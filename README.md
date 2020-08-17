@@ -1,2 +1,4 @@
-# Flipper-Android-App
+# Flipper Android App
+
 Mobile app to rule all Flipper's family
+
