@@ -1,0 +1,4 @@
+include ':bridge'
+include ':core'
+include ':app'
+rootProject.name = "Flipper App"
