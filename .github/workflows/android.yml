@@ -13,9 +13,11 @@ jobs:
           java-version: 1.8
       - name: Build debug
         run: ./gradlew assembleDebug
+      - name: Unit-test
+        run: ./gradlew test
       - name: Build release
         run: ./gradlew assembleRelease
       - uses: actions/upload-artifact@v2
         with:
-          name: Release App
+          name: Flipper-App
           path: app/build/outputs/apk/release/app-release-unsigned.apk
