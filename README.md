@@ -15,8 +15,8 @@ Mobile app to rule all Flipper's family
 │   ├── sample2
 ```
 
-`app` - main application module with base UI
-`core` - core library with deps and utils
-`bridge` - communication between android and flipper
-`modules` - community widget module
+- `app` - main application module with base UI
+- `core` - core library with deps and utils
+- `bridge` - communication between android and flipper
+- `modules` - community widget module
 
