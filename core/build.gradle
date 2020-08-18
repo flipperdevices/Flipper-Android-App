@@ -3,16 +3,14 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.1"
+    compileSdkVersion ApkConfig.COMPILE_SDK_VERSION
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 30
+        minSdkVersion ApkConfig.MIN_SDK_VERSION
+        targetSdkVersion ApkConfig.TARGET_SDK_VERSION
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
 
@@ -25,7 +23,13 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation "com.jakewharton.timber:timber:$project.depsTimberVersion"
+    implementation Libs.TIMBER
+    implementation Libs.KOTLIN
+    implementation Libs.ANNOTATIONS
+    implementation Libs.CORE_KTX
+    implementation Libs.APPCOMPAT
+
+    testImplementation TestingLib.JUNIT
+    androidTestImplementation TestingLib.ANDROIDX_TEST_EXT_JUNIT
+    androidTestImplementation TestingLib.ESPRESSO_CORE
 }
