@@ -1,25 +1,9 @@
+import com.flipper.gradle.ConfigurationPlugin
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-
-android {
-    compileSdkVersion ApkConfig.COMPILE_SDK_VERSION
-
-    defaultConfig {
-        applicationId ApkConfig.APPLICATION_ID
-        minSdkVersion ApkConfig.MIN_SDK_VERSION
-        targetSdkVersion ApkConfig.TARGET_SDK_VERSION
-        versionCode 1
-        versionName "1.0"
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-}
+apply plugin: ConfigurationPlugin
 
 dependencies {
     implementation project(':core')
