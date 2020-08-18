@@ -3,17 +3,14 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.1"
+    compileSdkVersion ApkConfig.COMPILE_SDK_VERSION
 
     defaultConfig {
-        applicationId "com.flipper.app"
-        minSdkVersion 21
-        targetSdkVersion 30
+        applicationId ApkConfig.APPLICATION_ID
+        minSdkVersion ApkConfig.MIN_SDK_VERSION
+        targetSdkVersion ApkConfig.TARGET_SDK_VERSION
         versionCode 1
         versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -25,11 +22,16 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation project(':core')
     implementation project(':bridge')
 
-    implementation "com.jakewharton.timber:timber:$project.depsTimberVersion"
-    implementation "androidx.appcompat:appcompat:$project.depsAppcompatVersion"
+    implementation Libs.TIMBER
+    implementation Libs.KOTLIN
+    implementation Libs.ANNOTATIONS
+    implementation Libs.CORE_KTX
+    implementation Libs.APPCOMPAT
+
+    testImplementation TestingLib.JUNIT
+    androidTestImplementation TestingLib.ANDROIDX_TEST_EXT_JUNIT
+    androidTestImplementation TestingLib.ESPRESSO_CORE
 }
