@@ -3,7 +3,7 @@ package com.flipper.app
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 
-public class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
