@@ -2,5 +2,5 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@color/colorAccent" />
 
-    <!--TODO Add flipper logo -->
+    <item android:gravity="center" android:drawable="@drawable/flipper_logo" android:height="250dp" android:width="250dp"/>
 </layer-list>
