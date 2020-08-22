@@ -2,8 +2,13 @@ import com.flipper.gradle.ConfigurationPlugin
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: ConfigurationPlugin
+
+android {
+  buildFeatures {
+    viewBinding = true
+  }
+}
 
 dependencies {
   implementation project(':core')
