@@ -6,6 +6,7 @@ object Versions {
     const val ANDROID_APPCOMPAT = "1.2.0"
     const val ANDROID_CORE = "1.3.1"
     const val ANDROID_ANNOTATIONS = "1.1.0"
+    const val ANDROID_NAVIGATION = "2.3.0"
 
     const val ANDROIDX_TEST = "1.2.0"
     const val ANDROIDX_TEST_EXT = "1.1.1"
@@ -26,6 +27,18 @@ object Libs {
     const val ANNOTATIONS = "androidx.annotation:annotation:${Versions.ANDROID_ANNOTATIONS}"
     const val CORE_KTX = "androidx.core:core-ktx:${Versions.ANDROID_CORE}"
     const val APPCOMPAT = "androidx.appcompat:appcompat:${Versions.ANDROID_APPCOMPAT}"
+
+    const val NAVIGATION_FRAGMENT = "androidx.navigation:navigation-fragment-ktx:${Versions.ANDROID_NAVIGATION}"
+    const val NAVIGATION_UI = "androidx.navigation:navigation-ui-ktx:${Versions.ANDROID_NAVIGATION}"
+    const val NAVIGATION_FRGMENT_TESTING = "androidx.fragment:fragment-testing:1.2.5"
+    const val NAVIGATION_TESTING = "androidx.navigation:navigation-testing:${Versions.ANDROID_NAVIGATION}"
+
+    const val COROUTINES_CORE = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.7"
+    const val COROUTINES_ANDROID = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.4"
+    const val COROUTINES_CORE_TEST = "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.5"
+    const val COROUTINES_TEST = "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.5"
+
+    const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:2.0.0-rc1"
 }
 
 object TestingLib {
