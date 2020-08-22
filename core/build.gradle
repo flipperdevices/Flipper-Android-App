@@ -2,8 +2,13 @@ import com.flipper.gradle.ConfigurationPlugin
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: ConfigurationPlugin
+
+android {
+  buildFeatures {
+    viewBinding = true
+  }
+}
 
 dependencies {
   implementation Libs.TIMBER
@@ -11,6 +16,7 @@ dependencies {
   implementation Libs.ANNOTATIONS
   implementation Libs.CORE_KTX
   implementation Libs.APPCOMPAT
+  implementation Libs.CONDUCTOR
 
   testImplementation TestingLib.JUNIT
   androidTestImplementation TestingLib.ANDROIDX_TEST_EXT_JUNIT
