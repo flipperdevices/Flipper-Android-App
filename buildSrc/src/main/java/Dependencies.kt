@@ -33,11 +33,6 @@ object Libs {
     const val NAVIGATION_FRGMENT_TESTING = "androidx.fragment:fragment-testing:1.2.5"
     const val NAVIGATION_TESTING = "androidx.navigation:navigation-testing:${Versions.ANDROID_NAVIGATION}"
 
-    const val COROUTINES_CORE = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.7"
-    const val COROUTINES_ANDROID = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.4"
-    const val COROUTINES_CORE_TEST = "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.5"
-    const val COROUTINES_TEST = "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.5"
-
     const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:2.0.0-rc1"
 }
 
