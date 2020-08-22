@@ -1,22 +1,22 @@
 buildscript {
-    repositories {
-        google()
-        jcenter()
-    }
+  repositories {
+    google()
+    jcenter()
+  }
 
-    dependencies {
-        classpath GradlePlugins.KOTLIN_PLUGIN
-        classpath GradlePlugins.ANDROID_GRADLE_PLUGIN
-    }
+  dependencies {
+    classpath GradlePlugins.KOTLIN_PLUGIN
+    classpath GradlePlugins.ANDROID_GRADLE_PLUGIN
+  }
 }
 
 allprojects {
-    repositories {
-        google()
-        jcenter()
-    }
+  repositories {
+    google()
+    jcenter()
+  }
 }
 
 task clean(type: Delete) {
-    delete rootProject.buildDir
+  delete rootProject.buildDir
 }

@@ -8,16 +8,16 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 
 class ConfigurationPlugin : Plugin<Project> {
-    override fun apply(project: Project) {
-        project.plugins.all { plugin ->
-            when (plugin) {
-                is LibraryPlugin -> {
-                    project.extensions.getByType(LibraryExtension::class.java).configure(project)
-                }
-                is AppPlugin -> {
-                    project.extensions.getByType(AppExtension::class.java).configure(project)
-                }
-            }
+  override fun apply(project: Project) {
+    project.plugins.all { plugin ->
+      when (plugin) {
+        is LibraryPlugin -> {
+          project.extensions.getByType(LibraryExtension::class.java).configure(project)
         }
+        is AppPlugin -> {
+          project.extensions.getByType(AppExtension::class.java).configure(project)
+        }
+      }
     }
+  }
 }
