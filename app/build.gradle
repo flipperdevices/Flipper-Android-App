@@ -19,6 +19,7 @@ dependencies {
   implementation Libs.ANNOTATIONS
   implementation Libs.CORE_KTX
   implementation Libs.APPCOMPAT
+  implementation Libs.CONDUCTOR
 
   testImplementation TestingLib.JUNIT
   androidTestImplementation TestingLib.ANDROIDX_TEST_EXT_JUNIT

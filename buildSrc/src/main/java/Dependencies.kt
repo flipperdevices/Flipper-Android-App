@@ -11,6 +11,8 @@ object Versions {
   const val ANDROIDX_TEST_EXT = "1.1.1"
   const val ESPRESSO_CORE = "3.2.0"
   const val JUNIT = "4.12"
+
+  const val CONDUCTOR = "3.0.0-rc5"
 }
 
 object GradlePlugins {
@@ -26,6 +28,8 @@ object Libs {
   const val ANNOTATIONS = "androidx.annotation:annotation:${Versions.ANDROID_ANNOTATIONS}"
   const val CORE_KTX = "androidx.core:core-ktx:${Versions.ANDROID_CORE}"
   const val APPCOMPAT = "androidx.appcompat:appcompat:${Versions.ANDROID_APPCOMPAT}"
+
+  const val CONDUCTOR = "com.bluelinelabs:conductor:${Versions.CONDUCTOR}"
 }
 
 object TestingLib {
