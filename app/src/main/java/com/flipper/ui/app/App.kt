@@ -1,6 +1,7 @@
-package com.flipper.app
+package com.flipper.ui.app
 
 import android.app.Application
+import com.flipper.app.BuildConfig
 import timber.log.Timber
 
 class App : Application() {
