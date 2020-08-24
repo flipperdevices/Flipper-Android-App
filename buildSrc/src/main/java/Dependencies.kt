@@ -11,6 +11,10 @@ object Versions {
   const val ANDROIDX_TEST_EXT = "1.1.1"
   const val ESPRESSO_CORE = "3.2.0"
   const val JUNIT = "4.12"
+
+  const val MOXY = "2.1.2"
+  const val CONDUCTOR = "3.0.0-rc5"
+  const val DAGGER = "2.28.3"
 }
 
 object GradlePlugins {
@@ -26,6 +30,13 @@ object Libs {
   const val ANNOTATIONS = "androidx.annotation:annotation:${Versions.ANDROID_ANNOTATIONS}"
   const val CORE_KTX = "androidx.core:core-ktx:${Versions.ANDROID_CORE}"
   const val APPCOMPAT = "androidx.appcompat:appcompat:${Versions.ANDROID_APPCOMPAT}"
+
+  const val MOXY = "com.github.moxy-community:moxy:${Versions.MOXY}"
+  const val MOXY_COMPILER = "com.github.moxy-community:moxy-compiler:${Versions.MOXY}"
+  const val CONDUCTOR = "com.bluelinelabs:conductor:${Versions.CONDUCTOR}"
+
+  const val DAGGER = "com.google.dagger:dagger:${Versions.DAGGER}"
+  const val DAGGER_COMPILER = "com.google.dagger:dagger-compiler:${Versions.DAGGER}"
 }
 
 object TestingLib {
