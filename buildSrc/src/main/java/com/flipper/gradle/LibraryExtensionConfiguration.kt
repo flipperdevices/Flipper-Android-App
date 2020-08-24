@@ -7,6 +7,7 @@ import org.gradle.api.Project
 fun LibraryExtension.configure(project: Project) {
   configureDefaultConfig()
   configureBuildTypes()
+  configureBuildFeatures()
 }
 
 private fun LibraryExtension.configureDefaultConfig() {
@@ -29,4 +30,8 @@ private fun LibraryExtension.configureBuildTypes() {
       )
     }
   }
+}
+
+private fun LibraryExtension.configureBuildFeatures() {
+  buildFeatures.viewBinding = true
 }
