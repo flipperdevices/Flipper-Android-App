@@ -4,7 +4,7 @@ Mobile app to rule all Flipper's family
 
 ![ecco](https://user-images.githubusercontent.com/5871715/90445233-04748100-e0e8-11ea-9e74-19390b0acfb4.png)
 
-# Module arch
+## Module arch
 
 ```
 ├── app
@@ -20,3 +20,18 @@ Mobile app to rule all Flipper's family
 - `bridge` - communication between android and flipper
 - `modules` - community widget module
 
+## Layer arch
+
+```
+├── app
+│   ├── feature1
+│   │   ├── data
+│   │   ├── view
+│   │   ├── interactor
+│   │   ├── repository
+```
+
+- `data` - Entity layer
+- `view` - Presentation layer
+- `interactor` - Domain layer
+- `repository` - Data layer
