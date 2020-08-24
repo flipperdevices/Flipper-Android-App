@@ -14,6 +14,7 @@ dependencies {
   implementation(Libs.APPCOMPAT)
   implementation(Libs.CONDUCTOR)
   implementation(Libs.DAGGER)
+  implementation(Libs.MOXY)
 
   testImplementation(TestingLib.JUNIT)
   androidTestImplementation(TestingLib.ANDROIDX_TEST_EXT_JUNIT)
