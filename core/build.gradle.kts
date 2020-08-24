@@ -7,12 +7,13 @@ plugins {
 apply<com.flipper.gradle.ConfigurationPlugin>()
 
 dependencies {
+  api(Libs.CONDUCTOR)
+
   implementation(Libs.TIMBER)
   implementation(Libs.KOTLIN)
   implementation(Libs.ANNOTATIONS)
   implementation(Libs.CORE_KTX)
   implementation(Libs.APPCOMPAT)
-  implementation(Libs.CONDUCTOR)
   implementation(Libs.DAGGER)
   implementation(Libs.MOXY)
 
