@@ -6,6 +6,9 @@ object Versions {
   const val ANDROID_APPCOMPAT = "1.2.0"
   const val ANDROID_CORE = "1.3.1"
   const val ANDROID_ANNOTATIONS = "1.1.0"
+  const val ANDROID_MATERIAL= "1.2.0"
+  const val ANDROID_CONSTRAINT = "1.1.3"
+  const val ANDROID_PREFERENCE = "1.1.1"
 
   const val ANDROIDX_TEST = "1.2.0"
   const val ANDROIDX_TEST_EXT = "1.1.1"
@@ -26,6 +29,9 @@ object Libs {
   const val ANNOTATIONS = "androidx.annotation:annotation:${Versions.ANDROID_ANNOTATIONS}"
   const val CORE_KTX = "androidx.core:core-ktx:${Versions.ANDROID_CORE}"
   const val APPCOMPAT = "androidx.appcompat:appcompat:${Versions.ANDROID_APPCOMPAT}"
+  const val MATERIAL = "com.google.android.material:material:${Versions.ANDROID_MATERIAL}"
+  const val CONSTRAINT = "androidx.constraintlayout:constraintlayout:${Versions.ANDROID_CONSTRAINT}"
+  const val PREFERENCE = "androidx.preference:preference:${Versions.ANDROID_PREFERENCE}"
 }
 
 object TestingLib {
