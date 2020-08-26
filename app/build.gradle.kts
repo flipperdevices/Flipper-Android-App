@@ -1,7 +1,7 @@
 plugins {
   id("com.android.application")
   id("kotlin-android")
-  id("kotlin-android-extensions")
+  id("kotlin-kapt")
 }
 
 apply<com.flipper.gradle.ConfigurationPlugin>()
@@ -15,8 +15,11 @@ dependencies {
   implementation(Libs.ANNOTATIONS)
   implementation(Libs.CORE_KTX)
   implementation(Libs.APPCOMPAT)
+  implementation(Libs.MOXY)
 
   testImplementation(TestingLib.JUNIT)
   androidTestImplementation(TestingLib.ANDROIDX_TEST_EXT_JUNIT)
   androidTestImplementation(TestingLib.ESPRESSO_CORE)
+
+  kapt(Libs.MOXY_COMPILER)
 }

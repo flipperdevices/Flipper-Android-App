@@ -2,11 +2,14 @@ package com.flipper.gradle
 
 import ApkConfig
 import com.android.build.gradle.LibraryExtension
+import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 
 fun LibraryExtension.configure(project: Project) {
   configureDefaultConfig()
   configureBuildTypes()
+  configureBuildFeatures()
+  configureCompileOptions()
 }
 
 private fun LibraryExtension.configureDefaultConfig() {
@@ -29,4 +32,13 @@ private fun LibraryExtension.configureBuildTypes() {
       )
     }
   }
+}
+
+private fun LibraryExtension.configureBuildFeatures() {
+  buildFeatures.viewBinding = true
+}
+
+private fun LibraryExtension.configureCompileOptions() {
+  compileOptions.sourceCompatibility = JavaVersion.VERSION_1_8
+  compileOptions.targetCompatibility = JavaVersion.VERSION_1_8
 }

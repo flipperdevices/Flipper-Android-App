@@ -4,7 +4,7 @@ Mobile app to rule all Flipper's family
 
 ![ecco](https://user-images.githubusercontent.com/5871715/90445233-04748100-e0e8-11ea-9e74-19390b0acfb4.png)
 
-# Module arch
+## Module arch
 
 ```
 ├── app
@@ -15,8 +15,27 @@ Mobile app to rule all Flipper's family
 │   ├── sample2
 ```
 
-- `app` - main application module with base UI
-- `core` - core library with deps and utils
-- `bridge` - communication between android and flipper
-- `modules` - community widget module
+- `app` - Main application module with UI
+- `core` - Core library with deps and utils
+- `bridge` - Communication between android and Flipper
+- `modules` - Community widget module
 
+## Layer arch
+
+```
+├── app
+│   ├── feature1
+│   │   ├── data <-- view specific data classes
+│   │   ├── view
+├── interactor
+│   ├── feature1
+│   │   ├── data
+├── repository
+│   ├── feature1
+│   │   ├── data
+```
+
+- `data` - Entity layer
+- `view` - Presentation layer
+- `interactor` - Domain layer
+- `repository` - Data layer
