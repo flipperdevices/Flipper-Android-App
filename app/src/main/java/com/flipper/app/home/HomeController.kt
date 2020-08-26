@@ -7,10 +7,6 @@ import com.flipper.core.view.ViewInflater
 import moxy.presenter.InjectPresenter
 
 class HomeController : BaseController<ControllerHomeBinding>(), HomeView {
-  override fun getViewInflater(): ViewInflater<ControllerHomeBinding> {
-    return ControllerHomeBinding::inflate
-  }
-
   @InjectPresenter
   lateinit var presenter: HomePresenter
   private var dialog: AlertDialog? = null
@@ -38,5 +34,9 @@ class HomeController : BaseController<ControllerHomeBinding>(), HomeView {
 
   override fun hideDialog() {
     dialog?.hide()
+  }
+
+  override fun getViewInflater(): ViewInflater<ControllerHomeBinding> {
+    return ControllerHomeBinding::inflate
   }
 }
