@@ -25,14 +25,14 @@ Mobile app to rule all Flipper's family
 ```
 ├── app
 │   ├── feature1
-│   │   ├── data <-- view specific data classes
-│   │   ├── view
-├── interactor
-│   ├── feature1
-│   │   ├── data
-├── repository
-│   ├── feature1
-│   │   ├── data
+│   │   ├── di
+│   │   ├── ui
+│   │   │   ├── view <-- custom views
+│   │   │   ├── data <-- screen specific data classes
+│   │   ├── interactor
+│   │   │   ├── data <-- layer specific data classes
+│   │   ├── repository
+│   │   │   ├── data <-- layer specific data classes
 ```
 
 - `data` - Entity layer
