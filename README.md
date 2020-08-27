@@ -1,4 +1,4 @@
-# Flipper Android App ![Flipper App Satus](https://github.com/Flipper-Zero/Flipper-Android-App/workflows/Android%20CI/badge.svg)
+# Flipper Android App [![Flipper App Satus](https://github.com/Flipper-Zero/Flipper-Android-App/workflows/Android%20CI/badge.svg)](https://github.com/Flipper-Zero/Flipper-Android-App/actions)
 
 Mobile app to rule all Flipper's family
 
