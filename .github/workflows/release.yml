@@ -27,7 +27,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          release_name: Flipper App Release
+          release_name: Flipper App 0.1.${{ GITHUB_RUN_NUMBER }}
           draft: false
           prerelease: true
       - name: Upload Release Asset
