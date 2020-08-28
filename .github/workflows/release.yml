@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - name: set up JDK 1.8
         uses: actions/setup-java@v1
         with:
@@ -17,6 +17,27 @@ jobs:
       - name: Build release
         run: ./gradlew assembleRelease
       - uses: actions/upload-artifact@v2
+        name: Publish APK in releases
         with:
           name: Flipper-App
           path: app/build/outputs/apk/release/app-release-unsigned.apk
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: 0.1.${{ github.run_number }}
+          release_name: Flipper App 0.1.${{ github.run_number }}
+          draft: false
+          prerelease: true
+      - name: Upload Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: app/build/outputs/apk/release/app-release-unsigned.apk
+          asset_name: FlipperApp.apk
+          asset_content_type: application/zip
