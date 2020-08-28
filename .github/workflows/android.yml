@@ -1,4 +1,4 @@
-name: Android CI
+name: Pull Request CI
 
 on:
   pull_request:
@@ -18,9 +18,3 @@ jobs:
         run: ./gradlew assembleDebug
       - name: Unit-test
         run: ./gradlew test
-      - name: Build release
-        run: ./gradlew assembleRelease
-      - uses: actions/upload-artifact@v2
-        with:
-          name: Flipper-App
-          path: app/build/outputs/apk/release/app-release-unsigned.apk
