@@ -16,6 +16,7 @@
     android:layout_alignParentBottom="true"
     android:layout_margin="16dp"
     android:layout_alignParentEnd="true"
-    android:layout_height="wrap_content"/>
+    android:layout_height="wrap_content"
+    android:visibility="gone"/>
 
 </RelativeLayout>
