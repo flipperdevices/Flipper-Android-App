@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   tools:context=".MainActivity">
 
-  <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:text="Hello, Flipper users!" />
+  <FrameLayout
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
 
-</FrameLayout>
+  <TextView
+    android:id="@+id/version_name"
+    android:layout_width="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_margin="16dp"
+    android:layout_alignParentEnd="true"
+    android:layout_height="wrap_content"/>
+
+</RelativeLayout>

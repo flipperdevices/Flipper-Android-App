@@ -24,6 +24,14 @@ private fun LibraryExtension.configureDefaultConfig() {
 private fun LibraryExtension.configureBuildTypes() {
   buildTypes { container ->
     container.maybeCreate("debug")
+    container.maybeCreate("internal").apply {
+      isMinifyEnabled = true
+      isDebuggable = true
+      proguardFiles(
+        getDefaultProguardFile("proguard-android-optimize.txt"),
+        "proguard-rules.pro"
+      )
+    }
     container.maybeCreate("release").apply {
       isMinifyEnabled = true
       proguardFiles(

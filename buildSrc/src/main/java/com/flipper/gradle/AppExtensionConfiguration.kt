@@ -29,6 +29,15 @@ private fun AppExtension.configureBuildTypes() {
       multiDexEnabled = true
       isDebuggable = true
     }
+    container.maybeCreate("internal").apply {
+      applicationIdSuffix = ".internal"
+      isDebuggable = true
+      isMinifyEnabled = true
+      proguardFiles(
+        getDefaultProguardFile("proguard-android-optimize.txt"),
+        "proguard-rules.pro"
+      )
+    }
     container.maybeCreate("release").apply {
       isMinifyEnabled = true
       proguardFiles(
