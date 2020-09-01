@@ -16,6 +16,7 @@ dependencies {
   implementation(Libs.CORE_KTX)
   implementation(Libs.APPCOMPAT)
   implementation(Libs.MOXY)
+  implementation(Libs.TREX)
 
   testImplementation(TestingLib.JUNIT)
   androidTestImplementation(TestingLib.ANDROIDX_TEST_EXT_JUNIT)

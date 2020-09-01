@@ -9,6 +9,7 @@ import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
 import com.flipper.app.databinding.ActivityMainBinding
 import com.flipper.app.home.HomeController
+import com.lionzxy.trex_offline.TRexOfflineActivity
 
 class MainActivity : AppCompatActivity() {
   private lateinit var router: Router
@@ -21,6 +22,9 @@ class MainActivity : AppCompatActivity() {
       binding.versionName.visibility = View.VISIBLE
       binding.versionName.text = BuildConfig.VERSION_NAME
       binding.versionName.alpha = 0.1F
+      binding.versionName.setOnClickListener {
+        TRexOfflineActivity.open(this)
+      }
     }
     initializeConductor(binding.container, savedInstanceState)
   }
