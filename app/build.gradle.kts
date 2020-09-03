@@ -16,6 +16,7 @@ dependencies {
   implementation(Libs.CORE_KTX)
   implementation(Libs.APPCOMPAT)
   implementation(Libs.MOXY)
+  implementation(Libs.TREX)
   implementation(Libs.DAGGER)
 
   testImplementation(TestingLib.JUNIT)

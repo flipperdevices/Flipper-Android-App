@@ -15,6 +15,7 @@ object Versions {
   const val MOXY = "2.1.2"
   const val CONDUCTOR = "3.0.0-rc5"
   const val DAGGER = "2.28.3"
+  const val TREX = "1.0.0"
 }
 
 object GradlePlugins {
@@ -37,6 +38,8 @@ object Libs {
 
   const val DAGGER = "com.google.dagger:dagger:${Versions.DAGGER}"
   const val DAGGER_COMPILER = "com.google.dagger:dagger-compiler:${Versions.DAGGER}"
+
+  const val TREX = "com.github.LionZXY.T-Rex-Android:trex-offline:${Versions.TREX}"
 }
 
 object TestingLib {
