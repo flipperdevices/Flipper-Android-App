@@ -3,7 +3,7 @@
   package="com.flipper.app">
 
   <application
-    android:name=".App"
+    android:name=".FlipperApplication"
     android:allowBackup="true"
     android:fullBackupContent="false"
     android:icon="@mipmap/ic_launcher"
