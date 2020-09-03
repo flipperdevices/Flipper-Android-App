@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:drawable="@color/colorAccent" />
+    <item android:drawable="@color/colorAccent" />
 
-  <item
-    android:width="250dp"
-    android:height="250dp"
-    android:drawable="@drawable/flipper_logo"
-    android:gravity="center" />
+    <item
+            android:width="250dp"
+            android:height="250dp"
+            android:drawable="@drawable/flipper_logo"
+            android:gravity="center" />
 </layer-list>

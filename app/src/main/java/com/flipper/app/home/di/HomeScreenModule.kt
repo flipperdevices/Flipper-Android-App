@@ -7,6 +7,6 @@ import dagger.Module
 
 @Module
 abstract class HomeScreenModule {
-  @Binds
-  abstract fun repository(impl: ProfileRepositoryImpl): ProfileRepository
+    @Binds
+    abstract fun repository(impl: ProfileRepositoryImpl): ProfileRepository
 }

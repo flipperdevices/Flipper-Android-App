@@ -5,13 +5,13 @@ import moxy.MvpPresenter
 import javax.inject.Inject
 
 class HomePresenter @Inject constructor(
-  private val repository: ProfileRepository
+    private val repository: ProfileRepository
 ) : MvpPresenter<HomeView>() {
-  fun onShowDialogClick() {
-    viewState.showDialog()
-  }
+    fun onShowDialogClick() {
+        viewState.showDialog()
+    }
 
-  fun onHideDialog() {
-    viewState.hideDialog()
-  }
+    fun onHideDialog() {
+        viewState.hideDialog()
+    }
 }
