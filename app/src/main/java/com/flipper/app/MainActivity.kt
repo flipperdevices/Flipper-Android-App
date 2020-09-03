@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        if (BuildConfig.DEBUG) {
+        if (BuildConfig.INTERNAL) {
             binding.versionName.visibility = View.VISIBLE
             binding.versionName.text = BuildConfig.VERSION_NAME
             binding.versionName.alpha = 0.1F

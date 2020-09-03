@@ -20,7 +20,7 @@ class FlipperApplication : Application() {
             .applicationModule(ApplicationModule(this))
             .build()
 
-        if (BuildConfig.DEBUG) {
+        if (BuildConfig.INTERNAL) {
             Timber.plant(Timber.DebugTree())
         }
 

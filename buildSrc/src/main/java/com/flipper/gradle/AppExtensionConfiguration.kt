@@ -25,13 +25,14 @@ private fun AppExtension.configureDefaultConfig() {
 private fun AppExtension.configureBuildTypes() {
     buildTypes { container ->
         container.maybeCreate("debug").apply {
+            buildConfigField("boolean", "INTERNAL", "true")
             applicationIdSuffix = ".dev"
             multiDexEnabled = true
             isDebuggable = true
         }
         container.maybeCreate("internal").apply {
+            buildConfigField("boolean", "INTERNAL", "true")
             applicationIdSuffix = ".internal"
-            //isDebuggable = true
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -39,6 +40,7 @@ private fun AppExtension.configureBuildTypes() {
             )
         }
         container.maybeCreate("release").apply {
+            buildConfigField("boolean", "INTERNAL", "false")
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
