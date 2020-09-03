@@ -2,6 +2,7 @@ package com.flipper.gradle
 
 import ApkConfig
 import com.android.build.gradle.LibraryExtension
+import com.android.builder.internal.ClassFieldImpl
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 
@@ -25,8 +26,8 @@ private fun LibraryExtension.configureBuildTypes() {
     buildTypes { container ->
         container.maybeCreate("debug")
         container.maybeCreate("internal").apply {
+            //buildConfigFields["DEBUG"] = ClassFieldImpl("boolean", "DEBUG", "true")
             isMinifyEnabled = true
-            isDebuggable = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
