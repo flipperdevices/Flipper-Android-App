@@ -6,6 +6,6 @@ import moxy.viewstate.strategy.StateStrategyType
 
 @StateStrategyType(SingleStateStrategy::class)
 interface HomeView : MvpView {
-  fun showDialog()
-  fun hideDialog()
+    fun showDialog()
+    fun hideDialog()
 }

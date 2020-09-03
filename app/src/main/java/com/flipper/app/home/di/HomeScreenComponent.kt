@@ -9,5 +9,5 @@ import dagger.Component
   dependencies = [HomeScreenDependencies::class]
 )
 interface HomeScreenComponent {
-  fun presenter(): HomePresenter
+    fun presenter(): HomePresenter
 }

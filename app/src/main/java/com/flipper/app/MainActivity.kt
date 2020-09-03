@@ -12,33 +12,33 @@ import com.flipper.app.home.HomeController
 import com.lionzxy.trex_offline.TRexOfflineActivity
 
 class MainActivity : AppCompatActivity() {
-  private lateinit var router: Router
+    private lateinit var router: Router
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    val binding = ActivityMainBinding.inflate(layoutInflater)
-    setContentView(binding.root)
-    if (BuildConfig.DEBUG) {
-      binding.versionName.visibility = View.VISIBLE
-      binding.versionName.text = BuildConfig.VERSION_NAME
-      binding.versionName.alpha = 0.1F
-      binding.versionName.setOnClickListener {
-        TRexOfflineActivity.open(this)
-      }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        if (BuildConfig.DEBUG) {
+            binding.versionName.visibility = View.VISIBLE
+            binding.versionName.text = BuildConfig.VERSION_NAME
+            binding.versionName.alpha = 0.1F
+            binding.versionName.setOnClickListener {
+                TRexOfflineActivity.open(this)
+            }
+        }
+        initializeConductor(binding.container, savedInstanceState)
     }
-    initializeConductor(binding.container, savedInstanceState)
-  }
 
-  private fun initializeConductor(container: ViewGroup, savedInstanceState: Bundle?) {
-    router = Conductor.attachRouter(this, container, savedInstanceState)
-    if (!router.hasRootController()) {
-      router.setRoot(RouterTransaction.with(HomeController()))
+    private fun initializeConductor(container: ViewGroup, savedInstanceState: Bundle?) {
+        router = Conductor.attachRouter(this, container, savedInstanceState)
+        if (!router.hasRootController()) {
+            router.setRoot(RouterTransaction.with(HomeController()))
+        }
     }
-  }
 
-  override fun onBackPressed() {
-    if (!router.handleBack()) {
-      super.onBackPressed()
+    override fun onBackPressed() {
+        if (!router.handleBack()) {
+            super.onBackPressed()
+        }
     }
-  }
 }
