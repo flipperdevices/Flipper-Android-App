@@ -25,10 +25,7 @@ jobs:
       - name: ktlint
         run: |
           curl -sSLO https://github.com/pinterest/ktlint/releases/download/0.38.1/ktlint && chmod a+x ktlint
-          ./ktlint --reporter=checkstyle,output=build/ktlint-report-in-checkstyle-format.xml
-      - uses: yutailang0119/action-ktlint@v1.0.0
-        with:
-          xml_path: build/ktlint-report-in-checkstyle-format.xml
+          ./ktlint
       - name: detekt
         uses: natiginfo/action-detekt-all@1.12.0
         with:
