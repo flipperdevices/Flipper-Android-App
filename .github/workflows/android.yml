@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: ktlint
-        uses: vroy/gha-kotlin-linter@v1
+        uses: lionzxy/gha-kotlin-linter@v1
       - name: detekt
         uses: natiginfo/action-detekt-all@1.12.0
         with:
