@@ -8,7 +8,7 @@ import com.bluelinelabs.conductor.Conductor
 import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
 import com.flipper.app.databinding.ActivityMainBinding
-import com.flipper.app.home.HomeController
+import com.flipper.app.home.ui.HomeController
 import com.lionzxy.trex_offline.TRexOfflineActivity
 
 class MainActivity : AppCompatActivity() {
@@ -21,9 +21,10 @@ class MainActivity : AppCompatActivity() {
         if (BuildConfig.INTERNAL) {
             binding.versionName.visibility = View.VISIBLE
             binding.versionName.text = BuildConfig.VERSION_NAME
-            binding.versionName.alpha = 0.1F
+            binding.versionName.alpha = 0.25F
             binding.versionName.setOnClickListener {
                 TRexOfflineActivity.open(this)
+                false
             }
         }
         initializeConductor(binding.container, savedInstanceState)

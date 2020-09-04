@@ -15,6 +15,7 @@ dependencies {
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.CORE_KTX)
     implementation(Libs.APPCOMPAT)
+    implementation(Libs.MATERIAL)
     implementation(Libs.MOXY)
     implementation(Libs.TREX)
     implementation(Libs.DAGGER)
