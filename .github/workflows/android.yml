@@ -6,7 +6,7 @@ on:
       - 'master'
 
 jobs:
-  build:
+  run_test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -28,12 +28,14 @@ jobs:
           java-version: 1.8
       - name: Build internal release
         run: ./gradlew assembleInternal -Dversion_code=${{ github.run_number }} -Dversion_name="0.1.${{ github.run_number }}"
+      - name: Prepare key
+        run: export DEBUG_KEY=$( openssl base64 < .github/workflows/assets/debug.jks | tr -d '\n' )
       - name: Sign internal release
         id: sign_internal_release
         uses: r0adkll/sign-android-release@v1
         with:
           releaseDirectory: app/build/outputs/apk/internal
-          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
-          alias: ${{ secrets.KEY_ALIAS }}
-          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
-          keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD }}
+          signingKeyBase64: ${{ env.DEBUG_KEY }}
+          alias: key0
+          keyStorePassword: 123456
+          keyPassword: 123456
