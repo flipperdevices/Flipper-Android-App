@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/home_bottom_navigation_market"
-            android:icon="@drawable/ic_market"
-        android:title="@string/market" />
+            android:id="@+id/home_bottom_navigation_extensions"
+            android:icon="@drawable/ic_extension_white_24dp"
+            android:title="@string/extensions" />
 
     <item
             android:id="@+id/home_bottom_navigation_user_space"
-            android:icon="@drawable/ic_userspace"
-        android:title="@string/userspace" />
+            android:icon="@drawable/ic_home_white_24dp"
+            android:title="@string/userspace" />
 
     <item
             android:id="@+id/home_bottom_navigation_settings"
-            android:icon="@drawable/ic_settings"
-        android:title="@string/settings" />
+            android:icon="@drawable/ic_settings_white_24dp"
+            android:title="@string/settings" />
 </menu>

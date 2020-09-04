@@ -7,13 +7,13 @@ enum class HomeTab(
     val menuItemId: Int
 ) {
     UserSpace(menuItemId = R.id.home_bottom_navigation_user_space),
-    Market(menuItemId = R.id.home_bottom_navigation_market),
+    Extensions(menuItemId = R.id.home_bottom_navigation_extensions),
     Settings(menuItemId = R.id.home_bottom_navigation_settings);
 
     companion object {
         fun createFromMenuItemId(itemId: Int): HomeTab? {
             return when (itemId) {
-                Market.menuItemId -> Market
+                Extensions.menuItemId -> Extensions
                 UserSpace.menuItemId -> UserSpace
                 Settings.menuItemId -> Settings
                 else -> {

@@ -47,7 +47,7 @@ class HomeController :
         } else {
             val controller: Controller = when (switchTo) {
                 HomeTab.UserSpace -> StubController("UserSpace")
-                HomeTab.Market -> StubController("Market")
+                HomeTab.Extensions -> StubController("Extensions")
                 HomeTab.Settings -> StubController("Settings")
             }
             childRouter.setRoot(RouterTransaction.with(controller))
