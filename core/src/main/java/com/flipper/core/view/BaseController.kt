@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.CallSuper
 import androidx.viewbinding.ViewBinding
 import com.bluelinelabs.conductor.Controller
 import moxy.MvpDelegate
@@ -59,7 +60,8 @@ abstract class BaseController<VB : ViewBinding> : Controller {
         mvpDelegate.onDetach()
     }
 
-    final override fun onSaveInstanceState(outState: Bundle) {
+    @CallSuper
+    override fun onSaveInstanceState(outState: Bundle) {
         mvpDelegate.onSaveInstanceState(outState)
     }
 }

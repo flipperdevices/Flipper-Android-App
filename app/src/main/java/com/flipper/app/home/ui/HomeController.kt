@@ -26,7 +26,7 @@ class HomeController :
 
     @IdRes
     private var selectedTabId = NO_TAB_ID
-    private val tabRouterStates = SparseArray<Bundle>()
+    private var tabRouterStates = SparseArray<Bundle>()
     private lateinit var childRouter: Router
 
     override fun initializeView() {
@@ -83,6 +83,18 @@ class HomeController :
         childRouter.setPopsLastView(false)
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        saveStateFromTab(selectedTabId)
+        outState.putSparseParcelableArray(ROUTER_STATES_KEY, tabRouterStates)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        savedInstanceState.getSparseParcelableArray<Bundle>(ROUTER_STATES_KEY)
+            ?.let { tabRouterStates = it }
+    }
+
     @InjectPresenter
     lateinit var presenter: HomePresenter
 
@@ -100,3 +112,4 @@ class HomeController :
 }
 
 private const val NO_TAB_ID = -1
+private const val ROUTER_STATES_KEY = "TAB_ROUTER_STATES"
