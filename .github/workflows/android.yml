@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: ktlint
-        uses: lionzxy/gha-kotlin-linter@v1
+        uses: lucasnlm/ktlint-action@v1.0.1
         with:
           args: --reporter=checkstyle,output=build/ktlint-report-in-checkstyle-format.xml
       - uses: yutailang0119/action-ktlint@v1.0.0
