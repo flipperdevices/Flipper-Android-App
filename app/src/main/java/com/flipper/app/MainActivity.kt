@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+      setContentView(binding.root)
         if (BuildConfig.INTERNAL) {
             binding.versionName.visibility = View.VISIBLE
             binding.versionName.text = BuildConfig.VERSION_NAME
