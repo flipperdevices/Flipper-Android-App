@@ -22,14 +22,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: ktlint
-        run: |
-          curl -sSLO https://github.com/pinterest/ktlint/releases/download/0.38.1/ktlint && chmod a+x ktlint
-          ./ktlint
-      - name: detekt
-        uses: natiginfo/action-detekt-all@1.12.0
+      - uses: actions/cache@v2
+        name: cache
         with:
-          args: --config detekt.yml
+          path: build/bin
+          key: ${{ runner.os }}
+      - name: ktlint
+        run: ./ktlint
+      - name: detekt
+        run: ./detekt
   check_release_aseemble:
     runs-on: ubuntu-latest
     steps:

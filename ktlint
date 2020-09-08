@@ -1,0 +1,15 @@
+#!/bin/bash
+
+ROOT_FOLDER=build/bin
+VERSION=0.38.1
+KTLINT_BIN=$ROOT_FOLDER/ktlint-$VERSION
+mkdir -p $ROOT_FOLDER
+if [ ! -f "$KTLINT_BIN" ]; then
+  echo "Please wait, first download..."
+  rm -f $ROOT_FOLDER/ktlint-*
+  curl -sSL https://github.com/pinterest/ktlint/releases/download/$VERSION/ktlint --output $KTLINT_BIN
+  chmod a+x $KTLINT_BIN
+fi
+
+$KTLINT_BIN
+echo "Done!"
