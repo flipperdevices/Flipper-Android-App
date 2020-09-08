@@ -6,7 +6,7 @@ on:
       - 'master'
 
 jobs:
-  run_test:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -18,6 +18,19 @@ jobs:
         run: ./gradlew assembleDebug
       - name: Unit-test
         run: ./gradlew test
+  static_analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        name: cache
+        with:
+          path: build/bin
+          key: ${{ runner.os }}
+      - name: ktlint
+        run: ./ktlint
+      - name: detekt
+        run: ./detekt
   check_release_aseemble:
     runs-on: ubuntu-latest
     steps:

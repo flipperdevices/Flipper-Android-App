@@ -2,7 +2,6 @@ package com.flipper.gradle
 
 import ApkConfig
 import com.android.build.gradle.LibraryExtension
-import com.android.builder.internal.ClassFieldImpl
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 
