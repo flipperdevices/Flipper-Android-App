@@ -12,15 +12,9 @@ enum class HomeTab(
 
     companion object {
         fun createFromMenuItemId(itemId: Int): HomeTab? {
-            return when (itemId) {
-                Extensions.menuItemId -> Extensions
-                UserSpace.menuItemId -> UserSpace
-                Settings.menuItemId -> Settings
-                else -> {
-                    Timber.e("unknown item id in home tabs: itemId=${itemId}")
-                    null
-                }
-            }
+            return values()
+                .firstOrNull { tab -> tab.menuItemId == itemId }
+                ?.also { Timber.e("unknown item id in home tabs: itemId=${itemId}") }
         }
     }
 }
