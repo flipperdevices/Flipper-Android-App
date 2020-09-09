@@ -1,10 +1,9 @@
 package com.flipper.app.stub
 
 import moxy.MvpView
-import moxy.viewstate.strategy.SingleStateStrategy
-import moxy.viewstate.strategy.StateStrategyType
+import moxy.viewstate.strategy.alias.AddToEndSingle
 
-@StateStrategyType(SingleStateStrategy::class)
+@AddToEndSingle
 interface StubView : MvpView {
     fun setNumber(number: Int)
 }
