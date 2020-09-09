@@ -17,6 +17,7 @@ dependencies {
     implementation(Libs.APPCOMPAT)
     implementation(Libs.MATERIAL)
     implementation(Libs.MOXY)
+    implementation(Libs.MOXY_KTX)
     implementation(Libs.TREX)
     implementation(Libs.DAGGER)
 

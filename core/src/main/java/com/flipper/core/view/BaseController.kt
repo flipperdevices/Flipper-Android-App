@@ -8,10 +8,11 @@ import androidx.annotation.CallSuper
 import androidx.viewbinding.ViewBinding
 import com.bluelinelabs.conductor.Controller
 import moxy.MvpDelegate
+import moxy.MvpDelegateHolder
 
-abstract class BaseController<VB : ViewBinding> : Controller {
+abstract class BaseController<VB : ViewBinding> : MvpDelegateHolder, Controller {
     // Lazy used for prevent leaking `this`
-    private val mvpDelegate by lazy(LazyThreadSafetyMode.NONE) { MvpDelegate(this) }
+    private var mvpDelegate: MvpDelegate<BaseController<VB>>? = null
     private var isStateSaved = false
     private var isCreated = false
 
@@ -30,7 +31,7 @@ abstract class BaseController<VB : ViewBinding> : Controller {
     ): View {
         if (!isCreated) {
             isCreated = true
-            mvpDelegate.onCreate()
+            getMvpDelegate().onCreate()
         }
         _binding = getViewInflater().invoke(inflater, container, false)
         val rootView = _binding!!.root
@@ -39,7 +40,7 @@ abstract class BaseController<VB : ViewBinding> : Controller {
     }
 
     final override fun onAttach(view: View) {
-        mvpDelegate.onAttach()
+        getMvpDelegate().onAttach()
     }
 
     abstract fun getViewInflater(): ViewInflater<VB>
@@ -48,31 +49,38 @@ abstract class BaseController<VB : ViewBinding> : Controller {
     protected open fun disposeView() = Unit
 
     final override fun onDetach(view: View) {
-        mvpDelegate.onDetach()
+        getMvpDelegate().onDetach()
     }
 
     final override fun onDestroyView(view: View) {
         disposeView()
         _binding = null
-        mvpDelegate.onDestroyView()
+        getMvpDelegate().onDestroyView()
     }
 
     final override fun onDestroy() {
         // If state is saved, it means controller rotation.
         // Do not destroy presenter.
         if (isStateSaved) return
-        mvpDelegate.onDestroy()
+        getMvpDelegate().onDestroy()
     }
 
     @CallSuper
     override fun onSaveInstanceState(outState: Bundle) {
         isStateSaved = true
-        mvpDelegate.onSaveInstanceState(outState)
+        getMvpDelegate().onSaveInstanceState(outState)
     }
 
     @CallSuper
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         isCreated = true
-        mvpDelegate.onCreate(savedInstanceState)
+        getMvpDelegate().onCreate(savedInstanceState)
+    }
+
+    override fun getMvpDelegate(): MvpDelegate<*> {
+        if (mvpDelegate == null) {
+            mvpDelegate = MvpDelegate(this)
+        }
+        return mvpDelegate!!
     }
 }

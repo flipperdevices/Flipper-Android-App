@@ -15,8 +15,7 @@ import com.flipper.app.stub.StubController
 import com.flipper.core.view.BaseController
 import com.flipper.core.view.ViewInflater
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import moxy.presenter.InjectPresenter
-import moxy.presenter.ProvidePresenter
+import moxy.ktx.moxyPresenter
 import timber.log.Timber
 
 class HomeController :
@@ -28,6 +27,8 @@ class HomeController :
     private var selectedTabId = NO_TAB_ID
     private var tabRouterStates = SparseArray<Bundle>()
     private lateinit var childRouter: Router
+
+    private val presenter by moxyPresenter(factory = ::providePresenter)
 
     override fun initializeView() {
         childRouter = getChildRouter(binding.homeContainer)
@@ -95,11 +96,7 @@ class HomeController :
             ?.let { tabRouterStates = it }
     }
 
-    @InjectPresenter
-    lateinit var presenter: HomePresenter
-
-    @ProvidePresenter
-    fun providePresenter(): HomePresenter {
+    private fun providePresenter(): HomePresenter {
         return DaggerHomeScreenComponent.builder()
             .homeScreenDependencies(FlipperApplication.component)
             .build()

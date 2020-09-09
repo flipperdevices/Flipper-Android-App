@@ -35,6 +35,7 @@ object Libs {
     const val MATERIAL = "com.google.android.material:material:${Versions.ANDROID_MATERIAL}"
 
     const val MOXY = "com.github.moxy-community:moxy:${Versions.MOXY}"
+    const val MOXY_KTX = "com.github.moxy-community:moxy-ktx:${Versions.MOXY}"
     const val MOXY_COMPILER = "com.github.moxy-community:moxy-compiler:${Versions.MOXY}"
     const val CONDUCTOR = "com.bluelinelabs:conductor:${Versions.CONDUCTOR}"
 
