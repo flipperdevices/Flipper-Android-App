@@ -14,6 +14,28 @@ abstract class BaseController<VB : ViewBinding> : MvpDelegateHolder, Controller 
     // Lazy used for prevent leaking `this`
     private var mvpDelegate: MvpDelegate<BaseController<VB>>? = null
     private var isStateSaved = false
+
+    //
+    // Hack to initialize moxy
+    //
+    // mvpDelegate.onCreate should be called before view creation.
+    // Because of that it called inside onRestoreInstanceState or before onCreateView methods.
+    //
+    // Why not using a constructor initialization?
+    // In constructor args, conductor doesn't provide information
+    // about saved instance state. That information is provided via onRestoreInstanceState method.
+    // Because of that we can't call mvpDelegate.onCreate in constructor. If we call it in
+    // constructor we will create new instance of presenter.
+    //
+    // Why do we need isCreated field?
+    // Moxy doesn't have isInitialized field inside. So if we call inCreate twice moxy
+    // will be initialized two times. The first initialisation will be overridden by second.
+    //
+    // Why are there 2 ways to initialize moxy?
+    // The controller can be in backstack in that case onCreateView method will be never called and
+    // moxy will be never initialized. If we call mvpDelegate.onSaveInstanceState on
+    // not initialized moxy, we will receive NPE.
+    //
     private var isCreated = false
 
     private var _binding: VB? = null
