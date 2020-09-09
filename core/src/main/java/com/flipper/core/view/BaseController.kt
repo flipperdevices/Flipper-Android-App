@@ -56,7 +56,7 @@ abstract class BaseController<VB : ViewBinding> : Controller {
     }
 
     final override fun onDestroy() {
-        mvpDelegate.onDetach()
+        mvpDelegate.onDestroy()
     }
 
     final override fun onSaveInstanceState(outState: Bundle) {
