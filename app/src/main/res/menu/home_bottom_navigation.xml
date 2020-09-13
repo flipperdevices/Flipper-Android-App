@@ -3,15 +3,15 @@
     <item
             android:id="@+id/home_bottom_navigation_extensions"
             android:icon="@drawable/ic_extension_white_24dp"
-            android:title="@string/extensions" />
+            android:title="@string/home_controller_extensions" />
 
     <item
             android:id="@+id/home_bottom_navigation_user_space"
             android:icon="@drawable/ic_home_white_24dp"
-            android:title="@string/userspace" />
+            android:title="@string/home_controller_userspace" />
 
     <item
             android:id="@+id/home_bottom_navigation_settings"
             android:icon="@drawable/ic_settings_white_24dp"
-            android:title="@string/settings" />
+            android:title="@string/home_controller_settings" />
 </menu>
