@@ -28,7 +28,12 @@ class HomeController :
     private var tabRouterStates = SparseArray<Bundle>()
     private lateinit var childRouter: Router
 
-    private val presenter by moxyPresenter(factory = ::providePresenter)
+    private val presenter by moxyPresenter {
+        DaggerHomeScreenComponent.builder()
+            .homeScreenDependencies(FlipperApplication.component)
+            .build()
+            .presenter()
+    }
 
     override fun initializeView() {
         childRouter = getChildRouter(binding.homeContainer)
@@ -94,13 +99,6 @@ class HomeController :
         super.onRestoreInstanceState(savedInstanceState)
         savedInstanceState.getSparseParcelableArray<Bundle>(ROUTER_STATES_KEY)
             ?.let { tabRouterStates = it }
-    }
-
-    private fun providePresenter(): HomePresenter {
-        return DaggerHomeScreenComponent.builder()
-            .homeScreenDependencies(FlipperApplication.component)
-            .build()
-            .presenter()
     }
 
     override fun getViewInflater(): ViewInflater<ControllerHomeBinding> {
