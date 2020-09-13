@@ -6,12 +6,11 @@ import com.bluelinelabs.conductor.RouterTransaction
 import com.flipper.app.databinding.ControllerStubBinding
 import com.flipper.core.view.BaseController
 import com.flipper.core.view.ViewInflater
-import moxy.presenter.InjectPresenter
+import moxy.ktx.moxyPresenter
 
 class StubController(args: Bundle) : BaseController<ControllerStubBinding>(args),
     StubView {
-    @InjectPresenter
-    lateinit var presenter: StubPresenter
+    private val presenter by moxyPresenter { StubPresenter() }
 
     constructor(text: String) : this(bundleOf("TEXT" to text))
 
