@@ -5,8 +5,8 @@ import dagger.Component
 
 @HomeScreenScope
 @Component(
-  modules = [HomeScreenModule::class],
-  dependencies = [HomeScreenDependencies::class]
+    modules = [HomeScreenModule::class],
+    dependencies = [HomeScreenDependencies::class]
 )
 interface HomeScreenComponent {
     fun presenter(): HomePresenter
