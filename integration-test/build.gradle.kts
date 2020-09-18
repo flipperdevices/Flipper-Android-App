@@ -5,12 +5,6 @@ plugins {
 
 apply<com.flipper.gradle.ConfigurationPlugin>()
 
-android {
-  testOptions {
-    unitTests.isIncludeAndroidResources = true
-  }
-}
-
 dependencies {
     api(Libs.CONDUCTOR)
 
@@ -21,9 +15,6 @@ dependencies {
     implementation(Libs.APPCOMPAT)
     implementation(Libs.DAGGER)
     implementation(Libs.MOXY)
-
-  testImplementation(TestingLib.JUNIT)
-  testImplementation(TestingLib.ROBOLECTRIC)
-  testImplementation(TestingLib.ASSERTJ)
-  testImplementation(project(":integration-test"))
+    implementation(Libs.MOXY_KTX)
+    implementation(project(":core"))
 }

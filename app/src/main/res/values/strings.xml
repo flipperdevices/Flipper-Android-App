@@ -1,4 +1,7 @@
 <resources>
-  <string name="app_name">Flipper App</string>
-  <string name="show_dialog">Show dialog</string>
+    <string name="app_name">Flipper App</string>
+
+    <string name="home_controller_settings">Settings</string>
+    <string name="home_controller_userspace">User Space</string>
+    <string name="home_controller_extensions">Extensions</string>
 </resources>

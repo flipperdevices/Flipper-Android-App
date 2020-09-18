@@ -1,6 +1,6 @@
 package com.flipper.app.home.di
 
-import com.flipper.app.home.HomePresenter
+import com.flipper.app.home.ui.HomePresenter
 import dagger.Component
 
 @HomeScreenScope
