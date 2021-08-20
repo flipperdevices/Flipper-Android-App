@@ -14,7 +14,7 @@ enum class HomeTab(
         fun createFromMenuItemId(itemId: Int): HomeTab? {
             return values()
                 .firstOrNull { tab -> tab.menuItemId == itemId }
-                ?.also { Timber.e("unknown item id in home tabs: itemId=${itemId}") }
+                ?.also { Timber.e("unknown item id in home tabs: itemId=$itemId") }
         }
     }
 }

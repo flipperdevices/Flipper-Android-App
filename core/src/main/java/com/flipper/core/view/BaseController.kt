@@ -1,3 +1,4 @@
+@file:SuppressWarnings("TooManyFunctions")
 package com.flipper.core.view
 
 import android.os.Bundle

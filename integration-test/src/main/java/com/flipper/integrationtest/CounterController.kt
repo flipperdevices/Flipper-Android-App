@@ -5,7 +5,8 @@ import com.flipper.core.view.ViewInflater
 import com.flipper.integrationtest.databinding.ControllerCounterBinding
 import moxy.ktx.moxyPresenter
 
-class CounterController : BaseController<ControllerCounterBinding>(),
+class CounterController :
+    BaseController<ControllerCounterBinding>(),
     CounterView {
     val presenter by moxyPresenter { CounterPresenter() }
 
@@ -14,7 +15,6 @@ class CounterController : BaseController<ControllerCounterBinding>(),
             presenter.clickOnNumber()
         }
     }
-
 
     override fun setNumber(number: Int) {
         binding.incrementButton.text = "$number"
