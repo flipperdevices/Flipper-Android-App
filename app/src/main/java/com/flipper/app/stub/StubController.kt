@@ -8,7 +8,8 @@ import com.flipper.core.view.BaseController
 import com.flipper.core.view.ViewInflater
 import moxy.ktx.moxyPresenter
 
-class StubController(args: Bundle) : BaseController<ControllerStubBinding>(args),
+class StubController(args: Bundle) :
+    BaseController<ControllerStubBinding>(args),
     StubView {
     private val presenter by moxyPresenter { StubPresenter() }
 
@@ -24,7 +25,6 @@ class StubController(args: Bundle) : BaseController<ControllerStubBinding>(args)
             presenter.clickOnNumber()
         }
     }
-
 
     override fun setNumber(number: Int) {
         binding.numberButton.text = "Number $number"

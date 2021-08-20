@@ -6,9 +6,9 @@ plugins {
 apply<com.flipper.gradle.ConfigurationPlugin>()
 
 android {
-  testOptions {
-    unitTests.isIncludeAndroidResources = true
-  }
+    testOptions {
+        unitTests.isIncludeAndroidResources = true
+    }
 }
 
 dependencies {
@@ -22,8 +22,8 @@ dependencies {
     implementation(Libs.DAGGER)
     implementation(Libs.MOXY)
 
-  testImplementation(TestingLib.JUNIT)
-  testImplementation(TestingLib.ROBOLECTRIC)
-  testImplementation(TestingLib.ASSERTJ)
-  testImplementation(project(":integration-test"))
+    testImplementation(TestingLib.JUNIT)
+    testImplementation(TestingLib.ROBOLECTRIC)
+    testImplementation(TestingLib.ASSERTJ)
+    testImplementation(project(":integration-test"))
 }
