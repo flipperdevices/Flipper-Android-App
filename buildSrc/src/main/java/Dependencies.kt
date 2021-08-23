@@ -1,8 +1,10 @@
 object Versions {
-    const val KOTLIN = "1.4.0"
+    // SEE NOTE_CONFIGURATION_PLUGIN
+    const val KOTLIN = "1.5.21"
     const val TIMBER = "4.7.1"
 
-    const val ANDROID_GRADLE_PLUGIN = "4.0.1"
+    // SEE NOTE_CONFIGURATION_PLUGIN
+    const val ANDROID_GRADLE_PLUGIN = "7.0.1"
     const val ANDROID_APPCOMPAT = "1.2.0"
     const val ANDROID_CORE = "1.3.1"
     const val ANDROID_ANNOTATIONS = "1.1.0"
