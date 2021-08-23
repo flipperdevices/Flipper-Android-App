@@ -15,9 +15,9 @@ object Versions {
     const val ESPRESSO_CORE = "3.2.0"
     const val JUNIT = "4.12"
 
-    const val MOXY = "2.1.2"
+    const val MOXY = "2.2.2"
     const val CONDUCTOR = "3.0.0-rc5"
-    const val DAGGER = "2.28.3"
+    const val DAGGER = "2.38.1"
     const val TREX = "1.0.0"
 }
 
@@ -53,6 +53,6 @@ object TestingLib {
     const val ANDROIDX_TEST_RUNNER = "androidx.test:runner:${Versions.ANDROIDX_TEST}"
     const val ANDROIDX_TEST_EXT_JUNIT = "androidx.test.ext:junit:${Versions.ANDROIDX_TEST_EXT}"
     const val ESPRESSO_CORE = "androidx.test.espresso:espresso-core:${Versions.ESPRESSO_CORE}"
-    const val ROBOLECTRIC = "org.robolectric:robolectric:4.3.1"
+    const val ROBOLECTRIC = "org.robolectric:robolectric:4.6.1"
     const val ASSERTJ = "org.assertj:assertj-core:3.6.2"
 }
