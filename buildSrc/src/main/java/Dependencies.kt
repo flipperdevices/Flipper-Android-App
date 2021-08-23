@@ -1,9 +1,13 @@
+// NOTE_CONFIGURATION_PLUGIN
+// when updating this dependency version, also update them in buildSrc/build.gradle.kts
+// (manual update is required, because this file is not seen by build scripts in buildSrc)
+
 object Versions {
-    // SEE NOTE_CONFIGURATION_PLUGIN
+    // Be careful! See more in /buildSrc/src/main/java/Dependencies.kt#NOTE_CONFIGURATION_PLUGIN
     const val KOTLIN = "1.5.21"
     const val TIMBER = "4.7.1"
 
-    // SEE NOTE_CONFIGURATION_PLUGIN
+    // Be careful! See more in /buildSrc/src/main/java/Dependencies.kt#NOTE_CONFIGURATION_PLUGIN
     const val ANDROID_GRADLE_PLUGIN = "7.0.1"
     const val ANDROID_APPCOMPAT = "1.2.0"
     const val ANDROID_CORE = "1.3.1"
