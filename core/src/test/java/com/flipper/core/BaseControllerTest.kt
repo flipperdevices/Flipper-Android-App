@@ -38,7 +38,10 @@ class BaseControllerTest {
     fun `on controller recreation should not recreate presenter`() {
         // Arrange
         val controller = CounterController()
-        router.setRoot(RouterTransaction.with(controller))
+        router.setRoot(
+            RouterTransaction
+                .with(controller)
+        )
         val presenter = controller.presenter
         val bundle = Bundle().also(router::saveInstanceState)
 

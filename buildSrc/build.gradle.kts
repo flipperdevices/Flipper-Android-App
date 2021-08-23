@@ -1,5 +1,6 @@
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.4.0"
+    // Be careful! See more in /buildSrc/src/main/java/Dependencies.kt#NOTE_CONFIGURATION_PLUGIN
+    id("org.jetbrains.kotlin.jvm") version "1.5.21"
 }
 
 repositories {
@@ -9,6 +10,7 @@ repositories {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.0")
-    implementation("com.android.tools.build:gradle:4.0.1")
+    // Be careful! See more in /buildSrc/src/main/java/Dependencies.kt#NOTE_CONFIGURATION_PLUGIN
+    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.21")
+    implementation("com.android.tools.build:gradle:7.0.1")
 }
