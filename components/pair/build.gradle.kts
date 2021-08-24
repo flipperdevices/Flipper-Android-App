@@ -11,8 +11,6 @@ android {
 }
 
 dependencies {
-    api(Libs.CONDUCTOR)
-
     implementation(Libs.TIMBER)
     implementation(Libs.KOTLIN)
     implementation(Libs.ANNOTATIONS)

@@ -13,12 +13,12 @@ fun LibraryExtension.configure(project: Project) {
 }
 
 private fun LibraryExtension.configureDefaultConfig() {
-    compileSdkVersion(ApkConfig.COMPILE_SDK_VERSION)
-    defaultConfig.setMinSdkVersion(ApkConfig.MIN_SDK_VERSION)
-    defaultConfig.setTargetSdkVersion(ApkConfig.TARGET_SDK_VERSION)
+    compileSdk = ApkConfig.COMPILE_SDK_VERSION
+    defaultConfig.minSdk = ApkConfig.MIN_SDK_VERSION
+    defaultConfig.targetSdk = ApkConfig.TARGET_SDK_VERSION
     defaultConfig.consumerProguardFiles("consumer-rules.pro")
-    defaultConfig.setVersionCode(ApkConfig.VERSION_CODE)
-    defaultConfig.setVersionName(ApkConfig.VERSION_NAME)
+    defaultConfig.versionCode = ApkConfig.VERSION_CODE
+    defaultConfig.versionName = ApkConfig.VERSION_NAME
 }
 
 private fun LibraryExtension.configureBuildTypes() {

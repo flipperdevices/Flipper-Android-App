@@ -14,12 +14,12 @@ fun AppExtension.configure(project: Project) {
 
 private fun AppExtension.configureDefaultConfig() {
     compileSdkVersion(ApkConfig.COMPILE_SDK_VERSION)
-    defaultConfig.setApplicationId(ApkConfig.APPLICATION_ID)
-    defaultConfig.setMinSdkVersion(ApkConfig.MIN_SDK_VERSION)
-    defaultConfig.setTargetSdkVersion(ApkConfig.TARGET_SDK_VERSION)
+    defaultConfig.applicationId = ApkConfig.APPLICATION_ID
+    defaultConfig.minSdk = ApkConfig.MIN_SDK_VERSION
+    defaultConfig.targetSdk = ApkConfig.TARGET_SDK_VERSION
     defaultConfig.consumerProguardFiles("consumer-rules.pro")
-    defaultConfig.setVersionCode(ApkConfig.VERSION_CODE)
-    defaultConfig.setVersionName(ApkConfig.VERSION_NAME)
+    defaultConfig.versionCode = ApkConfig.VERSION_CODE
+    defaultConfig.versionName = ApkConfig.VERSION_NAME
 }
 
 private fun AppExtension.configureBuildTypes() {
