@@ -25,5 +25,4 @@ dependencies {
     testImplementation(TestingLib.JUNIT)
     testImplementation(TestingLib.ROBOLECTRIC)
     testImplementation(TestingLib.ASSERTJ)
-    testImplementation(project(":integration-test"))
 }

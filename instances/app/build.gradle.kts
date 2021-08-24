@@ -7,8 +7,8 @@ plugins {
 apply<com.flipper.gradle.ConfigurationPlugin>()
 
 dependencies {
-    implementation(project(":core"))
-    implementation(project(":bridge"))
+    implementation(project(":components:core"))
+    implementation(project(":components:bridge"))
 
     implementation(Libs.TIMBER)
     implementation(Libs.KOTLIN)

@@ -1,5 +1,4 @@
 rootProject.name = "Flipper App"
-include(":bridge")
-include(":core")
-include(":app")
-include(":integration-test")
+include(":components:bridge")
+include(":components:core")
+include(":instances:app")
