@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="finddevice_pic_search_devices">Flipper device search pic</string>
+    <string name="finddevice_title">Looking for Flipper Zero...</string>
+
+</resources>

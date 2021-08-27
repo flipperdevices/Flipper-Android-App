@@ -5,20 +5,21 @@
 object Versions {
     // Be careful! See more in /buildSrc/src/main/java/Dependencies.kt#NOTE_CONFIGURATION_PLUGIN
     const val KOTLIN = "1.5.21"
-    const val TIMBER = "4.7.1"
-
     // Be careful! See more in /buildSrc/src/main/java/Dependencies.kt#NOTE_CONFIGURATION_PLUGIN
     const val ANDROID_GRADLE_PLUGIN = "7.0.1"
+
     const val ANDROID_APPCOMPAT = "1.2.0"
     const val ANDROID_CORE = "1.3.1"
     const val ANDROID_ANNOTATIONS = "1.1.0"
     const val ANDROID_MATERIAL = "1.2.0"
+    const val ANDROID_JETPACK_COMPOSE = "1.0.1"
 
     const val ANDROIDX_TEST = "1.2.0"
     const val ANDROIDX_TEST_EXT = "1.1.1"
     const val ESPRESSO_CORE = "3.2.0"
     const val JUNIT = "4.12"
 
+    const val TIMBER = "4.7.1"
     const val MOXY = "2.2.2"
     const val CONDUCTOR = "3.0.0-rc5"
     const val DAGGER = "2.38.1"
@@ -39,6 +40,14 @@ object Libs {
     const val CORE_KTX = "androidx.core:core-ktx:${Versions.ANDROID_CORE}"
     const val APPCOMPAT = "androidx.appcompat:appcompat:${Versions.ANDROID_APPCOMPAT}"
     const val MATERIAL = "com.google.android.material:material:${Versions.ANDROID_MATERIAL}"
+
+    const val COMPOSE_UI = "androidx.compose.ui:ui:${Versions.ANDROID_JETPACK_COMPOSE}"
+    // Tooling support (Previews, etc.)
+    const val COMPOSE_TOOLING = "androidx.compose.ui:ui-tooling:${Versions.ANDROID_JETPACK_COMPOSE}"
+    // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
+    const val COMPOSE_FOUNDATION = "androidx.compose.foundation:foundation:${Versions.ANDROID_JETPACK_COMPOSE}"
+    // Material Design
+    const val COMPOSE_MATERIAL = "androidx.compose.material:material:${Versions.ANDROID_JETPACK_COMPOSE}"
 
     const val MOXY = "com.github.moxy-community:moxy:${Versions.MOXY}"
     const val MOXY_KTX = "com.github.moxy-community:moxy-ktx:${Versions.MOXY}"

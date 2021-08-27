@@ -29,14 +29,6 @@ class MainActivity : AppCompatActivity() {
                 false
             }
         }
-        initializeConductor(binding.container, savedInstanceState)
-    }
-
-    private fun initializeConductor(container: ViewGroup, savedInstanceState: Bundle?) {
-        router = Conductor.attachRouter(this, container, savedInstanceState)
-        if (!router.hasRootController()) {
-            router.setRoot(RouterTransaction.with(HomeController()))
-        }
     }
 
     override fun onBackPressed() {

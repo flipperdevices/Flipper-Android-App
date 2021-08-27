@@ -10,6 +10,7 @@ fun LibraryExtension.configure(project: Project) {
     configureBuildTypes()
     configureBuildFeatures()
     configureCompileOptions()
+    configureComposeOptions()
 }
 
 private fun LibraryExtension.configureDefaultConfig() {
@@ -47,9 +48,14 @@ private fun LibraryExtension.configureBuildTypes() {
 
 private fun LibraryExtension.configureBuildFeatures() {
     buildFeatures.viewBinding = true
+    buildFeatures.compose = true
 }
 
 private fun LibraryExtension.configureCompileOptions() {
     compileOptions.sourceCompatibility = JavaVersion.VERSION_1_8
     compileOptions.targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+private fun LibraryExtension.configureComposeOptions() {
+    composeOptions.kotlinCompilerExtensionVersion = Versions.ANDROID_JETPACK_COMPOSE
 }

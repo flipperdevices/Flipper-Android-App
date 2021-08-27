@@ -20,6 +20,7 @@ dependencies {
     implementation(Libs.APPCOMPAT)
     implementation(Libs.DAGGER)
     implementation(Libs.MOXY)
+    implementation(Libs.COMPOSE_UI)
 
     testImplementation(TestingLib.JUNIT)
     testImplementation(TestingLib.ROBOLECTRIC)
