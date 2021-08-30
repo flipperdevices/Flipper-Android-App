@@ -53,3 +53,4 @@ private fun LibraryExtension.configureCompileOptions() {
     compileOptions.sourceCompatibility = JavaVersion.VERSION_1_8
     compileOptions.targetCompatibility = JavaVersion.VERSION_1_8
 }
+

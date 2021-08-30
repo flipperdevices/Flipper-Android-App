@@ -3,6 +3,7 @@ plugins {
 }
 
 apply<com.flipper.gradle.ConfigurationPlugin>()
+apply<com.flipper.gradle.ComposerPlugin>()
 
 android {
     testOptions {
@@ -11,6 +12,9 @@ android {
 }
 
 dependencies {
+    implementation(project(":components:core"))
+    implementation(project(":components:bridge"))
+
     implementation(Libs.TIMBER)
     implementation(Libs.KOTLIN)
     implementation(Libs.ANNOTATIONS)
@@ -18,6 +22,10 @@ dependencies {
     implementation(Libs.APPCOMPAT)
     implementation(Libs.DAGGER)
     implementation(Libs.MOXY)
+    implementation(Libs.COMPOSE_UI)
+    implementation(Libs.COMPOSE_TOOLING)
+    implementation(Libs.COMPOSE_FOUNDATION)
+    implementation(Libs.COMPOSE_MATERIAL)
 
     testImplementation(TestingLib.JUNIT)
     testImplementation(TestingLib.ROBOLECTRIC)

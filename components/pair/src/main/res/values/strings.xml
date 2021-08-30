@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pair_finddevice_pic_search_devices">Flipper device search picture</string>
+    <string name="pair_finddevice_title">Looking for Flipper Zero...</string>
+    <string name="pair_permission_pic_hello">Welcome picture</string>
+    <string name="pair_permission_title">Hey! Let\'s connect me!</string>
+    <string name="pair_permission_description">Now your phone will ask you to turn on bluetooth and give you permission to geolocate. This is normal, Bluetooth LE requires this permission to connect</string>
+    <string name="pair_permission_button">Ok, got it</string>
+    <string name="pair_permission_bt_enabled_failed">To connect to Flipper Zero we need Bluetooth enabled</string>
+    <string name="pair_permission_grant_failed">We need all these permissions to connect to the device. You can read more about how we use these permissions at blog.flipperzero.one</string>
+</resources>
