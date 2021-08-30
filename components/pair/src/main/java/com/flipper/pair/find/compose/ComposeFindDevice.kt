@@ -29,9 +29,9 @@ fun SimplePreview() {
                 .padding(16.dp),
             contentScale = ContentScale.Crop,
             painter = painterResource(id = R.drawable.ic_scanning),
-            contentDescription = stringResource(id = R.string.finddevice_pic_search_devices),
+            contentDescription = stringResource(id = R.string.pair_finddevice_pic_search_devices),
         )
-        Text(text = stringResource(id = R.string.finddevice_title))
+        Text(text = stringResource(id = R.string.pair_finddevice_title))
 
     }
 }

@@ -24,6 +24,7 @@ dependencies {
     implementation(Libs.MOXY)
     api(Libs.CICERONE)
     implementation(Libs.COMPOSE_UI)
+    implementation(Libs.COMPOSE_MATERIAL)
 
     kapt(Libs.DAGGER_COMPILER)
 
