@@ -23,7 +23,7 @@ import com.flipper.pair.R
     showBackground = true,
     showSystemUi = true
 )
-fun ComposePermission(onButtonClick: () -> Unit = {}) {
+fun ComposePermission(requestPermissionButton: () -> Unit = {}) {
     Column(
         Modifier
             .fillMaxWidth()
@@ -46,7 +46,7 @@ fun ComposePermission(onButtonClick: () -> Unit = {}) {
             modifier = Modifier.padding(vertical = 8.dp),
             text = stringResource(id = R.string.pair_permission_description)
         )
-        TextButton(onClick = onButtonClick) {
+        TextButton(onClick = requestPermissionButton) {
             Text(text = stringResource(id = R.string.pair_permission_button))
         }
     }

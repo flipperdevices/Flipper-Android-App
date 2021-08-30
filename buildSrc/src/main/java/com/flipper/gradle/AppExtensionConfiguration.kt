@@ -2,7 +2,6 @@ package com.flipper.gradle
 
 import ApkConfig
 import com.android.build.gradle.AppExtension
-import com.android.build.gradle.LibraryExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 
@@ -11,7 +10,6 @@ fun AppExtension.configure(project: Project) {
     configureBuildTypes()
     configureBuildFeatures()
     configureCompileOptions()
-    configureComposeOptions()
 }
 
 private fun AppExtension.configureDefaultConfig() {
@@ -54,14 +52,9 @@ private fun AppExtension.configureBuildTypes() {
 
 private fun AppExtension.configureBuildFeatures() {
     buildFeatures.viewBinding = true
-    //buildFeatures.compose = true
 }
 
 private fun AppExtension.configureCompileOptions() {
     compileOptions.sourceCompatibility = JavaVersion.VERSION_1_8
     compileOptions.targetCompatibility = JavaVersion.VERSION_1_8
-}
-
-private fun AppExtension.configureComposeOptions() {
-    composeOptions.kotlinCompilerExtensionVersion = Versions.ANDROID_JETPACK_COMPOSE
 }

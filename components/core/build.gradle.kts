@@ -5,6 +5,7 @@ plugins {
 }
 
 apply<com.flipper.gradle.ConfigurationPlugin>()
+apply<com.flipper.gradle.ComposerPlugin>()
 
 android {
     testOptions {

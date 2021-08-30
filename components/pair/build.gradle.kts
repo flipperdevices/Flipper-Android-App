@@ -3,6 +3,7 @@ plugins {
 }
 
 apply<com.flipper.gradle.ConfigurationPlugin>()
+apply<com.flipper.gradle.ComposerPlugin>()
 
 android {
     testOptions {
@@ -12,6 +13,7 @@ android {
 
 dependencies {
     implementation(project(":components:core"))
+    implementation(project(":components:bridge"))
 
     implementation(Libs.TIMBER)
     implementation(Libs.KOTLIN)
