@@ -62,6 +62,7 @@ class PermissionFragment : ComposeFragment() {
             }
         }
         if (needPermissions.isEmpty()) {
+            onAllPermissionGranted()
             return
         }
         requestPermissionWithResult.launch(needPermissions.toTypedArray())
