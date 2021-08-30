@@ -1,5 +1,7 @@
 plugins {
     id("com.android.library")
+    id("kotlin-android")
+    id("kotlin-kapt")
 }
 
 apply<com.flipper.gradle.ConfigurationPlugin>()
@@ -20,7 +22,10 @@ dependencies {
     implementation(Libs.APPCOMPAT)
     implementation(Libs.DAGGER)
     implementation(Libs.MOXY)
+    api(Libs.CICERONE)
     implementation(Libs.COMPOSE_UI)
+
+    kapt(Libs.DAGGER_COMPILER)
 
     testImplementation(TestingLib.JUNIT)
     testImplementation(TestingLib.ROBOLECTRIC)

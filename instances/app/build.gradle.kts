@@ -9,6 +9,7 @@ apply<com.flipper.gradle.ConfigurationPlugin>()
 dependencies {
     implementation(project(":components:core"))
     implementation(project(":components:bridge"))
+    implementation(project(":components:pair"))
 
     implementation(Libs.TIMBER)
     implementation(Libs.KOTLIN)
