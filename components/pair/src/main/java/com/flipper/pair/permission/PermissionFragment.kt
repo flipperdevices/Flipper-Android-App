@@ -10,9 +10,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.core.content.ContextCompat
 import com.flipper.bridge.utils.PermissionHelper
+import com.flipper.core.di.ComponentHolder
 import com.flipper.core.utils.toast
 import com.flipper.core.view.ComposeFragment
 import com.flipper.pair.R
+import com.flipper.pair.di.PairComponent
 import com.flipper.pair.navigation.PairNavigationScreens
 import com.flipper.pair.permission.compose.ComposePermission
 import com.github.terrakok.cicerone.Router
@@ -50,9 +52,10 @@ class PermissionFragment : ComposeFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (PermissionHelper.isBluetoothEnabled() && PermissionHelper.checkPermissions(
-                requireContext()
-            )
+        ComponentHolder.component<PairComponent>().inject(this)
+
+        if (PermissionHelper.isBluetoothEnabled() &&
+            PermissionHelper.checkPermissions(requireContext())
         ) {
             onAllPermissionGranted()
         }
@@ -94,6 +97,6 @@ class PermissionFragment : ComposeFragment() {
 
     // Navigate to next screen
     private fun onAllPermissionGranted() {
-        toast("Yay!")
+        router.replaceScreen(pairNavigationScreens.findDeviceScreen())
     }
 }
