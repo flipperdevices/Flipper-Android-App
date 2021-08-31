@@ -1,3 +1,3 @@
 package com.flipper.core.di
 
-interface AppGraph
+abstract class AppGraph private constructor()

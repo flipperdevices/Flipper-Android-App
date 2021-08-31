@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.flipper.app.databinding.ActivityMainBinding
+import com.flipper.app.di.MainComponent
+import com.flipper.core.di.ComponentHolder
 import com.flipper.core.navigation.delegates.OnBackPressListener
 import com.flipper.core.navigation.screen.PairScreenProvider
 import com.github.terrakok.cicerone.NavigatorHolder
@@ -31,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        FlipperApplication.component.inject(this)
+        ComponentHolder.component<MainComponent>().inject(this)
 
         if (savedInstanceState == null) {
             router.replaceScreen(pairScreenProvider.startPairScreen())

@@ -17,6 +17,9 @@ dependencies {
 
     implementation(Libs.TIMBER)
     implementation(Libs.KOTLIN)
+    implementation(Libs.KOTLIN_COROUTINES)
+    implementation(Libs.LIFECYCLE_RUNTIME_KTX)
+    implementation(Libs.LIFECYCLE_VIEWMODEL_KTX)
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.CORE_KTX)
     implementation(Libs.APPCOMPAT)
