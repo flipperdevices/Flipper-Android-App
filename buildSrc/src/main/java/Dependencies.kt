@@ -21,7 +21,6 @@ object Versions {
 
     const val TIMBER = "4.7.1"
     const val MOXY = "2.2.2"
-    const val CONDUCTOR = "3.0.0-rc5"
     const val DAGGER = "2.38.1"
     const val TREX = "1.0.0"
     const val CICERONE = "7.1"
@@ -53,7 +52,6 @@ object Libs {
     const val MOXY = "com.github.moxy-community:moxy:${Versions.MOXY}"
     const val MOXY_KTX = "com.github.moxy-community:moxy-ktx:${Versions.MOXY}"
     const val MOXY_COMPILER = "com.github.moxy-community:moxy-compiler:${Versions.MOXY}"
-    const val CONDUCTOR = "com.bluelinelabs:conductor:${Versions.CONDUCTOR}"
     const val CICERONE = "com.github.terrakok:cicerone:${Versions.CICERONE}"
 
     const val DAGGER = "com.google.dagger:dagger:${Versions.DAGGER}"

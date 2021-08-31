@@ -4,6 +4,7 @@ import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Bundle
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
@@ -12,9 +13,19 @@ import com.flipper.bridge.utils.PermissionHelper
 import com.flipper.core.utils.toast
 import com.flipper.core.view.ComposeFragment
 import com.flipper.pair.R
+import com.flipper.pair.navigation.PairNavigationScreens
 import com.flipper.pair.permission.compose.ComposePermission
+import com.github.terrakok.cicerone.Router
+import javax.inject.Inject
 
 class PermissionFragment : ComposeFragment() {
+    @Inject
+    lateinit var pairNavigationScreens: PairNavigationScreens
+
+    @Inject
+    lateinit var router: Router
+
+    // Result listener for bluetooth toggle
     private val bluetoothEnableWithResult = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result: ActivityResult ->
@@ -25,6 +36,7 @@ class PermissionFragment : ComposeFragment() {
         requestPermissions()
     }
 
+    // Result listener for permission request
     private val requestPermissionWithResult = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
@@ -36,11 +48,22 @@ class PermissionFragment : ComposeFragment() {
         onAllPermissionGranted()
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (PermissionHelper.isBluetoothEnabled() && PermissionHelper.checkPermissions(
+                requireContext()
+            )
+        ) {
+            onAllPermissionGranted()
+        }
+    }
+
     @Composable
     override fun renderView() {
         ComposePermission(requestPermissionButton = { enableBluetoothAndRequestPermissions() })
     }
 
+    // Call by user
     private fun enableBluetoothAndRequestPermissions() {
         if (!PermissionHelper.isBluetoothEnabled()) {
             bluetoothEnableWithResult.launch(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE))
@@ -49,6 +72,7 @@ class PermissionFragment : ComposeFragment() {
         requestPermissions()
     }
 
+    // Request permission which not grant already
     private fun requestPermissions() {
         val context = requireContext()
         val needPermissions: MutableList<String> = ArrayList()
@@ -68,6 +92,7 @@ class PermissionFragment : ComposeFragment() {
         requestPermissionWithResult.launch(needPermissions.toTypedArray())
     }
 
+    // Navigate to next screen
     private fun onAllPermissionGranted() {
         toast("Yay!")
     }

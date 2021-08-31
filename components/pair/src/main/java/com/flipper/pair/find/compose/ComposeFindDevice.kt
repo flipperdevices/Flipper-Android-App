@@ -18,7 +18,7 @@ import com.flipper.pair.R
     showSystemUi = true
 )
 @Composable
-fun SimplePreview() {
+fun ComposeFindDevice() {
     Column(
         Modifier.width(IntrinsicSize.Max),
         horizontalAlignment = Alignment.CenterHorizontally
