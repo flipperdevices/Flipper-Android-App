@@ -3,7 +3,7 @@ package com.flipper.pair.find.service
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipper.bridge.impl.scanner.FlipperScannerImpl
-import com.flipper.bridge.models.BLEDevice
+import com.flipper.core.models.BLEDevice
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -39,9 +39,10 @@ class BLEDeviceViewModel : ViewModel() {
             }
     }
 
-    private suspend fun emitState(devices: Iterable<BLEDevice>) = withContext(Dispatchers.IO) {
-        if (state.value != devices) { // Change state only if list change
-            _state.emit(devices.toList())
+    private suspend fun emitState(devices: Iterable<BLEDevice>) =
+        withContext(viewModelScope.coroutineContext) {
+            if (state.value != devices) { // Change state only if list change
+                _state.emit(devices.toList())
+            }
         }
-    }
 }

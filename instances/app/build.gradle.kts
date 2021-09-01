@@ -10,15 +10,12 @@ dependencies {
     implementation(project(":components:core"))
     implementation(project(":components:bridge"))
     implementation(project(":components:pair"))
+    implementation(project(":components:info"))
 
-    implementation(Libs.TIMBER)
-    implementation(Libs.KOTLIN)
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.CORE_KTX)
     implementation(Libs.APPCOMPAT)
     implementation(Libs.MATERIAL)
-    implementation(Libs.MOXY)
-    implementation(Libs.MOXY_KTX)
     implementation(Libs.TREX)
     implementation(Libs.DAGGER)
 
@@ -26,6 +23,5 @@ dependencies {
     androidTestImplementation(TestingLib.ANDROIDX_TEST_EXT_JUNIT)
     androidTestImplementation(TestingLib.ESPRESSO_CORE)
 
-    kapt(Libs.MOXY_COMPILER)
     kapt(Libs.DAGGER_COMPILER)
 }

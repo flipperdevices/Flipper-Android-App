@@ -2,8 +2,8 @@ package com.flipper.bridge.impl.scanner
 
 import android.os.ParcelUuid
 import com.flipper.bridge.api.scanner.FlipperScanner
-import com.flipper.bridge.models.BLEDevice
 import com.flipper.bridge.utils.Constants
+import com.flipper.core.models.BLEDevice
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map

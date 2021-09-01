@@ -1,6 +1,6 @@
 package com.flipper.bridge.api.scanner
 
-import com.flipper.bridge.models.BLEDevice
+import com.flipper.core.models.BLEDevice
 import kotlinx.coroutines.flow.Flow
 
 interface FlipperScanner {

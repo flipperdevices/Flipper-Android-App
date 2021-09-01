@@ -18,18 +18,20 @@ object Versions {
     const val ANDROID_JETPACK_COMPOSE = "1.0.1"
     const val ANDROID_LIFECYCLE = "2.3.1"
 
+    const val FRAGMENT_KTX = "1.3.6"
+
     const val ANDROIDX_TEST = "1.2.0"
     const val ANDROIDX_TEST_EXT = "1.1.1"
     const val ESPRESSO_CORE = "3.2.0"
     const val JUNIT = "4.12"
 
     const val TIMBER = "4.7.1"
-    const val MOXY = "2.2.2"
     const val DAGGER = "2.38.1"
     const val TREX = "1.0.0"
     const val CICERONE = "7.1"
 
     const val BLE_SCAN = "1.5.0"
+    const val BLE = "2.3.0"
 }
 
 object GradlePlugins {
@@ -46,6 +48,7 @@ object Libs {
     const val KOTLIN_COROUTINES =
         "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.KOTLIN_COROUTINES}"
     const val CORE_KTX = "androidx.core:core-ktx:${Versions.ANDROID_CORE}"
+    const val FRAGMENT_KTX = "androidx.fragment:fragment-ktx:${Versions.FRAGMENT_KTX}"
 
     // Lifecycle
     const val LIFECYCLE_VIEWMODEL_KTX =
@@ -70,11 +73,7 @@ object Libs {
     const val COMPOSE_MATERIAL =
         "androidx.compose.material:material:${Versions.ANDROID_JETPACK_COMPOSE}"
 
-    const val MOXY = "com.github.moxy-community:moxy:${Versions.MOXY}"
-    const val MOXY_KTX = "com.github.moxy-community:moxy-ktx:${Versions.MOXY}"
-    const val MOXY_COMPILER = "com.github.moxy-community:moxy-compiler:${Versions.MOXY}"
     const val CICERONE = "com.github.terrakok:cicerone:${Versions.CICERONE}"
-
     const val DAGGER = "com.google.dagger:dagger:${Versions.DAGGER}"
     const val DAGGER_COMPILER = "com.google.dagger:dagger-compiler:${Versions.DAGGER}"
 
@@ -82,6 +81,9 @@ object Libs {
 
     // BLE
     const val NORDIC_BLE_SCAN = "no.nordicsemi.android.support.v18:scanner:${Versions.BLE_SCAN}"
+    const val NORDIC_BLE = "no.nordicsemi.android:ble:${Versions.BLE}"
+    const val NORDIC_BLE_KTX = "no.nordicsemi.android:ble-ktx:${Versions.BLE}"
+    const val NORDIC_BLE_COMMON = "no.nordicsemi.android:ble-common:${Versions.BLE}"
 }
 
 object TestingLib {
