@@ -4,10 +4,16 @@ import android.app.Application
 import android.bluetooth.BluetoothDevice
 import androidx.lifecycle.AndroidViewModel
 import com.flipper.bridge.impl.manager.FlipperBleManager
+import com.flipper.bridge.model.FlipperGATTInformation
+import kotlinx.coroutines.flow.StateFlow
 
 class FlipperViewModel(application: Application) : AndroidViewModel(application) {
     private val bleManager = FlipperBleManager(application)
     private var currentDevice: BluetoothDevice? = null
+
+    fun getDeviceInformation(): StateFlow<FlipperGATTInformation> {
+        return bleManager.getInformationState()
+    }
 
     /**
      * Connect to the given peripheral.

@@ -3,6 +3,8 @@ package com.flipper.info.main
 import android.os.Bundle
 import android.view.View
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.fragment.app.activityViewModels
 import com.flipper.bridge.impl.viewmodel.FlipperViewModel
 import com.flipper.core.models.BLEDevice
@@ -14,7 +16,8 @@ class InfoFragment : ComposeFragment() {
 
     @Composable
     override fun renderView() {
-        ComposeInfoScreen()
+        val information by bleViewModel.getDeviceInformation().collectAsState()
+        ComposeInfoScreen(information)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
