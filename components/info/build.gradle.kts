@@ -1,5 +1,7 @@
 plugins {
     id("com.android.library")
+    id("kotlin-android")
+    id("kotlin-kapt")
 }
 
 apply<com.flipper.gradle.ConfigurationPlugin>()
@@ -12,23 +14,22 @@ android {
 }
 
 dependencies {
+    // Core deps
+    implementation(Libs.CORE_KTX)
+    implementation(Libs.ANNOTATIONS)
+
+    implementation(Libs.APPCOMPAT)
+    implementation(Libs.DAGGER)
+
     implementation(project(":components:core"))
     implementation(project(":components:bridge"))
 
-    implementation(Libs.KOTLIN_COROUTINES)
-    implementation(Libs.LIFECYCLE_RUNTIME_KTX)
-    implementation(Libs.LIFECYCLE_VIEWMODEL_KTX)
-    implementation(Libs.ANNOTATIONS)
-    implementation(Libs.CORE_KTX)
-    implementation(Libs.APPCOMPAT)
-    implementation(Libs.DAGGER)
     implementation(Libs.COMPOSE_UI)
+    implementation(Libs.COMPOSE_MATERIAL)
     implementation(Libs.COMPOSE_TOOLING)
     implementation(Libs.COMPOSE_FOUNDATION)
-    implementation(Libs.COMPOSE_MATERIAL)
+
     implementation(Libs.FRAGMENT_KTX)
 
-    testImplementation(TestingLib.JUNIT)
-    testImplementation(TestingLib.ROBOLECTRIC)
-    testImplementation(TestingLib.ASSERTJ)
+    kapt(Libs.DAGGER_COMPILER)
 }

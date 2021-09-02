@@ -1,4 +1,4 @@
-package com.flipper.pair.navigation
+package com.flipper.pair.navigation.internal
 
 import com.flipper.core.di.AppGraph
 import com.flipper.pair.find.FindDeviceFragment

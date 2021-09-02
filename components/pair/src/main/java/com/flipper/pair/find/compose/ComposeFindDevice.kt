@@ -18,7 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.flipper.bridge.models.BLEDevice
+import com.flipper.core.models.BLEDevice
 import com.flipper.pair.R
 import com.flipper.pair.find.service.BLEDeviceViewModel
 

@@ -1,4 +1,4 @@
-package com.flipper.pair.navigation
+package com.flipper.pair.navigation.internal
 
 import com.github.terrakok.cicerone.Screen
 

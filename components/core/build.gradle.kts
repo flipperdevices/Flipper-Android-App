@@ -2,6 +2,7 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-kapt")
+    id("kotlin-parcelize")
 }
 
 apply<com.flipper.gradle.ConfigurationPlugin>()
@@ -14,20 +15,17 @@ android {
 }
 
 dependencies {
-    implementation(Libs.TIMBER)
-    implementation(Libs.KOTLIN)
+    api(Libs.TIMBER)
+    api(Libs.KOTLIN)
+
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.CORE_KTX)
     implementation(Libs.APPCOMPAT)
-    implementation(Libs.DAGGER)
-    implementation(Libs.MOXY)
+
     api(Libs.CICERONE)
     implementation(Libs.COMPOSE_UI)
     implementation(Libs.COMPOSE_MATERIAL)
 
+    implementation(Libs.DAGGER)
     kapt(Libs.DAGGER_COMPILER)
-
-    testImplementation(TestingLib.JUNIT)
-    testImplementation(TestingLib.ROBOLECTRIC)
-    testImplementation(TestingLib.ASSERTJ)
 }
