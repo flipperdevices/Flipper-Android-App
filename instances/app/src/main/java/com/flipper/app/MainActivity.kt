@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         if ((fragment as? OnBackPressListener)?.onBackPressed() == true) {
             return
         } else {
-            super.onBackPressed()
+            router.exit()
         }
     }
 }

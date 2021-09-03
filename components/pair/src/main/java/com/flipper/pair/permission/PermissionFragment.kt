@@ -97,6 +97,6 @@ class PermissionFragment : ComposeFragment() {
 
     // Navigate to next screen
     private fun onAllPermissionGranted() {
-        router.replaceScreen(pairNavigationScreens.findDeviceScreen())
+        router.navigateTo(pairNavigationScreens.findDeviceScreen())
     }
 }

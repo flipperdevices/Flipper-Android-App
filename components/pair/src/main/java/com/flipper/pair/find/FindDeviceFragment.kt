@@ -41,6 +41,6 @@ class FindDeviceFragment : ComposeFragment() {
     }
 
     private fun onDeviceSelected(bleDevice: BLEDevice) {
-        router.replaceScreen(screenProvider.deviceInformationScreen(bleDevice))
+        router.navigateTo(screenProvider.deviceInformationScreen(bleDevice))
     }
 }
