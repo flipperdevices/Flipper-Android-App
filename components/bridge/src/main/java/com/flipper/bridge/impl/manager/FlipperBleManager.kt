@@ -8,7 +8,7 @@ import com.flipper.bridge.utils.Constants
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import no.nordicsemi.android.ble.BleManager
-import java.util.*
+import java.util.UUID
 
 class FlipperBleManager(context: Context) : BleManager(context) {
     private val informationState = MutableStateFlow(FlipperGATTInformation())
