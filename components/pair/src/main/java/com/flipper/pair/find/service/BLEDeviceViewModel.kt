@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.flipper.bridge.impl.scanner.FlipperScannerImpl
 import com.flipper.core.models.BLEDevice
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -18,15 +19,19 @@ class BLEDeviceViewModel : ViewModel() {
     private val scanner = FlipperScannerImpl()
     private val scanStarted = AtomicBoolean(false)
     private val _state = MutableStateFlow(emptyList<BLEDevice>())
+    private var scanJob: Job? = null
 
     val state: StateFlow<List<BLEDevice>>
         get() = _state
 
-    fun startScanIfNotYet() = viewModelScope.launch {
+    fun startScanIfNotYet() {
         if (!scanStarted.compareAndSet(false, true)) {
-            return@launch
+            return
         }
-        startBLEDiscover()
+
+        scanJob = viewModelScope.launch {
+            startBLEDiscover()
+        }
     }
 
     private suspend fun startBLEDiscover() = withContext(Dispatchers.IO) {
@@ -37,6 +42,7 @@ class BLEDeviceViewModel : ViewModel() {
             .collect {
                 emitState(it)
             }
+
     }
 
     private suspend fun emitState(devices: Iterable<BLEDevice>) =
@@ -45,4 +51,15 @@ class BLEDeviceViewModel : ViewModel() {
                 _state.emit(devices.toList())
             }
         }
+
+    fun stopScanAndReset() {
+        if (!scanStarted.compareAndSet(true, false)) {
+            return
+        }
+        scanJob?.cancel()
+        scanJob = null
+        viewModelScope.launch {
+            emitState(emptyList())
+        }
+    }
 }
