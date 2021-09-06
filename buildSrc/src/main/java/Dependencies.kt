@@ -17,6 +17,7 @@ object Versions {
     const val ANDROID_MATERIAL = "1.2.0"
     const val ANDROID_JETPACK_COMPOSE = "1.0.1"
     const val ANDROID_LIFECYCLE = "2.3.1"
+    const val ANDROID_PREFERENCE = "1.1.1"
 
     const val FRAGMENT_KTX = "1.3.6"
 
@@ -58,6 +59,7 @@ object Libs {
 
     const val ANNOTATIONS = "androidx.annotation:annotation:${Versions.ANDROID_ANNOTATIONS}"
     const val APPCOMPAT = "androidx.appcompat:appcompat:${Versions.ANDROID_APPCOMPAT}"
+    const val PREFERENCE = "androidx.preference:preference-ktx:${Versions.ANDROID_PREFERENCE}"
     const val MATERIAL = "com.google.android.material:material:${Versions.ANDROID_MATERIAL}"
 
     const val COMPOSE_UI = "androidx.compose.ui:ui:${Versions.ANDROID_JETPACK_COMPOSE}"
