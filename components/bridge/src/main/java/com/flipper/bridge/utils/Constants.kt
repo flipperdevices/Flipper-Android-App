@@ -1,6 +1,6 @@
 package com.flipper.bridge.utils
 
-import java.util.*
+import java.util.UUID
 
 object Constants {
     const val HEARTRATE_SERVICE_UUID = "0000180d-0000-1000-8000-00805f9b34fb"
