@@ -18,9 +18,11 @@ class SplashScreen : AppCompatActivity() {
         // We are warming up the Shared Preference here because we will need it afterwards.
         // It's better for the user to see a nice logo a little more than just a white screen.
         sharedPreferences.warmUp()
-        startActivity(Intent(this, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        })
+        startActivity(
+            Intent(this, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            }
+        )
         finish()
     }
 }

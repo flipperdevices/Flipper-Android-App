@@ -61,7 +61,7 @@ class FlipperBleManager(context: Context) : BleManager(context) {
         }
 
         override fun onServicesInvalidated() {
-            //TODO reset state
+            // TODO reset state
         }
     }
 }

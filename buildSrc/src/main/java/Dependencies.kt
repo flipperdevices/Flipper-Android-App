@@ -6,8 +6,7 @@ object Versions {
     // Be careful! See more in /buildSrc/src/main/java/Dependencies.kt#NOTE_CONFIGURATION_PLUGIN
     const val KOTLIN = "1.5.21"
 
-    // Be careful! See more in /buildSrc/src/main/java/Dependencies.kt#NOTE_CONFIGURATION_PLUGIN
-    const val ANDROID_GRADLE_PLUGIN = "7.0.1"
+    const val KTLINT = "0.42.1"
 
     const val KOTLIN_COROUTINES = "1.5.1"
 
@@ -36,9 +35,8 @@ object Versions {
 }
 
 object GradlePlugins {
-    const val ANDROID_GRADLE_PLUGIN =
-        "com.android.tools.build:gradle:${Versions.ANDROID_GRADLE_PLUGIN}"
-    const val KOTLIN_PLUGIN = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.KOTLIN}"
+    const val DETEKT = "1.18.1"
+    const val KTLINT = "10.1.0"
 }
 
 object Libs {

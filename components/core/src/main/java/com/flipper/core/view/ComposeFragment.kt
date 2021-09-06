@@ -19,11 +19,11 @@ abstract class ComposeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return ComposeView(requireContext()).apply {
-           setContent {
-               MaterialTheme {
-                   renderView()
-               }
-           }
+            setContent {
+                MaterialTheme {
+                    renderView()
+                }
+            }
         }
     }
 

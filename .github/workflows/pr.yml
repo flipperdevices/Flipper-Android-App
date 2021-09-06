@@ -23,15 +23,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        name: cache
+      - name: Set up JDK 1.11
+        uses: actions/setup-java@v2
         with:
-          path: build/bin
-          key: ${{ runner.os }}
+          distribution: 'temurin'
+          java-version: '11'
       - name: ktlint
-        run: ./ktlint
+        run: ./gradlew ktlintFormat
       - name: detekt
-        run: ./detekt
+        run: ./gradlew detekt
   check_release_aseemble:
     runs-on: ubuntu-latest
     steps:

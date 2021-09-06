@@ -42,7 +42,6 @@ class BLEDeviceViewModel : ViewModel() {
             .collect {
                 emitState(it)
             }
-
     }
 
     private suspend fun emitState(devices: Iterable<BLEDevice>) =
