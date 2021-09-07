@@ -1,5 +1,6 @@
 plugins {
     id("com.android.library")
+    id("com.squareup.anvil")
     id("kotlin-android")
     id("kotlin-kapt")
     id("kotlin-parcelize")
