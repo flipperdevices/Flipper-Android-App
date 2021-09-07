@@ -1,6 +1,6 @@
 package com.flipper.bridge.utils
 
-import java.util.*
+import java.util.UUID
 
 object Constants {
     const val HEARTRATE_SERVICE_UUID = "0000180d-0000-1000-8000-00805f9b34fb"
@@ -15,5 +15,10 @@ object Constants {
         val HARDWARE_VERSION: UUID =
             UUID.fromString("00002a26-0000-1000-8000-00805f9b34fb") // Example: f5, f6. Revision of hardware
         val SOFTWARE_VERSION: UUID = UUID.fromString("00002a28-0000-1000-8000-00805f9b34fb")
+    }
+
+    object BLE {
+        const val RECONNECT_COUNT = 3
+        const val RECONNECT_TIME = 100
     }
 }

@@ -4,5 +4,4 @@ import com.flipper.core.di.AppGraph
 import com.squareup.anvil.annotations.ContributesTo
 
 @ContributesTo(AppGraph::class)
-interface InfoComponent {
-}
+interface InfoComponent

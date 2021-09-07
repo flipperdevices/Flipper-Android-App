@@ -77,7 +77,8 @@ fun FlipperDevice(
         onClick = { onDeviceClickListener.invoke(device) }
     ) {
         Text(
-            text = device.name, modifier = Modifier
+            text = device.name,
+            modifier = Modifier
                 .padding(16.dp)
                 .fillMaxWidth()
         )

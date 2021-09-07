@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothDevice
 import androidx.lifecycle.AndroidViewModel
 import com.flipper.bridge.impl.manager.FlipperBleManager
 import com.flipper.bridge.model.FlipperGATTInformation
+import com.flipper.bridge.utils.Constants
 import kotlinx.coroutines.flow.StateFlow
 
 class FlipperViewModel(application: Application) : AndroidViewModel(application) {
@@ -36,7 +37,7 @@ class FlipperViewModel(application: Application) : AndroidViewModel(application)
     fun reconnect() {
         val device = currentDevice ?: return
         bleManager.connect(device)
-            .retry(3, 100)
+            .retry(Constants.BLE.RECONNECT_COUNT, Constants.BLE.RECONNECT_TIME)
             .useAutoConnect(false)
             .enqueue()
     }
