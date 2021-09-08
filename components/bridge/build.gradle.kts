@@ -15,7 +15,7 @@ dependencies {
     implementation(Libs.APPCOMPAT)
 
     implementation(Libs.NORDIC_BLE_SCAN)
-    implementation(Libs.NORDIC_BLE)
+    api(Libs.NORDIC_BLE)
     implementation(Libs.NORDIC_BLE_KTX)
     implementation(Libs.NORDIC_BLE_COMMON)
 

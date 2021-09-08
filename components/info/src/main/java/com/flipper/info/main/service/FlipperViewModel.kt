@@ -1,16 +1,42 @@
-package com.flipper.bridge.impl.viewmodel
+package com.flipper.info.main.service
 
 import android.app.Application
 import android.bluetooth.BluetoothDevice
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 import com.flipper.bridge.impl.manager.FlipperBleManager
 import com.flipper.bridge.model.FlipperGATTInformation
 import com.flipper.bridge.utils.Constants
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class FlipperViewModel(application: Application) : AndroidViewModel(application) {
     private val bleManager = FlipperBleManager(application)
     private var currentDevice: BluetoothDevice? = null
+    private val echoAnswers = MutableStateFlow(emptyList<ByteArray>())
+    private val allEchoAnswers = mutableListOf<ByteArray>()
+
+    init {
+        viewModelScope.launch {
+            bleManager.getEchoState().collect {
+                if (it.isEmpty()) {
+                    return@collect
+                }
+                allEchoAnswers.add(it)
+                echoAnswers.emit(ArrayList(allEchoAnswers))
+            }
+        }
+    }
+
+    fun getEchoAnswers(): StateFlow<List<ByteArray>> {
+        return echoAnswers
+    }
+
+    fun sendEcho(text: String) {
+        bleManager.sendEcho(text)
+    }
 
     fun getDeviceInformation(): StateFlow<FlipperGATTInformation> {
         return bleManager.getInformationState()

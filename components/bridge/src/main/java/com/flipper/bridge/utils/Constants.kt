@@ -17,6 +17,14 @@ object Constants {
         val SOFTWARE_VERSION: UUID = UUID.fromString("00002a28-0000-1000-8000-00805f9b34fb")
     }
 
+    // BLE serial service uuids: service uuid and characteristics uuids
+    object BLESerialService {
+        val SERVICE_UUID: UUID = UUID.fromString("8fe5b3d5-2e7f-4a98-2a48-7acc60fe0000")
+
+        val TX: UUID = UUID.fromString("19ed82ae-ed21-4c9d-4145-228e62fe0000")
+        val RX: UUID = UUID.fromString("19ed82ae-ed21-4c9d-4145-228e61fe0000")
+    }
+
     object BLE {
         const val RECONNECT_COUNT = 3
         const val RECONNECT_TIME = 100
