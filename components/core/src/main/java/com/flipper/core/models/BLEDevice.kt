@@ -11,9 +11,7 @@ data class BLEDevice(
     val name: String
 ) : Parcelable {
     fun getBluetoothDevice(adapter: BluetoothAdapter = BluetoothAdapter.getDefaultAdapter()): BluetoothDevice {
-        if (!BluetoothAdapter.checkBluetoothAddress(id)) {
-            throw IllegalArgumentException("Invalid bluetooth address")
-        }
+        check(BluetoothAdapter.checkBluetoothAddress(id)) { "Invalid bluetooth address" }
         return adapter.getRemoteDevice(id)
     }
 }

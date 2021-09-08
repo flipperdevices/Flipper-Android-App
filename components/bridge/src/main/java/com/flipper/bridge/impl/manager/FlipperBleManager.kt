@@ -6,6 +6,7 @@ import android.content.Context
 import com.flipper.bridge.model.FlipperGATTInformation
 import com.flipper.bridge.utils.Constants
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import no.nordicsemi.android.ble.BleManager
 import java.util.UUID
@@ -13,7 +14,7 @@ import java.util.UUID
 class FlipperBleManager(context: Context) : BleManager(context) {
     private val informationState = MutableStateFlow(FlipperGATTInformation())
 
-    fun getInformationState() = informationState
+    fun getInformationState(): StateFlow<FlipperGATTInformation> = informationState
 
     override fun getGattCallback(): BleManagerGattCallback =
         FlipperBleManagerGattCallback()

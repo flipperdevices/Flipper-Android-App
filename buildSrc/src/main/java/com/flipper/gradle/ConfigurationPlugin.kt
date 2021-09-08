@@ -19,9 +19,5 @@ class ConfigurationPlugin : Plugin<Project> {
                 }
             }
         }
-        project.pluginManager.apply("com.squareup.anvil")
-        if (!project.pluginManager.hasPlugin("kotlin-android")) {
-            project.pluginManager.apply("kotlin-android")
-        }
     }
 }

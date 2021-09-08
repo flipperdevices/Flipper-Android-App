@@ -1,5 +1,6 @@
 plugins {
     id("com.android.application")
+    id("com.squareup.anvil")
     id("kotlin-android")
     id("kotlin-kapt")
 }

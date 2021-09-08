@@ -1,5 +1,7 @@
 plugins {
     id("com.android.library")
+    id("com.squareup.anvil")
+    id("kotlin-android")
 }
 
 apply<com.flipper.gradle.ConfigurationPlugin>()
