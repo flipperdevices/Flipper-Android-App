@@ -55,7 +55,8 @@ fun ComposeInfoScreen(
             Button(
                 onClick = {
                     echoListener.invoke(text)
-                }) {
+                }
+            ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_baseline_send_24),
                     contentDescription = "Send"
