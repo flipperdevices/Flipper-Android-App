@@ -6,10 +6,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.fragment.app.activityViewModels
-import com.flipper.bridge.impl.viewmodel.FlipperViewModel
 import com.flipper.core.models.BLEDevice
 import com.flipper.core.view.ComposeFragment
 import com.flipper.info.main.compose.ComposeInfoScreen
+import com.flipper.info.main.service.FlipperViewModel
 
 class InfoFragment : ComposeFragment() {
     private val bleViewModel by activityViewModels<FlipperViewModel>()
@@ -17,7 +17,7 @@ class InfoFragment : ComposeFragment() {
     @Composable
     override fun renderView() {
         val information by bleViewModel.getDeviceInformation().collectAsState()
-        val echoList by bleViewModel.getEchoAnswers().collectAsState(initial = emptyList())
+        val echoList by bleViewModel.getEchoAnswers().collectAsState()
         ComposeInfoScreen(information, echoList) {
             bleViewModel.sendEcho(it)
         }
