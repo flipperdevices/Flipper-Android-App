@@ -17,7 +17,10 @@ class InfoFragment : ComposeFragment() {
     @Composable
     override fun renderView() {
         val information by bleViewModel.getDeviceInformation().collectAsState()
-        ComposeInfoScreen(information)
+        val echoList by bleViewModel.getEchoAnswers().collectAsState(initial = emptyList())
+        ComposeInfoScreen(information, echoList) {
+            bleViewModel.sendEcho(it)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -1,6 +1,5 @@
 package com.flipper.bridge.impl.scanner
 
-import android.os.ParcelUuid
 import com.flipper.bridge.api.scanner.FlipperScanner
 import com.flipper.bridge.utils.Constants
 import com.flipper.core.models.BLEDevice
@@ -38,10 +37,11 @@ class FlipperScannerImpl : FlipperScanner {
     }
 
     private fun provideFilter(): List<ScanFilter> {
-        return listOf(
+        return emptyList()
+        /*return listOf(
             ScanFilter.Builder()
                 .setServiceUuid(ParcelUuid.fromString(Constants.HEARTRATE_SERVICE_UUID))
                 .build()
-        )
+        )*/
     }
 }

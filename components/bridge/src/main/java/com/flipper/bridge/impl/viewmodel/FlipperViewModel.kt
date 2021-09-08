@@ -6,11 +6,28 @@ import androidx.lifecycle.AndroidViewModel
 import com.flipper.bridge.impl.manager.FlipperBleManager
 import com.flipper.bridge.model.FlipperGATTInformation
 import com.flipper.bridge.utils.Constants
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 
 class FlipperViewModel(application: Application) : AndroidViewModel(application) {
     private val bleManager = FlipperBleManager(application)
     private var currentDevice: BluetoothDevice? = null
+    private val allEchoAnswers = mutableListOf<ByteArray>()
+
+    fun getEchoAnswers(): Flow<List<ByteArray>> {
+        return bleManager.getEchoState().map {
+            if (it.isEmpty()) {
+                return@map allEchoAnswers
+            }
+            allEchoAnswers.add(it)
+            return@map allEchoAnswers
+        }
+    }
+
+    fun sendEcho(text: String) {
+        bleManager.sendEcho(text)
+    }
 
     fun getDeviceInformation(): StateFlow<FlipperGATTInformation> {
         return bleManager.getInformationState()
