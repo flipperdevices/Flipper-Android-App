@@ -44,15 +44,15 @@ class FlipperBleManager(context: Context) : BleManager(context) {
             val informationService =
                 gatt.getService(Constants.BLEInformationService.SERVICE_UUID)
 
-            informationService.characteristics.forEach {
+            informationService?.characteristics?.forEach {
                 infoCharacteristics[it.uuid] = it
             }
 
             val serialService =
                 gatt.getService(Constants.BLESerialService.SERVICE_UUID)
 
-            serialTxCharacteristic = serialService.getCharacteristic(Constants.BLESerialService.TX)
-            serialRxCharacteristic = serialService.getCharacteristic(Constants.BLESerialService.RX)
+            serialTxCharacteristic = serialService?.getCharacteristic(Constants.BLESerialService.TX)
+            serialRxCharacteristic = serialService?.getCharacteristic(Constants.BLESerialService.RX)
 
             return true
         }
