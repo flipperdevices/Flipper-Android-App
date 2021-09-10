@@ -19,4 +19,9 @@ dependencies {
     implementation(Libs.COMPOSE_MATERIAL)
     implementation(Libs.COMPOSE_TOOLING)
     implementation(Libs.COMPOSE_FOUNDATION)
+
+    implementation(Libs.KOTLIN_COROUTINES)
+    implementation(Libs.LIFECYCLE_RUNTIME_KTX)
+    implementation(Libs.LIFECYCLE_VIEWMODEL_KTX)
+    implementation(Libs.ACTIVITY_KTX)
 }

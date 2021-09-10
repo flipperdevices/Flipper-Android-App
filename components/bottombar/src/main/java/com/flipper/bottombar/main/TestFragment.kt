@@ -19,5 +19,4 @@ class TestFragment : ComposeFragment() {
                 .background(Color.Red)
         )
     }
-
 }

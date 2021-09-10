@@ -19,6 +19,7 @@ object Versions {
     const val ANDROID_PREFERENCE = "1.1.1"
 
     const val FRAGMENT_KTX = "1.3.6"
+    const val ACTIVITY_KTX = "1.3.1"
 
     const val ANDROIDX_TEST = "1.2.0"
     const val ANDROIDX_TEST_EXT = "1.1.1"
@@ -48,6 +49,7 @@ object Libs {
         "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.KOTLIN_COROUTINES}"
     const val CORE_KTX = "androidx.core:core-ktx:${Versions.ANDROID_CORE}"
     const val FRAGMENT_KTX = "androidx.fragment:fragment-ktx:${Versions.FRAGMENT_KTX}"
+    const val ACTIVITY_KTX = "androidx.activity:activity-ktx:${Versions.ACTIVITY_KTX}"
 
     // Lifecycle
     const val LIFECYCLE_VIEWMODEL_KTX =

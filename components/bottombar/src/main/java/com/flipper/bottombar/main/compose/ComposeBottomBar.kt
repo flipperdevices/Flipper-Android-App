@@ -8,18 +8,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.flipper.bottombar.model.FlipperBottomNavigationItem
+import com.flipper.bottombar.model.FlipperBottomTab
 
 @Preview(
     showBackground = true
 )
 @Composable
 fun ComposeBottomBar(
-    selectedItem: FlipperBottomNavigationItem = FlipperBottomNavigationItem.STORAGE,
-    onBottomBarClick: (FlipperBottomNavigationItem) -> Unit = {}
+    selectedItem: FlipperBottomTab = FlipperBottomTab.STORAGE,
+    onBottomBarClick: (FlipperBottomTab) -> Unit = {}
 ) {
     BottomNavigation {
-        FlipperBottomNavigationItem.values().forEach { item ->
+        FlipperBottomTab.values().forEach { item ->
             BottomNavigationItem(
                 icon = {
                     Icon(

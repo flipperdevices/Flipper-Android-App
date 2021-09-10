@@ -4,7 +4,10 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.flipper.bottombar.R
 
-enum class FlipperBottomNavigationItem(
+/**
+ * Warning: this class is processed by Proguard
+ */
+enum class FlipperBottomTab(
     @DrawableRes val icon: Int,
     @StringRes val title: Int
 ) {
