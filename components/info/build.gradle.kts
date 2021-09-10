@@ -21,6 +21,7 @@ dependencies {
 
     implementation(Libs.APPCOMPAT)
     implementation(Libs.DAGGER)
+    kapt(Libs.DAGGER_COMPILER)
 
     implementation(project(":components:core"))
     implementation(project(":components:bridge"))
@@ -35,6 +36,4 @@ dependencies {
     implementation(Libs.LIFECYCLE_VIEWMODEL_KTX)
 
     implementation(Libs.FRAGMENT_KTX)
-
-    kapt(Libs.DAGGER_COMPILER)
 }

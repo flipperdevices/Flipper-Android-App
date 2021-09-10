@@ -12,6 +12,7 @@ dependencies {
     implementation(project(":components:bridge"))
     implementation(project(":components:pair"))
     implementation(project(":components:info"))
+    implementation(project(":components:bottombar"))
 
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.CORE_KTX)
