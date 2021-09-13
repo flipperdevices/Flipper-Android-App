@@ -2,8 +2,8 @@ package com.flipper.pair.find.service
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.flipper.bridge.api.scanner.DiscoveredBluetoothDevice
 import com.flipper.bridge.impl.scanner.FlipperScannerImpl
-import com.flipper.core.models.BLEDevice
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,10 +18,10 @@ import java.util.concurrent.atomic.AtomicBoolean
 class BLEDeviceViewModel : ViewModel() {
     private val scanner = FlipperScannerImpl()
     private val scanStarted = AtomicBoolean(false)
-    private val _state = MutableStateFlow(emptyList<BLEDevice>())
+    private val _state = MutableStateFlow(emptyList<DiscoveredBluetoothDevice>())
     private var scanJob: Job? = null
 
-    val state: StateFlow<List<BLEDevice>>
+    val state: StateFlow<List<DiscoveredBluetoothDevice>>
         get() = _state
 
     fun startScanIfNotYet() {
@@ -44,7 +44,7 @@ class BLEDeviceViewModel : ViewModel() {
             }
     }
 
-    private suspend fun emitState(devices: Iterable<BLEDevice>) =
+    private suspend fun emitState(devices: Iterable<DiscoveredBluetoothDevice>) =
         withContext(viewModelScope.coroutineContext) {
             if (state.value != devices) { // Change state only if list change
                 _state.emit(devices.toList())

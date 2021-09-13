@@ -1,27 +1,31 @@
 package com.flipper.bridge.impl.scanner
 
+import com.flipper.bridge.api.scanner.DiscoveredBluetoothDevice
 import com.flipper.bridge.api.scanner.FlipperScanner
+import com.flipper.bridge.di.FlipperBleComponentProvider
 import com.flipper.bridge.utils.Constants
-import com.flipper.core.models.BLEDevice
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import no.nordicsemi.android.support.v18.scanner.BluetoothLeScannerCompat
 import no.nordicsemi.android.support.v18.scanner.ScanFilter
 import no.nordicsemi.android.support.v18.scanner.ScanSettings
+import javax.inject.Inject
 
 class FlipperScannerImpl : FlipperScanner {
-    private val scanner = BluetoothLeScannerCompat.getScanner()
+    @Inject
+    lateinit var scanner: BluetoothLeScannerCompat
 
-    override fun findFlipperDevices(): Flow<Iterable<BLEDevice>> {
-        val hashSet = hashSetOf<BLEDevice>()
+    init {
+        FlipperBleComponentProvider.component.inject(this)
+    }
+
+    override fun findFlipperDevices(): Flow<Iterable<DiscoveredBluetoothDevice>> {
+        val hashSet = hashSetOf<DiscoveredBluetoothDevice>()
         return scanner.scanFlow(provideSettings(), provideFilter())
             .filter { it.device.name?.startsWith(Constants.DEVICENAME_PREFIX) == true }
             .map { scanResult ->
-                BLEDevice(
-                    scanResult.device.address,
-                    scanResult.device.name
-                )
+                DiscoveredBluetoothDevice(scanResult)
             }.map {
                 hashSet.add(it)
                 hashSet
