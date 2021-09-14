@@ -1,6 +1,7 @@
 package com.flipper.pair.di
 
 import com.flipper.core.di.AppGraph
+import com.flipper.pair.PairScreenActivity
 import com.flipper.pair.find.FindDeviceFragment
 import com.flipper.pair.permission.PermissionFragment
 import com.squareup.anvil.annotations.ContributesTo
@@ -9,4 +10,5 @@ import com.squareup.anvil.annotations.ContributesTo
 interface PairComponent {
     fun inject(fragment: PermissionFragment)
     fun inject(fragment: FindDeviceFragment)
+    fun inject(activity: PairScreenActivity)
 }

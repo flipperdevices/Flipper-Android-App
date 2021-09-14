@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bar_title_device">Device</string>
+    <string name="bar_title_storage">Storage</string>
+    <string name="bar_title_settings">Settings</string>
+</resources>

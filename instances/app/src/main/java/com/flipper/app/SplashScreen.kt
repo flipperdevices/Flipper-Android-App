@@ -4,22 +4,29 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.flipper.app.di.MainComponent
+import com.flipper.bottombar.main.BottomNavigationActivity
+import com.flipper.core.api.BottomNavigationActivityApi
+import com.flipper.core.api.PairComponentApi
 import com.flipper.core.di.ComponentHolder
-import com.flipper.core.utils.preference.FlipperSharedPreferences
 import javax.inject.Inject
 
 class SplashScreen : AppCompatActivity() {
     @Inject
-    lateinit var sharedPreferences: FlipperSharedPreferences
+    lateinit var pairComponentApi: PairComponentApi
+
+    @Inject
+    lateinit var bottomNavigationActivityApi: BottomNavigationActivityApi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ComponentHolder.component<MainComponent>().inject(this)
-        // We are warming up the Shared Preference here because we will need it afterwards.
-        // It's better for the user to see a nice logo a little more than just a white screen.
-        sharedPreferences.warmUp()
+        if (pairComponentApi.isAtLeastOneTimePaired()) {
+            bottomNavigationActivityApi.openBottomNavigationScreen(this)
+        } else {
+            pairComponentApi.openPairScreen(this)
+        }
         startActivity(
-            Intent(this, MainActivity::class.java).apply {
+            Intent(this, BottomNavigationActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             }
         )

@@ -1,22 +1,18 @@
-package com.flipper.app
+package com.flipper.pair
 
 import android.os.Bundle
-import android.view.View
-import androidx.appcompat.app.AppCompatActivity
-import com.flipper.app.databinding.ActivityMainBinding
-import com.flipper.app.di.MainComponent
+import androidx.fragment.app.FragmentActivity
+import com.flipper.bridge.utils.PermissionHelper
 import com.flipper.core.di.ComponentHolder
 import com.flipper.core.navigation.delegates.OnBackPressListener
-import com.flipper.core.navigation.screen.PairScreenProvider
+import com.flipper.pair.di.PairComponent
+import com.flipper.pair.navigation.PairNavigationScreens
 import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.AppNavigator
-import com.lionzxy.trex_offline.TRexOfflineActivity
 import javax.inject.Inject
 
-const val ALPHA_VERSION_TEXT = 0.25F
-
-class MainActivity : AppCompatActivity() {
+class PairScreenActivity : FragmentActivity() {
     @Inject
     lateinit var navigatorHolder: NavigatorHolder
 
@@ -24,28 +20,22 @@ class MainActivity : AppCompatActivity() {
     lateinit var router: Router
 
     @Inject
-    lateinit var pairScreenProvider: PairScreenProvider
+    lateinit var screens: PairNavigationScreens
 
     private val navigator = AppNavigator(this, R.id.container)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        ComponentHolder.component<MainComponent>().inject(this)
+        setContentView(R.layout.activity_pair)
+        ComponentHolder.component<PairComponent>().inject(this)
 
         if (savedInstanceState == null) {
-            router.replaceScreen(pairScreenProvider.startPairScreen())
-        }
-
-        if (BuildConfig.INTERNAL) {
-            binding.versionName.visibility = View.VISIBLE
-            binding.versionName.text = BuildConfig.VERSION_NAME
-            binding.versionName.alpha = ALPHA_VERSION_TEXT
-            binding.versionName.setOnClickListener {
-                TRexOfflineActivity.open(this)
-                false
+            if (PermissionHelper.isPermissionGranted(this) &&
+                PermissionHelper.isBluetoothEnabled()
+            ) {
+                router.newRootScreen(screens.findDeviceScreen())
+            } else {
+                router.newRootScreen(screens.permissionScreen())
             }
         }
     }

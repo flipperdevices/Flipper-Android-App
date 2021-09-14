@@ -15,7 +15,7 @@ import com.flipper.core.utils.toast
 import com.flipper.core.view.ComposeFragment
 import com.flipper.pair.R
 import com.flipper.pair.di.PairComponent
-import com.flipper.pair.navigation.internal.PairNavigationScreens
+import com.flipper.pair.navigation.PairNavigationScreens
 import com.flipper.pair.permission.compose.ComposePermission
 import com.github.terrakok.cicerone.Router
 import javax.inject.Inject
