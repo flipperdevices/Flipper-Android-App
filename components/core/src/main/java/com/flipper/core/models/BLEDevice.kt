@@ -8,4 +8,3 @@ data class BLEDevice(
     val id: String,
     val name: String
 ) : Parcelable
-

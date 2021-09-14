@@ -43,7 +43,6 @@ class FlipperViewModel(application: Application) : AndroidViewModel(application)
         bleManager.getInformationState().collect { deviceInformation.emit(it) }
     }
 
-
     override fun onCleared() {
         super.onCleared()
         if (currentDevice?.getBleManager()?.isConnected == true) {
