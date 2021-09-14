@@ -10,7 +10,6 @@ import com.github.terrakok.cicerone.androidx.FragmentScreen
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
-
 @ContributesBinding(AppGraph::class)
 class ScreenTabProviderImpl @Inject constructor(
     private val infoScreenProvider: InfoScreenProvider,

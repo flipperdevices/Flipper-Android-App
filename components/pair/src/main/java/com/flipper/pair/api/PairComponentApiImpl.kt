@@ -26,8 +26,10 @@ class PairComponentApiImpl @Inject constructor(
     }
 
     override fun openPairScreen(context: Context) {
-        context.startActivity(Intent(context, PairScreenActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        })
+        context.startActivity(
+            Intent(context, PairScreenActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            }
+        )
     }
 }

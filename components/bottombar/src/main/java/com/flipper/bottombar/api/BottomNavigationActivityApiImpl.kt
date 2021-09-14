@@ -11,8 +11,10 @@ import javax.inject.Inject
 @ContributesBinding(AppGraph::class)
 class BottomNavigationActivityApiImpl @Inject constructor() : BottomNavigationActivityApi {
     override fun openBottomNavigationScreen(context: Context) {
-        context.startActivity(Intent(context, BottomNavigationActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        })
+        context.startActivity(
+            Intent(context, BottomNavigationActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            }
+        )
     }
 }
