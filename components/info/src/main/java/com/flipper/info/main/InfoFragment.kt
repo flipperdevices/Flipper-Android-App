@@ -25,7 +25,7 @@ class InfoFragment : ComposeFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        bleViewModel.connect(getDevice().getBluetoothDevice())
+        bleViewModel.connectAndStart(getDevice().id)
     }
 
     companion object {
