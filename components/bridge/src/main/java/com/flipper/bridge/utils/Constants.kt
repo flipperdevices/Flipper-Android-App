@@ -1,6 +1,7 @@
 package com.flipper.bridge.utils
 
 import java.util.UUID
+import java.util.concurrent.TimeUnit
 
 object Constants {
     const val HEARTRATE_SERVICE_UUID = "0000180d-0000-1000-8000-00805f9b34fb"
@@ -26,7 +27,9 @@ object Constants {
     }
 
     object BLE {
+        private const val CONNECT_TIME_SEC = 30L
+        val CONNECT_TIME_MS = TimeUnit.MILLISECONDS.convert(CONNECT_TIME_SEC, TimeUnit.SECONDS)
         const val RECONNECT_COUNT = 3
-        const val RECONNECT_TIME = 100
+        const val RECONNECT_TIME_MS = 100L
     }
 }

@@ -55,7 +55,7 @@ class PermissionFragment : ComposeFragment() {
         ComponentHolder.component<PairComponent>().inject(this)
 
         if (PermissionHelper.isBluetoothEnabled() &&
-            PermissionHelper.checkPermissions(requireContext())
+            PermissionHelper.isPermissionGranted(requireContext())
         ) {
             onAllPermissionGranted()
         }

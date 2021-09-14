@@ -36,6 +36,7 @@ class FlipperBleManager(context: Context) : BleManager(context) {
         BleManagerGattCallback() {
 
         override fun initialize() {
+            ensureBond().enqueue()
             registerToInformationGATT()
             registerToSerialGATT()
         }

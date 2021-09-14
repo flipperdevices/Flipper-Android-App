@@ -1,7 +1,8 @@
 plugins {
     id("com.android.library")
-    id("com.squareup.anvil")
     id("kotlin-android")
+    id("kotlin-kapt")
+    id("kotlin-parcelize")
 }
 
 apply<com.flipper.gradle.ConfigurationPlugin>()
@@ -18,6 +19,9 @@ dependencies {
     api(Libs.NORDIC_BLE)
     implementation(Libs.NORDIC_BLE_KTX)
     implementation(Libs.NORDIC_BLE_COMMON)
+
+    implementation(Libs.DAGGER)
+    kapt(Libs.DAGGER_COMPILER)
 
     testImplementation(TestingLib.JUNIT)
     androidTestImplementation(TestingLib.ANDROIDX_TEST_EXT_JUNIT)

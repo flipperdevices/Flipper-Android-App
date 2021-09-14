@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="pair_finddevice_pic_search_devices">Flipper device search picture</string>
+    <string name="pair_finddevice_unknown_name">Unknown</string>
     <string name="pair_finddevice_title">Looking for Flipper Zero...</string>
     <string name="pair_finddevice_error">Something happened while trying to detect devices.</string>
     <string name="pair_permission_pic_hello">Welcome picture</string>
