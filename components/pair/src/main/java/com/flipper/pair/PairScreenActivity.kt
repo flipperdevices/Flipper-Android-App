@@ -30,7 +30,7 @@ class PairScreenActivity : FragmentActivity() {
         ComponentHolder.component<PairComponent>().inject(this)
 
         if (savedInstanceState == null) {
-            if (PermissionHelper.checkPermissions(this)
+            if (PermissionHelper.isPermissionGranted(this)
                 && PermissionHelper.isBluetoothEnabled()
             ) {
                 router.newRootScreen(screens.findDeviceScreen())
