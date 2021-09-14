@@ -1,7 +1,6 @@
 package com.flipper.bridge.impl.pair
 
 import android.content.Context
-import androidx.lifecycle.LifecycleOwner
 import com.flipper.bridge.api.device.FlipperDeviceApi
 import com.flipper.bridge.api.pair.FlipperPairApi
 import com.flipper.bridge.api.scanner.FlipperScanner
@@ -22,7 +21,6 @@ class FlipperPairApiImpl @Inject constructor(
 
     @ExperimentalCoroutinesApi
     override suspend fun connect(
-        lifecycleOwner: LifecycleOwner,
         context: Context,
         deviceId: String
     ): FlipperDeviceApi {

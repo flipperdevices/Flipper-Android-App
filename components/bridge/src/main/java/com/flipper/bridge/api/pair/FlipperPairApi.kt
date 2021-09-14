@@ -1,7 +1,6 @@
 package com.flipper.bridge.api.pair
 
 import android.content.Context
-import androidx.lifecycle.LifecycleOwner
 import com.flipper.bridge.api.device.FlipperDeviceApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.TimeoutCancellationException
@@ -15,7 +14,6 @@ interface FlipperPairApi {
     )
     @ExperimentalCoroutinesApi
     suspend fun connect(
-        lifecycleOwner: LifecycleOwner,
         context: Context,
         deviceId: String
     ): FlipperDeviceApi
