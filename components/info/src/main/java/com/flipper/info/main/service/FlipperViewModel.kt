@@ -63,7 +63,7 @@ class FlipperViewModel(application: Application) : AndroidViewModel(application)
     fun reconnect() {
         val device = currentDevice ?: return
         bleManager.connect(device)
-            .retry(Constants.BLE.RECONNECT_COUNT, Constants.BLE.RECONNECT_TIME)
+            .retry(Constants.BLE.RECONNECT_COUNT, Constants.BLE.RECONNECT_TIME_MS.toInt())
             .useAutoConnect(false)
             .enqueue()
     }

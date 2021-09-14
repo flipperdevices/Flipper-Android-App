@@ -6,12 +6,14 @@ import androidx.compose.runtime.Composable
 import androidx.core.content.edit
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.flipper.bridge.api.scanner.DiscoveredBluetoothDevice
 import com.flipper.core.di.ComponentHolder
 import com.flipper.core.models.BLEDevice
 import com.flipper.core.navigation.screen.InfoScreenProvider
 import com.flipper.core.utils.preference.FlipperSharedPreferences
 import com.flipper.core.utils.preference.FlipperSharedPreferencesKey
 import com.flipper.core.view.ComposeFragment
+import com.flipper.pair.R
 import com.flipper.pair.di.PairComponent
 import com.flipper.pair.find.compose.ComposeFindDevice
 import com.flipper.pair.find.service.BLEDeviceViewModel
@@ -52,16 +54,30 @@ class FindDeviceFragment : ComposeFragment() {
         if (deviceId != null) {
             lifecycleScope.launch {
                 bleDeviceViewModel.state.collect { deviceList ->
-                    val selectedDevice = deviceList.find { it.id == deviceId } ?: return@collect
+                    val selectedDevice =
+                        deviceList.find { it.address == deviceId } ?: return@collect
                     onDeviceSelected(selectedDevice)
                 }
             }
         }
     }
 
-    private fun onDeviceSelected(bleDevice: BLEDevice) {
+    private fun onDeviceSelected(discoveredBluetoothDevice: DiscoveredBluetoothDevice) {
         bleDeviceViewModel.stopScanAndReset()
-        sharedPreferences.edit { putString(FlipperSharedPreferencesKey.DEVICE_ID, bleDevice.id) }
-        router.navigateTo(screenProvider.deviceInformationScreen(bleDevice))
+        sharedPreferences.edit {
+            putString(
+                FlipperSharedPreferencesKey.DEVICE_ID,
+                discoveredBluetoothDevice.address
+            )
+        }
+        router.navigateTo(
+            screenProvider.deviceInformationScreen(
+                BLEDevice(
+                    discoveredBluetoothDevice.address,
+                    discoveredBluetoothDevice.name
+                        ?: requireContext().getString(R.string.pair_finddevice_unknown_name)
+                )
+            )
+        )
     }
 }

@@ -12,6 +12,4 @@ class NordicBleModule {
     fun provideBluetoothLeScanner(): BluetoothLeScannerCompat {
         return BluetoothLeScannerCompat.getScanner()
     }
-
-
 }

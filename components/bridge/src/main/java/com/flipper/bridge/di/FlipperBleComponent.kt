@@ -1,11 +1,15 @@
 package com.flipper.bridge.di
 
-import com.flipper.bridge.impl.scanner.FlipperScannerImpl
+import com.flipper.bridge.api.pair.FlipperPairApi
+import com.flipper.bridge.api.scanner.FlipperScanner
 import dagger.Component
 import javax.inject.Singleton
 
-@Singleton
-@Component(modules = [NordicBleModule::class])
-interface FlipperBleComponent {
-    fun inject(flipperScanner: FlipperScannerImpl)
+interface FlipperBleComponentInterface {
+    val flipperScanner: FlipperScanner
+    val flipperPairApi: FlipperPairApi
 }
+
+@Singleton
+@Component(modules = [NordicBleModule::class, FlipperBleModule::class])
+interface FlipperBleComponent : FlipperBleComponentInterface

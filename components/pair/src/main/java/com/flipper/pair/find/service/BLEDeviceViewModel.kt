@@ -2,8 +2,8 @@ package com.flipper.pair.find.service
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.flipper.bridge.api.FlipperApi
 import com.flipper.bridge.api.scanner.DiscoveredBluetoothDevice
-import com.flipper.bridge.impl.scanner.FlipperScannerImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +16,7 @@ import timber.log.Timber
 import java.util.concurrent.atomic.AtomicBoolean
 
 class BLEDeviceViewModel : ViewModel() {
-    private val scanner = FlipperScannerImpl()
+    private val scanner = FlipperApi.flipperScanner
     private val scanStarted = AtomicBoolean(false)
     private val _state = MutableStateFlow(emptyList<DiscoveredBluetoothDevice>())
     private var scanJob: Job? = null
