@@ -29,6 +29,9 @@ object PermissionHelper {
      * @return true if all permissions for connection via Bluetooth granted
      */
     fun isPermissionGranted(context: Context): Boolean {
+        if (DeviceFeatureHelper.isCompanionFeatureAvailable(context)) {
+            return true
+        }
         for (permissionName in getRequiredPermissions()) {
             if (ContextCompat.checkSelfPermission(
                     context,
