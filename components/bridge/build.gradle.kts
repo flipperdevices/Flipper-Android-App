@@ -17,7 +17,7 @@ dependencies {
 
     implementation(Libs.NORDIC_BLE_SCAN)
     api(Libs.NORDIC_BLE)
-    implementation(Libs.NORDIC_BLE_KTX)
+    api(Libs.NORDIC_BLE_KTX)
     implementation(Libs.NORDIC_BLE_COMMON)
 
     implementation(Libs.DAGGER)

@@ -31,7 +31,8 @@ class FlipperViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun connectAndStart(deviceId: String) = viewModelScope.launch {
-        currentDevice = FlipperApi.flipperPairApi.connect(context, deviceId)
+        currentDevice = FlipperApi.flipperPairApi.getFlipperApi(context, deviceId)
+        FlipperApi.flipperPairApi.connect(context, currentDevice!!)
         val bleManager = currentDevice!!.getBleManager()
         bleManager.getEchoState().collect {
             if (it.isEmpty()) {

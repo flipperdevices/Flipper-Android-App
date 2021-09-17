@@ -7,13 +7,11 @@ import androidx.core.content.edit
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.flipper.bridge.api.scanner.DiscoveredBluetoothDevice
+import com.flipper.core.api.BottomNavigationActivityApi
 import com.flipper.core.di.ComponentHolder
-import com.flipper.core.models.BLEDevice
-import com.flipper.core.navigation.screen.InfoScreenProvider
 import com.flipper.core.utils.preference.FlipperSharedPreferences
 import com.flipper.core.utils.preference.FlipperSharedPreferencesKey
 import com.flipper.core.view.ComposeFragment
-import com.flipper.pair.R
 import com.flipper.pair.di.PairComponent
 import com.flipper.pair.find.compose.ComposeFindDevice
 import com.flipper.pair.find.service.BLEDeviceViewModel
@@ -27,7 +25,7 @@ class FindDeviceFragment : ComposeFragment() {
     lateinit var router: Router
 
     @Inject
-    lateinit var screenProvider: InfoScreenProvider
+    lateinit var bottomNavigationActivityApi: BottomNavigationActivityApi
 
     @Inject
     lateinit var sharedPreferences: FlipperSharedPreferences
@@ -70,14 +68,6 @@ class FindDeviceFragment : ComposeFragment() {
                 discoveredBluetoothDevice.address
             )
         }
-        router.navigateTo(
-            screenProvider.deviceInformationScreen(
-                BLEDevice(
-                    discoveredBluetoothDevice.address,
-                    discoveredBluetoothDevice.name
-                        ?: requireContext().getString(R.string.pair_finddevice_unknown_name)
-                )
-            )
-        )
+        bottomNavigationActivityApi.openBottomNavigationScreen()
     }
 }
