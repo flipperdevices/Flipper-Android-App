@@ -5,11 +5,15 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipper.bridge.api.FlipperApi
 import com.flipper.bridge.api.device.FlipperDeviceApi
+import com.flipper.bridge.impl.manager.FlipperBleManager
 import com.flipper.bridge.model.FlipperGATTInformation
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class FlipperViewModel(application: Application) : AndroidViewModel(application) {
     private val context = application
@@ -32,17 +36,30 @@ class FlipperViewModel(application: Application) : AndroidViewModel(application)
 
     fun connectAndStart(deviceId: String) = viewModelScope.launch {
         currentDevice = FlipperApi.flipperPairApi.getFlipperApi(context, deviceId)
-        FlipperApi.flipperPairApi.connect(context, currentDevice!!)
         val bleManager = currentDevice!!.getBleManager()
-        bleManager.getEchoState().collect {
-            if (it.isEmpty()) {
-                return@collect
-            }
-            allEchoAnswers.add(it)
-            echoAnswers.emit(ArrayList(allEchoAnswers))
-        }
-        bleManager.getInformationState().collect { deviceInformation.emit(it) }
+        async { subscribeToEcho(bleManager) }
+        async { subscribeToInformationState(bleManager) }
+        FlipperApi.flipperPairApi.connect(context, currentDevice!!)
     }
+
+    private suspend fun subscribeToEcho(bleManager: FlipperBleManager) =
+        withContext(Dispatchers.IO) {
+            bleManager.getEchoState().collect {
+                if (it.isEmpty()) {
+                    return@collect
+                }
+                allEchoAnswers.add(it)
+                echoAnswers.emit(ArrayList(allEchoAnswers))
+            }
+        }
+
+    private suspend fun subscribeToInformationState(bleManager: FlipperBleManager) =
+        withContext(Dispatchers.IO) {
+            bleManager.getInformationState().collect {
+                deviceInformation.emit(it)
+            }
+        }
+
 
     override fun onCleared() {
         super.onCleared()

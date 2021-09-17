@@ -43,10 +43,15 @@ class FlipperBleManager(context: Context) : BleManager(context) {
         BleManagerGattCallback() {
 
         override fun initialize() {
-            createBondInsecure().enqueue()
+            if (!isBonded) {
+                Timber.i("Start bond insecure")
+                createBondInsecure().enqueue()
+            }
+        }
 
-            //registerToInformationGATT()
-            //registerToSerialGATT()
+        override fun onDeviceReady() {
+            registerToInformationGATT()
+            registerToSerialGATT()
         }
 
         override fun isRequiredServiceSupported(gatt: BluetoothGatt): Boolean {
