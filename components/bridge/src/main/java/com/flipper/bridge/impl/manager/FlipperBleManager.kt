@@ -24,6 +24,13 @@ class FlipperBleManager(context: Context) : BleManager(context) {
 
     fun getInformationState(): StateFlow<FlipperGATTInformation> = informationState
     fun getEchoState(): StateFlow<ByteArray> = echoText
+    override fun log(priority: Int, message: String) {
+        Timber.d(message)
+    }
+
+    init {
+        setConnectionObserver(ConnectionObserverLogger())
+    }
 
     override fun getGattCallback(): BleManagerGattCallback =
         FlipperBleManagerGattCallback()
@@ -36,7 +43,13 @@ class FlipperBleManager(context: Context) : BleManager(context) {
         BleManagerGattCallback() {
 
         override fun initialize() {
-            ensureBond().enqueue()
+            if (!isBonded) {
+                Timber.i("Start bond insecure")
+                createBondInsecure().enqueue()
+            }
+        }
+
+        override fun onDeviceReady() {
             registerToInformationGATT()
             registerToSerialGATT()
         }

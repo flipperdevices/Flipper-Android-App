@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit
 object Constants {
     const val HEARTRATE_SERVICE_UUID = "0000180d-0000-1000-8000-00805f9b34fb"
     const val DEVICENAME_PREFIX = "Flipper"
+    val DEVICENAME_PREFIX_REGEXP = "Flipper .*".toPattern()
 
     // BLE information service uuids: service uuid and characteristics uuids
     object BLEInformationService {

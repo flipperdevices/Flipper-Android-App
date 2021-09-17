@@ -2,6 +2,7 @@ package com.flipper.pair
 
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
+import com.flipper.bridge.utils.DeviceFeatureHelper
 import com.flipper.bridge.utils.PermissionHelper
 import com.flipper.core.di.ComponentHolder
 import com.flipper.core.navigation.delegates.OnBackPressListener
@@ -30,8 +31,12 @@ class PairScreenActivity : FragmentActivity() {
         ComponentHolder.component<PairComponent>().inject(this)
 
         if (savedInstanceState == null) {
-            if (PermissionHelper.isPermissionGranted(this) &&
-                PermissionHelper.isBluetoothEnabled()
+            if (!PermissionHelper.isBluetoothEnabled()) {
+                router.newRootScreen(screens.permissionScreen())
+                return
+            }
+            if (DeviceFeatureHelper.isCompanionFeatureAvailable(this) ||
+                PermissionHelper.isPermissionGranted(this)
             ) {
                 router.newRootScreen(screens.findDeviceScreen())
             } else {

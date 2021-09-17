@@ -1,5 +1,6 @@
 package com.flipper.bridge.impl.pair
 
+import android.bluetooth.BluetoothDevice
 import android.content.Context
 import com.flipper.bridge.api.device.FlipperDeviceApi
 import com.flipper.bridge.api.pair.FlipperPairApi
@@ -19,14 +20,26 @@ class FlipperPairApiImpl @Inject constructor(
 ) : FlipperPairApi {
     private val cachedDeviceApi: Map<String, FlipperDeviceApi> = mapOf()
 
-    @ExperimentalCoroutinesApi
-    override suspend fun connect(
+    override fun getFlipperApi(
         context: Context,
         deviceId: String
     ): FlipperDeviceApi {
-        var deviceApi = cachedDeviceApi[deviceId]
+        val deviceApi = cachedDeviceApi[deviceId]
         if (deviceApi != null) {
             return deviceApi
+        }
+
+        val manager = FlipperBleManager(context)
+        return FlipperDeviceApiImpl(manager, deviceId)
+    }
+
+    @ExperimentalCoroutinesApi
+    override suspend fun connect(
+        context: Context,
+        flipperDeviceApi: FlipperDeviceApi
+    ) {
+        if (flipperDeviceApi.getBleManager().isConnected) {
+            return
         }
         if (!PermissionHelper.isPermissionGranted(context)) {
             throw SecurityException(
@@ -41,15 +54,19 @@ class FlipperPairApiImpl @Inject constructor(
         }
 
         val device = withTimeout(Constants.BLE.CONNECT_TIME_MS) {
-            scanner.findFlipperById(deviceId).first()
+            scanner.findFlipperById(flipperDeviceApi.address).first()
         }.device
-        val manager = FlipperBleManager(context)
-        manager.connect(device)
-            .retry(Constants.BLE.RECONNECT_COUNT, Constants.BLE.RECONNECT_TIME_MS.toInt())
-            .useAutoConnect(true)
-            .enqueue()
 
-        deviceApi = FlipperDeviceApiImpl(manager)
-        return deviceApi
+        scheduleConnect(flipperDeviceApi, device)
+    }
+
+    override fun scheduleConnect(flipperDeviceApi: FlipperDeviceApi, device: BluetoothDevice) {
+        if (flipperDeviceApi.getBleManager().isConnected) {
+            return
+        }
+        flipperDeviceApi.getBleManager().connect(device)
+            .retry(Constants.BLE.RECONNECT_COUNT, Constants.BLE.RECONNECT_TIME_MS.toInt())
+            .useAutoConnect(false)
+            .enqueue()
     }
 }

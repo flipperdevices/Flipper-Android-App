@@ -6,7 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.fragment.app.activityViewModels
-import com.flipper.core.models.BLEDevice
 import com.flipper.core.view.ComposeFragment
 import com.flipper.info.main.compose.ComposeInfoScreen
 import com.flipper.info.main.service.FlipperViewModel
@@ -25,14 +24,14 @@ class InfoFragment : ComposeFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        bleViewModel.connectAndStart(getDevice().id)
+        bleViewModel.connectAndStart(getDeviceId())
     }
 
     companion object {
-        const val EXTRA_DEVICE_KEY = "device"
+        const val EXTRA_DEVICE_KEY = "device_id"
     }
 
-    private fun getDevice(): BLEDevice {
-        return arguments?.get(EXTRA_DEVICE_KEY) as BLEDevice
+    private fun getDeviceId(): String {
+        return arguments?.get(EXTRA_DEVICE_KEY) as String
     }
 }

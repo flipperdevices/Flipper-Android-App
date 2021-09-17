@@ -1,7 +1,6 @@
 package com.flipper.core.api
 
 import android.content.Context
-import com.flipper.core.models.BLEDevice
 
 /**
  * Class which provide api to pair module
@@ -15,7 +14,7 @@ interface PairComponentApi {
     /**
      * @return paired device
      */
-    fun getPairedDevice(): BLEDevice
+    fun getPairedDevice(): String
 
     /**
      * Open screen with pair logic

@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import com.flipper.core.api.PairComponentApi
 import com.flipper.core.di.AppGraph
-import com.flipper.core.models.BLEDevice
 import com.flipper.core.utils.preference.FlipperSharedPreferences
 import com.flipper.core.utils.preference.FlipperSharedPreferencesKey
 import com.flipper.pair.PairScreenActivity
@@ -19,10 +18,10 @@ class PairComponentApiImpl @Inject constructor(
         return preferences.getString(FlipperSharedPreferencesKey.DEVICE_ID, null) != null
     }
 
-    override fun getPairedDevice(): BLEDevice {
+    override fun getPairedDevice(): String {
         val deviceId = preferences.getString(FlipperSharedPreferencesKey.DEVICE_ID, null)
         check(deviceId != null) { "Please, check isAtLeastOneTimePaired before " }
-        return BLEDevice(deviceId, "Device from storage") // TODO rework on normal storage
+        return deviceId
     }
 
     override fun openPairScreen(context: Context) {

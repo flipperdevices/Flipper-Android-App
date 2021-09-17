@@ -9,6 +9,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.core.content.ContextCompat
+import com.flipper.bridge.utils.DeviceFeatureHelper
 import com.flipper.bridge.utils.PermissionHelper
 import com.flipper.core.di.ComponentHolder
 import com.flipper.core.utils.toast
@@ -54,11 +55,17 @@ class PermissionFragment : ComposeFragment() {
         super.onCreate(savedInstanceState)
         ComponentHolder.component<PairComponent>().inject(this)
 
+        // If we have companion feature, we just want enable bluetooth on this screen
         if (PermissionHelper.isBluetoothEnabled() &&
-            PermissionHelper.isPermissionGranted(requireContext())
+            (
+                    DeviceFeatureHelper.isCompanionFeatureAvailable(requireContext()) ||
+                            PermissionHelper.isPermissionGranted(requireContext())
+                    )
         ) {
             onAllPermissionGranted()
+            return
         }
+        enableBluetoothAndRequestPermissions()
     }
 
     @Composable
@@ -66,7 +73,6 @@ class PermissionFragment : ComposeFragment() {
         ComposePermission(requestPermissionButton = { enableBluetoothAndRequestPermissions() })
     }
 
-    // Call by user
     private fun enableBluetoothAndRequestPermissions() {
         if (!PermissionHelper.isBluetoothEnabled()) {
             bluetoothEnableWithResult.launch(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE))
@@ -78,6 +84,11 @@ class PermissionFragment : ComposeFragment() {
     // Request permission which not grant already
     private fun requestPermissions() {
         val context = requireContext()
+        // For companion feature we don't want request permission
+        if (DeviceFeatureHelper.isCompanionFeatureAvailable(context)) {
+            onAllPermissionGranted()
+            return
+        }
         val needPermissions: MutableList<String> = ArrayList()
         for (permissionName in PermissionHelper.getRequiredPermissions()) {
             if (ContextCompat.checkSelfPermission(

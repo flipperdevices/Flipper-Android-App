@@ -7,5 +7,6 @@ import com.flipper.bridge.impl.manager.FlipperBleManager
  * For get instance of this object, use {@link FlipperPairApi#connect}
  */
 interface FlipperDeviceApi {
+    val address: String
     fun getBleManager(): FlipperBleManager
 }
