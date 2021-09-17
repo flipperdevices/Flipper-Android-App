@@ -11,7 +11,7 @@ import javax.inject.Inject
 @ContributesBinding(AppGraph::class)
 class InfoScreenProviderImpl @Inject constructor() : InfoScreenProvider {
     override fun deviceInformationScreen(deviceId: String) =
-        FragmentScreen("Info_${deviceId}") {
+        FragmentScreen("Info_$deviceId") {
             InfoFragment().withArgs {
                 putString(InfoFragment.EXTRA_DEVICE_KEY, deviceId)
             }

@@ -60,7 +60,6 @@ class FlipperViewModel(application: Application) : AndroidViewModel(application)
             }
         }
 
-
     override fun onCleared() {
         super.onCleared()
         if (currentDevice?.getBleManager()?.isConnected == true) {

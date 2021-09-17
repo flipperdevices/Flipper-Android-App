@@ -5,7 +5,7 @@ import android.os.Build
 import com.flipper.bridge.utils.DeviceFeatureHelper
 import com.flipper.core.di.AppGraph
 import com.flipper.pair.find.FindDeviceFragment
-import com.flipper.pair.find_companion.FindDeviceOreoFragment
+import com.flipper.pair.findcompanion.FindDeviceOreoFragment
 import com.flipper.pair.permission.PermissionFragment
 import com.github.terrakok.cicerone.Screen
 import com.github.terrakok.cicerone.androidx.FragmentScreen

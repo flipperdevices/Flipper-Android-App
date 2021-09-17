@@ -1,4 +1,4 @@
-package com.flipper.pair.find_companion
+package com.flipper.pair.findcompanion
 
 import android.app.Activity
 import android.bluetooth.BluetoothDevice
@@ -28,7 +28,7 @@ import com.flipper.core.view.ComposeFragment
 import com.flipper.pair.R
 import com.flipper.pair.di.PairComponent
 import com.flipper.pair.find.service.PairDeviceViewModel
-import com.flipper.pair.find_companion.compose.ComposeFindDevice
+import com.flipper.pair.findcompanion.compose.ComposeFindDevice
 import com.github.terrakok.cicerone.Router
 import timber.log.Timber
 import javax.inject.Inject
@@ -98,17 +98,22 @@ class FindDeviceOreoFragment : ComposeFragment() {
             requireContext().getSystemService(Context.COMPANION_DEVICE_SERVICE) as CompanionDeviceManager
         pairDeviceViewModel.onStartCompanionFinding()
 
-        deviceManager.associate(pairingRequest, object : CompanionDeviceManager.Callback() {
-            override fun onDeviceFound(chooserLauncher: IntentSender) {
-                val intentSenderRequest = IntentSenderRequest.Builder(chooserLauncher).build()
-                deviceConnectWithResult.launch(intentSenderRequest)
-            }
+        deviceManager.associate(
+            pairingRequest,
+            object : CompanionDeviceManager.Callback() {
+                override fun onDeviceFound(chooserLauncher: IntentSender) {
+                    val intentSenderRequest = IntentSenderRequest.Builder(chooserLauncher).build()
+                    deviceConnectWithResult.launch(intentSenderRequest)
+                }
 
-            override fun onFailure(error: CharSequence) {
-                pairDeviceViewModel.onFailedCompanionFinding("$error\n${getString(R.string.pair_companion_error_try_again)}")
-                Timber.e(error.toString())
-            }
-        }, null)
+                override fun onFailure(error: CharSequence) {
+                    val errorText = "$error\n${getString(R.string.pair_companion_error_try_again)}"
+                    pairDeviceViewModel.onFailedCompanionFinding(errorText)
+                    Timber.e(error.toString())
+                }
+            },
+            null
+        )
     }
 
     private fun onDeviceReady(device: BluetoothDevice) {

@@ -1,4 +1,4 @@
-package com.flipper.pair.find_companion.compose
+package com.flipper.pair.findcompanion.compose
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -65,7 +65,13 @@ fun ComposeFindDevice(
             ) {
                 IconButton(onClick = onClickRefreshButton) {
                     Icon(
-                        painter = painterResource(if (errorText != null) R.drawable.ic_sync_problem else R.drawable.ic_sync),
+                        painter = painterResource(
+                            if (errorText != null) {
+                                R.drawable.ic_sync_problem
+                            } else {
+                                R.drawable.ic_sync
+                            }
+                        ),
                         contentDescription = stringResource(R.string.pair_companion_pic_update)
                     )
                 }

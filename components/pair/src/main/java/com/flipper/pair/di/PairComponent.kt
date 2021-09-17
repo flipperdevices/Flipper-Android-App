@@ -3,7 +3,7 @@ package com.flipper.pair.di
 import com.flipper.core.di.AppGraph
 import com.flipper.pair.PairScreenActivity
 import com.flipper.pair.find.FindDeviceFragment
-import com.flipper.pair.find_companion.FindDeviceOreoFragment
+import com.flipper.pair.findcompanion.FindDeviceOreoFragment
 import com.flipper.pair.permission.PermissionFragment
 import com.squareup.anvil.annotations.ContributesTo
 
