@@ -56,7 +56,7 @@ class PairScreenActivity : FragmentActivity() {
     }
 
     override fun onBackPressed() {
-        val fragment = supportFragmentManager.findFragmentById(R.id.content)
+        val fragment = supportFragmentManager.findFragmentById(R.id.container)
         if ((fragment as? OnBackPressListener)?.onBackPressed() == true) {
             return
         } else {
