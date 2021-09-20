@@ -66,7 +66,7 @@ class FlipperPairApiImpl @Inject constructor(
         }
         flipperDeviceApi.getBleManager().connect(device)
             .retry(Constants.BLE.RECONNECT_COUNT, Constants.BLE.RECONNECT_TIME_MS.toInt())
-            .useAutoConnect(false)
+            .useAutoConnect(true)
             .enqueue()
     }
 
