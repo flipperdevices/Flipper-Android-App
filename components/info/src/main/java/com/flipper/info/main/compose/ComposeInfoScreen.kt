@@ -17,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -24,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipper.bridge.model.FlipperGATTInformation
 import com.flipper.info.R
+import no.nordicsemi.android.ble.ktx.state.ConnectionState
 
 @Preview(
     showBackground = true,
@@ -32,53 +34,87 @@ import com.flipper.info.R
 @Composable
 fun ComposeInfoScreen(
     flipperGATTInformation: FlipperGATTInformation = FlipperGATTInformation(),
+    connectionState: ConnectionState? = null,
     echoAnswers: List<ByteArray> = listOf("Test", "Test2").map { it.toByteArray() },
     echoListener: (String) -> Unit = {},
+    connectionToAnotherDeviceButton: () -> Unit = {}
 ) {
+    Column {
+        Column(modifier = Modifier.weight(weight = 1f)) {
+            InfoText(flipperGATTInformation, connectionState)
+            EchoScreen(echoAnswers, echoListener)
+        }
+
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = 16.dp),
+            onClick = connectionToAnotherDeviceButton
+        ) {
+            Text(text = "Connection to another device")
+        }
+    }
+}
+
+@Composable
+private fun InfoText(
+    flipperGATTInformation: FlipperGATTInformation,
+    connectionState: ConnectionState?
+) {
+    Text(text = "Connection status: ${connectionState?.toHumanReadableString() ?: "Unconnected"}")
+    Text(text = "Device name: ${flipperGATTInformation.deviceName ?: "Unavailable"}")
+    Text(text = "Manufacturer: ${flipperGATTInformation.manufacturerName ?: "Unavailable"}")
+    Text(text = "Hardware: ${flipperGATTInformation.hardwareRevision ?: "Unavailable"}")
+    Text(text = "Firmware: ${flipperGATTInformation.softwareVersion ?: "Unavailable"}")
+}
+
+@Composable
+private fun EchoScreen(
+    echoAnswers: List<ByteArray>,
+    echoListener: (String) -> Unit
+) = Column {
     var text by rememberSaveable { mutableStateOf("") }
 
-    Column {
-        Text(text = "Device name: ${flipperGATTInformation.deviceName ?: "Unavailable"}")
-        Text(text = "Manufacturer: ${flipperGATTInformation.manufacturerName ?: "Unavailable"}")
-        Text(text = "Hardware: ${flipperGATTInformation.hardwareRevision ?: "Unavailable"}")
-        Text(text = "Firmware: ${flipperGATTInformation.softwareVersion ?: "Unavailable"}")
-        Row(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            TextField(
-                value = text,
-                onValueChange = {
-                    text = it
-                },
-                label = { Text("Type text") }
-            )
-            Button(
-                onClick = {
-                    echoListener.invoke(text)
-                }
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_baseline_send_24),
-                    contentDescription = "Send"
-                )
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 16.dp)
+    ) {
+        TextField(
+            modifier = Modifier.weight(weight = 1f),
+            value = text,
+            onValueChange = {
+                text = it
+            },
+            label = { Text("Type text") }
+        )
+        Button(
+            onClick = {
+                echoListener.invoke(text)
             }
-        }
-        if (echoAnswers.isEmpty()) {
-            Text(
-                text = "No echo answers yet",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight()
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_baseline_send_24),
+                contentDescription = "Send"
             )
-        } else {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight()
-            ) {
-                items(echoAnswers) { bytes ->
-                    EchoAnswer(String(bytes), bytes.toHex())
-                }
+        }
+    }
+    if (echoAnswers.isEmpty()) {
+        Text(
+            text = "No echo answers yet",
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .align(Alignment.CenterHorizontally)
+        )
+    } else {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+        ) {
+            items(echoAnswers) { bytes ->
+                EchoAnswer(String(bytes), bytes.toHex())
             }
         }
     }
@@ -97,3 +133,14 @@ private fun EchoAnswer(echoAnswer: String, hexRepresentation: String) {
 
 private fun ByteArray.toHex(): String =
     joinToString(separator = " ") { eachByte -> "%02x".format(eachByte) }
+
+private fun ConnectionState.toHumanReadableString(): String {
+    return when (this) {
+        ConnectionState.Connecting -> "Connecting"
+        ConnectionState.Initializing -> "Initializing"
+        ConnectionState.Ready -> "Ready"
+        ConnectionState.Disconnecting -> "Disconnecting"
+        is ConnectionState.Disconnected -> "Disconnected"
+        else -> this::class.simpleName ?: this.toString()
+    }
+}
