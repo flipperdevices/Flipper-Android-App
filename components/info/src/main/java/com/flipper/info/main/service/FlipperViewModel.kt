@@ -45,11 +45,7 @@ class FlipperViewModel(application: Application) : AndroidViewModel(application)
         async { subscribeToEcho(bleManager) }
         async { subscribeToInformationState(bleManager) }
         async { subscribeToConnectionState(bleManager) }
-        try {
-            FlipperApi.flipperPairApi.connect(context, currentDevice!!)
-        } catch (exception: Exception) {
-
-        }
+        FlipperApi.flipperPairApi.connect(context, currentDevice!!)
     }
 
     private suspend fun subscribeToEcho(bleManager: FlipperBleManager) =

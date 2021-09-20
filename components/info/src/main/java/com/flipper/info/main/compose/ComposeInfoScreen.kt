@@ -39,57 +39,10 @@ fun ComposeInfoScreen(
     echoListener: (String) -> Unit = {},
     connectionToAnotherDeviceButton: () -> Unit = {}
 ) {
-    var text by rememberSaveable { mutableStateOf("") }
     Column {
         Column(modifier = Modifier.weight(weight = 1f)) {
-            Text(text = "Connection status: ${connectionState?.toHumanReadableString() ?: "Unconnected"}")
-            Text(text = "Device name: ${flipperGATTInformation.deviceName ?: "Unavailable"}")
-            Text(text = "Manufacturer: ${flipperGATTInformation.manufacturerName ?: "Unavailable"}")
-            Text(text = "Hardware: ${flipperGATTInformation.hardwareRevision ?: "Unavailable"}")
-            Text(text = "Firmware: ${flipperGATTInformation.softwareVersion ?: "Unavailable"}")
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp)
-            ) {
-                TextField(
-                    modifier = Modifier.weight(weight = 1f),
-                    value = text,
-                    onValueChange = {
-                        text = it
-                    },
-                    label = { Text("Type text") }
-                )
-                Button(
-                    onClick = {
-                        echoListener.invoke(text)
-                    }
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_baseline_send_24),
-                        contentDescription = "Send"
-                    )
-                }
-            }
-            if (echoAnswers.isEmpty()) {
-                Text(
-                    text = "No echo answers yet",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight()
-                        .align(Alignment.CenterHorizontally)
-                )
-            } else {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight()
-                ) {
-                    items(echoAnswers) { bytes ->
-                        EchoAnswer(String(bytes), bytes.toHex())
-                    }
-                }
-            }
+            InfoText(flipperGATTInformation, connectionState)
+            EchoScreen(echoAnswers, echoListener)
         }
 
         Button(
@@ -99,6 +52,70 @@ fun ComposeInfoScreen(
             onClick = connectionToAnotherDeviceButton
         ) {
             Text(text = "Connection to another device")
+        }
+    }
+}
+
+@Composable
+private fun InfoText(
+    flipperGATTInformation: FlipperGATTInformation,
+    connectionState: ConnectionState?
+) {
+    Text(text = "Connection status: ${connectionState?.toHumanReadableString() ?: "Unconnected"}")
+    Text(text = "Device name: ${flipperGATTInformation.deviceName ?: "Unavailable"}")
+    Text(text = "Manufacturer: ${flipperGATTInformation.manufacturerName ?: "Unavailable"}")
+    Text(text = "Hardware: ${flipperGATTInformation.hardwareRevision ?: "Unavailable"}")
+    Text(text = "Firmware: ${flipperGATTInformation.softwareVersion ?: "Unavailable"}")
+}
+
+@Composable
+private fun EchoScreen(
+    echoAnswers: List<ByteArray>,
+    echoListener: (String) -> Unit
+) = Column {
+    var text by rememberSaveable { mutableStateOf("") }
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 16.dp)
+    ) {
+        TextField(
+            modifier = Modifier.weight(weight = 1f),
+            value = text,
+            onValueChange = {
+                text = it
+            },
+            label = { Text("Type text") }
+        )
+        Button(
+            onClick = {
+                echoListener.invoke(text)
+            }
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_baseline_send_24),
+                contentDescription = "Send"
+            )
+        }
+    }
+    if (echoAnswers.isEmpty()) {
+        Text(
+            text = "No echo answers yet",
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .align(Alignment.CenterHorizontally)
+        )
+    } else {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+        ) {
+            items(echoAnswers) { bytes ->
+                EchoAnswer(String(bytes), bytes.toHex())
+            }
         }
     }
 }
