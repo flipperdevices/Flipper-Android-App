@@ -11,5 +11,5 @@ interface FlipperBleComponentInterface {
 }
 
 @Singleton
-@Component(modules = [NordicBleModule::class, FlipperBleModule::class])
+@Component(modules = [NordicBleModule::class, FlipperBleModule::class, AndroidBleModule::class])
 interface FlipperBleComponent : FlipperBleComponentInterface

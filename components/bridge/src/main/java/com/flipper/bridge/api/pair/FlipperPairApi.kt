@@ -16,7 +16,8 @@ interface FlipperPairApi {
     @Throws(
         SecurityException::class,
         BluetoothDisabledException::class,
-        TimeoutCancellationException::class
+        TimeoutCancellationException::class,
+        IllegalArgumentException::class
     )
     @ExperimentalCoroutinesApi
     suspend fun connect(

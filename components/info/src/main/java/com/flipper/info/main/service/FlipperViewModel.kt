@@ -14,6 +14,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import no.nordicsemi.android.ble.ktx.state.ConnectionState
+import no.nordicsemi.android.ble.ktx.stateAsFlow
 
 class FlipperViewModel(application: Application) : AndroidViewModel(application) {
     private val context = application
@@ -21,6 +23,7 @@ class FlipperViewModel(application: Application) : AndroidViewModel(application)
     private val echoAnswers = MutableStateFlow(emptyList<ByteArray>())
     private val deviceInformation = MutableStateFlow(FlipperGATTInformation())
     private val allEchoAnswers = mutableListOf<ByteArray>()
+    private val connectionState = MutableStateFlow<ConnectionState?>(null)
 
     fun getEchoAnswers(): StateFlow<List<ByteArray>> {
         return echoAnswers
@@ -34,12 +37,19 @@ class FlipperViewModel(application: Application) : AndroidViewModel(application)
         return deviceInformation
     }
 
+    fun getConnectionState(): StateFlow<ConnectionState?> = connectionState
+
     fun connectAndStart(deviceId: String) = viewModelScope.launch {
         currentDevice = FlipperApi.flipperPairApi.getFlipperApi(context, deviceId)
         val bleManager = currentDevice!!.getBleManager()
         async { subscribeToEcho(bleManager) }
         async { subscribeToInformationState(bleManager) }
-        FlipperApi.flipperPairApi.connect(context, currentDevice!!)
+        async { subscribeToConnectionState(bleManager) }
+        try {
+            FlipperApi.flipperPairApi.connect(context, currentDevice!!)
+        } catch (exception: Exception) {
+
+        }
     }
 
     private suspend fun subscribeToEcho(bleManager: FlipperBleManager) =
@@ -57,6 +67,13 @@ class FlipperViewModel(application: Application) : AndroidViewModel(application)
         withContext(Dispatchers.IO) {
             bleManager.getInformationState().collect {
                 deviceInformation.emit(it)
+            }
+        }
+
+    private suspend fun subscribeToConnectionState(bleManager: FlipperBleManager) =
+        withContext(Dispatchers.IO) {
+            bleManager.stateAsFlow().collect {
+                connectionState.emit(it)
             }
         }
 
