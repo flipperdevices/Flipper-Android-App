@@ -8,13 +8,13 @@ object Versions {
 
     const val KTLINT = "0.42.1"
 
-    const val KOTLIN_COROUTINES = "1.5.1"
+    const val KOTLIN_COROUTINES = "1.5.2"
 
-    const val ANDROID_APPCOMPAT = "1.3.1"
-    const val ANDROID_CORE = "1.3.1"
-    const val ANDROID_ANNOTATIONS = "1.1.0"
+    const val ANDROIDX_APPCOMPAT = "1.3.1"
+    const val ANDROIDX_CORE = "1.6.0"
+    const val ANDROID_ANNOTATIONS = "1.2.0"
     const val ANDROID_MATERIAL = "1.2.0"
-    const val ANDROID_JETPACK_COMPOSE = "1.0.1"
+    const val ANDROID_JETPACK_COMPOSE = "1.0.2"
     const val ANDROID_LIFECYCLE = "2.3.1"
     const val ANDROID_PREFERENCE = "1.1.1"
 
@@ -38,6 +38,7 @@ object Versions {
 object GradlePlugins {
     const val DETEKT = "1.18.1"
     const val KTLINT = "10.1.0"
+    const val VERSIONS_PLUGIN = "0.39.0"
 }
 
 object Libs {
@@ -47,7 +48,7 @@ object Libs {
     // KTX
     const val KOTLIN_COROUTINES =
         "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.KOTLIN_COROUTINES}"
-    const val CORE_KTX = "androidx.core:core-ktx:${Versions.ANDROID_CORE}"
+    const val CORE_KTX = "androidx.core:core-ktx:${Versions.ANDROIDX_CORE}"
     const val FRAGMENT_KTX = "androidx.fragment:fragment-ktx:${Versions.FRAGMENT_KTX}"
     const val ACTIVITY_KTX = "androidx.activity:activity-ktx:${Versions.ACTIVITY_KTX}"
 
@@ -58,7 +59,7 @@ object Libs {
         "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.ANDROID_LIFECYCLE}"
 
     const val ANNOTATIONS = "androidx.annotation:annotation:${Versions.ANDROID_ANNOTATIONS}"
-    const val APPCOMPAT = "androidx.appcompat:appcompat:${Versions.ANDROID_APPCOMPAT}"
+    const val APPCOMPAT = "androidx.appcompat:appcompat:${Versions.ANDROIDX_APPCOMPAT}"
     const val PREFERENCE = "androidx.preference:preference-ktx:${Versions.ANDROID_PREFERENCE}"
     const val MATERIAL = "com.google.android.material:material:${Versions.ANDROID_MATERIAL}"
 
