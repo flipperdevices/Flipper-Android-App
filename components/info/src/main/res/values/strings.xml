@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="info_pair_err_permission">The necessary permissions for work are not provided</string>
+    <string name="info_pair_err_ble_disabled">Please, enable bluetooth and try again</string>
+    <string name="info_pair_err_timeout">We could not find the device</string>
+    <string name="info_pair_err_not_bounded">The device is not bounded! Please correct this by going through the binding process again.</string>
+</resources>
