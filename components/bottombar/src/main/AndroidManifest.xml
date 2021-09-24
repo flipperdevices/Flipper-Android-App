@@ -2,8 +2,6 @@
         package="com.flipper.bottombar">
 
     <application>
-        <activity
-                android:launchMode="singleTop"
-                android:name=".main.BottomNavigationActivity" />
+        <activity android:name=".main.BottomNavigationActivity" />
     </application>
 </manifest>

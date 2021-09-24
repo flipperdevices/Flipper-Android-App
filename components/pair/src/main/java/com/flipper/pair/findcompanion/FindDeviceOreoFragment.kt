@@ -119,6 +119,5 @@ class FindDeviceOreoFragment : ComposeFragment() {
     private fun onDeviceReady(device: BluetoothDevice) {
         sharedPreferences.edit { putString(FlipperSharedPreferencesKey.DEVICE_ID, device.address) }
         bottomNavigationActivityApi.openBottomNavigationScreen()
-        requireActivity().finish()
     }
 }
