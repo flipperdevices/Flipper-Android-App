@@ -56,5 +56,6 @@ class FindDeviceFragment : ComposeFragment() {
             )
         }
         bottomNavigationActivityApi.openBottomNavigationScreen()
+        requireActivity().finish()
     }
 }

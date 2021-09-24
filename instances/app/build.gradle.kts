@@ -13,6 +13,8 @@ dependencies {
     implementation(project(":components:pair"))
     implementation(project(":components:info"))
     implementation(project(":components:bottombar"))
+    implementation(project(":components:termsofservice:api"))
+    implementation(project(":components:termsofservice:impl"))
 
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.CORE_KTX)
