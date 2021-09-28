@@ -20,26 +20,22 @@ import androidx.compose.runtime.getValue
 import androidx.core.content.edit
 import androidx.fragment.app.viewModels
 import com.flipper.bridge.utils.Constants
-import com.flipper.core.api.BottomNavigationActivityApi
 import com.flipper.core.di.ComponentHolder
 import com.flipper.core.utils.preference.FlipperSharedPreferences
 import com.flipper.core.utils.preference.FlipperSharedPreferencesKey
 import com.flipper.core.view.ComposeFragment
 import com.flipper.pair.R
 import com.flipper.pair.di.PairComponent
-import com.flipper.pair.find.service.PairDeviceViewModel
 import com.flipper.pair.findcompanion.compose.ComposeFindDevice
-import com.github.terrakok.cicerone.Router
+import com.flipper.pair.findstandart.service.PairDeviceViewModel
+import com.flipper.pair.navigation.machine.PairScreenStateDispatcher
 import timber.log.Timber
 import javax.inject.Inject
 
 @RequiresApi(Build.VERSION_CODES.O)
-class FindDeviceOreoFragment : ComposeFragment() {
+class CompanionFindFragment : ComposeFragment() {
     @Inject
-    lateinit var router: Router
-
-    @Inject
-    lateinit var bottomNavigationActivityApi: BottomNavigationActivityApi
+    lateinit var stateDispatcher: PairScreenStateDispatcher
 
     @Inject
     lateinit var sharedPreferences: FlipperSharedPreferences
@@ -75,7 +71,10 @@ class FindDeviceOreoFragment : ComposeFragment() {
     override fun renderView() {
         val connectionState by pairDeviceViewModel.getConnectionState().collectAsState()
         val errorText by pairDeviceViewModel.getErrorState().collectAsState()
-        ComposeFindDevice(connectionState, errorText, onClickBackButton = { router.exit() }) {
+        ComposeFindDevice(
+            connectionState,
+            errorText,
+            onClickBackButton = { stateDispatcher.back() }) {
             openFindDeviceDialog()
         }
     }
@@ -118,6 +117,6 @@ class FindDeviceOreoFragment : ComposeFragment() {
 
     private fun onDeviceReady(device: BluetoothDevice) {
         sharedPreferences.edit { putString(FlipperSharedPreferencesKey.DEVICE_ID, device.address) }
-        bottomNavigationActivityApi.openBottomNavigationScreen()
+        stateDispatcher.invalidateCurrentState { it.copy(devicePaired = true) }
     }
 }

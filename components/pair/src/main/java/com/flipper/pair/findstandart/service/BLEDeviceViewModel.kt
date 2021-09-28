@@ -1,4 +1,4 @@
-package com.flipper.pair.find.service
+package com.flipper.pair.findstandart.service
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

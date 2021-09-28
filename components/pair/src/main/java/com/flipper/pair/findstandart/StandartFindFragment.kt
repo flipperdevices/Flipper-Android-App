@@ -1,4 +1,4 @@
-package com.flipper.pair.find
+package com.flipper.pair.findstandart
 
 import android.os.Bundle
 import android.view.View
@@ -6,23 +6,19 @@ import androidx.compose.runtime.Composable
 import androidx.core.content.edit
 import androidx.fragment.app.viewModels
 import com.flipper.bridge.api.scanner.DiscoveredBluetoothDevice
-import com.flipper.core.api.BottomNavigationActivityApi
 import com.flipper.core.di.ComponentHolder
 import com.flipper.core.utils.preference.FlipperSharedPreferences
 import com.flipper.core.utils.preference.FlipperSharedPreferencesKey
 import com.flipper.core.view.ComposeFragment
 import com.flipper.pair.di.PairComponent
-import com.flipper.pair.find.compose.ComposeFindDevice
-import com.flipper.pair.find.service.BLEDeviceViewModel
-import com.github.terrakok.cicerone.Router
+import com.flipper.pair.findstandart.compose.ComposeFindDevice
+import com.flipper.pair.findstandart.service.BLEDeviceViewModel
+import com.flipper.pair.navigation.machine.PairScreenStateDispatcher
 import javax.inject.Inject
 
-class FindDeviceFragment : ComposeFragment() {
+class StandartFindFragment : ComposeFragment() {
     @Inject
-    lateinit var router: Router
-
-    @Inject
-    lateinit var bottomNavigationActivityApi: BottomNavigationActivityApi
+    lateinit var stateDispatcher: PairScreenStateDispatcher
 
     @Inject
     lateinit var sharedPreferences: FlipperSharedPreferences
@@ -31,7 +27,6 @@ class FindDeviceFragment : ComposeFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         ComponentHolder.component<PairComponent>().inject(this)
     }
 
@@ -55,6 +50,6 @@ class FindDeviceFragment : ComposeFragment() {
                 discoveredBluetoothDevice.address
             )
         }
-        bottomNavigationActivityApi.openBottomNavigationScreen()
+        stateDispatcher.invalidateCurrentState { it.copy(devicePaired = true) }
     }
 }

@@ -16,17 +16,13 @@ import com.flipper.core.utils.toast
 import com.flipper.core.view.ComposeFragment
 import com.flipper.pair.R
 import com.flipper.pair.di.PairComponent
-import com.flipper.pair.navigation.PairNavigationScreens
+import com.flipper.pair.navigation.machine.PairScreenStateDispatcher
 import com.flipper.pair.permission.compose.ComposePermission
-import com.github.terrakok.cicerone.Router
 import javax.inject.Inject
 
 class PermissionFragment : ComposeFragment() {
     @Inject
-    lateinit var pairNavigationScreens: PairNavigationScreens
-
-    @Inject
-    lateinit var router: Router
+    lateinit var stateDispatcher: PairScreenStateDispatcher
 
     // Result listener for bluetooth toggle
     private val bluetoothEnableWithResult = registerForActivityResult(
@@ -57,10 +53,8 @@ class PermissionFragment : ComposeFragment() {
 
         // If we have companion feature, we just want enable bluetooth on this screen
         if (PermissionHelper.isBluetoothEnabled() &&
-            (
-                    DeviceFeatureHelper.isCompanionFeatureAvailable(requireContext()) ||
-                            PermissionHelper.isPermissionGranted(requireContext())
-                    )
+            (DeviceFeatureHelper.isCompanionFeatureAvailable(requireContext()) ||
+                    PermissionHelper.isPermissionGranted(requireContext()))
         ) {
             onAllPermissionGranted()
             return
@@ -108,6 +102,6 @@ class PermissionFragment : ComposeFragment() {
 
     // Navigate to next screen
     private fun onAllPermissionGranted() {
-        router.navigateTo(pairNavigationScreens.findDeviceScreen())
+        stateDispatcher.invalidateCurrentState { it.copy(permissionGranted = true) }
     }
 }

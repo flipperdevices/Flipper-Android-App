@@ -2,14 +2,12 @@ package com.flipper.pair
 
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
-import com.flipper.bridge.utils.DeviceFeatureHelper
-import com.flipper.bridge.utils.PermissionHelper
 import com.flipper.core.di.ComponentHolder
 import com.flipper.core.navigation.delegates.OnBackPressListener
 import com.flipper.pair.di.PairComponent
-import com.flipper.pair.navigation.PairNavigationScreens
+import com.flipper.pair.navigation.factory.PairStateStorage
+import com.flipper.pair.navigation.machine.PairScreenStateDispatcher
 import com.github.terrakok.cicerone.NavigatorHolder
-import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import javax.inject.Inject
 
@@ -18,10 +16,10 @@ class PairScreenActivity : FragmentActivity() {
     lateinit var navigatorHolder: NavigatorHolder
 
     @Inject
-    lateinit var router: Router
+    lateinit var stateDispatcher: PairScreenStateDispatcher
 
     @Inject
-    lateinit var screens: PairNavigationScreens
+    lateinit var pairStateStorage: PairStateStorage
 
     private val navigator = AppNavigator(this, R.id.container)
 
@@ -31,17 +29,7 @@ class PairScreenActivity : FragmentActivity() {
         ComponentHolder.component<PairComponent>().inject(this)
 
         if (savedInstanceState == null) {
-            if (!PermissionHelper.isBluetoothEnabled()) {
-                router.newRootScreen(screens.permissionScreen())
-                return
-            }
-            if (DeviceFeatureHelper.isCompanionFeatureAvailable(this) ||
-                PermissionHelper.isPermissionGranted(this)
-            ) {
-                router.newRootScreen(screens.findDeviceScreen())
-            } else {
-                router.newRootScreen(screens.permissionScreen())
-            }
+            stateDispatcher.invalidate(pairStateStorage.getSavedPairState())
         }
     }
 
@@ -60,7 +48,7 @@ class PairScreenActivity : FragmentActivity() {
         if ((fragment as? OnBackPressListener)?.onBackPressed() == true) {
             return
         } else {
-            router.exit()
+            stateDispatcher.back()
         }
     }
 }
