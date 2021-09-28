@@ -39,9 +39,11 @@ import com.flipper.pair.impl.R
     showBackground = true
 )
 @Composable
-fun ComposableTOS() {
+fun ComposableTOS(
+    onAgreeClickListener: () -> Unit = {}
+) {
     Scaffold(bottomBar = {
-        TOSBottomBar()
+        TOSBottomBar(onAgreeClickListener)
     }) {
         TOSContent()
     }
@@ -162,13 +164,13 @@ private fun AnnotatedString.Builder.addLink(
 }
 
 @Composable
-fun TOSBottomBar() {
+fun TOSBottomBar(onAgreeClickListener: () -> Unit) {
     Box(
         modifier = Modifier.fillMaxWidth(),
         contentAlignment = Alignment.Center
     ) {
         TextButton(
-            onClick = { /*TODO*/ },
+            onClick = onAgreeClickListener,
             modifier = Modifier
                 .padding(all = 16.dp),
             colors = ButtonDefaults.buttonColors(
