@@ -10,6 +10,7 @@ apply<com.flipper.gradle.ComposerPlugin>()
 
 dependencies {
     implementation(project(":components:core"))
+    implementation(project(":components:pair:api"))
 
     implementation(Libs.APPCOMPAT)
     implementation(Libs.DAGGER)

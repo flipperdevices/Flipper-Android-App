@@ -2,9 +2,9 @@ package com.flipper.bottombar.navigate
 
 import com.flipper.bottombar.main.TestFragment
 import com.flipper.bottombar.model.FlipperBottomTab
-import com.flipper.core.api.PairComponentApi
 import com.flipper.core.di.AppGraph
 import com.flipper.core.navigation.screen.InfoScreenProvider
+import com.flipper.pair.api.PairComponentApi
 import com.github.terrakok.cicerone.Screen
 import com.github.terrakok.cicerone.androidx.FragmentScreen
 import com.squareup.anvil.annotations.ContributesBinding

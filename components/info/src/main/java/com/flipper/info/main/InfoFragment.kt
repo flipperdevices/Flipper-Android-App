@@ -6,12 +6,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.fragment.app.activityViewModels
-import com.flipper.core.api.PairComponentApi
 import com.flipper.core.di.ComponentHolder
 import com.flipper.core.view.ComposeFragment
 import com.flipper.info.di.InfoComponent
 import com.flipper.info.main.compose.ComposeInfoScreen
 import com.flipper.info.main.service.FlipperViewModel
+import com.flipper.pair.api.PairComponentApi
 import javax.inject.Inject
 
 class InfoFragment : ComposeFragment() {

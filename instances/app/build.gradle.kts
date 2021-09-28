@@ -10,7 +10,8 @@ apply<com.flipper.gradle.ConfigurationPlugin>()
 dependencies {
     implementation(project(":components:core"))
     implementation(project(":components:bridge"))
-    implementation(project(":components:pair"))
+    implementation(project(":components:pair:api"))
+    implementation(project(":components:pair:impl"))
     implementation(project(":components:info"))
     implementation(project(":components:bottombar"))
 

@@ -1,0 +1,11 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        package="com.flipper.pair.impl">
+
+    <uses-feature
+            android:name="android.software.companion_device_setup"
+            android:required="false" />
+
+    <application>
+        <activity android:name=".PairScreenActivity" />
+    </application>
+</manifest>
