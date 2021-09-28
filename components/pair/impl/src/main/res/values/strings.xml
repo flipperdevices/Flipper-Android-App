@@ -21,4 +21,20 @@
     <string name="pair_companion_error_try_again">Please, try connect device again</string>
     <string name="pair_companion_error_return_not_ok">The system broke the connection process, try again</string>
     <string name="pair_companion_error_return_device_null">The system returned an incorrect response. Please try again, or write to feedback@flipperzero.one if the problem repeat.</string>
+    <string name="pair_tos_welcome">Welcome to Flipper Zero App</string>
+    <string name="pair_tos_pic_welcome">Welcome to Flipper picture</string>
+    <string name="pair_tos_title">Terms and conditions</string>
+    <string name="pair_tos_description">In order to provide you the best service, Flipper App needs to collect following information only for increasing our product quality: </string>
+    <string name="pair_tos_collect_point_1">Personal information</string>
+    <string name="pair_tos_collect_point_2">Saved private user data</string>
+    <string name="pair_tos_collect_point_3">Device and network information</string>
+    <string name="pair_tos_collect_point_4">Your life</string>
+    <string name="pair_tos_footer_user_agreement">User Agreement</string>
+    <string name="pair_tos_footer_user_agreement_link">https://www.google.com/search?q=User+Agreement</string>
+    <string name="pair_tos_footer_privacy_policy">Privacy Policy</string>
+    <string name="pair_tos_footer_privacy_policy_link">https://www.google.com/search?q=Privacy+Policy</string>
+    <string name="pair_tos_footer_full_1">"Find more about our "</string>
+    <string name="pair_tos_footer_full_2">" and "</string>
+    <string name="pair_tos_footer_full_3" />
+    <string name="pair_tos_button_text">Agree and continue</string>
 </resources>
