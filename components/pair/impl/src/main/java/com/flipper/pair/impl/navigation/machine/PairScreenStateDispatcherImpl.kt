@@ -12,7 +12,9 @@ import com.github.terrakok.cicerone.Screen
 import com.squareup.anvil.annotations.ContributesBinding
 import java.util.Stack
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 @ContributesBinding(AppGraph::class)
 class PairScreenStateDispatcherImpl @Inject constructor(
     private val router: Router,
