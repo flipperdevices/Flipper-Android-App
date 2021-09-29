@@ -5,8 +5,8 @@ import androidx.fragment.app.FragmentActivity
 import com.flipper.core.di.ComponentHolder
 import com.flipper.core.navigation.delegates.OnBackPressListener
 import com.flipper.pair.impl.di.PairComponent
-import com.flipper.pair.impl.navigation.factory.PairStateStorage
 import com.flipper.pair.impl.navigation.machine.PairScreenStateDispatcher
+import com.flipper.pair.impl.navigation.storage.PairStateStorage
 import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import javax.inject.Inject

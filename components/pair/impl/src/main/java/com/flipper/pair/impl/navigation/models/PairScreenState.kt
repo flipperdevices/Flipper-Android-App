@@ -8,4 +8,6 @@ data class PairScreenState(
     val guidePassed: Boolean,
     val permissionGranted: Boolean,
     val devicePaired: Boolean
-)
+) {
+    fun isAllTrue() = tosAccepted and guidePassed and permissionGranted and devicePaired
+}

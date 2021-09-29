@@ -7,15 +7,17 @@ import com.flipper.core.utils.preference.FlipperSharedPreferences
 import com.flipper.core.utils.preference.FlipperSharedPreferencesKey
 import com.flipper.pair.api.PairComponentApi
 import com.flipper.pair.impl.PairScreenActivity
+import com.flipper.pair.impl.navigation.storage.PairStateStorage
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class)
 class PairComponentApiImpl @Inject constructor(
-    private val preferences: FlipperSharedPreferences
+    private val preferences: FlipperSharedPreferences,
+    private val pairStateStorage: PairStateStorage
 ) : PairComponentApi {
-    override fun isAtLeastOneTimePaired(): Boolean {
-        return preferences.getString(FlipperSharedPreferencesKey.DEVICE_ID, null) != null
+    override fun shouldWeOpenPairScreen(): Boolean {
+        return pairStateStorage.getSavedPairState().isAllTrue().not()
     }
 
     override fun getPairedDevice(): String {

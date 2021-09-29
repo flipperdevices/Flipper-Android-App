@@ -1,4 +1,4 @@
-package com.flipper.pair.impl.navigation.factory
+package com.flipper.pair.impl.navigation.storage
 
 import android.content.Context
 import android.content.SharedPreferences

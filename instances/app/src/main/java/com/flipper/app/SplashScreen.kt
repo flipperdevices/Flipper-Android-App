@@ -18,10 +18,10 @@ class SplashScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ComponentHolder.component<MainComponent>().inject(this)
-        if (pairComponentApi.isAtLeastOneTimePaired()) {
-            bottomNavigationActivityApi.openBottomNavigationScreen()
-        } else {
+        if (pairComponentApi.shouldWeOpenPairScreen()) {
             pairComponentApi.openPairScreen(this)
+        } else {
+            bottomNavigationActivityApi.openBottomNavigationScreen()
         }
         finish()
     }

@@ -9,7 +9,7 @@ interface PairComponentApi {
     /**
      * @return true if we already pass pair screen at least one time
      */
-    fun isAtLeastOneTimePaired(): Boolean
+    fun shouldWeOpenPairScreen(): Boolean
 
     /**
      * @return paired device
