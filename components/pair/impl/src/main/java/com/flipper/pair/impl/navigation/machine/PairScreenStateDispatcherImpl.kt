@@ -14,12 +14,13 @@ import java.util.Stack
 import javax.inject.Inject
 import javax.inject.Singleton
 
-//TODO move to singleton class
+// TODO move to singleton class
 // Exclude currentState
 private val stateStack = Stack<PairScreenState>()
 private var currentState: PairScreenState? = null
 
-@Singleton // TODO not work correctly
+@Singleton
+// TODO not work correctly
 @ContributesBinding(AppGraph::class)
 class PairScreenStateDispatcherImpl @Inject constructor(
     private val router: Router,
@@ -65,6 +66,7 @@ class PairScreenStateDispatcherImpl @Inject constructor(
      * This fun is unsafe and will not check which state we switch
      * Call it only after checks all requirement
      */
+    @Suppress("ReturnCount")
     private fun getScreenForStateUnsafe(state: PairScreenState): Screen? {
         if (!state.tosAccepted) {
             return PairNavigationScreens.tosScreen()
@@ -89,5 +91,4 @@ class PairScreenStateDispatcherImpl @Inject constructor(
         // State Machine finish
         return null
     }
-
 }

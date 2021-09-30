@@ -74,7 +74,8 @@ class CompanionFindFragment : ComposeFragment() {
         ComposeFindDevice(
             connectionState,
             errorText,
-            onClickBackButton = { stateDispatcher.back() }) {
+            onClickBackButton = { stateDispatcher.back() }
+        ) {
             openFindDeviceDialog()
         }
     }
