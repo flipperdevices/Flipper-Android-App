@@ -2,5 +2,9 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@color/colorAccent" />
 
-  <!--TODO Add flipper logo -->
+    <item
+            android:drawable="@drawable/ic_launcher_foreground"
+            android:gravity="center"
+            android:height="250dp"
+            android:width="250dp" />
 </layer-list>

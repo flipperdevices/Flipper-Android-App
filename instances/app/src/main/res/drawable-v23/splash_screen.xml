@@ -5,6 +5,6 @@
     <item
             android:width="250dp"
             android:height="250dp"
-            android:drawable="@drawable/flipper_logo"
+            android:drawable="@drawable/ic_launcher_foreground"
             android:gravity="center" />
 </layer-list>
