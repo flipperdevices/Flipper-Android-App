@@ -4,8 +4,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.flipper.app.di.MainComponent
 import com.flipper.core.api.BottomNavigationActivityApi
-import com.flipper.core.api.PairComponentApi
 import com.flipper.core.di.ComponentHolder
+import com.flipper.pair.api.PairComponentApi
 import javax.inject.Inject
 
 class SplashScreen : AppCompatActivity() {
@@ -18,10 +18,10 @@ class SplashScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ComponentHolder.component<MainComponent>().inject(this)
-        if (pairComponentApi.isAtLeastOneTimePaired()) {
-            bottomNavigationActivityApi.openBottomNavigationScreen()
-        } else {
+        if (pairComponentApi.shouldWeOpenPairScreen()) {
             pairComponentApi.openPairScreen(this)
+        } else {
+            bottomNavigationActivityApi.openBottomNavigationScreen()
         }
         finish()
     }

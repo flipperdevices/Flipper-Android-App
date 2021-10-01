@@ -6,35 +6,16 @@ Mobile app to rule all Flipper's family
 ## Module arch
 
 ```
-├── app
-├── core
-├── bridge
-├── modules
-│   ├── sample1
-│   ├── sample2
+├── instances
+│   ├── app
+├── components
+│   ├── core
+│   ├── bridge
+│   ├── feature1
+│   ├── feature2
 ```
 
 - `app` - Main application module with UI
-- `core` - Core library with deps and utils
-- `bridge` - Communication between android and Flipper
-- `modules` - Community widget module
-
-## Layer arch
-
-```
-├── app
-│   ├── feature1
-│   │   ├── di
-│   │   ├── ui
-│   │   │   ├── view <-- custom views
-│   │   │   ├── data <-- screen specific data classes
-│   │   ├── interactor
-│   │   │   ├── data <-- layer specific data classes
-│   │   ├── repository
-│   │   │   ├── data <-- layer specific data classes
-```
-
-- `data` - Entity layer
-- `view` - Presentation layer
-- `interactor` - Domain layer
-- `repository` - Data layer
+- `components/core` - Core library with deps and utils
+- `components/bridge` - Communication between android and Flipper
+- `components/*` - Features modules, which connect to root application
