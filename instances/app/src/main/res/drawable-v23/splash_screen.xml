@@ -3,8 +3,8 @@
     <item android:drawable="@color/colorAccent" />
 
     <item
-            android:width="250dp"
-            android:height="250dp"
             android:drawable="@drawable/flipper_logo"
-            android:gravity="center" />
+            android:gravity="center"
+            android:height="250dp"
+            android:width="250dp" />
 </layer-list>
