@@ -14,19 +14,16 @@ import java.util.Stack
 import javax.inject.Inject
 import javax.inject.Singleton
 
-// TODO move to singleton class
-// Exclude currentState
-private val stateStack = Stack<PairScreenState>()
-private var currentState: PairScreenState? = null
-
 @Singleton
-// TODO not work correctly
 @ContributesBinding(AppGraph::class)
 class PairScreenStateDispatcherImpl @Inject constructor(
     private val router: Router,
     private val context: Context,
     private val bottomNavigationActivityApi: BottomNavigationActivityApi
 ) : PairScreenStateDispatcher {
+    // Exclude currentState
+    private val stateStack = Stack<PairScreenState>()
+    private var currentState: PairScreenState? = null
 
     @Synchronized
     override fun invalidateCurrentState(stateChanger: (PairScreenState) -> PairScreenState) {

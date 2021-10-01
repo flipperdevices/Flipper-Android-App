@@ -7,7 +7,9 @@ import com.flipper.pair.impl.findstandart.StandartFindFragment
 import com.flipper.pair.impl.fragments.tos.FragmentTOS
 import com.flipper.pair.impl.permission.PermissionFragment
 import com.squareup.anvil.annotations.ContributesTo
+import javax.inject.Singleton
 
+@Singleton
 @ContributesTo(AppGraph::class)
 interface PairComponent {
     fun inject(fragment: PermissionFragment)
