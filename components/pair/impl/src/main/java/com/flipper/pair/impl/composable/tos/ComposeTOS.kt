@@ -9,10 +9,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,7 +24,6 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
@@ -33,6 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipper.pair.impl.R
+import com.flipper.pair.impl.composable.common.ComposableAgreeButton
 
 @Preview(
     showSystemUi = true,
@@ -45,7 +44,9 @@ fun ComposableTOS(
     Scaffold(bottomBar = {
         TOSBottomBar(onAgreeClickListener)
     }) {
-        TOSContent()
+        Box(Modifier.padding(it)) {
+            TOSContent()
+        }
     }
 }
 
@@ -57,13 +58,12 @@ fun TOSContent() {
         modifier = Modifier
             .verticalScroll(scrollState)
             .padding(all = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = stringResource(R.string.pair_tos_welcome),
-            fontSize = 30.sp,
-            textAlign = TextAlign.Center,
-            fontWeight = FontWeight.Bold
+            style = MaterialTheme.typography.h3,
+            textAlign = TextAlign.Center
         )
         Image(
             modifier = Modifier
@@ -76,9 +76,8 @@ fun TOSContent() {
         Text(
             modifier = Modifier.padding(all = 16.dp),
             text = stringResource(R.string.pair_tos_title),
-            fontSize = 17.sp,
-            textAlign = TextAlign.Center,
-            fontWeight = FontWeight.Bold
+            style = MaterialTheme.typography.h6,
+            textAlign = TextAlign.Center
         )
         Text(
             text = stringResource(R.string.pair_tos_description),
@@ -169,19 +168,6 @@ fun TOSBottomBar(onAgreeClickListener: () -> Unit) {
         modifier = Modifier.fillMaxWidth(),
         contentAlignment = Alignment.Center
     ) {
-        TextButton(
-            onClick = onAgreeClickListener,
-            modifier = Modifier
-                .padding(all = 16.dp),
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color.Blue,
-                contentColor = Color.White
-            )
-        ) {
-            Text(
-                text = stringResource(R.string.pair_tos_button_text),
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-            )
-        }
+        ComposableAgreeButton(stringResource(R.string.pair_tos_button_text), onAgreeClickListener)
     }
 }

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="image_slider_bottom_empty_margin">32dp</dimen>
+    <dimen name="image_slider_indicator_radius">4dp</dimen>
+</resources>
