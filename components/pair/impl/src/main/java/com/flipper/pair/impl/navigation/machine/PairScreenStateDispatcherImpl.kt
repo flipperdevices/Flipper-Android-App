@@ -57,6 +57,7 @@ class PairScreenStateDispatcherImpl @Inject constructor(
         val prevState = stateStack.pop()
         val screen = getScreenForStateUnsafe(prevState) ?: error("Call back on finish state")
         router.replaceScreen(screen)
+        currentState = prevState
     }
 
     /**

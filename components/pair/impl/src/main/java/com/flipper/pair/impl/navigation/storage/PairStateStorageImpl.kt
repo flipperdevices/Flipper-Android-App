@@ -29,7 +29,7 @@ class PairStateStorageImpl @Inject constructor(
             tosAccepted = tosAccepted,
             devicePaired = devicePaired,
             permissionGranted = permissionGranted,
-            guidePassed = true // Temporary disabled
+            guidePassed = devicePaired
         )
     }
 

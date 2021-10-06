@@ -59,22 +59,18 @@ fun ComposeFindDevice(
             TextButton(onClick = onClickBackButton) {
                 Text(stringResource(R.string.pair_companion_back_button))
             }
-            if (connectionState == null ||
-                connectionState is ConnectionState.Disconnecting ||
-                connectionState is ConnectionState.Disconnected
-            ) {
-                IconButton(onClick = onClickRefreshButton) {
-                    Icon(
-                        painter = painterResource(
-                            if (errorText != null) {
-                                R.drawable.ic_sync_problem
-                            } else {
-                                R.drawable.ic_sync
-                            }
-                        ),
-                        contentDescription = stringResource(R.string.pair_companion_pic_update)
-                    )
-                }
+
+            IconButton(onClick = onClickRefreshButton) {
+                Icon(
+                    painter = painterResource(
+                        if (errorText != null) {
+                            R.drawable.ic_sync_problem
+                        } else {
+                            R.drawable.ic_sync
+                        }
+                    ),
+                    contentDescription = stringResource(R.string.pair_companion_pic_update)
+                )
             }
         }
     }

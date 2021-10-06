@@ -9,7 +9,6 @@ import android.content.Context
 import android.content.IntentSender
 import android.os.Build
 import android.os.Bundle
-import android.view.View
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -80,8 +79,8 @@ class CompanionFindFragment : ComposeFragment() {
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onResume() {
+        super.onResume()
         openFindDeviceDialog()
     }
 
