@@ -33,6 +33,10 @@ dependencies {
     implementation(Libs.COMPOSE_MATERIAL)
     implementation(Libs.FRAGMENT_KTX)
 
+    // Guide
+    implementation(Libs.IMAGE_SLIDER)
+    implementation(Libs.GLIDE)
+
     testImplementation(TestingLib.JUNIT)
     testImplementation(TestingLib.ROBOLECTRIC)
     testImplementation(TestingLib.ASSERTJ)

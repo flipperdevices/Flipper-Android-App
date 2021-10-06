@@ -37,4 +37,7 @@
     <string name="pair_tos_footer_full_2">" and "</string>
     <string name="pair_tos_footer_full_3" />
     <string name="pair_tos_button_text">Agree and continue</string>
+    <string name="pair_guide_title">Connect your Flipper</string>
+    <string name="pair_guide_description">Make sure that Bluetooth is activated on your Flipper device</string>
+    <string name="pair_guide_ready">Ready</string>
 </resources>

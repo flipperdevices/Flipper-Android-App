@@ -33,6 +33,9 @@ object Versions {
 
     const val BLE_SCAN = "1.5.0"
     const val BLE = "2.3.0"
+
+    const val IMAGE_SLIDER = "1.4.0"
+    const val GLIDE = "4.12.0"
 }
 
 object GradlePlugins {
@@ -59,7 +62,6 @@ object Libs {
 
     const val ANNOTATIONS = "androidx.annotation:annotation:${Versions.ANDROID_ANNOTATIONS}"
     const val APPCOMPAT = "androidx.appcompat:appcompat:${Versions.ANDROIDX_APPCOMPAT}"
-    const val PREFERENCE = "androidx.preference:preference-ktx:${Versions.ANDROID_PREFERENCE}"
     const val MATERIAL = "com.google.android.material:material:${Versions.ANDROID_MATERIAL}"
 
     const val COMPOSE_UI = "androidx.compose.ui:ui:${Versions.ANDROID_JETPACK_COMPOSE}"
@@ -86,6 +88,9 @@ object Libs {
     const val NORDIC_BLE = "no.nordicsemi.android:ble:${Versions.BLE}"
     const val NORDIC_BLE_KTX = "no.nordicsemi.android:ble-ktx:${Versions.BLE}"
     const val NORDIC_BLE_COMMON = "no.nordicsemi.android:ble-common:${Versions.BLE}"
+
+    const val IMAGE_SLIDER = "com.github.smarteist:Android-Image-Slider:${Versions.IMAGE_SLIDER}"
+    const val GLIDE = "com.github.bumptech.glide:glide:${Versions.GLIDE}"
 }
 
 object TestingLib {
