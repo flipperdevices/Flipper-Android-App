@@ -9,8 +9,8 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.core.content.ContextCompat
-import com.flipper.bridge.utils.DeviceFeatureHelper
-import com.flipper.bridge.utils.PermissionHelper
+import com.flipper.bridge.api.utils.DeviceFeatureHelper
+import com.flipper.bridge.api.utils.PermissionHelper
 import com.flipper.core.di.ComponentHolder
 import com.flipper.core.utils.toast
 import com.flipper.core.view.ComposeFragment

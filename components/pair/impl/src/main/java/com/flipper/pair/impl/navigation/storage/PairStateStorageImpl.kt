@@ -3,8 +3,8 @@ package com.flipper.pair.impl.navigation.storage
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import com.flipper.bridge.utils.DeviceFeatureHelper
-import com.flipper.bridge.utils.PermissionHelper
+import com.flipper.bridge.api.utils.DeviceFeatureHelper
+import com.flipper.bridge.api.utils.PermissionHelper
 import com.flipper.core.di.AppGraph
 import com.flipper.core.utils.preference.FlipperSharedPreferencesKey
 import com.flipper.pair.impl.navigation.models.PairScreenState

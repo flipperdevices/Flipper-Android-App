@@ -2,8 +2,8 @@ package com.flipper.pair.impl.findstandart.service
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.flipper.bridge.api.FlipperApi
 import com.flipper.bridge.api.scanner.DiscoveredBluetoothDevice
+import com.flipper.bridge.provider.FlipperApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow

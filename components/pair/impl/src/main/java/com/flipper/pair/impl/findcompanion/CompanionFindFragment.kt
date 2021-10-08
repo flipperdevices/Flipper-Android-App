@@ -18,7 +18,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.core.content.edit
 import androidx.fragment.app.viewModels
-import com.flipper.bridge.utils.Constants
+import com.flipper.bridge.api.utils.Constants
 import com.flipper.core.di.ComponentHolder
 import com.flipper.core.utils.preference.FlipperSharedPreferences
 import com.flipper.core.utils.preference.FlipperSharedPreferencesKey

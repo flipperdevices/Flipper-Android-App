@@ -24,7 +24,7 @@ dependencies {
     kapt(Libs.DAGGER_COMPILER)
 
     implementation(project(":components:core"))
-    implementation(project(":components:bridge"))
+    implementation(project(":components:bridge:provider"))
     implementation(project(":components:pair:api"))
 
     implementation(Libs.COMPOSE_UI)
@@ -37,4 +37,9 @@ dependencies {
     implementation(Libs.LIFECYCLE_VIEWMODEL_KTX)
 
     implementation(Libs.FRAGMENT_KTX)
+
+    implementation(Libs.NORDIC_BLE)
+    implementation(Libs.NORDIC_BLE_KTX)
+    implementation(Libs.NORDIC_BLE_COMMON)
+    implementation(Libs.NORDIC_BLE_SCAN)
 }
