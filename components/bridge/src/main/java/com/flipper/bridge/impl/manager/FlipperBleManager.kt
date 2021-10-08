@@ -68,6 +68,14 @@ class FlipperBleManager(context: Context) : BleManager(context) {
             serialTxCharacteristic = serialService?.getCharacteristic(Constants.BLESerialService.TX)
             serialRxCharacteristic = serialService?.getCharacteristic(Constants.BLESerialService.RX)
 
+            val genericService = gatt.getService(Constants.GenericService.SERVICE_UUID)
+
+            genericService?.characteristics?.find {
+                it.uuid.equals(Constants.GenericService.DEVICE_NAME)
+            }?.let {
+                infoCharacteristics[Constants.GenericService.DEVICE_NAME] = it
+            }
+
             return true
         }
 
@@ -99,7 +107,7 @@ class FlipperBleManager(context: Context) : BleManager(context) {
             }
         }.enqueue()
         readCharacteristic(
-            infoCharacteristics[Constants.BLEInformationService.DEVICE_NAME]
+            infoCharacteristics[Constants.GenericService.DEVICE_NAME]
         ).with { _, data ->
             val content = data.value ?: return@with
             informationState.update {
