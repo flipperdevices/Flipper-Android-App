@@ -19,5 +19,5 @@ interface PairComponentApi {
     /**
      * Open screen with pair logic
      */
-    fun openPairScreen(context: Context)
+    fun openPairScreen(context: Context, vararg args: PairScreenArgument)
 }

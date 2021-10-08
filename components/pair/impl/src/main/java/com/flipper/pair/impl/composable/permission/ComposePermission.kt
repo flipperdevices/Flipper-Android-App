@@ -1,4 +1,4 @@
-package com.flipper.pair.impl.permission.compose
+package com.flipper.pair.impl.composable.permission
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column

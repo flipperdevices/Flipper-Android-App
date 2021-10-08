@@ -1,9 +1,12 @@
 package com.flipper.pair.impl
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import com.flipper.core.di.ComponentHolder
 import com.flipper.core.navigation.delegates.OnBackPressListener
+import com.flipper.pair.api.PairScreenArgument
 import com.flipper.pair.impl.di.PairComponent
 import com.flipper.pair.impl.navigation.machine.PairScreenStateDispatcher
 import com.flipper.pair.impl.navigation.storage.PairStateStorage
@@ -27,9 +30,15 @@ class PairScreenActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pair)
         ComponentHolder.component<PairComponent>().inject(this)
+        var initialState = pairStateStorage.getSavedPairState()
+
+        val args = getScreenArguments()
+        if (args.contains(PairScreenArgument.RECONNECT_DEVICE)) {
+            initialState = initialState.copy(devicePaired = false)
+        }
 
         if (savedInstanceState == null) {
-            stateDispatcher.invalidate(pairStateStorage.getSavedPairState())
+            stateDispatcher.invalidate(initialState)
         }
     }
 
@@ -49,6 +58,24 @@ class PairScreenActivity : FragmentActivity() {
             return
         } else {
             stateDispatcher.back()
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun getScreenArguments(): Array<PairScreenArgument> {
+        val args = intent.getSerializableExtra(EXTRA_ARGS) as? Array<*> ?: return emptyArray()
+        return if (args.isArrayOf<PairScreenArgument>()) {
+            args as Array<PairScreenArgument>
+        } else emptyArray()
+    }
+
+    companion object {
+        private const val EXTRA_ARGS = "pair_args"
+
+        fun getLaunchIntent(context: Context, vararg args: PairScreenArgument): Intent {
+            val intent = Intent(context, PairScreenActivity::class.java)
+            intent.putExtra(EXTRA_ARGS, args)
+            return intent
         }
     }
 }

@@ -2,11 +2,11 @@ package com.flipper.pair.impl.di
 
 import com.flipper.core.di.AppGraph
 import com.flipper.pair.impl.PairScreenActivity
-import com.flipper.pair.impl.findcompanion.CompanionFindFragment
 import com.flipper.pair.impl.findstandart.StandartFindFragment
+import com.flipper.pair.impl.fragments.findcompanion.CompanionFindFragment
 import com.flipper.pair.impl.fragments.guide.FragmentGuide
+import com.flipper.pair.impl.fragments.permission.PermissionFragment
 import com.flipper.pair.impl.fragments.tos.FragmentTOS
-import com.flipper.pair.impl.permission.PermissionFragment
 import com.squareup.anvil.annotations.ContributesTo
 import javax.inject.Singleton
 
