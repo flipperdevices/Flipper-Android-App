@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipper.pair.impl.R
+import com.flipper.pair.impl.model.findcompanion.PairingState
 import no.nordicsemi.android.ble.ktx.state.ConnectionState
 
 @Preview(
@@ -33,8 +34,7 @@ import no.nordicsemi.android.ble.ktx.state.ConnectionState
 )
 @Composable
 fun ComposeFindDevice(
-    connectionState: ConnectionState? = ConnectionState.Disconnecting,
-    errorText: String? = null,
+    pairingState: PairingState = PairingState.NotInitialized,
     onClickBackButton: () -> Unit = {},
     onClickRefreshButton: () -> Unit = {}
 ) {
@@ -47,7 +47,7 @@ fun ComposeFindDevice(
                 .weight(1f)
                 .padding(all = 16.dp),
             contentAlignment = Alignment.Center
-        ) { ConnectState(connectionState, errorText) }
+        ) { PairingState(pairingState) }
 
         Row(
             modifier = Modifier
@@ -63,7 +63,7 @@ fun ComposeFindDevice(
             IconButton(onClick = onClickRefreshButton) {
                 Icon(
                     painter = painterResource(
-                        if (errorText != null) {
+                        if (pairingState is PairingState.Failed) {
                             R.drawable.ic_sync_problem
                         } else {
                             R.drawable.ic_sync
@@ -77,21 +77,31 @@ fun ComposeFindDevice(
 }
 
 @Composable
-private fun ConnectState(connectionState: ConnectionState?, errorText: String?) {
-    if (errorText != null) {
-        ComposeConnectionState(
-            pic = R.drawable.ic_warning,
-            picDesc = R.string.pair_companion_pic_error,
-            text = errorText
-        )
-        return
-    }
-    when (connectionState) {
-        null -> ComposeConnectionState(
+private fun PairingState(pairingState: PairingState) {
+    when (pairingState) {
+        PairingState.NotInitialized -> ComposeConnectionState(
             pic = R.drawable.ic_sync,
             picDesc = R.string.pair_companion_desc_not_start_yet,
             text = stringResource(R.string.pair_companion_desc_not_start_yet)
         )
+        is PairingState.Failed -> ComposeConnectionState(
+            pic = R.drawable.ic_warning,
+            picDesc = R.string.pair_companion_desc_failed,
+            text = pairingState.reason
+        )
+        PairingState.FindingDevice -> ComposeConnectionState(
+            pic = R.drawable.ic_sync,
+            picDesc = R.string.pair_companion_desc_finding,
+            text = stringResource(R.string.pair_companion_desc_finding)
+        )
+
+        is PairingState.WithDevice -> ComposeProcessingConnectionState(pairingState.connectionState)
+    }
+}
+
+@Composable
+private fun ComposeProcessingConnectionState(connectionState: ConnectionState) {
+    when (connectionState) {
         ConnectionState.Connecting -> ComposeConnectionState(
             pic = R.drawable.ic_sync,
             picDesc = R.string.pair_companion_desc_connecting,

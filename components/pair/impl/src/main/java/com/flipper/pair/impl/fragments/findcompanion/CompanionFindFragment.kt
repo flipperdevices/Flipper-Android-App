@@ -1,4 +1,4 @@
-package com.flipper.pair.impl.findcompanion
+package com.flipper.pair.impl.fragments.findcompanion
 
 import android.app.Activity
 import android.bluetooth.BluetoothDevice
@@ -27,6 +27,7 @@ import com.flipper.pair.impl.R
 import com.flipper.pair.impl.di.PairComponent
 import com.flipper.pair.impl.findcompanion.compose.ComposeFindDevice
 import com.flipper.pair.impl.findstandart.service.PairDeviceViewModel
+import com.flipper.pair.impl.fragments.common.BluetoothEnableHelper
 import com.flipper.pair.impl.navigation.machine.PairScreenStateDispatcher
 import timber.log.Timber
 import javax.inject.Inject
@@ -40,6 +41,8 @@ class CompanionFindFragment : ComposeFragment() {
     lateinit var sharedPreferences: FlipperSharedPreferences
 
     private val pairDeviceViewModel by viewModels<PairDeviceViewModel>()
+
+    private val bluetoothEnableHelper = BluetoothEnableHelper(this)
 
     // Result listener for device pair
     private val deviceConnectWithResult = registerForActivityResult(
@@ -69,19 +72,23 @@ class CompanionFindFragment : ComposeFragment() {
     @Composable
     override fun renderView() {
         val connectionState by pairDeviceViewModel.getConnectionState().collectAsState()
-        val errorText by pairDeviceViewModel.getErrorState().collectAsState()
         ComposeFindDevice(
             connectionState,
-            errorText,
             onClickBackButton = { stateDispatcher.back() }
         ) {
-            openFindDeviceDialog()
+            refresh()
         }
     }
 
     override fun onResume() {
         super.onResume()
-        openFindDeviceDialog()
+        refresh()
+    }
+
+    private fun refresh() {
+        bluetoothEnableHelper.requestBluetoothEnable {
+            openFindDeviceDialog()
+        }
     }
 
     private fun openFindDeviceDialog() {

@@ -12,6 +12,7 @@ import com.flipper.info.di.InfoComponent
 import com.flipper.info.main.compose.ComposeInfoScreen
 import com.flipper.info.main.service.FlipperViewModel
 import com.flipper.pair.api.PairComponentApi
+import com.flipper.pair.api.PairScreenArgument
 import javax.inject.Inject
 
 class InfoFragment : ComposeFragment() {
@@ -33,7 +34,7 @@ class InfoFragment : ComposeFragment() {
         ComposeInfoScreen(information, connectionState, echoList, echoListener = {
             bleViewModel.sendEcho(it)
         }, connectionToAnotherDeviceButton = {
-            pairComponentApi.openPairScreen(requireContext())
+            pairComponentApi.openPairScreen(requireContext(), PairScreenArgument.RECONNECT_DEVICE)
         })
     }
 

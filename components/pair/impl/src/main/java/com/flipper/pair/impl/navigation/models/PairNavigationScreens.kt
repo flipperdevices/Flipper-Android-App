@@ -2,11 +2,11 @@ package com.flipper.pair.impl.navigation.models
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.flipper.pair.impl.findcompanion.CompanionFindFragment
 import com.flipper.pair.impl.findstandart.StandartFindFragment
+import com.flipper.pair.impl.fragments.findcompanion.CompanionFindFragment
 import com.flipper.pair.impl.fragments.guide.FragmentGuide
+import com.flipper.pair.impl.fragments.permission.PermissionFragment
 import com.flipper.pair.impl.fragments.tos.FragmentTOS
-import com.flipper.pair.impl.permission.PermissionFragment
 import com.github.terrakok.cicerone.Screen
 import com.github.terrakok.cicerone.androidx.FragmentScreen
 
