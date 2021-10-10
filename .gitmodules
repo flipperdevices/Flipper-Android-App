@@ -1,0 +1,6 @@
+[submodule "components/bridge/protobuf/src/main/proto/flipperzero-protobuf"]
+	path = components/bridge/protobuf/src/main/proto/flipperzero-protobuf
+	url = git@github.com:flipperdevices/flipperzero-protobuf.git
+[submodule "components/bridge/protobuf/flipperzero-protobuf"]
+	path = components/bridge/protobuf/flipperzero-protobuf
+	url = git@github.com:flipperdevices/flipperzero-protobuf.git
