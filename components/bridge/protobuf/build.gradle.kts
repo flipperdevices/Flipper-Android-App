@@ -35,7 +35,7 @@ protobuf {
 android {
     sourceSets {
         (getByName("main") as com.android.build.gradle.api.AndroidSourceSet).proto {
-            srcDir("${projectDir}/flipperzero-protobuf")
+            srcDir("$projectDir/flipperzero-protobuf")
         }
     }
 }

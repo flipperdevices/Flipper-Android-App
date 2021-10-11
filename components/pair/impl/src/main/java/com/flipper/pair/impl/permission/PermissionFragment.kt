@@ -54,9 +54,9 @@ class PermissionFragment : ComposeFragment() {
         // If we have companion feature, we just want enable bluetooth on this screen
         if (PermissionHelper.isBluetoothEnabled() &&
             (
-                    DeviceFeatureHelper.isCompanionFeatureAvailable(requireContext()) ||
-                            PermissionHelper.isPermissionGranted(requireContext())
-                    )
+                DeviceFeatureHelper.isCompanionFeatureAvailable(requireContext()) ||
+                    PermissionHelper.isPermissionGranted(requireContext())
+                )
         ) {
             onAllPermissionGranted()
             return
