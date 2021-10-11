@@ -5,8 +5,8 @@ plugins {
     id("kotlin-kapt")
 }
 
-apply<com.flipper.gradle.ConfigurationPlugin>()
-apply<com.flipper.gradle.ComposerPlugin>()
+apply<com.flipperdevices.gradle.ConfigurationPlugin>()
+apply<com.flipperdevices.gradle.ComposerPlugin>()
 
 android {
     testOptions {

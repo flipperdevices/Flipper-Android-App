@@ -1,7 +1,7 @@
 import java.lang.System.getProperty
 
 object ApkConfig {
-    const val APPLICATION_ID = "com.flipper.app"
+    const val APPLICATION_ID = "com.flipperdevices.app"
 
     const val MIN_SDK_VERSION = 21
     const val TARGET_SDK_VERSION = 30

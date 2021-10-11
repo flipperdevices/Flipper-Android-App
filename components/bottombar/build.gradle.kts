@@ -5,8 +5,8 @@ plugins {
     id("kotlin-android")
 }
 
-apply<com.flipper.gradle.ConfigurationPlugin>()
-apply<com.flipper.gradle.ComposerPlugin>()
+apply<com.flipperdevices.gradle.ConfigurationPlugin>()
+apply<com.flipperdevices.gradle.ComposerPlugin>()
 
 dependencies {
     implementation(project(":components:core"))
