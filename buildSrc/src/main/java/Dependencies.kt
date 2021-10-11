@@ -36,6 +36,8 @@ object Versions {
 
     const val IMAGE_SLIDER = "1.4.0"
     const val GLIDE = "4.12.0"
+
+    const val PROTOBUF = "3.18.1"
 }
 
 object GradlePlugins {
@@ -91,6 +93,9 @@ object Libs {
 
     const val IMAGE_SLIDER = "com.github.smarteist:Android-Image-Slider:${Versions.IMAGE_SLIDER}"
     const val GLIDE = "com.github.bumptech.glide:glide:${Versions.GLIDE}"
+
+    const val PROTOBUF_JAVA = "com.google.protobuf:protobuf-java:${Versions.PROTOBUF}"
+    const val PROTOBUF_PROTOC = "com.google.protobuf:protoc:${Versions.PROTOBUF}"
 }
 
 object TestingLib {

@@ -2,7 +2,7 @@ package com.flipper.pair.impl.navigation.machine
 
 import android.content.Context
 import android.os.Build
-import com.flipper.bridge.utils.DeviceFeatureHelper
+import com.flipper.bridge.api.utils.DeviceFeatureHelper
 import com.flipper.core.api.BottomNavigationActivityApi
 import com.flipper.core.di.AppGraph
 import com.flipper.pair.impl.navigation.models.PairNavigationScreens

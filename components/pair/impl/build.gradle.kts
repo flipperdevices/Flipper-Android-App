@@ -16,7 +16,8 @@ android {
 
 dependencies {
     implementation(project(":components:core"))
-    implementation(project(":components:bridge"))
+    implementation(project(":components:bridge:api"))
+    implementation(project(":components:bridge:provider"))
     implementation(project(":components:pair:api"))
 
     implementation(Libs.KOTLIN_COROUTINES)
@@ -37,7 +38,8 @@ dependencies {
     implementation(Libs.IMAGE_SLIDER)
     implementation(Libs.GLIDE)
 
-    testImplementation(TestingLib.JUNIT)
-    testImplementation(TestingLib.ROBOLECTRIC)
-    testImplementation(TestingLib.ASSERTJ)
+    implementation(Libs.NORDIC_BLE)
+    implementation(Libs.NORDIC_BLE_KTX)
+    implementation(Libs.NORDIC_BLE_COMMON)
+    implementation(Libs.NORDIC_BLE_SCAN)
 }

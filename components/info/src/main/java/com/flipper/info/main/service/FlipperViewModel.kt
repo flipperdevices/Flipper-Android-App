@@ -3,10 +3,10 @@ package com.flipper.info.main.service
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.flipper.bridge.api.FlipperApi
 import com.flipper.bridge.api.device.FlipperDeviceApi
-import com.flipper.bridge.impl.manager.FlipperBleManager
-import com.flipper.bridge.model.FlipperGATTInformation
+import com.flipper.bridge.api.manager.FlipperBleManager
+import com.flipper.bridge.api.model.FlipperGATTInformation
+import com.flipper.bridge.provider.FlipperApi
 import com.flipper.core.utils.toast
 import com.flipper.info.R
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +19,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import no.nordicsemi.android.ble.exception.BluetoothDisabledException
 import no.nordicsemi.android.ble.ktx.state.ConnectionState
-import no.nordicsemi.android.ble.ktx.stateAsFlow
 import timber.log.Timber
 
 class FlipperViewModel(application: Application) : AndroidViewModel(application) {
@@ -69,7 +68,7 @@ class FlipperViewModel(application: Application) : AndroidViewModel(application)
 
     private suspend fun subscribeToEcho(bleManager: FlipperBleManager) =
         withContext(Dispatchers.IO) {
-            bleManager.getEchoState().collect {
+            bleManager.getEchoStateFlow().collect {
                 if (it.isEmpty()) {
                     return@collect
                 }
@@ -80,22 +79,22 @@ class FlipperViewModel(application: Application) : AndroidViewModel(application)
 
     private suspend fun subscribeToInformationState(bleManager: FlipperBleManager) =
         withContext(Dispatchers.IO) {
-            bleManager.getInformationState().collect {
+            bleManager.getInformationStateFlow().collect {
                 deviceInformation.emit(it)
             }
         }
 
     private suspend fun subscribeToConnectionState(bleManager: FlipperBleManager) =
         withContext(Dispatchers.IO) {
-            bleManager.stateAsFlow().collect {
+            bleManager.getConnectionStateFlow().collect {
                 connectionState.emit(it)
             }
         }
 
     override fun onCleared() {
         super.onCleared()
-        if (currentDevice?.getBleManager()?.isConnected == true) {
-            currentDevice?.getBleManager()?.disconnect()
+        if (currentDevice?.getBleManager()?.isDeviceConnected == true) {
+            currentDevice?.getBleManager()?.disconnectDevice()
         }
     }
 }

@@ -17,8 +17,8 @@ class BottomNavigationActivityApiImpl @Inject constructor(private val context: C
         context.startActivity(
             Intent(context, BottomNavigationActivity::class.java).apply {
                 flags = FLAG_ACTIVITY_CLEAR_TOP or
-                        FLAG_ACTIVITY_CLEAR_TOP or
-                        FLAG_ACTIVITY_NEW_TASK
+                    FLAG_ACTIVITY_CLEAR_TOP or
+                    FLAG_ACTIVITY_NEW_TASK
             }
         )
     }

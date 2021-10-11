@@ -5,8 +5,8 @@ import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.core.content.ContextCompat
-import com.flipper.bridge.utils.DeviceFeatureHelper
-import com.flipper.bridge.utils.PermissionHelper
+import com.flipper.bridge.api.utils.DeviceFeatureHelper
+import com.flipper.bridge.api.utils.PermissionHelper
 import com.flipper.core.di.ComponentHolder
 import com.flipper.core.utils.toast
 import com.flipper.core.view.ComposeFragment
@@ -42,9 +42,9 @@ class PermissionFragment : ComposeFragment() {
         // If we have companion feature, we just want enable bluetooth on this screen
         if (PermissionHelper.isBluetoothEnabled() &&
             (
-                    DeviceFeatureHelper.isCompanionFeatureAvailable(requireContext()) ||
-                            PermissionHelper.isPermissionGranted(requireContext())
-                    )
+                DeviceFeatureHelper.isCompanionFeatureAvailable(requireContext()) ||
+                    PermissionHelper.isPermissionGranted(requireContext())
+                )
         ) {
             onAllPermissionGranted()
             return
