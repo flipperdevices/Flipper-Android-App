@@ -1,6 +1,5 @@
 package com.flipper.bridge.impl.manager
 
-import PB.Flipper
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattCharacteristic
@@ -59,7 +58,6 @@ class FlipperBleManagerImpl(context: Context) : BleManager(context), FlipperBleM
         BleManagerGattCallback() {
 
         override fun initialize() {
-            Flipper.CommandStatus.ERROR
             if (!isBonded) {
                 Timber.i("Start bond insecure")
                 createBondInsecure().enqueue()
