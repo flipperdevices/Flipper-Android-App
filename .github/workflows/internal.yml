@@ -49,5 +49,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_internal_release.outputs.upload_url }}
           asset_path: ${{ steps.sign_internal_release.outputs.signedReleaseFile }}
-          asset_name: FlipperApp.apk
+          asset_name: FlipperApp-0.1.${{ github.run_number }}.apk
           asset_content_type: application/zip

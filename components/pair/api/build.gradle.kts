@@ -2,7 +2,7 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
 }
-apply<com.flipper.gradle.ConfigurationPlugin>()
+apply<com.flipperdevices.gradle.ConfigurationPlugin>()
 
 dependencies {
     implementation(project(":components:core"))
