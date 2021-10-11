@@ -17,7 +17,9 @@
     <string name="pair_companion_desc_connecting">Connecting to the device…</string>
     <string name="pair_companion_desc_initializing">Connected to the device. Establishing a connection…</string>
     <string name="pair_companion_desc_done">Connection successfully established</string>
-    <string name="pair_companion_desc_disconnect">For some reason, the device broke the connection. This is not ok, check the firmware of the device. </string>
+    <string name="pair_companion_desc_disconnect">For some reason, the device broke the connection. This is not ok, check the firmware of the device.</string>
+    <string name="pair_companion_desc_finding">Looking for Flipper devices… Make sure you have enabled bluetooth on the Flipper.</string>
+    <string name="pair_companion_desc_failed">Something went wrong, please try again.</string>
     <string name="pair_companion_error_try_again">Please, try connect device again</string>
     <string name="pair_companion_error_return_not_ok">The system broke the connection process, try again</string>
     <string name="pair_companion_error_return_device_null">The system returned an incorrect response. Please try again, or write to feedback@flipperzero.one if the problem repeat.</string>

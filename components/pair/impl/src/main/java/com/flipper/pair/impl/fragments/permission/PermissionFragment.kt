@@ -1,11 +1,7 @@
-package com.flipper.pair.impl.permission
+package com.flipper.pair.impl.fragments.permission
 
-import android.app.Activity
-import android.bluetooth.BluetoothAdapter
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.core.content.ContextCompat
@@ -15,25 +11,17 @@ import com.flipper.core.di.ComponentHolder
 import com.flipper.core.utils.toast
 import com.flipper.core.view.ComposeFragment
 import com.flipper.pair.impl.R
+import com.flipper.pair.impl.composable.permission.ComposePermission
 import com.flipper.pair.impl.di.PairComponent
+import com.flipper.pair.impl.fragments.common.BluetoothEnableHelper
 import com.flipper.pair.impl.navigation.machine.PairScreenStateDispatcher
-import com.flipper.pair.impl.permission.compose.ComposePermission
 import javax.inject.Inject
 
 class PermissionFragment : ComposeFragment() {
     @Inject
     lateinit var stateDispatcher: PairScreenStateDispatcher
 
-    // Result listener for bluetooth toggle
-    private val bluetoothEnableWithResult = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result: ActivityResult ->
-        if (result.resultCode != Activity.RESULT_OK) {
-            toast(R.string.pair_permission_bt_enabled_failed)
-            return@registerForActivityResult
-        }
-        requestPermissions()
-    }
+    private val bluetoothEnableHelper = BluetoothEnableHelper(this)
 
     // Result listener for permission request
     private val requestPermissionWithResult = registerForActivityResult(
@@ -70,11 +58,9 @@ class PermissionFragment : ComposeFragment() {
     }
 
     private fun enableBluetoothAndRequestPermissions() {
-        if (!PermissionHelper.isBluetoothEnabled()) {
-            bluetoothEnableWithResult.launch(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE))
-            return
+        bluetoothEnableHelper.requestBluetoothEnable {
+            requestPermissions()
         }
-        requestPermissions()
     }
 
     // Request permission which not grant already

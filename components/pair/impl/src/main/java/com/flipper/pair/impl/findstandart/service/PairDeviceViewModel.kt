@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothDevice
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipper.bridge.provider.FlipperApi
+import com.flipper.pair.impl.model.findcompanion.PairingState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
@@ -13,17 +14,15 @@ import no.nordicsemi.android.ble.ktx.state.ConnectionState
 
 class PairDeviceViewModel(application: Application) : AndroidViewModel(application) {
     private val context = application
-    private val _state = MutableStateFlow<ConnectionState?>(null)
-    private val _errorTextState = MutableStateFlow<String?>(null)
+    private val _state = MutableStateFlow<PairingState>(PairingState.NotInitialized)
 
-    fun getConnectionState(): StateFlow<ConnectionState?> = _state
-    fun getErrorState(): StateFlow<String?> = _errorTextState
+    fun getConnectionState(): StateFlow<PairingState> = _state
 
     fun startConnectToDevice(device: BluetoothDevice, onReady: () -> Unit) {
         val flipperDeviceApi = FlipperApi.flipperPairApi.getFlipperApi(context, device.address)
         viewModelScope.launch {
             flipperDeviceApi.getBleManager().getConnectionStateFlow().collect {
-                _state.emit(it)
+                _state.emit(PairingState.WithDevice(it))
                 if (it == ConnectionState.Ready) {
                     onReady()
                 }
@@ -34,15 +33,13 @@ class PairDeviceViewModel(application: Application) : AndroidViewModel(applicati
 
     fun onStartCompanionFinding() {
         viewModelScope.launch {
-            _errorTextState.emit(null)
-            _state.emit(ConnectionState.Connecting)
+            _state.emit(PairingState.FindingDevice)
         }
     }
 
     fun onFailedCompanionFinding(reason: String) {
         viewModelScope.launch {
-            _errorTextState.emit(reason)
-            _state.emit(null)
+            _state.emit(PairingState.Failed(reason))
         }
     }
 }

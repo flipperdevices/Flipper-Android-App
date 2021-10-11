@@ -90,6 +90,7 @@ private fun EchoScreen(
         )
         Button(
             onClick = {
+                text = ""
                 echoListener.invoke(text)
             }
         ) {
