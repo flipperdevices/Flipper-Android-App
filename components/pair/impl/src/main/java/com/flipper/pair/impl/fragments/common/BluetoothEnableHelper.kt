@@ -6,7 +6,7 @@ import android.content.Intent
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import com.flipper.bridge.utils.PermissionHelper
+import com.flipper.bridge.api.utils.PermissionHelper
 import com.flipper.core.utils.toast
 import com.flipper.pair.impl.R
 
