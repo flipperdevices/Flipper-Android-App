@@ -9,6 +9,7 @@ apply<com.flipper.gradle.ConfigurationPlugin>()
 dependencies {
     implementation(project(":components:core"))
     implementation(project(":components:bridge:api"))
+    implementation(project(":components:bridge:protobuf"))
 
     implementation(Libs.KOTLIN_COROUTINES)
     implementation(Libs.ANNOTATIONS)
