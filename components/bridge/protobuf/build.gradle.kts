@@ -22,13 +22,8 @@ protobuf {
         artifact = Libs.PROTOBUF_PROTOC
     }
 
-    generatedFilesBaseDir = "$projectDir/build/protobuf"
-
     generateProtoTasks {
         ofSourceSet("main").forEach {
-            it.builtins {
-                remove("java")
-            }
             it.plugins {
                 id("javalite")
             }
@@ -40,7 +35,6 @@ android {
     sourceSets {
         (getByName("main") as com.android.build.gradle.api.AndroidSourceSet).proto {
             srcDir("${projectDir}/flipperzero-protobuf")
-            outputDir = file("build/protobuf")
         }
     }
 }
