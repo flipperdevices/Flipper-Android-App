@@ -24,6 +24,8 @@ dependencies {
     implementation(Libs.DAGGER)
     kapt(Libs.DAGGER_COMPILER)
 
+    implementation(Libs.FASTUTIL)
+
     testImplementation(TestingLib.JUNIT)
     androidTestImplementation(TestingLib.ANDROIDX_TEST_EXT_JUNIT)
     androidTestImplementation(TestingLib.ESPRESSO_CORE)
