@@ -6,4 +6,6 @@ interface PairScreenStateDispatcher {
     fun invalidateCurrentState(stateChanger: (PairScreenState) -> PairScreenState)
     fun invalidate(state: PairScreenState)
     fun back()
+    fun addStateListener(stateListener: ScreenStateChangeListener)
+    fun removeStateListener(stateListener: ScreenStateChangeListener)
 }
