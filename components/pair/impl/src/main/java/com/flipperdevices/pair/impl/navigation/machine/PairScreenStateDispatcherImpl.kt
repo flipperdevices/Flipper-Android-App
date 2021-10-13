@@ -45,6 +45,7 @@ class PairScreenStateDispatcherImpl @Inject constructor(
             // Do nothing, because we already on this state
             return
         }
+        currentState = state
         val screen = getScreenForStateUnsafe(state)
         if (screen == null) {
             bottomNavigationActivityApi.openBottomNavigationScreen()
@@ -54,7 +55,6 @@ class PairScreenStateDispatcherImpl @Inject constructor(
             stateStack.push(currentState)
         }
         router.replaceScreen(screen)
-        currentState = state
     }
 
     @Synchronized
@@ -64,8 +64,8 @@ class PairScreenStateDispatcherImpl @Inject constructor(
         }
         val prevState = stateStack.pop()
         val screen = getScreenForStateUnsafe(prevState) ?: error("Call back on finish state")
-        router.replaceScreen(screen)
         currentState = prevState
+        router.replaceScreen(screen)
     }
 
     override fun addStateListener(stateListener: ScreenStateChangeListener) {
