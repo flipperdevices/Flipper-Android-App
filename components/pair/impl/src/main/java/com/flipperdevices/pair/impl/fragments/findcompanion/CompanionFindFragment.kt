@@ -65,8 +65,8 @@ class CompanionFindFragment : ComposeFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         ComponentHolder.component<PairComponent>().inject(this)
+        refresh()
     }
 
     @Composable
@@ -78,11 +78,6 @@ class CompanionFindFragment : ComposeFragment() {
         ) {
             refresh()
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        refresh()
     }
 
     private fun refresh() {

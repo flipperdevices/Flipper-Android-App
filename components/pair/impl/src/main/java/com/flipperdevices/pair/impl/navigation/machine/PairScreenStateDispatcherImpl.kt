@@ -23,7 +23,15 @@ class PairScreenStateDispatcherImpl @Inject constructor(
 ) : PairScreenStateDispatcher {
     // Exclude currentState
     private val stateStack = Stack<PairScreenState>()
+
+    private val listeners = mutableListOf<ScreenStateChangeListener>()
     private var currentState: PairScreenState? = null
+        set(value) {
+            field = value
+            if (value != null) {
+                listeners.forEach { it.onStateChanged(value) }
+            }
+        }
 
     @Synchronized
     override fun invalidateCurrentState(stateChanger: (PairScreenState) -> PairScreenState) {
@@ -58,6 +66,16 @@ class PairScreenStateDispatcherImpl @Inject constructor(
         val screen = getScreenForStateUnsafe(prevState) ?: error("Call back on finish state")
         router.replaceScreen(screen)
         currentState = prevState
+    }
+
+    override fun addStateListener(stateListener: ScreenStateChangeListener) {
+        if (!listeners.contains(stateListener)) {
+            listeners.add(stateListener)
+        }
+    }
+
+    override fun removeStateListener(stateListener: ScreenStateChangeListener) {
+        listeners.remove(stateListener)
     }
 
     /**

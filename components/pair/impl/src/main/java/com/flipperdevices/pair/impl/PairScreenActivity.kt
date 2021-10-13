@@ -9,12 +9,14 @@ import com.flipperdevices.core.navigation.delegates.OnBackPressListener
 import com.flipperdevices.pair.api.PairScreenArgument
 import com.flipperdevices.pair.impl.di.PairComponent
 import com.flipperdevices.pair.impl.navigation.machine.PairScreenStateDispatcher
+import com.flipperdevices.pair.impl.navigation.machine.ScreenStateChangeListener
+import com.flipperdevices.pair.impl.navigation.models.PairScreenState
 import com.flipperdevices.pair.impl.navigation.storage.PairStateStorage
 import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import javax.inject.Inject
 
-class PairScreenActivity : FragmentActivity() {
+class PairScreenActivity : FragmentActivity(), ScreenStateChangeListener {
     @Inject
     lateinit var navigatorHolder: NavigatorHolder
 
@@ -30,6 +32,8 @@ class PairScreenActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pair)
         ComponentHolder.component<PairComponent>().inject(this)
+        stateDispatcher.addStateListener(this)
+
         var initialState = pairStateStorage.getSavedPairState()
 
         val args = getScreenArguments()
@@ -59,6 +63,17 @@ class PairScreenActivity : FragmentActivity() {
         } else {
             stateDispatcher.back()
         }
+    }
+
+    override fun onStateChanged(state: PairScreenState) {
+        if (state.isAllTrue()) {
+            finish()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        stateDispatcher.removeStateListener(this)
     }
 
     @Suppress("UNCHECKED_CAST")
