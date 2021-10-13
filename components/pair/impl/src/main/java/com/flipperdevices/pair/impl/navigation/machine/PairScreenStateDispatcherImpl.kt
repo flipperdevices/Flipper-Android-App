@@ -23,7 +23,15 @@ class PairScreenStateDispatcherImpl @Inject constructor(
 ) : PairScreenStateDispatcher {
     // Exclude currentState
     private val stateStack = Stack<PairScreenState>()
+
+    private val listeners = mutableListOf<ScreenStateChangeListener>()
     private var currentState: PairScreenState? = null
+        set(value) {
+            field = value
+            if (value != null) {
+                listeners.forEach { it.onStateChanged(value) }
+            }
+        }
 
     @Synchronized
     override fun invalidateCurrentState(stateChanger: (PairScreenState) -> PairScreenState) {
@@ -37,6 +45,7 @@ class PairScreenStateDispatcherImpl @Inject constructor(
             // Do nothing, because we already on this state
             return
         }
+        currentState = state
         val screen = getScreenForStateUnsafe(state)
         if (screen == null) {
             bottomNavigationActivityApi.openBottomNavigationScreen()
@@ -46,7 +55,6 @@ class PairScreenStateDispatcherImpl @Inject constructor(
             stateStack.push(currentState)
         }
         router.replaceScreen(screen)
-        currentState = state
     }
 
     @Synchronized
@@ -56,8 +64,18 @@ class PairScreenStateDispatcherImpl @Inject constructor(
         }
         val prevState = stateStack.pop()
         val screen = getScreenForStateUnsafe(prevState) ?: error("Call back on finish state")
-        router.replaceScreen(screen)
         currentState = prevState
+        router.replaceScreen(screen)
+    }
+
+    override fun addStateListener(stateListener: ScreenStateChangeListener) {
+        if (!listeners.contains(stateListener)) {
+            listeners.add(stateListener)
+        }
+    }
+
+    override fun removeStateListener(stateListener: ScreenStateChangeListener) {
+        listeners.remove(stateListener)
     }
 
     /**
