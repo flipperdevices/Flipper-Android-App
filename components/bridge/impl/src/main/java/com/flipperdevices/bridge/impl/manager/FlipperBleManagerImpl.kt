@@ -124,7 +124,7 @@ class FlipperBleManagerImpl(
                 receiveBytesFlow.emit(bytes)
             }
         }
-        requestMtu(200).enqueue()
+        requestMtu(300).enqueue()
         enableNotifications(serialRxCharacteristic).enqueue()
         enableIndications(serialRxCharacteristic).enqueue()
     }
