@@ -14,9 +14,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import java.io.ByteArrayOutputStream
 
 private typealias OnReceiveResponse = (Flipper.Main) -> Unit
@@ -39,6 +39,7 @@ class FlipperRequestApiImpl(
 
     @Suppress("BlockingMethodInNonBlockingContext")
     override fun request(command: Flipper.Main): Flow<Flipper.Main> = channelFlow {
+        Timber.i("Request $command")
         // Generate unique ID for each command
         val uniqueId = findEmptyId()
         val requestBytes = withContext(Dispatchers.IO) { // Launch in IO dispatcher
