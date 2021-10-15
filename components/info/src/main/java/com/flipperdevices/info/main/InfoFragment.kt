@@ -10,16 +10,19 @@ import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.view.ComposeFragment
 import com.flipperdevices.info.di.InfoComponent
 import com.flipperdevices.info.main.compose.ComposeInfoScreen
-import com.flipperdevices.info.main.service.FlipperViewModel
 import com.flipperdevices.pair.api.PairComponentApi
 import com.flipperdevices.pair.api.PairScreenArgument
+import com.flipperdevices.service.FlipperViewModel
+import com.flipperdevices.service.FlipperViewModelFactory
 import javax.inject.Inject
 
 class InfoFragment : ComposeFragment() {
     @Inject
     lateinit var pairComponentApi: PairComponentApi
 
-    private val bleViewModel by activityViewModels<FlipperViewModel>()
+    private val bleViewModel by activityViewModels<FlipperViewModel> {
+        FlipperViewModelFactory(requireActivity().application, getDeviceId())
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,18 +32,15 @@ class InfoFragment : ComposeFragment() {
     @Composable
     override fun renderView() {
         val information by bleViewModel.getDeviceInformation().collectAsState()
-        val echoList by bleViewModel.getEchoAnswers().collectAsState()
         val connectionState by bleViewModel.getConnectionState().collectAsState()
-        ComposeInfoScreen(information, connectionState, echoList, echoListener = {
-            bleViewModel.sendEcho(it)
-        }, connectionToAnotherDeviceButton = {
+        ComposeInfoScreen(information, connectionState, connectionToAnotherDeviceButton = {
             pairComponentApi.openPairScreen(requireContext(), PairScreenArgument.RECONNECT_DEVICE)
         })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        bleViewModel.connectAndStart(getDeviceId())
+        bleViewModel.connectAndStart()
     }
 
     companion object {

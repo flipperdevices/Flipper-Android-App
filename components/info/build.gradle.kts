@@ -26,6 +26,7 @@ dependencies {
     implementation(project(":components:core"))
     implementation(project(":components:bridge:provider"))
     implementation(project(":components:pair:api"))
+    implementation(project(":components:bridge:service"))
 
     implementation(Libs.COMPOSE_UI)
     implementation(Libs.COMPOSE_MATERIAL)

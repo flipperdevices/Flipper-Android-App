@@ -5,37 +5,46 @@ import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattCharacteristic
 import android.content.Context
 import com.flipperdevices.bridge.api.manager.FlipperBleManager
+import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperGATTInformation
 import com.flipperdevices.bridge.api.utils.Constants
-import com.flipperdevices.protobuf.main
-import com.flipperdevices.protobuf.status.pingRequest
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import no.nordicsemi.android.ble.BleManager
 import no.nordicsemi.android.ble.ktx.state.ConnectionState
 import no.nordicsemi.android.ble.ktx.stateAsFlow
 import timber.log.Timber
-import java.io.ByteArrayOutputStream
 import java.util.UUID
 
-class FlipperBleManagerImpl(context: Context) : BleManager(context), FlipperBleManager {
+class FlipperBleManagerImpl(
+    context: Context,
+    private val scope: CoroutineScope
+) : BleManager(context), FlipperBleManager {
     private val informationState = MutableStateFlow(FlipperGATTInformation())
-    private val echoText = MutableStateFlow(ByteArray(0))
+    private val receiveBytesFlow = MutableSharedFlow<ByteArray>()
     private val infoCharacteristics = mutableMapOf<UUID, BluetoothGattCharacteristic>()
     private var serialTxCharacteristic: BluetoothGattCharacteristic? = null
     private var serialRxCharacteristic: BluetoothGattCharacteristic? = null
-    private val responseReader = PeripheralResponseReader()
 
+    override val flipperRequestApi: FlipperRequestApi = FlipperRequestApiImpl(this, scope)
     override val isDeviceConnected = super.isConnected()
     override fun getInformationStateFlow(): StateFlow<FlipperGATTInformation> = informationState
-    override fun getEchoStateFlow(): StateFlow<ByteArray> = echoText
     override fun getConnectionStateFlow(): StateFlow<ConnectionState> = stateAsFlow()
     override fun disconnectDevice() = disconnect().enqueue()
+    override fun receiveBytesFlow(): Flow<ByteArray> {
+        return receiveBytesFlow
+    }
+
+    override fun sendBytes(data: ByteArray) {
+        writeCharacteristic(serialTxCharacteristic, data).enqueue()
+    }
+
     override fun connectToDevice(device: BluetoothDevice) {
         connect(device).retry(
             Constants.BLE.RECONNECT_COUNT,
@@ -54,18 +63,6 @@ class FlipperBleManagerImpl(context: Context) : BleManager(context), FlipperBleM
 
     override fun getGattCallback(): BleManagerGattCallback =
         FlipperBleManagerGattCallback()
-
-    override fun sendEcho(text: String) {
-        val protobufMessage = ByteArrayOutputStream().use { os ->
-            main {
-                commandId = 999
-                pingRequest = pingRequest { }
-            }.writeDelimitedTo(os)
-            return@use os.toByteArray()
-        }
-
-        writeCharacteristic(serialTxCharacteristic, protobufMessage).enqueue()
-    }
 
     private inner class FlipperBleManagerGattCallback :
         BleManagerGattCallback() {
@@ -123,17 +120,12 @@ class FlipperBleManagerImpl(context: Context) : BleManager(context), FlipperBleM
         setNotificationCallback(serialRxCharacteristic).with { _, data ->
             Timber.i("Receive serial data")
             val bytes = data.value ?: return@with
-            responseReader.onReceiveBytes(bytes)
+            scope.launch {
+                receiveBytesFlow.emit(bytes)
+            }
         }
         enableNotifications(serialRxCharacteristic).enqueue()
         enableIndications(serialRxCharacteristic).enqueue()
-
-        GlobalScope.launch {
-            responseReader.getResponses().collect {
-                val response = it ?: return@collect
-                Timber.i("Receive response: $response")
-            }
-        }
     }
 
     private fun registerToInformationGATT() {

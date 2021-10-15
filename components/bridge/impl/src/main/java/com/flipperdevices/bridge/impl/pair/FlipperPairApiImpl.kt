@@ -12,6 +12,7 @@ import com.flipperdevices.bridge.api.utils.PermissionHelper
 import com.flipperdevices.bridge.impl.device.FlipperDeviceApiImpl
 import com.flipperdevices.bridge.impl.manager.FlipperBleManagerImpl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withTimeout
 import no.nordicsemi.android.ble.exception.BluetoothDisabledException
@@ -21,18 +22,11 @@ class FlipperPairApiImpl @Inject constructor(
     private val scanner: FlipperScanner,
     private val adapter: BluetoothAdapter
 ) : FlipperPairApi {
-    private val cachedDeviceApi: Map<String, FlipperDeviceApi> = mapOf()
-
     override fun getFlipperApi(
         context: Context,
         deviceId: String
     ): FlipperDeviceApi {
-        val deviceApi = cachedDeviceApi[deviceId]
-        if (deviceApi != null) {
-            return deviceApi
-        }
-
-        val manager = FlipperBleManagerImpl(context)
+        val manager = FlipperBleManagerImpl(context, GlobalScope)
         return FlipperDeviceApiImpl(manager, deviceId)
     }
 

@@ -1,4 +1,4 @@
-package com.flipperdevices.bridge.utils
+package com.flipperdevices.bridge.impl.utils
 
 import it.unimi.dsi.fastutil.bytes.ByteArrayFIFOQueue
 import java.io.InputStream

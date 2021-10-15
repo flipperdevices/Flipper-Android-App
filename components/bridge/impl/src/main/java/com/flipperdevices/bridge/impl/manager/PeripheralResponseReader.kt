@@ -1,26 +1,38 @@
 package com.flipperdevices.bridge.impl.manager
 
-import com.flipperdevices.bridge.utils.ByteEndlessInputStream
+import com.flipperdevices.bridge.impl.utils.ByteEndlessInputStream
 import com.flipperdevices.protobuf.Flipper
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ObsoleteCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.newSingleThreadContext
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 
-class PeripheralResponseReader {
+const val TAG = "PeripheralResponseReader"
+
+@ObsoleteCoroutinesApi
+@Suppress("BlockingMethodInNonBlockingContext")
+class PeripheralResponseReader(
+    private val scope: CoroutineScope
+) {
     private val byteInputStream = ByteEndlessInputStream()
-    private val responses = MutableStateFlow<Flipper.Main?>(null)
+    private val responses = MutableSharedFlow<Flipper.Main?>()
 
     init {
-        Thread { // TODO attach to lifecycle
-            while (true) {
-                val main = Flipper.Main.parseDelimitedFrom(byteInputStream)
-                GlobalScope.launch {
-                    responses.emit(main)
+        scope.launch {
+            withContext(newSingleThreadContext(TAG)) {
+                while (this.isActive) {
+                    val main = Flipper.Main.parseDelimitedFrom(byteInputStream)
+                    scope.launch {
+                        responses.emit(main)
+                    }
                 }
             }
-        }.start()
+        }
     }
 
     fun onReceiveBytes(byteArray: ByteArray) {
@@ -28,5 +40,5 @@ class PeripheralResponseReader {
         byteInputStream.write(byteArray)
     }
 
-    fun getResponses(): StateFlow<Flipper.Main?> = responses
+    fun getResponses(): Flow<Flipper.Main?> = responses
 }

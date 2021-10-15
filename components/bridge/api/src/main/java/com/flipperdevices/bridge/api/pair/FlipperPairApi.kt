@@ -25,6 +25,9 @@ interface FlipperPairApi {
         flipperDeviceApi: FlipperDeviceApi
     )
 
+    /**
+     * Main difference in args
+     */
     fun scheduleConnect(
         flipperDeviceApi: FlipperDeviceApi,
         device: BluetoothDevice

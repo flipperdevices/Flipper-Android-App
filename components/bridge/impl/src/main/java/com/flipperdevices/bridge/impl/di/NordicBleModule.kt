@@ -1,4 +1,4 @@
-package com.flipperdevices.bridge.di
+package com.flipperdevices.bridge.impl.di
 
 import dagger.Module
 import dagger.Provides

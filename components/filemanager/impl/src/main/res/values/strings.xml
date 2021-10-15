@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="filemanager_folder_pic_desc">Folder</string>
+    <string name="filemanager_file_pic_desc">File</string>
+</resources>
