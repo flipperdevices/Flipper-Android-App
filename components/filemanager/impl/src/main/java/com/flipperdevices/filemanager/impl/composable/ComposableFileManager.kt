@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.filemanager.impl.R
 import com.flipperdevices.filemanager.impl.model.FileItem
 
-
 @Preview(
     showBackground = true,
     showSystemUi = true
@@ -36,7 +35,7 @@ fun ComposableFileManager(files: List<FileItem> = listOf(FileItem.DUMMY)) {
 }
 
 @Composable
-fun ComposableFileItem(fileItem: FileItem) {
+private fun ComposableFileItem(fileItem: FileItem) {
     Row(
         modifier = Modifier
             .padding(vertical = 8.dp)
@@ -62,7 +61,7 @@ fun ComposableFileItem(fileItem: FileItem) {
 }
 
 @Composable
-fun ComposableFileImage(modifier: Modifier, fileItem: FileItem) {
+private fun ComposableFileImage(modifier: Modifier, fileItem: FileItem) {
     if (fileItem.isDirectory) {
         Image(
             modifier = modifier,

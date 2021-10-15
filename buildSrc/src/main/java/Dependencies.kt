@@ -16,7 +16,6 @@ object Versions {
     const val ANDROID_MATERIAL = "1.2.0"
     const val ANDROID_JETPACK_COMPOSE = "1.0.2"
     const val ANDROID_LIFECYCLE = "2.3.1"
-    const val ANDROID_PREFERENCE = "1.1.1"
 
     const val FRAGMENT_KTX = "1.3.6"
     const val ACTIVITY_KTX = "1.3.1"
@@ -31,7 +30,7 @@ object Versions {
     const val CICERONE = "7.1"
 
     const val TREX = "1.0.0"
-    const val FASTUTIL = "8.5.6"
+    const val FASTUTIL = "7.2.1"
 
     const val BLE_SCAN = "1.5.0"
     const val BLE = "2.3.0"

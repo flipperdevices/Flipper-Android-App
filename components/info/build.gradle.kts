@@ -8,12 +8,6 @@ plugins {
 apply<com.flipperdevices.gradle.ConfigurationPlugin>()
 apply<com.flipperdevices.gradle.ComposerPlugin>()
 
-android {
-    testOptions {
-        unitTests.isIncludeAndroidResources = true
-    }
-}
-
 dependencies {
     // Core deps
     implementation(Libs.CORE_KTX)

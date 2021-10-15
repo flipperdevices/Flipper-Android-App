@@ -11,6 +11,7 @@ apply<com.flipperdevices.gradle.ComposerPlugin>()
 dependencies {
     implementation(project(":components:core"))
     implementation(project(":components:pair:api"))
+    implementation(project(":components:filemanager:api"))
 
     implementation(Libs.APPCOMPAT)
     implementation(Libs.DAGGER)

@@ -20,7 +20,7 @@ class PeripheralResponseReader(
     private val scope: CoroutineScope
 ) {
     private val byteInputStream = ByteEndlessInputStream()
-    private val responses = MutableSharedFlow<Flipper.Main?>()
+    private val responses = MutableSharedFlow<Flipper.Main>()
 
     init {
         scope.launch {
@@ -40,5 +40,5 @@ class PeripheralResponseReader(
         byteInputStream.write(byteArray)
     }
 
-    fun getResponses(): Flow<Flipper.Main?> = responses
+    fun getResponses(): Flow<Flipper.Main> = responses
 }
