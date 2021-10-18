@@ -29,8 +29,8 @@ import com.flipperdevices.pair.impl.findcompanion.compose.ComposeFindDevice
 import com.flipperdevices.pair.impl.findstandart.service.PairDeviceViewModel
 import com.flipperdevices.pair.impl.fragments.common.BluetoothEnableHelper
 import com.flipperdevices.pair.impl.navigation.machine.PairScreenStateDispatcher
-import timber.log.Timber
 import javax.inject.Inject
+import timber.log.Timber
 
 @RequiresApi(Build.VERSION_CODES.O)
 class CompanionFindFragment : ComposeFragment() {
@@ -49,13 +49,17 @@ class CompanionFindFragment : ComposeFragment() {
         ActivityResultContracts.StartIntentSenderForResult()
     ) { result: ActivityResult ->
         if (result.resultCode != Activity.RESULT_OK) {
-            pairDeviceViewModel.onFailedCompanionFinding(getString(R.string.pair_companion_error_return_not_ok))
+            pairDeviceViewModel.onFailedCompanionFinding(
+                getString(R.string.pair_companion_error_return_not_ok)
+            )
             return@registerForActivityResult
         }
         val deviceToPair: BluetoothDevice? =
             result.data?.getParcelableExtra(CompanionDeviceManager.EXTRA_DEVICE)
         if (deviceToPair == null) {
-            pairDeviceViewModel.onFailedCompanionFinding(getString(R.string.pair_companion_error_return_device_null))
+            pairDeviceViewModel.onFailedCompanionFinding(
+                getString(R.string.pair_companion_error_return_device_null)
+            )
             return@registerForActivityResult
         }
         pairDeviceViewModel.startConnectToDevice(deviceToPair) {
@@ -95,8 +99,8 @@ class CompanionFindFragment : ComposeFragment() {
             // Find only devices that match this request filter.
             .addDeviceFilter(deviceFilter)
             .build()
-        val deviceManager =
-            requireContext().getSystemService(Context.COMPANION_DEVICE_SERVICE) as CompanionDeviceManager
+        val deviceManager = requireContext().getSystemService(Context.COMPANION_DEVICE_SERVICE)
+            as CompanionDeviceManager
         pairDeviceViewModel.onStartCompanionFinding()
 
         deviceManager.associate(

@@ -8,6 +8,7 @@ import com.flipperdevices.bridge.api.manager.FlipperBleManager
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperGATTInformation
 import com.flipperdevices.bridge.api.utils.Constants
+import java.util.UUID
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -20,7 +21,6 @@ import no.nordicsemi.android.ble.BleManager
 import no.nordicsemi.android.ble.ktx.state.ConnectionState
 import no.nordicsemi.android.ble.ktx.stateAsFlow
 import timber.log.Timber
-import java.util.UUID
 
 class FlipperBleManagerImpl(
     context: Context,
@@ -124,7 +124,7 @@ class FlipperBleManagerImpl(
                 receiveBytesFlow.emit(bytes)
             }
         }
-        requestMtu(300).enqueue()
+        requestMtu(Constants.BLE.MTU).enqueue()
         enableNotifications(serialRxCharacteristic).enqueue()
         enableIndications(serialRxCharacteristic).enqueue()
     }

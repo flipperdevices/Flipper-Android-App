@@ -25,10 +25,9 @@ subprojects {
     }
 
     ktlint {
-        debug.set(false)
         version.set(Versions.KTLINT)
+        android.set(true)
         verbose.set(true)
-        android.set(false)
         outputToConsole.set(true)
         ignoreFailures.set(false)
         enableExperimentalRules.set(true)

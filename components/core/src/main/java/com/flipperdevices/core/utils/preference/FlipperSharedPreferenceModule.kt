@@ -19,7 +19,9 @@ class FlipperSharedPreferenceModule {
 
     @Provides
     @Singleton
-    fun provideSharedPreference(flipperSharedPreferences: FlipperSharedPreferences): SharedPreferences {
+    fun provideSharedPreference(
+        flipperSharedPreferences: FlipperSharedPreferences
+    ): SharedPreferences {
         return flipperSharedPreferences
     }
 }

@@ -19,6 +19,8 @@ import com.flipperdevices.protobuf.storage.listRequest
 import com.flipperdevices.service.FlipperViewModel
 import com.flipperdevices.service.FlipperViewModelFactory
 import com.github.terrakok.cicerone.Router
+import java.io.File
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
@@ -26,8 +28,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.runningReduce
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.io.File
-import javax.inject.Inject
 
 class FileManagerFragment : ComposeFragment() {
     private val stateFlow = MutableStateFlow<List<FileItem>>(emptyList())
@@ -68,12 +68,14 @@ class FileManagerFragment : ComposeFragment() {
     }
 
     private fun getFilesForDir(directory: String): Flow<List<FileItem>> {
-        return bleViewModel.getRequestApi().request(main {
-            storageListRequest = listRequest {
-                path = directory
+        return bleViewModel.getRequestApi().request(
+            main {
+                storageListRequest = listRequest {
+                    path = directory
+                }
             }
-        }).map {
-            Timber.i("FileManagerFragment#${directory}")
+        ).map {
+            Timber.i("FileManagerFragment#$directory")
             it.storageListResponse.fileList.map { file ->
                 FileItem(
                     fileName = file.name,
