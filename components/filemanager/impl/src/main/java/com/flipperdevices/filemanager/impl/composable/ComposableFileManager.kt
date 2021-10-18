@@ -2,7 +2,6 @@ package com.flipperdevices.filemanager.impl.composable
 
 import android.text.format.Formatter
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
@@ -19,7 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -40,7 +38,6 @@ fun ComposableFileManager(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .border(5.dp, Color.Cyan)
     ) {
         items(files) { file ->
             ComposableFileItem(file, onFileClick)
