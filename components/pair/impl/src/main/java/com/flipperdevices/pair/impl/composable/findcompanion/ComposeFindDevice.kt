@@ -7,7 +7,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,14 +15,12 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieAnimation
@@ -33,6 +30,7 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.flipperdevices.pair.impl.R
 import com.flipperdevices.pair.impl.composable.common.ComposableBackButton
+import com.flipperdevices.pair.impl.composable.common.ComposePairScreen
 import com.flipperdevices.pair.impl.model.findcompanion.PairingState
 import no.nordicsemi.android.ble.ktx.state.ConnectionState
 
@@ -103,27 +101,27 @@ private fun ComposeBottomBar(
 @Composable
 private fun PairingState(pairingState: PairingState) {
     when (pairingState) {
-        PairingState.NotInitialized -> ComposeConnectionState(
-            titleResId = R.string.pair_companion_title_find,
-            text = stringResource(R.string.pair_companion_desc_not_start_yet)
+        PairingState.NotInitialized -> ComposePairScreen(
+            title = stringResource(R.string.pair_companion_title_find),
+            description = stringResource(R.string.pair_companion_desc_not_start_yet)
         ) {
             ComposePairPic(
                 picResId = R.drawable.ic_find,
                 picDesc = R.string.pair_companion_desc_not_start_yet
             )
         }
-        is PairingState.Failed -> ComposeConnectionState(
-            titleResId = R.string.pair_companion_title_failed,
-            text = pairingState.reason
+        is PairingState.Failed -> ComposePairScreen(
+            title = stringResource(R.string.pair_companion_title_failed),
+            description = pairingState.reason
         ) {
             ComposePairPic(
                 picResId = R.drawable.ic_error_colored,
                 picDesc = R.string.pair_companion_desc_failed
             )
         }
-        PairingState.FindingDevice -> ComposeConnectionState(
-            titleResId = R.string.pair_companion_title_find,
-            text = stringResource(R.string.pair_companion_desc_finding)
+        PairingState.FindingDevice -> ComposePairScreen(
+            title = stringResource(R.string.pair_companion_title_find),
+            description = stringResource(R.string.pair_companion_desc_finding)
         ) {
             ComposePairPic(
                 picResId = R.drawable.ic_find,
@@ -138,67 +136,35 @@ private fun PairingState(pairingState: PairingState) {
 @Composable
 private fun ComposeProcessingConnectionState(connectionState: ConnectionState) {
     when (connectionState) {
-        ConnectionState.Connecting -> ComposeConnectionState(
-            titleResId = R.string.pair_companion_title_connecting,
-            text = stringResource(R.string.pair_companion_desc_initializing)
+        ConnectionState.Connecting -> ComposePairScreen(
+            title = stringResource(R.string.pair_companion_title_connecting),
+            description = stringResource(R.string.pair_companion_desc_initializing)
         ) {
             ComposeLottiePic(picResId = R.raw.ic_connecting)
         }
-        ConnectionState.Initializing -> ComposeConnectionState(
-            titleResId = R.string.pair_companion_title_connecting,
-            text = stringResource(R.string.pair_companion_desc_initializing)
+        ConnectionState.Initializing -> ComposePairScreen(
+            title = stringResource(R.string.pair_companion_title_connecting),
+            description = stringResource(R.string.pair_companion_desc_initializing)
         ) {
             ComposeLottiePic(picResId = R.raw.ic_connecting)
         }
-        ConnectionState.Ready -> ComposeConnectionState(
-            titleResId = R.string.pair_companion_title_connecting,
-            text = stringResource(R.string.pair_companion_desc_done)
+        ConnectionState.Ready -> ComposePairScreen(
+            title = stringResource(R.string.pair_companion_title_connecting),
+            description = stringResource(R.string.pair_companion_desc_done)
         ) {
             ComposePairPic(
                 picResId = R.drawable.ic_done,
                 picDesc = R.string.pair_companion_desc_done
             )
         }
-        ConnectionState.Disconnecting, is ConnectionState.Disconnected -> ComposeConnectionState(
-            titleResId = R.string.pair_companion_title_connecting,
-            text = stringResource(R.string.pair_companion_desc_disconnect)
+        ConnectionState.Disconnecting, is ConnectionState.Disconnected -> ComposePairScreen(
+            title = stringResource(R.string.pair_companion_title_connecting),
+            description = stringResource(R.string.pair_companion_desc_disconnect)
         ) {
             ComposePairPic(
                 picResId = R.drawable.ic_error_colored,
                 picDesc = R.string.pair_companion_desc_disconnect,
             )
-        }
-    }
-}
-
-@Composable
-private fun ComposeConnectionState(
-    @StringRes titleResId: Int,
-    text: String,
-    ComposePic: @Composable () -> Unit
-) {
-    Column(
-        modifier = Modifier.padding(top = 32.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = stringResource(id = titleResId),
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.h3
-        )
-        Text(
-            modifier = Modifier.padding(all = 16.dp),
-            text = text,
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.subtitle1
-        )
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(weight = 1f)
-                .padding(horizontal = 8.dp)
-        ) {
-            ComposePic()
         }
     }
 }
