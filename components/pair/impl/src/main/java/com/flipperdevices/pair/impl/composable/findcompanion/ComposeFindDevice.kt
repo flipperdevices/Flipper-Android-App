@@ -1,22 +1,24 @@
-package com.flipperdevices.pair.impl.findcompanion.compose
+package com.flipperdevices.pair.impl.composable.findcompanion
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.RawRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -24,7 +26,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.flipperdevices.pair.impl.R
+import com.flipperdevices.pair.impl.composable.common.ComposableBackButton
 import com.flipperdevices.pair.impl.model.findcompanion.PairingState
 import no.nordicsemi.android.ble.ktx.state.ConnectionState
 
@@ -38,40 +46,53 @@ fun ComposeFindDevice(
     onClickBackButton: () -> Unit = {},
     onClickRefreshButton: () -> Unit = {}
 ) {
-    Column(
-        modifier = Modifier.fillMaxSize()
+    Scaffold(
+        bottomBar = {
+            ComposeBottomBar(
+                onClickBackButton,
+                onClickRefreshButton,
+                pairingState
+            )
+        }
     ) {
         Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-                .padding(all = 16.dp),
+                .fillMaxSize()
+                .padding(it)
+                .padding(horizontal = 16.dp),
             contentAlignment = Alignment.Center
         ) { PairingState(pairingState) }
+    }
+}
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(all = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            TextButton(onClick = onClickBackButton) {
-                Text(stringResource(R.string.pair_companion_back_button))
-            }
+@Composable
+private fun ComposeBottomBar(
+    onClickBackButton: () -> Unit,
+    onClickRefreshButton: () -> Unit,
+    pairingState: PairingState
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        ComposableBackButton(
+            text = stringResource(R.string.pair_companion_skip_pairing),
+            onPressListener = onClickBackButton
+        )
 
-            IconButton(onClick = onClickRefreshButton) {
-                Icon(
-                    painter = painterResource(
-                        if (pairingState is PairingState.Failed) {
-                            R.drawable.ic_sync_problem
-                        } else {
-                            R.drawable.ic_sync
-                        }
-                    ),
-                    contentDescription = stringResource(R.string.pair_companion_pic_update)
-                )
-            }
+        IconButton(onClick = onClickRefreshButton) {
+            Icon(
+                painter = painterResource(
+                    if (pairingState is PairingState.Failed) {
+                        R.drawable.ic_sync_problem
+                    } else {
+                        R.drawable.ic_sync
+                    }
+                ),
+                contentDescription = stringResource(R.string.pair_companion_pic_update)
+            )
         }
     }
 }
@@ -80,20 +101,32 @@ fun ComposeFindDevice(
 private fun PairingState(pairingState: PairingState) {
     when (pairingState) {
         PairingState.NotInitialized -> ComposeConnectionState(
-            pic = R.drawable.ic_sync,
-            picDesc = R.string.pair_companion_desc_not_start_yet,
+            titleResId = R.string.pair_companion_title_find,
             text = stringResource(R.string.pair_companion_desc_not_start_yet)
-        )
+        ) {
+            ComposePairPic(
+                picResId = R.drawable.ic_find,
+                picDesc = R.string.pair_companion_desc_not_start_yet
+            )
+        }
         is PairingState.Failed -> ComposeConnectionState(
-            pic = R.drawable.ic_warning,
-            picDesc = R.string.pair_companion_desc_failed,
+            titleResId = R.string.pair_companion_title_failed,
             text = pairingState.reason
-        )
+        ) {
+            ComposePairPic(
+                picResId = R.drawable.ic_error_colored,
+                picDesc = R.string.pair_companion_desc_failed
+            )
+        }
         PairingState.FindingDevice -> ComposeConnectionState(
-            pic = R.drawable.ic_sync,
-            picDesc = R.string.pair_companion_desc_finding,
+            titleResId = R.string.pair_companion_title_find,
             text = stringResource(R.string.pair_companion_desc_finding)
-        )
+        ) {
+            ComposePairPic(
+                picResId = R.drawable.ic_find,
+                picDesc = R.string.pair_companion_desc_finding
+            )
+        }
 
         is PairingState.WithDevice -> ComposeProcessingConnectionState(pairingState.connectionState)
     }
@@ -103,42 +136,100 @@ private fun PairingState(pairingState: PairingState) {
 private fun ComposeProcessingConnectionState(connectionState: ConnectionState) {
     when (connectionState) {
         ConnectionState.Connecting -> ComposeConnectionState(
-            pic = R.drawable.ic_sync,
-            picDesc = R.string.pair_companion_desc_connecting,
-            text = stringResource(R.string.pair_companion_desc_connecting)
-        )
-        ConnectionState.Initializing -> ComposeConnectionState(
-            pic = R.drawable.ic_sync,
-            picDesc = R.string.pair_companion_desc_initializing,
+            titleResId = R.string.pair_companion_title_connecting,
             text = stringResource(R.string.pair_companion_desc_initializing)
-        )
+        ) {
+            ComposeLottiePic(picResId = R.raw.ic_connecting)
+        }
+        ConnectionState.Initializing -> ComposeConnectionState(
+            titleResId = R.string.pair_companion_title_connecting,
+            text = stringResource(R.string.pair_companion_desc_initializing)
+        ) {
+            ComposeLottiePic(picResId = R.raw.ic_connecting)
+        }
         ConnectionState.Ready -> ComposeConnectionState(
-            pic = R.drawable.ic_done,
-            picDesc = R.string.pair_companion_desc_done,
+            titleResId = R.string.pair_companion_title_connecting,
             text = stringResource(R.string.pair_companion_desc_done)
-        )
+        ) {
+            ComposePairPic(
+                picResId = R.drawable.ic_done,
+                picDesc = R.string.pair_companion_desc_done
+            )
+        }
         ConnectionState.Disconnecting, is ConnectionState.Disconnected -> ComposeConnectionState(
-            pic = R.drawable.ic_warning,
-            picDesc = R.string.pair_companion_desc_disconnect,
+            titleResId = R.string.pair_companion_title_connecting,
             text = stringResource(R.string.pair_companion_desc_disconnect)
-        )
+        ) {
+            ComposePairPic(
+                picResId = R.drawable.ic_error_colored,
+                picDesc = R.string.pair_companion_desc_disconnect,
+            )
+        }
     }
 }
 
 @Composable
 private fun ComposeConnectionState(
-    @DrawableRes pic: Int,
-    @StringRes picDesc: Int,
-    text: String
+    @StringRes titleResId: Int,
+    text: String,
+    ComposePic: @Composable () -> Unit
 ) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Image(
-            modifier = Modifier
-                .height(256.dp)
-                .width(256.dp),
-            painter = painterResource(pic),
-            contentDescription = stringResource(picDesc)
+    Column(
+        modifier = Modifier.padding(top = 32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = stringResource(id = titleResId),
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.h3
         )
-        Text(text = text, textAlign = TextAlign.Center)
+        Text(
+            modifier = Modifier.padding(all = 16.dp),
+            text = text,
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.subtitle1
+        )
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(weight = 1f)
+                .padding(horizontal = 8.dp)
+        ) {
+            ComposePic()
+        }
+    }
+}
+
+@Composable
+private fun ComposePairPic(
+    @DrawableRes picResId: Int,
+    @StringRes picDesc: Int
+) {
+    Image(
+        modifier = Modifier.fillMaxSize(),
+        painter = painterResource(picResId),
+        contentDescription = stringResource(picDesc)
+    )
+}
+
+@Composable
+private fun ComposeLottiePic(
+    @RawRes picResId: Int,
+    @DrawableRes rollBackPicResId: Int = 0 // TODO add rollbackPic
+) {
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(picResId))
+    val progress by animateLottieCompositionAsState(
+        composition,
+        iterations = LottieConstants.IterateForever
+    )
+
+    Box {
+        LottieAnimation(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colors.background),
+            composition = composition,
+            progress = progress
+        )
     }
 }

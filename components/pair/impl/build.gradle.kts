@@ -37,6 +37,7 @@ dependencies {
     // Guide
     implementation(Libs.IMAGE_SLIDER)
     implementation(Libs.GLIDE)
+    implementation(Libs.LOTTIE)
 
     implementation(Libs.NORDIC_BLE)
     implementation(Libs.NORDIC_BLE_KTX)
