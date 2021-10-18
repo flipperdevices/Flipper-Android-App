@@ -11,7 +11,6 @@ import com.flipperdevices.core.view.ComposeFragment
 import com.flipperdevices.info.di.InfoComponent
 import com.flipperdevices.info.main.compose.ComposeInfoScreen
 import com.flipperdevices.pair.api.PairComponentApi
-import com.flipperdevices.pair.api.PairScreenArgument
 import com.flipperdevices.service.FlipperViewModel
 import com.flipperdevices.service.FlipperViewModelFactory
 import javax.inject.Inject
@@ -33,9 +32,7 @@ class InfoFragment : ComposeFragment() {
     override fun renderView() {
         val information by bleViewModel.getDeviceInformation().collectAsState()
         val connectionState by bleViewModel.getConnectionState().collectAsState()
-        ComposeInfoScreen(information, connectionState, connectionToAnotherDeviceButton = {
-            pairComponentApi.openPairScreen(requireContext(), PairScreenArgument.RECONNECT_DEVICE)
-        })
+        ComposeInfoScreen(information, connectionState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
