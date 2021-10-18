@@ -14,6 +14,7 @@ apply<com.flipperdevices.gradle.ConfigurationPlugin>()
 dependencies {
     implementation(project(":components:core"))
     api(Libs.PROTOBUF_JAVA)
+    api(Libs.PROTOBUF_KOTLIN)
 }
 
 protobuf {
@@ -24,9 +25,8 @@ protobuf {
     generateProtoTasks {
         all().forEach {
             it.builtins {
-                id("java") {
-                    option("lite")
-                }
+                id("java")
+                id("kotlin")
             }
         }
     }

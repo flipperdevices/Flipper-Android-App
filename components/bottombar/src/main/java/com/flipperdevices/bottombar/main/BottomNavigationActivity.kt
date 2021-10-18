@@ -48,7 +48,9 @@ class BottomNavigationActivity : FragmentActivity() {
         val tabName = tab.name
         val currentFragment: Fragment? = fm.fragments.find { it.isVisible }
         val newFragment = fm.findFragmentByTag(tabName)
-        if (currentFragment != null && newFragment != null && currentFragment === newFragment) return
+        if (currentFragment != null && newFragment != null && currentFragment === newFragment) {
+            return
+        }
         val transaction = fm.beginTransaction()
         if (newFragment == null) {
             transaction.add(

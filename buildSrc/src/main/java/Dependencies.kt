@@ -16,7 +16,6 @@ object Versions {
     const val ANDROID_MATERIAL = "1.2.0"
     const val ANDROID_JETPACK_COMPOSE = "1.0.2"
     const val ANDROID_LIFECYCLE = "2.3.1"
-    const val ANDROID_PREFERENCE = "1.1.1"
 
     const val FRAGMENT_KTX = "1.3.6"
     const val ACTIVITY_KTX = "1.3.1"
@@ -28,8 +27,10 @@ object Versions {
 
     const val TIMBER = "4.7.1"
     const val DAGGER = "2.38.1"
-    const val TREX = "1.0.0"
     const val CICERONE = "7.1"
+
+    const val TREX = "1.0.0"
+    const val FASTUTIL = "7.2.1"
 
     const val BLE_SCAN = "1.5.0"
     const val BLE = "2.3.0"
@@ -42,7 +43,7 @@ object Versions {
 
 object GradlePlugins {
     const val DETEKT = "1.18.1"
-    const val KTLINT = "10.1.0"
+    const val KTLINT = "10.2.0"
 }
 
 object Libs {
@@ -83,7 +84,9 @@ object Libs {
     const val DAGGER = "com.google.dagger:dagger:${Versions.DAGGER}"
     const val DAGGER_COMPILER = "com.google.dagger:dagger-compiler:${Versions.DAGGER}"
 
+    // Util
     const val TREX = "com.github.LionZXY.T-Rex-Android:trex-offline:${Versions.TREX}"
+    const val FASTUTIL = "it.unimi.dsi:fastutil:${Versions.FASTUTIL}"
 
     // BLE
     const val NORDIC_BLE_SCAN = "no.nordicsemi.android.support.v18:scanner:${Versions.BLE_SCAN}"
@@ -91,10 +94,13 @@ object Libs {
     const val NORDIC_BLE_KTX = "no.nordicsemi.android:ble-ktx:${Versions.BLE}"
     const val NORDIC_BLE_COMMON = "no.nordicsemi.android:ble-common:${Versions.BLE}"
 
+    // Images
     const val IMAGE_SLIDER = "com.github.smarteist:Android-Image-Slider:${Versions.IMAGE_SLIDER}"
     const val GLIDE = "com.github.bumptech.glide:glide:${Versions.GLIDE}"
 
+    // Protobuf
     const val PROTOBUF_JAVA = "com.google.protobuf:protobuf-java:${Versions.PROTOBUF}"
+    const val PROTOBUF_KOTLIN = "com.google.protobuf:protobuf-kotlin:${Versions.PROTOBUF}"
     const val PROTOBUF_PROTOC = "com.google.protobuf:protoc:${Versions.PROTOBUF}"
 }
 

@@ -17,8 +17,9 @@ object Constants {
         val SERVICE_UUID: UUID = UUID.fromString("0000180a-0000-1000-8000-00805f9b34fb")
 
         val MANUFACTURER: UUID = UUID.fromString("00002a29-0000-1000-8000-00805f9b34fb")
-        val HARDWARE_VERSION: UUID =
-            UUID.fromString("00002a26-0000-1000-8000-00805f9b34fb") // Example: f5, f6. Revision of hardware
+
+        // Example: f5, f6. Revision of hardware
+        val HARDWARE_VERSION: UUID = UUID.fromString("00002a26-0000-1000-8000-00805f9b34fb")
         val SOFTWARE_VERSION: UUID = UUID.fromString("00002a28-0000-1000-8000-00805f9b34fb")
     }
 
@@ -35,5 +36,6 @@ object Constants {
         val CONNECT_TIME_MS = TimeUnit.MILLISECONDS.convert(CONNECT_TIME_SEC, TimeUnit.SECONDS)
         const val RECONNECT_COUNT = 3
         const val RECONNECT_TIME_MS = 100L
+        const val MTU = 300
     }
 }

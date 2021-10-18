@@ -8,12 +8,6 @@ plugins {
 apply<com.flipperdevices.gradle.ConfigurationPlugin>()
 apply<com.flipperdevices.gradle.ComposerPlugin>()
 
-android {
-    testOptions {
-        unitTests.isIncludeAndroidResources = true
-    }
-}
-
 dependencies {
     // Core deps
     implementation(Libs.CORE_KTX)
@@ -26,6 +20,7 @@ dependencies {
     implementation(project(":components:core"))
     implementation(project(":components:bridge:provider"))
     implementation(project(":components:pair:api"))
+    implementation(project(":components:bridge:service"))
 
     implementation(Libs.COMPOSE_UI)
     implementation(Libs.COMPOSE_MATERIAL)

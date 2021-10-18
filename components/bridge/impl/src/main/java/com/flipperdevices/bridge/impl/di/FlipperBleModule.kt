@@ -1,4 +1,4 @@
-package com.flipperdevices.bridge.di
+package com.flipperdevices.bridge.impl.di
 
 import com.flipperdevices.bridge.api.pair.FlipperPairApi
 import com.flipperdevices.bridge.api.scanner.FlipperScanner
