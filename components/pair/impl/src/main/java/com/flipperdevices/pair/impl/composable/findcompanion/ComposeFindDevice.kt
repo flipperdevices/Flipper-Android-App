@@ -140,13 +140,19 @@ private fun ComposeProcessingConnectionState(connectionState: ConnectionState) {
             title = stringResource(R.string.pair_companion_title_connecting),
             description = stringResource(R.string.pair_companion_desc_initializing)
         ) {
-            ComposeLottiePic(picResId = R.raw.ic_connecting)
+            ComposeLottiePic(
+                picResId = R.raw.ic_connecting,
+                rollBackPicResId = R.drawable.ic_connecting_frame1
+            )
         }
         ConnectionState.Initializing -> ComposePairScreen(
             title = stringResource(R.string.pair_companion_title_connecting),
             description = stringResource(R.string.pair_companion_desc_initializing)
         ) {
-            ComposeLottiePic(picResId = R.raw.ic_connecting)
+            ComposeLottiePic(
+                picResId = R.raw.ic_connecting,
+                rollBackPicResId = R.drawable.ic_connecting_frame1
+            )
         }
         ConnectionState.Ready -> ComposePairScreen(
             title = stringResource(R.string.pair_companion_title_connecting),
@@ -184,21 +190,31 @@ private fun ComposePairPic(
 @Composable
 private fun ComposeLottiePic(
     @RawRes picResId: Int,
-    @DrawableRes rollBackPicResId: Int = 0 // TODO add rollbackPic
+    @DrawableRes rollBackPicResId: Int
 ) {
-    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(picResId))
-    val progress by animateLottieCompositionAsState(
+    val compositionResult = rememberLottieComposition(LottieCompositionSpec.RawRes(picResId))
+    val composition by compositionResult
+    val animateState = animateLottieCompositionAsState(
         composition,
         iterations = LottieConstants.IterateForever
     )
+    val progress by animateState
 
     Box {
-        LottieAnimation(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colors.background),
-            composition = composition,
-            progress = progress
-        )
+        if (compositionResult.isLoading) {
+            Image(
+                modifier = Modifier.fillMaxSize(),
+                painter = painterResource(rollBackPicResId),
+                contentDescription = null
+            )
+        } else {
+            LottieAnimation(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colors.background),
+                composition = composition,
+                progress = progress
+            )
+        }
     }
 }
