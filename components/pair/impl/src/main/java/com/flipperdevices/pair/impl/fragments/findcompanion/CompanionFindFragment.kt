@@ -24,8 +24,8 @@ import com.flipperdevices.core.utils.preference.FlipperSharedPreferences
 import com.flipperdevices.core.utils.preference.FlipperSharedPreferencesKey
 import com.flipperdevices.core.view.ComposeFragment
 import com.flipperdevices.pair.impl.R
+import com.flipperdevices.pair.impl.composable.findcompanion.ComposeFindDevice
 import com.flipperdevices.pair.impl.di.PairComponent
-import com.flipperdevices.pair.impl.findcompanion.compose.ComposeFindDevice
 import com.flipperdevices.pair.impl.findstandart.service.PairDeviceViewModel
 import com.flipperdevices.pair.impl.fragments.common.BluetoothEnableHelper
 import com.flipperdevices.pair.impl.navigation.machine.PairScreenStateDispatcher

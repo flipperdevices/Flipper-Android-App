@@ -37,6 +37,7 @@ object Versions {
 
     const val IMAGE_SLIDER = "1.4.0"
     const val GLIDE = "4.12.0"
+    const val LOTTIE = "4.2.0"
 
     const val PROTOBUF = "3.18.1"
 }
@@ -97,6 +98,7 @@ object Libs {
     // Images
     const val IMAGE_SLIDER = "com.github.smarteist:Android-Image-Slider:${Versions.IMAGE_SLIDER}"
     const val GLIDE = "com.github.bumptech.glide:glide:${Versions.GLIDE}"
+    const val LOTTIE = "com.airbnb.android:lottie-compose:${Versions.LOTTIE}"
 
     // Protobuf
     const val PROTOBUF_JAVA = "com.google.protobuf:protobuf-java:${Versions.PROTOBUF}"
