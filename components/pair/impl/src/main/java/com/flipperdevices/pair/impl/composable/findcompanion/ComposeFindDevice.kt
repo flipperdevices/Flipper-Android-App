@@ -82,7 +82,10 @@ private fun ComposeBottomBar(
             onPressListener = onClickBackButton
         )
 
-        IconButton(onClick = onClickRefreshButton) {
+        IconButton(
+            modifier = Modifier.padding(horizontal = 16.dp),
+            onClick = onClickRefreshButton
+        ) {
             Icon(
                 painter = painterResource(
                     if (pairingState is PairingState.Failed) {
