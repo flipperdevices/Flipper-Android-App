@@ -59,6 +59,7 @@ fun ComposePairScreen(
     showBackground = true
 )
 @Composable
+@Suppress("UnusedPrivateMember")
 private fun PreviewComposePairScreen() {
     ComposePairScreen(
         title = "Test Title",
