@@ -6,8 +6,10 @@ on:
       - 'ci/firebase'
 
 jobs:
-  publish_release_firebase:
+  build_internal_release:
     runs-on: ubuntu-latest
+    outputs:
+      aabfile: ${{ steps.sign_release.outputs.signedReleaseFile }}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -28,10 +30,14 @@ jobs:
           alias: ${{ secrets.KEY_ALIAS_TEST }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD_TEST }}
           keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD_TEST }}
+  publish_to_firebase:
+    runs-on: ubuntu-latest
+    needs: build_internal_release
+    steps:
       - name: Upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
-          appId: ${{secrets.FIREBASE_APP_ID}}
-          token: ${{secrets.FIREBASE_TOKEN}}
+          appId: ${{ secrets.FIREBASE_APP_ID }}
+          token: ${{ secrets.FIREBASE_TOKEN }}
           groups: testers
-          file: ${{ steps.sign_release.outputs.signedReleaseFile }}
+          file: ${{ needs.job1.outputs.aabfile }}
