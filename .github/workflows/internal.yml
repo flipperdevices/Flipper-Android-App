@@ -28,28 +28,3 @@ jobs:
           alias: ${{ secrets.KEY_ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD }}
-      - uses: actions/upload-artifact@v2
-        name: Publish APK in releases
-        with:
-          name: Flipper-App
-          path: ${{ steps.sign_internal_release.outputs.signedReleaseFile }}
-      - name: Create internal Release
-        id: create_internal_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-        with:
-          tag_name: 0.1.${{ github.run_number }}
-          release_name: Flipper App 0.1.${{ github.run_number }}
-          draft: false
-          prerelease: true
-      - name: Upload Internal Release Asset
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_internal_release.outputs.upload_url }}
-          asset_path: ${{ steps.sign_internal_release.outputs.signedReleaseFile }}
-          asset_name: FlipperApp-0.1.${{ github.run_number }}.apk
-          asset_content_type: application/zip

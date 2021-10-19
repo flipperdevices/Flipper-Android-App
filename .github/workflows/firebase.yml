@@ -70,7 +70,7 @@ jobs:
           groups: testers
           file: ${{steps.download.outputs.download-path}}/app-internal.aab
   upload_to_playstore:
-    name: Upload to Firebase App Distribution
+    name: Upload to Play Store
     runs-on: ubuntu-latest
     needs: build_internal_release
     steps:
@@ -90,3 +90,37 @@ jobs:
           releaseFiles: ${{steps.download_aab.outputs.download-path}}/app-internal.aab
           track: beta
           mappingFile: ${{steps.download_mapping.outputs.download-path}}/mapping.txt
+  upload_to_github:
+    name: Upload to Github Releases
+    runs-on: ubuntu-latest
+    needs: build_internal_release
+    steps:
+      - uses: actions/download-artifact@v2
+        id: download_apk
+        with:
+          name: artifact_apk
+      - uses: actions/download-artifact@v2
+        id: download_mapping
+        with:
+          name: mapping
+      - run: ls ${{steps.download_mapping.download_apk.download-path}}
+      - name: Create internal Release
+        id: create_internal_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: 0.1.${{ github.run_number }}
+          release_name: Flipper App 0.1.${{ github.run_number }}
+          draft: false
+          prerelease: true
+      - name: Upload Internal Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_internal_release.outputs.upload_url }}
+          asset_path: ${{steps.download_mapping.download_apk.download-path}}/app-internal-unsigned.apk # Signed
+          asset_name: FlipperApp-0.1.${{ github.run_number }}.apk
+          asset_content_type: application/zip
