@@ -1,0 +1,35 @@
+name: firebase
+
+on:
+  push:
+    branches:
+      - 'ci/firebase'
+
+jobs:
+  publish_release_firebase:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 1.11
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+      - name: Build release
+        run: ./gradlew assembleRelease bundleRelease -Dversion_code=${{ github.run_number }} -Dversion_name="0.1.${{ github.run_number }}"
+      - name: Sign release
+        id: sign_release
+        uses: r0adkll/sign-android-release@v1
+        with:
+          releaseDirectory: instances/app/build/outputs/bundle/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY_TEST }}
+          alias: ${{ secrets.KEY_ALIAS_TEST }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD_TEST }}
+          keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD_TEST }}
+      - name: Upload artifact to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{secrets.FIREBASE_APP_ID}}
+          token: ${{secrets.FIREBASE_TOKEN}}
+          groups: testers
+          file: ${{ steps.sign_play_store_release.outputs.signedReleaseFile }}
