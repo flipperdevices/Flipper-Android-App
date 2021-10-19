@@ -103,7 +103,6 @@ jobs:
         id: download_mapping
         with:
           name: mapping
-      - run: ls ${{steps.download_mapping.download_apk.download-path}}
       - name: Create internal Release
         id: create_internal_release
         uses: actions/create-release@v1
@@ -121,6 +120,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_internal_release.outputs.upload_url }}
-          asset_path: ${{steps.download_mapping.download_apk.download-path}}/app-internal-unsigned.apk # Signed
+          asset_path: ${{steps.download_mapping.download_apk.download-path}}/app-internal-unsigned-signed.apk
           asset_name: FlipperApp-0.1.${{ github.run_number }}.apk
           asset_content_type: application/zip
