@@ -29,6 +29,11 @@ jobs:
           alias: ${{ secrets.KEY_ALIAS_TEST }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD_TEST }}
           keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD_TEST }}
+      - name: Upload AAB
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifact_aab
+          path: ${{ steps.sign_aab.outputs.signedReleaseFile }}
       - name: Sign APK
         id: sign_apk
         uses: r0adkll/sign-android-release@v1
@@ -38,13 +43,16 @@ jobs:
           alias: ${{ secrets.KEY_ALIAS_TEST }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD_TEST }}
           keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD_TEST }}
-      - uses: actions/upload-artifact@v2
+      - name: Upload APK
+        uses: actions/upload-artifact@v2
         with:
-          name: artifacts
-          path: |
-            ${{ steps.sign_aab.outputs.signedReleaseFile }}
-            ${{ steps.sign_apk.outputs.signedReleaseFile }}
-            instances/app/build/outputs/mapping/internal/mapping.txt
+          name: artifact_apk
+          path: ${{ steps.sign_apk.outputs.signedReleaseFile }}
+      - name: Upload mapping file
+        uses: actions/upload-artifact@v2
+        with:
+          name: mapping
+          path: instances/app/build/outputs/mapping/internal/mapping.txt
   upload_to_firebase:
     name: Upload to Firebase App Distribution
     runs-on: ubuntu-latest
@@ -53,14 +61,13 @@ jobs:
       - uses: actions/download-artifact@v2
         id: download
         with:
-          name: artifacts
+          name: artifact_aab
       - run: echo ${{steps.download.outputs.download-path}}
       - run: ls ${{steps.download.outputs.download-path}}
-      - run: ls ${{steps.download.outputs.download-path}}/bundle
       - name: Upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
           appId: ${{ secrets.FIREBASE_APP_ID }}
           token: ${{ secrets.FIREBASE_TOKEN }}
           groups: testers
-          file: ${{steps.download.outputs.download-path}}/bundle/app-internal.aab
+          file: ${{steps.download.outputs.download-path}}/app-internal.aab
