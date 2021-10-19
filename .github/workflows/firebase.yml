@@ -34,4 +34,4 @@ jobs:
           appId: ${{secrets.FIREBASE_APP_ID}}
           token: ${{secrets.FIREBASE_TOKEN}}
           groups: testers
-          file: ${{ steps.sign_play_store_release.outputs.signedReleaseFile }}
+          file: ${{ steps.sign_release.outputs.signedReleaseFile }}
