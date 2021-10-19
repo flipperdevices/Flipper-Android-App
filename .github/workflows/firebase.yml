@@ -105,21 +105,14 @@ jobs:
           name: mapping
       - name: Create internal Release
         id: create_internal_release
-        uses: actions/create-release@v1
+        uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          files: |
+            ${{steps.download_apk.outputs.download-path}}/app-internal-unsigned-signed.apk
+            ${{steps.download_mapping.outputs.download-path}}/mapping.txt
           tag_name: 0.1.${{ github.run_number }}
-          release_name: Flipper App 0.1.${{ github.run_number }}
+          name: Flipper App 0.1.${{ github.run_number }}
           draft: false
           prerelease: true
-      - name: Upload Internal Release Asset
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_internal_release.outputs.upload_url }}
-          asset_path: ${{steps.download_mapping.download_apk.download-path}}/app-internal-unsigned-signed.apk
-          asset_name: FlipperApp-0.1.${{ github.run_number }}.apk
-          asset_content_type: application/zip
