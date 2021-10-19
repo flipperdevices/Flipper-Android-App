@@ -23,7 +23,7 @@ jobs:
         id: sign_release
         uses: r0adkll/sign-android-release@v1
         with:
-          releaseDirectory: instances/app/build/outputs/bundle/release
+          releaseDirectory: instances/app/build/outputs/bundle/internal
           signingKeyBase64: ${{ secrets.SIGNING_KEY_TEST }}
           alias: ${{ secrets.KEY_ALIAS_TEST }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD_TEST }}
