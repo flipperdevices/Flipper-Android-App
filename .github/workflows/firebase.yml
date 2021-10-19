@@ -18,9 +18,9 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
       - name: Build release
-        run: ./gradlew bundleInternal -Dversion_code=${{ github.run_number }} -Dversion_name="0.1.${{ github.run_number }}"
-      - name: Sign release
-        id: sign_release
+        run: ./gradlew :instances:app:assembleInternal :instances:app:bundleInternal -Dversion_code=${{ github.run_number }} -Dversion_name="0.1.${{ github.run_number }}"
+      - name: Sign AAB
+        id: sign_aab
         uses: r0adkll/sign-android-release@v1
         with:
           releaseDirectory: instances/app/build/outputs/bundle/internal
@@ -30,8 +30,21 @@ jobs:
           keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD_TEST }}
       - uses: actions/upload-artifact@v2
         with:
-          name: aabfile
-          path: ${{ steps.sign_release.outputs.signedReleaseFile0 }}
+          name: aab_file
+          path: ${{ steps.sign_aab.outputs.signedReleaseFile }}
+      - name: Sign APK
+        id: sign_apk
+        uses: r0adkll/sign-android-release@v1
+        with:
+          releaseDirectory: instances/app/build/outputs/apk/internal
+          signingKeyBase64: ${{ secrets.SIGNING_KEY_TEST }}
+          alias: ${{ secrets.KEY_ALIAS_TEST }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD_TEST }}
+          keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD_TEST }}
+      - uses: actions/upload-artifact@v2
+        with:
+          name: apk_file
+          path: ${{ steps.sign_apk.outputs.signedReleaseFile }}
       - uses: actions/upload-artifact@v2
         with:
           name: mapping
@@ -43,13 +56,12 @@ jobs:
       - uses: actions/download-artifact@v2
         id: download
         with:
-          name: aabfile
-      - run: echo ${{steps.download.outputs.download-path}}
-      - run: ls ${{steps.download.outputs.download-path}}
+          name: aab_file
+          path: /inputs/flipper-zero.aab
       - name: Upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
           appId: ${{ secrets.FIREBASE_APP_ID }}
           token: ${{ secrets.FIREBASE_TOKEN }}
           groups: testers
-          file: ${{steps.download.outputs.download-path}}
+          file: /inputs/flipper-zero.aab
