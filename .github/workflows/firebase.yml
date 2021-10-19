@@ -56,6 +56,7 @@ jobs:
           name: artifacts
       - run: echo ${{steps.download.outputs.download-path}}
       - run: ls ${{steps.download.outputs.download-path}}
+      - run: ls ${{steps.download.outputs.download-path}}/bundle
       - name: Upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
