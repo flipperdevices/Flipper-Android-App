@@ -18,7 +18,7 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
       - name: Build release
-        run: ./gradlew assembleRelease bundleRelease -Dversion_code=${{ github.run_number }} -Dversion_name="0.1.${{ github.run_number }}"
+        run: ./gradlew bundleInternal -Dversion_code=${{ github.run_number }} -Dversion_name="0.1.${{ github.run_number }}"
       - name: Sign release
         id: sign_release
         uses: r0adkll/sign-android-release@v1
