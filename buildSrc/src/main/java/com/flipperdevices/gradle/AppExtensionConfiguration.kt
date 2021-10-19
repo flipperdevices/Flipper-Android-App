@@ -32,7 +32,6 @@ private fun AppExtension.configureBuildTypes() {
         }
         container.maybeCreate("internal").apply {
             buildConfigField("boolean", "INTERNAL", "true")
-            applicationIdSuffix = ".internal"
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
