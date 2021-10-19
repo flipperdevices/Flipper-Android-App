@@ -62,8 +62,6 @@ jobs:
         id: download
         with:
           name: artifact_aab
-      - run: echo ${{steps.download.outputs.download-path}}
-      - run: ls ${{steps.download.outputs.download-path}}
       - name: Upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
@@ -71,3 +69,24 @@ jobs:
           token: ${{ secrets.FIREBASE_TOKEN }}
           groups: testers
           file: ${{steps.download.outputs.download-path}}/app-internal.aab
+  upload_to_playstore:
+    name: Upload to Firebase App Distribution
+    runs-on: ubuntu-latest
+    needs: build_internal_release
+    steps:
+      - uses: actions/download-artifact@v2
+        id: download_aab
+        with:
+          name: artifact_aab
+      - uses: actions/download-artifact@v2
+        id: download_mapping
+        with:
+          name: mapping
+      - name: Upload to Play Store
+        uses: r0adkll/upload-google-play@v1.0.15
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_PUBLISHER_JSON }}
+          packageName: com.flipperdevices.app
+          releaseFiles: ${{steps.download_aab.outputs.download-path}}/app-internal.aab
+          track: beta
+          mappingFile: ${{steps.download_mapping.outputs.download-path}}/mapping.txt
