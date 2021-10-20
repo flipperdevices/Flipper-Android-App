@@ -25,10 +25,10 @@ jobs:
         uses: r0adkll/sign-android-release@v1
         with:
           releaseDirectory: instances/app/build/outputs/bundle/internal
-          signingKeyBase64: ${{ secrets.SIGNING_KEY_TEST }}
-          alias: ${{ secrets.KEY_ALIAS_TEST }}
-          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD_TEST }}
-          keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD_TEST }}
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD }}
       - name: Upload AAB
         uses: actions/upload-artifact@v2
         with:
@@ -39,10 +39,10 @@ jobs:
         uses: r0adkll/sign-android-release@v1
         with:
           releaseDirectory: instances/app/build/outputs/apk/internal
-          signingKeyBase64: ${{ secrets.SIGNING_KEY_TEST }}
-          alias: ${{ secrets.KEY_ALIAS_TEST }}
-          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD_TEST }}
-          keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD_TEST }}
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD }}
       - name: Upload APK
         uses: actions/upload-artifact@v2
         with:
