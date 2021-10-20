@@ -47,12 +47,12 @@ jobs:
           keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD }}
       - name: Copy artifacts
         id: artifacts_copy
-        working-directory: artifacts
         run: |
-          cp ${{ steps.sign_aab.outputs.signedReleaseFile }} flipper-zero.aab
-          cp ${{ steps.sign_apk.outputs.signedReleaseFile }} flipper-zero.apk
-          cp instances/app/build/outputs/mapping/internal/mapping.txt mapping.txt
-          echo "::set-output name=path::${pwd}"
+          mkdir ${{defaults.run.working-directory}}/artifacts/
+          cp ${{ steps.sign_aab.outputs.signedReleaseFile }} ${{defaults.run.working-directory}}/artifacts/flipper-zero.aab
+          cp ${{ steps.sign_apk.outputs.signedReleaseFile }} ${{defaults.run.working-directory}}/artifacts/flipper-zero.apk
+          cp instances/app/build/outputs/mapping/internal/mapping.txt ${{defaults.run.working-directory}}/artifacts/mapping.txt
+          echo "::set-output name=path::${{defaults.run.working-directory}}/artifacts/"
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
