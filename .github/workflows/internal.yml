@@ -3,7 +3,7 @@ name: internal
 on:
   push:
     branches:
-      - 'ci/firebase'
+      - 'dev'
 
 env:
   VERSION: 0.2
