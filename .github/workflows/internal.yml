@@ -48,6 +48,7 @@ jobs:
       - name: Copy artifacts
         id: artifacts_copy
         run: |
+          mkdir /artifacts/
           cp ${{ steps.sign_aab.outputs.signedReleaseFile }} /artifacts/flipper-zero.aab
           cp ${{ steps.sign_apk.outputs.signedReleaseFile }} /artifacts/flipper-zero.apk
           cp instances/app/build/outputs/mapping/internal/mapping.txt /artifacts/mapping.txt
