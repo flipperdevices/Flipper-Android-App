@@ -1,5 +1,6 @@
 package com.flipperdevices.pair.impl.fragments.findcompanion
 
+import android.Manifest
 import android.app.Activity
 import android.bluetooth.BluetoothDevice
 import android.companion.AssociationRequest
@@ -62,8 +63,29 @@ class CompanionFindFragment : ComposeFragment() {
             )
             return@registerForActivityResult
         }
-        pairDeviceViewModel.startConnectToDevice(deviceToPair) {
-            onDeviceReady(deviceToPair)
+
+        pairDeviceViewModel.onDeviceFounded(deviceToPair)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            requestConnectPermissionResult.launch(Manifest.permission.BLUETOOTH_CONNECT)
+        } else {
+            pairDeviceViewModel.startConnectToDevice {
+                onDeviceReady(it)
+            }
+        }
+    }
+
+    private val requestConnectPermissionResult = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { permissionGranted ->
+        if (!permissionGranted) {
+            pairDeviceViewModel.onFailedCompanionFinding(
+                getString(R.string.pair_companion_error_permission)
+            )
+            return@registerForActivityResult
+        }
+        pairDeviceViewModel.startConnectToDevice {
+            onDeviceReady(it)
         }
     }
 
