@@ -4,6 +4,7 @@
     <application>
         <activity
                 android:launchMode="singleTop"
+                android:exported="false"
                 android:name="com.flipperdevices.bottombar.main.BottomNavigationActivity" />
     </application>
 </manifest>
