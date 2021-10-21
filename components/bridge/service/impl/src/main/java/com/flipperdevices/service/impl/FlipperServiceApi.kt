@@ -1,4 +1,4 @@
-package com.flipperdevices.service
+package com.flipperdevices.service.impl
 
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 
@@ -30,5 +30,8 @@ interface FlipperServiceApi {
 }
 
 interface FlipperBleServiceConsumer {
+    /**
+     * Can be call twice or more
+     */
     fun onServiceApiReady(serviceApi: FlipperServiceApi)
 }

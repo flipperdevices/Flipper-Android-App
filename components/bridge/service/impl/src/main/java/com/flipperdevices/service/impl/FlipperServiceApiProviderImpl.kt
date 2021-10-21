@@ -1,4 +1,4 @@
-package com.flipperdevices.service
+package com.flipperdevices.service.impl
 
 import android.content.ComponentName
 import android.content.Context
@@ -55,21 +55,37 @@ class FlipperServiceApiProviderImpl(
             Intent(context, FlipperService::class.java), this,
             BIND_AUTO_CREATE or BIND_IMPORTANT
         )
+        isRequestedForBind = true
     }
 
-    override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-        TODO("Not yet implemented")
+    override fun onServiceConnected(name: ComponentName, service: IBinder) {
+        val flipperServiceBinder = service as FlipperServiceBinder
+        serviceBinder = flipperServiceBinder
+        isRequestedForBind = false
+        invalidate()
+        serviceConsumers.forEach {
+            it.get()?.onServiceApiReady(flipperServiceBinder.serviceApi)
+        }
     }
 
     override fun onServiceDisconnected(name: ComponentName?) {
-        TODO("Not yet implemented")
+        resetInternal()
     }
 
     override fun onBindingDied(name: ComponentName?) {
         super.onBindingDied(name)
+        resetInternal()
     }
 
     override fun onNullBinding(name: ComponentName?) {
         super.onNullBinding(name)
+        resetInternal()
+    }
+
+    @Synchronized
+    private fun resetInternal() {
+        serviceBinder = null
+        isRequestedForBind = false
+        invalidate()
     }
 }

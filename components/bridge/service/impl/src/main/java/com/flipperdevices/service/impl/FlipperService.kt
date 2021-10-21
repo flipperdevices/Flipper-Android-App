@@ -1,4 +1,4 @@
-package com.flipperdevices.service
+package com.flipperdevices.service.impl
 
 import android.app.Service
 import android.content.Intent

@@ -2,7 +2,7 @@ rootProject.name = "Flipper App"
 include(":components:bridge:api")
 include(":components:bridge:impl")
 include(":components:bridge:provider")
-include(":components:bridge:service")
+include(":components:bridge:service:impl")
 include(":components:bridge:protobuf")
 include(":components:filemanager:api")
 include(":components:filemanager:impl")
