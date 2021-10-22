@@ -34,7 +34,6 @@ private fun LibraryExtension.configureBuildTypes() {
                 "proguard-rules.pro"
             )
             consumerProguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
@@ -46,7 +45,6 @@ private fun LibraryExtension.configureBuildTypes() {
                 "proguard-rules.pro"
             )
             consumerProguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
