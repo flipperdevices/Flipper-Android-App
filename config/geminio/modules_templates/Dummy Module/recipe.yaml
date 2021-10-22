@@ -1,0 +1,26 @@
+requiredParams:
+  name: Flipper Dummy Module
+  description: Creates empty Gradle-module for general purposes
+
+widgets:
+  - booleanParameter:
+      id: needCompose
+      name: Add Compose dependencies?
+      help: Adds compose gradle plugin and compose deps
+      default: false
+
+recipe:
+  - mkDirs:
+      - ${srcOut}
+
+  - instantiate:
+      from: root/gitignore.ftl
+      to: ${rootOut}/.gitignore
+
+  - instantiate:
+      from: root/build.gradle.kts.ftl
+      to: ${rootOut}/build.gradle.kts
+
+  - instantiate:
+      from: root/src/main/AndroidManifest.xml.ftl
+      to: ${manifestOut}/AndroidManifest.xml
