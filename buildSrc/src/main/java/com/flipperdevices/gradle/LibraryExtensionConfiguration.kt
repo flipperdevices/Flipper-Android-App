@@ -33,11 +33,19 @@ private fun LibraryExtension.configureBuildTypes() {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            consumerProguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
         container.maybeCreate("release").apply {
             buildConfigField("boolean", "INTERNAL", "false")
             isMinifyEnabled = true
             proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+            consumerProguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
@@ -53,4 +61,3 @@ private fun LibraryExtension.configureCompileOptions() {
     compileOptions.sourceCompatibility = JavaVersion.VERSION_1_8
     compileOptions.targetCompatibility = JavaVersion.VERSION_1_8
 }
-
