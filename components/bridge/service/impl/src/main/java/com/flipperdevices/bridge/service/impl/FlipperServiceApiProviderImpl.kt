@@ -1,4 +1,4 @@
-package com.flipperdevices.service.impl
+package com.flipperdevices.bridge.service.impl
 
 import android.content.ComponentName
 import android.content.Context
@@ -7,10 +7,12 @@ import android.content.Context.BIND_IMPORTANT
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
+import com.flipperdevices.bridge.service.api.FlipperBleServiceConsumer
+import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import java.lang.ref.WeakReference
 
 class FlipperServiceApiProviderImpl(
-    private val context: Context
+    private val applicationContext: Context
 ) : FlipperServiceApi.Provider, ServiceConnection {
     private var serviceBinder: FlipperServiceBinder? = null
     private var isRequestedForBind: Boolean = false
@@ -37,7 +39,7 @@ class FlipperServiceApiProviderImpl(
         if (serviceConsumers.isEmpty()) {
             serviceBinder?.closeService()
             serviceBinder = null
-            context.unbindService(this)
+            applicationContext.unbindService(this)
             return
         }
 
@@ -51,8 +53,8 @@ class FlipperServiceApiProviderImpl(
             return
         }
 
-        context.bindService(
-            Intent(context, FlipperService::class.java), this,
+        applicationContext.bindService(
+            Intent(applicationContext, FlipperService::class.java), this,
             BIND_AUTO_CREATE or BIND_IMPORTANT
         )
         isRequestedForBind = true

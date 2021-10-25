@@ -8,6 +8,7 @@ dependencies {
     implementation(project(":components:core"))
     implementation(project(":components:bridge:provider"))
     implementation(project(":components:bridge:protobuf"))
+    implementation(project(":components:bridge:service:api"))
 
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.KOTLIN_COROUTINES)

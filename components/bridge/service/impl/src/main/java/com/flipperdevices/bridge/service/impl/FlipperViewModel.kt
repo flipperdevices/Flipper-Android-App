@@ -1,4 +1,4 @@
-package com.flipperdevices.service.impl
+package com.flipperdevices.bridge.service.impl
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -7,7 +7,6 @@ import com.flipperdevices.bridge.api.manager.FlipperBleManager
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperGATTInformation
 import com.flipperdevices.bridge.provider.FlipperApi
-import com.flipperdevices.bridge.service.R
 import com.flipperdevices.core.utils.toast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.TimeoutCancellationException

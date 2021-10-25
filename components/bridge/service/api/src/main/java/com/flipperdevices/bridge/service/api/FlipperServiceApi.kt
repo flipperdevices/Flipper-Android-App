@@ -1,4 +1,4 @@
-package com.flipperdevices.service.impl
+package com.flipperdevices.bridge.service.api
 
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 
