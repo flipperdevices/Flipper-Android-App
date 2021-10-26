@@ -1,4 +1,4 @@
-package com.flipperdevices.bridge.service.impl
+package com.flipperdevices.bridge.service.impl.provider
 
 import android.content.ComponentName
 import android.content.Context
@@ -7,8 +7,11 @@ import android.content.Context.BIND_IMPORTANT
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
-import com.flipperdevices.bridge.service.api.FlipperBleServiceConsumer
-import com.flipperdevices.bridge.service.api.FlipperServiceApi
+import androidx.lifecycle.Lifecycle
+import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
+import com.flipperdevices.bridge.service.api.provider.FlipperServiceApiProvider
+import com.flipperdevices.bridge.service.impl.FlipperService
+import com.flipperdevices.bridge.service.impl.FlipperServiceBinder
 import com.flipperdevices.core.di.AppGraph
 import com.squareup.anvil.annotations.ContributesBinding
 import java.lang.ref.WeakReference
@@ -16,25 +19,24 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-@ContributesBinding(AppGraph::class, FlipperServiceApi.Provider::class)
+@ContributesBinding(AppGraph::class, FlipperServiceApiProvider::class)
 class FlipperServiceApiProviderImpl @Inject constructor(
     private val applicationContext: Context
-) : FlipperServiceApi.Provider, ServiceConnection {
+) : FlipperServiceApiProvider, ServiceConnection {
     private var serviceBinder: FlipperServiceBinder? = null
     private var isRequestedForBind: Boolean = false
     private val serviceConsumers = mutableListOf<WeakReference<FlipperBleServiceConsumer>>()
 
     @Synchronized
-    override fun provideServiceApi(consumer: FlipperBleServiceConsumer) {
+    override fun provideServiceApi(
+        consumer: FlipperBleServiceConsumer,
+        onDestroyEvent: Lifecycle.Event
+    ) {
         serviceConsumers.add(WeakReference(consumer))
+        consumer.subscribeOnFirst(onDestroyEvent) { disconnectInternal(consumer) }
+
         invalidate()
         serviceBinder?.let { consumer.onServiceApiReady(it.serviceApi) }
-    }
-
-    @Synchronized
-    override fun disconnect(consumer: FlipperBleServiceConsumer) {
-        serviceConsumers.removeAll { it.get() == consumer }
-        invalidate()
     }
 
     @Synchronized
@@ -62,6 +64,11 @@ class FlipperServiceApiProviderImpl @Inject constructor(
             BIND_AUTO_CREATE or BIND_IMPORTANT
         )
         isRequestedForBind = true
+    }
+
+    private fun disconnectInternal(consumer: FlipperBleServiceConsumer) {
+        serviceConsumers.removeAll { it.get() == consumer }
+        invalidate()
     }
 
     override fun onServiceConnected(name: ComponentName, service: IBinder) {

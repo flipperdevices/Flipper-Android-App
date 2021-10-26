@@ -19,6 +19,7 @@ dependencies {
     implementation(Libs.LIFECYCLE_RUNTIME_KTX)
     implementation(Libs.LIFECYCLE_VIEWMODEL_KTX)
     implementation(Libs.LIFECYCLE_SERVICE)
+    kapt(Libs.LIFECYCLE_KAPT)
 
     implementation(Libs.NORDIC_BLE)
     implementation(Libs.NORDIC_BLE_KTX)
