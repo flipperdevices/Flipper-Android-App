@@ -8,4 +8,9 @@ interface FlipperBleServiceConsumer : LifecycleOwner {
      * Can be call twice or more
      */
     fun onServiceApiReady(serviceApi: FlipperServiceApi)
+
+    /**
+     * Called if the service throws an error
+     */
+    fun onServiceBleError(error: FlipperBleServiceError) = Unit
 }

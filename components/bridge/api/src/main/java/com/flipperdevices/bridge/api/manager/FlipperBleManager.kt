@@ -10,6 +10,16 @@ interface FlipperBleManager : FlipperSerialApi {
     val flipperRequestApi: FlipperRequestApi
     fun getInformationStateFlow(): StateFlow<FlipperGATTInformation>
     fun getConnectionStateFlow(): StateFlow<ConnectionState>
-    fun connectToDevice(device: BluetoothDevice)
-    fun disconnectDevice()
+
+    /**
+     * Connect to device {@param device}
+     * Await while disconnect process is not finish
+     */
+    suspend fun connectToDevice(device: BluetoothDevice)
+
+    /**
+     * Disconnect from current device
+     * Await while disconnect process is not finish
+     */
+    suspend fun disconnectDevice()
 }

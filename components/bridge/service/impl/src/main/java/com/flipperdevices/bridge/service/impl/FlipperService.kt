@@ -3,14 +3,17 @@ package com.flipperdevices.bridge.service.impl
 import android.content.Intent
 import android.os.Binder
 import androidx.lifecycle.LifecycleService
-import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.impl.notification.FLIPPER_NOTIFICATION_ID
 import com.flipperdevices.bridge.service.impl.notification.FlipperNotificationHelper
+import com.flipperdevices.bridge.service.impl.provider.error.CompositeFlipperServiceErrorListener
+import com.flipperdevices.bridge.service.impl.provider.error.CompositeFlipperServiceErrorListenerImpl
 import timber.log.Timber
 
-class FlipperService : LifecycleService(), FlipperServiceApi {
-    private val binder = FlipperServiceBinder(this)
+class FlipperService : LifecycleService() {
+    private val listener = CompositeFlipperServiceErrorListenerImpl()
+    private val flipperService = FlipperServiceApiImpl(this, this, listener)
+    private val binder = FlipperServiceBinder(flipperService, listener)
     private lateinit var flipperNotification: FlipperNotificationHelper
 
     override fun onCreate() {
@@ -19,7 +22,11 @@ class FlipperService : LifecycleService(), FlipperServiceApi {
 
         flipperNotification = FlipperNotificationHelper(this)
         startForeground(FLIPPER_NOTIFICATION_ID, flipperNotification.show())
-        flipperNotification.showStopButton()
+        if (!BuildConfig.INTERNAL) {
+            flipperNotification.showStopButton()
+        }
+
+        flipperService.internalInit()
     }
 
     override fun onBind(intent: Intent): Binder {
@@ -28,7 +35,7 @@ class FlipperService : LifecycleService(), FlipperServiceApi {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Timber.i("FlipperService#onStartCommand")
+        Timber.d("Service receive command with action ${intent?.action}")
 
         if (intent?.action == ACTION_STOP) {
             stopSelfInternal()
@@ -39,16 +46,12 @@ class FlipperService : LifecycleService(), FlipperServiceApi {
 
     override fun onDestroy() {
         super.onDestroy()
-        Timber.i("FlipperService#onDestroy")
+        Timber.d("Destroy flipper service")
     }
 
     private fun stopSelfInternal() {
         stopForeground(true)
         stopSelf()
-    }
-
-    override fun getRequestApi(): FlipperRequestApi {
-        TODO("Not yet implemented")
     }
 
     companion object {
@@ -57,9 +60,6 @@ class FlipperService : LifecycleService(), FlipperServiceApi {
 }
 
 class FlipperServiceBinder(
-    val serviceApi: FlipperServiceApi
-) : Binder() {
-    fun closeService() {
-        Timber.i("FlipperService#closeService")
-    }
-}
+    val serviceApi: FlipperServiceApi,
+    compositeListener: CompositeFlipperServiceErrorListener
+) : Binder(), CompositeFlipperServiceErrorListener by compositeListener

@@ -8,24 +8,31 @@ import com.flipperdevices.bridge.api.manager.FlipperBleManager
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperGATTInformation
 import com.flipperdevices.bridge.api.utils.Constants
+import com.flipperdevices.core.utils.newSingleThreadExecutor
 import java.util.UUID
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import no.nordicsemi.android.ble.BleManager
 import no.nordicsemi.android.ble.ktx.state.ConnectionState
 import no.nordicsemi.android.ble.ktx.stateAsFlow
 import timber.log.Timber
 
+@Suppress("BlockingMethodInNonBlockingContext")
 class FlipperBleManagerImpl(
     context: Context,
     private val scope: CoroutineScope
 ) : BleManager(context), FlipperBleManager {
+    private val bleDispatcher = newSingleThreadExecutor("FlipperBleManagerImpl")
+        .asCoroutineDispatcher()
+
     private val informationState = MutableStateFlow(FlipperGATTInformation())
     private val receiveBytesFlow = MutableSharedFlow<ByteArray>()
     private val infoCharacteristics = mutableMapOf<UUID, BluetoothGattCharacteristic>()
@@ -36,7 +43,11 @@ class FlipperBleManagerImpl(
     override val isDeviceConnected = super.isConnected()
     override fun getInformationStateFlow(): StateFlow<FlipperGATTInformation> = informationState
     override fun getConnectionStateFlow(): StateFlow<ConnectionState> = stateAsFlow()
-    override fun disconnectDevice() = disconnect().enqueue()
+
+    override suspend fun disconnectDevice() = withContext(bleDispatcher) {
+        disconnect().await()
+    }
+
     override fun receiveBytesFlow(): Flow<ByteArray> {
         return receiveBytesFlow
     }
@@ -45,12 +56,12 @@ class FlipperBleManagerImpl(
         writeCharacteristic(serialTxCharacteristic, data).enqueue()
     }
 
-    override fun connectToDevice(device: BluetoothDevice) {
+    override suspend fun connectToDevice(device: BluetoothDevice) = withContext(bleDispatcher) {
         connect(device).retry(
             Constants.BLE.RECONNECT_COUNT,
             Constants.BLE.RECONNECT_TIME_MS.toInt()
         ).useAutoConnect(true)
-            .enqueue()
+            .await()
     }
 
     override fun log(priority: Int, message: String) {

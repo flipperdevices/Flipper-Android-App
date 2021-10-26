@@ -11,6 +11,7 @@ dependencies {
     implementation(project(":components:bridge:provider"))
     implementation(project(":components:bridge:protobuf"))
     implementation(project(":components:bridge:service:api"))
+    implementation(project(":components:bridge:impl"))
 
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.APPCOMPAT)

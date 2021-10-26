@@ -11,4 +11,6 @@ interface FlipperServiceApi {
      * Returns an API for communicating with Flipper via a request-response structure.
      */
     fun getRequestApi(): FlipperRequestApi
+
+    suspend fun reconnect(deviceId: String)
 }

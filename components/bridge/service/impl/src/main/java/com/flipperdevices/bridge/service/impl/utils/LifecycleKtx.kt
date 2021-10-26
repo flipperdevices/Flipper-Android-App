@@ -1,4 +1,4 @@
-package com.flipperdevices.bridge.service.impl.provider
+package com.flipperdevices.bridge.service.impl.utils
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver

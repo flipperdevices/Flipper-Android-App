@@ -9,9 +9,12 @@ import android.content.ServiceConnection
 import android.os.IBinder
 import androidx.lifecycle.Lifecycle
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
+import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceError
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceApiProvider
 import com.flipperdevices.bridge.service.impl.FlipperService
 import com.flipperdevices.bridge.service.impl.FlipperServiceBinder
+import com.flipperdevices.bridge.service.impl.provider.error.FlipperServiceErrorListener
+import com.flipperdevices.bridge.service.impl.utils.subscribeOnFirst
 import com.flipperdevices.core.di.AppGraph
 import com.squareup.anvil.annotations.ContributesBinding
 import java.lang.ref.WeakReference
@@ -22,8 +25,10 @@ import javax.inject.Singleton
 @ContributesBinding(AppGraph::class, FlipperServiceApiProvider::class)
 class FlipperServiceApiProviderImpl @Inject constructor(
     private val applicationContext: Context
-) : FlipperServiceApiProvider, ServiceConnection {
+) : FlipperServiceApiProvider, ServiceConnection, FlipperServiceErrorListener {
     private var serviceBinder: FlipperServiceBinder? = null
+
+    // true if we wait bind answer from android
     private var isRequestedForBind: Boolean = false
     private val serviceConsumers = mutableListOf<WeakReference<FlipperBleServiceConsumer>>()
 
@@ -74,6 +79,7 @@ class FlipperServiceApiProviderImpl @Inject constructor(
     override fun onServiceConnected(name: ComponentName, service: IBinder) {
         val flipperServiceBinder = service as FlipperServiceBinder
         serviceBinder = flipperServiceBinder
+        flipperServiceBinder.subscribe(this)
         isRequestedForBind = false
         invalidate()
         serviceConsumers.forEach {
@@ -97,7 +103,7 @@ class FlipperServiceApiProviderImpl @Inject constructor(
 
     @Synchronized
     private fun stopServiceInternal() {
-        serviceBinder?.closeService()
+        serviceBinder?.unsubscribe(this)
         serviceBinder = null
         applicationContext.unbindService(this)
         val stopIntent = Intent(applicationContext, FlipperService::class.java).apply {
@@ -108,8 +114,15 @@ class FlipperServiceApiProviderImpl @Inject constructor(
 
     @Synchronized
     private fun resetInternal() {
+        serviceBinder?.unsubscribe(this)
         serviceBinder = null
         isRequestedForBind = false
         invalidate()
+    }
+
+    override fun onError(error: FlipperBleServiceError) {
+        serviceConsumers.forEach {
+            it.get()?.onServiceBleError(error)
+        }
     }
 }
