@@ -1,1 +1,10 @@
-<manifest package="com.flipperdevices.bridge.service.impl" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        package="com.flipperdevices.bridge.service.impl">
+
+    <application>
+        <service
+                android:exported="false"
+                android:name=".FlipperService"
+                android:stopWithTask="false" />
+    </application>
+</manifest>

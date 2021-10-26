@@ -9,9 +9,15 @@ import android.content.ServiceConnection
 import android.os.IBinder
 import com.flipperdevices.bridge.service.api.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
+import com.flipperdevices.core.di.AppGraph
+import com.squareup.anvil.annotations.ContributesBinding
 import java.lang.ref.WeakReference
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class FlipperServiceApiProviderImpl(
+@Singleton
+@ContributesBinding(AppGraph::class, FlipperServiceApi.Provider::class)
+class FlipperServiceApiProviderImpl @Inject constructor(
     private val applicationContext: Context
 ) : FlipperServiceApi.Provider, ServiceConnection {
     private var serviceBinder: FlipperServiceBinder? = null

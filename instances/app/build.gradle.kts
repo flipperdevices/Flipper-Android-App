@@ -15,6 +15,8 @@ dependencies {
     implementation(project(":components:bottombar"))
     implementation(project(":components:filemanager:api"))
     implementation(project(":components:filemanager:impl"))
+    implementation(project(":components:bridge:service:api"))
+    implementation(project(":components:bridge:service:impl"))
 
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.CORE_KTX)
