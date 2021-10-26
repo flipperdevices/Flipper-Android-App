@@ -43,9 +43,7 @@ class FlipperServiceApiProviderImpl @Inject constructor(
         serviceConsumers.removeAll { it.get() == null }
         // If we not found any consumers, close ble connection and service
         if (serviceConsumers.isEmpty()) {
-            serviceBinder?.closeService()
-            serviceBinder = null
-            applicationContext.unbindService(this)
+            stopServiceInternal()
             return
         }
 
@@ -88,6 +86,17 @@ class FlipperServiceApiProviderImpl @Inject constructor(
     override fun onNullBinding(name: ComponentName?) {
         super.onNullBinding(name)
         resetInternal()
+    }
+
+    @Synchronized
+    private fun stopServiceInternal() {
+        serviceBinder?.closeService()
+        serviceBinder = null
+        applicationContext.unbindService(this)
+        val stopIntent = Intent(applicationContext, FlipperService::class.java).apply {
+            action = FlipperService.ACTION_STOP
+        }
+        applicationContext.startService(stopIntent)
     }
 
     @Synchronized

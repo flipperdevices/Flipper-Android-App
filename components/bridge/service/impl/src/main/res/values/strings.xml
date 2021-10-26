@@ -4,4 +4,10 @@
     <string name="info_pair_err_ble_disabled">Please, enable bluetooth and try again</string>
     <string name="info_pair_err_timeout">We could not find the device</string>
     <string name="info_pair_err_not_bounded">The device is not bounded! Please correct this by going through the binding process again.</string>
+
+    <string name="bridge_service_notification_title">Flipper connection</string>
+    <string name="bridge_service_notification_desc">We are now connected to Flipper Zero</string>
+    <string name="bridge_service_notification_action_disconnect">Disconnect</string>
+    <string name="bridge_service_notification_channel_name">Flipper synchronization</string>
+    <string name="bridge_service_notification_channel_desc">Under this channel, you will see notifications informing you of the current synchronization status</string>
 </resources>

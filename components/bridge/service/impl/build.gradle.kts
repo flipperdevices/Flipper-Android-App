@@ -13,9 +13,12 @@ dependencies {
     implementation(project(":components:bridge:service:api"))
 
     implementation(Libs.ANNOTATIONS)
+    implementation(Libs.APPCOMPAT)
+
     implementation(Libs.KOTLIN_COROUTINES)
     implementation(Libs.LIFECYCLE_RUNTIME_KTX)
     implementation(Libs.LIFECYCLE_VIEWMODEL_KTX)
+    implementation(Libs.LIFECYCLE_SERVICE)
 
     implementation(Libs.NORDIC_BLE)
     implementation(Libs.NORDIC_BLE_KTX)
