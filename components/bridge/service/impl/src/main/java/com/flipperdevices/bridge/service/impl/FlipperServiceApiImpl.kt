@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.flipperdevices.bridge.api.manager.FlipperBleManager
-import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.impl.manager.FlipperBleManagerImpl
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceError
@@ -31,12 +30,11 @@ class FlipperServiceApiImpl(
     private val bleManager: FlipperBleManager = FlipperBleManagerImpl(context, scope)
     private val connectDelegate = FlipperServiceConnectDelegate(bleManager, context)
 
+    override val connectionInformationApi = bleManager.connectionInformationApi
+    override val requestApi = bleManager.flipperRequestApi
+
     fun internalInit() {
         connectToDeviceOnStartup()
-    }
-
-    override fun getRequestApi(): FlipperRequestApi {
-        return bleManager.flipperRequestApi
     }
 
     override suspend fun reconnect(deviceId: String) {
@@ -44,7 +42,11 @@ class FlipperServiceApiImpl(
     }
 
     override suspend fun reconnect(device: BluetoothDevice) {
-        connectDelegate.reconnect()
+        connectDelegate.reconnect(device)
+    }
+
+    suspend fun disconnect() {
+        connectDelegate.disconnect()
     }
 
     private fun connectToDeviceOnStartup() = scope.launch {

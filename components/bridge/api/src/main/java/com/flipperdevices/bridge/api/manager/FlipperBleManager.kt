@@ -1,14 +1,12 @@
 package com.flipperdevices.bridge.api.manager
 
 import android.bluetooth.BluetoothDevice
+import com.flipperdevices.bridge.api.manager.delegates.FlipperConnectionInformationApi
 import com.flipperdevices.bridge.api.manager.service.FlipperInformationApi
-import kotlinx.coroutines.flow.StateFlow
-import no.nordicsemi.android.ble.ktx.state.ConnectionState
 
 interface FlipperBleManager : FlipperSerialApi {
-    val isDeviceConnected: Boolean
-
-    fun getConnectionStateFlow(): StateFlow<ConnectionState>
+    // Manager delegates
+    val connectionInformationApi: FlipperConnectionInformationApi
 
     // This section provide access to device apis
     val informationApi: FlipperInformationApi

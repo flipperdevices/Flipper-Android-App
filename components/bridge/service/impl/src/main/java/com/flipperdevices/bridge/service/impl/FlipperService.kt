@@ -3,17 +3,21 @@ package com.flipperdevices.bridge.service.impl
 import android.content.Intent
 import android.os.Binder
 import androidx.lifecycle.LifecycleService
+import androidx.lifecycle.lifecycleScope
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.impl.notification.FLIPPER_NOTIFICATION_ID
 import com.flipperdevices.bridge.service.impl.notification.FlipperNotificationHelper
 import com.flipperdevices.bridge.service.impl.provider.error.CompositeFlipperServiceErrorListener
 import com.flipperdevices.bridge.service.impl.provider.error.CompositeFlipperServiceErrorListenerImpl
+import java.util.concurrent.atomic.AtomicBoolean
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class FlipperService : LifecycleService() {
     private val listener = CompositeFlipperServiceErrorListenerImpl()
     private val flipperService = FlipperServiceApiImpl(this, this, listener)
     private val binder = FlipperServiceBinder(flipperService, listener)
+    private val stopped = AtomicBoolean(false)
     private lateinit var flipperNotification: FlipperNotificationHelper
 
     override fun onCreate() {
@@ -49,7 +53,12 @@ class FlipperService : LifecycleService() {
         Timber.d("Destroy flipper service")
     }
 
-    private fun stopSelfInternal() {
+    private fun stopSelfInternal() = lifecycleScope.launch {
+        if (!stopped.compareAndSet(false, true)) {
+            Timber.i("Service already stopped")
+            return@launch
+        }
+        flipperService.disconnect()
         stopForeground(true)
         stopSelf()
     }

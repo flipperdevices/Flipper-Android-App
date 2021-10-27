@@ -6,17 +6,15 @@ import android.bluetooth.BluetoothGattCharacteristic
 import android.content.Context
 import com.flipperdevices.bridge.api.manager.FlipperBleManager
 import com.flipperdevices.bridge.api.utils.Constants
+import com.flipperdevices.bridge.impl.manager.delegates.FlipperConnectionInformationApiImpl
 import com.flipperdevices.bridge.impl.manager.service.FlipperInformationApiImpl
 import com.flipperdevices.core.utils.newSingleThreadExecutor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import no.nordicsemi.android.ble.ktx.state.ConnectionState
-import no.nordicsemi.android.ble.ktx.stateAsFlow
 import timber.log.Timber
 
 @Suppress("BlockingMethodInNonBlockingContext")
@@ -31,12 +29,12 @@ class FlipperBleManagerImpl(
     override val informationApi = FlipperInformationApiImpl()
     override val flipperRequestApi = FlipperRequestApiImpl(this, scope)
 
+    // Manager delegates
+    override val connectionInformationApi = FlipperConnectionInformationApiImpl(this)
+
     private val receiveBytesFlow = MutableSharedFlow<ByteArray>()
     private var serialTxCharacteristic: BluetoothGattCharacteristic? = null
     private var serialRxCharacteristic: BluetoothGattCharacteristic? = null
-
-    override val isDeviceConnected = super.isConnected()
-    override fun getConnectionStateFlow(): StateFlow<ConnectionState> = stateAsFlow()
 
     override suspend fun disconnectDevice() = withContext(bleDispatcher) {
         disconnect().await()

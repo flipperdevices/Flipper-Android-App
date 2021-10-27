@@ -8,46 +8,56 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceError
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceApiProvider
+import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.service.impl.FlipperService
 import com.flipperdevices.bridge.service.impl.FlipperServiceBinder
 import com.flipperdevices.bridge.service.impl.provider.error.FlipperServiceErrorListener
 import com.flipperdevices.bridge.service.impl.utils.subscribeOnFirst
 import com.flipperdevices.core.di.AppGraph
 import com.squareup.anvil.annotations.ContributesBinding
-import java.lang.ref.WeakReference
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-@ContributesBinding(AppGraph::class, FlipperServiceApiProvider::class)
-class FlipperServiceApiProviderImpl @Inject constructor(
+@ContributesBinding(AppGraph::class, FlipperServiceProvider::class)
+class FlipperServiceProviderImpl @Inject constructor(
     private val applicationContext: Context
-) : FlipperServiceApiProvider, ServiceConnection, FlipperServiceErrorListener {
+) : FlipperServiceProvider, ServiceConnection, FlipperServiceErrorListener {
     private var serviceBinder: FlipperServiceBinder? = null
 
     // true if we wait bind answer from android
     private var isRequestedForBind: Boolean = false
-    private val serviceConsumers = mutableListOf<WeakReference<FlipperBleServiceConsumer>>()
+    private val serviceConsumers = mutableListOf<FlipperBleServiceConsumer>()
 
     @Synchronized
     override fun provideServiceApi(
         consumer: FlipperBleServiceConsumer,
+        lifecycleOwner: LifecycleOwner,
         onDestroyEvent: Lifecycle.Event
     ) {
-        serviceConsumers.add(WeakReference(consumer))
-        consumer.subscribeOnFirst(onDestroyEvent) { disconnectInternal(consumer) }
+        serviceConsumers.add(consumer)
+        lifecycleOwner.subscribeOnFirst(onDestroyEvent) { disconnectInternal(consumer) }
 
         invalidate()
         serviceBinder?.let { consumer.onServiceApiReady(it.serviceApi) }
     }
 
+    override fun provideServiceApi(
+        lifecycleOwner: LifecycleOwner,
+        onDestroyEvent: Lifecycle.Event,
+        onError: (FlipperBleServiceError) -> Unit,
+        onBleManager: (FlipperServiceApi) -> Unit
+    ) {
+        val consumer = LambdaFlipperBleServiceConsumer(onBleManager, onError)
+        provideServiceApi(consumer, lifecycleOwner, onDestroyEvent)
+    }
+
     @Synchronized
     private fun invalidate() {
-        // Remove empty consumers
-        serviceConsumers.removeAll { it.get() == null }
         // If we not found any consumers, close ble connection and service
         if (serviceConsumers.isEmpty()) {
             stopServiceInternal()
@@ -72,7 +82,7 @@ class FlipperServiceApiProviderImpl @Inject constructor(
     }
 
     private fun disconnectInternal(consumer: FlipperBleServiceConsumer) {
-        serviceConsumers.removeAll { it.get() == consumer }
+        serviceConsumers.remove(consumer)
         invalidate()
     }
 
@@ -82,8 +92,8 @@ class FlipperServiceApiProviderImpl @Inject constructor(
         flipperServiceBinder.subscribe(this)
         isRequestedForBind = false
         invalidate()
-        serviceConsumers.forEach {
-            it.get()?.onServiceApiReady(flipperServiceBinder.serviceApi)
+        serviceConsumers.forEach { consumer ->
+            consumer.onServiceApiReady(flipperServiceBinder.serviceApi)
         }
     }
 
@@ -121,8 +131,8 @@ class FlipperServiceApiProviderImpl @Inject constructor(
     }
 
     override fun onError(error: FlipperBleServiceError) {
-        serviceConsumers.forEach {
-            it.get()?.onServiceBleError(error)
+        serviceConsumers.forEach { consumer ->
+            consumer.onServiceBleError(error)
         }
     }
 }

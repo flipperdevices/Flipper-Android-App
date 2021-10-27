@@ -1,9 +1,8 @@
 package com.flipperdevices.bridge.service.api.provider
 
-import androidx.lifecycle.LifecycleOwner
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 
-interface FlipperBleServiceConsumer : LifecycleOwner {
+interface FlipperBleServiceConsumer {
     /**
      * Can be call twice or more
      */

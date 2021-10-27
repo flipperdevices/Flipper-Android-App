@@ -31,7 +31,7 @@ class FlipperServiceConnectDelegate(
 
     suspend fun reconnect(deviceId: String) {
         // If we already connected to device, just ignore it
-        if (bleManager.isDeviceConnected) {
+        if (bleManager.connectionInformationApi.isDeviceConnected()) {
             bleManager.disconnectDevice()
         }
         // If Bluetooth disable, return exception
@@ -50,7 +50,7 @@ class FlipperServiceConnectDelegate(
 
     suspend fun reconnect(device: BluetoothDevice) {
         // If we already connected to device, just ignore it
-        if (bleManager.isDeviceConnected) {
+        if (bleManager.connectionInformationApi.isDeviceConnected()) {
             bleManager.disconnectDevice()
         }
 
@@ -60,6 +60,10 @@ class FlipperServiceConnectDelegate(
         }
 
         bleManager.connectToDevice(device)
+    }
+
+    suspend fun disconnect() {
+        bleManager.disconnectDevice()
     }
 
     private suspend fun connectWithBondedDevice(deviceId: String) {
