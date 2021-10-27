@@ -18,7 +18,7 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 @Suppress("BlockingMethodInNonBlockingContext")
-class FlipperBleManagerImpl(
+class FlipperBleManagerImpl constructor(
     context: Context,
     private val scope: CoroutineScope
 ) : UnsafeBleManager(context), FlipperBleManager {
@@ -35,6 +35,10 @@ class FlipperBleManagerImpl(
     private val receiveBytesFlow = MutableSharedFlow<ByteArray>()
     private var serialTxCharacteristic: BluetoothGattCharacteristic? = null
     private var serialRxCharacteristic: BluetoothGattCharacteristic? = null
+
+    init {
+        Timber.i("FlipperBleManagerImpl: ${this.hashCode()}")
+    }
 
     override suspend fun disconnectDevice() = withContext(bleDispatcher) {
         disconnect().await()
@@ -99,13 +103,18 @@ class FlipperBleManagerImpl(
             serialTxCharacteristic = serialService?.getCharacteristic(Constants.BLESerialService.TX)
             serialRxCharacteristic = serialService?.getCharacteristic(Constants.BLESerialService.RX)
 
-            informationApi.onServiceReceived(gatt.getService(Constants.GenericService.SERVICE_UUID))
+            informationApi.onServiceReceived(
+                gatt.getService(Constants.BLEInformationService.SERVICE_UUID)
+            )
+            informationApi.onServiceReceived(
+                gatt.getService(Constants.GenericService.SERVICE_UUID)
+            )
 
             return true
         }
 
         override fun onServicesInvalidated() {
-            informationApi.initialize(this@FlipperBleManagerImpl)
+            informationApi.reset()
         }
     }
 

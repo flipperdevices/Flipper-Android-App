@@ -1,11 +1,15 @@
 package com.flipperdevices.info.main
 
 import android.os.Bundle
-import android.view.View
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.fragment.app.viewModels
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.view.ComposeFragment
 import com.flipperdevices.info.di.InfoComponent
+import com.flipperdevices.info.main.compose.ComposeInfoScreen
+import com.flipperdevices.info.main.viewmodel.InfoViewModel
 import com.flipperdevices.pair.api.PairComponentApi
 import javax.inject.Inject
 
@@ -13,10 +17,7 @@ class InfoFragment : ComposeFragment() {
     @Inject
     lateinit var pairComponentApi: PairComponentApi
 
-    /*
-    private val bleViewModel by activityViewModels<FlipperViewModel> {
-        FlipperViewModelFactory(requireActivity().application, getDeviceId())
-    }*/
+    private val viewModel by viewModels<InfoViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,21 +26,8 @@ class InfoFragment : ComposeFragment() {
 
     @Composable
     override fun renderView() {
-        // val information by bleViewModel.getDeviceInformation().collectAsState()
-        // val connectionState by bleViewModel.getConnectionState().collectAsState()
-        // ComposeInfoScreen(information, connectionState)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        // bleViewModel.connectAndStart()
-    }
-
-    companion object {
-        const val EXTRA_DEVICE_KEY = "device_id"
-    }
-
-    private fun getDeviceId(): String {
-        return arguments?.get(EXTRA_DEVICE_KEY) as String
+        val information by viewModel.getDeviceInformation().collectAsState()
+        val connectionState by viewModel.getConnectionState().collectAsState()
+        ComposeInfoScreen(information, connectionState)
     }
 }

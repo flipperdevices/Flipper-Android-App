@@ -10,7 +10,9 @@ import com.flipperdevices.bridge.impl.manager.FlipperBleManagerImpl
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceError
 import com.flipperdevices.bridge.service.impl.delegate.FlipperServiceConnectDelegate
+import com.flipperdevices.bridge.service.impl.di.FlipperServiceComponent
 import com.flipperdevices.bridge.service.impl.provider.error.FlipperServiceErrorListener
+import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.utils.preference.FlipperSharedPreferencesKey
 import javax.inject.Inject
 import kotlinx.coroutines.TimeoutCancellationException
@@ -32,6 +34,11 @@ class FlipperServiceApiImpl(
 
     override val connectionInformationApi = bleManager.connectionInformationApi
     override val requestApi = bleManager.flipperRequestApi
+    override val flipperInformationApi = bleManager.informationApi
+
+    init {
+        ComponentHolder.component<FlipperServiceComponent>().inject(this)
+    }
 
     fun internalInit() {
         connectToDeviceOnStartup()
@@ -45,8 +52,9 @@ class FlipperServiceApiImpl(
         connectDelegate.reconnect(device)
     }
 
-    suspend fun disconnect() {
+    suspend fun close() {
         connectDelegate.disconnect()
+        bleManager.close()
     }
 
     private fun connectToDeviceOnStartup() = scope.launch {

@@ -3,6 +3,7 @@ package com.flipperdevices.bridge.service.api
 import android.bluetooth.BluetoothDevice
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.manager.delegates.FlipperConnectionInformationApi
+import com.flipperdevices.bridge.api.manager.service.FlipperInformationApi
 
 /**
  * Provides access to the API operation of the device
@@ -11,6 +12,11 @@ import com.flipperdevices.bridge.api.manager.delegates.FlipperConnectionInformat
  * You can get instance by FlipperServiceProvider
  */
 interface FlipperServiceApi {
+
+    /**
+     * Provide information about flipper name, device id
+     */
+    val flipperInformationApi: FlipperInformationApi
 
     /**
      * Provide information about current connection state

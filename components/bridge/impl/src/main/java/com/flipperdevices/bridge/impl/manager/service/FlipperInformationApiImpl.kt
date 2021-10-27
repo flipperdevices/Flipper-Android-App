@@ -14,10 +14,10 @@ import timber.log.Timber
 
 class FlipperInformationApiImpl() : BluetoothGattServiceWrapper, FlipperInformationApi {
     private val informationState = MutableStateFlow(FlipperGATTInformation())
-    private var infoCharacteristics: Map<UUID, BluetoothGattCharacteristic>? = null
+    private var infoCharacteristics = mutableMapOf<UUID, BluetoothGattCharacteristic>()
 
     override fun onServiceReceived(service: BluetoothGattService) {
-        infoCharacteristics = service.characteristics.map { it.uuid to it }.toMap()
+        infoCharacteristics.putAll(service.characteristics.map { it.uuid to it })
     }
 
     override fun initialize(bleManager: UnsafeBleManager) {

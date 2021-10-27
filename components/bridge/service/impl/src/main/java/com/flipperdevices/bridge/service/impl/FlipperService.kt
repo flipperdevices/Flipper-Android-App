@@ -15,8 +15,8 @@ import timber.log.Timber
 
 class FlipperService : LifecycleService() {
     private val listener = CompositeFlipperServiceErrorListenerImpl()
-    private val flipperService = FlipperServiceApiImpl(this, this, listener)
-    private val binder = FlipperServiceBinder(flipperService, listener)
+    private val flipperService by lazy { FlipperServiceApiImpl(this, this, listener) }
+    private val binder by lazy { FlipperServiceBinder(flipperService, listener) }
     private val stopped = AtomicBoolean(false)
     private lateinit var flipperNotification: FlipperNotificationHelper
 
@@ -58,7 +58,7 @@ class FlipperService : LifecycleService() {
             Timber.i("Service already stopped")
             return@launch
         }
-        flipperService.disconnect()
+        flipperService.close()
         stopForeground(true)
         stopSelf()
     }

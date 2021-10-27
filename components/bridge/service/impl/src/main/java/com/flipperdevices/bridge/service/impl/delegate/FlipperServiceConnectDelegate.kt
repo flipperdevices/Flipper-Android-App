@@ -1,16 +1,14 @@
 package com.flipperdevices.bridge.service.impl.delegate
 
-import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.content.Context
 import com.flipperdevices.bridge.api.manager.FlipperBleManager
-import com.flipperdevices.bridge.api.scanner.FlipperScanner
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.api.utils.DeviceFeatureHelper
 import com.flipperdevices.bridge.api.utils.PermissionHelper
+import com.flipperdevices.bridge.provider.FlipperApi
 import com.flipperdevices.bridge.service.impl.di.FlipperServiceComponent
 import com.flipperdevices.core.di.ComponentHolder
-import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withTimeout
 import no.nordicsemi.android.ble.exception.BluetoothDisabledException
@@ -19,11 +17,8 @@ class FlipperServiceConnectDelegate(
     private val bleManager: FlipperBleManager,
     private val context: Context
 ) {
-    @Inject
-    lateinit var scanner: FlipperScanner
-
-    @Inject
-    lateinit var adapter: BluetoothAdapter
+    private val scanner = FlipperApi.flipperScanner
+    private val adapter = FlipperApi.bluetoothAdapter
 
     init {
         ComponentHolder.component<FlipperServiceComponent>().inject(this)

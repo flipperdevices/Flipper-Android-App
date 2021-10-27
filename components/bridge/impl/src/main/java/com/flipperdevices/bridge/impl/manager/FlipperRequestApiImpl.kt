@@ -6,6 +6,7 @@ import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.manager.FlipperSerialApi
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.copy
+import java.io.ByteArrayOutputStream
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ObsoleteCoroutinesApi
@@ -17,7 +18,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import java.io.ByteArrayOutputStream
 
 private typealias OnReceiveResponse = (Flipper.Main) -> Unit
 
@@ -71,11 +71,11 @@ class FlipperRequestApiImpl(
     @ObsoleteCoroutinesApi
     private fun subscribeToAnswers() {
         val reader = PeripheralResponseReader(scope)
-        scope.launch {
+        /*scope.launch {
             serialApi.receiveBytesFlow().collect {
                 reader.onReceiveBytes(it)
             }
-        }
+        }*/
         scope.launch {
             reader.getResponses().collect {
                 val listener = requestListeners[it.commandId]

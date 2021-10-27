@@ -23,4 +23,9 @@ interface FlipperBleManager : FlipperSerialApi {
      * Await while disconnect process is not finish
      */
     suspend fun disconnectDevice()
+
+    /**
+     * Close manager, unregister receivers
+     */
+    fun close()
 }

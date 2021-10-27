@@ -46,6 +46,7 @@ class FlipperServiceProviderImpl @Inject constructor(
         serviceBinder?.let { consumer.onServiceApiReady(it.serviceApi) }
     }
 
+    @Synchronized
     override fun provideServiceApi(
         lifecycleOwner: LifecycleOwner,
         onDestroyEvent: Lifecycle.Event,
