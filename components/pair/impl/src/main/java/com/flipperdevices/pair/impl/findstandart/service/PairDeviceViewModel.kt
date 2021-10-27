@@ -18,6 +18,7 @@ import no.nordicsemi.android.ble.ktx.state.ConnectionState
 class PairDeviceViewModel : LifecycleViewModel() {
     @Inject
     lateinit var bleService: FlipperServiceProvider
+    private var deviceInternal: BluetoothDevice? = null
 
     private val _state = MutableStateFlow<PairingState>(PairingState.NotInitialized)
 
@@ -27,13 +28,20 @@ class PairDeviceViewModel : LifecycleViewModel() {
 
     fun getConnectionState(): StateFlow<PairingState> = _state
 
-    fun startConnectToDevice(device: BluetoothDevice, onReady: () -> Unit) {
+    fun startConnectToDevice(onReady: (BluetoothDevice) -> Unit) {
+        val device = deviceInternal ?: error("You need call #onDeviceFounded before")
         bleService.provideServiceApi(this) { serviceApi ->
-            subscribeToConnectionState(serviceApi.connectionInformationApi, onReady)
+            subscribeToConnectionState(serviceApi.connectionInformationApi) {
+                onReady(device)
+            }
             viewModelScope.launch {
                 serviceApi.reconnect(device)
             }
         }
+    }
+
+    fun onDeviceFounded(device: BluetoothDevice) {
+        deviceInternal = device
     }
 
     fun onStartCompanionFinding() {

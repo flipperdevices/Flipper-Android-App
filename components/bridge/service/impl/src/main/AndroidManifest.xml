@@ -3,6 +3,7 @@
         package="com.flipperdevices.bridge.service.impl">
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application>
