@@ -19,10 +19,13 @@ object PermissionHelper {
      * Return required permissions for current android version
      */
     fun getRequiredPermissions(): Array<String> {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O) {
             return arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION)
         }
-        return arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            return arrayOf(Manifest.permission.BLUETOOTH_CONNECT)
+        }
+        return emptyArray()
     }
 
     /**

@@ -39,7 +39,7 @@ object Versions {
     const val GLIDE = "4.12.0"
     const val LOTTIE = "4.2.0"
 
-    const val PROTOBUF = "3.18.1"
+    const val PROTOBUF = "3.19.0"
 }
 
 object GradlePlugins {
@@ -105,7 +105,8 @@ object Libs {
     const val LOTTIE = "com.airbnb.android:lottie-compose:${Versions.LOTTIE}"
 
     // Protobuf
-    const val PROTOBUF_JAVA = "com.google.protobuf:protobuf-java:${Versions.PROTOBUF}"
+    const val PROTOBUF_JAVALITE = "com.google.protobuf:protobuf-javalite:${Versions.PROTOBUF}"
+    const val PROTOBUF_GROUP = "com.google.protobuf"
     const val PROTOBUF_KOTLIN = "com.google.protobuf:protobuf-kotlin:${Versions.PROTOBUF}"
     const val PROTOBUF_PROTOC = "com.google.protobuf:protoc:${Versions.PROTOBUF}"
 }
