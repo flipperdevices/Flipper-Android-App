@@ -4,7 +4,7 @@
 
 object Versions {
     // Be careful! See more in /buildSrc/src/main/java/Dependencies.kt#NOTE_CONFIGURATION_PLUGIN
-    const val KOTLIN = "1.5.21"
+    const val KOTLIN = "1.5.31"
 
     const val KTLINT = "0.42.1"
 
@@ -14,7 +14,7 @@ object Versions {
     const val ANDROIDX_CORE = "1.6.0"
     const val ANDROID_ANNOTATIONS = "1.2.0"
     const val ANDROID_MATERIAL = "1.2.0"
-    const val ANDROID_JETPACK_COMPOSE = "1.0.2"
+    const val ANDROID_JETPACK_COMPOSE = "1.0.4"
     const val ANDROID_LIFECYCLE = "2.3.1"
 
     const val FRAGMENT_KTX = "1.3.6"
