@@ -18,6 +18,7 @@ dependencies {
     implementation(project(":components:core"))
     implementation(project(":components:bridge:api"))
     implementation(project(":components:bridge:provider"))
+    implementation(project(":components:bridge:service:api"))
     implementation(project(":components:pair:api"))
 
     implementation(Libs.KOTLIN_COROUTINES)

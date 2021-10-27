@@ -1,0 +1,24 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        package="com.flipperdevices.bridge.service.impl">
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <application>
+        <receiver
+                android:exported="true"
+                android:name=".notification.FlipperDisconnectBroadcastReceiver"
+                tools:ignore="ExportedReceiver">
+            <intent-filter>
+                <action android:name="com.flipperdevices.bridge.service.impl.notification.DisconnectBroadcastReceiver" />
+            </intent-filter>
+        </receiver>
+
+        <service
+                android:exported="false"
+                android:name=".FlipperService"
+                android:stopWithTask="false" />
+    </application>
+</manifest>

@@ -1,36 +1,43 @@
 package com.flipperdevices.pair.impl.findstandart.service
 
-import android.app.Application
 import android.bluetooth.BluetoothDevice
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.flipperdevices.bridge.provider.FlipperApi
+import com.flipperdevices.bridge.api.manager.delegates.FlipperConnectionInformationApi
+import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.view.LifecycleViewModel
+import com.flipperdevices.pair.impl.di.PairComponent
 import com.flipperdevices.pair.impl.model.findcompanion.PairingState
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import no.nordicsemi.android.ble.ktx.state.ConnectionState
 
-class PairDeviceViewModel(application: Application) : AndroidViewModel(application) {
-    private val context = application
+class PairDeviceViewModel : LifecycleViewModel() {
+    @Inject
+    lateinit var bleService: FlipperServiceProvider
     private var deviceInternal: BluetoothDevice? = null
+
     private val _state = MutableStateFlow<PairingState>(PairingState.NotInitialized)
+
+    init {
+        ComponentHolder.component<PairComponent>().inject(this)
+    }
 
     fun getConnectionState(): StateFlow<PairingState> = _state
 
     fun startConnectToDevice(onReady: (BluetoothDevice) -> Unit) {
         val device = deviceInternal ?: error("You need call #onDeviceFounded before")
-        val flipperDeviceApi = FlipperApi.flipperPairApi.getFlipperApi(context, device.address)
-        viewModelScope.launch {
-            flipperDeviceApi.getBleManager().getConnectionStateFlow().collect {
-                _state.emit(PairingState.WithDevice(it))
-                if (it == ConnectionState.Ready) {
-                    onReady(device)
-                }
+        bleService.provideServiceApi(this) { serviceApi ->
+            subscribeToConnectionState(serviceApi.connectionInformationApi) {
+                onReady(device)
+            }
+            viewModelScope.launch {
+                serviceApi.reconnect(device)
             }
         }
-        FlipperApi.flipperPairApi.scheduleConnect(flipperDeviceApi, device)
     }
 
     fun onDeviceFounded(device: BluetoothDevice) {
@@ -46,6 +53,18 @@ class PairDeviceViewModel(application: Application) : AndroidViewModel(applicati
     fun onFailedCompanionFinding(reason: String) {
         viewModelScope.launch {
             _state.emit(PairingState.Failed(reason))
+        }
+    }
+
+    private fun subscribeToConnectionState(
+        informationApi: FlipperConnectionInformationApi,
+        onReady: () -> Unit
+    ) = viewModelScope.launch {
+        informationApi.getConnectionStateFlow().collect {
+            _state.emit(PairingState.WithDevice(it))
+            if (it == ConnectionState.Ready) {
+                onReady()
+            }
         }
     }
 }

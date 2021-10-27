@@ -9,7 +9,7 @@ apply<com.flipperdevices.gradle.ComposerPlugin>()
 
 dependencies {
     implementation(project(":components:core"))
-    implementation(project(":components:bridge:service"))
+    implementation(project(":components:bridge:service:api"))
     implementation(project(":components:bridge:api"))
     implementation(project(":components:bridge:protobuf"))
     implementation(project(":components:filemanager:api"))

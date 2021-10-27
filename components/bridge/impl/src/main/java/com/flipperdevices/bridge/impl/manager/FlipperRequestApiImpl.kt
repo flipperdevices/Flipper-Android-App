@@ -3,9 +3,10 @@ package com.flipperdevices.bridge.impl.manager
 import android.util.SparseArray
 import androidx.core.util.set
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
-import com.flipperdevices.bridge.api.manager.FlipperSerialApi
+import com.flipperdevices.bridge.api.manager.service.FlipperSerialApi
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.copy
+import java.io.ByteArrayOutputStream
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ObsoleteCoroutinesApi
@@ -17,7 +18,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import java.io.ByteArrayOutputStream
 
 private typealias OnReceiveResponse = (Flipper.Main) -> Unit
 

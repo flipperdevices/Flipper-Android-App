@@ -11,10 +11,9 @@ import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class)
 class FileManagerScreenProviderImpl @Inject constructor() : FileManagerScreenProvider {
-    override fun fileManager(deviceId: String, path: String): Screen {
-        return FragmentScreen("FileManager_${deviceId}_$path") {
+    override fun fileManager(path: String): Screen {
+        return FragmentScreen("FileManager_$path") {
             FileManagerFragment().withArgs {
-                putString(FileManagerFragment.EXTRA_DEVICE_KEY, deviceId)
                 putString(FileManagerFragment.EXTRA_DIRECTORY_KEY, path)
             }
         }

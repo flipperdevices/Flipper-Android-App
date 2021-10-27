@@ -3,6 +3,7 @@ package com.flipperdevices.pair.impl.di
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.pair.impl.PairScreenActivity
 import com.flipperdevices.pair.impl.findstandart.StandartFindFragment
+import com.flipperdevices.pair.impl.findstandart.service.PairDeviceViewModel
 import com.flipperdevices.pair.impl.fragments.findcompanion.CompanionFindFragment
 import com.flipperdevices.pair.impl.fragments.guide.FragmentGuide
 import com.flipperdevices.pair.impl.fragments.permission.PermissionFragment
@@ -19,4 +20,5 @@ interface PairComponent {
     fun inject(fragment: FragmentGuide)
     fun inject(fragment: CompanionFindFragment)
     fun inject(activity: PairScreenActivity)
+    fun inject(viewModel: PairDeviceViewModel)
 }

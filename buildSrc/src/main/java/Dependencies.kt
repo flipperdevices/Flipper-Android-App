@@ -63,6 +63,10 @@ object Libs {
         "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.ANDROID_LIFECYCLE}"
     const val LIFECYCLE_RUNTIME_KTX =
         "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.ANDROID_LIFECYCLE}"
+    const val LIFECYCLE_SERVICE =
+        "androidx.lifecycle:lifecycle-service:${Versions.ANDROID_LIFECYCLE}"
+    const val LIFECYCLE_KAPT =
+        "androidx.lifecycle:lifecycle-compiler:${Versions.ANDROID_LIFECYCLE}"
 
     const val ANNOTATIONS = "androidx.annotation:annotation:${Versions.ANDROID_ANNOTATIONS}"
     const val APPCOMPAT = "androidx.appcompat:appcompat:${Versions.ANDROIDX_APPCOMPAT}"
