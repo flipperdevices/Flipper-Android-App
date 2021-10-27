@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import timber.log.Timber
 
-class FlipperInformationApiImpl() : BluetoothGattServiceWrapper, FlipperInformationApi {
+class FlipperInformationApiImpl : BluetoothGattServiceWrapper, FlipperInformationApi {
     private val informationState = MutableStateFlow(FlipperGATTInformation())
     private var infoCharacteristics = mutableMapOf<UUID, BluetoothGattCharacteristic>()
 

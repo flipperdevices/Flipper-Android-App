@@ -24,6 +24,7 @@ import javax.inject.Singleton
 
 @Singleton
 @ContributesBinding(AppGraph::class, FlipperServiceProvider::class)
+@Suppress("TooManyFunctions")
 class FlipperServiceProviderImpl @Inject constructor(
     private val applicationContext: Context
 ) : FlipperServiceProvider, ServiceConnection, FlipperServiceErrorListener {
