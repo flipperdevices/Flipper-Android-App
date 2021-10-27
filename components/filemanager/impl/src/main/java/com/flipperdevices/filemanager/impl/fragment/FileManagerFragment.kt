@@ -1,39 +1,31 @@
 package com.flipperdevices.filemanager.impl.fragment
 
 import android.os.Bundle
-import android.view.View
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.viewModels
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.view.ComposeFragment
 import com.flipperdevices.filemanager.api.navigation.FileManagerScreenProvider
 import com.flipperdevices.filemanager.impl.composable.ComposableFileManager
 import com.flipperdevices.filemanager.impl.di.FileManagerComponent
-import com.flipperdevices.filemanager.impl.model.FileItem
+import com.flipperdevices.filemanager.impl.viewmodels.FileManagerViewModel
+import com.flipperdevices.filemanager.impl.viewmodels.FileManagerViewModelFactory
 import com.github.terrakok.cicerone.Router
 import java.io.File
 import javax.inject.Inject
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.emptyFlow
-import kotlinx.coroutines.launch
 
 class FileManagerFragment : ComposeFragment() {
-    private val stateFlow = MutableStateFlow<List<FileItem>>(emptyList())
-
     @Inject
     lateinit var router: Router
 
     @Inject
     lateinit var screenProvider: FileManagerScreenProvider
 
-    /*
-    private val bleViewModel by activityViewModels<FlipperViewModel> {
-        FlipperViewModelFactory(requireActivity().application, getDeviceId())
-    }*/
+    private val viewModel by viewModels<FileManagerViewModel>() {
+        FileManagerViewModelFactory(getDirectory())
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,51 +34,16 @@ class FileManagerFragment : ComposeFragment() {
 
     @Composable
     override fun renderView() {
-        val fileList by stateFlow.collectAsState(emptyList())
+        val fileList by viewModel.getFileList().collectAsState()
 
         ComposableFileManager(fileList) {
             val newPath = File(getDirectory(), it.fileName).absolutePath
-            router.navigateTo(screenProvider.fileManager(getDeviceId(), newPath))
+            router.navigateTo(screenProvider.fileManager(newPath))
         }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        lifecycleScope.launch {
-            getFilesForDir(getDirectory()).collect {
-                stateFlow.emit(it)
-            }
-        }
-    }
-
-    private fun getFilesForDir(directory: String): Flow<List<FileItem>> {
-        return emptyFlow()/*TODO do under service
-        bleViewModel.getRequestApi().request(
-            main {
-                storageListRequest = listRequest {
-                    path = directory
-                }
-            }
-        ).map {
-            Timber.i("FileManagerFragment#$directory")
-            it.storageListResponse.fileList.map { file ->
-                FileItem(
-                    fileName = file.name,
-                    isDirectory = file.type == Storage.File.FileType.DIR,
-                    size = file.size.toLong()
-                )
-            }
-        }.runningReduce { accumulator, value -> accumulator.plus(value) }*/
     }
 
     companion object {
-        const val EXTRA_DEVICE_KEY = "device_id"
         const val EXTRA_DIRECTORY_KEY = "directory"
-    }
-
-    private fun getDeviceId(): String {
-        return arguments?.get(EXTRA_DEVICE_KEY) as String
     }
 
     private fun getDirectory(): String {

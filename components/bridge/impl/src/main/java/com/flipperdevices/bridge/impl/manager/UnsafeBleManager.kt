@@ -13,4 +13,16 @@ import no.nordicsemi.android.ble.BleManager
 abstract class UnsafeBleManager(context: Context) : BleManager(context) {
     fun readCharacteristicUnsafe(characteristic: BluetoothGattCharacteristic?) =
         readCharacteristic(characteristic)
+
+    fun writeCharacteristicUnsafe(characteristic: BluetoothGattCharacteristic?, data: ByteArray) =
+        writeCharacteristic(characteristic, data)
+
+    fun setNotificationCallbackUnsafe(characteristic: BluetoothGattCharacteristic?) =
+        setNotificationCallback(characteristic)
+
+    fun enableNotificationsUnsafe(characteristic: BluetoothGattCharacteristic?) =
+        enableNotifications(characteristic)
+
+    fun enableIndicationsUnsafe(characteristic: BluetoothGattCharacteristic?) =
+        enableIndications(characteristic)
 }

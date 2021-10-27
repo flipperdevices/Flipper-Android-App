@@ -1,4 +1,4 @@
-package com.flipperdevices.bridge.api.manager
+package com.flipperdevices.bridge.api.manager.service
 
 import kotlinx.coroutines.flow.Flow
 

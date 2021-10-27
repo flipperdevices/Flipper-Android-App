@@ -2,18 +2,15 @@ package com.flipperdevices.bridge.impl.manager
 
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothGatt
-import android.bluetooth.BluetoothGattCharacteristic
 import android.content.Context
 import com.flipperdevices.bridge.api.manager.FlipperBleManager
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.impl.manager.delegates.FlipperConnectionInformationApiImpl
 import com.flipperdevices.bridge.impl.manager.service.FlipperInformationApiImpl
+import com.flipperdevices.bridge.impl.manager.service.FlipperSerialApiImpl
 import com.flipperdevices.core.utils.newSingleThreadExecutor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.asCoroutineDispatcher
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
@@ -27,29 +24,19 @@ class FlipperBleManagerImpl constructor(
 
     // Gatt Delegates
     override val informationApi = FlipperInformationApiImpl()
-    override val flipperRequestApi = FlipperRequestApiImpl(this, scope)
+    override val serialApi = FlipperSerialApiImpl(scope)
+    override val flipperRequestApi = FlipperRequestApiImpl(serialApi, scope)
 
     // Manager delegates
     override val connectionInformationApi = FlipperConnectionInformationApiImpl(this)
 
-    private val receiveBytesFlow = MutableSharedFlow<ByteArray>()
-    private var serialTxCharacteristic: BluetoothGattCharacteristic? = null
-    private var serialRxCharacteristic: BluetoothGattCharacteristic? = null
-
     init {
+        setConnectionObserver(ConnectionObserverLogger())
         Timber.i("FlipperBleManagerImpl: ${this.hashCode()}")
     }
 
     override suspend fun disconnectDevice() = withContext(bleDispatcher) {
         disconnect().await()
-    }
-
-    override fun receiveBytesFlow(): Flow<ByteArray> {
-        return receiveBytesFlow
-    }
-
-    override fun sendBytes(data: ByteArray) {
-        writeCharacteristic(serialTxCharacteristic, data).enqueue()
     }
 
     override suspend fun connectToDevice(device: BluetoothDevice) = withContext(bleDispatcher) {
@@ -62,10 +49,6 @@ class FlipperBleManagerImpl constructor(
 
     override fun log(priority: Int, message: String) {
         Timber.d(message)
-    }
-
-    init {
-        setConnectionObserver(ConnectionObserverLogger())
     }
 
     override fun getGattCallback(): BleManagerGattCallback =
@@ -87,7 +70,7 @@ class FlipperBleManagerImpl constructor(
             requestMtu(Constants.BLE.MTU).enqueue()
 
             informationApi.initialize(this@FlipperBleManagerImpl)
-            registerToSerialGATT()
+            serialApi.initialize(this@FlipperBleManagerImpl)
         }
 
         override fun isRequiredServiceSupported(gatt: BluetoothGatt): Boolean {
@@ -97,12 +80,9 @@ class FlipperBleManagerImpl constructor(
                 }
             }
 
-            val serialService =
+            serialApi.onServiceReceived(
                 gatt.getService(Constants.BLESerialService.SERVICE_UUID)
-
-            serialTxCharacteristic = serialService?.getCharacteristic(Constants.BLESerialService.TX)
-            serialRxCharacteristic = serialService?.getCharacteristic(Constants.BLESerialService.RX)
-
+            )
             informationApi.onServiceReceived(
                 gatt.getService(Constants.BLEInformationService.SERVICE_UUID)
             )
@@ -115,18 +95,7 @@ class FlipperBleManagerImpl constructor(
 
         override fun onServicesInvalidated() {
             informationApi.reset()
+            serialApi.reset()
         }
-    }
-
-    private fun registerToSerialGATT() {
-        setNotificationCallback(serialRxCharacteristic).with { _, data ->
-            Timber.i("Receive serial data")
-            val bytes = data.value ?: return@with
-            scope.launch {
-                receiveBytesFlow.emit(bytes)
-            }
-        }
-        enableNotifications(serialRxCharacteristic).enqueue()
-        enableIndications(serialRxCharacteristic).enqueue()
     }
 }

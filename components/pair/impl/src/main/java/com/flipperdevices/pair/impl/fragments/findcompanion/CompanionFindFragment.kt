@@ -106,7 +106,10 @@ class CompanionFindFragment : ComposeFragment() {
         deviceManager.associate(
             pairingRequest,
             object : CompanionDeviceManager.Callback() {
-                override fun onDeviceFound(chooserLauncher: IntentSender) {
+                override fun onDeviceFound(chooserLauncher: IntentSender?) {
+                    if (chooserLauncher == null) {
+                        return
+                    }
                     val intentSenderRequest = IntentSenderRequest.Builder(chooserLauncher).build()
                     deviceConnectWithResult.launch(intentSenderRequest)
                 }

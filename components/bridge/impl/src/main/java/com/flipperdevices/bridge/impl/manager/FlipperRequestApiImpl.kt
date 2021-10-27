@@ -3,7 +3,7 @@ package com.flipperdevices.bridge.impl.manager
 import android.util.SparseArray
 import androidx.core.util.set
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
-import com.flipperdevices.bridge.api.manager.FlipperSerialApi
+import com.flipperdevices.bridge.api.manager.service.FlipperSerialApi
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.copy
 import java.io.ByteArrayOutputStream
@@ -71,11 +71,11 @@ class FlipperRequestApiImpl(
     @ObsoleteCoroutinesApi
     private fun subscribeToAnswers() {
         val reader = PeripheralResponseReader(scope)
-        /*scope.launch {
+        scope.launch {
             serialApi.receiveBytesFlow().collect {
                 reader.onReceiveBytes(it)
             }
-        }*/
+        }
         scope.launch {
             reader.getResponses().collect {
                 val listener = requestListeners[it.commandId]
