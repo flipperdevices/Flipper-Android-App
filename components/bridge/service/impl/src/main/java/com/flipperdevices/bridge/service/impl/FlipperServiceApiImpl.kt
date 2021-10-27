@@ -1,5 +1,6 @@
 package com.flipperdevices.bridge.service.impl
 
+import android.bluetooth.BluetoothDevice
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.LifecycleOwner
@@ -40,6 +41,10 @@ class FlipperServiceApiImpl(
 
     override suspend fun reconnect(deviceId: String) {
         connectDelegate.reconnect(deviceId)
+    }
+
+    override suspend fun reconnect(device: BluetoothDevice) {
+        connectDelegate.reconnect()
     }
 
     private fun connectToDeviceOnStartup() = scope.launch {

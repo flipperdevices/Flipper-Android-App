@@ -1,20 +1,28 @@
 package com.flipperdevices.pair.impl.findstandart.service
 
-import android.app.Application
 import android.bluetooth.BluetoothDevice
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.provider.FlipperApi
+import com.flipperdevices.bridge.service.api.FlipperServiceApi
+import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.pair.impl.di.PairComponent
 import com.flipperdevices.pair.impl.model.findcompanion.PairingState
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import no.nordicsemi.android.ble.ktx.state.ConnectionState
 
-class PairDeviceViewModel(application: Application) : AndroidViewModel(application) {
-    private val context = application
+class PairDeviceViewModel : ViewModel() {
+    @Inject
+    lateinit var bleService: FlipperServiceApi
+
     private val _state = MutableStateFlow<PairingState>(PairingState.NotInitialized)
+
+    init {
+        ComponentHolder.component<PairComponent>().inject(this)
+    }
 
     fun getConnectionState(): StateFlow<PairingState> = _state
 

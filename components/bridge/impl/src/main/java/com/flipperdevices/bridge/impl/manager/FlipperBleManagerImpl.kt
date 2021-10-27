@@ -5,22 +5,16 @@ import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattCharacteristic
 import android.content.Context
 import com.flipperdevices.bridge.api.manager.FlipperBleManager
-import com.flipperdevices.bridge.api.manager.FlipperRequestApi
-import com.flipperdevices.bridge.api.model.FlipperGATTInformation
 import com.flipperdevices.bridge.api.utils.Constants
+import com.flipperdevices.bridge.impl.manager.service.FlipperInformationApiImpl
 import com.flipperdevices.core.utils.newSingleThreadExecutor
-import java.util.UUID
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import no.nordicsemi.android.ble.BleManager
 import no.nordicsemi.android.ble.ktx.state.ConnectionState
 import no.nordicsemi.android.ble.ktx.stateAsFlow
 import timber.log.Timber
@@ -29,19 +23,19 @@ import timber.log.Timber
 class FlipperBleManagerImpl(
     context: Context,
     private val scope: CoroutineScope
-) : BleManager(context), FlipperBleManager {
+) : UnsafeBleManager(context), FlipperBleManager {
     private val bleDispatcher = newSingleThreadExecutor("FlipperBleManagerImpl")
         .asCoroutineDispatcher()
 
-    private val informationState = MutableStateFlow(FlipperGATTInformation())
+    // Gatt Delegates
+    override val informationApi = FlipperInformationApiImpl()
+    override val flipperRequestApi = FlipperRequestApiImpl(this, scope)
+
     private val receiveBytesFlow = MutableSharedFlow<ByteArray>()
-    private val infoCharacteristics = mutableMapOf<UUID, BluetoothGattCharacteristic>()
     private var serialTxCharacteristic: BluetoothGattCharacteristic? = null
     private var serialRxCharacteristic: BluetoothGattCharacteristic? = null
 
-    override val flipperRequestApi: FlipperRequestApi = FlipperRequestApiImpl(this, scope)
     override val isDeviceConnected = super.isConnected()
-    override fun getInformationStateFlow(): StateFlow<FlipperGATTInformation> = informationState
     override fun getConnectionStateFlow(): StateFlow<ConnectionState> = stateAsFlow()
 
     override suspend fun disconnectDevice() = withContext(bleDispatcher) {
@@ -86,22 +80,19 @@ class FlipperBleManagerImpl(
         }
 
         override fun onDeviceReady() {
-            registerToInformationGATT()
+            // Set up large MTU
+            // Also does not work with small MTU because of a bug in Flipper Zero firmware
+            requestMtu(Constants.BLE.MTU).enqueue()
+
+            informationApi.initialize(this@FlipperBleManagerImpl)
             registerToSerialGATT()
         }
 
         override fun isRequiredServiceSupported(gatt: BluetoothGatt): Boolean {
             gatt.services.forEach { service ->
                 service.characteristics.forEach {
-                    Timber.i("Characteristic for service ${service.uuid}: ${it.uuid}")
+                    Timber.d("Characteristic for service ${service.uuid}: ${it.uuid}")
                 }
-            }
-
-            val informationService =
-                gatt.getService(Constants.BLEInformationService.SERVICE_UUID)
-
-            informationService?.characteristics?.forEach {
-                infoCharacteristics[it.uuid] = it
             }
 
             val serialService =
@@ -110,23 +101,16 @@ class FlipperBleManagerImpl(
             serialTxCharacteristic = serialService?.getCharacteristic(Constants.BLESerialService.TX)
             serialRxCharacteristic = serialService?.getCharacteristic(Constants.BLESerialService.RX)
 
-            val genericService = gatt.getService(Constants.GenericService.SERVICE_UUID)
-
-            genericService?.characteristics?.find {
-                it.uuid.equals(Constants.GenericService.DEVICE_NAME)
-            }?.let {
-                infoCharacteristics[Constants.GenericService.DEVICE_NAME] = it
-            }
+            informationApi.onServiceReceived(gatt.getService(Constants.GenericService.SERVICE_UUID))
 
             return true
         }
 
         override fun onServicesInvalidated() {
-            // TODO reset state
+            informationApi.initialize(this@FlipperBleManagerImpl)
         }
     }
 
-    @DelicateCoroutinesApi // TODO replace it
     private fun registerToSerialGATT() {
         setNotificationCallback(serialRxCharacteristic).with { _, data ->
             Timber.i("Receive serial data")
@@ -135,43 +119,7 @@ class FlipperBleManagerImpl(
                 receiveBytesFlow.emit(bytes)
             }
         }
-        requestMtu(Constants.BLE.MTU).enqueue()
         enableNotifications(serialRxCharacteristic).enqueue()
         enableIndications(serialRxCharacteristic).enqueue()
-    }
-
-    private fun registerToInformationGATT() {
-        readCharacteristic(
-            infoCharacteristics[Constants.BLEInformationService.MANUFACTURER]
-        ).with { _, data ->
-            val content = data.value ?: return@with
-            informationState.update {
-                it.copy(manufacturerName = String(content))
-            }
-        }.enqueue()
-        readCharacteristic(
-            infoCharacteristics[Constants.GenericService.DEVICE_NAME]
-        ).with { _, data ->
-            val content = data.value ?: return@with
-            informationState.update {
-                it.copy(deviceName = String(content))
-            }
-        }.enqueue()
-        readCharacteristic(
-            infoCharacteristics[Constants.BLEInformationService.HARDWARE_VERSION]
-        ).with { _, data ->
-            val content = data.value ?: return@with
-            informationState.update {
-                it.copy(hardwareRevision = String(content))
-            }
-        }.enqueue()
-        readCharacteristic(
-            infoCharacteristics[Constants.BLEInformationService.SOFTWARE_VERSION]
-        ).with { _, data ->
-            val content = data.value ?: return@with
-            informationState.update {
-                it.copy(softwareVersion = String(content))
-            }
-        }.enqueue()
     }
 }

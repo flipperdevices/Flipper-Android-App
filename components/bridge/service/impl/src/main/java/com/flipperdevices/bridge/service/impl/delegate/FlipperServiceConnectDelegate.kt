@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.service.impl.delegate
 
 import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothDevice
 import android.content.Context
 import com.flipperdevices.bridge.api.manager.FlipperBleManager
 import com.flipperdevices.bridge.api.scanner.FlipperScanner
@@ -45,6 +46,20 @@ class FlipperServiceConnectDelegate(
         }
         // If companion feature not available, we try find device in manual mode and connect with it
         findAndConnectToDevice(context, deviceId)
+    }
+
+    suspend fun reconnect(device: BluetoothDevice) {
+        // If we already connected to device, just ignore it
+        if (bleManager.isDeviceConnected) {
+            bleManager.disconnectDevice()
+        }
+
+        // If Bluetooth disable, return exception
+        if (!PermissionHelper.isBluetoothEnabled()) {
+            throw BluetoothDisabledException()
+        }
+
+        bleManager.connectToDevice(device)
     }
 
     private suspend fun connectWithBondedDevice(deviceId: String) {
