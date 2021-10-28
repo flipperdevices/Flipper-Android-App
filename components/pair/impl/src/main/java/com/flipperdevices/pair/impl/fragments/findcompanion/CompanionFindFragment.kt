@@ -29,6 +29,7 @@ import com.flipperdevices.pair.impl.composable.findcompanion.ComposeFindDevice
 import com.flipperdevices.pair.impl.di.PairComponent
 import com.flipperdevices.pair.impl.findstandart.service.PairDeviceViewModel
 import com.flipperdevices.pair.impl.fragments.common.BluetoothEnableHelper
+import com.flipperdevices.pair.impl.model.findcompanion.PairingState
 import com.flipperdevices.pair.impl.navigation.machine.PairScreenStateDispatcher
 import javax.inject.Inject
 import timber.log.Timber
@@ -64,8 +65,10 @@ class CompanionFindFragment : ComposeFragment() {
             return@registerForActivityResult
         }
 
+        // Store founded device in memory
         pairDeviceViewModel.onDeviceFounded(deviceToPair)
 
+        // After Android 12 we need permission BLUETOOTH_CONNECT on this step
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             requestConnectPermissionResult.launch(Manifest.permission.BLUETOOTH_CONNECT)
         } else {
@@ -92,7 +95,15 @@ class CompanionFindFragment : ComposeFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ComponentHolder.component<PairComponent>().inject(this)
-        refresh()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val connectionState = pairDeviceViewModel.getConnectionState().value
+        // Don't open dialog if we already communicate with device
+        if (connectionState !is PairingState.WithDevice) {
+            requestPermissionAndOpenFindDeviceDialog()
+        }
     }
 
     @Composable
@@ -102,17 +113,19 @@ class CompanionFindFragment : ComposeFragment() {
             connectionState,
             onClickBackButton = { stateDispatcher.back() }
         ) {
-            refresh()
+            requestPermissionAndOpenFindDeviceDialog()
         }
     }
 
-    private fun refresh() {
+    private fun requestPermissionAndOpenFindDeviceDialog() {
         bluetoothEnableHelper.requestBluetoothEnable {
             openFindDeviceDialog()
         }
     }
 
     private fun openFindDeviceDialog() {
+        EnableLocationDialogHelper.showDialogIfLocationDisabled(requireContext())
+
         val deviceFilter: BluetoothDeviceFilter = BluetoothDeviceFilter.Builder()
             // Match only Bluetooth devices whose name matches the pattern.
             .setNamePattern(Constants.DEVICENAME_PREFIX_REGEXP)
