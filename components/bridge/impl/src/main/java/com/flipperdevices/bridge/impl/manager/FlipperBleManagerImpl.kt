@@ -11,13 +11,17 @@ import com.flipperdevices.bridge.impl.manager.service.FlipperSerialApiImpl
 import com.flipperdevices.core.utils.newSingleThreadExecutor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.asCoroutineDispatcher
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.withContext
+import no.nordicsemi.android.ble.ktx.state.ConnectionState
+import no.nordicsemi.android.ble.ktx.stateAsFlow
 import timber.log.Timber
 
 @Suppress("BlockingMethodInNonBlockingContext")
 class FlipperBleManagerImpl constructor(
     context: Context,
-    private val scope: CoroutineScope
+    scope: CoroutineScope
 ) : UnsafeBleManager(context), FlipperBleManager {
     private val bleDispatcher = newSingleThreadExecutor("FlipperBleManagerImpl")
         .asCoroutineDispatcher()
@@ -36,7 +40,10 @@ class FlipperBleManagerImpl constructor(
     }
 
     override suspend fun disconnectDevice() = withContext(bleDispatcher) {
-        disconnect().await()
+        disconnect().enqueue()
+        // Wait until device is really disconnected
+        stateAsFlow().filter { it == ConnectionState.Disconnecting }.single()
+        return@withContext
     }
 
     override suspend fun connectToDevice(device: BluetoothDevice) = withContext(bleDispatcher) {

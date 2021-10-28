@@ -101,7 +101,9 @@ class CompanionFindFragment : ComposeFragment() {
         super.onResume()
         val connectionState = pairDeviceViewModel.getConnectionState().value
         // Don't open dialog if we already communicate with device
-        if (connectionState !is PairingState.WithDevice) {
+        if (connectionState !is PairingState.WithDevice &&
+            connectionState != PairingState.FindingDevice
+        ) {
             requestPermissionAndOpenFindDeviceDialog()
         }
     }
