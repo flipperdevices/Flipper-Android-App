@@ -21,6 +21,7 @@ import com.flipperdevices.core.di.AppGraph
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 import javax.inject.Singleton
+import timber.log.Timber
 
 @Singleton
 @ContributesBinding(AppGraph::class, FlipperServiceProvider::class)
@@ -76,6 +77,8 @@ class FlipperServiceProviderImpl @Inject constructor(
             return
         }
 
+        // Without it service destroy after unbind
+        applicationContext.startService(Intent(applicationContext, FlipperService::class.java))
         applicationContext.bindService(
             Intent(applicationContext, FlipperService::class.java), this,
             BIND_AUTO_CREATE or BIND_IMPORTANT
@@ -115,6 +118,7 @@ class FlipperServiceProviderImpl @Inject constructor(
 
     @Synchronized
     private fun stopServiceInternal() {
+        Timber.i("Internal stop service")
         serviceBinder?.unsubscribe(this)
         serviceBinder = null
         applicationContext.unbindService(this)

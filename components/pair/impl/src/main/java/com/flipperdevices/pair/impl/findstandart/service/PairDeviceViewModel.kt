@@ -31,11 +31,11 @@ class PairDeviceViewModel : LifecycleViewModel() {
     fun startConnectToDevice(onReady: (BluetoothDevice) -> Unit) {
         val device = deviceInternal ?: error("You need call #onDeviceFounded before")
         bleService.provideServiceApi(this) { serviceApi ->
-            subscribeToConnectionState(serviceApi.connectionInformationApi) {
-                onReady(device)
-            }
             viewModelScope.launch {
                 serviceApi.reconnect(device)
+                subscribeToConnectionState(serviceApi.connectionInformationApi) {
+                    onReady(device)
+                }
             }
         }
     }
