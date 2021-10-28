@@ -46,4 +46,9 @@
     <string name="pair_guide_title">Connect your Flipper</string>
     <string name="pair_guide_description">Make sure that Bluetooth is activated on your Flipper device</string>
     <string name="pair_guide_ready">Ready</string>
+    <string name="pair_companion_enable_location_title">Turn on the location</string>
+    <string name="pair_companion_enable_location_desc">The system requires you to turn on geolocation to find your device. We will not use this location in the app. After selecting the Flipper, you can disable it back.</string>
+    <string name="pair_companion_enable_location_btn_more">More</string>
+    <string name="pair_companion_enable_location_btn_more_link">https://developer.android.com/guide/topics/connectivity/companion-device-pairing</string>
+    <string name="pair_companion_enable_location_btn_open_settings">Open settings</string>
 </resources>
