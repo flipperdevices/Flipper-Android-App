@@ -1,0 +1,6 @@
+templatesRootDirPath: /config/geminio/templates
+modulesTemplatesRootDirPath: /config/geminio/modules_templates
+
+groupsNames:
+  forNewGroup: Flipper Templates
+  forNewModulesGroup: Flipper Modules

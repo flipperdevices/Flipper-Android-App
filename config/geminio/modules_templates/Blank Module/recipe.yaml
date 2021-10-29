@@ -1,0 +1,51 @@
+requiredParams:
+  name: Flipper Blank Module
+  description: Creates empty Gradle-module for general purposes
+
+predefinedFeatures:
+  - enableModuleCreationParams:
+      defaultPackageNamePrefix: com.flipperdevices
+
+widgets:
+  - booleanParameter:
+      id: needCompose
+      name: Add Compose dependencies?
+      help: Adds compose gradle plugin and compose deps
+      default: false
+
+  - booleanParameter:
+      id: isApi
+      name: Is API submodule?
+      help: If it is api module, we create only interface for instances
+      default: false
+
+  - booleanParameter:
+      id: shouldGenerateDI
+      name: Add di?
+      help: Adds Dagger and Anvil deps, and create di component
+      default: false
+
+recipe:
+  - mkDirs:
+      - ${srcOut}
+
+  - instantiate:
+      from: root/gitignore.ftl
+      to: ${rootOut}/.gitignore
+
+  - instantiate:
+      from: root/build.gradle.kts.ftl
+      to: ${rootOut}/build.gradle.kts
+
+  - instantiate:
+      from: root/src/main/AndroidManifest.xml.ftl
+      to: ${manifestOut}/AndroidManifest.xml
+
+  - predicate:
+      validIf: ${shouldGenerateDI}
+      commands:
+        - mkDirs:
+            - ${srcOut}/di/
+        - instantiateAndOpen:
+            from: root/src/app_package/di/BlankComponent.kt.ftl
+            to: ${srcOut}/di/${__formattedModuleName}Component.kt
