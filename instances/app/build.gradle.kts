@@ -17,17 +17,14 @@ dependencies {
     implementation(project(":components:filemanager:impl"))
     implementation(project(":components:bridge:service:api"))
     implementation(project(":components:bridge:service:impl"))
+    implementation(project(":components:analytics:shake2report"))
 
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.CORE_KTX)
     implementation(Libs.APPCOMPAT)
     implementation(Libs.MATERIAL)
     implementation(Libs.TREX)
+
     implementation(Libs.DAGGER)
-
-    testImplementation(TestingLib.JUNIT)
-    androidTestImplementation(TestingLib.ANDROIDX_TEST_EXT_JUNIT)
-    androidTestImplementation(TestingLib.ESPRESSO_CORE)
-
     kapt(Libs.DAGGER_COMPILER)
 }

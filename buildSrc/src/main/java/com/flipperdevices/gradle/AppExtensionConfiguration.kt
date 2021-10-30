@@ -31,8 +31,10 @@ private fun AppExtension.configureBuildTypes() {
             isDebuggable = true
         }
         container.maybeCreate("internal").apply {
+            setMatchingFallbacks("debug")
             buildConfigField("boolean", "INTERNAL", "true")
             isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -41,6 +43,7 @@ private fun AppExtension.configureBuildTypes() {
         container.maybeCreate("release").apply {
             buildConfigField("boolean", "INTERNAL", "false")
             isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

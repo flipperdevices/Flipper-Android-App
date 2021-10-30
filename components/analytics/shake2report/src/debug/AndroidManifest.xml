@@ -1,0 +1,18 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        package="com.flipperdevices.analytics.shake2report">
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission
+            android:name="android.permission.HIGH_SAMPLING_RATE_SENSORS"
+            tools:ignore="HighSamplingRate" />
+
+    <application>
+        <meta-data
+                android:name="io.sentry.dsn"
+                android:value="https://f1b2e9d3d9f24d78b49f743d9e21642c@o1054712.ingest.sentry.io/6040279" />
+        <activity
+                android:exported="false"
+                android:name=".activity.Shake2ReportActivity" />
+    </application>
+</manifest>

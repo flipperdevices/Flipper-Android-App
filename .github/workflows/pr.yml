@@ -22,7 +22,7 @@ jobs:
       - name: Build debug
         run: ./gradlew assembleDebug
       - name: Unit-test
-        run: ./gradlew test
+        run: ./gradlew testDebug
   ktlint:
     name: "Check project by ktlint"
     runs-on: ubuntu-latest
@@ -36,7 +36,7 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
       - name: ktlint
-        run: ./gradlew ktlintFormat
+        run: ./gradlew ktlintCheck
   detekt:
     name: "Check project by detekt"
     runs-on: ubuntu-latest
