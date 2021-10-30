@@ -22,7 +22,7 @@ jobs:
       - name: Build debug
         run: ./gradlew assembleDebug
       - name: Unit-test
-        run: ./gradlew test
+        run: ./gradlew testDebug
   ktlint:
     name: "Check project by ktlint"
     runs-on: ubuntu-latest
