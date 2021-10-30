@@ -7,4 +7,9 @@
     <string name="shake2report_activity_status_screenshot">Save screenshot</string>
     <string name="shake2report_activity_status_zipping">Zipping logs and screenshot</string>
     <string name="shake2report_activity_status_sending">Sending to server</string>
+    <string name="shake2report_activity_report_title">Your report id is</string>
+    <string name="shake2report_activity_report_click">Click to copy</string>
+    <string name="shake2report_activity_btn_close">Close</string>
+    <string name="shake2report_copy_sentry_title">Sentry Report ID</string>
+    <string name="shake2report_copy_sentry_copy_toast">Copy to clipboard</string>
 </resources>

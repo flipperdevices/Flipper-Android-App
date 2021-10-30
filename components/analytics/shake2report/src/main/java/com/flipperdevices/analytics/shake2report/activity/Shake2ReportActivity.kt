@@ -1,21 +1,27 @@
 package com.flipperdevices.analytics.shake2report.activity
 
 import android.app.Application
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.view.View
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.flipperdevices.analytics.shake2report.R
 import com.flipperdevices.analytics.shake2report.Shake2Report
 import com.flipperdevices.analytics.shake2report.Shake2ReportApi
 import com.flipperdevices.analytics.shake2report.databinding.ActivityShake2reportBinding
 import com.flipperdevices.analytics.shake2report.helper.Shake2ReportDialog
+import com.flipperdevices.core.utils.toast
 import io.sentry.Attachment
 import io.sentry.Sentry
 import io.sentry.SentryEvent
 import io.sentry.SentryLevel
 import io.sentry.protocol.Message
+import io.sentry.protocol.SentryId
 import java.io.File
 import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.Dispatchers
@@ -41,6 +47,14 @@ class Shake2ReportActivity : AppCompatActivity() {
         shake2Report = Shake2ReportApi.instance
             ?: Shake2ReportApi.initAndGet(applicationContext as Application)
 
+        binding.closeBtn.setOnClickListener {
+            finish()
+        }
+        binding.reportIdArea.setOnClickListener { view ->
+            copyToClipboard(binding.reportId.text)
+            toast(R.string.shake2report_copy_sentry_copy_toast)
+        }
+
         Shake2ReportDialog.show(this, onCancel = {
             finish()
         }, onSuccess = {
@@ -55,8 +69,8 @@ class Shake2ReportActivity : AppCompatActivity() {
             reportStatus(R.string.shake2report_activity_status_zipping)
             val file = compressLogFolder()
             reportStatus(R.string.shake2report_activity_status_sending)
-            sendingReport(file)
-            finishInternal()
+            val id = sendingReport(file)
+            finishInternal(id)
         }
     }
 
@@ -89,25 +103,41 @@ class Shake2ReportActivity : AppCompatActivity() {
         }
     }
 
-    private suspend fun sendingReport(logZip: File) = withContext(Dispatchers.IO) {
+    private suspend fun sendingReport(logZip: File): String = withContext(Dispatchers.IO) {
         val event = SentryEvent()
         event.level = SentryLevel.ERROR
         event.message =
             Message().apply { message = "Error via shake2report ${System.currentTimeMillis()}" }
 
+        lateinit var sentryId: SentryId
         Sentry.withScope { scope ->
             scope.addAttachment(Attachment(logZip.absolutePath))
-            Sentry.captureEvent(event)
+            sentryId = Sentry.captureEvent(event)
             Sentry.flush(SENTRY_TIMEOUT_MS)
             scope.clearAttachments()
         }
+        return@withContext sentryId.toString()
     }
 
     private suspend fun reportStatus(@StringRes stringResId: Int) = withContext(Dispatchers.Main) {
         binding.status.setText(stringResId)
     }
 
-    private suspend fun finishInternal() = withContext(Dispatchers.Main) {
-        finish()
+    private suspend fun finishInternal(id: String) = withContext(Dispatchers.Main) {
+        binding.progressBlock.visibility = View.GONE
+        binding.reportBlock.visibility = View.VISIBLE
+        binding.closeBtn.visibility = View.VISIBLE
+        binding.reportId.text = id
+    }
+
+    private fun copyToClipboard(id: CharSequence) {
+        val clipboardManager = ContextCompat
+            .getSystemService(this, ClipboardManager::class.java)
+        val clipData = ClipData.newHtmlText(
+            getString(R.string.shake2report_copy_sentry_title),
+            id,
+            "<code>$id</code>"
+        )
+        clipboardManager?.setPrimaryClip(clipData)
     }
 }
