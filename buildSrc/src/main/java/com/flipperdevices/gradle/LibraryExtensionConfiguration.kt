@@ -27,23 +27,14 @@ private fun LibraryExtension.configureBuildTypes() {
             buildConfigField("boolean", "INTERNAL", "true")
         }
         container.maybeCreate("internal").apply {
+            setMatchingFallbacks("debug")
             buildConfigField("boolean", "INTERNAL", "true")
-            isMinifyEnabled = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
             consumerProguardFiles(
                 "proguard-rules.pro"
             )
         }
         container.maybeCreate("release").apply {
             buildConfigField("boolean", "INTERNAL", "false")
-            isMinifyEnabled = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
             consumerProguardFiles(
                 "proguard-rules.pro"
             )

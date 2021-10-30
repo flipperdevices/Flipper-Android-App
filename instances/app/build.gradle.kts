@@ -17,8 +17,7 @@ dependencies {
     implementation(project(":components:filemanager:impl"))
     implementation(project(":components:bridge:service:api"))
     implementation(project(":components:bridge:service:impl"))
-    debugImplementation(project(":components:analytics:shake2report"))
-    add("internalImplementation", project(":components:analytics:shake2report"))
+    implementation(project(":components:analytics:shake2report"))
 
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.CORE_KTX)
