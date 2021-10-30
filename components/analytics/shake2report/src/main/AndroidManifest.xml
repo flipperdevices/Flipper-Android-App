@@ -1,0 +1,9 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        package="com.flipperdevices.analytics.shake2report">
+
+    <application>
+        <meta-data
+                android:name="io.sentry.dsn"
+                android:value="https://f1b2e9d3d9f24d78b49f743d9e21642c@o1054712.ingest.sentry.io/6040279" />
+    </application>
+</manifest>

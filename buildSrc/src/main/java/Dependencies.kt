@@ -26,6 +26,7 @@ object Versions {
     const val JUNIT = "4.12"
 
     const val TIMBER = "4.7.1"
+    const val TREESSENCE = "1.0.5"
     const val DAGGER = "2.38.1"
     const val CICERONE = "7.1"
 
@@ -40,6 +41,9 @@ object Versions {
     const val LOTTIE = "4.2.0"
 
     const val PROTOBUF = "3.19.0"
+
+    const val SENTRY = "5.2.4"
+    const val SEISMIC = "1.0.3"
 }
 
 object GradlePlugins {
@@ -109,6 +113,12 @@ object Libs {
     const val PROTOBUF_GROUP = "com.google.protobuf"
     const val PROTOBUF_KOTLIN = "com.google.protobuf:protobuf-kotlin:${Versions.PROTOBUF}"
     const val PROTOBUF_PROTOC = "com.google.protobuf:protoc:${Versions.PROTOBUF}"
+
+    // Bug report dependencies
+    const val SENTRY = "io.sentry:sentry-android:${Versions.SENTRY}"
+    const val SENTRY_TIMBER = "io.sentry:sentry-android-timber:${Versions.SENTRY}"
+    const val SEISMIC = "com.squareup:seismic:${Versions.SEISMIC}"
+    const val TREESSENCE = "com.github.bastienpaulfr:Treessence:${Versions.TREESSENCE}"
 }
 
 object TestingLib {
