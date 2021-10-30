@@ -4,4 +4,7 @@
     <string name="shake2report_dialog_cancel">Cancel</string>
     <string name="shake2report_dialog_ok">Yes</string>
     <string name="shake2report_activity_title">Sending report…</string>
+    <string name="shake2report_activity_status_screenshot">Save screenshot</string>
+    <string name="shake2report_activity_status_zipping">Zipping logs and screenshot</string>
+    <string name="shake2report_activity_status_sending">Sending to server</string>
 </resources>

@@ -42,8 +42,9 @@ object Versions {
 
     const val PROTOBUF = "3.19.0"
 
-    const val SENTRY = "5.2.4"
+    const val SENTRY = "5.3.0"
     const val SEISMIC = "1.0.3"
+    const val ZIP4J = "2.9.0"
 }
 
 object GradlePlugins {
@@ -119,6 +120,7 @@ object Libs {
     const val SENTRY_TIMBER = "io.sentry:sentry-android-timber:${Versions.SENTRY}"
     const val SEISMIC = "com.squareup:seismic:${Versions.SEISMIC}"
     const val TREESSENCE = "com.github.bastienpaulfr:Treessence:${Versions.TREESSENCE}"
+    const val ZIP4J = "net.lingala.zip4j:zip4j:${Versions.ZIP4J}"
 }
 
 object TestingLib {

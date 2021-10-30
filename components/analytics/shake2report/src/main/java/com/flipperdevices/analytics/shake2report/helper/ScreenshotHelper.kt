@@ -1,4 +1,4 @@
-package com.flipperdevices.analytics.shake2report
+package com.flipperdevices.analytics.shake2report.helper
 
 import android.app.Activity
 import android.app.Application

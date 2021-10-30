@@ -16,4 +16,7 @@ dependencies {
 
     implementation(Libs.SEISMIC)
     implementation(Libs.TREESSENCE)
+    implementation(Libs.SENTRY)
+    implementation(Libs.SENTRY_TIMBER)
+    implementation(Libs.ZIP4J)
 }
