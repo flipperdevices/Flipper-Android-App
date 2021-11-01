@@ -58,7 +58,7 @@ class FlipperBleManagerImpl constructor(
     }
 
     override fun log(priority: Int, message: String) {
-        info { message }
+        info { "From BleManager: $message" }
     }
 
     override fun getGattCallback(): BleManagerGattCallback =
