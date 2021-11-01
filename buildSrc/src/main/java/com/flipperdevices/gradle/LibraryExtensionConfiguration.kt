@@ -28,6 +28,8 @@ private fun LibraryExtension.configureBuildTypes() {
         }
         container.maybeCreate("internal").apply {
             setMatchingFallbacks("debug")
+            sourceSets.getByName(this.name).setRoot("src/debug")
+
             buildConfigField("boolean", "INTERNAL", "true")
             consumerProguardFiles(
                 "proguard-rules.pro"
