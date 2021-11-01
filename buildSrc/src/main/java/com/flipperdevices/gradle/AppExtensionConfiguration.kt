@@ -32,6 +32,8 @@ private fun AppExtension.configureBuildTypes() {
         }
         container.maybeCreate("internal").apply {
             setMatchingFallbacks("debug")
+            sourceSets.getByName(this.name).setRoot("src/debug")
+
             buildConfigField("boolean", "INTERNAL", "true")
             isMinifyEnabled = true
             isShrinkResources = true
