@@ -2,8 +2,8 @@ package com.flipperdevices.pair.impl.navigation.machine
 
 import android.content.Context
 import android.os.Build
+import com.flipperdevices.bottombar.api.BottomNavigationActivityApi
 import com.flipperdevices.bridge.api.utils.DeviceFeatureHelper
-import com.flipperdevices.core.api.BottomNavigationActivityApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.pair.impl.navigation.models.PairNavigationScreens
 import com.flipperdevices.pair.impl.navigation.models.PairScreenState

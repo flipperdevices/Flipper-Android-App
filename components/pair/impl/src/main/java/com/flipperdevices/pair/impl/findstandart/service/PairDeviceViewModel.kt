@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.manager.delegates.FlipperConnectionInformationApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.ComponentHolder
-import com.flipperdevices.core.view.LifecycleViewModel
+import com.flipperdevices.core.ui.LifecycleViewModel
 import com.flipperdevices.pair.impl.di.PairComponent
 import com.flipperdevices.pair.impl.model.findcompanion.PairingState
 import javax.inject.Inject

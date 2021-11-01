@@ -8,15 +8,28 @@ plugins {
 apply<com.flipperdevices.gradle.ConfigurationPlugin>()
 
 dependencies {
-    implementation(project(":components:core"))
+    implementation(project(":components:core:di"))
+    implementation(project(":components:core:ktx"))
+    implementation(project(":components:core:log"))
+    implementation(project(":components:core:navigation"))
+    implementation(project(":components:core:preference"))
+    implementation(project(":components:core:ui"))
+
     implementation(project(":components:pair:api"))
     implementation(project(":components:pair:impl"))
-    implementation(project(":components:info"))
-    implementation(project(":components:bottombar"))
+
+    implementation(project(":components:info:api"))
+    implementation(project(":components:info:impl"))
+
+    implementation(project(":components:bottombar:api"))
+    implementation(project(":components:bottombar:impl"))
+
     implementation(project(":components:filemanager:api"))
     implementation(project(":components:filemanager:impl"))
+
     implementation(project(":components:bridge:service:api"))
     implementation(project(":components:bridge:service:impl"))
+
     implementation(project(":components:analytics:shake2report"))
 
     implementation(Libs.ANNOTATIONS)
@@ -27,4 +40,6 @@ dependencies {
 
     implementation(Libs.DAGGER)
     kapt(Libs.DAGGER_COMPILER)
+
+    implementation(Libs.CICERONE)
 }

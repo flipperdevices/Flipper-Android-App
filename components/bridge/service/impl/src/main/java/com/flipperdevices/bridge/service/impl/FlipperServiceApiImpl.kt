@@ -13,7 +13,7 @@ import com.flipperdevices.bridge.service.impl.delegate.FlipperServiceConnectDele
 import com.flipperdevices.bridge.service.impl.di.FlipperServiceComponent
 import com.flipperdevices.bridge.service.impl.provider.error.FlipperServiceErrorListener
 import com.flipperdevices.core.di.ComponentHolder
-import com.flipperdevices.core.utils.preference.FlipperSharedPreferencesKey
+import com.flipperdevices.core.preference.FlipperSharedPreferencesKey
 import javax.inject.Inject
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.launch

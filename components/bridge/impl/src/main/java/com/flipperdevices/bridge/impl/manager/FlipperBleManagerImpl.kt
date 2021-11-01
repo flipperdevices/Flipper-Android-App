@@ -8,7 +8,7 @@ import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.impl.manager.delegates.FlipperConnectionInformationApiImpl
 import com.flipperdevices.bridge.impl.manager.service.FlipperInformationApiImpl
 import com.flipperdevices.bridge.impl.manager.service.FlipperSerialApiImpl
-import com.flipperdevices.core.utils.newSingleThreadExecutor
+import com.flipperdevices.core.ktx.newSingleThreadExecutor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.flow.filter

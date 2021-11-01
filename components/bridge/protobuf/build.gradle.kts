@@ -12,7 +12,6 @@ plugins {
 apply<com.flipperdevices.gradle.ConfigurationPlugin>()
 
 dependencies {
-    implementation(project(":components:core"))
     api(Libs.PROTOBUF_JAVALITE)
     api(Libs.PROTOBUF_KOTLIN) {
         exclude(group = Libs.PROTOBUF_GROUP)

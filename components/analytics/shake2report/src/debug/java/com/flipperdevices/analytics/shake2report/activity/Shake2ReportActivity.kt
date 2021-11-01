@@ -15,7 +15,7 @@ import com.flipperdevices.analytics.shake2report.Shake2Report
 import com.flipperdevices.analytics.shake2report.Shake2ReportApi
 import com.flipperdevices.analytics.shake2report.databinding.ActivityShake2reportBinding
 import com.flipperdevices.analytics.shake2report.helper.Shake2ReportDialog
-import com.flipperdevices.core.utils.toast
+import com.flipperdevices.core.ktx.toast
 import io.sentry.Attachment
 import io.sentry.Sentry
 import io.sentry.SentryEvent

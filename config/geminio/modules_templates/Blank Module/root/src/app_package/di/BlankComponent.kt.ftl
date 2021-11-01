@@ -1,6 +1,6 @@
 package ${packageName}.di
 
-import com.flipperdevices.core.di.AppGraph
+import AppGraph
 import com.squareup.anvil.annotations.ContributesTo
 
 @ContributesTo(AppGraph::class)

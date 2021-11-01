@@ -1,7 +1,7 @@
 package com.flipperdevices.filemanager.impl.navigation
 
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.utils.withArgs
+import com.flipperdevices.core.ktx.withArgs
 import com.flipperdevices.filemanager.api.navigation.FileManagerScreenProvider
 import com.flipperdevices.filemanager.impl.fragment.FileManagerFragment
 import com.github.terrakok.cicerone.Screen

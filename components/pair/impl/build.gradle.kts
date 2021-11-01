@@ -15,7 +15,15 @@ android {
 }
 
 dependencies {
-    implementation(project(":components:core"))
+    implementation(project(":components:core:ui"))
+    implementation(project(":components:core:di"))
+    implementation(project(":components:core:ktx"))
+    implementation(project(":components:core:log"))
+    implementation(project(":components:core:preference"))
+    implementation(project(":components:core:navigation"))
+
+    implementation(project(":components:bottombar:api"))
+
     implementation(project(":components:bridge:api"))
     implementation(project(":components:bridge:provider"))
     implementation(project(":components:bridge:service:api"))
@@ -44,4 +52,6 @@ dependencies {
     implementation(Libs.NORDIC_BLE_KTX)
     implementation(Libs.NORDIC_BLE_COMMON)
     implementation(Libs.NORDIC_BLE_SCAN)
+
+    implementation(Libs.CICERONE)
 }
