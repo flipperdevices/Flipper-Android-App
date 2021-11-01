@@ -57,19 +57,19 @@ class Shake2ReportActivity : AppCompatActivity() {
 
         Shake2ReportDialog.show(this, onCancel = {
             finish()
-        }, onSuccess = {
-            startReportError()
+        }, onSuccess = { message ->
+            startReportError(message)
         })
     }
 
-    private fun startReportError() {
+    private fun startReportError(message: String) {
         lifecycleScope.launch {
             reportStatus(R.string.shake2report_activity_status_screenshot)
             saveScreenshotToLogFolder()
             reportStatus(R.string.shake2report_activity_status_zipping)
             val file = compressLogFolder()
             reportStatus(R.string.shake2report_activity_status_sending)
-            val id = sendingReport(file)
+            val id = sendingReport(message, file)
             finishInternal(id)
         }
     }
@@ -103,11 +103,17 @@ class Shake2ReportActivity : AppCompatActivity() {
         }
     }
 
-    private suspend fun sendingReport(logZip: File): String = withContext(Dispatchers.IO) {
+    private suspend fun sendingReport(
+        userInput: String,
+        logZip: File
+    ): String = withContext(Dispatchers.IO) {
         val event = SentryEvent()
         event.level = SentryLevel.ERROR
-        event.message =
-            Message().apply { message = "Error via shake2report ${System.currentTimeMillis()}" }
+        event.message = Message().apply {
+            message = if (userInput.isBlank()) {
+                "Error via shake2report ${System.currentTimeMillis()}"
+            } else userInput
+        }
 
         lateinit var sentryId: SentryId
         Sentry.withScope { scope ->

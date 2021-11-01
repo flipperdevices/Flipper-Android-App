@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="shake2report_dialog_title">Report error?</string>
+    <string name="shake2report_dialog_edittext_hint">Error message</string>
     <string name="shake2report_dialog_cancel">Cancel</string>
     <string name="shake2report_dialog_ok">Yes</string>
     <string name="shake2report_activity_title">Sending report…</string>
