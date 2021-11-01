@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.impl.manager
 
 import com.flipperdevices.bridge.impl.utils.ByteEndlessInputStream
+import com.flipperdevices.core.log.info
 import com.flipperdevices.protobuf.Flipper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ObsoleteCoroutinesApi
@@ -10,7 +11,6 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 
 const val TAG = "PeripheralResponseReader"
 
@@ -36,7 +36,7 @@ class PeripheralResponseReader(
     }
 
     fun onReceiveBytes(byteArray: ByteArray) {
-        Timber.i("Receive proto array with size: ${byteArray.size}")
+        info { "Receive proto array with size: ${byteArray.size}" }
         byteInputStream.write(byteArray)
     }
 

@@ -5,5 +5,5 @@ plugins {
 apply<com.flipperdevices.gradle.ConfigurationPlugin>()
 
 dependencies {
-    api(Libs.TIMBER)
+    implementation(Libs.TIMBER)
 }

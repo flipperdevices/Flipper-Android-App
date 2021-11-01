@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.scanner.DiscoveredBluetoothDevice
 import com.flipperdevices.bridge.provider.FlipperApi
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -13,9 +15,9 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 
-class BLEDeviceViewModel : ViewModel() {
+class BLEDeviceViewModel : ViewModel(), LogTagProvider {
+    override val TAG = "BLEDeviceViewModel"
     private val scanner = FlipperApi.flipperScanner
     private val scanStarted = AtomicBoolean(false)
     private val _state = MutableStateFlow(emptyList<DiscoveredBluetoothDevice>())
@@ -37,7 +39,7 @@ class BLEDeviceViewModel : ViewModel() {
     private suspend fun startBLEDiscover() = withContext(Dispatchers.IO) {
         scanner.findFlipperDevices()
             .catch { exception ->
-                Timber.e(exception, "Exception while search devices")
+                error(exception) { "Exception while search devices" }
             }
             .collect {
                 emitState(it)

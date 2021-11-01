@@ -1,9 +1,9 @@
 package com.flipperdevices.bridge.impl.manager
 
 import android.util.SparseArray
-import androidx.core.util.set
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.manager.service.FlipperSerialApi
+import com.flipperdevices.core.log.verbose
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.copy
 import java.io.ByteArrayOutputStream
@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 
 private typealias OnReceiveResponse = (Flipper.Main) -> Unit
 
@@ -39,7 +38,7 @@ class FlipperRequestApiImpl(
 
     @Suppress("BlockingMethodInNonBlockingContext")
     override fun request(command: Flipper.Main): Flow<Flipper.Main> = channelFlow {
-        Timber.i("Request $command")
+        verbose { "Request $command" }
         // Generate unique ID for each command
         val uniqueId = findEmptyId()
         val requestBytes = withContext(Dispatchers.IO) { // Launch in IO dispatcher

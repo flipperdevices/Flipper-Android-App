@@ -42,4 +42,5 @@ dependencies {
     kapt(Libs.DAGGER_COMPILER)
 
     implementation(Libs.CICERONE)
+    implementation(Libs.TIMBER)
 }

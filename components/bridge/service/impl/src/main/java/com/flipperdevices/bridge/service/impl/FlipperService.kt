@@ -9,11 +9,13 @@ import com.flipperdevices.bridge.service.impl.notification.FLIPPER_NOTIFICATION_
 import com.flipperdevices.bridge.service.impl.notification.FlipperNotificationHelper
 import com.flipperdevices.bridge.service.impl.provider.error.CompositeFlipperServiceErrorListener
 import com.flipperdevices.bridge.service.impl.provider.error.CompositeFlipperServiceErrorListenerImpl
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
-class FlipperService : LifecycleService() {
+class FlipperService : LifecycleService(), LogTagProvider {
+    override val TAG = "FlipperService-${hashCode()}"
     private val listener = CompositeFlipperServiceErrorListenerImpl()
     private val serviceApi by lazy { FlipperServiceApiImpl(this, this, listener) }
     private val binder by lazy { FlipperServiceBinder(serviceApi, listener) }
@@ -22,7 +24,7 @@ class FlipperService : LifecycleService() {
 
     override fun onCreate() {
         super.onCreate()
-        Timber.d("Start flipper service")
+        info { "Start flipper service" }
 
         flipperNotification = FlipperNotificationHelper(this)
         startForeground(FLIPPER_NOTIFICATION_ID, flipperNotification.show())
@@ -35,11 +37,12 @@ class FlipperService : LifecycleService() {
 
     override fun onBind(intent: Intent): Binder {
         super.onBind(intent)
+        info { "On bind $intent" }
         return binder
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Timber.d("Service receive command with action ${intent?.action}")
+        info { "Service receive command with action ${intent?.action}" }
 
         if (intent?.action == ACTION_STOP) {
             stopSelfInternal()
@@ -50,14 +53,16 @@ class FlipperService : LifecycleService() {
 
     override fun onDestroy() {
         super.onDestroy()
-        Timber.d("Destroy flipper service")
+        info { "On destroy service" }
     }
 
     private fun stopSelfInternal() = lifecycleScope.launch {
         if (!stopped.compareAndSet(false, true)) {
-            Timber.i("Service already stopped")
+            info { "Service already stopped" }
             return@launch
         }
+        info { "Service stop internal" }
+
         serviceApi.close()
         stopForeground(true)
         stopSelf()

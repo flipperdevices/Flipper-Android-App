@@ -5,6 +5,8 @@ import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.LifecycleViewModel
 import com.flipperdevices.filemanager.impl.di.FileManagerComponent
 import com.flipperdevices.filemanager.impl.model.FileItem
@@ -18,11 +20,12 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.runningReduce
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class FileManagerViewModel(
     private val directory: String
-) : LifecycleViewModel(), FlipperBleServiceConsumer {
+) : LifecycleViewModel(), FlipperBleServiceConsumer, LogTagProvider {
+    override val TAG = "FileManagerViewModel"
+
     @Inject
     lateinit var serviceProvider: FlipperServiceProvider
 
@@ -44,7 +47,7 @@ class FileManagerViewModel(
                     }
                 }
             ).map {
-                Timber.i("FileManagerFragment#$directory")
+                info { "FileManagerFragment#$directory" }
                 it.storageListResponse.fileList.map { file ->
                     FileItem(
                         fileName = file.name,
