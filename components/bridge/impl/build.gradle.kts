@@ -7,7 +7,9 @@ plugins {
 apply<com.flipperdevices.gradle.ConfigurationPlugin>()
 
 dependencies {
-    implementation(project(":components:core"))
+    implementation(project(":components:core:log"))
+    implementation(project(":components:core:ktx"))
+
     implementation(project(":components:bridge:api"))
     implementation(project(":components:bridge:protobuf"))
 

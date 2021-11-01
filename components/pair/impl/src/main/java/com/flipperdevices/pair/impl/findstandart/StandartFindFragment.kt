@@ -7,9 +7,9 @@ import androidx.core.content.edit
 import androidx.fragment.app.viewModels
 import com.flipperdevices.bridge.api.scanner.DiscoveredBluetoothDevice
 import com.flipperdevices.core.di.ComponentHolder
-import com.flipperdevices.core.utils.preference.FlipperSharedPreferences
-import com.flipperdevices.core.utils.preference.FlipperSharedPreferencesKey
-import com.flipperdevices.core.view.ComposeFragment
+import com.flipperdevices.core.preference.FlipperSharedPreferences
+import com.flipperdevices.core.preference.FlipperSharedPreferencesKey
+import com.flipperdevices.core.ui.ComposeFragment
 import com.flipperdevices.pair.impl.di.PairComponent
 import com.flipperdevices.pair.impl.findstandart.compose.ComposeFindDevice
 import com.flipperdevices.pair.impl.findstandart.service.BLEDeviceViewModel

@@ -5,7 +5,7 @@ import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.ComponentHolder
-import com.flipperdevices.core.view.LifecycleViewModel
+import com.flipperdevices.core.ui.LifecycleViewModel
 import com.flipperdevices.filemanager.impl.di.FileManagerComponent
 import com.flipperdevices.filemanager.impl.model.FileItem
 import com.flipperdevices.protobuf.main

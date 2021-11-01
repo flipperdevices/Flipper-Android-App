@@ -5,7 +5,6 @@ plugins {
 apply<com.flipperdevices.gradle.ConfigurationPlugin>()
 
 dependencies {
-    implementation(project(":components:core"))
     implementation(project(":components:bridge:api"))
 
     implementation(Libs.ANNOTATIONS)

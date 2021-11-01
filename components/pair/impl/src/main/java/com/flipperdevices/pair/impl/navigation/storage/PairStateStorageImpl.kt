@@ -6,7 +6,7 @@ import androidx.core.content.edit
 import com.flipperdevices.bridge.api.utils.DeviceFeatureHelper
 import com.flipperdevices.bridge.api.utils.PermissionHelper
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.utils.preference.FlipperSharedPreferencesKey
+import com.flipperdevices.core.preference.FlipperSharedPreferencesKey
 import com.flipperdevices.pair.impl.navigation.models.PairScreenState
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject

@@ -3,8 +3,8 @@ package com.flipperdevices.pair.impl.api
 import android.content.Context
 import android.content.Intent
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.utils.preference.FlipperSharedPreferences
-import com.flipperdevices.core.utils.preference.FlipperSharedPreferencesKey
+import com.flipperdevices.core.preference.FlipperSharedPreferences
+import com.flipperdevices.core.preference.FlipperSharedPreferencesKey
 import com.flipperdevices.pair.api.PairComponentApi
 import com.flipperdevices.pair.api.PairScreenArgument
 import com.flipperdevices.pair.impl.PairScreenActivity

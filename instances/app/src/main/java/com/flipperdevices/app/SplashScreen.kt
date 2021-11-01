@@ -3,7 +3,7 @@ package com.flipperdevices.app
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.flipperdevices.app.di.MainComponent
-import com.flipperdevices.core.api.BottomNavigationActivityApi
+import com.flipperdevices.bottombar.api.BottomNavigationActivityApi
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.pair.api.PairComponentApi
 import javax.inject.Inject

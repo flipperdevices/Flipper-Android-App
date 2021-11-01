@@ -5,7 +5,7 @@ plugins {
 apply<com.flipperdevices.gradle.ConfigurationPlugin>()
 
 dependencies {
-    implementation(project(":components:core"))
+    implementation(project(":components:core:ktx"))
 
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.APPCOMPAT)

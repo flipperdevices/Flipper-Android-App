@@ -12,7 +12,7 @@ apply<com.flipperdevices.gradle.ComposerPlugin>()
 </#if>
 
 dependencies {
-    implementation(project(":components:core"))
+
 
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.APPCOMPAT)

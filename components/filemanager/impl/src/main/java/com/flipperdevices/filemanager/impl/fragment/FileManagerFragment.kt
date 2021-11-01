@@ -6,7 +6,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.fragment.app.viewModels
 import com.flipperdevices.core.di.ComponentHolder
-import com.flipperdevices.core.view.ComposeFragment
+import com.flipperdevices.core.ui.ComposeFragment
 import com.flipperdevices.filemanager.api.navigation.FileManagerScreenProvider
 import com.flipperdevices.filemanager.impl.composable.ComposableFileManager
 import com.flipperdevices.filemanager.impl.di.FileManagerComponent
