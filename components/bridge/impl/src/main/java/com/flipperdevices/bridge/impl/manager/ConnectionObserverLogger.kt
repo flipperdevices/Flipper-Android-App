@@ -1,31 +1,33 @@
 package com.flipperdevices.bridge.impl.manager
 
 import android.bluetooth.BluetoothDevice
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import no.nordicsemi.android.ble.observer.ConnectionObserver
-import timber.log.Timber
 
-class ConnectionObserverLogger : ConnectionObserver {
+class ConnectionObserverLogger : ConnectionObserver, LogTagProvider {
+    override val TAG = "ConnectionObserverLogger"
     override fun onDeviceConnecting(device: BluetoothDevice) {
-        Timber.i("#onDeviceConnecting")
+        info { "#onDeviceConnecting $device" }
     }
 
     override fun onDeviceConnected(device: BluetoothDevice) {
-        Timber.i("#onDeviceConnected")
+        info { "#onDeviceConnected $device" }
     }
 
     override fun onDeviceFailedToConnect(device: BluetoothDevice, reason: Int) {
-        Timber.i("#onDeviceFailedToConnect")
+        info { "#onDeviceFailedToConnect $device, reason: $reason" }
     }
 
     override fun onDeviceReady(device: BluetoothDevice) {
-        Timber.i("#onDeviceReady")
+        info { "#onDeviceReady $device" }
     }
 
     override fun onDeviceDisconnecting(device: BluetoothDevice) {
-        Timber.i("#onDeviceDisconnecting")
+        info { "#onDeviceDisconnecting $device" }
     }
 
     override fun onDeviceDisconnected(device: BluetoothDevice, reason: Int) {
-        Timber.i("#onDeviceDisconnected")
+        info { "#onDeviceDisconnected $device, reason: $reason" }
     }
 }

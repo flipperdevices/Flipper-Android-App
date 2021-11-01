@@ -15,6 +15,7 @@ dependencies {
     implementation(Libs.LIFECYCLE_VIEWMODEL_KTX)
 
     implementation(Libs.SEISMIC)
+    implementation(Libs.TIMBER)
     implementation(Libs.TREESSENCE)
     implementation(Libs.SENTRY)
     implementation(Libs.SENTRY_TIMBER)

@@ -9,6 +9,9 @@ import com.flipperdevices.bridge.impl.manager.delegates.FlipperConnectionInforma
 import com.flipperdevices.bridge.impl.manager.service.FlipperInformationApiImpl
 import com.flipperdevices.bridge.impl.manager.service.FlipperSerialApiImpl
 import com.flipperdevices.core.ktx.newSingleThreadExecutor
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.debug
+import com.flipperdevices.core.log.info
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.flow.filter
@@ -16,13 +19,13 @@ import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.withContext
 import no.nordicsemi.android.ble.ktx.state.ConnectionState
 import no.nordicsemi.android.ble.ktx.stateAsFlow
-import timber.log.Timber
 
 @Suppress("BlockingMethodInNonBlockingContext")
 class FlipperBleManagerImpl constructor(
     context: Context,
     scope: CoroutineScope
-) : UnsafeBleManager(context), FlipperBleManager {
+) : UnsafeBleManager(context), FlipperBleManager, LogTagProvider {
+    override val TAG = "FlipperBleManager"
     private val bleDispatcher = newSingleThreadExecutor("FlipperBleManagerImpl")
         .asCoroutineDispatcher()
 
@@ -36,7 +39,7 @@ class FlipperBleManagerImpl constructor(
 
     init {
         setConnectionObserver(ConnectionObserverLogger())
-        Timber.i("FlipperBleManagerImpl: ${this.hashCode()}")
+        info { "FlipperBleManagerImpl: ${this.hashCode()}" }
     }
 
     override suspend fun disconnectDevice() = withContext(bleDispatcher) {
@@ -55,7 +58,7 @@ class FlipperBleManagerImpl constructor(
     }
 
     override fun log(priority: Int, message: String) {
-        Timber.d(message)
+        info { "From BleManager: $message" }
     }
 
     override fun getGattCallback(): BleManagerGattCallback =
@@ -66,7 +69,7 @@ class FlipperBleManagerImpl constructor(
 
         override fun initialize() {
             if (!isBonded) {
-                Timber.i("Start bond insecure")
+                info { "Start bond insecure" }
                 createBondInsecure().enqueue()
             }
         }
@@ -83,7 +86,7 @@ class FlipperBleManagerImpl constructor(
         override fun isRequiredServiceSupported(gatt: BluetoothGatt): Boolean {
             gatt.services.forEach { service ->
                 service.characteristics.forEach {
-                    Timber.d("Characteristic for service ${service.uuid}: ${it.uuid}")
+                    debug { "Characteristic for service ${service.uuid}: ${it.uuid}" }
                 }
             }
 

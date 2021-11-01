@@ -21,6 +21,8 @@ import androidx.core.content.edit
 import androidx.fragment.app.viewModels
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.preference.FlipperSharedPreferences
 import com.flipperdevices.core.preference.FlipperSharedPreferencesKey
 import com.flipperdevices.core.ui.ComposeFragment
@@ -32,10 +34,11 @@ import com.flipperdevices.pair.impl.fragments.common.BluetoothEnableHelper
 import com.flipperdevices.pair.impl.model.findcompanion.PairingState
 import com.flipperdevices.pair.impl.navigation.machine.PairScreenStateDispatcher
 import javax.inject.Inject
-import timber.log.Timber
 
 @RequiresApi(Build.VERSION_CODES.O)
-class CompanionFindFragment : ComposeFragment() {
+class CompanionFindFragment : ComposeFragment(), LogTagProvider {
+    override val TAG = "CompanionFindFragment"
+
     @Inject
     lateinit var stateDispatcher: PairScreenStateDispatcher
 
@@ -152,9 +155,9 @@ class CompanionFindFragment : ComposeFragment() {
                 }
 
                 override fun onFailure(error: CharSequence) {
-                    val errorText = "$error\n${getString(R.string.pair_companion_error_try_again)}"
+                    val errorText = getString(R.string.pair_companion_error_try_again)
                     pairDeviceViewModel.onFailedCompanionFinding(errorText)
-                    Timber.e(error.toString())
+                    error { error.toString() }
                 }
             },
             null

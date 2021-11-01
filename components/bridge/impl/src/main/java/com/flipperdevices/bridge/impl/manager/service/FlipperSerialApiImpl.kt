@@ -5,14 +5,16 @@ import android.bluetooth.BluetoothGattService
 import com.flipperdevices.bridge.api.manager.service.FlipperSerialApi
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.impl.manager.UnsafeBleManager
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class FlipperSerialApiImpl(
     private val scope: CoroutineScope
-) : FlipperSerialApi, BluetoothGattServiceWrapper {
+) : FlipperSerialApi, BluetoothGattServiceWrapper, LogTagProvider {
+    override val TAG = "FlipperSerialApi"
     private val receiveBytesFlow = MutableSharedFlow<ByteArray>()
 
     // Store bytes which pending for sending to Flipper Zero device
@@ -31,7 +33,7 @@ class FlipperSerialApiImpl(
     override fun initialize(bleManager: UnsafeBleManager) {
         bleManagerInternal = bleManager
         bleManager.setNotificationCallbackUnsafe(serialRxCharacteristic).with { _, data ->
-            Timber.i("Receive serial data")
+            info { "Receive serial data ${data.value?.size}" }
             val bytes = data.value ?: return@with
             scope.launch {
                 receiveBytesFlow.emit(bytes)

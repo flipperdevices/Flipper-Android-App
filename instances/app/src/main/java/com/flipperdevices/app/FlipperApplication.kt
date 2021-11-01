@@ -4,6 +4,7 @@ import android.app.Application
 import com.flipperdevices.analytics.shake2report.Shake2ReportApi
 import com.flipperdevices.app.di.DaggerAppComponent
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.log.info
 import timber.log.Timber
 
 class FlipperApplication : Application() {
@@ -18,6 +19,6 @@ class FlipperApplication : Application() {
             Shake2ReportApi.init(this)
         }
 
-        Timber.i("Start Flipper Application with version ${BuildConfig.VERSION_NAME}")
+        info { "Start Flipper Application with version ${BuildConfig.VERSION_NAME}" }
     }
 }

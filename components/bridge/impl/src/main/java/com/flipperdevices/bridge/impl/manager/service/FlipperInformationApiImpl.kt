@@ -6,13 +6,15 @@ import com.flipperdevices.bridge.api.manager.service.FlipperInformationApi
 import com.flipperdevices.bridge.api.model.FlipperGATTInformation
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.impl.manager.UnsafeBleManager
+import com.flipperdevices.core.log.LogTagProvider
 import java.util.UUID
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-import timber.log.Timber
 
-class FlipperInformationApiImpl : BluetoothGattServiceWrapper, FlipperInformationApi {
+class FlipperInformationApiImpl :
+    BluetoothGattServiceWrapper, FlipperInformationApi, LogTagProvider {
+    override val TAG = "FlipperInformationApi"
     private val informationState = MutableStateFlow(FlipperGATTInformation())
     private var infoCharacteristics = mutableMapOf<UUID, BluetoothGattCharacteristic>()
 
@@ -21,13 +23,8 @@ class FlipperInformationApiImpl : BluetoothGattServiceWrapper, FlipperInformatio
     }
 
     override fun initialize(bleManager: UnsafeBleManager) {
-        if (infoCharacteristics == null) {
-            Timber.e("Info characteristics can't be null on this stage")
-            return
-        }
-
         bleManager.readCharacteristicUnsafe(
-            infoCharacteristics!![Constants.BLEInformationService.MANUFACTURER]
+            infoCharacteristics[Constants.BLEInformationService.MANUFACTURER]
         ).with { _, data ->
             val content = data.value ?: return@with
             informationState.update {
@@ -35,7 +32,7 @@ class FlipperInformationApiImpl : BluetoothGattServiceWrapper, FlipperInformatio
             }
         }.enqueue()
         bleManager.readCharacteristicUnsafe(
-            infoCharacteristics!![Constants.GenericService.DEVICE_NAME]
+            infoCharacteristics[Constants.GenericService.DEVICE_NAME]
         ).with { _, data ->
             val content = data.value ?: return@with
             informationState.update {
@@ -43,7 +40,7 @@ class FlipperInformationApiImpl : BluetoothGattServiceWrapper, FlipperInformatio
             }
         }.enqueue()
         bleManager.readCharacteristicUnsafe(
-            infoCharacteristics!![Constants.BLEInformationService.HARDWARE_VERSION]
+            infoCharacteristics[Constants.BLEInformationService.HARDWARE_VERSION]
         ).with { _, data ->
             val content = data.value ?: return@with
             informationState.update {
@@ -51,7 +48,7 @@ class FlipperInformationApiImpl : BluetoothGattServiceWrapper, FlipperInformatio
             }
         }.enqueue()
         bleManager.readCharacteristicUnsafe(
-            infoCharacteristics!![Constants.BLEInformationService.SOFTWARE_VERSION]
+            infoCharacteristics[Constants.BLEInformationService.SOFTWARE_VERSION]
         ).with { _, data ->
             val content = data.value ?: return@with
             informationState.update {
