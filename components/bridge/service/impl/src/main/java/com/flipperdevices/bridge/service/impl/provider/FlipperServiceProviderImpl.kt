@@ -137,9 +137,8 @@ class FlipperServiceProviderImpl @Inject constructor(
     @Synchronized
     private fun stopServiceInternal() {
         info { "Internal stop service" }
-        serviceBinder?.unsubscribe(this)
-        serviceBinder = null
-        applicationContext.unbindService(this)
+        resetInternalWithoutInvalidate()
+
         val stopIntent = Intent(applicationContext, FlipperService::class.java).apply {
             action = FlipperService.ACTION_STOP
         }
@@ -148,11 +147,17 @@ class FlipperServiceProviderImpl @Inject constructor(
 
     @Synchronized
     private fun resetInternal() {
-        info { "Reset binder internal, unsubscribe and invalidate" }
+        info { "Reset binder with invalidate" }
+        resetInternalWithoutInvalidate()
+        invalidate()
+    }
+
+    private fun resetInternalWithoutInvalidate() {
+        info { "Reset binder internal, unsubscribe" }
+        applicationContext.unbindService(this)
         serviceBinder?.unsubscribe(this)
         serviceBinder = null
         isRequestedForBind = false
-        invalidate()
     }
 
     override fun onError(error: FlipperBleServiceError) {

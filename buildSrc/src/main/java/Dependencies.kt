@@ -15,15 +15,17 @@ object Versions {
     const val ANDROID_ANNOTATIONS = "1.2.0"
     const val ANDROID_MATERIAL = "1.2.0"
     const val ANDROID_JETPACK_COMPOSE = "1.0.4"
-    const val ANDROID_LIFECYCLE = "2.3.1"
+    const val ANDROID_LIFECYCLE = "2.4.0"
 
     const val FRAGMENT_KTX = "1.3.6"
     const val ACTIVITY_KTX = "1.3.1"
 
+    // Test
     const val ANDROIDX_TEST = "1.2.0"
-    const val ANDROIDX_TEST_EXT = "1.1.1"
-    const val ESPRESSO_CORE = "3.2.0"
+    const val ANDROIDX_TEST_EXT = "1.1.3"
     const val JUNIT = "4.12"
+    const val MOCKITO_KOTLIN = "4.0.0"
+    const val ROBOELECTRIC = "4.6.1"
 
     const val TIMBER = "4.7.1"
     const val TREESSENCE = "1.0.5"
@@ -128,7 +130,8 @@ object TestingLib {
 
     const val ANDROIDX_TEST_RUNNER = "androidx.test:runner:${Versions.ANDROIDX_TEST}"
     const val ANDROIDX_TEST_EXT_JUNIT = "androidx.test.ext:junit:${Versions.ANDROIDX_TEST_EXT}"
-    const val ESPRESSO_CORE = "androidx.test.espresso:espresso-core:${Versions.ESPRESSO_CORE}"
-    const val ROBOLECTRIC = "org.robolectric:robolectric:4.6.1"
-    const val ASSERTJ = "org.assertj:assertj-core:3.6.2"
+    const val MOCKITO = "org.mockito.kotlin:mockito-kotlin:${Versions.MOCKITO_KOTLIN}"
+    const val ROBOELECTRIC = "org.robolectric:robolectric:${Versions.ROBOELECTRIC}"
+    const val LIFECYCLE =
+        "androidx.lifecycle:lifecycle-runtime-testing:${Versions.ANDROID_LIFECYCLE}"
 }

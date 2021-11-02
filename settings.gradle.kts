@@ -15,6 +15,7 @@ include(":components:core:log")
 include(":components:core:navigation")
 include(":components:core:preference")
 include(":components:core:ui")
+include(":components:core:test")
 
 include(":components:pair:api")
 include(":components:pair:impl")

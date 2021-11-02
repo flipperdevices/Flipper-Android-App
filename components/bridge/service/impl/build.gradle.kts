@@ -6,6 +6,12 @@ plugins {
 }
 apply<com.flipperdevices.gradle.ConfigurationPlugin>()
 
+android {
+    testOptions {
+        unitTests.isIncludeAndroidResources = true
+    }
+}
+
 dependencies {
     implementation(project(":components:core:di"))
     implementation(project(":components:core:log"))
@@ -33,4 +39,11 @@ dependencies {
 
     implementation(Libs.DAGGER)
     kapt(Libs.DAGGER_COMPILER)
+
+    testImplementation(project(":components:core:test"))
+    testImplementation(TestingLib.JUNIT)
+    testImplementation(TestingLib.MOCKITO)
+    testImplementation(TestingLib.ANDROIDX_TEST_EXT_JUNIT)
+    testImplementation(TestingLib.ROBOELECTRIC)
+    testImplementation(TestingLib.LIFECYCLE)
 }

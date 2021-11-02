@@ -7,7 +7,7 @@ class FileManagerViewModelFactory(
     private val path: String
 ) : ViewModelProvider.NewInstanceFactory() {
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return FileManagerViewModel(path) as T
     }
 }
