@@ -1,11 +1,13 @@
 package com.flipperdevices.pair.impl.findstandart.service
 
+import android.app.Application
 import android.bluetooth.BluetoothDevice
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.manager.delegates.FlipperConnectionInformationApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.ComponentHolder
-import com.flipperdevices.core.ui.LifecycleViewModel
+import com.flipperdevices.core.ui.AndroidLifecycleViewModel
+import com.flipperdevices.pair.impl.R
 import com.flipperdevices.pair.impl.di.PairComponent
 import com.flipperdevices.pair.impl.model.findcompanion.PairingState
 import javax.inject.Inject
@@ -15,7 +17,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import no.nordicsemi.android.ble.ktx.state.ConnectionState
 
-class PairDeviceViewModel : LifecycleViewModel() {
+class PairDeviceViewModel(application: Application) : AndroidLifecycleViewModel(application) {
     @Inject
     lateinit var bleService: FlipperServiceProvider
     private var deviceInternal: BluetoothDevice? = null
@@ -32,7 +34,19 @@ class PairDeviceViewModel : LifecycleViewModel() {
         val device = deviceInternal ?: error("You need call #onDeviceFounded before")
         bleService.provideServiceApi(this) { serviceApi ->
             viewModelScope.launch {
-                serviceApi.reconnect(device)
+                @Suppress("TooGenericExceptionCaught")
+                try {
+                    serviceApi.reconnect(device)
+                } catch (connectException: Exception) {
+                    val message = connectException.localizedMessage
+                        ?: getApplication<Application>().getString(
+                            R.string.pair_companion_error_connect
+                        )
+                    onFailedCompanionFinding(message)
+                    com.flipperdevices.core.log.error(connectException) {
+                        "While we try connect to ${device.address}"
+                    }
+                }
                 subscribeToConnectionState(serviceApi.connectionInformationApi) {
                     onReady(device)
                 }

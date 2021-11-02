@@ -27,6 +27,7 @@
     <string name="pair_companion_error_return_not_ok">The system broke the connection process, try again</string>
     <string name="pair_companion_error_permission">On Android 12 and above we need permission to connect</string>
     <string name="pair_companion_error_return_device_null">The system returned an incorrect response. Please try again, or write to feedback@flipperzero.one if the problem repeat.</string>
+    <string name="pair_companion_error_connect">Device connection error</string>
     <string name="pair_tos_welcome">Welcome to Flipper Zero App</string>
     <string name="pair_tos_pic_welcome">Welcome to Flipper picture</string>
     <string name="pair_tos_title">Terms and conditions</string>
