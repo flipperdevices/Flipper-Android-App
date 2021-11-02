@@ -9,6 +9,7 @@ import com.flipperdevices.bridge.service.impl.notification.FLIPPER_NOTIFICATION_
 import com.flipperdevices.bridge.service.impl.notification.FlipperNotificationHelper
 import com.flipperdevices.bridge.service.impl.provider.error.CompositeFlipperServiceErrorListener
 import com.flipperdevices.bridge.service.impl.provider.error.CompositeFlipperServiceErrorListenerImpl
+import com.flipperdevices.bridge.service.impl.provider.lifecycle.FlipperServiceLifecycleListener
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import java.util.concurrent.atomic.AtomicBoolean
@@ -28,9 +29,7 @@ class FlipperService : LifecycleService(), LogTagProvider {
 
         flipperNotification = FlipperNotificationHelper(this)
         startForeground(FLIPPER_NOTIFICATION_ID, flipperNotification.show())
-        if (!BuildConfig.INTERNAL) {
-            flipperNotification.showStopButton()
-        }
+        flipperNotification.showStopButton()
 
         serviceApi.internalInit()
     }
@@ -64,8 +63,11 @@ class FlipperService : LifecycleService(), LogTagProvider {
         info { "Service stop internal" }
 
         serviceApi.close()
+        info { "Service api closed" }
         stopForeground(true)
         stopSelf()
+        info { "Called stopSelf and stopForeground" }
+        binder.listeners.removeAll { it.onInternalStop() }
     }
 
     companion object {
@@ -75,5 +77,7 @@ class FlipperService : LifecycleService(), LogTagProvider {
 
 class FlipperServiceBinder internal constructor(
     val serviceApi: FlipperServiceApi,
-    compositeListener: CompositeFlipperServiceErrorListener
-) : Binder(), CompositeFlipperServiceErrorListener by compositeListener
+    compositeListener: CompositeFlipperServiceErrorListener,
+    val listeners: MutableList<FlipperServiceLifecycleListener> = mutableListOf()
+) : Binder(),
+    CompositeFlipperServiceErrorListener by compositeListener

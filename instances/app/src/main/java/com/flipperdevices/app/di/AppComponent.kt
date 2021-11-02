@@ -2,6 +2,7 @@ package com.flipperdevices.app.di
 
 import android.content.Context
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.di.ApplicationParams
 import com.squareup.anvil.annotations.MergeComponent
 import dagger.BindsInstance
 import dagger.Component
@@ -18,6 +19,9 @@ import javax.inject.Singleton
 interface AppComponent {
     @Component.Factory
     interface Factory {
-        fun create(@BindsInstance context: Context): AppComponent
+        fun create(
+            @BindsInstance context: Context,
+            @BindsInstance applicationParams: ApplicationParams
+        ): AppComponent
     }
 }
