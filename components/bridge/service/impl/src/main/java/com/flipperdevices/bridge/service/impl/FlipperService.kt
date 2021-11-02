@@ -73,7 +73,7 @@ class FlipperService : LifecycleService(), LogTagProvider {
     }
 }
 
-class FlipperServiceBinder(
+class FlipperServiceBinder internal constructor(
     val serviceApi: FlipperServiceApi,
     compositeListener: CompositeFlipperServiceErrorListener
 ) : Binder(), CompositeFlipperServiceErrorListener by compositeListener

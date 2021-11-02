@@ -1,6 +1,6 @@
 plugins {
     // Be careful! See more in /buildSrc/src/main/java/Dependencies.kt#NOTE_CONFIGURATION_PLUGIN
-    id("org.jetbrains.kotlin.jvm") version "1.5.21"
+    id("org.jetbrains.kotlin.jvm") version "1.5.31"
 }
 
 repositories {
