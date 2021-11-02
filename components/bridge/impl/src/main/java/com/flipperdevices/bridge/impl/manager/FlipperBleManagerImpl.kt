@@ -15,7 +15,7 @@ import com.flipperdevices.core.log.info
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.single
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import no.nordicsemi.android.ble.ktx.state.ConnectionState
 import no.nordicsemi.android.ble.ktx.stateAsFlow
@@ -45,7 +45,7 @@ class FlipperBleManagerImpl constructor(
     override suspend fun disconnectDevice() = withContext(bleDispatcher) {
         disconnect().enqueue()
         // Wait until device is really disconnected
-        stateAsFlow().filter { it == ConnectionState.Disconnecting }.single()
+        stateAsFlow().filter { it is ConnectionState.Disconnected }.first()
         return@withContext
     }
 

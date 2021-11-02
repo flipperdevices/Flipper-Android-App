@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.service.impl.provider
 
 import android.content.Context
+import android.content.ServiceConnection
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.testing.TestLifecycleOwner
@@ -15,10 +16,12 @@ import org.junit.Before
 import org.junit.ClassRule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mockito.anyInt
 import org.mockito.Mockito.times
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
 import org.mockito.kotlin.clearInvocations
+import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
@@ -27,13 +30,19 @@ import org.robolectric.annotation.Config
 @Config(sdk = [30])
 @RunWith(AndroidJUnit4::class)
 class FlipperServiceProviderTest {
-    private val applicationContext = mock<Context>() {
-        on { packageName } doReturn "com.flipperdevices.bridge.service.impl.provider"
-    }
+    private lateinit var applicationContext: Context
     private lateinit var subject: FlipperServiceProviderImpl
+    private var serviceConnection: ServiceConnection? = null
 
     @Before
     fun setUp() {
+        applicationContext = mock() {
+            on { packageName } doReturn "com.flipperdevices.bridge.service.impl.provider"
+            on { bindService(any(), any(), anyInt()) } doAnswer {
+                serviceConnection = it.getArgument(1, ServiceConnection::class.java)
+                return@doAnswer true
+            }
+        }
         subject = FlipperServiceProviderImpl(applicationContext)
     }
 
@@ -79,7 +88,7 @@ class FlipperServiceProviderTest {
         val binder = FlipperServiceBinder(serverApi, mock())
 
         subject.provideServiceApi(consumer, lifecycleOwner)
-        subject.onServiceConnected(mock(), binder)
+        serviceConnection?.onServiceConnected(mock(), binder)
 
         verify(consumer).onServiceApiReady(serverApi)
     }
@@ -92,7 +101,7 @@ class FlipperServiceProviderTest {
         val binder = FlipperServiceBinder(serverApi, mock())
 
         subject.provideServiceApi(mock(), lifecycleOwner)
-        subject.onServiceConnected(mock(), binder)
+        serviceConnection?.onServiceConnected(mock(), binder)
         subject.provideServiceApi(secondConsumer, lifecycleOwner)
 
         verify(secondConsumer).onServiceApiReady(serverApi)
@@ -120,7 +129,10 @@ class FlipperServiceProviderTest {
         // Starting
         subject.provideServiceApi(firstConsumer, lifecycleOwner)
         verify(applicationContext).bindService(any(), any(), any())
-        subject.onServiceConnected(mock(), FlipperServiceBinder(firstServerApi, mock()))
+        serviceConnection?.onServiceConnected(
+            mock(),
+            FlipperServiceBinder(firstServerApi, mock())
+        )
         verify(firstConsumer).onServiceApiReady(firstServerApi)
 
         // Stopping..
@@ -132,7 +144,10 @@ class FlipperServiceProviderTest {
         // Starting...
         subject.provideServiceApi(secondConsumer, lifecycleOwner)
         verify(applicationContext).bindService(any(), any(), any())
-        subject.onServiceConnected(mock(), FlipperServiceBinder(secondServerApi, mock()))
+        serviceConnection?.onServiceConnected(
+            mock(),
+            FlipperServiceBinder(secondServerApi, mock())
+        )
 
         verify(secondConsumer).onServiceApiReady(secondServerApi)
     }
@@ -146,11 +161,36 @@ class FlipperServiceProviderTest {
         // Starting
         subject.provideServiceApi(consumer, lifecycleOwner)
         verify(applicationContext).bindService(any(), any(), any())
-        subject.onServiceConnected(mock(), FlipperServiceBinder(serverApi, mock()))
+        serviceConnection?.onServiceConnected(
+            mock(),
+            FlipperServiceBinder(serverApi, mock())
+        )
         verify(consumer).onServiceApiReady(serverApi)
 
         // Notify about service disconnected
-        subject.onServiceDisconnected(mock())
+        serviceConnection?.onServiceDisconnected(mock())
+
+        verify(applicationContext, times(2)).bindService(any(), any(), any())
+    }
+
+    @Test
+    fun `Recreate service on service destroy`() {
+        val consumer = mock<FlipperBleServiceConsumer>()
+        val consumerLifecycle = TestLifecycleOwner()
+        val serverApi = mock<FlipperServiceApi>()
+        val serviceBinder = FlipperServiceBinder(serverApi, mock())
+
+        // Starting
+        subject.provideServiceApi(consumer, consumerLifecycle)
+        verify(applicationContext).bindService(any(), any(), any())
+        serviceConnection?.onServiceConnected(
+            mock(),
+            serviceBinder
+        )
+        verify(consumer).onServiceApiReady(serverApi)
+
+        // Notify about service destroy
+        serviceBinder.listeners.removeAll { it.onInternalStop() }
 
         verify(applicationContext, times(2)).bindService(any(), any(), any())
     }

@@ -15,6 +15,7 @@ import com.flipperdevices.bridge.service.impl.provider.error.FlipperServiceError
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
+import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.FlipperSharedPreferencesKey
 import javax.inject.Inject
 import kotlinx.coroutines.TimeoutCancellationException
@@ -44,19 +45,24 @@ class FlipperServiceApiImpl(
     }
 
     fun internalInit() {
+        info { "Internal init and try connect" }
         connectToDeviceOnStartup()
     }
 
     override suspend fun reconnect(deviceId: String) {
+        info { "Reconnect to device $deviceId" }
         connectDelegate.reconnect(deviceId)
     }
 
     override suspend fun reconnect(device: BluetoothDevice) {
+        info { "Reconnect to device ${device.address}" }
         connectDelegate.reconnect(device)
     }
 
     suspend fun close() {
+        info { "Close manager and disconnect" }
         connectDelegate.disconnect()
+        info { "Disconnect successful, close manager" }
         bleManager.close()
     }
 
