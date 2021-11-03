@@ -24,17 +24,18 @@ jobs:
       - name: 'Set variables'
         id: vars
         run: |
-          echo "::set-output name=version::${VERSION}"
+          export $(cat .github/workflows/version.env | xargs)
+          echo "::set-output name=major_version::${MAJOR_VERSION}"
       - name: Generate build number
         id: buildnumber
         uses: einaregilsson/build-number@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build release
+      - name: Build internal release
         run: |
           ./gradlew :instances:app:assembleInternal :instances:app:bundleInternal \
             -Dversion_code=${{ steps.buildnumber.outputs.build_number }} \
-            -Dversion_name="${{ steps.vars.outputs.version }}.${{ steps.buildnumber.outputs.build_number }}"
+            -Dversion_name="${{ steps.vars.outputs.major_version }}.${{ steps.buildnumber.outputs.build_number }}"
       - name: Sign AAB
         id: sign_aab
         uses: r0adkll/sign-android-release@v1
@@ -107,7 +108,8 @@ jobs:
       - name: 'Set variables'
         id: vars
         run: |
-          echo "::set-output name=version::${VERSION}"
+          export $(cat .github/workflows/version.env | xargs)
+          echo "::set-output name=major_version::${MAJOR_VERSION}"
       - uses: actions/download-artifact@v2
         id: download
         with:
@@ -121,7 +123,7 @@ jobs:
           files: |
             ${{steps.download.outputs.download-path}}/flipper-zero.apk
             ${{steps.download.outputs.download-path}}/mapping.txt
-          tag_name: ${{ steps.vars.outputs.version }}.${{ github.run_number }}
-          name: Flipper App ${{ steps.vars.outputs.version }}.${{ github.run_number }}
+          tag_name: ${{ steps.vars.outputs.major_version }}.${{ github.run_number }}
+          name: Flipper App ${{ steps.vars.outputs.major_version }}.${{ github.run_number }}
           draft: false
           prerelease: true
