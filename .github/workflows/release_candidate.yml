@@ -46,6 +46,12 @@ jobs:
           alias: ${{ secrets.KEY_ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD }}
+      - name: Copy internal artifacts
+        run: |
+          mkdir artifacts
+          cp ${{ steps.sign_aab_internal.outputs.signedReleaseFile }} artifacts/flipper-zero-internal.aab
+          cp ${{ steps.sign_apk_internal.outputs.signedReleaseFile }} artifacts/flipper-zero-internal.apk
+          cp instances/app/build/outputs/mapping/internal/mapping.txt artifacts/mapping-internal.txt
       - name: Build production release
         run: |
           ./gradlew clean
@@ -70,15 +76,11 @@ jobs:
           alias: ${{ secrets.KEY_ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD }}
-      - name: Copy artifacts
+      - name: Copy release artifacts
         id: artifacts_copy
         run: |
-          mkdir artifacts
-          cp ${{ steps.sign_aab_internal.outputs.signedReleaseFile }} artifacts/flipper-zero-internal.aab
-          cp ${{ steps.sign_apk_internal.outputs.signedReleaseFile }} artifacts/flipper-zero-internal.apk
           cp ${{ steps.sign_aab_release.outputs.signedReleaseFile }} artifacts/flipper-zero-release.aab
           cp ${{ steps.sign_apk_release.outputs.signedReleaseFile }} artifacts/flipper-zero-release.apk
-          cp instances/app/build/outputs/mapping/internal/mapping.txt artifacts/mapping-internal.txt
           cp instances/app/build/outputs/mapping/release/mapping.txt artifacts/mapping-release.txt
           echo "::set-output name=path::artifacts/"
       - name: Upload Artifacts
