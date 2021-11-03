@@ -27,4 +27,6 @@ include(":components:info:api")
 include(":components:info:impl")
 
 include(":instances:app")
-include(":components:analytics:shake2report")
+include(":components:analytics:shake2report:api")
+include(":components:analytics:shake2report:noop")
+include(":components:analytics:shake2report:impl")
