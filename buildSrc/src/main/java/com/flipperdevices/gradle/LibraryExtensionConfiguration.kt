@@ -30,12 +30,18 @@ private fun LibraryExtension.configureBuildTypes() {
             setMatchingFallbacks("debug")
             sourceSets.getByName(this.name).setRoot("src/debug")
 
+            isMinifyEnabled = true
+            isShrinkResources = true
+
             buildConfigField("boolean", "INTERNAL", "true")
             consumerProguardFiles(
                 "proguard-rules.pro"
             )
         }
         container.maybeCreate("release").apply {
+            isMinifyEnabled = true
+            isShrinkResources = true
+
             buildConfigField("boolean", "INTERNAL", "false")
             consumerProguardFiles(
                 "proguard-rules.pro"
