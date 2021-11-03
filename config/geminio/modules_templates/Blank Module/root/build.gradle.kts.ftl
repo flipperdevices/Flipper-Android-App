@@ -12,7 +12,12 @@ apply<com.flipperdevices.gradle.ComposerPlugin>()
 </#if>
 
 dependencies {
-
+<#if shouldGenerateDI>
+    implementation(project(":components:core:di"))
+</#if>
+<#if needCompose>
+    implementation(project(":components:core:ui"))
+</#if>
 
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.APPCOMPAT)

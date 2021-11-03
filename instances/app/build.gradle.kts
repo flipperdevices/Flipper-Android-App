@@ -30,7 +30,10 @@ dependencies {
     implementation(project(":components:bridge:service:api"))
     implementation(project(":components:bridge:service:impl"))
 
-    implementation(project(":components:analytics:shake2report"))
+    implementation(project(":components:analytics:shake2report:api"))
+    releaseImplementation(project(":components:analytics:shake2report:noop"))
+    debugImplementation(project(":components:analytics:shake2report:impl"))
+    add("internalImplementation", project(":components:analytics:shake2report:impl"))
 
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.CORE_KTX)
