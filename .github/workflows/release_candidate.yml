@@ -28,12 +28,6 @@ jobs:
           ./gradlew :instances:app:assembleInternal :instances:app:bundleInternal \
             -Dversion_code=${{ steps.buildnumber.outputs.build_number }} \
             -Dversion_name="${{ steps.vars.outputs.major_version }}-internal-rc"
-      - name: Build production release
-        run: |
-          ./gradlew clean
-          ./gradlew :instances:app:assembleRelease :instances:app:bundleRelease \
-            -Dversion_code=${{ steps.buildnumber.outputs.build_number }} \
-            -Dversion_name="${{ steps.vars.outputs.major_version }}-rc"
       - name: Sign internal AAB
         id: sign_aab_internal
         uses: r0adkll/sign-android-release@v1
@@ -52,6 +46,12 @@ jobs:
           alias: ${{ secrets.KEY_ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD }}
+      - name: Build production release
+        run: |
+          ./gradlew clean
+          ./gradlew :instances:app:assembleRelease :instances:app:bundleRelease \
+            -Dversion_code=${{ steps.buildnumber.outputs.build_number }} \
+            -Dversion_name="${{ steps.vars.outputs.major_version }}-rc"
       - name: Sign release AAB
         id: sign_aab_release
         uses: r0adkll/sign-android-release@v1
