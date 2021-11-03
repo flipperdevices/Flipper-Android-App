@@ -31,7 +31,6 @@ private fun LibraryExtension.configureBuildTypes() {
             sourceSets.getByName(this.name).setRoot("src/debug")
 
             isMinifyEnabled = true
-            isShrinkResources = true
 
             buildConfigField("boolean", "INTERNAL", "true")
             consumerProguardFiles(
@@ -40,7 +39,6 @@ private fun LibraryExtension.configureBuildTypes() {
         }
         container.maybeCreate("release").apply {
             isMinifyEnabled = true
-            isShrinkResources = true
 
             buildConfigField("boolean", "INTERNAL", "false")
             consumerProguardFiles(
