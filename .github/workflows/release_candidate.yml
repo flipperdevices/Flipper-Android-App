@@ -1,0 +1,23 @@
+name: Pull Request CI
+
+on:
+  push:
+    branches:
+      - 'ci/rc_flow'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate build number
+        id: buildnumber
+        uses: einaregilsson/build-number@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: 'Set variables'
+        id: vars
+        run: |
+          export $(cat .github/workflows/version.env | xargs)
+          echo "::set-output name=major_version::${MAJOR_VERSION}"
+      - name: 'Version print'
+        run: echo "${{ steps.vars.outputs.major_version }}.${{ steps.buildnumber.outputs.build_number }}"

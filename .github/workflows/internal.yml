@@ -25,8 +25,16 @@ jobs:
         id: vars
         run: |
           echo "::set-output name=version::${VERSION}"
+      - name: Generate build number
+        id: buildnumber
+        uses: einaregilsson/build-number@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Build release
-        run: ./gradlew :instances:app:assembleInternal :instances:app:bundleInternal -Dversion_code=${{ github.run_number }} -Dversion_name="${{ steps.vars.outputs.version }}.${{ github.run_number }}"
+        run: |
+          ./gradlew :instances:app:assembleInternal :instances:app:bundleInternal \
+            -Dversion_code=${{ steps.buildnumber.outputs.build_number }} \
+            -Dversion_name="${{ steps.vars.outputs.version }}.${{ steps.buildnumber.outputs.build_number }}"
       - name: Sign AAB
         id: sign_aab
         uses: r0adkll/sign-android-release@v1
