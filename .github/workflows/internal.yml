@@ -105,6 +105,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: build_internal_release
     steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
       - name: 'Set variables'
         id: vars
         run: |

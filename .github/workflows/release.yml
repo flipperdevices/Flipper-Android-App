@@ -3,7 +3,7 @@ name: Build and publish Release
 on:
   push:
     branches:
-      - 'ci/rc_flow'
+      - 'master'
 
 jobs:
   build:
@@ -80,6 +80,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
       - name: 'Set variables'
         id: vars
         run: |
@@ -98,7 +101,7 @@ jobs:
             ${{steps.download.outputs.download-path}}/flipper-zero-release.aab
             ${{steps.download.outputs.download-path}}/flipper-zero-release.apk
             ${{steps.download.outputs.download-path}}/mapping-release.txt
-          tag_name: ${{ steps.vars.outputs.major_version }}-release
+          tag_name: ${{ steps.vars.outputs.major_version }}
           name: Flipper App ${{ steps.vars.outputs.major_version }}
           draft: false
           prerelease: false

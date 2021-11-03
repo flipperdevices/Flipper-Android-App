@@ -3,7 +3,7 @@ name: Build and publish Release Candidate
 on:
   push:
     branches:
-      - 'ci/rc_flow'
+      - 'rc'
 
 jobs:
   build:
