@@ -1,0 +1,13 @@
+name: Pull Request CI
+
+on:
+  push:
+    branches:
+      - 'ci/rc_flow'
+
+jobs:
+  build_internal_release:
+    name: Build Internal AAB and APK
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ${{ github.run_id }}
