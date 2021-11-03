@@ -98,7 +98,7 @@ jobs:
             ${{steps.download.outputs.download-path}}/flipper-zero-release.aab
             ${{steps.download.outputs.download-path}}/flipper-zero-release.apk
             ${{steps.download.outputs.download-path}}/mapping-release.txt
-          tag_name: ${{ steps.vars.outputs.major_version }}
+          tag_name: ${{ steps.vars.outputs.major_version }}-release
           name: Flipper App ${{ steps.vars.outputs.major_version }}
           draft: false
           prerelease: false
