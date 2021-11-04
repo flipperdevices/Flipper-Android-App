@@ -26,7 +26,8 @@ import com.flipperdevices.screenstreaming.impl.viewmodel.ScreenStreamFrameDecode
 )
 @Composable
 fun ComposableScreen(
-    flipperScreen: Bitmap = ScreenStreamFrameDecoder.emptyBitmap()
+    flipperScreen: Bitmap = ScreenStreamFrameDecoder.emptyBitmap(),
+    onPressButton: (ButtonEnum) -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -41,6 +42,6 @@ fun ComposableScreen(
             bitmap = flipperScreen.asImageBitmap(),
             contentDescription = stringResource(R.string.flipper_display)
         )
-        ComposableControlButtons()
+        ComposableControlButtons(onPressButton)
     }
 }

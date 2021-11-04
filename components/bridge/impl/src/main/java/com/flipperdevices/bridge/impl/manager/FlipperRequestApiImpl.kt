@@ -3,7 +3,9 @@ package com.flipperdevices.bridge.impl.manager
 import android.util.SparseArray
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.manager.service.FlipperSerialApi
+import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.verbose
+import com.flipperdevices.core.log.warn
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.copy
 import java.io.ByteArrayOutputStream
@@ -23,10 +25,11 @@ private typealias OnReceiveResponse = (Flipper.Main) -> Unit
 class FlipperRequestApiImpl(
     private val serialApi: FlipperSerialApi,
     private val scope: CoroutineScope
-) : FlipperRequestApi {
+) : FlipperRequestApi, LogTagProvider {
+    override val TAG = "FlipperRequestApi"
     private var idCounter = 1
     private val requestListeners = SparseArray<OnReceiveResponse>()
-    private val notificationMutableFlow = MutableSharedFlow<Flipper.Main>()
+    private val notificationMutableFlow = MutableSharedFlow<Flipper.Main>(replay = 1)
 
     init {
         subscribeToAnswers()
@@ -79,6 +82,7 @@ class FlipperRequestApiImpl(
             reader.getResponses().collect {
                 val listener = requestListeners[it.commandId]
                 if (listener == null) {
+                    warn { "Receive package without id $it" }
                     notificationMutableFlow.emit(it)
                 } else {
                     listener.invoke(it)

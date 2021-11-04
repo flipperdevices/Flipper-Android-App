@@ -2,6 +2,7 @@ package com.flipperdevices.screenstreaming.impl.viewmodel
 
 import android.graphics.Bitmap
 import androidx.lifecycle.viewModelScope
+import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.ComponentHolder
@@ -11,12 +12,16 @@ import com.flipperdevices.protobuf.screen.Gui
 import com.flipperdevices.protobuf.screen.sendInputEventRequest
 import com.flipperdevices.protobuf.screen.startScreenStreamRequest
 import com.flipperdevices.protobuf.screen.stopScreenStreamRequest
+import com.flipperdevices.screenstreaming.impl.composable.ButtonEnum
 import com.flipperdevices.screenstreaming.impl.di.ScreenStreamingComponent
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ScreenStreamingViewModel : LifecycleViewModel() {
     @Inject
@@ -36,30 +41,54 @@ class ScreenStreamingViewModel : LifecycleViewModel() {
         }
     }
 
-    fun onStartStreaming() = viewModelScope.launch {
-        serviceApi?.requestApi?.request(
-            main {
-                guiSendInputEventRequest = sendInputEventRequest {
-                    key = Gui.InputKey.OK
-                    type = Gui.InputType.SHORT
-                }
-            }
-        )?.collect()
+    fun onStartStreaming() {
         serviceApi?.requestApi?.request(
             main {
                 guiStartScreenStreamRequest = startScreenStreamRequest {}
             }
-        )?.collect {
+        )?.onEach {
             onStreamFrameReceived(it.guiScreenStreamFrame)
-        }
+        }?.launchIn(viewModelScope)
+
+        serviceApi?.requestApi?.notificationFlow()?.onEach {
+            if (it.hasGuiScreenStreamFrame()) {
+                onStreamFrameReceived(it.guiScreenStreamFrame)
+            }
+        }?.launchIn(viewModelScope)
         streamingActive = true
     }
 
-    private fun onStreamFrameReceived(streamFrame: Gui.ScreenStreamFrame) {
+    private fun FlipperRequestApi.sendInputEvent(
+        buttonEnum: ButtonEnum,
+        buttonType: Gui.InputType
+    ) {
+        request(
+            main {
+                guiSendInputEventRequest = sendInputEventRequest {
+                    key = buttonEnum.key
+                    type = buttonType
+                }
+            }
+        ).launchIn(viewModelScope)
+    }
+
+    private fun FlipperRequestApi.pressOnButton(buttonEnum: ButtonEnum) {
+        sendInputEvent(buttonEnum, Gui.InputType.PRESS)
+        sendInputEvent(buttonEnum, Gui.InputType.SHORT)
+        sendInputEvent(buttonEnum, Gui.InputType.RELEASE)
+    }
+
+    private suspend fun onStreamFrameReceived(
+        streamFrame: Gui.ScreenStreamFrame
+    ) = withContext(Dispatchers.IO) {
         val screen = ScreenStreamFrameDecoder.decode(streamFrame)
         viewModelScope.launch {
             flipperScreen.emit(screen)
         }
+    }
+
+    fun onPressButton(buttonEnum: ButtonEnum) {
+        serviceApi?.requestApi?.pressOnButton(buttonEnum)
     }
 
     fun getFlipperScreen(): StateFlow<Bitmap> = flipperScreen
@@ -69,7 +98,7 @@ class ScreenStreamingViewModel : LifecycleViewModel() {
             main {
                 guiStopScreenStreamRequest = stopScreenStreamRequest {}
             }
-        )
+        )?.launchIn(viewModelScope)
         streamingActive = false
     }
 }

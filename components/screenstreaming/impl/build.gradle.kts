@@ -15,6 +15,7 @@ dependencies {
 
     implementation(project(":components:core:di"))
     implementation(project(":components:core:ui"))
+    implementation(project(":components:core:log"))
 
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.APPCOMPAT)

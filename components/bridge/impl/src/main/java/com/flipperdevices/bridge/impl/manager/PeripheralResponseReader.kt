@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.impl.manager
 
 import com.flipperdevices.bridge.impl.utils.ByteEndlessInputStream
+import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.protobuf.Flipper
 import kotlinx.coroutines.CoroutineScope
@@ -18,7 +19,8 @@ const val TAG = "PeripheralResponseReader"
 @Suppress("BlockingMethodInNonBlockingContext")
 class PeripheralResponseReader(
     private val scope: CoroutineScope
-) {
+) : LogTagProvider {
+    override val TAG = "PeripheralResponseReader"
     private val byteInputStream = ByteEndlessInputStream()
     private val responses = MutableSharedFlow<Flipper.Main>()
 
@@ -27,6 +29,7 @@ class PeripheralResponseReader(
             withContext(newSingleThreadContext(TAG)) {
                 while (this.isActive) {
                     val main = Flipper.Main.parseDelimitedFrom(byteInputStream)
+                    info { "Receive $main response" }
                     scope.launch {
                         responses.emit(main)
                     }

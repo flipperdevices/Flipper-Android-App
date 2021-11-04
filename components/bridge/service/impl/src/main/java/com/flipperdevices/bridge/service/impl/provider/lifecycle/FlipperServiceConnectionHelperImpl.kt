@@ -79,7 +79,9 @@ class FlipperServiceConnectionHelperImpl(
 
     override fun disconnect() {
         info { "#disconnect" }
-        applicationContext.unbindService(this)
+        if (serviceBinder != null || isRequestedForBind) {
+            applicationContext.unbindService(this)
+        }
         serviceBinder = null
         isRequestedForBind = false
     }
