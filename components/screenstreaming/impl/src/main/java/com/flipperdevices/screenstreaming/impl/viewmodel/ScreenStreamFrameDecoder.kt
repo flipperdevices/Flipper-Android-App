@@ -8,12 +8,12 @@ import kotlin.experimental.and
 
 private const val SCREEN_WIDTH = 128
 private const val SCREEN_HEIGHT = 64
-private const val BITS_IN_BYTE = 8
+const val FLIPPER_SCREEN_RATIO = (SCREEN_WIDTH / SCREEN_HEIGHT).toFloat()
 
 object ScreenStreamFrameDecoder {
     fun emptyBitmap(): Bitmap {
         val bitmap = Bitmap.createBitmap(SCREEN_WIDTH, SCREEN_HEIGHT, Bitmap.Config.ARGB_8888)
-        bitmap.eraseColor(Color.WHITE)
+        bitmap.eraseColor(Color.MAGENTA)
         return bitmap
     }
 
