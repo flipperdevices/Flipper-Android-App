@@ -29,7 +29,7 @@ class FlipperRequestApiImpl(
     override val TAG = "FlipperRequestApi"
     private var idCounter = 1
     private val requestListeners = SparseArray<OnReceiveResponse>()
-    private val notificationMutableFlow = MutableSharedFlow<Flipper.Main>(replay = 1)
+    private val notificationMutableFlow = MutableSharedFlow<Flipper.Main>()
 
     init {
         subscribeToAnswers()
