@@ -41,9 +41,8 @@ object ScreenStreamFrameDecoder : LogTagProvider {
     }
 
     private fun ByteArray.isPixelSet(x: Int, y: Int): Boolean {
-        var index = (y / Byte.SIZE_BITS) * SCREEN_WIDTH
+        val index = (y / Byte.SIZE_BITS) * SCREEN_WIDTH + x
         val modifiedY = y and PIXEL_MASK
-        index += x
         return get(index) and (SINGLE_BIT.shl(modifiedY).toByte()) != ZERO_BYTE
     }
 }
