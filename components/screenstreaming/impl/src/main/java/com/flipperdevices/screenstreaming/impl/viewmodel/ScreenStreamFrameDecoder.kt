@@ -12,6 +12,9 @@ private const val SCREEN_WIDTH = 128
 private const val SCREEN_HEIGHT = 64
 const val FLIPPER_SCREEN_RATIO = (SCREEN_WIDTH / SCREEN_HEIGHT).toFloat()
 private const val BACKGROUND_COLOR = -0x73d7 // 0xFFFF8C29
+private const val SINGLE_BIT = 1
+private const val ZERO_BYTE = 0.toByte()
+private const val PIXEL_MASK = 7
 
 object ScreenStreamFrameDecoder : LogTagProvider {
     override val TAG = "ScreenStreamFrameDecoder"
@@ -39,8 +42,8 @@ object ScreenStreamFrameDecoder : LogTagProvider {
 
     private fun ByteArray.isPixelSet(x: Int, y: Int): Boolean {
         var index = (y / Byte.SIZE_BITS) * SCREEN_WIDTH
-        val modifiedY = y and 7
+        val modifiedY = y and PIXEL_MASK
         index += x
-        return get(index) and (1.shl(modifiedY).toByte()) != 0.toByte()
+        return get(index) and (SINGLE_BIT.shl(modifiedY).toByte()) != ZERO_BYTE
     }
 }
