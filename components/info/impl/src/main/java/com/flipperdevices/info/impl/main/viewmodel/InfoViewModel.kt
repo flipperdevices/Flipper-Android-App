@@ -23,6 +23,9 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import no.nordicsemi.android.ble.ktx.state.ConnectionState
 
+private const val BRUTEFORCE_POCKET_COUNT = 1000
+private const val BRUTEFORCE_POCKET_SIZE = 500
+
 class InfoViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
     @Inject
     lateinit var bleService: FlipperServiceProvider
@@ -46,14 +49,16 @@ class InfoViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
     fun emitManyPocketToFlipper() {
         bleService.provideServiceApi(this) { serviceApi ->
             viewModelScope.launch {
-                repeat(1000) {
+                repeat(BRUTEFORCE_POCKET_COUNT) {
                     async {
                         serviceApi.requestApi.request(
                             main {
                                 storageWriteRequest = writeRequest {
                                     path = "/ext/empty"
                                     file = file {
-                                        data = ByteString.copyFrom(ByteArray(200))
+                                        data = ByteString.copyFrom(
+                                            ByteArray(BRUTEFORCE_POCKET_SIZE)
+                                        )
                                     }
                                 }
                             }.wrapToRequest()
