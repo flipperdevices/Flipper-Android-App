@@ -3,14 +3,13 @@ package com.flipperdevices.bridge.impl.manager
 import android.util.SparseArray
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.manager.service.FlipperSerialApi
+import com.flipperdevices.bridge.protobuf.toDelimitedBytes
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.log.warn
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.copy
-import java.io.ByteArrayOutputStream
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -18,7 +17,6 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 private typealias OnReceiveResponse = (Flipper.Main) -> Unit
 
@@ -44,14 +42,9 @@ class FlipperRequestApiImpl(
         verbose { "Request $command" }
         // Generate unique ID for each command
         val uniqueId = findEmptyId()
-        val requestBytes = withContext(Dispatchers.IO) { // Launch in IO dispatcher
-            ByteArrayOutputStream().use { os ->
-                command.copy {
-                    commandId = uniqueId
-                }.writeDelimitedTo(os)
-                return@use os.toByteArray()
-            }
-        }
+        val requestBytes = command.copy {
+            commandId = uniqueId
+        }.toDelimitedBytes()
 
         // Add answer listener to listeners
         requestListeners[uniqueId] = {
@@ -68,6 +61,13 @@ class FlipperRequestApiImpl(
         awaitClose {
             requestListeners.remove(uniqueId)
         }
+    }
+
+    override suspend fun requestWithoutAnswer(vararg command: Flipper.Main) {
+        val commandBytes = command.map { it.toDelimitedBytes().toTypedArray() }
+            .toTypedArray().flatten()
+
+        serialApi.sendBytes(commandBytes.toByteArray())
     }
 
     @ObsoleteCoroutinesApi

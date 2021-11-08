@@ -1,6 +1,7 @@
 package com.flipperdevices.screenstreaming.impl.composable
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
@@ -19,6 +20,7 @@ import com.flipperdevices.screenstreaming.impl.R
 
 private val CONTROL_SIZE = 128.dp
 
+@ExperimentalFoundationApi
 @ExperimentalComposeUiApi
 @Preview(
     showSystemUi = true,
@@ -27,7 +29,8 @@ private val CONTROL_SIZE = 128.dp
 @Suppress("LongMethod")
 @Composable
 fun ComposableControlButtons(
-    onPressButton: (ButtonEnum) -> Unit = {}
+    onPressButton: (ButtonEnum) -> Unit = {},
+    onLongPressButton: (ButtonEnum) -> Unit = {}
 ) {
     /**
      * |----|  up  |-------|
@@ -45,10 +48,12 @@ fun ComposableControlButtons(
                     start.linkTo(ok.start)
                     end.linkTo(ok.end)
                 }
-                .clickable(
+                .combinedClickable(
                     interactionSource = remember { MutableInteractionSource() },
-                    indication = rememberRipple()
-                ) { onPressButton(ButtonEnum.UP) }
+                    indication = rememberRipple(),
+                    onClick = { onPressButton(ButtonEnum.UP) },
+                    onLongClick = { onLongPressButton(ButtonEnum.UP) }
+                )
                 .size(size = CONTROL_SIZE),
             painter = painterResource(R.drawable.ic_arrow_up),
             contentDescription = stringResource(R.string.control_up)
@@ -62,10 +67,12 @@ fun ComposableControlButtons(
                     top.linkTo(ok.top)
                     bottom.linkTo(ok.bottom)
                 }
-                .clickable(
+                .combinedClickable(
                     interactionSource = remember { MutableInteractionSource() },
-                    indication = rememberRipple()
-                ) { onPressButton(ButtonEnum.LEFT) }
+                    indication = rememberRipple(),
+                    onClick = { onPressButton(ButtonEnum.LEFT) },
+                    onLongClick = { onLongPressButton(ButtonEnum.LEFT) }
+                )
                 .size(size = CONTROL_SIZE),
             painter = painterResource(R.drawable.ic_arrow_left),
             contentDescription = stringResource(R.string.control_left)
@@ -79,10 +86,12 @@ fun ComposableControlButtons(
                     top.linkTo(up.bottom)
                     bottom.linkTo(down.top)
                 }
-                .clickable(
+                .combinedClickable(
                     interactionSource = remember { MutableInteractionSource() },
-                    indication = rememberRipple()
-                ) { onPressButton(ButtonEnum.OK) }
+                    indication = rememberRipple(),
+                    onClick = { onPressButton(ButtonEnum.OK) },
+                    onLongClick = { onLongPressButton(ButtonEnum.OK) }
+                )
                 .size(size = CONTROL_SIZE),
             painter = painterResource(R.drawable.ic_circle),
             contentDescription = stringResource(R.string.control_ok)
@@ -96,10 +105,12 @@ fun ComposableControlButtons(
                     top.linkTo(ok.top)
                     bottom.linkTo(ok.bottom)
                 }
-                .clickable(
+                .combinedClickable(
                     interactionSource = remember { MutableInteractionSource() },
-                    indication = rememberRipple()
-                ) { onPressButton(ButtonEnum.RIGHT) }
+                    indication = rememberRipple(),
+                    onClick = { onPressButton(ButtonEnum.RIGHT) },
+                    onLongClick = { onLongPressButton(ButtonEnum.RIGHT) }
+                )
                 .size(size = CONTROL_SIZE),
             painter = painterResource(R.drawable.ic_arrow_right),
             contentDescription = stringResource(R.string.control_right)
@@ -113,10 +124,12 @@ fun ComposableControlButtons(
                     top.linkTo(ok.bottom)
                     bottom.linkTo(parent.bottom)
                 }
-                .clickable(
+                .combinedClickable(
                     interactionSource = remember { MutableInteractionSource() },
-                    indication = rememberRipple()
-                ) { onPressButton(ButtonEnum.DOWN) }
+                    indication = rememberRipple(),
+                    onClick = { onPressButton(ButtonEnum.DOWN) },
+                    onLongClick = { onLongPressButton(ButtonEnum.DOWN) }
+                )
                 .size(size = CONTROL_SIZE),
             painter = painterResource(R.drawable.ic_arrow_down),
             contentDescription = stringResource(R.string.control_down)
@@ -130,10 +143,12 @@ fun ComposableControlButtons(
                     top.linkTo(down.top)
                     bottom.linkTo(down.bottom)
                 }
-                .clickable(
+                .combinedClickable(
                     interactionSource = remember { MutableInteractionSource() },
-                    indication = rememberRipple()
-                ) { onPressButton(ButtonEnum.BACK) }
+                    indication = rememberRipple(),
+                    onClick = { onPressButton(ButtonEnum.BACK) },
+                    onLongClick = { onLongPressButton(ButtonEnum.BACK) }
+                )
                 .size(size = CONTROL_SIZE),
             painter = painterResource(R.drawable.ic_back),
             contentDescription = stringResource(R.string.control_back)

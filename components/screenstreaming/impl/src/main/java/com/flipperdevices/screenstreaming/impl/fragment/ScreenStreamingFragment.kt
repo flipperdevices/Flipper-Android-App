@@ -7,6 +7,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.fragment.app.viewModels
 import com.flipperdevices.core.ui.ComposeFragment
 import com.flipperdevices.screenstreaming.impl.composable.ComposableScreen
+import com.flipperdevices.screenstreaming.impl.model.StreamingState
 import com.flipperdevices.screenstreaming.impl.viewmodel.ScreenStreamingViewModel
 
 class ScreenStreamingFragment : ComposeFragment() {
@@ -16,18 +17,37 @@ class ScreenStreamingFragment : ComposeFragment() {
     @Composable
     override fun renderView() {
         val screen by screenStreamingViewModel.getFlipperScreen().collectAsState()
-        ComposableScreen(screen) {
-            screenStreamingViewModel.onPressButton(it)
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        screenStreamingViewModel.onStartStreaming()
+        val streamingState by screenStreamingViewModel.getStreamingState().collectAsState()
+        ComposableScreen(
+            flipperScreen = screen,
+            streamingState = streamingState,
+            onPressButton = { button ->
+                screenStreamingViewModel.onPressButton(button)
+            },
+            onLongPressButton = { button ->
+                screenStreamingViewModel.onLongPressButton(button)
+            },
+            onScreenStreamingSwitch = { state ->
+                if (state == StreamingState.ENABLED) {
+                    screenStreamingViewModel.getStreamingState().compareAndSet(
+                        expect = StreamingState.DISABLED,
+                        update = StreamingState.ENABLED
+                    )
+                } else if (state == StreamingState.DISABLED) {
+                    screenStreamingViewModel.getStreamingState().compareAndSet(
+                        expect = StreamingState.ENABLED,
+                        update = StreamingState.DISABLED
+                    )
+                }
+            }
+        )
     }
 
     override fun onPause() {
         super.onPause()
-        screenStreamingViewModel.onPauseStreaming()
+        screenStreamingViewModel.getStreamingState().compareAndSet(
+            expect = StreamingState.ENABLED,
+            update = StreamingState.DISABLED
+        )
     }
 }
