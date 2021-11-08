@@ -30,3 +30,6 @@ include(":instances:app")
 include(":components:analytics:shake2report:api")
 include(":components:analytics:shake2report:noop")
 include(":components:analytics:shake2report:impl")
+
+include(":components:screenstreaming:impl")
+include(":components:screenstreaming:api")

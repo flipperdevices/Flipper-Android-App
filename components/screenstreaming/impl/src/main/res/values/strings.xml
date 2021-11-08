@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="control_up">Up</string>
+    <string name="control_down">Down</string>
+    <string name="control_left">Left</string>
+    <string name="control_right">Right</string>
+    <string name="control_ok">OK</string>
+    <string name="control_back">Back</string>
+    <string name="flipper_display">Flipper display</string>
+    <string name="screen_streaming_enable">Start streaming</string>
+    <string name="screen_streaming_disable">Stop streaming</string>
+</resources>

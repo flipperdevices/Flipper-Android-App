@@ -27,4 +27,11 @@ dependencies {
     kapt(Libs.DAGGER_COMPILER)
 
     implementation(Libs.FASTUTIL)
+
+    testImplementation(project(":components:core:test"))
+    testImplementation(TestingLib.JUNIT)
+    testImplementation(TestingLib.MOCKITO)
+    testImplementation(TestingLib.ANDROIDX_TEST_EXT_JUNIT)
+    testImplementation(TestingLib.ROBOELECTRIC)
+    testImplementation(TestingLib.LIFECYCLE)
 }

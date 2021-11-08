@@ -30,6 +30,9 @@ dependencies {
     implementation(project(":components:bridge:service:api"))
     implementation(project(":components:bridge:service:impl"))
 
+    implementation(project(":components:screenstreaming:api"))
+    implementation(project(":components:screenstreaming:impl"))
+
     implementation(project(":components:analytics:shake2report:api"))
     releaseImplementation(project(":components:analytics:shake2report:noop"))
     debugImplementation(project(":components:analytics:shake2report:impl"))
