@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothGattService
 import com.flipperdevices.bridge.api.manager.service.FlipperSerialApi
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.impl.manager.UnsafeBleManager
+import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import it.unimi.dsi.fastutil.bytes.ByteArrayFIFOQueue
 import java.nio.ByteBuffer
@@ -13,7 +14,10 @@ import no.nordicsemi.android.ble.data.Data
 
 class FlipperSerialOverflowThrottler(
     private val serialApi: FlipperSerialApi
-) : FlipperSerialApi, BluetoothGattServiceWrapper {
+) : FlipperSerialApi,
+    BluetoothGattServiceWrapper,
+    LogTagProvider {
+    override val TAG = "FlipperSerialOverflowThrottler"
     private var overflowCharacteristics: BluetoothGattCharacteristic? = null
 
     private var remainBufferSize = 0
@@ -31,12 +35,14 @@ class FlipperSerialOverflowThrottler(
         // Just send byte
         if (remainBufferSize > data.size) {
             remainBufferSize -= data.size
+            info { "Send ${data.size}. Remain size $remainBufferSize" }
             serialApi.sendBytes(data)
             return@synchronized
         }
 
         // Send part of byte and put in pending bytes
         if (remainBufferSize < data.size) {
+            info { "Send $remainBufferSize. Remain size $remainBufferSize" }
             serialApi.sendBytes(data.copyOf(remainBufferSize))
             val pending = data.copyOfRange(remainBufferSize, data.size)
             remainBufferSize = 0
@@ -75,6 +81,7 @@ class FlipperSerialOverflowThrottler(
         val remainingInternal = ByteBuffer.wrap(bytes).int
         synchronized(outputBuffer) {
             remainBufferSize = remainingInternal
+            info { "Invalidate buffer size. New size: $remainingInternal" }
             invalidate()
         }
     }
@@ -93,6 +100,7 @@ class FlipperSerialOverflowThrottler(
         repeat(pendingSize) {
             pendingBytes.put(outputBuffer.dequeueByte())
         }
+        info { "Send $pendingSize. Remain size $remainBufferSize" }
         serialApi.sendBytes(pendingBytes.array())
         remainBufferSize -= pendingSize
 
