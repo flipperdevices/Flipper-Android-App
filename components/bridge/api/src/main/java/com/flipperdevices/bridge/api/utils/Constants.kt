@@ -39,5 +39,10 @@ object Constants {
         const val RECONNECT_TIME_MS = 100L
         const val MTU = 255
         const val MAX_PAYLOAD_SIZE = 200
+
+        // How much time we next command
+        // Small size increase count of ble packet
+        // Large size increase waiting time for each command
+        const val RPC_SEND_WAIT_TIMEOUT_MS = 100L
     }
 }

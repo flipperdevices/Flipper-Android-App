@@ -37,7 +37,7 @@ object Versions {
     const val FASTUTIL = "7.2.1"
 
     const val BLE_SCAN = "1.5.0"
-    const val BLE = "2.3.0"
+    const val BLE = "2.3.1"
 
     const val IMAGE_SLIDER = "1.4.0"
     const val GLIDE = "4.12.0"
@@ -132,6 +132,8 @@ object TestingLib {
     const val JUNIT = "junit:junit:${Versions.JUNIT}"
 
     const val ANDROIDX_TEST_RUNNER = "androidx.test:runner:${Versions.ANDROIDX_TEST}"
+    const val COROUTINES =
+        "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.KOTLIN_COROUTINES}"
     const val ANDROIDX_TEST_EXT_JUNIT = "androidx.test.ext:junit:${Versions.ANDROIDX_TEST_EXT}"
     const val MOCKITO = "org.mockito.kotlin:mockito-kotlin:${Versions.MOCKITO_KOTLIN}"
     const val ROBOELECTRIC = "org.robolectric:robolectric:${Versions.ROBOELECTRIC}"

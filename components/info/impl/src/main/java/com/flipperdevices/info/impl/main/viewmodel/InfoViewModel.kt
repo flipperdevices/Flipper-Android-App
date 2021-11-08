@@ -2,6 +2,7 @@ package com.flipperdevices.info.impl.main.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.model.FlipperGATTInformation
+import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
@@ -55,7 +56,7 @@ class InfoViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
                                         data = ByteString.copyFrom(ByteArray(200))
                                     }
                                 }
-                            }
+                            }.wrapToRequest()
                         ).collect { }
                     }
                 }

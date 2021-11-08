@@ -3,9 +3,12 @@ package com.flipperdevices.bridge.impl.manager.service
 import android.bluetooth.BluetoothGattService
 import android.util.SparseArray
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
+import com.flipperdevices.bridge.api.model.FlipperRequest
 import com.flipperdevices.bridge.impl.manager.PeripheralResponseReader
 import com.flipperdevices.bridge.impl.manager.UnsafeBleManager
-import com.flipperdevices.bridge.protobuf.toDelimitedBytes
+import com.flipperdevices.bridge.impl.manager.overflow.FlipperRequestStorage
+import com.flipperdevices.bridge.impl.manager.overflow.FlipperRequestStorageImpl
+import com.flipperdevices.bridge.impl.manager.overflow.FlipperSerialOverflowThrottler
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.log.warn
@@ -33,7 +36,8 @@ class FlipperRequestApiImpl(
     private val notificationMutableFlow = MutableSharedFlow<Flipper.Main>()
 
     private val serialApiUnsafe = FlipperSerialApiImpl(scope)
-    private val serialApi = FlipperSerialOverflowThrottler(serialApiUnsafe)
+    private val requestStorage: FlipperRequestStorage = FlipperRequestStorageImpl()
+    private val serialApi = FlipperSerialOverflowThrottler(serialApiUnsafe, scope, requestStorage)
 
     init {
         subscribeToAnswers()
@@ -44,13 +48,15 @@ class FlipperRequestApiImpl(
     }
 
     @Suppress("BlockingMethodInNonBlockingContext")
-    override fun request(command: Flipper.Main): Flow<Flipper.Main> = channelFlow {
+    override fun request(command: FlipperRequest): Flow<Flipper.Main> = channelFlow {
         verbose { "Request $command" }
         // Generate unique ID for each command
         val uniqueId = findEmptyId()
-        val requestBytes = command.copy {
-            commandId = uniqueId
-        }.toDelimitedBytes()
+        val requestWithId = command.copy(
+            data = command.data.copy {
+                commandId = uniqueId
+            }
+        )
 
         // Add answer listener to listeners
         requestListeners[uniqueId] = {
@@ -62,25 +68,22 @@ class FlipperRequestApiImpl(
             }
         }
 
-        serialApi.sendBytes(requestBytes)
+        requestStorage.sendRequest(requestWithId)
 
         awaitClose {
             requestListeners.remove(uniqueId)
         }
     }
 
-    override suspend fun requestWithoutAnswer(vararg command: Flipper.Main) {
-        val commandBytes = command.map { it.toDelimitedBytes().toTypedArray() }
-            .toTypedArray().flatten()
-
-        serialApi.sendBytes(commandBytes.toByteArray())
+    override suspend fun requestWithoutAnswer(vararg commands: FlipperRequest) {
+        requestStorage.sendRequest(*commands)
     }
 
     @ObsoleteCoroutinesApi
     private fun subscribeToAnswers() {
         val reader = PeripheralResponseReader(scope)
         scope.launch {
-            serialApi.receiveBytesFlow().collect {
+            serialApiUnsafe.receiveBytesFlow().collect {
                 reader.onReceiveBytes(it)
             }
         }

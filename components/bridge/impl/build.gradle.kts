@@ -34,4 +34,5 @@ dependencies {
     testImplementation(TestingLib.ANDROIDX_TEST_EXT_JUNIT)
     testImplementation(TestingLib.ROBOELECTRIC)
     testImplementation(TestingLib.LIFECYCLE)
+    testImplementation(TestingLib.COROUTINES)
 }

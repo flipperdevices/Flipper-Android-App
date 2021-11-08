@@ -1,5 +1,6 @@
 package com.flipperdevices.bridge.api.manager
 
+import com.flipperdevices.bridge.api.model.FlipperRequest
 import com.flipperdevices.protobuf.Flipper
 import kotlinx.coroutines.flow.Flow
 
@@ -15,10 +16,10 @@ interface FlipperRequestApi {
     /**
      * Send request and wait answer from them
      */
-    fun request(command: Flipper.Main): Flow<Flipper.Main>
+    fun request(command: FlipperRequest): Flow<Flipper.Main>
 
     /**
      * Send batch request without waiting response
      */
-    suspend fun requestWithoutAnswer(vararg command: Flipper.Main)
+    suspend fun requestWithoutAnswer(vararg commands: FlipperRequest)
 }
