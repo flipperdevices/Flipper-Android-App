@@ -22,5 +22,5 @@ interface BluetoothGattServiceWrapper {
      * Reset stateflows and others stateful component
      * Calls after reconnect to new device or invalidate services
      */
-    fun reset()
+    fun reset(bleManager: UnsafeBleManager)
 }

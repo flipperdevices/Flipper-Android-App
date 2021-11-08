@@ -29,9 +29,11 @@ class InfoFragment : ComposeFragment() {
     override fun renderView() {
         val information by viewModel.getDeviceInformation().collectAsState()
         val connectionState by viewModel.getConnectionState().collectAsState()
-        ComposeInfoScreen(information, connectionState) {
+        ComposeInfoScreen(information, connectionState, connectionToAnotherDeviceButton = {
             pairComponentApi.openPairScreen(requireContext(), PairScreenArgument.RECONNECT_DEVICE)
             requireActivity().finish()
-        }
+        }, sendManyPocket = {
+            viewModel.emitManyPocketToFlipper()
+        })
     }
 }

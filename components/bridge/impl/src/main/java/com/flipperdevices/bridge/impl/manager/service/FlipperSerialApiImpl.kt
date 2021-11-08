@@ -46,7 +46,7 @@ class FlipperSerialApiImpl(
         }
     }
 
-    override fun reset() {
+    override fun reset(bleManager: UnsafeBleManager) {
         // Not exist states in this api
     }
 
@@ -58,6 +58,8 @@ class FlipperSerialApiImpl(
             pendingBytes.add(data)
             return
         }
-        bleManager.writeCharacteristicUnsafe(serialTxCharacteristic, data).enqueue()
+        bleManager.writeCharacteristicUnsafe(serialTxCharacteristic, data)
+            .split(FixedSizeDataSplitter())
+            .enqueue()
     }
 }

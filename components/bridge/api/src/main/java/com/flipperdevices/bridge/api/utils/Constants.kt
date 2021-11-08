@@ -29,6 +29,7 @@ object Constants {
 
         val TX: UUID = UUID.fromString("19ed82ae-ed21-4c9d-4145-228e62fe0000")
         val RX: UUID = UUID.fromString("19ed82ae-ed21-4c9d-4145-228e61fe0000")
+        val OVERFLOW: UUID = UUID.fromString("19ed82ae-ed21-4c9d-4145-228e63fe0000")
     }
 
     object BLE {
@@ -36,6 +37,7 @@ object Constants {
         val CONNECT_TIME_MS = TimeUnit.MILLISECONDS.convert(CONNECT_TIME_SEC, TimeUnit.SECONDS)
         const val RECONNECT_COUNT = 3
         const val RECONNECT_TIME_MS = 100L
-        const val MTU = 300
+        const val MTU = 255
+        const val MAX_PAYLOAD_SIZE = 200
     }
 }

@@ -1,8 +1,10 @@
-package com.flipperdevices.bridge.impl.manager
+package com.flipperdevices.bridge.impl.manager.service
 
+import android.bluetooth.BluetoothGattService
 import android.util.SparseArray
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
-import com.flipperdevices.bridge.api.manager.service.FlipperSerialApi
+import com.flipperdevices.bridge.impl.manager.PeripheralResponseReader
+import com.flipperdevices.bridge.impl.manager.UnsafeBleManager
 import com.flipperdevices.bridge.protobuf.toDelimitedBytes
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.verbose
@@ -21,13 +23,17 @@ import kotlinx.coroutines.launch
 private typealias OnReceiveResponse = (Flipper.Main) -> Unit
 
 class FlipperRequestApiImpl(
-    private val serialApi: FlipperSerialApi,
     private val scope: CoroutineScope
-) : FlipperRequestApi, LogTagProvider {
+) : FlipperRequestApi,
+    BluetoothGattServiceWrapper,
+    LogTagProvider {
     override val TAG = "FlipperRequestApi"
     private var idCounter = 1
     private val requestListeners = SparseArray<OnReceiveResponse>()
     private val notificationMutableFlow = MutableSharedFlow<Flipper.Main>()
+
+    private val serialApiUnsafe = FlipperSerialApiImpl(scope)
+    private val serialApi = FlipperSerialOverflowThrottler(serialApiUnsafe)
 
     init {
         subscribeToAnswers()
@@ -98,5 +104,20 @@ class FlipperRequestApiImpl(
             } else idCounter++
         } while (requestListeners[idCounter] != null)
         return idCounter
+    }
+
+    override fun onServiceReceived(service: BluetoothGattService) {
+        serialApiUnsafe.onServiceReceived(service)
+        serialApi.onServiceReceived(service)
+    }
+
+    override fun initialize(bleManager: UnsafeBleManager) {
+        serialApiUnsafe.initialize(bleManager)
+        serialApi.initialize(bleManager)
+    }
+
+    override fun reset(bleManager: UnsafeBleManager) {
+        serialApiUnsafe.reset(bleManager)
+        serialApi.reset(bleManager)
     }
 }

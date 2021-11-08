@@ -16,6 +16,7 @@ dependencies {
     implementation(project(":components:pair:api"))
     implementation(project(":components:bridge:api"))
     implementation(project(":components:bridge:service:api"))
+    implementation(project(":components:bridge:protobuf"))
 
     // Core deps
     implementation(Libs.CORE_KTX)

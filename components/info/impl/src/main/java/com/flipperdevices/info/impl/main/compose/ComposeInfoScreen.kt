@@ -20,11 +20,21 @@ import no.nordicsemi.android.ble.ktx.state.ConnectionState
 fun ComposeInfoScreen(
     flipperGATTInformation: FlipperGATTInformation = FlipperGATTInformation(),
     connectionState: ConnectionState? = null,
-    connectionToAnotherDeviceButton: () -> Unit = {}
+    connectionToAnotherDeviceButton: () -> Unit = {},
+    sendManyPocket: () -> Unit = {}
 ) {
     Column {
         Column(modifier = Modifier.weight(weight = 1f)) {
             InfoText(flipperGATTInformation, connectionState)
+        }
+
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = 16.dp),
+            onClick = sendManyPocket
+        ) {
+            Text(text = "Send 1000 pocket")
         }
         Button(
             modifier = Modifier
