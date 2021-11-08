@@ -2,6 +2,7 @@ package com.flipperdevices.screenstreaming.impl.viewmodel
 
 import android.graphics.Bitmap
 import androidx.lifecycle.viewModelScope
+import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.ComponentHolder
@@ -63,7 +64,7 @@ class ScreenStreamingViewModel : LifecycleViewModel() {
         serviceApi.requestApi.request(
             main {
                 guiStartScreenStreamRequest = startScreenStreamRequest {}
-            }
+            }.wrapToRequest()
         ).onEach {
             onStreamFrameReceived(it.guiScreenStreamFrame)
         }.launchIn(viewModelScope)
@@ -82,7 +83,7 @@ class ScreenStreamingViewModel : LifecycleViewModel() {
         serviceApi.requestApi.request(
             main {
                 guiStopScreenStreamRequest = stopScreenStreamRequest {}
-            }
+            }.wrapToRequest()
         ).launchIn(viewModelScope)
     }
 }

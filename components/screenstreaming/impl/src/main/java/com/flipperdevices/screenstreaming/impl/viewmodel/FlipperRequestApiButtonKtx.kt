@@ -1,7 +1,8 @@
 package com.flipperdevices.screenstreaming.impl.viewmodel
 
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
-import com.flipperdevices.protobuf.Flipper
+import com.flipperdevices.bridge.api.model.FlipperRequest
+import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.screen.Gui
 import com.flipperdevices.protobuf.screen.sendInputEventRequest
@@ -24,11 +25,11 @@ internal fun FlipperRequestApi.pressOnButton(
 private fun getRequestFor(
     buttonEnum: ButtonEnum,
     buttonType: Gui.InputType
-): Flipper.Main {
+): FlipperRequest {
     return main {
         guiSendInputEventRequest = sendInputEventRequest {
             key = buttonEnum.key
             type = buttonType
         }
-    }
+    }.wrapToRequest()
 }
