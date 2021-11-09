@@ -14,6 +14,7 @@ import com.flipperdevices.filemanager.impl.model.FileItem
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.Storage
 import com.flipperdevices.protobuf.storage.listRequest
+import java.io.File
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -53,6 +54,7 @@ class FileManagerViewModel(
                     FileItem(
                         fileName = file.name,
                         isDirectory = file.type == Storage.File.FileType.DIR,
+                        path = File(directory, file.name).absolutePath,
                         size = file.size.toLong()
                     )
                 }

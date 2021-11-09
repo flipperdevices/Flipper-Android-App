@@ -71,6 +71,8 @@ object Libs {
         "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.ANDROID_LIFECYCLE}"
     const val LIFECYCLE_RUNTIME_KTX =
         "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.ANDROID_LIFECYCLE}"
+    const val LIFECYCLE_COMPOSE =
+        "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.ANDROID_LIFECYCLE}"
     const val LIFECYCLE_SERVICE =
         "androidx.lifecycle:lifecycle-service:${Versions.ANDROID_LIFECYCLE}"
     const val LIFECYCLE_KAPT =

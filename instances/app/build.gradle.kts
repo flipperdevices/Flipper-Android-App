@@ -33,6 +33,9 @@ dependencies {
     implementation(project(":components:screenstreaming:api"))
     implementation(project(":components:screenstreaming:impl"))
 
+    implementation(project(":components:share:api"))
+    implementation(project(":components:share:impl"))
+
     implementation(project(":components:analytics:shake2report:api"))
     releaseImplementation(project(":components:analytics:shake2report:noop"))
     debugImplementation(project(":components:analytics:shake2report:impl"))
