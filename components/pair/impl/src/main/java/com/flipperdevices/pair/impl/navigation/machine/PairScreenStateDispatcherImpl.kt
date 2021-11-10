@@ -5,9 +5,9 @@ import android.os.Build
 import com.flipperdevices.bottombar.api.BottomNavigationActivityApi
 import com.flipperdevices.bridge.api.utils.DeviceFeatureHelper
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.navigation.global.CiceroneGlobal
 import com.flipperdevices.pair.impl.navigation.models.PairNavigationScreens
 import com.flipperdevices.pair.impl.navigation.models.PairScreenState
-import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.Screen
 import com.squareup.anvil.annotations.ContributesBinding
 import java.util.Stack
@@ -17,7 +17,7 @@ import javax.inject.Singleton
 @Singleton
 @ContributesBinding(AppGraph::class)
 class PairScreenStateDispatcherImpl @Inject constructor(
-    private val router: Router,
+    private val globalCicerone: CiceroneGlobal,
     private val context: Context,
     private val bottomNavigationActivityApi: BottomNavigationActivityApi
 ) : PairScreenStateDispatcher {
@@ -54,7 +54,7 @@ class PairScreenStateDispatcherImpl @Inject constructor(
         if (currentState != null) {
             stateStack.push(currentState)
         }
-        router.replaceScreen(screen)
+        globalCicerone.getRouter().replaceScreen(screen)
     }
 
     @Synchronized
@@ -65,7 +65,7 @@ class PairScreenStateDispatcherImpl @Inject constructor(
         val prevState = stateStack.pop()
         val screen = getScreenForStateUnsafe(prevState) ?: error("Call back on finish state")
         currentState = prevState
-        router.replaceScreen(screen)
+        globalCicerone.getRouter().replaceScreen(screen)
     }
 
     override fun addStateListener(stateListener: ScreenStateChangeListener) {
