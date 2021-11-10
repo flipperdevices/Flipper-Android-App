@@ -9,6 +9,9 @@ import com.flipperdevices.bridge.api.utils.PermissionHelper
 import com.flipperdevices.bridge.provider.FlipperApi
 import com.flipperdevices.bridge.service.impl.di.FlipperServiceComponent
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
+import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withTimeout
 import no.nordicsemi.android.ble.exception.BluetoothDisabledException
@@ -16,7 +19,9 @@ import no.nordicsemi.android.ble.exception.BluetoothDisabledException
 class FlipperServiceConnectDelegate(
     private val bleManager: FlipperBleManager,
     private val context: Context
-) {
+) : LogTagProvider {
+    override val TAG = "FlipperServiceConnectDelegate"
+
     private val scanner = FlipperApi.flipperScanner
     private val adapter = FlipperApi.bluetoothAdapter
 
@@ -27,7 +32,7 @@ class FlipperServiceConnectDelegate(
     suspend fun reconnect(deviceId: String) {
         // If we already connected to device, just ignore it
         if (bleManager.connectionInformationApi.isDeviceConnected()) {
-            bleManager.disconnectDevice()
+            disconnect()
         }
         // If Bluetooth disable, return exception
         if (!PermissionHelper.isBluetoothEnabled()) {
@@ -46,7 +51,7 @@ class FlipperServiceConnectDelegate(
     suspend fun reconnect(device: BluetoothDevice) {
         // If we already connected to device, just ignore it
         if (bleManager.connectionInformationApi.isDeviceConnected()) {
-            bleManager.disconnectDevice()
+            disconnect()
         }
 
         // If Bluetooth disable, return exception
@@ -58,7 +63,15 @@ class FlipperServiceConnectDelegate(
     }
 
     suspend fun disconnect() {
-        bleManager.disconnectDevice()
+        try {
+            withTimeout(Constants.BLE.DISCONNECT_TIMEOUT_MS) {
+                bleManager.disconnectDevice()
+            }
+        } catch (timeout: TimeoutCancellationException) {
+            error(timeout.cause) {
+                "Can't disconnect device with timeout ${Constants.BLE.DISCONNECT_TIMEOUT_MS}"
+            }
+        }
     }
 
     private suspend fun connectWithBondedDevice(deviceId: String) {

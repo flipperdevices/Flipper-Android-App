@@ -61,12 +61,12 @@ class FlipperService : LifecycleService(), LogTagProvider {
             return@launch
         }
         info { "Service stop internal" }
-
+        stopForeground(true)
+        info { "Foreground stopped, try close service api" }
         serviceApi.close()
         info { "Service api closed" }
-        stopForeground(true)
         stopSelf()
-        info { "Called stopSelf and stopForeground" }
+        info { "Called stopSelf" }
         binder.listeners.removeAll { it.onInternalStop() }
     }
 
