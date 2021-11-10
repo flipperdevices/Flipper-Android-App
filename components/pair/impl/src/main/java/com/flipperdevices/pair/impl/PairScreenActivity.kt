@@ -6,19 +6,19 @@ import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.navigation.delegates.OnBackPressListener
+import com.flipperdevices.core.navigation.global.CiceroneGlobal
 import com.flipperdevices.pair.api.PairScreenArgument
 import com.flipperdevices.pair.impl.di.PairComponent
 import com.flipperdevices.pair.impl.navigation.machine.PairScreenStateDispatcher
 import com.flipperdevices.pair.impl.navigation.machine.ScreenStateChangeListener
 import com.flipperdevices.pair.impl.navigation.models.PairScreenState
 import com.flipperdevices.pair.impl.navigation.storage.PairStateStorage
-import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import javax.inject.Inject
 
 class PairScreenActivity : FragmentActivity(), ScreenStateChangeListener {
     @Inject
-    lateinit var navigatorHolder: NavigatorHolder
+    lateinit var globalCicerone: CiceroneGlobal
 
     @Inject
     lateinit var stateDispatcher: PairScreenStateDispatcher
@@ -48,11 +48,11 @@ class PairScreenActivity : FragmentActivity(), ScreenStateChangeListener {
 
     override fun onResumeFragments() {
         super.onResumeFragments()
-        navigatorHolder.setNavigator(navigator)
+        globalCicerone.getNavigationHolder().setNavigator(navigator)
     }
 
     override fun onPause() {
-        navigatorHolder.removeNavigator()
+        globalCicerone.getNavigationHolder().removeNavigator()
         super.onPause()
     }
 

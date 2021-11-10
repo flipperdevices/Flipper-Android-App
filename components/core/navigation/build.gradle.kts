@@ -8,6 +8,9 @@ apply<com.flipperdevices.gradle.ConfigurationPlugin>()
 
 dependencies {
     implementation(project(":components:core:di"))
+    implementation(project(":components:bottombar:api"))
+
+    implementation(Libs.APPCOMPAT)
 
     implementation(Libs.CICERONE)
 

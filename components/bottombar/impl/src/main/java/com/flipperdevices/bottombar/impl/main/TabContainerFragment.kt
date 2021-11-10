@@ -7,33 +7,35 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.flipperdevices.bottombar.impl.R
 import com.flipperdevices.bottombar.impl.di.BottomBarComponent
+import com.flipperdevices.bottombar.impl.main.subnavigation.LocalCiceroneHolder
 import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
 import com.flipperdevices.bottombar.impl.navigate.ScreenTabProvider
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.navigation.delegates.OnBackPressListener
+import com.flipperdevices.core.navigation.delegates.RouterProvider
+import com.github.terrakok.cicerone.Cicerone
 import com.github.terrakok.cicerone.Navigator
-import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import javax.inject.Inject
 
-class TabContainerFragment : Fragment(), OnBackPressListener {
+class TabContainerFragment : Fragment(), OnBackPressListener, RouterProvider {
 
     private val navigator: Navigator by lazy {
         AppNavigator(requireActivity(), R.id.container, childFragmentManager)
     }
 
     @Inject
-    lateinit var navigatorHolder: NavigatorHolder
-
-    @Inject
-    lateinit var router: Router
-
-    @Inject
     lateinit var screenTabProvider: ScreenTabProvider
+
+    @Inject
+    lateinit var ciceroneHolder: LocalCiceroneHolder
 
     private val containerTab: FlipperBottomTab
         get() = requireArguments().getSerializable(EXTRA_NAME) as FlipperBottomTab
+
+    private val cicerone: Cicerone<Router> by lazy { ciceroneHolder.getCicerone(containerTab) }
+    override val router: Router by lazy { cicerone.router }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         ComponentHolder.component<BottomBarComponent>().inject(this)
@@ -57,11 +59,11 @@ class TabContainerFragment : Fragment(), OnBackPressListener {
 
     override fun onResume() {
         super.onResume()
-        navigatorHolder.setNavigator(navigator)
+        cicerone.getNavigatorHolder().setNavigator(navigator)
     }
 
     override fun onPause() {
-        navigatorHolder.removeNavigator()
+        cicerone.getNavigatorHolder().removeNavigator()
         super.onPause()
     }
 

@@ -15,12 +15,16 @@ import com.flipperdevices.bottombar.impl.main.service.BottomNavigationViewModel
 import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.navigation.delegates.OnBackPressListener
+import com.flipperdevices.core.navigation.delegates.RouterProvider
+import com.flipperdevices.core.navigation.global.CiceroneGlobal
 import com.github.terrakok.cicerone.Router
 import javax.inject.Inject
 
-class BottomNavigationActivity : FragmentActivity() {
+class BottomNavigationActivity : FragmentActivity(), RouterProvider {
     @Inject
-    lateinit var router: Router
+    lateinit var cicerone: CiceroneGlobal
+
+    override val router: Router by lazy { cicerone.getRouter() }
 
     private val bottomNavigationViewModel by viewModels<BottomNavigationViewModel>()
 
