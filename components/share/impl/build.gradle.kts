@@ -7,6 +7,18 @@ plugins {
 apply<com.flipperdevices.gradle.ConfigurationPlugin>()
 apply<com.flipperdevices.gradle.ComposerPlugin>()
 
+android {
+    defaultConfig {
+        val shareFileAuthorities = "com.flipperdevices.share.impl.provider"
+        manifestPlaceholders["shareFileAuthorities"] = shareFileAuthorities
+        buildConfigField("String", "SHARE_FILE_AUTHORITIES", "\"$shareFileAuthorities\"")
+
+        val shareFolderPath = "sharedkeys/"
+        resValue("string", "shareFolderPath", shareFolderPath)
+        buildConfigField("String", "SHARE_FILE_PATH", "\"$shareFolderPath\"")
+    }
+}
+
 dependencies {
     implementation(project(":components:core:di"))
     implementation(project(":components:core:ktx"))

@@ -17,6 +17,7 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.AndroidLifecycleViewModel
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.readRequest
+import com.flipperdevices.share.impl.BuildConfig
 import com.flipperdevices.share.impl.R
 import com.flipperdevices.share.impl.di.ShareComponent
 import com.flipperdevices.share.impl.model.DownloadProgress
@@ -33,8 +34,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-private const val SHARE_DIR = "sharedkeys"
-
 class ShareViewModel(
     private val shareFile: ShareFile,
     application: Application
@@ -43,7 +42,10 @@ class ShareViewModel(
     LogTagProvider {
     override val TAG = "ShareViewModel"
     private val downloadStarted = AtomicBoolean(false)
-    private val fileInSharedDir = application.createClearFileInCacheSafe(SHARE_DIR, shareFile.name)
+    private val fileInSharedDir = application.createClearFileInCacheSafe(
+        BuildConfig.SHARE_FILE_PATH,
+        shareFile.name
+    )
     private val shareStateFlow = MutableStateFlow(
         ShareState(
             DownloadProgress(
@@ -96,7 +98,7 @@ class ShareViewModel(
         val context = getApplication<Application>()
         val uri = FileProvider.getUriForFile(
             context,
-            "com.flipperdevices.share.impl.provider",
+            BuildConfig.SHARE_FILE_AUTHORITIES,
             fileInSharedDir,
             shareFile.name
         )
