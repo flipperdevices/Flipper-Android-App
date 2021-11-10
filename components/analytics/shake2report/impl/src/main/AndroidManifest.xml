@@ -9,8 +9,12 @@
 
     <application>
         <meta-data
+                android:name="io.sentry.auto-init"
+                android:value="false" />
+        <meta-data
                 android:name="io.sentry.dsn"
                 android:value="https://e3c73bc8fe924e97bcb8719dd8b2cee9@sentry.flipperdevices.com/2" />
+
         <activity
                 android:exported="false"
                 android:name=".activity.Shake2ReportActivity" />
