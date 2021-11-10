@@ -14,7 +14,6 @@ import com.flipperdevices.filemanager.impl.di.FileManagerComponent
 import com.flipperdevices.filemanager.impl.viewmodels.FileManagerViewModel
 import com.flipperdevices.filemanager.impl.viewmodels.FileManagerViewModelFactory
 import com.flipperdevices.share.api.ShareApi
-import com.github.terrakok.cicerone.Router
 import javax.inject.Inject
 
 class FileManagerFragment : ComposeFragment() {
