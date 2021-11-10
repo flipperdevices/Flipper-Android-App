@@ -36,6 +36,9 @@ dependencies {
     implementation(project(":components:share:api"))
     implementation(project(":components:share:impl"))
 
+    implementation(project(":components:singleactivity:api"))
+    implementation(project(":components:singleactivity:impl"))
+
     implementation(project(":components:analytics:shake2report:api"))
     releaseImplementation(project(":components:analytics:shake2report:noop"))
     debugImplementation(project(":components:analytics:shake2report:impl"))

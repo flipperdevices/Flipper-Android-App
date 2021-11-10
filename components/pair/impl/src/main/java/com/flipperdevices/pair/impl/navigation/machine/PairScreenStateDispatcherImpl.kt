@@ -2,12 +2,12 @@ package com.flipperdevices.pair.impl.navigation.machine
 
 import android.content.Context
 import android.os.Build
-import com.flipperdevices.bottombar.api.BottomNavigationActivityApi
 import com.flipperdevices.bridge.api.utils.DeviceFeatureHelper
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.navigation.global.CiceroneGlobal
 import com.flipperdevices.pair.impl.navigation.models.PairNavigationScreens
 import com.flipperdevices.pair.impl.navigation.models.PairScreenState
+import com.flipperdevices.singleactivity.api.SingleActivityApi
 import com.github.terrakok.cicerone.Screen
 import com.squareup.anvil.annotations.ContributesBinding
 import java.util.Stack
@@ -19,7 +19,7 @@ import javax.inject.Singleton
 class PairScreenStateDispatcherImpl @Inject constructor(
     private val globalCicerone: CiceroneGlobal,
     private val context: Context,
-    private val bottomNavigationActivityApi: BottomNavigationActivityApi
+    private val singleActivityApi: SingleActivityApi
 ) : PairScreenStateDispatcher {
     // Exclude currentState
     private val stateStack = Stack<PairScreenState>()
@@ -48,7 +48,7 @@ class PairScreenStateDispatcherImpl @Inject constructor(
         currentState = state
         val screen = getScreenForStateUnsafe(state)
         if (screen == null) {
-            bottomNavigationActivityApi.openBottomNavigationScreen()
+            singleActivityApi.open()
             return
         }
         if (currentState != null) {

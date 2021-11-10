@@ -1,11 +1,10 @@
 package com.flipperdevices.bottombar.api
 
+import com.github.terrakok.cicerone.androidx.FragmentScreen
+
 /**
  * Class which provide api to bottombar module
  */
 interface BottomNavigationActivityApi {
-    /**
-     * Open main screen with bottom bar
-     */
-    fun openBottomNavigationScreen()
+    fun getBottomNavigationFragment(): FragmentScreen
 }

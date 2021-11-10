@@ -24,6 +24,8 @@ dependencies {
 
     implementation(project(":components:bottombar:api"))
 
+    implementation(project(":components:singleactivity:api"))
+
     implementation(project(":components:bridge:api"))
     implementation(project(":components:bridge:provider"))
     implementation(project(":components:bridge:service:api"))

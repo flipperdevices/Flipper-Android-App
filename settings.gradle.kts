@@ -36,3 +36,6 @@ include(":components:screenstreaming:api")
 
 include(":components:share:impl")
 include(":components:share:api")
+
+include(":components:singleactivity:api")
+include(":components:singleactivity:impl")

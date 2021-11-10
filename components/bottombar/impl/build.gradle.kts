@@ -32,7 +32,7 @@ dependencies {
     implementation(Libs.KOTLIN_COROUTINES)
     implementation(Libs.LIFECYCLE_RUNTIME_KTX)
     implementation(Libs.LIFECYCLE_VIEWMODEL_KTX)
-    implementation(Libs.ACTIVITY_KTX)
+    implementation(Libs.FRAGMENT_KTX)
 
     implementation(Libs.CICERONE)
 }

@@ -2,5 +2,5 @@
 <paths>
     <cache-path
             name="sharedkeys"
-            path="@string/shareFolderPath" />
+            path=",me@string/shareFolderPath" />
 </paths>
