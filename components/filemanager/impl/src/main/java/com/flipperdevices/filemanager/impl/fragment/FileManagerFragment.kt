@@ -8,12 +8,12 @@ import androidx.fragment.app.viewModels
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ui.ComposeFragment
 import com.flipperdevices.filemanager.api.navigation.FileManagerScreenProvider
-import com.flipperdevices.filemanager.impl.composable.ComposableFileManager
+import com.flipperdevices.filemanager.impl.composable.ComposableFileManagerWithDialog
 import com.flipperdevices.filemanager.impl.di.FileManagerComponent
 import com.flipperdevices.filemanager.impl.viewmodels.FileManagerViewModel
 import com.flipperdevices.filemanager.impl.viewmodels.FileManagerViewModelFactory
+import com.flipperdevices.share.api.ShareApi
 import com.github.terrakok.cicerone.Router
-import java.io.File
 import javax.inject.Inject
 
 class FileManagerFragment : ComposeFragment() {
@@ -22,6 +22,9 @@ class FileManagerFragment : ComposeFragment() {
 
     @Inject
     lateinit var screenProvider: FileManagerScreenProvider
+
+    @Inject
+    lateinit var shareApi: ShareApi
 
     private val viewModel by viewModels<FileManagerViewModel>() {
         FileManagerViewModelFactory(getDirectory())
@@ -36,9 +39,8 @@ class FileManagerFragment : ComposeFragment() {
     override fun renderView() {
         val fileList by viewModel.getFileList().collectAsState()
 
-        ComposableFileManager(fileList) {
-            val newPath = File(getDirectory(), it.fileName).absolutePath
-            router.navigateTo(screenProvider.fileManager(newPath))
+        ComposableFileManagerWithDialog(fileList, shareApi) { fileItem ->
+            router.navigateTo(screenProvider.fileManager(fileItem.path))
         }
     }
 

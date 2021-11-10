@@ -43,6 +43,7 @@ class FlipperBleManagerImpl constructor(
 
     override suspend fun disconnectDevice() = withContext(bleDispatcher) {
         disconnect().enqueue()
+        isConnected
         // Wait until device is really disconnected
         stateAsFlow().filter { it is ConnectionState.Disconnected }.first()
         return@withContext

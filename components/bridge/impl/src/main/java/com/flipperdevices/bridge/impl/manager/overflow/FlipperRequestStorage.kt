@@ -4,6 +4,7 @@ import com.flipperdevices.bridge.api.model.FlipperRequest
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.protobuf.toDelimitedBytes
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import java.io.ByteArrayOutputStream
 
 /**
@@ -38,6 +39,8 @@ suspend fun FlipperRequestStorage.getPendingCommands(
 
     while (remainBufferSize > 0) {
         val request = getNextRequest(timeout) ?: break
+
+        info { "Get $request" }
 
         val bytesToSend = request.data.toDelimitedBytes()
 

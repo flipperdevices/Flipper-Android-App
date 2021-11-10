@@ -56,6 +56,7 @@ class FlipperSerialApiImpl(
         if (data.isEmpty()) {
             return
         }
+        info { "Send bytes to flipper with size: ${data.size}" }
         val bleManager = bleManagerInternal
         if (bleManager == null) {
             pendingBytes.add(data)
