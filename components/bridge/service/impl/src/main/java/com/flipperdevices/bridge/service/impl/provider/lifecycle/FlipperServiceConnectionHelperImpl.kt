@@ -37,24 +37,27 @@ class FlipperServiceConnectionHelperImpl(
 
     override fun onServiceDisconnected(name: ComponentName?) {
         info { "Service $name disconnected" }
-        onServiceUnbindInternal()
+        serviceBinder = null
+        onServiceUnboundedInternal()
     }
 
     override fun onBindingDied(name: ComponentName?) {
         super.onBindingDied(name)
         info { "Binding died for service $name" }
-        onServiceUnbindInternal()
+        serviceBinder = null
+        onServiceUnboundedInternal()
     }
 
     override fun onNullBinding(name: ComponentName?) {
         super.onNullBinding(name)
         info { "Null binding for service $name" }
-        onServiceUnbindInternal()
+        serviceBinder = null
+        onServiceUnboundedInternal()
     }
 
     override fun onInternalStop(): Boolean {
         info { "Service notified that it internal stop self" }
-        onServiceUnbindInternal()
+        onUnbind()
         return true
     }
 
@@ -86,8 +89,9 @@ class FlipperServiceConnectionHelperImpl(
         isRequestedForBind = false
     }
 
-    private fun onServiceUnbindInternal() {
+    private fun onServiceUnboundedInternal() {
         info { "#onServiceUnbindInternal" }
+        serviceBinder = null
         isRequestedForBind = false
         onUnbind()
     }
