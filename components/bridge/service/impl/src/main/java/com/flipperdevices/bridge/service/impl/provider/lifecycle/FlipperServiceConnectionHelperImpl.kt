@@ -61,6 +61,7 @@ class FlipperServiceConnectionHelperImpl(
         return true
     }
 
+    @Synchronized
     override fun connect() {
         info { "#connect" }
         // If we already request bind, just do nothing
@@ -80,15 +81,23 @@ class FlipperServiceConnectionHelperImpl(
         info { "Start service. bindSuccessful is $bindSuccessful, componentName is $componentName" }
     }
 
+    @Synchronized
     override fun disconnect() {
         info { "#disconnect" }
-        if (serviceBinder != null || isRequestedForBind) {
+        val serviceRunning = serviceBinder != null || isRequestedForBind
+        if (serviceRunning) {
+            val stopIntent = Intent(applicationContext, FlipperService::class.java).apply {
+                action = FlipperService.ACTION_STOP
+            }
+            applicationContext.startService(stopIntent)
+
             applicationContext.unbindService(this)
         }
         serviceBinder = null
         isRequestedForBind = false
     }
 
+    @Synchronized
     private fun onServiceUnboundedInternal() {
         info { "#onServiceUnbindInternal" }
         serviceBinder = null
