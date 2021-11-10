@@ -16,7 +16,11 @@ inline fun LogTagProvider.error(logMessage: () -> String) {
 
 inline fun LogTagProvider.error(error: Throwable?, logMessage: () -> String) {
     if (BuildConfig.INTERNAL) {
-        Timber.tag(TAG).e(error, logMessage.invoke())
+        if (error == null) {
+            Timber.tag(TAG).e(logMessage.invoke())
+        } else {
+            Timber.tag(TAG).e(error, logMessage.invoke())
+        }
     }
 }
 

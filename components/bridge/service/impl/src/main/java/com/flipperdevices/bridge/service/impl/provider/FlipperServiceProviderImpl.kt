@@ -1,14 +1,12 @@
 package com.flipperdevices.bridge.service.impl.provider
 
 import android.content.Context
-import android.content.Intent
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceError
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
-import com.flipperdevices.bridge.service.impl.FlipperService
 import com.flipperdevices.bridge.service.impl.FlipperServiceBinder
 import com.flipperdevices.bridge.service.impl.provider.error.FlipperServiceErrorListener
 import com.flipperdevices.bridge.service.impl.provider.lifecycle.FlipperServiceConnectionHelper
@@ -96,11 +94,6 @@ class FlipperServiceProviderImpl @Inject constructor(
     private fun stopServiceInternal() {
         info { "Internal stop service" }
         resetInternalWithoutInvalidate()
-
-        val stopIntent = Intent(applicationContext, FlipperService::class.java).apply {
-            action = FlipperService.ACTION_STOP
-        }
-        applicationContext.startService(stopIntent)
     }
 
     private fun onServiceBind(binder: FlipperServiceBinder) {

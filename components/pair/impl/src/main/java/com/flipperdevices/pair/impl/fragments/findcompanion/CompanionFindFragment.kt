@@ -23,6 +23,7 @@ import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
+import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.FlipperSharedPreferences
 import com.flipperdevices.core.preference.FlipperSharedPreferencesKey
 import com.flipperdevices.core.ui.ComposeFragment
@@ -105,7 +106,10 @@ class CompanionFindFragment : ComposeFragment(), LogTagProvider {
         val connectionState = pairDeviceViewModel.getConnectionState().value
         // Don't open dialog if we already communicate with device
         if (connectionState == PairingState.NotInitialized) {
+            info { "SHOW dialog, because connection state is $connectionState" }
             requestPermissionAndOpenFindDeviceDialog()
+        } else {
+            info { "NOT show dialog, because connection state is $connectionState" }
         }
     }
 
@@ -121,12 +125,14 @@ class CompanionFindFragment : ComposeFragment(), LogTagProvider {
     }
 
     private fun requestPermissionAndOpenFindDeviceDialog() {
+        info { "Request permission for bluetooth and open find device dialog" }
         bluetoothEnableHelper.requestBluetoothEnable {
             openFindDeviceDialog()
         }
     }
 
     private fun openFindDeviceDialog() {
+        info { "Open find device dialog" }
         EnableLocationDialogHelper.showDialogIfLocationDisabled(requireContext())
 
         val deviceFilter: BluetoothDeviceFilter = BluetoothDeviceFilter.Builder()
@@ -145,6 +151,7 @@ class CompanionFindFragment : ComposeFragment(), LogTagProvider {
             pairingRequest,
             object : CompanionDeviceManager.Callback() {
                 override fun onDeviceFound(chooserLauncher: IntentSender?) {
+                    info { "Device manager found device: $chooserLauncher" }
                     if (chooserLauncher == null) {
                         return
                     }
@@ -155,11 +162,12 @@ class CompanionFindFragment : ComposeFragment(), LogTagProvider {
                 override fun onFailure(error: CharSequence) {
                     val errorText = getString(R.string.pair_companion_error_try_again)
                     pairDeviceViewModel.onFailedCompanionFinding(errorText)
-                    error { error.toString() }
+                    error { "Device manager return error: $error" }
                 }
             },
             null
         )
+        info { "Request device manager open" }
     }
 
     private fun onDeviceReady(device: BluetoothDevice) {
