@@ -15,7 +15,10 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -25,15 +28,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.filemanager.impl.R
 import com.flipperdevices.filemanager.impl.model.FileItem
+import com.flipperdevices.share.api.ShareApi
+import com.flipperdevices.share.model.ShareFile
 
-@Preview(
-    showBackground = true,
-    showSystemUi = true
-)
 @Composable
-fun ComposableFileManager(
-    files: List<FileItem> = listOf(FileItem.DUMMY),
-    onFileClick: (FileItem) -> Unit = {}
+private fun ComposableFileManager(
+    files: List<FileItem>,
+    onFileClick: (FileItem) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
@@ -41,6 +42,35 @@ fun ComposableFileManager(
     ) {
         items(files) { file ->
             ComposableFileItem(file, onFileClick)
+        }
+    }
+}
+
+@Composable
+fun ComposableFileManagerWithDialog(
+    files: List<FileItem>,
+    shareApi: ShareApi,
+    onDirectoryClick: (FileItem) -> Unit
+) {
+    var sharedFile by remember { mutableStateOf<FileItem?>(null) }
+
+    ComposableFileManager(files) { itemFile ->
+        if (itemFile.isDirectory) {
+            onDirectoryClick(itemFile)
+        } else {
+            sharedFile = itemFile
+        }
+    }
+
+    if (sharedFile != null) {
+        shareApi.AlertDialogDownload(
+            ShareFile(
+                name = sharedFile!!.fileName,
+                flipperFilePath = sharedFile!!.path,
+                size = sharedFile!!.size
+            )
+        ) {
+            sharedFile = null
         }
     }
 }
@@ -92,4 +122,13 @@ private fun ComposableFileImage(modifier: Modifier, fileItem: FileItem) {
             contentDescription = stringResource(R.string.filemanager_file_pic_desc)
         )
     }
+}
+
+@Preview(
+    showBackground = true,
+    showSystemUi = true
+)
+@Composable
+fun ComposableFileManagerPreview() {
+    ComposableFileManager(listOf(FileItem.DUMMY)) {}
 }

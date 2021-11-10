@@ -11,7 +11,6 @@ import com.flipperdevices.core.ktx.newSingleThreadExecutor
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import java.nio.ByteBuffer
-import java.util.concurrent.atomic.AtomicBoolean
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.asCoroutineDispatcher
@@ -41,7 +40,6 @@ class FlipperSerialOverflowThrottler(
      * Bytes waiting to be sent to the device
      */
     private var bufferSizeState = MutableSharedFlow<Int>(replay = 1)
-    private val resetRequest = AtomicBoolean(false)
 
     init {
         scope.launch {
@@ -59,7 +57,6 @@ class FlipperSerialOverflowThrottler(
 
     override fun initialize(bleManager: UnsafeBleManager) {
         pendingBytes = null
-        resetRequest.compareAndSet(false, true)
         bleManager.setNotificationCallbackUnsafe(overflowCharacteristics).with { _, data ->
             updateRemainingBuffer(data)
         }
@@ -72,7 +69,6 @@ class FlipperSerialOverflowThrottler(
 
     override fun reset(bleManager: UnsafeBleManager) {
         pendingBytes = null
-        resetRequest.compareAndSet(false, true)
         bleManager.readCharacteristicUnsafe(overflowCharacteristics).with { _, data ->
             updateRemainingBuffer(data)
         }.enqueue()
@@ -100,6 +96,7 @@ class FlipperSerialOverflowThrottler(
             remainingBufferSize -= pendingBytesToSend.size
 
             if (remainingBufferSize == 0) {
+                info { "Sending only pending bytes" }
                 serialApi.sendBytes(pendingBytesToSend)
                 break
             }
@@ -115,9 +112,7 @@ class FlipperSerialOverflowThrottler(
             remainingBufferSize -= bytesToSend.size
             pendingBytes = pendingBytesInternal
 
-            if (!resetRequest.compareAndSet(true, false)) {
-                serialApi.sendBytes(pendingBytesToSend + bytesToSend)
-            }
+            serialApi.sendBytes(pendingBytesToSend + bytesToSend)
         }
     }
 

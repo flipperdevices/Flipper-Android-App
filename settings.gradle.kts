@@ -33,3 +33,6 @@ include(":components:analytics:shake2report:impl")
 
 include(":components:screenstreaming:impl")
 include(":components:screenstreaming:api")
+
+include(":components:share:impl")
+include(":components:share:api")
