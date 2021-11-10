@@ -2,6 +2,7 @@ package com.flipperdevices.share.impl.composable
 
 import android.app.Application
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -21,13 +22,15 @@ fun ComposableShare(
         )
     )
 ) {
-    val downloadProgress by viewModel.getDownloadProgress()
+    val shareState by viewModel.getShareState().collectAsState()
+    if (!shareState.dialogShown) {
+        onCancel()
+    }
     ComposableAlertDialog(
         shareFile = shareFile,
-        downloadProgress = downloadProgress,
+        downloadProgress = shareState.downloadProgress,
         onCancel = {
             viewModel.cancelDownload()
-            onCancel()
         }
     )
 }

@@ -29,7 +29,7 @@ class BottomNavigationActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_with_bottombar)
 
-        selectTab(FlipperBottomTab.DEVICE)
+        selectTab(FlipperBottomTab.STORAGE)
 
         findViewById<ComposeView>(R.id.bottom_bar).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)

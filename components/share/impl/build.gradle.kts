@@ -9,6 +9,7 @@ apply<com.flipperdevices.gradle.ComposerPlugin>()
 
 dependencies {
     implementation(project(":components:core:di"))
+    implementation(project(":components:core:ktx"))
     implementation(project(":components:core:ui"))
     implementation(project(":components:core:log"))
 

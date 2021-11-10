@@ -34,7 +34,7 @@ fun ComposableAlertDialog(
     )
 
     AlertDialog(
-        onDismissRequest = { A },
+        onDismissRequest = { },
         title = {
             Text(text = stringResource(R.string.share_dialog_title, shareFile.name))
         },
