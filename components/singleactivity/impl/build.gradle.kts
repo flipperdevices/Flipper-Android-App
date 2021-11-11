@@ -12,6 +12,8 @@ dependencies {
 
     implementation(project(":components:bottombar:api"))
 
+    implementation(project(":components:deeplink:api"))
+
     implementation(project(":components:singleactivity:api"))
 
     implementation(Libs.ANNOTATIONS)

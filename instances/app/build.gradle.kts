@@ -39,6 +39,9 @@ dependencies {
     implementation(project(":components:singleactivity:api"))
     implementation(project(":components:singleactivity:impl"))
 
+    implementation(project(":components:deeplink:api"))
+    implementation(project(":components:deeplink:impl"))
+
     implementation(project(":components:analytics:shake2report:api"))
     releaseImplementation(project(":components:analytics:shake2report:noop"))
     debugImplementation(project(":components:analytics:shake2report:impl"))

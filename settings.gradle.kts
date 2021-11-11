@@ -1,5 +1,6 @@
 rootProject.name = "Flipper App"
 include(":components:bridge:api")
+include(":components:bridge:dao")
 include(":components:bridge:impl")
 include(":components:bridge:provider")
 include(":components:bridge:service:impl")
@@ -36,6 +37,10 @@ include(":components:screenstreaming:api")
 
 include(":components:share:impl")
 include(":components:share:api")
+include(":components:share:receive")
 
 include(":components:singleactivity:api")
 include(":components:singleactivity:impl")
+
+include(":components:deeplink:api")
+include(":components:deeplink:impl")

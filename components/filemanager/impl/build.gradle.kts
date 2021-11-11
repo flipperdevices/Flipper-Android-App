@@ -20,6 +20,8 @@ dependencies {
 
     implementation(project(":components:filemanager:api"))
 
+    implementation(project(":components:deeplink:api"))
+
     implementation(project(":components:share:api"))
 
     implementation(Libs.ANNOTATIONS)

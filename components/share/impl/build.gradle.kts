@@ -12,10 +12,6 @@ android {
         val shareFileAuthorities = "com.flipperdevices.share.impl.provider"
         manifestPlaceholders["shareFileAuthorities"] = shareFileAuthorities
         buildConfigField("String", "SHARE_FILE_AUTHORITIES", "\"$shareFileAuthorities\"")
-
-        val shareFolderPath = "sharedkeys/"
-        resValue("string", "shareFolderPath", shareFolderPath)
-        buildConfigField("String", "SHARE_FILE_PATH", "\"$shareFolderPath\"")
     }
 }
 

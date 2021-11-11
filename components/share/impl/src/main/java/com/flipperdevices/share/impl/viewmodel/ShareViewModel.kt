@@ -34,6 +34,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+const val SHARE_DIR = "sharedkeys/"
+
 class ShareViewModel(
     private val shareFile: ShareFile,
     application: Application
@@ -43,7 +45,7 @@ class ShareViewModel(
     override val TAG = "ShareViewModel"
     private val downloadStarted = AtomicBoolean(false)
     private val fileInSharedDir = application.createClearFileInCacheSafe(
-        BuildConfig.SHARE_FILE_PATH,
+        SHARE_DIR,
         shareFile.name
     )
     private val shareStateFlow = MutableStateFlow(

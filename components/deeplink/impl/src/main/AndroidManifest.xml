@@ -1,0 +1,75 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        package="com.flipperdevices.deeplink.impl">
+
+    <application>
+        <activity
+                android:exported="true"
+                android:name="${splashScreenActivity}">
+            <intent-filter android:icon="@drawable/ic_fileformat_ibutton">
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="file" />
+                <data android:scheme="content" />
+                <data android:host="*" />
+
+                <data android:pathPattern=".*\\.ibtn" />
+            </intent-filter>
+            <intent-filter android:icon="@drawable/ic_fileformat_nfc">
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="file" />
+                <data android:scheme="content" />
+                <data android:host="*" />
+
+                <data android:pathPattern=".*\\.nfc" />
+            </intent-filter>
+            <intent-filter android:icon="@drawable/ic_fileformat_sub">
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="file" />
+                <data android:scheme="content" />
+                <data android:host="*" />
+
+                <data android:pathPattern=".*\\.sub" />
+            </intent-filter>
+            <intent-filter android:icon="@drawable/ic_fileformat_rf">
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="file" />
+                <data android:scheme="content" />
+                <data android:host="*" />
+
+                <data android:pathPattern=".*\\.rfid" />
+            </intent-filter>
+            <intent-filter android:icon="@drawable/ic_fileformat_ir">
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="file" />
+                <data android:scheme="content" />
+                <data android:host="*" />
+
+                <data android:pathPattern=".*\\.ir" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>
