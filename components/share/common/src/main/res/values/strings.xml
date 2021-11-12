@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="share_dialog_progress_text">%1$s from %2$s</string>
+    <string name="share_dialog_progress_infinite_text">%1$s</string>
+    <string name="share_dialog_btn_close">Cancel</string>
+</resources>

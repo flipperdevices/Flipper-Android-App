@@ -60,8 +60,6 @@ class FlipperServiceApiImpl(
     }
 
     suspend fun close() {
-        info { "Close manager and disconnect" }
-        connectDelegate.disconnect()
         info { "Disconnect successful, close manager" }
         bleManager.close()
     }

@@ -19,6 +19,11 @@ interface FlipperRequestApi {
     fun request(command: FlipperRequest): Flow<Flipper.Main>
 
     /**
+     * Send batch of request in flipper and wait single answer
+     */
+    suspend fun request(commandFlow: Flow<FlipperRequest>): Flipper.Main
+
+    /**
      * Send batch request without waiting response
      */
     suspend fun requestWithoutAnswer(vararg commands: FlipperRequest)

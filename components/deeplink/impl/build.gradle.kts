@@ -8,6 +8,9 @@ apply<com.flipperdevices.gradle.ConfigurationPlugin>()
 
 dependencies {
     implementation(project(":components:core:di"))
+
+    implementation(project(":components:bridge:dao"))
+
     implementation(project(":components:deeplink:api"))
     implementation(project(":components:filemanager:api"))
 

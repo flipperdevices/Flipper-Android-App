@@ -32,12 +32,13 @@ import com.flipperdevices.share.api.ShareApi
 import com.flipperdevices.share.model.ShareFile
 
 @Composable
-private fun ComposableFileManager(
+fun ComposableFileManager(
     files: List<FileItem>,
+    modifier: Modifier = Modifier,
     onFileClick: (FileItem) -> Unit
 ) {
     LazyColumn(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
     ) {
         items(files) { file ->

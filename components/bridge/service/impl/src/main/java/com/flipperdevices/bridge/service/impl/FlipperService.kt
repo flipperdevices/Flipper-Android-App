@@ -60,10 +60,10 @@ class FlipperService : LifecycleService(), LogTagProvider {
             info { "Service already stopped" }
             return@launch
         }
-        info { "Service stop internal" }
-        stopForeground(true)
         info { "Foreground stopped, try close service api" }
         serviceApi.close()
+        info { "Service stop internal" }
+        stopForeground(true)
         info { "Service api closed" }
         stopSelf()
         info { "Called stopSelf" }
