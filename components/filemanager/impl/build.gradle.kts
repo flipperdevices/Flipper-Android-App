@@ -24,6 +24,8 @@ dependencies {
 
     implementation(project(":components:share:api"))
 
+    implementation(project(":components:bottombar:api"))
+
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.APPCOMPAT)
 

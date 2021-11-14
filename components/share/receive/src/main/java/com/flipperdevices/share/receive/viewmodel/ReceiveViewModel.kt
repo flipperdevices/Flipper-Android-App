@@ -1,7 +1,10 @@
 package com.flipperdevices.share.receive.viewmodel
 
 import android.app.Application
+import android.content.Intent
 import androidx.lifecycle.viewModelScope
+import com.flipperdevices.bridge.api.model.FlipperRequestPriority
+import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.protobuf.ProtobufConstants
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
@@ -10,6 +13,7 @@ import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.log.warn
 import com.flipperdevices.core.ui.AndroidLifecycleViewModel
 import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.protobuf.main
@@ -21,6 +25,7 @@ import com.flipperdevices.share.receive.di.ShareReceiveComponent
 import com.flipperdevices.share.receive.util.FAILED_SIZE
 import com.flipperdevices.share.receive.util.lengthAsync
 import com.google.protobuf.ByteString
+import java.io.File
 import java.io.InputStream
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
@@ -28,6 +33,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -56,7 +62,6 @@ class ReceiveViewModel(
 
     init {
         ComponentHolder.component<ShareReceiveComponent>().inject(this)
-        calculateFileLengthAsync()
         serviceProvider.provideServiceApi(consumer = this, lifecycleOwner = this)
     }
 
@@ -79,20 +84,24 @@ class ReceiveViewModel(
             info { "Upload file $deeplinkContent already started" }
             return@withContext
         }
+        val fileSize = calculateFileLengthAsync()
         info { "Upload file $deeplinkContent start" }
         val exception = runCatching {
-            /*contentResolver.acquireContentProviderClient(receiveFileUri).use {
-                contentResolver.openInputStream(receiveFileUri).use { fileStream ->
-                    val requestFlow = getUploadRequestFlow(fileStream!!).map {
-                        it.wrapToRequest(FlipperRequestPriority.FOREGROUND)
-                    }
-                    val response = serviceApi.requestApi.request(requestFlow)
-                    info { "File send with response $response" }
+            deeplinkContent.openStream().use { fileStream ->
+                val stream = fileStream ?: return@use
+                val requestFlow = getUploadRequestFlow(stream, fileSize).map {
+                    it.wrapToRequest(FlipperRequestPriority.FOREGROUND)
                 }
-            }*/
+                val response = serviceApi.requestApi.request(requestFlow)
+                info { "File send with response $response" }
+            }
         }.exceptionOrNull()
+        cleanUp()
         receiveStateFlow.update {
-            it.copy(dialogShown = false)
+            it.copy(
+                dialogShown = false,
+                processCompleted = true
+            )
         }
         if (exception != null) {
             error(exception) { "Can't upload $deeplinkContent" }
@@ -100,33 +109,50 @@ class ReceiveViewModel(
     }
 
     private suspend fun getUploadRequestFlow(
-        fileStream: InputStream
+        fileStream: InputStream,
+        fileSize: Long?
     ) = channelFlow {
+        val filePath = File(flipperPath, deeplinkContent.filename()!!).absolutePath
+
         val bufferArray = ByteArray(ProtobufConstants.MAX_FILE_DATA)
-        var readSize = fileStream.read(bufferArray)
-        while (readSize != EOF_CODE) {
+        var alreadyRead = 0L
+        var isAllRead = false
+        var readSize = fileStream.readOrThrow(bufferArray)
+
+        while (readSize != EOF_CODE && !isAllRead) {
+            alreadyRead += readSize
+            isAllRead = if (fileSize != null) alreadyRead >= fileSize else false
             send(
                 main {
-                    hasNext = true
+                    hasNext = isAllRead.not()
                     storageWriteRequest = writeRequest {
-                        path = flipperPath
+                        path = filePath
                         file = file {
                             data = ByteString.copyFrom(bufferArray.copyOf(readSize))
                         }
                     }
                 }
             )
-            readSize = fileStream.read(bufferArray)
+            readSize = fileStream.readOrThrow(bufferArray)
         }
-        send(
-            main {
-                hasNext = false
-            }
-        )
+        if (!isAllRead) {
+            warn { "Unexpected end of stream. Expect $fileSize bytes, actual $alreadyRead bytes" }
+            send(
+                main {
+                    hasNext = false
+                    storageWriteRequest = writeRequest {
+                        path = filePath
+                        file = file {
+                            data = ByteString.EMPTY
+                        }
+                    }
+                }
+            )
+        }
         close()
     }
 
-    private fun calculateFileLengthAsync() = viewModelScope.launch {
+    private suspend fun calculateFileLengthAsync(): Long? {
         val fileLength = when (deeplinkContent) {
             is DeeplinkContent.ExternalUri -> {
                 deeplinkContent.uri.lengthAsync(contentResolver)
@@ -144,6 +170,39 @@ class ReceiveViewModel(
                         fileLength
                     )
                 )
+            }
+            return fileLength
+        }
+        return null
+    }
+
+    private fun DeeplinkContent.openStream(): InputStream? {
+        return when (this) {
+            is DeeplinkContent.ExternalUri -> {
+                contentResolver.openInputStream(uri)
+            }
+            is DeeplinkContent.InternalStorageFile -> {
+                file.inputStream()
+            }
+        }
+    }
+
+    private fun InputStream.readOrThrow(buffer: ByteArray): Int {
+        return runCatching {
+            read(buffer)
+        }.getOrThrow()
+    }
+
+    private fun cleanUp() {
+        when (deeplinkContent) {
+            is DeeplinkContent.ExternalUri -> {
+                contentResolver.releasePersistableUriPermission(
+                    deeplinkContent.uri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
+            }
+            is DeeplinkContent.InternalStorageFile -> {
+                deeplinkContent.file.delete()
             }
         }
     }

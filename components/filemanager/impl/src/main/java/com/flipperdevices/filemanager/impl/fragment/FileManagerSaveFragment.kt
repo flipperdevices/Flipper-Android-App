@@ -1,12 +1,12 @@
 package com.flipperdevices.filemanager.impl.fragment
 
-import android.content.Context
 import android.os.Bundle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.flipperdevices.bottombar.api.BottomNavigationActivityApi
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.navigation.requireRouter
@@ -23,6 +23,9 @@ import javax.inject.Inject
 class FileManagerSaveFragment : ComposeFragment() {
     @Inject
     lateinit var screenProvider: FileManagerScreenProvider
+
+    @Inject
+    lateinit var bottomNavigationApi: BottomNavigationActivityApi
 
     @Inject
     lateinit var receiveApi: ReceiveApi
@@ -42,10 +45,6 @@ class FileManagerSaveFragment : ComposeFragment() {
         FileManagerViewModelFactory(directory)
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
-
     @Composable
     override fun renderView() {
         val fileList by viewModel.getFileList().collectAsState()
@@ -55,6 +54,9 @@ class FileManagerSaveFragment : ComposeFragment() {
             deeplinkContent,
             directory,
             fileList,
+            onSuccessful = {
+                requireRouter().backTo(bottomNavigationApi.getBottomNavigationFragment())
+            },
             onOpenFolder = { fileItem ->
                 requireRouter().navigateTo(
                     screenProvider.saveWithFileManager(

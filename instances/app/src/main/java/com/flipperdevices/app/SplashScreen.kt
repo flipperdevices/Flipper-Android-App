@@ -1,5 +1,6 @@
 package com.flipperdevices.app
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.flipperdevices.app.di.MainComponent
@@ -30,13 +31,14 @@ class SplashScreen : AppCompatActivity(), LogTagProvider {
         if (pairComponentApi.shouldWeOpenPairScreen()) {
             pairComponentApi.openPairScreen(this)
         } else {
-            singleActivityApi.open(null)
+            singleActivityApi.open(getDeepLink())
         }
         finish()
     }
 
     private fun getDeepLink(): Deeplink? {
         val uri = intent.data ?: return null
+        contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
         return Deeplink(DeeplinkContent.ExternalUri(uri))
     }
 }

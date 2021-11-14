@@ -17,6 +17,7 @@ import com.flipperdevices.share.receive.viewmodel.ReceiveViewModelFactory
 fun ComposableReceive(
     deeplinkContent: DeeplinkContent,
     flipperPath: String,
+    onSuccessful: () -> Unit,
     onCancel: () -> Unit,
     viewModel: ReceiveViewModel = viewModel(
         factory = ReceiveViewModelFactory(
@@ -27,8 +28,13 @@ fun ComposableReceive(
     )
 ) {
     val receiveState by viewModel.getReceiveState().collectAsState()
+    if (receiveState.processCompleted) {
+        onSuccessful()
+        return
+    }
     if (!receiveState.dialogShown) {
         onCancel()
+        return
     }
     ComposableAlertDialog(
         title = stringResource(

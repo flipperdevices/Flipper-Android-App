@@ -49,7 +49,3 @@ fun Uri.length(contentResolver: ContentResolver): Long {
 suspend fun Uri.lengthAsync(contentResolver: ContentResolver): Long = withContext(Dispatchers.IO) {
     return@withContext length(contentResolver)
 }
-
-fun Uri.filename(): String? {
-    return path?.substringAfterLast("/")
-}

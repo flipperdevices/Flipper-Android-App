@@ -8,6 +8,7 @@ interface ReceiveApi {
     fun AlertDialogUpload(
         deeplinkContent: DeeplinkContent,
         flipperPath: String,
-        onCancel: () -> Unit
+        onSuccessful: () -> Unit,
+        onCancel: () -> Unit,
     )
 }

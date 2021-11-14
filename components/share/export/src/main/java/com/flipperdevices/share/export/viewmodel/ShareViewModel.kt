@@ -116,7 +116,12 @@ class ShareViewModel(
         }
         context.startActivity(activityIntent)
 
-        shareStateFlow.update { it.copy(dialogShown = false) }
+        shareStateFlow.update {
+            it.copy(
+                dialogShown = false,
+                processCompleted = true
+            )
+        }
     }
 
     private suspend fun onFileResponseReceived(data: ByteString) = withContext(Dispatchers.IO) {

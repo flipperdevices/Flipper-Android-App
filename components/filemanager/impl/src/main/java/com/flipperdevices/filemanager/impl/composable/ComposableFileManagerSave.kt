@@ -43,6 +43,7 @@ fun ComposableFileManagerSaveWithDialog(
     deeplinkContent: DeeplinkContent,
     currentPath: String,
     files: List<FileItem>,
+    onSuccessful: () -> Unit,
     onOpenFolder: (FileItem) -> Unit
 ) {
     var openSaveDialog by remember { mutableStateOf(false) }
@@ -52,7 +53,8 @@ fun ComposableFileManagerSaveWithDialog(
     if (openSaveDialog) {
         receiveApi.AlertDialogUpload(
             deeplinkContent = deeplinkContent,
-            flipperPath = currentPath
+            flipperPath = currentPath,
+            onSuccessful = onSuccessful
         ) {
             openSaveDialog = false
         }

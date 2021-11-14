@@ -14,11 +14,13 @@ class ReceiveApiImpl @Inject constructor() : ReceiveApi {
     override fun AlertDialogUpload(
         deeplinkContent: DeeplinkContent,
         flipperPath: String,
+        onSuccessful: () -> Unit,
         onCancel: () -> Unit
     ) {
         ComposableReceive(
             deeplinkContent = deeplinkContent,
             flipperPath = flipperPath,
+            onSuccessful = onSuccessful,
             onCancel = onCancel
         )
     }
