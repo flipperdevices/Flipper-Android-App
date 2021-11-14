@@ -10,18 +10,23 @@ import com.flipperdevices.bridge.impl.manager.overflow.FlipperRequestStorage
 import com.flipperdevices.bridge.impl.manager.overflow.FlipperRequestStorageImpl
 import com.flipperdevices.bridge.impl.manager.overflow.FlipperSerialOverflowThrottler
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.log.warn
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.copy
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ObsoleteCoroutinesApi
+import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
 
 private typealias OnReceiveResponse = (Flipper.Main) -> Unit
 
@@ -75,6 +80,24 @@ class FlipperRequestApiImpl(
         }
     }
 
+    override suspend fun request(commandFlow: Flow<FlipperRequest>): Flipper.Main {
+        verbose { "Request command flow" }
+        // Generate unique ID for each command
+        val uniqueId = findEmptyId()
+        val commandAnswer = scope.async { awaitCommandAnswer(uniqueId) }
+
+        commandFlow.onEach { request ->
+            val requestWithId = request.copy(
+                data = request.data.copy {
+                    commandId = uniqueId
+                }
+            )
+            requestWithoutAnswer(requestWithId)
+        }.launchIn(scope)
+
+        return commandAnswer.await()
+    }
+
     override suspend fun requestWithoutAnswer(vararg commands: FlipperRequest) {
         requestStorage.sendRequest(*commands)
     }
@@ -107,6 +130,19 @@ class FlipperRequestApiImpl(
             } else idCounter++
         } while (requestListeners[idCounter] != null)
         return idCounter
+    }
+
+    private suspend fun awaitCommandAnswer(
+        uniqueId: Int
+    ): Flipper.Main = suspendCancellableCoroutine { cont ->
+        requestListeners[uniqueId] = {
+            requestListeners.remove(uniqueId)
+            cont.resume(it) { throwable ->
+                error(throwable) { "Error on resume execution of $uniqueId command. Answer is $it" }
+            }
+        }
+
+        cont.invokeOnCancellation { requestListeners.remove(uniqueId) }
     }
 
     override fun onServiceReceived(service: BluetoothGattService) {

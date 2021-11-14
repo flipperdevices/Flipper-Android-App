@@ -2,4 +2,6 @@
 <resources>
     <string name="filemanager_folder_pic_desc">Folder</string>
     <string name="filemanager_file_pic_desc">File</string>
+    <string name="filemanager_save_title">Save file to flipper</string>
+    <string name="filemanager_save_action">Save</string>
 </resources>

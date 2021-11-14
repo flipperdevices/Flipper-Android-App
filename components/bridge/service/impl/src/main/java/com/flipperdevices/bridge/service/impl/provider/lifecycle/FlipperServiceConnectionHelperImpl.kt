@@ -18,7 +18,7 @@ class FlipperServiceConnectionHelperImpl(
     FlipperServiceLifecycleListener,
     FlipperServiceConnectionHelper,
     LogTagProvider {
-    override val TAG = "FlipperServiceConnectionHolder"
+    override val TAG = "FlipperServiceConnectionHelper"
     override var serviceBinder: FlipperServiceBinder? = null
         private set
 
@@ -86,6 +86,7 @@ class FlipperServiceConnectionHelperImpl(
         info { "#disconnect" }
         val serviceRunning = serviceBinder != null || isRequestedForBind
         if (serviceRunning) {
+            info { "Stop service" }
             val stopIntent = Intent(applicationContext, FlipperService::class.java).apply {
                 action = FlipperService.ACTION_STOP
             }

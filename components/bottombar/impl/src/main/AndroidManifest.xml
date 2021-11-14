@@ -5,6 +5,6 @@
         <activity
                 android:exported="false"
                 android:launchMode="singleTop"
-                android:name=".main.BottomNavigationActivity" />
+                android:name=".main.BottomNavigationFragment" />
     </application>
 </manifest>

@@ -34,9 +34,12 @@ class FileManagerFragment : ComposeFragment() {
 
     @Composable
     override fun renderView() {
-        val fileList by viewModel.getFileList().collectAsState()
+        val fileManagerState by viewModel.getFileManagerState().collectAsState()
 
-        ComposableFileManagerWithDialog(fileList, shareApi) { fileItem ->
+        ComposableFileManagerWithDialog(
+            fileManagerState,
+            shareApi
+        ) { fileItem ->
             requireRouter().navigateTo(screenProvider.fileManager(fileItem.path))
         }
     }

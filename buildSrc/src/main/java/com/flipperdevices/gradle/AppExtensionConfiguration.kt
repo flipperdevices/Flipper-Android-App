@@ -24,6 +24,9 @@ private fun AppExtension.configureDefaultConfig() {
 
 private fun AppExtension.configureBuildTypes() {
     buildTypes { container ->
+        defaultConfig {
+            it.manifestPlaceholders[SPLASH_SCREEN_ACTIVITY_KEY] = SPLASH_SCREEN_ACTIVITY
+        }
         container.maybeCreate("debug").apply {
             buildConfigField("boolean", "INTERNAL", "true")
             applicationIdSuffix = ".dev"

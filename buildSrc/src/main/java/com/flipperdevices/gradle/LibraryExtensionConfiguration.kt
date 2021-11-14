@@ -5,6 +5,9 @@ import com.android.build.gradle.LibraryExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 
+const val SPLASH_SCREEN_ACTIVITY = "com.flipperdevices.app.SplashScreen"
+const val SPLASH_SCREEN_ACTIVITY_KEY = "splashScreenActivity"
+
 fun LibraryExtension.configure(project: Project) {
     configureDefaultConfig()
     configureBuildTypes()
@@ -23,6 +26,9 @@ private fun LibraryExtension.configureDefaultConfig() {
 
 private fun LibraryExtension.configureBuildTypes() {
     buildTypes { container ->
+        defaultConfig {
+            manifestPlaceholders[SPLASH_SCREEN_ACTIVITY_KEY] = SPLASH_SCREEN_ACTIVITY
+        }
         container.maybeCreate("debug").apply {
             buildConfigField("boolean", "INTERNAL", "true")
         }

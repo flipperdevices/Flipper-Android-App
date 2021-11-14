@@ -18,7 +18,7 @@ class ScreenTabProviderImpl @Inject constructor(
     override fun getScreen(tab: FlipperBottomTab): Screen {
         return when (tab) {
             FlipperBottomTab.DEVICE -> infoScreenProvider.deviceInformationScreen()
-            FlipperBottomTab.STORAGE -> fileManagerScreenProvider.fileManager("/")
+            FlipperBottomTab.STORAGE -> fileManagerScreenProvider.fileManager()
             FlipperBottomTab.SETTINGS -> screenStreamingApi.provideScreen()
         }
     }

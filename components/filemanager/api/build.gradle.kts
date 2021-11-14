@@ -5,5 +5,7 @@ plugins {
 apply<com.flipperdevices.gradle.ConfigurationPlugin>()
 
 dependencies {
+    implementation(project(":components:deeplink:api"))
+
     implementation(Libs.CICERONE)
 }

@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         package="com.flipperdevices.app">
 
     <application
-            android:name="com.flipperdevices.app.FlipperApplication"
             android:allowBackup="true"
             android:fullBackupContent="false"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
+            android:name="com.flipperdevices.app.FlipperApplication"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity
                 android:exported="true"
-                android:name="com.flipperdevices.app.SplashScreen"
-                android:theme="@style/AppTheme.SplashTheme">
+                android:name="${splashScreenActivity}"
+                android:theme="@style/AppTheme.SplashTheme"
+                tools:node="merge">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
