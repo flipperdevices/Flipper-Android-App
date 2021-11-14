@@ -1,6 +1,5 @@
 package com.flipperdevices.filemanager.impl.composable
 
-import android.net.Uri
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -16,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.filemanager.impl.R
 import com.flipperdevices.filemanager.impl.model.FileItem
 import com.flipperdevices.share.api.ReceiveApi
@@ -40,7 +40,7 @@ fun ComposableFileManagerSave(
 @Composable
 fun ComposableFileManagerSaveWithDialog(
     receiveApi: ReceiveApi,
-    receiveUri: Uri,
+    deeplinkContent: DeeplinkContent,
     currentPath: String,
     files: List<FileItem>,
     onOpenFolder: (FileItem) -> Unit
@@ -51,7 +51,7 @@ fun ComposableFileManagerSaveWithDialog(
     }
     if (openSaveDialog) {
         receiveApi.AlertDialogUpload(
-            receiveFileUri = receiveUri,
+            deeplinkContent = deeplinkContent,
             flipperPath = currentPath
         ) {
             openSaveDialog = false

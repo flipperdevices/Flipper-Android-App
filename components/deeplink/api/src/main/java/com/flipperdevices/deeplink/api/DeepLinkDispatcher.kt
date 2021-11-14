@@ -1,12 +1,12 @@
 package com.flipperdevices.deeplink.api
 
-import android.net.Uri
+import com.flipperdevices.deeplink.model.Deeplink
 
 interface DeepLinkDispatcher {
     /**
      * @return false if dispatcher not found handler for this uri
      */
-    fun processUri(uri: Uri): Boolean
+    fun process(deeplink: Deeplink): Boolean
 
     fun registerHandler(deepLinkHandler: DeepLinkHandler)
 }

@@ -1,6 +1,6 @@
 package com.flipperdevices.deeplink.api
 
-import android.net.Uri
+import com.flipperdevices.deeplink.model.Deeplink
 
 /**
  * Each component which support deeplink should implement this interface
@@ -10,6 +10,6 @@ interface DeepLinkHandler {
     /**
      * @return null if uri not supported
      */
-    fun isSupportLink(uri: Uri): DispatcherPriority?
-    fun processLink(uri: Uri)
+    fun isSupportLink(link: Deeplink): DispatcherPriority?
+    fun processLink(link: Deeplink)
 }

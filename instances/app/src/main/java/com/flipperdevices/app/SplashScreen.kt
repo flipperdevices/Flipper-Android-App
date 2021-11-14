@@ -6,6 +6,8 @@ import com.flipperdevices.app.di.MainComponent
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.deeplink.model.Deeplink
+import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.pair.api.PairComponentApi
 import com.flipperdevices.singleactivity.api.SingleActivityApi
 import javax.inject.Inject
@@ -28,8 +30,13 @@ class SplashScreen : AppCompatActivity(), LogTagProvider {
         if (pairComponentApi.shouldWeOpenPairScreen()) {
             pairComponentApi.openPairScreen(this)
         } else {
-            singleActivityApi.open(intent)
+            singleActivityApi.open(null)
         }
         finish()
+    }
+
+    private fun getDeepLink(): Deeplink? {
+        val uri = intent.data ?: return null
+        return Deeplink(DeeplinkContent.ExternalUri(uri))
     }
 }

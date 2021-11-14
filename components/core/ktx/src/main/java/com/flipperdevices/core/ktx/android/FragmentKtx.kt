@@ -1,4 +1,4 @@
-package com.flipperdevices.core.ktx
+package com.flipperdevices.core.ktx.android
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

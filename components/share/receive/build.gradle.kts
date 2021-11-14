@@ -13,6 +13,8 @@ dependencies {
     implementation(project(":components:core:log"))
     implementation(project(":components:core:ktx"))
 
+    implementation(project(":components:deeplink:api"))
+
     implementation(project(":components:share:api"))
     implementation(project(":components:share:common"))
 

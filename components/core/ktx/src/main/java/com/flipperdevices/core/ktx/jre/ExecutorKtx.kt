@@ -1,4 +1,4 @@
-package com.flipperdevices.core.ktx
+package com.flipperdevices.core.ktx.jre
 
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors

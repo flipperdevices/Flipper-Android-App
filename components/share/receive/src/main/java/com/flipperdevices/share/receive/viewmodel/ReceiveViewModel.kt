@@ -1,10 +1,7 @@
 package com.flipperdevices.share.receive.viewmodel
 
 import android.app.Application
-import android.net.Uri
 import androidx.lifecycle.viewModelScope
-import com.flipperdevices.bridge.api.model.FlipperRequestPriority
-import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.protobuf.ProtobufConstants
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
@@ -14,6 +11,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.AndroidLifecycleViewModel
+import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.file
 import com.flipperdevices.protobuf.storage.writeRequest
@@ -30,7 +28,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -38,7 +35,7 @@ import kotlinx.coroutines.withContext
 const val EOF_CODE = -1
 
 class ReceiveViewModel(
-    private val receiveFileUri: Uri,
+    private val deeplinkContent: DeeplinkContent,
     private val flipperPath: String,
     application: Application
 ) : AndroidLifecycleViewModel(application),
@@ -79,12 +76,12 @@ class ReceiveViewModel(
 
     private suspend fun startUpload(serviceApi: FlipperServiceApi) = withContext(Dispatchers.IO) {
         if (!uploadStarted.compareAndSet(false, true)) {
-            info { "Upload file $receiveFileUri already started" }
+            info { "Upload file $deeplinkContent already started" }
             return@withContext
         }
-        info { "Upload file $receiveFileUri start" }
+        info { "Upload file $deeplinkContent start" }
         val exception = runCatching {
-            contentResolver.acquireContentProviderClient(receiveFileUri).use {
+            /*contentResolver.acquireContentProviderClient(receiveFileUri).use {
                 contentResolver.openInputStream(receiveFileUri).use { fileStream ->
                     val requestFlow = getUploadRequestFlow(fileStream!!).map {
                         it.wrapToRequest(FlipperRequestPriority.FOREGROUND)
@@ -92,13 +89,13 @@ class ReceiveViewModel(
                     val response = serviceApi.requestApi.request(requestFlow)
                     info { "File send with response $response" }
                 }
-            }
+            }*/
         }.exceptionOrNull()
         receiveStateFlow.update {
             it.copy(dialogShown = false)
         }
         if (exception != null) {
-            error(exception) { "Can't upload $receiveFileUri" }
+            error(exception) { "Can't upload $deeplinkContent" }
         }
     }
 
@@ -130,8 +127,15 @@ class ReceiveViewModel(
     }
 
     private fun calculateFileLengthAsync() = viewModelScope.launch {
-        val fileLength = receiveFileUri.lengthAsync(contentResolver)
-        info { "Calculate size for $receiveFileUri is $fileLength" }
+        val fileLength = when (deeplinkContent) {
+            is DeeplinkContent.ExternalUri -> {
+                deeplinkContent.uri.lengthAsync(contentResolver)
+            }
+            is DeeplinkContent.InternalStorageFile -> {
+                deeplinkContent.file.length()
+            }
+        }
+        info { "Calculate size for $deeplinkContent is $fileLength" }
         if (fileLength != FAILED_SIZE) {
             receiveStateFlow.update {
                 it.copy(

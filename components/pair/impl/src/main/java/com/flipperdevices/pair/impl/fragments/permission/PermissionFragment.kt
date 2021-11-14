@@ -8,7 +8,7 @@ import androidx.core.content.ContextCompat
 import com.flipperdevices.bridge.api.utils.DeviceFeatureHelper
 import com.flipperdevices.bridge.api.utils.PermissionHelper
 import com.flipperdevices.core.di.ComponentHolder
-import com.flipperdevices.core.ktx.toast
+import com.flipperdevices.core.ktx.android.toast
 import com.flipperdevices.core.ui.ComposeFragment
 import com.flipperdevices.pair.impl.R
 import com.flipperdevices.pair.impl.composable.permission.ComposePermission

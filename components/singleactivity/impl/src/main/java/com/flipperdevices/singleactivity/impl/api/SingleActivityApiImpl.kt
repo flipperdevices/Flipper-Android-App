@@ -3,6 +3,7 @@ package com.flipperdevices.singleactivity.impl.api
 import android.content.Context
 import android.content.Intent
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.singleactivity.api.SingleActivityApi
 import com.flipperdevices.singleactivity.impl.LAUNCH_PARAMS_INTENT
 import com.flipperdevices.singleactivity.impl.SingleActivity
@@ -13,13 +14,13 @@ import javax.inject.Inject
 class SingleActivityApiImpl @Inject constructor(
     private val context: Context
 ) : SingleActivityApi {
-    override fun open(launchParams: Intent?) {
+    override fun open(deeplink: Deeplink?) {
         context.startActivity(
             Intent(context, SingleActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or
                     Intent.FLAG_ACTIVITY_CLEAR_TASK or
                     Intent.FLAG_ACTIVITY_NEW_TASK
-                putExtra(LAUNCH_PARAMS_INTENT, launchParams)
+                putExtra(LAUNCH_PARAMS_INTENT, deeplink)
             }
         )
     }

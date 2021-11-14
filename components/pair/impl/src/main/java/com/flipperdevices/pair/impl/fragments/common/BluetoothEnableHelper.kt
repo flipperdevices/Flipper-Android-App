@@ -7,7 +7,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.flipperdevices.bridge.api.utils.PermissionHelper
-import com.flipperdevices.core.ktx.toast
+import com.flipperdevices.core.ktx.android.toast
 import com.flipperdevices.pair.impl.R
 
 class BluetoothEnableHelper(

@@ -1,7 +1,7 @@
 package com.flipperdevices.bridge.impl.manager
 
 import com.flipperdevices.bridge.impl.utils.ByteEndlessInputStream
-import com.flipperdevices.core.ktx.newSingleThreadExecutor
+import com.flipperdevices.core.ktx.jre.newSingleThreadExecutor
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.protobuf.Flipper

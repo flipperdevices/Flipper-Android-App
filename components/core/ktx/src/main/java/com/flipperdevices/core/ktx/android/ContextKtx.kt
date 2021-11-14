@@ -1,4 +1,4 @@
-package com.flipperdevices.core.ktx
+package com.flipperdevices.core.ktx.android
 
 import android.content.Context
 import java.io.File

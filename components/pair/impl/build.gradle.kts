@@ -26,6 +26,8 @@ dependencies {
 
     implementation(project(":components:singleactivity:api"))
 
+    implementation(project(":components:deeplink:api"))
+
     implementation(project(":components:bridge:api"))
     implementation(project(":components:bridge:provider"))
     implementation(project(":components:bridge:service:api"))

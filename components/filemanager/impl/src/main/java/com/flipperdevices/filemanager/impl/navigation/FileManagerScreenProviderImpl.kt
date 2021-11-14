@@ -1,8 +1,8 @@
 package com.flipperdevices.filemanager.impl.navigation
 
-import android.net.Uri
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.ktx.withArgs
+import com.flipperdevices.core.ktx.android.withArgs
+import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.filemanager.api.navigation.FileManagerScreenProvider
 import com.flipperdevices.filemanager.impl.fragment.FileManagerFragment
 import com.flipperdevices.filemanager.impl.fragment.FileManagerSaveFragment
@@ -21,9 +21,9 @@ class FileManagerScreenProviderImpl @Inject constructor() : FileManagerScreenPro
         }
     }
 
-    override fun saveWithFileManager(uri: Uri, path: String): Screen {
+    override fun saveWithFileManager(deeplinkContent: DeeplinkContent, path: String): Screen {
         return FragmentScreen("FileManagerSave_$path") {
-            FileManagerSaveFragment.newInstance(path, uri)
+            FileManagerSaveFragment.newInstance(path, deeplinkContent)
         }
     }
 }
