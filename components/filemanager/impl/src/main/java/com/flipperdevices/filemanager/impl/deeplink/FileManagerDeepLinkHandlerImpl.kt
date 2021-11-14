@@ -24,10 +24,11 @@ class FileManagerDeepLinkHandlerImpl @Inject constructor(
             }
             is DeeplinkContent.ExternalUri -> {
                 val scheme = content.uri.scheme
-                val isSupportedScheme = content.uri.path.isNullOrEmpty().not() &&
-                    (scheme == ContentResolver.SCHEME_CONTENT || scheme == ContentResolver.SCHEME_FILE)
+                val isSupportedScheme = scheme == ContentResolver.SCHEME_CONTENT ||
+                    scheme == ContentResolver.SCHEME_FILE
+                val isNotNullPath = content.uri.path.isNullOrEmpty().not()
 
-                if (isSupportedScheme) DispatcherPriority.LOW else null
+                if (isSupportedScheme && isNotNullPath) DispatcherPriority.LOW else null
             }
         }
     }

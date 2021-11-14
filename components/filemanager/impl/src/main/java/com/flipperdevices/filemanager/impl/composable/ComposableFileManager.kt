@@ -28,12 +28,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.filemanager.impl.R
 import com.flipperdevices.filemanager.impl.model.FileItem
+import com.flipperdevices.filemanager.impl.model.FileManagerState
 import com.flipperdevices.share.api.ShareApi
 import com.flipperdevices.share.model.ShareFile
 
 @Composable
 fun ComposableFileManager(
-    files: List<FileItem>,
+    fileManagerState: FileManagerState,
     modifier: Modifier = Modifier,
     onFileClick: (FileItem) -> Unit
 ) {
@@ -41,7 +42,7 @@ fun ComposableFileManager(
         modifier = modifier
             .fillMaxSize()
     ) {
-        items(files) { file ->
+        items(fileManagerState.filesInDirectory.toList()) { file ->
             ComposableFileItem(file, onFileClick)
         }
     }
@@ -49,13 +50,13 @@ fun ComposableFileManager(
 
 @Composable
 fun ComposableFileManagerWithDialog(
-    files: List<FileItem>,
+    fileManagerState: FileManagerState,
     shareApi: ShareApi,
     onDirectoryClick: (FileItem) -> Unit
 ) {
     var sharedFile by remember { mutableStateOf<FileItem?>(null) }
 
-    ComposableFileManager(files) { itemFile ->
+    ComposableFileManager(fileManagerState) { itemFile ->
         if (itemFile.isDirectory) {
             onDirectoryClick(itemFile)
         } else {
@@ -131,5 +132,5 @@ private fun ComposableFileImage(modifier: Modifier, fileItem: FileItem) {
 )
 @Composable
 fun ComposableFileManagerPreview() {
-    ComposableFileManager(listOf(FileItem.DUMMY)) {}
+    ComposableFileManager(FileManagerState("/", setOf(FileItem.DUMMY))) {}
 }

@@ -47,13 +47,12 @@ class FileManagerSaveFragment : ComposeFragment() {
 
     @Composable
     override fun renderView() {
-        val fileList by viewModel.getFileList().collectAsState()
+        val fileManagerState by viewModel.getFileManagerState().collectAsState()
 
         ComposableFileManagerSaveWithDialog(
+            fileManagerState,
             receiveApi,
             deeplinkContent,
-            directory,
-            fileList,
             onSuccessful = {
                 requireRouter().backTo(bottomNavigationApi.getBottomNavigationFragment())
             },

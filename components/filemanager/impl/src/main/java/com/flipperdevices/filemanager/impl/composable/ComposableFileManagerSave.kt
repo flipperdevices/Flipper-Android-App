@@ -18,11 +18,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.filemanager.impl.R
 import com.flipperdevices.filemanager.impl.model.FileItem
+import com.flipperdevices.filemanager.impl.model.FileManagerState
 import com.flipperdevices.share.api.ReceiveApi
 
 @Composable
 fun ComposableFileManagerSave(
-    files: List<FileItem>,
+    fileManagerState: FileManagerState,
     onOpenFolder: (FileItem) -> Unit,
     onClickSaveButton: () -> Unit
 ) {
@@ -30,7 +31,7 @@ fun ComposableFileManagerSave(
         topBar = { ComposableSaveTopBar(onClickSaveButton) }
     ) { scaffoldPaddings ->
         ComposableFileManager(
-            files,
+            fileManagerState,
             Modifier.padding(scaffoldPaddings),
             onOpenFolder
         )
@@ -39,21 +40,23 @@ fun ComposableFileManagerSave(
 
 @Composable
 fun ComposableFileManagerSaveWithDialog(
+    fileManagerState: FileManagerState,
     receiveApi: ReceiveApi,
     deeplinkContent: DeeplinkContent,
-    currentPath: String,
-    files: List<FileItem>,
     onSuccessful: () -> Unit,
     onOpenFolder: (FileItem) -> Unit
 ) {
     var openSaveDialog by remember { mutableStateOf(false) }
-    ComposableFileManagerSave(files, onOpenFolder) {
+    ComposableFileManagerSave(
+        fileManagerState,
+        onOpenFolder
+    ) {
         openSaveDialog = true
     }
     if (openSaveDialog) {
         receiveApi.AlertDialogUpload(
             deeplinkContent = deeplinkContent,
-            flipperPath = currentPath,
+            flipperPath = fileManagerState.currentPath,
             onSuccessful = onSuccessful
         ) {
             openSaveDialog = false
@@ -82,7 +85,13 @@ private fun ComposableSaveTopBar(onClickSaveButton: () -> Unit) {
 @Composable
 fun ComposableFileManagerSavePreview() {
     ComposableFileManagerSave(
-        listOf(FileItem.DUMMY), onOpenFolder = {},
+        FileManagerState(
+            "/",
+            setOf(
+                FileItem.DUMMY
+            )
+        ),
+        onOpenFolder = {},
         onClickSaveButton = {}
     )
 }
