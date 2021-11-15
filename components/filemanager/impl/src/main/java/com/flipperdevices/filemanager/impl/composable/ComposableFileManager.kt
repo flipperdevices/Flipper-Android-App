@@ -4,21 +4,21 @@ import android.text.format.Formatter
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -26,11 +26,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.bridge.dao.FlipperFileFormat
 import com.flipperdevices.filemanager.impl.R
 import com.flipperdevices.filemanager.impl.model.FileItem
 import com.flipperdevices.filemanager.impl.model.FileManagerState
-import com.flipperdevices.share.api.ShareApi
-import com.flipperdevices.share.model.ShareFile
 
 @Composable
 fun ComposableFileManager(
@@ -38,41 +37,28 @@ fun ComposableFileManager(
     modifier: Modifier = Modifier,
     onFileClick: (FileItem) -> Unit
 ) {
-    LazyColumn(
-        modifier = modifier
-            .fillMaxSize()
+    Box(
+        modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
     ) {
-        items(fileManagerState.filesInDirectory.toList()) { file ->
-            ComposableFileItem(file, onFileClick)
-        }
-    }
-}
-
-@Composable
-fun ComposableFileManagerWithDialog(
-    fileManagerState: FileManagerState,
-    shareApi: ShareApi,
-    onDirectoryClick: (FileItem) -> Unit
-) {
-    var sharedFile by remember { mutableStateOf<FileItem?>(null) }
-
-    ComposableFileManager(fileManagerState) { itemFile ->
-        if (itemFile.isDirectory) {
-            onDirectoryClick(itemFile)
-        } else {
-            sharedFile = itemFile
-        }
-    }
-
-    if (sharedFile != null) {
-        shareApi.AlertDialogDownload(
-            ShareFile(
-                name = sharedFile!!.fileName,
-                flipperFilePath = sharedFile!!.path,
-                size = sharedFile!!.size
-            )
-        ) {
-            sharedFile = null
+        when {
+            fileManagerState.filesInDirectory.isNotEmpty() -> {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    items(fileManagerState.filesInDirectory.toList()) { file ->
+                        ComposableFileItem(file, onFileClick)
+                    }
+                }
+            }
+            fileManagerState.inProgress -> {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(size = 48.dp)
+                )
+            }
+            else -> {
+                Text(text = stringResource(id = R.string.filemanager_empty_folder))
+            }
         }
     }
 }
@@ -118,11 +104,29 @@ private fun ComposableFileImage(modifier: Modifier, fileItem: FileItem) {
             contentDescription = stringResource(R.string.filemanager_folder_pic_desc)
         )
     } else {
-        Image(
+        Box(
             modifier = modifier,
-            painter = painterResource(R.drawable.ic_file),
-            contentDescription = stringResource(R.string.filemanager_file_pic_desc)
-        )
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                modifier = Modifier.size(size = 48.dp),
+                painter = painterResource(R.drawable.ic_file),
+                contentDescription = stringResource(R.string.filemanager_file_pic_desc)
+            )
+            val fileIcon = remember(fileItem) {
+                FlipperFileFormat.getByExtension(
+                    fileItem.fileName.substringAfterLast(".")
+                )
+            }
+
+            if (fileIcon != null) {
+                Image(
+                    modifier = Modifier.size(size = 24.dp),
+                    painter = painterResource(fileIcon.icon),
+                    contentDescription = fileIcon.humanReadableName
+                )
+            }
+        }
     }
 }
 
@@ -132,5 +136,13 @@ private fun ComposableFileImage(modifier: Modifier, fileItem: FileItem) {
 )
 @Composable
 fun ComposableFileManagerPreview() {
-    ComposableFileManager(FileManagerState("/", setOf(FileItem.DUMMY))) {}
+    ComposableFileManager(
+        FileManagerState(
+            "/",
+            setOf(
+                FileItem.DUMMY_FOLDER,
+                FileItem.DUMMY_FILE
+            )
+        )
+    ) {}
 }

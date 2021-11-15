@@ -16,6 +16,7 @@ dependencies {
 
     implementation(project(":components:bridge:service:api"))
     implementation(project(":components:bridge:api"))
+    implementation(project(":components:bridge:dao"))
     implementation(project(":components:bridge:protobuf"))
 
     implementation(project(":components:filemanager:api"))

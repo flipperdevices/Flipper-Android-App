@@ -66,6 +66,9 @@ class FileManagerViewModel(
                     oldState.copy(filesInDirectory = newSet)
                 }
             }
+            fileManagerStateFlow.update {
+                it.copy(inProgress = false)
+            }
         }
     }
 }
