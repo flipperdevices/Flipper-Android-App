@@ -4,6 +4,7 @@ import com.flipperdevices.protobuf.Flipper
 
 data class FlipperRequest(
     val data: Flipper.Main,
+    val createTimestamp: Long = System.currentTimeMillis(),
     val priority: FlipperRequestPriority = FlipperRequestPriority.DEFAULT
 )
 
