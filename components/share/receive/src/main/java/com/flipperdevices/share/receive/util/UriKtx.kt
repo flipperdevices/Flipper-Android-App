@@ -49,3 +49,23 @@ fun Uri.length(contentResolver: ContentResolver): Long {
 suspend fun Uri.lengthAsync(contentResolver: ContentResolver): Long = withContext(Dispatchers.IO) {
     return@withContext length(contentResolver)
 }
+
+fun Uri.filename(contentResolver: ContentResolver): String? {
+    val nameFromResolver: String? = if (scheme == ContentResolver.SCHEME_CONTENT) runCatching {
+        contentResolver.query(this, null, null, null, null).use {
+            val cursor = it ?: return@use null
+            cursor.moveToFirst()
+            val columnIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+            if (columnIndex == -1) {
+                return@use null
+            }
+            return@use cursor.getString(columnIndex)
+        }
+    }.getOrNull() else null
+
+    if (nameFromResolver != null) {
+        return nameFromResolver
+    }
+
+    return path?.substringAfterLast("/")
+}

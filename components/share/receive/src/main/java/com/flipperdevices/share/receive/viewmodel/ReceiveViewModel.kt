@@ -23,6 +23,7 @@ import com.flipperdevices.share.common.model.DownloadProgress
 import com.flipperdevices.share.common.model.ShareState
 import com.flipperdevices.share.receive.di.ShareReceiveComponent
 import com.flipperdevices.share.receive.util.FAILED_SIZE
+import com.flipperdevices.share.receive.util.filename
 import com.flipperdevices.share.receive.util.lengthAsync
 import com.google.protobuf.ByteString
 import java.io.File
@@ -112,7 +113,7 @@ class ReceiveViewModel(
         fileStream: InputStream,
         fileSize: Long?
     ) = channelFlow {
-        val filePath = File(flipperPath, deeplinkContent.filename()!!).absolutePath
+        val filePath = File(flipperPath, deeplinkContent.filename(contentResolver)!!).absolutePath
 
         val bufferArray = ByteArray(ProtobufConstants.MAX_FILE_DATA)
         var alreadyRead = 0L

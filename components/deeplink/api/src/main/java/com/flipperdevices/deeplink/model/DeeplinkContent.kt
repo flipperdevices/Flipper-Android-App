@@ -15,15 +15,4 @@ sealed class DeeplinkContent : Parcelable {
     class InternalStorageFile(
         val file: File
     ) : DeeplinkContent()
-
-    fun filename(): String? {
-        return when (this) {
-            is ExternalUri -> {
-                uri.path?.substringAfterLast("/")
-            }
-            is InternalStorageFile -> {
-                file.name
-            }
-        }
-    }
 }
