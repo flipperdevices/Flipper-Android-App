@@ -88,7 +88,7 @@ fun ComposableFileManagerSavePreview() {
         FileManagerState(
             "/",
             setOf(
-                FileItem.DUMMY
+                FileItem.DUMMY_FOLDER
             )
         ),
         onOpenFolder = {},
