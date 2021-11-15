@@ -4,14 +4,12 @@ import android.app.Application
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.share.common.composable.ComposableAlertDialog
 import com.flipperdevices.share.receive.R
-import com.flipperdevices.share.receive.util.filename
 import com.flipperdevices.share.receive.viewmodel.ReceiveViewModel
 import com.flipperdevices.share.receive.viewmodel.ReceiveViewModelFactory
 
@@ -38,14 +36,10 @@ fun ComposableReceive(
         onCancel()
         return
     }
-    val context = LocalContext.current
-    val filename = remember(deeplinkContent) {
-        deeplinkContent.filename(context.contentResolver) ?: ""
-    }
     ComposableAlertDialog(
         title = stringResource(
             R.string.receive_dialog_title,
-            filename
+            deeplinkContent.filename() ?: "Unknown"
         ),
         downloadProgress = receiveState.downloadProgress,
         onCancel = {

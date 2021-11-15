@@ -22,9 +22,6 @@ import com.flipperdevices.protobuf.storage.writeRequest
 import com.flipperdevices.share.common.model.DownloadProgress
 import com.flipperdevices.share.common.model.ShareState
 import com.flipperdevices.share.receive.di.ShareReceiveComponent
-import com.flipperdevices.share.receive.util.FAILED_SIZE
-import com.flipperdevices.share.receive.util.filename
-import com.flipperdevices.share.receive.util.lengthAsync
 import com.google.protobuf.ByteString
 import java.io.File
 import java.io.InputStream
@@ -57,7 +54,9 @@ class ReceiveViewModel(
     private val contentResolver = application.contentResolver
     private val receiveStateFlow = MutableStateFlow(
         ShareState(
-            DownloadProgress.Infinite(0L)
+            deeplinkContent.length()?.let {
+                DownloadProgress.Fixed(0L, it)
+            } ?: DownloadProgress.Infinite(0L)
         )
     )
 
@@ -85,12 +84,11 @@ class ReceiveViewModel(
             info { "Upload file $deeplinkContent already started" }
             return@withContext
         }
-        val fileSize = calculateFileLengthAsync()
         info { "Upload file $deeplinkContent start" }
         val exception = runCatching {
             deeplinkContent.openStream().use { fileStream ->
                 val stream = fileStream ?: return@use
-                val requestFlow = getUploadRequestFlow(stream, fileSize).map {
+                val requestFlow = getUploadRequestFlow(stream, deeplinkContent.length()).map {
                     it.wrapToRequest(FlipperRequestPriority.FOREGROUND)
                 }
                 val response = serviceApi.requestApi.request(requestFlow)
@@ -113,7 +111,7 @@ class ReceiveViewModel(
         fileStream: InputStream,
         fileSize: Long?
     ) = channelFlow {
-        val filePath = File(flipperPath, deeplinkContent.filename(contentResolver)!!).absolutePath
+        val filePath = File(flipperPath, deeplinkContent.filename() ?: "Unknown").absolutePath
 
         val bufferArray = ByteArray(ProtobufConstants.MAX_FILE_DATA)
         var alreadyRead = 0L
@@ -151,30 +149,6 @@ class ReceiveViewModel(
             )
         }
         close()
-    }
-
-    private suspend fun calculateFileLengthAsync(): Long? {
-        val fileLength = when (deeplinkContent) {
-            is DeeplinkContent.ExternalUri -> {
-                deeplinkContent.uri.lengthAsync(contentResolver)
-            }
-            is DeeplinkContent.InternalStorageFile -> {
-                deeplinkContent.file.length()
-            }
-        }
-        info { "Calculate size for $deeplinkContent is $fileLength" }
-        if (fileLength != FAILED_SIZE) {
-            receiveStateFlow.update {
-                it.copy(
-                    downloadProgress = DownloadProgress.Fixed(
-                        it.downloadProgress.progress,
-                        fileLength
-                    )
-                )
-            }
-            return fileLength
-        }
-        return null
     }
 
     private fun DeeplinkContent.openStream(): InputStream? {

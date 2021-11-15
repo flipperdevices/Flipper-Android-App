@@ -8,6 +8,7 @@ apply<com.flipperdevices.gradle.ConfigurationPlugin>()
 
 dependencies {
     implementation(project(":components:core:di"))
+    implementation(project(":components:core:log"))
 
     implementation(project(":components:bridge:dao"))
 
@@ -16,6 +17,7 @@ dependencies {
 
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.APPCOMPAT)
+    implementation(Libs.KOTLIN_COROUTINES)
 
     // Dagger deps
     implementation(Libs.DAGGER)
