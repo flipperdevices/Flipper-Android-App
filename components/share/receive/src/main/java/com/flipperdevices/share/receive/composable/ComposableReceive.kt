@@ -39,7 +39,7 @@ fun ComposableReceive(
     ComposableAlertDialog(
         title = stringResource(
             R.string.receive_dialog_title,
-            deeplinkContent.filename() ?: ""
+            deeplinkContent.filename() ?: "Unknown"
         ),
         downloadProgress = receiveState.downloadProgress,
         onCancel = {

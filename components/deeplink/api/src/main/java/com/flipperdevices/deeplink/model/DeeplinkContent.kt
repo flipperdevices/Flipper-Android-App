@@ -8,6 +8,8 @@ import kotlinx.parcelize.Parcelize
 sealed class DeeplinkContent : Parcelable {
     @Parcelize
     class ExternalUri(
+        val filename: String?,
+        val size: Long?,
         val uri: Uri
     ) : DeeplinkContent()
 
@@ -16,14 +18,17 @@ sealed class DeeplinkContent : Parcelable {
         val file: File
     ) : DeeplinkContent()
 
+    fun length(): Long? {
+        return when (this) {
+            is ExternalUri -> size
+            is InternalStorageFile -> file.length()
+        }
+    }
+
     fun filename(): String? {
         return when (this) {
-            is ExternalUri -> {
-                uri.path?.substringAfterLast("/")
-            }
-            is InternalStorageFile -> {
-                file.name
-            }
+            is ExternalUri -> filename
+            is InternalStorageFile -> file.name
         }
     }
 }

@@ -54,6 +54,9 @@ dependencies {
     implementation(Libs.MATERIAL)
     implementation(Libs.TREX)
 
+    implementation(Libs.KOTLIN_COROUTINES)
+    implementation(Libs.ACTIVITY_KTX)
+
     implementation(Libs.DAGGER)
     kapt(Libs.DAGGER_COMPILER)
 
