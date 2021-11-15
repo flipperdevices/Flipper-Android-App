@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -37,10 +38,14 @@ fun ComposableReceive(
         onCancel()
         return
     }
+    val context = LocalContext.current
+    val filename = remember(deeplinkContent) {
+        deeplinkContent.filename(context.contentResolver) ?: ""
+    }
     ComposableAlertDialog(
         title = stringResource(
             R.string.receive_dialog_title,
-            deeplinkContent.filename(LocalContext.current.contentResolver) ?: ""
+            filename
         ),
         downloadProgress = receiveState.downloadProgress,
         onCancel = {
