@@ -75,6 +75,17 @@ class ShareViewModel(
         viewModelScope.launch {
             startDownload(serviceApi)
         }
+        viewModelScope.launch {
+            serviceApi.requestApi.getSpeed().collect { serialSpeed ->
+                shareStateFlow.update {
+                    it.copy(
+                        downloadProgress = it.downloadProgress.updateSpeed(
+                            serialSpeed.receiveBytesInSec
+                        )
+                    )
+                }
+            }
+        }
     }
 
     private suspend fun startDownload(serviceApi: FlipperServiceApi) = withContext(Dispatchers.IO) {
