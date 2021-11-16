@@ -69,8 +69,8 @@ fun TOSContent() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp),
-            contentScale = ContentScale.Crop,
-            painter = painterResource(R.drawable.ic_scanning),
+            contentScale = ContentScale.FillWidth,
+            painter = painterResource(R.drawable.ic_welcome),
             contentDescription = stringResource(R.string.pair_tos_pic_welcome)
         )
         Text(
