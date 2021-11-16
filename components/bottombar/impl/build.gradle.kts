@@ -17,8 +17,6 @@ dependencies {
 
     implementation(project(":components:info:api"))
     implementation(project(":components:pair:api"))
-    implementation(project(":components:filemanager:api"))
-    implementation(project(":components:screenstreaming:api"))
 
     implementation(Libs.APPCOMPAT)
     implementation(Libs.DAGGER)

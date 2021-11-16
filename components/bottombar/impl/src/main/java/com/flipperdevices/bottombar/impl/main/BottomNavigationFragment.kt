@@ -44,7 +44,7 @@ class BottomNavigationFragment : Fragment(), OnBackPressListener {
         }
 
         if (childFragmentManager.findFragmentById(R.id.fragment_container) == null) {
-            selectTab(FlipperBottomTab.STORAGE)
+            selectTab(FlipperBottomTab.DEVICE)
         }
     }
 
