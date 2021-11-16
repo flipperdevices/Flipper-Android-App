@@ -133,7 +133,7 @@ class ShareViewModel(
         shareStateFlow.update {
             val progress = it.downloadProgress
             it.copy(
-                downloadProgress = progress.updateProgress(progress.progress + delta)
+                downloadProgress = progress.updateProgress(delta.toLong())
             )
         }
     }
