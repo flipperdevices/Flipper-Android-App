@@ -31,6 +31,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -70,6 +71,17 @@ class ReceiveViewModel(
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
         viewModelScope.launch {
             startUpload(serviceApi)
+        }
+        viewModelScope.launch {
+            serviceApi.requestApi.getSpeed().collect { serialSpeed ->
+                receiveStateFlow.update {
+                    it.copy(
+                        downloadProgress = it.downloadProgress.updateSpeed(
+                            serialSpeed.transmitBytesInSec
+                        )
+                    )
+                }
+            }
         }
     }
 

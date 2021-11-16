@@ -2,6 +2,7 @@ package com.flipperdevices.screenstreaming.impl.viewmodel
 
 import android.graphics.Bitmap
 import androidx.lifecycle.viewModelScope
+import com.flipperdevices.bridge.api.model.FlipperSerialSpeed
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
@@ -18,6 +19,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -30,6 +32,7 @@ class ScreenStreamingViewModel : LifecycleViewModel() {
     private val flipperScreen = MutableStateFlow(ScreenStreamFrameDecoder.emptyBitmap())
     private var serviceApi: FlipperServiceApi? = null
     private val streamingState = MutableStateFlow(StreamingState.DISABLED)
+    private val speedState = MutableStateFlow(FlipperSerialSpeed())
 
     init {
         ComponentHolder.component<ScreenStreamingComponent>().inject(this)
@@ -42,15 +45,21 @@ class ScreenStreamingViewModel : LifecycleViewModel() {
                 }
             }.launchIn(viewModelScope)
             serviceApiInternal.requestApi.notificationFlow().onEach {
-                if (it.hasGuiScreenStreamFrame()) {
-                    onStreamFrameReceived(it.guiScreenStreamFrame)
+                if (it.hasGuiScreenFrame()) {
+                    onStreamFrameReceived(it.guiScreenFrame)
                 }
             }.launchIn(viewModelScope)
+            viewModelScope.launch {
+                serviceApiInternal.requestApi.getSpeed().collect {
+                    speedState.emit(it)
+                }
+            }
         }
     }
 
     fun getFlipperScreen(): StateFlow<Bitmap> = flipperScreen
     fun getStreamingState() = streamingState
+    fun getSpeed(): StateFlow<FlipperSerialSpeed> = speedState
 
     fun onPressButton(buttonEnum: ButtonEnum) {
         serviceApi?.requestApi?.pressOnButton(viewModelScope, buttonEnum, Gui.InputType.SHORT)
@@ -66,12 +75,12 @@ class ScreenStreamingViewModel : LifecycleViewModel() {
                 guiStartScreenStreamRequest = startScreenStreamRequest {}
             }.wrapToRequest()
         ).onEach {
-            onStreamFrameReceived(it.guiScreenStreamFrame)
+            onStreamFrameReceived(it.guiScreenFrame)
         }.launchIn(viewModelScope)
     }
 
     private suspend fun onStreamFrameReceived(
-        streamFrame: Gui.ScreenStreamFrame
+        streamFrame: Gui.ScreenFrame
     ) = withContext(Dispatchers.IO) {
         val screen = ScreenStreamFrameDecoder.decode(streamFrame)
         viewModelScope.launch {

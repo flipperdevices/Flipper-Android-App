@@ -72,12 +72,18 @@ fun ComposableFixedProgress(fixedProgress: DownloadProgress.Fixed) {
         LocalContext.current,
         fixedProgress.totalSize
     )
+    val speed = Formatter.formatFileSize(
+        LocalContext.current,
+        fixedProgress.speedBytesInSecond
+    )
     Column() {
         Text(
             modifier = Modifier.padding(bottom = 8.dp),
             text = stringResource(
                 R.string.share_dialog_progress_text,
-                downloadedSize, totalSize
+                downloadedSize,
+                totalSize,
+                "$speed/s"
             )
         )
         LinearProgressIndicator(
@@ -93,12 +99,17 @@ fun ComposableInfiniteProgress(infiniteProgress: DownloadProgress.Infinite) {
         LocalContext.current,
         infiniteProgress.progress
     )
+    val speed = Formatter.formatFileSize(
+        LocalContext.current,
+        infiniteProgress.speedBytesInSecond
+    )
     Column() {
         Text(
             modifier = Modifier.padding(bottom = 8.dp),
             text = stringResource(
                 R.string.share_dialog_progress_infinite_text,
-                downloadedSize
+                downloadedSize,
+                "$speed/s"
             )
         )
         LinearProgressIndicator(
