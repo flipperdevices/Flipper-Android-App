@@ -11,9 +11,13 @@ apply<com.flipperdevices.gradle.ComposerPlugin>()
 dependencies {
     implementation(project(":components:core:di"))
     implementation(project(":components:core:ui"))
+    implementation(project(":components:core:navigation"))
 
     implementation(project(":components:info:api"))
     implementation(project(":components:pair:api"))
+    implementation(project(":components:screenstreaming:api"))
+    implementation(project(":components:filemanager:api"))
+
     implementation(project(":components:bridge:api"))
     implementation(project(":components:bridge:service:api"))
     implementation(project(":components:bridge:protobuf"))
