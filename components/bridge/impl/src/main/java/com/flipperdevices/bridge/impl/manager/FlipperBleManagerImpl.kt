@@ -17,6 +17,7 @@ import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
+import no.nordicsemi.android.ble.ConnectionPriorityRequest
 import no.nordicsemi.android.ble.ktx.state.ConnectionState
 import no.nordicsemi.android.ble.ktx.stateAsFlow
 
@@ -43,7 +44,6 @@ class FlipperBleManagerImpl constructor(
 
     override suspend fun disconnectDevice() = withContext(bleDispatcher) {
         disconnect().enqueue()
-        isConnected
         // Wait until device is really disconnected
         stateAsFlow().filter { it is ConnectionState.Disconnected }.first()
         return@withContext
@@ -78,6 +78,7 @@ class FlipperBleManagerImpl constructor(
             // Set up large MTU
             // Also does not work with small MTU because of a bug in Flipper Zero firmware
             requestMtu(Constants.BLE.MTU).enqueue()
+            requestConnectionPriority(ConnectionPriorityRequest.CONNECTION_PRIORITY_HIGH).enqueue()
 
             informationApi.initialize(this@FlipperBleManagerImpl)
             flipperRequestApi.initialize(this@FlipperBleManagerImpl)

@@ -24,7 +24,7 @@ object ScreenStreamFrameDecoder : LogTagProvider {
         return bitmap
     }
 
-    fun decode(streamFrame: Gui.ScreenStreamFrame): Bitmap {
+    fun decode(streamFrame: Gui.ScreenFrame): Bitmap {
         val bytes = streamFrame.data.toByteArray()
         info { "Receive package with ${bytes.size} bytes" }
         if (bytes.isEmpty()) {

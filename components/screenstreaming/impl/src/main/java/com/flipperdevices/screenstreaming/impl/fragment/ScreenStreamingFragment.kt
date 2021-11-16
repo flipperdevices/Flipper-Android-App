@@ -1,8 +1,6 @@
 package com.flipperdevices.screenstreaming.impl.fragment
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.fragment.app.viewModels
 import com.flipperdevices.core.ui.ComposeFragment
@@ -16,11 +14,8 @@ class ScreenStreamingFragment : ComposeFragment() {
     @ExperimentalComposeUiApi
     @Composable
     override fun renderView() {
-        val screen by screenStreamingViewModel.getFlipperScreen().collectAsState()
-        val streamingState by screenStreamingViewModel.getStreamingState().collectAsState()
         ComposableScreen(
-            flipperScreen = screen,
-            streamingState = streamingState,
+            screenStreamingViewModel,
             onPressButton = { button ->
                 screenStreamingViewModel.onPressButton(button)
             },

@@ -45,3 +45,6 @@ include(":components:singleactivity:impl")
 
 include(":components:deeplink:api")
 include(":components:deeplink:impl")
+
+include(":components:debug:api")
+include(":components:debug:impl")

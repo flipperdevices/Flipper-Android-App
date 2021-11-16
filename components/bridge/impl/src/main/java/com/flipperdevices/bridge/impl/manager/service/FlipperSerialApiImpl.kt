@@ -3,12 +3,16 @@ package com.flipperdevices.bridge.impl.manager.service
 import android.bluetooth.BluetoothGattCharacteristic
 import android.bluetooth.BluetoothGattService
 import com.flipperdevices.bridge.api.manager.service.FlipperSerialApi
+import com.flipperdevices.bridge.api.model.FlipperSerialSpeed
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.impl.manager.UnsafeBleManager
+import com.flipperdevices.bridge.impl.utils.SpeedMeter
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class FlipperSerialApiImpl(
@@ -25,6 +29,9 @@ class FlipperSerialApiImpl(
     private var serialTxCharacteristic: BluetoothGattCharacteristic? = null
     private var serialRxCharacteristic: BluetoothGattCharacteristic? = null
 
+    private val txSpeed = SpeedMeter()
+    private val rxSpeed = SpeedMeter()
+
     override fun onServiceReceived(service: BluetoothGattService) {
         serialTxCharacteristic = service.getCharacteristic(Constants.BLESerialService.TX)
         serialRxCharacteristic = service.getCharacteristic(Constants.BLESerialService.RX)
@@ -35,6 +42,7 @@ class FlipperSerialApiImpl(
         bleManager.setNotificationCallbackUnsafe(serialRxCharacteristic).with { _, data ->
             info { "Receive serial data ${data.value?.size}" }
             val bytes = data.value ?: return@with
+            rxSpeed.onReceiveBytes(bytes.size)
             scope.launch {
                 receiveBytesFlow.emit(bytes)
             }
@@ -42,7 +50,10 @@ class FlipperSerialApiImpl(
         bleManager.enableNotificationsUnsafe(serialRxCharacteristic).enqueue()
         bleManager.enableIndicationsUnsafe(serialRxCharacteristic).enqueue()
         pendingBytes.forEach { data ->
-            bleManager.writeCharacteristicUnsafe(serialTxCharacteristic, data).enqueue()
+            bleManager.writeCharacteristicUnsafe(serialTxCharacteristic, data)
+                .done {
+                    txSpeed.onReceiveBytes(data.size)
+                }.enqueue()
         }
     }
 
@@ -51,6 +62,10 @@ class FlipperSerialApiImpl(
     }
 
     override fun receiveBytesFlow() = receiveBytesFlow
+    override suspend fun getSpeed() = rxSpeed.getSpeed()
+        .combine(txSpeed.getSpeed()) { rxBPS, txBPS ->
+            FlipperSerialSpeed(receiveBytesInSec = rxBPS, transmitBytesInSec = txBPS)
+        }.stateIn(scope)
 
     override fun sendBytes(data: ByteArray) {
         if (data.isEmpty()) {
@@ -64,6 +79,9 @@ class FlipperSerialApiImpl(
         }
         bleManager.writeCharacteristicUnsafe(serialTxCharacteristic, data)
             .split(FixedSizeDataSplitter())
+            .done {
+                txSpeed.onReceiveBytes(data.size)
+            }
             .enqueue()
     }
 }

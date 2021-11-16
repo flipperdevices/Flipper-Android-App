@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothGattService
 import android.util.SparseArray
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequest
+import com.flipperdevices.bridge.api.model.FlipperSerialSpeed
 import com.flipperdevices.bridge.impl.manager.PeripheralResponseReader
 import com.flipperdevices.bridge.impl.manager.UnsafeBleManager
 import com.flipperdevices.bridge.impl.manager.overflow.FlipperRequestStorage
@@ -21,6 +22,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
@@ -100,6 +102,10 @@ class FlipperRequestApiImpl(
 
     override suspend fun requestWithoutAnswer(vararg commands: FlipperRequest) {
         requestStorage.sendRequest(*commands)
+    }
+
+    override suspend fun getSpeed(): StateFlow<FlipperSerialSpeed> {
+        return serialApiUnsafe.getSpeed()
     }
 
     @ObsoleteCoroutinesApi

@@ -1,8 +1,10 @@
 package com.flipperdevices.bridge.api.manager
 
 import com.flipperdevices.bridge.api.model.FlipperRequest
+import com.flipperdevices.bridge.api.model.FlipperSerialSpeed
 import com.flipperdevices.protobuf.Flipper
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 
 /**
  * High level API for Flipper RPC
@@ -27,4 +29,9 @@ interface FlipperRequestApi {
      * Send batch request without waiting response
      */
     suspend fun requestWithoutAnswer(vararg commands: FlipperRequest)
+
+    /**
+     * Contains state about average serial speed
+     */
+    suspend fun getSpeed(): StateFlow<FlipperSerialSpeed>
 }
