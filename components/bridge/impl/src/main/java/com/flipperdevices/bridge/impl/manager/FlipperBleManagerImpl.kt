@@ -7,7 +7,7 @@ import com.flipperdevices.bridge.api.manager.FlipperBleManager
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.impl.manager.delegates.FlipperConnectionInformationApiImpl
 import com.flipperdevices.bridge.impl.manager.service.FlipperInformationApiImpl
-import com.flipperdevices.bridge.impl.manager.service.FlipperRequestApiImpl
+import com.flipperdevices.bridge.impl.manager.service.request.FlipperRequestApiImpl
 import com.flipperdevices.core.ktx.jre.newSingleThreadExecutor
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.debug

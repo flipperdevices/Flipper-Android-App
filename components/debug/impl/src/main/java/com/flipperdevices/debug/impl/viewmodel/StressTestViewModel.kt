@@ -41,6 +41,7 @@ import kotlinx.coroutines.withContext
 const val BUFFER_SIZE = 2048
 const val TEST_FILE = "/any/stresstest_mobile.tmp"
 
+@Suppress("TooManyFunctions")
 class StressTestViewModel : LifecycleViewModel() {
     @Inject
     lateinit var serviceProvider: FlipperServiceProvider
