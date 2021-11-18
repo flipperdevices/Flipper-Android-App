@@ -1,4 +1,13 @@
 rootProject.name = "Flipper App"
+
+dependencyResolutionManagement {
+    repositories {
+        google()
+        mavenCentral()
+        maven("https://jitpack.io")
+    }
+}
+
 include(":components:bridge:api")
 include(":components:bridge:dao")
 include(":components:bridge:impl")
