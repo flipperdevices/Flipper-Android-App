@@ -22,9 +22,9 @@ class FlipperRequestComparator : Comparator<FlipperRequest> {
         }
 
         // Request with lower timestamp have larger priority
-        if (first.createTimestamp > second.createTimestamp) {
+        if (first.createTimestampNanos > second.createTimestampNanos) {
             solution = GREATER
-        } else if (first.createTimestamp < second.createTimestamp) {
+        } else if (first.createTimestampNanos < second.createTimestampNanos) {
             solution = LESS
         }
 

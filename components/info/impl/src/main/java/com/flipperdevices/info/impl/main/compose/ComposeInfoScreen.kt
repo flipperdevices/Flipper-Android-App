@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.bridge.api.manager.delegates.toHumanReadableString
 import com.flipperdevices.bridge.api.model.FlipperGATTInformation
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.main.model.DeviceSubScreen
@@ -38,6 +39,13 @@ fun ComposeInfoScreen(
                 .fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(space = 16.dp)
         ) {
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                onClick = { onOpenScreen(DeviceSubScreen.DEBUG) }
+            ) {
+                Text(text = stringResource(R.string.info_debug))
+            }
             Button(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -73,15 +81,4 @@ private fun InfoText(
     Text(text = "Manufacturer: ${flipperGATTInformation.manufacturerName ?: "Unavailable"}")
     Text(text = "Hardware: ${flipperGATTInformation.hardwareRevision ?: "Unavailable"}")
     Text(text = "Firmware: ${flipperGATTInformation.softwareVersion ?: "Unavailable"}")
-}
-
-private fun ConnectionState.toHumanReadableString(): String {
-    return when (this) {
-        ConnectionState.Connecting -> "Connecting"
-        ConnectionState.Initializing -> "Initializing"
-        ConnectionState.Ready -> "Ready"
-        ConnectionState.Disconnecting -> "Disconnecting"
-        is ConnectionState.Disconnected -> "Disconnected"
-        else -> this::class.simpleName ?: this.toString()
-    }
 }

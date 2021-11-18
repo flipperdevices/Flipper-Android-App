@@ -13,7 +13,7 @@ import com.flipperdevices.core.ui.ComposeFragment
 
 class TestFragment : ComposeFragment() {
     @Composable
-    override fun renderView() {
+    override fun RenderView() {
         Box(
             modifier = Modifier
                 .fillMaxHeight()

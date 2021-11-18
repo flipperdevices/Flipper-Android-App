@@ -23,7 +23,7 @@ class FragmentTOS : ComposeFragment() {
     }
 
     @Composable
-    override fun renderView() {
+    override fun RenderView() {
         ComposableTOS { onAccept() }
     }
 

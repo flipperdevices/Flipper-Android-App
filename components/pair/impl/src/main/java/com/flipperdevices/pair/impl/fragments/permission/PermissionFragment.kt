@@ -53,7 +53,7 @@ class PermissionFragment : ComposeFragment() {
     }
 
     @Composable
-    override fun renderView() {
+    override fun RenderView() {
         ComposePermission(requestPermissionButton = { enableBluetoothAndRequestPermissions() })
     }
 

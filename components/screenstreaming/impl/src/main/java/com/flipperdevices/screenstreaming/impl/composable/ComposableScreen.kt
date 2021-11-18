@@ -1,5 +1,6 @@
 package com.flipperdevices.screenstreaming.impl.composable
 
+import android.graphics.Bitmap
 import android.text.format.Formatter
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -32,7 +33,7 @@ import com.flipperdevices.screenstreaming.impl.viewmodel.FLIPPER_SCREEN_RATIO
 import com.flipperdevices.screenstreaming.impl.viewmodel.ScreenStreamingViewModel
 import kotlin.math.roundToInt
 
-@OptIn(ExperimentalFoundationApi::class)
+@ExperimentalFoundationApi
 @ExperimentalComposeUiApi
 @Preview(
     showBackground = true,
@@ -57,26 +58,7 @@ fun ComposableScreen(
                 .weight(weight = 1f),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            val imageDrawPaint = remember {
-                Paint().apply {
-                    filterQuality = FilterQuality.None
-                }
-            }
-            Canvas(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(FLIPPER_SCREEN_RATIO),
-                contentDescription = stringResource(R.string.flipper_display)
-            ) {
-                drawContext.canvas.drawImageRect(
-                    image = flipperScreen.asImageBitmap(),
-                    dstSize = IntSize(
-                        size.width.roundToInt(),
-                        size.height.roundToInt()
-                    ),
-                    paint = imageDrawPaint
-                )
-            }
+            ComposableFlipperScreen(flipperScreen)
             ComposableControlButtons(onPressButton, onLongPressButton)
             Button(
                 modifier = Modifier.fillMaxWidth(),
@@ -105,5 +87,30 @@ fun ComposableScreen(
             Text(stringResource(R.string.screen_streaming_speed_receive, rx))
             Text(stringResource(R.string.screen_streaming_speed_send, tx))
         }
+    }
+}
+
+@ExperimentalFoundationApi
+@Composable
+private fun ComposableFlipperScreen(flipperScreen: Bitmap) {
+    val imageDrawPaint = remember {
+        Paint().apply {
+            filterQuality = FilterQuality.None
+        }
+    }
+    Canvas(
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(FLIPPER_SCREEN_RATIO),
+        contentDescription = stringResource(R.string.flipper_display)
+    ) {
+        drawContext.canvas.drawImageRect(
+            image = flipperScreen.asImageBitmap(),
+            dstSize = IntSize(
+                size.width.roundToInt(),
+                size.height.roundToInt()
+            ),
+            paint = imageDrawPaint
+        )
     }
 }

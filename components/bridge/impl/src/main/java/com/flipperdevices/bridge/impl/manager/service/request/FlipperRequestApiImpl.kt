@@ -1,4 +1,4 @@
-package com.flipperdevices.bridge.impl.manager.service
+package com.flipperdevices.bridge.impl.manager.service.request
 
 import android.bluetooth.BluetoothGattService
 import android.util.SparseArray
@@ -10,6 +10,7 @@ import com.flipperdevices.bridge.impl.manager.UnsafeBleManager
 import com.flipperdevices.bridge.impl.manager.overflow.FlipperRequestStorage
 import com.flipperdevices.bridge.impl.manager.overflow.FlipperRequestStorageImpl
 import com.flipperdevices.bridge.impl.manager.overflow.FlipperSerialOverflowThrottler
+import com.flipperdevices.bridge.impl.manager.service.BluetoothGattServiceWrapper
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.verbose
@@ -30,8 +31,9 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 
-private typealias OnReceiveResponse = (Flipper.Main) -> Unit
+private typealias OnReceiveResponse = suspend (Flipper.Main) -> Unit
 
+@Suppress("TooManyFunctions")
 class FlipperRequestApiImpl(
     private val scope: CoroutineScope
 ) : FlipperRequestApi,
@@ -67,11 +69,10 @@ class FlipperRequestApiImpl(
 
         // Add answer listener to listeners
         requestListeners[uniqueId] = {
-            scope.launch {
-                send(it)
-            }
+            send(it)
             if (!it.hasNext) {
                 requestListeners.remove(uniqueId)
+                close()
             }
         }
 

@@ -1,4 +1,4 @@
-package com.flipperdevices.bridge.impl.manager.service
+package com.flipperdevices.bridge.impl.manager.service.request
 
 import com.flipperdevices.bridge.api.utils.Constants
 import kotlin.math.min

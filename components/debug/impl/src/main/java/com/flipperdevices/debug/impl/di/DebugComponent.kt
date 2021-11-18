@@ -1,7 +1,10 @@
 package com.flipperdevices.debug.impl.di
 
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.debug.impl.viewmodel.StressTestViewModel
 import com.squareup.anvil.annotations.ContributesTo
 
 @ContributesTo(AppGraph::class)
-interface DebugComponent
+interface DebugComponent {
+    fun inject(viewModel: StressTestViewModel)
+}

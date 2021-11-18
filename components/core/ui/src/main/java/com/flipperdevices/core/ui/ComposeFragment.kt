@@ -21,7 +21,7 @@ abstract class ComposeFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 MaterialTheme {
-                    renderView()
+                    RenderView()
                 }
             }
         }
@@ -31,5 +31,5 @@ abstract class ComposeFragment : Fragment() {
      * Please, don't forget add composable annotation to override funs
      */
     @Composable
-    abstract fun renderView()
+    abstract fun RenderView()
 }

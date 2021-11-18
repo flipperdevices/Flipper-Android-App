@@ -5,7 +5,5 @@ plugins {
 apply<com.flipperdevices.gradle.ConfigurationPlugin>()
 
 dependencies {
-
-    implementation(Libs.ANNOTATIONS)
-    implementation(Libs.APPCOMPAT)
+    implementation(Libs.CICERONE)
 }

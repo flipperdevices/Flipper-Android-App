@@ -1,4 +1,4 @@
-package com.flipperdevices.bridge.impl.manager.service
+package com.flipperdevices.bridge.impl.manager.service.request
 
 import android.bluetooth.BluetoothGattCharacteristic
 import android.bluetooth.BluetoothGattService
@@ -6,6 +6,7 @@ import com.flipperdevices.bridge.api.manager.service.FlipperSerialApi
 import com.flipperdevices.bridge.api.model.FlipperSerialSpeed
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.impl.manager.UnsafeBleManager
+import com.flipperdevices.bridge.impl.manager.service.BluetoothGattServiceWrapper
 import com.flipperdevices.bridge.impl.utils.SpeedMeter
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
