@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="info_debug">Debug</string>
     <string name="info_file_manager">File Manager</string>
     <string name="info_screen_streaming">Screen Streaming</string>
     <string name="info_connection_to_another_device">Connection to another device</string>

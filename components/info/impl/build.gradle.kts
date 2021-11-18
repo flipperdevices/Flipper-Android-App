@@ -17,6 +17,7 @@ dependencies {
     implementation(project(":components:pair:api"))
     implementation(project(":components:screenstreaming:api"))
     implementation(project(":components:filemanager:api"))
+    implementation(project(":components:debug:api"))
 
     implementation(project(":components:bridge:api"))
     implementation(project(":components:bridge:service:api"))

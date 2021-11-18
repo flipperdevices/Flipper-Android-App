@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.navigation.requireRouter
 import com.flipperdevices.core.ui.ComposeFragment
+import com.flipperdevices.debug.api.DebugScreenApi
 import com.flipperdevices.filemanager.api.navigation.FileManagerScreenProvider
 import com.flipperdevices.info.impl.di.InfoComponent
 import com.flipperdevices.info.impl.main.compose.ComposeInfoScreen
@@ -24,6 +25,9 @@ class InfoFragment : ComposeFragment() {
 
     @Inject
     lateinit var fileManagerScreenProvider: FileManagerScreenProvider
+
+    @Inject
+    lateinit var debugScreenProvider: DebugScreenApi
 
     @Inject
     lateinit var screenStreaming: ScreenStreamingApi
@@ -44,6 +48,7 @@ class InfoFragment : ComposeFragment() {
             requireActivity().finish()
         }, onOpenScreen = {
             val screen = when (it) {
+                DeviceSubScreen.DEBUG -> debugScreenProvider.getDebugScreen()
                 DeviceSubScreen.FILE_MANAGER -> fileManagerScreenProvider.fileManager()
                 DeviceSubScreen.SCREEN_STREAMING -> screenStreaming.provideScreen()
             }

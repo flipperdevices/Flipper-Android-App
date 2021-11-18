@@ -16,7 +16,9 @@ dependencies {
     implementation(project(":components:core:ktx"))
 
     implementation(project(":components:bridge:api"))
+    implementation(project(":components:bridge:protobuf"))
     implementation(project(":components:bridge:service:api"))
+    implementation(Libs.NORDIC_BLE_KTX)
 
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.APPCOMPAT)
@@ -33,5 +35,8 @@ dependencies {
 
     implementation(Libs.LIFECYCLE_RUNTIME_KTX)
     implementation(Libs.LIFECYCLE_VIEWMODEL_KTX)
+    implementation(Libs.LIFECYCLE_COMPOSE)
     implementation(Libs.FRAGMENT_KTX)
+
+    implementation(Libs.CICERONE)
 }

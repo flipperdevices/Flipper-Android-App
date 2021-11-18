@@ -30,7 +30,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 
-private typealias OnReceiveResponse = (Flipper.Main) -> Unit
+private typealias OnReceiveResponse = suspend (Flipper.Main) -> Unit
 
 class FlipperRequestApiImpl(
     private val scope: CoroutineScope
@@ -67,11 +67,10 @@ class FlipperRequestApiImpl(
 
         // Add answer listener to listeners
         requestListeners[uniqueId] = {
-            scope.launch {
-                send(it)
-            }
+            send(it)
             if (!it.hasNext) {
                 requestListeners.remove(uniqueId)
+                close()
             }
         }
 
