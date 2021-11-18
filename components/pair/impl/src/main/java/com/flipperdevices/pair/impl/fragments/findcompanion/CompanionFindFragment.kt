@@ -114,7 +114,7 @@ class CompanionFindFragment : ComposeFragment(), LogTagProvider {
     }
 
     @Composable
-    override fun renderView() {
+    override fun RenderView() {
         val connectionState by pairDeviceViewModel.getConnectionState().collectAsState()
         ComposeFindDevice(
             connectionState,

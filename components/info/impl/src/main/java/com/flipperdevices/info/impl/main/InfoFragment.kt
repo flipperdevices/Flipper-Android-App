@@ -36,7 +36,7 @@ class InfoFragment : ComposeFragment() {
     }
 
     @Composable
-    override fun renderView() {
+    override fun RenderView() {
         val information by viewModel.getDeviceInformation().collectAsState()
         val connectionState by viewModel.getConnectionState().collectAsState()
         ComposeInfoScreen(information, connectionState, connectionToAnotherDeviceButton = {

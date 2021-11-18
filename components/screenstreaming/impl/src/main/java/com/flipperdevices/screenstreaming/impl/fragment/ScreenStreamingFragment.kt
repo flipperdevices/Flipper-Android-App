@@ -13,7 +13,7 @@ class ScreenStreamingFragment : ComposeFragment() {
 
     @ExperimentalComposeUiApi
     @Composable
-    override fun renderView() {
+    override fun RenderView() {
         ComposableScreen(
             screenStreamingViewModel,
             onPressButton = { button ->

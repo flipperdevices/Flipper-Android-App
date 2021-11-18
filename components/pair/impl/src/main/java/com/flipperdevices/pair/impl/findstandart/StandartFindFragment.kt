@@ -31,7 +31,7 @@ class StandartFindFragment : ComposeFragment() {
     }
 
     @Composable
-    override fun renderView() {
+    override fun RenderView() {
         ComposeFindDevice(bleDeviceViewModel) { bleDevice ->
             onDeviceSelected(bleDevice)
         }

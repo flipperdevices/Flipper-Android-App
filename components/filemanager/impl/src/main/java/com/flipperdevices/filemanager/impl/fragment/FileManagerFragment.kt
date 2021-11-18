@@ -33,7 +33,7 @@ class FileManagerFragment : ComposeFragment() {
     }
 
     @Composable
-    override fun renderView() {
+    override fun RenderView() {
         val fileManagerState by viewModel.getFileManagerState().collectAsState()
 
         ComposableFileManagerWithDialog(

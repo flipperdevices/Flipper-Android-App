@@ -19,7 +19,7 @@ class FragmentGuide : ComposeFragment() {
     }
 
     @Composable
-    override fun renderView() {
+    override fun RenderView() {
         ComposableGuide(onNextClickListener = {
             stateDispatcher.invalidateCurrentState { it.copy(guidePassed = true) }
         })
