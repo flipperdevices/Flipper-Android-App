@@ -6,7 +6,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.flipperdevices.bottombar.api.BottomNavigationActivityApi
+import com.flipperdevices.bottombar.api.BottomNavigationApi
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.navigation.requireRouter
@@ -25,7 +25,7 @@ class FileManagerSaveFragment : ComposeFragment() {
     lateinit var screenProvider: FileManagerScreenProvider
 
     @Inject
-    lateinit var bottomNavigationApi: BottomNavigationActivityApi
+    lateinit var bottomNavigationApi: BottomNavigationApi
 
     @Inject
     lateinit var receiveApi: ReceiveApi

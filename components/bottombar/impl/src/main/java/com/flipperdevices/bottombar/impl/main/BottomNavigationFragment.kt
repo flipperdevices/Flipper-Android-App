@@ -13,6 +13,7 @@ import com.flipperdevices.bottombar.impl.R
 import com.flipperdevices.bottombar.impl.databinding.FragmentBottombarBinding
 import com.flipperdevices.bottombar.impl.main.compose.ComposeBottomBar
 import com.flipperdevices.bottombar.impl.main.service.BottomNavigationViewModel
+import com.flipperdevices.bottombar.impl.main.subnavigation.OnDoublePressOnTab
 import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
 import com.flipperdevices.core.navigation.delegates.OnBackPressListener
 
@@ -55,6 +56,9 @@ class BottomNavigationFragment : Fragment(), OnBackPressListener {
         val currentFragment: Fragment? = fm.fragments.find { it.isVisible }
         val newFragment = fm.findFragmentByTag(tabName)
         if (currentFragment != null && newFragment != null && currentFragment === newFragment) {
+            if (currentFragment is OnDoublePressOnTab) {
+                currentFragment.onDoublePress()
+            }
             return
         }
         val transaction = fm.beginTransaction()

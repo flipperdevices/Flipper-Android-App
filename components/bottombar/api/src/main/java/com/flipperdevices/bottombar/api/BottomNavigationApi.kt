@@ -5,6 +5,6 @@ import com.github.terrakok.cicerone.androidx.FragmentScreen
 /**
  * Class which provide api to bottombar module
  */
-interface BottomNavigationActivityApi {
+interface BottomNavigationApi {
     fun getBottomNavigationFragment(): FragmentScreen
 }

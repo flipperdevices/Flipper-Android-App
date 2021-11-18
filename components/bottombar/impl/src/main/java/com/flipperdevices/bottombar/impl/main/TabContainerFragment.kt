@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import com.flipperdevices.bottombar.impl.R
 import com.flipperdevices.bottombar.impl.di.BottomBarComponent
 import com.flipperdevices.bottombar.impl.main.subnavigation.LocalCiceroneHolder
+import com.flipperdevices.bottombar.impl.main.subnavigation.OnDoublePressOnTab
 import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
 import com.flipperdevices.bottombar.impl.navigate.ScreenTabProvider
 import com.flipperdevices.core.di.ComponentHolder
@@ -19,7 +20,7 @@ import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import javax.inject.Inject
 
-class TabContainerFragment : Fragment(), OnBackPressListener, RouterProvider {
+class TabContainerFragment : Fragment(), OnBackPressListener, RouterProvider, OnDoublePressOnTab {
 
     private val navigator: Navigator by lazy {
         AppNavigator(requireActivity(), R.id.container, childFragmentManager)
@@ -75,6 +76,10 @@ class TabContainerFragment : Fragment(), OnBackPressListener, RouterProvider {
             router.exit()
             true
         }
+    }
+
+    override fun onDoublePress() {
+        router.newRootScreen(screenTabProvider.getScreen(containerTab))
     }
 
     companion object {
