@@ -3,7 +3,7 @@ package com.flipperdevices.singleactivity.impl
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.flipperdevices.bottombar.api.BottomNavigationActivityApi
+import com.flipperdevices.bottombar.api.BottomNavigationApi
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.navigation.delegates.OnBackPressListener
 import com.flipperdevices.core.navigation.delegates.RouterProvider
@@ -24,7 +24,7 @@ class SingleActivity : AppCompatActivity(), RouterProvider {
     lateinit var cicerone: CiceroneGlobal
 
     @Inject
-    lateinit var bottomBarApi: BottomNavigationActivityApi
+    lateinit var bottomBarApi: BottomNavigationApi
 
     @Inject
     lateinit var deepLinkDispatcher: DeepLinkDispatcher

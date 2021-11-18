@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class BottomNavigationViewModel : ViewModel() {
-    private val selectedTabInternal = MutableStateFlow(FlipperBottomTab.STORAGE)
+    private val selectedTabInternal = MutableStateFlow(FlipperBottomTab.DEVICE)
 
     val selectedTab: StateFlow<FlipperBottomTab>
         get() = selectedTabInternal
