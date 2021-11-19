@@ -1,5 +1,6 @@
 package com.flipperdevices.bottombar.impl.navigate
 
+import com.flipperdevices.archive.api.ArchiveApi
 import com.flipperdevices.bottombar.impl.main.TestFragment
 import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
 import com.flipperdevices.core.di.AppGraph
@@ -11,11 +12,13 @@ import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class)
 class ScreenTabProviderImpl @Inject constructor(
-    private val infoScreenProvider: InfoScreenProvider
+    private val infoScreenProvider: InfoScreenProvider,
+    private val archiveApi: ArchiveApi,
 ) : ScreenTabProvider {
     override fun getScreen(tab: FlipperBottomTab): Screen {
         return when (tab) {
             FlipperBottomTab.DEVICE -> infoScreenProvider.deviceInformationScreen()
+            FlipperBottomTab.STORAGE -> archiveApi.getArchiveScreen()
             else -> FragmentScreen { TestFragment() }
         }
     }

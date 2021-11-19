@@ -16,6 +16,7 @@ dependencies {
     implementation(project(":components:core:ui"))
 
     implementation(project(":components:info:api"))
+    implementation(project(":components:archive:api"))
     implementation(project(":components:pair:api"))
 
     implementation(Libs.APPCOMPAT)
