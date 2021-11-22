@@ -1,4 +1,4 @@
-package com.flipperdevices.connection.impl.composable
+package com.flipperdevices.connection.impl.composable.status
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -25,7 +25,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.connection.impl.R
-import com.flipperdevices.connection.impl.composable.helper.rotatableSweepGradient
+import com.flipperdevices.connection.impl.composable.status.helper.rotatableSweepGradient
 import com.flipperdevices.connection.impl.model.ConnectionStatusState
 
 private const val PROGRESS_BAR_END_PERCENT = 0.2f
@@ -62,19 +62,19 @@ fun ComposableConnectionBackground(
 @Composable
 private fun getBrush(statusState: ConnectionStatusState): Brush {
     return when (statusState) {
-        ConnectionStatusState.DISCONNECTED ->
+        ConnectionStatusState.Disconnected ->
             SolidColor(colorResource(R.color.state_border_not_connected_color))
-        ConnectionStatusState.CONNECTING ->
+        ConnectionStatusState.Connecting ->
             getAnimatedBrush(
                 firstColor = colorResource(R.color.state_border_connecting_first_color),
                 secondColor = colorResource(R.color.state_border_connecting_second_color)
             )
-        ConnectionStatusState.SYNCHRONIZATION ->
+        ConnectionStatusState.Synchronization ->
             getAnimatedBrush(
                 firstColor = colorResource(R.color.state_border_synchronization_first_color),
                 secondColor = colorResource(R.color.state_border_synchronization_second_color)
             )
-        ConnectionStatusState.ALL_DONE ->
+        ConnectionStatusState.Completed ->
             SolidColor(colorResource(R.color.state_border_connected_color))
     }
 }
@@ -114,7 +114,7 @@ private fun getAnimatedBrush(
 @Composable
 fun PreviewComposableConnectionBackground() {
     ComposableConnectionBackground(
-        statusState = ConnectionStatusState.CONNECTING
+        statusState = ConnectionStatusState.Connecting
     ) {
         Text(text = "Sample")
     }

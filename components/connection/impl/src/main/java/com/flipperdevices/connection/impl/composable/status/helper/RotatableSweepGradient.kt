@@ -1,4 +1,4 @@
-package com.flipperdevices.connection.impl.composable.helper
+package com.flipperdevices.connection.impl.composable.status.helper
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size

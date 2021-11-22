@@ -1,4 +1,4 @@
-package com.flipperdevices.connection.impl.composable.helper
+package com.flipperdevices.connection.impl.composable.status.helper
 
 import android.graphics.Matrix
 import android.graphics.SweepGradient
