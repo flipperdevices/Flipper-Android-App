@@ -8,6 +8,8 @@ dependencyResolutionManagement {
     }
 }
 
+include(":instances:app")
+
 include(":components:bridge:api")
 include(":components:bridge:dao")
 include(":components:bridge:impl")
@@ -36,7 +38,6 @@ include(":components:bottombar:impl")
 include(":components:info:api")
 include(":components:info:impl")
 
-include(":instances:app")
 include(":components:analytics:shake2report:api")
 include(":components:analytics:shake2report:noop")
 include(":components:analytics:shake2report:impl")
@@ -57,3 +58,9 @@ include(":components:deeplink:impl")
 
 include(":components:debug:api")
 include(":components:debug:impl")
+
+include(":components:archive:api")
+include(":components:archive:impl")
+
+include(":components:connection:api")
+include(":components:connection:impl")

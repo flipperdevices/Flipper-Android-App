@@ -46,6 +46,12 @@ dependencies {
     implementation(project(":components:debug:api"))
     implementation(project(":components:debug:impl"))
 
+    implementation(project(":components:archive:api"))
+    implementation(project(":components:archive:impl"))
+
+    implementation(project(":components:connection:api"))
+    implementation(project(":components:connection:impl"))
+
     implementation(project(":components:analytics:shake2report:api"))
     releaseImplementation(project(":components:analytics:shake2report:noop"))
     debugImplementation(project(":components:analytics:shake2report:impl"))

@@ -6,6 +6,11 @@ import no.nordicsemi.android.ble.ktx.state.ConnectionState
 interface FlipperConnectionInformationApi {
     fun isDeviceConnected(): Boolean
     fun getConnectionStateFlow(): StateFlow<ConnectionState>
+
+    /**
+     * @return null if device not connected
+     */
+    fun getConnectedDeviceName(): String?
 }
 
 fun ConnectionState.toHumanReadableString(): String {

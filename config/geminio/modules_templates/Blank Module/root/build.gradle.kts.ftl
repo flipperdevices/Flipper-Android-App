@@ -18,9 +18,9 @@ dependencies {
 <#if needCompose>
     implementation(project(":components:core:ui"))
 </#if>
-
-    implementation(Libs.ANNOTATIONS)
-    implementation(Libs.APPCOMPAT)
+<#if isApi>
+    implementation(Libs.CICERONE)
+</#if>
 <#if needCompose>
 
     // Compose
@@ -34,5 +34,9 @@ dependencies {
     // Dagger deps
     implementation(Libs.DAGGER)
     kapt(Libs.DAGGER_COMPILER)
+</#if>
+<#if needFragment>
+
+    implementation(Libs.CICERONE)
 </#if>
 }
