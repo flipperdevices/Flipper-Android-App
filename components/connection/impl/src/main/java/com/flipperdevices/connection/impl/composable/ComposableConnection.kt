@@ -27,7 +27,7 @@ fun ComposableConnection() {
     ) {
         Icon(
             modifier = Modifier.padding(all = 16.dp),
-            painter = painterResource(id = R.drawable.ic_check),
+            painter = painterResource(id = R.drawable.ic_search),
             contentDescription = stringResource(
                 id = R.string.connection_tab_search_pic_desc
             )

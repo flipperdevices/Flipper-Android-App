@@ -32,15 +32,19 @@ class ConnectionStatusViewModel : LifecycleViewModel(), FlipperBleServiceConsume
 
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
         serviceApi.connectionInformationApi.getConnectionStateFlow().onEach {
-            statusState.emit(it.toConnectionStatus())
+            statusState.emit(
+                it.toConnectionStatus(
+                    serviceApi.connectionInformationApi.getConnectedDeviceName()
+                )
+            )
         }.launchIn(viewModelScope)
     }
 }
 
-private fun ConnectionState.toConnectionStatus() = when (this) {
+private fun ConnectionState.toConnectionStatus(deviceName: String?) = when (this) {
     ConnectionState.Connecting -> ConnectionStatusState.Connecting
     ConnectionState.Initializing -> ConnectionStatusState.Connecting
-    ConnectionState.Ready -> ConnectionStatusState.Completed("TEST")
+    ConnectionState.Ready -> ConnectionStatusState.Completed(deviceName ?: "Unnamed")
     ConnectionState.Disconnecting -> ConnectionStatusState.Connecting
     is ConnectionState.Disconnected -> ConnectionStatusState.Disconnected
 }
