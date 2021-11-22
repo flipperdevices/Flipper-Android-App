@@ -74,7 +74,7 @@ private fun getBrush(statusState: ConnectionStatusState): Brush {
                 firstColor = colorResource(R.color.state_border_synchronization_first_color),
                 secondColor = colorResource(R.color.state_border_synchronization_second_color)
             )
-        ConnectionStatusState.Completed ->
+        is ConnectionStatusState.Completed ->
             SolidColor(colorResource(R.color.state_border_connected_color))
     }
 }

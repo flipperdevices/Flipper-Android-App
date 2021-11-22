@@ -1,6 +1,6 @@
 package com.flipperdevices.connection.impl.composable
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -23,8 +23,7 @@ import com.flipperdevices.connection.impl.composable.status.ComposableConnection
 fun ComposableConnection() {
     Row(
         modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
             modifier = Modifier.padding(all = 16.dp),
@@ -34,7 +33,12 @@ fun ComposableConnection() {
             )
         )
 
-        ComposableConnectionStatus()
+        Box(
+            Modifier.weight(weight = 1f),
+            contentAlignment = Alignment.Center
+        ) {
+            ComposableConnectionStatus()
+        }
 
         Icon(
             modifier = Modifier.padding(all = 16.dp),

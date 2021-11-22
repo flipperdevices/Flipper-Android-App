@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -15,13 +17,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.connection.impl.R
 import com.flipperdevices.connection.impl.model.ConnectionStatusState
+import com.flipperdevices.connection.impl.viewmodel.ConnectionStatusViewModel
 
 @Composable
 fun ComposableConnectionStatus(
-    statusState: ConnectionStatusState = ConnectionStatusState.Completed
+    connectionStatusViewModel: ConnectionStatusViewModel = viewModel()
 ) {
+    val statusState by connectionStatusViewModel.getStatusState().collectAsState()
+
     ComposableConnectionBackground(statusState = statusState) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Box(
@@ -31,11 +37,9 @@ fun ComposableConnectionStatus(
                 ComposableSyncIcon(statusState = statusState)
             }
 
-            Text(
+            ComposableTitle(
                 modifier = Modifier.padding(horizontal = 20.dp),
-                text = "Flipper Name",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Medium
+                statusState = statusState
             )
 
             Box(
@@ -62,13 +66,46 @@ private fun ComposableSyncIcon(modifier: Modifier = Modifier, statusState: Conne
                 id = R.string.connection_status_synchronization_pic_desc
             )
         )
-        ConnectionStatusState.Completed -> Icon(
+        is ConnectionStatusState.Completed -> Icon(
             modifier = modifier,
             painter = painterResource(id = R.drawable.ic_check),
             tint = colorResource(id = R.color.state_border_connected_color),
             contentDescription = stringResource(
                 id = R.string.connection_status_ok_pic_desc
             )
+        )
+    }
+}
+
+@Composable
+private fun ComposableTitle(
+    modifier: Modifier = Modifier,
+    statusState: ConnectionStatusState
+) {
+    when (statusState) {
+        ConnectionStatusState.Disconnected -> Text(
+            modifier = modifier,
+            text = stringResource(R.string.connection_status_bluetooth_disconnected_title),
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Medium
+        )
+        ConnectionStatusState.Connecting -> Text(
+            modifier = modifier,
+            text = stringResource(R.string.connection_status_bluetooth_connecting_title),
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Medium
+        )
+        ConnectionStatusState.Synchronization -> Text(
+            modifier = modifier,
+            text = stringResource(R.string.connection_status_synchronization_title),
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Medium
+        )
+        is ConnectionStatusState.Completed -> Text(
+            modifier = modifier,
+            text = statusState.deviceName,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Medium
         )
     }
 }
@@ -96,7 +133,7 @@ private fun ComposableBluetoothIcon(
             )
         )
         ConnectionStatusState.Synchronization,
-        ConnectionStatusState.Completed -> Icon(
+        is ConnectionStatusState.Completed -> Icon(
             modifier = modifier,
             painter = painterResource(id = R.drawable.ic_bluetooth_connected),
             tint = colorResource(id = R.color.state_bluetooth_icon_active),

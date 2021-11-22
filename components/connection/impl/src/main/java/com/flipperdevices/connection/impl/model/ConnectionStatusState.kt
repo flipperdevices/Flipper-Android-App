@@ -4,5 +4,5 @@ sealed class ConnectionStatusState {
     object Disconnected : ConnectionStatusState()
     object Connecting : ConnectionStatusState()
     object Synchronization : ConnectionStatusState()
-    object Completed : ConnectionStatusState()
+    class Completed(val deviceName: String) : ConnectionStatusState()
 }

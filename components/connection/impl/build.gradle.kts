@@ -13,6 +13,10 @@ dependencies {
     implementation(project(":components:core:di"))
     implementation(project(":components:core:ui"))
 
+    implementation(project(":components:bridge:api"))
+    implementation(project(":components:bridge:service:api"))
+    implementation(Libs.NORDIC_BLE_KTX)
+
     // Compose
     implementation(Libs.COMPOSE_UI)
     implementation(Libs.COMPOSE_TOOLING)
@@ -25,5 +29,6 @@ dependencies {
 
     implementation(Libs.LIFECYCLE_RUNTIME_KTX)
     implementation(Libs.LIFECYCLE_VIEWMODEL_KTX)
+    implementation(Libs.LIFECYCLE_COMPOSE)
     implementation(Libs.FRAGMENT_KTX)
 }
