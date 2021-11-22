@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.connection.impl.R
+import com.flipperdevices.connection.impl.model.ConnectionStatusState
 
 private const val DONE_COLOR = 0xFF3ADEB7
 private const val BLUETOOTH_COLOR = 0xFF007AFF
@@ -54,7 +55,9 @@ fun ComposableConnection() {
 
 @Composable
 private fun ConnectionStatus() {
-    ComposableConnectionBackground {
+    ComposableConnectionBackground(
+        statusState = ConnectionStatusState.CONNECTING
+    ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_check),

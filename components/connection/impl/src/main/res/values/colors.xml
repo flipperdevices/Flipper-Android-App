@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="state_border_not_connected_color">#F5F5F5</color>
+    <color name="state_border_connected_color">#3ADEB7</color>
+    <color name="state_border_connecting_first_color">@android:color/white</color>
+    <color name="state_border_connecting_second_color">@color/state_border_connected_color</color>
+    <color name="state_border_synchronization_color">#FDAE38</color>
+    <color name="state_border_synchronization_first_color">@android:color/white</color>
+    <color name="state_border_synchronization_second_color">
+        @color/state_border_synchronization_color
+    </color>
+</resources>
