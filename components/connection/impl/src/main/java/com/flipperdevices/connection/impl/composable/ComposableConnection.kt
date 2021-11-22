@@ -1,4 +1,4 @@
-package ${packageName}.composable
+package com.flipperdevices.connection.impl.composable
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
@@ -8,6 +8,5 @@ import androidx.compose.ui.tooling.preview.Preview
     showBackground = true
 )
 @Composable
-fun Composable${__formattedModuleName}() {
-
+fun ComposableConnection() {
 }

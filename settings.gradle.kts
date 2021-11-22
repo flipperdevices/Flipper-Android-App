@@ -61,3 +61,6 @@ include(":components:debug:impl")
 
 include(":components:archive:api")
 include(":components:archive:impl")
+
+include(":components:connection:api")
+include(":components:connection:impl")
