@@ -14,15 +14,9 @@ private const val HASH_MAGIC_NUMBER = 31
 class RotatableSweepGradient(
     private val center: Offset,
     private val colors: List<Color>,
-    private val stops: List<Float>? = null
+    private val stops: List<Float>? = null,
+    private val angel: Float
 ) : ShaderBrush() {
-    private var shader: RotatableSweepShader? = null
-    private var rotationAngel = 0f
-        set(value) {
-            field = value
-            shader?.rotate(value)
-        }
-
     override fun createShader(size: Size): Shader {
         return RotatableSweepShader(
             if (center.isUnspecified) {
@@ -34,15 +28,9 @@ class RotatableSweepGradient(
                 )
             },
             colors,
-            stops
-        ).apply {
-            shader = this
-            rotate(rotationAngel)
-        }
-    }
-
-    fun rotate(angel: Float) {
-        rotationAngel = angel
+            stops,
+            angel
+        )
     }
 
     override fun equals(other: Any?): Boolean {
@@ -52,6 +40,7 @@ class RotatableSweepGradient(
         if (center != other.center) return false
         if (colors != other.colors) return false
         if (stops != other.stops) return false
+        if (angel != other.angel) return false
 
         return true
     }
@@ -60,6 +49,7 @@ class RotatableSweepGradient(
         var result = center.hashCode()
         result = HASH_MAGIC_NUMBER * result + colors.hashCode()
         result = HASH_MAGIC_NUMBER * result + (stops?.hashCode() ?: 0)
+        result = HASH_MAGIC_NUMBER * result + angel.hashCode()
         return result
     }
 
@@ -73,9 +63,11 @@ class RotatableSweepGradient(
 
 fun rotatableSweepGradient(
     vararg colorStops: Pair<Float, Color>,
+    angel: Float,
     center: Offset = Offset.Unspecified
 ): RotatableSweepGradient = RotatableSweepGradient(
     colors = List(colorStops.size) { i -> colorStops[i].second },
     stops = List(colorStops.size) { i -> colorStops[i].first },
-    center = center
+    center = center,
+    angel = angel
 )

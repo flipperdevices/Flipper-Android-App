@@ -14,8 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,11 +31,14 @@ import com.flipperdevices.connection.impl.composable.helper.rotatableSweepGradie
 @Composable
 fun GradientExperiment() {
     val rotationTransition = rememberInfiniteTransition()
-    val offsetFloatAnimated by rotationTransition.animateFloat(
+    val angelAnimated by rotationTransition.animateFloat(
         initialValue = 0f,
         targetValue = 360f,
         animationSpec = infiniteRepeatable(
-            animation = tween(1000, easing = LinearEasing),
+            animation = tween(
+                durationMillis = 1000,
+                easing = LinearEasing
+            ),
             repeatMode = RepeatMode.Restart
         )
     )
@@ -45,13 +46,12 @@ fun GradientExperiment() {
         0f to Color.Green,
         0.2f to Color.White
     ).toTypedArray()
-    val gradientBrush by rememberSaveable() {
-        mutableStateOf(rotatableSweepGradient(colorStops = colorStops))
-    }
-    gradientBrush.rotate(offsetFloatAnimated)
     Column {
         ExampleBox(
-            brush = gradientBrush
+            brush = rotatableSweepGradient(
+                colorStops = colorStops,
+                angel = angelAnimated
+            )
         )
     }
 }

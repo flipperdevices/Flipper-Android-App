@@ -10,29 +10,28 @@ class RotatableSweepShader(
     centerX: Float,
     centerY: Float,
     colorsInt: IntArray,
-    colorsSteps: FloatArray?
+    colorsSteps: FloatArray?,
+    angel: Float
 ) : SweepGradient(centerX, centerY, colorsInt, colorsSteps) {
     private var gradientMatrix = Matrix()
 
     init {
+        gradientMatrix.postRotate(angel, centerX, centerY)
         setLocalMatrix(gradientMatrix)
     }
 
     constructor(
         center: Offset,
         colors: List<Color>,
-        colorStops: List<Float>?
+        colorStops: List<Float>?,
+        angel: Float
     ) : this(
         center.x,
         center.y,
         colors.toIntArray(),
-        colorStops?.toFloatArray()
+        colorStops?.toFloatArray(),
+        angel
     )
-
-    fun rotate(angel: Float) {
-        gradientMatrix.postRotate(angel)
-        setLocalMatrix(gradientMatrix)
-    }
 }
 
 private fun List<Color>.toIntArray(): IntArray =
