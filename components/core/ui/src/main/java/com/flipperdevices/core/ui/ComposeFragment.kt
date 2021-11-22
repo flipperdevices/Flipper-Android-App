@@ -8,6 +8,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
+import com.flipperdevices.core.ui.FontFamilyFactory.getTypographyWithReplacedFontFamily
 
 /**
  * Fragment with jetpack compose support
@@ -20,7 +21,12 @@ abstract class ComposeFragment : Fragment() {
     ): View? {
         return ComposeView(requireContext()).apply {
             setContent {
-                MaterialTheme {
+                MaterialTheme(
+                    typography = getTypographyWithReplacedFontFamily(
+                        FontFamilyFactory.Roboto,
+                        MaterialTheme.typography
+                    )
+                ) {
                     RenderView()
                 }
             }

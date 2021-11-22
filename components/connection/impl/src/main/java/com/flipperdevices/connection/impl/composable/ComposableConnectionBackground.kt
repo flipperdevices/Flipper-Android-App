@@ -10,6 +10,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -20,9 +21,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.connection.impl.composable.helper.rotatableSweepGradient
 
-private val CORNER_RADIUS = 14.dp
 private const val PROGRESS_BAR_END_PERCENT = 0.2f
 private const val PROGRESS_COLOR = 0xFF3ADEB7
 
@@ -50,19 +49,16 @@ fun ComposableConnectionBackground(
     Box(
         modifier = modifier
             .wrapContentSize(align = Alignment.Center)
-            .clip(RoundedCornerShape(CORNER_RADIUS))
+            .clip(RoundedCornerShape(CornerSize(percent = 100)))
             .background(
-                brush = rotatableSweepGradient(
-                    colorStops = colorStops,
-                    angel = angelAnimated
-                )
+                color = Color(PROGRESS_COLOR)
             ),
         contentAlignment = Alignment.Center
     ) {
         Box(
             modifier = Modifier
-                .padding(all = 2.dp)
-                .clip(RoundedCornerShape(CORNER_RADIUS))
+                .padding(all = 3.dp)
+                .clip(RoundedCornerShape(CornerSize(percent = 100)))
                 .background(Color.White)
         ) {
             Box(modifier = Modifier.padding(vertical = 4.dp, horizontal = 12.dp)) {
