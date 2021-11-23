@@ -17,6 +17,7 @@ object Versions {
     const val ANDROID_JETPACK_COMPOSE = "1.0.4"
     const val ANDROID_LIFECYCLE = "2.4.0"
     const val ANDROID_COMPOSE_CONSTRAINT = "1.0.0-rc01"
+    const val ANDROID_JETPACK_ACCOMPANIST = "0.20.2"
 
     const val FRAGMENT_KTX = "1.3.6"
     const val ACTIVITY_KTX = "1.3.1"

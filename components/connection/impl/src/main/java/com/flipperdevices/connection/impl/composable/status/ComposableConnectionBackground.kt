@@ -61,29 +61,6 @@ fun ComposableConnectionBackground(
 
 @Composable
 private fun getBrush(statusState: ConnectionStatusState): Brush {
-    return when (statusState) {
-        ConnectionStatusState.Disconnected ->
-            SolidColor(colorResource(R.color.state_border_not_connected_color))
-        ConnectionStatusState.Connecting ->
-            getAnimatedBrush(
-                firstColor = colorResource(R.color.state_border_connecting_first_color),
-                secondColor = colorResource(R.color.state_border_connecting_second_color)
-            )
-        ConnectionStatusState.Synchronization ->
-            getAnimatedBrush(
-                firstColor = colorResource(R.color.state_border_synchronization_first_color),
-                secondColor = colorResource(R.color.state_border_synchronization_second_color)
-            )
-        is ConnectionStatusState.Completed ->
-            SolidColor(colorResource(R.color.state_border_connected_color))
-    }
-}
-
-@Composable
-private fun getAnimatedBrush(
-    firstColor: Color,
-    secondColor: Color
-): Brush {
     val rotationTransition = rememberInfiniteTransition()
     val angelAnimated by rotationTransition.animateFloat(
         initialValue = 0f,
@@ -96,13 +73,35 @@ private fun getAnimatedBrush(
             repeatMode = RepeatMode.Restart
         )
     )
-    val colorStops = listOf(
-        0f to secondColor,
-        PROGRESS_BAR_END_PERCENT to firstColor
-    ).toTypedArray()
+    return when (statusState) {
+        ConnectionStatusState.Disconnected ->
+            SolidColor(colorResource(R.color.state_border_not_connected_color))
+        ConnectionStatusState.Connecting ->
+            getAnimatedBrush(
+                firstColor = colorResource(R.color.state_border_connecting_first_color),
+                secondColor = colorResource(R.color.state_border_connecting_second_color),
+                angelAnimated = angelAnimated
+            )
+        ConnectionStatusState.Synchronization ->
+            getAnimatedBrush(
+                firstColor = colorResource(R.color.state_border_synchronization_first_color),
+                secondColor = colorResource(R.color.state_border_synchronization_second_color),
+                angelAnimated = angelAnimated
+            )
+        is ConnectionStatusState.Completed ->
+            SolidColor(colorResource(R.color.state_border_connected_color))
+    }
+}
 
+@Composable
+private fun getAnimatedBrush(
+    firstColor: Color,
+    secondColor: Color,
+    angelAnimated: Float
+): Brush {
     return rotatableSweepGradient(
-        colorStops = colorStops,
+        0f to secondColor,
+        PROGRESS_BAR_END_PERCENT to firstColor,
         angel = angelAnimated
     )
 }

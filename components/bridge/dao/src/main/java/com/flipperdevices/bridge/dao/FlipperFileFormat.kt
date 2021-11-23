@@ -11,7 +11,7 @@ enum class FlipperFileFormat(
     I_BUTTON("iButton", "ibtn", "ibutton", R.drawable.ic_fileformat_ibutton),
     NFC("NFC", "nfc", "nfc", R.drawable.ic_fileformat_nfc),
     SUB_GHZ("Sub-GHz", "sub", "subghz", R.drawable.ic_fileformat_sub),
-    RFID("125kHz RFID", "rfid", "lfrfid", R.drawable.ic_fileformat_rf),
+    RFID("RFID125", "rfid", "lfrfid", R.drawable.ic_fileformat_rf),
     INFRARED("Infrared", "ir", "irda", R.drawable.ic_fileformat_ir);
 
     companion object {

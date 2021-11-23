@@ -15,6 +15,8 @@ dependencies {
 
     implementation(project(":components:connection:api"))
 
+    implementation(project(":components:bridge:dao"))
+
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.APPCOMPAT)
 
