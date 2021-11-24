@@ -25,6 +25,8 @@ dependencies {
     implementation(Libs.COMPOSE_TOOLING)
     implementation(Libs.COMPOSE_FOUNDATION)
     implementation(Libs.COMPOSE_MATERIAL)
+    implementation(Libs.COMPOSE_PAGER)
+    implementation(Libs.COMPOSE_PAGER_INDICATOR)
 
     // Dagger deps
     implementation(Libs.DAGGER)
