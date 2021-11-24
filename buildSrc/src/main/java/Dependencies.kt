@@ -14,9 +14,10 @@ object Versions {
     const val ANDROIDX_CORE = "1.6.0"
     const val ANDROID_ANNOTATIONS = "1.2.0"
     const val ANDROID_MATERIAL = "1.2.0"
-    const val ANDROID_JETPACK_COMPOSE = "1.0.4"
+    const val ANDROID_JETPACK_COMPOSE = "1.0.5"
     const val ANDROID_LIFECYCLE = "2.4.0"
     const val ANDROID_COMPOSE_CONSTRAINT = "1.0.0-rc01"
+    const val ANDROID_JETPACK_ACCOMPANIST = "0.20.2"
 
     const val FRAGMENT_KTX = "1.3.6"
     const val ACTIVITY_KTX = "1.3.1"
@@ -96,6 +97,11 @@ object Libs {
         "androidx.compose.material:material:${Versions.ANDROID_JETPACK_COMPOSE}"
     const val COMPOSE_CONSTRAINT_LAYOUT =
         "androidx.constraintlayout:constraintlayout-compose:${Versions.ANDROID_COMPOSE_CONSTRAINT}"
+
+    const val COMPOSE_PAGER =
+        "com.google.accompanist:accompanist-pager:${Versions.ANDROID_JETPACK_ACCOMPANIST}"
+    const val COMPOSE_PAGER_INDICATOR =
+        "com.google.accompanist:accompanist-pager-indicators:${Versions.ANDROID_JETPACK_ACCOMPANIST}"
 
     const val CICERONE = "com.github.terrakok:cicerone:${Versions.CICERONE}"
     const val DAGGER = "com.google.dagger:dagger:${Versions.DAGGER}"
