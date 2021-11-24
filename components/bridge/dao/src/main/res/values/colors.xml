@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="fileformat_color_ibutton">#007AFF</color>
+    <color name="fileformat_color_ir">#AF52DE</color>
+    <color name="fileformat_color_nfc">#34C7A4</color>
+    <color name="fileformat_color_rf">#5856D6</color>
+    <color name="fileformat_color_sub">#FF9B34</color>
+</resources>
