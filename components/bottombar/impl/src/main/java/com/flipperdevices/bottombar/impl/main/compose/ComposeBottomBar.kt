@@ -12,4 +12,5 @@ fun ComposeBottomBar(
     selectedItem: FlipperBottomTab = FlipperBottomTab.STORAGE,
     onBottomBarClick: (FlipperBottomTab) -> Unit = {}
 ) {
+    // TODO
 }
