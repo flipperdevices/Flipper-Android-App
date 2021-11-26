@@ -2,6 +2,9 @@
         package="com.flipperdevices.singleactivity.impl">
 
     <application>
-        <activity android:name=".SingleActivity" />
+        <activity
+                android:exported="false"
+                android:name=".SingleActivity"
+                android:theme="@style/FlipperTheme" />
     </application>
 </manifest>

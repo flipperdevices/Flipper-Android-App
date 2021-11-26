@@ -35,11 +35,11 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bottombar.impl.R
 import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @OptIn(ExperimentalPagerApi::class)
 @Preview(
@@ -60,30 +60,13 @@ fun ComposeBottomBar(
     var tabHeightPx by remember {
         mutableStateOf(0)
     }
-
-    val systemUiController = rememberSystemUiController()
-    systemUiController.setNavigationBarColor(Color.White)
-
     Box(
         modifier = Modifier.background(Color.White)
     ) {
         if (tabPositions.size > selectedIndex) {
             val currentTabPosition = tabPositions[selectedIndex]
             val tabHeight = with(LocalDensity.current) { tabHeightPx.toDp() }
-            Box(
-                modifier = Modifier
-                    .tabIndicatorOffset(currentTabPosition)
-                    .height(tabHeight)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .padding(horizontal = 20.dp, vertical = 2.dp)
-                        .fillMaxHeight()
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(size = 10.dp))
-                        .background(colorResource(R.color.tab_active_color))
-                )
-            }
+            ComposeTabAnimatedBackground(currentTabPosition, tabHeight)
         }
         TabRow(
             modifier = Modifier
@@ -111,10 +94,32 @@ fun ComposeBottomBar(
                     unselectedContentColor = colorResource(android.R.color.darker_gray),
                     onClick = {
                         selectedIndex = index
+                        onBottomBarClick(tabs[index])
                     }
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun ComposeTabAnimatedBackground(
+    tabPosition: TabPosition,
+    tabHeight: Dp
+) {
+    Box(
+        modifier = Modifier
+            .tabIndicatorOffset(tabPosition)
+            .height(tabHeight)
+    ) {
+        Box(
+            modifier = Modifier
+                .padding(horizontal = 20.dp, vertical = 2.dp)
+                .fillMaxHeight()
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(size = 10.dp))
+                .background(colorResource(R.color.tab_active_color))
+        )
     }
 }
 
