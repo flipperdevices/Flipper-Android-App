@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.bottombar.impl.R
 import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @OptIn(ExperimentalPagerApi::class)
 @Preview(
@@ -59,6 +60,9 @@ fun ComposeBottomBar(
     var tabHeightPx by remember {
         mutableStateOf(0)
     }
+
+    val systemUiController = rememberSystemUiController()
+    systemUiController.setNavigationBarColor(Color.White)
 
     Box(
         modifier = Modifier.background(Color.White)

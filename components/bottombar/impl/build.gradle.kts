@@ -28,6 +28,7 @@ dependencies {
     implementation(Libs.COMPOSE_TOOLING)
     implementation(Libs.COMPOSE_FOUNDATION)
     implementation(Libs.COMPOSE_PAGER)
+    implementation(Libs.COMPOSE_SYSTEM_UI_CONTROLLER)
 
     implementation(Libs.KOTLIN_COROUTINES)
     implementation(Libs.LIFECYCLE_RUNTIME_KTX)

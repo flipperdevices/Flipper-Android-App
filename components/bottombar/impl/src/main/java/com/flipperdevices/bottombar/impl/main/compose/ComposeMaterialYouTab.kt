@@ -26,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bottombar.impl.R
 
+@Suppress("LongParameterList")
 @Composable
 fun ComposeMaterialYouTab(
     text: @Composable (() -> Unit)? = null,
