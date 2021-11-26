@@ -4,25 +4,25 @@ import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Icon
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.LocalContentColor
-import androidx.compose.material.TabFadeInAnimationDelay
-import androidx.compose.material.TabFadeInAnimationDuration
-import androidx.compose.material.TabFadeOutAnimationDuration
 import androidx.compose.material.Text
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,19 +38,45 @@ fun ComposeMaterialYouTab(
     selectedContentColor: Color = LocalContentColor.current,
     unselectedContentColor: Color = selectedContentColor.copy(alpha = ContentAlpha.medium)
 ) {
-    Column(
-        Modifier.clip(RoundedCornerShape(size = 10.dp)),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+
+    TabTransition(
+        activeColor = selectedContentColor,
+        inactiveColor = unselectedContentColor,
+        selected = selected
     ) {
-        Box(modifier = Modifier.padding(bottom = 6.dp)) {
-            icon?.invoke()
-        }
-        Box(modifier = Modifier.padding(top = 6.dp)) {
-            text?.invoke()
+        Box(
+            Modifier.clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = rememberRipple(),
+                onClick = { onClick?.invoke() }
+            ),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                Modifier.padding(vertical = 9.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Box(
+                    modifier = Modifier
+                        .padding(bottom = 6.dp)
+                        .size(size = 24.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    icon?.invoke()
+                }
+                Box(modifier = Modifier.padding(top = 6.dp)) {
+                    text?.invoke()
+                }
+            }
         }
     }
 }
+
+// Tab transition specifications
+private const val TabFadeInAnimationDuration = 150
+private const val TabFadeInAnimationDelay = 100
+private const val TabFadeOutAnimationDuration = 100
 
 @Composable
 private fun TabTransition(
