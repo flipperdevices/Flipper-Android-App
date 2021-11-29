@@ -69,9 +69,9 @@ fun ComposeMaterialYouTab(
 }
 
 // Tab transition specifications
-private const val TabFadeInAnimationDuration = 150
-private const val TabFadeInAnimationDelay = 100
-private const val TabFadeOutAnimationDuration = 100
+private const val TAB_FADE_IN_ANIMATION_DURATION = 150
+private const val TAB_FADE_IN_ANIMATION_DELAY = 100
+private const val TAB_FADE_OUT_ANIMATION_DURATION = 100
 
 @Composable
 private fun TabTransition(
@@ -85,17 +85,17 @@ private fun TabTransition(
         transitionSpec = {
             if (false isTransitioningTo true) {
                 tween(
-                    durationMillis = TabFadeInAnimationDuration,
-                    delayMillis = TabFadeInAnimationDelay,
+                    durationMillis = TAB_FADE_IN_ANIMATION_DURATION,
+                    delayMillis = TAB_FADE_IN_ANIMATION_DELAY,
                     easing = LinearEasing
                 )
             } else {
                 tween(
-                    durationMillis = TabFadeOutAnimationDuration,
+                    durationMillis = TAB_FADE_OUT_ANIMATION_DURATION,
                     easing = LinearEasing
                 )
             }
-        }
+        }, label = "colorChangeAnimation"
     ) {
         if (it) activeColor else inactiveColor
     }

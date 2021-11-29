@@ -41,6 +41,9 @@ import com.flipperdevices.bottombar.impl.R
 import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
 import com.google.accompanist.pager.ExperimentalPagerApi
 
+const val ANIMATION_WIDTH_CHANGE_DURATION_MS = 250
+const val ANIMATION_OFFSET_CHANGE_DURATION_MS = 150
+
 @OptIn(ExperimentalPagerApi::class)
 @Preview(
     showBackground = true
@@ -133,11 +136,17 @@ private fun Modifier.tabIndicatorOffset(
 ) {
     val currentTabWidth by animateDpAsState(
         targetValue = currentTabPosition.width,
-        animationSpec = tween(durationMillis = 250, easing = FastOutSlowInEasing)
+        animationSpec = tween(
+            durationMillis = ANIMATION_WIDTH_CHANGE_DURATION_MS,
+            easing = FastOutSlowInEasing
+        )
     )
     val indicatorOffset by animateDpAsState(
         targetValue = currentTabPosition.left,
-        animationSpec = tween(durationMillis = 250, easing = FastOutSlowInEasing)
+        animationSpec = tween(
+            durationMillis = ANIMATION_OFFSET_CHANGE_DURATION_MS,
+            easing = FastOutSlowInEasing
+        )
     )
     fillMaxWidth()
         .wrapContentSize(Alignment.BottomStart)
