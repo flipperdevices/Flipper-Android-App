@@ -118,7 +118,7 @@ private fun ComposeTabAnimatedBackground(
                 .fillMaxHeight()
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(size = 10.dp))
-                .background(colorResource(R.color.tab_active_color))
+                .background(colorResource(R.color.bottombar_tab_active_color))
         )
     }
 }
