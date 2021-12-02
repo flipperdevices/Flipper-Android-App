@@ -6,28 +6,21 @@ object Versions {
     // Be careful! See more in /buildSrc/src/main/java/Dependencies.kt#NOTE_CONFIGURATION_PLUGIN
     const val KOTLIN = "1.5.31"
 
-    const val KTLINT = "0.42.1"
+    const val KTLINT = "0.43.1"
 
     const val KOTLIN_COROUTINES = "1.5.2"
 
-    const val ANDROIDX_APPCOMPAT = "1.3.1"
-    const val ANDROIDX_CORE = "1.6.0"
-    const val ANDROID_ANNOTATIONS = "1.2.0"
-    const val ANDROID_MATERIAL = "1.2.0"
+    const val ANDROIDX_APPCOMPAT = "1.4.0"
+    const val ANDROIDX_CORE = "1.7.0"
+    const val ANDROID_ANNOTATIONS = "1.3.0"
+    const val ANDROID_MATERIAL = "1.4.0"
     const val ANDROID_JETPACK_COMPOSE = "1.0.5"
     const val ANDROID_LIFECYCLE = "2.4.0"
-    const val ANDROID_COMPOSE_CONSTRAINT = "1.0.0-rc01"
+    const val ANDROID_COMPOSE_CONSTRAINT = "1.0.0-rc02"
     const val COMPOSE_ACCOMPANIST = "0.20.2"
 
-    const val FRAGMENT_KTX = "1.3.6"
-    const val ACTIVITY_KTX = "1.3.1"
-
-    // Test
-    const val ANDROIDX_TEST = "1.2.0"
-    const val ANDROIDX_TEST_EXT = "1.1.3"
-    const val JUNIT = "4.12"
-    const val MOCKITO_KOTLIN = "4.0.0"
-    const val ROBOELECTRIC = "4.6.1"
+    const val FRAGMENT_KTX = "1.4.0"
+    const val ACTIVITY_KTX = "1.4.0"
 
     const val TIMBER = "4.7.1"
     const val TREESSENCE = "1.0.5"
@@ -49,10 +42,17 @@ object Versions {
     const val SENTRY = "5.3.0"
     const val SEISMIC = "1.0.3"
     const val ZIP4J = "2.9.0"
+
+    // Test
+    const val ANDROIDX_TEST = "1.2.0"
+    const val ANDROIDX_TEST_EXT = "1.1.3"
+    const val JUNIT = "4.12"
+    const val MOCKITO_KOTLIN = "4.0.0"
+    const val ROBOELECTRIC = "4.6.1"
 }
 
 object GradlePlugins {
-    const val DETEKT = "1.18.1"
+    const val DETEKT = "1.19.0"
     const val KTLINT = "10.2.0"
 }
 
