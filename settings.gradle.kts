@@ -17,6 +17,8 @@ include(":components:bridge:provider")
 include(":components:bridge:service:impl")
 include(":components:bridge:service:api")
 include(":components:bridge:protobuf")
+include(":components:bridge:synchronization:api")
+include(":components:bridge:synchronization:impl")
 
 include(":components:filemanager:api")
 include(":components:filemanager:impl")

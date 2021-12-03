@@ -14,10 +14,14 @@ dependencies {
     implementation(project(":components:core:ui"))
     implementation(project(":components:core:log"))
     implementation(project(":components:core:ktx"))
+    implementation(project(":components:core:navigation"))
 
     implementation(project(":components:bridge:api"))
     implementation(project(":components:bridge:protobuf"))
     implementation(project(":components:bridge:service:api"))
+
+    implementation(project(":components:bridge:synchronization:api"))
+
     implementation(Libs.NORDIC_BLE_KTX)
 
     implementation(Libs.ANNOTATIONS)
