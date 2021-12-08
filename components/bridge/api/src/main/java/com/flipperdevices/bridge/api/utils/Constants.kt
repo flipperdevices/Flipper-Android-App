@@ -37,8 +37,8 @@ object Constants {
         val CONNECT_TIME_MS = TimeUnit.MILLISECONDS.convert(CONNECT_TIME_SEC, TimeUnit.SECONDS)
         const val RECONNECT_COUNT = 3
         const val RECONNECT_TIME_MS = 100L
-        const val MTU = 255
-        const val MAX_PAYLOAD_SIZE = 200
+        const val MTU = 489
+        const val MAX_PAYLOAD_SIZE = 251
 
         // How much time we next command
         // Small size increase count of ble packet
