@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="receive_keys_list">Retrieving a list of %1$s</string>
+    <string name="receive_hash">Calculate delta between Flipper and phone</string>
+</resources>

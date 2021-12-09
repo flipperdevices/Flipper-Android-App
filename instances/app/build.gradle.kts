@@ -52,8 +52,8 @@ dependencies {
     implementation(project(":components:connection:api"))
     implementation(project(":components:connection:impl"))
 
-    implementation(project(":components:synchronization:api"))
-    implementation(project(":components:synchronization:impl"))
+    implementation(project(":components:bridge:synchronization:api"))
+    implementation(project(":components:bridge:synchronization:impl"))
 
     implementation(project(":components:analytics:shake2report:api"))
     releaseImplementation(project(":components:analytics:shake2report:noop"))

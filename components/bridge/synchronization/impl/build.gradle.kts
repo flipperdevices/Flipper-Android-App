@@ -12,6 +12,12 @@ dependencies {
 
     implementation(project(":components:core:di"))
     implementation(project(":components:core:ui"))
+    implementation(project(":components:core:log"))
+
+    implementation(project(":components:bridge:api"))
+    implementation(project(":components:bridge:protobuf"))
+    implementation(project(":components:bridge:service:api"))
+    implementation(project(":components:bridge:dao"))
 
     // Compose
     implementation(Libs.COMPOSE_UI)
@@ -22,4 +28,6 @@ dependencies {
     // Dagger deps
     implementation(Libs.DAGGER)
     kapt(Libs.DAGGER_COMPILER)
+
+    implementation(Libs.LIFECYCLE_RUNTIME_KTX)
 }
