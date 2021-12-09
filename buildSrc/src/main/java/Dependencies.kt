@@ -6,6 +6,7 @@ object Versions {
     // Be careful! See more in /buildSrc/src/main/java/Dependencies.kt#NOTE_CONFIGURATION_PLUGIN
     const val KOTLIN = "1.5.31"
 
+    const val KOTLIN_SERIALIZATION_JSON = "1.3.1"
     const val KTLINT = "0.43.1"
 
     const val KOTLIN_COROUTINES = "1.5.2"
@@ -54,11 +55,14 @@ object Versions {
 object GradlePlugins {
     const val DETEKT = "1.19.0"
     const val KTLINT = "10.2.0"
+    const val KOTLIN_SERIALIZATION = Versions.KOTLIN
 }
 
 object Libs {
     const val TIMBER = "com.jakewharton.timber:timber:${Versions.TIMBER}"
     const val KOTLIN = "org.jetbrains.kotlin:kotlin-stdlib:${Versions.KOTLIN}"
+    const val KOTLIN_SERIALIZATION_JSON =
+        "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.KOTLIN_SERIALIZATION_JSON}"
 
     // KTX
     const val KOTLIN_COROUTINES =

@@ -3,6 +3,7 @@ plugins {
     id("kotlin-android")
     id("com.squareup.anvil")
     id("kotlin-kapt")
+    id("kotlinx-serialization")
 }
 apply<com.flipperdevices.gradle.ConfigurationPlugin>()
 apply<com.flipperdevices.gradle.ComposerPlugin>()
@@ -30,4 +31,6 @@ dependencies {
     kapt(Libs.DAGGER_COMPILER)
 
     implementation(Libs.LIFECYCLE_RUNTIME_KTX)
+
+    implementation(Libs.KOTLIN_SERIALIZATION_JSON)
 }
