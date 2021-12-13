@@ -1,3 +1,4 @@
+ 
 package com.flipperdevices.gradle
 
 import Versions
@@ -33,7 +34,7 @@ private fun AppExtension.enableComposeBuildFeature() {
 }
 
 private fun AppExtension.configureComposeOptions() {
-    composeOptions.kotlinCompilerExtensionVersion = Versions.ANDROID_JETPACK_COMPOSE
+    composeOptions.kotlinCompilerExtensionVersion = Versions.COMPOSE
 }
 
 private fun LibraryExtension.configure() {
@@ -46,5 +47,5 @@ private fun LibraryExtension.enableComposeBuildFeature() {
 }
 
 private fun LibraryExtension.configureComposeOptions() {
-    composeOptions.kotlinCompilerExtensionVersion = Versions.ANDROID_JETPACK_COMPOSE
+    composeOptions.kotlinCompilerExtensionVersion = Versions.COMPOSE
 }

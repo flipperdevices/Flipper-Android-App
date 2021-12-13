@@ -1,8 +1,6 @@
 package com.flipperdevices.screenstreaming.impl.fragment
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.fragment.app.viewModels
 import com.flipperdevices.core.ui.ComposeFragment
 import com.flipperdevices.screenstreaming.impl.composable.ComposableScreen
@@ -12,8 +10,6 @@ import com.flipperdevices.screenstreaming.impl.viewmodel.ScreenStreamingViewMode
 class ScreenStreamingFragment : ComposeFragment() {
     private val screenStreamingViewModel by viewModels<ScreenStreamingViewModel>()
 
-    @ExperimentalFoundationApi
-    @ExperimentalComposeUiApi
     @Composable
     override fun RenderView() {
         ComposableScreen(

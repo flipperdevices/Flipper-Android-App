@@ -1,8 +1,8 @@
 plugins {
+    id("kotlin-android")
     id("kotlin-kapt")
     id("com.android.library")
     id("com.squareup.anvil")
-    id("kotlin-android")
 }
 
 apply<com.flipperdevices.gradle.ConfigurationPlugin>()
