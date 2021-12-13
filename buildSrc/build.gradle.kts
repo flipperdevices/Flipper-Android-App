@@ -1,6 +1,5 @@
 plugins {
-    // Be careful! See more in /buildSrc/src/main/java/Dependencies.kt#NOTE_CONFIGURATION_PLUGIN
-    id("org.jetbrains.kotlin.jvm") version "1.6.0"
+    `kotlin-dsl`
 }
 
 repositories {
