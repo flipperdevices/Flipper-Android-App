@@ -2,6 +2,7 @@
 kotlin = "1.6.0"
 anvil = "2.3.10-1-6-0"
 android-gradle = "7.0.4"
+protobuf = "0.8.17"
 
 [libraries]
 android-gradle = { module = "com.android.tools.build:gradle", version.ref = "android-gradle" }
@@ -18,5 +19,7 @@ square-anvil-compiler-api = { module = "com.squareup.anvil:compiler-api", versio
 square-anvil-compiler-core = { module = "com.squareup.anvil:compiler", version.ref = "anvil" }
 square-anvil-compiler-utils = { module = "com.squareup.anvil:compiler-utils", version.ref = "anvil" }
 square-anvil-gradle = { module = "com.squareup.anvil:gradle-plugin", version.ref = "anvil" }
+
+protobuf-gradle = { module = "com.google.protobuf:protobuf-gradle-plugin", version.ref = "protobuf" }
 
 [bundles]

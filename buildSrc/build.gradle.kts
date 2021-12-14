@@ -27,8 +27,7 @@ dependencies {
 
     implementation(libs.android.gradle)
     implementation(libs.square.anvil.gradle)
-
-    implementation("com.google.protobuf:protobuf-gradle-plugin:0.8.17")
+    implementation(libs.protobuf.gradle)
 }
 
 configurations.all {
