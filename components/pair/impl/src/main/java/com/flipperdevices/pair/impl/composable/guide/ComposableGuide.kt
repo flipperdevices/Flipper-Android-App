@@ -24,7 +24,7 @@ import com.flipperdevices.pair.impl.composable.guide.imageslider.ImageSliderItem
 
 @Preview(
     showSystemUi = true,
-    showBackground = true,
+    showBackground = true
 )
 @Composable
 fun ComposableGuide(onNextClickListener: () -> Unit = {}) {

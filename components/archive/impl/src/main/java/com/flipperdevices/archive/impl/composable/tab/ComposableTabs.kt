@@ -54,7 +54,7 @@ fun ComposableTabs(pagerState: PagerState, tabs: List<ArchiveTab>) {
                         coroutineScope.launch {
                             pagerState.animateScrollToPage(index)
                         }
-                    },
+                    }
                 )
             }
         }

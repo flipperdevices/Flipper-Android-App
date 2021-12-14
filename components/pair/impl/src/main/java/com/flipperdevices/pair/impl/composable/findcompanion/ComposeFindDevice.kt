@@ -169,7 +169,7 @@ private fun ComposeProcessingConnectionState(connectionState: ConnectionState) {
         ) {
             ComposePairPic(
                 picResId = R.drawable.ic_error_colored,
-                picDesc = R.string.pair_companion_desc_disconnect,
+                picDesc = R.string.pair_companion_desc_disconnect
             )
         }
     }

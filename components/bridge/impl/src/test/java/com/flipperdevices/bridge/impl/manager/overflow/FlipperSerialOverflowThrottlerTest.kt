@@ -4,9 +4,9 @@ import com.flipperdevices.bridge.api.manager.service.FlipperSerialApi
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.protobuf.toDelimitedBytes
 import com.flipperdevices.protobuf.main
-import com.flipperdevices.protobuf.status.pingRequest
 import com.flipperdevices.protobuf.storage.file
 import com.flipperdevices.protobuf.storage.writeRequest
+import com.flipperdevices.protobuf.system.pingRequest
 import com.google.protobuf.ByteString
 import java.io.ByteArrayOutputStream
 import java.nio.ByteBuffer
@@ -56,7 +56,7 @@ class FlipperSerialOverflowThrottlerTest {
 
     @Test
     fun `Send request fitting in buffer size`() = runBlockingTest {
-        val testRequest = main { pingRequest = pingRequest { } }.wrapToRequest()
+        val testRequest = main { systemPingRequest = pingRequest { } }.wrapToRequest()
         val bufferSize = testRequest.data.toDelimitedBytes().size
 
         whenever(requestStorage.getNextRequest(any())).doReturn(testRequest)
@@ -68,7 +68,9 @@ class FlipperSerialOverflowThrottlerTest {
 
     @Test
     fun `Send request if we fit in buffer`() = runBlockingTest {
-        val testRequest = main { pingRequest = pingRequest { } }.wrapToRequest()
+        val testRequest = main {
+            systemPingRequest = pingRequest { data = ByteString.EMPTY }
+        }.wrapToRequest()
         val bufferSize = 400
 
         whenever(requestStorage.getNextRequest(any())).doReturnOnFirst(testRequest)

@@ -26,7 +26,7 @@ fun ComposeInfoScreen(
     flipperGATTInformation: FlipperGATTInformation = FlipperGATTInformation(),
     connectionState: ConnectionState? = null,
     onOpenScreen: (DeviceSubScreen) -> Unit = {},
-    connectionToAnotherDeviceButton: () -> Unit = {},
+    connectionToAnotherDeviceButton: () -> Unit = {}
 ) {
     Column {
         Column(modifier = Modifier.weight(weight = 1f)) {

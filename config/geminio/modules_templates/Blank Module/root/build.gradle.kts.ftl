@@ -6,9 +6,9 @@ plugins {
     id("kotlin-kapt")
 </#if>
 }
-apply<com.flipperdevices.gradle.ConfigurationPlugin>()
+
 <#if needCompose>
-apply<com.flipperdevices.gradle.ComposerPlugin>()
+
 </#if>
 
 dependencies {

@@ -1,9 +1,6 @@
 plugins {
-    id("com.android.library")
-    id("kotlin-android")
+    androidCompose
 }
-apply<com.flipperdevices.gradle.ConfigurationPlugin>()
-apply<com.flipperdevices.gradle.ComposerPlugin>()
 
 dependencies {
     implementation(Libs.ANNOTATIONS)

@@ -1,0 +1,25 @@
+[versions]
+kotlin = "1.6.0"
+anvil = "2.3.10-1-6-0"
+android-gradle = "7.0.4"
+protobuf = "0.8.17"
+
+[libraries]
+android-gradle = { module = "com.android.tools.build:gradle", version.ref = "android-gradle" }
+
+kotlin-annotation-processing = { module = "org.jetbrains.kotlin:kotlin-annotation-processing-embeddable", version.ref = "kotlin" }
+kotlin-compiler = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "kotlin" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin-gradle-pluginApi = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin-api", version.ref = "kotlin" }
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
+kotlin-stdlib-jdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
+
+square-anvil-annotations = { module = "com.squareup.anvil:annotations", version.ref = "anvil" }
+square-anvil-compiler-api = { module = "com.squareup.anvil:compiler-api", version.ref = "anvil" }
+square-anvil-compiler-core = { module = "com.squareup.anvil:compiler", version.ref = "anvil" }
+square-anvil-compiler-utils = { module = "com.squareup.anvil:compiler-utils", version.ref = "anvil" }
+square-anvil-gradle = { module = "com.squareup.anvil:gradle-plugin", version.ref = "anvil" }
+
+protobuf-gradle = { module = "com.google.protobuf:protobuf-gradle-plugin", version.ref = "protobuf" }
+
+[bundles]

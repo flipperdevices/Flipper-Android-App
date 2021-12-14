@@ -11,7 +11,7 @@ import com.flipperdevices.core.ktx.android.toast
 import com.flipperdevices.pair.impl.R
 
 class BluetoothEnableHelper(
-    private val fragment: Fragment,
+    private val fragment: Fragment
 ) {
     private var onBluetoothEnabled: (() -> Unit)? = null
 

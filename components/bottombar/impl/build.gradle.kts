@@ -1,12 +1,8 @@
 plugins {
-    id("kotlin-kapt")
-    id("com.android.library")
+    androidCompose
     id("com.squareup.anvil")
-    id("kotlin-android")
+    kotlin("kapt")
 }
-
-apply<com.flipperdevices.gradle.ConfigurationPlugin>()
-apply<com.flipperdevices.gradle.ComposerPlugin>()
 
 dependencies {
     implementation(project(":components:bottombar:api"))

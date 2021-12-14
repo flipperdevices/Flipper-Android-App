@@ -28,7 +28,7 @@ fun ComposablePager(
         modifier = modifier
             .fillMaxWidth(),
         count = tabs.size,
-        state = pagerState,
+        state = pagerState
     ) { page ->
         LazyColumn(
             modifier = Modifier
