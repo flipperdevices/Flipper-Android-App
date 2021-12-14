@@ -10,10 +10,8 @@ import com.flipperdevices.archive.impl.composable.page.ComposablePager
 import com.flipperdevices.archive.impl.composable.tab.ComposableTabs
 import com.flipperdevices.archive.impl.model.ArchiveTab
 import com.flipperdevices.bridge.dao.FlipperFileType
-import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
 
-@OptIn(ExperimentalPagerApi::class)
 @Preview(
     showSystemUi = true,
     showBackground = true

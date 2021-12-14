@@ -3,9 +3,9 @@ plugins {
     id("kotlin-android")
 }
 
+@Suppress("UnstableApiUsage")
 android {
     commonAndroid(project)
-    common()
 
     buildTypes {
         debug {

@@ -26,8 +26,8 @@ dependencies {
     implementation(kotlin("reflect", version = kotlinVersion))
 
     implementation(libs.android.gradle)
+    implementation(libs.square.anvil.gradle)
 
-    implementation("com.squareup.anvil:gradle-plugin:2.3.4")
     implementation("com.google.protobuf:protobuf-gradle-plugin:0.8.17")
 }
 

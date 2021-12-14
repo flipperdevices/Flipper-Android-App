@@ -1,5 +1,5 @@
 plugins {
-    javaLibrary
+    androidLibrary
     id("com.squareup.anvil")
     kotlin("kapt")
 }

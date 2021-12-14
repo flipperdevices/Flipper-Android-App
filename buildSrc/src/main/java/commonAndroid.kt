@@ -1,6 +1,8 @@
 import com.android.build.gradle.BaseExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 private const val SPLASH_SCREEN_ACTIVITY = "com.flipperdevices.app.SplashScreen"
 private const val SPLASH_SCREEN_ACTIVITY_KEY = "splashScreenActivity"
@@ -13,7 +15,7 @@ fun BaseExtension.commonAndroid(target: Project) {
     configureBuildFeatures()
     configureCompileOptions()
 
-    enableCompose()
+    target.suppressOptIn()
 }
 
 private fun BaseExtension.configureDefaultConfig() {
@@ -71,8 +73,18 @@ private fun BaseExtension.configureCompileOptions() {
     compileOptions.targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-// To speed up build need add flag for enable/disable compose for each module
-private fun BaseExtension.enableCompose() {
-    buildFeatures.compose = true
-    composeOptions.kotlinCompilerExtensionVersion = Versions.ANDROID_JETPACK_COMPOSE
+private fun Project.suppressOptIn() {
+    tasks.withType<KotlinCompile>()
+        .configureEach {
+            kotlinOptions {
+                jvmTarget = "1.8"
+
+                freeCompilerArgs = freeCompilerArgs + listOf(
+                    "-Xopt-in=com.google.accompanist.pager.ExperimentalPagerApi",
+                    "-Xopt-in=androidx.compose.ui.ExperimentalComposeUiApi",
+                    "-Xopt-in=androidx.compose.foundation.ExperimentalFoundationApi",
+                    "-Xopt-in=kotlin.RequiresOptIn",
+                )
+            }
+        }
 }

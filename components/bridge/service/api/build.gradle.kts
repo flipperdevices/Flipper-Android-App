@@ -1,5 +1,5 @@
 plugins {
-    javaLibrary
+    androidLibrary
 }
 
 dependencies {

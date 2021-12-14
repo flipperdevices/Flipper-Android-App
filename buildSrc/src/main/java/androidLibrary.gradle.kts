@@ -6,5 +6,4 @@ plugins {
 
 android {
     commonAndroid(project)
-    common()
 }

@@ -1,5 +1,5 @@
 plugins {
-    androidLibrary
+    androidCompose
 }
 
 dependencies {
