@@ -1,13 +1,14 @@
 rootProject.name = "FlipperApp"
 
 enableFeaturePreview("VERSION_CATALOGS")
-// TODO enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
         maven("https://jitpack.io")
+        maven("https://oss.sonatype.org/content/repositories/snapshots")
     }
 }
 

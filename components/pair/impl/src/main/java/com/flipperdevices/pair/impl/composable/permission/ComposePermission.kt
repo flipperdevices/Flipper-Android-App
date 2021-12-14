@@ -36,7 +36,7 @@ fun ComposePermission(requestPermissionButton: () -> Unit = {}) {
                 .fillMaxWidth(),
             contentScale = ContentScale.Crop,
             painter = painterResource(id = R.drawable.ic_scanning),
-            contentDescription = stringResource(id = R.string.pair_permission_pic_hello),
+            contentDescription = stringResource(id = R.string.pair_permission_pic_hello)
         )
         Text(
             text = stringResource(id = R.string.pair_permission_title),

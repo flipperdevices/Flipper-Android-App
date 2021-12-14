@@ -7,7 +7,7 @@ sealed class DownloadProgress(
     class Fixed(
         progress: Long = 0,
         val totalSize: Long = Long.MAX_VALUE,
-        speedBytesInSecond: Long = 0,
+        speedBytesInSecond: Long = 0
     ) : DownloadProgress(progress, speedBytesInSecond) {
         fun toProgressFloat() = progress.toFloat() / totalSize.toFloat()
     }

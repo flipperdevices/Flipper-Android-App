@@ -1,5 +1,5 @@
 enableFeaturePreview("VERSION_CATALOGS")
-// TODO enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 dependencyResolutionManagement {
     versionCatalogs {

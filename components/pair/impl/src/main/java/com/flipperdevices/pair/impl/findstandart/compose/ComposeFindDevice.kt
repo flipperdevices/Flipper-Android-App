@@ -35,7 +35,7 @@ fun ComposeFindDevice(
 ) {
     Column(
         Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
             modifier = Modifier
@@ -43,7 +43,7 @@ fun ComposeFindDevice(
                 .padding(16.dp),
             contentScale = ContentScale.Crop,
             painter = painterResource(id = R.drawable.ic_scanning),
-            contentDescription = stringResource(id = R.string.pair_finddevice_pic_search_devices),
+            contentDescription = stringResource(id = R.string.pair_finddevice_pic_search_devices)
         )
         Text(text = stringResource(id = R.string.pair_finddevice_title))
 

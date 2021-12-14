@@ -58,7 +58,7 @@ fun TOSContent() {
         modifier = Modifier
             .verticalScroll(scrollState)
             .padding(all = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
             text = stringResource(R.string.pair_tos_welcome),

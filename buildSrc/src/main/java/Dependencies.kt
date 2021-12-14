@@ -3,7 +3,7 @@
 // (manual update is required, because this file is not seen by build scripts in buildSrc)
 
 object Versions {
-    const val KTLINT = "0.43.1"
+    const val KTLINT = "0.44.0-SNAPSHOT"
 
     const val KOTLIN_COROUTINES = "1.5.2"
 
