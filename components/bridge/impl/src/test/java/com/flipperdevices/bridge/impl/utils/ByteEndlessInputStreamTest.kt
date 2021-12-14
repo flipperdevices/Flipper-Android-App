@@ -2,9 +2,9 @@ package com.flipperdevices.bridge.impl.utils
 
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.main
-import com.flipperdevices.protobuf.status.pingRequest
 import com.flipperdevices.protobuf.storage.file
 import com.flipperdevices.protobuf.storage.writeRequest
+import com.flipperdevices.protobuf.system.pingRequest
 import com.google.protobuf.ByteString
 import java.io.ByteArrayOutputStream
 import java.nio.ByteBuffer
@@ -41,7 +41,7 @@ class ByteEndlessInputStreamTest {
     @Test
     fun `Write read protobuf message`() {
         val message = main {
-            pingRequest = pingRequest {}
+            systemPingRequest = pingRequest {}
         }
         val messageBytes = ByteArrayOutputStream().use { os ->
             message.writeDelimitedTo(os)
