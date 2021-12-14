@@ -3,7 +3,7 @@ plugins {
     id("kotlin-android")
     id("com.squareup.anvil")
     id("kotlin-kapt")
-    id("kotlinx-serialization")
+    //id("kotlinx-serialization")
 }
 apply<com.flipperdevices.gradle.ConfigurationPlugin>()
 apply<com.flipperdevices.gradle.ComposerPlugin>()
