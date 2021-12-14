@@ -1,8 +1,6 @@
 plugins {
-    id("com.android.library")
-    id("kotlin-android")
+    androidLibrary
 }
-apply<com.flipperdevices.gradle.ConfigurationPlugin>()
 
 dependencies {
     implementation(TestingLib.JUNIT)

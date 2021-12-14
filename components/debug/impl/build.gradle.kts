@@ -1,11 +1,8 @@
 plugins {
-    id("com.android.library")
-    id("kotlin-android")
+    androidLibrary
     id("com.squareup.anvil")
-    id("kotlin-kapt")
+    kotlin("kapt")
 }
-apply<com.flipperdevices.gradle.ConfigurationPlugin>()
-apply<com.flipperdevices.gradle.ComposerPlugin>()
 
 dependencies {
     implementation(project(":components:debug:api"))

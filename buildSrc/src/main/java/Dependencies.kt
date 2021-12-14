@@ -3,9 +3,6 @@
 // (manual update is required, because this file is not seen by build scripts in buildSrc)
 
 object Versions {
-    // Be careful! See more in /buildSrc/src/main/java/Dependencies.kt#NOTE_CONFIGURATION_PLUGIN
-    const val KOTLIN = "1.5.31"
-
     const val KTLINT = "0.43.1"
 
     const val KOTLIN_COROUTINES = "1.5.2"
@@ -14,7 +11,7 @@ object Versions {
     const val ANDROIDX_CORE = "1.7.0"
     const val ANDROID_ANNOTATIONS = "1.3.0"
     const val ANDROID_MATERIAL = "1.4.0"
-    const val ANDROID_JETPACK_COMPOSE = "1.0.5"
+    const val ANDROID_JETPACK_COMPOSE = "1.1.0-beta04"
     const val ANDROID_LIFECYCLE = "2.4.0"
     const val ANDROID_COMPOSE_CONSTRAINT = "1.0.0-rc02"
     const val COMPOSE_ACCOMPANIST = "0.20.2"
@@ -58,7 +55,6 @@ object GradlePlugins {
 
 object Libs {
     const val TIMBER = "com.jakewharton.timber:timber:${Versions.TIMBER}"
-    const val KOTLIN = "org.jetbrains.kotlin:kotlin-stdlib:${Versions.KOTLIN}"
 
     // KTX
     const val KOTLIN_COROUTINES =

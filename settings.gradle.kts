@@ -1,4 +1,7 @@
-rootProject.name = "Flipper App"
+rootProject.name = "FlipperApp"
+
+enableFeaturePreview("VERSION_CATALOGS")
+// TODO enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 dependencyResolutionManagement {
     repositories {

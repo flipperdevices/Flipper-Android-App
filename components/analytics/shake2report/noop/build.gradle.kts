@@ -1,10 +1,8 @@
 plugins {
-    id("com.android.library")
-    id("kotlin-android")
+    javaLibrary
     id("com.squareup.anvil")
-    id("kotlin-kapt")
+    kotlin("kapt")
 }
-apply<com.flipperdevices.gradle.ConfigurationPlugin>()
 
 dependencies {
     implementation(project(":components:analytics:shake2report:api"))

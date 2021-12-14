@@ -1,8 +1,6 @@
 plugins {
-    id("com.android.library")
-    id("kotlin-android")
+    javaLibrary
 }
-apply<com.flipperdevices.gradle.ConfigurationPlugin>()
 
 dependencies {
     implementation(Libs.CICERONE)

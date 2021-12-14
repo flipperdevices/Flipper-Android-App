@@ -1,12 +1,8 @@
 plugins {
-    id("com.android.library")
+    androidLibrary
     id("com.squareup.anvil")
-    id("kotlin-android")
-    id("kotlin-kapt")
+    kotlin("kapt")
 }
-
-apply<com.flipperdevices.gradle.ConfigurationPlugin>()
-apply<com.flipperdevices.gradle.ComposerPlugin>()
 
 android {
     testOptions {

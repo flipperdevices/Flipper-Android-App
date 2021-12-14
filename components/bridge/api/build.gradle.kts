@@ -1,9 +1,8 @@
 plugins {
-    id("com.android.library")
+    androidLibrary
     id("kotlin-android")
     id("kotlin-parcelize")
 }
-apply<com.flipperdevices.gradle.ConfigurationPlugin>()
 
 dependencies {
     implementation(project(":components:bridge:protobuf"))
