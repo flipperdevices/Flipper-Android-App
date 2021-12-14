@@ -20,7 +20,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '11'
-      - name: Build debug
+      - name: Build release
         run: ./gradlew assembleRelease
   debug_build:
     name: "Build debug"
@@ -48,5 +48,5 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '11'
-      - name: Build debug
+      - name: Build internal
         run: ./gradlew assembleInternal
