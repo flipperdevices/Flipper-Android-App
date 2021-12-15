@@ -1,24 +1,22 @@
 plugins {
-    id("com.android.library")
-    id("kotlin-android")
+    androidLibrary
+    androidCompose
     id("com.squareup.anvil")
     id("kotlin-kapt")
-    //id("kotlinx-serialization")
+    id("kotlinx-serialization")
 }
-apply<com.flipperdevices.gradle.ConfigurationPlugin>()
-apply<com.flipperdevices.gradle.ComposerPlugin>()
 
 dependencies {
-    implementation(project(":components:bridge:synchronization:api"))
+    implementation(projects.components.bridge.synchronization.api)
 
-    implementation(project(":components:core:di"))
-    implementation(project(":components:core:ui"))
-    implementation(project(":components:core:log"))
+    implementation(projects.components.core.di)
+    implementation(projects.components.core.ui)
+    implementation(projects.components.core.log)
 
-    implementation(project(":components:bridge:api"))
-    implementation(project(":components:bridge:protobuf"))
-    implementation(project(":components:bridge:service:api"))
-    implementation(project(":components:bridge:dao"))
+    implementation(projects.components.bridge.api)
+    implementation(projects.components.bridge.protobuf)
+    implementation(projects.components.bridge.service.api)
+    implementation(projects.components.bridge.dao)
 
     // Compose
     implementation(Libs.COMPOSE_UI)
@@ -32,5 +30,5 @@ dependencies {
 
     implementation(Libs.LIFECYCLE_RUNTIME_KTX)
 
-    implementation(Libs.KOTLIN_SERIALIZATION_JSON)
+    implementation(libs.kotlin.serialization.json)
 }
