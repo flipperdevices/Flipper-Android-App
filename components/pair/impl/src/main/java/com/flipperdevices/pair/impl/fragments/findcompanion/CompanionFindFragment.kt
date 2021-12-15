@@ -1,5 +1,6 @@
 package com.flipperdevices.pair.impl.fragments.findcompanion
 
+import android.Manifest
 import android.app.Activity
 import android.bluetooth.BluetoothDevice
 import android.companion.AssociationRequest
@@ -72,9 +73,12 @@ class CompanionFindFragment : ComposeFragment(), LogTagProvider {
         pairDeviceViewModel.onDeviceFounded(deviceToPair)
 
         // After Android 12 we need permission BLUETOOTH_CONNECT on this step
-
-        pairDeviceViewModel.startConnectToDevice {
-            onDeviceReady(it)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            requestConnectPermissionResult.launch(Manifest.permission.BLUETOOTH_CONNECT)
+        } else {
+            pairDeviceViewModel.startConnectToDevice {
+                onDeviceReady(it)
+            }
         }
     }
 

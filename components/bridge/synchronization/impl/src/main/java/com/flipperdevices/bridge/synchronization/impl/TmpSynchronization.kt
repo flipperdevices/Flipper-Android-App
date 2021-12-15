@@ -12,11 +12,15 @@ import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import javax.inject.Inject
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
 class TmpSynchronization : TaskWithLifecycle(), LogTagProvider {
     override val TAG = "TestSynchronization"
+
+    val scope = CoroutineScope(Dispatchers.Default + SupervisorJob())
 
     @Inject
     lateinit var serviceProvider: FlipperServiceProvider
@@ -27,7 +31,7 @@ class TmpSynchronization : TaskWithLifecycle(), LogTagProvider {
 
     fun requestServiceAndReceive() {
         serviceProvider.provideServiceApi(this) { serviceApi ->
-            GlobalScope.launch {
+            scope.launch {
                 try {
                     launch(serviceApi)
                 } finally {
@@ -35,7 +39,9 @@ class TmpSynchronization : TaskWithLifecycle(), LogTagProvider {
                 }
             }
         }
-        onStart()
+        scope.launch {
+            onStart()
+        }
     }
 
     private suspend fun launch(serviceApi: FlipperServiceApi) {
@@ -49,6 +55,10 @@ class TmpSynchronization : TaskWithLifecycle(), LogTagProvider {
         ).trackProgressAndReturn {
             info { "Progress is ${it.currentPosition}/${it.maxPosition}: ${it.text}" }
         }
-        val diffWithFlipper = ManifestRepository().compareWithManifest(hashes)
+        val repository = ManifestRepository()
+        val diffWithFlipper = repository.compareWithManifest(hashes)
+
+        // End synchronization
+        repository.saveManifest(hashes)
     }
 }
