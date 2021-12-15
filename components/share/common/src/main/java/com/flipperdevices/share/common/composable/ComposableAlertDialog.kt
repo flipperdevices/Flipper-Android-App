@@ -88,7 +88,7 @@ fun ComposableFixedProgress(fixedProgress: DownloadProgress.Fixed) {
         )
         LinearProgressIndicator(
             modifier = Modifier.fillMaxWidth(),
-            progress = animatedProgress,
+            progress = animatedProgress
         )
     }
 }
@@ -113,7 +113,7 @@ fun ComposableInfiniteProgress(infiniteProgress: DownloadProgress.Infinite) {
             )
         )
         LinearProgressIndicator(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }

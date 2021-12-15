@@ -9,6 +9,6 @@ interface ReceiveApi {
         deeplinkContent: DeeplinkContent,
         flipperPath: String,
         onSuccessful: () -> Unit,
-        onCancel: () -> Unit,
+        onCancel: () -> Unit
     )
 }

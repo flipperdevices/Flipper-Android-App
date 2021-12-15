@@ -23,7 +23,7 @@ fun ComposePairScreen(
     title: String,
     modifier: Modifier = Modifier,
     description: String? = null,
-    content: @Composable () -> Unit,
+    content: @Composable () -> Unit
 ) {
     Column(
         modifier = modifier.padding(top = TITLE_TOP_MARGIN),

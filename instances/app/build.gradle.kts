@@ -1,11 +1,8 @@
 plugins {
-    id("com.android.application")
+    androidApplication
     id("com.squareup.anvil")
-    id("kotlin-android")
-    id("kotlin-kapt")
+    kotlin("kapt")
 }
-
-apply<com.flipperdevices.gradle.ConfigurationPlugin>()
 
 dependencies {
     implementation(project(":components:core:di"))

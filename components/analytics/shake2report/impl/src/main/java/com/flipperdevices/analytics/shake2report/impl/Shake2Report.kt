@@ -96,7 +96,7 @@ internal class Shake2Report(
                 )
             )
         } else {
-            // deprecated in API 26 
+            // deprecated in API 26
             vibrator?.vibrate(VIBRATOR_TIME_MS)
         }
     }

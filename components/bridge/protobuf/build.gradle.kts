@@ -5,11 +5,9 @@ import com.google.protobuf.gradle.protobuf
 import com.google.protobuf.gradle.protoc
 
 plugins {
-    id("com.android.library")
-    id("kotlin-android")
+    androidLibrary
     id("com.google.protobuf")
 }
-apply<com.flipperdevices.gradle.ConfigurationPlugin>()
 
 dependencies {
     api(Libs.PROTOBUF_JAVALITE)

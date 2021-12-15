@@ -77,7 +77,7 @@ fun ComposableScreen(
                             StreamingState.DISABLED -> R.string.screen_streaming_enable
                             StreamingState.ENABLED -> R.string.screen_streaming_disable
                         }
-                    ),
+                    )
                 )
             }
         }
