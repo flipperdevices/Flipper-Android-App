@@ -37,10 +37,10 @@ dependencies {
     implementation(Libs.APPCOMPAT)
     implementation(Libs.DAGGER)
     kapt(Libs.DAGGER_COMPILER)
-    implementation(Libs.COMPOSE_UI)
-    implementation(Libs.COMPOSE_TOOLING)
-    implementation(Libs.COMPOSE_FOUNDATION)
-    implementation(Libs.COMPOSE_MATERIAL)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.tooling)
+    implementation(libs.compose.foundation)
+    implementation(libs.compose.material)
     implementation(Libs.FRAGMENT_KTX)
 
     // Guide

@@ -27,10 +27,10 @@ dependencies {
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.APPCOMPAT)
 
-    implementation(Libs.COMPOSE_UI)
-    implementation(Libs.COMPOSE_TOOLING)
-    implementation(Libs.COMPOSE_FOUNDATION)
-    implementation(Libs.COMPOSE_MATERIAL)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.tooling)
+    implementation(libs.compose.foundation)
+    implementation(libs.compose.material)
 
     implementation(Libs.KOTLIN_COROUTINES)
     implementation(Libs.LIFECYCLE_RUNTIME_KTX)

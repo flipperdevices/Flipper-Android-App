@@ -11,7 +11,6 @@ object Versions {
     const val ANDROIDX_CORE = "1.7.0"
     const val ANDROID_ANNOTATIONS = "1.3.0"
     const val ANDROID_MATERIAL = "1.4.0"
-    const val ANDROID_JETPACK_COMPOSE = "1.1.0-beta04"
     const val ANDROID_LIFECYCLE = "2.4.0"
     const val ANDROID_COMPOSE_CONSTRAINT = "1.0.0-rc02"
     const val COMPOSE_ACCOMPANIST = "0.20.2"
@@ -79,18 +78,6 @@ object Libs {
     const val APPCOMPAT = "androidx.appcompat:appcompat:${Versions.ANDROIDX_APPCOMPAT}"
     const val MATERIAL = "com.google.android.material:material:${Versions.ANDROID_MATERIAL}"
 
-    const val COMPOSE_UI = "androidx.compose.ui:ui:${Versions.ANDROID_JETPACK_COMPOSE}"
-
-    // Tooling support (Previews, etc.)
-    const val COMPOSE_TOOLING = "androidx.compose.ui:ui-tooling:${Versions.ANDROID_JETPACK_COMPOSE}"
-
-    // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
-    const val COMPOSE_FOUNDATION =
-        "androidx.compose.foundation:foundation:${Versions.ANDROID_JETPACK_COMPOSE}"
-
-    // Material Design
-    const val COMPOSE_MATERIAL =
-        "androidx.compose.material:material:${Versions.ANDROID_JETPACK_COMPOSE}"
     const val COMPOSE_CONSTRAINT_LAYOUT =
         "androidx.constraintlayout:constraintlayout-compose:${Versions.ANDROID_COMPOSE_CONSTRAINT}"
 

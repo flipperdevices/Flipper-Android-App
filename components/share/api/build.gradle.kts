@@ -5,5 +5,5 @@ plugins {
 dependencies {
     implementation(project(":components:deeplink:api"))
 
-    implementation(Libs.COMPOSE_UI)
+    implementation(libs.compose.ui)
 }

@@ -27,10 +27,10 @@ dependencies {
     implementation(Libs.DAGGER)
     kapt(Libs.DAGGER_COMPILER)
 
-    implementation(Libs.COMPOSE_UI)
-    implementation(Libs.COMPOSE_MATERIAL)
-    implementation(Libs.COMPOSE_TOOLING)
-    implementation(Libs.COMPOSE_FOUNDATION)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.material)
+    implementation(libs.compose.tooling)
+    implementation(libs.compose.foundation)
 
     implementation(Libs.KOTLIN_COROUTINES)
     implementation(Libs.LIFECYCLE_RUNTIME_KTX)
