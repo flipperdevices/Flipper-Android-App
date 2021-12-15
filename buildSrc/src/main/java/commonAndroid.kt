@@ -48,6 +48,9 @@ private fun BaseExtension.configureBuildTypes() {
 
             buildConfigField("boolean", "INTERNAL", "true")
             isMinifyEnabled = true
+            consumerProguardFile(
+                "proguard-rules.pro"
+            )
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -56,6 +59,9 @@ private fun BaseExtension.configureBuildTypes() {
         maybeCreate("release").apply {
             buildConfigField("boolean", "INTERNAL", "false")
             isMinifyEnabled = true
+            consumerProguardFile(
+                "proguard-rules.pro"
+            )
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
