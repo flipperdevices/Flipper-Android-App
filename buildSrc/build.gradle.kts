@@ -18,6 +18,7 @@ dependencies {
     implementation(libs.kotlin.compiler)
     implementation(libs.kotlin.gradle.pluginApi)
     implementation(libs.kotlin.serialization.gradle)
+    implementation(libs.kotlin.ksp.gradle)
 
     implementation(kotlin("gradle-plugin", version = kotlinVersion))
     implementation(kotlin("stdlib", version = kotlinVersion))

@@ -1,12 +1,13 @@
 [versions]
 kotlin = "1.6.0"
+ksp = "1.6.10-1.0.2"
 serialization = "1.3.1"
 anvil = "2.3.10-1-6-0"
 android-gradle = "7.0.4"
 protobuf = "0.8.17"
 # Temporary solution: please, change also in androidCompose.gradle.kts
 compose = "1.1.0-beta04"
-room = "2.4.0-rc01"
+room = "2.4.0"
 dagger = "2.38.1"
 
 [libraries]
@@ -21,6 +22,8 @@ kotlin-stdlib-jdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", versi
 
 kotlin-serialization-gradle = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "serialization" }
 kotlin-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
+
+kotlin-ksp-gradle = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 
 square-anvil-annotations = { module = "com.squareup.anvil:annotations", version.ref = "anvil" }
 square-anvil-compiler-api = { module = "com.squareup.anvil:compiler-api", version.ref = "anvil" }
