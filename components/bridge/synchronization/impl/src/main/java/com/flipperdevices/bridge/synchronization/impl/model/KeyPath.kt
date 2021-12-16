@@ -1,11 +1,12 @@
 package com.flipperdevices.bridge.synchronization.impl.model
 
+import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class KeyPath(
     val path: String,
     val name: String,
-    val fileType: com.flipperdevices.bridge.dao.api.model.FlipperFileType,
+    val fileType: FlipperFileType,
     val byteSize: Int
 )

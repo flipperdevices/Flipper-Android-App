@@ -24,7 +24,7 @@ class KeysListingRepository : LogTagProvider {
         requestApi: FlipperRequestApi
     ) = callbackFlow<ResultWithProgress<List<KeyPath>>> {
         val allKeys = mutableListOf<KeyPath>()
-        com.flipperdevices.bridge.dao.api.model.FlipperFileType.values().forEach { fileType ->
+        FlipperFileType.values().forEach { fileType ->
             send(ResultWithProgress.InProgress())
             allKeys.addAll(getKeysForFileType(requestApi, fileType))
         }
@@ -34,7 +34,7 @@ class KeysListingRepository : LogTagProvider {
 
     private suspend fun getKeysForFileType(
         requestApi: FlipperRequestApi,
-        fileType: com.flipperdevices.bridge.dao.api.model.FlipperFileType
+        fileType: FlipperFileType
     ): List<KeyPath> {
         val fileTypePath = File("/any/", fileType.flipperDir).absolutePath
         return requestApi.request(
@@ -70,7 +70,7 @@ class KeysListingRepository : LogTagProvider {
             return false
         }
         val extension = file.name.substringAfterLast(".")
-        if (com.flipperdevices.bridge.dao.api.model.FlipperFileType.getByExtension(extension) == null) {
+        if (FlipperFileType.getByExtension(extension) == null) {
             debug {
                 "File ${file.name} skip, because we don't support this file extension ($extension)"
             }
