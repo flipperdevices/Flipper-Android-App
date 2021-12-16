@@ -35,8 +35,8 @@ dependencies {
     implementation(libs.compose.material)
 
     // Dagger deps
-    implementation(Libs.DAGGER)
-    kapt(Libs.DAGGER_COMPILER)
+    implementation(libs.dagger)
+    kapt(libs.dagger.kapt)
 
     // Lifecycle
     implementation(Libs.LIFECYCLE_RUNTIME_KTX)

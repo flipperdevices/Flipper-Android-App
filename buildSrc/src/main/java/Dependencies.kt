@@ -20,7 +20,6 @@ object Versions {
 
     const val TIMBER = "4.7.1"
     const val TREESSENCE = "1.0.5"
-    const val DAGGER = "2.38.1"
     const val CICERONE = "7.1"
 
     const val TREX = "1.0.0"
@@ -89,8 +88,6 @@ object Libs {
         "com.google.accompanist:accompanist-systemuicontroller:${Versions.COMPOSE_ACCOMPANIST}"
 
     const val CICERONE = "com.github.terrakok:cicerone:${Versions.CICERONE}"
-    const val DAGGER = "com.google.dagger:dagger:${Versions.DAGGER}"
-    const val DAGGER_COMPILER = "com.google.dagger:dagger-compiler:${Versions.DAGGER}"
 
     // Util
     const val TREX = "com.github.LionZXY.T-Rex-Android:trex-offline:${Versions.TREX}"

@@ -26,7 +26,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.bridge.dao.FlipperFileType
 import com.flipperdevices.filemanager.impl.R
 import com.flipperdevices.filemanager.impl.model.FileItem
 import com.flipperdevices.filemanager.impl.model.FileManagerState
@@ -114,7 +113,7 @@ private fun ComposableFileImage(modifier: Modifier, fileItem: FileItem) {
                 contentDescription = stringResource(R.string.filemanager_file_pic_desc)
             )
             val fileIcon = remember(fileItem) {
-                FlipperFileType.getByExtension(
+                com.flipperdevices.bridge.dao.api.model.FlipperFileType.getByExtension(
                     fileItem.fileName.substringAfterLast(".")
                 )
             }

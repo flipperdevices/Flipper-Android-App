@@ -13,7 +13,7 @@ dependencies {
 
     implementation(project(":components:bridge:service:api"))
     implementation(project(":components:bridge:api"))
-    implementation(project(":components:bridge:dao"))
+    implementation(projects.components.bridge.dao.api)
     implementation(project(":components:bridge:protobuf"))
 
     implementation(project(":components:filemanager:api"))
@@ -37,8 +37,8 @@ dependencies {
     implementation(Libs.LIFECYCLE_VIEWMODEL_KTX)
     implementation(Libs.FRAGMENT_KTX)
 
-    implementation(Libs.DAGGER)
-    kapt(Libs.DAGGER_COMPILER)
+    implementation(libs.dagger)
+    kapt(libs.dagger.kapt)
 
     implementation(Libs.CICERONE)
 }

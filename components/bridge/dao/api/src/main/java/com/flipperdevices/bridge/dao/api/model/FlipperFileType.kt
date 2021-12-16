@@ -1,7 +1,8 @@
-package com.flipperdevices.bridge.dao
+package com.flipperdevices.bridge.dao.api.model
 
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
+import com.flipperdevices.bridge.dao.api.R
 
 enum class FlipperFileType(
     val humanReadableName: String,

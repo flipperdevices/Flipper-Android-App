@@ -12,7 +12,7 @@ dependencies {
 
     implementation(project(":components:connection:api"))
 
-    implementation(project(":components:bridge:dao"))
+    implementation(projects.components.bridge.dao.api)
 
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.APPCOMPAT)
@@ -26,8 +26,8 @@ dependencies {
     implementation(Libs.COMPOSE_PAGER_INDICATOR)
 
     // Dagger deps
-    implementation(Libs.DAGGER)
-    kapt(Libs.DAGGER_COMPILER)
+    implementation(libs.dagger)
+    kapt(libs.dagger.kapt)
 
     implementation(Libs.CICERONE)
 }

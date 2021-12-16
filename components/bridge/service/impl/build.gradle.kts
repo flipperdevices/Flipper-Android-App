@@ -35,8 +35,8 @@ dependencies {
     implementation(Libs.NORDIC_BLE_COMMON)
     implementation(Libs.NORDIC_BLE_SCAN)
 
-    implementation(Libs.DAGGER)
-    kapt(Libs.DAGGER_COMPILER)
+    implementation(libs.dagger)
+    kapt(libs.dagger.kapt)
 
     testImplementation(project(":components:core:test"))
     testImplementation(TestingLib.JUNIT)

@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.archive.impl.composable.key.ComposableFlipperKey
 import com.flipperdevices.archive.impl.model.ArchiveTab
-import com.flipperdevices.bridge.dao.FlipperKey
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
@@ -22,7 +21,7 @@ fun ComposablePager(
     pagerState: PagerState,
     tabs: List<ArchiveTab>
 ) {
-    val dummyKeys = FlipperKey.DUMMY_LIST
+    val dummyKeys = com.flipperdevices.bridge.dao.api.model.FlipperKey.DUMMY_LIST
 
     HorizontalPager(
         modifier = modifier

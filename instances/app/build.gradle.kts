@@ -52,6 +52,9 @@ dependencies {
     implementation(project(":components:bridge:synchronization:api"))
     implementation(project(":components:bridge:synchronization:impl"))
 
+    implementation(projects.components.bridge.dao.api)
+    implementation(projects.components.bridge.dao.impl)
+
     implementation(project(":components:analytics:shake2report:api"))
     releaseImplementation(project(":components:analytics:shake2report:noop"))
     debugImplementation(project(":components:analytics:shake2report:impl"))
@@ -66,8 +69,8 @@ dependencies {
     implementation(Libs.KOTLIN_COROUTINES)
     implementation(Libs.ACTIVITY_KTX)
 
-    implementation(Libs.DAGGER)
-    kapt(Libs.DAGGER_COMPILER)
+    implementation(libs.dagger)
+    kapt(libs.dagger.kapt)
 
     implementation(Libs.CICERONE)
     implementation(Libs.TIMBER)

@@ -3,7 +3,7 @@ package com.flipperdevices.bridge.synchronization.impl.repository
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
-import com.flipperdevices.bridge.dao.FlipperFileType
+import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.synchronization.impl.model.KeyPath
 import com.flipperdevices.bridge.synchronization.impl.model.ResultWithProgress
 import com.flipperdevices.core.log.LogTagProvider
@@ -24,7 +24,7 @@ class KeysListingRepository : LogTagProvider {
         requestApi: FlipperRequestApi
     ) = callbackFlow<ResultWithProgress<List<KeyPath>>> {
         val allKeys = mutableListOf<KeyPath>()
-        FlipperFileType.values().forEach { fileType ->
+        com.flipperdevices.bridge.dao.api.model.FlipperFileType.values().forEach { fileType ->
             send(ResultWithProgress.InProgress())
             allKeys.addAll(getKeysForFileType(requestApi, fileType))
         }
@@ -34,7 +34,7 @@ class KeysListingRepository : LogTagProvider {
 
     private suspend fun getKeysForFileType(
         requestApi: FlipperRequestApi,
-        fileType: FlipperFileType
+        fileType: com.flipperdevices.bridge.dao.api.model.FlipperFileType
     ): List<KeyPath> {
         val fileTypePath = File("/any/", fileType.flipperDir).absolutePath
         return requestApi.request(
@@ -70,7 +70,7 @@ class KeysListingRepository : LogTagProvider {
             return false
         }
         val extension = file.name.substringAfterLast(".")
-        if (FlipperFileType.getByExtension(extension) == null) {
+        if (com.flipperdevices.bridge.dao.api.model.FlipperFileType.getByExtension(extension) == null) {
             debug {
                 "File ${file.name} skip, because we don't support this file extension ($extension)"
             }

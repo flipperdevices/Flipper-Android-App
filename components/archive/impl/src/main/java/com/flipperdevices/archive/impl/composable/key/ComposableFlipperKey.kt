@@ -33,15 +33,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.archive.impl.R
-import com.flipperdevices.bridge.dao.FlipperFileType
-import com.flipperdevices.bridge.dao.FlipperKey
 
 @Preview(
     showSystemUi = true,
     showBackground = true
 )
 @Composable
-fun ComposableFlipperKey(key: FlipperKey = FlipperKey.DUMMY) {
+fun ComposableFlipperKey(
+    key: com.flipperdevices.bridge.dao.api.model.FlipperKey = com.flipperdevices.bridge.dao.api.model.FlipperKey.DUMMY
+) {
     Card(
         modifier = Modifier
             .padding(horizontal = 16.dp)
@@ -65,7 +65,7 @@ fun ComposableFlipperKey(key: FlipperKey = FlipperKey.DUMMY) {
 }
 
 @Composable
-private fun ComposableKeyIcon(fileType: FlipperFileType) {
+private fun ComposableKeyIcon(fileType: com.flipperdevices.bridge.dao.api.model.FlipperFileType) {
     Box(
         modifier = Modifier
             .width(width = 56.dp)
@@ -83,7 +83,10 @@ private fun ComposableKeyIcon(fileType: FlipperFileType) {
 }
 
 @Composable
-private fun ComposableKeyDescription(modifier: Modifier, key: FlipperKey) {
+private fun ComposableKeyDescription(
+    modifier: Modifier,
+    key: com.flipperdevices.bridge.dao.api.model.FlipperKey
+) {
     Column(
         modifier = modifier
             .padding(start = 15.dp),

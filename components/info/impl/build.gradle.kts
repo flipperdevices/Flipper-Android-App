@@ -24,8 +24,8 @@ dependencies {
     implementation(Libs.ANNOTATIONS)
 
     implementation(Libs.APPCOMPAT)
-    implementation(Libs.DAGGER)
-    kapt(Libs.DAGGER_COMPILER)
+    implementation(libs.dagger)
+    kapt(libs.dagger.kapt)
 
     implementation(libs.compose.ui)
     implementation(libs.compose.material)

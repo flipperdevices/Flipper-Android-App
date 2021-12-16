@@ -1,4 +1,4 @@
-package com.flipperdevices.bridge.dao
+package com.flipperdevices.bridge.dao.api.model
 
 data class FlipperKey(
     val name: String,

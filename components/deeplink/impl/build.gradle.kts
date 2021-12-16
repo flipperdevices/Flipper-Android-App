@@ -8,7 +8,7 @@ dependencies {
     implementation(project(":components:core:di"))
     implementation(project(":components:core:log"))
 
-    implementation(project(":components:bridge:dao"))
+    implementation(projects.components.bridge.dao.api)
 
     implementation(project(":components:deeplink:api"))
     implementation(project(":components:filemanager:api"))
@@ -18,6 +18,6 @@ dependencies {
     implementation(Libs.KOTLIN_COROUTINES)
 
     // Dagger deps
-    implementation(Libs.DAGGER)
-    kapt(Libs.DAGGER_COMPILER)
+    implementation(libs.dagger)
+    kapt(libs.dagger.kapt)
 }
