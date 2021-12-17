@@ -21,4 +21,7 @@ interface KeyDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(vararg keys: Key)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(keys: List<Key>)
 }
