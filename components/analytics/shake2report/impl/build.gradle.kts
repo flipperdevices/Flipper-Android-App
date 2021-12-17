@@ -24,6 +24,6 @@ dependencies {
     implementation(Libs.ZIP4J)
 
     // Dagger deps
-    implementation(Libs.DAGGER)
-    kapt(Libs.DAGGER_COMPILER)
+    implementation(libs.dagger)
+    kapt(libs.dagger.kapt)
 }

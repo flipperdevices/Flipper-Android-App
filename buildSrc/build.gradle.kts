@@ -17,6 +17,8 @@ dependencies {
     implementation(libs.kotlin.annotation.processing)
     implementation(libs.kotlin.compiler)
     implementation(libs.kotlin.gradle.pluginApi)
+    implementation(libs.kotlin.serialization.gradle)
+    implementation(libs.kotlin.ksp.gradle)
 
     implementation(kotlin("gradle-plugin", version = kotlinVersion))
     implementation(kotlin("stdlib", version = kotlinVersion))
@@ -28,6 +30,11 @@ dependencies {
     implementation(libs.android.gradle)
     implementation(libs.square.anvil.gradle)
     implementation(libs.protobuf.gradle)
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 configurations.all {

@@ -16,13 +16,13 @@ dependencies {
     implementation(project(":components:pair:api"))
 
     implementation(Libs.APPCOMPAT)
-    implementation(Libs.DAGGER)
-    kapt(Libs.DAGGER_COMPILER)
+    implementation(libs.dagger)
+    kapt(libs.dagger.kapt)
 
-    implementation(Libs.COMPOSE_UI)
-    implementation(Libs.COMPOSE_MATERIAL)
-    implementation(Libs.COMPOSE_TOOLING)
-    implementation(Libs.COMPOSE_FOUNDATION)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.material)
+    implementation(libs.compose.tooling)
+    implementation(libs.compose.foundation)
     implementation(Libs.COMPOSE_PAGER)
     implementation(Libs.COMPOSE_SYSTEM_UI_CONTROLLER)
 

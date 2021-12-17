@@ -1,6 +1,5 @@
 plugins {
-    id("com.android.library")
-    id("kotlin-android")
+    androidLibrary
 <#if shouldGenerateDI>
     id("com.squareup.anvil")
     id("kotlin-kapt")
@@ -13,10 +12,10 @@ plugins {
 
 dependencies {
 <#if shouldGenerateDI>
-    implementation(project(":components:core:di"))
+    implementation(components.core.di)
 </#if>
 <#if needCompose>
-    implementation(project(":components:core:ui"))
+    implementation(components.core.ui)
 </#if>
 <#if isApi>
     implementation(Libs.CICERONE)
@@ -24,16 +23,16 @@ dependencies {
 <#if needCompose>
 
     // Compose
-    implementation(Libs.COMPOSE_UI)
-    implementation(Libs.COMPOSE_TOOLING)
-    implementation(Libs.COMPOSE_FOUNDATION)
-    implementation(Libs.COMPOSE_MATERIAL)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.tooling)
+    implementation(libs.compose.foundation)
+    implementation(libs.compose.material)
 </#if>
 <#if shouldGenerateDI>
 
     // Dagger deps
-    implementation(Libs.DAGGER)
-    kapt(Libs.DAGGER_COMPILER)
+    implementation(libs.dagger)
+    kapt(libs.dagger.kapt)
 </#if>
 <#if needFragment>
 

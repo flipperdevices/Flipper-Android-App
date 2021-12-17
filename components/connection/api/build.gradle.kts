@@ -3,5 +3,5 @@ plugins {
 }
 
 dependencies {
-    implementation(Libs.COMPOSE_UI)
+    implementation(libs.compose.ui)
 }

@@ -13,7 +13,7 @@ dependencies {
 
     implementation(project(":components:bridge:service:api"))
     implementation(project(":components:bridge:api"))
-    implementation(project(":components:bridge:dao"))
+    implementation(projects.components.bridge.dao.api)
     implementation(project(":components:bridge:protobuf"))
 
     implementation(project(":components:filemanager:api"))
@@ -27,18 +27,18 @@ dependencies {
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.APPCOMPAT)
 
-    implementation(Libs.COMPOSE_UI)
-    implementation(Libs.COMPOSE_TOOLING)
-    implementation(Libs.COMPOSE_FOUNDATION)
-    implementation(Libs.COMPOSE_MATERIAL)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.tooling)
+    implementation(libs.compose.foundation)
+    implementation(libs.compose.material)
 
     implementation(Libs.KOTLIN_COROUTINES)
     implementation(Libs.LIFECYCLE_RUNTIME_KTX)
     implementation(Libs.LIFECYCLE_VIEWMODEL_KTX)
     implementation(Libs.FRAGMENT_KTX)
 
-    implementation(Libs.DAGGER)
-    kapt(Libs.DAGGER_COMPILER)
+    implementation(libs.dagger)
+    kapt(libs.dagger.kapt)
 
     implementation(Libs.CICERONE)
 }

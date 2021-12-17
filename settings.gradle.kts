@@ -12,59 +12,63 @@ dependencyResolutionManagement {
     }
 }
 
-include(":instances:app")
+include(
+    ":instances:app",
+    ":components:bridge:api",
+    ":components:bridge:impl",
+    ":components:bridge:provider",
+    ":components:bridge:service:impl",
+    ":components:bridge:service:api",
+    ":components:bridge:protobuf",
+    ":components:bridge:synchronization:api",
+    ":components:bridge:synchronization:impl",
+    ":components:bridge:dao:api",
+    ":components:bridge:dao:impl",
 
-include(":components:bridge:api")
-include(":components:bridge:dao")
-include(":components:bridge:impl")
-include(":components:bridge:provider")
-include(":components:bridge:service:impl")
-include(":components:bridge:service:api")
-include(":components:bridge:protobuf")
+    ":components:filemanager:api",
+    ":components:filemanager:impl",
 
-include(":components:filemanager:api")
-include(":components:filemanager:impl")
+    ":components:core:di",
+    ":components:core:ktx",
+    ":components:core:log",
+    ":components:core:navigation",
+    ":components:core:preference",
+    ":components:core:ui",
+    ":components:core:test",
 
-include(":components:core:di")
-include(":components:core:ktx")
-include(":components:core:log")
-include(":components:core:navigation")
-include(":components:core:preference")
-include(":components:core:ui")
-include(":components:core:test")
+    ":components:pair:api",
+    ":components:pair:impl",
 
-include(":components:pair:api")
-include(":components:pair:impl")
+    ":components:bottombar:api",
+    ":components:bottombar:impl",
 
-include(":components:bottombar:api")
-include(":components:bottombar:impl")
+    ":components:info:api",
+    ":components:info:impl",
 
-include(":components:info:api")
-include(":components:info:impl")
+    ":components:analytics:shake2report:api",
+    ":components:analytics:shake2report:noop",
+    ":components:analytics:shake2report:impl",
 
-include(":components:analytics:shake2report:api")
-include(":components:analytics:shake2report:noop")
-include(":components:analytics:shake2report:impl")
+    ":components:screenstreaming:impl",
+    ":components:screenstreaming:api",
 
-include(":components:screenstreaming:impl")
-include(":components:screenstreaming:api")
+    ":components:share:api",
+    ":components:share:export",
+    ":components:share:common",
+    ":components:share:receive",
 
-include(":components:share:api")
-include(":components:share:export")
-include(":components:share:common")
-include(":components:share:receive")
+    ":components:singleactivity:api",
+    ":components:singleactivity:impl",
 
-include(":components:singleactivity:api")
-include(":components:singleactivity:impl")
+    ":components:deeplink:api",
+    ":components:deeplink:impl",
 
-include(":components:deeplink:api")
-include(":components:deeplink:impl")
+    ":components:debug:api",
+    ":components:debug:impl",
 
-include(":components:debug:api")
-include(":components:debug:impl")
+    ":components:archive:api",
+    ":components:archive:impl",
 
-include(":components:archive:api")
-include(":components:archive:impl")
-
-include(":components:connection:api")
-include(":components:connection:impl")
+    ":components:connection:api",
+    ":components:connection:impl"
+)

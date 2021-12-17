@@ -19,8 +19,8 @@ dependencies {
     implementation(Libs.APPCOMPAT)
 
     // Dagger deps
-    implementation(Libs.DAGGER)
-    kapt(Libs.DAGGER_COMPILER)
+    implementation(libs.dagger)
+    kapt(libs.dagger.kapt)
 
     implementation(Libs.CICERONE)
 }

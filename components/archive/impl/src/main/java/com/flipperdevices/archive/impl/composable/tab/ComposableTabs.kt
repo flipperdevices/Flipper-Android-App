@@ -10,6 +10,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -42,7 +43,8 @@ fun ComposableTabs(pagerState: PagerState, tabs: List<ArchiveTab>) {
                 Tab(
                     text = {
                         Text(
-                            text = tab.name,
+                            text = tab.fileType?.humanReadableName
+                                ?: stringResource(R.string.archive_tab_all),
                             fontWeight = FontWeight.Medium,
                             fontSize = 16.sp
                         )

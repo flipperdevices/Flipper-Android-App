@@ -9,7 +9,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.flipperdevices.archive.impl.composable.page.ComposablePager
 import com.flipperdevices.archive.impl.composable.tab.ComposableTabs
 import com.flipperdevices.archive.impl.model.ArchiveTab
-import com.flipperdevices.bridge.dao.FlipperFileType
+import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.google.accompanist.pager.rememberPagerState
 
 @Preview(
@@ -20,8 +20,8 @@ import com.google.accompanist.pager.rememberPagerState
 fun ComposableArchive(connectionBar: @Composable () -> Unit = {}) {
     val pagerState = rememberPagerState()
 
-    val tabs = listOf(ArchiveTab("All")).plus(
-        FlipperFileType.values().map { ArchiveTab(it.humanReadableName) }
+    val tabs = listOf(ArchiveTab(null)).plus(
+        FlipperFileType.values().map { ArchiveTab(it) }
     )
 
     Scaffold(topBar = {

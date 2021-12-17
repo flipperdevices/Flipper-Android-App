@@ -21,8 +21,8 @@ dependencies {
     implementation(Libs.NORDIC_BLE_KTX)
     implementation(Libs.NORDIC_BLE_COMMON)
 
-    implementation(Libs.DAGGER)
-    kapt(Libs.DAGGER_COMPILER)
+    implementation(libs.dagger)
+    kapt(libs.dagger.kapt)
 
     implementation(Libs.FASTUTIL)
 

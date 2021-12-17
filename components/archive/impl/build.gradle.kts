@@ -12,22 +12,27 @@ dependencies {
 
     implementation(project(":components:connection:api"))
 
-    implementation(project(":components:bridge:dao"))
+    implementation(projects.components.bridge.dao.api)
 
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.APPCOMPAT)
 
     // Compose
-    implementation(Libs.COMPOSE_UI)
-    implementation(Libs.COMPOSE_TOOLING)
-    implementation(Libs.COMPOSE_FOUNDATION)
-    implementation(Libs.COMPOSE_MATERIAL)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.tooling)
+    implementation(libs.compose.foundation)
+    implementation(libs.compose.material)
     implementation(Libs.COMPOSE_PAGER)
     implementation(Libs.COMPOSE_PAGER_INDICATOR)
 
     // Dagger deps
-    implementation(Libs.DAGGER)
-    kapt(Libs.DAGGER_COMPILER)
+    implementation(libs.dagger)
+    kapt(libs.dagger.kapt)
 
     implementation(Libs.CICERONE)
+
+    // Lifecycle
+    implementation(Libs.LIFECYCLE_RUNTIME_KTX)
+    implementation(Libs.LIFECYCLE_VIEWMODEL_KTX)
+    implementation(Libs.LIFECYCLE_COMPOSE)
 }
