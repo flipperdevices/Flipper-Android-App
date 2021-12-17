@@ -1,5 +1,7 @@
 package com.flipperdevices.bridge.synchronization.impl
 
+import com.flipperdevices.bridge.dao.api.DaoApi
+import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.impl.di.SynchronizationComponent
@@ -24,6 +26,9 @@ class TmpSynchronization : TaskWithLifecycle(), LogTagProvider {
 
     @Inject
     lateinit var serviceProvider: FlipperServiceProvider
+
+    @Inject
+    lateinit var daoApi: DaoApi
 
     init {
         ComponentHolder.component<SynchronizationComponent>().inject(this)
@@ -57,6 +62,14 @@ class TmpSynchronization : TaskWithLifecycle(), LogTagProvider {
         }
         val repository = ManifestRepository()
         val diffWithFlipper = repository.compareWithManifest(hashes)
+        daoApi.getKeysApi().updateKeys(
+            diffWithFlipper.map {
+                FlipperKey(
+                    name = it.hashedKey.keyPath.name,
+                    fileType = it.hashedKey.keyPath.fileType
+                )
+            }
+        )
 
         // End synchronization
         repository.saveManifest(hashes)

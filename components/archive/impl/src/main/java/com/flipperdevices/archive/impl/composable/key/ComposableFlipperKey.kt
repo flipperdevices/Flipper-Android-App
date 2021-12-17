@@ -104,7 +104,7 @@ private fun ComposableKeyDescription(
         )
         Text(
             modifier = Modifier.padding(bottom = 10.dp),
-            text = key.keyType.name,
+            text = key.keyType?.name ?: key.fileType.humanReadableName,
             fontWeight = FontWeight.Normal,
             color = colorResource(R.color.archive_description_keytype),
             fontSize = 16.sp

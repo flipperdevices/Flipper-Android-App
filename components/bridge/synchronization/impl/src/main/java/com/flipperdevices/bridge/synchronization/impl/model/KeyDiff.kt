@@ -1,6 +1,6 @@
 package com.flipperdevices.bridge.synchronization.impl.model
 
 data class KeyDiff(
-    val keyPath: KeyWithHash,
+    val hashedKey: KeyWithHash,
     val action: KeyAction
 )

@@ -3,7 +3,7 @@ package com.flipperdevices.bridge.dao.api.model
 data class FlipperKey(
     val name: String,
     val fileType: FlipperFileType,
-    val keyType: FlipperKeyType
+    val keyType: FlipperKeyType? = null
 ) {
     companion object {
         val DUMMY = FlipperKey("Test Key", FlipperFileType.NFC, FlipperKeyType())

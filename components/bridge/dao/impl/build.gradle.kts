@@ -6,6 +6,10 @@ plugins {
 }
 
 dependencies {
+    implementation(projects.components.bridge.dao.api)
+
+    implementation(projects.components.core.di)
+
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.ksp)

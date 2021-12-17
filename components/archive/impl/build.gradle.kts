@@ -30,4 +30,9 @@ dependencies {
     kapt(libs.dagger.kapt)
 
     implementation(Libs.CICERONE)
+
+    // Lifecycle
+    implementation(Libs.LIFECYCLE_RUNTIME_KTX)
+    implementation(Libs.LIFECYCLE_VIEWMODEL_KTX)
+    implementation(Libs.LIFECYCLE_COMPOSE)
 }
