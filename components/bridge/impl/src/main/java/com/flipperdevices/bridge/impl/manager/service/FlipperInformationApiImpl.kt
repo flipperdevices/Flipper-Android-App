@@ -1,7 +1,7 @@
 package com.flipperdevices.bridge.impl.manager.service
 
+import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattCharacteristic
-import android.bluetooth.BluetoothGattService
 import com.flipperdevices.bridge.api.manager.service.FlipperInformationApi
 import com.flipperdevices.bridge.api.model.FlipperGATTInformation
 import com.flipperdevices.bridge.api.utils.Constants
@@ -18,8 +18,14 @@ class FlipperInformationApiImpl :
     private val informationState = MutableStateFlow(FlipperGATTInformation())
     private var infoCharacteristics = mutableMapOf<UUID, BluetoothGattCharacteristic>()
 
-    override fun onServiceReceived(service: BluetoothGattService) {
-        infoCharacteristics.putAll(service.characteristics.map { it.uuid to it })
+    override fun onServiceReceived(gatt: BluetoothGatt): Boolean {
+        getServiceOrLog(gatt, Constants.BLEInformationService.SERVICE_UUID)?.let { service ->
+            infoCharacteristics.putAll(service.characteristics.map { it.uuid to it })
+        }
+        getServiceOrLog(gatt, Constants.GenericService.SERVICE_UUID)?.let { service ->
+            infoCharacteristics.putAll(service.characteristics.map { it.uuid to it })
+        }
+        return true
     }
 
     override fun initialize(bleManager: UnsafeBleManager) {

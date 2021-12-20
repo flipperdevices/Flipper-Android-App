@@ -24,9 +24,6 @@ dependencies {
     implementation(projects.components.filemanager.api)
     implementation(projects.components.filemanager.impl)
 
-    implementation(projects.components.bridge.service.api)
-    implementation(projects.components.bridge.service.impl)
-
     implementation(projects.components.screenstreaming.api)
     implementation(projects.components.screenstreaming.impl)
 
@@ -49,11 +46,13 @@ dependencies {
     implementation(projects.components.connection.api)
     implementation(projects.components.connection.impl)
 
-    implementation(projects.components.bridge.synchronization.api)
-    implementation(projects.components.bridge.synchronization.impl)
-
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.dao.impl)
+    implementation(projects.components.bridge.synchronization.api)
+    implementation(projects.components.bridge.synchronization.impl)
+    implementation(projects.components.bridge.service.api)
+    implementation(projects.components.bridge.service.impl)
+    implementation(projects.components.bridge.api)
 
     implementation(projects.components.analytics.shake2report.api)
     releaseImplementation(projects.components.analytics.shake2report.noop)

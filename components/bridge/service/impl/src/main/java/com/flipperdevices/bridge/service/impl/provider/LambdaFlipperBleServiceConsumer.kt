@@ -1,8 +1,8 @@
 package com.flipperdevices.bridge.service.impl.provider
 
+import com.flipperdevices.bridge.api.error.FlipperBleServiceError
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
-import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceError
 
 class LambdaFlipperBleServiceConsumer(
     private val onBleManager: (FlipperServiceApi) -> Unit,

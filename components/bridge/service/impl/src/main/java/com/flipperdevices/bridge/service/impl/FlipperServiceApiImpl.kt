@@ -5,13 +5,13 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import com.flipperdevices.bridge.api.error.FlipperBleServiceError
+import com.flipperdevices.bridge.api.error.FlipperServiceErrorListener
 import com.flipperdevices.bridge.api.manager.FlipperBleManager
 import com.flipperdevices.bridge.impl.manager.FlipperBleManagerImpl
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
-import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceError
 import com.flipperdevices.bridge.service.impl.delegate.FlipperServiceConnectDelegate
 import com.flipperdevices.bridge.service.impl.di.FlipperServiceComponent
-import com.flipperdevices.bridge.service.impl.provider.error.FlipperServiceErrorListener
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
@@ -33,7 +33,9 @@ class FlipperServiceApiImpl(
     lateinit var sharedPreferences: SharedPreferences
 
     private val scope = lifecycleOwner.lifecycleScope
-    private val bleManager: FlipperBleManager = FlipperBleManagerImpl(context, scope)
+    private val bleManager: FlipperBleManager = FlipperBleManagerImpl(
+        context, scope, serviceErrorListener
+    )
     private val connectDelegate = FlipperServiceConnectDelegate(bleManager, context)
 
     override val connectionInformationApi = bleManager.connectionInformationApi

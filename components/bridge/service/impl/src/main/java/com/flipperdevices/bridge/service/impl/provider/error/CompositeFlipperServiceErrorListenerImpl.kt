@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.service.impl.provider.error
 
-import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceError
+import com.flipperdevices.bridge.api.error.FlipperBleServiceError
+import com.flipperdevices.bridge.api.error.FlipperServiceErrorListener
 
 class CompositeFlipperServiceErrorListenerImpl :
     CompositeFlipperServiceErrorListener,

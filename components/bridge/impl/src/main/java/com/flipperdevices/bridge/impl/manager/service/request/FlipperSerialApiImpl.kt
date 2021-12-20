@@ -1,12 +1,14 @@
 package com.flipperdevices.bridge.impl.manager.service.request
 
+import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattCharacteristic
-import android.bluetooth.BluetoothGattService
 import com.flipperdevices.bridge.api.manager.service.FlipperSerialApi
 import com.flipperdevices.bridge.api.model.FlipperSerialSpeed
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.impl.manager.UnsafeBleManager
 import com.flipperdevices.bridge.impl.manager.service.BluetoothGattServiceWrapper
+import com.flipperdevices.bridge.impl.manager.service.getCharacteristicOrLog
+import com.flipperdevices.bridge.impl.manager.service.getServiceOrLog
 import com.flipperdevices.bridge.impl.utils.SpeedMeter
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
@@ -33,9 +35,15 @@ class FlipperSerialApiImpl(
     private val txSpeed = SpeedMeter()
     private val rxSpeed = SpeedMeter()
 
-    override fun onServiceReceived(service: BluetoothGattService) {
-        serialTxCharacteristic = service.getCharacteristic(Constants.BLESerialService.TX)
-        serialRxCharacteristic = service.getCharacteristic(Constants.BLESerialService.RX)
+    override fun onServiceReceived(gatt: BluetoothGatt): Boolean {
+        val service = getServiceOrLog(
+            gatt, Constants.BLESerialService.SERVICE_UUID
+        ) ?: return false
+
+        serialTxCharacteristic = getCharacteristicOrLog(service, Constants.BLESerialService.TX)
+        serialRxCharacteristic = getCharacteristicOrLog(service, Constants.BLESerialService.RX)
+
+        return serialTxCharacteristic != null && serialRxCharacteristic != null
     }
 
     override fun initialize(bleManager: UnsafeBleManager) {

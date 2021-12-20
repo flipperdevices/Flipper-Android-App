@@ -3,14 +3,19 @@ package com.flipperdevices.bridge.impl.manager
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothGatt
 import android.content.Context
+import com.flipperdevices.bridge.BuildConfig
+import com.flipperdevices.bridge.api.error.FlipperBleServiceError
+import com.flipperdevices.bridge.api.error.FlipperServiceErrorListener
 import com.flipperdevices.bridge.api.manager.FlipperBleManager
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.impl.manager.delegates.FlipperConnectionInformationApiImpl
+import com.flipperdevices.bridge.impl.manager.service.BluetoothGattServiceWrapper
 import com.flipperdevices.bridge.impl.manager.service.FlipperInformationApiImpl
 import com.flipperdevices.bridge.impl.manager.service.request.FlipperRequestApiImpl
 import com.flipperdevices.core.ktx.jre.newSingleThreadExecutor
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.debug
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.asCoroutineDispatcher
@@ -24,7 +29,8 @@ import no.nordicsemi.android.ble.ktx.stateAsFlow
 @Suppress("BlockingMethodInNonBlockingContext")
 class FlipperBleManagerImpl constructor(
     context: Context,
-    scope: CoroutineScope
+    scope: CoroutineScope,
+    private val serviceErrorListener: FlipperServiceErrorListener
 ) : UnsafeBleManager(context), FlipperBleManager, LogTagProvider {
     override val TAG = "FlipperBleManager"
     private val bleDispatcher = newSingleThreadExecutor("FlipperBleManagerImpl")
@@ -80,26 +86,33 @@ class FlipperBleManagerImpl constructor(
             requestMtu(Constants.BLE.MTU).enqueue()
             requestConnectionPriority(ConnectionPriorityRequest.CONNECTION_PRIORITY_HIGH).enqueue()
 
-            informationApi.initialize(this@FlipperBleManagerImpl)
-            flipperRequestApi.initialize(this@FlipperBleManagerImpl)
+            informationApi.initializeSafe(this@FlipperBleManagerImpl) {
+                error(it) { "Error while initialize information api" }
+                serviceErrorListener.onError(FlipperBleServiceError.SERVICE_INFORMATION_FAILED_INIT)
+            }
+            flipperRequestApi.initializeSafe(this@FlipperBleManagerImpl) {
+                error(it) { "Error while initialize request api" }
+                serviceErrorListener.onError(FlipperBleServiceError.SERVICE_SERIAL_FAILED_INIT)
+            }
         }
 
         override fun isRequiredServiceSupported(gatt: BluetoothGatt): Boolean {
-            gatt.services.forEach { service ->
-                service.characteristics.forEach {
-                    debug { "Characteristic for service ${service.uuid}: ${it.uuid}" }
+            if (BuildConfig.INTERNAL) {
+                gatt.services.forEach { service ->
+                    service.characteristics.forEach {
+                        debug { "Characteristic for service ${service.uuid}: ${it.uuid}" }
+                    }
                 }
             }
 
-            flipperRequestApi.onServiceReceived(
-                gatt.getService(Constants.BLESerialService.SERVICE_UUID)
-            )
-            informationApi.onServiceReceived(
-                gatt.getService(Constants.BLEInformationService.SERVICE_UUID)
-            )
-            informationApi.onServiceReceived(
-                gatt.getService(Constants.GenericService.SERVICE_UUID)
-            )
+            flipperRequestApi.onServiceReceivedSafe(gatt) {
+                error(it) { "Can't find service for flipper request api" }
+                serviceErrorListener.onError(FlipperBleServiceError.SERVICE_SERIAL_NOT_FOUND)
+            }
+            informationApi.onServiceReceivedSafe(gatt) {
+                error(it) { "Can't find service for information api" }
+                serviceErrorListener.onError(FlipperBleServiceError.SERVICE_INFORMATION_NOT_FOUND)
+            }
 
             return true
         }
@@ -108,5 +121,31 @@ class FlipperBleManagerImpl constructor(
             informationApi.reset(this@FlipperBleManagerImpl)
             flipperRequestApi.reset(this@FlipperBleManagerImpl)
         }
+    }
+}
+
+private fun BluetoothGattServiceWrapper.initializeSafe(
+    manager: UnsafeBleManager,
+    onError: (Throwable?) -> Unit
+) {
+    runCatching {
+        initialize(manager)
+    }.onFailure {
+        onError(it)
+    }
+}
+
+private fun BluetoothGattServiceWrapper.onServiceReceivedSafe(
+    gatt: BluetoothGatt,
+    onError: (Throwable?) -> Unit
+) {
+    runCatching {
+        onServiceReceived(gatt)
+    }.onSuccess { serviceReceived ->
+        if (!serviceReceived) {
+            onError(null)
+        }
+    }.onFailure {
+        onError(it)
     }
 }

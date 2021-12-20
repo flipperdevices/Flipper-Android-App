@@ -1,6 +1,6 @@
 package com.flipperdevices.bridge.impl.manager.service.request
 
-import android.bluetooth.BluetoothGattService
+import android.bluetooth.BluetoothGatt
 import android.util.SparseArray
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequest
@@ -68,7 +68,9 @@ class FlipperRequestApiImpl(
         )
 
         // Add answer listener to listeners
-        requestListeners[uniqueId] = {
+        requestListeners.put(
+            uniqueId
+        ) {
             send(it)
             if (!it.hasNext) {
                 requestListeners.remove(uniqueId)
@@ -152,9 +154,9 @@ class FlipperRequestApiImpl(
         cont.invokeOnCancellation { requestListeners.remove(uniqueId) }
     }
 
-    override fun onServiceReceived(service: BluetoothGattService) {
-        serialApiUnsafe.onServiceReceived(service)
-        serialApi.onServiceReceived(service)
+    override fun onServiceReceived(gatt: BluetoothGatt): Boolean {
+        return serialApiUnsafe.onServiceReceived(gatt) &&
+            serialApi.onServiceReceived(gatt)
     }
 
     override fun initialize(bleManager: UnsafeBleManager) {

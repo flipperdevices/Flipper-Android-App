@@ -11,4 +11,14 @@
 
     <string name="connection_tab_search_pic_desc">Search</string>
     <string name="connection_tab_menu_pic_desc">Menu</string>
+
+    <string name="error_connect_bluetooth_disabled">Bluetooth disabled, please enable it</string>
+    <string name="error_connect_device_not_stored">Binding for device is invalid, please forget device and connect again</string>
+    <string name="error_connect_bluetooth_permission">Can\'t access to Bluetooth</string>
+    <string name="error_connect_timeout">Can\'t connect to device in timeout</string>
+    <string name="error_connect_require_rebound">Binding for device is invalid, please forget device and connect again</string>
+    <string name="error_connect_information_not_found">Can\'t find information gatt service</string>
+    <string name="error_connect_serial_not_found">Can\'t find serial gatt service</string>
+    <string name="error_connect_information_init_failed">Failed initialize information service</string>
+    <string name="error_connect_serial_init_failed">Failed initialize serial service</string>
 </resources>
