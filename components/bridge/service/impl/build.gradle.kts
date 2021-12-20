@@ -11,15 +11,15 @@ android {
 }
 
 dependencies {
-    implementation(project(":components:core:di"))
-    implementation(project(":components:core:log"))
-    implementation(project(":components:core:preference"))
+    implementation(projects.components.core.di)
+    implementation(projects.components.core.log)
+    implementation(projects.components.core.preference)
 
-    implementation(project(":components:bridge:api"))
-    implementation(project(":components:bridge:provider"))
-    implementation(project(":components:bridge:protobuf"))
-    implementation(project(":components:bridge:service:api"))
-    implementation(project(":components:bridge:impl"))
+    implementation(projects.components.bridge.api)
+    implementation(projects.components.bridge.provider)
+    implementation(projects.components.bridge.protobuf)
+    implementation(projects.components.bridge.service.api)
+    implementation(projects.components.bridge.impl)
 
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.APPCOMPAT)
@@ -38,7 +38,7 @@ dependencies {
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
 
-    testImplementation(project(":components:core:test"))
+    testImplementation(projects.components.core.test)
     testImplementation(TestingLib.JUNIT)
     testImplementation(TestingLib.MOCKITO)
     testImplementation(TestingLib.ANDROIDX_TEST_EXT_JUNIT)

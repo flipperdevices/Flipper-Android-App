@@ -5,15 +5,15 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":components:core:di"))
-    implementation(project(":components:core:ui"))
-    implementation(project(":components:core:navigation"))
+    implementation(projects.components.core.di)
+    implementation(projects.components.core.ui)
+    implementation(projects.components.core.navigation)
 
-    implementation(project(":components:bottombar:api"))
+    implementation(projects.components.bottombar.api)
 
-    implementation(project(":components:deeplink:api"))
+    implementation(projects.components.deeplink.api)
 
-    implementation(project(":components:singleactivity:api"))
+    implementation(projects.components.singleactivity.api)
 
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.APPCOMPAT)

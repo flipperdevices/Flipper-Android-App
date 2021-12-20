@@ -12,8 +12,6 @@ object Versions {
     const val ANDROID_ANNOTATIONS = "1.3.0"
     const val ANDROID_MATERIAL = "1.4.0"
     const val ANDROID_LIFECYCLE = "2.4.0"
-    const val ANDROID_COMPOSE_CONSTRAINT = "1.0.0-rc02"
-    const val COMPOSE_ACCOMPANIST = "0.20.2"
 
     const val FRAGMENT_KTX = "1.4.0"
     const val ACTIVITY_KTX = "1.4.0"
@@ -76,16 +74,6 @@ object Libs {
     const val ANNOTATIONS = "androidx.annotation:annotation:${Versions.ANDROID_ANNOTATIONS}"
     const val APPCOMPAT = "androidx.appcompat:appcompat:${Versions.ANDROIDX_APPCOMPAT}"
     const val MATERIAL = "com.google.android.material:material:${Versions.ANDROID_MATERIAL}"
-
-    const val COMPOSE_CONSTRAINT_LAYOUT =
-        "androidx.constraintlayout:constraintlayout-compose:${Versions.ANDROID_COMPOSE_CONSTRAINT}"
-
-    const val COMPOSE_PAGER =
-        "com.google.accompanist:accompanist-pager:${Versions.COMPOSE_ACCOMPANIST}"
-    const val COMPOSE_PAGER_INDICATOR =
-        "com.google.accompanist:accompanist-pager-indicators:${Versions.COMPOSE_ACCOMPANIST}"
-    const val COMPOSE_SYSTEM_UI_CONTROLLER =
-        "com.google.accompanist:accompanist-systemuicontroller:${Versions.COMPOSE_ACCOMPANIST}"
 
     const val CICERONE = "com.github.terrakok:cicerone:${Versions.CICERONE}"
 

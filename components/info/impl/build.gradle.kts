@@ -5,19 +5,19 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":components:core:di"))
-    implementation(project(":components:core:ui"))
-    implementation(project(":components:core:navigation"))
+    implementation(projects.components.core.di)
+    implementation(projects.components.core.ui)
+    implementation(projects.components.core.navigation)
 
-    implementation(project(":components:info:api"))
-    implementation(project(":components:pair:api"))
-    implementation(project(":components:screenstreaming:api"))
-    implementation(project(":components:filemanager:api"))
-    implementation(project(":components:debug:api"))
+    implementation(projects.components.info.api)
+    implementation(projects.components.pair.api)
+    implementation(projects.components.screenstreaming.api)
+    implementation(projects.components.filemanager.api)
+    implementation(projects.components.debug.api)
 
-    implementation(project(":components:bridge:api"))
-    implementation(project(":components:bridge:service:api"))
-    implementation(project(":components:bridge:protobuf"))
+    implementation(projects.components.bridge.api)
+    implementation(projects.components.bridge.service.api)
+    implementation(projects.components.bridge.protobuf)
 
     // Core deps
     implementation(Libs.CORE_KTX)

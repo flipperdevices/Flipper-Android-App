@@ -5,14 +5,14 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":components:bridge:protobuf"))
-    implementation(project(":components:bridge:api"))
-    implementation(project(":components:bridge:service:api"))
-    implementation(project(":components:screenstreaming:api"))
+    implementation(projects.components.bridge.protobuf)
+    implementation(projects.components.bridge.api)
+    implementation(projects.components.bridge.service.api)
+    implementation(projects.components.screenstreaming.api)
 
-    implementation(project(":components:core:di"))
-    implementation(project(":components:core:ui"))
-    implementation(project(":components:core:log"))
+    implementation(projects.components.core.di)
+    implementation(projects.components.core.ui)
+    implementation(projects.components.core.log)
 
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.APPCOMPAT)
@@ -22,7 +22,7 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
-    implementation(Libs.COMPOSE_CONSTRAINT_LAYOUT)
+    implementation(libs.compose.constraint)
 
     implementation(Libs.KOTLIN_COROUTINES)
     implementation(Libs.LIFECYCLE_RUNTIME_KTX)

@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":components:deeplink:api"))
+    implementation(projects.components.deeplink.api)
 
     implementation(libs.compose.ui)
 }

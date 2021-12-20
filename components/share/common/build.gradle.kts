@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":components:core:ui"))
+    implementation(projects.components.core.ui)
 
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.APPCOMPAT)

@@ -5,12 +5,12 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":components:archive:api"))
+    implementation(projects.components.archive.api)
 
-    implementation(project(":components:core:di"))
-    implementation(project(":components:core:ui"))
+    implementation(projects.components.core.di)
+    implementation(projects.components.core.ui)
 
-    implementation(project(":components:connection:api"))
+    implementation(projects.components.connection.api)
 
     implementation(projects.components.bridge.dao.api)
 
@@ -22,8 +22,8 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
-    implementation(Libs.COMPOSE_PAGER)
-    implementation(Libs.COMPOSE_PAGER_INDICATOR)
+    implementation(libs.compose.pager)
+    implementation(libs.compose.pager.indicators)
 
     // Dagger deps
     implementation(libs.dagger)

@@ -5,13 +5,13 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":components:connection:api"))
+    implementation(projects.components.connection.api)
 
-    implementation(project(":components:core:di"))
-    implementation(project(":components:core:ui"))
+    implementation(projects.components.core.di)
+    implementation(projects.components.core.ui)
 
-    implementation(project(":components:bridge:api"))
-    implementation(project(":components:bridge:service:api"))
+    implementation(projects.components.bridge.api)
+    implementation(projects.components.bridge.service.api)
     implementation(Libs.NORDIC_BLE_KTX)
 
     // Compose

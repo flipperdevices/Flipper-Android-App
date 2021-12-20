@@ -5,19 +5,19 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":components:core:di"))
-    implementation(project(":components:core:ui"))
-    implementation(project(":components:core:log"))
-    implementation(project(":components:core:ktx"))
+    implementation(projects.components.core.di)
+    implementation(projects.components.core.ui)
+    implementation(projects.components.core.log)
+    implementation(projects.components.core.ktx)
 
-    implementation(project(":components:deeplink:api"))
+    implementation(projects.components.deeplink.api)
 
-    implementation(project(":components:share:api"))
-    implementation(project(":components:share:common"))
+    implementation(projects.components.share.api)
+    implementation(projects.components.share.common)
 
-    implementation(project(":components:bridge:api"))
-    implementation(project(":components:bridge:protobuf"))
-    implementation(project(":components:bridge:service:api"))
+    implementation(projects.components.bridge.api)
+    implementation(projects.components.bridge.protobuf)
+    implementation(projects.components.bridge.service.api)
 
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.APPCOMPAT)

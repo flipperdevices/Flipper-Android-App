@@ -5,7 +5,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":components:core:di"))
+    implementation(projects.components.core.di)
 
     // Dagger deps
     implementation(libs.dagger)
