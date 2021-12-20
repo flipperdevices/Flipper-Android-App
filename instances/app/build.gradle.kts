@@ -5,60 +5,60 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":components:core:di"))
-    implementation(project(":components:core:ktx"))
-    implementation(project(":components:core:log"))
-    implementation(project(":components:core:navigation"))
-    implementation(project(":components:core:preference"))
-    implementation(project(":components:core:ui"))
+    implementation(projects.components.core.di)
+    implementation(projects.components.core.ktx)
+    implementation(projects.components.core.log)
+    implementation(projects.components.core.navigation)
+    implementation(projects.components.core.preference)
+    implementation(projects.components.core.ui)
 
-    implementation(project(":components:pair:api"))
-    implementation(project(":components:pair:impl"))
+    implementation(projects.components.pair.api)
+    implementation(projects.components.pair.impl)
 
-    implementation(project(":components:info:api"))
-    implementation(project(":components:info:impl"))
+    implementation(projects.components.info.api)
+    implementation(projects.components.info.impl)
 
-    implementation(project(":components:bottombar:api"))
-    implementation(project(":components:bottombar:impl"))
+    implementation(projects.components.bottombar.api)
+    implementation(projects.components.bottombar.impl)
 
-    implementation(project(":components:filemanager:api"))
-    implementation(project(":components:filemanager:impl"))
+    implementation(projects.components.filemanager.api)
+    implementation(projects.components.filemanager.impl)
 
-    implementation(project(":components:bridge:service:api"))
-    implementation(project(":components:bridge:service:impl"))
+    implementation(projects.components.bridge.service.api)
+    implementation(projects.components.bridge.service.impl)
 
-    implementation(project(":components:screenstreaming:api"))
-    implementation(project(":components:screenstreaming:impl"))
+    implementation(projects.components.screenstreaming.api)
+    implementation(projects.components.screenstreaming.impl)
 
-    implementation(project(":components:share:api"))
-    implementation(project(":components:share:receive"))
-    implementation(project(":components:share:export"))
+    implementation(projects.components.share.api)
+    implementation(projects.components.share.receive)
+    implementation(projects.components.share.export)
 
-    implementation(project(":components:singleactivity:api"))
-    implementation(project(":components:singleactivity:impl"))
+    implementation(projects.components.singleactivity.api)
+    implementation(projects.components.singleactivity.impl)
 
-    implementation(project(":components:deeplink:api"))
-    implementation(project(":components:deeplink:impl"))
+    implementation(projects.components.deeplink.api)
+    implementation(projects.components.deeplink.impl)
 
-    implementation(project(":components:debug:api"))
-    implementation(project(":components:debug:impl"))
+    implementation(projects.components.debug.api)
+    implementation(projects.components.debug.impl)
 
-    implementation(project(":components:archive:api"))
-    implementation(project(":components:archive:impl"))
+    implementation(projects.components.archive.api)
+    implementation(projects.components.archive.impl)
 
-    implementation(project(":components:connection:api"))
-    implementation(project(":components:connection:impl"))
+    implementation(projects.components.connection.api)
+    implementation(projects.components.connection.impl)
 
-    implementation(project(":components:bridge:synchronization:api"))
-    implementation(project(":components:bridge:synchronization:impl"))
+    implementation(projects.components.bridge.synchronization.api)
+    implementation(projects.components.bridge.synchronization.impl)
 
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.dao.impl)
 
-    implementation(project(":components:analytics:shake2report:api"))
-    releaseImplementation(project(":components:analytics:shake2report:noop"))
-    debugImplementation(project(":components:analytics:shake2report:impl"))
-    add("internalImplementation", project(":components:analytics:shake2report:impl"))
+    implementation(projects.components.analytics.shake2report.api)
+    releaseImplementation(projects.components.analytics.shake2report.noop)
+    debugImplementation(projects.components.analytics.shake2report.impl)
+    add("internalImplementation", projects.components.analytics.shake2report.noop)
 
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.CORE_KTX)

@@ -5,11 +5,11 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":components:core:log"))
-    implementation(project(":components:core:ktx"))
+    implementation(projects.components.core.log)
+    implementation(projects.components.core.ktx)
 
-    implementation(project(":components:bridge:api"))
-    implementation(project(":components:bridge:protobuf"))
+    implementation(projects.components.bridge.api)
+    implementation(projects.components.bridge.protobuf)
 
     implementation(Libs.KOTLIN_COROUTINES)
     implementation(Libs.ANNOTATIONS)
@@ -26,7 +26,7 @@ dependencies {
 
     implementation(Libs.FASTUTIL)
 
-    testImplementation(project(":components:core:test"))
+    testImplementation(projects.components.core.test)
     testImplementation(TestingLib.JUNIT)
     testImplementation(TestingLib.MOCKITO)
     testImplementation(TestingLib.ANDROIDX_TEST_EXT_JUNIT)

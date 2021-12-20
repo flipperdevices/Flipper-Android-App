@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":components:bridge:api"))
+    implementation(projects.components.bridge.api)
 
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.APPCOMPAT)

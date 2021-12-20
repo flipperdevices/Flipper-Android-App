@@ -5,8 +5,8 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":components:analytics:shake2report:api"))
-    implementation(project(":components:core:di"))
+    implementation(projects.components.analytics.shake2report.api)
+    implementation(projects.components.core.di)
 
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.APPCOMPAT)

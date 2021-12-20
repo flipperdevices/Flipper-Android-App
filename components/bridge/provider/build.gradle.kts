@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-    api(project(":components:bridge:api"))
-    implementation(project(":components:bridge:impl"))
+    api(projects.components.bridge.api)
+    implementation(projects.components.bridge.impl)
 }

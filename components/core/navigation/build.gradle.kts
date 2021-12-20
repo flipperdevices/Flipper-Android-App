@@ -5,8 +5,8 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":components:core:di"))
-    implementation(project(":components:bottombar:api"))
+    implementation(projects.components.core.di)
+    implementation(projects.components.bottombar.api)
 
     implementation(Libs.APPCOMPAT)
 

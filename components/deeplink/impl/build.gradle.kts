@@ -5,13 +5,13 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":components:core:di"))
-    implementation(project(":components:core:log"))
+    implementation(projects.components.core.di)
+    implementation(projects.components.core.log)
 
     implementation(projects.components.bridge.dao.api)
 
-    implementation(project(":components:deeplink:api"))
-    implementation(project(":components:filemanager:api"))
+    implementation(projects.components.deeplink.api)
+    implementation(projects.components.filemanager.api)
 
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.APPCOMPAT)

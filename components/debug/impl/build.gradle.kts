@@ -5,19 +5,19 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":components:debug:api"))
+    implementation(projects.components.debug.api)
 
-    implementation(project(":components:core:di"))
-    implementation(project(":components:core:ui"))
-    implementation(project(":components:core:log"))
-    implementation(project(":components:core:ktx"))
-    implementation(project(":components:core:navigation"))
+    implementation(projects.components.core.di)
+    implementation(projects.components.core.ui)
+    implementation(projects.components.core.log)
+    implementation(projects.components.core.ktx)
+    implementation(projects.components.core.navigation)
 
-    implementation(project(":components:bridge:api"))
-    implementation(project(":components:bridge:protobuf"))
-    implementation(project(":components:bridge:service:api"))
+    implementation(projects.components.bridge.api)
+    implementation(projects.components.bridge.protobuf)
+    implementation(projects.components.bridge.service.api)
 
-    implementation(project(":components:bridge:synchronization:api"))
+    implementation(projects.components.bridge.synchronization.api)
 
     implementation(Libs.NORDIC_BLE_KTX)
 

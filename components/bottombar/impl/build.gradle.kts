@@ -5,15 +5,15 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":components:bottombar:api"))
+    implementation(projects.components.bottombar.api)
 
-    implementation(project(":components:core:di"))
-    implementation(project(":components:core:navigation"))
-    implementation(project(":components:core:ui"))
+    implementation(projects.components.core.di)
+    implementation(projects.components.core.navigation)
+    implementation(projects.components.core.ui)
 
-    implementation(project(":components:info:api"))
-    implementation(project(":components:archive:api"))
-    implementation(project(":components:pair:api"))
+    implementation(projects.components.info.api)
+    implementation(projects.components.archive.api)
+    implementation(projects.components.pair.api)
 
     implementation(Libs.APPCOMPAT)
     implementation(libs.dagger)

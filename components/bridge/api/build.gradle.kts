@@ -5,7 +5,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":components:bridge:protobuf"))
+    implementation(projects.components.bridge.protobuf)
 
     implementation(Libs.KOTLIN_COROUTINES)
     implementation(Libs.NORDIC_BLE_COMMON)

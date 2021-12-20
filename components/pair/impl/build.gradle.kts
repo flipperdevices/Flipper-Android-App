@@ -11,23 +11,23 @@ android {
 }
 
 dependencies {
-    implementation(project(":components:core:ui"))
-    implementation(project(":components:core:di"))
-    implementation(project(":components:core:ktx"))
-    implementation(project(":components:core:log"))
-    implementation(project(":components:core:preference"))
-    implementation(project(":components:core:navigation"))
+    implementation(projects.components.core.ui)
+    implementation(projects.components.core.di)
+    implementation(projects.components.core.ktx)
+    implementation(projects.components.core.log)
+    implementation(projects.components.core.preference)
+    implementation(projects.components.core.navigation)
 
-    implementation(project(":components:bottombar:api"))
+    implementation(projects.components.bottombar.api)
 
-    implementation(project(":components:singleactivity:api"))
+    implementation(projects.components.singleactivity.api)
 
-    implementation(project(":components:deeplink:api"))
+    implementation(projects.components.deeplink.api)
 
-    implementation(project(":components:bridge:api"))
-    implementation(project(":components:bridge:provider"))
-    implementation(project(":components:bridge:service:api"))
-    implementation(project(":components:pair:api"))
+    implementation(projects.components.bridge.api)
+    implementation(projects.components.bridge.provider)
+    implementation(projects.components.bridge.service.api)
+    implementation(projects.components.pair.api)
 
     implementation(Libs.KOTLIN_COROUTINES)
     implementation(Libs.LIFECYCLE_RUNTIME_KTX)
