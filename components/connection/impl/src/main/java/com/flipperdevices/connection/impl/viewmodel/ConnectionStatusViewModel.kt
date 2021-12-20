@@ -50,15 +50,24 @@ class ConnectionStatusViewModel(
     override fun onServiceBleError(error: FlipperBleServiceError) {
         super.onServiceBleError(error)
         val errorTextResId = when (error) {
-            FlipperBleServiceError.CONNECT_BLUETOOTH_DISABLED -> R.string.error_connect_bluetooth_disabled
-            FlipperBleServiceError.CONNECT_DEVICE_NOT_STORED -> R.string.error_connect_device_not_stored
-            FlipperBleServiceError.CONNECT_BLUETOOTH_PERMISSION -> R.string.error_connect_bluetooth_permission
-            FlipperBleServiceError.CONNECT_TIMEOUT -> R.string.error_connect_timeout
-            FlipperBleServiceError.CONNECT_REQUIRE_REBOUND -> R.string.error_connect_require_rebound
-            FlipperBleServiceError.SERVICE_INFORMATION_NOT_FOUND -> R.string.error_connect_information_not_found
-            FlipperBleServiceError.SERVICE_SERIAL_NOT_FOUND -> R.string.error_connect_serial_not_found
-            FlipperBleServiceError.SERVICE_INFORMATION_FAILED_INIT -> R.string.error_connect_information_init_failed
-            FlipperBleServiceError.SERVICE_SERIAL_FAILED_INIT -> R.string.error_connect_serial_init_failed
+            FlipperBleServiceError.CONNECT_BLUETOOTH_DISABLED ->
+                R.string.error_connect_bluetooth_disabled
+            FlipperBleServiceError.CONNECT_DEVICE_NOT_STORED ->
+                R.string.error_connect_device_not_stored
+            FlipperBleServiceError.CONNECT_BLUETOOTH_PERMISSION ->
+                R.string.error_connect_bluetooth_permission
+            FlipperBleServiceError.CONNECT_TIMEOUT ->
+                R.string.error_connect_timeout
+            FlipperBleServiceError.CONNECT_REQUIRE_REBOUND ->
+                R.string.error_connect_require_rebound
+            FlipperBleServiceError.SERVICE_INFORMATION_NOT_FOUND ->
+                R.string.error_connect_information_not_found
+            FlipperBleServiceError.SERVICE_SERIAL_NOT_FOUND ->
+                R.string.error_connect_serial_not_found
+            FlipperBleServiceError.SERVICE_INFORMATION_FAILED_INIT ->
+                R.string.error_connect_information_init_failed
+            FlipperBleServiceError.SERVICE_SERIAL_FAILED_INIT ->
+                R.string.error_connect_serial_init_failed
         }
         val application = getApplication<Application>()
         Toast.makeText(application, errorTextResId, Toast.LENGTH_LONG)
