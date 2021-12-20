@@ -22,7 +22,7 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
-    implementation(Libs.COMPOSE_CONSTRAINT_LAYOUT)
+    implementation(libs.compose.constraint)
 
     implementation(Libs.KOTLIN_COROUTINES)
     implementation(Libs.LIFECYCLE_RUNTIME_KTX)

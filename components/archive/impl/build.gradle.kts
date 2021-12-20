@@ -22,8 +22,8 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
-    implementation(Libs.COMPOSE_PAGER)
-    implementation(Libs.COMPOSE_PAGER_INDICATOR)
+    implementation(libs.compose.pager)
+    implementation(libs.compose.pager.indicators)
 
     // Dagger deps
     implementation(libs.dagger)

@@ -23,8 +23,8 @@ dependencies {
     implementation(libs.compose.material)
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
-    implementation(Libs.COMPOSE_PAGER)
-    implementation(Libs.COMPOSE_SYSTEM_UI_CONTROLLER)
+    implementation(libs.compose.pager)
+    implementation(libs.compose.systemui)
 
     implementation(Libs.KOTLIN_COROUTINES)
     implementation(Libs.LIFECYCLE_RUNTIME_KTX)
