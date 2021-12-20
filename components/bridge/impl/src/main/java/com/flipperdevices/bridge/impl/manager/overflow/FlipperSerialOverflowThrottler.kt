@@ -1,12 +1,14 @@
 package com.flipperdevices.bridge.impl.manager.overflow
 
+import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattCharacteristic
-import android.bluetooth.BluetoothGattService
 import androidx.annotation.VisibleForTesting
 import com.flipperdevices.bridge.api.manager.service.FlipperSerialApi
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.impl.manager.UnsafeBleManager
 import com.flipperdevices.bridge.impl.manager.service.BluetoothGattServiceWrapper
+import com.flipperdevices.bridge.impl.manager.service.getCharacteristicOrLog
+import com.flipperdevices.bridge.impl.manager.service.getServiceOrLog
 import com.flipperdevices.core.ktx.jre.newSingleThreadExecutor
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
@@ -51,8 +53,13 @@ class FlipperSerialOverflowThrottler(
         }
     }
 
-    override fun onServiceReceived(service: BluetoothGattService) {
-        overflowCharacteristics = service.getCharacteristic(Constants.BLESerialService.OVERFLOW)
+    override fun onServiceReceived(gatt: BluetoothGatt): Boolean {
+        val service = getServiceOrLog(gatt, Constants.BLESerialService.SERVICE_UUID) ?: return false
+        overflowCharacteristics = getCharacteristicOrLog(
+            service,
+            Constants.BLESerialService.OVERFLOW
+        ) ?: return false
+        return true
     }
 
     override fun initialize(bleManager: UnsafeBleManager) {

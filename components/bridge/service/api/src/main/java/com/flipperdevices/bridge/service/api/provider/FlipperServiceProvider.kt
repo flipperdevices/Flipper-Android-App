@@ -2,6 +2,7 @@ package com.flipperdevices.bridge.service.api.provider
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import com.flipperdevices.bridge.api.error.FlipperBleServiceError
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 
 interface FlipperServiceProvider {

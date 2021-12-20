@@ -3,12 +3,12 @@ package com.flipperdevices.bridge.service.impl.provider
 import android.content.Context
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import com.flipperdevices.bridge.api.error.FlipperBleServiceError
+import com.flipperdevices.bridge.api.error.FlipperServiceErrorListener
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
-import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceError
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.service.impl.FlipperServiceBinder
-import com.flipperdevices.bridge.service.impl.provider.error.FlipperServiceErrorListener
 import com.flipperdevices.bridge.service.impl.provider.lifecycle.FlipperServiceConnectionHelper
 import com.flipperdevices.bridge.service.impl.provider.lifecycle.FlipperServiceConnectionHelperImpl
 import com.flipperdevices.bridge.service.impl.utils.subscribeOnFirst
