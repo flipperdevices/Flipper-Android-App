@@ -17,6 +17,7 @@ import com.flipperdevices.core.ui.AndroidLifecycleViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import no.nordicsemi.android.ble.ktx.state.ConnectionState
@@ -43,22 +44,17 @@ class ConnectionStatusViewModel(
     fun getStatusState(): StateFlow<ConnectionStatusState> = statusState
 
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
-        serviceApi.connectionInformationApi.getConnectionStateFlow().onEach { connectionState ->
+        serviceApi.connectionInformationApi.getConnectionStateFlow().combine(
+            synchronizationApi.getSynchronizationState()
+        ) { connectionState, synchronizationState ->
+            val deviceName = serviceApi.connectionInformationApi.getConnectedDeviceName()
             if (connectionState == ConnectionState.Ready) {
-                synchronizationApi.getSynchronizationState().onEach { synchronizationState ->
-                    statusState.emit(
-                        synchronizationState.toConnectionStatus(
-                            serviceApi.connectionInformationApi.getConnectedDeviceName()
-                        )
-                    )
-                }.launchIn(viewModelScope)
+                return@combine synchronizationState.toConnectionStatus(deviceName)
             } else {
-                statusState.emit(
-                    connectionState.toConnectionStatus(
-                        serviceApi.connectionInformationApi.getConnectedDeviceName()
-                    )
-                )
+                return@combine connectionState.toConnectionStatus(deviceName)
             }
+        }.onEach {
+            statusState.emit(it)
         }.launchIn(viewModelScope)
     }
 
