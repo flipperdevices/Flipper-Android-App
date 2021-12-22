@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    implementation(Libs.KOTLIN_COROUTINES)
+    implementation(libs.kotlin.coroutines)
 
     implementation(Libs.CICERONE)
 }

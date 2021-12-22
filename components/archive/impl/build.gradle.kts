@@ -13,6 +13,7 @@ dependencies {
     implementation(projects.components.connection.api)
 
     implementation(projects.components.bridge.dao.api)
+    implementation(projects.components.bridge.synchronization.api)
 
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.APPCOMPAT)
@@ -24,6 +25,7 @@ dependencies {
     implementation(libs.compose.material)
     implementation(libs.compose.pager)
     implementation(libs.compose.pager.indicators)
+    implementation(libs.compose.swipetorefresh)
 
     // Dagger deps
     implementation(libs.dagger)

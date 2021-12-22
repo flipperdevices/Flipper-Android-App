@@ -15,7 +15,7 @@ dependencies {
 
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.APPCOMPAT)
-    implementation(Libs.KOTLIN_COROUTINES)
+    implementation(libs.kotlin.coroutines)
 
     // Dagger deps
     implementation(libs.dagger)

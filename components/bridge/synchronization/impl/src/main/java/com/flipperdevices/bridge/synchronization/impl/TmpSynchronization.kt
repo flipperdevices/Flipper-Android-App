@@ -1,28 +1,23 @@
 package com.flipperdevices.bridge.synchronization.impl
 
 import com.flipperdevices.bridge.dao.api.DaoApi
-import com.flipperdevices.bridge.dao.api.model.FlipperKey
-import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.impl.di.SynchronizationComponent
-import com.flipperdevices.bridge.synchronization.impl.model.trackProgressAndReturn
-import com.flipperdevices.bridge.synchronization.impl.repository.HashRepository
-import com.flipperdevices.bridge.synchronization.impl.repository.KeysListingRepository
-import com.flipperdevices.bridge.synchronization.impl.repository.ManifestRepository
-import com.flipperdevices.bridge.synchronization.impl.utils.TaskWithLifecycle
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 
-class TmpSynchronization : TaskWithLifecycle(), LogTagProvider {
+class TmpSynchronization : LogTagProvider {
     override val TAG = "TestSynchronization"
 
-    val scope = CoroutineScope(Dispatchers.Default + SupervisorJob())
+    private val isLaunched = AtomicBoolean(false)
+    private val synchronizationState = MutableStateFlow(SynchronizationState.NOT_STARTED)
 
     @Inject
     lateinit var serviceProvider: FlipperServiceProvider
@@ -35,43 +30,20 @@ class TmpSynchronization : TaskWithLifecycle(), LogTagProvider {
     }
 
     fun requestServiceAndReceive() {
-        serviceProvider.provideServiceApi(this) { serviceApi ->
-            scope.launch {
-                try {
-                    launch(serviceApi)
-                } finally {
-                    onStop()
-                }
-            }
+        if (!isLaunched.compareAndSet(false, true)) {
+            info { "Synchronization skipped, because we already in synchronization" }
+            return
         }
-        scope.launch {
-            onStart()
+        val synchronizationTask = SynchronizationTask(serviceProvider, daoApi)
+        synchronizationTask.start { taskState ->
+            synchronizationState.update { taskState }
+            if (taskState == SynchronizationState.FINISHED) {
+                isLaunched.compareAndSet(true, false)
+            }
         }
     }
 
-    private suspend fun launch(serviceApi: FlipperServiceApi) {
-        val keys = KeysListingRepository().getAllKeys(
-            serviceApi.requestApi
-        ).trackProgressAndReturn {
-            info { "Progress is ${it.currentPosition}/${it.maxPosition}: ${it.text}" }
-        }
-        val hashes = HashRepository().calculateHash(
-            serviceApi.requestApi, keys
-        ).trackProgressAndReturn {
-            info { "Progress is ${it.currentPosition}/${it.maxPosition}: ${it.text}" }
-        }
-        val repository = ManifestRepository()
-        val diffWithFlipper = repository.compareWithManifest(hashes)
-        daoApi.getKeysApi().updateKeys(
-            diffWithFlipper.map {
-                FlipperKey(
-                    name = it.hashedKey.keyPath.name,
-                    fileType = it.hashedKey.keyPath.fileType
-                )
-            }
-        )
-
-        // End synchronization
-        repository.saveManifest(hashes)
+    fun getSynchronizationState(): StateFlow<SynchronizationState> {
+        return synchronizationState
     }
 }

@@ -24,7 +24,7 @@ dependencies {
     implementation(libs.compose.material)
     implementation(libs.compose.constraint)
 
-    implementation(Libs.KOTLIN_COROUTINES)
+    implementation(libs.kotlin.coroutines)
     implementation(Libs.LIFECYCLE_RUNTIME_KTX)
     implementation(Libs.LIFECYCLE_VIEWMODEL_KTX)
     implementation(Libs.LIFECYCLE_COMPOSE)

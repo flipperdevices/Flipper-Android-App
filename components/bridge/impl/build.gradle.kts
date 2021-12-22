@@ -11,7 +11,7 @@ dependencies {
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.protobuf)
 
-    implementation(Libs.KOTLIN_COROUTINES)
+    implementation(libs.kotlin.coroutines)
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.CORE_KTX)
     implementation(Libs.APPCOMPAT)
@@ -32,5 +32,5 @@ dependencies {
     testImplementation(TestingLib.ANDROIDX_TEST_EXT_JUNIT)
     testImplementation(TestingLib.ROBOELECTRIC)
     testImplementation(TestingLib.LIFECYCLE)
-    testImplementation(TestingLib.COROUTINES)
+    testImplementation(libs.kotlin.coroutines.test)
 }

@@ -37,5 +37,5 @@ dependencies {
     implementation(Libs.LIFECYCLE_VIEWMODEL_KTX)
     implementation(Libs.LIFECYCLE_COMPOSE)
 
-    implementation(Libs.KOTLIN_COROUTINES)
+    implementation(libs.kotlin.coroutines)
 }

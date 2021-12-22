@@ -29,7 +29,7 @@ dependencies {
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.pair.api)
 
-    implementation(Libs.KOTLIN_COROUTINES)
+    implementation(libs.kotlin.coroutines)
     implementation(Libs.LIFECYCLE_RUNTIME_KTX)
     implementation(Libs.LIFECYCLE_VIEWMODEL_KTX)
     implementation(Libs.ANNOTATIONS)

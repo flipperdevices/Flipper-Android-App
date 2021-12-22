@@ -7,6 +7,8 @@ import com.flipperdevices.bridge.api.error.FlipperBleServiceError
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
+import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.connection.impl.R
 import com.flipperdevices.connection.impl.di.ConnectionComponent
 import com.flipperdevices.connection.impl.model.ConnectionStatusState
@@ -15,6 +17,7 @@ import com.flipperdevices.core.ui.AndroidLifecycleViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import no.nordicsemi.android.ble.ktx.state.ConnectionState
@@ -30,6 +33,9 @@ class ConnectionStatusViewModel(
     @Inject
     lateinit var serviceProvider: FlipperServiceProvider
 
+    @Inject
+    lateinit var synchronizationApi: SynchronizationApi
+
     init {
         ComponentHolder.component<ConnectionComponent>().inject(this)
         serviceProvider.provideServiceApi(consumer = this, lifecycleOwner = this)
@@ -38,12 +44,17 @@ class ConnectionStatusViewModel(
     fun getStatusState(): StateFlow<ConnectionStatusState> = statusState
 
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
-        serviceApi.connectionInformationApi.getConnectionStateFlow().onEach {
-            statusState.emit(
-                it.toConnectionStatus(
-                    serviceApi.connectionInformationApi.getConnectedDeviceName()
-                )
-            )
+        serviceApi.connectionInformationApi.getConnectionStateFlow().combine(
+            synchronizationApi.getSynchronizationState()
+        ) { connectionState, synchronizationState ->
+            val deviceName = serviceApi.connectionInformationApi.getConnectedDeviceName()
+            if (connectionState == ConnectionState.Ready) {
+                return@combine synchronizationState.toConnectionStatus(deviceName)
+            } else {
+                return@combine connectionState.toConnectionStatus(deviceName)
+            }
+        }.onEach {
+            statusState.emit(it)
         }.launchIn(viewModelScope)
     }
 
@@ -70,7 +81,7 @@ class ConnectionStatusViewModel(
                 R.string.error_connect_serial_init_failed
         }
         val application = getApplication<Application>()
-        Toast.makeText(application, errorTextResId, Toast.LENGTH_LONG)
+        Toast.makeText(application, errorTextResId, Toast.LENGTH_LONG).show()
     }
 }
 
@@ -80,4 +91,10 @@ private fun ConnectionState.toConnectionStatus(deviceName: String?) = when (this
     ConnectionState.Ready -> ConnectionStatusState.Completed(deviceName ?: "Unnamed")
     ConnectionState.Disconnecting -> ConnectionStatusState.Connecting
     is ConnectionState.Disconnected -> ConnectionStatusState.Disconnected
+}
+
+private fun SynchronizationState.toConnectionStatus(deviceName: String?) = when (this) {
+    SynchronizationState.NOT_STARTED -> ConnectionStatusState.Synchronization
+    SynchronizationState.IN_PROGRESS -> ConnectionStatusState.Synchronization
+    SynchronizationState.FINISHED -> ConnectionStatusState.Completed(deviceName ?: "Unnamed")
 }

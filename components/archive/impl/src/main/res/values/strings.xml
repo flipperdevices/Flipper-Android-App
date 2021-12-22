@@ -2,4 +2,5 @@
 <resources>
     <string name="archive_key_icon_pic_desc">Key type icon</string>
     <string name="archive_tab_all">All</string>
+    <string name="archive_content_empty">You don\'t have this type of key yet</string>
 </resources>

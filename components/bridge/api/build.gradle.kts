@@ -7,7 +7,7 @@ plugins {
 dependencies {
     implementation(projects.components.bridge.protobuf)
 
-    implementation(Libs.KOTLIN_COROUTINES)
+    implementation(libs.kotlin.coroutines)
     implementation(Libs.NORDIC_BLE_COMMON)
     implementation(Libs.NORDIC_BLE_SCAN)
     implementation(Libs.NORDIC_BLE_KTX)
