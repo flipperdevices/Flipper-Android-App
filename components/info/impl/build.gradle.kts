@@ -32,7 +32,7 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
 
-    implementation(Libs.KOTLIN_COROUTINES)
+    implementation(libs.kotlin.coroutines)
     implementation(Libs.LIFECYCLE_RUNTIME_KTX)
     implementation(Libs.LIFECYCLE_VIEWMODEL_KTX)
 

@@ -70,7 +70,7 @@ class ConnectionStatusViewModel(
                 R.string.error_connect_serial_init_failed
         }
         val application = getApplication<Application>()
-        Toast.makeText(application, errorTextResId, Toast.LENGTH_LONG)
+        Toast.makeText(application, errorTextResId, Toast.LENGTH_LONG).show()
     }
 }
 

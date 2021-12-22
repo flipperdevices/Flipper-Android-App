@@ -5,8 +5,6 @@
 object Versions {
     const val KTLINT = "0.44.0-SNAPSHOT"
 
-    const val KOTLIN_COROUTINES = "1.5.2"
-
     const val ANDROIDX_APPCOMPAT = "1.4.0"
     const val ANDROIDX_CORE = "1.7.0"
     const val ANDROID_ANNOTATIONS = "1.3.0"
@@ -53,8 +51,6 @@ object Libs {
     const val TIMBER = "com.jakewharton.timber:timber:${Versions.TIMBER}"
 
     // KTX
-    const val KOTLIN_COROUTINES =
-        "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.KOTLIN_COROUTINES}"
     const val CORE_KTX = "androidx.core:core-ktx:${Versions.ANDROIDX_CORE}"
     const val FRAGMENT_KTX = "androidx.fragment:fragment-ktx:${Versions.FRAGMENT_KTX}"
     const val ACTIVITY_KTX = "androidx.activity:activity-ktx:${Versions.ACTIVITY_KTX}"
@@ -110,8 +106,6 @@ object TestingLib {
     const val JUNIT = "junit:junit:${Versions.JUNIT}"
 
     const val ANDROIDX_TEST_RUNNER = "androidx.test:runner:${Versions.ANDROIDX_TEST}"
-    const val COROUTINES =
-        "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.KOTLIN_COROUTINES}"
     const val ANDROIDX_TEST_EXT_JUNIT = "androidx.test.ext:junit:${Versions.ANDROIDX_TEST_EXT}"
     const val MOCKITO = "org.mockito.kotlin:mockito-kotlin:${Versions.MOCKITO_KOTLIN}"
     const val ROBOELECTRIC = "org.robolectric:robolectric:${Versions.ROBOELECTRIC}"
