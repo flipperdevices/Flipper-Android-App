@@ -48,10 +48,6 @@ class TmpSynchronization : TaskWithLifecycle(), LogTagProvider {
         }
         serviceProvider.provideServiceApi(this) { serviceApi ->
             scope.launch {
-                if (!isLaunched.compareAndSet(false, true)) {
-                    info { "Synchronization skipped, because we already in synchronization" }
-                    return@launch
-                }
                 try {
                     synchronizationState.update { SynchronizationState.IN_PROGRESS }
                     launch(serviceApi)

@@ -13,6 +13,7 @@ dependencies {
     implementation(projects.components.connection.api)
 
     implementation(projects.components.bridge.dao.api)
+    implementation(projects.components.bridge.synchronization.api)
 
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.APPCOMPAT)
