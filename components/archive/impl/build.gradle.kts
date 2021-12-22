@@ -25,6 +25,7 @@ dependencies {
     implementation(libs.compose.material)
     implementation(libs.compose.pager)
     implementation(libs.compose.pager.indicators)
+    implementation(libs.compose.swipetorefresh)
 
     // Dagger deps
     implementation(libs.dagger)

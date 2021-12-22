@@ -43,9 +43,11 @@ compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
 compose-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
 compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
 compose-material = { module = "androidx.compose.material:material", version.ref = "compose" }
+
 compose-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "compose_accompanist" }
 compose-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "compose_accompanist" }
 compose-systemui = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "compose_accompanist" }
+compose-swipetorefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "compose_accompanist" }
 compose-constraint = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "compose_constraint" }
 
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }

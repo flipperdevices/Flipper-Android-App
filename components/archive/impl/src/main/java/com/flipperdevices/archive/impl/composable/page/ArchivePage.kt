@@ -21,6 +21,8 @@ import com.flipperdevices.archive.impl.composable.key.ComposableFlipperKey
 import com.flipperdevices.archive.impl.model.ArchiveTab
 import com.flipperdevices.archive.impl.viewmodel.TabViewModel
 import com.flipperdevices.archive.impl.viewmodel.TabViewModelFactory
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 fun ArchivePage(
@@ -30,6 +32,16 @@ fun ArchivePage(
         factory = TabViewModelFactory(tab)
     )
 ) {
+    SwipeRefresh(
+        state = rememberSwipeRefreshState(false),
+        onRefresh = { tabViewModel.refresh() }
+    ) {
+        KeysList(tabViewModel)
+    }
+}
+
+@Composable
+private fun KeysList(tabViewModel: TabViewModel) {
     val keys by tabViewModel.getKeys().collectAsState()
 
     // If synchronization in progress yet

@@ -27,6 +27,7 @@ class TabViewModel(
     lateinit var synchronizationApi: SynchronizationApi
 
     private val tabKeys = MutableStateFlow<List<FlipperKey>?>(null)
+    private val swipeToRefreshState = MutableStateFlow(false)
 
     init {
         ComponentHolder.component<ArchiveComponent>().inject(this)
@@ -46,4 +47,8 @@ class TabViewModel(
     }
 
     fun getKeys(): StateFlow<List<FlipperKey>?> = tabKeys
+
+    fun refresh() {
+        synchronizationApi.startSynchronization()
+    }
 }
