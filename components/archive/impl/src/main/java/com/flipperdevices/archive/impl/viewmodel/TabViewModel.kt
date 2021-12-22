@@ -6,11 +6,15 @@ import com.flipperdevices.archive.impl.di.ArchiveComponent
 import com.flipperdevices.archive.impl.model.ArchiveTab
 import com.flipperdevices.bridge.dao.api.DaoApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
+import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
+import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.core.di.ComponentHolder
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class TabViewModel(
@@ -19,16 +23,27 @@ class TabViewModel(
     @Inject
     lateinit var daoApi: DaoApi
 
-    private val tabKeys = MutableStateFlow<List<FlipperKey>>(emptyList())
+    @Inject
+    lateinit var synchronizationApi: SynchronizationApi
+
+    private val tabKeys = MutableStateFlow<List<FlipperKey>?>(null)
 
     init {
         ComponentHolder.component<ArchiveComponent>().inject(this)
         viewModelScope.launch {
-            daoApi.getKeysApi().getKeysAsFlow(tab.fileType).collect {
+            daoApi.getKeysApi().getKeysAsFlow(tab.fileType).combine(
+                synchronizationApi.getSynchronizationState()
+            ) { keyList, synchronizationState ->
+                if (keyList.isEmpty() && synchronizationState == SynchronizationState.IN_PROGRESS) {
+                    return@combine null
+                } else {
+                    return@combine keyList
+                }
+            }.onEach {
                 tabKeys.emit(it)
-            }
+            }.launchIn(viewModelScope)
         }
     }
 
-    fun getKeys(): StateFlow<List<FlipperKey>> = tabKeys
+    fun getKeys(): StateFlow<List<FlipperKey>?> = tabKeys
 }
