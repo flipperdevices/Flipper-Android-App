@@ -17,6 +17,8 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -43,13 +45,9 @@ class FlipperSerialOverflowThrottler(
     private var bufferSizeState = MutableSharedFlow<Int>(replay = 1)
 
     init {
-        scope.launch {
-            withContext(dispatcher) {
-                bufferSizeState.collect { bufferSize ->
-                    sendCommandsWhileBufferNotEnd(bufferSize)
-                }
-            }
-        }
+        bufferSizeState.onEach { bufferSize ->
+            sendCommandsWhileBufferNotEnd(bufferSize)
+        }.launchIn(scope)
     }
 
     override fun onServiceReceived(gatt: BluetoothGatt): Boolean {
@@ -90,8 +88,9 @@ class FlipperSerialOverflowThrottler(
         }
     }
 
-    @Synchronized
-    private suspend fun CoroutineScope.sendCommandsWhileBufferNotEnd(bufferSize: Int) {
+    private suspend fun sendCommandsWhileBufferNotEnd(
+        bufferSize: Int
+    ) = withContext(dispatcher) {
         var remainingBufferSize = bufferSize
 
         while (isActive && remainingBufferSize > 0) {
