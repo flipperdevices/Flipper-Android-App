@@ -1,32 +1,41 @@
 package com.flipperdevices.bridge.impl.utils
 
-import kotlin.math.max
-import kotlin.math.roundToLong
+import java.util.concurrent.atomic.AtomicLong
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 private const val MS_IN_SEC = 1000L
 
-class SpeedMeter {
+class SpeedMeter(scope: CoroutineScope) {
     private val bytesPerSecond = MutableStateFlow(0L)
-    private var lastTimestampMs = 0L
+    private var bytesCollected = AtomicLong(0)
+
+    init {
+        scope.launch {
+            calculateSpeedEachSecond()
+        }
+    }
 
     fun getSpeed(): StateFlow<Long> = bytesPerSecond
 
     fun onReceiveBytes(bytesCount: Int) {
-        if (lastTimestampMs == 0L) {
-            bytesPerSecond.update { bytesCount.toLong() }
-            lastTimestampMs = System.currentTimeMillis()
-            return
-        }
+        bytesCollected.addAndGet(bytesCount.toLong())
+    }
 
-        val diffMs = max(System.currentTimeMillis() - lastTimestampMs, 1L)
-        val receiveBytesInSecond: Long = (bytesCount.toDouble() * MS_IN_SEC / diffMs).roundToLong()
-
-        bytesPerSecond.update {
-            max(receiveBytesInSecond, 0L)
+    private suspend fun calculateSpeedEachSecond() = withContext(Dispatchers.Default) {
+        while (isActive) {
+            delay(MS_IN_SEC)
+            val totalBytes = bytesCollected.getAndSet(0)
+            bytesPerSecond.update {
+                totalBytes
+            }
         }
-        lastTimestampMs = System.currentTimeMillis()
     }
 }

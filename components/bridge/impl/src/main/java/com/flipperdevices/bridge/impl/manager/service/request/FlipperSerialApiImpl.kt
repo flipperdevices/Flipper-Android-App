@@ -32,8 +32,8 @@ class FlipperSerialApiImpl(
     private var serialTxCharacteristic: BluetoothGattCharacteristic? = null
     private var serialRxCharacteristic: BluetoothGattCharacteristic? = null
 
-    private val txSpeed = SpeedMeter()
-    private val rxSpeed = SpeedMeter()
+    private val txSpeed = SpeedMeter(scope)
+    private val rxSpeed = SpeedMeter(scope)
 
     override fun onServiceReceived(gatt: BluetoothGatt): Boolean {
         val service = getServiceOrLog(
@@ -87,7 +87,7 @@ class FlipperSerialApiImpl(
             return
         }
         bleManager.writeCharacteristicUnsafe(serialTxCharacteristic, data)
-            .split(FixedSizeDataSplitter())
+            .split()
             .done {
                 txSpeed.onReceiveBytes(data.size)
             }

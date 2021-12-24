@@ -83,7 +83,7 @@ class FlipperBleManagerImpl constructor(
         override fun onDeviceReady() {
             // Set up large MTU
             // Also does not work with small MTU because of a bug in Flipper Zero firmware
-            requestMtu(Constants.BLE.MTU).enqueue()
+            requestMtu(Constants.BLE.MAX_MTU).enqueue()
             requestConnectionPriority(ConnectionPriorityRequest.CONNECTION_PRIORITY_HIGH).enqueue()
 
             informationApi.initializeSafe(this@FlipperBleManagerImpl) {

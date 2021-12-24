@@ -67,13 +67,6 @@ fun ComposeInfoScreen(
             ) {
                 Text(text = stringResource(R.string.info_connection_to_another_device))
             }
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                onClick = connectionToAnotherDeviceButton
-            ) {
-                Text(text = stringResource(R.string.info_connection_to_another_device))
-            }
         }
     }
 }
