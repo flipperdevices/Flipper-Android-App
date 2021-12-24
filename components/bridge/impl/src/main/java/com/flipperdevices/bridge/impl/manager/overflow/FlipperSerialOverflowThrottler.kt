@@ -17,7 +17,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -76,9 +75,7 @@ class FlipperSerialOverflowThrottler(
 
     override fun reset(bleManager: UnsafeBleManager) {
         pendingBytes = null
-        bleManager.readCharacteristicUnsafe(overflowCharacteristics).with { _, data ->
-            updateRemainingBuffer(data)
-        }.enqueue()
+        bleManager.setNotificationCallbackUnsafe(overflowCharacteristics) // reset (free) callback
     }
 
     @VisibleForTesting

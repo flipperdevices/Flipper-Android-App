@@ -44,12 +44,12 @@ class SynchronizationTask(
         val keys = KeysListingRepository().getAllKeys(
             serviceApi.requestApi
         ).trackProgressAndReturn {
-            info { "Progress is ${it.currentPosition}/${it.maxPosition}: ${it.text}" }
+            info { "[Keys] Progress is ${it.currentPosition}/${it.maxPosition}: ${it.text}" }
         }
         val hashes = HashRepository().calculateHash(
             serviceApi.requestApi, keys
         ).trackProgressAndReturn {
-            info { "Progress is ${it.currentPosition}/${it.maxPosition}: ${it.text}" }
+            info { "[Hash] Progress is ${it.currentPosition}/${it.maxPosition}: ${it.text}" }
         }
         val repository = ManifestRepository()
         val diffWithFlipper = repository.compareWithManifest(hashes)
