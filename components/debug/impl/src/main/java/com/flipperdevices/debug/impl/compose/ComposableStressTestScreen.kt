@@ -16,6 +16,9 @@ import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -120,6 +123,17 @@ private fun ComposableButton(viewModel: StressTestViewModel) {
 
 @Composable
 private fun ComposableSpeed(speedState: FlipperSerialSpeed) {
+    var maxReceiveSpeed by remember { mutableStateOf(0L) }
+    var maxTransmitSpeed by remember { mutableStateOf(0L) }
+
+    if (speedState.receiveBytesInSec > maxReceiveSpeed) {
+        maxReceiveSpeed = speedState.receiveBytesInSec
+    }
+
+    if (speedState.transmitBytesInSec > maxTransmitSpeed) {
+        maxTransmitSpeed = speedState.transmitBytesInSec
+    }
+
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
@@ -128,5 +142,14 @@ private fun ComposableSpeed(speedState: FlipperSerialSpeed) {
         val tx = Formatter.formatFileSize(LocalContext.current, speedState.transmitBytesInSec)
         Text("Receive speed: $rx/s")
         Text("Send speed: $tx/s")
+    }
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        val rx = Formatter.formatFileSize(LocalContext.current, maxReceiveSpeed)
+        val tx = Formatter.formatFileSize(LocalContext.current, maxTransmitSpeed)
+        Text("Max: $rx/s")
+        Text("Max: $tx/s")
     }
 }

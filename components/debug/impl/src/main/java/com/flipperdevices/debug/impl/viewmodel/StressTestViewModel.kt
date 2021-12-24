@@ -38,7 +38,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-const val BUFFER_SIZE = 2048
+const val BUFFER_SIZE = 20 * 1024
 const val TEST_FILE = "/any/stresstest_mobile.tmp"
 
 @Suppress("TooManyFunctions")
