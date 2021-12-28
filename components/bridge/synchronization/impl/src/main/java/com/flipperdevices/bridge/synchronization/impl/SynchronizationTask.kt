@@ -6,7 +6,9 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
+import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
 import com.flipperdevices.bridge.synchronization.impl.model.trackProgressAndReturn
+import com.flipperdevices.bridge.synchronization.impl.repository.FavoritesRepository
 import com.flipperdevices.bridge.synchronization.impl.repository.HashRepository
 import com.flipperdevices.bridge.synchronization.impl.repository.KeysListingRepository
 import com.flipperdevices.bridge.synchronization.impl.repository.ManifestRepository
@@ -53,16 +55,27 @@ class SynchronizationTask(
         }
         val repository = ManifestRepository()
         val diffWithFlipper = repository.compareWithManifest(hashes)
-        daoApi.getKeysApi().updateKeys(
-            diffWithFlipper.map {
-                FlipperKey(
-                    name = it.hashedKey.keyPath.name,
-                    fileType = it.hashedKey.keyPath.fileType
-                )
-            }
-        )
+        val toAdd = diffWithFlipper.filter { it.action != KeyAction.DELETED }.map {
+            FlipperKey(
+                name = it.hashedKey.keyPath.name,
+                fileType = it.hashedKey.keyPath.fileType
+            )
+        }
+        val toDelete = diffWithFlipper.filter { it.action == KeyAction.DELETED }.map {
+            FlipperKey(
+                name = it.hashedKey.keyPath.name,
+                fileType = it.hashedKey.keyPath.fileType
+            )
+        }
+        daoApi.getKeysApi().insertKeys(toAdd)
+        daoApi.getKeysApi().deleteKeys(toDelete)
 
-        // End synchronization
+        // End synchronization keys
         repository.saveManifest(hashes)
+
+        val favorites = FavoritesRepository().getFavorites(
+            serviceApi.requestApi
+        )
+        daoApi.getFavoriteApi().updateFavorites(favorites)
     }
 }

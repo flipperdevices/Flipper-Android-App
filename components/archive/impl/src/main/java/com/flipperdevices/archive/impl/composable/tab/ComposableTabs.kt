@@ -40,11 +40,15 @@ fun ComposableTabs(pagerState: PagerState, tabs: List<ArchiveTab>) {
         ) {
             // Add tabs for all of our pages
             tabs.forEachIndexed { index, tab ->
+                val tabName = when (tab) {
+                    ArchiveTab.General -> stringResource(R.string.archive_tab_general_title)
+                    is ArchiveTab.Specified -> tab.fileType.humanReadableName
+                }
+
                 Tab(
                     text = {
                         Text(
-                            text = tab.fileType?.humanReadableName
-                                ?: stringResource(R.string.archive_tab_all),
+                            text = tabName,
                             fontWeight = FontWeight.Medium,
                             fontSize = 16.sp
                         )

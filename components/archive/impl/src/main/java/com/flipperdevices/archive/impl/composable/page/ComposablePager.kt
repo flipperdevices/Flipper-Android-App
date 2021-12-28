@@ -21,6 +21,9 @@ fun ComposablePager(
         count = tabs.size,
         state = pagerState
     ) { page ->
-        ArchivePage(tabs[page])
+        when (val tab = tabs[page]) {
+            ArchiveTab.General -> GeneralPage()
+            is ArchiveTab.Specified -> ArchivePage(tab)
+        }
     }
 }
