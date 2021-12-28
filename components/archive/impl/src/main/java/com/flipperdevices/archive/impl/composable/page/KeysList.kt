@@ -13,6 +13,7 @@ import com.flipperdevices.archive.impl.R
 import com.flipperdevices.archive.impl.composable.key.ComposableFlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 
+@SuppressWarnings("FunctionNaming")
 fun LazyListScope.KeysList(keys: List<FlipperKey>?) {
     // If synchronization in progress yet
     if (keys == null) {

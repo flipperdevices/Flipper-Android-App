@@ -42,6 +42,7 @@ fun GeneralPage(tabViewModel: GeneralTabViewModel = viewModel()) {
     }
 }
 
+@SuppressWarnings("FunctionNaming")
 private fun LazyListScope.FavoriteList(keys: List<FlipperKey>) {
     if (keys.isEmpty()) {
         return
@@ -58,6 +59,7 @@ private fun LazyListScope.FavoriteList(keys: List<FlipperKey>) {
     KeysList(keys)
 }
 
+@SuppressWarnings("FunctionNaming")
 private fun LazyListScope.AllList(favoriteKeys: List<FlipperKey>, keys: List<FlipperKey>?) {
     if (favoriteKeys.isNotEmpty()) {
         item {
