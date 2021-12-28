@@ -1,6 +1,7 @@
 package com.flipperdevices.archive.impl.di
 
 import com.flipperdevices.archive.impl.fragments.ArchiveFragment
+import com.flipperdevices.archive.impl.viewmodel.GeneralTabViewModel
 import com.flipperdevices.archive.impl.viewmodel.TabViewModel
 import com.flipperdevices.core.di.AppGraph
 import com.squareup.anvil.annotations.ContributesTo
@@ -9,4 +10,5 @@ import com.squareup.anvil.annotations.ContributesTo
 interface ArchiveComponent {
     fun inject(fragment: ArchiveFragment)
     fun inject(viewModel: TabViewModel)
+    fun inject(viewModel: GeneralTabViewModel)
 }

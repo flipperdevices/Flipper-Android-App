@@ -6,11 +6,13 @@ import com.flipperdevices.bridge.dao.impl.model.FavoriteKey
 import com.flipperdevices.bridge.dao.impl.repository.FavoriteDao
 import com.flipperdevices.bridge.dao.impl.repository.KeyDao
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class FavoriteImpl(
-    val favoriteDao: FavoriteDao,
-    val keyDao: KeyDao
+    private val favoriteDao: FavoriteDao,
+    private val keyDao: KeyDao
 ) : FavoriteApi {
     override suspend fun updateFavorites(
         keys: List<FlipperKey>
@@ -21,10 +23,18 @@ class FavoriteImpl(
             keyDao.getByTypeAndName(it.fileType, it.name)
         }.map {
             it.uid
-        }.mapIndexed { order, key ->
-            FavoriteKey(key = key, order = order)
+        }.mapIndexed { order, keyId ->
+            FavoriteKey(keyId = keyId, order = order)
         }
 
         favoriteDao.insert(favoriteKeys)
+    }
+
+    override suspend fun getFavoritesFlow(): Flow<List<FlipperKey>> = withContext(Dispatchers.IO) {
+        return@withContext favoriteDao.subscribe().map { keys ->
+            keys.map { (favoriteKey, key) ->
+                favoriteKey.order to FlipperKey(key.name, key.fileType)
+            }.sortedBy { (order, _) -> order }.map { it.second }
+        }
     }
 }

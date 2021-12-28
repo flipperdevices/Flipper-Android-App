@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "07c7af4957ca8d4b62145834acfb0596",
+    "identityHash": "1dcbdd37a373cba046e103d3e500e4e8",
     "entities": [
       {
         "tableName": "keys",
@@ -49,7 +49,7 @@
       },
       {
         "tableName": "favorite_keys",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `key` INTEGER NOT NULL, `order` INTEGER NOT NULL, FOREIGN KEY(`key`) REFERENCES `keys`(`uid`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `key_id` INTEGER NOT NULL, `order` INTEGER NOT NULL, FOREIGN KEY(`key_id`) REFERENCES `keys`(`uid`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "uid",
@@ -58,8 +58,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "key",
-            "columnName": "key",
+            "fieldPath": "keyId",
+            "columnName": "key_id",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -78,13 +78,13 @@
         },
         "indices": [
           {
-            "name": "index_favorite_keys_key",
+            "name": "index_favorite_keys_key_id",
             "unique": false,
             "columnNames": [
-              "key"
+              "key_id"
             ],
             "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_favorite_keys_key` ON `${TABLE_NAME}` (`key`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_favorite_keys_key_id` ON `${TABLE_NAME}` (`key_id`)"
           }
         ],
         "foreignKeys": [
@@ -93,7 +93,7 @@
             "onDelete": "NO ACTION",
             "onUpdate": "NO ACTION",
             "columns": [
-              "key"
+              "key_id"
             ],
             "referencedColumns": [
               "uid"
@@ -105,7 +105,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '07c7af4957ca8d4b62145834acfb0596')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1dcbdd37a373cba046e103d3e500e4e8')"
     ]
   }
 }

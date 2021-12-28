@@ -11,12 +11,12 @@ import androidx.room.PrimaryKey
         ForeignKey(
             entity = Key::class,
             parentColumns = arrayOf("uid"),
-            childColumns = arrayOf("key")
+            childColumns = arrayOf("key_id")
         )
     ]
 )
 data class FavoriteKey(
     @PrimaryKey(autoGenerate = true) val uid: Int = 0,
-    @ColumnInfo(name = "key", index = true) val key: Int = 0,
+    @ColumnInfo(name = "key_id", index = true) val keyId: Int = 0,
     @ColumnInfo(name = "order") val order: Int = 0
 )

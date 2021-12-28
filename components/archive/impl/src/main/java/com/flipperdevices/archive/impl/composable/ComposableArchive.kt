@@ -20,8 +20,8 @@ import com.google.accompanist.pager.rememberPagerState
 fun ComposableArchive(connectionBar: @Composable () -> Unit = {}) {
     val pagerState = rememberPagerState()
 
-    val tabs = listOf(ArchiveTab(null)).plus(
-        FlipperFileType.values().map { ArchiveTab(it) }
+    val tabs = listOf(ArchiveTab.General).plus(
+        FlipperFileType.values().map { ArchiveTab.Specified(it) }
     )
 
     Scaffold(topBar = {
