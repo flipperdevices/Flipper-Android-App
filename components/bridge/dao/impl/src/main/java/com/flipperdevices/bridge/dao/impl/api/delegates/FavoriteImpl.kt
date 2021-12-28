@@ -14,14 +14,14 @@ class FavoriteImpl(
 ) : FavoriteApi {
     override suspend fun updateFavorites(
         keys: List<FlipperKey>
-    ): Unit = withContext(Dispatchers.IO) {
+    ) = withContext(Dispatchers.IO) {
         favoriteDao.deleteAll()
 
-        val favoriteKeys = keys.map {
+        val favoriteKeys = keys.mapNotNull {
             keyDao.getByTypeAndName(it.fileType, it.name)
-        }.filterNotNull().map {
+        }.map {
             it.uid
-        }.mapIndexed { key, order ->
+        }.mapIndexed { order, key ->
             FavoriteKey(key = key, order = order)
         }
 

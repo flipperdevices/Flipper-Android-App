@@ -20,7 +20,7 @@ class FavoritesRepository : LogTagProvider {
         val favoritesPaths = getFavoritesFromFlipper(requestApi)
         val dirToKey = FlipperFileType.values().map { it.flipperDir to it }.toMap()
         return favoritesPaths.map {
-            val relativePath = it.substringAfter("/")
+            val relativePath = it.replace("/any/", "").replace("/ext/", "")
             relativePath.substringBefore("/") to relativePath.substringAfter("/")
         }.map { (typeDir, keyName) ->
             dirToKey[typeDir] to keyName
@@ -34,13 +34,14 @@ class FavoritesRepository : LogTagProvider {
     private suspend fun getFavoritesFromFlipper(
         requestApi: FlipperRequestApi
     ): List<String> = withContext(Dispatchers.IO) {
-        return@withContext requestApi.request(
+        val responses = requestApi.request(
             main {
                 storageReadRequest = readRequest {
                     path = "/any/favorites.txt"
                 }
             }.wrapToRequest(FlipperRequestPriority.BACKGROUND)
         ).toList()
+        return@withContext responses
             .map { it.storageReadResponse.file.data }
             .flatten()
             .toByteArray()
