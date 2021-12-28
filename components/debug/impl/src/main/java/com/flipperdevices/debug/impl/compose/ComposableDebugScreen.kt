@@ -19,7 +19,8 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun ComposableDebugScreen(
     goToStressTest: () -> Unit = {},
-    startSynchronization: () -> Unit = {}
+    startSynchronization: () -> Unit = {},
+    sendAlarmToFlipper: () -> Unit = {}
 ) {
     val buttonModifier = Modifier
         .fillMaxWidth()
@@ -42,6 +43,12 @@ fun ComposableDebugScreen(
             onClick = { goToStressTest() }
         ) {
             Text("Stress Test")
+        }
+        Button(
+            modifier = buttonModifier,
+            onClick = { sendAlarmToFlipper() }
+        ) {
+            Text("Send alarm to flipper")
         }
     }
 }
