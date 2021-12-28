@@ -9,8 +9,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class KeyApiImpl(private val keysDao: KeyDao) : KeyApi {
-    override suspend fun updateKeys(keys: List<FlipperKey>) {
+    override suspend fun insertKeys(keys: List<FlipperKey>) {
         keysDao.insertAll(keys.map { it.toDatabaseKey() })
+    }
+
+    override suspend fun deleteKeys(keys: List<FlipperKey>) {
+        keysDao.deleteAll(keys.map { it.toDatabaseKey() })
     }
 
     override fun getKeysAsFlow(

@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.dao.impl.repository
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -19,9 +20,15 @@ interface KeyDao {
     @Query("SELECT * FROM keys WHERE type = :fileType")
     fun subscribeByType(fileType: FlipperFileType): Flow<List<Key>>
 
+    @Query("SELECT * FROM keys WHERE type = :fileType AND name = :name")
+    suspend fun getByTypeAndName(fileType: FlipperFileType, name: String): Key?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(vararg keys: Key)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(keys: List<Key>)
+
+    @Delete
+    suspend fun deleteAll(keys: List<Key>)
 }
