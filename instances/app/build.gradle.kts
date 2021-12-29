@@ -57,7 +57,7 @@ dependencies {
     implementation(projects.components.analytics.shake2report.api)
     releaseImplementation(projects.components.analytics.shake2report.noop)
     debugImplementation(projects.components.analytics.shake2report.impl)
-    add("internalImplementation", projects.components.analytics.shake2report.noop)
+    add("internalImplementation", projects.components.analytics.shake2report.impl)
 
     implementation(Libs.ANNOTATIONS)
     implementation(Libs.CORE_KTX)
