@@ -1,10 +1,12 @@
 package com.flipperdevices.bridge.dao.api.model
 
 import java.io.File
+import kotlinx.serialization.Serializable
 
 /**
  * Describe name and path for key
  */
+@Serializable
 data class FlipperKeyPath(
     val folder: String,
     val name: String, // With extension

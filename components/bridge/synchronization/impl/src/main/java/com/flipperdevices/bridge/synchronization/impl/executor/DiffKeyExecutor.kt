@@ -15,7 +15,12 @@ class DiffKeyExecutor {
         val path = diff.hashedKey.keyPath
 
         when (diff.action) {
-            KeyAction.ADD, KeyAction.MODIFIED -> {
+            KeyAction.ADD -> {
+                val content = source.loadKey(path)
+                target.saveKey(path, content)
+            }
+            KeyAction.MODIFIED -> {
+                target.deleteKey(path)
                 val content = source.loadKey(path)
                 target.saveKey(path, content)
             }

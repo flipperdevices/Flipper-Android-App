@@ -3,7 +3,7 @@ package com.flipperdevices.bridge.synchronization.impl.repository
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
-import com.flipperdevices.bridge.synchronization.impl.model.KeyPath
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.impl.model.KeyWithHash
 import com.flipperdevices.bridge.synchronization.impl.model.ResultWithProgress
 import com.flipperdevices.core.log.LogTagProvider
@@ -19,7 +19,7 @@ class HashRepository : LogTagProvider {
 
     fun calculateHash(
         requestApi: FlipperRequestApi,
-        keys: List<KeyPath>
+        keys: List<FlipperKeyPath>
     ) = callbackFlow {
         val alreadyHashReceiveCounter = AtomicInteger(0)
 
@@ -42,12 +42,12 @@ class HashRepository : LogTagProvider {
 
     private suspend fun receiveHash(
         requestApi: FlipperRequestApi,
-        keyPath: KeyPath
+        keyPath: FlipperKeyPath
     ): String {
         return requestApi.request(
             main {
                 storageMd5SumRequest = md5sumRequest {
-                    path = keyPath.path
+                    path = keyPath.pathToKey
                 }
             }.wrapToRequest(FlipperRequestPriority.BACKGROUND)
         ).single().storageMd5SumResponse.md5Sum

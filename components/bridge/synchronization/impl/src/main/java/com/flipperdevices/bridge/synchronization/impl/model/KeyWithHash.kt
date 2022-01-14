@@ -1,18 +1,19 @@
 package com.flipperdevices.bridge.synchronization.impl.model
 
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class KeyWithHash(
-    val keyPath: KeyPath,
+    val keyPath: FlipperKeyPath,
     val hash: String
 )
 
 /**
  * @return path to key with hash map
  */
-fun List<KeyWithHash>.toHashMap(): HashMap<String, KeyWithHash> {
+fun List<KeyWithHash>.toLinkedHashMap(): LinkedHashMap<String, KeyWithHash> {
     return this.map {
-        it.keyPath.path to it
-    }.toMap(HashMap(this.size))
+        it.keyPath.pathToKey to it
+    }.toMap(LinkedHashMap(this.size))
 }

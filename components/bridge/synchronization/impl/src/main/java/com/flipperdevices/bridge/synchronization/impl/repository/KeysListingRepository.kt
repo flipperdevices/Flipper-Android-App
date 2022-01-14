@@ -4,7 +4,7 @@ import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.dao.api.model.FlipperFileType
-import com.flipperdevices.bridge.synchronization.impl.model.KeyPath
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.impl.model.ResultWithProgress
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.debug
@@ -22,8 +22,8 @@ class KeysListingRepository : LogTagProvider {
 
     fun getAllKeys(
         requestApi: FlipperRequestApi
-    ) = callbackFlow<ResultWithProgress<List<KeyPath>>> {
-        val allKeys = mutableListOf<KeyPath>()
+    ) = callbackFlow<ResultWithProgress<List<FlipperKeyPath>>> {
+        val allKeys = mutableListOf<FlipperKeyPath>()
         FlipperFileType.values().forEach { fileType ->
             send(ResultWithProgress.InProgress())
             allKeys.addAll(getKeysForFileType(requestApi, fileType))
@@ -35,7 +35,7 @@ class KeysListingRepository : LogTagProvider {
     private suspend fun getKeysForFileType(
         requestApi: FlipperRequestApi,
         fileType: FlipperFileType
-    ): List<KeyPath> {
+    ): List<FlipperKeyPath> {
         val fileTypePath = File("/any/", fileType.flipperDir).absolutePath
         return requestApi.request(
             main {
@@ -46,11 +46,9 @@ class KeysListingRepository : LogTagProvider {
         ).toList().map { it.storageListResponse.fileList }.flatten()
             .filter { isValidFile(it) }
             .map {
-                KeyPath(
-                    path = File(fileTypePath, it.name).absolutePath,
-                    name = it.name,
-                    fileType = fileType,
-                    byteSize = it.size
+                FlipperKeyPath(
+                    folder = fileTypePath,
+                    name = it.name
                 )
             }
     }

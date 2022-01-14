@@ -4,8 +4,8 @@ import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.protobuf.streamToCommandFlow
-import com.flipperdevices.bridge.synchronization.impl.model.KeyPath
 import com.flipperdevices.core.ktx.jre.flatten
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
@@ -23,11 +23,11 @@ class FlipperKeyStorage(
 ) : AbstractKeyStorage, LogTagProvider {
     override val TAG = "FlipperKeyStorage"
 
-    override suspend fun loadKey(keyPath: KeyPath): FlipperKeyContent {
+    override suspend fun loadKey(keyPath: FlipperKeyPath): FlipperKeyContent {
         val responseBytes = requestApi.request(
             main {
                 storageReadRequest = readRequest {
-                    path = keyPath.path
+                    path = keyPath.pathToKey
                 }
             }.wrapToRequest(FlipperRequestPriority.BACKGROUND)
         ).toList().map { it.storageReadResponse.file.data.toByteArray() }.flatten()
@@ -36,12 +36,12 @@ class FlipperKeyStorage(
     }
 
     override suspend fun saveKey(
-        keyPath: KeyPath,
+        keyPath: FlipperKeyPath,
         keyContent: FlipperKeyContent
     ) = keyContent.stream().use { stream ->
         val response = streamToCommandFlow(stream, keyContent.length()) { chunkData ->
             storageWriteRequest = writeRequest {
-                path = keyPath.path
+                path = keyPath.pathToKey
                 file = file { data = chunkData }
             }
         }.map { it.wrapToRequest(FlipperRequestPriority.BACKGROUND) }.also {
@@ -51,11 +51,11 @@ class FlipperKeyStorage(
         return@use
     }
 
-    override suspend fun deleteKey(keyPath: KeyPath) {
+    override suspend fun deleteKey(keyPath: FlipperKeyPath) {
         requestApi.request(
             main {
                 storageDeleteRequest = deleteRequest {
-                    path = keyPath.path
+                    path = keyPath.pathToKey
                 }
             }.wrapToRequest(FlipperRequestPriority.BACKGROUND)
         ).single()
