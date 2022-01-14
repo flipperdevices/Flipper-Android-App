@@ -8,5 +8,5 @@ data class KeyPath(
     val path: String,
     val name: String,
     val fileType: FlipperFileType,
-    val byteSize: Int
+    val byteSize: Int = -1
 )

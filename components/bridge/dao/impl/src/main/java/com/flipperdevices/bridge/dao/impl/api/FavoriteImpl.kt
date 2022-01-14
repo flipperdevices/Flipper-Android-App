@@ -1,19 +1,32 @@
-package com.flipperdevices.bridge.dao.impl.api.delegates
+package com.flipperdevices.bridge.dao.impl.api
 
 import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.impl.model.FavoriteKey
 import com.flipperdevices.bridge.dao.impl.repository.FavoriteDao
 import com.flipperdevices.bridge.dao.impl.repository.KeyDao
+import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.di.provideDelegate
+import com.squareup.anvil.annotations.ContributesBinding
+import java.io.File
+import javax.inject.Inject
+import javax.inject.Provider
+import javax.inject.Singleton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
-class FavoriteImpl(
-    private val favoriteDao: FavoriteDao,
-    private val keyDao: KeyDao
+@Singleton
+@ContributesBinding(AppGraph::class)
+class FavoriteImpl @Inject constructor(
+    favoriteDaoProvider: Provider<FavoriteDao>,
+    keyDaoProvider: Provider<KeyDao>
 ) : FavoriteApi {
+    private val favoriteDao by favoriteDaoProvider
+    private val keyDao by keyDaoProvider
+
     override suspend fun updateFavorites(
         keys: List<FlipperKey>
     ) = withContext(Dispatchers.IO) {
@@ -33,7 +46,11 @@ class FavoriteImpl(
     override suspend fun getFavoritesFlow(): Flow<List<FlipperKey>> = withContext(Dispatchers.IO) {
         return@withContext favoriteDao.subscribe().map { keys ->
             keys.map { (favoriteKey, key) ->
-                favoriteKey.order to FlipperKey(key.name, key.fileType)
+                favoriteKey.order to FlipperKey(
+                    key.name,
+                    key.fileType,
+                    FlipperKeyContent.InternalFile(File(key.filePath))
+                )
             }.sortedBy { (order, _) -> order }.map { it.second }
         }
     }

@@ -10,7 +10,7 @@ protobuf = "0.8.17"
 compose = "1.1.0-beta04"
 compose_accompanist = "0.20.2"
 compose_constraint = "1.0.0-rc02"
-room = "2.4.0"
+room = "2.4.1"
 dagger = "2.38.1"
 
 [libraries]

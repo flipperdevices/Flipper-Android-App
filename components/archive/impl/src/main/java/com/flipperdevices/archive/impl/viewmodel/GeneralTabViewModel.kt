@@ -3,7 +3,8 @@ package com.flipperdevices.archive.impl.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.archive.impl.di.ArchiveComponent
-import com.flipperdevices.bridge.dao.api.DaoApi
+import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
+import com.flipperdevices.bridge.dao.api.delegates.KeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
@@ -17,7 +18,10 @@ import kotlinx.coroutines.launch
 
 class GeneralTabViewModel : ViewModel() {
     @Inject
-    lateinit var daoApi: DaoApi
+    lateinit var keyApi: KeyApi
+
+    @Inject
+    lateinit var favoriteApi: FavoriteApi
 
     @Inject
     lateinit var synchronizationApi: SynchronizationApi
@@ -28,7 +32,7 @@ class GeneralTabViewModel : ViewModel() {
     init {
         ComponentHolder.component<ArchiveComponent>().inject(this)
         viewModelScope.launch {
-            daoApi.getKeysApi().getKeysAsFlow(null).combine(
+            keyApi.getKeysAsFlow(null).combine(
                 synchronizationApi.getSynchronizationState()
             ) { keyList, synchronizationState ->
                 if (keyList.isEmpty() && synchronizationState == SynchronizationState.IN_PROGRESS) {
@@ -36,7 +40,7 @@ class GeneralTabViewModel : ViewModel() {
                 } else {
                     return@combine keyList
                 }
-            }.combine(daoApi.getFavoriteApi().getFavoritesFlow()) { keyList, favoriteKeysList ->
+            }.combine(favoriteApi.getFavoritesFlow()) { keyList, favoriteKeysList ->
                 keys.emit(keyList?.minus(favoriteKeysList.toSet()))
                 favoriteKeys.emit(favoriteKeysList)
             }.launchIn(viewModelScope)

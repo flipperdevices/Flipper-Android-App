@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.synchronization.impl
 
-import com.flipperdevices.bridge.dao.api.DaoApi
+import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
+import com.flipperdevices.bridge.dao.api.delegates.KeyApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.impl.di.SynchronizationComponent
@@ -23,7 +24,10 @@ class TmpSynchronization : LogTagProvider {
     lateinit var serviceProvider: FlipperServiceProvider
 
     @Inject
-    lateinit var daoApi: DaoApi
+    lateinit var keyApi: KeyApi
+
+    @Inject
+    lateinit var favoriteApi: FavoriteApi
 
     init {
         ComponentHolder.component<SynchronizationComponent>().inject(this)
@@ -34,7 +38,7 @@ class TmpSynchronization : LogTagProvider {
             info { "Synchronization skipped, because we already in synchronization" }
             return
         }
-        val synchronizationTask = SynchronizationTask(serviceProvider, daoApi)
+        val synchronizationTask = SynchronizationTask(serviceProvider, keyApi, favoriteApi)
         synchronizationTask.start { taskState ->
             synchronizationState.update { taskState }
             if (taskState == SynchronizationState.FINISHED) {

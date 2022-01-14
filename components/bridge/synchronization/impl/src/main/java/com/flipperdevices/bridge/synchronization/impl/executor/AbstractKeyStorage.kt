@@ -1,6 +1,6 @@
 package com.flipperdevices.bridge.synchronization.impl.executor
 
-import com.flipperdevices.bridge.synchronization.impl.model.FlipperKeyContent
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.synchronization.impl.model.KeyPath
 
 interface AbstractKeyStorage {

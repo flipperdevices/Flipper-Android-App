@@ -20,8 +20,9 @@ import com.flipperdevices.bridge.dao.impl.repository.KeyDao
             from = 1,
             to = 2
         )
+        // From 2 to 3 we just drop database
     ],
-    version = 2,
+    version = 3,
     exportSchema = true
 )
 @TypeConverters(FlipperFileTypeConverter::class)

@@ -5,7 +5,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import kotlinx.coroutines.flow.Flow
 
 interface KeyApi {
-    suspend fun insertKeys(keys: List<FlipperKey>)
+    suspend fun insertKey(key: FlipperKey)
 
     suspend fun deleteKeys(keys: List<FlipperKey>)
 

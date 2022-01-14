@@ -13,5 +13,6 @@ import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 data class Key(
     @PrimaryKey(autoGenerate = true) val uid: Int = 0,
     @ColumnInfo(name = "name") val name: String,
-    @ColumnInfo(name = "type") val fileType: FlipperFileType
+    @ColumnInfo(name = "type") val fileType: FlipperFileType,
+    @ColumnInfo(name = "file_path") val filePath: String
 )

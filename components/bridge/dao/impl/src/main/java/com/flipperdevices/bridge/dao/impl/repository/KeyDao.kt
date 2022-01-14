@@ -23,11 +23,8 @@ interface KeyDao {
     @Query("SELECT * FROM keys WHERE type = :fileType AND name = :name")
     suspend fun getByTypeAndName(fileType: FlipperFileType, name: String): Key?
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insert(vararg keys: Key)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(keys: List<Key>)
 
     @Delete
     suspend fun deleteAll(keys: List<Key>)

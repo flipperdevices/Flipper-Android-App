@@ -1,12 +1,11 @@
 package com.flipperdevices.bridge.synchronization.impl
 
 import androidx.lifecycle.lifecycleScope
-import com.flipperdevices.bridge.dao.api.DaoApi
-import com.flipperdevices.bridge.dao.api.model.FlipperKey
+import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
+import com.flipperdevices.bridge.dao.api.delegates.KeyApi
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
-import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
 import com.flipperdevices.bridge.synchronization.impl.model.trackProgressAndReturn
 import com.flipperdevices.bridge.synchronization.impl.repository.FavoritesRepository
 import com.flipperdevices.bridge.synchronization.impl.repository.HashRepository
@@ -19,7 +18,8 @@ import kotlinx.coroutines.launch
 
 class SynchronizationTask(
     private val serviceProvider: FlipperServiceProvider,
-    private val daoApi: DaoApi
+    private val keyApi: KeyApi,
+    private val favoriteApi: FavoriteApi
 ) : TaskWithLifecycle(), LogTagProvider {
     override val TAG = "SynchronizationTask"
 
@@ -55,20 +55,7 @@ class SynchronizationTask(
         }
         val repository = ManifestRepository()
         val diffWithFlipper = repository.compareWithManifest(hashes)
-        val toAdd = diffWithFlipper.filter { it.action != KeyAction.DELETED }.map {
-            FlipperKey(
-                name = it.hashedKey.keyPath.name,
-                fileType = it.hashedKey.keyPath.fileType
-            )
-        }
-        val toDelete = diffWithFlipper.filter { it.action == KeyAction.DELETED }.map {
-            FlipperKey(
-                name = it.hashedKey.keyPath.name,
-                fileType = it.hashedKey.keyPath.fileType
-            )
-        }
-        daoApi.getKeysApi().insertKeys(toAdd)
-        daoApi.getKeysApi().deleteKeys(toDelete)
+        TODO("Not implement yet")
 
         // End synchronization keys
         repository.saveManifest(hashes)
@@ -76,6 +63,7 @@ class SynchronizationTask(
         val favorites = FavoritesRepository().getFavorites(
             serviceApi.requestApi
         )
-        daoApi.getFavoriteApi().updateFavorites(favorites)
+        TODO("Not implement yet")
+        // favoriteApi.updateFavorites(favorites)
     }
 }
