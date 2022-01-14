@@ -33,7 +33,7 @@ enum class FlipperFileType(
         color = R.color.fileformat_color_sub
     ),
     RFID(
-        humanReadableName = "RFID125",
+        humanReadableName = "RFID",
         extension = "rfid",
         flipperDir = "lfrfid",
         icon = R.drawable.ic_fileformat_rf,

@@ -1,5 +1,6 @@
 package com.flipperdevices.bridge.synchronization.impl.executor
 
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
 import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
 import com.flipperdevices.core.log.LogTagProvider
@@ -28,20 +29,25 @@ class DiffKeyExecutor : LogTagProvider {
         return diffs
     }
 
-    suspend fun execute(source: AbstractKeyStorage, target: AbstractKeyStorage, diff: KeyDiff) {
+    private suspend fun execute(
+        source: AbstractKeyStorage,
+        target: AbstractKeyStorage,
+        diff: KeyDiff
+    ) {
         val path = diff.hashedKey.keyPath
+        val targetPath = FlipperKeyPath(path.fileType!!.flipperDir, path.name)
 
         when (diff.action) {
             KeyAction.ADD -> {
                 val content = source.loadKey(path)
-                target.saveKey(path, content)
+                target.saveKey(targetPath, content)
             }
             KeyAction.MODIFIED -> {
-                target.deleteKey(path)
                 val content = source.loadKey(path)
-                target.saveKey(path, content)
+                target.deleteKey(targetPath)
+                target.saveKey(targetPath, content)
             }
-            KeyAction.DELETED -> target.deleteKey(path)
+            KeyAction.DELETED -> target.deleteKey(targetPath)
         }
     }
 }

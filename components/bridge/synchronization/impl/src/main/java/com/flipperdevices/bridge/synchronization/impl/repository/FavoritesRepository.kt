@@ -3,7 +3,6 @@ package com.flipperdevices.bridge.synchronization.impl.repository
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
-import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.protobuf.main
@@ -18,19 +17,14 @@ class FavoritesRepository : LogTagProvider {
 
     suspend fun getFavorites(requestApi: FlipperRequestApi): List<FlipperKeyPath> {
         val favoritesPaths = getFavoritesFromFlipper(requestApi)
-        val dirToKey = FlipperFileType.values().map { it.flipperDir to it }.toMap()
         return favoritesPaths.map {
             val relativePath = it.replace("/any/", "").replace("/ext/", "")
-            relativePath.substringBefore("/") to relativePath.substringAfter("/")
-        }.map { (typeDir, keyName) ->
-            dirToKey[typeDir] to keyName
-        }.mapNotNull { (keyType, keyName) ->
-            if (keyType != null) {
-                FlipperKeyPath(
-                    folder = keyType.flipperDir,
-                    name = keyName
-                )
-            } else null
+            return@map relativePath.substringBefore("/") to relativePath.substringAfter("/")
+        }.map { (keyFolder, keyName) ->
+            return@map FlipperKeyPath(
+                folder = keyFolder,
+                name = keyName
+            )
         }
     }
 

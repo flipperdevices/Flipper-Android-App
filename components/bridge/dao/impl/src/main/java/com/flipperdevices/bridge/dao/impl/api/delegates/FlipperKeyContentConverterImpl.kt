@@ -28,7 +28,7 @@ class FlipperKeyContentConverterImpl @Inject constructor(
 
         val keyFile = File(keyFolder, flipperKey.path.pathToKey)
         if (keyFile.exists()) {
-            error("File already created, delete it first")
+            error("File $keyFile already created, delete it first")
         }
         val fileCreatedSuccessful = runCatching {
             keyFile.createNewFileWithMkDirs()

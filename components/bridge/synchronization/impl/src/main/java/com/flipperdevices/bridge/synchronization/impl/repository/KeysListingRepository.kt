@@ -44,7 +44,7 @@ class KeysListingRepository : LogTagProvider {
                 }
             }.wrapToRequest(FlipperRequestPriority.BACKGROUND)
         ).toList().map { it.storageListResponse.fileList }.flatten()
-            .filter { isValidFile(it) }
+            .filter { isValidFile(it, fileType) }
             .map {
                 FlipperKeyPath(
                     folder = fileTypePath,
@@ -53,7 +53,7 @@ class KeysListingRepository : LogTagProvider {
             }
     }
 
-    private fun isValidFile(file: Storage.File): Boolean {
+    private fun isValidFile(file: Storage.File, requestedType: FlipperFileType): Boolean {
         if (file.type != Storage.File.FileType.FILE) {
             debug {
                 "File ${file.name} is not file. This is folder. Ignore it"
@@ -68,9 +68,17 @@ class KeysListingRepository : LogTagProvider {
             return false
         }
         val extension = file.name.substringAfterLast(".")
-        if (FlipperFileType.getByExtension(extension) == null) {
+        val fileTypeByExtension = FlipperFileType.getByExtension(extension)
+        if (fileTypeByExtension == null) {
             debug {
                 "File ${file.name} skip, because we don't support this file extension ($extension)"
+            }
+            return false
+        }
+        if (fileTypeByExtension != requestedType) {
+            debug {
+                "File ${file.name} skip, because folder type ($requestedType) " +
+                    "and extension type ($fileTypeByExtension) is not equals"
             }
             return false
         }
