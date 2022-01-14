@@ -18,6 +18,7 @@ import com.flipperdevices.bridge.synchronization.impl.utils.TaskWithLifecycle
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.shake2report.api.Shake2ReportApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -25,12 +26,13 @@ import kotlinx.coroutines.withContext
 class SynchronizationTask(
     private val serviceProvider: FlipperServiceProvider,
     private val keysApi: KeyApi,
-    private val favoriteApi: FavoriteApi
+    private val favoriteApi: FavoriteApi,
+    reportApi: Shake2ReportApi
 ) : TaskWithLifecycle(), LogTagProvider {
     override val TAG = "SynchronizationTask"
 
     private val taskScope = lifecycleScope
-    private val diffKeyExecutor = DiffKeyExecutor()
+    private val diffKeyExecutor = DiffKeyExecutor(reportApi)
 
     fun start(onStateUpdate: suspend (SynchronizationState) -> Unit) {
         serviceProvider.provideServiceApi(this) { serviceApi ->
@@ -53,21 +55,33 @@ class SynchronizationTask(
     }
 
     private suspend fun launch(serviceApi: FlipperServiceApi) = withContext(Dispatchers.Default) {
+        // Get keys listing
         val keys = KeysListingRepository().getAllKeys(
             serviceApi.requestApi
         ).trackProgressAndReturn {
             info { "[Keys] Progress is ${it.currentPosition}/${it.maxPosition}: ${it.text}" }
         }
+        // Get hashes from Flipper
         val hashes = HashRepository().calculateHash(
             serviceApi.requestApi, keys
         ).trackProgressAndReturn {
             info { "[Hash] Progress is ${it.currentPosition}/${it.maxPosition}: ${it.text}" }
         }
+
+        // Compare hashes with local snapshot
         val repository = ManifestRepository()
         val diffWithFlipper = repository.compareWithManifest(hashes)
-        val sourceKeyStorage = FlipperKeyStorage(serviceApi.requestApi)
-        val targetKeyStorage = AndroidKeyStorage(keysApi)
-        diffKeyExecutor.executeBatch(sourceKeyStorage, targetKeyStorage, diffWithFlipper)
+
+        // Apply changes from Flipper
+        val flipperStorage = FlipperKeyStorage(serviceApi.requestApi)
+        val androidStorage = AndroidKeyStorage(keysApi)
+        val appliedKeys = diffKeyExecutor.executeBatch(
+            source = flipperStorage,
+            target = androidStorage,
+            diffs = diffWithFlipper
+        )
+
+        info { "[Keys] Successful applied ${appliedKeys.size} from ${diffWithFlipper.size} changes" }
 
         // End synchronization keys
         repository.saveManifest(hashes)

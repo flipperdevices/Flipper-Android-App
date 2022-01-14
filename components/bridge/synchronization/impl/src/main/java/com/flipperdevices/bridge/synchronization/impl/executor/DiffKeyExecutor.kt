@@ -4,11 +4,15 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
 import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
+import com.flipperdevices.shake2report.api.Shake2ReportApi
 
 /**
  * This class execute diff for
  */
-class DiffKeyExecutor : LogTagProvider {
+class DiffKeyExecutor(
+    private val reportApi: Shake2ReportApi
+) : LogTagProvider {
     override val TAG = "DiffKeyExecutor"
 
     /**
@@ -19,14 +23,20 @@ class DiffKeyExecutor : LogTagProvider {
         target: AbstractKeyStorage,
         diffs: List<KeyDiff>
     ): List<KeyDiff> {
-        diffs.forEach {
+        return diffs.mapNotNull {
             try {
                 execute(source, target, it)
-            } catch (e: Exception) {
-                throw e
+                return@mapNotNull it
+            } catch (executeError: Exception) {
+                error(executeError) { "While apply diff $it we have error" }
+                reportApi.reportException(
+                    executeError,
+                    "diffkeyexecutor",
+                    mapOf("path" to it.hashedKey.keyPath.toString())
+                )
             }
+            return@mapNotNull null
         }
-        return diffs
     }
 
     private suspend fun execute(

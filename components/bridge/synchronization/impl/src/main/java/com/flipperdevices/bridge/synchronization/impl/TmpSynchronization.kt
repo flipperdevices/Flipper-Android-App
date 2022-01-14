@@ -8,6 +8,7 @@ import com.flipperdevices.bridge.synchronization.impl.di.SynchronizationComponen
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.shake2report.api.Shake2ReportApi
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,6 +30,9 @@ class TmpSynchronization : LogTagProvider {
     @Inject
     lateinit var favoriteApi: FavoriteApi
 
+    @Inject
+    lateinit var reportApi: Shake2ReportApi
+
     init {
         ComponentHolder.component<SynchronizationComponent>().inject(this)
     }
@@ -38,7 +42,12 @@ class TmpSynchronization : LogTagProvider {
             info { "Synchronization skipped, because we already in synchronization" }
             return
         }
-        val synchronizationTask = SynchronizationTask(serviceProvider, keyApi, favoriteApi)
+        val synchronizationTask = SynchronizationTask(
+            serviceProvider = serviceProvider,
+            keysApi = keyApi,
+            favoriteApi = favoriteApi,
+            reportApi = reportApi
+        )
         synchronizationTask.start { taskState ->
             synchronizationState.update { taskState }
             if (taskState == SynchronizationState.FINISHED) {
