@@ -6,6 +6,9 @@ import com.flipperdevices.bridge.dao.api.delegates.KeyApi
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
+import com.flipperdevices.bridge.synchronization.impl.executor.AndroidKeyStorage
+import com.flipperdevices.bridge.synchronization.impl.executor.DiffKeyExecutor
+import com.flipperdevices.bridge.synchronization.impl.executor.FlipperKeyStorage
 import com.flipperdevices.bridge.synchronization.impl.model.trackProgressAndReturn
 import com.flipperdevices.bridge.synchronization.impl.repository.FavoritesRepository
 import com.flipperdevices.bridge.synchronization.impl.repository.HashRepository
@@ -18,12 +21,13 @@ import kotlinx.coroutines.launch
 
 class SynchronizationTask(
     private val serviceProvider: FlipperServiceProvider,
-    private val keyApi: KeyApi,
+    private val keysApi: KeyApi,
     private val favoriteApi: FavoriteApi
 ) : TaskWithLifecycle(), LogTagProvider {
     override val TAG = "SynchronizationTask"
 
     private val taskScope = lifecycleScope
+    private val diffKeyExecutor = DiffKeyExecutor()
 
     fun start(onStateUpdate: suspend (SynchronizationState) -> Unit) {
         serviceProvider.provideServiceApi(this) { serviceApi ->
@@ -55,7 +59,9 @@ class SynchronizationTask(
         }
         val repository = ManifestRepository()
         val diffWithFlipper = repository.compareWithManifest(hashes)
-        TODO("Not implement yet")
+        val sourceKeyStorage = FlipperKeyStorage(serviceApi.requestApi)
+        val targetKeyStorage = AndroidKeyStorage(keysApi)
+        diffKeyExecutor.executeBatch(sourceKeyStorage, targetKeyStorage, diffWithFlipper)
 
         // End synchronization keys
         repository.saveManifest(hashes)
@@ -63,7 +69,6 @@ class SynchronizationTask(
         val favorites = FavoritesRepository().getFavorites(
             serviceApi.requestApi
         )
-        TODO("Not implement yet")
-        // favoriteApi.updateFavorites(favorites)
+        favoriteApi.updateFavorites(favorites)
     }
 }

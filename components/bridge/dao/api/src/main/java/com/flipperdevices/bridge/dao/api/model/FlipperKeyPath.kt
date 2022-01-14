@@ -20,6 +20,8 @@ data class FlipperKeyPath(
         )
     }
 
+    override fun toString() = pathToKey
+
     companion object {
         val DUMMY by lazy { FlipperKeyPath(FlipperFileType.NFC.flipperDir, "Test_Key.nfc") }
     }

@@ -7,10 +7,16 @@ import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
  * This class execute diff for
  */
 class DiffKeyExecutor {
-    /**
-     * @param source
-     * @param target
-     */
+    suspend fun executeBatch(
+        source: AbstractKeyStorage,
+        target: AbstractKeyStorage,
+        diffs: List<KeyDiff>
+    ) {
+        diffs.forEach {
+            execute(source, target, it)
+        }
+    }
+
     suspend fun execute(source: AbstractKeyStorage, target: AbstractKeyStorage, diff: KeyDiff) {
         val path = diff.hashedKey.keyPath
 

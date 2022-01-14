@@ -1,7 +1,6 @@
 package com.flipperdevices.bridge.dao.impl.repository
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -27,6 +26,6 @@ interface KeyDao {
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insert(vararg keys: Key)
 
-    @Delete
-    suspend fun deleteAll(keys: List<Key>)
+    @Query("DELETE FROM keys WHERE path = :keyPath")
+    suspend fun deleteByPath(keyPath: FlipperKeyPath)
 }

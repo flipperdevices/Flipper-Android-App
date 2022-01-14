@@ -4,6 +4,7 @@ import com.flipperdevices.bridge.dao.api.delegates.KeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.impl.api.delegates.FlipperKeyContentConverter
 import com.flipperdevices.bridge.dao.impl.model.Key
 import com.flipperdevices.bridge.dao.impl.repository.KeyDao
@@ -27,11 +28,18 @@ class KeyApiImpl @Inject constructor(
     private val keyContentConverter by keyContentConverterProvider
 
     override suspend fun insertKey(key: FlipperKey) {
-        TODO("Not yet implemented")
+        val file = keyContentConverter.extractFile(key)
+        val databaseKey = key.toDatabaseKey(file)
+
+        keysDao.insert(databaseKey)
     }
 
-    override suspend fun deleteKey(key: FlipperKey) {
-        TODO("Not yet implemented")
+    override suspend fun deleteKey(keyPath: FlipperKeyPath) {
+        keysDao.deleteByPath(keyPath)
+    }
+
+    override suspend fun getKey(keyPath: FlipperKeyPath): FlipperKey? {
+        return keysDao.getByPath(keyPath)?.toFlipperKey()
     }
 
     override fun getKeysAsFlow(

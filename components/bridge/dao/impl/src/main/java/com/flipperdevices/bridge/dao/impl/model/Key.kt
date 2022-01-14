@@ -9,11 +9,14 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 
 @Entity(
     tableName = "keys",
-    indices = [Index(value = ["path"], unique = true)]
+    indices = [
+        Index(value = ["path"], unique = true), // We can't storage two keys with one path
+        Index(value = ["type"]) // For performance
+    ]
 )
 data class Key(
     @PrimaryKey(autoGenerate = true) val uid: Int = 0,
     @ColumnInfo(name = "path") val path: FlipperKeyPath,
-    @ColumnInfo(name = "type") val type: FlipperFileType? = path.fileType,
+    @ColumnInfo(name = "type") val type: FlipperFileType? = path.fileType, // Denormalize for performance
     @ColumnInfo(name = "file_path") val filePath: String
 )
