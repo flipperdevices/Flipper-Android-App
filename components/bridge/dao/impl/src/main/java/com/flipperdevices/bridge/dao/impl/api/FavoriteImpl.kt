@@ -3,6 +3,7 @@ package com.flipperdevices.bridge.dao.impl.api
 import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.impl.model.FavoriteKey
 import com.flipperdevices.bridge.dao.impl.repository.FavoriteDao
 import com.flipperdevices.bridge.dao.impl.repository.KeyDao
@@ -28,14 +29,15 @@ class FavoriteImpl @Inject constructor(
     private val keyDao by keyDaoProvider
 
     override suspend fun updateFavorites(
-        keys: List<FlipperKey>
+        keys: List<FlipperKeyPath>
     ) = withContext(Dispatchers.IO) {
         favoriteDao.deleteAll()
 
         val favoriteKeys = keys.mapNotNull {
-            keyDao.getByTypeAndName(it.fileType, it.name)
-        }.map {
-            it.uid
+            val fileType = it.fileType
+            return@mapNotNull if (fileType != null) {
+                keyDao.getByPath(it)?.uid
+            } else null
         }.mapIndexed { order, keyId ->
             FavoriteKey(keyId = keyId, order = order)
         }
@@ -47,8 +49,7 @@ class FavoriteImpl @Inject constructor(
         return@withContext favoriteDao.subscribe().map { keys ->
             keys.map { (favoriteKey, key) ->
                 favoriteKey.order to FlipperKey(
-                    key.name,
-                    key.fileType,
+                    key.path,
                     FlipperKeyContent.InternalFile(File(key.filePath))
                 )
             }.sortedBy { (order, _) -> order }.map { it.second }

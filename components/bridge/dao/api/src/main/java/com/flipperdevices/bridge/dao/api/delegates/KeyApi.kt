@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 interface KeyApi {
     suspend fun insertKey(key: FlipperKey)
 
-    suspend fun deleteKeys(keys: List<FlipperKey>)
+    suspend fun deleteKey(key: FlipperKey)
 
     fun getKeysAsFlow(
         fileType: FlipperFileType? = null

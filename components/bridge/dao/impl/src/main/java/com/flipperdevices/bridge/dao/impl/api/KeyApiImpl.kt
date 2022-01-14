@@ -4,6 +4,7 @@ import com.flipperdevices.bridge.dao.api.delegates.KeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
+import com.flipperdevices.bridge.dao.impl.api.delegates.FlipperKeyContentConverter
 import com.flipperdevices.bridge.dao.impl.model.Key
 import com.flipperdevices.bridge.dao.impl.repository.KeyDao
 import com.flipperdevices.core.di.AppGraph
@@ -29,7 +30,7 @@ class KeyApiImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun deleteKeys(keys: List<FlipperKey>) {
+    override suspend fun deleteKey(key: FlipperKey) {
         TODO("Not yet implemented")
     }
 
@@ -47,16 +48,14 @@ class KeyApiImpl @Inject constructor(
 
 private fun FlipperKey.toDatabaseKey(keyContent: File): Key {
     return Key(
-        name = this.name,
-        fileType = this.fileType,
+        path = path,
         filePath = keyContent.absolutePath
     )
 }
 
 private fun Key.toFlipperKey(): FlipperKey {
     return FlipperKey(
-        name = this.name,
-        fileType = this.fileType,
+        path = path,
         keyContent = FlipperKeyContent.InternalFile(File(this.filePath))
     )
 }

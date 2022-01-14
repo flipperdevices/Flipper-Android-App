@@ -1,4 +1,4 @@
-package com.flipperdevices.bridge.dao.impl.api
+package com.flipperdevices.bridge.dao.impl.api.delegates
 
 import android.content.Context
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
@@ -14,17 +14,18 @@ import kotlinx.coroutines.withContext
 
 @Singleton
 @ContributesBinding(AppGraph::class)
-class FlipperKeyContentConverter @Inject constructor(context: Context) {
+class FlipperKeyContentConverterImpl @Inject constructor(
+    context: Context
+) : FlipperKeyContentConverter {
     private val keyFolder = FlipperStorageProvider.getKeyFolder(context)
 
-    suspend fun extractFile(flipperKey: FlipperKey): File = withContext(Dispatchers.IO) {
+    override suspend fun extractFile(flipperKey: FlipperKey) = withContext(Dispatchers.IO) {
         val keyContent = flipperKey.keyContent
         if (keyContent is FlipperKeyContent.InternalFile) {
             return@withContext keyContent.file
         }
 
-        val relativeKeyPath = File(flipperKey.fileType.flipperDir, flipperKey.name).path
-        val keyFile = File(keyFolder, relativeKeyPath)
+        val keyFile = File(keyFolder, flipperKey.path.pathToKey)
 
         keyContent.stream().use { inputStream ->
             keyFile.outputStream().use { outputStream ->

@@ -1,7 +1,9 @@
 package com.flipperdevices.bridge.dao.api.model
 
+/**
+ * The most complete description of the key
+ */
 data class FlipperKey(
-    val name: String, // With extension
-    val fileType: FlipperFileType,
+    val path: FlipperKeyPath,
     val keyContent: FlipperKeyContent
 )

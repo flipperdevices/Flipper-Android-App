@@ -42,7 +42,7 @@ fun LazyListScope.KeysList(keys: List<FlipperKey>?) {
         }
     } else {
         items(keysNotNull.size) {
-            ComposableFlipperKey(keysNotNull[it])
+            ComposableFlipperKey(keysNotNull[it].path)
         }
     }
 }
