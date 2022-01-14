@@ -17,6 +17,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 data class Key(
     @PrimaryKey(autoGenerate = true) val uid: Int = 0,
     @ColumnInfo(name = "path") val path: FlipperKeyPath,
-    @ColumnInfo(name = "type") val type: FlipperFileType? = path.fileType, // Denormalize for performance
+    // Denormalize for performance
+    @ColumnInfo(name = "type") val type: FlipperFileType? = path.fileType,
     @ColumnInfo(name = "file_path") val filePath: String
 )

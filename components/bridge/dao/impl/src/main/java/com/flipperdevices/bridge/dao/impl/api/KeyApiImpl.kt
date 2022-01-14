@@ -35,6 +35,9 @@ class KeyApiImpl @Inject constructor(
     }
 
     override suspend fun deleteKey(keyPath: FlipperKeyPath) {
+        val key = keysDao.getByPath(keyPath) ?: return
+        val file = keyContentConverter.extractFile(key.toFlipperKey())
+        file.delete()
         keysDao.deleteByPath(keyPath)
     }
 

@@ -40,7 +40,10 @@ class SynchronizationTask(
                 try {
                     onStateUpdate(SynchronizationState.IN_PROGRESS)
                     launch(serviceApi)
-                } catch (exception: Throwable) {
+                } catch (
+                    @Suppress("detekt:TooGenericExceptionCaught")
+                    exception: Throwable
+                ) {
                     error(exception) { "While synchronization we have error" }
                     throw exception
                 } finally {
@@ -81,7 +84,9 @@ class SynchronizationTask(
             diffs = diffWithFlipper
         )
 
-        info { "[Keys] Successful applied ${appliedKeys.size} from ${diffWithFlipper.size} changes" }
+        info {
+            "[Keys] Successful applied ${appliedKeys.size} from ${diffWithFlipper.size} changes"
+        }
 
         // End synchronization keys
         repository.saveManifest(hashes)

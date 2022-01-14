@@ -27,7 +27,10 @@ class DiffKeyExecutor(
             try {
                 execute(source, target, it)
                 return@mapNotNull it
-            } catch (executeError: Exception) {
+            } catch (
+                @Suppress("detekt:TooGenericExceptionCaught")
+                executeError: Exception
+            ) {
                 error(executeError) { "While apply diff $it we have error" }
                 reportApi.reportException(
                     executeError,

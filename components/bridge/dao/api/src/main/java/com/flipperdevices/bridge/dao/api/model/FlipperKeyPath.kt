@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class FlipperKeyPath(
     val folder: String,
-    val name: String, // With extension
+    val name: String // With extension
 ) {
     val pathToKey: String by lazy { File(folder, name).path }
     val fileType: FlipperFileType? by lazy {
