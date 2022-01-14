@@ -33,16 +33,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.archive.impl.R
+import com.flipperdevices.bridge.dao.api.R as DaoR
 import com.flipperdevices.bridge.dao.api.model.FlipperFileType
-import com.flipperdevices.bridge.dao.api.model.FlipperKey
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 
 @Preview(
-    showSystemUi = true,
-    showBackground = true
+    showBackground = true,
+    showSystemUi = true
 )
 @Composable
 fun ComposableFlipperKey(
-    key: FlipperKey = FlipperKey.DUMMY
+    keyPath: FlipperKeyPath = FlipperKeyPath.DUMMY
 ) {
     Card(
         modifier = Modifier
@@ -60,24 +61,26 @@ fun ComposableFlipperKey(
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            ComposableKeyIcon(key.fileType)
-            ComposableKeyDescription(modifier = Modifier.weight(1f), key)
+            ComposableKeyIcon(keyPath.fileType)
+            ComposableKeyDescription(modifier = Modifier.weight(1f), keyPath)
         }
     }
 }
 
 @Composable
-private fun ComposableKeyIcon(fileType: FlipperFileType) {
+private fun ComposableKeyIcon(fileType: FlipperFileType?) {
+    val typeColor = fileType?.color ?: DaoR.color.fileformat_color_unknown
+    val typeIcon = fileType?.icon ?: DaoR.drawable.ic_fileformat_unknown
     Box(
         modifier = Modifier
             .width(width = 56.dp)
             .fillMaxHeight()
-            .background(colorResource(fileType.color)),
+            .background(colorResource(typeColor)),
         contentAlignment = Alignment.Center
     ) {
         Icon(
             modifier = Modifier.size(28.dp),
-            painter = painterResource(fileType.icon),
+            painter = painterResource(typeIcon),
             tint = Color.White,
             contentDescription = stringResource(R.string.archive_key_icon_pic_desc)
         )
@@ -87,7 +90,7 @@ private fun ComposableKeyIcon(fileType: FlipperFileType) {
 @Composable
 private fun ComposableKeyDescription(
     modifier: Modifier,
-    key: FlipperKey
+    keyPath: FlipperKeyPath
 ) {
     Column(
         modifier = modifier
@@ -96,7 +99,7 @@ private fun ComposableKeyDescription(
     ) {
         Text(
             modifier = Modifier.padding(vertical = 10.dp),
-            text = key.name,
+            text = keyPath.name,
             fontWeight = FontWeight.Medium,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -104,7 +107,8 @@ private fun ComposableKeyDescription(
         )
         Text(
             modifier = Modifier.padding(bottom = 10.dp),
-            text = key.keyType?.name ?: key.fileType.humanReadableName,
+            text = keyPath.fileType?.humanReadableName
+                ?: stringResource(R.string.archive_key_type_unknown),
             fontWeight = FontWeight.Normal,
             color = colorResource(R.color.archive_description_keytype),
             fontSize = 16.sp

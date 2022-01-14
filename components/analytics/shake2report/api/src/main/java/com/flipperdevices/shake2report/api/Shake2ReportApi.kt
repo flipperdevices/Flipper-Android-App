@@ -8,4 +8,10 @@ interface Shake2ReportApi {
      * And call empty method in release build
      */
     fun init(application: Application)
+
+    fun reportException(
+        throwable: Throwable,
+        tag: String? = null,
+        extras: Map<String, String>? = null
+    )
 }

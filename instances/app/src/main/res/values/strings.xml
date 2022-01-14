@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Flipper App</string>
+    <string name="app_name">Flipper</string>
 
     <string name="home_controller_settings">Settings</string>
     <string name="home_controller_userspace">User Space</string>

@@ -70,6 +70,7 @@ private fun BaseExtension.configureBuildTypes() {
     }
 }
 
+@Suppress("UnstableApiUsage")
 private fun BaseExtension.configureBuildFeatures() {
     buildFeatures.viewBinding = true
 }
@@ -89,6 +90,8 @@ private fun Project.suppressOptIn() {
                     "-Xopt-in=com.google.accompanist.pager.ExperimentalPagerApi",
                     "-Xopt-in=androidx.compose.ui.ExperimentalComposeUiApi",
                     "-Xopt-in=androidx.compose.foundation.ExperimentalFoundationApi",
+                    "-Xopt-in=kotlinx.serialization.ExperimentalSerializationApi",
+                    "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
                     "-Xopt-in=kotlin.RequiresOptIn",
                 )
             }

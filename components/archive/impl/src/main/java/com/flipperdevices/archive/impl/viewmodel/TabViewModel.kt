@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.archive.impl.di.ArchiveComponent
 import com.flipperdevices.archive.impl.model.ArchiveTab
-import com.flipperdevices.bridge.dao.api.DaoApi
+import com.flipperdevices.bridge.dao.api.delegates.KeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
@@ -21,7 +21,7 @@ class TabViewModel(
     private val tab: ArchiveTab.Specified
 ) : ViewModel() {
     @Inject
-    lateinit var daoApi: DaoApi
+    lateinit var keyApi: KeyApi
 
     @Inject
     lateinit var synchronizationApi: SynchronizationApi
@@ -31,7 +31,7 @@ class TabViewModel(
     init {
         ComponentHolder.component<ArchiveComponent>().inject(this)
         viewModelScope.launch {
-            daoApi.getKeysApi().getKeysAsFlow(tab.fileType).combine(
+            keyApi.getKeysAsFlow(tab.fileType).combine(
                 synchronizationApi.getSynchronizationState()
             ) { keyList, synchronizationState ->
                 if (keyList.isEmpty() && synchronizationState == SynchronizationState.IN_PROGRESS) {

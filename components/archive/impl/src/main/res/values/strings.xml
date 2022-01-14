@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="archive_key_icon_pic_desc">Key type icon</string>
+    <string name="archive_key_type_unknown">Unknown</string>
     <string name="archive_tab_general_title">All</string>
     <string name="archive_content_empty">You don\'t have this type of key yet</string>
     <string name="archive_tab_general_favorite_title">Favorites</string>

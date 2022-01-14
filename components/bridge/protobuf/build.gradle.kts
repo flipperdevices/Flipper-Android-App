@@ -14,6 +14,9 @@ dependencies {
     api(Libs.PROTOBUF_KOTLIN) {
         exclude(group = Libs.PROTOBUF_GROUP)
     }
+
+    implementation(projects.components.core.log)
+    implementation(libs.kotlin.coroutines)
 }
 
 protobuf {

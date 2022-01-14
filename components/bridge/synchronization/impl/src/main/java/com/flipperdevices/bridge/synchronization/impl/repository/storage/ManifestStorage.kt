@@ -11,7 +11,7 @@ import kotlinx.serialization.json.decodeFromStream
 import kotlinx.serialization.json.encodeToStream
 
 class ManifestStorage(context: Context) {
-    private val file: File = File(context.filesDir, "LastSyncManifest")
+    private val file: File = File(context.filesDir, "LastSyncManifest_v2.json")
 
     suspend fun save(keys: List<KeyWithHash>) = withContext(Dispatchers.IO) {
         if (file.exists()) {
