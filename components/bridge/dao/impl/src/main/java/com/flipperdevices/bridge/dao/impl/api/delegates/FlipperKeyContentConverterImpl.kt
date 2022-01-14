@@ -4,6 +4,7 @@ import android.content.Context
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ktx.jre.createNewFileWithMkDirs
 import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.squareup.anvil.annotations.ContributesBinding
 import java.io.File
@@ -26,6 +27,16 @@ class FlipperKeyContentConverterImpl @Inject constructor(
         }
 
         val keyFile = File(keyFolder, flipperKey.path.pathToKey)
+        if (keyFile.exists()) {
+            error("File already created, delete it first")
+        }
+        val fileCreatedSuccessful = runCatching {
+            keyFile.createNewFileWithMkDirs()
+        }.getOrThrow()
+
+        if (!fileCreatedSuccessful) {
+            error("Can't create file $keyFile")
+        }
 
         keyContent.stream().use { inputStream ->
             keyFile.outputStream().use { outputStream ->

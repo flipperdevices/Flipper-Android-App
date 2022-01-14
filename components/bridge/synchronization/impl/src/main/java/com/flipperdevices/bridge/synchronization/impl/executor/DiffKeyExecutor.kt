@@ -2,19 +2,30 @@ package com.flipperdevices.bridge.synchronization.impl.executor
 
 import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
 import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
+import com.flipperdevices.core.log.LogTagProvider
 
 /**
  * This class execute diff for
  */
-class DiffKeyExecutor {
+class DiffKeyExecutor : LogTagProvider {
+    override val TAG = "DiffKeyExecutor"
+
+    /**
+     * @return list of diffs which successful applied
+     */
     suspend fun executeBatch(
         source: AbstractKeyStorage,
         target: AbstractKeyStorage,
         diffs: List<KeyDiff>
-    ) {
+    ): List<KeyDiff> {
         diffs.forEach {
-            execute(source, target, it)
+            try {
+                execute(source, target, it)
+            } catch (e: Exception) {
+                throw e
+            }
         }
+        return diffs
     }
 
     suspend fun execute(source: AbstractKeyStorage, target: AbstractKeyStorage, diff: KeyDiff) {

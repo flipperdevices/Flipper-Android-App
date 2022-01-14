@@ -16,8 +16,11 @@ import com.flipperdevices.bridge.synchronization.impl.repository.KeysListingRepo
 import com.flipperdevices.bridge.synchronization.impl.repository.ManifestRepository
 import com.flipperdevices.bridge.synchronization.impl.utils.TaskWithLifecycle
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SynchronizationTask(
     private val serviceProvider: FlipperServiceProvider,
@@ -35,6 +38,9 @@ class SynchronizationTask(
                 try {
                     onStateUpdate(SynchronizationState.IN_PROGRESS)
                     launch(serviceApi)
+                } catch (exception: Throwable) {
+                    error(exception) { "While synchronization we have error" }
+                    throw exception
                 } finally {
                     onStateUpdate(SynchronizationState.FINISHED)
                     onStop()
@@ -46,7 +52,7 @@ class SynchronizationTask(
         }
     }
 
-    private suspend fun launch(serviceApi: FlipperServiceApi) {
+    private suspend fun launch(serviceApi: FlipperServiceApi) = withContext(Dispatchers.Default) {
         val keys = KeysListingRepository().getAllKeys(
             serviceApi.requestApi
         ).trackProgressAndReturn {
