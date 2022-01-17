@@ -6,7 +6,7 @@ plugins {
 dependencies {
     implementation(libs.kotlin.coroutines)
 
-    implementation(Libs.CICERONE)
+    implementation(libs.cicerone)
 
     implementation(libs.kotlin.serialization.json)
 }

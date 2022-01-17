@@ -18,7 +18,7 @@ dependencies {
     implementation(components.core.ui)
 </#if>
 <#if isApi>
-    implementation(Libs.CICERONE)
+    implementation(libs.cicerone)
 </#if>
 <#if needCompose>
 
@@ -36,6 +36,6 @@ dependencies {
 </#if>
 <#if needFragment>
 
-    implementation(Libs.CICERONE)
+    implementation(libs.cicerone)
 </#if>
 }

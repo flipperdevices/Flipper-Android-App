@@ -30,10 +30,10 @@ dependencies {
     implementation(projects.components.pair.api)
 
     implementation(libs.kotlin.coroutines)
-    implementation(Libs.LIFECYCLE_RUNTIME_KTX)
-    implementation(Libs.LIFECYCLE_VIEWMODEL_KTX)
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.lifecycle.viewmodel.ktx)
     implementation(Libs.ANNOTATIONS)
-    implementation(Libs.CORE_KTX)
+    implementation(libs.ktx)
     implementation(Libs.APPCOMPAT)
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
@@ -41,17 +41,17 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
-    implementation(Libs.FRAGMENT_KTX)
+    implementation(libs.ktx.fragment)
 
     // Guide
-    implementation(Libs.IMAGE_SLIDER)
-    implementation(Libs.GLIDE)
-    implementation(Libs.LOTTIE)
+    implementation(libs.image.slider)
+    implementation(libs.image.glide)
+    implementation(libs.image.lottie)
 
-    implementation(Libs.NORDIC_BLE)
-    implementation(Libs.NORDIC_BLE_KTX)
-    implementation(Libs.NORDIC_BLE_COMMON)
-    implementation(Libs.NORDIC_BLE_SCAN)
+    implementation(libs.ble)
+    implementation(libs.ble.ktx)
+    implementation(libs.ble.common)
+    implementation(libs.ble.scan)
 
-    implementation(Libs.CICERONE)
+    implementation(libs.cicerone)
 }

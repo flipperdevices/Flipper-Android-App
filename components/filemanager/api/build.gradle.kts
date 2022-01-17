@@ -5,5 +5,5 @@ plugins {
 dependencies {
     implementation(projects.components.deeplink.api)
 
-    implementation(Libs.CICERONE)
+    implementation(libs.cicerone)
 }

@@ -22,5 +22,5 @@ dependencies {
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
 
-    implementation(Libs.CICERONE)
+    implementation(libs.cicerone)
 }

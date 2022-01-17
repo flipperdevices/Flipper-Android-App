@@ -60,17 +60,16 @@ dependencies {
     add("internalImplementation", projects.components.analytics.shake2report.impl)
 
     implementation(Libs.ANNOTATIONS)
-    implementation(Libs.CORE_KTX)
+    implementation(libs.ktx)
     implementation(Libs.APPCOMPAT)
-    implementation(Libs.MATERIAL)
-    implementation(Libs.TREX)
+    implementation(libs.material)
 
     implementation(libs.kotlin.coroutines)
-    implementation(Libs.ACTIVITY_KTX)
+    implementation(libs.ktx.activity)
 
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
 
-    implementation(Libs.CICERONE)
-    implementation(Libs.TIMBER)
+    implementation(libs.cicerone)
+    implementation(libs.timber)
 }

@@ -10,7 +10,7 @@ dependencies {
 
     implementation(Libs.APPCOMPAT)
 
-    implementation(Libs.CICERONE)
+    implementation(libs.cicerone)
 
     // Dagger deps
     implementation(libs.dagger)

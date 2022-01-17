@@ -4,5 +4,5 @@ plugins {
 
 dependencies {
     implementation(TestingLib.JUNIT)
-    implementation(Libs.TIMBER)
+    implementation(libs.timber)
 }

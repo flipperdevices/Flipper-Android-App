@@ -25,15 +25,15 @@ dependencies {
     implementation(Libs.APPCOMPAT)
 
     implementation(libs.kotlin.coroutines)
-    implementation(Libs.LIFECYCLE_RUNTIME_KTX)
-    implementation(Libs.LIFECYCLE_VIEWMODEL_KTX)
-    implementation(Libs.LIFECYCLE_SERVICE)
-    kapt(Libs.LIFECYCLE_KAPT)
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.lifecycle.service)
+    kapt(libs.lifecycle.kapt)
 
-    implementation(Libs.NORDIC_BLE)
-    implementation(Libs.NORDIC_BLE_KTX)
-    implementation(Libs.NORDIC_BLE_COMMON)
-    implementation(Libs.NORDIC_BLE_SCAN)
+    implementation(libs.ble)
+    implementation(libs.ble.ktx)
+    implementation(libs.ble.common)
+    implementation(libs.ble.scan)
 
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
@@ -43,5 +43,5 @@ dependencies {
     testImplementation(TestingLib.MOCKITO)
     testImplementation(TestingLib.ANDROIDX_TEST_EXT_JUNIT)
     testImplementation(TestingLib.ROBOELECTRIC)
-    testImplementation(TestingLib.LIFECYCLE)
+    testImplementation(libs.lifecycle.test)
 }

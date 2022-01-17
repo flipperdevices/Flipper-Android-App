@@ -13,24 +13,24 @@ dependencies {
 
     implementation(libs.kotlin.coroutines)
     implementation(Libs.ANNOTATIONS)
-    implementation(Libs.CORE_KTX)
+    implementation(libs.ktx)
     implementation(Libs.APPCOMPAT)
 
-    implementation(Libs.NORDIC_BLE_SCAN)
-    implementation(Libs.NORDIC_BLE)
-    implementation(Libs.NORDIC_BLE_KTX)
-    implementation(Libs.NORDIC_BLE_COMMON)
+    implementation(libs.ble.scan)
+    implementation(libs.ble)
+    implementation(libs.ble.ktx)
+    implementation(libs.ble.common)
 
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
 
-    implementation(Libs.FASTUTIL)
+    implementation(libs.fastutil)
 
     testImplementation(projects.components.core.test)
     testImplementation(TestingLib.JUNIT)
     testImplementation(TestingLib.MOCKITO)
     testImplementation(TestingLib.ANDROIDX_TEST_EXT_JUNIT)
     testImplementation(TestingLib.ROBOELECTRIC)
-    testImplementation(TestingLib.LIFECYCLE)
+    testImplementation(libs.lifecycle.test)
     testImplementation(libs.kotlin.coroutines.test)
 }
