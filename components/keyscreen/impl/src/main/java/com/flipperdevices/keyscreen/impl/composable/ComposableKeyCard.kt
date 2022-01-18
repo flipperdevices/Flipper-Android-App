@@ -23,9 +23,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.bridge.dao.api.R as DaoR
-import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.keyscreen.impl.R
+import com.flipperdevices.keyscreen.impl.composable.content.ComposableRFIDContent
 
 @Composable
 fun ComposableKeyCard(parsedKey: FlipperKeyParsed) {
@@ -59,6 +59,7 @@ fun ComposableKeyCard(parsedKey: FlipperKeyParsed) {
                     color = colorResource(R.color.keyscreen_text_gray)
                 )
             }
+            ComposableKeyContent(parsedKey)
         }
     }
 }
@@ -87,15 +88,24 @@ private fun ComposableKeyIcon(parsedKey: FlipperKeyParsed, modifier: Modifier = 
     }
 }
 
+@Composable
+private fun ComposableKeyContent(keyParsed: FlipperKeyParsed) {
+    when (keyParsed) {
+        is FlipperKeyParsed.RFID -> ComposableRFIDContent(keyParsed)
+        is FlipperKeyParsed.Unrecognized -> return
+    }
+}
+
 @Preview(
     showSystemUi = true,
     showBackground = true
 )
 @Composable
 private fun ComposableKeyCardPreview() {
-    val parsedKey = FlipperKeyParsed.Unrecognized(
+    val parsedKey = FlipperKeyParsed.RFID(
         keyName = "Test_key",
-        fileType = FlipperFileType.NFC,
+        data = "DC 69 66 0F 12",
+        keyType = "EM4100",
         notes = null
     )
     ComposableKeyCard(parsedKey)

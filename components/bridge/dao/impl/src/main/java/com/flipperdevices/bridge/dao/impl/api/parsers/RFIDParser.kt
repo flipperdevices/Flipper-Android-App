@@ -2,6 +2,7 @@ package com.flipperdevices.bridge.dao.impl.api.parsers
 
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
+import java.nio.charset.Charset
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -13,8 +14,10 @@ class RFIDParser : KeyParserDelegate {
         flipperKey: FlipperKey
     ): FlipperKeyParsed = withContext(Dispatchers.IO) {
         val keyContentAsPairs = flipperKey.keyContent.stream().use {
-            it.readBytes().toString()
-        }.split("\n").map { it.split(":") }.map { it[0].trim() to it[1].trim() }
+            it.readBytes().toString(Charset.defaultCharset())
+        }.split("\n")
+            .filterNot { it.startsWith("#") }
+            .map { it.substringBefore(":").trim() to it.substringAfter(":").trim() }
         val keyContentAsMap = keyContentAsPairs.toMap()
 
         return@withContext FlipperKeyParsed.RFID(
