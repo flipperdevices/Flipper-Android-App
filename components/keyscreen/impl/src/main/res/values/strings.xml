@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="keyscreen_error_keypath">Key opening error. The key path is not provided.</string>
+    <string name="keyscreen_error_notfound_key">The key will not be found.</string>
+</resources>

@@ -1,7 +1,8 @@
 package com.flipperdevices.keyscreen.impl.fragments
 
-import android.os.Bundle
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.fragment.app.viewModels
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.ktx.android.withArgs
@@ -14,17 +15,13 @@ private const val EXTRA_KEY_PATH = "flipper_key_path"
 
 class KeyScreenFragment : ComposeFragment() {
     private val viewModel by viewModels<KeyScreenViewModel>() {
-        KeyScreenViewModelFactory(arguments!!.getParcelable(EXTRA_KEY_PATH)!!)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.loadKeyContent()
+        KeyScreenViewModelFactory(arguments?.getParcelable(EXTRA_KEY_PATH))
     }
 
     @Composable
     override fun RenderView() {
-        ComposableKeyScreen()
+        val keyScreenState by viewModel.getKeyScreenState().collectAsState()
+        ComposableKeyScreen(keyScreenState)
     }
 
     companion object {
