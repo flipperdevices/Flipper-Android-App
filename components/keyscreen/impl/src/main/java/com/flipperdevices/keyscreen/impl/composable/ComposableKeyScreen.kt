@@ -1,14 +1,19 @@
 package com.flipperdevices.keyscreen.impl.composable
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.keyscreen.impl.model.KeyScreenState
 
 @Preview(
@@ -16,11 +21,11 @@ import com.flipperdevices.keyscreen.impl.model.KeyScreenState
     showBackground = true
 )
 @Composable
-fun ComposableKeyScreen(keyScreenState: KeyScreenState = KeyScreenState.Initial) {
+fun ComposableKeyScreen(keyScreenState: KeyScreenState = KeyScreenState.InProgress) {
     when (keyScreenState) {
-        KeyScreenState.Initial -> ComposableKeyInitial()
-        is KeyScreenState.Error -> TODO()
-        is KeyScreenState.Ready -> TODO()
+        KeyScreenState.InProgress -> ComposableKeyInitial()
+        is KeyScreenState.Error -> ComposableKeyError(keyScreenState)
+        is KeyScreenState.Ready -> ComposableKeyParsed(keyScreenState.parsedKey)
     }
 }
 
@@ -30,6 +35,27 @@ private fun ComposableKeyInitial() {
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        CircularProgressIndicator(modifier = Modifier.size(24.dp))
+        CircularProgressIndicator(modifier = Modifier.size(48.dp))
+    }
+}
+
+@Composable
+private fun ComposableKeyError(error: KeyScreenState.Error) {
+    val errorText = stringResource(error.reason)
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = errorText,
+            fontWeight = FontWeight.Medium
+        )
+    }
+}
+
+@Composable
+private fun ComposableKeyParsed(keyParsed: FlipperKeyParsed) {
+    Column() {
+        ComposableKeyCard(keyParsed)
     }
 }

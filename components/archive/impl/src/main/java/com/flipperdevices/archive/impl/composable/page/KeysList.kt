@@ -14,7 +14,10 @@ import com.flipperdevices.archive.impl.composable.key.ComposableFlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 
 @SuppressWarnings("FunctionNaming")
-fun LazyListScope.KeysList(keys: List<FlipperKey>?) {
+fun LazyListScope.KeysList(
+    keys: List<FlipperKey>?,
+    onKeyClick: (FlipperKey) -> Unit
+) {
     // If synchronization in progress yet
     if (keys == null) {
         item {
@@ -30,8 +33,7 @@ fun LazyListScope.KeysList(keys: List<FlipperKey>?) {
         return
     }
 
-    val keysNotNull = keys ?: return
-    if (keysNotNull.isEmpty()) {
+    if (keys.isEmpty()) {
         item {
             Box(
                 modifier = Modifier.fillParentMaxSize(),
@@ -41,8 +43,10 @@ fun LazyListScope.KeysList(keys: List<FlipperKey>?) {
             }
         }
     } else {
-        items(keysNotNull.size) {
-            ComposableFlipperKey(keysNotNull[it].path)
+        items(keys.size) {
+            ComposableFlipperKey(keys[it].path) {
+                onKeyClick(keys[it])
+            }
         }
     }
 }

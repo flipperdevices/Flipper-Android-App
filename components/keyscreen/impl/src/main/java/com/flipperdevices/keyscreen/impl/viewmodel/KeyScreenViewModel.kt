@@ -25,7 +25,7 @@ class KeyScreenViewModel(
     @Inject
     lateinit var keyParser: KeyParser
 
-    private val keyScreenState = MutableStateFlow<KeyScreenState>(KeyScreenState.Initial)
+    private val keyScreenState = MutableStateFlow<KeyScreenState>(KeyScreenState.InProgress)
 
     init {
         ComponentHolder.component<KeyScreenComponent>().inject(this)

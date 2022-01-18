@@ -9,6 +9,8 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.navigation.global.CiceroneGlobal
+import com.flipperdevices.keyscreen.api.KeyScreenApi
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,6 +27,12 @@ class GeneralTabViewModel : ViewModel() {
 
     @Inject
     lateinit var synchronizationApi: SynchronizationApi
+
+    @Inject
+    lateinit var cicerone: CiceroneGlobal
+
+    @Inject
+    lateinit var keyScreenApi: KeyScreenApi
 
     private val keys = MutableStateFlow<List<FlipperKey>?>(null)
     private val favoriteKeys = MutableStateFlow<List<FlipperKey>>(emptyList())
@@ -49,6 +57,10 @@ class GeneralTabViewModel : ViewModel() {
 
     fun getKeys(): StateFlow<List<FlipperKey>?> = keys
     fun getFavoriteKeys(): StateFlow<List<FlipperKey>> = favoriteKeys
+
+    fun onKeyClick(key: FlipperKey) {
+        cicerone.getRouter().navigateTo(keyScreenApi.getKeyScreenScreen(key.path))
+    }
 
     fun refresh() {
         synchronizationApi.startSynchronization()

@@ -35,7 +35,9 @@ fun ArchivePage(
                 .padding(top = 18.dp),
             verticalArrangement = Arrangement.spacedBy(space = 12.dp)
         ) {
-            KeysList(keys)
+            KeysList(keys) {
+                tabViewModel.onKeyClick(it)
+            }
         }
     }
 }

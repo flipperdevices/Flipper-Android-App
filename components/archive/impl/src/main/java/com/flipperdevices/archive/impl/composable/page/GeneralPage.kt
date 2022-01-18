@@ -36,14 +36,21 @@ fun GeneralPage(tabViewModel: GeneralTabViewModel = viewModel()) {
                 .padding(top = 18.dp),
             verticalArrangement = Arrangement.spacedBy(space = 12.dp)
         ) {
-            FavoriteList(favoriteKeys)
-            AllList(favoriteKeys, keys)
+            FavoriteList(favoriteKeys) {
+                tabViewModel.onKeyClick(it)
+            }
+            AllList(favoriteKeys, keys) {
+                tabViewModel.onKeyClick(it)
+            }
         }
     }
 }
 
 @SuppressWarnings("FunctionNaming")
-private fun LazyListScope.FavoriteList(keys: List<FlipperKey>) {
+private fun LazyListScope.FavoriteList(
+    keys: List<FlipperKey>,
+    onKeyClick: (FlipperKey) -> Unit
+) {
     if (keys.isEmpty()) {
         return
     }
@@ -56,11 +63,15 @@ private fun LazyListScope.FavoriteList(keys: List<FlipperKey>) {
         )
     }
 
-    KeysList(keys)
+    KeysList(keys, onKeyClick)
 }
 
 @SuppressWarnings("FunctionNaming")
-private fun LazyListScope.AllList(favoriteKeys: List<FlipperKey>, keys: List<FlipperKey>?) {
+private fun LazyListScope.AllList(
+    favoriteKeys: List<FlipperKey>,
+    keys: List<FlipperKey>?,
+    onKeyClick: (FlipperKey) -> Unit
+) {
     if (favoriteKeys.isNotEmpty()) {
         item {
             Text(
@@ -72,5 +83,7 @@ private fun LazyListScope.AllList(favoriteKeys: List<FlipperKey>, keys: List<Fli
         }
     }
 
-    KeysList(keys)
+    KeysList(keys) {
+        onKeyClick(it)
+    }
 }

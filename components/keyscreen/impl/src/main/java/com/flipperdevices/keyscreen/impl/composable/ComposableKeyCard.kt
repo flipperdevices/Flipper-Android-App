@@ -1,0 +1,102 @@
+package com.flipperdevices.keyscreen.impl.composable
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.flipperdevices.bridge.dao.api.R as DaoR
+import com.flipperdevices.bridge.dao.api.model.FlipperFileType
+import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
+import com.flipperdevices.keyscreen.impl.R
+
+@Composable
+fun ComposableKeyCard(parsedKey: FlipperKeyParsed) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(all = 24.dp)
+    ) {
+        Column(modifier = Modifier.padding(all = 18.dp)) {
+            ComposableKeyIcon(parsedKey)
+            Text(
+                modifier = Modifier.padding(top = 18.dp, bottom = 12.dp),
+                text = parsedKey.keyName,
+                fontWeight = FontWeight.W700,
+                fontSize = 20.sp
+            )
+            val notes = parsedKey.notes
+            if (notes != null) {
+                Text(
+                    text = notes,
+                    fontWeight = FontWeight.W400,
+                    fontSize = 14.sp,
+                    color = Color.Black
+                )
+            } else {
+                Text(
+                    text = stringResource(R.string.keyscreen_card_note_empty),
+                    fontWeight = FontWeight.W400,
+                    fontSize = 14.sp,
+                    fontStyle = FontStyle.Italic,
+                    color = colorResource(R.color.keyscreen_text_gray)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ComposableKeyIcon(parsedKey: FlipperKeyParsed, modifier: Modifier = Modifier) {
+    val fileTypeColor = parsedKey.fileType?.color ?: DaoR.color.fileformat_color_unknown
+
+    Box(
+        modifier = modifier
+            .background(
+                colorResource(fileTypeColor),
+                RoundedCornerShape(6.dp)
+            )
+            .size(46.dp)
+    ) {
+        val fileTypeIcon = parsedKey.fileType?.icon ?: DaoR.drawable.ic_fileformat_unknown
+        Icon(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(9.dp),
+            painter = painterResource(fileTypeIcon),
+            contentDescription = parsedKey.fileType?.humanReadableName
+                ?: stringResource(DaoR.string.fileformat_unknown)
+        )
+    }
+}
+
+@Preview(
+    showSystemUi = true,
+    showBackground = true
+)
+@Composable
+private fun ComposableKeyCardPreview() {
+    val parsedKey = FlipperKeyParsed.Unrecognized(
+        keyName = "Test_key",
+        fileType = FlipperFileType.NFC,
+        notes = null
+    )
+    ComposableKeyCard(parsedKey)
+}
