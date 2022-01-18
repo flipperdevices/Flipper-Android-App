@@ -32,12 +32,21 @@ fun ComposableKeyCard(parsedKey: FlipperKeyParsed) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(all = 24.dp)
+            .padding(all = 24.dp),
+        shape = RoundedCornerShape(10.dp)
     ) {
-        Column(modifier = Modifier.padding(all = 18.dp)) {
-            ComposableKeyIcon(parsedKey)
+        Column(modifier = Modifier.padding(vertical = 18.dp)) {
+            ComposableKeyIcon(
+                modifier = Modifier.padding(horizontal = 18.dp),
+                parsedKey = parsedKey
+            )
             Text(
-                modifier = Modifier.padding(top = 18.dp, bottom = 12.dp),
+                modifier = Modifier.padding(
+                    top = 18.dp,
+                    bottom = 12.dp,
+                    start = 18.dp,
+                    end = 18.dp
+                ),
                 text = parsedKey.keyName,
                 fontWeight = FontWeight.W700,
                 fontSize = 20.sp
@@ -45,6 +54,7 @@ fun ComposableKeyCard(parsedKey: FlipperKeyParsed) {
             val notes = parsedKey.notes
             if (notes != null) {
                 Text(
+                    modifier = Modifier.padding(horizontal = 18.dp),
                     text = notes,
                     fontWeight = FontWeight.W400,
                     fontSize = 14.sp,
@@ -52,6 +62,7 @@ fun ComposableKeyCard(parsedKey: FlipperKeyParsed) {
                 )
             } else {
                 Text(
+                    modifier = Modifier.padding(horizontal = 18.dp),
                     text = stringResource(R.string.keyscreen_card_note_empty),
                     fontWeight = FontWeight.W400,
                     fontSize = 14.sp,
@@ -101,6 +112,7 @@ private fun ComposableKeyContent(keyParsed: FlipperKeyParsed) {
     showBackground = true
 )
 @Composable
+@Suppress("UnusedPrivateMember")
 private fun ComposableKeyCardPreview() {
     val parsedKey = FlipperKeyParsed.RFID(
         keyName = "Test_key",

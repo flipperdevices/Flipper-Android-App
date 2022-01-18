@@ -16,18 +16,23 @@ import com.flipperdevices.keyscreen.impl.R
 fun ComposableKeyContent(
     content: @Composable ColumnScope.() -> Unit
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+    Column() {
         Divider(
             modifier = Modifier
                 .padding(
                     top = 18.dp,
-                    bottom = 6.dp // 12 + 6 = 18
+                    bottom = 18.dp,
                 )
                 .fillMaxWidth(),
             thickness = 1.dp,
             color = colorResource(R.color.keyscreen_devider)
         )
 
-        content()
+        Column(
+            modifier = Modifier.padding(horizontal = 18.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            content()
+        }
     }
 }
