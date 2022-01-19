@@ -8,9 +8,9 @@ dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.bottombar.api)
 
-    implementation(Libs.APPCOMPAT)
+    implementation(libs.appcompat)
 
-    implementation(Libs.CICERONE)
+    implementation(libs.cicerone)
 
     // Dagger deps
     implementation(libs.dagger)

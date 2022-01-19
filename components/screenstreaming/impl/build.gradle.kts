@@ -14,8 +14,8 @@ dependencies {
     implementation(projects.components.core.ui)
     implementation(projects.components.core.log)
 
-    implementation(Libs.ANNOTATIONS)
-    implementation(Libs.APPCOMPAT)
+    implementation(libs.annotations)
+    implementation(libs.appcompat)
 
     // Compose
     implementation(libs.compose.ui)
@@ -25,12 +25,12 @@ dependencies {
     implementation(libs.compose.constraint)
 
     implementation(libs.kotlin.coroutines)
-    implementation(Libs.LIFECYCLE_RUNTIME_KTX)
-    implementation(Libs.LIFECYCLE_VIEWMODEL_KTX)
-    implementation(Libs.LIFECYCLE_COMPOSE)
-    implementation(Libs.FRAGMENT_KTX)
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.lifecycle.compose)
+    implementation(libs.ktx.fragment)
 
-    implementation(Libs.CICERONE)
+    implementation(libs.cicerone)
 
     // Dagger deps
     implementation(libs.dagger)

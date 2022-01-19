@@ -25,8 +25,8 @@ dependencies {
     implementation(projects.components.bridge.protobuf)
     implementation(projects.components.bridge.service.api)
 
-    implementation(Libs.ANNOTATIONS)
-    implementation(Libs.APPCOMPAT)
+    implementation(libs.annotations)
+    implementation(libs.appcompat)
 
     // Compose
     implementation(libs.compose.ui)
@@ -39,7 +39,7 @@ dependencies {
     kapt(libs.dagger.kapt)
 
     // Lifecycle
-    implementation(Libs.LIFECYCLE_RUNTIME_KTX)
-    implementation(Libs.LIFECYCLE_VIEWMODEL_KTX)
-    implementation(Libs.LIFECYCLE_COMPOSE)
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.lifecycle.compose)
 }

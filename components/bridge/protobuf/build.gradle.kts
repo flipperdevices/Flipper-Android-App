@@ -10,9 +10,10 @@ plugins {
 }
 
 dependencies {
-    api(Libs.PROTOBUF_JAVALITE)
-    api(Libs.PROTOBUF_KOTLIN) {
-        exclude(group = Libs.PROTOBUF_GROUP)
+    api(libs.protobuf.javalite)
+    api(libs.protobuf.kotlin) {
+        @Suppress("UnstableApiUsage")
+        exclude(libs.protobuf.kotlin.get().module.group)
     }
 
     implementation(projects.components.core.log)
@@ -21,7 +22,7 @@ dependencies {
 
 protobuf {
     protoc {
-        artifact = Libs.PROTOBUF_PROTOC
+        artifact = libs.protobuf.protoc.get().toString()
     }
 
     generateProtoTasks {

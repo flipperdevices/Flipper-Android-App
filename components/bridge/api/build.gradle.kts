@@ -8,9 +8,9 @@ dependencies {
     implementation(projects.components.bridge.protobuf)
 
     implementation(libs.kotlin.coroutines)
-    implementation(Libs.NORDIC_BLE_COMMON)
-    implementation(Libs.NORDIC_BLE_SCAN)
-    implementation(Libs.NORDIC_BLE_KTX)
+    implementation(libs.ble.common)
+    implementation(libs.ble.scan)
+    implementation(libs.ble.ktx)
 
-    implementation(Libs.APPCOMPAT)
+    implementation(libs.appcompat)
 }

@@ -22,10 +22,10 @@ dependencies {
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
 
-    implementation(Libs.CICERONE)
-    implementation(Libs.APPCOMPAT)
+    implementation(libs.cicerone)
+    implementation(libs.appcompat)
 
-    implementation(Libs.LIFECYCLE_RUNTIME_KTX)
-    implementation(Libs.LIFECYCLE_VIEWMODEL_KTX)
-    implementation(Libs.FRAGMENT_KTX)
+    implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.ktx.fragment)
 }

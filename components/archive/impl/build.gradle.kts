@@ -17,8 +17,8 @@ dependencies {
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.synchronization.api)
 
-    implementation(Libs.ANNOTATIONS)
-    implementation(Libs.APPCOMPAT)
+    implementation(libs.annotations)
+    implementation(libs.appcompat)
 
     // Compose
     implementation(libs.compose.ui)
@@ -33,10 +33,10 @@ dependencies {
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
 
-    implementation(Libs.CICERONE)
+    implementation(libs.cicerone)
 
     // Lifecycle
-    implementation(Libs.LIFECYCLE_RUNTIME_KTX)
-    implementation(Libs.LIFECYCLE_VIEWMODEL_KTX)
-    implementation(Libs.LIFECYCLE_COMPOSE)
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.lifecycle.compose)
 }

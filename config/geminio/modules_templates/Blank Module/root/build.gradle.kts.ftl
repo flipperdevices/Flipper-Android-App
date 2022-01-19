@@ -23,12 +23,12 @@ dependencies {
 </#if>
 <#if isApi>
 
-    implementation(Libs.CICERONE)
+    implementation(libs.cicerone)
 <#else>
 <#if needFragment>
 
-    implementation(Libs.CICERONE)
-    implementation(Libs.APPCOMPAT)
+    implementation(libs.cicerone)
+    implementation(libs.appcompat)
 </#if>
 </#if>
 <#if needCompose>

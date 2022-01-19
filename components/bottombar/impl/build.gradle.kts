@@ -15,7 +15,7 @@ dependencies {
     implementation(projects.components.archive.api)
     implementation(projects.components.pair.api)
 
-    implementation(Libs.APPCOMPAT)
+    implementation(libs.appcompat)
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
 
@@ -27,9 +27,9 @@ dependencies {
     implementation(libs.compose.systemui)
 
     implementation(libs.kotlin.coroutines)
-    implementation(Libs.LIFECYCLE_RUNTIME_KTX)
-    implementation(Libs.LIFECYCLE_VIEWMODEL_KTX)
-    implementation(Libs.FRAGMENT_KTX)
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.ktx.fragment)
 
-    implementation(Libs.CICERONE)
+    implementation(libs.cicerone)
 }

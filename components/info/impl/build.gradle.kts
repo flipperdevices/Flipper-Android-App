@@ -20,10 +20,10 @@ dependencies {
     implementation(projects.components.bridge.protobuf)
 
     // Core deps
-    implementation(Libs.CORE_KTX)
-    implementation(Libs.ANNOTATIONS)
+    implementation(libs.ktx)
+    implementation(libs.annotations)
 
-    implementation(Libs.APPCOMPAT)
+    implementation(libs.appcompat)
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
 
@@ -33,15 +33,15 @@ dependencies {
     implementation(libs.compose.foundation)
 
     implementation(libs.kotlin.coroutines)
-    implementation(Libs.LIFECYCLE_RUNTIME_KTX)
-    implementation(Libs.LIFECYCLE_VIEWMODEL_KTX)
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.lifecycle.viewmodel.ktx)
 
-    implementation(Libs.FRAGMENT_KTX)
+    implementation(libs.ktx.fragment)
 
-    implementation(Libs.NORDIC_BLE)
-    implementation(Libs.NORDIC_BLE_KTX)
-    implementation(Libs.NORDIC_BLE_COMMON)
-    implementation(Libs.NORDIC_BLE_SCAN)
+    implementation(libs.ble)
+    implementation(libs.ble.ktx)
+    implementation(libs.ble.common)
+    implementation(libs.ble.scan)
 
-    implementation(Libs.CICERONE)
+    implementation(libs.cicerone)
 }

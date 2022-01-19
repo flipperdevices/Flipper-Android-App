@@ -19,10 +19,10 @@ dependencies {
 
     implementation(projects.components.bridge.synchronization.api)
 
-    implementation(Libs.NORDIC_BLE_KTX)
+    implementation(libs.ble.ktx)
 
-    implementation(Libs.ANNOTATIONS)
-    implementation(Libs.APPCOMPAT)
+    implementation(libs.annotations)
+    implementation(libs.appcompat)
 
     // Compose
     implementation(libs.compose.ui)
@@ -34,10 +34,10 @@ dependencies {
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
 
-    implementation(Libs.LIFECYCLE_RUNTIME_KTX)
-    implementation(Libs.LIFECYCLE_VIEWMODEL_KTX)
-    implementation(Libs.LIFECYCLE_COMPOSE)
-    implementation(Libs.FRAGMENT_KTX)
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.lifecycle.compose)
+    implementation(libs.ktx.fragment)
 
-    implementation(Libs.CICERONE)
+    implementation(libs.cicerone)
 }

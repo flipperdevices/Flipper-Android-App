@@ -13,8 +13,8 @@ dependencies {
     implementation(projects.components.deeplink.api)
     implementation(projects.components.filemanager.api)
 
-    implementation(Libs.ANNOTATIONS)
-    implementation(Libs.APPCOMPAT)
+    implementation(libs.annotations)
+    implementation(libs.appcompat)
     implementation(libs.kotlin.coroutines)
 
     // Dagger deps

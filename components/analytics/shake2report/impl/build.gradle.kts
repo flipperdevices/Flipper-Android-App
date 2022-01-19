@@ -9,19 +9,19 @@ dependencies {
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.di)
 
-    implementation(Libs.ANNOTATIONS)
-    implementation(Libs.APPCOMPAT)
+    implementation(libs.annotations)
+    implementation(libs.appcompat)
 
     implementation(libs.kotlin.coroutines)
-    implementation(Libs.LIFECYCLE_RUNTIME_KTX)
-    implementation(Libs.LIFECYCLE_VIEWMODEL_KTX)
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.lifecycle.viewmodel.ktx)
 
-    implementation(Libs.SEISMIC)
-    implementation(Libs.TIMBER)
-    implementation(Libs.TREESSENCE)
-    implementation(Libs.SENTRY)
-    implementation(Libs.SENTRY_TIMBER)
-    implementation(Libs.ZIP4J)
+    implementation(libs.seismic)
+    implementation(libs.timber)
+    implementation(libs.timber.tressence)
+    implementation(libs.sentry)
+    implementation(libs.sentry.timber)
+    implementation(libs.zip4j)
 
     // Dagger deps
     implementation(libs.dagger)

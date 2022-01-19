@@ -32,7 +32,7 @@ dependencies {
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
 
-    implementation(Libs.LIFECYCLE_RUNTIME_KTX)
+    implementation(libs.lifecycle.runtime.ktx)
 
     implementation(libs.kotlin.serialization.json)
 }

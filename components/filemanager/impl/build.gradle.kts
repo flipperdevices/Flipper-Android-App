@@ -24,8 +24,8 @@ dependencies {
 
     implementation(projects.components.bottombar.api)
 
-    implementation(Libs.ANNOTATIONS)
-    implementation(Libs.APPCOMPAT)
+    implementation(libs.annotations)
+    implementation(libs.appcompat)
 
     implementation(libs.compose.ui)
     implementation(libs.compose.tooling)
@@ -33,12 +33,12 @@ dependencies {
     implementation(libs.compose.material)
 
     implementation(libs.kotlin.coroutines)
-    implementation(Libs.LIFECYCLE_RUNTIME_KTX)
-    implementation(Libs.LIFECYCLE_VIEWMODEL_KTX)
-    implementation(Libs.FRAGMENT_KTX)
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.ktx.fragment)
 
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
 
-    implementation(Libs.CICERONE)
+    implementation(libs.cicerone)
 }

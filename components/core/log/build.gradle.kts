@@ -3,5 +3,5 @@ plugins {
 }
 
 dependencies {
-    implementation(Libs.TIMBER)
+    implementation(libs.timber)
 }
