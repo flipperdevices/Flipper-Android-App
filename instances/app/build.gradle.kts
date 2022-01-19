@@ -46,6 +46,9 @@ dependencies {
     implementation(projects.components.connection.api)
     implementation(projects.components.connection.impl)
 
+    implementation(projects.components.keyscreen.api)
+    implementation(projects.components.keyscreen.impl)
+
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.dao.impl)
     implementation(projects.components.bridge.synchronization.api)
