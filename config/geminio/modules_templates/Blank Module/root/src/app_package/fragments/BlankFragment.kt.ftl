@@ -2,7 +2,7 @@ package ${packageName}.fragments
 
 import androidx.compose.runtime.Composable
 import com.flipperdevices.core.ui.ComposeFragment
-import ${packageName}.composable.ComposableArchive
+import ${packageName}.composable.Composable${__formattedModuleName}
 
 class ${__formattedModuleName}Fragment : ComposeFragment() {
     @Composable

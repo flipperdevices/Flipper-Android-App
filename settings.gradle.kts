@@ -70,5 +70,8 @@ include(
     ":components:archive:impl",
 
     ":components:connection:api",
-    ":components:connection:impl"
+    ":components:connection:impl",
+
+    ":components:keyscreen:api",
+    ":components:keyscreen:impl",
 )

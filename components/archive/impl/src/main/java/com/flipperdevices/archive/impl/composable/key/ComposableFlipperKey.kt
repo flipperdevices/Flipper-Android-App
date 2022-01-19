@@ -43,7 +43,8 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 )
 @Composable
 fun ComposableFlipperKey(
-    keyPath: FlipperKeyPath = FlipperKeyPath.DUMMY
+    keyPath: FlipperKeyPath = FlipperKeyPath.DUMMY,
+    onClick: () -> Unit = {}
 ) {
     Card(
         modifier = Modifier
@@ -51,7 +52,7 @@ fun ComposableFlipperKey(
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(),
-                onClick = {}
+                onClick = onClick
             ),
         shape = RoundedCornerShape(10.dp)
     ) {
@@ -108,7 +109,7 @@ private fun ComposableKeyDescription(
         Text(
             modifier = Modifier.padding(bottom = 10.dp),
             text = keyPath.fileType?.humanReadableName
-                ?: stringResource(R.string.archive_key_type_unknown),
+                ?: stringResource(DaoR.string.fileformat_unknown),
             fontWeight = FontWeight.Normal,
             color = colorResource(R.color.archive_description_keytype),
             fontSize = 16.sp

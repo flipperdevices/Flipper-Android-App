@@ -1,6 +1,7 @@
 plugins {
     androidLibrary
     id("kotlinx-serialization")
+    id("kotlin-parcelize")
 }
 
 dependencies {
