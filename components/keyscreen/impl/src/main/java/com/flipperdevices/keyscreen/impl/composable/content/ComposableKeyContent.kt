@@ -21,7 +21,7 @@ fun ComposableKeyContent(
             modifier = Modifier
                 .padding(
                     top = 18.dp,
-                    bottom = 18.dp,
+                    bottom = 18.dp
                 )
                 .fillMaxWidth(),
             thickness = 1.dp,
