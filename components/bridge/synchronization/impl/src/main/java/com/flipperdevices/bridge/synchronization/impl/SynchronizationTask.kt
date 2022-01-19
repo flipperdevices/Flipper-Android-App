@@ -90,12 +90,12 @@ class SynchronizationTask(
             "[Keys] Successful applied ${appliedKeys.size} from ${diffWithFlipper.size} changes"
         }
 
-        // End synchronization keys
-        repository.saveManifest(hashes)
-
         val favorites = FavoritesRepository().getFavorites(
             serviceApi.requestApi
         )
         favoriteApi.updateFavorites(favorites)
+
+        // End synchronization keys
+        repository.saveManifest(hashes, favorites)
     }
 }

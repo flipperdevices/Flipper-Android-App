@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.synchronization.impl.repository
 
 import android.content.Context
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.impl.di.SynchronizationComponent
 import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
 import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
@@ -20,13 +21,13 @@ class ManifestRepository {
         ComponentHolder.component<SynchronizationComponent>().inject(this)
     }
 
-    suspend fun saveManifest(keys: List<KeyWithHash>) {
-        manifestStorage.save(keys)
+    suspend fun saveManifest(keys: List<KeyWithHash>, favorites: List<FlipperKeyPath>) {
+        manifestStorage.save(keys, favorites)
     }
 
     suspend fun compareWithManifest(keys: List<KeyWithHash>): List<KeyDiff> {
         val manifestFile = manifestStorage.load()
-            ?: return keys.map { KeyDiff(it, KeyAction.ADD) }
+            ?: return keys.map { KeyDiff(it.keyPath, KeyAction.ADD) }
         val diff = mutableListOf<KeyDiff>()
         val manifestKeys = manifestFile.keys.toLinkedHashMap()
 
@@ -34,16 +35,16 @@ class ManifestRepository {
             val keyInManifest = manifestKeys.remove(key.keyPath.pathToKey)
             if (keyInManifest == null) {
                 // If key is new for us
-                diff.add(KeyDiff(key, KeyAction.ADD))
+                diff.add(KeyDiff(key.keyPath, KeyAction.ADD))
             } else if (keyInManifest.hash != key.hash) {
                 // If key exist, but content is different
-                diff.add(KeyDiff(key, KeyAction.MODIFIED))
+                diff.add(KeyDiff(key.keyPath, KeyAction.MODIFIED))
             }
         }
 
         // Add all unpresent keys as deleted
         manifestKeys.values.forEach {
-            diff.add(KeyDiff(it, KeyAction.DELETED))
+            diff.add(KeyDiff(it.keyPath, KeyAction.DELETED))
         }
 
         return diff

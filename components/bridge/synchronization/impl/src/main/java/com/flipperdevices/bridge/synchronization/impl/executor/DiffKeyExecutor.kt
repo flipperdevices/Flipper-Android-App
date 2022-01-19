@@ -35,7 +35,7 @@ class DiffKeyExecutor(
                 reportApi.reportException(
                     executeError,
                     "diffkeyexecutor",
-                    mapOf("path" to it.hashedKey.keyPath.toString())
+                    mapOf("path" to it.keyPath.toString())
                 )
             }
             return@mapNotNull null
@@ -47,7 +47,7 @@ class DiffKeyExecutor(
         target: AbstractKeyStorage,
         diff: KeyDiff
     ) {
-        val path = diff.hashedKey.keyPath
+        val path = diff.keyPath
         val targetPath = FlipperKeyPath(path.fileType!!.flipperDir, path.name)
 
         when (diff.action) {
