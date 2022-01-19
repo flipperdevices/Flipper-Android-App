@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.impl.manager.overflow
 
 import com.flipperdevices.bridge.api.model.FlipperRequest
+import com.flipperdevices.core.log.info
 import java.util.concurrent.PriorityBlockingQueue
 import java.util.concurrent.TimeUnit
 
@@ -12,11 +13,18 @@ class FlipperRequestStorageImpl : FlipperRequestStorage {
 
     override fun sendRequest(vararg requests: FlipperRequest) {
         queue.addAll(requests)
+        info { "Add new request. New request storage size: ${queue.size}" }
     }
 
     override suspend fun getNextRequest(timeout: Long): FlipperRequest? {
-        return runCatching {
+        val request = runCatching {
             queue.poll(timeout, TimeUnit.MILLISECONDS)
         }.getOrNull()
+
+        if (request != null) {
+            info { "Remove request from queue and new queue size is ${queue.size}" }
+        }
+
+        return request
     }
 }
