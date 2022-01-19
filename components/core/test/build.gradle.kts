@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-    implementation(TestingLib.JUNIT)
+    implementation(libs.junit)
     implementation(libs.timber)
 }

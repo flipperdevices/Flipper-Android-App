@@ -39,9 +39,9 @@ dependencies {
     kapt(libs.dagger.kapt)
 
     testImplementation(projects.components.core.test)
-    testImplementation(TestingLib.JUNIT)
-    testImplementation(TestingLib.MOCKITO)
-    testImplementation(TestingLib.ANDROIDX_TEST_EXT_JUNIT)
-    testImplementation(TestingLib.ROBOELECTRIC)
+    testImplementation(libs.junit)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.ktx.testing)
+    testImplementation(libs.roboelectric)
     testImplementation(libs.lifecycle.test)
 }
