@@ -17,7 +17,7 @@ subprojects {
     }
 
     ktlint {
-        version.set(Versions.KTLINT)
+        version.set(libs.versions.ktlint.runtime.get())
         android.set(true)
         verbose.set(true)
         outputToConsole.set(true)
@@ -32,8 +32,4 @@ subprojects {
     detekt {
         config = rootProject.files("config/detekt/detekt.yml")
     }
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
 }

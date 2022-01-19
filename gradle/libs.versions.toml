@@ -40,6 +40,9 @@ junit = "4.12"
 mockito = "4.0.0"
 roboelectric = "4.6.1"
 
+ktlint-runtime = "0.44.0-SNAPSHOT"
+ktlint-gradle = "10.2.0"
+
 [libraries]
 # Gradle - Core
 android-gradle = { module = "com.android.tools.build:gradle", version.ref = "android-gradle" }
