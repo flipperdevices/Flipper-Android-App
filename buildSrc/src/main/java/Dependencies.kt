@@ -5,10 +5,6 @@
 object Versions {
     const val KTLINT = "0.44.0-SNAPSHOT"
 
-    const val ANDROIDX_APPCOMPAT = "1.4.0"
-    const val ANDROID_ANNOTATIONS = "1.3.0"
-    const val PROTOBUF = "3.19.0"
-
     // Test
     const val ANDROIDX_TEST = "1.2.0"
     const val ANDROIDX_TEST_EXT = "1.1.3"
@@ -20,14 +16,6 @@ object Versions {
 object GradlePlugins {
     const val DETEKT = "1.19.0"
     const val KTLINT = "10.2.0"
-}
-
-object Libs {
-    // Protobuf
-    const val PROTOBUF_JAVALITE = "com.google.protobuf:protobuf-javalite:${Versions.PROTOBUF}"
-    const val PROTOBUF_GROUP = "com.google.protobuf"
-    const val PROTOBUF_KOTLIN = "com.google.protobuf:protobuf-kotlin:${Versions.PROTOBUF}"
-    const val PROTOBUF_PROTOC = "com.google.protobuf:protoc:${Versions.PROTOBUF}"
 }
 
 object TestingLib {

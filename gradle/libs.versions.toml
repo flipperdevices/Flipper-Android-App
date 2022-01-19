@@ -5,7 +5,8 @@ ksp = "1.6.0-1.0.2"
 serialization = "1.3.1"
 anvil = "2.3.10-1-6-0"
 android-gradle = "7.0.4"
-protobuf = "0.8.17"
+protobuf = "3.19.0"
+protobuf-gradle = "0.8.17"
 # Temporary solution: please, change also in androidCompose.gradle.kts
 compose = "1.1.0-beta04"
 compose_accompanist = "0.20.2"
@@ -51,7 +52,7 @@ kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-te
 kotlin-serialization-gradle = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "serialization" }
 kotlin-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 
-protobuf-gradle = { module = "com.google.protobuf:protobuf-gradle-plugin", version.ref = "protobuf" }
+protobuf-gradle = { module = "com.google.protobuf:protobuf-gradle-plugin", version.ref = "protobuf-gradle" }
 
 # UI
 material = { module = "com.google.android.material:material", version.ref = "material" }
@@ -124,6 +125,8 @@ image-glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide
 image-lottie = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie" }
 
 # Protobuf
-
+protobuf-javalite = { module = "com.google.protobuf:protobuf-javalite", version.ref = "protobuf" }
+protobuf-kotlin = { module = "com.google.protobuf:protobuf-kotlin", version.ref = "protobuf" }
+protobuf-protoc = { module = "com.google.protobuf:protoc", version.ref = "protobuf" }
 
 [bundles]
