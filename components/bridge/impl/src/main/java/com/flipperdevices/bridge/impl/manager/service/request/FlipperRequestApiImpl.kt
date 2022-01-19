@@ -58,7 +58,7 @@ class FlipperRequestApiImpl(
 
     @Suppress("BlockingMethodInNonBlockingContext")
     override fun request(command: FlipperRequest): Flow<Flipper.Main> = channelFlow {
-        verbose { "Request $command" }
+        verbose { "Pending commands count: ${requestListeners.size()}. Request $command" }
         // Generate unique ID for each command
         val uniqueId = findEmptyId()
         val requestWithId = command.copy(
@@ -86,7 +86,7 @@ class FlipperRequestApiImpl(
     }
 
     override suspend fun request(commandFlow: Flow<FlipperRequest>): Flipper.Main {
-        verbose { "Request command flow" }
+        verbose { "Pending commands count: ${requestListeners.size()}. Request command flow" }
         // Generate unique ID for each command
         val uniqueId = findEmptyId()
         val commandAnswer = scope.async { awaitCommandAnswer(uniqueId) }
@@ -144,7 +144,7 @@ class FlipperRequestApiImpl(
     private suspend fun awaitCommandAnswer(
         uniqueId: Int
     ): Flipper.Main = suspendCancellableCoroutine { cont ->
-        requestListeners[uniqueId] = {
+        requestListeners.put(uniqueId) {
             requestListeners.remove(uniqueId)
             cont.resume(it) { throwable ->
                 error(throwable) { "Error on resume execution of $uniqueId command. Answer is $it" }

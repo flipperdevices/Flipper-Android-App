@@ -71,6 +71,8 @@ class SynchronizationTask(
             info { "[Hash] Progress is ${it.currentPosition}/${it.maxPosition}: ${it.text}" }
         }
 
+        info { "Finish receive hashes: $hashes" }
+
         // Compare hashes with local snapshot
         val repository = ManifestRepository()
         val diffWithFlipper = repository.compareWithManifest(hashes)

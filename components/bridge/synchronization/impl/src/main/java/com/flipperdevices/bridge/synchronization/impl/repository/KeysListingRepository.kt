@@ -8,6 +8,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.impl.model.ResultWithProgress
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.debug
+import com.flipperdevices.core.log.info
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.Storage
 import com.flipperdevices.protobuf.storage.listRequest
@@ -23,9 +24,10 @@ class KeysListingRepository : LogTagProvider {
     fun getAllKeys(
         requestApi: FlipperRequestApi
     ) = callbackFlow<ResultWithProgress<List<FlipperKeyPath>>> {
+        info { "Start request keys listing" }
         val allKeys = mutableListOf<FlipperKeyPath>()
-        FlipperFileType.values().forEach { fileType ->
-            send(ResultWithProgress.InProgress())
+        FlipperFileType.values().forEachIndexed { index, fileType ->
+            send(ResultWithProgress.InProgress(index, FlipperFileType.values().size))
             allKeys.addAll(getKeysForFileType(requestApi, fileType))
         }
         send(ResultWithProgress.Completed(allKeys))

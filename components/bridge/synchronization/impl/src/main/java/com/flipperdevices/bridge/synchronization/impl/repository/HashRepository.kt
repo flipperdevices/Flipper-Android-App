@@ -7,6 +7,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.impl.model.KeyWithHash
 import com.flipperdevices.bridge.synchronization.impl.model.ResultWithProgress
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.md5sumRequest
 import java.util.concurrent.atomic.AtomicInteger
@@ -22,6 +23,7 @@ class HashRepository : LogTagProvider {
         keys: List<FlipperKeyPath>
     ) = callbackFlow {
         val alreadyHashReceiveCounter = AtomicInteger(0)
+        info { "Start request hashes for ${keys.size} keys" }
 
         val hashList = keys.map { keyPath ->
             async {
