@@ -8,4 +8,6 @@ interface FavoriteApi {
     suspend fun updateFavorites(keys: List<FlipperKeyPath>)
 
     suspend fun getFavoritesFlow(): Flow<List<FlipperKey>>
+
+    suspend fun getFavorites(): List<FlipperKey>
 }

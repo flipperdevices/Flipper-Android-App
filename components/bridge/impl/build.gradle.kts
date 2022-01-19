@@ -26,6 +26,7 @@ dependencies {
 
     implementation(libs.fastutil)
 
+    // Testing
     testImplementation(projects.components.core.test)
     testImplementation(libs.junit)
     testImplementation(libs.mockito.kotlin)
