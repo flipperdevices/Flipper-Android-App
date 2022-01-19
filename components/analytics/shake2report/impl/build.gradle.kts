@@ -9,8 +9,8 @@ dependencies {
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.di)
 
-    implementation(Libs.ANNOTATIONS)
-    implementation(Libs.APPCOMPAT)
+    implementation(libs.annotations)
+    implementation(libs.appcompat)
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.lifecycle.runtime.ktx)

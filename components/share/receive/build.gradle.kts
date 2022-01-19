@@ -19,8 +19,8 @@ dependencies {
     implementation(projects.components.bridge.protobuf)
     implementation(projects.components.bridge.service.api)
 
-    implementation(Libs.ANNOTATIONS)
-    implementation(Libs.APPCOMPAT)
+    implementation(libs.annotations)
+    implementation(libs.appcompat)
 
     // Compose
     implementation(libs.compose.ui)

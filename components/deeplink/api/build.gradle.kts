@@ -4,6 +4,6 @@ plugins {
 }
 
 dependencies {
-    implementation(Libs.ANNOTATIONS)
-    implementation(Libs.APPCOMPAT)
+    implementation(libs.annotations)
+    implementation(libs.appcompat)
 }

@@ -21,9 +21,9 @@ dependencies {
 
     // Core deps
     implementation(libs.ktx)
-    implementation(Libs.ANNOTATIONS)
+    implementation(libs.annotations)
 
-    implementation(Libs.APPCOMPAT)
+    implementation(libs.appcompat)
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
 

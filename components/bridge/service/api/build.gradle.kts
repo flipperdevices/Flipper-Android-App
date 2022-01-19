@@ -5,6 +5,6 @@ plugins {
 dependencies {
     implementation(projects.components.bridge.api)
 
-    implementation(Libs.ANNOTATIONS)
-    implementation(Libs.APPCOMPAT)
+    implementation(libs.annotations)
+    implementation(libs.appcompat)
 }

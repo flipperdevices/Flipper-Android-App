@@ -15,8 +15,8 @@ dependencies {
 
     implementation(projects.components.singleactivity.api)
 
-    implementation(Libs.ANNOTATIONS)
-    implementation(Libs.APPCOMPAT)
+    implementation(libs.annotations)
+    implementation(libs.appcompat)
 
     // Dagger deps
     implementation(libs.dagger)

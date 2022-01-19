@@ -12,9 +12,9 @@ dependencies {
     implementation(projects.components.bridge.protobuf)
 
     implementation(libs.kotlin.coroutines)
-    implementation(Libs.ANNOTATIONS)
+    implementation(libs.annotations)
     implementation(libs.ktx)
-    implementation(Libs.APPCOMPAT)
+    implementation(libs.appcompat)
 
     implementation(libs.ble.scan)
     implementation(libs.ble)

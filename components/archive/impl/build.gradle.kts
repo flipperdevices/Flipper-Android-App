@@ -17,8 +17,8 @@ dependencies {
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.synchronization.api)
 
-    implementation(Libs.ANNOTATIONS)
-    implementation(Libs.APPCOMPAT)
+    implementation(libs.annotations)
+    implementation(libs.appcompat)
 
     // Compose
     implementation(libs.compose.ui)

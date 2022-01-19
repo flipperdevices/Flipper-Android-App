@@ -12,5 +12,5 @@ dependencies {
     implementation(libs.ble.scan)
     implementation(libs.ble.ktx)
 
-    implementation(Libs.APPCOMPAT)
+    implementation(libs.appcompat)
 }

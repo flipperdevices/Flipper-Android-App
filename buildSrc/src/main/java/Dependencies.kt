@@ -23,9 +23,6 @@ object GradlePlugins {
 }
 
 object Libs {
-    const val ANNOTATIONS = "androidx.annotation:annotation:${Versions.ANDROID_ANNOTATIONS}"
-    const val APPCOMPAT = "androidx.appcompat:appcompat:${Versions.ANDROIDX_APPCOMPAT}"
-
     // Protobuf
     const val PROTOBUF_JAVALITE = "com.google.protobuf:protobuf-javalite:${Versions.PROTOBUF}"
     const val PROTOBUF_GROUP = "com.google.protobuf"

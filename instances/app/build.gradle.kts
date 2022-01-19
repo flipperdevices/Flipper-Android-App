@@ -62,9 +62,9 @@ dependencies {
     debugImplementation(projects.components.analytics.shake2report.impl)
     add("internalImplementation", projects.components.analytics.shake2report.impl)
 
-    implementation(Libs.ANNOTATIONS)
+    implementation(libs.annotations)
     implementation(libs.ktx)
-    implementation(Libs.APPCOMPAT)
+    implementation(libs.appcompat)
     implementation(libs.material)
 
     implementation(libs.kotlin.coroutines)

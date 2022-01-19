@@ -8,7 +8,7 @@ dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.bottombar.api)
 
-    implementation(Libs.APPCOMPAT)
+    implementation(libs.appcompat)
 
     implementation(libs.cicerone)
 

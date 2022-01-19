@@ -5,8 +5,8 @@ plugins {
 dependencies {
     implementation(projects.components.core.ui)
 
-    implementation(Libs.ANNOTATIONS)
-    implementation(Libs.APPCOMPAT)
+    implementation(libs.annotations)
+    implementation(libs.appcompat)
 
     // Compose
     implementation(libs.compose.ui)

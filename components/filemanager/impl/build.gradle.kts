@@ -24,8 +24,8 @@ dependencies {
 
     implementation(projects.components.bottombar.api)
 
-    implementation(Libs.ANNOTATIONS)
-    implementation(Libs.APPCOMPAT)
+    implementation(libs.annotations)
+    implementation(libs.appcompat)
 
     implementation(libs.compose.ui)
     implementation(libs.compose.tooling)

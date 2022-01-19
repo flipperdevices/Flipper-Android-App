@@ -15,7 +15,7 @@ dependencies {
     implementation(projects.components.archive.api)
     implementation(projects.components.pair.api)
 
-    implementation(Libs.APPCOMPAT)
+    implementation(libs.appcompat)
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
 
