@@ -1,7 +1,6 @@
 package com.flipperdevices.bridge.impl.manager.service.request
 
 import android.bluetooth.BluetoothGatt
-import android.util.SparseArray
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequest
 import com.flipperdevices.bridge.api.model.FlipperSerialSpeed
@@ -11,14 +10,16 @@ import com.flipperdevices.bridge.impl.manager.overflow.FlipperRequestStorage
 import com.flipperdevices.bridge.impl.manager.overflow.FlipperRequestStorageImpl
 import com.flipperdevices.bridge.impl.manager.overflow.FlipperSerialOverflowThrottler
 import com.flipperdevices.bridge.impl.manager.service.BluetoothGattServiceWrapper
+import com.flipperdevices.core.ktx.jre.updateAndGetSafe
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.log.warn
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.copy
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.atomic.AtomicInteger
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -40,8 +41,8 @@ class FlipperRequestApiImpl(
     BluetoothGattServiceWrapper,
     LogTagProvider {
     override val TAG = "FlipperRequestApi"
-    private var idCounter = 1
-    private val requestListeners = SparseArray<OnReceiveResponse>()
+    private var idCounter = AtomicInteger(1)
+    private val requestListeners = ConcurrentHashMap<Int, OnReceiveResponse>()
     private val notificationMutableFlow = MutableSharedFlow<Flipper.Main>()
 
     private val serialApiUnsafe = FlipperSerialApiImpl(scope)
@@ -58,7 +59,7 @@ class FlipperRequestApiImpl(
 
     @Suppress("BlockingMethodInNonBlockingContext")
     override fun request(command: FlipperRequest): Flow<Flipper.Main> = channelFlow {
-        verbose { "Pending commands count: ${requestListeners.size()}. Request $command" }
+        verbose { "Pending commands count: ${requestListeners.size}. Request $command" }
         // Generate unique ID for each command
         val uniqueId = findEmptyId()
         val requestWithId = command.copy(
@@ -68,9 +69,7 @@ class FlipperRequestApiImpl(
         )
 
         // Add answer listener to listeners
-        requestListeners.put(
-            uniqueId
-        ) {
+        requestListeners[uniqueId] = {
             send(it)
             if (!it.hasNext) {
                 requestListeners.remove(uniqueId)
@@ -86,7 +85,7 @@ class FlipperRequestApiImpl(
     }
 
     override suspend fun request(commandFlow: Flow<FlipperRequest>): Flipper.Main {
-        verbose { "Pending commands count: ${requestListeners.size()}. Request command flow" }
+        verbose { "Pending commands count: ${requestListeners.size}. Request command flow" }
         // Generate unique ID for each command
         val uniqueId = findEmptyId()
         val commandAnswer = scope.async { awaitCommandAnswer(uniqueId) }
@@ -111,7 +110,6 @@ class FlipperRequestApiImpl(
         return serialApiUnsafe.getSpeed()
     }
 
-    @ObsoleteCoroutinesApi
     private fun subscribeToAnswers() {
         val reader = PeripheralResponseReader(scope)
         scope.launch {
@@ -133,18 +131,21 @@ class FlipperRequestApiImpl(
     }
 
     private fun findEmptyId(): Int {
+        var counter: Int
         do {
-            if (idCounter == Int.MAX_VALUE) {
-                idCounter = 1
-            } else idCounter++
-        } while (requestListeners[idCounter] != null)
-        return idCounter
+            counter = idCounter.updateAndGetSafe {
+                if (it == Int.MAX_VALUE) {
+                    return@updateAndGetSafe 1
+                } else return@updateAndGetSafe it + 1
+            }
+        } while (requestListeners[counter] != null)
+        return counter
     }
 
     private suspend fun awaitCommandAnswer(
         uniqueId: Int
     ): Flipper.Main = suspendCancellableCoroutine { cont ->
-        requestListeners.put(uniqueId) {
+        requestListeners[uniqueId] = {
             requestListeners.remove(uniqueId)
             cont.resume(it) { throwable ->
                 error(throwable) { "Error on resume execution of $uniqueId command. Answer is $it" }

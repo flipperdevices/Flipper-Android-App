@@ -12,4 +12,6 @@ interface FavoriteApi {
     suspend fun setFavorite(keyPath: FlipperKeyPath, isFavorite: Boolean)
 
     suspend fun getFavoritesFlow(): Flow<List<FlipperKey>>
+
+    suspend fun getFavorites(): List<FlipperKey>
 }
