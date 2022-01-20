@@ -35,7 +35,7 @@ fun ComposableKeyAction(viewModel: KeyScreenViewModel, keyScreenState: KeyScreen
                     viewModel.setFavorite(!keyScreenState.isFavorite)
                 },
                 interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple(),
+                indication = rememberRipple()
             ),
         contentAlignment = Alignment.CenterStart
     ) {
