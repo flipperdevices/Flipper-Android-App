@@ -35,4 +35,13 @@ dependencies {
     implementation(libs.lifecycle.runtime.ktx)
 
     implementation(libs.kotlin.serialization.json)
+
+    // Testing
+    testImplementation(projects.components.core.test)
+    testImplementation(libs.junit)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.ktx.testing)
+    testImplementation(libs.roboelectric)
+    testImplementation(libs.lifecycle.test)
+    testImplementation(libs.kotlin.coroutines.test)
 }

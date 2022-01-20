@@ -55,4 +55,13 @@ class FavoriteImpl @Inject constructor(
             }.sortedBy { (order, _) -> order }.map { it.second }
         }
     }
+
+    override suspend fun getFavorites(): List<FlipperKey> = withContext(Dispatchers.IO) {
+        return@withContext favoriteDao.getAll().map { (favoriteKey, key) ->
+            favoriteKey.order to FlipperKey(
+                key.path,
+                FlipperKeyContent.InternalFile(File(key.filePath))
+            )
+        }.sortedBy { (order, _) -> order }.map { it.second }
+    }
 }
