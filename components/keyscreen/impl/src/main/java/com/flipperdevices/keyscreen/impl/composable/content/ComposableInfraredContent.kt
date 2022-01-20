@@ -9,7 +9,7 @@ fun ComposableInfraredContent(infrared: FlipperKeyParsed.Infrared) {
     ComposableKeyContent(
         lines = listOf(
             FlipperFileType.INFRARED.humanReadableName,
-            infrared.protocol?.let { "Protocol: $it" },
+            infrared.protocol?.let { "Protocol: $it" }
         )
     )
 }
