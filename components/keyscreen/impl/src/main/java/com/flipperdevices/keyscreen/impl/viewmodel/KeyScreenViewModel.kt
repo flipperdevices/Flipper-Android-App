@@ -2,6 +2,7 @@ package com.flipperdevices.keyscreen.impl.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.delegates.KeyApi
 import com.flipperdevices.bridge.dao.api.delegates.KeyParser
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
@@ -23,6 +24,9 @@ class KeyScreenViewModel(
     lateinit var keyApi: KeyApi
 
     @Inject
+    lateinit var favoriteApi: FavoriteApi
+
+    @Inject
     lateinit var keyParser: KeyParser
 
     private val keyScreenState = MutableStateFlow<KeyScreenState>(KeyScreenState.InProgress)
@@ -40,13 +44,27 @@ class KeyScreenViewModel(
                     KeyScreenState.Error(R.string.keyscreen_error_notfound_key)
                 }
                 return@launch
-            } else {
-                val parsedKey = keyParser.parseKey(flipperKey)
-                keyScreenState.update { KeyScreenState.Ready(parsedKey) }
-                return@launch
             }
+
+            val parsedKey = keyParser.parseKey(flipperKey)
+            val isFavorite = favoriteApi.isFavorite(keyPathNotNull)
+            keyScreenState.update { KeyScreenState.Ready(parsedKey, isFavorite) }
+            return@launch
         }
     }
 
     fun getKeyScreenState(): StateFlow<KeyScreenState> = keyScreenState
+
+    fun setFavorite(isFavorite: Boolean) {
+        val keyPathNotNull = keyPath ?: return
+        viewModelScope.launch {
+            favoriteApi.setFavorite(keyPathNotNull, isFavorite)
+            keyScreenState.update {
+                if (it is KeyScreenState.Ready) KeyScreenState.Ready(
+                    it.parsedKey,
+                    isFavorite
+                ) else it
+            }
+        }
+    }
 }

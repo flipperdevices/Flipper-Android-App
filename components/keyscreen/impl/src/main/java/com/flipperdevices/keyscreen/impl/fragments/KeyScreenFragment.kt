@@ -21,7 +21,7 @@ class KeyScreenFragment : ComposeFragment() {
     @Composable
     override fun RenderView() {
         val keyScreenState by viewModel.getKeyScreenState().collectAsState()
-        ComposableKeyScreen(keyScreenState)
+        ComposableKeyScreen(viewModel, keyScreenState)
     }
 
     companion object {

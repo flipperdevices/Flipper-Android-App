@@ -7,5 +7,9 @@ import kotlinx.coroutines.flow.Flow
 interface FavoriteApi {
     suspend fun updateFavorites(keys: List<FlipperKeyPath>)
 
+    suspend fun isFavorite(keyPath: FlipperKeyPath): Boolean
+
+    suspend fun setFavorite(keyPath: FlipperKeyPath, isFavorite: Boolean)
+
     suspend fun getFavoritesFlow(): Flow<List<FlipperKey>>
 }
