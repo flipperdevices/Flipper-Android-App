@@ -25,7 +25,11 @@ import androidx.compose.ui.unit.sp
 import com.flipperdevices.bridge.dao.api.R as DaoR
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.keyscreen.impl.R
+import com.flipperdevices.keyscreen.impl.composable.content.ComposableIButtonContent
+import com.flipperdevices.keyscreen.impl.composable.content.ComposableInfraredContent
+import com.flipperdevices.keyscreen.impl.composable.content.ComposableNFCContent
 import com.flipperdevices.keyscreen.impl.composable.content.ComposableRFIDContent
+import com.flipperdevices.keyscreen.impl.composable.content.ComposableSubGhzContent
 
 @Composable
 fun ComposableKeyCard(parsedKey: FlipperKeyParsed) {
@@ -103,6 +107,10 @@ private fun ComposableKeyIcon(parsedKey: FlipperKeyParsed, modifier: Modifier = 
 private fun ComposableKeyContent(keyParsed: FlipperKeyParsed) {
     when (keyParsed) {
         is FlipperKeyParsed.RFID -> ComposableRFIDContent(keyParsed)
+        is FlipperKeyParsed.IButton -> ComposableIButtonContent(keyParsed)
+        is FlipperKeyParsed.Infrared -> ComposableInfraredContent(keyParsed)
+        is FlipperKeyParsed.NFC -> ComposableNFCContent(keyParsed)
+        is FlipperKeyParsed.SubGhz -> ComposableSubGhzContent(keyParsed)
         is FlipperKeyParsed.Unrecognized -> return
     }
 }

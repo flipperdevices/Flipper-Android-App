@@ -5,12 +5,12 @@ import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 
 @Composable
-fun ComposableRFIDContent(rfid: FlipperKeyParsed.RFID) {
+fun ComposableIButtonContent(iButton: FlipperKeyParsed.IButton) {
     ComposableKeyContent(
         lines = listOf(
-            FlipperFileType.RFID.humanReadableName,
-            rfid.keyType?.let { "Key type: $it" },
-            rfid.data?.let { "Data: $it" }
+            FlipperFileType.I_BUTTON.humanReadableName,
+            iButton.keyType?.let { "Key type: $it" },
+            iButton.data?.let { "Data: $it" }
         )
     )
 }
