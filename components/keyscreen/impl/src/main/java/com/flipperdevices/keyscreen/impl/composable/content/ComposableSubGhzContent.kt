@@ -5,12 +5,12 @@ import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 
 @Composable
-fun ComposableRFIDContent(rfid: FlipperKeyParsed.RFID) {
+fun ComposableSubGhzContent(subghz: FlipperKeyParsed.SubGhz) {
     ComposableKeyContent(
         lines = listOf(
-            FlipperFileType.RFID.humanReadableName,
-            rfid.keyType?.let { "Key type: $it" },
-            rfid.data?.let { "Data: $it" }
+            FlipperFileType.SUB_GHZ.humanReadableName,
+            subghz.protocol?.let { "Protocol: $it" },
+            subghz.key?.let { "Key: $it" }
         )
     )
 }

@@ -5,12 +5,12 @@ import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 
 @Composable
-fun ComposableRFIDContent(rfid: FlipperKeyParsed.RFID) {
+fun ComposableNFCContent(nfc: FlipperKeyParsed.NFC) {
     ComposableKeyContent(
         lines = listOf(
-            FlipperFileType.RFID.humanReadableName,
-            rfid.keyType?.let { "Key type: $it" },
-            rfid.data?.let { "Data: $it" }
+            FlipperFileType.NFC.humanReadableName,
+            nfc.deviceType?.let { "Device type: $it" },
+            nfc.uid?.let { "Uid: $it" }
         )
     )
 }

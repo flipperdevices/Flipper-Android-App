@@ -38,9 +38,10 @@ class KeyParserImpl @Inject constructor() : KeyParser {
         flipperKey: FlipperKey
     ): FlipperKeyParsed = withContext(Dispatchers.IO) {
         val parser = parsers[flipperKey.path.fileType] ?: unrecognizedParser
-        val keyContentAsPairs = flipperKey.keyContent.stream().use {
+        val fileContent = flipperKey.keyContent.stream().use {
             it.readBytes().toString(Charset.defaultCharset())
-        }.split("\n")
+        }
+        val keyContentAsPairs = fileContent.split("\n")
             .filterNot { it.startsWith("#") }
             .map { it.substringBefore(":").trim() to it.substringAfter(":").trim() }
         return@withContext parser.parseKey(flipperKey, keyContentAsPairs)
