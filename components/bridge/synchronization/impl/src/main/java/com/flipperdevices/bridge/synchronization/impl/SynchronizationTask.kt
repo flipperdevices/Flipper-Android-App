@@ -77,7 +77,7 @@ class SynchronizationTask(
     private suspend fun syncKeys(
         requestApi: FlipperRequestApi,
         manifestRepository: ManifestRepository,
-        flipperStorage: FlipperKeyStorage,
+        flipperStorage: FlipperKeyStorage
     ): List<KeyWithHash> {
         // Get keys listing
         val keys = KeysListingRepository().getAllKeys(requestApi).trackProgressAndReturn {
