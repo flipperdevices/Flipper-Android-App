@@ -2,4 +2,5 @@
 <resources>
     <color name="keyscreen_text_gray">#A0A0A0</color>
     <color name="keyscreen_devider">#989898</color>
+    <color name="keyscreen_favorite_enabled">#FFCA28</color>
 </resources>

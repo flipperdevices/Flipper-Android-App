@@ -45,6 +45,34 @@ class FavoriteImpl @Inject constructor(
         favoriteDao.insert(favoriteKeys)
     }
 
+    override suspend fun isFavorite(keyPath: FlipperKeyPath) = withContext(Dispatchers.IO) {
+        val favoritesResponse = favoriteDao.isFavorite(keyPath)
+        return@withContext favoritesResponse.isNotEmpty()
+    }
+
+    override suspend fun setFavorite(
+        keyPath: FlipperKeyPath,
+        isFavorite: Boolean
+    ) = withContext(Dispatchers.IO) {
+        val uid = keyDao.getByPath(keyPath)?.uid ?: return@withContext
+        val favoriteKey = favoriteDao.getFavoriteByKeyId(uid)
+        if (favoriteKey != null) {
+            if (!isFavorite) {
+                favoriteDao.delete(favoriteKey)
+            } // else do nothing
+            return@withContext
+        }
+
+        favoriteDao.insert(
+            listOf(
+                FavoriteKey(
+                    keyId = uid,
+                    order = favoriteDao.maxOrderCount() + 1
+                )
+            )
+        )
+    }
+
     override suspend fun getFavoritesFlow(): Flow<List<FlipperKey>> = withContext(Dispatchers.IO) {
         return@withContext favoriteDao.subscribe().map { keys ->
             keys.map { (favoriteKey, key) ->

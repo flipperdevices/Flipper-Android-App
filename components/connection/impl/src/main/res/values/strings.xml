@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="connection_status_ok_pic_desc">Synchronization finished</string>
-    <string name="connection_status_synchronization_title">Synchronization…</string>
+    <string name="connection_status_synchronization_title">Syncing…</string>
     <string name="connection_status_synchronization_pic_desc">Synchronization in progress</string>
     <string name="connection_status_bluetooth_pic_desc">Bluetooth connection established</string>
     <string name="connection_status_bluetooth_connecting_pic_desc">Connecting to device…</string>

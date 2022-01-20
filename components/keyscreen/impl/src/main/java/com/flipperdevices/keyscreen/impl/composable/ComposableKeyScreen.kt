@@ -13,21 +13,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.keyscreen.impl.model.KeyScreenState
+import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModel
 
-@Preview(
-    showSystemUi = true,
-    showBackground = true
-)
 @Composable
-fun ComposableKeyScreen(keyScreenState: KeyScreenState = KeyScreenState.InProgress) {
+fun ComposableKeyScreen(
+    viewModel: KeyScreenViewModel,
+    keyScreenState: KeyScreenState = KeyScreenState.InProgress
+) {
     when (keyScreenState) {
         KeyScreenState.InProgress -> ComposableKeyInitial()
         is KeyScreenState.Error -> ComposableKeyError(keyScreenState)
-        is KeyScreenState.Ready -> ComposableKeyParsed(keyScreenState.parsedKey)
+        is KeyScreenState.Ready -> ComposableKeyParsed(viewModel, keyScreenState)
     }
 }
 
@@ -56,9 +54,13 @@ private fun ComposableKeyError(error: KeyScreenState.Error) {
 }
 
 @Composable
-private fun ComposableKeyParsed(keyParsed: FlipperKeyParsed) {
+private fun ComposableKeyParsed(
+    viewModel: KeyScreenViewModel,
+    keyScreenState: KeyScreenState.Ready
+) {
     val scrollState = rememberScrollState()
     Column(modifier = Modifier.verticalScroll(scrollState)) {
-        ComposableKeyCard(keyParsed)
+        ComposableKeyCard(keyScreenState.parsedKey)
+        ComposableKeyAction(viewModel, keyScreenState)
     }
 }
