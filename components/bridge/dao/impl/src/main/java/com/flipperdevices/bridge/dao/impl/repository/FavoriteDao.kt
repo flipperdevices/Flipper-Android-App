@@ -23,7 +23,7 @@ interface FavoriteDao {
             SELECT * FROM favorite_keys 
             JOIN keys ON favorite_keys.key_id = keys.uid 
             WHERE keys.path = :keyPath
-            """
+        """
     )
     suspend fun isFavorite(keyPath: FlipperKeyPath): Map<FavoriteKey, Key>
 
