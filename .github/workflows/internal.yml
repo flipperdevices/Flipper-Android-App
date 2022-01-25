@@ -6,9 +6,6 @@ on:
       - 'dev'
       - 'ci/fix_version_number'
 
-env:
-  VERSION: 0.3
-
 jobs:
   build_internal_release:
     name: Build Internal AAB and APK
