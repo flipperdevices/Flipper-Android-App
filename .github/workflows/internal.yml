@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - 'dev'
-      - 'ci/fix_version_number'
 
 jobs:
   build_internal_release:
