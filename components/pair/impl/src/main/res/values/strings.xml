@@ -31,11 +31,7 @@
     <string name="pair_tos_welcome">Welcome to Flipper Zero App</string>
     <string name="pair_tos_pic_welcome">Welcome to Flipper picture</string>
     <string name="pair_tos_title">Terms and conditions</string>
-    <string name="pair_tos_description">In order to provide you the best service, Flipper App needs to collect following information only for increasing our product quality: </string>
-    <string name="pair_tos_collect_point_1">Personal information</string>
-    <string name="pair_tos_collect_point_2">Saved private user data</string>
-    <string name="pair_tos_collect_point_3">Device and network information</string>
-    <string name="pair_tos_collect_point_4">Your life</string>
+    <string name="pair_tos_description">It is very important to remember that this is an early alpha version of the application. Please report bugs you find. Together we will make this app better</string>
     <string name="pair_tos_footer_user_agreement">User Agreement</string>
     <string name="pair_tos_footer_user_agreement_link">https://www.google.com/search?q=User+Agreement</string>
     <string name="pair_tos_footer_privacy_policy">Privacy Policy</string>

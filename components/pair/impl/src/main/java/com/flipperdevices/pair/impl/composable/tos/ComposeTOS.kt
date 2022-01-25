@@ -83,11 +83,7 @@ fun TOSContent() {
             text = stringResource(R.string.pair_tos_description),
             fontSize = 14.sp
         )
-        TOSPoint(R.string.pair_tos_collect_point_1)
-        TOSPoint(R.string.pair_tos_collect_point_2)
-        TOSPoint(R.string.pair_tos_collect_point_3)
-        TOSPoint(R.string.pair_tos_collect_point_4)
-        TOSFooter()
+        // TOSFooter()
     }
 }
 
