@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - 'dev'
+      - 'ci/fix_version_number'
 
 env:
   VERSION: 0.3
@@ -12,6 +13,9 @@ jobs:
   build_internal_release:
     name: Build Internal AAB and APK
     runs-on: ubuntu-latest
+    outputs:
+      major_version: ${{ steps.vars.outputs.major_version }}
+      minor_version: ${{ steps.vars.outputs.minor_version }}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -21,21 +25,22 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '11'
-      - name: 'Set variables'
-        id: vars
-        run: |
-          export $(cat .github/workflows/version.env | xargs)
-          echo "::set-output name=major_version::${MAJOR_VERSION}"
       - name: Generate build number
         id: buildnumber
         uses: einaregilsson/build-number@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+      - name: 'Set variables'
+        id: vars
+        run: |
+          export $(cat .github/workflows/version.env | xargs)
+          echo "::set-output name=major_version::${MAJOR_VERSION}"
+          echo "::set-output name=minor_version::${{ steps.buildnumber.outputs.build_number }}"
       - name: Build internal release
         run: |
           ./gradlew :instances:app:assembleInternal :instances:app:bundleInternal \
             -Dversion_code=${{ steps.buildnumber.outputs.build_number }} \
-            -Dversion_name="${{ steps.vars.outputs.major_version }}.${{ steps.buildnumber.outputs.build_number }}"
+            -Dversion_name="${{ steps.vars.outputs.major_version }}.${{ steps.vars.outputs.minor_version }}"
       - name: Sign AAB
         id: sign_aab
         uses: r0adkll/sign-android-release@v1
@@ -105,14 +110,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: build_internal_release
     steps:
-      - uses: actions/checkout@v2
-        with:
-          submodules: 'recursive'
-      - name: 'Set variables'
-        id: vars
-        run: |
-          export $(cat .github/workflows/version.env | xargs)
-          echo "::set-output name=major_version::${MAJOR_VERSION}"
       - uses: actions/download-artifact@v2
         id: download
         with:
@@ -126,7 +123,7 @@ jobs:
           files: |
             ${{steps.download.outputs.download-path}}/flipper-zero.apk
             ${{steps.download.outputs.download-path}}/mapping.txt
-          tag_name: ${{ steps.vars.outputs.major_version }}.${{ github.run_number }}
-          name: Flipper App ${{ steps.vars.outputs.major_version }}.${{ github.run_number }}
+          tag_name: ${{ needs.build_internal_release.outputs.major_version }}.${{ needs.build_internal_release.outputs.minor_version }}
+          name: Flipper App ${{ needs.build_internal_release.outputs.major_version }}.${{ needs.build_internal_release.outputs.minor_version }}
           draft: false
           prerelease: true
