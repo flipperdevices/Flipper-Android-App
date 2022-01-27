@@ -74,4 +74,7 @@ include(
 
     ":components:keyscreen:api",
     ":components:keyscreen:impl",
+
+    ":components:firstpair:api",
+    ":components:firstpair:impl",
 )

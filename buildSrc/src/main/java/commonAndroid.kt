@@ -92,6 +92,7 @@ private fun Project.suppressOptIn() {
                     "-Xopt-in=androidx.compose.foundation.ExperimentalFoundationApi",
                     "-Xopt-in=kotlinx.serialization.ExperimentalSerializationApi",
                     "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+                    "-Xopt-in=com.squareup.anvil.annotations.ExperimentalAnvilApi",
                     "-Xopt-in=kotlin.RequiresOptIn",
                 )
             }
