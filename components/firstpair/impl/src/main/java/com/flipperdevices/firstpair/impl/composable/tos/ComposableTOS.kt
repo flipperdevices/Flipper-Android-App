@@ -112,7 +112,7 @@ fun ComposableFooter() {
                 textAlign = TextAlign.Center,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.W400,
-                color = colorResource(DesignSystem.color.black_40)
+                color = colorResource(DesignSystem.color.black_30)
             )
         )
     }
