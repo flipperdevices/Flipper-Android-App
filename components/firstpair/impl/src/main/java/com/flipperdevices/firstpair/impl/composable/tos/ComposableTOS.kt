@@ -84,7 +84,7 @@ fun ComposableFooter() {
                     vertical = 32.dp
                 )
                 .fillMaxWidth(),
-            buttonTextResId = R.string.firstpair_tos_button
+            text = stringResource(R.string.firstpair_tos_button)
         )
 
         ClickableUrlText(

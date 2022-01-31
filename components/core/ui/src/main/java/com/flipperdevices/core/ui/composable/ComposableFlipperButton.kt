@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
@@ -26,34 +27,9 @@ import com.flipperdevices.core.ui.R
 @Composable
 fun ComposableFlipperButton(
     modifier: Modifier = Modifier,
-    buttonText: String,
+    text: String,
+    textPadding: PaddingValues = PaddingValues(all = 16.dp),
     onClick: () -> Unit = {}
-) {
-    ComposableFlipperButtonInternal(
-        modifier = modifier,
-        buttonText = buttonText,
-        onClick = onClick
-    )
-}
-
-@Composable
-fun ComposableFlipperButton(
-    modifier: Modifier = Modifier,
-    @StringRes buttonTextResId: Int,
-    onClick: () -> Unit = {}
-) {
-    ComposableFlipperButtonInternal(
-        modifier = modifier,
-        buttonText = stringResource(buttonTextResId),
-        onClick = onClick
-    )
-}
-
-@Composable
-private fun ComposableFlipperButtonInternal(
-    modifier: Modifier,
-    buttonText: String,
-    onClick: () -> Unit
 ) {
     Box(
         modifier = modifier
@@ -67,8 +43,8 @@ private fun ComposableFlipperButtonInternal(
         contentAlignment = Alignment.Center
     ) {
         Text(
-            modifier = Modifier.padding(all = 16.dp),
-            text = buttonText,
+            modifier = Modifier.padding(textPadding),
+            text = text,
             color = colorResource(R.color.white_100),
             fontSize = 16.sp,
             fontWeight = FontWeight.W700
@@ -84,6 +60,6 @@ private fun ComposableFlipperButtonInternal(
 @Suppress("UnusedPrivateMember")
 private fun ComposableFlipperButtonPreview() {
     Column() {
-        ComposableFlipperButton(buttonText = "Test")
+        ComposableFlipperButton(text = "Test")
     }
 }

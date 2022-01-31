@@ -9,4 +9,7 @@
     <string name="firstpair_tos_footer_and"> and </string>
     <string name="firstpair_tos_footer_policy">Privacy Policy</string>
     <string name="firstpair_tos_footer_policy_link">https://flipperzero.one/compliance</string>
+    <string name="firstpair_search_flipper_status">Flipper status</string>
+    <string name="firstpair_search_flipper_model_zero">Flipper Zero</string>
+    <string name="firstpair_search_connect_button">Connect</string>
 </resources>
