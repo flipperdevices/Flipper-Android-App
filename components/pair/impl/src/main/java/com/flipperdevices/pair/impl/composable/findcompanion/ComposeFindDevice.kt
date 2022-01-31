@@ -1,7 +1,6 @@
 package com.flipperdevices.pair.impl.composable.findcompanion
 
 import androidx.annotation.DrawableRes
-import androidx.annotation.RawRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -16,18 +15,13 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.animateLottieCompositionAsState
-import com.airbnb.lottie.compose.rememberLottieComposition
+import com.flipperdevices.core.ui.composable.ComposeLottiePic
 import com.flipperdevices.pair.impl.R
 import com.flipperdevices.pair.impl.composable.common.ComposableBackButton
 import com.flipperdevices.pair.impl.composable.common.ComposePairScreen
@@ -141,6 +135,9 @@ private fun ComposeProcessingConnectionState(connectionState: ConnectionState) {
             description = stringResource(R.string.pair_companion_desc_initializing)
         ) {
             ComposeLottiePic(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colors.background),
                 picResId = R.raw.ic_connecting,
                 rollBackPicResId = R.drawable.ic_connecting_frame1
             )
@@ -150,6 +147,9 @@ private fun ComposeProcessingConnectionState(connectionState: ConnectionState) {
             description = stringResource(R.string.pair_companion_desc_initializing)
         ) {
             ComposeLottiePic(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colors.background),
                 picResId = R.raw.ic_connecting,
                 rollBackPicResId = R.drawable.ic_connecting_frame1
             )
@@ -185,36 +185,4 @@ private fun ComposePairPic(
         painter = painterResource(picResId),
         contentDescription = stringResource(picDesc)
     )
-}
-
-@Composable
-private fun ComposeLottiePic(
-    @RawRes picResId: Int,
-    @DrawableRes rollBackPicResId: Int
-) {
-    val compositionResult = rememberLottieComposition(LottieCompositionSpec.RawRes(picResId))
-    val composition by compositionResult
-    val animateState = animateLottieCompositionAsState(
-        composition,
-        iterations = LottieConstants.IterateForever
-    )
-    val progress by animateState
-
-    Box {
-        if (compositionResult.isLoading) {
-            Image(
-                modifier = Modifier.fillMaxSize(),
-                painter = painterResource(rollBackPicResId),
-                contentDescription = null
-            )
-        } else {
-            LottieAnimation(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colors.background),
-                composition = composition,
-                progress = progress
-            )
-        }
-    }
 }

@@ -30,13 +30,17 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.composable.ComposableFlipperButton
 
 
 @Composable
-fun ComposableSearchItem(text: String) {
+fun ComposableSearchItem(
+    modifier: Modifier = Modifier,
+    text: String
+) {
     Card(
-        modifier = Modifier.padding(horizontal = 14.dp),
+        modifier = modifier.padding(horizontal = 14.dp),
         shape = RoundedCornerShape(size = 10.dp),
         elevation = 4.dp
     ) {
@@ -65,7 +69,8 @@ fun ComposableSearchItem(text: String) {
                     ),
                     text = stringResource(R.string.firstpair_search_flipper_model_zero),
                     color = colorResource(DesignSystem.color.black_30),
-                    fontWeight = FontWeight.W500
+                    fontWeight = FontWeight.W500,
+                    fontSize = 12.sp
                 )
             }
 
@@ -83,13 +88,15 @@ fun ComposableSearchItem(text: String) {
                 text = text,
                 textAlign = TextAlign.Start,
                 fontWeight = FontWeight.W500,
-                color = colorResource(DesignSystem.color.black_100)
+                color = colorResource(DesignSystem.color.black_100),
+                fontSize = 16.sp
             )
 
             ComposableFlipperButton(
                 modifier = Modifier.padding(end = 12.dp),
                 text = stringResource(R.string.firstpair_search_connect_button),
-                textPadding = PaddingValues(horizontal = 18.dp, vertical = 10.dp)
+                textPadding = PaddingValues(horizontal = 18.dp, vertical = 10.dp),
+                fontSize = 14.sp
             )
         }
     }
@@ -102,6 +109,6 @@ fun ComposableSearchItem(text: String) {
 @Composable
 private fun ComposableSearchItemPreview() {
     Column() {
-        ComposableSearchItem("Anmach0n")
+        ComposableSearchItem(text = "Anmach0n")
     }
 }

@@ -12,4 +12,10 @@
     <string name="firstpair_search_flipper_status">Flipper status</string>
     <string name="firstpair_search_flipper_model_zero">Flipper Zero</string>
     <string name="firstpair_search_connect_button">Connect</string>
+    <string name="firstpair_search_back">Back</string>
+    <string name="firstpair_search_title">Connect your Flipper</string>
+    <string name="firstpair_search_title_status_text">Searching</string>
+    <string name="firstpair_search_title_help">Help</string>
+    <string name="firstpair_search_skip_connection">Skip Connection</string>
+    <string name="firstpair_search_loader_text">Turn On Bluetooth on your Flipper</string>
 </resources>

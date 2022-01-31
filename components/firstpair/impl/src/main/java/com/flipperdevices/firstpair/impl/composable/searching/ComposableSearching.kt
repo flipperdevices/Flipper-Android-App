@@ -1,0 +1,202 @@
+package com.flipperdevices.firstpair.impl.composable.searching
+
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material.Icon
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.painterResource
+import com.flipperdevices.core.ui.R as DesignSystem
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Text
+import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.flipperdevices.core.ui.composable.ComposeLottiePic
+import com.flipperdevices.firstpair.impl.R
+
+@Preview(
+    showSystemUi = true,
+    showBackground = true
+)
+@Composable
+fun ComposableSearchingScreen() {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        ComposableSearchingAppBar {}
+        ComposableTitle()
+        ComposableSearchingTitle {}
+        ComposableSearchingItems(
+            modifier = Modifier.weight(weight = 1f)
+        )
+        ComposableSearchingFooter {}
+    }
+}
+
+@Composable
+private fun ComposableSearchingAppBar(
+    onBack: () -> Unit
+) {
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.CenterStart
+    ) {
+        Icon(
+            modifier = Modifier
+                .padding(vertical = 12.dp, horizontal = 14.dp)
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = rememberRipple(bounded = false),
+                    onClick = onBack
+                ),
+            painter = painterResource(DesignSystem.drawable.ic_back),
+            contentDescription = stringResource(R.string.firstpair_search_back)
+        )
+    }
+}
+
+@Composable
+private fun ComposableTitle() {
+    Text(
+        modifier = Modifier.padding(top = 6.dp, bottom = 48.dp),
+        text = stringResource(R.string.firstpair_search_title),
+        fontWeight = FontWeight.W700,
+        color = colorResource(DesignSystem.color.black_100),
+        fontSize = 22.sp
+    )
+}
+
+@Composable
+private fun ComposableSearchingTitle(
+    onHelpClicking: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 18.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Row(
+            modifier = Modifier.weight(weight = 1f),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                modifier = Modifier.padding(end = 8.dp, top = 8.dp, bottom = 8.dp),
+                text = stringResource(R.string.firstpair_search_title_status_text),
+                color = colorResource(DesignSystem.color.black_100),
+                fontSize = 18.sp,
+                fontWeight = FontWeight.W500
+            )
+            CircularProgressIndicator(
+                modifier = Modifier.size(size = 20.dp)
+            )
+        }
+        Row(
+            modifier = Modifier.clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = rememberRipple(bounded = false),
+                onClick = onHelpClicking
+            ),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                modifier = Modifier.padding(all = 8.dp),
+                text = stringResource(R.string.firstpair_search_title_help),
+                color = colorResource(DesignSystem.color.black_30),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.W500
+            )
+            Icon(
+                modifier = Modifier.size(size = 24.dp),
+                painter = painterResource(R.drawable.ic_help),
+                contentDescription = stringResource(R.string.firstpair_search_title_help),
+                tint = colorResource(DesignSystem.color.black_30)
+            )
+        }
+    }
+}
+
+@Composable
+private fun ComposableSearchingItems(modifier: Modifier = Modifier) {
+    Box(
+        modifier,
+        contentAlignment = Alignment.Center
+    ) {
+        ComposableSearchingProgress()
+    }
+}
+
+@Composable
+private fun ComposableSearchingProgress() {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Row(
+            modifier = Modifier.padding(bottom = 36.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                modifier = Modifier.size(size = 82.dp),
+                painter = painterResource(R.drawable.pic_phone),
+                contentDescription = null
+            )
+            ComposeLottiePic(
+                modifier = Modifier.size(size = 32.dp),
+                picResId = R.raw.dots_loader,
+                rollBackPicResId = R.drawable.pic_loader,
+                tint = colorResource(DesignSystem.color.accent_secondary)
+            )
+            Icon(
+                modifier = Modifier
+                    .size(size = 82.dp)
+                    .padding(start = 13.dp),
+                painter = painterResource(R.drawable.pic_flipper_status),
+                contentDescription = stringResource(R.string.firstpair_search_flipper_status),
+                tint = colorResource(DesignSystem.color.accent_secondary)
+            )
+        }
+
+        Text(
+            text = stringResource(R.string.firstpair_search_loader_text),
+            color = colorResource(DesignSystem.color.black_30),
+            fontWeight = FontWeight.W400,
+            fontSize = 18.sp
+        )
+    }
+}
+
+@Composable
+private fun ComposableSearchingFoundedItems() {
+
+}
+
+@Composable
+private fun ComposableSearchingFooter(
+    onClickSkipConnection: () -> Unit
+) {
+    Text(
+        modifier = Modifier
+            .padding(all = 8.dp)
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = rememberRipple(bounded = false),
+                onClick = onClickSkipConnection
+            ),
+        text = stringResource(R.string.firstpair_search_skip_connection),
+        color = colorResource(DesignSystem.color.accent_secondary),
+        fontWeight = FontWeight.W500,
+        fontSize = 16.sp
+    )
+}

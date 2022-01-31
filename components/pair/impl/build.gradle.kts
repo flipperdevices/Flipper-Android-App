@@ -46,7 +46,6 @@ dependencies {
     // Guide
     implementation(libs.image.slider)
     implementation(libs.image.glide)
-    implementation(libs.image.lottie)
 
     implementation(libs.ble)
     implementation(libs.ble.ktx)

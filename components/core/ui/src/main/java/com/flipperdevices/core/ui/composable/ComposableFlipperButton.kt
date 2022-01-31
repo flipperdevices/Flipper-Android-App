@@ -20,6 +20,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.R
@@ -29,7 +30,8 @@ fun ComposableFlipperButton(
     modifier: Modifier = Modifier,
     text: String,
     textPadding: PaddingValues = PaddingValues(all = 16.dp),
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
+    fontSize: TextUnit = 16.sp
 ) {
     Box(
         modifier = modifier
@@ -46,7 +48,7 @@ fun ComposableFlipperButton(
             modifier = Modifier.padding(textPadding),
             text = text,
             color = colorResource(R.color.white_100),
-            fontSize = 16.sp,
+            fontSize = fontSize,
             fontWeight = FontWeight.W700
         )
     }
