@@ -1,6 +1,5 @@
 package com.flipperdevices.core.ui.composable
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -17,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
@@ -61,7 +59,7 @@ fun ComposableFlipperButton(
 @Composable
 @Suppress("UnusedPrivateMember")
 private fun ComposableFlipperButtonPreview() {
-    Column() {
+    Column {
         ComposableFlipperButton(text = "Test")
     }
 }

@@ -23,7 +23,7 @@ class FileManagerFragment : ComposeFragment() {
     @Inject
     lateinit var shareApi: ShareApi
 
-    private val viewModel by viewModels<FileManagerViewModel>() {
+    private val viewModel by viewModels<FileManagerViewModel> {
         FileManagerViewModelFactory(getDirectory())
     }
 

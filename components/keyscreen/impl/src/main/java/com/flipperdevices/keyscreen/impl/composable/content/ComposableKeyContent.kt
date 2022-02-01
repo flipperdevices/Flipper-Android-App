@@ -19,7 +19,7 @@ import com.flipperdevices.keyscreen.impl.R
 fun ComposableKeyContent(
     content: @Composable ColumnScope.() -> Unit
 ) {
-    Column() {
+    Column {
         Divider(
             modifier = Modifier
                 .padding(

@@ -30,7 +30,7 @@ import com.flipperdevices.firstpair.impl.R
 )
 @Composable
 fun ComposableTOS() {
-    Column() {
+    Column {
         ComposableTutorial(modifier = Modifier.weight(weight = 1f))
         ComposableFooter()
     }

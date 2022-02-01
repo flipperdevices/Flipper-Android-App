@@ -14,7 +14,7 @@ import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModelFactory
 private const val EXTRA_KEY_PATH = "flipper_key_path"
 
 class KeyScreenFragment : ComposeFragment() {
-    private val viewModel by viewModels<KeyScreenViewModel>() {
+    private val viewModel by viewModels<KeyScreenViewModel> {
         KeyScreenViewModelFactory(arguments?.getParcelable(EXTRA_KEY_PATH))
     }
 
