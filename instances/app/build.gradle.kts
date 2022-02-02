@@ -76,3 +76,9 @@ dependencies {
     implementation(libs.cicerone)
     implementation(libs.timber)
 }
+
+tasks.register("confTest") {
+    doFirst {
+        configurations.getByName("debugCompileClasspath").resolve()
+    }
+}
