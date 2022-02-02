@@ -20,6 +20,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -83,8 +84,7 @@ private fun ComposableSearchingTitle(
 ) {
     Row(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 18.dp),
+            .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Row(
@@ -92,7 +92,9 @@ private fun ComposableSearchingTitle(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                modifier = Modifier.padding(end = 8.dp, top = 8.dp, bottom = 8.dp),
+                modifier = Modifier.padding(
+                    end = 8.dp, top = 8.dp, bottom = 8.dp, start = 18.dp
+                ),
                 text = stringResource(R.string.firstpair_search_title_status_text),
                 color = colorResource(DesignSystem.color.black_100),
                 fontSize = 18.sp,
@@ -104,11 +106,13 @@ private fun ComposableSearchingTitle(
             )
         }
         Row(
-            modifier = Modifier.clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple(),
-                onClick = onHelpClicking
-            ),
+            modifier = Modifier
+                .padding(end = 10.dp)
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = rememberRipple(),
+                    onClick = onHelpClicking
+                ),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
@@ -119,7 +123,9 @@ private fun ComposableSearchingTitle(
                 fontWeight = FontWeight.W500
             )
             Icon(
-                modifier = Modifier.size(size = 24.dp),
+                modifier = Modifier
+                    .size(height = 24.dp, width = 32.dp) // 24 (width) + 8 (padding) = 32
+                    .padding(end = 8.dp),
                 painter = painterResource(R.drawable.ic_help),
                 contentDescription = stringResource(R.string.firstpair_search_title_help),
                 tint = colorResource(DesignSystem.color.black_30)
@@ -186,15 +192,17 @@ private fun ComposableSearchingFooter(
 ) {
     Text(
         modifier = Modifier
-            .padding(all = 8.dp)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(),
                 onClick = onClickSkipConnection
-            ),
+            )
+            .padding(all = 8.dp)
+            .fillMaxWidth(),
         text = stringResource(R.string.firstpair_search_skip_connection),
         color = colorResource(DesignSystem.color.accent_secondary),
         fontWeight = FontWeight.W500,
-        fontSize = 16.sp
+        fontSize = 16.sp,
+        textAlign = TextAlign.Center
     )
 }
