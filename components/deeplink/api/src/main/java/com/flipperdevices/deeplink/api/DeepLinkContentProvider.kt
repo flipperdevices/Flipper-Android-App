@@ -9,7 +9,7 @@ import com.flipperdevices.deeplink.model.DeeplinkContent
  */
 interface DeepLinkContentProvider {
     /**
-     * Can be called only from permission owner for this
+     * Can be called only from permission owner for uri
      */
     @Throws(SecurityException::class)
     suspend fun fromUri(activity: Activity, uri: Uri): DeeplinkContent?

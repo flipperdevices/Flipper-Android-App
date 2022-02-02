@@ -8,6 +8,11 @@ dependencies {
     implementation(projects.components.firstpair.api)
     implementation(projects.components.core.di)
     implementation(projects.components.core.ui)
+    implementation(projects.components.core.preference)
+    implementation(projects.components.core.navigation)
+
+    implementation(projects.components.deeplink.api)
+    implementation(projects.components.singleactivity.api)
 
     implementation(libs.cicerone)
     implementation(libs.appcompat)
@@ -21,4 +26,7 @@ dependencies {
     // Dagger deps
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
+
+    implementation(libs.ktx)
+    implementation(libs.ktx.fragment)
 }

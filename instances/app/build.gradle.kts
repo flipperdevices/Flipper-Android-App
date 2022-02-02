@@ -12,8 +12,8 @@ dependencies {
     implementation(projects.components.core.preference)
     implementation(projects.components.core.ui)
 
-    implementation(projects.components.pair.api)
-    implementation(projects.components.pair.impl)
+    implementation(projects.components.firstpair.api)
+    implementation(projects.components.firstpair.impl)
 
     implementation(projects.components.info.api)
     implementation(projects.components.info.impl)

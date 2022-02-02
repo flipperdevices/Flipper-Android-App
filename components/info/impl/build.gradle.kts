@@ -10,7 +10,7 @@ dependencies {
     implementation(projects.components.core.navigation)
 
     implementation(projects.components.info.api)
-    implementation(projects.components.pair.api)
+    implementation(projects.components.firstpair.api)
     implementation(projects.components.screenstreaming.api)
     implementation(projects.components.filemanager.api)
     implementation(projects.components.debug.api)

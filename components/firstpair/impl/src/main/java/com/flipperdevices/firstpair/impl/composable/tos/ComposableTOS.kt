@@ -24,15 +24,11 @@ import com.flipperdevices.core.ui.composable.ComposableFlipperButton
 import com.flipperdevices.core.ui.composable.appendUrl
 import com.flipperdevices.firstpair.impl.R
 
-@Preview(
-    showBackground = true,
-    showSystemUi = true
-)
 @Composable
-fun ComposableTOS() {
+fun ComposableTOS(onApplyPress: () -> Unit) {
     Column {
         ComposableTutorial(modifier = Modifier.weight(weight = 1f))
-        ComposableFooter()
+        ComposableFooter(onApplyPress)
     }
 }
 
@@ -75,7 +71,7 @@ private fun ComposableTutorial(modifier: Modifier) {
 }
 
 @Composable
-fun ComposableFooter() {
+fun ComposableFooter(onApplyPress: () -> Unit) {
     Column {
         ComposableFlipperButton(
             modifier = Modifier
@@ -84,7 +80,8 @@ fun ComposableFooter() {
                     vertical = 32.dp
                 )
                 .fillMaxWidth(),
-            text = stringResource(R.string.firstpair_tos_button)
+            text = stringResource(R.string.firstpair_tos_button),
+            onClick = onApplyPress
         )
 
         ClickableUrlText(
@@ -96,12 +93,18 @@ fun ComposableFooter() {
             text = buildAnnotatedString {
                 append(stringResource(R.string.firstpair_tos_footer_pre))
 
+                append(" ")
+
                 appendUrl(
                     text = stringResource(R.string.firstpair_tos_footer_tos),
                     url = stringResource(R.string.firstpair_tos_footer_tos_link)
                 )
 
+                append(" ")
+
                 append(stringResource(R.string.firstpair_tos_footer_and))
+
+                append(" ")
 
                 appendUrl(
                     text = stringResource(R.string.firstpair_tos_footer_policy),
@@ -116,4 +119,14 @@ fun ComposableFooter() {
             )
         )
     }
+}
+
+@Preview(
+    showBackground = true,
+    showSystemUi = true
+)
+@Composable
+@Suppress("UnusedPrivateMember")
+private fun ComposableTOSPreview() {
+    ComposableTOS(onApplyPress = {})
 }
