@@ -106,7 +106,7 @@ private fun ComposableSearchingTitle(
         Row(
             modifier = Modifier.clickable(
                 interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple(bounded = false),
+                indication = rememberRipple(),
                 onClick = onHelpClicking
             ),
             verticalAlignment = Alignment.CenterVertically
@@ -189,7 +189,7 @@ private fun ComposableSearchingFooter(
             .padding(all = 8.dp)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple(bounded = false),
+                indication = rememberRipple(),
                 onClick = onClickSkipConnection
             ),
         text = stringResource(R.string.firstpair_search_skip_connection),
