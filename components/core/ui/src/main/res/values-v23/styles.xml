@@ -2,6 +2,7 @@
 <resources>
 
     <style name="FlipperTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="background">@color/background</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor">@color/background</item>
     </style>
 </resources>

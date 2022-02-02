@@ -99,7 +99,8 @@ private fun ComposableSearchingTitle(
                 fontWeight = FontWeight.W500
             )
             CircularProgressIndicator(
-                modifier = Modifier.size(size = 20.dp)
+                modifier = Modifier.size(size = 20.dp),
+                strokeWidth = 2.dp
             )
         }
         Row(
