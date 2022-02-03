@@ -102,7 +102,8 @@ private fun ComposableSearchingTitle(
             )
             CircularProgressIndicator(
                 modifier = Modifier.size(size = 20.dp),
-                strokeWidth = 2.dp
+                strokeWidth = 2.dp,
+                color = colorResource(DesignSystem.color.black_30)
             )
         }
         Row(
@@ -167,7 +168,7 @@ private fun ComposableSearchingProgress() {
                 modifier = Modifier
                     .size(size = 82.dp)
                     .padding(start = 13.dp),
-                painter = painterResource(R.drawable.pic_flipper_status),
+                painter = painterResource(R.drawable.pic_flipper_heavy),
                 contentDescription = stringResource(R.string.firstpair_search_flipper_status),
                 tint = colorResource(DesignSystem.color.accent_secondary)
             )
