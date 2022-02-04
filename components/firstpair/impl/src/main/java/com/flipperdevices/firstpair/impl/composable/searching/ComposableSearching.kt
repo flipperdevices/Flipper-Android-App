@@ -8,11 +8,15 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,22 +28,28 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.flipperdevices.bridge.api.scanner.DiscoveredBluetoothDevice
 import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.core.ui.composable.ComposeLottiePic
 import com.flipperdevices.firstpair.impl.R
+import com.flipperdevices.firstpair.impl.viewmodels.searching.BLEDeviceViewModel
 
 @Preview(
-    showSystemUi = true,
-    showBackground = true
+    showBackground = true,
+    showSystemUi = true
 )
 @Composable
-fun ComposableSearchingScreen() {
+fun ComposableSearchingScreen(
+    devicesViewModel: BLEDeviceViewModel = viewModel()
+) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         ComposableSearchingAppBar {}
         ComposableTitle()
         ComposableSearchingTitle {}
         ComposableSearchingItems(
-            modifier = Modifier.weight(weight = 1f)
+            modifier = Modifier.weight(weight = 1f),
+            devicesViewModel
         )
         ComposableSearchingFooter {}
     }
@@ -136,13 +146,25 @@ private fun ComposableSearchingTitle(
 }
 
 @Composable
-private fun ComposableSearchingItems(modifier: Modifier = Modifier) {
-    Box(
-        modifier,
-        contentAlignment = Alignment.Center
-    ) {
-        ComposableSearchingProgress()
+private fun ComposableSearchingItems(
+    modifier: Modifier = Modifier,
+    devicesViewModel: BLEDeviceViewModel
+) {
+    val devices by devicesViewModel.getState().collectAsState()
+
+    if (devices.isEmpty()) {
+        Box(
+            modifier,
+            contentAlignment = Alignment.Center
+        ) {
+            ComposableSearchingProgress()
+        }
+        return
     }
+
+    val filteredDevices = devices.filterNot { it.name.isNullOrEmpty() }
+
+    ComposableSearchingFoundedItems(modifier, filteredDevices)
 }
 
 @Composable
@@ -184,7 +206,16 @@ private fun ComposableSearchingProgress() {
 }
 
 @Composable
-private fun ComposableSearchingFoundedItems() {
+private fun ComposableSearchingFoundedItems(
+    modifier: Modifier = Modifier,
+    devices: List<DiscoveredBluetoothDevice>
+) {
+    LazyColumn(modifier = modifier) {
+        items(devices) {
+            val name = it.name!!.replaceFirst("Flipper", "")
+            ComposableSearchItem(text = name)
+        }
+    }
 }
 
 @Composable

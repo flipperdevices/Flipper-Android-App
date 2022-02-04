@@ -8,11 +8,18 @@ dependencies {
     implementation(projects.components.firstpair.api)
     implementation(projects.components.core.di)
     implementation(projects.components.core.ui)
+    implementation(projects.components.core.log)
     implementation(projects.components.core.preference)
     implementation(projects.components.core.navigation)
 
     implementation(projects.components.deeplink.api)
     implementation(projects.components.singleactivity.api)
+
+    // BLE
+    implementation(projects.components.bridge.api)
+    implementation(projects.components.bridge.provider)
+    implementation(projects.components.bridge.service.api)
+    implementation(libs.ble.ktx)
 
     implementation(libs.cicerone)
     implementation(libs.appcompat)
@@ -22,6 +29,7 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
+    implementation(libs.lifecycle.compose)
 
     // Dagger deps
     implementation(libs.dagger)

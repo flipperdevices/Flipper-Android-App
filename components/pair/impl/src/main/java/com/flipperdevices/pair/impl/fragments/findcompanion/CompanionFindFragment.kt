@@ -15,8 +15,6 @@ import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.core.content.edit
 import androidx.fragment.app.viewModels
 import com.flipperdevices.bridge.api.utils.Constants
@@ -27,10 +25,10 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.FlipperSharedPreferences
 import com.flipperdevices.core.preference.FlipperSharedPreferencesKey
 import com.flipperdevices.core.ui.ComposeFragment
+import com.flipperdevices.firstpair.impl.viewmodels.searching.PairDeviceViewModel
 import com.flipperdevices.pair.impl.R
 import com.flipperdevices.pair.impl.composable.findcompanion.ComposeFindDevice
 import com.flipperdevices.pair.impl.di.PairComponent
-import com.flipperdevices.pair.impl.findstandart.service.PairDeviceViewModel
 import com.flipperdevices.pair.impl.fragments.common.BluetoothEnableHelper
 import com.flipperdevices.pair.impl.model.findcompanion.PairingState
 import com.flipperdevices.pair.impl.navigation.machine.PairScreenStateDispatcher
@@ -46,7 +44,7 @@ class CompanionFindFragment : ComposeFragment(), LogTagProvider {
     @Inject
     lateinit var sharedPreferences: FlipperSharedPreferences
 
-    private val pairDeviceViewModel by viewModels<PairDeviceViewModel>()
+    private val pairDeviceViewModel by viewModels<com.flipperdevices.firstpair.impl.viewmodels.searching.PairDeviceViewModel>()
 
     private val bluetoothEnableHelper = BluetoothEnableHelper(this)
 

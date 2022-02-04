@@ -9,8 +9,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -19,8 +17,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.api.scanner.DiscoveredBluetoothDevice
+import com.flipperdevices.firstpair.impl.viewmodels.searching.BLEDeviceViewModel
 import com.flipperdevices.pair.impl.R
-import com.flipperdevices.pair.impl.findstandart.service.BLEDeviceViewModel
 
 private typealias OnDeviceClickListener = (DiscoveredBluetoothDevice) -> Unit
 
@@ -30,7 +28,7 @@ private typealias OnDeviceClickListener = (DiscoveredBluetoothDevice) -> Unit
 )
 @Composable
 fun ComposeFindDevice(
-    bleDevices: BLEDeviceViewModel = BLEDeviceViewModel(),
+    bleDevices: com.flipperdevices.firstpair.impl.viewmodels.searching.BLEDeviceViewModel = com.flipperdevices.firstpair.impl.viewmodels.searching.BLEDeviceViewModel(),
     onDeviceClickListener: OnDeviceClickListener = {}
 ) {
     Column(

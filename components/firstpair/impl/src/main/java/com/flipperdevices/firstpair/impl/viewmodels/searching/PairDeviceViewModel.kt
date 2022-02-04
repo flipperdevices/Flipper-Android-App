@@ -1,4 +1,4 @@
-package com.flipperdevices.pair.impl.findstandart.service
+package com.flipperdevices.firstpair.impl.viewmodels.searching
 
 import android.app.Application
 import android.bluetooth.BluetoothDevice
@@ -7,9 +7,8 @@ import com.flipperdevices.bridge.api.manager.delegates.FlipperConnectionInformat
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ui.AndroidLifecycleViewModel
-import com.flipperdevices.pair.impl.R
-import com.flipperdevices.pair.impl.di.PairComponent
-import com.flipperdevices.pair.impl.model.findcompanion.PairingState
+import com.flipperdevices.firstpair.impl.di.FirstPairComponent
+import com.flipperdevices.firstpair.impl.model.PairingState
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,7 +24,7 @@ class PairDeviceViewModel(application: Application) : AndroidLifecycleViewModel(
     private val _state = MutableStateFlow<PairingState>(PairingState.NotInitialized)
 
     init {
-        ComponentHolder.component<PairComponent>().inject(this)
+        ComponentHolder.component<FirstPairComponent>().inject(this)
     }
 
     fun getConnectionState(): StateFlow<PairingState> = _state
@@ -38,14 +37,6 @@ class PairDeviceViewModel(application: Application) : AndroidLifecycleViewModel(
                 try {
                     serviceApi.reconnect(device)
                 } catch (connectException: Exception) {
-                    val message = connectException.localizedMessage
-                        ?: getApplication<Application>().getString(
-                            R.string.pair_companion_error_connect
-                        )
-                    onFailedCompanionFinding(message)
-                    com.flipperdevices.core.log.error(connectException) {
-                        "While we try connect to ${device.address}"
-                    }
                 }
                 subscribeToConnectionState(serviceApi.connectionInformationApi) {
                     onReady(device)

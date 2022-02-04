@@ -1,4 +1,4 @@
-package com.flipperdevices.pair.impl.findstandart.service
+package com.flipperdevices.firstpair.impl.viewmodels.searching
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,7 +8,6 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -20,18 +19,16 @@ class BLEDeviceViewModel : ViewModel(), LogTagProvider {
     override val TAG = "BLEDeviceViewModel"
     private val scanner = FlipperApi.flipperScanner
     private val scanStarted = AtomicBoolean(false)
-    private val _state = MutableStateFlow(emptyList<DiscoveredBluetoothDevice>())
-    private var scanJob: Job? = null
+    private val state = MutableStateFlow(emptyList<DiscoveredBluetoothDevice>())
 
-    val state: StateFlow<List<DiscoveredBluetoothDevice>>
-        get() = _state
+    fun getState(): StateFlow<List<DiscoveredBluetoothDevice>> = state
 
     fun startScanIfNotYet() {
         if (!scanStarted.compareAndSet(false, true)) {
             return
         }
 
-        scanJob = viewModelScope.launch {
+        viewModelScope.launch {
             startBLEDiscover()
         }
     }
@@ -49,18 +46,7 @@ class BLEDeviceViewModel : ViewModel(), LogTagProvider {
     private suspend fun emitState(devices: Iterable<DiscoveredBluetoothDevice>) =
         withContext(viewModelScope.coroutineContext) {
             if (state.value != devices) { // Change state only if list change
-                _state.emit(devices.toList())
+                state.emit(devices.toList())
             }
         }
-
-    fun stopScanAndReset() {
-        if (!scanStarted.compareAndSet(true, false)) {
-            return
-        }
-        scanJob?.cancel()
-        scanJob = null
-        viewModelScope.launch {
-            emitState(emptyList())
-        }
-    }
 }
