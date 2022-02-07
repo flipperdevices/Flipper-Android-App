@@ -8,6 +8,7 @@ import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
+import com.flipperdevices.core.log.info
 import com.flipperdevices.firstpair.impl.di.FirstPairComponent
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
@@ -38,6 +39,7 @@ class BLEDeviceViewModel : ViewModel(), LogTagProvider {
 
     fun startScanIfNotYet() {
         if (!scanStarted.compareAndSet(false, true)) {
+            info { "Scan already started, skip" }
             return
         }
 
@@ -47,6 +49,7 @@ class BLEDeviceViewModel : ViewModel(), LogTagProvider {
     }
 
     private suspend fun startBLEDiscover() = withContext(Dispatchers.IO) {
+        info { "Start ble scan" }
         scanner.findFlipperDevices()
             .catch { exception ->
                 error(exception) { "Exception while search devices" }

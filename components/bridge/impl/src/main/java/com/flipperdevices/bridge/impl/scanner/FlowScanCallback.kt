@@ -3,6 +3,7 @@ package com.flipperdevices.bridge.impl.scanner
 import android.annotation.SuppressLint
 import com.flipperdevices.core.log.TaggedTimber
 import com.flipperdevices.core.log.error
+import com.flipperdevices.core.log.info
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.onFailure
 import kotlinx.coroutines.flow.callbackFlow
@@ -40,6 +41,7 @@ internal fun BluetoothLeScannerCompat.scanFlow(
         }
     }
     startScan(filters, settings, callback)
+    info { "Start scan with filter $filters and settings $settings" }
 
     awaitClose {
         stopScan(callback)
