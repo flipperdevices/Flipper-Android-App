@@ -18,4 +18,10 @@
     <string name="firstpair_search_title_help">Help</string>
     <string name="firstpair_search_skip_connection">Skip Connection</string>
     <string name="firstpair_search_loader_text">Turn On Bluetooth on your Flipper</string>
+
+    <string name="firstpair_permission_enable_location_title">Allow Location Access</string>
+    <string name="firstpair_permission_enable_location_desc">Apps using Bluetooth are required to enable location access. No location data will be gathered or stored</string>
+    <string name="firstpair_permission_enable_location_btn">Go to Settings</string>
+    <string name="firstpair_permission_cancel_btn">Cancel</string>
+
 </resources>

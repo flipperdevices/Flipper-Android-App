@@ -1,14 +1,15 @@
 package com.flipperdevices.bridge.impl.di
 
+import com.flipperdevices.core.di.AppGraph
+import com.squareup.anvil.annotations.ContributesTo
 import dagger.Module
 import dagger.Provides
-import javax.inject.Singleton
 import no.nordicsemi.android.support.v18.scanner.BluetoothLeScannerCompat
 
 @Module
+@ContributesTo(AppGraph::class)
 class NordicBleModule {
     @Provides
-    @Singleton
     fun provideBluetoothLeScanner(): BluetoothLeScannerCompat {
         return BluetoothLeScannerCompat.getScanner()
     }

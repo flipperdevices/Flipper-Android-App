@@ -1,16 +1,20 @@
 package com.flipperdevices.bridge.service.impl.delegate
 
+import android.annotation.SuppressLint
+import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.content.Context
 import com.flipperdevices.bridge.api.manager.FlipperBleManager
+import com.flipperdevices.bridge.api.scanner.FlipperScanner
 import com.flipperdevices.bridge.api.utils.Constants
-import com.flipperdevices.bridge.api.utils.DeviceFeatureHelper
 import com.flipperdevices.bridge.api.utils.PermissionHelper
-import com.flipperdevices.bridge.provider.FlipperApi
 import com.flipperdevices.bridge.service.impl.di.FlipperServiceComponent
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
+import javax.inject.Inject
+import javax.inject.Provider
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withTimeout
@@ -22,12 +26,18 @@ class FlipperServiceConnectDelegate(
 ) : LogTagProvider {
     override val TAG = "FlipperServiceConnectDelegate"
 
-    private val scanner = FlipperApi.flipperScanner
-    private val adapter = FlipperApi.bluetoothAdapter
+    @Inject
+    lateinit var scannerProvider: Provider<FlipperScanner>
+
+    @Inject
+    lateinit var adapterProvider: Provider<BluetoothAdapter>
 
     init {
         ComponentHolder.component<FlipperServiceComponent>().inject(this)
     }
+
+    private val scanner by scannerProvider
+    private val adapter by adapterProvider
 
     suspend fun reconnect(deviceId: String) {
         // If we already connected to device, just ignore it
@@ -35,17 +45,25 @@ class FlipperServiceConnectDelegate(
             disconnect()
         }
         // If Bluetooth disable, return exception
-        if (!PermissionHelper.isBluetoothEnabled()) {
+        if (!adapter.isEnabled) {
             throw BluetoothDisabledException()
         }
 
-        // If we use companion feature, we can't connect without bonded device
-        if (DeviceFeatureHelper.isCompanionFeatureAvailable(context)) {
-            connectWithBondedDevice(deviceId)
-            return
+        if (!PermissionHelper.isPermissionsGranted(
+                context,
+                PermissionHelper.getRequiredPermissions()
+            )
+        ) {
+            throw SecurityException(
+                """
+                For connect to Flipper via bluetooth you need grant permission for you application. 
+                Please, check PermissionHelper#checkPermissions
+                """.trimIndent()
+            )
         }
-        // If companion feature not available, we try find device in manual mode and connect with it
-        findAndConnectToDevice(context, deviceId)
+
+        // We try find device in manual mode and connect with it
+        findAndConnectToDevice(deviceId)
     }
 
     suspend fun reconnect(device: BluetoothDevice) {
@@ -55,7 +73,7 @@ class FlipperServiceConnectDelegate(
         }
 
         // If Bluetooth disable, return exception
-        if (!PermissionHelper.isBluetoothEnabled()) {
+        if (!adapter.isEnabled) {
             throw BluetoothDisabledException()
         }
 
@@ -74,28 +92,18 @@ class FlipperServiceConnectDelegate(
         }
     }
 
-    private suspend fun connectWithBondedDevice(deviceId: String) {
-        val device = adapter.bondedDevices.find { it.address == deviceId }
-            ?: throw IllegalArgumentException("Can't find bonded device with this id")
-        bleManager.connectToDevice(device)
-    }
-
+    // All rights must be obtained before calling this method
+    @SuppressLint("MissingPermission")
     private suspend fun findAndConnectToDevice(
-        context: Context,
         deviceId: String
     ) {
-        if (!PermissionHelper.isPermissionGranted(context)) {
-            throw SecurityException(
-                """
-                For connect to Flipper via bluetooth you need grant permission for you application. 
-                Please, check PermissionHelper#checkPermissions
-                """.trimIndent()
-            )
-        }
+        var device = adapter.bondedDevices.find { it.address == deviceId }
 
-        val device = withTimeout(Constants.BLE.CONNECT_TIME_MS) {
-            scanner.findFlipperById(deviceId).first()
-        }.device
+        if (device == null) {
+            device = withTimeout(Constants.BLE.CONNECT_TIME_MS) {
+                scanner.findFlipperById(deviceId).first()
+            }.device
+        }
 
         bleManager.connectToDevice(device)
     }

@@ -17,7 +17,6 @@ dependencies {
 
     // BLE
     implementation(projects.components.bridge.api)
-    implementation(projects.components.bridge.provider)
     implementation(projects.components.bridge.service.api)
     implementation(libs.ble.ktx)
 
