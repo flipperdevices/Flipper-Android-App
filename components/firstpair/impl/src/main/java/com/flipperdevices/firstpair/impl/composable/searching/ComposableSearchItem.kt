@@ -37,7 +37,7 @@ fun ComposableSearchItem(
     Card(
         modifier = modifier.padding(horizontal = 14.dp),
         shape = RoundedCornerShape(size = 10.dp),
-        elevation = 4.dp
+        elevation = 1.dp
     ) {
         Row(
             modifier = Modifier

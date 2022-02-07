@@ -210,7 +210,7 @@ private fun ComposableSearchingFoundedItems(
     modifier: Modifier = Modifier,
     devices: List<DiscoveredBluetoothDevice>
 ) {
-    LazyColumn(modifier = modifier) {
+    LazyColumn(modifier = modifier.padding(vertical = 18.dp)) {
         items(devices) {
             val name = it.name!!.replaceFirst("Flipper", "")
             ComposableSearchItem(text = name)

@@ -9,6 +9,8 @@ import com.flipperdevices.bridge.api.scanner.DiscoveredBluetoothDevice
 import com.flipperdevices.bridge.api.scanner.FlipperScanner
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
@@ -18,11 +20,13 @@ import no.nordicsemi.android.support.v18.scanner.BluetoothLeScannerCompat
 import no.nordicsemi.android.support.v18.scanner.ScanFilter
 import no.nordicsemi.android.support.v18.scanner.ScanSettings
 
-@ContributesBinding(AppGraph::class)
+@ContributesBinding(AppGraph::class, FlipperScanner::class)
 class FlipperScannerImpl @Inject constructor(
     private val scanner: BluetoothLeScannerCompat,
     private val context: Context
-) : FlipperScanner {
+) : FlipperScanner, LogTagProvider {
+    override val TAG = "FlipperScanner"
+
     override fun findFlipperDevices(): Flow<Iterable<DiscoveredBluetoothDevice>> {
         val devices = arrayListOf<DiscoveredBluetoothDevice>()
 
@@ -44,6 +48,7 @@ class FlipperScannerImpl @Inject constructor(
                 if (alreadyExistDBD != null) {
                     alreadyExistDBD.update(scanResult)
                 } else {
+                    info { "Find new device $scanResult" }
                     devices.add(device)
                 }
                 devices
