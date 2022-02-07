@@ -16,10 +16,9 @@ dependencies {
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.protobuf)
     implementation(projects.components.bridge.service.api)
+    implementation(libs.ble.common)
 
     implementation(projects.components.bridge.synchronization.api)
-
-    implementation(libs.ble.ktx)
 
     implementation(libs.annotations)
     implementation(libs.appcompat)

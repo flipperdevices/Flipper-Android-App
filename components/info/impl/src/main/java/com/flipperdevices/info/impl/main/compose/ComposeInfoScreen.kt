@@ -12,10 +12,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.api.manager.delegates.toHumanReadableString
+import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.model.FlipperGATTInformation
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.main.model.DeviceSubScreen
-import no.nordicsemi.android.ble.ktx.state.ConnectionState
 
 @Preview(
     showBackground = true,

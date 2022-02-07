@@ -1,11 +1,11 @@
 package com.flipperdevices.bridge.api.manager.delegates
 
-import kotlinx.coroutines.flow.StateFlow
-import no.nordicsemi.android.ble.ktx.state.ConnectionState
+import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
+import kotlinx.coroutines.flow.Flow
 
 interface FlipperConnectionInformationApi {
     fun isDeviceConnected(): Boolean
-    fun getConnectionStateFlow(): StateFlow<ConnectionState>
+    fun getConnectionStateFlow(): Flow<ConnectionState>
 
     /**
      * @return null if device not connected

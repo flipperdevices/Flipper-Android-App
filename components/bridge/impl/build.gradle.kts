@@ -19,7 +19,6 @@ dependencies {
 
     implementation(libs.ble.scan)
     implementation(libs.ble)
-    implementation(libs.ble.ktx)
     implementation(libs.ble.common)
 
     implementation(libs.dagger)

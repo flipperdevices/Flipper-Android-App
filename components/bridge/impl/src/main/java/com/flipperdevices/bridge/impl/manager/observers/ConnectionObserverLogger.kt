@@ -1,12 +1,13 @@
-package com.flipperdevices.bridge.impl.manager
+package com.flipperdevices.bridge.impl.manager.observers
 
 import android.bluetooth.BluetoothDevice
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import no.nordicsemi.android.ble.observer.ConnectionObserver
 
-class ConnectionObserverLogger : ConnectionObserver, LogTagProvider {
-    override val TAG = "ConnectionObserverLogger"
+class ConnectionObserverLogger(
+    override val TAG: String
+) : ConnectionObserver, LogTagProvider {
     override fun onDeviceConnecting(device: BluetoothDevice) {
         info { "#onDeviceConnecting $device" }
     }

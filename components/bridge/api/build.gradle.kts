@@ -10,7 +10,6 @@ dependencies {
     implementation(libs.kotlin.coroutines)
     implementation(libs.ble.common)
     implementation(libs.ble.scan)
-    implementation(libs.ble.ktx)
 
     implementation(libs.appcompat)
 }

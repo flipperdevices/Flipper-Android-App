@@ -1,6 +1,7 @@
 package com.flipperdevices.info.impl.main.viewmodel
 
 import androidx.lifecycle.viewModelScope
+import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.model.FlipperGATTInformation
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
@@ -13,7 +14,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import no.nordicsemi.android.ble.ktx.state.ConnectionState
 
 class InfoViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
     @Inject

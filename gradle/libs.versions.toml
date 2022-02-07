@@ -122,7 +122,6 @@ appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat"
 
 # BLE
 ble = { module = "no.nordicsemi.android:ble", version.ref = "ble" }
-ble-ktx = { module = "no.nordicsemi.android:ble-ktx", version.ref = "ble" }
 ble-common = { module = "no.nordicsemi.android:ble-common", version.ref = "ble" }
 ble-scan = { module = "no.nordicsemi.android.support.v18:scanner", version.ref = "ble-scan" }
 

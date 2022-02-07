@@ -39,7 +39,6 @@ dependencies {
     implementation(libs.ktx.fragment)
 
     implementation(libs.ble)
-    implementation(libs.ble.ktx)
     implementation(libs.ble.common)
     implementation(libs.ble.scan)
 

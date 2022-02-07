@@ -13,7 +13,6 @@ dependencies {
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.synchronization.api)
-    implementation(libs.ble.ktx)
 
     // Compose
     implementation(libs.compose.ui)

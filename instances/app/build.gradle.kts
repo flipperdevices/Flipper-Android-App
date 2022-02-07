@@ -59,7 +59,6 @@ dependencies {
     implementation(projects.components.bridge.impl)
     implementation(libs.ble.common)
     implementation(libs.ble.scan)
-    implementation(libs.ble.ktx)
 
     implementation(projects.components.analytics.shake2report.api)
     releaseImplementation(projects.components.analytics.shake2report.noop)

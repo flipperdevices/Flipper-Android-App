@@ -30,7 +30,6 @@ dependencies {
     kapt(libs.lifecycle.kapt)
 
     implementation(libs.ble)
-    implementation(libs.ble.ktx)
     implementation(libs.ble.common)
     implementation(libs.ble.scan)
 
