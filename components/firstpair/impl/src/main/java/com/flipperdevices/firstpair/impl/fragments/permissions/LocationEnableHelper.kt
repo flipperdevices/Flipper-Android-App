@@ -38,7 +38,7 @@ class LocationEnableHelper(
                 listener.onLocationUserDenied()
                 dialog.cancel()
             }
-            .setPositiveButton(R.string.firstpair_permission_enable_location_btn) { _, _ ->
+            .setPositiveButton(R.string.firstpair_permission_settings) { _, _ ->
                 verbose { "User click on open setting" }
                 context.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
                 dialog.cancel()
