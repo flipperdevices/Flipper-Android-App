@@ -13,7 +13,6 @@ dependencies {
 
     implementation(projects.components.info.api)
     implementation(projects.components.archive.api)
-    implementation(projects.components.pair.api)
 
     implementation(libs.appcompat)
     implementation(libs.dagger)
