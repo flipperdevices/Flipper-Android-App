@@ -58,7 +58,9 @@ private fun ProducerScope<ConnectionState>.getConnectionObserver() = object : Co
     }
 }
 
-private fun getConnectionStateFrom(connectionStateProvider: ConnectionStateProvider): ConnectionState {
+private fun getConnectionStateFrom(
+    connectionStateProvider: ConnectionStateProvider
+): ConnectionState {
     return when (connectionStateProvider.getConnectionState()) {
         BluetoothProfile.STATE_CONNECTING -> ConnectionState.Disconnecting
         BluetoothProfile.STATE_CONNECTED -> if (connectionStateProvider.isReady()) {

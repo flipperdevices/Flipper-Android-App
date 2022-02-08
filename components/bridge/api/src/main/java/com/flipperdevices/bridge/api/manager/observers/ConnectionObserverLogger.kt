@@ -1,4 +1,4 @@
-package com.flipperdevices.bridge.impl.manager.observers
+package com.flipperdevices.bridge.api.manager.observers
 
 import android.bluetooth.BluetoothDevice
 import com.flipperdevices.core.log.LogTagProvider

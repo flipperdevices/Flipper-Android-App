@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -32,7 +33,9 @@ import com.flipperdevices.firstpair.impl.R
 @Composable
 fun ComposableSearchItem(
     modifier: Modifier = Modifier,
-    text: String
+    text: String,
+    isConnecting: Boolean,
+    onConnectionClick: () -> Unit
 ) {
     Card(
         modifier = modifier.padding(horizontal = 14.dp),
@@ -87,12 +90,23 @@ fun ComposableSearchItem(
                 fontSize = 16.sp
             )
 
-            ComposableFlipperButton(
-                modifier = Modifier.padding(end = 12.dp),
-                text = stringResource(R.string.firstpair_search_connect_button),
-                textPadding = PaddingValues(horizontal = 18.dp, vertical = 10.dp),
-                fontSize = 14.sp
-            )
+            if (isConnecting) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .padding(end = 32.dp)
+                        .size(24.dp),
+                    color = colorResource(DesignSystem.color.accent_secondary),
+                    strokeWidth = 2.dp
+                )
+            } else {
+                ComposableFlipperButton(
+                    modifier = Modifier.padding(end = 12.dp),
+                    text = stringResource(R.string.firstpair_search_connect_button),
+                    textPadding = PaddingValues(horizontal = 18.dp, vertical = 10.dp),
+                    fontSize = 14.sp,
+                    onClick = onConnectionClick
+                )
+            }
         }
     }
 }
@@ -105,6 +119,6 @@ fun ComposableSearchItem(
 @Composable
 private fun ComposableSearchItemPreview() {
     Column {
-        ComposableSearchItem(text = "Anmach0n")
+        ComposableSearchItem(text = "Anmach0n", isConnecting = true, onConnectionClick = {})
     }
 }

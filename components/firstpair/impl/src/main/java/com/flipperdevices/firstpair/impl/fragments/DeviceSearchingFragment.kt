@@ -15,6 +15,7 @@ import com.flipperdevices.firstpair.impl.di.FirstPairComponent
 import com.flipperdevices.firstpair.impl.fragments.permissions.BluetoothEnableHelper
 import com.flipperdevices.firstpair.impl.fragments.permissions.LocationEnableHelper
 import com.flipperdevices.firstpair.impl.fragments.permissions.PermissionEnableHelper
+import com.flipperdevices.firstpair.impl.viewmodels.connecting.PairDeviceViewModel
 import com.flipperdevices.firstpair.impl.viewmodels.searching.BLEDeviceViewModel
 import javax.inject.Inject
 import javax.inject.Provider
@@ -35,6 +36,7 @@ class DeviceSearchingFragment :
     private var permissionEnableHelper: PermissionEnableHelper? = null
 
     private val viewModelSearch by viewModels<BLEDeviceViewModel>()
+    private val viewModelConnecting by viewModels<PairDeviceViewModel>()
 
     init {
         ComponentHolder.component<FirstPairComponent>().inject(this)
@@ -61,7 +63,7 @@ class DeviceSearchingFragment :
 
     @Composable
     override fun RenderView() {
-        ComposableSearchingScreen(viewModelSearch)
+        ComposableSearchingScreen(viewModelSearch, viewModelConnecting)
     }
 
     private fun invalidate() {

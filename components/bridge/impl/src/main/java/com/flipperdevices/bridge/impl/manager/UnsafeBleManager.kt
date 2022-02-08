@@ -5,9 +5,9 @@ import android.bluetooth.BluetoothGattCharacteristic
 import android.content.Context
 import com.flipperdevices.bridge.api.manager.ktx.providers.BondStateProvider
 import com.flipperdevices.bridge.api.manager.ktx.providers.ConnectionStateProvider
-import com.flipperdevices.bridge.impl.manager.observers.BondingObserverComposite
-import com.flipperdevices.bridge.impl.manager.observers.ConnectionObserverComposite
-import com.flipperdevices.bridge.impl.manager.observers.ConnectionObserverLogger
+import com.flipperdevices.bridge.api.manager.observers.BondingObserverComposite
+import com.flipperdevices.bridge.api.manager.observers.ConnectionObserverComposite
+import com.flipperdevices.bridge.api.manager.observers.ConnectionObserverLogger
 import no.nordicsemi.android.ble.BleManager
 import no.nordicsemi.android.ble.observer.BondingObserver
 import no.nordicsemi.android.ble.observer.ConnectionObserver

@@ -33,6 +33,8 @@ import com.flipperdevices.bridge.api.scanner.DiscoveredBluetoothDevice
 import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.core.ui.composable.ComposeLottiePic
 import com.flipperdevices.firstpair.impl.R
+import com.flipperdevices.firstpair.impl.model.DevicePairState
+import com.flipperdevices.firstpair.impl.viewmodels.connecting.PairDeviceViewModel
 import com.flipperdevices.firstpair.impl.viewmodels.searching.BLEDeviceViewModel
 
 @Preview(
@@ -41,7 +43,8 @@ import com.flipperdevices.firstpair.impl.viewmodels.searching.BLEDeviceViewModel
 )
 @Composable
 fun ComposableSearchingScreen(
-    devicesViewModel: BLEDeviceViewModel = viewModel()
+    devicesViewModel: BLEDeviceViewModel = viewModel(),
+    pairDeviceViewModel: PairDeviceViewModel = viewModel()
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         ComposableSearchingAppBar {}
@@ -49,7 +52,8 @@ fun ComposableSearchingScreen(
         ComposableSearchingTitle {}
         ComposableSearchingItems(
             modifier = Modifier.weight(weight = 1f),
-            devicesViewModel
+            devicesViewModel,
+            pairDeviceViewModel
         )
         ComposableSearchingFooter {}
     }
@@ -148,7 +152,8 @@ private fun ComposableSearchingTitle(
 @Composable
 private fun ComposableSearchingItems(
     modifier: Modifier = Modifier,
-    devicesViewModel: BLEDeviceViewModel
+    devicesViewModel: BLEDeviceViewModel,
+    pairDeviceViewModel: PairDeviceViewModel
 ) {
     val devices by devicesViewModel.getState().collectAsState()
 
@@ -164,7 +169,7 @@ private fun ComposableSearchingItems(
 
     val filteredDevices = devices.filterNot { it.name.isNullOrEmpty() }
 
-    ComposableSearchingFoundedItems(modifier, filteredDevices)
+    ComposableSearchingFoundedItems(modifier, filteredDevices, pairDeviceViewModel)
 }
 
 @Composable
@@ -208,12 +213,19 @@ private fun ComposableSearchingProgress() {
 @Composable
 private fun ComposableSearchingFoundedItems(
     modifier: Modifier = Modifier,
-    devices: List<DiscoveredBluetoothDevice>
+    devices: List<DiscoveredBluetoothDevice>,
+    pairDeviceViewModel: PairDeviceViewModel
 ) {
+    val devicePairState by pairDeviceViewModel.getConnectionState().collectAsState()
+    val connectingAddress = (devicePairState as? DevicePairState.Connecting)?.address
+
     LazyColumn(modifier = modifier.padding(vertical = 18.dp)) {
         items(devices) {
             val name = it.name!!.replaceFirst("Flipper", "")
-            ComposableSearchItem(text = name)
+            val isConnecting = it.address == connectingAddress
+            ComposableSearchItem(text = name, isConnecting = isConnecting) {
+                pairDeviceViewModel.startConnectToDevice(it.device)
+            }
         }
     }
 }

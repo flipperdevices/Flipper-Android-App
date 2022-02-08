@@ -33,7 +33,7 @@ class FlipperBleManagerImpl constructor(
     private val serviceErrorListener: FlipperServiceErrorListener
 ) : UnsafeBleManager(context), FlipperBleManager, LogTagProvider {
     override val TAG = "FlipperBleManager"
-    private val bleDispatcher = newSingleThreadExecutor("FlipperBleManagerImpl")
+    private val bleDispatcher = newSingleThreadExecutor(TAG)
         .asCoroutineDispatcher()
 
     // Gatt Delegates
