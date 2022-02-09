@@ -1,7 +1,18 @@
 package com.flipperdevices.firstpair.impl.viewmodels
 
+import android.content.Context
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import com.flipperdevices.firstpair.impl.model.DevicePairState
+import com.flipperdevices.firstpair.impl.model.PermissionState
+import com.flipperdevices.firstpair.impl.model.PermissionState.ALL_GRANTED
+import com.flipperdevices.firstpair.impl.model.PermissionState.BLUETOOTH_PERMISSION
+import com.flipperdevices.firstpair.impl.model.PermissionState.BLUETOOTH_PERMISSION_GO_TO_SETTINGS
+import com.flipperdevices.firstpair.impl.model.PermissionState.LOCATION_PERMISSION
+import com.flipperdevices.firstpair.impl.model.PermissionState.LOCATION_PERMISSION_GO_TO_SETTINGS
+import com.flipperdevices.firstpair.impl.model.PermissionState.NOT_REQUESTED_YET
+import com.flipperdevices.firstpair.impl.model.PermissionState.TURN_ON_BLUETOOTH
+import com.flipperdevices.firstpair.impl.model.PermissionState.TURN_ON_LOCATION
 import com.flipperdevices.firstpair.impl.model.ScanState
 import com.flipperdevices.firstpair.impl.model.SearchingContent
 import com.flipperdevices.firstpair.impl.model.SearchingState
@@ -15,6 +26,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 
 class SearchStateBuilder(
+    private val context: Context,
     private val permissionStateBuilder: PermissionStateBuilder,
     private val viewModelSearch: BLEDeviceViewModel,
     viewModelConnecting: PairDeviceViewModel,
@@ -55,20 +67,60 @@ class SearchStateBuilder(
         freezeInvalidate = false
     }
 
+    fun resetByUser() {
+        unfreezeInvalidate()
+        viewModelSearch.stopScan()
+        viewModelSearch.startScanIfNotYet()
+    }
+
     fun getState(): StateFlow<SearchingState> = state
 
     private suspend fun combineState(
-        permissionState: SearchingContent.PermissionRequest?,
+        permissionState: PermissionState,
         scanState: ScanState,
         pairState: DevicePairState
     ) {
+        info { "Received permissionState: $permissionState, scanState: $scanState, pairState: $pairState" }
         if (pairState is DevicePairState.Connected) {
             state.emit(SearchingState(content = SearchingContent.Finished(pairState.address)))
             return
         }
 
-        if (permissionState != null) {
-            state.emit(SearchingState(content = permissionState))
+        if (permissionState != ALL_GRANTED) {
+            val permissionContent = when (permissionState) {
+                TURN_ON_BLUETOOTH, NOT_REQUESTED_YET -> SearchingContent.TurnOnBluetooth(
+                    searchStateHolder = this
+                )
+                TURN_ON_LOCATION -> SearchingContent.TurnOnBluetooth(searchStateHolder = this)
+                BLUETOOTH_PERMISSION ->
+                    SearchingContent.BluetoothPermission(
+                        searchStateHolder = this,
+                        context = context,
+                        requestedFirstTime = true
+                    )
+                BLUETOOTH_PERMISSION_GO_TO_SETTINGS ->
+                    SearchingContent.BluetoothPermission(
+                        searchStateHolder = this,
+                        context = context,
+                        requestedFirstTime = false
+                    )
+                LOCATION_PERMISSION ->
+                    SearchingContent.LocationPermission(
+                        searchStateHolder = this,
+                        context = context,
+                        requestedFirstTime = true
+                    )
+                LOCATION_PERMISSION_GO_TO_SETTINGS ->
+                    SearchingContent.LocationPermission(
+                        searchStateHolder = this,
+                        context = context,
+                        requestedFirstTime = false
+                    )
+                ALL_GRANTED -> null
+            }
+            if (permissionContent != null) {
+                state.emit(SearchingState(content = permissionContent))
+            }
             return
         }
         when (scanState) {
@@ -81,7 +133,7 @@ class SearchStateBuilder(
             ScanState.Timeout -> state.emit(
                 SearchingState(
                     showSearching = false, showHelp = true,
-                    content = SearchingContent.FlipperNotFound
+                    content = SearchingContent.FlipperNotFound(this)
                 )
             )
             is ScanState.Stopped -> viewModelSearch.startScanIfNotYet()

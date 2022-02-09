@@ -21,11 +21,12 @@ class PermissionEnableHelper(
     ) { permissionsGrantedMap ->
         val notGrantedPermissions = permissionsGrantedMap.filterNot { it.value }.map { it.key }
         if (notGrantedPermissions.isEmpty()) {
-            warn { "User denied for permissions $notGrantedPermissions" }
+            verbose { "User grant all permission ($permissions)" }
             listener.onPermissionGranted(permissions)
             return@registerForActivityResult
         }
-        verbose { "User grant all permission ($permissions)" }
+        warn { "User denied for permissions $notGrantedPermissions" }
+
         listener.onPermissionUserDenied(notGrantedPermissions.toTypedArray())
     }
 

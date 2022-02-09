@@ -14,7 +14,6 @@ import com.flipperdevices.core.ui.ComposeFragment
 import com.flipperdevices.firstpair.impl.composable.searching.ComposableSearchingScreen
 import com.flipperdevices.firstpair.impl.di.FirstPairComponent
 import com.flipperdevices.firstpair.impl.model.SearchingContent
-import com.flipperdevices.firstpair.impl.model.SearchingState
 import com.flipperdevices.firstpair.impl.storage.FirstPairStorage
 import com.flipperdevices.firstpair.impl.viewmodels.SearchStateBuilder
 import com.flipperdevices.firstpair.impl.viewmodels.connecting.PairDeviceViewModel
@@ -46,6 +45,7 @@ class DeviceSearchingFragment :
     override fun onAttach(context: Context) {
         super.onAttach(context)
         searchStateBuilder = SearchStateBuilder(
+            context = context,
             PermissionStateBuilder(fragment = this, context = context),
             viewModelSearch,
             viewModelConnecting,
@@ -63,11 +63,7 @@ class DeviceSearchingFragment :
         }
 
         ComposableSearchingScreen(
-            state = SearchingState(
-                showSearching = true,
-                showHelp = true,
-                content = SearchingContent.Searching
-            ),
+            state = state,
             onBack = {
                 requireRouter().exit()
             },
@@ -81,8 +77,7 @@ class DeviceSearchingFragment :
                 viewModelConnecting.startConnectToDevice(it.device)
             },
             onRefreshSearching = {
-                viewModelSearch.stopScan()
-                viewModelSearch.startScanIfNotYet()
+                searchStateBuilder.resetByUser()
             }
         )
     }
