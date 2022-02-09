@@ -10,7 +10,6 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.firstpair.impl.di.FirstPairComponent
 import com.flipperdevices.firstpair.impl.model.ScanState
-import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 import javax.inject.Provider
@@ -25,7 +24,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-private val TIMEOUT_MS = TimeUnit.MILLISECONDS.convert(30, TimeUnit.SECONDS)
+private const val TIMEOUT_MS = 30 * 1000
 
 class BLEDeviceViewModel : ViewModel(), LogTagProvider {
     override val TAG = "BLEDeviceViewModel"

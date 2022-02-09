@@ -80,49 +80,61 @@ class SearchStateBuilder(
         scanState: ScanState,
         pairState: DevicePairState
     ) {
-        info { "Received permissionState: $permissionState, scanState: $scanState, pairState: $pairState" }
+        info {
+            "Received permissionState: $permissionState, " +
+                "scanState: $scanState, " +
+                "pairState: $pairState"
+        }
         if (pairState is DevicePairState.Connected) {
             state.emit(SearchingState(content = SearchingContent.Finished(pairState.address)))
             return
         }
 
         if (permissionState != ALL_GRANTED) {
-            val permissionContent = when (permissionState) {
-                TURN_ON_BLUETOOTH, NOT_REQUESTED_YET -> SearchingContent.TurnOnBluetooth(
-                    searchStateHolder = this
-                )
-                TURN_ON_LOCATION -> SearchingContent.TurnOnBluetooth(searchStateHolder = this)
-                BLUETOOTH_PERMISSION ->
-                    SearchingContent.BluetoothPermission(
-                        searchStateHolder = this,
-                        context = context,
-                        requestedFirstTime = true
-                    )
-                BLUETOOTH_PERMISSION_GO_TO_SETTINGS ->
-                    SearchingContent.BluetoothPermission(
-                        searchStateHolder = this,
-                        context = context,
-                        requestedFirstTime = false
-                    )
-                LOCATION_PERMISSION ->
-                    SearchingContent.LocationPermission(
-                        searchStateHolder = this,
-                        context = context,
-                        requestedFirstTime = true
-                    )
-                LOCATION_PERMISSION_GO_TO_SETTINGS ->
-                    SearchingContent.LocationPermission(
-                        searchStateHolder = this,
-                        context = context,
-                        requestedFirstTime = false
-                    )
-                ALL_GRANTED -> null
-            }
-            if (permissionContent != null) {
-                state.emit(SearchingState(content = permissionContent))
-            }
+            applyPermissionState(permissionState)
             return
         }
+        applyScanState(scanState, pairState)
+    }
+
+    private suspend fun applyPermissionState(permissionState: PermissionState) {
+        val permissionContent = when (permissionState) {
+            TURN_ON_BLUETOOTH, NOT_REQUESTED_YET -> SearchingContent.TurnOnBluetooth(
+                searchStateHolder = this
+            )
+            TURN_ON_LOCATION -> SearchingContent.TurnOnBluetooth(searchStateHolder = this)
+            BLUETOOTH_PERMISSION ->
+                SearchingContent.BluetoothPermission(
+                    searchStateHolder = this,
+                    context = context,
+                    requestedFirstTime = true
+                )
+            BLUETOOTH_PERMISSION_GO_TO_SETTINGS ->
+                SearchingContent.BluetoothPermission(
+                    searchStateHolder = this,
+                    context = context,
+                    requestedFirstTime = false
+                )
+            LOCATION_PERMISSION ->
+                SearchingContent.LocationPermission(
+                    searchStateHolder = this,
+                    context = context,
+                    requestedFirstTime = true
+                )
+            LOCATION_PERMISSION_GO_TO_SETTINGS ->
+                SearchingContent.LocationPermission(
+                    searchStateHolder = this,
+                    context = context,
+                    requestedFirstTime = false
+                )
+            ALL_GRANTED -> null
+        }
+        if (permissionContent != null) {
+            state.emit(SearchingState(content = permissionContent))
+        }
+    }
+
+    private fun applyScanState(scanState: ScanState, pairState: DevicePairState) {
         when (scanState) {
             ScanState.Searching -> state.emit(
                 SearchingState(

@@ -18,7 +18,7 @@ import javax.inject.Provider
 
 class BluetoothEnableHelper(
     fragment: Fragment,
-    private val listener: Listener,
+    private val listener: Listener
 ) : LogTagProvider {
     override val TAG = "BluetoothEnableHelper"
 

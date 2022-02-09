@@ -27,6 +27,7 @@ import kotlinx.coroutines.flow.update
 
 private const val DENIED_POSSIBLE_COUNT = 3
 
+@Suppress("TooManyFunctions")
 class PermissionStateBuilder(
     fragment: Fragment,
     context: Context

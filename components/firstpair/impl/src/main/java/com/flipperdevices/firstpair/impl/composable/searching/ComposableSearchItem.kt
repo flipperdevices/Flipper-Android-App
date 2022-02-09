@@ -31,6 +31,7 @@ import com.flipperdevices.core.ui.composable.ComposableFlipperButton
 import com.flipperdevices.firstpair.impl.R
 
 @Composable
+@Suppress("LongMethod")
 fun ComposableSearchItem(
     modifier: Modifier = Modifier,
     text: String,
