@@ -13,6 +13,14 @@ import com.flipperdevices.firstpair.impl.fragments.permissions.BluetoothEnableHe
 import com.flipperdevices.firstpair.impl.fragments.permissions.LocationEnableHelper
 import com.flipperdevices.firstpair.impl.fragments.permissions.PermissionEnableHelper
 import com.flipperdevices.firstpair.impl.model.PermissionState
+import com.flipperdevices.firstpair.impl.model.PermissionState.ALL_GRANTED
+import com.flipperdevices.firstpair.impl.model.PermissionState.BLUETOOTH_PERMISSION
+import com.flipperdevices.firstpair.impl.model.PermissionState.BLUETOOTH_PERMISSION_GO_TO_SETTINGS
+import com.flipperdevices.firstpair.impl.model.PermissionState.LOCATION_PERMISSION
+import com.flipperdevices.firstpair.impl.model.PermissionState.LOCATION_PERMISSION_GO_TO_SETTINGS
+import com.flipperdevices.firstpair.impl.model.PermissionState.NOT_REQUESTED_YET
+import com.flipperdevices.firstpair.impl.model.PermissionState.TURN_ON_BLUETOOTH
+import com.flipperdevices.firstpair.impl.model.PermissionState.TURN_ON_LOCATION
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -45,13 +53,29 @@ class PermissionStateBuilder(
     // If a user has refused one permissive more than three times, we offer him to open the settings
     private var permissionDeniedByUserCount = mutableMapOf<String, Int>()
 
-    private val state = MutableStateFlow<PermissionState>(PermissionState.NOT_REQUESTED_YET)
+    private val state = MutableStateFlow(NOT_REQUESTED_YET)
 
-    fun invalidate() {
-        state.update { getPreparedState() }
+    fun invalidateState(): PermissionState {
+        val permissionState = getPreparedState()
+        state.update { permissionState }
+        return permissionState
     }
 
     fun getState(): StateFlow<PermissionState> = state
+
+    fun executeStateAction(state: PermissionState) {
+        when (state) {
+            TURN_ON_BLUETOOTH -> bluetoothEnableHelper.requestBluetoothEnable()
+            TURN_ON_LOCATION -> locationEnableHelper.requestLocationEnabled()
+            BLUETOOTH_PERMISSION, LOCATION_PERMISSION -> permissionEnableHelper.requestPermissions()
+            NOT_REQUESTED_YET,
+            BLUETOOTH_PERMISSION_GO_TO_SETTINGS,
+            LOCATION_PERMISSION_GO_TO_SETTINGS,
+            ALL_GRANTED -> {
+                // Do nothing
+            }
+        }
+    }
 
     /**
      * @return state before searching. Return null if all preparing state is finished
@@ -70,18 +94,16 @@ class PermissionStateBuilder(
 
         if (!bluetoothEnableHelper.isBluetoothEnabled()) {
             info { "Bluetooth not enabled, request bluetooth enable" }
-            bluetoothEnableHelper.requestBluetoothEnable()
-            return PermissionState.TURN_ON_BLUETOOTH
+            return TURN_ON_BLUETOOTH
         }
 
         if (!locationEnableHelper.isLocationEnabled()) {
             info { "Location not enabled, request location enable" }
-            locationEnableHelper.requestLocationEnabled()
-            return PermissionState.TURN_ON_LOCATION
+            return TURN_ON_LOCATION
         }
 
         info { "All permission granted" }
-        return PermissionState.ALL_GRANTED
+        return ALL_GRANTED
     }
 
     @Suppress("SpreadOperator")
@@ -92,22 +114,18 @@ class PermissionStateBuilder(
         )
         val shouldShowSettings = deniedCount < DENIED_POSSIBLE_COUNT
 
-        if (!shouldShowSettings) {
-            permissionEnableHelper.requestPermissions()
-        }
-
         for (permission in permissionNotGranted) {
             when (permission) {
                 Manifest.permission.BLUETOOTH_CONNECT,
                 Manifest.permission.BLUETOOTH_SCAN -> {
                     return if (shouldShowSettings) {
-                        PermissionState.BLUETOOTH_PERMISSION_GO_TO_SETTINGS
-                    } else PermissionState.BLUETOOTH_PERMISSION
+                        BLUETOOTH_PERMISSION
+                    } else BLUETOOTH_PERMISSION_GO_TO_SETTINGS
                 }
                 Manifest.permission.ACCESS_FINE_LOCATION -> {
                     return if (shouldShowSettings) {
-                        PermissionState.LOCATION_PERMISSION_GO_TO_SETTINGS
-                    } else PermissionState.LOCATION_PERMISSION
+                        LOCATION_PERMISSION
+                    } else LOCATION_PERMISSION_GO_TO_SETTINGS
                 }
                 else -> {
                     error { "Unknown permission $permission, skip" }
@@ -119,23 +137,26 @@ class PermissionStateBuilder(
     }
 
     override fun onBluetoothEnabled() {
-        invalidate()
+        val permissionState = invalidateState()
+        executeStateAction(permissionState)
     }
 
     override fun onBluetoothUserDenied() {
-        invalidate()
+        invalidateState()
     }
 
     override fun onLocationEnabled() {
-        invalidate()
+        val permissionState = invalidateState()
+        executeStateAction(permissionState)
     }
 
     override fun onLocationUserDenied() {
-        invalidate()
+        invalidateState()
     }
 
     override fun onPermissionGranted(permissions: Array<String>) {
-        invalidate()
+        val permissionState = invalidateState()
+        executeStateAction(permissionState)
     }
 
     override fun onPermissionUserDenied(permissions: Array<String>) {
@@ -147,6 +168,6 @@ class PermissionStateBuilder(
             permissionDeniedByUserCount[permission] = currentDeniedCount + 1
         }
 
-        invalidate()
+        invalidateState()
     }
 }

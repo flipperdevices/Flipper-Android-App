@@ -26,7 +26,6 @@ class PermissionEnableHelper(
             return@registerForActivityResult
         }
         warn { "User denied for permissions $notGrantedPermissions" }
-
         listener.onPermissionUserDenied(notGrantedPermissions.toTypedArray())
     }
 

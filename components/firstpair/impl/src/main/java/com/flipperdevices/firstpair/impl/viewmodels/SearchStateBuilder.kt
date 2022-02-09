@@ -52,10 +52,10 @@ class SearchStateBuilder(
     private var freezeInvalidate = false
 
     fun invalidate() {
-        if (freezeInvalidate) {
-            return
+        val permissionState = permissionStateBuilder.invalidateState()
+        if (!freezeInvalidate) {
+            permissionStateBuilder.executeStateAction(permissionState)
         }
-        permissionStateBuilder.invalidate()
         freezeInvalidate()
     }
 
