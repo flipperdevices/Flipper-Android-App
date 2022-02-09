@@ -2,7 +2,6 @@ package com.flipperdevices.firstpair.impl.viewmodels.searching
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.flipperdevices.bridge.api.scanner.DiscoveredBluetoothDevice
 import com.flipperdevices.bridge.api.scanner.FlipperScanner
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.di.provideDelegate
@@ -10,16 +9,23 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.firstpair.impl.di.FirstPairComponent
+import com.flipperdevices.firstpair.impl.model.ScanState
+import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 import javax.inject.Provider
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+
+private val TIMEOUT_MS = TimeUnit.MILLISECONDS.convert(30, TimeUnit.SECONDS)
 
 class BLEDeviceViewModel : ViewModel(), LogTagProvider {
     override val TAG = "BLEDeviceViewModel"
@@ -33,36 +39,52 @@ class BLEDeviceViewModel : ViewModel(), LogTagProvider {
 
     private val scanner by scannerProvider
     private val scanStarted = AtomicBoolean(false)
-    private val state = MutableStateFlow(emptyList<DiscoveredBluetoothDevice>())
+    private val state = MutableStateFlow<ScanState>(ScanState.Stopped())
+    private var scanJob: Job? = null
 
-    fun getState(): StateFlow<List<DiscoveredBluetoothDevice>> = state
+    fun getState(): StateFlow<ScanState> = state
 
+    @Synchronized
     fun startScanIfNotYet() {
         if (!scanStarted.compareAndSet(false, true)) {
             info { "Scan already started, skip" }
             return
         }
 
-        viewModelScope.launch {
-            startBLEDiscover()
+        scanJob = viewModelScope.launch {
+            launch { startBLEDiscover() }
+            delay(TIMEOUT_MS)
+            // If we already 30s not found any devices
+            if (state.value is ScanState.Searching) {
+                state.emit(ScanState.Timeout)
+                stopScan()
+            }
         }
     }
 
-    private suspend fun startBLEDiscover() = withContext(Dispatchers.IO) {
+    private suspend fun startBLEDiscover() = withContext(Dispatchers.Default) {
         info { "Start ble scan" }
+        state.emit(ScanState.Searching)
         scanner.findFlipperDevices()
             .catch { exception ->
                 error(exception) { "Exception while search devices" }
             }
-            .collect {
-                emitState(it)
+            .collect { devices ->
+                state.update {
+                    if (it !is ScanState.Founded || it.devices != devices) {
+                        ScanState.Founded(devices.toList())
+                    } else it
+                }
             }
     }
 
-    private suspend fun emitState(devices: Iterable<DiscoveredBluetoothDevice>) =
-        withContext(viewModelScope.coroutineContext) {
-            if (state.value != devices) { // Change state only if list change
-                state.emit(devices.toList())
-            }
+    @Synchronized
+    fun stopScan() {
+        if (!scanStarted.compareAndSet(true, false)) {
+            return
         }
+        scanJob?.cancel()
+        scanJob = null
+        state.update { if (it !is ScanState.Stopped) ScanState.Stopped() else it }
+    }
 }

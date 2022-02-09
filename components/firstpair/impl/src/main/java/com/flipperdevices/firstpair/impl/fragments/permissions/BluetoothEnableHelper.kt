@@ -6,17 +6,30 @@ import android.content.Intent
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.log.warn
+import com.flipperdevices.firstpair.impl.di.FirstPairComponent
+import javax.inject.Inject
+import javax.inject.Provider
 
 class BluetoothEnableHelper(
     fragment: Fragment,
-    private val bluetoothAdapter: BluetoothAdapter,
     private val listener: Listener,
 ) : LogTagProvider {
     override val TAG = "BluetoothEnableHelper"
+
+    @Inject
+    lateinit var bluetoothAdapterProvider: Provider<BluetoothAdapter>
+
+    init {
+        ComponentHolder.component<FirstPairComponent>().inject(this)
+    }
+
+    private val bluetoothAdapter by bluetoothAdapterProvider
 
     // Result listener for bluetooth toggle
     private val bluetoothEnableWithResult = fragment.registerForActivityResult(

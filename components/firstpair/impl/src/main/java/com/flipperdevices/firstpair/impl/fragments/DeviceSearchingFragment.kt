@@ -1,130 +1,100 @@
 package com.flipperdevices.firstpair.impl.fragments
 
-import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.fragment.app.viewModels
-import com.flipperdevices.bridge.api.utils.PermissionHelper
+import androidx.lifecycle.lifecycleScope
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.navigation.requireRouter
 import com.flipperdevices.core.ui.ComposeFragment
 import com.flipperdevices.firstpair.impl.composable.searching.ComposableSearchingScreen
 import com.flipperdevices.firstpair.impl.di.FirstPairComponent
-import com.flipperdevices.firstpair.impl.fragments.permissions.BluetoothEnableHelper
-import com.flipperdevices.firstpair.impl.fragments.permissions.LocationEnableHelper
-import com.flipperdevices.firstpair.impl.fragments.permissions.PermissionEnableHelper
+import com.flipperdevices.firstpair.impl.model.SearchingContent
+import com.flipperdevices.firstpair.impl.model.SearchingState
+import com.flipperdevices.firstpair.impl.storage.FirstPairStorage
+import com.flipperdevices.firstpair.impl.viewmodels.SearchStateBuilder
 import com.flipperdevices.firstpair.impl.viewmodels.connecting.PairDeviceViewModel
 import com.flipperdevices.firstpair.impl.viewmodels.searching.BLEDeviceViewModel
+import com.flipperdevices.firstpair.impl.viewmodels.searching.PermissionStateBuilder
+import com.flipperdevices.singleactivity.api.SingleActivityApi
 import javax.inject.Inject
-import javax.inject.Provider
 
 class DeviceSearchingFragment :
     ComposeFragment(),
-    LogTagProvider,
-    BluetoothEnableHelper.Listener,
-    LocationEnableHelper.Listener,
-    PermissionEnableHelper.Listener {
+    LogTagProvider {
     override val TAG = "DeviceSearchingFragment"
 
     @Inject
-    lateinit var bluetoothAdapterProvider: Provider<BluetoothAdapter>
+    lateinit var firstPairStorage: FirstPairStorage
 
-    private var bluetoothEnableHelper: BluetoothEnableHelper? = null
-    private var locationEnableHelper: LocationEnableHelper? = null
-    private var permissionEnableHelper: PermissionEnableHelper? = null
-
-    private val viewModelSearch by viewModels<BLEDeviceViewModel>()
-    private val viewModelConnecting by viewModels<PairDeviceViewModel>()
+    @Inject
+    lateinit var singleActivityApi: SingleActivityApi
 
     init {
         ComponentHolder.component<FirstPairComponent>().inject(this)
     }
 
+    private val viewModelSearch by viewModels<BLEDeviceViewModel>()
+    private val viewModelConnecting by viewModels<PairDeviceViewModel>()
+
+    private lateinit var searchStateBuilder: SearchStateBuilder
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        bluetoothEnableHelper = BluetoothEnableHelper(
-            fragment = this,
-            bluetoothAdapter = bluetoothAdapterProvider.get(),
-            listener = this
-        )
-        locationEnableHelper = LocationEnableHelper(
-            context = context,
-            listener = this
-        )
-        permissionEnableHelper = PermissionEnableHelper(
-            fragment = this,
-            context = context,
-            listener = this,
-            permissions = PermissionHelper.getRequiredPermissions()
+        searchStateBuilder = SearchStateBuilder(
+            PermissionStateBuilder(fragment = this, context = context),
+            viewModelSearch,
+            viewModelConnecting,
+            lifecycleScope
         )
     }
 
     @Composable
     override fun RenderView() {
-        ComposableSearchingScreen(viewModelSearch, viewModelConnecting)
-    }
+        val state by searchStateBuilder.getState().collectAsState()
+        info { "New state is $state" }
 
-    private fun invalidate() {
-        val bluetoothEnableHelperNotNull = bluetoothEnableHelper
-        val locationEnableHelperNotNull = locationEnableHelper
-        val permissionEnableHelperNotNull = permissionEnableHelper
-
-        if (bluetoothEnableHelperNotNull == null ||
-            locationEnableHelperNotNull == null ||
-            permissionEnableHelperNotNull == null
-        ) {
-            error(RuntimeException()) { "Call invalidate before onAttach. Skip method call" }
-            return
+        (state.content as? SearchingContent.Finished)?.let {
+            finishConnection(it.deviceId)
         }
 
-        if (!bluetoothEnableHelperNotNull.isBluetoothEnabled()) {
-            bluetoothEnableHelperNotNull.requestBluetoothEnable()
-            return
-        }
-
-        if (!locationEnableHelperNotNull.isLocationEnabled()) {
-            locationEnableHelperNotNull.requestLocationEnabled()
-            return
-        }
-
-        if (!permissionEnableHelperNotNull.isPermissionGranted()) {
-            permissionEnableHelperNotNull.requestPermissions()
-            return
-        }
-
-        info { "All permission granted, start scan" }
-
-        viewModelSearch.startScanIfNotYet()
+        ComposableSearchingScreen(
+            state = SearchingState(
+                showSearching = true,
+                showHelp = true,
+                content = SearchingContent.Searching
+            ),
+            onBack = {
+                requireRouter().exit()
+            },
+            onHelpClicking = {
+                TODO()
+            },
+            onSkipConnection = {
+                finishConnection()
+            },
+            onDeviceClick = {
+                viewModelConnecting.startConnectToDevice(it.device)
+            },
+            onRefreshSearching = {
+                viewModelSearch.stopScan()
+                viewModelSearch.startScanIfNotYet()
+            }
+        )
     }
 
     override fun onResume() {
         super.onResume()
-        invalidate()
+        searchStateBuilder.invalidate()
     }
 
-    override fun onBluetoothEnabled() {
-        invalidate()
-    }
-
-    override fun onBluetoothUserDenied() {
-        invalidate()
-    }
-
-    override fun onLocationEnabled() {
-        invalidate()
-    }
-
-    override fun onLocationUserDenied() {
-        invalidate()
-    }
-
-    override fun onPermissionGranted(permissions: Array<String>) {
-        invalidate()
-    }
-
-    override fun onPermissionUserDenied(permissions: Array<String>) {
-        invalidate()
+    private fun finishConnection(deviceId: String? = null) {
+        viewModelConnecting.close()
+        firstPairStorage.markDeviceSelected(deviceId)
+        singleActivityApi.open()
     }
 }

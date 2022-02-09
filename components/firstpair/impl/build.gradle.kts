@@ -30,6 +30,7 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
+    implementation(libs.compose.swipetorefresh)
     implementation(libs.lifecycle.compose)
 
     // Dagger deps

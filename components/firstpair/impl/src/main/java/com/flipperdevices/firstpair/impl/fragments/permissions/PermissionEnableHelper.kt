@@ -30,7 +30,7 @@ class PermissionEnableHelper(
     }
 
     fun requestPermissions() {
-        if (isPermissionGranted()) {
+        if (getUngrantedPermission().isEmpty()) {
             warn { "Request grant permissions $permissions, but it already granted" }
             // Already granted permissions
             listener.onPermissionGranted(permissions)
@@ -41,8 +41,8 @@ class PermissionEnableHelper(
         requestPermissionsWithResult.launch(permissions)
     }
 
-    fun isPermissionGranted(): Boolean {
-        return PermissionHelper.isPermissionsGranted(context, permissions)
+    fun getUngrantedPermission(): List<String> {
+        return PermissionHelper.getUngrantedPermission(context, permissions)
     }
 
     interface Listener {

@@ -23,16 +23,17 @@ object PermissionHelper {
     /**
      * @return true if all permissions granted
      */
-    fun isPermissionsGranted(context: Context, permissions: Array<String>): Boolean {
+    fun getUngrantedPermission(context: Context, permissions: Array<String>): List<String> {
+        val ungrantedPermission = mutableListOf<String>()
         for (permissionName in permissions) {
             if (ContextCompat.checkSelfPermission(
                     context,
                     permissionName
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
-                return false
+                ungrantedPermission.add(permissionName)
             }
         }
-        return true
+        return ungrantedPermission
     }
 }

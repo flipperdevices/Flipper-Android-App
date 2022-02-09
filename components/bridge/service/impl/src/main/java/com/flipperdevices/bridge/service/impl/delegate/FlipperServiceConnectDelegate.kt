@@ -49,10 +49,10 @@ class FlipperServiceConnectDelegate(
             throw BluetoothDisabledException()
         }
 
-        if (!PermissionHelper.isPermissionsGranted(
+        if (PermissionHelper.getUngrantedPermission(
                 context,
                 PermissionHelper.getRequiredPermissions()
-            )
+            ).isNotEmpty()
         ) {
             throw SecurityException(
                 """
