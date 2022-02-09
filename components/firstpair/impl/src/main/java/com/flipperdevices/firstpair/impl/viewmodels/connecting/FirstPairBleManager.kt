@@ -49,7 +49,9 @@ internal class FirstPairBleManager(
             super.onDeviceReady()
             info { "On device ready called" }
             readCharacteristic(
-                informationService?.getCharacteristic(Constants.BLEInformationService.SOFTWARE_VERSION)
+                informationService?.getCharacteristic(
+                    Constants.BLEInformationService.SOFTWARE_VERSION
+                )
             ).with { device, data ->
                 val softwareVersion = String(data.value ?: byteArrayOf())
                 info { "Software version on ${device.name} is $softwareVersion" }
@@ -65,7 +67,7 @@ internal class FirstPairBleManager(
     }
 
     fun connectToDevice(device: BluetoothDevice) {
-        connect(device).useAutoConnect(true).enqueue()
+        connect(device).enqueue()
     }
 
     override fun subscribeOnConnectionState(observer: ConnectionObserver) {

@@ -134,7 +134,7 @@ sealed class SearchingContent {
         image = R.drawable.pic_device_not_found,
         title = R.string.firstpair_device_not_found_title,
         description = R.string.firstpair_device_not_found_desc,
-        buttonText = R.string.firstpair_permission_continue,
+        buttonText = R.string.firstpair_permission_retry,
         searchStateHolder = searchStateHolder
     ) {
         override fun onButtonClick() {
