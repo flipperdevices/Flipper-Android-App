@@ -102,7 +102,10 @@ class SearchStateBuilder(
             TURN_ON_BLUETOOTH, NOT_REQUESTED_YET -> SearchingContent.TurnOnBluetooth(
                 searchStateHolder = this
             )
-            TURN_ON_LOCATION -> SearchingContent.TurnOnBluetooth(searchStateHolder = this)
+            TURN_ON_LOCATION -> SearchingContent.TurnOnLocation(
+                searchStateHolder = this,
+                context = context
+            )
             BLUETOOTH_PERMISSION ->
                 SearchingContent.BluetoothPermission(
                     searchStateHolder = this,
