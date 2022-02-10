@@ -18,6 +18,7 @@ import com.flipperdevices.firstpair.impl.storage.FirstPairStorage
 import com.flipperdevices.firstpair.impl.viewmodels.SearchStateBuilder
 import com.flipperdevices.firstpair.impl.viewmodels.connecting.PairDeviceViewModel
 import com.flipperdevices.firstpair.impl.viewmodels.searching.BLEDeviceViewModel
+import com.flipperdevices.firstpair.impl.viewmodels.searching.PermissionChangeDetectBroadcastReceiver
 import com.flipperdevices.firstpair.impl.viewmodels.searching.PermissionStateBuilder
 import com.flipperdevices.singleactivity.api.SingleActivityApi
 import javax.inject.Inject
@@ -41,6 +42,7 @@ class DeviceSearchingFragment :
     private val viewModelConnecting by viewModels<PairDeviceViewModel>()
 
     private lateinit var searchStateBuilder: SearchStateBuilder
+    private var permissionChangeBroadcastReceiver: PermissionChangeDetectBroadcastReceiver? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -50,6 +52,9 @@ class DeviceSearchingFragment :
             viewModelSearch,
             viewModelConnecting,
             lifecycleScope
+        )
+        permissionChangeBroadcastReceiver = PermissionChangeDetectBroadcastReceiver(
+            searchStateBuilder
         )
     }
 
@@ -85,6 +90,14 @@ class DeviceSearchingFragment :
     override fun onResume() {
         super.onResume()
         searchStateBuilder.invalidate()
+        val activityNotNull = activity ?: return
+        permissionChangeBroadcastReceiver?.register(activityNotNull)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        val activityNotNull = activity ?: return
+        permissionChangeBroadcastReceiver?.unregister(activityNotNull)
     }
 
     private fun finishConnection(deviceId: String? = null) {

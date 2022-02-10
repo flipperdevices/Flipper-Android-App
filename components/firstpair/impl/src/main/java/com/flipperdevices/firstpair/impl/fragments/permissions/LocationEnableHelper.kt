@@ -16,6 +16,7 @@ class LocationEnableHelper(
     private val context: Context,
     private val listener: Listener
 ) : LogTagProvider {
+    private var dialog: AlertDialog? = null
     override val TAG = "LocationEnableHelper"
 
     fun requestLocationEnabled() {
@@ -26,8 +27,9 @@ class LocationEnableHelper(
             return
         }
 
-        @Suppress("JoinDeclarationAndAssignment")
-        lateinit var dialog: AlertDialog
+        if (dialog != null) {
+            return
+        }
 
         dialog = AlertDialog.Builder(context)
             .setTitle(R.string.firstpair_permission_enable_location_title)
@@ -36,15 +38,17 @@ class LocationEnableHelper(
             .setNegativeButton(R.string.firstpair_permission_cancel_btn) { _, _ ->
                 verbose { "User click cancel on location enable dialog" }
                 listener.onLocationUserDenied()
-                dialog.cancel()
+                dialog?.cancel()
+                dialog = null
             }
             .setPositiveButton(R.string.firstpair_permission_settings) { _, _ ->
                 verbose { "User click on open setting" }
                 context.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
-                dialog.cancel()
+                dialog?.cancel()
+                dialog = null
             }.create()
 
-        dialog.show()
+        dialog?.show()
     }
 
     fun isLocationEnabled(): Boolean {
@@ -57,7 +61,14 @@ class LocationEnableHelper(
             return false
         }
 
-        return LocationManagerCompat.isLocationEnabled(locationManager)
+        val isLocationEnabled = LocationManagerCompat.isLocationEnabled(locationManager)
+
+        if (isLocationEnabled) { // Close dialog if it open
+            dialog?.cancel()
+            dialog = null
+        }
+
+        return isLocationEnabled
     }
 
     interface Listener {
