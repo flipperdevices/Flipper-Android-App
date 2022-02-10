@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="firstpair_tos_title">Turn On Bluetooth on your Flipper</string>
+    <string name="firstpair_tos_title">Turn On Bluetooth \non your Flipper</string>
     <string name="firstpair_tos_description">Settings > Bluetooth > Switch On</string>
     <string name="firstpair_tos_button">Connect</string>
     <string name="firstpair_tos_footer_pre">By pressing Connect, you agree with our</string>

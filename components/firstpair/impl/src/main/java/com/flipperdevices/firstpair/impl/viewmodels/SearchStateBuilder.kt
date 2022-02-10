@@ -134,7 +134,7 @@ class SearchStateBuilder(
         }
     }
 
-    private fun applyScanState(scanState: ScanState, pairState: DevicePairState) {
+    private suspend fun applyScanState(scanState: ScanState, pairState: DevicePairState) {
         when (scanState) {
             ScanState.Searching -> state.emit(
                 SearchingState(

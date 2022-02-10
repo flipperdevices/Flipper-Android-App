@@ -24,7 +24,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-private const val TIMEOUT_MS = 30 * 1000
+private const val TIMEOUT_MS = 30L * 1000
 
 class BLEDeviceViewModel : ViewModel(), LogTagProvider {
     override val TAG = "BLEDeviceViewModel"

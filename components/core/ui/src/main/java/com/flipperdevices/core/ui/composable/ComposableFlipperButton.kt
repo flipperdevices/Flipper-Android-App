@@ -33,7 +33,7 @@ fun ComposableFlipperButton(
 ) {
     Box(
         modifier = modifier
-            .clip(RoundedCornerShape(size = 20.dp))
+            .clip(RoundedCornerShape(size = 30.dp))
             .background(colorResource(R.color.accent_secondary))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },

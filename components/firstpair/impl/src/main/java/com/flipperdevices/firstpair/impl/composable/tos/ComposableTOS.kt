@@ -43,7 +43,7 @@ private fun ComposableTutorial(modifier: Modifier) {
                 start = 60.dp,
                 end = 60.dp,
                 top = 48.dp,
-                bottom = 18.dp
+                bottom = 48.dp
             ),
             text = stringResource(R.string.firstpair_tos_title),
             fontWeight = FontWeight.W700,
@@ -62,7 +62,7 @@ private fun ComposableTutorial(modifier: Modifier) {
                 .fillMaxWidth()
                 .padding(
                     horizontal = 40.dp,
-                    vertical = 18.dp
+                    vertical = 8.dp
                 ),
             painter = painterResource(R.drawable.pic_flipper_instruction),
             contentDescription = stringResource(R.string.firstpair_tos_description)
@@ -77,7 +77,7 @@ fun ComposableFooter(onApplyPress: () -> Unit) {
             modifier = Modifier
                 .padding(
                     horizontal = 24.dp,
-                    vertical = 32.dp
+                    vertical = 18.dp
                 )
                 .fillMaxWidth(),
             text = stringResource(R.string.firstpair_tos_button),

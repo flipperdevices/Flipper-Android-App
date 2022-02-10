@@ -56,7 +56,8 @@ sealed class SearchingContent {
                 searchStateHolder.invalidate()
             } else {
                 val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                intent.data = Uri.parse("package:" + context.packageName)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                intent.data = Uri.fromParts("package", context.packageName, null)
                 context.startActivity(intent)
             }
         }
