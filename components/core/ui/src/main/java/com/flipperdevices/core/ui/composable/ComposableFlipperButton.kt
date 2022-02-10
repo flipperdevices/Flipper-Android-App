@@ -27,7 +27,7 @@ import com.flipperdevices.core.ui.R
 fun ComposableFlipperButton(
     modifier: Modifier = Modifier,
     text: String,
-    textPadding: PaddingValues = PaddingValues(all = 16.dp),
+    textPadding: PaddingValues = PaddingValues(vertical = 16.dp, horizontal = 38.dp),
     onClick: () -> Unit = {},
     fontSize: TextUnit = 16.sp
 ) {

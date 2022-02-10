@@ -53,6 +53,7 @@ class PairDeviceViewModel(
                 error(anyOtherException) { "Fatal exception while try connecting to device" }
                 pairState.emit(DevicePairState.Timeout)
             }
+            connectingJob = null
         }
     }
 
