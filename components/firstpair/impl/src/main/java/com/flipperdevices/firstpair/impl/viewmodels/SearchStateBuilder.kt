@@ -98,6 +98,7 @@ class SearchStateBuilder(
     }
 
     private suspend fun applyPermissionState(permissionState: PermissionState) {
+        viewModelSearch.stopScan()
         val permissionContent = when (permissionState) {
             TURN_ON_BLUETOOTH, NOT_REQUESTED_YET -> SearchingContent.TurnOnBluetooth(
                 searchStateHolder = this
@@ -138,6 +139,7 @@ class SearchStateBuilder(
     }
 
     private suspend fun applyScanState(scanState: ScanState, pairState: DevicePairState) {
+        unfreezeInvalidate()
         when (scanState) {
             ScanState.Searching -> state.emit(
                 SearchingState(
