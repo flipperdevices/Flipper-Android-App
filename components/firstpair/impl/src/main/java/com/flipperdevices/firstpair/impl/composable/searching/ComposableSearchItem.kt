@@ -39,7 +39,7 @@ fun ComposableSearchItem(
     onConnectionClick: () -> Unit
 ) {
     Card(
-        modifier = modifier.padding(horizontal = 14.dp),
+        modifier = modifier.padding(horizontal = 14.dp, vertical = 2.dp),
         shape = RoundedCornerShape(size = 10.dp),
         elevation = 1.dp
     ) {

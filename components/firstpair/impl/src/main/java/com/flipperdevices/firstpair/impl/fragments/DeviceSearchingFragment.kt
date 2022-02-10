@@ -73,13 +73,13 @@ class DeviceSearchingFragment :
                 requireRouter().exit()
             },
             onHelpClicking = {
-                TODO()
+                // TODO
             },
             onSkipConnection = {
                 finishConnection()
             },
             onDeviceClick = {
-                viewModelConnecting.startConnectToDevice(it.device)
+                viewModelConnecting.startConnectToDevice(it)
             },
             onRefreshSearching = {
                 searchStateBuilder.resetByUser()

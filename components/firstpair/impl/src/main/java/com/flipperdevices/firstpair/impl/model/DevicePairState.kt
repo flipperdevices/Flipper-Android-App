@@ -6,4 +6,6 @@ sealed class DevicePairState {
     data class Connecting(val address: String?) : DevicePairState()
 
     class Connected(val address: String?) : DevicePairState()
+
+    object Timeout : DevicePairState()
 }

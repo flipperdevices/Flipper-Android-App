@@ -29,7 +29,7 @@ fun ComposableSearchingDevices(
     ) {
         LazyColumn(
             modifier = Modifier.padding(vertical = 18.dp),
-            verticalArrangement = Arrangement.spacedBy(14.dp)
+            verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             items(devices) { device ->
                 val name = device.name!!.replaceFirst(Constants.DEVICENAME_PREFIX, "")

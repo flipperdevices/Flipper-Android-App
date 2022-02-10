@@ -9,14 +9,18 @@ import com.flipperdevices.bridge.api.manager.ktx.providers.ConnectionStateProvid
 import com.flipperdevices.bridge.api.manager.observers.ConnectionObserverComposite
 import com.flipperdevices.bridge.api.manager.observers.ConnectionObserverLogger
 import com.flipperdevices.bridge.api.utils.Constants
+import com.flipperdevices.core.ktx.jre.newSingleThreadExecutor
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import kotlinx.coroutines.asCoroutineDispatcher
+import kotlinx.coroutines.withContext
 import no.nordicsemi.android.ble.BleManager
 import no.nordicsemi.android.ble.observer.ConnectionObserver
 
 /**
  * Class for initial connection to device. Set up connection and set up pairing
  */
+@Suppress("BlockingMethodInNonBlockingContext")
 internal class FirstPairBleManager(
     context: Context
 ) : BleManager(context),
@@ -25,6 +29,8 @@ internal class FirstPairBleManager(
     override val TAG = "FirstPairBleManager"
 
     private val connectionObservers = ConnectionObserverComposite(ConnectionObserverLogger(TAG))
+    private val bleDispatcher = newSingleThreadExecutor(TAG)
+        .asCoroutineDispatcher()
 
     init {
         setConnectionObserver(connectionObservers)
@@ -66,8 +72,8 @@ internal class FirstPairBleManager(
         override fun onServicesInvalidated() = Unit
     }
 
-    fun connectToDevice(device: BluetoothDevice) {
-        connect(device).enqueue()
+    suspend fun connectToDevice(device: BluetoothDevice) = withContext(bleDispatcher) {
+        connect(device).await()
     }
 
     override fun subscribeOnConnectionState(observer: ConnectionObserver) {
