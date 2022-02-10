@@ -41,7 +41,7 @@ class FileManagerSaveFragment : ComposeFragment() {
         ComponentHolder.component<FileManagerComponent>().inject(this)
     }
 
-    private val viewModel by viewModels<FileManagerViewModel>() {
+    private val viewModel by viewModels<FileManagerViewModel> {
         FileManagerViewModelFactory(directory)
     }
 

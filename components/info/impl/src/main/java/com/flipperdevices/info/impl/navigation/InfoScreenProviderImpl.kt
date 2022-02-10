@@ -9,5 +9,5 @@ import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class)
 class InfoScreenProviderImpl @Inject constructor() : InfoScreenProvider {
-    override fun deviceInformationScreen() = FragmentScreen() { InfoFragment() }
+    override fun deviceInformationScreen() = FragmentScreen { InfoFragment() }
 }

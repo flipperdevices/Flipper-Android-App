@@ -2,6 +2,6 @@
 <resources>
 
     <style name="FlipperTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:navigationBarColor">@android:color/white</item>
+        <item name="background">@color/background</item>
     </style>
 </resources>

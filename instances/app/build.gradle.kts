@@ -12,8 +12,8 @@ dependencies {
     implementation(projects.components.core.preference)
     implementation(projects.components.core.ui)
 
-    implementation(projects.components.pair.api)
-    implementation(projects.components.pair.impl)
+    implementation(projects.components.firstpair.api)
+    implementation(projects.components.firstpair.impl)
 
     implementation(projects.components.info.api)
     implementation(projects.components.info.impl)
@@ -56,11 +56,14 @@ dependencies {
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.service.impl)
     implementation(projects.components.bridge.api)
+    implementation(projects.components.bridge.impl)
+    implementation(libs.ble.common)
+    implementation(libs.ble.scan)
 
     implementation(projects.components.analytics.shake2report.api)
     releaseImplementation(projects.components.analytics.shake2report.noop)
     debugImplementation(projects.components.analytics.shake2report.impl)
-    add("internalImplementation", projects.components.analytics.shake2report.impl)
+    internalImplementation(projects.components.analytics.shake2report.impl)
 
     implementation(libs.annotations)
     implementation(libs.ktx)

@@ -10,7 +10,7 @@ dependencies {
     implementation(projects.components.core.navigation)
 
     implementation(projects.components.info.api)
-    implementation(projects.components.pair.api)
+    implementation(projects.components.firstpair.api)
     implementation(projects.components.screenstreaming.api)
     implementation(projects.components.filemanager.api)
     implementation(projects.components.debug.api)
@@ -39,7 +39,6 @@ dependencies {
     implementation(libs.ktx.fragment)
 
     implementation(libs.ble)
-    implementation(libs.ble.ktx)
     implementation(libs.ble.common)
     implementation(libs.ble.scan)
 

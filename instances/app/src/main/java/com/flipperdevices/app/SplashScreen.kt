@@ -9,7 +9,6 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.deeplink.api.DeepLinkContentProvider
 import com.flipperdevices.deeplink.model.Deeplink
-import com.flipperdevices.pair.api.PairComponentApi
 import com.flipperdevices.singleactivity.api.SingleActivityApi
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -18,9 +17,6 @@ import kotlinx.coroutines.withContext
 
 class SplashScreen : AppCompatActivity(), LogTagProvider {
     override val TAG = "SplashScreen"
-
-    @Inject
-    lateinit var pairComponentApi: PairComponentApi
 
     @Inject
     lateinit var singleActivityApi: SingleActivityApi
@@ -33,12 +29,6 @@ class SplashScreen : AppCompatActivity(), LogTagProvider {
         ComponentHolder.component<MainComponent>().inject(this)
 
         info { "Open SplashScreen with $intent" }
-
-        // Open pair screen if not yet
-        if (pairComponentApi.shouldWeOpenPairScreen()) {
-            pairComponentApi.openPairScreen(this)
-            return
-        }
 
         // Open single activity if it is not deeplink
         val uri = intent.data

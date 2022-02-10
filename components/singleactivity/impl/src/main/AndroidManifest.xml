@@ -4,6 +4,7 @@
     <application>
         <activity
                 android:exported="false"
+                android:launchMode="singleTask"
                 android:name=".SingleActivity"
                 android:theme="@style/FlipperTheme" />
     </application>

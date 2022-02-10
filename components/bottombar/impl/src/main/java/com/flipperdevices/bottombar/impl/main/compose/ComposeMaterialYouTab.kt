@@ -60,7 +60,7 @@ fun ComposeMaterialYouTab(
                 ) {
                     icon?.invoke()
                 }
-                Box() {
+                Box {
                     text?.invoke()
                 }
             }

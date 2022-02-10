@@ -16,7 +16,6 @@ dependencies {
     implementation(projects.components.core.preference)
 
     implementation(projects.components.bridge.api)
-    implementation(projects.components.bridge.provider)
     implementation(projects.components.bridge.protobuf)
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.impl)
@@ -31,7 +30,6 @@ dependencies {
     kapt(libs.lifecycle.kapt)
 
     implementation(libs.ble)
-    implementation(libs.ble.ktx)
     implementation(libs.ble.common)
     implementation(libs.ble.scan)
 

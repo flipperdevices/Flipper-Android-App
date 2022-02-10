@@ -7,14 +7,14 @@ import kotlinx.parcelize.Parcelize
 
 sealed class DeeplinkContent : Parcelable {
     @Parcelize
-    class ExternalUri(
+    data class ExternalUri(
         val filename: String?,
         val size: Long?,
         val uri: Uri
     ) : DeeplinkContent()
 
     @Parcelize
-    class InternalStorageFile(
+    data class InternalStorageFile(
         val file: File
     ) : DeeplinkContent()
 

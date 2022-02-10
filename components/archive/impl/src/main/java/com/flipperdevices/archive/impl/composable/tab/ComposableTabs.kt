@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 fun ComposableTabs(pagerState: PagerState, tabs: List<ArchiveTab>) {
     val coroutineScope = rememberCoroutineScope()
 
-    Column() {
+    Column {
         ScrollableTabRow(
             backgroundColor = Color.White,
             selectedTabIndex = pagerState.currentPage,

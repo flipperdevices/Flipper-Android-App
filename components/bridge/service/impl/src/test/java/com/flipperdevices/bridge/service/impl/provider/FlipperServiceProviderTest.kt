@@ -36,7 +36,7 @@ class FlipperServiceProviderTest {
 
     @Before
     fun setUp() {
-        applicationContext = mock() {
+        applicationContext = mock {
             on { packageName } doReturn "com.flipperdevices.bridge.service.impl.provider"
             on { bindService(any(), any(), anyInt()) } doAnswer {
                 serviceConnection = it.getArgument(1, ServiceConnection::class.java)

@@ -7,6 +7,8 @@ import com.flipperdevices.bridge.BuildConfig
 import com.flipperdevices.bridge.api.error.FlipperBleServiceError
 import com.flipperdevices.bridge.api.error.FlipperServiceErrorListener
 import com.flipperdevices.bridge.api.manager.FlipperBleManager
+import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
+import com.flipperdevices.bridge.api.manager.ktx.stateAsFlow
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.impl.manager.delegates.FlipperConnectionInformationApiImpl
 import com.flipperdevices.bridge.impl.manager.service.BluetoothGattServiceWrapper
@@ -23,8 +25,6 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import no.nordicsemi.android.ble.ConnectionPriorityRequest
-import no.nordicsemi.android.ble.ktx.state.ConnectionState
-import no.nordicsemi.android.ble.ktx.stateAsFlow
 
 @Suppress("BlockingMethodInNonBlockingContext")
 class FlipperBleManagerImpl constructor(
@@ -33,7 +33,7 @@ class FlipperBleManagerImpl constructor(
     private val serviceErrorListener: FlipperServiceErrorListener
 ) : UnsafeBleManager(context), FlipperBleManager, LogTagProvider {
     override val TAG = "FlipperBleManager"
-    private val bleDispatcher = newSingleThreadExecutor("FlipperBleManagerImpl")
+    private val bleDispatcher = newSingleThreadExecutor(TAG)
         .asCoroutineDispatcher()
 
     // Gatt Delegates
@@ -44,7 +44,6 @@ class FlipperBleManagerImpl constructor(
     override val connectionInformationApi = FlipperConnectionInformationApiImpl(this)
 
     init {
-        setConnectionObserver(ConnectionObserverLogger())
         info { "FlipperBleManagerImpl: ${this.hashCode()}" }
     }
 
@@ -75,8 +74,8 @@ class FlipperBleManagerImpl constructor(
 
         override fun initialize() {
             if (!isBonded) {
-                info { "Start bond insecure" }
-                createBondInsecure().enqueue()
+                info { "Start bond secure" }
+                ensureBond().enqueue()
             }
         }
 

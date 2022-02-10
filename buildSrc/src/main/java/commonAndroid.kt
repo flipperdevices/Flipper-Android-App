@@ -1,6 +1,9 @@
 import com.android.build.gradle.BaseExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
+import org.gradle.api.artifacts.Dependency
+import org.gradle.api.artifacts.dsl.DependencyHandler
+import org.gradle.kotlin.dsl.add
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -92,8 +95,20 @@ private fun Project.suppressOptIn() {
                     "-Xopt-in=androidx.compose.foundation.ExperimentalFoundationApi",
                     "-Xopt-in=kotlinx.serialization.ExperimentalSerializationApi",
                     "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+                    "-Xopt-in=com.squareup.anvil.annotations.ExperimentalAnvilApi",
                     "-Xopt-in=kotlin.RequiresOptIn",
                 )
             }
         }
 }
+
+/**
+ * Adds a dependency to the 'internalImplementation' configuration.
+ *
+ * @param dependencyNotation notation for the dependency to be added.
+ * @return The dependency.
+ *
+ * @see [DependencyHandler.add]
+ */
+fun DependencyHandler.`internalImplementation`(dependencyNotation: Any): Dependency? =
+    add("internalImplementation", dependencyNotation)

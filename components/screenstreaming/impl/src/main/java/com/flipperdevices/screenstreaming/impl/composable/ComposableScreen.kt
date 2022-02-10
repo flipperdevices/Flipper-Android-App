@@ -50,7 +50,7 @@ fun ComposableScreen(
     val streamingState by viewModel.getStreamingState().collectAsState()
     val speedState by viewModel.getSpeed().collectAsState()
 
-    Column() {
+    Column {
         Column(
             modifier = Modifier
                 .fillMaxSize()

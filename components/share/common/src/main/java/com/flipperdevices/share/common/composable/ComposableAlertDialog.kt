@@ -76,7 +76,7 @@ fun ComposableFixedProgress(fixedProgress: DownloadProgress.Fixed) {
         LocalContext.current,
         fixedProgress.speedBytesInSecond
     )
-    Column() {
+    Column {
         Text(
             modifier = Modifier.padding(bottom = 8.dp),
             text = stringResource(
@@ -103,7 +103,7 @@ fun ComposableInfiniteProgress(infiniteProgress: DownloadProgress.Infinite) {
         LocalContext.current,
         infiniteProgress.speedBytesInSecond
     )
-    Column() {
+    Column {
         Text(
             modifier = Modifier.padding(bottom = 8.dp),
             text = stringResource(
