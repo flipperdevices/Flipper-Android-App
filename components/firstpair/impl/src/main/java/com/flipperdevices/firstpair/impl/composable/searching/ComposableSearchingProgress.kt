@@ -32,7 +32,9 @@ fun ComposableSearchingProgress(modifier: Modifier) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                modifier = Modifier.size(size = 82.dp),
+                modifier = Modifier
+                    .size(size = 82.dp)
+                    .padding(end = 13.dp),
                 painter = painterResource(R.drawable.pic_phone),
                 contentDescription = null
             )
