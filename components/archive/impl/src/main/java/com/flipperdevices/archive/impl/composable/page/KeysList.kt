@@ -43,7 +43,10 @@ fun LazyListScope.KeysList(
             }
         }
     } else {
-        items(keys.size) {
+        items(
+            count = keys.size,
+            key = { keys[it].path }
+        ) {
             ComposableFlipperKey(keys[it].path) {
                 onKeyClick(keys[it])
             }

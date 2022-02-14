@@ -46,7 +46,7 @@ fun ComposableFileManager(
                 LazyColumn(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    items(fileManagerState.filesInDirectory.toList()) { file ->
+                    items(items = fileManagerState.filesInDirectory.toList()) { file ->
                         ComposableFileItem(file, onFileClick)
                     }
                 }
