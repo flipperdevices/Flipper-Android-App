@@ -1,6 +1,6 @@
 [versions]
 kotlin = "1.6.10"
-kt_coroutines = "1.6.0"
+kt_coroutines = "1.5.2"
 ksp = "1.6.10-1.0.2"
 serialization = "1.3.2"
 anvil = "2.3.11-1-6-10"
