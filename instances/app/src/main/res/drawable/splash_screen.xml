@@ -6,12 +6,12 @@
             android:gravity="center" />
 
     <item
-            android:bottom="85dp"
+            android:bottom="109dp"
             android:drawable="@drawable/pic_splashscreen_furippa"
             android:gravity="bottom|center_horizontal" />
 
     <item
-            android:bottom="27dp"
+            android:bottom="48dp"
             android:drawable="@drawable/pic_splashscreen_text"
             android:gravity="bottom|center_horizontal" />
 </layer-list>
