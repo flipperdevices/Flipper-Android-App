@@ -31,7 +31,10 @@ fun ComposableSearchingDevices(
             modifier = Modifier.padding(vertical = 18.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            items(devices) { device ->
+            items(
+                items = devices,
+                key = { it.address }
+            ) { device ->
                 val name = device.name!!.replaceFirst(Constants.DEVICENAME_PREFIX, "")
                 val isConnecting = device.address == state.selectedAddress
                 ComposableSearchItem(text = name, isConnecting = isConnecting) {
