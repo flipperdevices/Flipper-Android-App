@@ -34,8 +34,9 @@ import org.mockito.stubbing.OngoingStubbing
     """
     I can't fix in one day. More info about migration:
     https://github.com/Kotlin/kotlinx.coroutines/blob/master/kotlinx-coroutines-test/MIGRATION.md
-"""
-) // TODO(LionZXY): https://flipperzero.atlassian.net/browse/MOB-75
+    """
+)
+// TODO(LionZXY): https://flipperzero.atlassian.net/browse/MOB-75
 @ExperimentalCoroutinesApi
 class FlipperSerialOverflowThrottlerTest {
     private lateinit var coroutineScope: TestCoroutineScope
