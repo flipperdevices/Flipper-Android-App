@@ -11,11 +11,11 @@
             android:name="com.flipperdevices.app.FlipperApplication"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
-            android:theme="@style/AppTheme">
+            android:theme="@style/FlipperTheme">
         <activity
                 android:exported="true"
                 android:name="${splashScreenActivity}"
-                android:theme="@style/AppTheme.SplashTheme"
+                android:theme="@style/FlipperTheme.SplashTheme"
                 tools:node="merge">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
