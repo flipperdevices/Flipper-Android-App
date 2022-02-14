@@ -28,9 +28,9 @@ class DebugScreenFragment : ComposeFragment() {
         ComposableDebugScreen(goToStressTest = {
             requireRouter().navigateTo(FragmentScreen { StressTestFragment() })
         }, startSynchronization = {
-            synchronizationApi.startSynchronization(force = true)
-        }, sendAlarmToFlipper = {
-            debugViewModel.sendAlarmToFlipper()
-        })
+                synchronizationApi.startSynchronization(force = true)
+            }, sendAlarmToFlipper = {
+                debugViewModel.sendAlarmToFlipper()
+            })
     }
 }

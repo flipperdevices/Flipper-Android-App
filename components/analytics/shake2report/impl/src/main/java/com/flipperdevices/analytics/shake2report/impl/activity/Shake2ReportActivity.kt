@@ -58,8 +58,8 @@ class Shake2ReportActivity : AppCompatActivity() {
         Shake2ReportDialog.show(this, onCancel = {
             finish()
         }, onSuccess = { message ->
-            startReportError(message)
-        })
+                startReportError(message)
+            })
     }
 
     private fun startReportError(message: String) {

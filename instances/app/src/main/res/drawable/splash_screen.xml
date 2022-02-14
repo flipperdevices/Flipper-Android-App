@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@color/colorAccent" />
+    <item android:drawable="@color/background" />
+    <item
+            android:drawable="@drawable/pic_splashscreen_dolphin"
+            android:gravity="center" />
 
     <item
-            android:drawable="@drawable/ic_launcher_foreground"
-            android:gravity="center"
-            android:height="250dp"
-            android:width="250dp" />
+            android:bottom="109dp"
+            android:drawable="@drawable/pic_splashscreen_furippa"
+            android:gravity="bottom|center_horizontal" />
+
+    <item
+            android:bottom="48dp"
+            android:drawable="@drawable/pic_splashscreen_text"
+            android:gravity="bottom|center_horizontal" />
 </layer-list>
