@@ -6,7 +6,9 @@ plugins {
 
 android {
     defaultConfig {
-        val shareFileAuthorities = "com.flipperdevices.share.impl.provider"
+        val applicationId =
+            android.defaultConfig.applicationId + android.defaultConfig.applicationIdSuffix
+        val shareFileAuthorities = "$applicationId.share.impl.provider"
         manifestPlaceholders["shareFileAuthorities"] = shareFileAuthorities
         buildConfigField("String", "SHARE_FILE_AUTHORITIES", "\"$shareFileAuthorities\"")
     }
