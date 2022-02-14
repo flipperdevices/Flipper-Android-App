@@ -49,12 +49,12 @@ class InfoFragment : ComposeFragment() {
         ComposeInfoScreen(information, connectionState, connectionToAnotherDeviceButton = {
             ciceroneGlobal.getRouter().navigateTo(firstPairApi.getFirstPairScreen())
         }, onOpenScreen = {
-            val screen = when (it) {
-                DeviceSubScreen.DEBUG -> debugScreenProvider.getDebugScreen()
-                DeviceSubScreen.FILE_MANAGER -> fileManagerScreenProvider.fileManager()
-                DeviceSubScreen.SCREEN_STREAMING -> screenStreaming.provideScreen()
-            }
-            requireRouter().navigateTo(screen)
-        })
+                val screen = when (it) {
+                    DeviceSubScreen.DEBUG -> debugScreenProvider.getDebugScreen()
+                    DeviceSubScreen.FILE_MANAGER -> fileManagerScreenProvider.fileManager()
+                    DeviceSubScreen.SCREEN_STREAMING -> screenStreaming.provideScreen()
+                }
+                requireRouter().navigateTo(screen)
+            })
     }
 }

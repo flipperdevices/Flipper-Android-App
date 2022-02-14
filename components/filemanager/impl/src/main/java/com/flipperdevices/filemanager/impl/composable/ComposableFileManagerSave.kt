@@ -69,13 +69,13 @@ private fun ComposableSaveTopBar(onClickSaveButton: () -> Unit) {
     TopAppBar(title = {
         Text(stringResource(R.string.filemanager_save_title))
     }, actions = {
-        IconButton(onClick = onClickSaveButton) {
-            Icon(
-                painter = painterResource(R.drawable.ic_ok),
-                contentDescription = stringResource(R.string.filemanager_save_action)
-            )
-        }
-    })
+            IconButton(onClick = onClickSaveButton) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_ok),
+                    contentDescription = stringResource(R.string.filemanager_save_action)
+                )
+            }
+        })
 }
 
 @Preview(
