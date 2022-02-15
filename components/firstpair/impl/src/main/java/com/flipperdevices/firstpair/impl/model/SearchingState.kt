@@ -126,7 +126,7 @@ sealed class SearchingContent {
         } else R.string.firstpair_permission_settings,
         searchStateHolder = searchStateHolder,
         context = context,
-        shouldInvalidateInsteadCallSettings = true
+        shouldInvalidateInsteadCallSettings = requestedFirstTime
     )
 
     class FlipperNotFound(
