@@ -28,6 +28,7 @@ private const val ICON_SIZE = 24
 
 @Composable
 fun ComposableSearchingAppBar(
+    title: String,
     onBack: () -> Unit
 ) {
     Row(
@@ -53,7 +54,7 @@ fun ComposableSearchingAppBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(end = (ICON_SIZE + ICON_HORIZONTAL_PADDING_DP * 2).dp),
-            text = stringResource(R.string.firstpair_search_title),
+            text = title,
             fontWeight = FontWeight.W700,
             color = colorResource(DesignSystem.color.black_100),
             fontSize = 22.sp,
