@@ -21,7 +21,7 @@ import com.flipperdevices.firstpair.impl.composable.searching.ComposableSearchin
 fun ComposableHelp(
     onBack: () -> Unit = {}
 ) {
-    Column() {
+    Column {
         ComposableSearchingAppBar(stringResource(R.string.firstpair_help_title), onBack)
         ComposableHelpList()
     }

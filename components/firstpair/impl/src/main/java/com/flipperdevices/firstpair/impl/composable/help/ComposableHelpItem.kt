@@ -32,7 +32,7 @@ fun ComposableHelpItem(index: Int, data: HelpOptions) {
             text = "${index + 1}.",
             style = titleStyle
         )
-        Column() {
+        Column {
             Text(
                 text = stringResource(data.title),
                 style = titleStyle
