@@ -33,7 +33,7 @@ class LocationEnableHelper(
 
         dialog = AlertDialog.Builder(context)
             .setTitle(R.string.firstpair_permission_enable_location_title)
-            .setMessage(R.string.firstpair_permission_location_desc)
+            .setMessage(R.string.firstpair_permission_location_dialog)
             .setCancelable(false)
             .setNegativeButton(R.string.firstpair_permission_cancel_btn) { _, _ ->
                 verbose { "User click cancel on location enable dialog" }

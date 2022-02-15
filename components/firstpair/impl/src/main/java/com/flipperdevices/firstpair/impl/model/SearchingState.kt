@@ -105,7 +105,7 @@ sealed class SearchingContent {
         searchStateHolder: SearchStateBuilder,
         context: Context
     ) : PermissionSettingsRequest(
-        image = R.drawable.pic_turn_on_location,
+        image = R.drawable.pic_location_permission,
         title = R.string.firstpair_permission_enable_location_title,
         description = R.string.firstpair_permission_location_desc,
         buttonText = R.string.firstpair_permission_settings,
@@ -118,7 +118,7 @@ sealed class SearchingContent {
         context: Context,
         requestedFirstTime: Boolean
     ) : PermissionRequestWithAppSettings(
-        image = R.drawable.pic_location_permission_failed,
+        image = R.drawable.pic_location_permission,
         title = R.string.firstpair_permission_location_title,
         description = R.string.firstpair_permission_location_desc,
         buttonText = if (requestedFirstTime) {

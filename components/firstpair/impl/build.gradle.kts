@@ -12,6 +12,7 @@ dependencies {
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.preference)
     implementation(projects.components.core.navigation)
+    implementation(projects.components.core.markdown)
 
     implementation(projects.components.deeplink.api)
     implementation(projects.components.singleactivity.api)

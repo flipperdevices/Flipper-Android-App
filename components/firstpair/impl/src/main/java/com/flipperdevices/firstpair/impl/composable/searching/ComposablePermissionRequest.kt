@@ -14,6 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.flipperdevices.core.markdown.annotatedStringFromMarkdown
 import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.core.ui.composable.ComposableFlipperButton
 import com.flipperdevices.core.ui.composable.painterResourceByKey
@@ -42,7 +43,7 @@ fun ComposablePermissionRequest(modifier: Modifier, state: SearchingContent.Perm
             textAlign = TextAlign.Center
         )
         Text(
-            text = stringResource(state.description),
+            text = annotatedStringFromMarkdown(state.description),
             fontWeight = FontWeight.W400,
             fontSize = 14.sp,
             color = colorResource(DesignSystem.color.black_40),

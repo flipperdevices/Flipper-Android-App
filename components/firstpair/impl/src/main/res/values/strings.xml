@@ -21,7 +21,8 @@
 
     <string name="firstpair_permission_location_title">Allow Location Access</string>
     <string name="firstpair_permission_enable_location_title">Turn On Location</string>
-    <string name="firstpair_permission_location_desc">Apps using Bluetooth are required to enable location access. No location data will be gathered or stored</string>
+    <string name="firstpair_permission_location_desc">Apps using Bluetooth are required to enable location access. **No location data will be gathered or stored**</string>
+    <string name="firstpair_permission_location_dialog">Apps using Bluetooth are required to enable location access. No location data will be gathered or stored</string>
     <string name="firstpair_permission_enable_bluetooth_title">Turn On Bluetooth</string>
     <string name="firstpair_permission_enable_bluetooth_desc">Bluetooth on Your Phone is Turned Off</string>
     <string name="firstpair_permission_bluetooth_title">Allow Bluetooth Access</string>
