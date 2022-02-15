@@ -21,6 +21,7 @@ import com.flipperdevices.firstpair.impl.viewmodels.searching.BLEDeviceViewModel
 import com.flipperdevices.firstpair.impl.viewmodels.searching.PermissionChangeDetectBroadcastReceiver
 import com.flipperdevices.firstpair.impl.viewmodels.searching.PermissionStateBuilder
 import com.flipperdevices.singleactivity.api.SingleActivityApi
+import com.github.terrakok.cicerone.androidx.FragmentScreen
 import javax.inject.Inject
 
 class DeviceSearchingFragment :
@@ -73,7 +74,7 @@ class DeviceSearchingFragment :
                 requireRouter().exit()
             },
             onHelpClicking = {
-                // TODO
+                requireRouter().navigateTo(FragmentScreen { HelpFragment() })
             },
             onSkipConnection = {
                 finishConnection()

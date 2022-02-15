@@ -27,7 +27,21 @@
     <string name="firstpair_permission_settings">Go to Settings</string>
     <string name="firstpair_permission_continue">Continue</string>
     <string name="firstpair_permission_retry">Retry</string>
-
     <string name="firstpair_permission_cancel_btn">Cancel</string>
+
+    <string name="firstpair_help_title">Can’t Find your Flipper?</string>
+    <string name="firstpair_help_1_title">Check the correct name of your Flipper.</string>
+    <string name="firstpair_help_1_description">[How to know the name of Flipper](https://docs.flipperzero.one/)</string>
+    <string name="firstpair_help_2_title">Make sure Bluetooth on your Flipper is turned On.</string>
+    <string name="firstpair_help_2_description">[How to turn On Bluetooth on Flipper](https://docs.flipperzero.one/)</string>
+    <string name="firstpair_help_3_title">Check Bluetooth connection on your phone.</string>
+    <string name="firstpair_help_3_description">Go to Bluetooth settings</string>
+    <string name="firstpair_help_4_title">Disconnect your Flipper from other apps and devices.</string>
+    <string name="firstpair_help_5_title">Install the latest firmware version on Flipper. It’s important to update regularly.</string>
+    <string name="firstpair_help_5_description">[How to install](https://docs.flipperzero.one/)</string>
+    <string name="firstpair_help_6_title">Check that you have the latest version of the Flipper App installed.</string>
+    <string name="firstpair_help_6_description">Go to Play Market</string>
+    <string name="firstpair_help_7_title">Try to reboot your Flipper.</string>
+    <string name="firstpair_help_7_description">[How to reboot Flipper](https://docs.flipperzero.one/)</string>
 
 </resources>
