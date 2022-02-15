@@ -25,7 +25,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -36,6 +35,7 @@ import com.flipperdevices.archive.impl.R
 import com.flipperdevices.bridge.dao.api.R as DaoR
 import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
+import com.flipperdevices.core.ui.composable.painterResourceByKey
 
 @Preview(
     showBackground = true,
@@ -81,7 +81,7 @@ private fun ComposableKeyIcon(fileType: FlipperFileType?) {
     ) {
         Icon(
             modifier = Modifier.size(28.dp),
-            painter = painterResource(typeIcon),
+            painter = painterResourceByKey(typeIcon),
             tint = Color.White,
             contentDescription = stringResource(R.string.archive_key_icon_pic_desc)
         )
