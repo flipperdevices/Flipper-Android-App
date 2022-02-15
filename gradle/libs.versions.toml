@@ -38,7 +38,7 @@ flexmark = "0.64.0"
 # Testing
 junit = "4.12"
 mockito = "4.0.0"
-roboelectric = "4.6.1"
+roboelectric = "4.7.3"
 
 [libraries]
 # Gradle - Core

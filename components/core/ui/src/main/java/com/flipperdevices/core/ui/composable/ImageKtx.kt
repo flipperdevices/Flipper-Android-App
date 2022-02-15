@@ -13,5 +13,5 @@ import androidx.compose.ui.res.painterResource
  */
 @Composable
 fun painterResourceByKey(@DrawableRes id: Int, key: Int = id): Painter {
-    return key(id) { painterResource(id) }
+    return key(key) { painterResource(id) }
 }
