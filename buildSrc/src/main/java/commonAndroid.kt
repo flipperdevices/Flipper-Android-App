@@ -21,6 +21,7 @@ fun BaseExtension.commonAndroid(target: Project) {
     target.suppressOptIn()
 }
 
+@Suppress("UnstableApiUsage")
 private fun BaseExtension.configureDefaultConfig() {
     compileSdkVersion(ApkConfig.COMPILE_SDK_VERSION)
     defaultConfig {
@@ -32,6 +33,13 @@ private fun BaseExtension.configureDefaultConfig() {
         consumerProguardFiles(
             "consumer-rules.pro"
         )
+
+        packagingOptions {
+            resources.excludes += "META-INF/LICENSE-LGPL-2.1.txt"
+            resources.excludes += "META-INF/LICENSE-LGPL-3.txt"
+            resources.excludes += "META-INF/LICENSE-W3C-TEST"
+            resources.excludes += "META-INF/DEPENDENCIES"
+        }
     }
 }
 

@@ -33,6 +33,7 @@ lottie = "4.2.1"
 material = "1.5.0"
 annotations = "1.3.0"
 appcompat = "1.4.1"
+flexmark = "0.64.0"
 
 # Testing
 junit = "4.12"
@@ -72,6 +73,9 @@ compose-pager-indicators = { module = "com.google.accompanist:accompanist-pager-
 compose-systemui = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "compose_accompanist" }
 compose-swipetorefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "compose_accompanist" }
 compose-constraint = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "compose_constraint" }
+
+# Flexmark Markdown
+flexmark-all = { module = "com.vladsch.flexmark:flexmark-all", version.ref = "flexmark" }
 
 # Storage
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }

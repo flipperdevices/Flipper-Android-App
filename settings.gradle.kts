@@ -16,7 +16,6 @@ include(
     ":instances:app",
     ":components:bridge:api",
     ":components:bridge:impl",
-    ":components:bridge:provider",
     ":components:bridge:service:impl",
     ":components:bridge:service:api",
     ":components:bridge:protobuf",
@@ -35,9 +34,7 @@ include(
     ":components:core:preference",
     ":components:core:ui",
     ":components:core:test",
-
-    ":components:pair:api",
-    ":components:pair:impl",
+    ":components:core:markdown",
 
     ":components:bottombar:api",
     ":components:bottombar:impl",
