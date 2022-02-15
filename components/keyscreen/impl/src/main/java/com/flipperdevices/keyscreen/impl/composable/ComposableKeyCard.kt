@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -24,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.bridge.dao.api.R as DaoR
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
+import com.flipperdevices.core.ui.composable.painterResourceByKey
 import com.flipperdevices.keyscreen.impl.R
 import com.flipperdevices.keyscreen.impl.composable.content.ComposableIButtonContent
 import com.flipperdevices.keyscreen.impl.composable.content.ComposableInfraredContent
@@ -96,7 +96,7 @@ private fun ComposableKeyIcon(parsedKey: FlipperKeyParsed, modifier: Modifier = 
             modifier = Modifier
                 .fillMaxSize()
                 .padding(9.dp),
-            painter = painterResource(fileTypeIcon),
+            painter = painterResourceByKey(fileTypeIcon),
             contentDescription = parsedKey.fileType?.humanReadableName
                 ?: stringResource(DaoR.string.fileformat_unknown)
         )
