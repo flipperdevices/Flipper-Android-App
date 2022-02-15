@@ -1,6 +1,7 @@
 package com.flipperdevices.firstpair.impl.composable.tos
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -12,16 +13,14 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.flipperdevices.core.markdown.ClickableUrlText
 import com.flipperdevices.core.ui.R as DesignSystem
-import com.flipperdevices.core.ui.composable.ClickableUrlText
 import com.flipperdevices.core.ui.composable.ComposableFlipperButton
-import com.flipperdevices.core.ui.composable.appendUrl
 import com.flipperdevices.firstpair.impl.R
 
 @Composable
@@ -42,8 +41,7 @@ private fun ComposableTutorial(modifier: Modifier) {
             modifier = Modifier.padding(
                 start = 60.dp,
                 end = 60.dp,
-                top = 48.dp,
-                bottom = 48.dp
+                top = 48.dp
             ),
             text = stringResource(R.string.firstpair_tos_title),
             fontWeight = FontWeight.W700,
@@ -51,22 +49,27 @@ private fun ComposableTutorial(modifier: Modifier) {
             textAlign = TextAlign.Center
         )
 
-        Image(
-            modifier = Modifier.fillMaxWidth(),
-            painter = painterResource(R.drawable.pic_connecting),
-            contentDescription = stringResource(R.string.firstpair_tos_title)
-        )
+        Column(
+            modifier = Modifier.weight(weight = 1f),
+            verticalArrangement = Arrangement.Center
+        ) {
+            Image(
+                modifier = Modifier.fillMaxWidth(),
+                painter = painterResource(R.drawable.pic_connecting),
+                contentDescription = stringResource(R.string.firstpair_tos_title)
+            )
 
-        Image(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    horizontal = 40.dp,
-                    vertical = 8.dp
-                ),
-            painter = painterResource(R.drawable.pic_flipper_instruction),
-            contentDescription = stringResource(R.string.firstpair_tos_description)
-        )
+            Image(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        horizontal = 40.dp,
+                        vertical = 8.dp
+                    ),
+                painter = painterResource(R.drawable.pic_flipper_instruction),
+                contentDescription = stringResource(R.string.firstpair_tos_description)
+            )
+        }
     }
 }
 
@@ -90,27 +93,7 @@ fun ComposableFooter(onApplyPress: () -> Unit) {
                 end = 24.dp,
                 bottom = 12.dp
             ),
-            text = buildAnnotatedString {
-                append(stringResource(R.string.firstpair_tos_footer_pre))
-
-                append(" ")
-
-                appendUrl(
-                    text = stringResource(R.string.firstpair_tos_footer_tos),
-                    url = stringResource(R.string.firstpair_tos_footer_tos_link)
-                )
-
-                append(" ")
-
-                append(stringResource(R.string.firstpair_tos_footer_and))
-
-                append(" ")
-
-                appendUrl(
-                    text = stringResource(R.string.firstpair_tos_footer_policy),
-                    url = stringResource(R.string.firstpair_tos_footer_policy_link)
-                )
-            },
+            markdownResId = R.string.firstpair_tos_footer,
             style = TextStyle(
                 textAlign = TextAlign.Center,
                 fontSize = 16.sp,

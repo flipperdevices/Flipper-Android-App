@@ -40,6 +40,12 @@ private fun BaseExtension.configureDefaultConfig() {
             resources.excludes += "META-INF/LICENSE-W3C-TEST"
             resources.excludes += "META-INF/DEPENDENCIES"
         }
+
+        testOptions {
+            unitTests {
+                isIncludeAndroidResources = true
+            }
+        }
     }
 }
 

@@ -15,17 +15,22 @@ import androidx.compose.ui.text.style.TextGeometricTransform
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.TextUnit
 import com.vladsch.flexmark.ast.Emphasis
+import com.vladsch.flexmark.ast.Link
 import com.vladsch.flexmark.ast.StrongEmphasis
 import com.vladsch.flexmark.ast.Text
 import com.vladsch.flexmark.util.ast.Node
-import com.vladsch.flexmark.util.sequence.BasedSequence
+
+const val ANNOTATED_STRING_TAG_URL = "URL"
 
 /**
  * Now support only:
  * 1) Bold (** tag)
  * 2) Italic (* tag)
+ * 3) Link ([]())
  */
-object AnnotatedStringRenderer {
+class AnnotatedStringRenderer(
+    private val linkColor: Color
+) {
     fun render(node: Node): AnnotatedString {
         val builder = AnnotatedString.Builder()
         render(node, builder)
@@ -37,6 +42,7 @@ object AnnotatedStringRenderer {
             is Text -> builder.append(node.chars.toString())
             is Emphasis -> builder.appendText(node.text, fontStyle = FontStyle.Italic)
             is StrongEmphasis -> builder.appendText(node.text, fontWeight = FontWeight.Bold)
+            is Link -> builder.appendUrl(node.text, node.url)
             else -> renderChildren(node, builder)
         }
     }
@@ -48,11 +54,29 @@ object AnnotatedStringRenderer {
             child = child.next
         }
     }
+
+    private fun AnnotatedString.Builder.appendUrl(text: CharSequence, url: CharSequence = text) {
+        val startIndex = length
+        val endIndex = startIndex + text.length
+
+        appendText(
+            text = text,
+            color = linkColor,
+            textDecoration = TextDecoration.Underline
+        )
+
+        addStringAnnotation(
+            tag = ANNOTATED_STRING_TAG_URL,
+            annotation = url.toString(),
+            start = startIndex,
+            end = endIndex
+        )
+    }
 }
 
 @Suppress("LongParameterList")
 private fun AnnotatedString.Builder.appendText(
-    text: BasedSequence,
+    text: CharSequence,
     color: Color = Color.Unspecified,
     fontSize: TextUnit = TextUnit.Unspecified,
     fontWeight: FontWeight? = null,
