@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - 'rc'
-      - 'ci/fix_rc_naming'
 
 jobs:
   generate_version:
@@ -44,7 +43,7 @@ jobs:
         run: |
           ./gradlew :instances:app:assembleInternal :instances:app:bundleInternal \
             -Dversion_code=${{ needs.generate_version.outputs.minor_version }} \
-            -Dversion_name="${{ needs.generate_version.outputs.major_version }}-internal-rc"
+            -Dversion_name="${{ needs.generate_version.outputs.major_version }}.${{ needs.generate_version.outputs.minor_version }}-internal-rc"
       - name: Sign internal AAB
         id: sign_aab_internal
         uses: r0adkll/sign-android-release@v1
@@ -94,7 +93,7 @@ jobs:
           rm -rf **/build
           ./gradlew :instances:app:assembleRelease :instances:app:bundleRelease \
           -Dversion_code=${{ needs.generate_version.outputs.minor_version }} \
-          -Dversion_name="${{ needs.generate_version.outputs.major_version }}-rc"
+          -Dversion_name="${{ needs.generate_version.outputs.major_version }}.${{ needs.generate_version.outputs.minor_version }}-rc"
       - name: Sign release AAB
         id: sign_aab_release
         uses: r0adkll/sign-android-release@v1
