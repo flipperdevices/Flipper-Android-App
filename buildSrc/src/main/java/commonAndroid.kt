@@ -40,6 +40,7 @@ private fun BaseExtension.configureDefaultConfig() {
             resources.excludes += "META-INF/LICENSE-LGPL-3.txt"
             resources.excludes += "META-INF/LICENSE-W3C-TEST"
             resources.excludes += "META-INF/DEPENDENCIES"
+            resources.excludes += "*.proto"
         }
 
         testOptions {
