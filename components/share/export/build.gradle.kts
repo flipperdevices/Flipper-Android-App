@@ -12,6 +12,12 @@ android {
             manifestPlaceholders["shareFileAuthorities"] = shareFileAuthorities
             buildConfigField("String", "SHARE_FILE_AUTHORITIES", "\"$shareFileAuthorities\"")
         }
+        internal {
+            val applicationId = ApkConfig.APPLICATION_ID
+            val shareFileAuthorities = "$applicationId.share.impl.provider"
+            manifestPlaceholders["shareFileAuthorities"] = shareFileAuthorities
+            buildConfigField("String", "SHARE_FILE_AUTHORITIES", "\"$shareFileAuthorities\"")
+        }
         release {
             val applicationId = ApkConfig.APPLICATION_ID
             val shareFileAuthorities = "$applicationId.share.impl.provider"
