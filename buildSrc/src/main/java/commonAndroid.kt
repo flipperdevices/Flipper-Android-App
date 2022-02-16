@@ -1,5 +1,6 @@
 import com.android.build.gradle.BaseExtension
 import org.gradle.api.JavaVersion
+import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Dependency
 import org.gradle.api.artifacts.dsl.DependencyHandler
@@ -126,3 +127,9 @@ private fun Project.suppressOptIn() {
  */
 fun DependencyHandler.`internalImplementation`(dependencyNotation: Any): Dependency? =
     add("internalImplementation", dependencyNotation)
+
+fun <BuildTypeT> NamedDomainObjectContainer<BuildTypeT>.internal(
+    action: BuildTypeT.() -> Unit
+) {
+    maybeCreate("internal").action()
+}
