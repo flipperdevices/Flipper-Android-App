@@ -7,9 +7,13 @@ plugins {
 android {
     commonAndroid(project)
 
+    defaultConfig {
+        applicationId = ApkConfig.APPLICATION_ID
+    }
+
     buildTypes {
         debug {
-            applicationIdSuffix = ".dev"
+            applicationIdSuffix = ApkConfig.APPLICATION_ID_SUFFIX
         }
         maybeCreate("internal").apply {
             isShrinkResources = true
