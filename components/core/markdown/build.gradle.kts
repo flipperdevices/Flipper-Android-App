@@ -14,7 +14,7 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
 
-    implementation(libs.flexmark.all)
+    implementation(libs.flexmark.core)
 
     // Testing
     testImplementation(projects.components.core.test)

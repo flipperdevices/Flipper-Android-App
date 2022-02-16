@@ -33,7 +33,8 @@ lottie = "4.2.1"
 material = "1.5.0"
 annotations = "1.3.0"
 appcompat = "1.4.1"
-flexmark = "0.64.0"
+# https://github.com/vsch/flexmark-java/issues/442
+flexmark = "0.42.14"
 
 # Testing
 junit = "4.12"
@@ -75,7 +76,7 @@ compose-swipetorefresh = { module = "com.google.accompanist:accompanist-swiperef
 compose-constraint = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "compose_constraint" }
 
 # Flexmark Markdown
-flexmark-all = { module = "com.vladsch.flexmark:flexmark-all", version.ref = "flexmark" }
+flexmark-core = { module = "com.vladsch.flexmark:flexmark", version.ref = "flexmark" }
 
 # Storage
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
