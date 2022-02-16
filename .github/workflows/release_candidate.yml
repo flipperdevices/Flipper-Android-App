@@ -13,6 +13,9 @@ jobs:
       major_version: ${{ steps.vars.outputs.major_version }}
       minor_version: ${{ steps.vars.outputs.minor_version }}
     steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
       - name: Generate build number
         id: buildnumber
         uses: einaregilsson/build-number@v3
