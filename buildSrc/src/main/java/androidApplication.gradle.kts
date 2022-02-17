@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
+    id("io.sentry.android.gradle")
 }
 
 @Suppress("UnstableApiUsage")
@@ -15,11 +16,15 @@ android {
         debug {
             applicationIdSuffix = ApkConfig.APPLICATION_ID_SUFFIX
         }
-        maybeCreate("internal").apply {
+        internal {
             isShrinkResources = true
         }
         release {
             isShrinkResources = true
         }
     }
+}
+
+sentry {
+    ignoredBuildTypes.set(setOf("release", "debug"))
 }

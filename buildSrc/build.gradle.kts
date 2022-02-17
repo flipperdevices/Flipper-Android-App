@@ -30,6 +30,7 @@ dependencies {
     implementation(libs.android.gradle)
     implementation(libs.square.anvil.gradle)
     implementation(libs.protobuf.gradle)
+    implementation(libs.sentry.gradle)
 }
 
 java {
@@ -39,7 +40,6 @@ java {
 
 configurations.all {
     resolutionStrategy {
-
         eachDependency {
             when {
                 requested.group == "org.jetbrains.kotlin" -> useVersion(kotlinVersion)
