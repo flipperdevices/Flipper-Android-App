@@ -10,4 +10,6 @@ object ApkConfig {
 
     val VERSION_CODE = getProperty("version_code", Integer.MAX_VALUE.toString()).toInt()
     val VERSION_NAME = getProperty("version_name", "DEBUG_VERSION")!!
+
+    val IS_SENTRY_PUBLISH = getProperty("is_sentry_publish", "false").toBoolean()
 }

@@ -26,5 +26,7 @@ android {
 }
 
 sentry {
+    autoUploadProguardMapping.set(ApkConfig.IS_SENTRY_PUBLISH)
+
     ignoredBuildTypes.set(setOf("release", "debug"))
 }
