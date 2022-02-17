@@ -40,6 +40,8 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
       - name: Build internal release
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
         run: |
           ./gradlew :instances:app:assembleInternal :instances:app:bundleInternal \
             -Dversion_code=${{ needs.generate_version.outputs.minor_version }} \
