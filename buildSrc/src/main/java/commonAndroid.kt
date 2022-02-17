@@ -126,7 +126,7 @@ private fun Project.suppressOptIn() {
  *
  * @see [DependencyHandler.add]
  */
-fun DependencyHandler.`internalImplementation`(dependencyNotation: Any): Dependency? =
+fun DependencyHandler.internalImplementation(dependencyNotation: Any): Dependency? =
     add("internalImplementation", dependencyNotation)
 
 fun <BuildTypeT> NamedDomainObjectContainer<BuildTypeT>.internal(

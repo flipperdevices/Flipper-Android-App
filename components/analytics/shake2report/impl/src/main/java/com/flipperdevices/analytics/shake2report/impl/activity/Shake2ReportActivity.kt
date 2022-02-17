@@ -50,7 +50,7 @@ class Shake2ReportActivity : AppCompatActivity() {
         binding.closeBtn.setOnClickListener {
             finish()
         }
-        binding.reportIdArea.setOnClickListener { view ->
+        binding.reportIdArea.setOnClickListener { _ ->
             copyToClipboard(binding.reportId.text)
             toast(R.string.shake2report_copy_sentry_copy_toast)
         }
