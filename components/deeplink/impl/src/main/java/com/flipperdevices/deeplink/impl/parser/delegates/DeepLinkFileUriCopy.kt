@@ -3,6 +3,7 @@ package com.flipperdevices.deeplink.impl.parser.delegates
 import android.app.Activity
 import android.content.ContentResolver
 import android.net.Uri
+import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.deeplink.impl.parser.filename
 import com.flipperdevices.deeplink.model.Deeplink
@@ -11,7 +12,9 @@ import java.io.File
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class DeepLinkFileUriCopy : DeepLinkParserDelegate {
+class DeepLinkFileUriCopy : DeepLinkParserDelegate, LogTagProvider {
+    override val TAG = "DeepLinkFileUriCopy"
+
     // Fallback if DeepLinkFileUriGrantPermission failed: copy from uri to tmp file
     override suspend fun fromUri(activity: Activity, uri: Uri): Deeplink {
         val contentResolver = activity.contentResolver

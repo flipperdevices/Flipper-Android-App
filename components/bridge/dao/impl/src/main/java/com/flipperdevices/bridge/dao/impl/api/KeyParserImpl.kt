@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.dao.impl.api
 
 import com.flipperdevices.bridge.dao.api.delegates.KeyParser
+import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
 import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
@@ -41,9 +42,10 @@ class KeyParserImpl @Inject constructor() : KeyParser {
         val fileContent = flipperKey.keyContent.stream().use {
             it.readBytes().toString(Charset.defaultCharset())
         }
-        val keyContentAsPairs = fileContent.split("\n")
-            .filterNot { it.startsWith("#") }
-            .map { it.substringBefore(":").trim() to it.substringAfter(":").trim() }
-        return@withContext parser.parseKey(flipperKey, keyContentAsPairs)
+
+        return@withContext parser.parseKey(
+            flipperKey,
+            FlipperFileFormat.fromFileContent(fileContent)
+        )
     }
 }
