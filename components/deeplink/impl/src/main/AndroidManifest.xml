@@ -1,10 +1,25 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         package="com.flipperdevices.deeplink.impl">
 
     <application>
         <activity
                 android:exported="true"
                 android:name="${splashScreenActivity}">
+            <intent-filter
+                    android:autoVerify="true"
+                    tools:ignore="UnusedAttribute">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+
+                <data android:host="dev.flpr.app" />
+            </intent-filter>
+
             <intent-filter android:icon="@drawable/ic_fileformat_ibutton">
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.SEND" />

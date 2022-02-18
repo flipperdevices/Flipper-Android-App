@@ -4,6 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Deeplink(
+data class Deeplink constructor(
+    val path: String? = null,
     val content: DeeplinkContent? = null
 ) : Parcelable

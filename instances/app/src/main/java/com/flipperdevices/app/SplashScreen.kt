@@ -7,7 +7,7 @@ import com.flipperdevices.app.di.MainComponent
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.flipperdevices.deeplink.api.DeepLinkContentProvider
+import com.flipperdevices.deeplink.api.DeepLinkParser
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.singleactivity.api.SingleActivityApi
 import javax.inject.Inject
@@ -22,7 +22,7 @@ class SplashScreen : AppCompatActivity(), LogTagProvider {
     lateinit var singleActivityApi: SingleActivityApi
 
     @Inject
-    lateinit var deepLinkContentProvider: DeepLinkContentProvider
+    lateinit var deepLinkParser: DeepLinkParser
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,8 +39,7 @@ class SplashScreen : AppCompatActivity(), LogTagProvider {
 
         // Open deeplink
         lifecycleScope.launch {
-            val deeplinkContent = deepLinkContentProvider.fromUri(this@SplashScreen, uri)
-            val deeplink = Deeplink(deeplinkContent)
+            val deeplink = deepLinkParser.fromUri(this@SplashScreen, uri)
             withContext(Dispatchers.Main) {
                 openSingleActivityAndFinish(deeplink)
             }
