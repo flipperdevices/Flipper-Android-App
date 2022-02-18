@@ -17,6 +17,7 @@
                 <data android:scheme="http" />
                 <data android:scheme="https" />
 
+                <!-- Please, also add host in FFFUrlConstants -->
                 <data android:host="dev.flpr.app" />
             </intent-filter>
 

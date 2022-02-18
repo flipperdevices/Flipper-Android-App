@@ -22,4 +22,11 @@ dependencies {
 
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
+
+    testImplementation(projects.components.core.test)
+    testImplementation(libs.junit)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.ktx.testing)
+    testImplementation(libs.roboelectric)
+    testImplementation(libs.kotlin.coroutines.test)
 }
