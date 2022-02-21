@@ -20,8 +20,6 @@ dependencies {
 
     implementation(projects.components.deeplink.api)
 
-    implementation(projects.components.share.api)
-
     implementation(projects.components.bottombar.api)
 
     implementation(libs.annotations)

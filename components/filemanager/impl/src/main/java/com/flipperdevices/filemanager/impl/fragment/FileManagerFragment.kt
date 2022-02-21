@@ -9,11 +9,11 @@ import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.navigation.requireRouter
 import com.flipperdevices.core.ui.ComposeFragment
 import com.flipperdevices.filemanager.api.navigation.FileManagerScreenProvider
+import com.flipperdevices.filemanager.api.share.ShareApi
 import com.flipperdevices.filemanager.impl.composable.ComposableFileManagerWithDialog
 import com.flipperdevices.filemanager.impl.di.FileManagerComponent
 import com.flipperdevices.filemanager.impl.viewmodels.FileManagerViewModel
 import com.flipperdevices.filemanager.impl.viewmodels.FileManagerViewModelFactory
-import com.flipperdevices.share.api.ShareApi
 import javax.inject.Inject
 
 class FileManagerFragment : ComposeFragment() {

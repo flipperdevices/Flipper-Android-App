@@ -1,0 +1,15 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        package="com.flipperdevices.filemanager.export">
+
+    <application>
+        <provider
+                android:authorities="${shareFileAuthorities}"
+                android:exported="false"
+                android:grantUriPermissions="true"
+                android:name="androidx.core.content.FileProvider">
+            <meta-data
+                    android:name="android.support.FILE_PROVIDER_PATHS"
+                    android:resource="@xml/filepaths" />
+        </provider>
+    </application>
+</manifest>

@@ -4,7 +4,7 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.deeplink.api.DeepLinkDispatcher
 import com.flipperdevices.deeplink.api.DeepLinkHandler
 import com.flipperdevices.deeplink.model.Deeplink
-import com.flipperdevices.filemanager.api.deeplink.FileManagerDeepLinkHandler
+import com.flipperdevices.filemanager.api.share.FileManagerDeepLinkHandler
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 import javax.inject.Singleton

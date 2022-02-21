@@ -6,8 +6,8 @@ import com.flipperdevices.core.navigation.global.CiceroneGlobal
 import com.flipperdevices.deeplink.api.DispatcherPriority
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkContent
-import com.flipperdevices.filemanager.api.deeplink.FileManagerDeepLinkHandler
 import com.flipperdevices.filemanager.api.navigation.FileManagerScreenProvider
+import com.flipperdevices.filemanager.api.share.FileManagerDeepLinkHandler
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
