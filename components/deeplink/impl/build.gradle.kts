@@ -12,10 +12,12 @@ dependencies {
 
     implementation(projects.components.deeplink.api)
     implementation(projects.components.filemanager.api)
+    implementation(projects.components.share.api)
 
     implementation(libs.annotations)
     implementation(libs.appcompat)
     implementation(libs.kotlin.coroutines)
+    implementation(libs.cicerone)
 
     // Dagger deps
     implementation(libs.dagger)
