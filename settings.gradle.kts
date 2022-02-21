@@ -52,6 +52,7 @@ include(
     ":components:screenstreaming:api",
 
     ":components:share:api",
+    ":components:share:receive",
 
     ":components:singleactivity:api",
     ":components:singleactivity:impl",

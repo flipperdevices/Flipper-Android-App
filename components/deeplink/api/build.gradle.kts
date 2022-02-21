@@ -8,4 +8,5 @@ dependencies {
 
     implementation(libs.annotations)
     implementation(libs.appcompat)
+    implementation(libs.cicerone)
 }
