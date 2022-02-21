@@ -12,7 +12,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 @Parcelize
-data class FlipperKeyPath(
+data class FlipperKeyPath constructor(
     val folder: String,
     val name: String // With extension
 ) : Parcelable {

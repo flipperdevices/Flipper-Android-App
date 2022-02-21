@@ -11,11 +11,13 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class FFFUrlDecoderTest {
+    private val underTest = FFFUrlDecoder()
+
     @Test
     fun `on wrong scheme null`() {
         val testUri = Uri.fromParts("content", "flpr.app/s", null)
 
-        val actualResult = FFFUrlDecoder.uriToContent(testUri)
+        val actualResult = underTest.uriToContent(testUri)
 
         assertNull(actualResult)
     }
@@ -24,7 +26,7 @@ class FFFUrlDecoderTest {
     fun `on wrong host null`() {
         val testUri = Uri.parse("https://google.com/s")
 
-        val actualResult = FFFUrlDecoder.uriToContent(testUri)
+        val actualResult = underTest.uriToContent(testUri)
 
         assertNull(actualResult)
     }
@@ -33,7 +35,7 @@ class FFFUrlDecoderTest {
     fun `on wrong path null`() {
         val testUri = Uri.parse("https://flpr.app/wrongpath")
 
-        val actualResult = FFFUrlDecoder.uriToContent(testUri)
+        val actualResult = underTest.uriToContent(testUri)
 
         assertNull(actualResult)
     }
@@ -43,7 +45,7 @@ class FFFUrlDecoderTest {
         val testUri = Uri.parse("https://flpr.app/s")
 
         val exception = runCatching {
-            FFFUrlDecoder.uriToContent(testUri)
+            underTest.uriToContent(testUri)
         }.exceptionOrNull()
 
         assertNotNull(exception)
@@ -58,7 +60,7 @@ class FFFUrlDecoderTest {
     fun `correct decoding value`() {
         val testUri = Uri.parse("https://flpr.app/s#path=nfc%2FUid+card+name.nfc")
 
-        val actualResult = FFFUrlDecoder.uriToContent(testUri)
+        val actualResult = underTest.uriToContent(testUri)
         assertNotNull(actualResult)
         val (path, _) = actualResult!!
 
@@ -70,7 +72,7 @@ class FFFUrlDecoderTest {
         val testUri = Uri.parse("https://flpr.app/s#foo=bar")
 
         val exception = runCatching {
-            FFFUrlDecoder.uriToContent(testUri)
+            underTest.uriToContent(testUri)
         }.exceptionOrNull()
 
         assertNotNull(exception)
@@ -85,7 +87,7 @@ class FFFUrlDecoderTest {
     fun `path not included in fff content`() {
         val testUri = Uri.parse("https://flpr.app/s#path=test&foo=bar")
 
-        val actualResult = FFFUrlDecoder.uriToContent(testUri)
+        val actualResult = underTest.uriToContent(testUri)
         assertNotNull(actualResult)
         val (path, content) = actualResult!!
 
@@ -98,7 +100,7 @@ class FFFUrlDecoderTest {
     fun `only first path exclude`() {
         val testUri = Uri.parse("https://flpr.app/s#path=test&foo=bar&path=otherTest")
 
-        val actualResult = FFFUrlDecoder.uriToContent(testUri)
+        val actualResult = underTest.uriToContent(testUri)
         assertNotNull(actualResult)
         val (path, content) = actualResult!!
 
@@ -112,7 +114,7 @@ class FFFUrlDecoderTest {
     fun `path can be not first`() {
         val testUri = Uri.parse("https://flpr.app/s#foo=bar&path=test")
 
-        val actualResult = FFFUrlDecoder.uriToContent(testUri)
+        val actualResult = underTest.uriToContent(testUri)
         assertNotNull(actualResult)
         val (path, content) = actualResult!!
 
@@ -124,7 +126,7 @@ class FFFUrlDecoderTest {
     fun `path key ignore case`() {
         val testUri = Uri.parse("https://flpr.app/s#foo=bar&pAtH=test")
 
-        val actualResult = FFFUrlDecoder.uriToContent(testUri)
+        val actualResult = underTest.uriToContent(testUri)
         assertNotNull(actualResult)
         val (path, content) = actualResult!!
 
@@ -142,7 +144,7 @@ class FFFUrlDecoderTest {
                 "ATQA=04+00&SAK=08"
         )
 
-        val actualResult = FFFUrlDecoder.uriToContent(testUri)
+        val actualResult = underTest.uriToContent(testUri)
         assertNotNull(actualResult)
         val (path, content) = actualResult!!
 

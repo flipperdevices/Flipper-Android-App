@@ -4,6 +4,8 @@ plugins {
 }
 
 dependencies {
+    implementation(projects.components.bridge.dao.api)
+
     implementation(libs.annotations)
     implementation(libs.appcompat)
 }
