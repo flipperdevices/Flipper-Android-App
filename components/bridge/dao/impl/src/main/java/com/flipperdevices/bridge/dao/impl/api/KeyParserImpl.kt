@@ -26,7 +26,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-@ContributesBinding(AppGraph::class)
+@ContributesBinding(AppGraph::class, KeyParser::class)
 class KeyParserImpl @Inject constructor() : KeyParser, LogTagProvider {
     override val TAG = "KeyParser"
 
