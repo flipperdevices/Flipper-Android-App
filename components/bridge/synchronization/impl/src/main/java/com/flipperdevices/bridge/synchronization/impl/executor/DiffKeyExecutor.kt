@@ -5,6 +5,7 @@ import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
 import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
+import com.flipperdevices.core.log.info
 import com.flipperdevices.shake2report.api.Shake2ReportApi
 
 /**
@@ -25,6 +26,7 @@ class DiffKeyExecutor(
     ): List<KeyDiff> {
         return diffs.mapNotNull {
             try {
+                info { "Execute $it for $source to $target" }
                 execute(source, target, it)
                 return@mapNotNull it
             } catch (

@@ -27,7 +27,7 @@ class ManifestRepository {
     suspend fun compareKeysWithManifest(keys: List<KeyWithHash>): List<KeyDiff> {
         val manifestFile = manifestStorage.load()
             ?: return keys.map { KeyDiff(it, KeyAction.ADD) }
-        return compare(keys, manifestFile.keys)
+        return compare(manifestFile.keys, keys)
     }
 
     suspend fun compareFavoritesWithManifest(favorites: List<FlipperKeyPath>): List<KeyDiff> {
