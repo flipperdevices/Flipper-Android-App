@@ -13,6 +13,7 @@ dependencies {
     implementation(projects.components.bridge.dao.api)
 
     implementation(projects.components.core.di)
+    implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.preference)
 
@@ -22,4 +23,11 @@ dependencies {
 
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
+
+    testImplementation(projects.components.core.test)
+    testImplementation(libs.junit)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.ktx.testing)
+    testImplementation(libs.roboelectric)
+    testImplementation(libs.kotlin.coroutines.test)
 }

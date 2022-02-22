@@ -16,6 +16,7 @@ dependencies {
     implementation(projects.components.share.common)
 
     implementation(projects.components.bridge.api)
+    implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.protobuf)
     implementation(projects.components.bridge.service.api)
 

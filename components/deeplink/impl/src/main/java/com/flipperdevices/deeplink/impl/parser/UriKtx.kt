@@ -1,4 +1,4 @@
-package com.flipperdevices.deeplink.impl.provider
+package com.flipperdevices.deeplink.impl.parser
 
 import android.content.ContentResolver
 import android.net.Uri

@@ -30,6 +30,7 @@ class FileManagerDeepLinkHandlerImpl @Inject constructor(
 
                 if (isSupportedScheme && isNotNullPath) DispatcherPriority.LOW else null
             }
+            is DeeplinkContent.FFFContent -> DispatcherPriority.LOW
         }
     }
 
