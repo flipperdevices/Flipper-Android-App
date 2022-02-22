@@ -21,7 +21,7 @@ fun ComposableKeyReceive(
             keyScreenApi = keyScreenApi,
             keyParsed = state.parsed,
             savingInProgress = false,
-            onSave = onSave,
+            onSave = onSave
         )
         is ReceiveState.Saving -> ComposableKeySaveScreen(
             keyScreenApi = keyScreenApi,

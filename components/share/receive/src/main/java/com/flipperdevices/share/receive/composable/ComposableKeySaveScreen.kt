@@ -20,9 +20,9 @@ fun ComposableKeySaveScreen(
     keyScreenApi: KeyScreenApi,
     keyParsed: FlipperKeyParsed,
     savingInProgress: Boolean,
-    onSave: () -> Unit,
+    onSave: () -> Unit
 ) {
-    Column() {
+    Column {
         Box(modifier = Modifier.weight(1f)) {
             keyScreenApi.KeyCard(key = keyParsed)
         }
