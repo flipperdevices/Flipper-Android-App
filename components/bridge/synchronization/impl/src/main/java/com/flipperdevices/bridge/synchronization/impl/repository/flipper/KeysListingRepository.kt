@@ -1,8 +1,9 @@
-package com.flipperdevices.bridge.synchronization.impl.repository
+package com.flipperdevices.bridge.synchronization.impl.repository.flipper
 
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
+import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.impl.model.ResultWithProgress
@@ -38,7 +39,7 @@ class KeysListingRepository : LogTagProvider {
         requestApi: FlipperRequestApi,
         fileType: FlipperFileType
     ): List<FlipperKeyPath> {
-        val fileTypePath = File("/any/", fileType.flipperDir).absolutePath
+        val fileTypePath = File(Constants.KEYS_DEFAULT_STORAGE, fileType.flipperDir).path
         return requestApi.request(
             main {
                 storageListRequest = listRequest {
@@ -49,7 +50,7 @@ class KeysListingRepository : LogTagProvider {
             .filter { isValidFile(it, fileType) }
             .map {
                 FlipperKeyPath(
-                    folder = fileTypePath,
+                    folder = fileType.flipperDir,
                     name = it.name
                 )
             }

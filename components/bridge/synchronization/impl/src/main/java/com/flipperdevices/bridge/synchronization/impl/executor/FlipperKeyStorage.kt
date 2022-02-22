@@ -3,6 +3,7 @@ package com.flipperdevices.bridge.synchronization.impl.executor
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
+import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.protobuf.streamToCommandFlow
@@ -14,11 +15,12 @@ import com.flipperdevices.protobuf.storage.deleteRequest
 import com.flipperdevices.protobuf.storage.file
 import com.flipperdevices.protobuf.storage.readRequest
 import com.flipperdevices.protobuf.storage.writeRequest
+import java.io.File
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.flow.toList
 
-class FlipperKeyStorage(
+class FlipperKeyStorage constructor(
     private val requestApi: FlipperRequestApi
 ) : AbstractKeyStorage, LogTagProvider {
     override val TAG = "FlipperKeyStorage"
@@ -27,7 +29,7 @@ class FlipperKeyStorage(
         val responseBytes = requestApi.request(
             main {
                 storageReadRequest = readRequest {
-                    path = keyPath.pathToKey
+                    path = File(Constants.KEYS_DEFAULT_STORAGE, keyPath.pathToKey).path
                 }
             }.wrapToRequest(FlipperRequestPriority.BACKGROUND)
         ).toList().map { it.storageReadResponse.file.data.toByteArray() }.flatten()
@@ -41,7 +43,7 @@ class FlipperKeyStorage(
     ) = keyContent.stream().use { stream ->
         val response = streamToCommandFlow(stream, keyContent.length()) { chunkData ->
             storageWriteRequest = writeRequest {
-                path = keyPath.pathToKey
+                path = File(Constants.KEYS_DEFAULT_STORAGE, keyPath.pathToKey).path
                 file = file { data = chunkData }
             }
         }.map { it.wrapToRequest(FlipperRequestPriority.BACKGROUND) }.also {
@@ -55,7 +57,7 @@ class FlipperKeyStorage(
         requestApi.request(
             main {
                 storageDeleteRequest = deleteRequest {
-                    path = keyPath.pathToKey
+                    path = File(Constants.KEYS_DEFAULT_STORAGE, keyPath.pathToKey).path
                 }
             }.wrapToRequest(FlipperRequestPriority.BACKGROUND)
         ).single()

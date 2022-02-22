@@ -27,6 +27,10 @@ class KeyApiImpl @Inject constructor(
     private val keysDao by keysDaoProvider
     private val keyContentConverter by keyContentConverterProvider
 
+    override suspend fun getAllKeys(): List<FlipperKey> {
+        return keysDao.getAll().map { it.toFlipperKey() }
+    }
+
     override suspend fun insertKey(key: FlipperKey) {
         val file = keyContentConverter.extractFile(key)
         val databaseKey = key.toDatabaseKey(file)
