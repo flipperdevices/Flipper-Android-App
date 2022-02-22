@@ -9,9 +9,10 @@ import com.flipperdevices.share.receive.fragments.KeyReceiveFragment
 import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.FragmentScreen
 import com.squareup.anvil.annotations.ContributesBinding
+import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class)
-class ArchiveKeyDeeplinkHandlerImpl : ArchiveKeyDeeplinkHandler {
+class ArchiveKeyDeeplinkHandlerImpl @Inject constructor() : ArchiveKeyDeeplinkHandler {
     override fun isSupportLink(link: Deeplink): DispatcherPriority? {
         if (link.path == null || link.content == null) {
             return null

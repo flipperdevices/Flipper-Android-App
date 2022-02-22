@@ -15,7 +15,7 @@ class DeepLinkDispatcherImpl @Inject constructor(
     fileManagerHandler: FileManagerDeepLinkHandler,
     keyReceiveHandler: ArchiveKeyDeeplinkHandler
 ) : DeepLinkDispatcher {
-    private val handlers = mutableListOf<DeepLinkHandler>(
+    private val handlers = mutableListOf(
         keyReceiveHandler,
         fileManagerHandler
     )
