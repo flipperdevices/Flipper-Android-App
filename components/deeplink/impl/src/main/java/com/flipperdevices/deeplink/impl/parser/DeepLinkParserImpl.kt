@@ -9,6 +9,7 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.deeplink.api.DeepLinkParser
 import com.flipperdevices.deeplink.impl.parser.delegates.DeepLinkFileUriCopy
 import com.flipperdevices.deeplink.impl.parser.delegates.DeepLinkFileUriGrantPermission
+import com.flipperdevices.deeplink.impl.parser.delegates.DeepLinkFlipperFormatSharing
 import com.flipperdevices.deeplink.impl.parser.delegates.DeepLinkParserDelegate
 import com.flipperdevices.deeplink.model.Deeplink
 import com.squareup.anvil.annotations.ContributesBinding
@@ -19,6 +20,7 @@ class DeepLinkParserImpl @Inject constructor() : DeepLinkParser, LogTagProvider 
     override val TAG = "DeepLinkParserImpl"
 
     private val delegates: List<DeepLinkParserDelegate> = listOf(
+        DeepLinkFlipperFormatSharing(),
         DeepLinkFileUriGrantPermission(),
         DeepLinkFileUriCopy()
     )
