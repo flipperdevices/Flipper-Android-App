@@ -16,6 +16,8 @@ dependencies {
 
     implementation(projects.components.bridge.dao.api)
 
+    implementation(projects.components.keyscreen.api)
+
     implementation(libs.cicerone)
     implementation(libs.appcompat)
 

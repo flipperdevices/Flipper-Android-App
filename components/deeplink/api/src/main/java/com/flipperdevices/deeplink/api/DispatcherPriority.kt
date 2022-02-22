@@ -8,7 +8,7 @@ package com.flipperdevices.deeplink.api
  * Enum order is important
  */
 enum class DispatcherPriority {
-    HIGH,
+    LOW,
     DEFAULT,
-    LOW
+    HIGH,
 }

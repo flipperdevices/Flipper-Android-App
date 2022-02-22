@@ -1,19 +1,42 @@
 package com.flipperdevices.share.receive.composable
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import com.flipperdevices.core.ui.composable.ComposableFlipperButton
-import com.flipperdevices.share.receive.R
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import com.flipperdevices.keyscreen.api.KeyScreenApi
+import com.flipperdevices.share.receive.model.ReceiveState
 
-@Preview(
-    showSystemUi = true,
-    showBackground = true
-)
 @Composable
-fun ComposableKeyReceive(onSave: () -> Unit = {}) {
-    ComposableFlipperButton(
-        text = stringResource(R.string.receive_save_btn),
-        onClick = onSave
-    )
+fun ComposableKeyReceive(
+    keyScreenApi: KeyScreenApi,
+    state: ReceiveState,
+    onSave: () -> Unit = {}
+) {
+    when (state) {
+        ReceiveState.NotStarted -> ComposableProgress()
+        is ReceiveState.Pending -> ComposableKeySaveScreen(
+            keyScreenApi = keyScreenApi,
+            keyParsed = state.parsed,
+            onSave = onSave
+        )
+        is ReceiveState.Saving -> ComposableKeySaveScreen(
+            keyScreenApi = keyScreenApi,
+            keyParsed = state.parsed,
+            onSave = onSave
+        )
+        ReceiveState.Finished -> return
+    }
+}
+
+@Composable
+fun ComposableProgress() {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator()
+    }
 }
