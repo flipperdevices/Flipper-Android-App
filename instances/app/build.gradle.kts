@@ -31,6 +31,7 @@ dependencies {
     implementation(projects.components.screenstreaming.impl)
 
     implementation(projects.components.share.api)
+    implementation(projects.components.share.receive)
 
     implementation(projects.components.singleactivity.api)
     implementation(projects.components.singleactivity.impl)

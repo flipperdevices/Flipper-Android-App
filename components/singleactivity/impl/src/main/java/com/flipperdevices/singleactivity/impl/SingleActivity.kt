@@ -93,7 +93,7 @@ class SingleActivity : AppCompatActivity(), RouterProvider, LogTagProvider {
         try {
             val deeplink = deeplinkStack.pop()
             info { "Process deeplink $deeplink" }
-            deepLinkDispatcher.process(deeplink)
+            deepLinkDispatcher.process(router, deeplink)
         } catch (ignored: EmptyStackException) {
             // Ignore it, normal behavior
         }
