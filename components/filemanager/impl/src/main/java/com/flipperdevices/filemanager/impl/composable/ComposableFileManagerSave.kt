@@ -16,10 +16,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.flipperdevices.deeplink.model.DeeplinkContent
+import com.flipperdevices.filemanager.api.share.ReceiveApi
 import com.flipperdevices.filemanager.impl.R
 import com.flipperdevices.filemanager.impl.model.FileItem
 import com.flipperdevices.filemanager.impl.model.FileManagerState
-import com.flipperdevices.share.api.ReceiveApi
 
 @Composable
 fun ComposableFileManagerSave(

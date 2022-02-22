@@ -25,6 +25,9 @@ include(
 
     ":components:filemanager:api",
     ":components:filemanager:impl",
+    ":components:filemanager:sharecommon",
+    ":components:filemanager:export",
+    ":components:filemanager:receive",
 
     ":components:core:di",
     ":components:core:ktx",
@@ -49,9 +52,6 @@ include(
     ":components:screenstreaming:api",
 
     ":components:share:api",
-    ":components:share:export",
-    ":components:share:common",
-    ":components:share:receive",
 
     ":components:singleactivity:api",
     ":components:singleactivity:impl",

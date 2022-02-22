@@ -1,9 +1,7 @@
 plugins {
-    androidCompose
+    androidLibrary
 }
 
 dependencies {
     implementation(projects.components.deeplink.api)
-
-    implementation(libs.compose.ui)
 }
