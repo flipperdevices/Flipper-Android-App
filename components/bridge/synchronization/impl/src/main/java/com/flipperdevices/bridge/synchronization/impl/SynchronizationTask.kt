@@ -93,6 +93,8 @@ class SynchronizationTask(
         // Compare hashes with local snapshot
         val diffWithFlipper = manifestRepository.compareKeysWithManifest(hashes)
 
+        info { "Receive diffs $diffWithFlipper" }
+
         // Apply changes from Flipper
         val androidStorage = AndroidKeyStorage(keysApi)
         val appliedKeys = diffKeyExecutor.executeBatch(
