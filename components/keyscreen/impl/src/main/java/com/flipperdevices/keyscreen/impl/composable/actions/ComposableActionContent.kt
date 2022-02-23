@@ -46,7 +46,7 @@ fun ComposableActionRow(
 @Composable
 fun ComposableActionRowInProgress(
     @StringRes descriptionId: Int,
-    @ColorRes descriptionColorId: Int = DesignSystem.color.black_100,
+    @ColorRes descriptionColorId: Int = DesignSystem.color.black_100
 ) {
     ComposableActionRowInternal(
         iconId = null,
