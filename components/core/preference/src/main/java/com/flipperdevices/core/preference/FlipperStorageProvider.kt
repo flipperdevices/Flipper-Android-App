@@ -5,6 +5,6 @@ import java.io.File
 
 object FlipperStorageProvider {
     fun getKeyFolder(context: Context): File {
-        return File(context.filesDir, "keys/")
+        return File(context.filesDir, "keysfiles/")
     }
 }

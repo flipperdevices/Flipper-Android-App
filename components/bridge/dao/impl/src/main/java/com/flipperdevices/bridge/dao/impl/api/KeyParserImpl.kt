@@ -49,7 +49,7 @@ class KeyParserImpl @Inject constructor() : KeyParser, LogTagProvider {
         flipperKey: FlipperKey
     ): FlipperKeyParsed = withContext(Dispatchers.IO) {
         val parser = parsers[flipperKey.path.fileType] ?: unrecognizedParser
-        val fileContent = flipperKey.keyContent.stream().use {
+        val fileContent = flipperKey.keyContent.openStream().use {
             it.readBytes().toString(Charset.defaultCharset())
         }
 

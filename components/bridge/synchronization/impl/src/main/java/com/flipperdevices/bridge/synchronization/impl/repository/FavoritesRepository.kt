@@ -32,7 +32,7 @@ class FavoritesRepository : LogTagProvider {
     private suspend fun getFavoritesFromFlipper(
         flipperKeyStorage: FlipperKeyStorage
     ): List<String> = withContext(Dispatchers.IO) {
-        val favoritesFile = flipperKeyStorage.loadKey(FAVORITES_PATH).stream().use {
+        val favoritesFile = flipperKeyStorage.loadKey(FAVORITES_PATH).openStream().use {
             it.readBytes().toString(Charset.defaultCharset())
         }
         return@withContext favoritesFile
