@@ -1,12 +1,12 @@
-package com.flipperdevices.bridge.synchronization.impl.repository
+package com.flipperdevices.bridge.synchronization.impl.repository.storage
 
 import android.content.Context
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.impl.di.SynchronizationComponent
+import com.flipperdevices.bridge.synchronization.impl.model.DiffSource
 import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
 import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
 import com.flipperdevices.bridge.synchronization.impl.model.KeyWithHash
-import com.flipperdevices.bridge.synchronization.impl.repository.storage.ManifestStorage
 import com.flipperdevices.core.di.ComponentHolder
 import javax.inject.Inject
 
@@ -24,20 +24,26 @@ class ManifestRepository {
         manifestStorage.save(keys, favorites)
     }
 
-    suspend fun compareKeysWithManifest(keys: List<KeyWithHash>): List<KeyDiff> {
+    suspend fun compareKeysWithManifest(
+        keys: List<KeyWithHash>,
+        diffSource: DiffSource
+    ): List<KeyDiff> {
         val manifestFile = manifestStorage.load()
-            ?: return keys.map { KeyDiff(it, KeyAction.ADD) }
-        return compare(manifestFile.keys, keys)
+            ?: return keys.map { KeyDiff(it, KeyAction.ADD, diffSource) }
+        return compare(manifestFile.keys, keys, diffSource)
     }
 
-    suspend fun compareFavoritesWithManifest(favorites: List<FlipperKeyPath>): List<KeyDiff> {
+    suspend fun compareFavoritesWithManifest(
+        favorites: List<FlipperKeyPath>,
+        diffSource: DiffSource
+    ): List<KeyDiff> {
         val manifestFile = manifestStorage.load()
-            ?: return favorites.map { KeyDiff(KeyWithHash(it, ""), KeyAction.ADD) }
+            ?: return favorites.map { KeyDiff(KeyWithHash(it, ""), KeyAction.ADD, diffSource) }
 
         val manifestFavoritesWithEmptyHash = manifestFile.favorites.map { KeyWithHash(it, "") }
         val favoritesWithEmptyHash = favorites.map { KeyWithHash(it, "") }
 
-        return compare(manifestFavoritesWithEmptyHash, favoritesWithEmptyHash)
+        return compare(manifestFavoritesWithEmptyHash, favoritesWithEmptyHash, diffSource)
     }
 
     suspend fun getFavorites() = manifestStorage.load()?.favorites
@@ -48,7 +54,11 @@ class ManifestRepository {
  *
  * Respect order
  */
-private fun compare(source: List<KeyWithHash>, target: List<KeyWithHash>): List<KeyDiff> {
+private fun compare(
+    source: List<KeyWithHash>,
+    target: List<KeyWithHash>,
+    diffSource: DiffSource
+): List<KeyDiff> {
     val diff = mutableListOf<KeyDiff>()
     val manifestKeys = source.map {
         it.keyPath to it
@@ -58,16 +68,16 @@ private fun compare(source: List<KeyWithHash>, target: List<KeyWithHash>): List<
         val keyInManifest = manifestKeys.remove(key.keyPath)
         if (keyInManifest == null) {
             // If key is new for us
-            diff.add(KeyDiff(key, KeyAction.ADD))
+            diff.add(KeyDiff(key, KeyAction.ADD, diffSource))
         } else if (keyInManifest.hash != key.hash) {
             // If key exist, but content is different
-            diff.add(KeyDiff(key, KeyAction.MODIFIED))
+            diff.add(KeyDiff(key, KeyAction.MODIFIED, diffSource))
         }
     }
 
     // Add all unpresent keys as deleted
     manifestKeys.values.forEach {
-        diff.add(KeyDiff(it, KeyAction.DELETED))
+        diff.add(KeyDiff(it, KeyAction.DELETED, diffSource))
     }
 
     return diff

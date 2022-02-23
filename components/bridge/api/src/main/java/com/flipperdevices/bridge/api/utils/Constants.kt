@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit
 
 object Constants {
     const val DEVICENAME_PREFIX = "Flipper"
+    const val KEYS_DEFAULT_STORAGE = "/any/"
     val DEVICENAME_PREFIX_REGEXP = "Flipper .*".toPattern()
 
     object GenericService {

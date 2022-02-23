@@ -9,10 +9,12 @@ import kotlinx.serialization.Serializable
 /**
  * Describe name and path for key.
  * Used as unique id for keys
+ *
+ * Never contains storage
  */
 @Serializable
 @Parcelize
-data class FlipperKeyPath constructor(
+data class FlipperKeyPath(
     val folder: String,
     val name: String // With extension
 ) : Parcelable {
@@ -23,9 +25,14 @@ data class FlipperKeyPath constructor(
     val fileType: FlipperFileType? by lazy {
         FlipperFileType.getByExtension(
             name.substringAfterLast(
-                "."
+                '.'
             )
         )
+    }
+
+    @IgnoredOnParcel
+    val nameWithoutExtension by lazy {
+        name.substringAfterLast('/').substringBeforeLast(".")
     }
 
     override fun toString() = pathToKey

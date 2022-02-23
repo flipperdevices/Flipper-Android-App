@@ -14,6 +14,9 @@ import kotlinx.coroutines.flow.Flow
  */
 @Dao
 interface KeyDao {
+    @Query("SELECT * FROM keys WHERE deleted = 0")
+    suspend fun getAll(): List<Key>
+
     @Query("SELECT * FROM keys")
     suspend fun getAllWithDeleted(): List<Key>
 
