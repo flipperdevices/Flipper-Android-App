@@ -11,6 +11,7 @@ class FFFUrlEncoder : LogTagProvider {
 
     fun keyToUri(path: FlipperKeyPath, fff: FlipperFileFormat): URL {
         val query = listOf(QUERY_KEY_PATH to path.pathToKey).plus(fff.orderedDict)
+            .filterNot { it.first.isBlank() || it.second.isBlank() }
             .joinToString(QUERY_DELIMITED_CHAR) {
                 val field = URLEncoder.encode(it.first.trim(), "UTF-8")
                 val value = URLEncoder.encode(it.second.trim(), "UTF-8")
