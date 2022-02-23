@@ -14,6 +14,7 @@ import com.flipperdevices.bridge.dao.api.delegates.KeyParser
 import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.filemanager.api.share.ShareApi
@@ -22,8 +23,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 private const val BITMAP_QUALITY = 100
-private const val EXPECTED_BITMAP_WIDTH = 512
-private const val EXPECTED_BITMAP_HEIGHT = 512
 
 class ShareDelegate(
     private val context: Context,
@@ -34,9 +33,16 @@ class ShareDelegate(
 
     suspend fun share(flipperKey: FlipperKey) {
         val link = keyParser.keyToUrl(flipperKey)
-        // TODO catch exception from bitmap decoding
-        val icon = flipperKey.path.fileType?.let {
-            shareIcon(it)
+        val icon: Uri? = try {
+            flipperKey.path.fileType?.let {
+                shareIcon(it)
+            }
+        } catch (
+            @Suppress("TooGenericExceptionCaught")
+            exception: Exception
+        ) {
+            error(exception) { "I can't share icon for $flipperKey" }
+            null
         }
         info { "Share ${flipperKey.path.name} with icon uri $icon and link $link" }
         shareLink(flipperKey, link, icon)
