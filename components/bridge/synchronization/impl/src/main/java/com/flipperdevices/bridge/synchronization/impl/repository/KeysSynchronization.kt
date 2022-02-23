@@ -62,8 +62,8 @@ class KeysSynchronization(
         val diffWithFlipper = manifestRepository
             .compareKeysWithManifest(hashesFromFlipper, DiffSource.FLIPPER)
 
-        info { "Receive diffs for Flipper: $diffWithFlipper" }
-        info { "Receive diffs for Android: $diffWithAndroid" }
+        info { "Receive diffs on Flipper: $diffWithFlipper" }
+        info { "Receive diffs on Android: $diffWithAndroid" }
 
         val mergedDiff = mergeDiffs(diffWithFlipper, diffWithAndroid)
         val diffForFlipper = mergedDiff.filter { it.source == DiffSource.ANDROID }
@@ -169,7 +169,7 @@ class KeysSynchronization(
         info { "Found free key name! $newPath" }
 
         keysApi.insertKey(FlipperKey(newPath, oldKey.keyContent))
-        keysApi.deleteKey(oldKey.path)
+        keysApi.markDeleted(oldKey.path)
     }
 }
 
