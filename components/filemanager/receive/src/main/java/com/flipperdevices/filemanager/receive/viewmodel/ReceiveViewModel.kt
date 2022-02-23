@@ -129,7 +129,7 @@ class ReceiveViewModel(
             is DeeplinkContent.InternalStorageFile -> {
                 file.inputStream()
             }
-            is DeeplinkContent.FFFContent -> content.stream()
+            is DeeplinkContent.FFFContent -> content.openStream()
         }
     }
 

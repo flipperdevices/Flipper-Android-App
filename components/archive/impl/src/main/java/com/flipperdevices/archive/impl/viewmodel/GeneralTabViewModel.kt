@@ -40,7 +40,7 @@ class GeneralTabViewModel : ViewModel() {
     init {
         ComponentHolder.component<ArchiveComponent>().inject(this)
         viewModelScope.launch {
-            keyApi.getKeysAsFlow(null).combine(
+            keyApi.getExistKeysAsFlow(null).combine(
                 synchronizationApi.getSynchronizationState()
             ) { keyList, synchronizationState ->
                 if (keyList.isEmpty() && synchronizationState == SynchronizationState.IN_PROGRESS) {

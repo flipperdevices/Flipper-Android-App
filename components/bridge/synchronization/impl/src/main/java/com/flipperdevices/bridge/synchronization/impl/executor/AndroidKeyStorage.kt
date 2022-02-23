@@ -24,7 +24,7 @@ class AndroidKeyStorage(
     }
 
     override suspend fun deleteKey(keyPath: FlipperKeyPath) {
-        info { "Delete key $keyPath" }
-        keysApi.deleteKey(keyPath)
+        info { "Mark delete key $keyPath" }
+        keysApi.markDeleted(keyPath)
     }
 }

@@ -15,16 +15,16 @@ import kotlinx.parcelize.Parcelize
  */
 sealed class FlipperKeyContent {
     class RawData(private val bytes: ByteArray) : FlipperKeyContent() {
-        override fun stream() = ByteArrayInputStream(bytes)
+        override fun openStream() = ByteArrayInputStream(bytes)
         override fun length() = bytes.size.toLong()
     }
 
     data class InternalFile(val file: File) : FlipperKeyContent() {
-        override fun stream() = FileInputStream(file)
+        override fun openStream() = FileInputStream(file)
         override fun length() = file.length()
     }
 
-    abstract fun stream(): InputStream
+    abstract fun openStream(): InputStream
 
     abstract fun length(): Long?
 }
@@ -51,7 +51,7 @@ data class FlipperFileFormat(
         }
     }
 
-    override fun stream() = ByteArrayInputStream(fileContentLazy.toByteArray())
+    override fun openStream() = ByteArrayInputStream(fileContentLazy.toByteArray())
     override fun length() = fileContentLazy.toByteArray().size.toLong()
 
     private fun generateFileContent(): String {

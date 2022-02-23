@@ -3,15 +3,14 @@ package com.flipperdevices.bridge.dao.impl.api
 import com.flipperdevices.bridge.dao.api.delegates.KeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
-import com.flipperdevices.bridge.dao.impl.api.delegates.FlipperKeyContentConverter
+import com.flipperdevices.bridge.dao.impl.api.delegates.KeyContentCleaner
+import com.flipperdevices.bridge.dao.impl.model.DatabaseKeyContent
 import com.flipperdevices.bridge.dao.impl.model.Key
 import com.flipperdevices.bridge.dao.impl.repository.KeyDao
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.provideDelegate
 import com.squareup.anvil.annotations.ContributesBinding
-import java.io.File
 import javax.inject.Inject
 import javax.inject.Provider
 import javax.inject.Singleton
@@ -22,30 +21,29 @@ import kotlinx.coroutines.flow.map
 @ContributesBinding(AppGraph::class)
 class KeyApiImpl @Inject constructor(
     keysDaoProvider: Provider<KeyDao>,
-    keyContentConverterProvider: Provider<FlipperKeyContentConverter>
+    cleanerProvider: Provider<KeyContentCleaner>
 ) : KeyApi {
     private val keysDao by keysDaoProvider
-    private val keyContentConverter by keyContentConverterProvider
+    private val cleaner by cleanerProvider
 
     override suspend fun insertKey(key: FlipperKey) {
-        val file = keyContentConverter.extractFile(key)
-        val databaseKey = key.toDatabaseKey(file)
-
-        keysDao.insert(databaseKey)
+        keysDao.insert(key.toDatabaseKey())
     }
 
-    override suspend fun deleteKey(keyPath: FlipperKeyPath) {
-        val key = keysDao.getByPath(keyPath) ?: return
-        val file = keyContentConverter.extractFile(key.toFlipperKey())
-        file.delete()
-        keysDao.deleteByPath(keyPath)
+    override suspend fun deleteMarkedDeleted(keyPath: FlipperKeyPath) {
+        keysDao.deleteMarkedDeleted(keyPath)
+        cleaner.deleteUnusedFiles()
+    }
+
+    override suspend fun markDeleted(keyPath: FlipperKeyPath) {
+        keysDao.markDeleted(keyPath)
     }
 
     override suspend fun getKey(keyPath: FlipperKeyPath): FlipperKey? {
         return keysDao.getByPath(keyPath)?.toFlipperKey()
     }
 
-    override fun getKeysAsFlow(
+    override fun getExistKeysAsFlow(
         fileType: FlipperFileType?
     ): Flow<List<FlipperKey>> {
         val flowWithFilter = if (fileType == null) {
@@ -57,16 +55,16 @@ class KeyApiImpl @Inject constructor(
     }
 }
 
-private fun FlipperKey.toDatabaseKey(keyContent: File): Key {
+private fun FlipperKey.toDatabaseKey(): Key {
     return Key(
         path = path,
-        filePath = keyContent.absolutePath
+        content = DatabaseKeyContent(keyContent)
     )
 }
 
 private fun Key.toFlipperKey(): FlipperKey {
     return FlipperKey(
         path = path,
-        keyContent = FlipperKeyContent.InternalFile(File(this.filePath))
+        keyContent = content.flipperContent
     )
 }
