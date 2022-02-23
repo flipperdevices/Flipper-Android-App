@@ -30,6 +30,11 @@ class KeyApiImpl @Inject constructor(
         keysDao.insert(key.toDatabaseKey())
     }
 
+    override suspend fun deleteMarkedDeleted(keyPath: FlipperKeyPath) {
+        keysDao.deleteMarkedDeleted(keyPath)
+        cleaner.deleteUnusedFiles()
+    }
+
     override suspend fun markDeleted(keyPath: FlipperKeyPath) {
         keysDao.markDeleted(keyPath)
     }

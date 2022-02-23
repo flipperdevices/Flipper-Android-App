@@ -23,7 +23,7 @@ interface KeyDao {
     @Query(
         """
        SELECT * FROM keys WHERE type = :fileType AND deleted = 0 
-    """
+        """
     )
     fun subscribeByType(fileType: FlipperFileType): Flow<List<Key>>
 
