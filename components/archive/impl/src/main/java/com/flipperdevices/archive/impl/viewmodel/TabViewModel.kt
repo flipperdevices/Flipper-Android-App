@@ -39,7 +39,7 @@ class TabViewModel(
     init {
         ComponentHolder.component<ArchiveComponent>().inject(this)
         viewModelScope.launch {
-            keyApi.getKeysAsFlow(tab.fileType).combine(
+            keyApi.getExistKeysAsFlow(tab.fileType).combine(
                 synchronizationApi.getSynchronizationState()
             ) { keyList, synchronizationState ->
                 if (keyList.isEmpty() && synchronizationState == SynchronizationState.IN_PROGRESS) {

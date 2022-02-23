@@ -40,7 +40,7 @@ class FlipperKeyStorage constructor(
     override suspend fun saveKey(
         keyPath: FlipperKeyPath,
         keyContent: FlipperKeyContent
-    ) = keyContent.stream().use { stream ->
+    ) = keyContent.openStream().use { stream ->
         val response = streamToCommandFlow(stream, keyContent.length()) { chunkData ->
             storageWriteRequest = writeRequest {
                 path = File(Constants.KEYS_DEFAULT_STORAGE, keyPath.pathToKey).path

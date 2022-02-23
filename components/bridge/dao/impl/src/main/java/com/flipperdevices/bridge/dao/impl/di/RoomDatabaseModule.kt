@@ -3,6 +3,7 @@ package com.flipperdevices.bridge.dao.impl.di
 import android.content.Context
 import androidx.room.Room
 import com.flipperdevices.bridge.dao.impl.AppDatabase
+import com.flipperdevices.bridge.dao.impl.converters.DatabaseKeyContentConverter
 import com.flipperdevices.core.di.AppGraph
 import com.squareup.anvil.annotations.ContributesTo
 import dagger.Module
@@ -21,7 +22,8 @@ class RoomDatabaseModule {
             context,
             AppDatabase::class.java,
             DATABASE_NAME
-        ).fallbackToDestructiveMigration()
+        ).addTypeConverter(DatabaseKeyContentConverter(context))
+            .fallbackToDestructiveMigration()
             .build()
     }
 

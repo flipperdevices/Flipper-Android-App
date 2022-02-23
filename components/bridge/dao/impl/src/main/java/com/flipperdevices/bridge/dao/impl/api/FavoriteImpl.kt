@@ -2,7 +2,6 @@ package com.flipperdevices.bridge.dao.impl.api
 
 import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.impl.model.FavoriteKey
 import com.flipperdevices.bridge.dao.impl.repository.FavoriteDao
@@ -10,7 +9,6 @@ import com.flipperdevices.bridge.dao.impl.repository.KeyDao
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.provideDelegate
 import com.squareup.anvil.annotations.ContributesBinding
-import java.io.File
 import javax.inject.Inject
 import javax.inject.Provider
 import javax.inject.Singleton
@@ -78,7 +76,7 @@ class FavoriteImpl @Inject constructor(
             keys.map { (favoriteKey, key) ->
                 favoriteKey.order to FlipperKey(
                     key.path,
-                    FlipperKeyContent.InternalFile(File(key.filePath))
+                    key.content.flipperContent
                 )
             }.sortedBy { (order, _) -> order }.map { it.second }
         }
@@ -88,7 +86,7 @@ class FavoriteImpl @Inject constructor(
         return@withContext favoriteDao.getAll().map { (favoriteKey, key) ->
             favoriteKey.order to FlipperKey(
                 key.path,
-                FlipperKeyContent.InternalFile(File(key.filePath))
+                key.content.flipperContent
             )
         }.sortedBy { (order, _) -> order }.map { it.second }
     }

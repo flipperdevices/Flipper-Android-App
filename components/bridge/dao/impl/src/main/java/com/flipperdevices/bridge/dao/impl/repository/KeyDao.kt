@@ -9,23 +9,33 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.impl.model.Key
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * By default all method exclude deleted field
+ */
 @Dao
 interface KeyDao {
     @Query("SELECT * FROM keys")
-    suspend fun getAll(): List<Key>
+    suspend fun getAllWithDeleted(): List<Key>
 
-    @Query("SELECT * FROM keys")
+    @Query("SELECT * FROM keys WHERE deleted = 0 ")
     fun subscribe(): Flow<List<Key>>
 
-    @Query("SELECT * FROM keys WHERE type = :fileType")
+    @Query(
+        """
+       SELECT * FROM keys WHERE type = :fileType AND deleted = 0 
+        """
+    )
     fun subscribeByType(fileType: FlipperFileType): Flow<List<Key>>
 
-    @Query("SELECT * FROM keys WHERE path = :keyPath")
-    suspend fun getByPath(keyPath: FlipperKeyPath): Key?
+    @Query("SELECT * FROM keys WHERE path = :keyPath AND deleted = :deleted")
+    suspend fun getByPath(keyPath: FlipperKeyPath, deleted: Boolean = false): Key?
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insert(vararg keys: Key)
 
-    @Query("DELETE FROM keys WHERE path = :keyPath")
-    suspend fun deleteByPath(keyPath: FlipperKeyPath)
+    @Query("DELETE FROM keys WHERE path = :keyPath AND deleted = 1")
+    suspend fun deleteMarkedDeleted(keyPath: FlipperKeyPath)
+
+    @Query("UPDATE keys SET deleted = 1 WHERE path = :keyPath AND deleted = 0")
+    suspend fun markDeleted(keyPath: FlipperKeyPath)
 }

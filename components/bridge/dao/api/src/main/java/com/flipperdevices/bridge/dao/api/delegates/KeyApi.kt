@@ -10,11 +10,13 @@ interface KeyApi {
 
     suspend fun insertKey(key: FlipperKey)
 
-    suspend fun deleteKey(keyPath: FlipperKeyPath)
+    suspend fun deleteMarkedDeleted(keyPath: FlipperKeyPath)
+
+    suspend fun markDeleted(keyPath: FlipperKeyPath)
 
     suspend fun getKey(keyPath: FlipperKeyPath): FlipperKey?
 
-    fun getKeysAsFlow(
+    fun getExistKeysAsFlow(
         fileType: FlipperFileType? = null
     ): Flow<List<FlipperKey>>
 }
