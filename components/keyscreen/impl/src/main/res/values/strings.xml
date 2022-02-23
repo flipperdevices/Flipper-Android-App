@@ -3,6 +3,7 @@
     <string name="keyscreen_error_keypath">Key opening error. The key path is not provided.</string>
     <string name="keyscreen_error_notfound_key">The key will not be found.</string>
     <string name="keyscreen_card_note_empty">Note is empty</string>
+    <string name="keyscreen_favorite_progress">Switching favorites…</string>
     <string name="keyscreen_favorite_disabled">Add to favorites</string>
     <string name="keyscreen_favorite_enabled">Remove from favorites</string>
 </resources>

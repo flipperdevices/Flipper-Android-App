@@ -9,7 +9,10 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.keyscreen.impl.R
 import com.flipperdevices.keyscreen.impl.di.KeyScreenComponent
+import com.flipperdevices.keyscreen.impl.model.DeleteState
+import com.flipperdevices.keyscreen.impl.model.FavoriteState
 import com.flipperdevices.keyscreen.impl.model.KeyScreenState
+import com.flipperdevices.keyscreen.impl.model.ShareState
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -48,7 +51,14 @@ class KeyScreenViewModel(
 
             val parsedKey = keyParser.parseKey(flipperKey)
             val isFavorite = favoriteApi.isFavorite(keyPathNotNull)
-            keyScreenState.update { KeyScreenState.Ready(parsedKey, isFavorite) }
+            keyScreenState.update {
+                KeyScreenState.Ready(
+                    parsedKey,
+                    if (isFavorite) FavoriteState.FAVORITE else FavoriteState.NOT_FAVORITE,
+                    ShareState.NOT_SHARING,
+                    DeleteState.NOT_DELETED
+                )
+            }
             return@launch
         }
     }
@@ -57,12 +67,17 @@ class KeyScreenViewModel(
 
     fun setFavorite(isFavorite: Boolean) {
         val keyPathNotNull = keyPath ?: return
+        keyScreenState.update {
+            if (it is KeyScreenState.Ready) it.copy(favoriteState = FavoriteState.PROGRESS) else it
+        }
+
         viewModelScope.launch {
             favoriteApi.setFavorite(keyPathNotNull, isFavorite)
             keyScreenState.update {
-                if (it is KeyScreenState.Ready) KeyScreenState.Ready(
-                    it.parsedKey,
-                    isFavorite
+                if (it is KeyScreenState.Ready) it.copy(
+                    favoriteState = if (isFavorite) {
+                        FavoriteState.FAVORITE
+                    } else FavoriteState.NOT_FAVORITE
                 ) else it
             }
         }

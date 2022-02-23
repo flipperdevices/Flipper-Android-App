@@ -19,6 +19,7 @@
 
                 <!-- Please, also add host in FFFUrlConstants -->
                 <data android:host="dev.flpr.app" />
+                <data android:host="flpr.app" />
             </intent-filter>
 
             <intent-filter android:icon="@drawable/ic_fileformat_ibutton">

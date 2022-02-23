@@ -15,6 +15,7 @@ import com.flipperdevices.bridge.dao.impl.api.parsers.RFIDParser
 import com.flipperdevices.bridge.dao.impl.api.parsers.SubGhzParser
 import com.flipperdevices.bridge.dao.impl.api.parsers.UnrecognizedParser
 import com.flipperdevices.bridge.dao.impl.api.parsers.url.FFFUrlDecoder
+import com.flipperdevices.bridge.dao.impl.api.parsers.url.FFFUrlEncoder
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.warn
@@ -31,6 +32,7 @@ class KeyParserImpl @Inject constructor() : KeyParser, LogTagProvider {
     override val TAG = "KeyParser"
 
     private val urlDecoder = FFFUrlDecoder()
+    private val urlEncoder = FFFUrlEncoder()
 
     private val parsers by lazy {
         EnumMap<FlipperFileType, KeyParserDelegate>(
@@ -48,18 +50,16 @@ class KeyParserImpl @Inject constructor() : KeyParser, LogTagProvider {
     override suspend fun parseKey(
         flipperKey: FlipperKey
     ): FlipperKeyParsed = withContext(Dispatchers.IO) {
-        val parser = parsers[flipperKey.path.fileType] ?: unrecognizedParser
         val fileContent = flipperKey.keyContent.openStream().use {
             it.readBytes().toString(Charset.defaultCharset())
         }
+        val fff = FlipperFileFormat.fromFileContent(fileContent)
+        val parser = parsers[flipperKey.path.fileType] ?: unrecognizedParser
 
-        return@withContext parser.parseKey(
-            flipperKey,
-            FlipperFileFormat.fromFileContent(fileContent)
-        )
+        return@withContext parser.parseKey(flipperKey, fff)
     }
 
-    override fun parseUri(uri: Uri): Pair<FlipperKeyPath, FlipperFileFormat>? {
+    override suspend fun parseUri(uri: Uri): Pair<FlipperKeyPath, FlipperFileFormat>? {
         val (path, content) = urlDecoder.uriToContent(uri) ?: return null
         val pathAsFile = File(path)
         val extension = pathAsFile.extension
@@ -70,5 +70,14 @@ class KeyParserImpl @Inject constructor() : KeyParser, LogTagProvider {
         } else FlipperKeyPath(fileType.flipperDir, pathAsFile.name)
 
         return keyPath to content
+    }
+
+    override suspend fun keyToUrl(flipperKey: FlipperKey): String {
+        val fileContent = flipperKey.keyContent.openStream().use {
+            it.readBytes().toString(Charset.defaultCharset())
+        }
+        val fff = FlipperFileFormat.fromFileContent(fileContent)
+
+        return urlEncoder.keyToUri(flipperKey.path, fff).toString()
     }
 }
