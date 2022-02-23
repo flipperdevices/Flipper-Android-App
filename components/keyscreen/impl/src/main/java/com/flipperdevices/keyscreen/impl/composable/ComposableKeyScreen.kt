@@ -1,11 +1,8 @@
 package com.flipperdevices.keyscreen.impl.composable
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -50,17 +47,5 @@ private fun ComposableKeyError(error: KeyScreenState.Error) {
             text = errorText,
             fontWeight = FontWeight.Medium
         )
-    }
-}
-
-@Composable
-private fun ComposableKeyParsed(
-    viewModel: KeyScreenViewModel,
-    keyScreenState: KeyScreenState.Ready
-) {
-    val scrollState = rememberScrollState()
-    Column(modifier = Modifier.verticalScroll(scrollState)) {
-        ComposableKeyCard(keyScreenState.parsedKey)
-        ComposableKeyAction(viewModel, keyScreenState)
     }
 }

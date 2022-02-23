@@ -12,5 +12,7 @@ interface KeyParser {
      */
     suspend fun parseKey(flipperKey: FlipperKey): FlipperKeyParsed
 
-    fun parseUri(uri: Uri): Pair<FlipperKeyPath, FlipperFileFormat>?
+    suspend fun parseUri(uri: Uri): Pair<FlipperKeyPath, FlipperFileFormat>?
+
+    suspend fun keyToUrl(flipperKey: FlipperKey): String
 }

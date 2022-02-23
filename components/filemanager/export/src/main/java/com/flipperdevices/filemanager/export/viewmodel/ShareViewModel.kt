@@ -11,9 +11,10 @@ import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.ComponentHolder
-import com.flipperdevices.core.ktx.android.createClearFileInCacheSafe
+import com.flipperdevices.core.ktx.jre.createClearNewFileWithMkDirs
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.core.ui.AndroidLifecycleViewModel
 import com.flipperdevices.filemanager.api.share.ShareFile
 import com.flipperdevices.filemanager.export.BuildConfig
@@ -24,6 +25,7 @@ import com.flipperdevices.filemanager.sharecommon.model.ShareState
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.readRequest
 import com.google.protobuf.ByteString
+import java.io.File
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -33,8 +35,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-const val SHARE_DIR = "sharedkeys/"
-
 class ShareViewModel(
     private val shareFile: ShareFile,
     application: Application
@@ -43,10 +43,11 @@ class ShareViewModel(
     LogTagProvider {
     override val TAG = "ShareViewModel"
     private val downloadStarted = AtomicBoolean(false)
-    private val fileInSharedDir = application.createClearFileInCacheSafe(
-        SHARE_DIR,
-        shareFile.name
-    )
+    private val fileInSharedDir by lazy {
+        File(FlipperStorageProvider.getSharedKeyFolder(application), shareFile.name).apply {
+            createClearNewFileWithMkDirs()
+        }
+    }
     private val shareStateFlow = MutableStateFlow(
         ShareState(
             DownloadProgress.Fixed(
