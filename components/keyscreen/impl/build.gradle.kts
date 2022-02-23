@@ -9,8 +9,12 @@ dependencies {
 
     implementation(projects.components.core.di)
     implementation(projects.components.core.ui)
+    implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)
+    implementation(projects.components.core.preference)
     implementation(projects.components.bridge.dao.api)
+
+    implementation(projects.components.filemanager.api)
 
     // Compose
     implementation(libs.compose.ui)

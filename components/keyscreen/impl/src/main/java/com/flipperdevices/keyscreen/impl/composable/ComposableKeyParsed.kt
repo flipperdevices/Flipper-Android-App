@@ -6,6 +6,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableFavorite
+import com.flipperdevices.keyscreen.impl.composable.actions.ComposableShare
 import com.flipperdevices.keyscreen.impl.model.KeyScreenState
 import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModel
 
@@ -18,5 +19,6 @@ fun ComposableKeyParsed(
     Column(modifier = Modifier.verticalScroll(scrollState)) {
         ComposableKeyCard(keyScreenState.parsedKey)
         ComposableFavorite(keyScreenState.favoriteState, viewModel::setFavorite)
+        ComposableShare(keyScreenState.shareState, viewModel::onShare)
     }
 }

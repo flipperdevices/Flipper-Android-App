@@ -13,3 +13,13 @@ fun File.createNewFileWithMkDirs(): Boolean {
 
     return createNewFile()
 }
+
+fun File.createClearNewFileWithMkDirs(): Boolean {
+    if (exists()) {
+        delete()
+    }
+
+    createNewFileWithMkDirs()
+
+    return createNewFile()
+}
