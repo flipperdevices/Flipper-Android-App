@@ -17,7 +17,7 @@ import kotlinx.serialization.Serializable
 data class FlipperKeyPath(
     val folder: String,
     val name: String // With extension
-) : Parcelable {
+) : Parcelable, Comparable<FlipperKeyPath> {
     @IgnoredOnParcel
     val pathToKey: String by lazy { File(folder, name).path }
 
@@ -39,5 +39,9 @@ data class FlipperKeyPath(
 
     companion object {
         val DUMMY by lazy { FlipperKeyPath(FlipperFileType.NFC.flipperDir, "Test_Key.nfc") }
+    }
+
+    override fun compareTo(other: FlipperKeyPath): Int {
+        return pathToKey.compareTo(other.pathToKey)
     }
 }
