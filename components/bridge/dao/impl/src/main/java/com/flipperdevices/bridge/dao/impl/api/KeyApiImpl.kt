@@ -40,6 +40,10 @@ class KeyApiImpl @Inject constructor(
     }
 
     override suspend fun markDeleted(keyPath: FlipperKeyPath) {
+        val existKey = keysDao.getByPath(keyPath, deleted = true)
+        if (existKey != null) {
+            keysDao.deleteMarkedDeleted(keyPath)
+        }
         keysDao.markDeleted(keyPath)
     }
 

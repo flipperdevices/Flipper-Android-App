@@ -15,6 +15,7 @@ import com.flipperdevices.bridge.synchronization.impl.model.trackProgressAndRetu
 import com.flipperdevices.bridge.synchronization.impl.repository.android.AndroidHashRepository
 import com.flipperdevices.bridge.synchronization.impl.repository.flipper.FlipperHashRepository
 import com.flipperdevices.bridge.synchronization.impl.repository.flipper.KeysListingRepository
+import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestChangeExecutor
 import com.flipperdevices.bridge.synchronization.impl.repository.storage.ManifestRepository
 import com.flipperdevices.bridge.synchronization.impl.utils.KeyDiffCombiner
 import com.flipperdevices.bridge.synchronization.impl.utils.UnresolvedConflictException
@@ -41,18 +42,8 @@ class KeysSynchronization(
 
     suspend fun syncKeys(): List<KeyWithHash> {
         val keysFromAndroid = keysApi.getAllKeys()
-        val keysFromFlipper = keysListingRepository
-            .getAllKeys(requestApi)
-            .trackProgressAndReturn {
-                info { "[Keys] Progress is ${it.currentPosition}/${it.maxPosition}: ${it.text}" }
-            }
         val hashesFromAndroid = androidHashRepository.calculateHash(keysFromAndroid)
-        val hashesFromFlipper = flipperHashRepository
-            .calculateHash(requestApi, keysFromFlipper)
-            .trackProgressAndReturn {
-                info { "[Hash] Progress is ${it.currentPosition}/${it.maxPosition}: ${it.text}" }
-            }
-
+        val hashesFromFlipper = getManifestOnFlipper()
         info { "Finish receive hashes from Flipper: $hashesFromFlipper" }
         info { "Finish receive hashes from Android: $hashesFromAndroid" }
 
@@ -96,30 +87,59 @@ class KeysSynchronization(
                 "${appliedKeysToAndroid.size} from ${diffForAndroid.size} changes"
         }
 
-        // The state of the files should be the same, but it is cheaper to calculate it on Android
-        val manifestHashes = androidHashRepository.calculateHash(keysApi.getAllKeys())
-
-        if (BuildConfig.DEBUG) { // If we launch in debug mode, we check hash also on flipper
-            checkManifestOnFlipper(manifestHashes)
-        }
+        val manifestHashes = checkSynchronization(
+            calculatedHashOnAndroid = ManifestChangeExecutor.applyChanges(
+                hashesFromAndroid, appliedKeysToAndroid
+            ),
+            calculatedHashOnFlipper = ManifestChangeExecutor.applyChanges(
+                hashesFromFlipper, appliedKeysToFlipper
+            )
+        )
 
         return manifestHashes
     }
 
-    private suspend fun checkManifestOnFlipper(manifestOnAndroid: List<KeyWithHash>) {
+    /**
+     * Check that the contents on both sides are identical.
+     *
+     * @return manifest content, which should be stored as synchronization snapshot
+     */
+    private suspend fun checkSynchronization(
+        calculatedHashOnFlipper: List<KeyWithHash>,
+        calculatedHashOnAndroid: List<KeyWithHash>
+    ): List<KeyWithHash> {
+        val calculatedHashOnFlipperSorted = calculatedHashOnFlipper.sortedBy {
+            it.keyPath
+        }
+        val calculatedHashOnAndroidSorted = calculatedHashOnAndroid.sortedBy {
+            it.keyPath
+        }
+
+        check(calculatedHashOnFlipperSorted == calculatedHashOnAndroidSorted) {
+            "Calculated hash should be equals. " +
+                "Flipper: $calculatedHashOnFlipperSorted. Android: $calculatedHashOnAndroidSorted"
+        }
+
+        if (BuildConfig.DEBUG) {
+            val hashesFromFlipperSorted = getManifestOnFlipper().sortedBy { it.keyPath }
+
+            check(calculatedHashOnFlipperSorted == hashesFromFlipperSorted) {
+                "Calculated and real hash should be equal, please check it" +
+                    "Calculated: $calculatedHashOnFlipperSorted. Real: $hashesFromFlipperSorted"
+            }
+        }
+
+        return calculatedHashOnFlipperSorted
+    }
+
+    private suspend fun getManifestOnFlipper(): List<KeyWithHash> {
         val keysFromFlipper = keysListingRepository.getAllKeys(requestApi).trackProgressAndReturn {
             info { "[Hash] Progress is ${it.currentPosition}/${it.maxPosition}: ${it.text}" }
         }
-        val hashesOnFlipperSorted = flipperHashRepository.calculateHash(requestApi, keysFromFlipper)
+        return flipperHashRepository.calculateHash(requestApi, keysFromFlipper)
             .trackProgressAndReturn {
                 info { "[Hash] Progress is ${it.currentPosition}/${it.maxPosition}: ${it.text}" }
-            }.sortedBy { it.keyPath.pathToKey }
-        val androidKeysSorted = manifestOnAndroid.sortedBy { it.keyPath.pathToKey }
-
-        check(hashesOnFlipperSorted == manifestOnAndroid.sortedBy { it.keyPath.pathToKey }) {
-            "Hashes on Flipper and on Android should be equals, but we have diff. " +
-                "Flipper keys: $hashesOnFlipperSorted. Android keys: $androidKeysSorted"
-        }
+            }
     }
 
     private suspend fun mergeDiffs(first: List<KeyDiff>, second: List<KeyDiff>): List<KeyDiff> {

@@ -20,6 +20,7 @@ class TmpSynchronization : LogTagProvider {
 
     private val isLaunched = AtomicBoolean(false)
     private val synchronizationState = MutableStateFlow(SynchronizationState.NOT_STARTED)
+    private var markDirty = false
 
     @Inject
     lateinit var serviceProvider: FlipperServiceProvider
@@ -39,9 +40,11 @@ class TmpSynchronization : LogTagProvider {
 
     fun requestServiceAndReceive() {
         if (!isLaunched.compareAndSet(false, true)) {
+            markDirty = true
             info { "Synchronization skipped, because we already in synchronization" }
             return
         }
+        markDirty = false
         val synchronizationTask = SynchronizationTask(
             serviceProvider = serviceProvider,
             keysApi = keyApi,
@@ -52,6 +55,9 @@ class TmpSynchronization : LogTagProvider {
             synchronizationState.update { taskState }
             if (taskState == SynchronizationState.FINISHED) {
                 isLaunched.compareAndSet(true, false)
+            }
+            if (markDirty) {
+                requestServiceAndReceive()
             }
         }
     }
