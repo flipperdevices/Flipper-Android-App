@@ -14,8 +14,6 @@ dependencies {
     implementation(projects.components.core.preference)
     implementation(projects.components.bridge.dao.api)
 
-    implementation(projects.components.filemanager.api)
-
     // Compose
     implementation(libs.compose.ui)
     implementation(libs.compose.tooling)
