@@ -28,7 +28,7 @@ enum class FlipperFileType(
     SUB_GHZ(
         humanReadableName = "Sub-GHz",
         extension = "sub",
-        flipperDir = "subghz/saved",
+        flipperDir = "subghz",
         icon = R.drawable.ic_fileformat_sub,
         color = R.color.fileformat_color_sub
     ),
