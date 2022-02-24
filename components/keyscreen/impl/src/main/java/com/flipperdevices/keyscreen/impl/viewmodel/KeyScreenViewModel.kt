@@ -10,7 +10,6 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.warn
-import com.flipperdevices.filemanager.api.share.ShareApi
 import com.flipperdevices.keyscreen.impl.R
 import com.flipperdevices.keyscreen.impl.di.KeyScreenComponent
 import com.flipperdevices.keyscreen.impl.model.DeleteState
@@ -38,15 +37,12 @@ class KeyScreenViewModel(
     @Inject
     lateinit var keyParser: KeyParser
 
-    @Inject
-    lateinit var shareApi: ShareApi
-
     init {
         ComponentHolder.component<KeyScreenComponent>().inject(this)
     }
 
     private val keyScreenState = MutableStateFlow<KeyScreenState>(KeyScreenState.InProgress)
-    private val shareDelegate = ShareDelegate(application, shareApi, keyParser)
+    private val shareDelegate = ShareDelegate(application, keyParser)
 
     init {
         viewModelScope.launch {

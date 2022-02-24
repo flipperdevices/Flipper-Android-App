@@ -15,6 +15,7 @@ class FFFUrlEncoder : LogTagProvider {
             .joinToString(QUERY_DELIMITED_CHAR) {
                 val field = URLEncoder.encode(it.first.trim(), "UTF-8")
                 val value = URLEncoder.encode(it.second.trim(), "UTF-8")
+                    .replace("%2F", "/") // We want safe / for readability
                 "$field$QUERY_VALUE_DELIMITED_CHAR$value"
             }
         return URL(
