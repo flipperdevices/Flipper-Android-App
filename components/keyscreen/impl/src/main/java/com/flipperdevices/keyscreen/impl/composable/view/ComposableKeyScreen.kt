@@ -1,4 +1,4 @@
-package com.flipperdevices.keyscreen.impl.composable
+package com.flipperdevices.keyscreen.impl.composable.view
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,17 +12,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.keyscreen.impl.model.KeyScreenState
-import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModel
+import com.flipperdevices.keyscreen.impl.viewmodel.view.KeyScreenViewModel
 
 @Composable
 fun ComposableKeyScreen(
     viewModel: KeyScreenViewModel,
-    keyScreenState: KeyScreenState = KeyScreenState.InProgress
+    keyScreenState: KeyScreenState = KeyScreenState.InProgress,
+    onOpenEdit: () -> Unit
 ) {
     when (keyScreenState) {
         KeyScreenState.InProgress -> ComposableKeyInitial()
         is KeyScreenState.Error -> ComposableKeyError(keyScreenState)
-        is KeyScreenState.Ready -> ComposableKeyParsed(viewModel, keyScreenState)
+        is KeyScreenState.Ready -> ComposableKeyParsed(viewModel, keyScreenState, onOpenEdit)
     }
 }
 

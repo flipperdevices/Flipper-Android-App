@@ -1,4 +1,4 @@
-package com.flipperdevices.keyscreen.impl.composable.actions
+package com.flipperdevices.keyscreen.impl.composable.view.actions
 
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes

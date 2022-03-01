@@ -1,4 +1,4 @@
-package com.flipperdevices.keyscreen.impl.composable.content
+package com.flipperdevices.keyscreen.impl.composable.view.content
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

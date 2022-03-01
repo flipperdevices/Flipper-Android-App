@@ -21,10 +21,14 @@ import com.flipperdevices.bridge.dao.impl.repository.KeyDao
         AutoMigration(
             from = 1,
             to = 2
-        )
+        ),
         // From 2 to 4 we just drop database
+        AutoMigration(
+            from = 4,
+            to = 5
+        )
     ],
-    version = 4,
+    version = 5,
     exportSchema = true
 )
 @TypeConverters(

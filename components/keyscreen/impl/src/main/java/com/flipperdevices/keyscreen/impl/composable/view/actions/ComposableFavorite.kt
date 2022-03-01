@@ -1,4 +1,4 @@
-package com.flipperdevices.keyscreen.impl.composable.actions
+package com.flipperdevices.keyscreen.impl.composable.view.actions
 
 import androidx.compose.runtime.Composable
 import com.flipperdevices.core.ui.R as DesignSystem

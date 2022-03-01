@@ -1,1 +1,5 @@
-<manifest package="com.flipperdevices.core.ktx" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        package="com.flipperdevices.core.ktx">
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+</manifest>

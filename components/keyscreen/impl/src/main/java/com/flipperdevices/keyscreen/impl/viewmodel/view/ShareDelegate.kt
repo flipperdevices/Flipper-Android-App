@@ -1,4 +1,4 @@
-package com.flipperdevices.keyscreen.impl.viewmodel
+package com.flipperdevices.keyscreen.impl.viewmodel.view
 
 import android.content.Context
 import android.content.Intent

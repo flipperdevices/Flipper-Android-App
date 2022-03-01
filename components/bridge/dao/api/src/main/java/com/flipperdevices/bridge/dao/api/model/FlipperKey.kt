@@ -5,5 +5,6 @@ package com.flipperdevices.bridge.dao.api.model
  */
 data class FlipperKey(
     val path: FlipperKeyPath,
-    val keyContent: FlipperKeyContent
+    val keyContent: FlipperKeyContent,
+    val notes: String? = null
 )

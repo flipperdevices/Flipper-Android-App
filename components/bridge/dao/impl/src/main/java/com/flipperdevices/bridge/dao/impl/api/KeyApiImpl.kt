@@ -73,6 +73,7 @@ private fun FlipperKey.toDatabaseKey(): Key {
 private fun Key.toFlipperKey(): FlipperKey {
     return FlipperKey(
         path = path,
-        keyContent = content.flipperContent
+        keyContent = content.flipperContent,
+        notes = notes
     )
 }

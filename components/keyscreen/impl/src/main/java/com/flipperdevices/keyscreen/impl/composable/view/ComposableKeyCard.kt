@@ -1,4 +1,4 @@
-package com.flipperdevices.keyscreen.impl.composable
+package com.flipperdevices.keyscreen.impl.composable.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -25,11 +25,11 @@ import com.flipperdevices.bridge.dao.api.R as DaoR
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.core.ui.composable.painterResourceByKey
 import com.flipperdevices.keyscreen.impl.R
-import com.flipperdevices.keyscreen.impl.composable.content.ComposableIButtonContent
-import com.flipperdevices.keyscreen.impl.composable.content.ComposableInfraredContent
-import com.flipperdevices.keyscreen.impl.composable.content.ComposableNFCContent
-import com.flipperdevices.keyscreen.impl.composable.content.ComposableRFIDContent
-import com.flipperdevices.keyscreen.impl.composable.content.ComposableSubGhzContent
+import com.flipperdevices.keyscreen.impl.composable.view.content.ComposableIButtonContent
+import com.flipperdevices.keyscreen.impl.composable.view.content.ComposableInfraredContent
+import com.flipperdevices.keyscreen.impl.composable.view.content.ComposableNFCContent
+import com.flipperdevices.keyscreen.impl.composable.view.content.ComposableRFIDContent
+import com.flipperdevices.keyscreen.impl.composable.view.content.ComposableSubGhzContent
 
 @Composable
 fun ComposableKeyCard(parsedKey: FlipperKeyParsed) {

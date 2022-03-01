@@ -23,5 +23,6 @@ data class Key(
     // Denormalize for performance
     @ColumnInfo(name = "type") val type: FlipperFileType? = path.fileType,
     @ColumnInfo(name = "content") val content: DatabaseKeyContent,
-    @ColumnInfo(name = "deleted") val deleted: Boolean = false
+    @ColumnInfo(name = "deleted") val deleted: Boolean = false,
+    @ColumnInfo(name = "notes") val notes: String? = null,
 )

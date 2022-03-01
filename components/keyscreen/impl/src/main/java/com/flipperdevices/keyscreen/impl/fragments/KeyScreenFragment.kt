@@ -6,10 +6,12 @@ import androidx.compose.runtime.getValue
 import androidx.fragment.app.viewModels
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.ktx.android.withArgs
+import com.flipperdevices.core.navigation.requireRouter
 import com.flipperdevices.core.ui.ComposeFragment
-import com.flipperdevices.keyscreen.impl.composable.ComposableKeyScreen
-import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModel
-import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModelFactory
+import com.flipperdevices.keyscreen.impl.composable.view.ComposableKeyScreen
+import com.flipperdevices.keyscreen.impl.viewmodel.view.KeyScreenViewModel
+import com.flipperdevices.keyscreen.impl.viewmodel.view.KeyScreenViewModelFactory
+import com.github.terrakok.cicerone.androidx.FragmentScreen
 
 private const val EXTRA_KEY_PATH = "flipper_key_path"
 
@@ -24,7 +26,17 @@ class KeyScreenFragment : ComposeFragment() {
     @Composable
     override fun RenderView() {
         val keyScreenState by viewModel.getKeyScreenState().collectAsState()
-        ComposableKeyScreen(viewModel, keyScreenState)
+        ComposableKeyScreen(viewModel, keyScreenState, onOpenEdit = this::openEditScreen)
+    }
+
+    private fun openEditScreen() {
+        val keyPathNotNull = arguments?.getParcelable<FlipperKeyPath>(EXTRA_KEY_PATH) ?: return
+
+        requireRouter().navigateTo(
+            FragmentScreen {
+                KeyEditFragment.getInstance(keyPathNotNull)
+            }
+        )
     }
 
     companion object {

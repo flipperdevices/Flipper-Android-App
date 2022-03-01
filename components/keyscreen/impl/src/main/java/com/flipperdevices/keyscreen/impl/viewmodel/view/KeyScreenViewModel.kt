@@ -1,4 +1,4 @@
-package com.flipperdevices.keyscreen.impl.viewmodel
+package com.flipperdevices.keyscreen.impl.viewmodel.view
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

@@ -5,7 +5,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.keyscreen.api.KeyScreenApi
-import com.flipperdevices.keyscreen.impl.composable.ComposableKeyCard
+import com.flipperdevices.keyscreen.impl.composable.view.ComposableKeyCard
 import com.flipperdevices.keyscreen.impl.fragments.KeyScreenFragment
 import com.github.terrakok.cicerone.Screen
 import com.github.terrakok.cicerone.androidx.FragmentScreen
