@@ -25,6 +25,7 @@ import com.flipperdevices.keyedit.impl.R
     showBackground = true,
     showSystemUi = true
 )
+@Suppress("LongMethod")
 fun ComposableEditAppBar(
     onBack: () -> Unit = {},
     onSave: () -> Unit = {}
@@ -50,7 +51,7 @@ fun ComposableEditAppBar(
                     onClick = onBack
                 ),
             text = stringResource(R.string.keyedit_bar_cancel),
-            fontSize = 14.sp,
+            fontSize = 16.sp,
             color = colorResource(DesignSystem.color.black_40),
             fontWeight = FontWeight.W500
         )
@@ -62,7 +63,7 @@ fun ComposableEditAppBar(
                 end.linkTo(save.start)
             },
             text = stringResource(R.string.keyedit_bar_title),
-            fontSize = 18.sp,
+            fontSize = 24.sp,
             fontWeight = FontWeight.W800,
             color = colorResource(DesignSystem.color.black_88)
         )
@@ -81,7 +82,7 @@ fun ComposableEditAppBar(
                 ),
             text = stringResource(R.string.keyedit_bar_save),
             fontWeight = FontWeight.W500,
-            fontSize = 14.sp,
+            fontSize = 16.sp,
             color = colorResource(DesignSystem.color.accent_secondary)
         )
 

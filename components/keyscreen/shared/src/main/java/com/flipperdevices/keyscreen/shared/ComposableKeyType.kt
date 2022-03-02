@@ -51,7 +51,7 @@ fun ComposableKeyType(
                 end = 14.dp
             ),
             text = title,
-            fontSize = 14.sp,
+            fontSize = 16.sp,
             fontWeight = FontWeight.W500,
             color = colorResource(DesignSystem.color.black_100)
         )

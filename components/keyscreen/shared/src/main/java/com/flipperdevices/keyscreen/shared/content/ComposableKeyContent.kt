@@ -22,13 +22,13 @@ private fun ComposableKeyItem(name: String, value: String) {
         Text(
             text = name,
             fontWeight = FontWeight.W400,
-            fontSize = 14.sp,
+            fontSize = 16.sp,
             color = colorResource(DesignSystem.color.black_30)
         )
         Text(
             text = value,
             fontWeight = FontWeight.W400,
-            fontSize = 14.sp,
+            fontSize = 16.sp,
             color = colorResource(DesignSystem.color.black_100)
         )
     }

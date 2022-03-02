@@ -46,7 +46,7 @@ fun FlipperTextField(
 
     val textBoxStyle = TextStyle(
         fontWeight = FontWeight.W400,
-        fontSize = 14.sp,
+        fontSize = 16.sp,
         color = colorResource(DesignSystem.color.black_100)
     )
 
@@ -65,7 +65,7 @@ fun FlipperTextField(
                 }
                 Text(
                     text = label,
-                    fontSize = 14.sp,
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.W400,
                     color = colorResource(DesignSystem.color.black_8)
                 )
@@ -85,7 +85,7 @@ private fun FlipperTitle(title: String) {
         modifier = Modifier.padding(bottom = 4.dp),
         text = title,
         fontWeight = FontWeight.W400,
-        fontSize = 14.sp,
+        fontSize = 16.sp,
         color = colorResource(DesignSystem.color.black_30)
     )
 }
