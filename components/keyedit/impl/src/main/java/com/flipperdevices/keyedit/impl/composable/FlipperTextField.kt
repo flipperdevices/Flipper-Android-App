@@ -105,7 +105,7 @@ private fun FlipperTextBox(
 ) {
     val focusManager = LocalFocusManager.current
     val decorationBox = @Composable { innerTextField: @Composable () -> Unit ->
-        Box() {
+        Box {
             innerTextField()
             if (text.isEmpty()) {
                 label()

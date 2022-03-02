@@ -11,7 +11,7 @@ internal fun ColumnScope.ComposableNFCContent(nfc: FlipperKeyParsed.NFC) {
     ComposableKeyContent(
         lines = listOf(
             stringResource(R.string.content_nfc_device_type) to nfc.deviceType,
-            stringResource(R.string.content_nfc_uid) to nfc.uid,
+            stringResource(R.string.content_nfc_uid) to nfc.uid
         )
     )
 }
