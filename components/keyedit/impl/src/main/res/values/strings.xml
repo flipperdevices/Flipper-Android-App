@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="keyedit_name_title">Name:</string>
+    <string name="keyedit_name_hint">Key_name</string>
+</resources>

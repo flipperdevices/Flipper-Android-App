@@ -8,7 +8,4 @@
     <string name="keyscreen_favorite_enabled">Remove from favorites</string>
     <string name="keyscreen_share_text">Share</string>
     <string name="keyscreen_edit_text">Edit</string>
-
-    <string name="keyedit_name_title">Name:</string>
-    <string name="keyedit_name_hint">Key_name</string>
 </resources>
