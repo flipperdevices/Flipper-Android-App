@@ -50,7 +50,8 @@ class GeneralTabViewModel : ViewModel() {
                 }
             }.combine(favoriteApi.getFavoritesFlow()) { keyList, favoriteKeysList ->
                 val favoriteKeyPaths = favoriteKeysList.map { it.path }.toSet()
-                keys.emit(keyList?.filterNot { favoriteKeyPaths.contains(it.path) })
+                val keysExceptFavorite = keyList?.filterNot { favoriteKeyPaths.contains(it.path) }
+                keys.emit(keysExceptFavorite)
                 favoriteKeys.emit(favoriteKeysList)
             }.launchIn(viewModelScope)
         }

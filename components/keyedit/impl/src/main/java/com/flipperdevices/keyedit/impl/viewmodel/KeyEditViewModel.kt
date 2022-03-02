@@ -3,6 +3,7 @@ package com.flipperdevices.keyedit.impl.viewmodel
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.delegates.KeyApi
 import com.flipperdevices.bridge.dao.api.delegates.KeyParser
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
@@ -30,6 +31,9 @@ class KeyEditViewModel(
 
     @Inject
     lateinit var keyApi: KeyApi
+
+    @Inject
+    lateinit var favoriteApi: FavoriteApi
 
     @Inject
     lateinit var parser: KeyParser
@@ -117,8 +121,16 @@ class KeyEditViewModel(
             keyContent = flipperKey.keyContent,
             notes = newNote
         )
+        val isFavorite = favoriteApi.isFavorite(oldPath)
+        if (isFavorite) {
+            // Delete key from favorite, because we can't delete it
+            favoriteApi.setFavorite(oldPath, false)
+        }
         keyApi.markDeleted(oldPath)
         keyApi.insertKey(newFlipperKey)
+        if (isFavorite) {
+            favoriteApi.setFavorite(newFlipperKey.path, true)
+        }
         keyEditState.emit(KeyEditState.Finished(newFlipperKey))
     }
 

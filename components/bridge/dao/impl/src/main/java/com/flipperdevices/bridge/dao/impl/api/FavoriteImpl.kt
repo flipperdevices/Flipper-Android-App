@@ -73,7 +73,7 @@ class FavoriteImpl @Inject constructor(
 
     override suspend fun getFavoritesFlow(): Flow<List<FlipperKey>> = withContext(Dispatchers.IO) {
         return@withContext favoriteDao.subscribe().map { keys ->
-            keys.map { (favoriteKey, key) ->
+            keys.filter { !it.value.deleted }.map { (favoriteKey, key) ->
                 favoriteKey.order to FlipperKey(
                     key.path,
                     key.content.flipperContent
@@ -83,11 +83,13 @@ class FavoriteImpl @Inject constructor(
     }
 
     override suspend fun getFavorites(): List<FlipperKey> = withContext(Dispatchers.IO) {
-        return@withContext favoriteDao.getAll().map { (favoriteKey, key) ->
-            favoriteKey.order to FlipperKey(
-                key.path,
-                key.content.flipperContent
-            )
-        }.sortedBy { (order, _) -> order }.map { it.second }
+        return@withContext favoriteDao.getAll()
+            .filter { !it.value.deleted }
+            .map { (favoriteKey, key) ->
+                favoriteKey.order to FlipperKey(
+                    key.path,
+                    key.content.flipperContent
+                )
+            }.sortedBy { (order, _) -> order }.map { it.second }
     }
 }
