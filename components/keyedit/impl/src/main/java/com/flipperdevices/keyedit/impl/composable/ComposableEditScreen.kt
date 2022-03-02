@@ -22,7 +22,6 @@ fun ComposableEditScreen(
         KeyEditState.Loading -> ComposableEditScreenLoading()
         is KeyEditState.Editing -> ComposableEditScreenEditing(viewModel, state, onCancel, onSave)
         is KeyEditState.Saving -> ComposableEditScreenSaving(viewModel, state, onCancel)
-        is KeyEditState.Finished -> return
     }
 }
 

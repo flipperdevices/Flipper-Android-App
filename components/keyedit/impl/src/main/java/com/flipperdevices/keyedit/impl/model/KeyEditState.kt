@@ -1,6 +1,5 @@
 package com.flipperdevices.keyedit.impl.model
 
-import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 
 sealed class KeyEditState {
@@ -16,9 +15,5 @@ sealed class KeyEditState {
         val name: String?,
         val notes: String?,
         val parsedKey: FlipperKeyParsed
-    ) : KeyEditState()
-
-    data class Finished(
-        val flipperKey: FlipperKey
     ) : KeyEditState()
 }

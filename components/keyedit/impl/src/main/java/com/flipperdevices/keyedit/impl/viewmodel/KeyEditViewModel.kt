@@ -21,6 +21,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+private typealias FinishListener = (FlipperKey) -> Unit
+
 class KeyEditViewModel(
     private val flipperKey: FlipperKey,
     context: Context,
@@ -39,6 +41,7 @@ class KeyEditViewModel(
     lateinit var parser: KeyParser
 
     private val keyEditState = MutableStateFlow<KeyEditState>(KeyEditState.Loading)
+    private var finishListener: FinishListener? = null
 
     init {
         ComponentHolder.component<KeyEditComponent>().inject(this)
@@ -65,8 +68,12 @@ class KeyEditViewModel(
         }
     }
 
+    fun subscribeOnFinish(finishListener: FinishListener) {
+        this.finishListener = finishListener
+    }
+
     fun cancel() {
-        keyEditState.update { KeyEditState.Finished(flipperKey) }
+        finishListener?.invoke(flipperKey)
     }
 
     fun onSave() {
@@ -94,11 +101,16 @@ class KeyEditViewModel(
             } catch (e: Exception) {
                 error(e) { "Error while we try save exception" }
                 keyEditState.update { editState }
+            } finally {
+                keyEditState.emit(editState)
             }
         }
     }
 
-    private suspend fun onSaveInternal(newName: String?, newNote: String?) {
+    private suspend fun onSaveInternal(
+        newName: String?,
+        newNote: String?
+    ) {
         check(!newName.isNullOrBlank()) {
             "Save button should be inactive when name is null or blank"
         }
@@ -108,11 +120,7 @@ class KeyEditViewModel(
 
         if (oldPath == newPath && !newNote.isNullOrBlank()) {
             keyApi.updateNote(oldPath, newNote)
-            keyEditState.emit(
-                KeyEditState.Finished(
-                    flipperKey.copy(notes = newNote)
-                )
-            )
+            finishListener?.invoke(flipperKey.copy(notes = newNote))
             return
         }
 
@@ -131,7 +139,7 @@ class KeyEditViewModel(
         if (isFavorite) {
             favoriteApi.setFavorite(newFlipperKey.path, true)
         }
-        keyEditState.emit(KeyEditState.Finished(newFlipperKey))
+        finishListener?.invoke(newFlipperKey)
     }
 
     private fun setUpInitState(parsedKey: FlipperKeyParsed?) {
