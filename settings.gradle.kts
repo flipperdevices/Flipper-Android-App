@@ -71,6 +71,10 @@ include(
 
     ":components:keyscreen:api",
     ":components:keyscreen:impl",
+    ":components:keyscreen:shared",
+
+    ":components:keyedit:api",
+    ":components:keyedit:impl",
 
     ":components:firstpair:api",
     ":components:firstpair:impl",

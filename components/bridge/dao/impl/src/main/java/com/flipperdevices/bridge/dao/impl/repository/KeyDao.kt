@@ -39,6 +39,9 @@ interface KeyDao {
     @Query("DELETE FROM keys WHERE path = :keyPath AND deleted = 1")
     suspend fun deleteMarkedDeleted(keyPath: FlipperKeyPath)
 
+    @Query("UPDATE keys SET notes = :note WHERE path = :keyPath AND deleted = 0")
+    suspend fun updateNote(keyPath: FlipperKeyPath, note: String)
+
     @Query("UPDATE keys SET deleted = 1 WHERE path = :keyPath AND deleted = 0")
     suspend fun markDeleted(keyPath: FlipperKeyPath)
 }

@@ -13,12 +13,14 @@ import kotlinx.parcelize.Parcelize
  * May be a stream, a file, a link, or bytes.
  * Do not limit your support to only one type of content.
  */
-sealed class FlipperKeyContent {
+sealed class FlipperKeyContent : Parcelable {
+    @Parcelize
     class RawData(private val bytes: ByteArray) : FlipperKeyContent() {
         override fun openStream() = ByteArrayInputStream(bytes)
         override fun length() = bytes.size.toLong()
     }
 
+    @Parcelize
     data class InternalFile(val file: File) : FlipperKeyContent() {
         override fun openStream() = FileInputStream(file)
         override fun length() = file.length()

@@ -7,4 +7,5 @@
     <string name="keyscreen_favorite_disabled">Add to favorites</string>
     <string name="keyscreen_favorite_enabled">Remove from favorites</string>
     <string name="keyscreen_share_text">Share</string>
+    <string name="keyscreen_edit_text">Edit</string>
 </resources>

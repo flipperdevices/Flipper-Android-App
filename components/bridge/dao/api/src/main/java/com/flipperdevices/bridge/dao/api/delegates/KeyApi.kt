@@ -14,6 +14,8 @@ interface KeyApi {
 
     suspend fun markDeleted(keyPath: FlipperKeyPath)
 
+    suspend fun updateNote(keyPath: FlipperKeyPath, note: String)
+
     suspend fun getKey(keyPath: FlipperKeyPath): FlipperKey?
 
     fun getExistKeysAsFlow(

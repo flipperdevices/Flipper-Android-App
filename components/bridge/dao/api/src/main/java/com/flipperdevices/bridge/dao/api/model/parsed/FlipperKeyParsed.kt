@@ -4,43 +4,40 @@ import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 
 sealed class FlipperKeyParsed(
     val keyName: String,
-    val fileType: FlipperFileType?,
-    val notes: String? = null
+    val fileType: FlipperFileType?
 ) {
     class Infrared(
         keyName: String,
-        notes: String? = null,
         val protocol: String?
-    ) : FlipperKeyParsed(keyName, FlipperFileType.INFRARED, notes)
+    ) : FlipperKeyParsed(keyName, FlipperFileType.INFRARED)
 
     class NFC(
         keyName: String,
-        notes: String? = null,
         val deviceType: String?,
         val uid: String?
-    ) : FlipperKeyParsed(keyName, FlipperFileType.NFC, notes)
+    ) : FlipperKeyParsed(keyName, FlipperFileType.NFC)
 
     class SubGhz(
         keyName: String,
-        notes: String? = null,
         val protocol: String?,
         val key: String?
-    ) : FlipperKeyParsed(keyName, FlipperFileType.SUB_GHZ, notes)
+    ) : FlipperKeyParsed(keyName, FlipperFileType.SUB_GHZ)
 
     class IButton(
         keyName: String,
-        notes: String? = null,
         val keyType: String?,
         val data: String?
-    ) : FlipperKeyParsed(keyName, FlipperFileType.I_BUTTON, notes)
+    ) : FlipperKeyParsed(keyName, FlipperFileType.I_BUTTON)
 
     class RFID(
         keyName: String,
-        notes: String? = null,
         val data: String?,
         val keyType: String?
-    ) : FlipperKeyParsed(keyName, FlipperFileType.RFID, notes)
+    ) : FlipperKeyParsed(keyName, FlipperFileType.RFID)
 
-    class Unrecognized(keyName: String, fileType: FlipperFileType?, notes: String? = null) :
-        FlipperKeyParsed(keyName, fileType, notes)
+    class Unrecognized(
+        keyName: String,
+        fileType: FlipperFileType?,
+        val orderedDict: List<Pair<String, String>>
+    ) : FlipperKeyParsed(keyName, fileType)
 }

@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.delegates.KeyApi
 import com.flipperdevices.bridge.dao.api.delegates.KeyParser
+import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
@@ -58,16 +59,7 @@ class KeyScreenViewModel(
                 return@launch
             }
 
-            val parsedKey = keyParser.parseKey(flipperKey)
-            val isFavorite = favoriteApi.isFavorite(keyPathNotNull)
-            keyScreenState.update {
-                KeyScreenState.Ready(
-                    parsedKey,
-                    if (isFavorite) FavoriteState.FAVORITE else FavoriteState.NOT_FAVORITE,
-                    ShareState.NOT_SHARING,
-                    DeleteState.NOT_DELETED
-                )
-            }
+            loadKey(flipperKey)
             return@launch
         }
     }
@@ -98,6 +90,45 @@ class KeyScreenViewModel(
         }
     }
 
+    fun onOpenEdit() {
+        keyScreenState.update {
+            if (it is KeyScreenState.Ready) {
+                KeyScreenState.Editing(it.flipperKey, it.parsedKey)
+            } else it
+        }
+    }
+
+    fun onBack(): Boolean {
+        val currentState = keyScreenState.value
+        if (currentState !is KeyScreenState.Editing) {
+            return false
+        }
+        val isStateSaved = keyScreenState.compareAndSet(currentState, KeyScreenState.InProgress)
+        if (!isStateSaved) {
+            return onBack()
+        }
+        viewModelScope.launch {
+            loadKey(currentState.flipperKey)
+        }
+        return true
+    }
+
+    fun onEditFinished(newFlipperKey: FlipperKey) {
+        val currentState = keyScreenState.value
+        if (currentState !is KeyScreenState.Editing) {
+            return
+        }
+        val isStateSaved = keyScreenState.compareAndSet(currentState, KeyScreenState.InProgress)
+        if (!isStateSaved) {
+            onEditFinished(newFlipperKey)
+            return
+        }
+
+        viewModelScope.launch {
+            loadKey(newFlipperKey)
+        }
+    }
+
     fun onShare() {
         val keyPathNotNull = keyPath ?: return
         val state = keyScreenState.value
@@ -121,6 +152,20 @@ class KeyScreenViewModel(
             keyScreenState.update {
                 if (it is KeyScreenState.Ready) it.copy(shareState = ShareState.NOT_SHARING) else it
             }
+        }
+    }
+
+    private suspend fun loadKey(flipperKey: FlipperKey) {
+        val parsedKey = keyParser.parseKey(flipperKey)
+        val isFavorite = favoriteApi.isFavorite(flipperKey.path)
+        keyScreenState.update {
+            KeyScreenState.Ready(
+                parsedKey,
+                if (isFavorite) FavoriteState.FAVORITE else FavoriteState.NOT_FAVORITE,
+                ShareState.NOT_SHARING,
+                DeleteState.NOT_DELETED,
+                flipperKey
+            )
         }
     }
 }
