@@ -13,7 +13,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
@@ -25,11 +24,7 @@ import com.flipperdevices.bridge.dao.api.R as DaoR
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.core.ui.composable.painterResourceByKey
 import com.flipperdevices.keyscreen.impl.R
-import com.flipperdevices.keyscreen.impl.composable.content.ComposableIButtonContent
-import com.flipperdevices.keyscreen.impl.composable.content.ComposableInfraredContent
-import com.flipperdevices.keyscreen.impl.composable.content.ComposableNFCContent
-import com.flipperdevices.keyscreen.impl.composable.content.ComposableRFIDContent
-import com.flipperdevices.keyscreen.impl.composable.content.ComposableSubGhzContent
+import com.flipperdevices.keyscreen.shared.ComposableKeyContent
 
 @Composable
 fun ComposableKeyCard(parsedKey: FlipperKeyParsed) {
@@ -55,25 +50,16 @@ fun ComposableKeyCard(parsedKey: FlipperKeyParsed) {
                 fontWeight = FontWeight.W700,
                 fontSize = 20.sp
             )
-            val notes = parsedKey.notes
-            if (notes != null) {
-                Text(
-                    modifier = Modifier.padding(horizontal = 18.dp),
-                    text = notes,
-                    fontWeight = FontWeight.W400,
-                    fontSize = 14.sp,
-                    color = Color.Black
-                )
-            } else {
-                Text(
-                    modifier = Modifier.padding(horizontal = 18.dp),
-                    text = stringResource(R.string.keyscreen_card_note_empty),
-                    fontWeight = FontWeight.W400,
-                    fontSize = 14.sp,
-                    fontStyle = FontStyle.Italic,
-                    color = colorResource(R.color.keyscreen_text_gray)
-                )
-            }
+            // val notes = parsedKey.notes
+            Text(
+                modifier = Modifier.padding(horizontal = 18.dp),
+                text = stringResource(R.string.keyscreen_card_note_empty),
+                fontWeight = FontWeight.W400,
+                fontSize = 14.sp,
+                fontStyle = FontStyle.Italic,
+                color = colorResource(R.color.keyscreen_text_gray)
+            )
+
             ComposableKeyContent(parsedKey)
         }
     }
@@ -103,18 +89,6 @@ private fun ComposableKeyIcon(parsedKey: FlipperKeyParsed, modifier: Modifier = 
     }
 }
 
-@Composable
-private fun ComposableKeyContent(keyParsed: FlipperKeyParsed) {
-    when (keyParsed) {
-        is FlipperKeyParsed.RFID -> ComposableRFIDContent(keyParsed)
-        is FlipperKeyParsed.IButton -> ComposableIButtonContent(keyParsed)
-        is FlipperKeyParsed.Infrared -> ComposableInfraredContent(keyParsed)
-        is FlipperKeyParsed.NFC -> ComposableNFCContent(keyParsed)
-        is FlipperKeyParsed.SubGhz -> ComposableSubGhzContent(keyParsed)
-        is FlipperKeyParsed.Unrecognized -> return
-    }
-}
-
 @Preview(
     showSystemUi = true,
     showBackground = true
@@ -125,8 +99,7 @@ private fun ComposableKeyCardPreview() {
     val parsedKey = FlipperKeyParsed.RFID(
         keyName = "Test_key",
         data = "DC 69 66 0F 12",
-        keyType = "EM4100",
-        notes = null
+        keyType = "EM4100"
     )
     ComposableKeyCard(parsedKey)
 }

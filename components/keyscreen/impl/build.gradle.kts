@@ -6,6 +6,7 @@ plugins {
 
 dependencies {
     implementation(projects.components.keyscreen.api)
+    implementation(projects.components.keyscreen.shared)
 
     implementation(projects.components.core.di)
     implementation(projects.components.core.ui)

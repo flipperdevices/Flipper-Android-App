@@ -1,6 +1,7 @@
 package com.flipperdevices.keyedit.impl.composable
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
@@ -16,12 +17,7 @@ fun ComposableEditScreen(
 ) {
     when (state) {
         KeyEditState.Loading -> ComposableEditScreenLoading()
-        is KeyEditState.Editing -> ComposableKeyEdit(
-            viewModel,
-            state.name,
-            state.notes,
-            state.parsedKey
-        )
+        is KeyEditState.Editing -> ComposableEditScreenEditing(viewModel, state)
         KeyEditState.Finished -> return
     }
 }
@@ -33,5 +29,18 @@ private fun ComposableEditScreenLoading() {
         contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator()
+    }
+}
+
+@Composable
+private fun ComposableEditScreenEditing(viewModel: KeyEditViewModel, state: KeyEditState.Editing) {
+    Column {
+        ComposableEditAppBar()
+        ComposableEditCard(
+            viewModel,
+            state.name,
+            state.notes,
+            state.parsedKey
+        )
     }
 }

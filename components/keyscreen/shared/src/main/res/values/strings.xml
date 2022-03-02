@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="content_ibutton_key_type">Key Type:</string>
+    <string name="content_ibutton_data">Data:</string>
+    <string name="content_infrared_data">Protocol:</string>
+    <string name="content_nfc_device_type">Device Type:</string>
+    <string name="content_nfc_uid">Uid:</string>
+    <string name="content_rfid_key_type">Key Type:</string>
+    <string name="content_rfid_data">Data:</string>
+    <string name="content_subghz_protocol">Protocol:</string>
+    <string name="content_subghz_key">Key:</string>
+</resources>
