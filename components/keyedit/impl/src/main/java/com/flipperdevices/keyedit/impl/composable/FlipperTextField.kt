@@ -41,6 +41,7 @@ fun FlipperTextField(
     text: String,
     onTextChange: (String) -> Unit,
     keyboardType: KeyboardType = KeyboardType.Text,
+    enabled: Boolean = true
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
@@ -73,7 +74,8 @@ fun FlipperTextField(
             keyboardOptions = KeyboardOptions(
                 keyboardType = keyboardType,
                 imeAction = ImeAction.Done
-            )
+            ),
+            enabled = enabled
         )
         FlipperTextBoxUnderline(interactionSource)
     }
@@ -99,6 +101,7 @@ private fun FlipperTextBox(
     interactionSource: MutableInteractionSource,
     textStyle: TextStyle,
     keyboardOptions: KeyboardOptions,
+    enabled: Boolean
 ) {
     val focusManager = LocalFocusManager.current
     val decorationBox = @Composable { innerTextField: @Composable () -> Unit ->
@@ -121,7 +124,8 @@ private fun FlipperTextBox(
         keyboardOptions = keyboardOptions,
         keyboardActions = KeyboardActions(onDone = {
             focusManager.clearFocus()
-        })
+        }),
+        enabled = enabled
     )
 }
 

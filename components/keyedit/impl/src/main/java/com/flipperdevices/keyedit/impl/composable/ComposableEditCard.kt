@@ -26,7 +26,8 @@ fun ComposableEditCard(
     viewModel: KeyEditViewModel,
     name: String?,
     notes: String?,
-    keyParsed: FlipperKeyParsed
+    keyParsed: FlipperKeyParsed,
+    enabled: Boolean
 ) {
     Card(
         modifier = Modifier.padding(horizontal = 24.dp, vertical = 2.dp),
@@ -36,7 +37,7 @@ fun ComposableEditCard(
             modifier = Modifier.padding(bottom = 21.dp),
             verticalArrangement = Arrangement.spacedBy(space = 18.dp)
         ) {
-            ComposableCardContent(viewModel, name, notes, keyParsed)
+            ComposableCardContent(viewModel, name, notes, keyParsed, enabled)
         }
     }
 }
@@ -46,7 +47,8 @@ private fun ColumnScope.ComposableCardContent(
     viewModel: KeyEditViewModel,
     name: String?,
     notes: String?,
-    keyParsed: FlipperKeyParsed
+    keyParsed: FlipperKeyParsed,
+    enabled: Boolean
 ) {
     ComposableKeyType(keyParsed.fileType)
     FlipperTextField(
@@ -55,7 +57,8 @@ private fun ColumnScope.ComposableCardContent(
         label = stringResource(R.string.keyedit_name_hint),
         text = name ?: "",
         onTextChange = viewModel::onNameChange,
-        keyboardType = KeyboardType.Ascii
+        keyboardType = KeyboardType.Ascii,
+        enabled = enabled
     )
     FlipperTextField(
         modifier = Modifier.padding(horizontal = 12.dp),
@@ -63,7 +66,8 @@ private fun ColumnScope.ComposableCardContent(
         label = stringResource(R.string.keyedit_notes_hint),
         text = notes ?: "",
         onTextChange = viewModel::onNotesChange,
-        keyboardType = KeyboardType.Text
+        keyboardType = KeyboardType.Text,
+        enabled = enabled
     )
 
     Divider(

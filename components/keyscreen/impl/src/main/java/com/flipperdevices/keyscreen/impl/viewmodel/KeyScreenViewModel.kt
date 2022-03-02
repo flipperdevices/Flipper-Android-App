@@ -98,6 +98,21 @@ class KeyScreenViewModel(
         }
     }
 
+    fun onBack(): Boolean {
+        val currentState = keyScreenState.value
+        if (currentState !is KeyScreenState.Editing) {
+            return false
+        }
+        val isStateSaved = keyScreenState.compareAndSet(currentState, KeyScreenState.InProgress)
+        if (!isStateSaved) {
+            return onBack()
+        }
+        viewModelScope.launch {
+            loadKey(currentState.flipperKey)
+        }
+        return true
+    }
+
     fun onEditFinished(newFlipperKey: FlipperKey) {
         val currentState = keyScreenState.value
         if (currentState !is KeyScreenState.Editing) {

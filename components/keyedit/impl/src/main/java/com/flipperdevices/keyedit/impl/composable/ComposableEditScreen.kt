@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.flipperdevices.keyedit.impl.model.KeyEditState
+import com.flipperdevices.keyedit.impl.model.SaveButtonState
 import com.flipperdevices.keyedit.impl.viewmodel.KeyEditViewModel
 
 @Composable
@@ -20,6 +21,7 @@ fun ComposableEditScreen(
     when (state) {
         KeyEditState.Loading -> ComposableEditScreenLoading()
         is KeyEditState.Editing -> ComposableEditScreenEditing(viewModel, state, onCancel, onSave)
+        is KeyEditState.Saving -> ComposableEditScreenSaving(viewModel, state, onCancel)
         is KeyEditState.Finished -> return
     }
 }
@@ -41,13 +43,35 @@ private fun ComposableEditScreenEditing(
     onCancel: () -> Unit,
     onSave: () -> Unit
 ) {
+    val buttonState = if (state.savingKeyActive) {
+        SaveButtonState.ENABLED
+    } else SaveButtonState.DISABLED
     Column {
-        ComposableEditAppBar(onCancel, onSave)
+        ComposableEditAppBar(buttonState, onCancel, onSave)
         ComposableEditCard(
             viewModel,
             state.name,
             state.notes,
-            state.parsedKey
+            state.parsedKey,
+            enabled = true
+        )
+    }
+}
+
+@Composable
+private fun ComposableEditScreenSaving(
+    viewModel: KeyEditViewModel,
+    state: KeyEditState.Saving,
+    onCancel: () -> Unit
+) {
+    Column {
+        ComposableEditAppBar(SaveButtonState.IN_PROGRESS, onBack = onCancel)
+        ComposableEditCard(
+            viewModel,
+            state.name,
+            state.notes,
+            state.parsedKey,
+            enabled = false
         )
     }
 }

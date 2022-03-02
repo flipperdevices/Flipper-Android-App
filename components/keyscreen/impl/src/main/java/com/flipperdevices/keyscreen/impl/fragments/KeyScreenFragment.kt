@@ -7,6 +7,7 @@ import androidx.fragment.app.viewModels
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.withArgs
+import com.flipperdevices.core.navigation.delegates.OnBackPressListener
 import com.flipperdevices.core.ui.ComposeFragment
 import com.flipperdevices.keyedit.api.KeyEditApi
 import com.flipperdevices.keyscreen.impl.composable.ComposableKeyScreen
@@ -17,7 +18,7 @@ import javax.inject.Inject
 
 private const val EXTRA_KEY_PATH = "flipper_key_path"
 
-class KeyScreenFragment : ComposeFragment() {
+class KeyScreenFragment : ComposeFragment(), OnBackPressListener {
 
     @Inject
     lateinit var keyEditApi: KeyEditApi
@@ -43,5 +44,9 @@ class KeyScreenFragment : ComposeFragment() {
         fun getInstance(keyPath: FlipperKeyPath) = KeyScreenFragment().withArgs {
             putParcelable(EXTRA_KEY_PATH, keyPath)
         }
+    }
+
+    override fun onBackPressed(): Boolean {
+        return viewModel.onBack()
     }
 }
