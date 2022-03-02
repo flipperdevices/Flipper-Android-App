@@ -3,6 +3,7 @@
     <string name="keyedit_name_title">Name:</string>
     <string name="keyedit_name_hint">Key_name</string>
     <string name="keyedit_notes_title">Note:</string>
+    <string name="keyedit_notes_hint">Enter your note</string>
 
     <string name="keyedit_bar_cancel">Cancel</string>
     <string name="keyedit_bar_title">Editing</string>

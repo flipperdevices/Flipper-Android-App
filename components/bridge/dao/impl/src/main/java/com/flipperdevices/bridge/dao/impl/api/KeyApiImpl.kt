@@ -14,8 +14,10 @@ import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 import javax.inject.Provider
 import javax.inject.Singleton
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 
 @Singleton
 @ContributesBinding(AppGraph::class)
@@ -26,20 +28,22 @@ class KeyApiImpl @Inject constructor(
     private val keysDao by keysDaoProvider
     private val cleaner by cleanerProvider
 
-    override suspend fun getAllKeys(): List<FlipperKey> {
-        return keysDao.getAll().map { it.toFlipperKey() }
+    override suspend fun getAllKeys(): List<FlipperKey> = withContext(Dispatchers.IO) {
+        return@withContext keysDao.getAll().map { it.toFlipperKey() }
     }
 
-    override suspend fun insertKey(key: FlipperKey) {
+    override suspend fun insertKey(key: FlipperKey) = withContext(Dispatchers.IO) {
         keysDao.insert(key.toDatabaseKey())
     }
 
-    override suspend fun deleteMarkedDeleted(keyPath: FlipperKeyPath) {
+    override suspend fun deleteMarkedDeleted(
+        keyPath: FlipperKeyPath
+    ) = withContext(Dispatchers.IO) {
         keysDao.deleteMarkedDeleted(keyPath)
         cleaner.deleteUnusedFiles()
     }
 
-    override suspend fun markDeleted(keyPath: FlipperKeyPath) {
+    override suspend fun markDeleted(keyPath: FlipperKeyPath) = withContext(Dispatchers.IO) {
         val existKey = keysDao.getByPath(keyPath, deleted = true)
         if (existKey != null) {
             keysDao.deleteMarkedDeleted(keyPath)
@@ -47,8 +51,17 @@ class KeyApiImpl @Inject constructor(
         keysDao.markDeleted(keyPath)
     }
 
-    override suspend fun getKey(keyPath: FlipperKeyPath): FlipperKey? {
-        return keysDao.getByPath(keyPath)?.toFlipperKey()
+    override suspend fun updateNote(
+        keyPath: FlipperKeyPath,
+        note: String
+    ) = withContext(Dispatchers.IO) {
+        keysDao.updateNote(keyPath, note)
+    }
+
+    override suspend fun getKey(
+        keyPath: FlipperKeyPath
+    ): FlipperKey? = withContext(Dispatchers.IO) {
+        return@withContext keysDao.getByPath(keyPath)?.toFlipperKey()
     }
 
     override fun getExistKeysAsFlow(

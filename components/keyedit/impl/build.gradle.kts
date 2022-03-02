@@ -8,6 +8,7 @@ dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.ui)
     implementation(projects.components.core.ktx)
+    implementation(projects.components.core.log)
     implementation(projects.components.core.navigation)
 
     implementation(projects.components.keyedit.api)
@@ -25,6 +26,7 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
     implementation(libs.compose.constraint)
+    implementation(libs.lifecycle.compose)
 
     // Dagger deps
     implementation(libs.dagger)

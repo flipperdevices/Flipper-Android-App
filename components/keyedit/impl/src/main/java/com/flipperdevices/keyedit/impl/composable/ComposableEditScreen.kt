@@ -13,12 +13,14 @@ import com.flipperdevices.keyedit.impl.viewmodel.KeyEditViewModel
 @Composable
 fun ComposableEditScreen(
     viewModel: KeyEditViewModel,
-    state: KeyEditState
+    state: KeyEditState,
+    onCancel: () -> Unit,
+    onSave: () -> Unit
 ) {
     when (state) {
         KeyEditState.Loading -> ComposableEditScreenLoading()
-        is KeyEditState.Editing -> ComposableEditScreenEditing(viewModel, state)
-        KeyEditState.Finished -> return
+        is KeyEditState.Editing -> ComposableEditScreenEditing(viewModel, state, onCancel, onSave)
+        is KeyEditState.Finished -> return
     }
 }
 
@@ -33,9 +35,14 @@ private fun ComposableEditScreenLoading() {
 }
 
 @Composable
-private fun ComposableEditScreenEditing(viewModel: KeyEditViewModel, state: KeyEditState.Editing) {
+private fun ComposableEditScreenEditing(
+    viewModel: KeyEditViewModel,
+    state: KeyEditState.Editing,
+    onCancel: () -> Unit,
+    onSave: () -> Unit
+) {
     Column {
-        ComposableEditAppBar()
+        ComposableEditAppBar(onCancel, onSave)
         ComposableEditCard(
             viewModel,
             state.name,

@@ -60,7 +60,7 @@ private fun ColumnScope.ComposableCardContent(
     FlipperTextField(
         modifier = Modifier.padding(horizontal = 12.dp),
         title = stringResource(R.string.keyedit_notes_title),
-        label = null,
+        label = stringResource(R.string.keyedit_notes_hint),
         text = notes ?: "",
         onTextChange = viewModel::onNotesChange,
         keyboardType = KeyboardType.Text

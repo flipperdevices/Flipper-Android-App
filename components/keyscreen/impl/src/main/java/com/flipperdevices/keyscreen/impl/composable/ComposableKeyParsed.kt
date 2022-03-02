@@ -14,13 +14,12 @@ import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModel
 @Composable
 fun ComposableKeyParsed(
     viewModel: KeyScreenViewModel,
-    keyScreenState: KeyScreenState.Ready,
-    onOpenEdit: () -> Unit
+    keyScreenState: KeyScreenState.Ready
 ) {
     val scrollState = rememberScrollState()
     Column(modifier = Modifier.verticalScroll(scrollState)) {
         ComposableKeyCard(keyScreenState.parsedKey)
-        ComposableEdit(onOpenEdit)
+        ComposableEdit(viewModel::onOpenEdit)
         ComposableFavorite(keyScreenState.favoriteState, viewModel::setFavorite)
         ComposableShare(keyScreenState.shareState, viewModel::onShare)
     }

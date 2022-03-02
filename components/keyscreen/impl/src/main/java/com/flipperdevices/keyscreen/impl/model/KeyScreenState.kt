@@ -1,6 +1,7 @@
 package com.flipperdevices.keyscreen.impl.model
 
 import androidx.annotation.StringRes
+import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 
 sealed class KeyScreenState {
@@ -10,6 +11,12 @@ sealed class KeyScreenState {
         val parsedKey: FlipperKeyParsed,
         val favoriteState: FavoriteState,
         val shareState: ShareState,
-        val deleteState: DeleteState
+        val deleteState: DeleteState,
+        val flipperKey: FlipperKey
+    ) : KeyScreenState()
+
+    data class Editing(
+        val flipperKey: FlipperKey,
+        val parsedKey: FlipperKeyParsed
     ) : KeyScreenState()
 }

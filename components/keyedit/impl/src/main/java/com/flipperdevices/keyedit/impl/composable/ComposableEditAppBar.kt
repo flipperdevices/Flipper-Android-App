@@ -15,7 +15,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.keyedit.impl.R
@@ -30,6 +29,7 @@ fun ComposableEditAppBar(
     onBack: () -> Unit = {},
     onSave: () -> Unit = {}
 ) {
+
     ConstraintLayout(
         modifier = Modifier
             .padding(horizontal = 14.dp, vertical = 16.dp)
@@ -43,7 +43,6 @@ fun ComposableEditAppBar(
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
                     start.linkTo(parent.start)
-                    end.linkTo(title.start)
                 }
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
@@ -59,8 +58,8 @@ fun ComposableEditAppBar(
             modifier = Modifier.constrainAs(title) {
                 top.linkTo(parent.top)
                 bottom.linkTo(parent.bottom)
-                start.linkTo(cancel.end)
-                end.linkTo(save.start)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
             },
             text = stringResource(R.string.keyedit_bar_title),
             fontSize = 24.sp,
@@ -72,7 +71,6 @@ fun ComposableEditAppBar(
                 .constrainAs(save) {
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
-                    start.linkTo(title.end)
                     end.linkTo(parent.end)
                 }
                 .clickable(
@@ -84,11 +82,6 @@ fun ComposableEditAppBar(
             fontWeight = FontWeight.W500,
             fontSize = 16.sp,
             color = colorResource(DesignSystem.color.accent_secondary)
-        )
-
-        createHorizontalChain(
-            cancel, title, save,
-            chainStyle = ChainStyle.SpreadInside
         )
     }
 }
