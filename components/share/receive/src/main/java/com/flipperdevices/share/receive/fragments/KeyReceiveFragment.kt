@@ -41,7 +41,7 @@ class KeyReceiveFragment : ComposeFragment(), OnBackPressListener {
     }
 
     private val receiveViewModel by viewModels<KeyReceiveViewModel> {
-        KeyReceiveViewModelFactory(deeplink)
+        KeyReceiveViewModelFactory(deeplink, requireContext())
     }
 
     @Composable

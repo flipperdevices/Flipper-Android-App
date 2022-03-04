@@ -11,7 +11,6 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.warn
 import com.flipperdevices.keyedit.impl.di.KeyEditComponent
 import com.flipperdevices.keyedit.impl.model.KeyEditState
@@ -82,63 +81,16 @@ class KeyEditViewModel(
             warn { "We try edit key without editing state" }
             return
         }
-        val newState = KeyEditState.Saving(
-            editState.name,
-            editState.notes,
-            editState.parsedKey
-        )
-        val isStateSaved = keyEditState.compareAndSet(editState, newState)
-        if (!isStateSaved) {
-            warn { "State save failed" }
-            onSave()
-            return
-        }
-
-        viewModelScope.launch {
-            @Suppress("TooGenericExceptionCaught")
-            try {
-                onSaveInternal(newState.name, newState.notes)
-            } catch (e: Exception) {
-                error(e) { "Error while we try save exception" }
-                keyEditState.update { editState }
-            } finally {
-                keyEditState.emit(editState)
-            }
-        }
-    }
-
-    private suspend fun onSaveInternal(
-        newName: String?,
-        newNote: String?
-    ) {
-        check(!newName.isNullOrBlank()) {
+        check(!editState.name.isNullOrBlank()) {
             "Save button should be inactive when name is null or blank"
         }
-        val oldPath = flipperKey.path
-        val extension = oldPath.name.substringAfterLast('.')
-        val newPath = FlipperKeyPath(oldPath.folder, "$newName.$extension")
 
-        if (oldPath == newPath && !newNote.isNullOrBlank()) {
-            keyApi.updateNote(oldPath, newNote)
-            finishListener?.invoke(flipperKey.copy(notes = newNote))
-            return
-        }
-
+        val extension = flipperKey.path.name.substringAfterLast('.')
         val newFlipperKey = FlipperKey(
-            path = newPath,
-            keyContent = flipperKey.keyContent,
-            notes = newNote
+            FlipperKeyPath(flipperKey.path.folder, "${editState.name}.$extension"),
+            flipperKey.keyContent,
+            editState.notes
         )
-        val isFavorite = favoriteApi.isFavorite(oldPath)
-        if (isFavorite) {
-            // Delete key from favorite, because we can't delete it
-            favoriteApi.setFavorite(oldPath, false)
-        }
-        keyApi.markDeleted(oldPath)
-        keyApi.insertKey(newFlipperKey)
-        if (isFavorite) {
-            favoriteApi.setFavorite(newFlipperKey.path, true)
-        }
         finishListener?.invoke(newFlipperKey)
     }
 

@@ -21,7 +21,6 @@ fun ComposableEditScreen(
     when (state) {
         KeyEditState.Loading -> ComposableEditScreenLoading()
         is KeyEditState.Editing -> ComposableEditScreenEditing(viewModel, state, onCancel, onSave)
-        is KeyEditState.Saving -> ComposableEditScreenSaving(viewModel, state, onCancel)
     }
 }
 
@@ -53,24 +52,6 @@ private fun ComposableEditScreenEditing(
             state.notes,
             state.parsedKey,
             enabled = true
-        )
-    }
-}
-
-@Composable
-private fun ComposableEditScreenSaving(
-    viewModel: KeyEditViewModel,
-    state: KeyEditState.Saving,
-    onCancel: () -> Unit
-) {
-    Column {
-        ComposableEditAppBar(SaveButtonState.IN_PROGRESS, onBack = onCancel)
-        ComposableEditCard(
-            viewModel,
-            state.name,
-            state.notes,
-            state.parsedKey,
-            enabled = false
         )
     }
 }

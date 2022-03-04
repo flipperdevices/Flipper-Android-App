@@ -9,7 +9,9 @@ import com.flipperdevices.bridge.dao.api.delegates.KeyParser
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.ktx.android.toast
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.warn
 import com.flipperdevices.keyscreen.impl.R
 import com.flipperdevices.keyscreen.impl.di.KeyScreenComponent
@@ -44,6 +46,7 @@ class KeyScreenViewModel(
 
     private val keyScreenState = MutableStateFlow<KeyScreenState>(KeyScreenState.InProgress)
     private val shareDelegate = ShareDelegate(application, keyParser)
+    private val saveDelegate = SaveDelegate()
 
     init {
         viewModelScope.launch {
@@ -125,7 +128,19 @@ class KeyScreenViewModel(
         }
 
         viewModelScope.launch {
-            loadKey(newFlipperKey)
+            @Suppress("TooGenericExceptionCaught")
+            try {
+                saveDelegate.onEditSaveInternal(
+                    currentState.flipperKey,
+                    newFlipperKey
+                )
+                loadKey(newFlipperKey)
+            } catch (e: Exception) {
+                error(e) { "Error while save key after editing" }
+                getApplication<Application>().toast(R.string.keyscreen_save_error)
+                val parsed = keyParser.parseKey(newFlipperKey)
+                keyScreenState.emit(KeyScreenState.Editing(newFlipperKey, parsed))
+            }
         }
     }
 

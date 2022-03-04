@@ -3,4 +3,5 @@
     <string name="receive_save_btn">Save</string>
     <string name="receive_title">Add Key</string>
     <string name="receive_edit_btn">Edit</string>
+    <string name="receive_error_conflict">Error when saving. A key with this name already exists</string>
 </resources>

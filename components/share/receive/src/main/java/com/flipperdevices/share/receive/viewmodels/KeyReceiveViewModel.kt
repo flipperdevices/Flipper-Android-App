@@ -1,16 +1,19 @@
 package com.flipperdevices.share.receive.viewmodels
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.dao.api.delegates.KeyApi
 import com.flipperdevices.bridge.dao.api.delegates.KeyParser
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.ktx.android.toast
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkContent
+import com.flipperdevices.share.receive.R
 import com.flipperdevices.share.receive.di.KeyReceiveComponent
 import com.flipperdevices.share.receive.model.ReceiveState
 import javax.inject.Inject
@@ -21,7 +24,8 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class KeyReceiveViewModel(
-    initialDeeplink: Deeplink?
+    initialDeeplink: Deeplink?,
+    private val context: Context
 ) : ViewModel(), LogTagProvider {
     override val TAG = "KeyReceiveViewModel"
     private val internalDeeplinkFlow = MutableStateFlow(initialDeeplink)
@@ -69,6 +73,9 @@ class KeyReceiveViewModel(
                 keyApi.insertKey(localState.flipperKey)
             } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
                 error(e) { "While save key ${localState.flipperKey}" }
+                context.toast(R.string.receive_error_conflict)
+                state.emit(ReceiveState.Pending(localState.flipperKey, localState.parsed))
+                return@launch
             }
             state.emit(ReceiveState.Finished)
         }
