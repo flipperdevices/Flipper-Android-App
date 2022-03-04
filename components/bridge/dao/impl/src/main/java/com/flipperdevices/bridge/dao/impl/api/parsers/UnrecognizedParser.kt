@@ -11,6 +11,7 @@ class UnrecognizedParser : KeyParserDelegate {
     ): FlipperKeyParsed {
         return FlipperKeyParsed.Unrecognized(
             flipperKey.path.name,
+            flipperKey.notes,
             flipperKey.path.fileType,
             fff.orderedDict
         )

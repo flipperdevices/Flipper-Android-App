@@ -14,7 +14,8 @@ class InfraredParser : KeyParserDelegate {
         val keyContentAsMap = fff.orderedDict.toMap()
 
         return FlipperKeyParsed.Infrared(
-            keyName = flipperKey.path.name,
+            keyName = flipperKey.path.nameWithoutExtension,
+            notes = flipperKey.notes,
             protocol = keyContentAsMap[KEY_PROTOCOL]
         )
     }

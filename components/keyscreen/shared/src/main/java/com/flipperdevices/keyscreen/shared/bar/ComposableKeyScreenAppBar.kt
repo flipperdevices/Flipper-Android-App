@@ -1,4 +1,4 @@
-package com.flipperdevices.keyscreen.shared
+package com.flipperdevices.keyscreen.shared.bar
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding

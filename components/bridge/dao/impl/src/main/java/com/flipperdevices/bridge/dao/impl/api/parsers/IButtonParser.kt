@@ -15,7 +15,8 @@ class IButtonParser : KeyParserDelegate {
         val keyContentAsMap = fff.orderedDict.toMap()
 
         return FlipperKeyParsed.IButton(
-            keyName = flipperKey.path.name,
+            keyName = flipperKey.path.nameWithoutExtension,
+            notes = flipperKey.notes,
             data = keyContentAsMap[KEY_DATA],
             keyType = keyContentAsMap[KEY_TYPE]
         )

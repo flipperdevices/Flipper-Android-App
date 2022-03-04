@@ -19,12 +19,13 @@ import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModel
 fun ComposableKeyScreen(
     viewModel: KeyScreenViewModel,
     keyScreenState: KeyScreenState = KeyScreenState.InProgress,
-    keyEditApi: KeyEditApi
+    keyEditApi: KeyEditApi,
+    onBack: () -> Unit
 ) {
     when (keyScreenState) {
         KeyScreenState.InProgress -> ComposableKeyInitial()
         is KeyScreenState.Error -> ComposableKeyError(keyScreenState)
-        is KeyScreenState.Ready -> ComposableKeyParsed(viewModel, keyScreenState)
+        is KeyScreenState.Ready -> ComposableKeyParsed(viewModel, keyScreenState, onBack)
         is KeyScreenState.Editing -> keyEditApi.EditScreen(
             keyScreenState.flipperKey,
             keyScreenState.parsedKey,

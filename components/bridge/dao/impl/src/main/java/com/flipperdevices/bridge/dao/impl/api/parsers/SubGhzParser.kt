@@ -15,7 +15,8 @@ class SubGhzParser : KeyParserDelegate {
         val keyContentAsMap = fff.orderedDict.toMap()
 
         return FlipperKeyParsed.SubGhz(
-            keyName = flipperKey.path.name,
+            keyName = flipperKey.path.nameWithoutExtension,
+            notes = flipperKey.notes,
             protocol = keyContentAsMap[KEY_PROTOCOL],
             key = keyContentAsMap[KEY_KEY]
         )
