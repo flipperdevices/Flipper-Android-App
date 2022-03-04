@@ -18,6 +18,15 @@ interface KeyApi {
 
     suspend fun getKey(keyPath: FlipperKeyPath): FlipperKey?
 
+    /**
+     * We try to find the nearest name that has no conflict.
+     * Example:
+     * Conflict with path "nfc/My_card.nfc"
+     * Try "nfc/My_card_1.nfc"... Failed
+     * Try "nfc/My_card_2.nfc"... Success!
+     */
+    suspend fun findAvailablePath(keyPath: FlipperKeyPath): FlipperKeyPath
+
     fun getExistKeysAsFlow(
         fileType: FlipperFileType? = null
     ): Flow<List<FlipperKey>>

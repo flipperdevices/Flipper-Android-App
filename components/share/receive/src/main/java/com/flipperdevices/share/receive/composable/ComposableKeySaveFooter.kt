@@ -2,7 +2,9 @@ package com.flipperdevices.share.receive.composable
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -16,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.R as DesignSystem
@@ -26,12 +27,14 @@ import com.flipperdevices.share.receive.R
 @Composable
 fun ComposableKeySaveFooter(savingInProgress: Boolean, onSave: () -> Unit, onEdit: () -> Unit) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
+        modifier = Modifier
+            .padding(horizontal = 55.dp)
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
             modifier = Modifier
-                .weight(weight = 0.5f)
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = rememberRipple(bounded = false),
@@ -40,11 +43,9 @@ fun ComposableKeySaveFooter(savingInProgress: Boolean, onSave: () -> Unit, onEdi
             text = stringResource(R.string.receive_edit_btn),
             fontSize = 14.sp,
             color = colorResource(DesignSystem.color.black_40),
-            fontWeight = FontWeight.W700,
-            textAlign = TextAlign.Center
+            fontWeight = FontWeight.W700
         )
         SaveButton(
-            modifier = Modifier.weight(weight = 0.5f),
             savingInProgress = savingInProgress,
             onSave = onSave
         )
@@ -52,10 +53,10 @@ fun ComposableKeySaveFooter(savingInProgress: Boolean, onSave: () -> Unit, onEdi
 }
 
 @Composable
-private fun SaveButton(modifier: Modifier, savingInProgress: Boolean, onSave: () -> Unit) {
+private fun SaveButton(savingInProgress: Boolean, onSave: () -> Unit) {
     if (savingInProgress) {
         Box(
-            modifier = modifier
+            modifier = Modifier
                 .padding(32.dp),
             contentAlignment = Alignment.Center
         ) {
@@ -64,12 +65,9 @@ private fun SaveButton(modifier: Modifier, savingInProgress: Boolean, onSave: ()
         return
     }
 
-    Box(modifier = modifier, contentAlignment = Alignment.Center) {
-        ComposableFlipperButton(
-            modifier = Modifier
-                .padding(vertical = 12.dp, horizontal = 38.dp),
-            text = stringResource(R.string.receive_save_btn),
-            onClick = onSave
-        )
-    }
+    ComposableFlipperButton(
+        textPadding = PaddingValues(vertical = 12.dp, horizontal = 38.dp),
+        text = stringResource(R.string.receive_save_btn),
+        onClick = onSave
+    )
 }

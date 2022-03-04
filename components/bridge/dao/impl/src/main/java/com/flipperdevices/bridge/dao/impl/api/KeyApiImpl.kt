@@ -10,6 +10,8 @@ import com.flipperdevices.bridge.dao.impl.model.Key
 import com.flipperdevices.bridge.dao.impl.repository.KeyDao
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.provideDelegate
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 import javax.inject.Provider
@@ -20,11 +22,13 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 @Singleton
-@ContributesBinding(AppGraph::class)
+@ContributesBinding(AppGraph::class, KeyApi::class)
 class KeyApiImpl @Inject constructor(
     keysDaoProvider: Provider<KeyDao>,
     cleanerProvider: Provider<KeyContentCleaner>
-) : KeyApi {
+) : KeyApi, LogTagProvider {
+    override val TAG = "KeyApi"
+
     private val keysDao by keysDaoProvider
     private val cleaner by cleanerProvider
 
@@ -64,6 +68,32 @@ class KeyApiImpl @Inject constructor(
         return@withContext keysDao.getByPath(keyPath)?.toFlipperKey()
     }
 
+    override suspend fun findAvailablePath(keyPath: FlipperKeyPath): FlipperKeyPath {
+        var newNameWithoutExtension = keyPath.nameWithoutExtension
+        var newPath = getKeyPathWithDifferentNameWithoutExtension(
+            keyPath,
+            newNameWithoutExtension
+        )
+        var index = 1
+        info {
+            "Start finding free name for path $newPath " +
+                "(newNameWithoutExtension=$newNameWithoutExtension)"
+        }
+        // Find empty key name
+        while (getKey(newPath) != null) {
+            newNameWithoutExtension = "${newNameWithoutExtension}_${index++}"
+            newPath = getKeyPathWithDifferentNameWithoutExtension(
+                keyPath,
+                newNameWithoutExtension
+            )
+            info {
+                "Try $newPath ($newNameWithoutExtension)"
+            }
+        }
+        info { "Found free key name! $newPath" }
+        return newPath
+    }
+
     override fun getExistKeysAsFlow(
         fileType: FlipperFileType?
     ): Flow<List<FlipperKey>> {
@@ -88,5 +118,15 @@ private fun Key.toFlipperKey(): FlipperKey {
         path = path,
         keyContent = content.flipperContent,
         notes = notes
+    )
+}
+
+private fun getKeyPathWithDifferentNameWithoutExtension(
+    keyPath: FlipperKeyPath,
+    nameWithoutExtension: String
+): FlipperKeyPath {
+    return FlipperKeyPath(
+        keyPath.folder,
+        "$nameWithoutExtension.${keyPath.name.substringAfterLast('.')}"
     )
 }

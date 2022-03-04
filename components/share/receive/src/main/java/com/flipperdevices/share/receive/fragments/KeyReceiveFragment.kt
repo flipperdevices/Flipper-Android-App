@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.withArgs
+import com.flipperdevices.core.navigation.delegates.OnBackPressListener
 import com.flipperdevices.core.navigation.requireRouter
 import com.flipperdevices.core.ui.ComposeFragment
 import com.flipperdevices.deeplink.model.Deeplink
@@ -22,7 +23,7 @@ import javax.inject.Inject
 
 private const val EXTRA_KEY_DEEPLINK = "deeplink"
 
-class KeyReceiveFragment : ComposeFragment() {
+class KeyReceiveFragment : ComposeFragment(), OnBackPressListener {
     private val deeplink: Deeplink?
         get() = arguments?.get(EXTRA_KEY_DEEPLINK) as? Deeplink
 
@@ -57,6 +58,10 @@ class KeyReceiveFragment : ComposeFragment() {
                 requireRouter().exit()
             }
         )
+    }
+
+    override fun onBackPressed(): Boolean {
+        return receiveViewModel.onBack()
     }
 
     private fun finish() {

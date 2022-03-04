@@ -36,11 +36,13 @@ class KeyReceiveViewModel(
     init {
         ComponentHolder.component<KeyReceiveComponent>().inject(this)
         internalDeeplinkFlow.onEach {
-            val flipperKey = it?.toFlipperKey()
+            var flipperKey = it?.toFlipperKey()
             if (flipperKey == null) {
                 state.emit(ReceiveState.Finished)
                 return@onEach
             }
+            val newPath = keyApi.findAvailablePath(flipperKey.path)
+            flipperKey = flipperKey.copy(path = newPath)
             state.emit(ReceiveState.Pending(flipperKey, keyParser.parseKey(flipperKey)))
         }.launchIn(viewModelScope)
     }
@@ -110,6 +112,24 @@ class KeyReceiveViewModel(
 
             state.emit(ReceiveState.Pending(flipperKey, parsed))
         }
+    }
+
+    fun onBack(): Boolean {
+        val currentState = state.value
+        if (currentState !is ReceiveState.Editing) {
+            return false
+        }
+        val isStateSaved = state.compareAndSet(
+            currentState,
+            ReceiveState.Pending(
+                currentState.flipperKey,
+                currentState.parsed
+            )
+        )
+        if (!isStateSaved) {
+            return onBack()
+        }
+        return true
     }
 }
 
