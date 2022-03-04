@@ -15,7 +15,8 @@ class RFIDParser : KeyParserDelegate {
         val keyContentAsMap = fff.orderedDict.toMap()
 
         return FlipperKeyParsed.RFID(
-            keyName = flipperKey.path.name,
+            keyName = flipperKey.path.nameWithoutExtension,
+            notes = flipperKey.notes,
             data = keyContentAsMap[KEY_DATA],
             keyType = keyContentAsMap[KEY_TYPE]
         )

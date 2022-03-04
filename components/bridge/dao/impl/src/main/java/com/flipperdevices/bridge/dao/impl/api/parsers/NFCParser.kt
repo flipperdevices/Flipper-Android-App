@@ -15,7 +15,8 @@ class NFCParser : KeyParserDelegate {
         val keyContentAsMap = fff.orderedDict.toMap()
 
         return FlipperKeyParsed.NFC(
-            keyName = flipperKey.path.name,
+            keyName = flipperKey.path.nameWithoutExtension,
+            notes = flipperKey.notes,
             deviceType = keyContentAsMap[KEY_TYPE],
             uid = keyContentAsMap[KEY_UID]
         )

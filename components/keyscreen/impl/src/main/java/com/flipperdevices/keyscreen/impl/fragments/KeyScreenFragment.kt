@@ -8,6 +8,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.navigation.delegates.OnBackPressListener
+import com.flipperdevices.core.navigation.requireRouter
 import com.flipperdevices.core.ui.ComposeFragment
 import com.flipperdevices.keyedit.api.KeyEditApi
 import com.flipperdevices.keyscreen.impl.composable.ComposableKeyScreen
@@ -37,7 +38,9 @@ class KeyScreenFragment : ComposeFragment(), OnBackPressListener {
     @Composable
     override fun RenderView() {
         val keyScreenState by viewModel.getKeyScreenState().collectAsState()
-        ComposableKeyScreen(viewModel, keyScreenState, keyEditApi)
+        ComposableKeyScreen(viewModel, keyScreenState, keyEditApi, onBack = {
+            requireRouter().exit()
+        })
     }
 
     companion object {
