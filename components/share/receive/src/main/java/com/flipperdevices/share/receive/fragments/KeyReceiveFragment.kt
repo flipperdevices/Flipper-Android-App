@@ -11,6 +11,7 @@ import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.navigation.requireRouter
 import com.flipperdevices.core.ui.ComposeFragment
 import com.flipperdevices.deeplink.model.Deeplink
+import com.flipperdevices.keyedit.api.KeyEditApi
 import com.flipperdevices.keyscreen.api.KeyScreenApi
 import com.flipperdevices.share.receive.composable.ComposableKeyReceive
 import com.flipperdevices.share.receive.di.KeyReceiveComponent
@@ -31,6 +32,9 @@ class KeyReceiveFragment : ComposeFragment() {
     @Inject
     lateinit var synchronizationApi: SynchronizationApi
 
+    @Inject
+    lateinit var editApi: KeyEditApi
+
     init {
         ComponentHolder.component<KeyReceiveComponent>().inject(this)
     }
@@ -48,9 +52,11 @@ class KeyReceiveFragment : ComposeFragment() {
             return
         }
 
-        ComposableKeyReceive(keyScreenApi, state) {
-            receiveViewModel.save()
-        }
+        ComposableKeyReceive(
+            keyScreenApi, state, receiveViewModel, editApi, onCancel = {
+                requireRouter().exit()
+            }
+        )
     }
 
     private fun finish() {

@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class KeyReceiveViewModel(
@@ -42,27 +41,74 @@ class KeyReceiveViewModel(
                 state.emit(ReceiveState.Finished)
                 return@onEach
             }
-            state.emit(ReceiveState.Pending(it, keyParser.parseKey(flipperKey)))
+            state.emit(ReceiveState.Pending(flipperKey, keyParser.parseKey(flipperKey)))
         }.launchIn(viewModelScope)
     }
 
     fun getState(): StateFlow<ReceiveState> = state
 
-    fun save() {
+    fun onSave() {
         val localState = state.value
         if (localState !is ReceiveState.Pending) {
             info { "You can save key only from pending state, now is $state" }
             return
         }
-        state.update { ReceiveState.Saving(localState.deeplink, localState.parsed) }
+        val isStateSaved = state.compareAndSet(
+            localState,
+            ReceiveState.Saving(localState.flipperKey, localState.parsed)
+        )
+        if (!isStateSaved) {
+            onSave()
+            return
+        }
+
         viewModelScope.launch {
-            val flipperKey = localState.deeplink.toFlipperKey() ?: return@launch
             try {
-                keyApi.insertKey(flipperKey)
+                keyApi.insertKey(localState.flipperKey)
             } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
-                error(e) { "While save key $flipperKey" }
+                error(e) { "While save key ${localState.flipperKey}" }
             }
             state.emit(ReceiveState.Finished)
+        }
+    }
+
+    fun onEdit() {
+        val localState = state.value
+        if (localState !is ReceiveState.Pending) {
+            info { "You can edit key only from pending state, now is $state" }
+            return
+        }
+        val isStateSaved = state.compareAndSet(
+            localState,
+            ReceiveState.Editing(
+                flipperKey = localState.flipperKey,
+                parsed = localState.parsed
+            )
+        )
+        if (!isStateSaved) {
+            onEdit()
+            return
+        }
+    }
+
+    fun onCloseEdit(flipperKey: FlipperKey) {
+        val localState = state.value
+        if (localState !is ReceiveState.Editing) {
+            info { "You can return from edit state only on edit state, now is $state" }
+            return
+        }
+        val isStateSaved = state.compareAndSet(
+            localState,
+            ReceiveState.NotStarted
+        )
+        if (!isStateSaved) {
+            onCloseEdit(flipperKey)
+            return
+        }
+        viewModelScope.launch {
+            val parsed = keyParser.parseKey(flipperKey)
+
+            state.emit(ReceiveState.Pending(flipperKey, parsed))
         }
     }
 }
