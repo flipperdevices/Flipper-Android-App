@@ -17,9 +17,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.keyscreen.impl.R
+import com.flipperdevices.keyscreen.impl.composable.actions.ComposableDelete
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableEdit
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableShare
 import com.flipperdevices.keyscreen.impl.composable.card.ComposableKeyCard
+import com.flipperdevices.keyscreen.impl.model.DeleteState
 import com.flipperdevices.keyscreen.impl.model.KeyScreenState
 import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModel
 import com.flipperdevices.keyscreen.shared.bar.ComposableBarTitle
@@ -41,6 +43,9 @@ fun ComposableKeyParsed(
         )
         ComposableEdit(viewModel::onOpenEdit)
         ComposableShare(keyScreenState.shareState, viewModel::onShare)
+        if (keyScreenState.deleteState == DeleteState.DELETED) {
+            onBack()
+        } else ComposableDelete(keyScreenState.deleteState, viewModel::onDelete)
     }
 }
 

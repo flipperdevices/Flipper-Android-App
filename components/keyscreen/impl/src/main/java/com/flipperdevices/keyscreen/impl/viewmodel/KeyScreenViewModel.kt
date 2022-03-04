@@ -155,6 +155,27 @@ class KeyScreenViewModel(
         }
     }
 
+    fun onDelete() {
+        val state = keyScreenState.value
+        if (state !is KeyScreenState.Ready || state.deleteState == DeleteState.PROGRESS) {
+            warn { "We skip onShare, because state is $state" }
+            return
+        }
+        val newState = state.copy(deleteState = DeleteState.PROGRESS)
+        val isStateSaved = keyScreenState.compareAndSet(state, newState)
+        if (!isStateSaved) {
+            onDelete()
+            return
+        }
+
+        viewModelScope.launch {
+            keyApi.markDeleted(state.flipperKey.path)
+            keyScreenState.update {
+                if (it is KeyScreenState.Ready) it.copy(deleteState = DeleteState.DELETED) else it
+            }
+        }
+    }
+
     private suspend fun loadKey(flipperKey: FlipperKey) {
         val parsedKey = keyParser.parseKey(flipperKey)
         val isFavorite = favoriteApi.isFavorite(flipperKey.path)
