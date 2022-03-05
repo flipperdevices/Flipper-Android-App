@@ -78,4 +78,7 @@ include(
 
     ":components:firstpair:api",
     ":components:firstpair:impl",
+
+    ":components:inappnotification:api",
+    ":components:inappnotification:impl"
 )

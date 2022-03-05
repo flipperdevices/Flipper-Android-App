@@ -1,0 +1,3 @@
+package com.flipperdevices.inappnotification.api
+
+interface InAppNotificationRenderer
