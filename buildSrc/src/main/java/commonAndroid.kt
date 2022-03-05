@@ -112,6 +112,7 @@ private fun Project.suppressOptIn() {
                     "-Xopt-in=kotlinx.serialization.ExperimentalSerializationApi",
                     "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
                     "-Xopt-in=com.squareup.anvil.annotations.ExperimentalAnvilApi",
+                    "-Xopt-in=kotlin.time.ExperimentalTime",
                     "-Xopt-in=kotlin.RequiresOptIn",
                 )
             }

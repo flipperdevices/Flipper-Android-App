@@ -81,7 +81,7 @@ class KeyApiImpl @Inject constructor(
         }
         // Find empty key name
         while (getKey(newPath) != null) {
-            newNameWithoutExtension = "${newNameWithoutExtension}_${index++}"
+            newNameWithoutExtension = "${keyPath.nameWithoutExtension}_${index++}"
             newPath = getKeyPathWithDifferentNameWithoutExtension(
                 keyPath,
                 newNameWithoutExtension

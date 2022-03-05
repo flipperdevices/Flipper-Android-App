@@ -1,5 +1,6 @@
 package com.flipperdevices.share.receive.fragments
 
+import android.app.Application
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -41,7 +42,7 @@ class KeyReceiveFragment : ComposeFragment(), OnBackPressListener {
     }
 
     private val receiveViewModel by viewModels<KeyReceiveViewModel> {
-        KeyReceiveViewModelFactory(deeplink, requireContext())
+        KeyReceiveViewModelFactory(deeplink, requireContext().applicationContext as Application)
     }
 
     @Composable

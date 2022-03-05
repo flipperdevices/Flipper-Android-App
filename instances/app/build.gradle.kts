@@ -55,6 +55,9 @@ dependencies {
     implementation(projects.components.keyedit.api)
     implementation(projects.components.keyedit.impl)
 
+    implementation(projects.components.inappnotification.api)
+    implementation(projects.components.inappnotification.impl)
+
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.dao.impl)
     implementation(projects.components.bridge.synchronization.api)
