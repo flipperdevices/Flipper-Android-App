@@ -11,7 +11,10 @@ import javax.inject.Inject
 @ContributesBinding(AppGraph::class)
 class InAppNotificationRendererImpl @Inject constructor() : InAppNotificationRenderer {
     @Composable
-    override fun InAppNotification(notification: InAppNotification) {
-        ComposableInAppNotification(notification)
+    override fun InAppNotification(
+        notification: InAppNotification,
+        onNotificationHidden: () -> Unit
+    ) {
+        ComposableInAppNotification(notification, onNotificationHidden)
     }
 }

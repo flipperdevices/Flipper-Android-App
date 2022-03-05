@@ -1,7 +1,7 @@
 package com.flipperdevices.share.receive.viewmodels
 
-import android.content.Context
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.dao.api.delegates.KeyApi
 import com.flipperdevices.bridge.dao.api.delegates.KeyParser
@@ -13,6 +13,8 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkContent
+import com.flipperdevices.inappnotification.api.InAppNotificationStorage
+import com.flipperdevices.inappnotification.api.model.InAppNotification
 import com.flipperdevices.share.receive.R
 import com.flipperdevices.share.receive.di.KeyReceiveComponent
 import com.flipperdevices.share.receive.model.ReceiveState
@@ -23,10 +25,12 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
+private const val NOTIFICATION_DURATION_MS = 3 * 1000L
+
 class KeyReceiveViewModel(
     initialDeeplink: Deeplink?,
-    private val context: Context
-) : ViewModel(), LogTagProvider {
+    application: Application
+) : AndroidViewModel(application), LogTagProvider {
     override val TAG = "KeyReceiveViewModel"
     private val internalDeeplinkFlow = MutableStateFlow(initialDeeplink)
     private val state = MutableStateFlow<ReceiveState>(ReceiveState.NotStarted)
@@ -36,6 +40,9 @@ class KeyReceiveViewModel(
 
     @Inject
     lateinit var keyParser: KeyParser
+
+    @Inject
+    lateinit var notificationStorage: InAppNotificationStorage
 
     init {
         ComponentHolder.component<KeyReceiveComponent>().inject(this)
@@ -73,10 +80,18 @@ class KeyReceiveViewModel(
                 keyApi.insertKey(localState.flipperKey)
             } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
                 error(e) { "While save key ${localState.flipperKey}" }
-                context.toast(R.string.receive_error_conflict)
+                getApplication<Application>().toast(R.string.receive_error_conflict)
                 state.emit(ReceiveState.Pending(localState.flipperKey, localState.parsed))
                 return@launch
             }
+
+            notificationStorage.addNotification(
+                InAppNotification(
+                    title = localState.flipperKey.path.nameWithoutExtension,
+                    descriptionId = R.string.receive_notification_description,
+                    durationMs = NOTIFICATION_DURATION_MS
+                )
+            )
             state.emit(ReceiveState.Finished)
         }
     }

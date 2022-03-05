@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -22,7 +23,7 @@ import com.flipperdevices.inappnotification.impl.R
 
 @Composable
 internal fun ComposableInAppNotificationCardContent(notification: InAppNotification) {
-    Row() {
+    Row {
         ComposableSaveIcon()
         Column(modifier = Modifier.padding(top = 9.dp, bottom = 9.dp, end = 12.dp)) {
             Text(
@@ -32,7 +33,7 @@ internal fun ComposableInAppNotificationCardContent(notification: InAppNotificat
                 color = colorResource(DesignSystem.color.black_100)
             )
             Text(
-                text = notification.description,
+                text = stringResource(notification.descriptionId),
                 fontSize = 12.sp,
                 fontWeight = FontWeight.W400,
                 color = colorResource(DesignSystem.color.black_100)

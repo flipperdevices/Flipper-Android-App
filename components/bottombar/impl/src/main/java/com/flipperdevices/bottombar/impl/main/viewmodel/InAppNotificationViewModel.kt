@@ -11,6 +11,7 @@ import javax.inject.Inject
 import javax.inject.Provider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 
 class InAppNotificationViewModel : ViewModel(), InAppNotificationListener {
     @Inject
@@ -34,6 +35,16 @@ class InAppNotificationViewModel : ViewModel(), InAppNotificationListener {
 
     fun onPause() {
         notificationStorage.unsubscribe()
+    }
+
+    fun onNotificationHidden(notification: InAppNotification) {
+        notificationState.update {
+            if (it is InAppNotificationState.ShownNotification &&
+                it.notification == notification
+            ) {
+                InAppNotificationState.NotPresent
+            } else it
+        }
     }
 
     override suspend fun onNewNotification(notification: InAppNotification) {

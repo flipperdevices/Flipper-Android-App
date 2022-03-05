@@ -15,6 +15,7 @@ import com.flipperdevices.bottombar.impl.di.BottomBarComponent
 import com.flipperdevices.bottombar.impl.main.compose.ComposeBottomBar
 import com.flipperdevices.bottombar.impl.main.service.BottomNavigationViewModel
 import com.flipperdevices.bottombar.impl.main.subnavigation.OnDoublePressOnTab
+import com.flipperdevices.bottombar.impl.main.viewmodel.InAppNotificationState
 import com.flipperdevices.bottombar.impl.main.viewmodel.InAppNotificationViewModel
 import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
 import com.flipperdevices.core.di.ComponentHolder
@@ -60,20 +61,30 @@ class BottomNavigationFragment : Fragment(), OnBackPressListener {
         binding.inappNotification.apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                /*val notificationState by notificationViewModel.state().collectAsState()
+                val notificationState by notificationViewModel.state().collectAsState()
                 val localNotificationState = notificationState
                 if (localNotificationState !is InAppNotificationState.ShownNotification) {
                     return@setContent
-                }*/
-                notificationRenderer.InAppNotification(
-                    InAppNotification("Office_guest", "saved to Archive", 3000L)
-                )
+                }
+                notificationRenderer.InAppNotification(localNotificationState.notification) {
+                    notificationViewModel.onNotificationHidden(localNotificationState.notification)
+                }
             }
         }
 
         if (childFragmentManager.findFragmentById(R.id.fragment_container) == null) {
             selectTab(FlipperBottomTab.STORAGE)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        notificationViewModel.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        notificationViewModel.onPause()
     }
 
     private fun selectTab(tab: FlipperBottomTab) {

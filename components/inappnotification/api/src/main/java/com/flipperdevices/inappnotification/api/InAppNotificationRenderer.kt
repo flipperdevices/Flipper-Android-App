@@ -5,5 +5,5 @@ import com.flipperdevices.inappnotification.api.model.InAppNotification
 
 interface InAppNotificationRenderer {
     @Composable
-    fun InAppNotification(notification: InAppNotification)
+    fun InAppNotification(notification: InAppNotification, onNotificationHidden: () -> Unit)
 }

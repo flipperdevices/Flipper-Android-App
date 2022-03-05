@@ -2,6 +2,7 @@ package com.flipperdevices.inappnotification.api.model
 
 data class InAppNotification(
     val title: String,
-    val description: String,
-    val duration: Long
+    val descriptionId: Int,
+    val durationMs: Long,
+    val timestamp: Long = System.currentTimeMillis()
 )

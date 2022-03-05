@@ -21,6 +21,8 @@ dependencies {
     implementation(projects.components.keyscreen.shared)
     implementation(projects.components.keyedit.api)
 
+    implementation(projects.components.inappnotification.api)
+
     implementation(libs.cicerone)
     implementation(libs.appcompat)
 

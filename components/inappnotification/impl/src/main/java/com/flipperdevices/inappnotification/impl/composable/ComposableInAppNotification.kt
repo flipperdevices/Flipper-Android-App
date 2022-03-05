@@ -20,32 +20,36 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.inappnotification.api.model.InAppNotification
+import kotlin.math.max
 
 const val VISIBLE_ANIMATION_MS = 1000
 
 @Composable
 fun ComposableInAppNotification(
-    notification: InAppNotification
+    notification: InAppNotification,
+    onNotificationHidden: () -> Unit
 ) {
     key(notification) {
-        ComposableInAppNotificationCard(notification)
+        ComposableInAppNotificationCard(notification, onNotificationHidden)
     }
 }
 
 @Composable
-private fun ComposableInAppNotificationCard(notification: InAppNotification) {
+private fun ComposableInAppNotificationCard(
+    notification: InAppNotification,
+    onNotificationHidden: () -> Unit
+) {
     var visibleState by remember { mutableStateOf(false) }
-    LaunchedEffect(key1 = notification) {
+    LaunchedEffect(notification) {
         visibleState = true
     }
     AnimatedVisibility(
         visible = visibleState,
         enter = fadeIn(animationSpec = tween(VISIBLE_ANIMATION_MS)),
-        exit = fadeOut(animationSpec = tween(VISIBLE_ANIMATION_MS)),
+        exit = fadeOut(animationSpec = tween(VISIBLE_ANIMATION_MS))
     ) {
         Card(
             modifier = Modifier
@@ -57,33 +61,28 @@ private fun ComposableInAppNotificationCard(notification: InAppNotification) {
             ComposableInAppNotificationCardContent(notification)
         }
     }
-    DisposableEffect(key1 = notification) {
+    DisposableEffect(notification) {
         val handler = Handler(Looper.getMainLooper())
 
         val fadeOutRunnable = {
             visibleState = false
         }
+        val hiddenRunnable = {
+            onNotificationHidden()
+        }
 
-        handler.postDelayed(fadeOutRunnable, notification.duration)
+        handler.postDelayed(
+            fadeOutRunnable,
+            max(0L, notification.durationMs - VISIBLE_ANIMATION_MS)
+        )
+        handler.postDelayed(
+            hiddenRunnable,
+            notification.durationMs
+        )
 
         onDispose {
             handler.removeCallbacks(fadeOutRunnable)
+            handler.removeCallbacks(hiddenRunnable)
         }
     }
-}
-
-@Composable
-@Preview(
-    showSystemUi = true,
-    showBackground = true
-)
-@Suppress("UnusedPrivateMember")
-private fun ComposableInAppNotificationPreview() {
-    ComposableInAppNotification(
-        InAppNotification(
-            title = "Test_title",
-            description = "saved to Archive",
-            duration = 1000
-        )
-    )
 }

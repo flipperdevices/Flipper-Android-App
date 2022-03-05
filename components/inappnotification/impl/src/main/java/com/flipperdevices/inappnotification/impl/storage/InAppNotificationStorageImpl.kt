@@ -72,6 +72,6 @@ class InAppNotificationStorageImpl @Inject constructor() :
 
         val notificationToShown = pendingNotification.pop()
         notificationListener.onNewNotification(notificationToShown)
-        nextNotificationTime = System.currentTimeMillis() + notificationToShown.duration
+        nextNotificationTime = System.currentTimeMillis() + notificationToShown.durationMs
     }
 }
