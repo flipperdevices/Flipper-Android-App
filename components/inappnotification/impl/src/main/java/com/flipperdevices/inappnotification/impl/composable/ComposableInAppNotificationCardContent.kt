@@ -60,8 +60,8 @@ private fun ComposableSaveIcon() {
 
     LottieAnimation(
         modifier = Modifier
-            .padding(all = 12.dp)
-            .size(size = 24.dp),
+            .padding(all = 8.dp)
+            .size(size = 32.dp),
         composition = composition,
         progress = progress
     )
