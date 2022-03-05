@@ -164,41 +164,9 @@ class KeysSynchronization(
     private suspend fun resolveConflict(keyPath: FlipperKeyPath) {
         warn { "Try resolve conflict with $keyPath" }
         val oldKey = keysApi.getKey(keyPath) ?: error("Can't found key $keyPath on Android side")
-
-        var newNameWithoutExtension = oldKey.path.nameWithoutExtension
-        var newPath = getKeyPathWithDifferentNameWithoutExtension(
-            oldKey.path,
-            newNameWithoutExtension
-        )
-        var index = 1
-        info {
-            "Start finding free name for path $newPath " +
-                "(newNameWithoutExtension=$newNameWithoutExtension)"
-        }
-        // Find empty key name
-        while (keysApi.getKey(newPath) != null) {
-            newNameWithoutExtension = "${newNameWithoutExtension}_${index++}"
-            newPath = getKeyPathWithDifferentNameWithoutExtension(
-                oldKey.path,
-                newNameWithoutExtension
-            )
-            info {
-                "Try $newPath ($newNameWithoutExtension)"
-            }
-        }
-        info { "Found free key name! $newPath" }
+        val newPath = keysApi.findAvailablePath(keyPath)
 
         keysApi.insertKey(FlipperKey(newPath, oldKey.keyContent))
         keysApi.markDeleted(oldKey.path)
     }
-}
-
-private fun getKeyPathWithDifferentNameWithoutExtension(
-    keyPath: FlipperKeyPath,
-    nameWithoutExtension: String
-): FlipperKeyPath {
-    return FlipperKeyPath(
-        keyPath.folder,
-        "$nameWithoutExtension.${keyPath.name.substringAfterLast('.')}"
-    )
 }

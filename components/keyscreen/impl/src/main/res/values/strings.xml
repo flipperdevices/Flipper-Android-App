@@ -8,5 +8,5 @@
     <string name="keyscreen_delete_text">Delete</string>
     <string name="keyscreen_deleting_text">Deleting</string>
     <string name="keyscreen_title">Key info</string>
-    <string name="keyscreen_cancel_pic_desc">Cancel</string>
+    <string name="keyscreen_save_error">Error when saving. Perhaps a key with this name already exists?</string>
 </resources>

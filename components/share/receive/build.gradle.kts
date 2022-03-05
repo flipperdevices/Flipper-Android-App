@@ -18,6 +18,8 @@ dependencies {
     implementation(projects.components.bridge.synchronization.api)
 
     implementation(projects.components.keyscreen.api)
+    implementation(projects.components.keyscreen.shared)
+    implementation(projects.components.keyedit.api)
 
     implementation(libs.cicerone)
     implementation(libs.appcompat)
