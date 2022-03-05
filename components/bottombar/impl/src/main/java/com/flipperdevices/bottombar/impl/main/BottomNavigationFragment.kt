@@ -11,16 +11,30 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.flipperdevices.bottombar.impl.R
 import com.flipperdevices.bottombar.impl.databinding.FragmentBottombarBinding
+import com.flipperdevices.bottombar.impl.di.BottomBarComponent
 import com.flipperdevices.bottombar.impl.main.compose.ComposeBottomBar
 import com.flipperdevices.bottombar.impl.main.service.BottomNavigationViewModel
 import com.flipperdevices.bottombar.impl.main.subnavigation.OnDoublePressOnTab
+import com.flipperdevices.bottombar.impl.main.viewmodel.InAppNotificationViewModel
 import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
+import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.navigation.delegates.OnBackPressListener
+import com.flipperdevices.inappnotification.api.InAppNotificationRenderer
+import com.flipperdevices.inappnotification.api.model.InAppNotification
+import javax.inject.Inject
 
 class BottomNavigationFragment : Fragment(), OnBackPressListener {
     private val bottomNavigationViewModel by viewModels<BottomNavigationViewModel>()
+    private val notificationViewModel by viewModels<InAppNotificationViewModel>()
 
-    lateinit var binding: FragmentBottombarBinding
+    private lateinit var binding: FragmentBottombarBinding
+
+    @Inject
+    lateinit var notificationRenderer: InAppNotificationRenderer
+
+    init {
+        ComponentHolder.component<BottomBarComponent>().inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,6 +55,19 @@ class BottomNavigationFragment : Fragment(), OnBackPressListener {
                 ComposeBottomBar(selectedItem) {
                     selectTab(it)
                 }
+            }
+        }
+        binding.inappNotification.apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                /*val notificationState by notificationViewModel.state().collectAsState()
+                val localNotificationState = notificationState
+                if (localNotificationState !is InAppNotificationState.ShownNotification) {
+                    return@setContent
+                }*/
+                notificationRenderer.InAppNotification(
+                    InAppNotification("Office_guest", "saved to Archive", 3000L)
+                )
             }
         }
 

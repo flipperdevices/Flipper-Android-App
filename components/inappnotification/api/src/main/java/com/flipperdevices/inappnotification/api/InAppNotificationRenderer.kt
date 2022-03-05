@@ -1,3 +1,9 @@
 package com.flipperdevices.inappnotification.api
 
-interface InAppNotificationRenderer
+import androidx.compose.runtime.Composable
+import com.flipperdevices.inappnotification.api.model.InAppNotification
+
+interface InAppNotificationRenderer {
+    @Composable
+    fun InAppNotification(notification: InAppNotification)
+}

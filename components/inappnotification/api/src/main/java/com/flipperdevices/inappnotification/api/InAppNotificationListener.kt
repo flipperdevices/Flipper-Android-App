@@ -4,5 +4,5 @@ import com.flipperdevices.inappnotification.api.model.InAppNotification
 
 @FunctionalInterface
 interface InAppNotificationListener {
-    fun onNewNotification(notification: InAppNotification)
+    suspend fun onNewNotification(notification: InAppNotification)
 }

@@ -15,4 +15,11 @@
             android:layout_alignParentBottom="true"
             android:layout_height="wrap_content"
             android:layout_width="match_parent" />
+
+    <androidx.compose.ui.platform.ComposeView
+            android:id="@+id/inapp_notification"
+            android:layout_above="@id/bottom_bar"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent" />
+
 </RelativeLayout>
