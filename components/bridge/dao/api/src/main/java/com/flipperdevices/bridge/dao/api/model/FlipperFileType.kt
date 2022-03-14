@@ -42,7 +42,7 @@ enum class FlipperFileType(
     INFRARED(
         humanReadableName = "Infrared",
         extension = "ir",
-        flipperDir = "irda",
+        flipperDir = "infrared",
         icon = R.drawable.ic_fileformat_ir,
         color = R.color.fileformat_color_ir
     );
