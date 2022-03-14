@@ -27,10 +27,10 @@ class FFFUrlDecoder : LogTagProvider {
             }
             return null
         }
-        if (uri.path != SUPPORTED_PATH) {
+        if (!SUPPORTED_PATHS.contains(uri.path)) {
             warn {
                 "Ignore $uri because ${uri.path} is unsupported path " +
-                    "(Supported: $SUPPORTED_PATH)"
+                    "(Supported: $SUPPORTED_PATHS)"
             }
             return null
         }
@@ -65,9 +65,9 @@ class FFFUrlDecoder : LogTagProvider {
                 path == null // Respect only first path value
             ) {
                 path = pair.second
-                continue
+            } else if (pair.first.isNotBlank() && pair.second.isNotBlank()) {
+                fileContent.add(pair)
             }
-            fileContent.add(pair)
         }
 
         if (path == null) {
