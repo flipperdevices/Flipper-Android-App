@@ -8,7 +8,10 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.deeplink.impl.di.DeepLinkComponent
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkContent
+import java.net.URLDecoder
 import javax.inject.Inject
+
+private const val SCHEME_FLIPPERKEY = "flipperkey"
 
 class DeepLinkFlipperFormatSharing : DeepLinkParserDelegate, LogTagProvider {
     override val TAG = "DeepLinkFlipperFormatSharing"
@@ -21,7 +24,15 @@ class DeepLinkFlipperFormatSharing : DeepLinkParserDelegate, LogTagProvider {
     }
 
     override suspend fun fromUri(activity: Activity, uri: Uri): Deeplink? {
-        val (path, content) = parser.parseUri(uri) ?: return null
+        var pureUri = uri
+
+        if (uri.scheme == SCHEME_FLIPPERKEY) {
+            val query = uri.query
+            val decodedQuery = URLDecoder.decode(query, "UTF-8")
+            pureUri = Uri.parse(decodedQuery)
+        }
+
+        val (path, content) = parser.parseUri(pureUri) ?: return null
         return Deeplink(path, DeeplinkContent.FFFContent(path.name, content))
     }
 }

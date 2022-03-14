@@ -21,7 +21,7 @@ class FFFUrlEncoder : LogTagProvider {
         return URL(
             PREFFERED_SCHEME,
             PREFFERED_HOST,
-            "$SUPPORTED_PATH#$query"
+            "$PATH_FOR_FFF_LIHK#$query"
         )
     }
 }
