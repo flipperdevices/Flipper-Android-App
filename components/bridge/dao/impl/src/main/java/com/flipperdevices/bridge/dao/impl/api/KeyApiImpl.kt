@@ -109,7 +109,8 @@ class KeyApiImpl @Inject constructor(
 private fun FlipperKey.toDatabaseKey(): Key {
     return Key(
         path = path,
-        content = DatabaseKeyContent(keyContent)
+        content = DatabaseKeyContent(keyContent),
+        notes = notes
     )
 }
 
