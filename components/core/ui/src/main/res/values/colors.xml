@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="accent">#FFA843</color>
+    <color name="accent">#FF8200</color>
     <color name="accent_secondary">#589DFF</color>
     <color name="background">#FBFBFB</color>
 
