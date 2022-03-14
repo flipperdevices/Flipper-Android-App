@@ -47,7 +47,7 @@ data class FlipperFileFormat(
                 .map {
                     it.substringBefore(":").trim() to
                         it.substringAfter(":").trim()
-                }
+                }.filterNot { it.first.isBlank() || it.second.isBlank() }
 
             return FlipperFileFormat(pairs)
         }
@@ -59,7 +59,7 @@ data class FlipperFileFormat(
     private fun generateFileContent(): String {
         val sb = StringBuilder()
         orderedDict.forEach { line ->
-            sb.append(line.first).append(": ").append(line.second).append('\n')
+            sb.append(line.first).append(": ").append(line.second).append("\n")
         }
         return sb.toString()
     }
