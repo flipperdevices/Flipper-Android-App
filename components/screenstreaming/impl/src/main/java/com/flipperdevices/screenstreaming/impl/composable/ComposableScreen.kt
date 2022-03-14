@@ -59,7 +59,7 @@ fun ComposableScreen(
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             ComposableFlipperScreen(flipperScreen)
-            ComposableControlButtons(onPressButton, onLongPressButton)
+            ComposableControlButtons(Modifier.weight(1f), onPressButton, onLongPressButton)
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
