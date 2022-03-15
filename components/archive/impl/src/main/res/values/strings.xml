@@ -5,4 +5,5 @@
     <string name="archive_content_empty">You don\'t have this type of key yet</string>
     <string name="archive_tab_general_favorite_title">Favorites</string>
     <string name="archive_tab_general_all_title">All</string>
+    <string name="archive_tab_deleted">Deleted</string>
 </resources>

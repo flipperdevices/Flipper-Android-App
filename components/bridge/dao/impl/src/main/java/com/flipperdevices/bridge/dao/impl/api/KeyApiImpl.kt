@@ -68,6 +68,12 @@ class KeyApiImpl @Inject constructor(
         return@withContext keysDao.getByPath(keyPath)?.toFlipperKey()
     }
 
+    override fun getDeletedKeyAsFlow(): Flow<List<FlipperKey>> {
+        return keysDao.subscribeOnDeletedKeys().map { list ->
+            list.map { it.toFlipperKey() }
+        }
+    }
+
     override suspend fun findAvailablePath(keyPath: FlipperKeyPath): FlipperKeyPath {
         var newNameWithoutExtension = keyPath.nameWithoutExtension
         var newPath = getKeyPathWithDifferentNameWithoutExtension(
