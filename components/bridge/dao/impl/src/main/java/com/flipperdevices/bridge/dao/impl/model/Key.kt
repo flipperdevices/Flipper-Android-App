@@ -24,5 +24,7 @@ data class Key(
     @ColumnInfo(name = "type") val type: FlipperFileType? = path.fileType,
     @ColumnInfo(name = "content") val content: DatabaseKeyContent,
     @ColumnInfo(name = "deleted") val deleted: Boolean = false,
-    @ColumnInfo(name = "notes") val notes: String? = null
+    @ColumnInfo(name = "notes") val notes: String? = null,
+    @ColumnInfo(name = "synchronized_status")
+    val synchronizedStatus: SynchronizedStatus = SynchronizedStatus.SYNCHRONIZED
 )

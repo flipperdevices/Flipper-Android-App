@@ -1,7 +1,8 @@
-package com.flipperdevices.keyscreen.shared
+package com.flipperdevices.core.ui.composable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,6 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.bridge.dao.api.R as DaoR
@@ -25,17 +27,24 @@ import com.flipperdevices.core.ui.R as DesignSystem
 @Composable
 @Preview
 fun ComposableKeyType(
-    type: FlipperFileType? = FlipperFileType.NFC
+    type: FlipperFileType? = FlipperFileType.NFC,
+    minWidth: Dp? = 110.dp
 ) {
     val icon = type?.icon ?: DaoR.drawable.ic_fileformat_unknown
     val color = type?.color ?: DaoR.color.fileformat_color_unknown
     val title = type?.humanReadableName
         ?: stringResource(DaoR.string.fileformat_unknown)
 
+    var rowModifier = Modifier
+        .clip(RoundedCornerShape(bottomEnd = 18.dp))
+        .background(colorResource(color))
+
+    if (minWidth != null) {
+        rowModifier = rowModifier.defaultMinSize(minWidth = minWidth)
+    }
+
     Row(
-        modifier = Modifier
-            .clip(RoundedCornerShape(bottomEnd = 18.dp))
-            .background(colorResource(color)),
+        modifier = rowModifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(

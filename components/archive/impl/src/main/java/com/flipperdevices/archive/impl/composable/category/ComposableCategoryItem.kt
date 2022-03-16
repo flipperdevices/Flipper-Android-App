@@ -70,7 +70,9 @@ private fun ComposableCategoryIcon(
 ) {
     if (iconId != null) {
         Icon(
-            modifier = Modifier.size(24.dp),
+            modifier = Modifier
+                .padding(end = 8.dp)
+                .size(24.dp),
             painter = painterResource(iconId),
             contentDescription = description
         )

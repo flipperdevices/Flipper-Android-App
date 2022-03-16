@@ -25,6 +25,6 @@ class ArchiveFragment : ComposeFragment() {
 
     @Composable
     override fun RenderView() {
-        ComposableArchive(connectionBar = { connectionApi.ConnectionTab() })
+        ComposableArchive()
     }
 }

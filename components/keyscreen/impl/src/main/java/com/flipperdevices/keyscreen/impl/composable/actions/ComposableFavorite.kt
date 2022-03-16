@@ -25,8 +25,8 @@ fun ComposableFavorite(favoriteState: FavoriteState, onSwitchFavorites: (Boolean
             CircularProgressIndicator(modifier = Modifier.size(ICON_SIZE_DP.dp))
             return
         }
-        FavoriteState.FAVORITE -> R.drawable.ic_star_enabled
-        FavoriteState.NOT_FAVORITE -> R.drawable.ic_star_disabled
+        FavoriteState.FAVORITE -> DesignSystem.drawable.ic_star_enabled
+        FavoriteState.NOT_FAVORITE -> DesignSystem.drawable.ic_star_disabled
     }
     val tintId = if (favoriteState == FavoriteState.FAVORITE) {
         R.color.keyscreen_favorite_enabled

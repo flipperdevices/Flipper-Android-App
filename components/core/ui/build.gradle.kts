@@ -3,6 +3,11 @@ plugins {
 }
 
 dependencies {
+    implementation(projects.components.bridge.dao.api)
+    implementation(projects.components.core.navigation)
+
+    implementation(libs.cicerone)
+
     implementation(libs.annotations)
     implementation(libs.appcompat)
 

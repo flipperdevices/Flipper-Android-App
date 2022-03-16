@@ -24,7 +24,7 @@ fun ComposableCategoryCard(
     onDeletedPress: () -> Unit
 ) {
     Card(
-        modifier = Modifier.padding(all = 14.dp),
+        modifier = Modifier.padding(top = 14.dp, start = 14.dp, end = 14.dp, bottom = 2.dp),
         shape = RoundedCornerShape(size = 10.dp)
     ) {
         ComposableCategoryList(onCategoryPress = onCategoryPress, onDeletedPress = onDeletedPress)

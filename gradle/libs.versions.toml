@@ -11,7 +11,7 @@ protobuf-gradle = "0.8.18"
 compose = "1.1.0"
 compose_accompanist = "0.23.0"
 compose_constraint = "1.0.0"
-room = "2.4.1"
+room = "2.4.2"
 # Crush after https://github.com/google/dagger/releases/tag/dagger-2.40.4
 dagger = "2.40.3"
 timber = "5.0.1"

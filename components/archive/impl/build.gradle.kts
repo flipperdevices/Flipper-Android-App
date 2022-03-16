@@ -1,5 +1,6 @@
 plugins {
     androidCompose
+    id("kotlin-parcelize")
     id("com.squareup.anvil")
     kotlin("kapt")
 }
