@@ -22,9 +22,9 @@ object ConnectionTabStateMapper {
                 selectedColor = DesignSystem.color.black_40,
                 unselectedColor = DesignSystem.color.black_30
             )
-            ConnectionStatusState.Connecting -> TabState.Static(
-                selectedIcon = R.drawable.ic_connecting_filled,
-                notSelectedIcon = R.drawable.ic_connecting,
+            ConnectionStatusState.Connecting -> TabState.Animated(
+                selectedIcon = R.raw.ic_connecting_filled,
+                notSelectedIcon = R.raw.ic_connecting,
                 textId = R.string.connection_status_connecting,
                 selectedColor = DesignSystem.color.black_40,
                 unselectedColor = DesignSystem.color.black_30,
@@ -38,13 +38,12 @@ object ConnectionTabStateMapper {
                 unselectedColor = DesignSystem.color.black_30,
                 unselectedColorIcon = DesignSystem.color.accent_secondary
             )
-            ConnectionStatusState.Synchronization -> TabState.Static(
-                selectedIcon = R.drawable.ic_syncing_filled,
-                notSelectedIcon = R.drawable.ic_syncing,
+            ConnectionStatusState.Synchronization -> TabState.Animated(
+                selectedIcon = R.raw.ic_syncing_filled,
+                notSelectedIcon = R.raw.ic_syncing,
                 textId = R.string.connection_status_syncing,
                 selectedColor = DesignSystem.color.accent_secondary,
                 unselectedColor = DesignSystem.color.black_30,
-                unselectedColorIcon = DesignSystem.color.accent_secondary,
                 textDotsAnimated = true
             )
             is ConnectionStatusState.Completed -> TabState.Static(
