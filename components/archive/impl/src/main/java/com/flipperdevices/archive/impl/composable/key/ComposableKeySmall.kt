@@ -24,11 +24,12 @@ import com.flipperdevices.core.ui.composable.ComposableKeyType
 )
 @Composable
 fun ComposableKeySmall(
+    modifier: Modifier = Modifier,
     keyPath: FlipperKeyPath = FlipperKeyPath.DUMMY,
     onKeyClick: () -> Unit = {}
 ) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .padding(horizontal = 7.dp, vertical = 6.dp)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },

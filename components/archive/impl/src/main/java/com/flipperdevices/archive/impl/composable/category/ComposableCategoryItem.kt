@@ -31,12 +31,12 @@ fun ComposableCategoryItem(
 ) {
     Row(
         modifier = Modifier
-            .padding(horizontal = 12.dp)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(),
                 onClick = { onPress(categoryItem) }
-            ),
+            )
+            .padding(horizontal = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         ComposableCategoryIcon(categoryItem.iconId, categoryItem.title)

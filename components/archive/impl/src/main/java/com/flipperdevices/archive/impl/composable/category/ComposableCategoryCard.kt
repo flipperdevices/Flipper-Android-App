@@ -1,9 +1,8 @@
 package com.flipperdevices.archive.impl.composable.category
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
@@ -40,19 +39,17 @@ private fun ComposableCategoryList(
     val categories by categoryViewModel.getCategoriesFlow().collectAsState()
     val deletedCategory by categoryViewModel.getDeletedFlow().collectAsState()
 
-    LazyColumn {
-        items(categories) {
+    Column() {
+        categories.forEach {
             ComposableCategoryItem(categoryItem = it, onPress = onCategoryPress)
         }
-        item {
-            Divider(
-                modifier = Modifier.fillMaxWidth(),
-                thickness = 1.dp,
-                color = colorResource(DesignSystem.color.black_12)
-            )
-        }
-        item(deletedCategory) {
-            ComposableCategoryItem(categoryItem = deletedCategory, onPress = { onDeletedPress() })
-        }
+
+        Divider(
+            modifier = Modifier.fillMaxWidth(),
+            thickness = 1.dp,
+            color = colorResource(DesignSystem.color.black_12)
+        )
+
+        ComposableCategoryItem(categoryItem = deletedCategory, onPress = { onDeletedPress() })
     }
 }
