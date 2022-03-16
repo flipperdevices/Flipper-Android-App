@@ -6,9 +6,11 @@ plugins {
 
 dependencies {
     implementation(projects.components.connection.api)
+    implementation(projects.components.bottombar.api)
 
     implementation(projects.components.core.di)
     implementation(projects.components.core.ui)
+    implementation(projects.components.core.preference)
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.service.api)
@@ -19,6 +21,7 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
+    implementation(libs.image.lottie)
 
     // Dagger deps
     implementation(libs.dagger)

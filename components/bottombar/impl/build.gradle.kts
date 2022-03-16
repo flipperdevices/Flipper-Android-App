@@ -12,6 +12,7 @@ dependencies {
     implementation(projects.components.core.ui)
 
     implementation(projects.components.info.api)
+    implementation(projects.components.connection.api)
     implementation(projects.components.archive.api)
     implementation(projects.components.inappnotification.api)
 
@@ -25,6 +26,7 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.pager)
     implementation(libs.compose.systemui)
+    implementation(libs.image.lottie)
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.lifecycle.runtime.ktx)

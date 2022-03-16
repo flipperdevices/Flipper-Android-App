@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="connection_status_ok_pic_desc">Synchronization finished</string>
-    <string name="connection_status_synchronization_title">Syncing…</string>
-    <string name="connection_status_synchronization_pic_desc">Synchronization in progress</string>
-    <string name="connection_status_bluetooth_pic_desc">Bluetooth connection established</string>
-    <string name="connection_status_bluetooth_connecting_pic_desc">Connecting to device…</string>
-    <string name="connection_status_bluetooth_connecting_title">Connecting…</string>
-    <string name="connection_status_bluetooth_disconnected_pic_desc">Device not connected</string>
-    <string name="connection_status_bluetooth_disconnected_title">No device</string>
+    <string name="connection_status_connected">Connected</string>
+    <string name="connection_status_not_connected">Not Connected</string>
+    <string name="connection_status_connecting">Connecting</string>
+    <string name="connection_status_no_device">No Device</string>
+    <string name="connection_status_syncing">Syncing</string>
+    <string name="connection_status_synced">Synced</string>
+    <string name="connection_status_sync_failed">Sync Failed</string>
 
-    <string name="connection_tab_search_pic_desc">Search</string>
-    <string name="connection_tab_menu_pic_desc">Menu</string>
 
     <string name="error_connect_bluetooth_disabled">Bluetooth disabled, please enable it</string>
     <string name="error_connect_device_not_stored">Binding for device is invalid, please forget device and connect again</string>
