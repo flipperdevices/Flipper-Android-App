@@ -1,11 +1,22 @@
 package com.flipperdevices.bottombar.impl.main.compose
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Icon
+import androidx.compose.material.LocalContentAlpha
+import androidx.compose.material.LocalContentColor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.paint
+import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.toolingGraphicsLayer
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -28,14 +39,25 @@ private fun ComposableTabIconStatic(
     tabState: TabState.Static,
     selected: Boolean
 ) {
-    Icon(
-        modifier = modifier
-            .fillMaxSize(),
-        painter = painterResourceByKey(
-            if (selected) tabState.selectedIcon
-            else tabState.notSelectedIcon
-        ),
-        contentDescription = stringResource(tabState.textId),
+    val description = stringResource(tabState.textId)
+    val tintColor = LocalContentColor.current.copy(alpha = LocalContentAlpha.current)
+
+    Box(
+        modifier
+            .fillMaxSize()
+            .toolingGraphicsLayer()
+            .paint(
+                painterResourceByKey(
+                    if (selected) tabState.selectedIcon
+                    else tabState.notSelectedIcon
+                ),
+                colorFilter = ColorFilter.tint(tintColor, BlendMode.DstIn),
+                contentScale = ContentScale.Fit
+            )
+            .semantics {
+                this.contentDescription = description
+                this.role = Role.Image
+            }
     )
 }
 
