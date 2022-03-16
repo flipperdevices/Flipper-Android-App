@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -26,7 +27,9 @@ private const val GRID_WIDTH = 2
 private const val GRID_ROW_WEIGHT = 1f / GRID_WIDTH
 
 @Suppress("FunctionName")
-fun LazyListScope.ComposableKeysGrid(keys: List<FlipperKey>) {
+fun LazyListScope.ComposableKeysGrid(
+    keys: List<FlipperKey>
+) {
     items(keys.windowed(GRID_WIDTH, GRID_WIDTH, partialWindows = true)) { items ->
         Row(
             modifier = Modifier
@@ -48,15 +51,20 @@ fun LazyListScope.ComposableKeysGrid(keys: List<FlipperKey>) {
 
 @Composable
 fun ComposableFavoriteKeysTitle() {
-    Row(modifier = Modifier.padding(top = 24.dp, start = 14.dp)) {
+    Row(
+        modifier = Modifier.padding(top = 24.dp, start = 14.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         Text(
-            text = stringResource(R.string.archive_tab_general_all_title),
+            text = stringResource(R.string.archive_tab_general_favorite_title),
             fontWeight = FontWeight.W700,
             fontSize = 16.sp,
-            color = colorResource(com.flipperdevices.core.ui.R.color.black_100)
+            color = colorResource(DesignSystem.color.black_100)
         )
         Icon(
-            modifier = Modifier.size(size = 16.dp),
+            modifier = Modifier
+                .padding(horizontal = 6.dp)
+                .size(size = 20.dp),
             painter = painterResource(DesignSystem.drawable.ic_star_enabled),
             tint = colorResource(DesignSystem.color.favorite_enabled),
             contentDescription = null

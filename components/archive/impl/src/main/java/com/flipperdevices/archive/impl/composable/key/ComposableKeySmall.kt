@@ -12,29 +12,28 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.flipperdevices.archive.impl.viewmodel.KeyItemViewModel
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.ui.composable.ComposableKeyType
+import com.flipperdevices.core.ui.composable.LocalRouter
 
-@Preview(
-    showBackground = true,
-    showSystemUi = true
-)
 @Composable
 fun ComposableKeySmall(
     modifier: Modifier = Modifier,
     keyPath: FlipperKeyPath = FlipperKeyPath.DUMMY,
-    onKeyClick: () -> Unit = {}
+    keyItemViewModel: KeyItemViewModel = viewModel()
 ) {
+    val router = LocalRouter.current
     Card(
         modifier = modifier
             .padding(horizontal = 7.dp, vertical = 6.dp)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(),
-                onClick = onKeyClick
+                onClick = { keyItemViewModel.open(keyPath, router) }
             )
     ) {
         Column() {

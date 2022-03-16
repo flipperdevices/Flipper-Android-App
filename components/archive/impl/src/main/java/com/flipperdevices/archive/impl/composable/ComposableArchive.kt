@@ -10,5 +10,5 @@ import com.flipperdevices.archive.impl.composable.page.GeneralPage
 )
 @Composable
 fun ComposableArchive() {
-    GeneralPage(onKeyClick = {}, onCategoryPress = {}, onDeletedPress = {})
+    GeneralPage(onCategoryPress = {}, onDeletedPress = {})
 }

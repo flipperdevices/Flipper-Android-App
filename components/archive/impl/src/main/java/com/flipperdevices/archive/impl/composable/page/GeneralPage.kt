@@ -31,7 +31,6 @@ import com.flipperdevices.core.ui.R as DesignSystem
 @Composable
 fun GeneralPage(
     tabViewModel: GeneralTabViewModel = viewModel(),
-    onKeyClick: (FlipperKey) -> Unit,
     onCategoryPress: (CategoryItem) -> Unit,
     onDeletedPress: () -> Unit
 ) {
@@ -51,21 +50,18 @@ fun GeneralPage(
                 KeyCatalog(favoriteKeys, keys)
             }
         }
-        Box(
-            modifier = Modifier
-                .weight(weight = 1f)
-                .fillMaxWidth(),
-            contentAlignment = Alignment.Center
-        ) {
-            if (!isKeysPresented) {
-                ComposableNoKeys()
-            }
+
+        if (!isKeysPresented) {
+            ComposableNoKeys()
         }
     }
 }
 
 @Suppress("FunctionName")
-private fun LazyListScope.KeyCatalog(favoriteKeys: List<FlipperKey>, otherKeys: List<FlipperKey>?) {
+private fun LazyListScope.KeyCatalog(
+    favoriteKeys: List<FlipperKey>,
+    otherKeys: List<FlipperKey>?
+) {
     if (!favoriteKeys.isNullOrEmpty()) {
         item {
             ComposableFavoriteKeysTitle()
@@ -82,13 +78,20 @@ private fun LazyListScope.KeyCatalog(favoriteKeys: List<FlipperKey>, otherKeys: 
 }
 
 @Composable
-private fun ComposableNoKeys() {
-    Text(
-        text = stringResource(R.string.archive_content_empty),
-        fontWeight = FontWeight.W400,
-        fontSize = 16.sp,
-        color = colorResource(DesignSystem.color.black_40)
-    )
+private fun ColumnScope.ComposableNoKeys() {
+    Box(
+        modifier = Modifier
+            .weight(weight = 1f)
+            .fillMaxWidth(),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = stringResource(R.string.archive_content_empty),
+            fontWeight = FontWeight.W400,
+            fontSize = 16.sp,
+            color = colorResource(DesignSystem.color.black_40)
+        )
+    }
 }
 
 @Composable
