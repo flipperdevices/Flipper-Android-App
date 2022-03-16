@@ -20,7 +20,7 @@ import com.flipperdevices.bottombar.model.TabState
 fun ComposeMaterialYouTab(
     tabState: TabState,
     selected: Boolean = false,
-    onClick: (() -> Unit),
+    onClick: (() -> Unit)
 ) {
     Box(
         Modifier.clickable(

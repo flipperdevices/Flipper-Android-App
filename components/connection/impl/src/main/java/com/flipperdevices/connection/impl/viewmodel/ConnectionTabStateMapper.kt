@@ -53,7 +53,7 @@ object ConnectionTabStateMapper {
                 textId = R.string.connection_status_synced,
                 selectedColor = DesignSystem.color.accent_secondary,
                 unselectedColor = DesignSystem.color.black_30,
-                unselectedColorIcon = DesignSystem.color.accent_secondary,
+                unselectedColorIcon = DesignSystem.color.accent_secondary
             )
         }
     }
