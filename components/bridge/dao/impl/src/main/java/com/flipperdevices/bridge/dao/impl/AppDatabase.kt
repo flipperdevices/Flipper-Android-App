@@ -28,7 +28,7 @@ import com.flipperdevices.bridge.dao.impl.repository.KeyDao
             to = 5
         )
     ],
-    version = 5,
+    version = 6,
     exportSchema = true
 )
 @TypeConverters(

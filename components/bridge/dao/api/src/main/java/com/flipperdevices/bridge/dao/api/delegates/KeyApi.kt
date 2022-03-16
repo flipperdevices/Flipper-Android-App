@@ -18,6 +18,8 @@ interface KeyApi {
 
     suspend fun getKey(keyPath: FlipperKeyPath): FlipperKey?
 
+    fun getDeletedKeyAsFlow(): Flow<List<FlipperKey>>
+
     /**
      * We try to find the nearest name that has no conflict.
      * Example:

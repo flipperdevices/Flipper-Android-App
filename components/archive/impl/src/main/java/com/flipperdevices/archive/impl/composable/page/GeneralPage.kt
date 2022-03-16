@@ -1,89 +1,145 @@
 package com.flipperdevices.archive.impl.composable.page
 
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.archive.impl.R
+import com.flipperdevices.archive.impl.composable.category.ComposableCategoryCard
+import com.flipperdevices.archive.impl.model.CategoryItem
 import com.flipperdevices.archive.impl.viewmodel.GeneralTabViewModel
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
+import com.flipperdevices.bridge.synchronization.api.SynchronizationState
+import com.flipperdevices.core.ui.R as DesignSystem
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
-fun GeneralPage(tabViewModel: GeneralTabViewModel = viewModel()) {
+fun GeneralPage(
+    tabViewModel: GeneralTabViewModel = viewModel(),
+    onCategoryPress: (CategoryItem) -> Unit,
+    onDeletedPress: () -> Unit
+) {
     val keys by tabViewModel.getKeys().collectAsState()
     val favoriteKeys by tabViewModel.getFavoriteKeys().collectAsState()
+    val synchronizationState by tabViewModel.getSynchronizationState().collectAsState()
+    val isKeysPresented = !favoriteKeys.isNullOrEmpty() || !keys.isNullOrEmpty()
 
-    SwipeRefresh(
-        state = rememberSwipeRefreshState(false),
-        onRefresh = { tabViewModel.refresh() }
-    ) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 18.dp),
-            verticalArrangement = Arrangement.spacedBy(space = 12.dp)
+    Column(verticalArrangement = Arrangement.Top) {
+        SwipeRefresh(
+            state = rememberSwipeRefreshState(false),
+            onRefresh = tabViewModel::refresh
         ) {
-            FavoriteList(favoriteKeys) {
-                tabViewModel.onKeyClick(it)
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                item {
+                    ComposableCategoryCard(onCategoryPress, onDeletedPress)
+                }
+                if (isKeysPresented) {
+                    KeyCatalog(favoriteKeys, keys)
+                }
             }
-            AllList(favoriteKeys, keys) {
-                tabViewModel.onKeyClick(it)
-            }
+        }
+
+        if (!isKeysPresented) {
+            if (synchronizationState == SynchronizationState.IN_PROGRESS) {
+                ComposableProgress()
+            } else ComposableNoKeys()
         }
     }
 }
 
-@SuppressWarnings("FunctionNaming")
-private fun LazyListScope.FavoriteList(
-    keys: List<FlipperKey>,
-    onKeyClick: (FlipperKey) -> Unit
+@Suppress("FunctionName")
+private fun LazyListScope.KeyCatalog(
+    favoriteKeys: List<FlipperKey>,
+    otherKeys: List<FlipperKey>?
 ) {
-    if (keys.isEmpty()) {
-        return
+    if (!favoriteKeys.isNullOrEmpty()) {
+        item {
+            ComposableFavoriteKeysTitle()
+        }
+        ComposableKeysGrid(favoriteKeys)
     }
-    item {
+
+    if (!otherKeys.isNullOrEmpty()) {
+        item {
+            ComposableAllKeysTitle()
+        }
+        ComposableKeysGrid(otherKeys)
+    }
+}
+
+@Composable
+private fun ColumnScope.ComposableNoKeys() {
+    Box(
+        modifier = Modifier
+            .weight(weight = 1f)
+            .fillMaxWidth(),
+        contentAlignment = Alignment.Center
+    ) {
         Text(
-            modifier = Modifier.padding(start = 24.dp, end = 24.dp, bottom = 14.dp),
-            text = stringResource(R.string.archive_tab_general_favorite_title),
-            fontSize = 28.sp,
-            fontWeight = FontWeight.Bold
+            text = stringResource(R.string.archive_content_empty),
+            fontWeight = FontWeight.W400,
+            fontSize = 16.sp,
+            color = colorResource(DesignSystem.color.black_40)
         )
     }
-
-    KeysList(keys, onKeyClick)
 }
 
-@SuppressWarnings("FunctionNaming")
-private fun LazyListScope.AllList(
-    favoriteKeys: List<FlipperKey>,
-    keys: List<FlipperKey>?,
-    onKeyClick: (FlipperKey) -> Unit
-) {
-    if (favoriteKeys.isNotEmpty()) {
-        item {
-            Text(
-                modifier = Modifier.padding(horizontal = 24.dp, vertical = 14.dp),
-                text = stringResource(R.string.archive_tab_general_all_title),
-                fontSize = 28.sp,
-                fontWeight = FontWeight.Bold
+@Composable
+private fun ColumnScope.ComposableProgress() {
+    Column(
+        modifier = Modifier
+            .weight(weight = 1f)
+            .fillMaxWidth(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        val infiniteTransition = rememberInfiniteTransition()
+        val angle by infiniteTransition.animateFloat(
+            initialValue = 0F,
+            targetValue = 360F,
+            animationSpec = infiniteRepeatable(
+                animation = tween(durationMillis = 2000, easing = LinearEasing)
             )
-        }
-    }
-
-    KeysList(keys) {
-        onKeyClick(it)
+        )
+        Icon(
+            modifier = Modifier.rotate(angle),
+            painter = painterResource(R.drawable.ic_progress),
+            tint = colorResource(DesignSystem.color.accent_secondary),
+            contentDescription = stringResource(R.string.archive_sync_progress)
+        )
+        Text(
+            modifier = Modifier.padding(top = 8.dp),
+            text = stringResource(R.string.archive_sync_progress),
+            fontSize = 16.sp,
+            color = colorResource(DesignSystem.color.black_40)
+        )
     }
 }

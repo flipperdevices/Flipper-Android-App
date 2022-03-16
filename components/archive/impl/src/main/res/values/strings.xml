@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="archive_key_icon_pic_desc">Key type icon</string>
-    <string name="archive_tab_general_title">All</string>
-    <string name="archive_content_empty">You don\'t have this type of key yet</string>
+    <string name="archive_content_empty">You have no keys yet</string>
     <string name="archive_tab_general_favorite_title">Favorites</string>
     <string name="archive_tab_general_all_title">All</string>
+    <string name="archive_tab_deleted">Deleted</string>
+    <string name="archive_sync_progress">Syncing with Flipper…</string>
 </resources>

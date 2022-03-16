@@ -20,6 +20,9 @@ interface KeyDao {
     @Query("SELECT * FROM keys")
     suspend fun getAllWithDeleted(): List<Key>
 
+    @Query("SELECT * FROM keys WHERE deleted = 1")
+    fun subscribeOnDeletedKeys(): Flow<List<Key>>
+
     @Query("SELECT * FROM keys WHERE deleted = 0 ")
     fun subscribe(): Flow<List<Key>>
 
