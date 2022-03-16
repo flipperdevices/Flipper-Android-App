@@ -114,6 +114,7 @@ private fun Project.suppressOptIn() {
                     "-Xopt-in=com.squareup.anvil.annotations.ExperimentalAnvilApi",
                     "-Xopt-in=kotlin.time.ExperimentalTime",
                     "-Xopt-in=kotlin.RequiresOptIn",
+                    "-Xopt-in=androidx.compose.animation.ExperimentalAnimationApi",
                 )
             }
         }

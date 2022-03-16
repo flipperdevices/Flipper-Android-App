@@ -18,10 +18,10 @@ import com.flipperdevices.bottombar.impl.main.subnavigation.OnDoublePressOnTab
 import com.flipperdevices.bottombar.impl.main.viewmodel.InAppNotificationState
 import com.flipperdevices.bottombar.impl.main.viewmodel.InAppNotificationViewModel
 import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
+import com.flipperdevices.connection.api.ConnectionApi
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.navigation.delegates.OnBackPressListener
 import com.flipperdevices.inappnotification.api.InAppNotificationRenderer
-import com.flipperdevices.inappnotification.api.model.InAppNotification
 import javax.inject.Inject
 
 class BottomNavigationFragment : Fragment(), OnBackPressListener {
@@ -32,6 +32,9 @@ class BottomNavigationFragment : Fragment(), OnBackPressListener {
 
     @Inject
     lateinit var notificationRenderer: InAppNotificationRenderer
+
+    @Inject
+    lateinit var connectionApi: ConnectionApi
 
     init {
         ComponentHolder.component<BottomBarComponent>().inject(this)
@@ -53,7 +56,7 @@ class BottomNavigationFragment : Fragment(), OnBackPressListener {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 val selectedItem by bottomNavigationViewModel.selectedTab.collectAsState()
-                ComposeBottomBar(selectedItem) {
+                ComposeBottomBar(connectionApi, selectedItem) {
                     selectTab(it)
                 }
             }
@@ -73,7 +76,7 @@ class BottomNavigationFragment : Fragment(), OnBackPressListener {
         }
 
         if (childFragmentManager.findFragmentById(R.id.fragment_container) == null) {
-            selectTab(FlipperBottomTab.STORAGE)
+            selectTab(FlipperBottomTab.ARCHIVE)
         }
     }
 
