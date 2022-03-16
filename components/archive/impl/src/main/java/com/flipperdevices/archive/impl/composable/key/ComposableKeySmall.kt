@@ -36,7 +36,7 @@ fun ComposableKeySmall(
                 onClick = { keyItemViewModel.open(keyPath, router) }
             )
     ) {
-        Column() {
+        Column {
             ComposableKeyType(keyPath.fileType)
             Text(
                 modifier = Modifier.padding(

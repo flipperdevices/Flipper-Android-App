@@ -39,7 +39,7 @@ private fun ComposableCategoryList(
     val categories by categoryViewModel.getCategoriesFlow().collectAsState()
     val deletedCategory by categoryViewModel.getDeletedFlow().collectAsState()
 
-    Column() {
+    Column {
         categories.forEach {
             ComposableCategoryItem(categoryItem = it, onPress = onCategoryPress)
         }
