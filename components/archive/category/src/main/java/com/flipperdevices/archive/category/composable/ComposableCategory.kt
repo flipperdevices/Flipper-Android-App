@@ -28,6 +28,7 @@ import com.flipperdevices.archive.model.CategoryType
 import com.flipperdevices.archive.shared.composable.ComposableAppBar
 import com.flipperdevices.archive.shared.composable.ComposableKeyCard
 import com.flipperdevices.bridge.dao.api.model.FlipperFileType
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.core.ui.composable.LocalRouter
@@ -61,19 +62,26 @@ fun ComposableCategory(
         when (localCategoryState) {
             is CategoryState.Loaded -> if (localCategoryState.keys.isEmpty()) {
                 CategoryEmpty(contentModifier)
-            } else CategoryList(contentModifier, localCategoryState.keys)
+            } else CategoryList(contentModifier, categoryViewModel, localCategoryState.keys)
             CategoryState.Loading -> CategoryLoadingProgress(contentModifier)
         }
     }
 }
 
 @Composable
-private fun CategoryList(modifier: Modifier, keys: List<FlipperKeyParsed>) {
+private fun CategoryList(
+    modifier: Modifier,
+    categoryViewModel: CategoryViewModel,
+    keys: List<Pair<FlipperKeyParsed, FlipperKeyPath>>
+) {
+    val router = LocalRouter.current
     LazyColumn(
         modifier.padding(top = 14.dp)
     ) {
-        items(keys) { flipperKeyParsed ->
-            ComposableKeyCard(Modifier.padding(bottom = 14.dp), flipperKeyParsed)
+        items(keys) { (flipperKeyParsed, keyPath) ->
+            ComposableKeyCard(Modifier.padding(bottom = 14.dp), flipperKeyParsed) {
+                categoryViewModel.openKeyScreen(router, keyPath)
+            }
         }
     }
 }

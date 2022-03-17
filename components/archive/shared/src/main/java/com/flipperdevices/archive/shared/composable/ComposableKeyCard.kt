@@ -1,5 +1,7 @@
 package com.flipperdevices.archive.shared.composable
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
@@ -8,7 +10,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -22,11 +26,20 @@ import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.core.ui.composable.ComposableKeyType
 
 @Composable
-fun ComposableKeyCard(modifier: Modifier, flipperKeyParsed: FlipperKeyParsed) {
+fun ComposableKeyCard(
+    modifier: Modifier,
+    flipperKeyParsed: FlipperKeyParsed,
+    onCardClicked: () -> Unit
+) {
     Card(
         modifier = modifier
             .padding(horizontal = 14.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = rememberRipple(bounded = false),
+                onClick = onCardClicked
+            ),
         shape = RoundedCornerShape(size = 10.dp)
     ) {
         Column() {

@@ -7,11 +7,13 @@ plugins {
 dependencies {
     implementation(projects.components.archive.api)
     implementation(projects.components.archive.shared)
-    implementation(projects.components.bridge.dao.api)
 
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.di)
     implementation(projects.components.core.ui)
+
+    implementation(projects.components.bridge.dao.api)
+    implementation(projects.components.keyscreen.api)
 
     implementation(libs.cicerone)
     implementation(libs.appcompat)
