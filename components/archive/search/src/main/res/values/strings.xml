@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="search_field_hint">Search by name and note</string>
+    <string name="search_not_found_title">Nothing found</string>
+    <string name="search_not_found_description">There are no keys with this name or note</string>
 </resources>

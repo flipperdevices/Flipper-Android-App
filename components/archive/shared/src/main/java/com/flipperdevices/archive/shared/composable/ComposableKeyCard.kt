@@ -42,7 +42,7 @@ fun ComposableKeyCard(
             ),
         shape = RoundedCornerShape(size = 10.dp)
     ) {
-        Column() {
+        Column {
             ComposableKeyCardContent(flipperKeyParsed)
         }
     }

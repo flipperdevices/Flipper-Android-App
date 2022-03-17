@@ -41,14 +41,13 @@ fun ComposableAppBar(
 ) {
     ComposableAppBarInternal(title, onBack) {
         Icon(
-            modifier = Modifier
+            modifier = it
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = rememberRipple(bounded = false),
                     onClick = onIconClick
                 )
-                .size(size = 24.dp)
-                .then(it),
+                .size(size = 24.dp),
             painter = painterResource(iconId),
             contentDescription = null
         )
@@ -72,14 +71,14 @@ private fun ComposableAppBarInternal(
         modifier = Modifier
             .fillMaxWidth()
             .background(appBarColor),
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         if (onBack != null) {
             AppBarBackArrow(onBack)
         }
         Text(
             modifier = Modifier
-                .padding(vertical = 14.dp, horizontal = 8.dp)
+                .padding(horizontal = 14.dp, vertical = 8.dp)
                 .weight(weight = 1f),
             text = title,
             fontSize = 20.sp,

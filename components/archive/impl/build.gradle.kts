@@ -7,6 +7,7 @@ plugins {
 
 dependencies {
     implementation(projects.components.archive.api)
+    implementation(projects.components.archive.shared)
 
     implementation(projects.components.core.di)
     implementation(projects.components.core.ui)

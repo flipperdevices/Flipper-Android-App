@@ -68,6 +68,13 @@ class KeyApiImpl @Inject constructor(
         return@withContext keysDao.getByPath(keyPath)?.toFlipperKey()
     }
 
+    override fun search(text: String): Flow<List<FlipperKey>> {
+        val searchQuery = "%$text%"
+        return keysDao.search(searchQuery).map { list ->
+            list.map { it.toFlipperKey() }
+        }
+    }
+
     override fun getDeletedKeyAsFlow(): Flow<List<FlipperKey>> {
         return keysDao.subscribeOnDeletedKeys().map { list ->
             list.map { it.toFlipperKey() }

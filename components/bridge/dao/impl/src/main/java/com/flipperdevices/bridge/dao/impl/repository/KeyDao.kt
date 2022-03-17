@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.Flow
  * By default all method exclude deleted field
  */
 @Dao
+@Suppress("TooManyFunctions")
 interface KeyDao {
     @Query("SELECT * FROM keys WHERE deleted = 0")
     suspend fun getAll(): List<Key>
@@ -47,4 +48,7 @@ interface KeyDao {
 
     @Query("UPDATE keys SET deleted = 1 WHERE path = :keyPath AND deleted = 0")
     suspend fun markDeleted(keyPath: FlipperKeyPath)
+
+    @Query("SELECT * FROM keys WHERE deleted = 0 AND (path LIKE :query OR notes LIKE :query)")
+    fun search(query: String): Flow<List<Key>>
 }

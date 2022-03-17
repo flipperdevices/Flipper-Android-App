@@ -48,7 +48,7 @@ fun ComposableCategory(
     val localCategoryState = categoryState
     val router = LocalRouter.current
 
-    Column() {
+    Column {
         ComposableAppBar(
             title = when (categoryType) {
                 is CategoryType.ByFileType -> categoryType.fileType.humanReadableName

@@ -7,7 +7,11 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -23,7 +27,7 @@ import com.flipperdevices.core.ui.R as DesignSystem
 internal fun ComposableSearchTextField(
     modifier: Modifier,
     text: String,
-    onTextChange: (String) -> Unit,
+    onTextChange: (String) -> Unit
 ) {
     SearchTextBox(
         modifier,
@@ -55,9 +59,10 @@ private fun SearchTextBox(
             }
         }
     }
+    val focusRequester = remember { FocusRequester() }
 
     BasicTextField(
-        modifier = modifier,
+        modifier = modifier.focusRequester(focusRequester),
         value = text,
         onValueChange = onTextChange,
         decorationBox = decorationBox,
@@ -70,6 +75,10 @@ private fun SearchTextBox(
             focusManager.clearFocus()
         })
     )
+
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+    }
 }
 
 @Composable
