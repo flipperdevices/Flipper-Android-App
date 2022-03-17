@@ -4,5 +4,6 @@
     <string name="archive_tab_general_favorite_title">Favorites</string>
     <string name="archive_tab_general_all_title">All</string>
     <string name="archive_tab_deleted">Deleted</string>
+    <string name="archive_title">Archive</string>
     <string name="archive_sync_progress">Syncing with Flipper…</string>
 </resources>

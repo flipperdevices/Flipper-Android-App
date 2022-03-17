@@ -2,6 +2,7 @@ package com.flipperdevices.archive.impl.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.flipperdevices.archive.api.SearchApi
 import com.flipperdevices.archive.impl.di.ArchiveComponent
 import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.delegates.KeyApi
@@ -9,6 +10,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.core.di.ComponentHolder
+import com.github.terrakok.cicerone.Router
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,6 +28,9 @@ class GeneralTabViewModel : ViewModel() {
 
     @Inject
     lateinit var synchronizationApi: SynchronizationApi
+
+    @Inject
+    lateinit var searchApi: SearchApi
 
     private val keys = MutableStateFlow<List<FlipperKey>>(emptyList())
     private val favoriteKeys = MutableStateFlow<List<FlipperKey>>(emptyList())
@@ -51,6 +56,10 @@ class GeneralTabViewModel : ViewModel() {
     fun getKeys(): StateFlow<List<FlipperKey>?> = keys
     fun getFavoriteKeys(): StateFlow<List<FlipperKey>> = favoriteKeys
     fun getSynchronizationState(): StateFlow<SynchronizationState> = synchronizationState
+
+    fun onOpenSearch(router: Router) {
+        router.navigateTo(searchApi.getSearchScreen())
+    }
 
     fun refresh() {
         synchronizationApi.startSynchronization()

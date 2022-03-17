@@ -65,6 +65,9 @@ include(
 
     ":components:archive:api",
     ":components:archive:impl",
+    ":components:archive:category",
+    ":components:archive:search",
+    ":components:archive:shared",
 
     ":components:connection:api",
     ":components:connection:impl",

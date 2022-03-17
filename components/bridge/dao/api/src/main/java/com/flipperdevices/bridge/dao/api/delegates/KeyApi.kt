@@ -20,6 +20,8 @@ interface KeyApi {
 
     fun getDeletedKeyAsFlow(): Flow<List<FlipperKey>>
 
+    fun search(text: String): Flow<List<FlipperKey>>
+
     /**
      * We try to find the nearest name that has no conflict.
      * Example:

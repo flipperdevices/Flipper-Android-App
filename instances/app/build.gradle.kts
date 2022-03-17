@@ -44,6 +44,8 @@ dependencies {
 
     implementation(projects.components.archive.api)
     implementation(projects.components.archive.impl)
+    implementation(projects.components.archive.category)
+    implementation(projects.components.archive.search)
 
     implementation(projects.components.connection.api)
     implementation(projects.components.connection.impl)
