@@ -18,23 +18,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.archive.impl.model.CategoryItem
+import com.flipperdevices.archive.impl.viewmodel.CategoryViewModel
 import com.flipperdevices.core.ui.R as DesignSystem
+import com.flipperdevices.core.ui.composable.LocalRouter
 
 @Composable
 fun ComposableCategoryItem(
     categoryItem: CategoryItem,
-    onPress: (CategoryItem) -> Unit
+    categoryViewModel: CategoryViewModel
 ) {
+    val router = LocalRouter.current
+
     Row(
         modifier = Modifier
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(),
-                onClick = { onPress(categoryItem) }
+                onClick = { categoryViewModel.onCategoryClick(router, categoryItem) }
             )
             .padding(horizontal = 12.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -98,14 +101,4 @@ private fun ComposableCategoryCounter(counter: Int?) {
             color = colorResource(DesignSystem.color.black_30)
         )
     }
-}
-
-@Preview(
-    showSystemUi = true,
-    showBackground = true
-)
-@Composable
-@Suppress("UnusedPrivateMember")
-private fun ComposableCategoryItemPreview() {
-    ComposableCategoryItem(CategoryItem(null, "Test Protocol", count = null)) {}
 }

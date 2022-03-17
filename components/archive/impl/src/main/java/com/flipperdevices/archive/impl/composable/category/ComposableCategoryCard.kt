@@ -13,35 +13,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.flipperdevices.archive.impl.model.CategoryItem
 import com.flipperdevices.archive.impl.viewmodel.CategoryViewModel
 import com.flipperdevices.core.ui.R as DesignSystem
 
 @Composable
-fun ComposableCategoryCard(
-    onCategoryPress: (CategoryItem) -> Unit,
-    onDeletedPress: () -> Unit
-) {
+fun ComposableCategoryCard() {
     Card(
         modifier = Modifier.padding(top = 14.dp, start = 14.dp, end = 14.dp, bottom = 2.dp),
         shape = RoundedCornerShape(size = 10.dp)
     ) {
-        ComposableCategoryList(onCategoryPress = onCategoryPress, onDeletedPress = onDeletedPress)
+        ComposableCategoryList()
     }
 }
 
 @Composable
 private fun ComposableCategoryList(
-    categoryViewModel: CategoryViewModel = viewModel(),
-    onCategoryPress: (CategoryItem) -> Unit,
-    onDeletedPress: () -> Unit
+    categoryViewModel: CategoryViewModel = viewModel()
 ) {
     val categories by categoryViewModel.getCategoriesFlow().collectAsState()
     val deletedCategory by categoryViewModel.getDeletedFlow().collectAsState()
 
     Column {
         categories.forEach {
-            ComposableCategoryItem(categoryItem = it, onPress = onCategoryPress)
+            ComposableCategoryItem(categoryItem = it, categoryViewModel = categoryViewModel)
         }
 
         Divider(
@@ -50,6 +44,9 @@ private fun ComposableCategoryList(
             color = colorResource(DesignSystem.color.black_12)
         )
 
-        ComposableCategoryItem(categoryItem = deletedCategory, onPress = { onDeletedPress() })
+        ComposableCategoryItem(
+            categoryItem = deletedCategory,
+            categoryViewModel = categoryViewModel
+        )
     }
 }

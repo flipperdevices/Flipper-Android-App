@@ -30,7 +30,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.archive.impl.R
 import com.flipperdevices.archive.impl.composable.category.ComposableCategoryCard
-import com.flipperdevices.archive.impl.model.CategoryItem
 import com.flipperdevices.archive.impl.viewmodel.GeneralTabViewModel
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
@@ -40,9 +39,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 fun GeneralPage(
-    tabViewModel: GeneralTabViewModel = viewModel(),
-    onCategoryPress: (CategoryItem) -> Unit,
-    onDeletedPress: () -> Unit
+    tabViewModel: GeneralTabViewModel = viewModel()
 ) {
     val keys by tabViewModel.getKeys().collectAsState()
     val favoriteKeys by tabViewModel.getFavoriteKeys().collectAsState()
@@ -59,7 +56,7 @@ fun GeneralPage(
                     .fillMaxWidth()
             ) {
                 item {
-                    ComposableCategoryCard(onCategoryPress, onDeletedPress)
+                    ComposableCategoryCard()
                 }
                 if (isKeysPresented) {
                     KeyCatalog(favoriteKeys, keys)
