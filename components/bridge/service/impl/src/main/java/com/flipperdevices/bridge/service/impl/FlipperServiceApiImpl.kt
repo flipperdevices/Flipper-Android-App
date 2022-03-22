@@ -82,6 +82,7 @@ class FlipperServiceApiImpl(
     private suspend fun connectToDeviceOnStartup(deviceId: String) {
         if (deviceId.isBlank()) {
             error { "Flipper id not found in storage" }
+            connectDelegate.disconnect()
             serviceErrorListener.onError(FlipperBleServiceError.CONNECT_DEVICE_NOT_STORED)
             return
         }
