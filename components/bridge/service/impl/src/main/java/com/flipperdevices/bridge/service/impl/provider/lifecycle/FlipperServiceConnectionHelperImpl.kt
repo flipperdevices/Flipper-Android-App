@@ -5,10 +5,17 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
+import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.service.impl.FlipperService
 import com.flipperdevices.bridge.service.impl.FlipperServiceBinder
+import com.flipperdevices.bridge.service.impl.di.FlipperServiceComponent
+import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.preference.pb.Settings
+import javax.inject.Inject
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 
 class FlipperServiceConnectionHelperImpl(
     private val applicationContext: Context,
@@ -21,6 +28,13 @@ class FlipperServiceConnectionHelperImpl(
     override val TAG = "FlipperServiceConnectionHelper"
     override var serviceBinder: FlipperServiceBinder? = null
         private set
+
+    @Inject
+    lateinit var dataStoreSettings: DataStore<Settings>
+
+    init {
+        ComponentHolder.component<FlipperServiceComponent>().inject(this)
+    }
 
     // true if we wait bind answer from android
     private var isRequestedForBind: Boolean = false
@@ -70,15 +84,16 @@ class FlipperServiceConnectionHelperImpl(
             return
         }
 
-        // Without it service destroy after unbind
-        val componentName =
+        if (runBlocking { dataStoreSettings.data.first() }.usedForegroundService) {
+            // Without it service destroy after unbind
             applicationContext.startService(Intent(applicationContext, FlipperService::class.java))
+        }
         val bindSuccessful = applicationContext.bindService(
             Intent(applicationContext, FlipperService::class.java), this,
             Context.BIND_AUTO_CREATE or Context.BIND_IMPORTANT
         )
         isRequestedForBind = true
-        info { "Start service. bindSuccessful is $bindSuccessful, componentName is $componentName" }
+        info { "Start service. bindSuccessful is $bindSuccessful" }
     }
 
     @Synchronized
@@ -86,11 +101,13 @@ class FlipperServiceConnectionHelperImpl(
         info { "#disconnect" }
         val serviceRunning = serviceBinder != null || isRequestedForBind
         if (serviceRunning) {
-            info { "Stop service" }
-            val stopIntent = Intent(applicationContext, FlipperService::class.java).apply {
-                action = FlipperService.ACTION_STOP
+            if (runBlocking { dataStoreSettings.data.first() }.usedForegroundService) {
+                info { "Stop service" }
+                val stopIntent = Intent(applicationContext, FlipperService::class.java).apply {
+                    action = FlipperService.ACTION_STOP
+                }
+                applicationContext.startService(stopIntent)
             }
-            applicationContext.startService(stopIntent)
 
             applicationContext.unbindService(this)
         }
