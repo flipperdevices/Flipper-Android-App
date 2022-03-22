@@ -2,7 +2,7 @@ package com.flipperdevices.bridge.service.impl
 
 import android.bluetooth.BluetoothDevice
 import android.content.Context
-import android.content.SharedPreferences
+import androidx.datastore.core.DataStore
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.flipperdevices.bridge.api.error.FlipperBleServiceError
@@ -16,10 +16,12 @@ import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.preference.FlipperSharedPreferencesKey
+import com.flipperdevices.core.preference.pb.PairSettings
+import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 import kotlinx.coroutines.TimeoutCancellationException
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import no.nordicsemi.android.ble.exception.BluetoothDisabledException
 
 class FlipperServiceApiImpl(
@@ -30,13 +32,14 @@ class FlipperServiceApiImpl(
     override val TAG = "FlipperServiceApi"
 
     @Inject
-    lateinit var sharedPreferences: SharedPreferences
+    lateinit var pairSettingsStore: DataStore<PairSettings>
 
     private val scope = lifecycleOwner.lifecycleScope
     private val bleManager: FlipperBleManager = FlipperBleManagerImpl(
         context, scope, serviceErrorListener
     )
     private val connectDelegate = FlipperServiceConnectDelegate(bleManager, context)
+    private val inited = AtomicBoolean(false)
 
     override val connectionInformationApi = bleManager.connectionInformationApi
     override val requestApi = bleManager.flipperRequestApi
@@ -47,8 +50,18 @@ class FlipperServiceApiImpl(
     }
 
     fun internalInit() {
+        if (!inited.compareAndSet(false, true)) {
+            error { "Servie api already inited" }
+            return
+        }
         info { "Internal init and try connect" }
-        connectToDeviceOnStartup()
+        var deviceId: String? = null
+        pairSettingsStore.data.onEach {
+            if (it.deviceId != deviceId) {
+                deviceId = it.deviceId
+                connectToDeviceOnStartup(deviceId ?: "")
+            }
+        }.launchIn(scope)
     }
 
     override suspend fun reconnect(deviceId: String) {
@@ -66,12 +79,11 @@ class FlipperServiceApiImpl(
         bleManager.close()
     }
 
-    private fun connectToDeviceOnStartup() = scope.launch {
-        val deviceId = sharedPreferences.getString(FlipperSharedPreferencesKey.DEVICE_ID, null)
-        if (deviceId == null) {
+    private suspend fun connectToDeviceOnStartup(deviceId: String) {
+        if (deviceId.isBlank()) {
             error { "Flipper id not found in storage" }
             serviceErrorListener.onError(FlipperBleServiceError.CONNECT_DEVICE_NOT_STORED)
-            return@launch
+            return
         }
 
         try {

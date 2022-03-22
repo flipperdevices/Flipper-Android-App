@@ -1,8 +1,8 @@
 package com.flipperdevices.connection.impl.viewmodel
 
 import android.app.Application
-import android.content.SharedPreferences
 import android.widget.Toast
+import androidx.datastore.core.DataStore
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bottombar.model.TabState
 import com.flipperdevices.bridge.api.error.FlipperBleServiceError
@@ -16,12 +16,13 @@ import com.flipperdevices.connection.impl.R
 import com.flipperdevices.connection.impl.di.ConnectionComponent
 import com.flipperdevices.connection.impl.model.ConnectionStatusState
 import com.flipperdevices.core.di.ComponentHolder
-import com.flipperdevices.core.preference.FlipperSharedPreferencesKey
+import com.flipperdevices.core.preference.pb.PairSettings
 import com.flipperdevices.core.ui.AndroidLifecycleViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -40,7 +41,7 @@ class ConnectionStatusViewModel(
     lateinit var synchronizationApi: SynchronizationApi
 
     @Inject
-    lateinit var sharedPreferences: SharedPreferences
+    lateinit var pairSettingsStore: DataStore<PairSettings>
 
     init {
         ComponentHolder.component<ConnectionComponent>().inject(this)
@@ -90,13 +91,13 @@ class ConnectionStatusViewModel(
         Toast.makeText(application, errorTextResId, Toast.LENGTH_LONG).show()
     }
 
-    private fun ConnectionState.toConnectionStatus(deviceName: String?) = when (this) {
+    private suspend fun ConnectionState.toConnectionStatus(deviceName: String?) = when (this) {
         ConnectionState.Connecting -> ConnectionStatusState.Connecting
         ConnectionState.Initializing -> ConnectionStatusState.Connecting
         ConnectionState.Ready -> ConnectionStatusState.Completed(deviceName ?: "Unnamed")
         ConnectionState.Disconnecting -> ConnectionStatusState.Connecting
         is ConnectionState.Disconnected -> if (
-            sharedPreferences.getString(FlipperSharedPreferencesKey.DEVICE_ID, null) == null
+            pairSettingsStore.data.first().deviceId.isBlank()
         ) ConnectionStatusState.NoDevice
         else ConnectionStatusState.Disconnected
     }

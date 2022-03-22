@@ -1,8 +1,13 @@
 package com.flipperdevices.core.preference
 
 import android.content.Context
-import android.content.SharedPreferences
+import androidx.datastore.core.DataStore
+import androidx.datastore.dataStore
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.preference.internal.PairSettingsSerializer
+import com.flipperdevices.core.preference.internal.SettingsSerializer
+import com.flipperdevices.core.preference.pb.PairSettings
+import com.flipperdevices.core.preference.pb.Settings
 import com.squareup.anvil.annotations.ContributesTo
 import dagger.Module
 import dagger.Provides
@@ -13,15 +18,25 @@ import javax.inject.Singleton
 class FlipperSharedPreferenceModule {
     @Provides
     @Singleton
-    fun provideFlipperSharedPreference(context: Context): FlipperSharedPreferences {
-        return FlipperSharedPreferencesImpl(context)
+    fun provideDataStoreSettings(context: Context): DataStore<Settings> {
+        return context.dataStoreSettings
     }
 
     @Provides
     @Singleton
-    fun provideSharedPreference(
-        flipperSharedPreferences: FlipperSharedPreferences
-    ): SharedPreferences {
-        return flipperSharedPreferences
+    fun provideDataStorePairSettings(
+        context: Context
+    ): DataStore<PairSettings> {
+        return context.dataStorePairSettings
     }
 }
+
+private val Context.dataStoreSettings: DataStore<Settings> by dataStore(
+    fileName = FlipperStorageProvider.DATASTORE_FILENAME_SETTINGS,
+    serializer = SettingsSerializer
+)
+
+private val Context.dataStorePairSettings: DataStore<PairSettings> by dataStore(
+    fileName = FlipperStorageProvider.DATASTORE_FILENAME_PAIR_SETTINGS,
+    serializer = PairSettingsSerializer
+)
