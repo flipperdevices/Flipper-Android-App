@@ -41,6 +41,7 @@ dependencies {
 
     implementation(projects.components.debug.api)
     implementation(projects.components.debug.impl)
+    implementation(projects.components.debug.stresstest)
 
     implementation(projects.components.archive.api)
     implementation(projects.components.archive.impl)
@@ -59,6 +60,9 @@ dependencies {
 
     implementation(projects.components.inappnotification.api)
     implementation(projects.components.inappnotification.impl)
+
+    implementation(projects.components.settings.api)
+    implementation(projects.components.settings.impl)
 
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.dao.impl)

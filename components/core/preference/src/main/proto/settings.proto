@@ -5,4 +5,6 @@ option java_multiple_files = true;
 
 message Settings {
   bool used_foreground_service = 2;
+  bool enabled_debug_settings = 3;
+  bool enabled_experimental_functions = 4;
 }

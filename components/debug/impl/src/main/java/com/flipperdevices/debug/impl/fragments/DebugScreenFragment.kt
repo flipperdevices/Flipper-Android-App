@@ -26,7 +26,7 @@ class DebugScreenFragment : ComposeFragment() {
     @Composable
     override fun RenderView() {
         ComposableDebugScreen(goToStressTest = {
-            requireRouter().navigateTo(FragmentScreen { StressTestFragment() })
+            requireRouter().navigateTo(FragmentScreen { com.flipperdevices.debug.stresstest.fragments.StressTestFragment() })
         }, startSynchronization = {
                 synchronizationApi.startSynchronization(force = true)
             }, sendAlarmToFlipper = {

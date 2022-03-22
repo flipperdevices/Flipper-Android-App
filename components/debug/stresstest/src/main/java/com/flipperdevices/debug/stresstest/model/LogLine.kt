@@ -1,4 +1,4 @@
-package com.flipperdevices.debug.impl.model
+package com.flipperdevices.debug.stresstest.model
 
 import androidx.compose.ui.graphics.Color
 

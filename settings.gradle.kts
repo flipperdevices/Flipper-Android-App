@@ -62,6 +62,7 @@ include(
 
     ":components:debug:api",
     ":components:debug:impl",
+    ":components:debug:stresstest",
 
     ":components:archive:api",
     ":components:archive:impl",
@@ -83,5 +84,8 @@ include(
     ":components:firstpair:impl",
 
     ":components:inappnotification:api",
-    ":components:inappnotification:impl"
+    ":components:inappnotification:impl",
+
+    ":components:settings:api",
+    ":components:settings:impl"
 )

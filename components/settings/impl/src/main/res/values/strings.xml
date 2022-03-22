@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="category_general">General</string>
+    <string name="general_debug_title">Enable Debug Settings</string>
+    <string name="general_debug_description">Includes features for developers and testing</string>
+    <string name="general_experimental_title">Enable Experimental Settings</string>
+    <string name="general_experimental_description">Includes unstable and untested features that will be in future releases</string>
+    <string name="category_debug">Debug</string>
+    <string name="debug_stress_test">Open Stress Test</string>
+    <string name="debug_start_synchronization">Start Synchronization</string>
+    <string name="debug_connection_to_another">Connection to another device</string>
+    <string name="category_experimental">Experimental</string>
+    <string name="experimental_alarm">Send alarm to Flipper</string>
+    <string name="experimental_alarm_desc">Bzzzz-Whoo-Whoo-Bzzzz</string>
+    <string name="experimental_file_manager">File Manager</string>
+    <string name="experimental_file_manager_desc">Navigating through folders and files in the flipper</string>
+    <string name="experimental_screen_streaming">Screen Streaming</string>
+    <string name="experimental_screen_streaming_desc">Control and watch your flipper through your phone</string>
+</resources>

@@ -1,4 +1,4 @@
-package com.flipperdevices.debug.impl.model
+package com.flipperdevices.debug.stresstest.model
 
 data class StressTestState(
     val successfulCount: Int = 0,

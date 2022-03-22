@@ -1,4 +1,4 @@
-package com.flipperdevices.debug.impl.viewmodel
+package com.flipperdevices.debug.stresstest.viewmodel
 
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewModelScope
@@ -12,9 +12,9 @@ import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.jre.split
 import com.flipperdevices.core.ui.LifecycleViewModel
-import com.flipperdevices.debug.impl.di.DebugComponent
-import com.flipperdevices.debug.impl.model.LogLine
-import com.flipperdevices.debug.impl.model.StressTestState
+import com.flipperdevices.debug.stresstest.di.StressTestComponent
+import com.flipperdevices.debug.stresstest.model.LogLine
+import com.flipperdevices.debug.stresstest.model.StressTestState
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.deleteRequest
 import com.flipperdevices.protobuf.storage.file
@@ -30,7 +30,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.single
@@ -53,7 +52,7 @@ class StressTestViewModel : LifecycleViewModel() {
     private var byteBuffer = ByteArray(size = BUFFER_SIZE)
 
     init {
-        ComponentHolder.component<DebugComponent>().inject(this)
+        ComponentHolder.component<StressTestComponent>().inject(this)
         serviceProvider.provideServiceApi(this) {
             subscribeToConnectionStateUpdate(it)
             subscribeToSpeedStateUpdate(it)

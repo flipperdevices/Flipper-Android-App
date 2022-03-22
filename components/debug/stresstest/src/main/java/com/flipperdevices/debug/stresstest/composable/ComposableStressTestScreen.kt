@@ -1,4 +1,4 @@
-package com.flipperdevices.debug.impl.compose
+package com.flipperdevices.debug.stresstest.composable
 
 import android.text.format.Formatter
 import androidx.compose.foundation.layout.Arrangement
@@ -26,9 +26,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.bridge.api.model.FlipperSerialSpeed
-import com.flipperdevices.debug.impl.model.LogLine
-import com.flipperdevices.debug.impl.model.StressTestState
-import com.flipperdevices.debug.impl.viewmodel.StressTestViewModel
+import com.flipperdevices.debug.stresstest.model.LogLine
+import com.flipperdevices.debug.stresstest.model.StressTestState
+import com.flipperdevices.debug.stresstest.viewmodel.StressTestViewModel
 
 @Composable
 fun ComposableStressTestScreen(
