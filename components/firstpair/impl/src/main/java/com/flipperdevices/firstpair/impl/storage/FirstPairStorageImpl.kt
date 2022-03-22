@@ -1,37 +1,43 @@
 package com.flipperdevices.firstpair.impl.storage
 
-import android.content.SharedPreferences
-import androidx.core.content.edit
+import androidx.datastore.core.DataStore
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.preference.FlipperSharedPreferencesKey
+import com.flipperdevices.core.preference.pb.PairSettings
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
-
-private const val KEY_TOS_PASS = "pair_tos_pass_v2"
-private const val KEY_DEVICE_PASS = "pair_device_pass"
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 
 @ContributesBinding(AppGraph::class)
 class FirstPairStorageImpl @Inject constructor(
-    private val prefs: SharedPreferences
+    private val pairSettingsStore: DataStore<PairSettings>
 ) : FirstPairStorage {
     override fun isTosPassed(): Boolean {
-        return prefs.getBoolean(KEY_TOS_PASS, false)
+        return runBlocking { pairSettingsStore.data.first() }.tosPassed
     }
 
     override fun isDeviceSelected(): Boolean {
-        return prefs.getBoolean(KEY_DEVICE_PASS, false)
+        return runBlocking { pairSettingsStore.data.first() }.pairDevicePass
     }
 
-    override fun markTosPassed() {
-        prefs.edit { putBoolean(KEY_TOS_PASS, true) }
+    override fun markTosPassed(): Unit = runBlocking {
+        pairSettingsStore.updateData {
+            it.toBuilder()
+                .setTosPassed(true)
+                .build()
+        }
     }
 
-    override fun markDeviceSelected(deviceId: String?) {
-        prefs.edit {
-            putBoolean(KEY_DEVICE_PASS, true)
+    override fun markDeviceSelected(deviceId: String?): Unit = runBlocking {
+        pairSettingsStore.updateData {
+            var builder = it.toBuilder()
+                .setPairDevicePass(true)
+
             if (deviceId != null) {
-                putString(FlipperSharedPreferencesKey.DEVICE_ID, deviceId)
+                builder = builder
+                    .setDeviceId(deviceId)
             }
+            builder.build()
         }
     }
 }
