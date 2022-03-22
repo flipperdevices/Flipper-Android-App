@@ -4,5 +4,5 @@ option java_package = "com.flipperdevices.core.preference.pb";
 option java_multiple_files = true;
 
 message Settings {
-  int32 example_counter = 1;
+  bool used_foreground_service = 2;
 }

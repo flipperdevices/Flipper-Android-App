@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.service.impl.provider
 
 import android.content.Context
+import androidx.datastore.core.DataStore
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import com.flipperdevices.bridge.api.error.FlipperBleServiceError
@@ -16,6 +17,7 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.preference.pb.Settings
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -23,7 +25,8 @@ import javax.inject.Singleton
 @Singleton
 @ContributesBinding(AppGraph::class, FlipperServiceProvider::class)
 class FlipperServiceProviderImpl @Inject constructor(
-    private val applicationContext: Context
+    applicationContext: Context,
+    dataStoreSettings: DataStore<Settings>
 ) : FlipperServiceProvider,
     FlipperServiceErrorListener,
     LogTagProvider {
@@ -31,6 +34,7 @@ class FlipperServiceProviderImpl @Inject constructor(
     private val connectionHelper: FlipperServiceConnectionHelper =
         FlipperServiceConnectionHelperImpl(
             applicationContext,
+            dataStoreSettings,
             onBind = this::onServiceBind,
             onUnbind = this::onServiceUnbind
         )

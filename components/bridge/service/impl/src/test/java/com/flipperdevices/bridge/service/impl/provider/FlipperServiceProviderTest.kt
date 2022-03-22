@@ -2,6 +2,7 @@ package com.flipperdevices.bridge.service.impl.provider
 
 import android.content.Context
 import android.content.ServiceConnection
+import androidx.datastore.core.DataStore
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.testing.TestLifecycleOwner
@@ -10,7 +11,10 @@ import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.impl.FlipperService
 import com.flipperdevices.bridge.service.impl.FlipperServiceBinder
+import com.flipperdevices.core.preference.pb.Settings
+import com.flipperdevices.core.preference.pb.settings
 import com.flipperdevices.core.test.TimberRule
+import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Assert.assertNotEquals
 import org.junit.Before
 import org.junit.ClassRule
@@ -32,6 +36,7 @@ import org.robolectric.annotation.Config
 class FlipperServiceProviderTest {
     private lateinit var applicationContext: Context
     private lateinit var subject: FlipperServiceProviderImpl
+    private lateinit var dataStore: DataStore<Settings>
     private var serviceConnection: ServiceConnection? = null
 
     @Before
@@ -43,7 +48,14 @@ class FlipperServiceProviderTest {
                 return@doAnswer true
             }
         }
-        subject = FlipperServiceProviderImpl(applicationContext)
+        dataStore = mock {
+            on { data } doReturn MutableStateFlow(
+                settings {
+                    usedForegroundService = true
+                }
+            )
+        }
+        subject = FlipperServiceProviderImpl(applicationContext, dataStore)
     }
 
     @Test

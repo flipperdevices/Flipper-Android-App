@@ -5,15 +5,19 @@ import android.os.Binder
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
+import com.flipperdevices.bridge.service.impl.di.FlipperServiceComponent
 import com.flipperdevices.bridge.service.impl.notification.FLIPPER_NOTIFICATION_ID
 import com.flipperdevices.bridge.service.impl.notification.FlipperNotificationHelper
 import com.flipperdevices.bridge.service.impl.provider.error.CompositeFlipperServiceErrorListener
 import com.flipperdevices.bridge.service.impl.provider.error.CompositeFlipperServiceErrorListenerImpl
 import com.flipperdevices.bridge.service.impl.provider.lifecycle.FlipperServiceLifecycleListener
+import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import java.util.concurrent.atomic.AtomicBoolean
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class FlipperService : LifecycleService(), LogTagProvider {
     override val TAG = "FlipperService-${hashCode()}"
@@ -21,15 +25,23 @@ class FlipperService : LifecycleService(), LogTagProvider {
     private val serviceApi by lazy { FlipperServiceApiImpl(this, this, listener) }
     private val binder by lazy { FlipperServiceBinder(serviceApi, listener) }
     private val stopped = AtomicBoolean(false)
-    private lateinit var flipperNotification: FlipperNotificationHelper
+    private var flipperNotification: FlipperNotificationHelper? = null
 
     override fun onCreate() {
         super.onCreate()
         info { "Start flipper service" }
 
-        flipperNotification = FlipperNotificationHelper(this)
-        startForeground(FLIPPER_NOTIFICATION_ID, flipperNotification.show())
-        flipperNotification.showStopButton()
+        val dataStoreSettings = ComponentHolder
+            .component<FlipperServiceComponent>()
+            .dataStoreSettings
+            .get()
+
+        if (runBlocking { dataStoreSettings.data.first() }.usedForegroundService) {
+            val flipperNotificationLocal = FlipperNotificationHelper(this)
+            flipperNotification = flipperNotificationLocal
+            startForeground(FLIPPER_NOTIFICATION_ID, flipperNotificationLocal.show())
+            flipperNotificationLocal.showStopButton()
+        }
 
         serviceApi.internalInit()
     }

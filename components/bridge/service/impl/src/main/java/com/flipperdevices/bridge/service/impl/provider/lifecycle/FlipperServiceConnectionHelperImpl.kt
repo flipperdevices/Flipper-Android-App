@@ -5,13 +5,18 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
+import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.service.impl.FlipperService
 import com.flipperdevices.bridge.service.impl.FlipperServiceBinder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.preference.pb.Settings
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 
 class FlipperServiceConnectionHelperImpl(
     private val applicationContext: Context,
+    private val dataStoreSettings: DataStore<Settings>,
     private val onBind: (FlipperServiceBinder) -> Unit,
     private val onUnbind: () -> Unit
 ) : ServiceConnection,
@@ -70,15 +75,16 @@ class FlipperServiceConnectionHelperImpl(
             return
         }
 
-        // Without it service destroy after unbind
-        val componentName =
+        if (runBlocking { dataStoreSettings.data.first() }.usedForegroundService) {
+            // Without it service destroy after unbind
             applicationContext.startService(Intent(applicationContext, FlipperService::class.java))
+        }
         val bindSuccessful = applicationContext.bindService(
             Intent(applicationContext, FlipperService::class.java), this,
             Context.BIND_AUTO_CREATE or Context.BIND_IMPORTANT
         )
         isRequestedForBind = true
-        info { "Start service. bindSuccessful is $bindSuccessful, componentName is $componentName" }
+        info { "Start service. bindSuccessful is $bindSuccessful" }
     }
 
     @Synchronized
@@ -86,11 +92,13 @@ class FlipperServiceConnectionHelperImpl(
         info { "#disconnect" }
         val serviceRunning = serviceBinder != null || isRequestedForBind
         if (serviceRunning) {
-            info { "Stop service" }
-            val stopIntent = Intent(applicationContext, FlipperService::class.java).apply {
-                action = FlipperService.ACTION_STOP
+            if (runBlocking { dataStoreSettings.data.first() }.usedForegroundService) {
+                info { "Stop service" }
+                val stopIntent = Intent(applicationContext, FlipperService::class.java).apply {
+                    action = FlipperService.ACTION_STOP
+                }
+                applicationContext.startService(stopIntent)
             }
-            applicationContext.startService(stopIntent)
 
             applicationContext.unbindService(this)
         }
