@@ -8,17 +8,15 @@ import android.os.IBinder
 import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.service.impl.FlipperService
 import com.flipperdevices.bridge.service.impl.FlipperServiceBinder
-import com.flipperdevices.bridge.service.impl.di.FlipperServiceComponent
-import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.Settings
-import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
 class FlipperServiceConnectionHelperImpl(
     private val applicationContext: Context,
+    private val dataStoreSettings: DataStore<Settings>,
     private val onBind: (FlipperServiceBinder) -> Unit,
     private val onUnbind: () -> Unit
 ) : ServiceConnection,
@@ -28,13 +26,6 @@ class FlipperServiceConnectionHelperImpl(
     override val TAG = "FlipperServiceConnectionHelper"
     override var serviceBinder: FlipperServiceBinder? = null
         private set
-
-    @Inject
-    lateinit var dataStoreSettings: DataStore<Settings>
-
-    init {
-        ComponentHolder.component<FlipperServiceComponent>().inject(this)
-    }
 
     // true if we wait bind answer from android
     private var isRequestedForBind: Boolean = false
