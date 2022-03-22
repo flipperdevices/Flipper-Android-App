@@ -51,7 +51,7 @@ class FlipperServiceApiImpl(
 
     fun internalInit() {
         if (!inited.compareAndSet(false, true)) {
-            error { "Servie api already inited" }
+            error { "Service api already inited" }
             return
         }
         info { "Internal init and try connect" }
