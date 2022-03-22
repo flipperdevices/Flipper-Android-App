@@ -1,13 +1,13 @@
 package com.flipperdevices.settings.impl.composable.category
 
-import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.runtime.Composable
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.composable.elements.SwitchableElement
 
 @Composable
-fun RowScope.GeneralCategory(
+fun ColumnScope.GeneralCategory(
     settings: Settings,
     onSwitchExperimental: (Boolean) -> Unit,
     onSwitchDebug: (Boolean) -> Unit

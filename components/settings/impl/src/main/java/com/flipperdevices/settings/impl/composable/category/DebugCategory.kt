@@ -1,6 +1,6 @@
 package com.flipperdevices.settings.impl.composable.category
 
-import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.ui.composable.LocalRouter
@@ -9,7 +9,7 @@ import com.flipperdevices.settings.impl.composable.elements.SimpleElement
 import com.flipperdevices.settings.impl.viewmodels.DebugViewModel
 
 @Composable
-fun RowScope.DebugCategory(
+fun ColumnScope.DebugCategory(
     debugViewModel: DebugViewModel = viewModel()
 ) {
     val router = LocalRouter.current

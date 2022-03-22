@@ -1,9 +1,12 @@
 package com.flipperdevices.settings.impl.composable
 
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.settings.impl.R
@@ -23,8 +26,8 @@ fun ComposableSettings(
 ) {
     val settings by settingsViewModel.getState().collectAsState()
 
-    Row {
-        Category(R.string.category_debug)
+    Column(Modifier.verticalScroll(rememberScrollState())) {
+        Category(R.string.category_general)
 
         GeneralCategory(
             settings = settings,
@@ -32,14 +35,14 @@ fun ComposableSettings(
             onSwitchDebug = settingsViewModel::onSwitchDebug
         )
 
-        if (settings.enabledDebugSettings) {
-            Category(titleId = R.string.general_debug_title)
-            DebugCategory()
+        if (settings.enabledExperimentalFunctions) {
+            Category(titleId = R.string.category_experimental)
+            ExperimentalCategory()
         }
 
-        if (settings.enabledExperimentalFunctions) {
-            Category(titleId = R.string.general_experimental_title)
-            ExperimentalCategory()
+        if (settings.enabledDebugSettings) {
+            Category(titleId = R.string.category_debug)
+            DebugCategory()
         }
     }
 }
