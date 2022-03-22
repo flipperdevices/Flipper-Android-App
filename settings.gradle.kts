@@ -61,7 +61,6 @@ include(
     ":components:deeplink:impl",
 
     ":components:debug:api",
-    ":components:debug:impl",
     ":components:debug:stresstest",
 
     ":components:archive:api",

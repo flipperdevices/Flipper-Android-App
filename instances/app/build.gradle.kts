@@ -40,7 +40,6 @@ dependencies {
     implementation(projects.components.deeplink.impl)
 
     implementation(projects.components.debug.api)
-    implementation(projects.components.debug.impl)
     implementation(projects.components.debug.stresstest)
 
     implementation(projects.components.archive.api)
