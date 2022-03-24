@@ -6,6 +6,7 @@ plugins {
 
 dependencies {
     implementation(projects.components.core.di)
+    implementation(projects.components.core.markdown)
     implementation(projects.components.core.ui)
     implementation(projects.components.core.navigation)
 
@@ -31,6 +32,7 @@ dependencies {
     implementation(libs.kotlin.coroutines)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.lifecycle.compose)
 
     implementation(libs.ktx.fragment)
 
