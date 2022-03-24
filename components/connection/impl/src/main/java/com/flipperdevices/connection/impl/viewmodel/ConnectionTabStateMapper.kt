@@ -30,6 +30,14 @@ object ConnectionTabStateMapper {
                 unselectedColor = DesignSystem.color.black_30,
                 textDotsAnimated = true
             )
+            ConnectionStatusState.Unsupported -> TabState.Static(
+                selectedIcon = R.drawable.ic_no_device_filled,
+                notSelectedIcon = R.drawable.ic_no_device,
+                textId = R.string.connection_status_unsupported,
+                selectedColor = DesignSystem.color.red,
+                unselectedColor = DesignSystem.color.black_30,
+                unselectedColorIcon = DesignSystem.color.red
+            )
             ConnectionStatusState.Connected -> TabState.Static(
                 selectedIcon = R.drawable.ic_connected_filled,
                 notSelectedIcon = R.drawable.ic_connected,

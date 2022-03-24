@@ -92,6 +92,11 @@ class FlipperBleManagerImpl constructor(
                 val isDeviceSupported = informationApi
                     .checkVersionSupport(this@FlipperBleManagerImpl)
 
+                setDeviceSupportedStatus(isDeviceSupported)
+                if (!isDeviceSupported) {
+                    return@launch
+                }
+
                 informationApi.initializeSafe(this@FlipperBleManagerImpl) {
                     error(it) { "Error while initialize information api" }
                     serviceErrorListener.onError(
@@ -102,8 +107,6 @@ class FlipperBleManagerImpl constructor(
                     error(it) { "Error while initialize request api" }
                     serviceErrorListener.onError(FlipperBleServiceError.SERVICE_SERIAL_FAILED_INIT)
                 }
-
-                setDeviceSupportedStatus(isDeviceSupported)
             }
         }
 
