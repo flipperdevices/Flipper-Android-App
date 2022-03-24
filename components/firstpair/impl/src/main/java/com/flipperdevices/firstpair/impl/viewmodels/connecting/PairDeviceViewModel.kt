@@ -1,5 +1,6 @@
 package com.flipperdevices.firstpair.impl.viewmodels.connecting
 
+import android.annotation.SuppressLint
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -72,6 +73,7 @@ class PairDeviceViewModel(
         close()
     }
 
+    @SuppressLint("MissingPermission")
     private fun provideBleManager(): FirstPairBleManager {
         var bleManager = _firstPairBleManager
         if (bleManager != null) {
@@ -87,13 +89,22 @@ class PairDeviceViewModel(
                 ConnectionState.Connecting,
                 ConnectionState.Initializing,
                 ConnectionState.Disconnecting -> {
-                    DevicePairState.Connecting(bleManager.bluetoothDevice?.address)
+                    DevicePairState.Connecting(
+                        bleManager.bluetoothDevice?.address,
+                        bleManager.bluetoothDevice?.name
+                    )
                 }
                 ConnectionState.RetrievingInformation -> {
-                    DevicePairState.Connecting(bleManager.bluetoothDevice?.address)
+                    DevicePairState.Connecting(
+                        bleManager.bluetoothDevice?.address,
+                        bleManager.bluetoothDevice?.name
+                    )
                 }
                 is ConnectionState.Ready -> {
-                    DevicePairState.Connected(bleManager.bluetoothDevice?.address)
+                    DevicePairState.Connected(
+                        bleManager.bluetoothDevice?.address,
+                        bleManager.bluetoothDevice?.name
+                    )
                 }
             }
             pairState.update { devicePairState }

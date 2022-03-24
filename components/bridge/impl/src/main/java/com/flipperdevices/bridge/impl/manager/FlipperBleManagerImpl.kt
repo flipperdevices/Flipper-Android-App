@@ -38,7 +38,7 @@ class FlipperBleManagerImpl constructor(
         .asCoroutineDispatcher()
 
     // Gatt Delegates
-    override val informationApi = FlipperInformationApiImpl()
+    override val informationApi = FlipperInformationApiImpl(scope)
     override val flipperRequestApi = FlipperRequestApiImpl(scope)
 
     // Manager delegates

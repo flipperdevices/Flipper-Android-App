@@ -2,22 +2,38 @@ package com.flipperdevices.bridge.impl.manager.service
 
 import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattCharacteristic
+import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.api.manager.service.FlipperInformationApi
 import com.flipperdevices.bridge.api.model.FlipperGATTInformation
 import com.flipperdevices.bridge.api.utils.Constants
+import com.flipperdevices.bridge.impl.di.BridgeImplComponent
 import com.flipperdevices.bridge.impl.manager.UnsafeBleManager
+import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.preference.pb.PairSettings
 import java.util.UUID
+import javax.inject.Inject
+import javax.inject.Provider
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-class FlipperInformationApiImpl :
-    BluetoothGattServiceWrapper, FlipperInformationApi, LogTagProvider {
+class FlipperInformationApiImpl(
+    private val scope: CoroutineScope
+) : BluetoothGattServiceWrapper, FlipperInformationApi, LogTagProvider {
     override val TAG = "FlipperInformationApi"
     private val informationState = MutableStateFlow(FlipperGATTInformation())
     private var infoCharacteristics = mutableMapOf<UUID, BluetoothGattCharacteristic>()
+
+    @Inject
+    lateinit var dataStoreFirstPair: Provider<DataStore<PairSettings>>
+
+    init {
+        ComponentHolder.component<BridgeImplComponent>().inject(this)
+    }
 
     override fun onServiceReceived(gatt: BluetoothGatt): Boolean {
         getServiceOrLog(gatt, Constants.BLEInformationService.SERVICE_UUID)?.let { service ->
@@ -76,9 +92,11 @@ class FlipperInformationApiImpl :
             infoCharacteristics[Constants.GenericService.DEVICE_NAME]
         ).with { _, data ->
             val content = data.value ?: return@with
+            val deviceName = String(content)
             informationState.update {
-                it.copy(deviceName = String(content))
+                it.copy(deviceName)
             }
+            onDeviceNameReceived(deviceName)
         }.enqueue()
         bleManager.readCharacteristicUnsafe(
             infoCharacteristics[Constants.BLEInformationService.HARDWARE_VERSION]
@@ -96,6 +114,16 @@ class FlipperInformationApiImpl :
                 it.copy(softwareVersion = String(content))
             }
         }.enqueue()
+    }
+
+    private fun onDeviceNameReceived(deviceName: String) {
+        scope.launch {
+            dataStoreFirstPair.get().updateData {
+                it.toBuilder()
+                    .setDeviceName(deviceName)
+                    .build()
+            }
+        }
     }
 
     override fun reset(bleManager: UnsafeBleManager) {

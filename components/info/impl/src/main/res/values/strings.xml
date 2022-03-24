@@ -5,6 +5,11 @@
     <string name="info_screen_streaming">Screen Streaming</string>
     <string name="info_connection_to_another_device">Connection to another device</string>
 
+    <string name="info_device_no_device">No device</string>
+    <string name="info_device_not_connected">Not connected</string>
+    <string name="info_device_connected">Connected</string>
+    <string name="info_device_model_name">Flipper Zero</string>
+
     <string name="info_firmware_update_title">Firmware Update</string>
     <string name="info_firmware_update_unsupported_title">Update Flipper Firmware from PC</string>
     <string name="info_firmware_update_unsupported_desc">Our app doesn’t support installed  firmware version</string>

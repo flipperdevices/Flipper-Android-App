@@ -7,4 +7,5 @@ message PairSettings {
   bool tos_passed = 1;
   bool pair_device_pass = 2;
   string device_id = 3;
+  string device_name = 4;
 }

@@ -86,7 +86,14 @@ class SearchStateBuilder(
                 "pairState: $pairState"
         }
         if (pairState is DevicePairState.Connected) {
-            state.emit(SearchingState(content = SearchingContent.Finished(pairState.address)))
+            state.emit(
+                SearchingState(
+                    content = SearchingContent.Finished(
+                        pairState.address,
+                        pairState.deviceName
+                    )
+                )
+            )
             return
         }
 

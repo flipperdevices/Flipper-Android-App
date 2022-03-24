@@ -101,9 +101,12 @@ class DeviceSearchingFragment :
         permissionChangeBroadcastReceiver?.unregister(activityNotNull)
     }
 
-    private fun finishConnection(deviceId: String? = null) {
+    private fun finishConnection(
+        deviceId: String? = null,
+        deviceName: String? = null
+    ) {
         viewModelConnecting.close()
-        firstPairStorage.markDeviceSelected(deviceId)
+        firstPairStorage.markDeviceSelected(deviceId, deviceName)
         singleActivityApi.open()
     }
 }
