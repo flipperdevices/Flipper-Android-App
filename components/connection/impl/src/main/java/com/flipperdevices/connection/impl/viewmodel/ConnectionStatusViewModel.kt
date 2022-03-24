@@ -55,7 +55,7 @@ class ConnectionStatusViewModel(
             synchronizationApi.getSynchronizationState()
         ) { connectionState, synchronizationState ->
             val deviceName = serviceApi.connectionInformationApi.getConnectedDeviceName()
-            if (connectionState == ConnectionState.Ready) {
+            if (connectionState is ConnectionState.Ready && connectionState.isSupported) {
                 return@combine synchronizationState.toConnectionStatus(deviceName)
             } else {
                 return@combine connectionState.toConnectionStatus(deviceName)
@@ -94,7 +94,10 @@ class ConnectionStatusViewModel(
     private suspend fun ConnectionState.toConnectionStatus(deviceName: String?) = when (this) {
         ConnectionState.Connecting -> ConnectionStatusState.Connecting
         ConnectionState.Initializing -> ConnectionStatusState.Connecting
-        ConnectionState.Ready -> ConnectionStatusState.Completed(deviceName ?: "Unnamed")
+        ConnectionState.RetrievingInformation -> ConnectionStatusState.Connecting
+        is ConnectionState.Ready -> if (isSupported) ConnectionStatusState.Completed(
+            deviceName ?: "Unnamed"
+        ) else ConnectionStatusState.Unsupported
         ConnectionState.Disconnecting -> ConnectionStatusState.Connecting
         is ConnectionState.Disconnected -> if (
             pairSettingsStore.data.first().deviceId.isBlank()

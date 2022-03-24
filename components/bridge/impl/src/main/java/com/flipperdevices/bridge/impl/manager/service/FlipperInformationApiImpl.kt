@@ -7,6 +7,7 @@ import com.flipperdevices.bridge.api.model.FlipperGATTInformation
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.impl.manager.UnsafeBleManager
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import java.util.UUID
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,7 +29,41 @@ class FlipperInformationApiImpl :
         return true
     }
 
+    suspend fun checkVersionSupport(bleManager: UnsafeBleManager): Boolean {
+        info { "Start version check" }
+
+        val characteristic = infoCharacteristics[Constants.BLEInformationService.API_VERSION]
+            ?: return false
+
+        info { "Gatt service founded, start subscribe to gatt characteristic" }
+
+        var apiVersion: String? = null
+        bleManager.readCharacteristicUnsafe(characteristic)
+            .with { _, data ->
+                info { "Found information about version $data" }
+                val content = data.value ?: return@with
+                informationState.update {
+                    it.copy(apiVersion = String(content))
+                }
+                apiVersion = String(content)
+                info { "Api version is $apiVersion" }
+            }
+            .await()
+
+        val apiVersionNumber = apiVersion?.toFloatOrNull() ?: return false
+        info { "Parsed api version number is $apiVersionNumber" }
+        return apiVersionNumber >= Constants.API_SUPPORTED_VERSION
+    }
+
     override fun initialize(bleManager: UnsafeBleManager) {
+        bleManager.readCharacteristicUnsafe(
+            infoCharacteristics[Constants.BLEInformationService.API_VERSION]
+        ).with { _, data ->
+            val content = data.value ?: return@with
+            informationState.update {
+                it.copy(apiVersion = String(content))
+            }
+        }
         bleManager.readCharacteristicUnsafe(
             infoCharacteristics[Constants.BLEInformationService.MANUFACTURER]
         ).with { _, data ->

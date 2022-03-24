@@ -1,46 +1,63 @@
 package com.flipperdevices.bridge.api.manager.observers
 
 import android.bluetooth.BluetoothDevice
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import no.nordicsemi.android.ble.observer.ConnectionObserver
 
 class ConnectionObserverComposite(
-    vararg initialObservers: ConnectionObserver
+    private val scope: CoroutineScope,
+    vararg initialObservers: SuspendConnectionObserver
 ) : ConnectionObserver {
     @Suppress("SpreadOperator")
     private val observers = mutableListOf(*initialObservers)
+    private val compositeDispatcher = Dispatchers.Default.limitedParallelism(1)
 
-    fun addObserver(observer: ConnectionObserver) {
+    fun addObserver(observer: SuspendConnectionObserver) {
         if (observers.contains(observer)) {
             return
         }
         observers.add(observer)
     }
 
-    fun removeObserver(observer: ConnectionObserver) {
+    fun removeObserver(observer: SuspendConnectionObserver) {
         observers.remove(observer)
     }
 
     override fun onDeviceConnecting(device: BluetoothDevice) {
-        observers.forEach { it.onDeviceConnecting(device) }
+        scope.launch(compositeDispatcher) {
+            observers.forEach { it.onDeviceConnecting(device) }
+        }
     }
 
     override fun onDeviceConnected(device: BluetoothDevice) {
-        observers.forEach { it.onDeviceConnected(device) }
+        scope.launch(compositeDispatcher) {
+            observers.forEach { it.onDeviceConnected(device) }
+        }
     }
 
     override fun onDeviceFailedToConnect(device: BluetoothDevice, reason: Int) {
-        observers.forEach { it.onDeviceFailedToConnect(device, reason) }
+        scope.launch(compositeDispatcher) {
+            observers.forEach { it.onDeviceFailedToConnect(device, reason) }
+        }
     }
 
     override fun onDeviceReady(device: BluetoothDevice) {
-        observers.forEach { it.onDeviceReady(device) }
+        scope.launch(compositeDispatcher) {
+            observers.forEach { it.onDeviceReady(device) }
+        }
     }
 
     override fun onDeviceDisconnecting(device: BluetoothDevice) {
-        observers.forEach { it.onDeviceDisconnecting(device) }
+        scope.launch(compositeDispatcher) {
+            observers.forEach { it.onDeviceDisconnecting(device) }
+        }
     }
 
     override fun onDeviceDisconnected(device: BluetoothDevice, reason: Int) {
-        observers.forEach { it.onDeviceDisconnected(device, reason) }
+        scope.launch(compositeDispatcher) {
+            observers.forEach { it.onDeviceDisconnected(device, reason) }
+        }
     }
 }

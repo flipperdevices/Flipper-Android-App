@@ -8,5 +8,6 @@ data class FlipperGATTInformation(
     val deviceName: String? = null,
     val manufacturerName: String? = null,
     val hardwareRevision: String? = null,
-    val softwareVersion: String? = null
+    val softwareVersion: String? = null,
+    val apiVersion: String? = null
 )

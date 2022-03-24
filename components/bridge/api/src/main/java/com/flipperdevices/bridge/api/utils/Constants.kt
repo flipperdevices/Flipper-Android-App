@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit
 object Constants {
     const val DEVICENAME_PREFIX = "Flipper"
     const val KEYS_DEFAULT_STORAGE = "/any/"
-    val DEVICENAME_PREFIX_REGEXP = "Flipper .*".toPattern()
+    const val API_SUPPORTED_VERSION = 0.2f
 
     object GenericService {
         val SERVICE_UUID: UUID = UUID.fromString("00001800-0000-1000-8000-00805f9b34fb")
@@ -22,6 +22,8 @@ object Constants {
         // Example: f5, f6. Revision of hardware
         val HARDWARE_VERSION: UUID = UUID.fromString("00002a26-0000-1000-8000-00805f9b34fb")
         val SOFTWARE_VERSION: UUID = UUID.fromString("00002a28-0000-1000-8000-00805f9b34fb")
+
+        val API_VERSION: UUID = UUID.fromString("03f6666d-ae5e-47c8-8e1a-5d873eb5a933")
     }
 
     // BLE serial service uuids: service uuid and characteristics uuids

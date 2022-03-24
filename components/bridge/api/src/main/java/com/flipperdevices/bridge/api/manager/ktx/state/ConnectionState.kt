@@ -11,8 +11,10 @@ sealed class ConnectionState {
     /** The device has connected and begun service discovery and initialization. */
     object Initializing : ConnectionState()
 
+    object RetrievingInformation : ConnectionState()
+
     /** The initialization is complete, and the device is ready to use. */
-    object Ready : ConnectionState()
+    data class Ready(val isSupported: Boolean) : ConnectionState()
 
     /** The disconnection was initiated. */
     object Disconnecting : ConnectionState()

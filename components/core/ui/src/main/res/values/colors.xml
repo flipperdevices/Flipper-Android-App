@@ -17,4 +17,6 @@
 
     <color name="white_100">#FFFFFF</color>
     <color name="favorite_enabled">#FECF5D</color>
+
+    <color name="red">#F63F3F</color>
 </resources>

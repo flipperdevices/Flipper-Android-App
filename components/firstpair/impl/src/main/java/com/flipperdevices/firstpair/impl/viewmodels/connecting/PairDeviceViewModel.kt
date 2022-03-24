@@ -78,7 +78,7 @@ class PairDeviceViewModel(
             return bleManager
         }
 
-        bleManager = FirstPairBleManager(getApplication())
+        bleManager = FirstPairBleManager(getApplication(), viewModelScope)
         _firstPairBleManager = bleManager
 
         connectionStateUpdateJob = bleManager.stateAsFlow().onEach {
@@ -89,7 +89,10 @@ class PairDeviceViewModel(
                 ConnectionState.Disconnecting -> {
                     DevicePairState.Connecting(bleManager.bluetoothDevice?.address)
                 }
-                ConnectionState.Ready -> {
+                ConnectionState.RetrievingInformation -> {
+                    DevicePairState.Connecting(bleManager.bluetoothDevice?.address)
+                }
+                is ConnectionState.Ready -> {
                     DevicePairState.Connected(bleManager.bluetoothDevice?.address)
                 }
             }

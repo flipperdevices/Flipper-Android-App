@@ -8,33 +8,39 @@ import android.content.Context
 import com.flipperdevices.bridge.api.manager.ktx.providers.ConnectionStateProvider
 import com.flipperdevices.bridge.api.manager.observers.ConnectionObserverComposite
 import com.flipperdevices.bridge.api.manager.observers.ConnectionObserverLogger
+import com.flipperdevices.bridge.api.manager.observers.SuspendConnectionObserver
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.core.ktx.jre.newSingleThreadExecutor
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.withContext
 import no.nordicsemi.android.ble.BleManager
-import no.nordicsemi.android.ble.observer.ConnectionObserver
 
 /**
  * Class for initial connection to device. Set up connection and set up pairing
  */
 @Suppress("BlockingMethodInNonBlockingContext")
 internal class FirstPairBleManager(
-    context: Context
+    context: Context,
+    scope: CoroutineScope
 ) : BleManager(context),
     LogTagProvider,
     ConnectionStateProvider {
     override val TAG = "FirstPairBleManager"
 
-    private val connectionObservers = ConnectionObserverComposite(ConnectionObserverLogger(TAG))
+    private val connectionObservers = ConnectionObserverComposite(
+        scope, ConnectionObserverLogger(TAG)
+    )
     private val bleDispatcher = newSingleThreadExecutor(TAG)
         .asCoroutineDispatcher()
 
     init {
         setConnectionObserver(connectionObservers)
     }
+
+    override fun isSupported() = true
 
     override fun getGattCallback(): BleManagerGattCallback = FirstPairBleManagerGattCallback()
 
@@ -76,12 +82,12 @@ internal class FirstPairBleManager(
         connect(device).await()
     }
 
-    override fun subscribeOnConnectionState(observer: ConnectionObserver) {
+    override fun subscribeOnConnectionState(observer: SuspendConnectionObserver) {
         connectionObservers.addObserver(observer)
         setConnectionObserver(connectionObservers)
     }
 
-    override fun unsubscribeConnectionState(observer: ConnectionObserver) {
+    override fun unsubscribeConnectionState(observer: SuspendConnectionObserver) {
         connectionObservers.removeObserver(observer)
         setConnectionObserver(connectionObservers)
     }
