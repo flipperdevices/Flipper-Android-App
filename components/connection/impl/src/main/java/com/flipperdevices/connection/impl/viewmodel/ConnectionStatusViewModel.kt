@@ -17,24 +17,32 @@ import com.flipperdevices.connection.impl.di.ConnectionComponent
 import com.flipperdevices.connection.impl.dialog.UnsupportedDialogShowHelper
 import com.flipperdevices.connection.impl.model.ConnectionStatusState
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.ktx.jre.map
 import com.flipperdevices.core.preference.pb.PairSettings
 import com.flipperdevices.core.ui.AndroidLifecycleViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+
+private const val TIMEOUT_SYNCHRONIZED_STATUS_MS = 3000L
 
 class ConnectionStatusViewModel(
     application: Application
 ) : AndroidLifecycleViewModel(application),
     FlipperBleServiceConsumer {
-    private val statusState = MutableStateFlow(
-        ConnectionTabStateMapper.getConnectionTabState(ConnectionStatusState.Disconnected)
+    private val statusState = MutableStateFlow<ConnectionStatusState>(
+        ConnectionStatusState.Disconnected
     )
     private val unsupportedDialogShowHelper = UnsupportedDialogShowHelper()
+    private var switchFromSynchronizedJob: Job? = null
 
     @Inject
     lateinit var serviceProvider: FlipperServiceProvider
@@ -50,23 +58,40 @@ class ConnectionStatusViewModel(
         serviceProvider.provideServiceApi(consumer = this, lifecycleOwner = this)
     }
 
-    fun getStatusState(): StateFlow<TabState> = statusState
+    fun getStatusState(): StateFlow<TabState> = statusState.map(viewModelScope) {
+        ConnectionTabStateMapper.getConnectionTabState(it)
+    }
 
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
         serviceApi.connectionInformationApi.getConnectionStateFlow().combine(
             synchronizationApi.getSynchronizationState()
         ) { connectionState, synchronizationState ->
-            val deviceName = serviceApi.connectionInformationApi.getConnectedDeviceName()
             if (connectionState is ConnectionState.Ready && connectionState.isSupported) {
-                return@combine synchronizationState.toConnectionStatus(deviceName)
+                return@combine synchronizationState.toConnectionStatus()
             } else {
-                return@combine connectionState.toConnectionStatus(deviceName)
+                return@combine connectionState.toConnectionStatus()
             }
         }.onEach {
             if (it is ConnectionStatusState.Unsupported) {
                 unsupportedDialogShowHelper.showDialog()
             }
-            statusState.emit(ConnectionTabStateMapper.getConnectionTabState(it))
+            if (it is ConnectionStatusState.Synchronized &&
+                switchFromSynchronizedJob == null
+            ) {
+                switchFromSynchronizedJob = viewModelScope.launch {
+                    delay(TIMEOUT_SYNCHRONIZED_STATUS_MS)
+                    statusState.update {
+                        if (it is ConnectionStatusState.Synchronized) {
+                            ConnectionStatusState.Connected
+                        } else it
+                    }
+                    switchFromSynchronizedJob = null
+                }
+            } else {
+                switchFromSynchronizedJob?.cancel()
+                switchFromSynchronizedJob = null
+            }
+            statusState.emit(it)
         }.launchIn(viewModelScope)
     }
 
@@ -96,13 +121,12 @@ class ConnectionStatusViewModel(
         Toast.makeText(application, errorTextResId, Toast.LENGTH_LONG).show()
     }
 
-    private suspend fun ConnectionState.toConnectionStatus(deviceName: String?) = when (this) {
+    private suspend fun ConnectionState.toConnectionStatus() = when (this) {
         ConnectionState.Connecting -> ConnectionStatusState.Connecting
         ConnectionState.Initializing -> ConnectionStatusState.Connecting
         ConnectionState.RetrievingInformation -> ConnectionStatusState.Connecting
-        is ConnectionState.Ready -> if (isSupported) ConnectionStatusState.Completed(
-            deviceName ?: "Unnamed"
-        ) else ConnectionStatusState.Unsupported
+        is ConnectionState.Ready -> if (isSupported) ConnectionStatusState.Connected
+        else ConnectionStatusState.Unsupported
         ConnectionState.Disconnecting -> ConnectionStatusState.Connecting
         is ConnectionState.Disconnected -> if (
             pairSettingsStore.data.first().deviceId.isBlank()
@@ -111,8 +135,8 @@ class ConnectionStatusViewModel(
     }
 }
 
-private fun SynchronizationState.toConnectionStatus(deviceName: String?) = when (this) {
+private fun SynchronizationState.toConnectionStatus() = when (this) {
     SynchronizationState.NOT_STARTED -> ConnectionStatusState.Connected
     SynchronizationState.IN_PROGRESS -> ConnectionStatusState.Synchronization
-    SynchronizationState.FINISHED -> ConnectionStatusState.Completed(deviceName ?: "Unnamed")
+    SynchronizationState.FINISHED -> ConnectionStatusState.Synchronized
 }

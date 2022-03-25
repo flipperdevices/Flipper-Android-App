@@ -54,7 +54,7 @@ object ConnectionTabStateMapper {
                 unselectedColor = DesignSystem.color.black_30,
                 textDotsAnimated = true
             )
-            is ConnectionStatusState.Completed -> TabState.Static(
+            is ConnectionStatusState.Synchronized -> TabState.Static(
                 selectedIcon = R.drawable.ic_synced_filled,
                 notSelectedIcon = R.drawable.ic_synced,
                 textId = R.string.connection_status_synced,
