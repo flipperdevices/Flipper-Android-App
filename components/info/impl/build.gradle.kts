@@ -6,8 +6,10 @@ plugins {
 
 dependencies {
     implementation(projects.components.core.di)
+    implementation(projects.components.core.markdown)
     implementation(projects.components.core.ui)
     implementation(projects.components.core.navigation)
+    implementation(projects.components.core.preference)
 
     implementation(projects.components.info.api)
 
@@ -27,10 +29,12 @@ dependencies {
     implementation(libs.compose.material)
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
+    implementation(libs.compose.systemui)
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.lifecycle.compose)
 
     implementation(libs.ktx.fragment)
 

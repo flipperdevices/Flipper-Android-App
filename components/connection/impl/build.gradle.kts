@@ -11,6 +11,7 @@ dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.ui)
     implementation(projects.components.core.preference)
+    implementation(projects.components.core.activityholder)
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.service.api)

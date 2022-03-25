@@ -17,7 +17,8 @@ fun ConnectionState.toHumanReadableString(): String {
     return when (this) {
         ConnectionState.Connecting -> "Connecting"
         ConnectionState.Initializing -> "Initializing"
-        ConnectionState.Ready -> "Ready"
+        ConnectionState.RetrievingInformation -> "RetrievingInformation"
+        is ConnectionState.Ready -> "Ready (isSupported=$isSupported)"
         ConnectionState.Disconnecting -> "Disconnecting"
         is ConnectionState.Disconnected -> "Disconnected (reason=${reason.toHumanReadableString()})"
     }

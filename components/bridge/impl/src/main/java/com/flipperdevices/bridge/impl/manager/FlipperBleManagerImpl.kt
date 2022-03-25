@@ -23,21 +23,22 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import no.nordicsemi.android.ble.ConnectionPriorityRequest
 
 @Suppress("BlockingMethodInNonBlockingContext")
 class FlipperBleManagerImpl constructor(
     context: Context,
-    scope: CoroutineScope,
+    private val scope: CoroutineScope,
     private val serviceErrorListener: FlipperServiceErrorListener
-) : UnsafeBleManager(context), FlipperBleManager, LogTagProvider {
+) : UnsafeBleManager(scope, context), FlipperBleManager, LogTagProvider {
     override val TAG = "FlipperBleManager"
     private val bleDispatcher = newSingleThreadExecutor(TAG)
         .asCoroutineDispatcher()
 
     // Gatt Delegates
-    override val informationApi = FlipperInformationApiImpl()
+    override val informationApi = FlipperInformationApiImpl(scope)
     override val flipperRequestApi = FlipperRequestApiImpl(scope)
 
     // Manager delegates
@@ -80,18 +81,32 @@ class FlipperBleManagerImpl constructor(
         }
 
         override fun onDeviceReady() {
-            // Set up large MTU
-            // Also does not work with small MTU because of a bug in Flipper Zero firmware
-            requestMtu(Constants.BLE.MAX_MTU).enqueue()
-            requestConnectionPriority(ConnectionPriorityRequest.CONNECTION_PRIORITY_HIGH).enqueue()
+            scope.launch(bleDispatcher) {
+                // Set up large MTU
+                // Also does not work with small MTU because of a bug in Flipper Zero firmware
+                requestMtu(Constants.BLE.MAX_MTU).enqueue()
+                requestConnectionPriority(
+                    ConnectionPriorityRequest.CONNECTION_PRIORITY_HIGH
+                ).enqueue()
 
-            informationApi.initializeSafe(this@FlipperBleManagerImpl) {
-                error(it) { "Error while initialize information api" }
-                serviceErrorListener.onError(FlipperBleServiceError.SERVICE_INFORMATION_FAILED_INIT)
-            }
-            flipperRequestApi.initializeSafe(this@FlipperBleManagerImpl) {
-                error(it) { "Error while initialize request api" }
-                serviceErrorListener.onError(FlipperBleServiceError.SERVICE_SERIAL_FAILED_INIT)
+                val isDeviceSupported = informationApi
+                    .checkVersionSupport(this@FlipperBleManagerImpl)
+
+                setDeviceSupportedStatus(isDeviceSupported)
+                if (!isDeviceSupported) {
+                    return@launch
+                }
+
+                informationApi.initializeSafe(this@FlipperBleManagerImpl) {
+                    error(it) { "Error while initialize information api" }
+                    serviceErrorListener.onError(
+                        FlipperBleServiceError.SERVICE_INFORMATION_FAILED_INIT
+                    )
+                }
+                flipperRequestApi.initializeSafe(this@FlipperBleManagerImpl) {
+                    error(it) { "Error while initialize request api" }
+                    serviceErrorListener.onError(FlipperBleServiceError.SERVICE_SERIAL_FAILED_INIT)
+                }
             }
         }
 

@@ -3,11 +3,11 @@
     <string name="connection_status_connected">Connected</string>
     <string name="connection_status_not_connected">Not Connected</string>
     <string name="connection_status_connecting">Connecting</string>
+    <string name="connection_status_unsupported">Unsupported</string>
     <string name="connection_status_no_device">No Device</string>
     <string name="connection_status_syncing">Syncing</string>
     <string name="connection_status_synced">Synced</string>
     <string name="connection_status_sync_failed">Sync Failed</string>
-
 
     <string name="error_connect_bluetooth_disabled">Bluetooth disabled, please enable it</string>
     <string name="error_connect_device_not_stored">Binding for device is invalid, please forget device and connect again</string>
@@ -18,4 +18,7 @@
     <string name="error_connect_serial_not_found">Can\'t find serial gatt service</string>
     <string name="error_connect_information_init_failed">Failed initialize information service</string>
     <string name="error_connect_serial_init_failed">Failed initialize serial service</string>
+
+    <string name="dialog_unsupported_title">Update Flipper Firmware from PC</string>
+    <string name="dialog_unsupported_description">Our app doesn\'t support installed firmware version</string>
 </resources>

@@ -7,6 +7,7 @@ import com.flipperdevices.bridge.api.manager.ktx.providers.BondStateProvider
 import com.flipperdevices.bridge.api.manager.ktx.providers.ConnectionStateProvider
 import com.flipperdevices.bridge.api.manager.ktx.state.BondState
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
+import com.flipperdevices.bridge.api.manager.observers.SuspendConnectionObserver
 import kotlinx.coroutines.channels.ProducerScope
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
@@ -19,42 +20,49 @@ import no.nordicsemi.android.ble.observer.ConnectionObserver
  */
 
 fun ConnectionStateProvider.stateAsFlow() = callbackFlow {
-    val observer = getConnectionObserver()
-    trySend(getConnectionStateFrom(this@stateAsFlow))
+    val observer = getConnectionObserver(this@stateAsFlow)
+    send(getConnectionStateFrom(this@stateAsFlow))
     subscribeOnConnectionState(observer)
     awaitClose { unsubscribeConnectionState(observer) }
 }
 
 fun BondStateProvider.bondingStateAsFlow() = callbackFlow {
     val bondObserver = getBondingObserver()
-    trySend(getBondingStateFrom(this@bondingStateAsFlow))
+    send(getBondingStateFrom(this@bondingStateAsFlow))
     subscribeOnBondingState(bondObserver)
     awaitClose { unsubscribeBondingState(bondObserver) }
 }
 
-private fun ProducerScope<ConnectionState>.getConnectionObserver() = object : ConnectionObserver {
-    override fun onDeviceConnecting(device: BluetoothDevice) {
-        trySend(ConnectionState.Connecting)
+private fun ProducerScope<ConnectionState>.getConnectionObserver(
+    connectionStateProvider: ConnectionStateProvider
+) = object : SuspendConnectionObserver {
+    override suspend fun onDeviceConnecting(device: BluetoothDevice) {
+        send(ConnectionState.Connecting)
     }
 
-    override fun onDeviceConnected(device: BluetoothDevice) {
-        trySend(ConnectionState.Initializing)
+    override suspend fun onDeviceConnected(device: BluetoothDevice) {
+        send(ConnectionState.Initializing)
     }
 
-    override fun onDeviceFailedToConnect(device: BluetoothDevice, reason: Int) {
-        trySend(ConnectionState.Disconnected(parseDisconnectedReason(reason)))
+    override suspend fun onDeviceFailedToConnect(device: BluetoothDevice, reason: Int) {
+        send(ConnectionState.Disconnected(parseDisconnectedReason(reason)))
     }
 
-    override fun onDeviceReady(device: BluetoothDevice) {
-        trySend(ConnectionState.Ready)
+    override suspend fun onDeviceReady(device: BluetoothDevice) {
+        val isSupported = connectionStateProvider.isSupported()
+        if (isSupported == null) {
+            send(ConnectionState.RetrievingInformation)
+        } else {
+            send(ConnectionState.Ready(isSupported))
+        }
     }
 
-    override fun onDeviceDisconnecting(device: BluetoothDevice) {
-        trySend(ConnectionState.Disconnecting)
+    override suspend fun onDeviceDisconnecting(device: BluetoothDevice) {
+        send(ConnectionState.Disconnecting)
     }
 
-    override fun onDeviceDisconnected(device: BluetoothDevice, reason: Int) {
-        trySend(ConnectionState.Disconnected(parseDisconnectedReason(reason)))
+    override suspend fun onDeviceDisconnected(device: BluetoothDevice, reason: Int) {
+        send(ConnectionState.Disconnected(parseDisconnectedReason(reason)))
     }
 }
 
@@ -64,7 +72,9 @@ private fun getConnectionStateFrom(
     return when (connectionStateProvider.getConnectionState()) {
         BluetoothProfile.STATE_CONNECTING -> ConnectionState.Disconnecting
         BluetoothProfile.STATE_CONNECTED -> if (connectionStateProvider.isReady()) {
-            ConnectionState.Ready
+            val isSupported = connectionStateProvider.isSupported()
+            if (isSupported == null) ConnectionState.RetrievingInformation
+            else ConnectionState.Ready(isSupported)
         } else ConnectionState.Initializing
         BluetoothProfile.STATE_DISCONNECTING -> ConnectionState.Disconnecting
         else -> ConnectionState.Disconnected(ConnectionState.Disconnected.Reason.UNKNOWN)

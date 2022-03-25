@@ -14,6 +14,7 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.connection.impl.R
 import com.flipperdevices.connection.impl.di.ConnectionComponent
+import com.flipperdevices.connection.impl.dialog.UnsupportedDialogShowHelper
 import com.flipperdevices.connection.impl.model.ConnectionStatusState
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.preference.pb.PairSettings
@@ -33,6 +34,7 @@ class ConnectionStatusViewModel(
     private val statusState = MutableStateFlow(
         ConnectionTabStateMapper.getConnectionTabState(ConnectionStatusState.Disconnected)
     )
+    private val unsupportedDialogShowHelper = UnsupportedDialogShowHelper()
 
     @Inject
     lateinit var serviceProvider: FlipperServiceProvider
@@ -55,12 +57,15 @@ class ConnectionStatusViewModel(
             synchronizationApi.getSynchronizationState()
         ) { connectionState, synchronizationState ->
             val deviceName = serviceApi.connectionInformationApi.getConnectedDeviceName()
-            if (connectionState == ConnectionState.Ready) {
+            if (connectionState is ConnectionState.Ready && connectionState.isSupported) {
                 return@combine synchronizationState.toConnectionStatus(deviceName)
             } else {
                 return@combine connectionState.toConnectionStatus(deviceName)
             }
         }.onEach {
+            if (it is ConnectionStatusState.Unsupported) {
+                unsupportedDialogShowHelper.showDialog()
+            }
             statusState.emit(ConnectionTabStateMapper.getConnectionTabState(it))
         }.launchIn(viewModelScope)
     }
@@ -94,7 +99,10 @@ class ConnectionStatusViewModel(
     private suspend fun ConnectionState.toConnectionStatus(deviceName: String?) = when (this) {
         ConnectionState.Connecting -> ConnectionStatusState.Connecting
         ConnectionState.Initializing -> ConnectionStatusState.Connecting
-        ConnectionState.Ready -> ConnectionStatusState.Completed(deviceName ?: "Unnamed")
+        ConnectionState.RetrievingInformation -> ConnectionStatusState.Connecting
+        is ConnectionState.Ready -> if (isSupported) ConnectionStatusState.Completed(
+            deviceName ?: "Unnamed"
+        ) else ConnectionStatusState.Unsupported
         ConnectionState.Disconnecting -> ConnectionStatusState.Connecting
         is ConnectionState.Disconnected -> if (
             pairSettingsStore.data.first().deviceId.isBlank()
