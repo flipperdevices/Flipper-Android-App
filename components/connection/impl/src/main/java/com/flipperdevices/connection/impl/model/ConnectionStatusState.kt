@@ -7,5 +7,5 @@ sealed class ConnectionStatusState {
     object Unsupported : ConnectionStatusState()
     object Connected : ConnectionStatusState()
     object Synchronization : ConnectionStatusState()
-    class Completed(val deviceName: String) : ConnectionStatusState()
+    object Synchronized : ConnectionStatusState()
 }
