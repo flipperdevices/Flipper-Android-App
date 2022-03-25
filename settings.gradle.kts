@@ -37,6 +37,7 @@ include(
     ":components:core:ui",
     ":components:core:test",
     ":components:core:markdown",
+    ":components:core:activityholder",
 
     ":components:bottombar:api",
     ":components:bottombar:impl",

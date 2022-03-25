@@ -4,12 +4,13 @@ import android.app.Application
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.os.Vibrator
 import android.util.Log
 import androidx.core.content.ContextCompat
 import com.flipperdevices.analytics.shake2report.impl.activity.Shake2ReportActivity
-import com.flipperdevices.analytics.shake2report.impl.helper.ScreenshotHelper
 import com.flipperdevices.analytics.shake2report.impl.listener.FlipperShakeDetector
+import com.flipperdevices.core.activityholder.CurrentActivityHolder
 import com.flipperdevices.core.ktx.android.vibrateCompat
 import com.squareup.seismic.ShakeDetector
 import fr.bipi.tressence.file.FileLoggerTree
@@ -29,7 +30,6 @@ internal class Shake2Report(
 ) : ShakeDetector.Listener {
     private val shakeDetector = FlipperShakeDetector(this, application)
     private var vibrator = ContextCompat.getSystemService(application, Vibrator::class.java)
-    private var screenshotHelper = ScreenshotHelper(application)
     private var logDir: File = File(application.cacheDir, FILE_LOG_DIR)
     private var screenshot: Bitmap? = null
 
@@ -58,8 +58,6 @@ internal class Shake2Report(
         Timber.plant(fileLoggerTree)
 
         shakeDetector.register()
-
-        screenshotHelper.register()
     }
 
     internal fun getLogDir(): File {
@@ -74,7 +72,7 @@ internal class Shake2Report(
 
     override fun hearShake() {
         vibrator?.vibrateCompat(VIBRATOR_TIME_MS)
-        screenshot = screenshotHelper.takeScreenshot()
+        screenshot = takeScreenshot()
 
         application.startActivity(
             Intent(
@@ -84,5 +82,15 @@ internal class Shake2Report(
                 flags = FLAG_ACTIVITY_NEW_TASK
             }
         )
+    }
+
+    private fun takeScreenshot(): Bitmap? {
+        val rootView = CurrentActivityHolder.getCurrentActivity()?.window?.decorView?.rootView
+            ?: return null
+        val width = rootView.width
+        val height = rootView.height
+        val screenshot = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        rootView.draw(Canvas(screenshot))
+        return screenshot
     }
 }

@@ -14,6 +14,7 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.connection.impl.R
 import com.flipperdevices.connection.impl.di.ConnectionComponent
+import com.flipperdevices.connection.impl.dialog.UnsupportedDialogShowHelper
 import com.flipperdevices.connection.impl.model.ConnectionStatusState
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.preference.pb.PairSettings
@@ -33,6 +34,7 @@ class ConnectionStatusViewModel(
     private val statusState = MutableStateFlow(
         ConnectionTabStateMapper.getConnectionTabState(ConnectionStatusState.Disconnected)
     )
+    private val unsupportedDialogShowHelper = UnsupportedDialogShowHelper()
 
     @Inject
     lateinit var serviceProvider: FlipperServiceProvider
@@ -61,6 +63,9 @@ class ConnectionStatusViewModel(
                 return@combine connectionState.toConnectionStatus(deviceName)
             }
         }.onEach {
+            if (it is ConnectionStatusState.Unsupported) {
+                unsupportedDialogShowHelper.showDialog()
+            }
             statusState.emit(ConnectionTabStateMapper.getConnectionTabState(it))
         }.launchIn(viewModelScope)
     }
