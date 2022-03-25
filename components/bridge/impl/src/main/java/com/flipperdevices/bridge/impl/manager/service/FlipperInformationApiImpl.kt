@@ -42,6 +42,9 @@ class FlipperInformationApiImpl(
         getServiceOrLog(gatt, Constants.GenericService.SERVICE_UUID)?.let { service ->
             infoCharacteristics.putAll(service.characteristics.map { it.uuid to it })
         }
+        getServiceOrLog(gatt, Constants.BatteryService.SERVICE_UUID)?.let { service ->
+            infoCharacteristics.putAll(service.characteristics.map { it.uuid to it })
+        }
         return true
     }
 
@@ -114,6 +117,14 @@ class FlipperInformationApiImpl(
                 it.copy(softwareVersion = String(content))
             }
         }.enqueue()
+        bleManager.readCharacteristicUnsafe(
+            infoCharacteristics[Constants.BatteryService.BATTERY_LEVEL]
+        ).with { device, data ->
+            val content = data.value ?: return@with
+            /*informationState.update {
+                it.copy(batteryLevel = String(content))
+            }*/
+        }
     }
 
     private fun onDeviceNameReceived(deviceName: String) {

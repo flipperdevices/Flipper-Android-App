@@ -41,7 +41,7 @@ class DeviceViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
             dataStorePair.data
         ) { connectionState, flipperInformation, pairSettings ->
             return@combine when (connectionState) {
-                is ConnectionState.Disconnected -> if (pairSettings.deviceName == null) {
+                is ConnectionState.Disconnected -> if (pairSettings.deviceName.isBlank()) {
                     DeviceStatus.NoDevice
                 } else DeviceStatus.NotConnected(pairSettings.deviceName)
                 ConnectionState.Connecting,
@@ -49,7 +49,10 @@ class DeviceViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
                 ConnectionState.Initializing,
                 is ConnectionState.Ready,
                 ConnectionState.RetrievingInformation -> {
-                    val deviceName = pairSettings.deviceName ?: "Unknown"
+                    var deviceName = pairSettings.deviceName
+                    if (deviceName.isBlank()) {
+                        deviceName = "Unknown"
+                    }
                     val batteryLevel = flipperInformation.batteryLevel
                     if (batteryLevel == null) {
                         DeviceStatus.NotConnected(

@@ -29,6 +29,8 @@ import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.viewmodel.DeviceViewModel
 import kotlin.math.round
 
+const val FLOAT_TO_PERCENT_QUALIFIER = 100
+
 @Composable
 fun ComposableDeviceBar(deviceViewModel: DeviceViewModel = viewModel()) {
     val deviceStatus by deviceViewModel.getState().collectAsState()
@@ -66,7 +68,7 @@ private fun FlipperImage(deviceStatus: DeviceStatus) {
     }
 
     Image(
-        modifier = Modifier.padding(vertical = 7.dp),
+        modifier = Modifier.padding(top = 7.dp, bottom = 7.dp, end = 18.dp),
         painter = painterResource(imageId),
         contentDescription = stringResource(descriptionId)
     )
@@ -98,14 +100,17 @@ private fun ConnectedText(title: String, batteryValue: Float) {
     ) {
         FlipperName(title)
         if (batteryValue > 0.0f && batteryValue <= 1.0f) {
-            Row() {
+            Row(
+                modifier = Modifier.padding(top = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 ComposableFlipperBattery(
                     Modifier.size(width = 30.dp, height = 14.dp),
                     percent = batteryValue
                 )
                 Text(
                     modifier = Modifier.padding(start = 5.dp),
-                    text = "${round(batteryValue * 100)}%",
+                    text = "${round(batteryValue * FLOAT_TO_PERCENT_QUALIFIER)}%",
                     fontSize = 12.sp,
                     fontWeight = FontWeight.W400,
                     color = colorResource(DesignSystem.color.black_100)

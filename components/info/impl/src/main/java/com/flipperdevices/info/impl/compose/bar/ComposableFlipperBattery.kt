@@ -30,7 +30,8 @@ fun ComposableFlipperBattery(
         Icon(
             modifier = Modifier.padding(start = 1.dp),
             painter = painterResource(R.drawable.ic_battery_pin),
-            contentDescription = null
+            contentDescription = null,
+            tint = colorResource(R.color.battery_backgroud)
         )
     }
 }
@@ -45,6 +46,7 @@ private fun BatteryContent(
             .clip(RoundedCornerShape(3.dp))
             .background(colorResource(R.color.battery_backgroud))
             .padding(1.dp)
+            .clip(RoundedCornerShape(3.dp))
             .background(Color.White)
             .padding(1.66.dp)
             .clip(RoundedCornerShape(1.dp))
