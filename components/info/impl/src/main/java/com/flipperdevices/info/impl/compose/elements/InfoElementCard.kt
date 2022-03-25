@@ -20,7 +20,7 @@ fun InfoElementCard(
         modifier = Modifier.padding(horizontal = 14.dp),
         shape = RoundedCornerShape(size = 10.dp)
     ) {
-        Column() {
+        Column {
             Text(
                 modifier = Modifier.padding(
                     start = 12.dp,

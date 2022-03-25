@@ -39,7 +39,7 @@ fun ComposableDeviceBar(deviceViewModel: DeviceViewModel = viewModel()) {
             .fillMaxWidth()
             .background(colorResource(DesignSystem.color.accent)),
         horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         FlipperImage(deviceStatus)
         val localDeviceStatus = deviceStatus
