@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
@@ -50,17 +51,19 @@ fun ComposableKeyCard(
                 onSwitchFavorites = onSwitchFavorites
             )
             val notes = parsedKey.notes
-            Text(
-                modifier = Modifier.padding(
-                    bottom = 18.dp,
-                    start = 12.dp,
-                    end = 12.dp
-                ),
-                text = notes ?: stringResource(R.string.keyscreen_card_note_empty),
-                fontWeight = FontWeight.W400,
-                fontSize = 14.sp,
-                color = colorResource(DesignSystem.color.black_30)
-            )
+            SelectionContainer {
+                Text(
+                    modifier = Modifier.padding(
+                        bottom = 18.dp,
+                        start = 12.dp,
+                        end = 12.dp
+                    ),
+                    text = notes ?: stringResource(R.string.keyscreen_card_note_empty),
+                    fontWeight = FontWeight.W400,
+                    fontSize = 14.sp,
+                    color = colorResource(DesignSystem.color.black_30)
+                )
+            }
 
             Divider(
                 modifier = Modifier.fillMaxWidth(),
