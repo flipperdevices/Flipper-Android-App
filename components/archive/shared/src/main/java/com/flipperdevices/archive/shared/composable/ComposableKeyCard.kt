@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.material.ripple.rememberRipple
@@ -37,12 +38,12 @@ fun ComposableKeyCard(
             .fillMaxWidth()
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple(bounded = false),
+                indication = rememberRipple(),
                 onClick = onCardClicked
             ),
         shape = RoundedCornerShape(size = 10.dp)
     ) {
-        Column {
+        Column(Modifier.padding(bottom = 8.dp)) {
             ComposableKeyCardContent(flipperKeyParsed)
         }
     }
@@ -67,7 +68,7 @@ private fun ColumnScope.ComposableKeyCardContent(
     }
     Text(
         modifier = Modifier.padding(
-            top = 12.dp,
+            top = 8.dp,
             start = 8.dp,
             end = 8.dp
         ),
@@ -79,18 +80,21 @@ private fun ColumnScope.ComposableKeyCardContent(
         fontWeight = FontWeight.W400
     )
 
-    Text(
-        modifier = Modifier.padding(
-            top = 6.dp,
-            start = 8.dp,
-            end = 8.dp,
-            bottom = 8.dp
-        ),
-        text = flipperKeyParsed.notes ?: "",
-        fontSize = 14.sp,
-        fontWeight = FontWeight.W400,
-        color = colorResource(DesignSystem.color.black_30),
-        maxLines = 1,
-        overflow = TextOverflow.Ellipsis
-    )
+    val notes = flipperKeyParsed.notes ?: return
+
+    SelectionContainer() {
+        Text(
+            modifier = Modifier.padding(
+                top = 6.dp,
+                start = 8.dp,
+                end = 8.dp
+            ),
+            text = notes,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.W400,
+            color = colorResource(DesignSystem.color.black_30),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+    }
 }
