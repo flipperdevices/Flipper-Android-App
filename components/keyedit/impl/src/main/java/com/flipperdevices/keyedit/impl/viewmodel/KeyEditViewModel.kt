@@ -29,6 +29,7 @@ class KeyEditViewModel(
 ) : ViewModel(), LogTagProvider {
     override val TAG = "KeyEditViewModel"
     private val nameFilter = FlipperSymbolFilter(context)
+    private val lengthFilter = LengthFilter(context)
 
     @Inject
     lateinit var keyApi: KeyApi
@@ -50,20 +51,24 @@ class KeyEditViewModel(
     fun getEditState(): StateFlow<KeyEditState> = keyEditState
 
     fun onNameChange(newName: String) {
-        nameFilter.filterUnacceptableSymbol(newName) { filteredName ->
-            keyEditState.update {
-                if (it is KeyEditState.Editing) {
-                    it.copy(name = filteredName, savingKeyActive = filteredName.isNotBlank())
-                } else it
+        nameFilter.filterUnacceptableSymbol(newName) {
+            lengthFilter.nameLengthFilter(it) { filteredName ->
+                keyEditState.update {
+                    if (it is KeyEditState.Editing) {
+                        it.copy(name = filteredName, savingKeyActive = filteredName.isNotBlank())
+                    } else it
+                }
             }
         }
     }
 
     fun onNotesChange(newNote: String) {
-        keyEditState.update {
-            if (it is KeyEditState.Editing) {
-                it.copy(notes = newNote)
-            } else it
+        lengthFilter.noteLengthFilter(newNote) { filteredName ->
+            keyEditState.update {
+                if (it is KeyEditState.Editing) {
+                    it.copy(notes = filteredName)
+                } else it
+            }
         }
     }
 
