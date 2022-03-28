@@ -11,20 +11,6 @@ enum class FlipperFileType(
     @DrawableRes val icon: Int,
     @ColorRes val color: Int
 ) {
-    I_BUTTON(
-        humanReadableName = "iButton",
-        extension = "ibtn",
-        flipperDir = "ibutton",
-        icon = R.drawable.ic_fileformat_ibutton,
-        color = R.color.fileformat_color_ibutton
-    ),
-    NFC(
-        humanReadableName = "NFC",
-        extension = "nfc",
-        flipperDir = "nfc",
-        icon = R.drawable.ic_fileformat_nfc,
-        color = R.color.fileformat_color_nfc
-    ),
     SUB_GHZ(
         humanReadableName = "Sub-GHz",
         extension = "sub",
@@ -39,12 +25,26 @@ enum class FlipperFileType(
         icon = R.drawable.ic_fileformat_rf,
         color = R.color.fileformat_color_rf
     ),
+    NFC(
+        humanReadableName = "NFC",
+        extension = "nfc",
+        flipperDir = "nfc",
+        icon = R.drawable.ic_fileformat_nfc,
+        color = R.color.fileformat_color_nfc
+    ),
     INFRARED(
         humanReadableName = "Infrared",
         extension = "ir",
         flipperDir = "infrared",
         icon = R.drawable.ic_fileformat_ir,
         color = R.color.fileformat_color_ir
+    ),
+    I_BUTTON(
+        humanReadableName = "iButton",
+        extension = "ibtn",
+        flipperDir = "ibutton",
+        icon = R.drawable.ic_fileformat_ibutton,
+        color = R.color.fileformat_color_ibutton
     );
 
     companion object {
