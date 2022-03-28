@@ -82,7 +82,7 @@ private fun ColumnScope.ComposableKeyCardContent(
 
     val notes = flipperKeyParsed.notes ?: return
 
-    SelectionContainer() {
+    SelectionContainer {
         Text(
             modifier = Modifier.padding(
                 top = 6.dp,
