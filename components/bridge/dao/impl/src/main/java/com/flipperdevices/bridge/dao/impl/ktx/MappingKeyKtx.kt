@@ -9,7 +9,9 @@ internal fun FlipperKey.toDatabaseKey(): Key {
     return Key(
         path = path,
         content = DatabaseKeyContent(keyContent),
-        notes = notes
+        notes = notes,
+        synchronizedStatus = if (synchronized) SynchronizedStatus.SYNCHRONIZED
+        else SynchronizedStatus.NOT_SYNCHRONIZED
     )
 }
 

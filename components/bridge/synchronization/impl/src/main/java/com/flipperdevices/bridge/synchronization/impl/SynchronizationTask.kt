@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.synchronization.impl
 
 import androidx.lifecycle.lifecycleScope
+import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
@@ -19,6 +20,8 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.shake2report.api.Shake2ReportApi
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -38,6 +41,9 @@ class SynchronizationTask(
     fun start(onStateUpdate: suspend (SynchronizationState) -> Unit) {
         serviceProvider.provideServiceApi(this) { serviceApi ->
             taskScope.launch {
+                // Waiting to be connected to the flipper
+                serviceApi.connectionInformationApi.getConnectionStateFlow()
+                    .filter { it is ConnectionState.Ready && it.isSupported }.first()
                 startInternal(serviceApi, onStateUpdate)
             }
         }

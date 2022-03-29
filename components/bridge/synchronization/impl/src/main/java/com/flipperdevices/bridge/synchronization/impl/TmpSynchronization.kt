@@ -61,6 +61,7 @@ class TmpSynchronization : LogTagProvider {
             favoriteApi = favoriteApi,
             reportApi = reportApi
         )
+
         synchronizationTask.start { taskState ->
             synchronizationState.update { taskState }
             if (taskState == SynchronizationState.FINISHED) {
