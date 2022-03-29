@@ -21,6 +21,11 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.info.impl.R
 
+private const val EMPTY_BATTERY = 0f
+private const val FIRST_BATTERY_THRESHOLD = 0.15f
+private const val SECOND_BATTERY_THRESHOLD = 0.4f
+private const val FULL_BATTERY = 0f
+
 @Composable
 fun ComposableFlipperBattery(
     modifier: Modifier = Modifier,
@@ -43,9 +48,9 @@ private fun BatteryContent(
     @FloatRange(from = 0.0, to = 1.0) percent: Float
 ) {
     val batteryColorId = when (percent) {
-        in 0f..0.15f -> DesignSystem.color.red
-        in 0.15f..0.4f -> DesignSystem.color.yellow
-        in 0.4f..1.0f -> DesignSystem.color.green
+        in EMPTY_BATTERY..FIRST_BATTERY_THRESHOLD -> DesignSystem.color.red
+        in FIRST_BATTERY_THRESHOLD..SECOND_BATTERY_THRESHOLD -> DesignSystem.color.yellow
+        in SECOND_BATTERY_THRESHOLD..FULL_BATTERY -> DesignSystem.color.green
         else -> DesignSystem.color.red
     }
 

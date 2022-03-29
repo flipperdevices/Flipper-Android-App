@@ -77,6 +77,12 @@ class FlipperInformationApiImpl(
     }
 
     override fun initialize(bleManager: UnsafeBleManager) {
+        readInformationService(bleManager)
+        readGenericService(bleManager)
+        readBattery(bleManager)
+    }
+
+    private fun readInformationService(bleManager: UnsafeBleManager) {
         bleManager.readCharacteristicUnsafe(
             infoCharacteristics[Constants.BLEInformationService.API_VERSION]
         ).with { _, data ->
@@ -94,16 +100,6 @@ class FlipperInformationApiImpl(
             }
         }.enqueue()
         bleManager.readCharacteristicUnsafe(
-            infoCharacteristics[Constants.GenericService.DEVICE_NAME]
-        ).with { _, data ->
-            val content = data.value ?: return@with
-            val deviceName = String(content)
-            informationState.update {
-                it.copy(deviceName)
-            }
-            onDeviceNameReceived(deviceName)
-        }.enqueue()
-        bleManager.readCharacteristicUnsafe(
             infoCharacteristics[Constants.BLEInformationService.HARDWARE_VERSION]
         ).with { _, data ->
             val content = data.value ?: return@with
@@ -119,6 +115,22 @@ class FlipperInformationApiImpl(
                 it.copy(softwareVersion = String(content))
             }
         }.enqueue()
+    }
+
+    private fun readGenericService(bleManager: UnsafeBleManager) {
+        bleManager.readCharacteristicUnsafe(
+            infoCharacteristics[Constants.GenericService.DEVICE_NAME]
+        ).with { _, data ->
+            val content = data.value ?: return@with
+            val deviceName = String(content)
+            informationState.update {
+                it.copy(deviceName)
+            }
+            onDeviceNameReceived(deviceName)
+        }.enqueue()
+    }
+
+    private fun readBattery(bleManager: UnsafeBleManager) {
         bleManager.readCharacteristicUnsafe(
             infoCharacteristics[Constants.BatteryService.BATTERY_LEVEL]
         ).with { _, data ->
