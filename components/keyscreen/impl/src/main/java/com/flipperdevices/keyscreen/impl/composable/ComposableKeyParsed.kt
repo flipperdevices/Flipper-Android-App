@@ -5,6 +5,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.keyscreen.impl.R
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableDelete
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableEdit
@@ -21,6 +22,7 @@ import com.flipperdevices.keyscreen.shared.bar.ComposableKeyScreenAppBar
 fun ComposableKeyParsed(
     viewModel: KeyScreenViewModel,
     keyScreenState: KeyScreenState.Ready,
+    synchronizationUiApi: SynchronizationUiApi,
     onBack: () -> Unit
 ) {
     val scrollState = rememberScrollState()
@@ -28,8 +30,14 @@ fun ComposableKeyParsed(
         ComposableKeyScreenBar(onBack)
         ComposableKeyCard(
             keyScreenState.parsedKey,
+            synchronizationState = {
+                synchronizationUiApi.RenderSynchronizationState(
+                    keyScreenState.flipperKey.path,
+                    withText = true
+                )
+            },
             keyScreenState.favoriteState,
-            viewModel::setFavorite
+            viewModel::setFavorite,
         )
         ComposableEdit(viewModel::onOpenEdit)
         ComposableShare(keyScreenState.shareState, viewModel::onShare)

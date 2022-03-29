@@ -30,6 +30,12 @@ class SimpleKeyApiImpl @Inject constructor(
         return@withContext simpleKeyDao.getAll().map { it.toFlipperKey() }
     }
 
+    override fun getKeyAsFlow(keyPath: FlipperKeyPath): Flow<FlipperKey?> {
+        return simpleKeyDao.getByPathFlow(keyPath).map {
+            it?.toFlipperKey()
+        }
+    }
+
     override fun getExistKeysAsFlow(
         fileType: FlipperFileType?
     ): Flow<List<FlipperKey>> {

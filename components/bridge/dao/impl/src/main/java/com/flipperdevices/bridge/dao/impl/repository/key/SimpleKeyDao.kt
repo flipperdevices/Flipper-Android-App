@@ -18,6 +18,9 @@ interface SimpleKeyDao {
     @Query("SELECT * FROM keys WHERE path = :keyPath AND deleted = :deleted")
     suspend fun getByPath(keyPath: FlipperKeyPath, deleted: Boolean = false): Key?
 
+    @Query("SELECT * FROM keys WHERE path = :keyPath AND deleted = :deleted")
+    fun getByPathFlow(keyPath: FlipperKeyPath, deleted: Boolean = false): Flow<Key?>
+
     @Query(
         """
        SELECT * FROM keys WHERE type = :fileType AND deleted = 0 

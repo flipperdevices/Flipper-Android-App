@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.keyedit.api.KeyEditApi
 import com.flipperdevices.keyscreen.impl.model.KeyScreenState
 import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModel
@@ -18,6 +19,7 @@ import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModel
 @Composable
 fun ComposableKeyScreen(
     viewModel: KeyScreenViewModel,
+    synchronizationUiApi: SynchronizationUiApi,
     keyScreenState: KeyScreenState = KeyScreenState.InProgress,
     keyEditApi: KeyEditApi,
     onBack: () -> Unit
@@ -25,7 +27,12 @@ fun ComposableKeyScreen(
     when (keyScreenState) {
         KeyScreenState.InProgress -> ComposableKeyInitial()
         is KeyScreenState.Error -> ComposableKeyError(keyScreenState)
-        is KeyScreenState.Ready -> ComposableKeyParsed(viewModel, keyScreenState, onBack)
+        is KeyScreenState.Ready -> ComposableKeyParsed(
+            viewModel,
+            keyScreenState,
+            synchronizationUiApi,
+            onBack
+        )
         is KeyScreenState.Editing -> keyEditApi.EditScreen(
             keyScreenState.flipperKey,
             keyScreenState.parsedKey,

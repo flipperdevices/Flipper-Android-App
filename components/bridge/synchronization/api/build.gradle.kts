@@ -1,8 +1,9 @@
 plugins {
-    androidLibrary
+    androidCompose
 }
 
 dependencies {
-    implementation(libs.cicerone)
-    implementation(libs.kotlin.coroutines)
+    implementation(projects.components.bridge.dao.api)
+
+    implementation(libs.compose.ui)
 }

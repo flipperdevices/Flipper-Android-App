@@ -8,6 +8,8 @@ import kotlinx.coroutines.flow.Flow
 interface SimpleKeyApi {
     suspend fun getAllKeys(): List<FlipperKey>
 
+    fun getKeyAsFlow(keyPath: FlipperKeyPath): Flow<FlipperKey?>
+
     fun getExistKeysAsFlow(
         fileType: FlipperFileType? = null
     ): Flow<List<FlipperKey>>

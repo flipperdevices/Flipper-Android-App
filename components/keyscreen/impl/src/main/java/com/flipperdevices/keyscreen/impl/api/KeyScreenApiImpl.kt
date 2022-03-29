@@ -20,6 +20,9 @@ class KeyScreenApiImpl @Inject constructor() : KeyScreenApi {
 
     @Composable
     override fun KeyCard(key: FlipperKeyParsed) {
-        ComposableKeyCard(parsedKey = key)
+        ComposableKeyCard(
+            parsedKey = key,
+            synchronizationState = null
+        )
     }
 }
