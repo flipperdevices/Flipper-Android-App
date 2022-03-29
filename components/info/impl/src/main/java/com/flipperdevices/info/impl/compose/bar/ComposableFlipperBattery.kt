@@ -1,4 +1,4 @@
-package com.flipperdevices.info.impl.compose
+package com.flipperdevices.info.impl.compose.bar
 
 import androidx.annotation.FloatRange
 import androidx.compose.foundation.background
@@ -18,6 +18,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.info.impl.R
 
 @Composable
@@ -41,6 +42,13 @@ private fun BatteryContent(
     modifier: Modifier = Modifier,
     @FloatRange(from = 0.0, to = 1.0) percent: Float
 ) {
+    val batteryColorId = when (percent) {
+        in 0f..0.15f -> DesignSystem.color.red
+        in 0.15f..0.4f -> DesignSystem.color.yellow
+        in 0.4f..1.0f -> DesignSystem.color.green
+        else -> DesignSystem.color.red
+    }
+
     Row(
         modifier
             .clip(RoundedCornerShape(3.dp))
@@ -56,7 +64,7 @@ private fun BatteryContent(
             Modifier
                 .weight(weight = percent)
                 .fillMaxHeight()
-                .background(colorResource(R.color.battery_charged))
+                .background(colorResource(batteryColorId))
         )
         Box(Modifier.weight(remainingWeight))
     }

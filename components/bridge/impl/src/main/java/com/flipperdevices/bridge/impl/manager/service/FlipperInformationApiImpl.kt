@@ -21,6 +21,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+private const val MAX_BATTERY_LEVEL = 100
+
 class FlipperInformationApiImpl(
     private val scope: CoroutineScope
 ) : BluetoothGattServiceWrapper, FlipperInformationApi, LogTagProvider {
@@ -119,12 +121,16 @@ class FlipperInformationApiImpl(
         }.enqueue()
         bleManager.readCharacteristicUnsafe(
             infoCharacteristics[Constants.BatteryService.BATTERY_LEVEL]
-        ).with { device, data ->
+        ).with { _, data ->
             val content = data.value ?: return@with
-            /*informationState.update {
-                it.copy(batteryLevel = String(content))
-            }*/
-        }
+            val batteryLevel = content.firstOrNull() ?: return@with
+            val batteryLevelAsFloat = batteryLevel.toFloat() / MAX_BATTERY_LEVEL
+            if (batteryLevelAsFloat in 0.0f..1.0f) {
+                informationState.update {
+                    it.copy(batteryLevel = batteryLevelAsFloat)
+                }
+            }
+        }.enqueue()
     }
 
     private fun onDeviceNameReceived(deviceName: String) {

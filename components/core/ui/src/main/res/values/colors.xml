@@ -19,4 +19,6 @@
     <color name="favorite_enabled">#FECF5D</color>
 
     <color name="red">#F63F3F</color>
+    <color name="yellow">#FECF5D</color>
+    <color name="green">#34C7A4</color>
 </resources>
