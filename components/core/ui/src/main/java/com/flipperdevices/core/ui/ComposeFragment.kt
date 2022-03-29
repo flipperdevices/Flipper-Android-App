@@ -12,14 +12,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
+import com.flipperdevices.core.ktx.android.setStatusBarColor
 import com.flipperdevices.core.navigation.requireRouter
 import com.flipperdevices.core.ui.FontFamilyFactory.getTypographyWithReplacedFontFamily
 import com.flipperdevices.core.ui.composable.LocalRouter
+import com.flipperdevices.core.ui.provider.StatusBarColorProvider
 
 /**
  * Fragment with jetpack compose support
  */
-abstract class ComposeFragment : Fragment() {
+abstract class ComposeFragment : Fragment(), StatusBarColorProvider {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,6 +44,13 @@ abstract class ComposeFragment : Fragment() {
             }
         }
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setStatusBarColor(getStatusBarColor())
+    }
+
+    override fun getStatusBarColor(): Int? = null
 
     /**
      * Please, don't forget add composable annotation to override funs

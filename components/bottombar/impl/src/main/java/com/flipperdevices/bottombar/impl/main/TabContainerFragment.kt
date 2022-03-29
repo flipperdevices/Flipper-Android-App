@@ -14,13 +14,19 @@ import com.flipperdevices.bottombar.impl.navigate.ScreenTabProvider
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.navigation.delegates.OnBackPressListener
 import com.flipperdevices.core.navigation.delegates.RouterProvider
+import com.flipperdevices.core.ui.provider.StatusBarColorProvider
 import com.github.terrakok.cicerone.Cicerone
 import com.github.terrakok.cicerone.Navigator
 import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import javax.inject.Inject
 
-class TabContainerFragment : Fragment(), OnBackPressListener, RouterProvider, OnDoublePressOnTab {
+class TabContainerFragment :
+    Fragment(),
+    OnBackPressListener,
+    RouterProvider,
+    OnDoublePressOnTab,
+    StatusBarColorProvider {
 
     private val navigator: Navigator by lazy {
         AppNavigator(requireActivity(), R.id.container, childFragmentManager)
@@ -76,6 +82,15 @@ class TabContainerFragment : Fragment(), OnBackPressListener, RouterProvider, On
             router.exit()
             true
         }
+    }
+
+    override fun getStatusBarColor(): Int? {
+        val fragment = childFragmentManager.findFragmentById(R.id.container)
+        if (fragment !is StatusBarColorProvider) {
+            return null
+        }
+
+        return fragment.getStatusBarColor()
     }
 
     override fun onDoublePress() {
