@@ -47,11 +47,13 @@ class FavoriteSynchronization constructor(
             return favoritesFromFlipper
         }
 
-        val resultFavoritesList = mergedWithManifestList(combinedDiff)
-        favoritesRepository.updateFavorites(
+        val diffForFlipper = combinedDiff.filter { it.source == DiffSource.ANDROID }
+        favoritesRepository.applyDiff(
             flipperStorage,
-            resultFavoritesList
+            favoritesFromFlipper,
+            diffForFlipper
         ) // Update on Flipper
+        val resultFavoritesList = mergedWithManifestList(combinedDiff)
         favoriteApi.updateFavorites(resultFavoritesList)
 
         return resultFavoritesList
