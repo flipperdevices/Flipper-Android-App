@@ -43,7 +43,7 @@ fun ComposableKeySmall(
         shape = RoundedCornerShape(size = 10.dp)
     ) {
         Column {
-            Row() {
+            Row {
                 ComposableKeyType(keyPath.fileType)
                 Box(
                     modifier = Modifier

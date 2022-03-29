@@ -37,7 +37,7 @@ fun ComposableKeyParsed(
                 )
             },
             keyScreenState.favoriteState,
-            viewModel::setFavorite,
+            viewModel::setFavorite
         )
         ComposableEdit(viewModel::onOpenEdit)
         ComposableShare(keyScreenState.shareState, viewModel::onShare)

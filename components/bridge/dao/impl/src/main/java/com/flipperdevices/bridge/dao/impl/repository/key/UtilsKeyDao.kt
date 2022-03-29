@@ -7,7 +7,11 @@ import com.flipperdevices.bridge.dao.impl.model.SynchronizedStatus
 import kotlinx.coroutines.flow.Flow
 
 interface UtilsKeyDao {
-    @Query("UPDATE keys SET synchronized_status = :status WHERE path = :keyPath AND deleted = :deleted")
+    @Query(
+        """
+       UPDATE keys SET synchronized_status = :status WHERE path = :keyPath AND deleted = :deleted 
+        """
+    )
     suspend fun markSynchronized(
         keyPath: FlipperKeyPath,
         deleted: Boolean,
