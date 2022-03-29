@@ -28,6 +28,7 @@ import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.provider.StatusBarColorProvider
 import com.flipperdevices.inappnotification.api.InAppNotificationRenderer
 import javax.inject.Inject
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
 class BottomNavigationFragment : Fragment(), OnBackPressListener {

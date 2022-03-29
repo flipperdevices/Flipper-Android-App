@@ -24,7 +24,7 @@ import com.flipperdevices.info.impl.R
 private const val EMPTY_BATTERY = 0f
 private const val FIRST_BATTERY_THRESHOLD = 0.15f
 private const val SECOND_BATTERY_THRESHOLD = 0.4f
-private const val FULL_BATTERY = 0f
+private const val FULL_BATTERY = 1.0f
 
 @Composable
 fun ComposableFlipperBattery(

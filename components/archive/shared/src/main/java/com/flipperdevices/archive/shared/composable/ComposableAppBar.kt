@@ -12,7 +12,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,7 +21,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.R as DesignSystem
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun ComposableAppBar(
@@ -60,17 +58,10 @@ private fun ComposableAppBarInternal(
     onBack: (() -> Unit)? = null,
     endContent: (@Composable (Modifier) -> Unit)? = null
 ) {
-    val systemUiController = rememberSystemUiController()
-    val appBarColor = colorResource(DesignSystem.color.accent)
-
-    SideEffect {
-        systemUiController.setStatusBarColor(appBarColor)
-    }
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(appBarColor),
+            .background(colorResource(DesignSystem.color.accent)),
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (onBack != null) {

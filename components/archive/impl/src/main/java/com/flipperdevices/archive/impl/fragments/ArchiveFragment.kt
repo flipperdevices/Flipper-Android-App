@@ -8,6 +8,7 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.connection.api.ConnectionApi
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ui.ComposeFragment
+import com.flipperdevices.core.ui.R as DesignSystem
 import javax.inject.Inject
 
 class ArchiveFragment : ComposeFragment() {
@@ -26,4 +27,6 @@ class ArchiveFragment : ComposeFragment() {
     override fun RenderView() {
         ComposableArchive(synchronizationUiApi)
     }
+
+    override fun getStatusBarColor(): Int = DesignSystem.color.accent
 }
