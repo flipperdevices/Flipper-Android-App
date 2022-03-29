@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.info.impl.R
-import com.flipperdevices.info.impl.compose.ComposableFlipperBattery
+import com.flipperdevices.info.impl.compose.bar.ComposableFlipperBattery
 import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.viewmodel.DeviceViewModel
 import kotlin.math.round
@@ -101,7 +101,7 @@ private fun ConnectedText(title: String, batteryValue: Float) {
         FlipperName(title)
         if (batteryValue > 0.0f && batteryValue <= 1.0f) {
             Row(
-                modifier = Modifier.padding(top = 8.dp),
+                modifier = Modifier.padding(top = 6.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 ComposableFlipperBattery(
