@@ -14,6 +14,11 @@ interface KeyApi {
 
     suspend fun markDeleted(keyPath: FlipperKeyPath)
 
+    suspend fun markAsSynchronized(
+        keyPath: FlipperKeyPath,
+        deleted: Boolean
+    )
+
     suspend fun updateNote(keyPath: FlipperKeyPath, note: String)
 
     suspend fun getKey(keyPath: FlipperKeyPath): FlipperKey?

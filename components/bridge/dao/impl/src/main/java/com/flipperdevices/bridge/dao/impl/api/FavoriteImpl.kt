@@ -4,6 +4,7 @@ import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.impl.model.FavoriteKey
+import com.flipperdevices.bridge.dao.impl.model.SynchronizedStatus
 import com.flipperdevices.bridge.dao.impl.repository.FavoriteDao
 import com.flipperdevices.bridge.dao.impl.repository.KeyDao
 import com.flipperdevices.core.di.AppGraph
@@ -76,7 +77,9 @@ class FavoriteImpl @Inject constructor(
             keys.filter { !it.value.deleted }.map { (favoriteKey, key) ->
                 favoriteKey.order to FlipperKey(
                     key.path,
-                    key.content.flipperContent
+                    key.content.flipperContent,
+                    key.notes,
+                    synchronized = key.synchronizedStatus == SynchronizedStatus.SYNCHRONIZED
                 )
             }.sortedBy { (order, _) -> order }.map { it.second }
         }
@@ -88,7 +91,9 @@ class FavoriteImpl @Inject constructor(
             .map { (favoriteKey, key) ->
                 favoriteKey.order to FlipperKey(
                     key.path,
-                    key.content.flipperContent
+                    key.content.flipperContent,
+                    key.notes,
+                    synchronized = key.synchronizedStatus == SynchronizedStatus.SYNCHRONIZED
                 )
             }.sortedBy { (order, _) -> order }.map { it.second }
     }

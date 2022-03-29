@@ -94,7 +94,8 @@ class KeyEditViewModel(
         val newFlipperKey = FlipperKey(
             FlipperKeyPath(flipperKey.path.folder, "${editState.name}.$extension"),
             flipperKey.keyContent,
-            editState.notes
+            editState.notes,
+            synchronized = false
         )
         finishListener?.invoke(newFlipperKey)
     }

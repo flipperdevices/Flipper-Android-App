@@ -13,6 +13,7 @@ import com.flipperdevices.bridge.synchronization.impl.model.KeyWithHash
 import com.flipperdevices.bridge.synchronization.impl.model.RestartSynchronizationException
 import com.flipperdevices.bridge.synchronization.impl.model.trackProgressAndReturn
 import com.flipperdevices.bridge.synchronization.impl.repository.android.AndroidHashRepository
+import com.flipperdevices.bridge.synchronization.impl.repository.android.SynchronizationStateRepository
 import com.flipperdevices.bridge.synchronization.impl.repository.flipper.FlipperHashRepository
 import com.flipperdevices.bridge.synchronization.impl.repository.flipper.KeysListingRepository
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestChangeExecutor
@@ -39,6 +40,7 @@ class KeysSynchronization(
     private val flipperHashRepository = FlipperHashRepository()
     private val androidHashRepository = AndroidHashRepository()
     private val androidStorage = AndroidKeyStorage(keysApi)
+    private val synchronizationRepository = SynchronizationStateRepository(keysApi)
 
     suspend fun syncKeys(): List<KeyWithHash> {
         val keysFromAndroid = keysApi.getAllKeys()
@@ -71,7 +73,7 @@ class KeysSynchronization(
         )
 
         info {
-            "[Keys] Android, successful applied" +
+            "[Keys] Flipper, successful applied" +
                 " ${appliedKeysToFlipper.size} from ${diffForFlipper.size} changes"
         }
 
@@ -83,9 +85,13 @@ class KeysSynchronization(
         )
 
         info {
-            "[Keys] Flipper, successful applied " +
+            "[Keys] Android, successful applied " +
                 "${appliedKeysToAndroid.size} from ${diffForAndroid.size} changes"
         }
+
+        synchronizationRepository.markAsSynchronized(
+            appliedKeysToAndroid.plus(appliedKeysToFlipper)
+        )
 
         val manifestHashes = checkSynchronization(
             calculatedHashOnAndroid = ManifestChangeExecutor.applyChanges(
@@ -166,7 +172,7 @@ class KeysSynchronization(
         val oldKey = keysApi.getKey(keyPath) ?: error("Can't found key $keyPath on Android side")
         val newPath = keysApi.findAvailablePath(keyPath)
 
-        keysApi.insertKey(FlipperKey(newPath, oldKey.keyContent))
+        keysApi.insertKey(FlipperKey(newPath, oldKey.keyContent, synchronized = false))
         keysApi.markDeleted(oldKey.path)
     }
 }

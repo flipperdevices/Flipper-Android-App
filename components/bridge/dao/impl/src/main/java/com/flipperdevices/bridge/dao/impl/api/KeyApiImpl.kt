@@ -7,6 +7,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.impl.api.delegates.KeyContentCleaner
 import com.flipperdevices.bridge.dao.impl.model.DatabaseKeyContent
 import com.flipperdevices.bridge.dao.impl.model.Key
+import com.flipperdevices.bridge.dao.impl.model.SynchronizedStatus
 import com.flipperdevices.bridge.dao.impl.repository.KeyDao
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.provideDelegate
@@ -45,6 +46,13 @@ class KeyApiImpl @Inject constructor(
     ) = withContext(Dispatchers.IO) {
         keysDao.deleteMarkedDeleted(keyPath)
         cleaner.deleteUnusedFiles()
+    }
+
+    override suspend fun markAsSynchronized(
+        keyPath: FlipperKeyPath,
+        deleted: Boolean
+    ) = withContext(Dispatchers.IO) {
+        keysDao.markSynchronized(keyPath, deleted, SynchronizedStatus.SYNCHRONIZED)
     }
 
     override suspend fun markDeleted(keyPath: FlipperKeyPath) = withContext(Dispatchers.IO) {
@@ -131,7 +139,8 @@ private fun Key.toFlipperKey(): FlipperKey {
     return FlipperKey(
         path = path,
         keyContent = content.flipperContent,
-        notes = notes
+        notes = notes,
+        synchronized = synchronizedStatus == SynchronizedStatus.SYNCHRONIZED
     )
 }
 

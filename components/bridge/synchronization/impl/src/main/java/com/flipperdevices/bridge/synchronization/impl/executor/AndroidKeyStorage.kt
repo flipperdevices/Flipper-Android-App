@@ -19,7 +19,7 @@ class AndroidKeyStorage(
 
     override suspend fun saveKey(keyPath: FlipperKeyPath, keyContent: FlipperKeyContent) {
         info { "Save key $keyPath with $keyContent" }
-        val flipperKey = FlipperKey(keyPath, keyContent)
+        val flipperKey = FlipperKey(keyPath, keyContent, synchronized = true)
         keysApi.insertKey(flipperKey)
     }
 

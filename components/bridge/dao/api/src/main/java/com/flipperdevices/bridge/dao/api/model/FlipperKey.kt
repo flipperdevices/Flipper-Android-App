@@ -10,5 +10,6 @@ import kotlinx.parcelize.Parcelize
 data class FlipperKey(
     val path: FlipperKeyPath,
     val keyContent: FlipperKeyContent,
-    val notes: String? = null
+    val notes: String? = null,
+    val synchronized: Boolean
 ) : Parcelable

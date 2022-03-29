@@ -60,7 +60,6 @@ class SynchronizationTask(
             exception: Throwable
         ) {
             error(exception) { "While synchronization we have error" }
-            throw exception
         } finally {
             onStateUpdate(SynchronizationState.FINISHED)
             onStop()

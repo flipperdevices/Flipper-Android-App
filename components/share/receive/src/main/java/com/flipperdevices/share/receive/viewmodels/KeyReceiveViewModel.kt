@@ -159,5 +159,5 @@ private fun Deeplink?.toFlipperKey(): FlipperKey? {
     val path = this?.path ?: return null
     val deeplinkContent = this.content as? DeeplinkContent.FFFContent
         ?: return null
-    return FlipperKey(path, deeplinkContent.content)
+    return FlipperKey(path, deeplinkContent.content, synchronized = false)
 }
