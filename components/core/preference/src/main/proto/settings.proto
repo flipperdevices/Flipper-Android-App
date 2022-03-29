@@ -3,8 +3,15 @@ syntax = "proto3";
 option java_package = "com.flipperdevices.core.preference.pb";
 option java_multiple_files = true;
 
+enum SelectedTab {
+  DEVICE = 0;
+  ARCHIVE = 1;
+  OPTIONS = 2;
+}
+
 message Settings {
   bool used_foreground_service = 2;
   bool enabled_debug_settings = 3;
   bool enabled_experimental_functions = 4;
+  SelectedTab selected_tab = 5;
 }

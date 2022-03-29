@@ -8,6 +8,7 @@ dependencies {
     implementation(projects.components.bottombar.api)
 
     implementation(projects.components.core.di)
+    implementation(projects.components.core.preference)
     implementation(projects.components.core.navigation)
     implementation(projects.components.core.ui)
 
