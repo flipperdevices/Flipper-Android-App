@@ -13,7 +13,6 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.core.ui.composable.painterResourceByKey
-import com.flipperdevices.keyscreen.impl.R
 import com.flipperdevices.keyscreen.impl.model.FavoriteState
 
 private const val ICON_SIZE_DP = 24
@@ -28,9 +27,6 @@ fun ComposableFavorite(favoriteState: FavoriteState, onSwitchFavorites: (Boolean
         FavoriteState.FAVORITE -> DesignSystem.drawable.ic_star_enabled
         FavoriteState.NOT_FAVORITE -> DesignSystem.drawable.ic_star_disabled
     }
-    val tintId = if (favoriteState == FavoriteState.FAVORITE) {
-        R.color.keyscreen_favorite_enabled
-    } else DesignSystem.color.black_100
 
     Icon(
         modifier = Modifier
@@ -43,7 +39,7 @@ fun ComposableFavorite(favoriteState: FavoriteState, onSwitchFavorites: (Boolean
             )
             .size(ICON_SIZE_DP.dp),
         painter = painterResourceByKey(iconId),
-        tint = colorResource(tintId),
+        tint = colorResource(DesignSystem.color.favorite_enabled),
         contentDescription = null
     )
 }
