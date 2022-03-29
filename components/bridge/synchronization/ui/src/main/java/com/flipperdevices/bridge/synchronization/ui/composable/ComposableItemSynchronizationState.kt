@@ -12,6 +12,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -24,6 +26,7 @@ import kotlin.math.roundToInt
 
 private const val DOTS_COUNT = 3f
 private const val DOTS_DURATION_MS = 3000
+private const val ROTATE_DURATION_MS = 3000
 
 @Composable
 internal fun ComposableItemSynchronizationState(
@@ -48,6 +51,8 @@ internal fun ComposableItemSynchronizationState(
         ItemSynchronizationState.NOT_SYNCHRONIZED -> R.string.synchronization_status_not_synced
     }
     var description = stringResource(descriptionId)
+    var angel = 0f
+
     if (itemSynchronizationState == ItemSynchronizationState.IN_PROGRESS) {
         val infiniteTransition = rememberInfiniteTransition()
         val dotsCount by infiniteTransition.animateFloat(
@@ -58,11 +63,20 @@ internal fun ComposableItemSynchronizationState(
                 repeatMode = RepeatMode.Restart
             )
         )
+        val angelProgress by infiniteTransition.animateFloat(
+            initialValue = 0F,
+            targetValue = 360F,
+            animationSpec = infiniteRepeatable(
+                animation = tween(durationMillis = ROTATE_DURATION_MS, easing = LinearEasing)
+            )
+        )
         description += ".".repeat(dotsCount.roundToInt())
+        angel = angelProgress
     }
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Icon(
+            modifier = Modifier.rotate(angel),
             painter = painterResourceByKey(iconId),
             contentDescription = stringResource(descriptionId),
             tint = colorResource(colorId)
