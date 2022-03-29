@@ -7,6 +7,7 @@ import com.flipperdevices.archive.search.di.SearchComponent
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ui.ComposeFragment
+import com.flipperdevices.core.ui.R as DesignSystem
 import javax.inject.Inject
 
 class SearchFragment : ComposeFragment() {
@@ -22,4 +23,6 @@ class SearchFragment : ComposeFragment() {
     override fun RenderView() {
         ComposableSearch(synchronizationUiApi)
     }
+
+    override fun getStatusBarColor(): Int = DesignSystem.color.background
 }

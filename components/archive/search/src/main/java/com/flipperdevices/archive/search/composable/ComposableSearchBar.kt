@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
@@ -24,17 +23,9 @@ import com.flipperdevices.archive.search.R
 import com.flipperdevices.archive.search.viewmodel.SearchViewModel
 import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.core.ui.composable.LocalRouter
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun ComposableSearchBar(searchViewModel: SearchViewModel) {
-    val systemUiController = rememberSystemUiController()
-    val appBarColor = colorResource(DesignSystem.color.background)
-
-    SideEffect {
-        systemUiController.setStatusBarColor(appBarColor)
-    }
-
     val router = LocalRouter.current
     var text by remember { mutableStateOf("") }
     key(text) {
@@ -42,7 +33,7 @@ fun ComposableSearchBar(searchViewModel: SearchViewModel) {
     }
 
     Row(
-        modifier = Modifier.background(appBarColor),
+        modifier = Modifier.background(colorResource(DesignSystem.color.background)),
         verticalAlignment = Alignment.CenterVertically
     ) {
         ComposableSearchBarBack { router.exit() }

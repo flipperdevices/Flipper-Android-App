@@ -9,6 +9,7 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.ui.ComposeFragment
+import com.flipperdevices.core.ui.R as DesignSystem
 import javax.inject.Inject
 
 private const val EXTRA_CATEGORY_TYPE = "category_type"
@@ -29,6 +30,8 @@ class CategoryFragment : ComposeFragment() {
             ComposableCategory(categoryType, synchronizationUiApi)
         }
     }
+
+    override fun getStatusBarColor(): Int = DesignSystem.color.accent
 
     companion object {
         fun getInstance(categoryType: CategoryType) = CategoryFragment().withArgs {

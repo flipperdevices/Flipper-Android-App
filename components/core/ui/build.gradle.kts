@@ -4,6 +4,7 @@ plugins {
 
 dependencies {
     implementation(projects.components.bridge.dao.api)
+    implementation(projects.components.core.ktx)
     implementation(projects.components.core.navigation)
 
     implementation(libs.cicerone)

@@ -8,9 +8,10 @@ dependencies {
     implementation(projects.components.bottombar.api)
 
     implementation(projects.components.core.di)
-    implementation(projects.components.core.preference)
-    implementation(projects.components.core.navigation)
     implementation(projects.components.core.ui)
+    implementation(projects.components.core.ktx)
+    implementation(projects.components.core.navigation)
+    implementation(projects.components.core.preference)
 
     implementation(projects.components.info.api)
     implementation(projects.components.connection.api)
@@ -27,7 +28,6 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.pager)
-    implementation(libs.compose.systemui)
     implementation(libs.image.lottie)
 
     implementation(libs.kotlin.coroutines)
