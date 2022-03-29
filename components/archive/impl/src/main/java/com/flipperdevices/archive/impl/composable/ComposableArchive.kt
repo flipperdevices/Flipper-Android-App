@@ -37,6 +37,7 @@ import com.flipperdevices.archive.impl.viewmodel.GeneralTabViewModel
 import com.flipperdevices.archive.shared.composable.ComposableAppBar
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
+import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.core.ui.composable.LocalRouter
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -44,6 +45,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 fun ComposableArchive(
+    synchronizationUiApi: SynchronizationUiApi,
     tabViewModel: GeneralTabViewModel = viewModel()
 ) {
     val keys by tabViewModel.getKeys().collectAsState()
@@ -70,7 +72,12 @@ fun ComposableArchive(
                     ComposableCategoryCard()
                 }
                 if (isKeysPresented) {
-                    KeyCatalog(favoriteKeys, keys)
+                    KeyCatalog(
+                        favoriteKeys = favoriteKeys,
+                        otherKeys = keys,
+                        synchronizationUiApi = synchronizationUiApi,
+                        synchronizationState = synchronizationState
+                    )
                 }
             }
         }
@@ -86,20 +93,30 @@ fun ComposableArchive(
 @Suppress("FunctionName")
 private fun LazyListScope.KeyCatalog(
     favoriteKeys: List<FlipperKey>,
-    otherKeys: List<FlipperKey>?
+    otherKeys: List<FlipperKey>?,
+    synchronizationUiApi: SynchronizationUiApi,
+    synchronizationState: SynchronizationState
 ) {
     if (!favoriteKeys.isNullOrEmpty()) {
         item {
             ComposableFavoriteKeysTitle()
         }
-        ComposableKeysGrid(favoriteKeys)
+        ComposableKeysGrid(
+            favoriteKeys,
+            synchronizationUiApi,
+            synchronizationState
+        )
     }
 
     if (!otherKeys.isNullOrEmpty()) {
         item {
             ComposableAllKeysTitle()
         }
-        ComposableKeysGrid(otherKeys)
+        ComposableKeysGrid(
+            otherKeys,
+            synchronizationUiApi,
+            synchronizationState
+        )
     }
 }
 

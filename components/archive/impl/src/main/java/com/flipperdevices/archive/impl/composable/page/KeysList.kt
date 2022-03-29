@@ -21,6 +21,8 @@ import androidx.compose.ui.unit.sp
 import com.flipperdevices.archive.impl.R
 import com.flipperdevices.archive.impl.composable.key.ComposableKeySmall
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
+import com.flipperdevices.bridge.synchronization.api.SynchronizationState
+import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.ui.R as DesignSystem
 
 private const val GRID_WIDTH = 2
@@ -28,7 +30,9 @@ private const val GRID_ROW_WEIGHT = 1f / GRID_WIDTH
 
 @Suppress("FunctionName")
 fun LazyListScope.ComposableKeysGrid(
-    keys: List<FlipperKey>
+    keys: List<FlipperKey>,
+    synchronizationUiApi: SynchronizationUiApi,
+    synchronizationState: SynchronizationState
 ) {
     items(keys.windowed(GRID_WIDTH, GRID_WIDTH, partialWindows = true)) { items ->
         Row(
@@ -39,6 +43,13 @@ fun LazyListScope.ComposableKeysGrid(
             items.forEach {
                 ComposableKeySmall(
                     modifier = Modifier.weight(GRID_ROW_WEIGHT),
+                    synchronizationContent = {
+                        synchronizationUiApi.RenderSynchronizationState(
+                            it.synchronized,
+                            synchronizationState,
+                            withText = false
+                        )
+                    },
                     keyPath = it.path
                 )
             }

@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import com.flipperdevices.archive.impl.composable.ComposableArchive
 import com.flipperdevices.archive.impl.di.ArchiveComponent
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
+import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.connection.api.ConnectionApi
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ui.ComposeFragment
@@ -17,6 +18,9 @@ class ArchiveFragment : ComposeFragment() {
     @Inject
     lateinit var synchronizationApi: SynchronizationApi
 
+    @Inject
+    lateinit var synchronizationUiApi: SynchronizationUiApi
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ComponentHolder.component<ArchiveComponent>().inject(this)
@@ -25,6 +29,6 @@ class ArchiveFragment : ComposeFragment() {
 
     @Composable
     override fun RenderView() {
-        ComposableArchive()
+        ComposableArchive(synchronizationUiApi)
     }
 }

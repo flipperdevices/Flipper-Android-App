@@ -24,20 +24,33 @@ import com.flipperdevices.archive.search.R
 import com.flipperdevices.archive.search.model.SearchState
 import com.flipperdevices.archive.search.viewmodel.SearchViewModel
 import com.flipperdevices.archive.shared.composable.ComposableKeyCard
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
+import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
+import com.flipperdevices.bridge.synchronization.api.SynchronizationState
+import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.core.ui.composable.LocalRouter
 
 @Composable
-fun ComposableSearchContent(modifier: Modifier, searchViewModel: SearchViewModel) {
+fun ComposableSearchContent(
+    modifier: Modifier,
+    synchronizationUiApi: SynchronizationUiApi,
+    searchViewModel: SearchViewModel
+) {
     val state by searchViewModel.getState().collectAsState()
+    val synchronizationState by searchViewModel.getSynchronizationState().collectAsState()
     val localState = state
     when (localState) {
         SearchState.Loading -> CategoryLoadingProgress(modifier)
         is SearchState.Loaded -> if (localState.keys.isEmpty()) {
             CategoryEmpty(modifier)
-        } else CategoryList(modifier, searchViewModel, localState.keys)
+        } else CategoryList(
+            modifier,
+            searchViewModel,
+            synchronizationUiApi,
+            synchronizationState,
+            localState.keys
+        )
     }
 }
 
@@ -45,15 +58,27 @@ fun ComposableSearchContent(modifier: Modifier, searchViewModel: SearchViewModel
 private fun CategoryList(
     modifier: Modifier,
     searchViewModel: SearchViewModel,
-    keys: List<Pair<FlipperKeyParsed, FlipperKeyPath>>
+    synchronizationUiApi: SynchronizationUiApi,
+    synchronizationState: SynchronizationState,
+    keys: List<Pair<FlipperKeyParsed, FlipperKey>>
 ) {
     val router = LocalRouter.current
     LazyColumn(
         modifier.padding(top = 14.dp)
     ) {
-        items(keys) { (flipperKeyParsed, keyPath) ->
-            ComposableKeyCard(Modifier.padding(bottom = 14.dp), flipperKeyParsed) {
-                searchViewModel.openKeyScreen(router, keyPath)
+        items(keys) { (flipperKeyParsed, flipperKey) ->
+            ComposableKeyCard(
+                Modifier.padding(bottom = 14.dp),
+                syncronizationContent = {
+                    synchronizationUiApi.RenderSynchronizationState(
+                        flipperKey.synchronized,
+                        synchronizationState,
+                        withText = false
+                    )
+                },
+                flipperKeyParsed,
+            ) {
+                searchViewModel.openKeyScreen(router, flipperKey.path)
             }
         }
     }

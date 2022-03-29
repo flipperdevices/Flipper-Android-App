@@ -13,6 +13,7 @@ dependencies {
     implementation(projects.components.core.ui)
 
     implementation(projects.components.bridge.dao.api)
+    implementation(projects.components.bridge.synchronization.api)
     implementation(projects.components.keyscreen.api)
 
     implementation(libs.cicerone)

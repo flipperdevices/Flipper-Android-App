@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -28,23 +27,23 @@ import com.flipperdevices.archive.model.CategoryType
 import com.flipperdevices.archive.shared.composable.ComposableAppBar
 import com.flipperdevices.archive.shared.composable.ComposableKeyCard
 import com.flipperdevices.bridge.dao.api.model.FlipperFileType
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
+import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
+import com.flipperdevices.bridge.synchronization.api.SynchronizationState
+import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.core.ui.composable.LocalRouter
 
-@Preview(
-    showSystemUi = true,
-    showBackground = true
-)
 @Composable
 fun ComposableCategory(
     categoryType: CategoryType = CategoryType.ByFileType(FlipperFileType.INFRARED),
+    synchronizationUiApi: SynchronizationUiApi,
     categoryViewModel: CategoryViewModel = viewModel(
         factory = CategoryViewModelFactory(categoryType)
     )
 ) {
     val categoryState by categoryViewModel.getState().collectAsState()
+    val synchronizationState by categoryViewModel.getSynchronizationState().collectAsState()
     val localCategoryState = categoryState
     val router = LocalRouter.current
 
@@ -62,7 +61,13 @@ fun ComposableCategory(
         when (localCategoryState) {
             is CategoryState.Loaded -> if (localCategoryState.keys.isEmpty()) {
                 CategoryEmpty(contentModifier)
-            } else CategoryList(contentModifier, categoryViewModel, localCategoryState.keys)
+            } else CategoryList(
+                contentModifier,
+                categoryViewModel,
+                synchronizationUiApi,
+                synchronizationState,
+                localCategoryState.keys
+            )
             CategoryState.Loading -> CategoryLoadingProgress(contentModifier)
         }
     }
@@ -72,15 +77,27 @@ fun ComposableCategory(
 private fun CategoryList(
     modifier: Modifier,
     categoryViewModel: CategoryViewModel,
-    keys: List<Pair<FlipperKeyParsed, FlipperKeyPath>>
+    synchronizationUiApi: SynchronizationUiApi,
+    synchronizationState: SynchronizationState,
+    keys: List<Pair<FlipperKeyParsed, FlipperKey>>
 ) {
     val router = LocalRouter.current
     LazyColumn(
         modifier.padding(top = 14.dp)
     ) {
-        items(keys) { (flipperKeyParsed, keyPath) ->
-            ComposableKeyCard(Modifier.padding(bottom = 14.dp), flipperKeyParsed) {
-                categoryViewModel.openKeyScreen(router, keyPath)
+        items(keys) { (flipperKeyParsed, flipperKey) ->
+            ComposableKeyCard(
+                Modifier.padding(bottom = 14.dp),
+                syncronizationContent = {
+                    synchronizationUiApi.RenderSynchronizationState(
+                        synced = flipperKey.synchronized,
+                        synchronizationState = synchronizationState,
+                        withText = false
+                    )
+                },
+                flipperKeyParsed
+            ) {
+                categoryViewModel.openKeyScreen(router, flipperKey.path)
             }
         }
     }

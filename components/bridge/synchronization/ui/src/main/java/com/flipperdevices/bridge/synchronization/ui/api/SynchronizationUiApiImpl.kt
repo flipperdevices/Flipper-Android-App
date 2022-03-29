@@ -34,7 +34,7 @@ class SynchronizationUiApiImpl @Inject constructor() : SynchronizationUiApi {
     ) {
         ComposableItemSynchronizationState(
             itemSynchronizationState = ItemSynchronizationStateMapper.getItemSynchronizedState(
-                synchronized = false,
+                synchronized = synced,
                 synchronizationState
             ),
             withText = withText

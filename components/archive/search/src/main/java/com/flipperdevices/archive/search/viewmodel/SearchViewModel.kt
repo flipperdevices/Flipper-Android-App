@@ -7,6 +7,8 @@ import com.flipperdevices.archive.search.model.SearchState
 import com.flipperdevices.bridge.dao.api.delegates.KeyParser
 import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
+import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
+import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.keyscreen.api.KeyScreenApi
 import com.github.terrakok.cicerone.Router
@@ -31,12 +33,15 @@ class SearchViewModel : ViewModel() {
     @Inject
     lateinit var keyScreenApi: KeyScreenApi
 
+    @Inject
+    lateinit var synchronizationApi: SynchronizationApi
+
     init {
         ComponentHolder.component<SearchComponent>().inject(this)
         queryFlow.mapLatest { query ->
             searchState.emit(SearchState.Loading)
             utilsKeyApi.search(query)
-                .map { keys -> keys.map { keyParser.parseKey(it) to it.path } }
+                .map { keys -> keys.map { keyParser.parseKey(it) to it } }
                 .collect {
                     searchState.emit(SearchState.Loaded(it))
                 }
@@ -44,6 +49,9 @@ class SearchViewModel : ViewModel() {
     }
 
     fun getState(): StateFlow<SearchState> = searchState
+
+    fun getSynchronizationState(): StateFlow<SynchronizationState> =
+        synchronizationApi.getSynchronizationState()
 
     fun onChangeText(text: String) {
         viewModelScope.launch {

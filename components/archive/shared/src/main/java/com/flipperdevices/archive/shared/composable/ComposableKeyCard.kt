@@ -2,6 +2,7 @@ package com.flipperdevices.archive.shared.composable
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
@@ -29,6 +30,7 @@ import com.flipperdevices.core.ui.composable.ComposableKeyType
 @Composable
 fun ComposableKeyCard(
     modifier: Modifier,
+    syncronizationContent: @Composable () -> Unit,
     flipperKeyParsed: FlipperKeyParsed,
     onCardClicked: () -> Unit
 ) {
@@ -44,14 +46,15 @@ fun ComposableKeyCard(
         shape = RoundedCornerShape(size = 10.dp)
     ) {
         Column(Modifier.padding(bottom = 8.dp)) {
-            ComposableKeyCardContent(flipperKeyParsed)
+            ComposableKeyCardContent(flipperKeyParsed, syncronizationContent)
         }
     }
 }
 
 @Composable
 private fun ColumnScope.ComposableKeyCardContent(
-    flipperKeyParsed: FlipperKeyParsed
+    flipperKeyParsed: FlipperKeyParsed,
+    syncronizationContent: @Composable () -> Unit
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         ComposableKeyType(flipperKeyParsed.fileType)
@@ -64,6 +67,14 @@ private fun ColumnScope.ComposableKeyCardContent(
                 fontWeight = FontWeight.W400,
                 fontSize = 12.sp
             )
+        }
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .padding(horizontal = 8.dp, vertical = 8.dp),
+            contentAlignment = Alignment.CenterEnd
+        ) {
+            syncronizationContent()
         }
     }
     Text(

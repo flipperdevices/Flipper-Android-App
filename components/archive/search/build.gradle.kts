@@ -9,6 +9,7 @@ dependencies {
     implementation(projects.components.archive.shared)
 
     implementation(projects.components.bridge.dao.api)
+    implementation(projects.components.bridge.synchronization.api)
     implementation(projects.components.keyscreen.api)
 
     implementation(projects.components.core.di)
