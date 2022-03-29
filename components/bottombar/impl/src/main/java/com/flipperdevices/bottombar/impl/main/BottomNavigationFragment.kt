@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.datastore.core.DataStore
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.flipperdevices.bottombar.impl.R
@@ -21,8 +22,12 @@ import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
 import com.flipperdevices.connection.api.ConnectionApi
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.navigation.delegates.OnBackPressListener
+import com.flipperdevices.core.preference.pb.SelectedTab
+import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.inappnotification.api.InAppNotificationRenderer
 import javax.inject.Inject
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 
 class BottomNavigationFragment : Fragment(), OnBackPressListener {
     private val bottomNavigationViewModel by viewModels<BottomNavigationViewModel>()
@@ -35,6 +40,9 @@ class BottomNavigationFragment : Fragment(), OnBackPressListener {
 
     @Inject
     lateinit var connectionApi: ConnectionApi
+
+    @Inject
+    lateinit var settingsDataStore: DataStore<Settings>
 
     init {
         ComponentHolder.component<BottomBarComponent>().inject(this)
@@ -76,7 +84,7 @@ class BottomNavigationFragment : Fragment(), OnBackPressListener {
         }
 
         if (childFragmentManager.findFragmentById(R.id.fragment_container) == null) {
-            selectTab(FlipperBottomTab.ARCHIVE)
+            selectTab(getFirstTab())
         }
     }
 
@@ -117,6 +125,20 @@ class BottomNavigationFragment : Fragment(), OnBackPressListener {
             transaction.show(newFragment)
         }
         transaction.commitNow()
+    }
+
+    private fun getFirstTab(): FlipperBottomTab {
+        return runBlocking {
+            val selectedTab = settingsDataStore.data.first().selectedTab
+                ?: return@runBlocking FlipperBottomTab.DEVICE
+
+            return@runBlocking when (selectedTab) {
+                SelectedTab.UNRECOGNIZED,
+                SelectedTab.DEVICE -> FlipperBottomTab.DEVICE
+                SelectedTab.ARCHIVE -> FlipperBottomTab.ARCHIVE
+                SelectedTab.OPTIONS -> FlipperBottomTab.OPTIONS
+            }
+        }
     }
 
     override fun onBackPressed(): Boolean {
