@@ -15,7 +15,7 @@ fun ComposableBarTitle(modifier: Modifier, text: String) {
     Text(
         modifier = modifier,
         text = text,
-        fontSize = 24.sp,
+        fontSize = 20.sp,
         fontWeight = FontWeight.W800,
         color = colorResource(R.color.black_88)
     )
