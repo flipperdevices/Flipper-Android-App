@@ -68,6 +68,7 @@ dependencies {
     implementation(projects.components.bridge.dao.impl)
     implementation(projects.components.bridge.synchronization.api)
     implementation(projects.components.bridge.synchronization.impl)
+    implementation(projects.components.bridge.synchronization.ui)
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.service.impl)
     implementation(projects.components.bridge.api)

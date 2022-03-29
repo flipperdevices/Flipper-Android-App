@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.flipperdevices.app.di.MainComponent
+import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
@@ -23,6 +24,9 @@ class SplashScreen : AppCompatActivity(), LogTagProvider {
 
     @Inject
     lateinit var deepLinkParser: DeepLinkParser
+
+    @Inject
+    lateinit var synchronizationApi: SynchronizationApi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +48,8 @@ class SplashScreen : AppCompatActivity(), LogTagProvider {
                 openSingleActivityAndFinish(deeplink)
             }
         }
+
+        synchronizationApi.startSynchronization()
     }
 
     private fun openSingleActivityAndFinish(deeplink: Deeplink?) {

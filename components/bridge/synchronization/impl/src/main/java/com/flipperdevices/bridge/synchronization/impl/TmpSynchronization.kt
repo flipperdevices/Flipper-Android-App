@@ -1,7 +1,9 @@
 package com.flipperdevices.bridge.synchronization.impl
 
 import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
-import com.flipperdevices.bridge.dao.api.delegates.KeyApi
+import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
+import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
+import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.impl.di.SynchronizationComponent
@@ -26,7 +28,13 @@ class TmpSynchronization : LogTagProvider {
     lateinit var serviceProvider: FlipperServiceProvider
 
     @Inject
-    lateinit var keyApi: KeyApi
+    lateinit var simpleKeyApi: SimpleKeyApi
+
+    @Inject
+    lateinit var deleteKeyApi: DeleteKeyApi
+
+    @Inject
+    lateinit var utilsKeyApi: UtilsKeyApi
 
     @Inject
     lateinit var favoriteApi: FavoriteApi
@@ -47,10 +55,13 @@ class TmpSynchronization : LogTagProvider {
         markDirty = false
         val synchronizationTask = SynchronizationTask(
             serviceProvider = serviceProvider,
-            keysApi = keyApi,
+            simpleKeyApi = simpleKeyApi,
+            deleteKeyApi = deleteKeyApi,
+            utilsKeyApi = utilsKeyApi,
             favoriteApi = favoriteApi,
             reportApi = reportApi
         )
+
         synchronizationTask.start { taskState ->
             synchronizationState.update { taskState }
             if (taskState == SynchronizationState.FINISHED) {

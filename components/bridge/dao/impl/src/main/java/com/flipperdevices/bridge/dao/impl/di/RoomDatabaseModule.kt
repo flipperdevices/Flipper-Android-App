@@ -4,6 +4,10 @@ import android.content.Context
 import androidx.room.Room
 import com.flipperdevices.bridge.dao.impl.AppDatabase
 import com.flipperdevices.bridge.dao.impl.converters.DatabaseKeyContentConverter
+import com.flipperdevices.bridge.dao.impl.repository.KeyDao
+import com.flipperdevices.bridge.dao.impl.repository.key.DeleteKeyDao
+import com.flipperdevices.bridge.dao.impl.repository.key.SimpleKeyDao
+import com.flipperdevices.bridge.dao.impl.repository.key.UtilsKeyDao
 import com.flipperdevices.core.di.AppGraph
 import com.squareup.anvil.annotations.ContributesTo
 import dagger.Module
@@ -32,4 +36,13 @@ class RoomDatabaseModule {
 
     @Provides
     fun provideKeyDao(database: AppDatabase) = database.keyDao()
+
+    @Provides
+    fun provideDeleteKeyDao(keyDao: KeyDao): DeleteKeyDao = keyDao
+
+    @Provides
+    fun provideSimpleKeyDao(keyDao: KeyDao): SimpleKeyDao = keyDao
+
+    @Provides
+    fun provideUtilsKeyDao(keyDao: KeyDao): UtilsKeyDao = keyDao
 }

@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.flipperdevices.archive.api.SearchApi
 import com.flipperdevices.archive.impl.di.ArchiveComponent
 import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
-import com.flipperdevices.bridge.dao.api.delegates.KeyApi
+import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 
 class GeneralTabViewModel : ViewModel() {
     @Inject
-    lateinit var keyApi: KeyApi
+    lateinit var simpleKeyApi: SimpleKeyApi
 
     @Inject
     lateinit var favoriteApi: FavoriteApi
@@ -40,7 +40,7 @@ class GeneralTabViewModel : ViewModel() {
     init {
         ComponentHolder.component<ArchiveComponent>().inject(this)
         viewModelScope.launch {
-            keyApi.getExistKeysAsFlow(null)
+            simpleKeyApi.getExistKeysAsFlow(null)
                 .combine(favoriteApi.getFavoritesFlow()) { keyList, favoriteKeysList ->
                     // val favoriteKeyPaths = favoriteKeysList.map { it.path }.toSet()
                     // val keysExceptFavorite = keyList?.filterNot { favoriteKeyPaths.contains(it.path) }

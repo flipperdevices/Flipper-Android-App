@@ -8,7 +8,8 @@ import com.flipperdevices.archive.impl.R
 import com.flipperdevices.archive.impl.di.ArchiveComponent
 import com.flipperdevices.archive.impl.model.CategoryItem
 import com.flipperdevices.archive.model.CategoryType
-import com.flipperdevices.bridge.dao.api.delegates.KeyApi
+import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
+import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.jre.map
@@ -28,7 +29,10 @@ class CategoryViewModel(
     private val deletedCategoryName = application.getString(R.string.archive_tab_deleted)
 
     @Inject
-    lateinit var keyApi: KeyApi
+    lateinit var simpleKeyApi: SimpleKeyApi
+
+    @Inject
+    lateinit var deleteKeyApi: DeleteKeyApi
 
     @Inject
     lateinit var categoryApi: CategoryApi
@@ -60,7 +64,7 @@ class CategoryViewModel(
     }
 
     private suspend fun subscribeOnCategoriesCount() {
-        keyApi.getDeletedKeyAsFlow().onEach {
+        deleteKeyApi.getDeletedKeyAsFlow().onEach {
             deletedCategoryFlow.emit(
                 CategoryItem(
                     iconId = null,
@@ -72,7 +76,7 @@ class CategoryViewModel(
         }.launchIn(viewModelScope)
 
         FlipperFileType.values().forEach { fileType ->
-            keyApi.getExistKeysAsFlow(fileType).onEach { keys ->
+            simpleKeyApi.getExistKeysAsFlow(fileType).onEach { keys ->
                 categoriesFlow.update {
                     val mutableMap = TreeMap(it)
                     mutableMap[fileType] = CategoryItem(

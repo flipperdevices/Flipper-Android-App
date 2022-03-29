@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="synchronization_status_synced">Synced</string>
+    <string name="synchronization_status_syncing">Syncing</string>
+    <string name="synchronization_status_not_synced">Not Synced</string>
+</resources>

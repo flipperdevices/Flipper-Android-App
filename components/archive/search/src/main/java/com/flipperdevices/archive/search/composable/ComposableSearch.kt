@@ -4,22 +4,22 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.archive.search.viewmodel.SearchViewModel
+import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 
-@Preview(
-    showSystemUi = true,
-    showBackground = true
-)
 @Composable
-fun ComposableSearch(searchViewModel: SearchViewModel = viewModel()) {
+fun ComposableSearch(
+    synchronizationUiApi: SynchronizationUiApi,
+    searchViewModel: SearchViewModel = viewModel()
+) {
     Column {
         ComposableSearchBar(searchViewModel)
         ComposableSearchContent(
             Modifier
                 .weight(weight = 1f)
                 .fillMaxWidth(),
+            synchronizationUiApi,
             searchViewModel
         )
     }
