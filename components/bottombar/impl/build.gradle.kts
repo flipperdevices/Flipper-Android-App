@@ -28,7 +28,6 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.pager)
-    implementation(libs.compose.systemui)
     implementation(libs.image.lottie)
 
     implementation(libs.kotlin.coroutines)
