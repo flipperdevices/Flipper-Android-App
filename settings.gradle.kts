@@ -20,6 +20,7 @@ include(
     ":components:bridge:protobuf",
     ":components:bridge:synchronization:api",
     ":components:bridge:synchronization:impl",
+    ":components:bridge:synchronization:ui",
     ":components:bridge:dao:api",
     ":components:bridge:dao:impl",
 

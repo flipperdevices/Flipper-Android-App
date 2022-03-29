@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
-import com.flipperdevices.bridge.dao.api.delegates.KeyApi
 import com.flipperdevices.bridge.dao.api.delegates.KeyParser
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
@@ -30,9 +29,6 @@ class KeyEditViewModel(
     override val TAG = "KeyEditViewModel"
     private val nameFilter = FlipperSymbolFilter(context)
     private val lengthFilter = LengthFilter(context)
-
-    @Inject
-    lateinit var keyApi: KeyApi
 
     @Inject
     lateinit var favoriteApi: FavoriteApi

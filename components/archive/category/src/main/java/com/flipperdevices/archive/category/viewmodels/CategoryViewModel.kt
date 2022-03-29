@@ -5,8 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.flipperdevices.archive.category.di.CategoryComponent
 import com.flipperdevices.archive.category.model.CategoryState
 import com.flipperdevices.archive.model.CategoryType
-import com.flipperdevices.bridge.dao.api.delegates.KeyApi
 import com.flipperdevices.bridge.dao.api.delegates.KeyParser
+import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
+import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.keyscreen.api.KeyScreenApi
@@ -26,7 +27,10 @@ class CategoryViewModel(
     lateinit var parser: KeyParser
 
     @Inject
-    lateinit var keyApi: KeyApi
+    lateinit var simpleKeyApi: SimpleKeyApi
+
+    @Inject
+    lateinit var deleteKeyApi: DeleteKeyApi
 
     @Inject
     lateinit var screenApi: KeyScreenApi
@@ -35,8 +39,8 @@ class CategoryViewModel(
         ComponentHolder.component<CategoryComponent>().inject(this)
         viewModelScope.launch {
             when (categoryType) {
-                is CategoryType.ByFileType -> keyApi.getExistKeysAsFlow(categoryType.fileType)
-                CategoryType.Deleted -> keyApi.getDeletedKeyAsFlow()
+                is CategoryType.ByFileType -> simpleKeyApi.getExistKeysAsFlow(categoryType.fileType)
+                CategoryType.Deleted -> deleteKeyApi.getDeletedKeyAsFlow()
             }.map { list ->
                 list.map {
                     parser.parseKey(it) to it.path

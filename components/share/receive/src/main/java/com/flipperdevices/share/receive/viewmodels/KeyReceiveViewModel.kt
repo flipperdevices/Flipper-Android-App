@@ -3,8 +3,9 @@ package com.flipperdevices.share.receive.viewmodels
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.flipperdevices.bridge.dao.api.delegates.KeyApi
 import com.flipperdevices.bridge.dao.api.delegates.KeyParser
+import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
+import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.toast
@@ -36,7 +37,10 @@ class KeyReceiveViewModel(
     private val state = MutableStateFlow<ReceiveState>(ReceiveState.NotStarted)
 
     @Inject
-    lateinit var keyApi: KeyApi
+    lateinit var simpleKeyApi: SimpleKeyApi
+
+    @Inject
+    lateinit var utilsKeyApi: UtilsKeyApi
 
     @Inject
     lateinit var keyParser: KeyParser
@@ -52,7 +56,7 @@ class KeyReceiveViewModel(
                 state.emit(ReceiveState.Finished)
                 return@onEach
             }
-            val newPath = keyApi.findAvailablePath(flipperKey.path)
+            val newPath = utilsKeyApi.findAvailablePath(flipperKey.path)
             flipperKey = flipperKey.copy(path = newPath)
             state.emit(ReceiveState.Pending(flipperKey, keyParser.parseKey(flipperKey)))
         }.launchIn(viewModelScope)
@@ -77,7 +81,7 @@ class KeyReceiveViewModel(
 
         viewModelScope.launch {
             try {
-                keyApi.insertKey(localState.flipperKey)
+                simpleKeyApi.insertKey(localState.flipperKey)
             } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
                 error(e) { "While save key ${localState.flipperKey}" }
                 getApplication<Application>().toast(R.string.receive_error_conflict)

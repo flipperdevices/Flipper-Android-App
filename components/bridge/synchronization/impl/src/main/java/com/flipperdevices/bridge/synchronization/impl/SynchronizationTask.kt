@@ -2,7 +2,9 @@ package com.flipperdevices.bridge.synchronization.impl
 
 import androidx.lifecycle.lifecycleScope
 import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
-import com.flipperdevices.bridge.dao.api.delegates.KeyApi
+import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
+import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
+import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
@@ -22,7 +24,9 @@ import kotlinx.coroutines.withContext
 
 class SynchronizationTask(
     private val serviceProvider: FlipperServiceProvider,
-    private val keysApi: KeyApi,
+    private val simpleKeyApi: SimpleKeyApi,
+    private val deleteKeyApi: DeleteKeyApi,
+    private val utilsKeyApi: UtilsKeyApi,
     private val favoriteApi: FavoriteApi,
     private val reportApi: Shake2ReportApi
 ) : TaskWithLifecycle(), LogTagProvider {
@@ -72,7 +76,13 @@ class SynchronizationTask(
             favoriteApi, manifestRepository, flipperStorage
         )
         val keysSynchronization = KeysSynchronization(
-            keysApi, manifestRepository, flipperStorage, serviceApi.requestApi, reportApi
+            simpleKeyApi,
+            deleteKeyApi,
+            utilsKeyApi,
+            manifestRepository,
+            flipperStorage,
+            serviceApi.requestApi,
+            reportApi
         )
 
         val keysHashes = keysSynchronization.syncKeys()

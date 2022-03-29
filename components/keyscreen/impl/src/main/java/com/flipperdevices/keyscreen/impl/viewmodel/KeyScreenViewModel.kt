@@ -4,8 +4,9 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
-import com.flipperdevices.bridge.dao.api.delegates.KeyApi
 import com.flipperdevices.bridge.dao.api.delegates.KeyParser
+import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
+import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.di.ComponentHolder
@@ -32,7 +33,10 @@ class KeyScreenViewModel(
     override val TAG = "KeyScreenViewModel"
 
     @Inject
-    lateinit var keyApi: KeyApi
+    lateinit var simpleKeyApi: SimpleKeyApi
+
+    @Inject
+    lateinit var deleteKeyApi: DeleteKeyApi
 
     @Inject
     lateinit var favoriteApi: FavoriteApi
@@ -54,7 +58,7 @@ class KeyScreenViewModel(
                 keyScreenState.update { KeyScreenState.Error(R.string.keyscreen_error_keypath) }
                 return@launch
             } else keyPath
-            val flipperKey = keyApi.getKey(keyPathNotNull)
+            val flipperKey = simpleKeyApi.getKey(keyPathNotNull)
             if (flipperKey == null) {
                 keyScreenState.update {
                     KeyScreenState.Error(R.string.keyscreen_error_notfound_key)
@@ -156,7 +160,7 @@ class KeyScreenViewModel(
         }
 
         viewModelScope.launch {
-            val flipperKey = keyApi.getKey(keyPathNotNull)
+            val flipperKey = simpleKeyApi.getKey(keyPathNotNull)
             if (flipperKey == null) {
                 keyScreenState.update {
                     KeyScreenState.Error(R.string.keyscreen_error_notfound_key)
@@ -184,7 +188,7 @@ class KeyScreenViewModel(
         }
 
         viewModelScope.launch {
-            keyApi.markDeleted(state.flipperKey.path)
+            deleteKeyApi.markDeleted(state.flipperKey.path)
             keyScreenState.update {
                 if (it is KeyScreenState.Ready) it.copy(deleteState = DeleteState.DELETED) else it
             }

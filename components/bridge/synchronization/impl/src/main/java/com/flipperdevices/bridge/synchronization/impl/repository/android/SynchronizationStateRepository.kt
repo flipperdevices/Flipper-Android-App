@@ -1,13 +1,13 @@
 package com.flipperdevices.bridge.synchronization.impl.repository.android
 
-import com.flipperdevices.bridge.dao.api.delegates.KeyApi
+import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
 import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
 import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 
 class SynchronizationStateRepository(
-    private val keyApi: KeyApi
+    private val utilsKeyApi: UtilsKeyApi
 ) : LogTagProvider {
     override val TAG = "SynchronizationStateRepository"
 
@@ -16,7 +16,7 @@ class SynchronizationStateRepository(
             .distinctBy { it.newHash.keyPath }
         for (diffToMark in uniqueDiffs) {
             try {
-                keyApi.markAsSynchronized(
+                utilsKeyApi.markAsSynchronized(
                     diffToMark.newHash.keyPath,
                     deleted = diffToMark.action == KeyAction.DELETED
                 )

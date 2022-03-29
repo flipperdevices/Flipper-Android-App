@@ -1,7 +1,9 @@
 package com.flipperdevices.bridge.synchronization.impl.repository
 
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
-import com.flipperdevices.bridge.dao.api.delegates.KeyApi
+import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
+import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
+import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.impl.executor.AndroidKeyStorage
@@ -26,8 +28,11 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.warn
 import com.flipperdevices.shake2report.api.Shake2ReportApi
 
+@Suppress("LongParameterList")
 class KeysSynchronization(
-    private val keysApi: KeyApi,
+    private val simpleKeyApi: SimpleKeyApi,
+    private val deleteKeyApi: DeleteKeyApi,
+    private val utilsKeyApi: UtilsKeyApi,
     private val manifestRepository: ManifestRepository,
     private val flipperStorage: FlipperKeyStorage,
     private val requestApi: FlipperRequestApi,
@@ -39,11 +44,11 @@ class KeysSynchronization(
     private val keysListingRepository = KeysListingRepository()
     private val flipperHashRepository = FlipperHashRepository()
     private val androidHashRepository = AndroidHashRepository()
-    private val androidStorage = AndroidKeyStorage(keysApi)
-    private val synchronizationRepository = SynchronizationStateRepository(keysApi)
+    private val androidStorage = AndroidKeyStorage(simpleKeyApi, deleteKeyApi)
+    private val synchronizationRepository = SynchronizationStateRepository(utilsKeyApi)
 
     suspend fun syncKeys(): List<KeyWithHash> {
-        val keysFromAndroid = keysApi.getAllKeys()
+        val keysFromAndroid = simpleKeyApi.getAllKeys()
         val hashesFromAndroid = androidHashRepository.calculateHash(keysFromAndroid)
         val hashesFromFlipper = getManifestOnFlipper()
         info { "Finish receive hashes from Flipper: $hashesFromFlipper" }
@@ -169,10 +174,11 @@ class KeysSynchronization(
      */
     private suspend fun resolveConflict(keyPath: FlipperKeyPath) {
         warn { "Try resolve conflict with $keyPath" }
-        val oldKey = keysApi.getKey(keyPath) ?: error("Can't found key $keyPath on Android side")
-        val newPath = keysApi.findAvailablePath(keyPath)
+        val oldKey =
+            simpleKeyApi.getKey(keyPath) ?: error("Can't found key $keyPath on Android side")
+        val newPath = utilsKeyApi.findAvailablePath(keyPath)
 
-        keysApi.insertKey(FlipperKey(newPath, oldKey.keyContent, synchronized = false))
-        keysApi.markDeleted(oldKey.path)
+        simpleKeyApi.insertKey(FlipperKey(newPath, oldKey.keyContent, synchronized = false))
+        deleteKeyApi.markDeleted(oldKey.path)
     }
 }
