@@ -84,14 +84,6 @@ class FlipperInformationApiImpl(
 
     private fun readInformationService(bleManager: UnsafeBleManager) {
         bleManager.readCharacteristicUnsafe(
-            infoCharacteristics[Constants.BLEInformationService.API_VERSION]
-        ).with { _, data ->
-            val content = data.value ?: return@with
-            informationState.update {
-                it.copy(apiVersion = String(content))
-            }
-        }
-        bleManager.readCharacteristicUnsafe(
             infoCharacteristics[Constants.BLEInformationService.MANUFACTURER]
         ).with { _, data ->
             val content = data.value ?: return@with
