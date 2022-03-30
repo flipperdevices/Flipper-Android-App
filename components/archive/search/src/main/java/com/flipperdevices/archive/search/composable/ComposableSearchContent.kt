@@ -18,6 +18,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.archive.search.R
@@ -114,7 +115,8 @@ private fun CategoryEmpty(modifier: Modifier) {
             text = stringResource(R.string.search_not_found_description),
             color = colorResource(DesignSystem.color.black_40),
             fontSize = 16.sp,
-            fontWeight = FontWeight.W400
+            fontWeight = FontWeight.W400,
+            textAlign = TextAlign.Center
         )
     }
 }

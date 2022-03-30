@@ -69,7 +69,8 @@ private fun SearchTextBox(
         textStyle = LocalTextStyle.current.merge(textStyle),
         singleLine = true,
         keyboardOptions = KeyboardOptions(
-            imeAction = ImeAction.Search
+            imeAction = ImeAction.Search,
+            autoCorrect = false
         ),
         keyboardActions = KeyboardActions(onSearch = {
             focusManager.clearFocus()
