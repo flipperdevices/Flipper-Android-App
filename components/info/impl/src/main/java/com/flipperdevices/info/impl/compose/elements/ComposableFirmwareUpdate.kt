@@ -15,6 +15,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -56,15 +57,17 @@ private fun ComposableFirmwareUpdateUnsupported() {
             text = stringResource(R.string.info_firmware_update_unsupported_title),
             fontSize = 14.sp,
             fontWeight = FontWeight.W500,
-            color = colorResource(DesignSystem.color.black_100)
+            color = colorResource(DesignSystem.color.black_100),
+            textAlign = TextAlign.Center
         )
 
         Text(
-            modifier = Modifier.padding(top = 8.dp),
+            modifier = Modifier.padding(top = 8.dp, start = 12.dp, end = 12.dp),
             text = stringResource(R.string.info_firmware_update_unsupported_desc),
             fontSize = 14.sp,
             fontWeight = FontWeight.W400,
-            color = colorResource(DesignSystem.color.black_40)
+            color = colorResource(DesignSystem.color.black_40),
+            textAlign = TextAlign.Center
         )
 
         ClickableUrlText(
