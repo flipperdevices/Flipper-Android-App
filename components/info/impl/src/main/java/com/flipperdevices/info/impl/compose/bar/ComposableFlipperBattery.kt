@@ -71,7 +71,9 @@ private fun BatteryContent(
                 .fillMaxHeight()
                 .background(colorResource(batteryColorId))
         )
-        Box(Modifier.weight(remainingWeight))
+        if (remainingWeight <= 0f) {
+            Box(Modifier.weight(remainingWeight))
+        }
     }
 }
 
