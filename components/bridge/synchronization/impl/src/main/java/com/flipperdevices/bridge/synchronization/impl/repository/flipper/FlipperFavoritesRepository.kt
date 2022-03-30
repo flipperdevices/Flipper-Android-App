@@ -4,6 +4,8 @@ import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.impl.executor.FlipperKeyStorage
+import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
+import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
 import com.flipperdevices.core.log.LogTagProvider
 import java.io.File
 import java.nio.charset.Charset
@@ -40,11 +42,20 @@ class FlipperFavoritesRepository : LogTagProvider {
             .split("\n")
     }
 
-    suspend fun updateFavorites(
+    suspend fun applyDiff(
         flipperKeyStorage: FlipperKeyStorage,
-        favorites: List<FlipperKeyPath>
+        oldFavorites: List<FlipperKeyPath>,
+        favoritesDiff: List<KeyDiff>
     ) {
-        val newFavoritesFile = favorites.joinToString("\n") {
+        val resultFavoritesList = ArrayList(oldFavorites)
+        for (diff in favoritesDiff) {
+            when (diff.action) {
+                KeyAction.ADD -> resultFavoritesList.add(diff.newHash.keyPath)
+                KeyAction.MODIFIED -> resultFavoritesList.add(diff.newHash.keyPath)
+                KeyAction.DELETED -> resultFavoritesList.remove(diff.newHash.keyPath)
+            }
+        }
+        val newFavoritesFile = resultFavoritesList.joinToString("\n") {
             File(Constants.KEYS_DEFAULT_STORAGE, it.pathToKey).absolutePath
         } + "\n"
         flipperKeyStorage.saveKey(
