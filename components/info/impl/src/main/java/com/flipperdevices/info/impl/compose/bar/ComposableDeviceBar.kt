@@ -27,7 +27,7 @@ import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.compose.bar.ComposableFlipperBattery
 import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.viewmodel.DeviceViewModel
-import kotlin.math.round
+import kotlin.math.roundToInt
 
 const val FLOAT_TO_PERCENT_QUALIFIER = 100
 
@@ -110,7 +110,7 @@ private fun ConnectedText(title: String, batteryValue: Float) {
                 )
                 Text(
                     modifier = Modifier.padding(start = 5.dp),
-                    text = "${round(batteryValue * FLOAT_TO_PERCENT_QUALIFIER)}%",
+                    text = "${(batteryValue * FLOAT_TO_PERCENT_QUALIFIER).roundToInt()}%",
                     fontSize = 12.sp,
                     fontWeight = FontWeight.W400,
                     color = colorResource(DesignSystem.color.black_100)
