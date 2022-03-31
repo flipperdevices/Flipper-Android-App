@@ -19,9 +19,12 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.PairSettings
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.TimeoutCancellationException
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.withContext
 import no.nordicsemi.android.ble.exception.BluetoothDisabledException
 
 class FlipperServiceApiImpl(
@@ -35,6 +38,7 @@ class FlipperServiceApiImpl(
     lateinit var pairSettingsStore: DataStore<PairSettings>
 
     private val scope = lifecycleOwner.lifecycleScope
+    private val dispatcher = Dispatchers.Default.limitedParallelism(1)
     private val bleManager: FlipperBleManager = FlipperBleManagerImpl(
         context, scope, serviceErrorListener
     )
@@ -64,27 +68,31 @@ class FlipperServiceApiImpl(
         }.launchIn(scope)
     }
 
-    override suspend fun reconnect(deviceId: String) {
+    override suspend fun reconnect(): Unit = withContext(dispatcher) {
+        val deviceId = pairSettingsStore.data.first().deviceId
+        connectToDeviceOnStartup(deviceId)
+    }
+
+    override suspend fun reconnect(deviceId: String) = withContext(dispatcher) {
         info { "Reconnect to device $deviceId" }
         connectDelegate.reconnect(deviceId)
     }
 
-    override suspend fun reconnect(device: BluetoothDevice) {
+    override suspend fun reconnect(device: BluetoothDevice) = withContext(dispatcher) {
         info { "Reconnect to device ${device.address}" }
         connectDelegate.reconnect(device)
     }
 
-    suspend fun close() {
+    suspend fun close() = withContext(dispatcher) {
         info { "Disconnect successful, close manager" }
         bleManager.close()
     }
 
-    private suspend fun connectToDeviceOnStartup(deviceId: String) {
+    private suspend fun connectToDeviceOnStartup(deviceId: String) = withContext(dispatcher) {
         if (deviceId.isBlank()) {
             error { "Flipper id not found in storage" }
             connectDelegate.disconnect()
-            serviceErrorListener.onError(FlipperBleServiceError.CONNECT_DEVICE_NOT_STORED)
-            return
+            return@withContext
         }
 
         try {

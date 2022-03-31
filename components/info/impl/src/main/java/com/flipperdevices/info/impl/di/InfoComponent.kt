@@ -1,6 +1,8 @@
 package com.flipperdevices.info.impl.di
 
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.info.impl.viewmodel.AlarmViewModel
+import com.flipperdevices.info.impl.viewmodel.ConnectViewModel
 import com.flipperdevices.info.impl.viewmodel.DeviceViewModel
 import com.flipperdevices.info.impl.viewmodel.FirmwareUpdateViewModel
 import com.squareup.anvil.annotations.ContributesTo
@@ -9,4 +11,6 @@ import com.squareup.anvil.annotations.ContributesTo
 interface InfoComponent {
     fun inject(viewModel: FirmwareUpdateViewModel)
     fun inject(viewModel: DeviceViewModel)
+    fun inject(viewModel: ConnectViewModel)
+    fun inject(viewModel: AlarmViewModel)
 }

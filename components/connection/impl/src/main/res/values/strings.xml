@@ -10,7 +10,6 @@
     <string name="connection_status_sync_failed">Sync Failed</string>
 
     <string name="error_connect_bluetooth_disabled">Bluetooth disabled, please enable it</string>
-    <string name="error_connect_device_not_stored">Binding for device is invalid, please forget device and connect again</string>
     <string name="error_connect_bluetooth_permission">Can\'t access to Bluetooth</string>
     <string name="error_connect_timeout">Can\'t connect to device in timeout</string>
     <string name="error_connect_require_rebound">Binding for device is invalid, please forget device and connect again</string>

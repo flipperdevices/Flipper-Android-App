@@ -21,6 +21,7 @@ import com.flipperdevices.core.ktx.jre.map
 import com.flipperdevices.core.preference.pb.PairSettings
 import com.flipperdevices.core.ui.AndroidLifecycleViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -100,8 +101,6 @@ class ConnectionStatusViewModel(
         val errorTextResId = when (error) {
             FlipperBleServiceError.CONNECT_BLUETOOTH_DISABLED ->
                 R.string.error_connect_bluetooth_disabled
-            FlipperBleServiceError.CONNECT_DEVICE_NOT_STORED ->
-                R.string.error_connect_device_not_stored
             FlipperBleServiceError.CONNECT_BLUETOOTH_PERMISSION ->
                 R.string.error_connect_bluetooth_permission
             FlipperBleServiceError.CONNECT_TIMEOUT ->
@@ -118,7 +117,9 @@ class ConnectionStatusViewModel(
                 R.string.error_connect_serial_init_failed
         }
         val application = getApplication<Application>()
-        Toast.makeText(application, errorTextResId, Toast.LENGTH_LONG).show()
+        viewModelScope.launch(Dispatchers.Main) {
+            Toast.makeText(application, errorTextResId, Toast.LENGTH_LONG).show()
+        }
     }
 
     private suspend fun ConnectionState.toConnectionStatus() = when (this) {

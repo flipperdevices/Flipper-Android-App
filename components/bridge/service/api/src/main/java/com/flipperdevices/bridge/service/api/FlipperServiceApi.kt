@@ -28,6 +28,8 @@ interface FlipperServiceApi {
      */
     val requestApi: FlipperRequestApi
 
+    suspend fun reconnect()
+
     suspend fun reconnect(deviceId: String)
 
     suspend fun reconnect(device: BluetoothDevice)

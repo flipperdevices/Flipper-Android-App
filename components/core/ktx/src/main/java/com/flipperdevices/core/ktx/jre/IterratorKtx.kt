@@ -24,3 +24,11 @@ fun <T, M> StateFlow<T>.map(
     SharingStarted.Eagerly,
     mapper(value)
 )
+
+inline fun <T> Iterable<T>.forEachIterable(block: (T) -> Unit) {
+    with(iterator()) {
+        while (hasNext()) {
+            block(next())
+        }
+    }
+}

@@ -15,11 +15,6 @@ fun ColumnScope.ExperimentalCategory(
     val router = LocalRouter.current
 
     SimpleElement(
-        titleId = R.string.experimental_alarm,
-        descriptionId = R.string.experimental_alarm_desc,
-        onClick = { experimentalViewModel.sendAlarmToFlipper() }
-    )
-    SimpleElement(
         titleId = R.string.experimental_file_manager,
         descriptionId = R.string.experimental_file_manager_desc,
         onClick = { experimentalViewModel.onOpenFileManager(router) }

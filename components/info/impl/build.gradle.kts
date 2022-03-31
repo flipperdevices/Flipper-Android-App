@@ -10,10 +10,13 @@ dependencies {
     implementation(projects.components.core.ui)
     implementation(projects.components.core.navigation)
     implementation(projects.components.core.preference)
+    implementation(projects.components.core.activityholder)
 
     implementation(projects.components.info.api)
+    implementation(projects.components.firstpair.api)
 
     implementation(projects.components.bridge.api)
+    implementation(projects.components.bridge.synchronization.api)
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.protobuf)
 

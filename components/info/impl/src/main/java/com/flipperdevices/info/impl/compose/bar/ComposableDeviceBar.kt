@@ -45,7 +45,7 @@ fun ComposableDeviceBar(deviceViewModel: DeviceViewModel = viewModel()) {
         val localDeviceStatus = deviceStatus
         when (localDeviceStatus) {
             DeviceStatus.NoDevice -> NoDeviceText()
-            is DeviceStatus.NotConnected -> NotConnectedText(localDeviceStatus.deviceName)
+            is DeviceStatus.NoDeviceInformation -> NotConnectedText(localDeviceStatus.deviceName)
             is DeviceStatus.Connected -> ConnectedText(
                 localDeviceStatus.deviceName,
                 localDeviceStatus.batteryLevel
@@ -59,12 +59,12 @@ private fun FlipperImage(deviceStatus: DeviceStatus) {
     val imageId = when (deviceStatus) {
         DeviceStatus.NoDevice -> R.drawable.ic_grey_flipper
         is DeviceStatus.Connected,
-        is DeviceStatus.NotConnected -> R.drawable.ic_white_flipper
+        is DeviceStatus.NoDeviceInformation -> R.drawable.ic_white_flipper
     }
     val descriptionId = when (deviceStatus) {
         DeviceStatus.NoDevice -> R.string.info_device_no_device
         is DeviceStatus.Connected -> R.string.info_device_connected
-        is DeviceStatus.NotConnected -> R.string.info_device_not_connected
+        is DeviceStatus.NoDeviceInformation -> R.string.info_device_not_connected
     }
 
     Image(
