@@ -10,6 +10,7 @@ dependencies {
     implementation(projects.components.core.ui)
     implementation(projects.components.core.navigation)
     implementation(projects.components.core.preference)
+    implementation(projects.components.core.activityholder)
 
     implementation(projects.components.info.api)
     implementation(projects.components.firstpair.api)

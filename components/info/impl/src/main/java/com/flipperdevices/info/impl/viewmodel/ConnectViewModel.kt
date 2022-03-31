@@ -10,11 +10,13 @@ import com.flipperdevices.core.preference.pb.PairSettings
 import com.flipperdevices.core.ui.LifecycleViewModel
 import com.flipperdevices.firstpair.api.FirstPairApi
 import com.flipperdevices.info.impl.di.InfoComponent
+import com.flipperdevices.info.impl.fragment.ForgetDialogApproveHelper
 import com.flipperdevices.info.impl.model.ConnectRequestState
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -68,7 +70,16 @@ class ConnectViewModel : LifecycleViewModel() {
         synchronizationApi.startSynchronization(force = true)
     }
 
-    fun forgetFlipper() {
+    fun showDialogForgetFlipper() {
+        viewModelScope.launch {
+            val deviceName = dataStoreFirstPair.data.first().deviceName
+            ForgetDialogApproveHelper.showDialog(deviceName) {
+                forgetFlipper()
+            }
+        }
+    }
+
+    private fun forgetFlipper() {
         viewModelScope.launch {
             dataStoreFirstPair.updateData {
                 it.toBuilder()

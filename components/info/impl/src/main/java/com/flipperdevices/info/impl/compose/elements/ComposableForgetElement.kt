@@ -31,6 +31,6 @@ fun ComposableForgetElement(
         titleId = R.string.info_device_forget,
         iconId = R.drawable.ic_disconnection,
         colorId = DesignSystem.color.red,
-        onClick = connectViewModel::forgetFlipper
+        onClick = connectViewModel::showDialogForgetFlipper
     )
 }
