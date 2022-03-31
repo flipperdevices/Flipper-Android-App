@@ -28,11 +28,15 @@ import com.flipperdevices.info.impl.viewmodel.FirmwareUpdateViewModel
 
 @Composable
 fun ComposableFirmwareUpdate(
+    modifier: Modifier,
     firmwareViewModel: FirmwareUpdateViewModel = viewModel()
 ) {
     val updateStatus by firmwareViewModel.getState().collectAsState()
     if (updateStatus is FirmwareUpdateStatus.Unsupported) {
-        InfoElementCard(titleId = R.string.info_firmware_update_title) {
+        InfoElementCard(
+            modifier = modifier,
+            titleId = R.string.info_firmware_update_title
+        ) {
             ComposableFirmwareUpdateUnsupported()
         }
     }

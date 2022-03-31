@@ -12,8 +12,10 @@ dependencies {
     implementation(projects.components.core.preference)
 
     implementation(projects.components.info.api)
+    implementation(projects.components.firstpair.api)
 
     implementation(projects.components.bridge.api)
+    implementation(projects.components.bridge.synchronization.api)
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.protobuf)
 

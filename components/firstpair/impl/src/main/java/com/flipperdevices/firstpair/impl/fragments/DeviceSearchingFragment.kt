@@ -11,6 +11,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.navigation.requireRouter
 import com.flipperdevices.core.ui.ComposeFragment
+import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.firstpair.impl.composable.searching.ComposableSearchingScreen
 import com.flipperdevices.firstpair.impl.di.FirstPairComponent
 import com.flipperdevices.firstpair.impl.model.SearchingContent
@@ -87,6 +88,8 @@ class DeviceSearchingFragment :
             }
         )
     }
+
+    override fun getStatusBarColor() = DesignSystem.color.background
 
     override fun onResume() {
         super.onResume()

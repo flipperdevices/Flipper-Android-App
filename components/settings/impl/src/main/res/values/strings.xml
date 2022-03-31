@@ -8,10 +8,8 @@
     <string name="category_debug">Debug</string>
     <string name="debug_stress_test">Open Stress Test</string>
     <string name="debug_start_synchronization">Start Synchronization</string>
-    <string name="debug_connection_to_another">Connection to another device</string>
+    <string name="debug_connection_to_another">Open connection screen</string>
     <string name="category_experimental">Experimental</string>
-    <string name="experimental_alarm">Send alarm to Flipper</string>
-    <string name="experimental_alarm_desc">Bzzzz-Whoo-Whoo-Bzzzz</string>
     <string name="experimental_file_manager">File Manager</string>
     <string name="experimental_file_manager_desc">Navigating through folders and files in the flipper</string>
     <string name="experimental_screen_streaming">Screen Streaming</string>
