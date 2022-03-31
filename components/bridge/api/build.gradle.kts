@@ -7,6 +7,7 @@ plugins {
 dependencies {
     implementation(projects.components.bridge.protobuf)
     implementation(projects.components.core.log)
+    implementation(projects.components.core.ktx)
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.ble.common)

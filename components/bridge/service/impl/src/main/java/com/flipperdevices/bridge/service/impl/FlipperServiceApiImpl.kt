@@ -70,7 +70,7 @@ class FlipperServiceApiImpl(
 
     override suspend fun reconnect(): Unit = withContext(dispatcher) {
         val deviceId = pairSettingsStore.data.first().deviceId
-        reconnect(deviceId)
+        connectToDeviceOnStartup(deviceId)
     }
 
     override suspend fun reconnect(deviceId: String) = withContext(dispatcher) {
@@ -92,7 +92,6 @@ class FlipperServiceApiImpl(
         if (deviceId.isBlank()) {
             error { "Flipper id not found in storage" }
             connectDelegate.disconnect()
-            serviceErrorListener.onError(FlipperBleServiceError.CONNECT_DEVICE_NOT_STORED)
             return@withContext
         }
 

@@ -41,7 +41,9 @@ class DeviceViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
             dataStorePair.data
         ) { connectionState, flipperInformation, pairSettings ->
             return@combine when (connectionState) {
-                is ConnectionState.Disconnected -> if (pairSettings.deviceName.isBlank()) {
+                is ConnectionState.Disconnected -> if (pairSettings.deviceName.isBlank() ||
+                    pairSettings.deviceId.isBlank()
+                ) {
                     DeviceStatus.NoDevice
                 } else DeviceStatus.NoDeviceInformation(
                     pairSettings.deviceName,

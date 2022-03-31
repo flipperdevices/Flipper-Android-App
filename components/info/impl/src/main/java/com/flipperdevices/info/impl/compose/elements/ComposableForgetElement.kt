@@ -22,6 +22,10 @@ fun ComposableForgetElement(
         return
     }
 
+    if ((deviceState as? DeviceStatus.NoDeviceInformation)?.connectInProgress == true) {
+        return
+    }
+
     ButtonElementCard(
         modifier = modifier,
         titleId = R.string.info_device_forget,
