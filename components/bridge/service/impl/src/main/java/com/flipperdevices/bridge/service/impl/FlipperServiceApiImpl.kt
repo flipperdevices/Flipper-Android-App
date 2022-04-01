@@ -48,6 +48,7 @@ class FlipperServiceApiImpl(
     override val connectionInformationApi = bleManager.connectionInformationApi
     override val requestApi = bleManager.flipperRequestApi
     override val flipperInformationApi = bleManager.informationApi
+    override val flipperRpcInformationApi = bleManager.flipperRpcInformationApi
 
     init {
         ComponentHolder.component<FlipperServiceComponent>().inject(this)

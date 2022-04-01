@@ -14,6 +14,7 @@ import com.flipperdevices.bridge.impl.manager.delegates.FlipperConnectionInforma
 import com.flipperdevices.bridge.impl.manager.service.BluetoothGattServiceWrapper
 import com.flipperdevices.bridge.impl.manager.service.FlipperInformationApiImpl
 import com.flipperdevices.bridge.impl.manager.service.request.FlipperRequestApiImpl
+import com.flipperdevices.bridge.impl.manager.service.requestservice.FlipperRpcInformationApiImpl
 import com.flipperdevices.core.ktx.jre.newSingleThreadExecutor
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.debug
@@ -40,6 +41,9 @@ class FlipperBleManagerImpl constructor(
     // Gatt Delegates
     override val informationApi = FlipperInformationApiImpl(scope)
     override val flipperRequestApi = FlipperRequestApiImpl(scope)
+
+    // RPC services
+    override val flipperRpcInformationApi = FlipperRpcInformationApiImpl(scope)
 
     // Manager delegates
     override val connectionInformationApi = FlipperConnectionInformationApiImpl(this)
@@ -106,6 +110,12 @@ class FlipperBleManagerImpl constructor(
                 flipperRequestApi.initializeSafe(this@FlipperBleManagerImpl) {
                     error(it) { "Error while initialize request api" }
                     serviceErrorListener.onError(FlipperBleServiceError.SERVICE_SERIAL_FAILED_INIT)
+                }
+
+                runCatching {
+                    flipperRpcInformationApi.initialize(flipperRequestApi)
+                }.onFailure {
+                    error(it) { "Error while initialize rpc information api" }
                 }
             }
         }
