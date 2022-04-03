@@ -56,6 +56,7 @@ class FlipperServiceApiImpl(
     override val connectionInformationApi = bleManager.connectionInformationApi
     override val requestApi = bleManager.flipperRequestApi
     override val flipperInformationApi = bleManager.informationApi
+    override val flipperRpcInformationApi = bleManager.flipperRpcInformationApi
 
     fun internalInit() {
         if (!inited.compareAndSet(false, true)) {

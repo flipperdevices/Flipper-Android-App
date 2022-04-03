@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothDevice
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.manager.delegates.FlipperConnectionInformationApi
 import com.flipperdevices.bridge.api.manager.service.FlipperInformationApi
+import com.flipperdevices.bridge.api.manager.service.FlipperRpcInformationApi
 
 /**
  * Provides access to the API operation of the device
@@ -27,6 +28,11 @@ interface FlipperServiceApi {
      * Returns an API for communicating with Flipper via a request-response structure.
      */
     val requestApi: FlipperRequestApi
+
+    /**
+     * Returns wrapper of request api which provide device info from flipper
+     */
+    val flipperRpcInformationApi: FlipperRpcInformationApi
 
     suspend fun reconnect()
 

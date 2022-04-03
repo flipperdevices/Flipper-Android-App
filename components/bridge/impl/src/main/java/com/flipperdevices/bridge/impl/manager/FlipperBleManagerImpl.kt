@@ -14,6 +14,7 @@ import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.impl.manager.delegates.FlipperConnectionInformationApiImpl
 import com.flipperdevices.bridge.impl.manager.service.FlipperInformationApiImpl
 import com.flipperdevices.bridge.impl.manager.service.request.FlipperRequestApiImpl
+import com.flipperdevices.bridge.impl.manager.service.requestservice.FlipperRpcInformationApiImpl
 import com.flipperdevices.bridge.impl.utils.initializeSafe
 import com.flipperdevices.bridge.impl.utils.onServiceReceivedSafe
 import com.flipperdevices.core.ktx.jre.newSingleThreadExecutor
@@ -44,6 +45,9 @@ class FlipperBleManagerImpl constructor(
     // Gatt Delegates
     override val informationApi = FlipperInformationApiImpl(scope)
     override val flipperRequestApi = FlipperRequestApiImpl(scope)
+
+    // RPC services
+    override val flipperRpcInformationApi = FlipperRpcInformationApiImpl(scope)
 
     // Manager delegates
     override val connectionInformationApi = FlipperConnectionInformationApiImpl(this)
@@ -95,6 +99,13 @@ class FlipperBleManagerImpl constructor(
 
                 val ignoreSupported = settingsStore.data.first().ignoreUnsupportedVersion
 
+                informationApi.initializeSafe(this@FlipperBleManagerImpl) {
+                    error(it) { "Error while initialize information api" }
+                    serviceErrorListener.onError(
+                        FlipperBleServiceError.SERVICE_INFORMATION_FAILED_INIT
+                    )
+                }
+
                 if (ignoreSupported) {
                     setDeviceSupportedStatus(true)
                 } else {
@@ -106,15 +117,15 @@ class FlipperBleManagerImpl constructor(
                     }
                 }
 
-                informationApi.initializeSafe(this@FlipperBleManagerImpl) {
-                    error(it) { "Error while initialize information api" }
-                    serviceErrorListener.onError(
-                        FlipperBleServiceError.SERVICE_INFORMATION_FAILED_INIT
-                    )
-                }
                 flipperRequestApi.initializeSafe(this@FlipperBleManagerImpl) {
                     error(it) { "Error while initialize request api" }
                     serviceErrorListener.onError(FlipperBleServiceError.SERVICE_SERIAL_FAILED_INIT)
+                }
+
+                runCatching {
+                    flipperRpcInformationApi.initialize(flipperRequestApi)
+                }.onFailure {
+                    error(it) { "Error while initialize rpc information api" }
                 }
             }
         }
@@ -143,6 +154,7 @@ class FlipperBleManagerImpl constructor(
         override fun onServicesInvalidated() {
             informationApi.reset(this@FlipperBleManagerImpl)
             flipperRequestApi.reset(this@FlipperBleManagerImpl)
+            flipperRpcInformationApi.reset()
         }
     }
 }

@@ -12,7 +12,7 @@
 
     <string name="info_firmware_update_title">Firmware Update</string>
     <string name="info_firmware_update_unsupported_title">Update Flipper Firmware from PC</string>
-    <string name="info_firmware_update_unsupported_desc">Our app doesn’t support installed  firmware version</string>
+    <string name="info_firmware_update_unsupported_desc">Our app doesn’t support installed firmware version</string>
     <string name="info_firmware_update_unsupported_link">[How to update Flipper](https://docs.flipperzero.one/basics/firmware-update)</string>
 
     <string name="info_device_connect">Connect to Flipper</string>
@@ -23,4 +23,17 @@
     <string name="info_device_forget_dialog_title">Forget Flipper?</string>
     <string name="info_device_forget_dialog_description">App will no longer be paired with Flipper %1$s</string>
     <string name="info_device_forget_dialog_forget">Forget</string>
+
+    <string name="info_device_info_title">Device Info</string>
+    <string name="info_device_info_title_card">Flipper Device</string>
+    <string name="info_device_info_other_card">Other</string>
+    <string name="info_device_info_version">Firmware Version</string>
+    <string name="info_device_info_build_date">Build Date</string>
+    <string name="info_device_info_int_flash">Int. Flash (Used/Total)</string>
+    <string name="info_device_info_ext_flash">SD Card (Used/Total)</string>
+    <string name="info_device_info_more_information">Full Info</string>
+    <string name="info_device_firmware_version_dev">Dev</string>
+    <string name="info_device_firmware_version_rc">RC</string>
+    <string name="info_device_firmware_version_release">Release</string>
+    <string name="info_device_unknown">—</string>
 </resources>
