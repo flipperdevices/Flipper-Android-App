@@ -3,6 +3,7 @@ package com.flipperdevices.bridge.impl.manager
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothGatt
 import android.content.Context
+import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.BuildConfig
 import com.flipperdevices.bridge.api.error.FlipperBleServiceError
 import com.flipperdevices.bridge.api.error.FlipperServiceErrorListener
@@ -11,15 +12,17 @@ import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.ktx.stateAsFlow
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.impl.manager.delegates.FlipperConnectionInformationApiImpl
-import com.flipperdevices.bridge.impl.manager.service.BluetoothGattServiceWrapper
 import com.flipperdevices.bridge.impl.manager.service.FlipperInformationApiImpl
 import com.flipperdevices.bridge.impl.manager.service.request.FlipperRequestApiImpl
 import com.flipperdevices.bridge.impl.manager.service.requestservice.FlipperRpcInformationApiImpl
+import com.flipperdevices.bridge.impl.utils.initializeSafe
+import com.flipperdevices.bridge.impl.utils.onServiceReceivedSafe
 import com.flipperdevices.core.ktx.jre.newSingleThreadExecutor
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.debug
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.preference.pb.Settings
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.flow.filter
@@ -31,6 +34,7 @@ import no.nordicsemi.android.ble.ConnectionPriorityRequest
 @Suppress("BlockingMethodInNonBlockingContext")
 class FlipperBleManagerImpl constructor(
     context: Context,
+    private val settingsStore: DataStore<Settings>,
     private val scope: CoroutineScope,
     private val serviceErrorListener: FlipperServiceErrorListener
 ) : UnsafeBleManager(scope, context), FlipperBleManager, LogTagProvider {
@@ -93,10 +97,7 @@ class FlipperBleManagerImpl constructor(
                     ConnectionPriorityRequest.CONNECTION_PRIORITY_HIGH
                 ).enqueue()
 
-                val isDeviceSupported = informationApi
-                    .checkVersionSupport(this@FlipperBleManagerImpl)
-
-                setDeviceSupportedStatus(isDeviceSupported)
+                val ignoreSupported = settingsStore.data.first().ignoreUnsupportedVersion
 
                 informationApi.initializeSafe(this@FlipperBleManagerImpl) {
                     error(it) { "Error while initialize information api" }
@@ -104,9 +105,18 @@ class FlipperBleManagerImpl constructor(
                         FlipperBleServiceError.SERVICE_INFORMATION_FAILED_INIT
                     )
                 }
-                if (!isDeviceSupported) {
-                    return@launch
+
+                if (ignoreSupported) {
+                    setDeviceSupportedStatus(true)
+                } else {
+                    val isDeviceSupported = informationApi
+                        .checkVersionSupport(this@FlipperBleManagerImpl)
+                    setDeviceSupportedStatus(isDeviceSupported)
+                    if (!isDeviceSupported) {
+                        return@launch
+                    }
                 }
+
                 flipperRequestApi.initializeSafe(this@FlipperBleManagerImpl) {
                     error(it) { "Error while initialize request api" }
                     serviceErrorListener.onError(FlipperBleServiceError.SERVICE_SERIAL_FAILED_INIT)
@@ -146,31 +156,5 @@ class FlipperBleManagerImpl constructor(
             flipperRequestApi.reset(this@FlipperBleManagerImpl)
             flipperRpcInformationApi.reset()
         }
-    }
-}
-
-private fun BluetoothGattServiceWrapper.initializeSafe(
-    manager: UnsafeBleManager,
-    onError: (Throwable?) -> Unit
-) {
-    runCatching {
-        initialize(manager)
-    }.onFailure {
-        onError(it)
-    }
-}
-
-private fun BluetoothGattServiceWrapper.onServiceReceivedSafe(
-    gatt: BluetoothGatt,
-    onError: (Throwable?) -> Unit
-) {
-    runCatching {
-        onServiceReceived(gatt)
-    }.onSuccess { serviceReceived ->
-        if (!serviceReceived) {
-            onError(null)
-        }
-    }.onFailure {
-        onError(it)
     }
 }

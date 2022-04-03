@@ -9,9 +9,13 @@
     <string name="debug_stress_test">Open Stress Test</string>
     <string name="debug_start_synchronization">Start Synchronization</string>
     <string name="debug_connection_to_another">Open connection screen</string>
+    <string name="debug_ignored_unsupported_version">Ignored unsupported version</string>
+    <string name="debug_ignored_unsupported_version_desc">Does not stop processes in the program if the flipper version is not supported.</string>
+    <string name="debug_ignored_unsupported_version_toast">Please restart the application to apply the changes</string>
     <string name="category_experimental">Experimental</string>
     <string name="experimental_file_manager">File Manager</string>
     <string name="experimental_file_manager_desc">Navigating through folders and files in the flipper</string>
     <string name="experimental_screen_streaming">Screen Streaming</string>
     <string name="experimental_screen_streaming_desc">Control and watch your flipper through your phone</string>
+
 </resources>

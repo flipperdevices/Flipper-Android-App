@@ -17,6 +17,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.PairSettings
+import com.flipperdevices.core.preference.pb.Settings
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -37,10 +38,17 @@ class FlipperServiceApiImpl(
     @Inject
     lateinit var pairSettingsStore: DataStore<PairSettings>
 
+    @Inject
+    lateinit var settingsStore: DataStore<Settings>
+
+    init {
+        ComponentHolder.component<FlipperServiceComponent>().inject(this)
+    }
+
     private val scope = lifecycleOwner.lifecycleScope
     private val dispatcher = Dispatchers.Default.limitedParallelism(1)
     private val bleManager: FlipperBleManager = FlipperBleManagerImpl(
-        context, scope, serviceErrorListener
+        context, settingsStore, scope, serviceErrorListener
     )
     private val connectDelegate = FlipperServiceConnectDelegate(bleManager, context)
     private val inited = AtomicBoolean(false)
@@ -49,10 +57,6 @@ class FlipperServiceApiImpl(
     override val requestApi = bleManager.flipperRequestApi
     override val flipperInformationApi = bleManager.informationApi
     override val flipperRpcInformationApi = bleManager.flipperRpcInformationApi
-
-    init {
-        ComponentHolder.component<FlipperServiceComponent>().inject(this)
-    }
 
     fun internalInit() {
         if (!inited.compareAndSet(false, true)) {
