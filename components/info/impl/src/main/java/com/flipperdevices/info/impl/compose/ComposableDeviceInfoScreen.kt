@@ -10,12 +10,14 @@ import com.flipperdevices.info.impl.compose.elements.ComposableDeviceBar
 import com.flipperdevices.info.impl.compose.elements.ComposableFirmwareUpdate
 import com.flipperdevices.info.impl.compose.elements.ComposableForgetElement
 import com.flipperdevices.info.impl.compose.elements.ComposableSynchronizeElement
+import com.flipperdevices.info.impl.compose.info.ComposableInfoCard
 
 @Composable
 fun ComposableDeviceInfoScreen() {
     Column {
         ComposableDeviceBar()
         ComposableFirmwareUpdate(modifier = Modifier.padding(top = 14.dp))
+        ComposableInfoCard(modifier = Modifier.padding(top = 14.dp))
         ComposableSynchronizeElement(modifier = Modifier.padding(top = 24.dp))
         ComposableAlarmElement(modifier = Modifier.padding(top = 12.dp))
         ComposableForgetElement(modifier = Modifier.padding(top = 24.dp))

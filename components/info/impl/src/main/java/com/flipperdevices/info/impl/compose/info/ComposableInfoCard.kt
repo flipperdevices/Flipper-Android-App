@@ -11,14 +11,12 @@ import com.flipperdevices.info.impl.compose.elements.InfoElementCard
 import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.viewmodel.DeviceInfoViewModel
 import com.flipperdevices.info.impl.viewmodel.DeviceViewModel
-import com.flipperdevices.info.impl.viewmodel.FirmwareUpdateViewModel
 
 @Composable
 fun ComposableInfoCard(
     modifier: Modifier,
     deviceInfoViewModel: DeviceInfoViewModel = viewModel(),
-    deviceViewModel: DeviceViewModel = viewModel(),
-    firmwareUpdateViewModel: FirmwareUpdateViewModel = viewModel()
+    deviceViewModel: DeviceViewModel = viewModel()
 ) {
     val deviceInfo by deviceInfoViewModel.getDeviceInfo().collectAsState()
     val deviceInfoRequestStatus by deviceInfoViewModel.getDeviceInfoRequestStatus().collectAsState()

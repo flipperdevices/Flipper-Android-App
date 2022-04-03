@@ -3,11 +3,11 @@ package com.flipperdevices.info.impl.utils
 import com.flipperdevices.info.impl.model.FirmwareVersion
 
 private const val DEVICE_VERSION_PART_COUNT = 4
-private const val DEVICE_VERSION_COMMIT_INDEX = 1
-private const val DEVICE_VERSION_TYPE_INDEX = 2
+private const val DEVICE_VERSION_COMMIT_INDEX = 0
+private const val DEVICE_VERSION_TYPE_INDEX = 1
 private const val DEVICE_VERSION_TYPE_DEV = "dev"
 private const val DEVICE_VERSION_TYPE_RC = "rc"
-private const val DEVICE_VERSION_DATE_INDEX = 4
+private const val DEVICE_VERSION_DATE_INDEX = 3
 
 object FirmwareVersionBuildHelper {
     fun buildFirmwareVersionFromString(

@@ -8,6 +8,7 @@ import com.flipperdevices.bridge.api.model.FlipperRpcInformation
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.core.ktx.jre.forEachIterable
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.verbose
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.infoRequest
@@ -44,6 +45,7 @@ class FlipperRpcInformationApiImpl(
         requestStatusFlow.update { FlipperRequestRpcInformationStatus.InProgress() }
         requestJobs += scope.launch {
             receiveStorageInfo(requestApi, FLIPPER_PATH_EXTERNAL_STORAGE) { totalSpace, freeSpace ->
+                info { "Received external storage info: $freeSpace/$totalSpace" }
                 rpcInformationFlow.update {
                     it.copy(
                         externalStorageTotal = totalSpace,
@@ -59,6 +61,7 @@ class FlipperRpcInformationApiImpl(
         }
         requestJobs += scope.launch {
             receiveStorageInfo(requestApi, FLIPPER_PATH_INTERNAL_STORAGE) { totalSpace, freeSpace ->
+                info { "Received internal storage info: $freeSpace/$totalSpace" }
                 rpcInformationFlow.update {
                     it.copy(
                         internalStorageTotal = totalSpace,
@@ -114,9 +117,9 @@ class FlipperRpcInformationApiImpl(
                 storageInfoRequest = infoRequest {
                     path = storagePath
                 }
-            }.wrapToRequest(FlipperRequestPriority.BACKGROUND)
+            }.wrapToRequest(FlipperRequestPriority.DEFAULT)
         ).collect { response ->
-            if (response.hasStorageInfoResponse()) {
+            if (!response.hasStorageInfoResponse()) {
                 return@collect
             }
             spaceInfoReceiver(

@@ -13,6 +13,7 @@ import com.flipperdevices.info.impl.model.DeviceInfo
 import com.flipperdevices.info.impl.model.DeviceInfoRequestStatus
 import com.flipperdevices.info.impl.model.StorageInfo
 import com.flipperdevices.info.impl.utils.FirmwareVersionBuildHelper
+import java.lang.Math.max
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -79,6 +80,6 @@ class DeviceInfoViewModel :
         if (free == null || total == null) {
             return null
         }
-        return StorageInfo(free, total)
+        return StorageInfo(max(0, total - free), total)
     }
 }
