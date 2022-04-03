@@ -97,15 +97,15 @@ class FlipperBleManagerImpl constructor(
                     .checkVersionSupport(this@FlipperBleManagerImpl)
 
                 setDeviceSupportedStatus(isDeviceSupported)
-                if (!isDeviceSupported) {
-                    return@launch
-                }
 
                 informationApi.initializeSafe(this@FlipperBleManagerImpl) {
                     error(it) { "Error while initialize information api" }
                     serviceErrorListener.onError(
                         FlipperBleServiceError.SERVICE_INFORMATION_FAILED_INIT
                     )
+                }
+                if (!isDeviceSupported) {
+                    return@launch
                 }
                 flipperRequestApi.initializeSafe(this@FlipperBleManagerImpl) {
                     error(it) { "Error while initialize request api" }
