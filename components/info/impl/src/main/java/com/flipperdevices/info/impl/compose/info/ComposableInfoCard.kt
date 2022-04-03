@@ -43,12 +43,12 @@ fun ComposableInfoCard(
         }
         ComposableDeviceInfoRowWithText(
             R.string.info_device_info_int_flash,
-            !deviceInfoRequestStatus.internalStorageRequestFinished,
+            deviceInfoRequestStatus.internalStorageRequestInProgress,
             deviceInfo.flashInt?.toString(LocalContext.current)
         )
         ComposableDeviceInfoRowWithText(
             R.string.info_device_info_ext_flash,
-            !deviceInfoRequestStatus.externalStorageRequestFinished,
+            deviceInfoRequestStatus.externalStorageRequestInProgress,
             deviceInfo.flashSd?.toString(LocalContext.current)
         )
     }

@@ -44,12 +44,10 @@ class DeviceInfoViewModel :
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
         serviceApi.flipperInformationApi.getInformationFlow().onEach { flipperGATTInformation ->
             val softwareVersion = flipperGATTInformation.softwareVersion
-            if (softwareVersion != null) {
-                FirmwareVersionBuildHelper
-                    .buildFirmwareVersionFromString(softwareVersion).let { firmwareVersion ->
-                        deviceInfoState.update { it.copy(firmwareVersion = firmwareVersion) }
-                    }
-            }
+            val softwareVersionParsed = if (softwareVersion != null) FirmwareVersionBuildHelper
+                .buildFirmwareVersionFromString(softwareVersion) else null
+
+            deviceInfoState.update { it.copy(firmwareVersion = softwareVersionParsed) }
         }.launchIn(viewModelScope)
 
         serviceApi.flipperRpcInformationApi.getRpcInformationFlow().onEach { rpcInformation ->
