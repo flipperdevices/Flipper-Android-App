@@ -1,5 +1,8 @@
 package com.flipperdevices.info.impl.model
 
+import android.content.Context
+import android.text.format.Formatter
+
 data class DeviceInfo(
     val firmwareVersion: FirmwareVersion? = null,
     val flashInt: StorageInfo? = null,
@@ -9,23 +12,28 @@ data class DeviceInfo(
 data class StorageInfo(
     val used: Long,
     val total: Long
-)
+) {
+    fun toString(context: Context): String {
+        val usedHumanReadable = Formatter.formatFileSize(context, used)
+        val totalHumanReadable = Formatter.formatFileSize(context, total)
 
-sealed class FirmwareVersion {
-    data class Dev(
+        return "$usedHumanReadable/$totalHumanReadable"
+    }
+}
+
+sealed class FirmwareVersion(val buildDate: String? = null) {
+    class Dev(
         val commitSHA: String,
-        val buildDate: String
-    ) : FirmwareVersion()
+        buildDate: String
+    ) : FirmwareVersion(buildDate)
 
-    data class Release(
+    class Release(
         val version: String,
-        val buildDate: String
-    ) : FirmwareVersion()
+        buildDate: String
+    ) : FirmwareVersion(buildDate)
 
-    data class ReleaseCandidate(
+    class ReleaseCandidate(
         val version: String,
-        val buildDate: String
-    ) : FirmwareVersion()
-
-    object Unknown : FirmwareVersion()
+        buildDate: String
+    ) : FirmwareVersion(buildDate)
 }

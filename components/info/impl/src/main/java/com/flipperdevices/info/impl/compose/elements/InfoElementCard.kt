@@ -2,6 +2,7 @@ package com.flipperdevices.info.impl.compose.elements
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,7 +21,7 @@ import com.flipperdevices.core.ui.R as DesignSystem
 fun InfoElementCard(
     modifier: Modifier,
     @StringRes titleId: Int,
-    content: @Composable () -> Unit
+    content: @Composable ColumnScope.() -> Unit
 ) {
     Card(
         modifier = modifier
