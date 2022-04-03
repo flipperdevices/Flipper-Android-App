@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.ui.R as DesignSystem
+import com.flipperdevices.core.ui.composable.LocalRouter
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.compose.elements.InfoElementCard
 import com.flipperdevices.info.impl.model.DeviceStatus
@@ -36,43 +37,15 @@ import com.flipperdevices.info.impl.viewmodel.FirmwareUpdateViewModel
 @Composable
 fun ComposableInfoCard(
     modifier: Modifier,
-    deviceInfoViewModel: DeviceInfoViewModel = viewModel(),
     deviceViewModel: DeviceViewModel = viewModel(),
     firmwareUpdateViewModel: FirmwareUpdateViewModel = viewModel()
 ) {
-    val deviceInfo by deviceInfoViewModel.getDeviceInfo().collectAsState()
-    val deviceInfoRequestStatus by deviceInfoViewModel.getDeviceInfoRequestStatus().collectAsState()
     val deviceStatus by deviceViewModel.getState().collectAsState()
     val firmwareUpdateStatus by firmwareUpdateViewModel.getState().collectAsState()
-
-    val firmwareVersionInProgress = deviceStatus is DeviceStatus.Connected
     val isUnsupported = firmwareUpdateStatus is FirmwareUpdateStatus.Unsupported
 
     InfoElementCard(modifier, R.string.info_device_info_title) {
-        ComposableFirmwareVersion(
-            deviceInfo.firmwareVersion,
-            firmwareVersionInProgress
-        )
-        ComposableInfoDivider()
-        ComposableFirmwareBuildDate(
-            deviceInfo.firmwareVersion,
-            firmwareVersionInProgress
-        )
-        if (isUnsupported) {
-            return@InfoElementCard
-        }
-        ComposableInfoDivider()
-        ComposableDeviceInfoRowWithText(
-            R.string.info_device_info_int_flash,
-            deviceInfoRequestStatus.internalStorageRequestInProgress,
-            deviceInfo.flashInt?.toString(LocalContext.current)
-        )
-        ComposableInfoDivider()
-        ComposableDeviceInfoRowWithText(
-            R.string.info_device_info_ext_flash,
-            deviceInfoRequestStatus.externalStorageRequestInProgress,
-            deviceInfo.flashSd?.toString(LocalContext.current)
-        )
+        ComposableInfoCardContent(isUnsupported)
         if (deviceStatus is DeviceStatus.Connected && !isUnsupported) {
             ComposableFullInfoButton()
         }
@@ -80,13 +53,55 @@ fun ComposableInfoCard(
 }
 
 @Composable
-private fun ComposableFullInfoButton() {
+fun ComposableInfoCardContent(
+    isUnsupported: Boolean,
+    deviceInfoViewModel: DeviceInfoViewModel = viewModel(),
+    deviceViewModel: DeviceViewModel = viewModel()
+) {
+    val deviceInfo by deviceInfoViewModel.getDeviceInfo().collectAsState()
+    val deviceInfoRequestStatus by deviceInfoViewModel.getDeviceInfoRequestStatus().collectAsState()
+    val deviceStatus by deviceViewModel.getState().collectAsState()
+
+    val firmwareVersionInProgress = deviceStatus is DeviceStatus.Connected
+
+    ComposableFirmwareVersion(
+        deviceInfo.firmwareVersion,
+        firmwareVersionInProgress
+    )
+    ComposableInfoDivider()
+    ComposableFirmwareBuildDate(
+        deviceInfo.firmwareVersion,
+        firmwareVersionInProgress
+    )
+    if (isUnsupported) {
+        return
+    }
+    ComposableInfoDivider()
+    ComposableDeviceInfoRowWithText(
+        R.string.info_device_info_int_flash,
+        deviceInfoRequestStatus.internalStorageRequestInProgress,
+        deviceInfo.flashInt?.toString(LocalContext.current)
+    )
+    ComposableInfoDivider()
+    ComposableDeviceInfoRowWithText(
+        R.string.info_device_info_ext_flash,
+        deviceInfoRequestStatus.externalStorageRequestInProgress,
+        deviceInfo.flashSd?.toString(LocalContext.current)
+    )
+}
+
+@Composable
+private fun ComposableFullInfoButton(
+    deviceInfoViewModel: DeviceInfoViewModel = viewModel()
+) {
+    val router = LocalRouter.current
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(
                 indication = rememberRipple(),
-                onClick = { },
+                onClick = { deviceInfoViewModel.onOpenFullDeviceInfo(router) },
                 interactionSource = remember { MutableInteractionSource() }
             )
             .padding(all = 12.dp),

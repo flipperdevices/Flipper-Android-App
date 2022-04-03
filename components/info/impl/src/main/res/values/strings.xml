@@ -25,6 +25,8 @@
     <string name="info_device_forget_dialog_forget">Forget</string>
 
     <string name="info_device_info_title">Device Info</string>
+    <string name="info_device_info_title_card">Flipper Device</string>
+    <string name="info_device_info_other_card">Other</string>
     <string name="info_device_info_version">Firmware Version</string>
     <string name="info_device_info_build_date">Build Date</string>
     <string name="info_device_info_int_flash">Int. Flash (Used/Total)</string>

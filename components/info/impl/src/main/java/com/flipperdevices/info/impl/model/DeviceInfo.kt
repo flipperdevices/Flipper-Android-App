@@ -9,6 +9,10 @@ data class DeviceInfo(
     val flashSd: StorageInfo? = null
 )
 
+data class VerboseDeviceInfo(
+    val rpcInformationMap: Map<String, String> = emptyMap()
+)
+
 data class StorageInfo(
     val used: Long,
     val total: Long
