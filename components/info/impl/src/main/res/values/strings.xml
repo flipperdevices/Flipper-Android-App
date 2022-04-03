@@ -29,6 +29,7 @@
     <string name="info_device_info_build_date">Build Date</string>
     <string name="info_device_info_int_flash">Int. Flash (Used/Total)</string>
     <string name="info_device_info_ext_flash">SD Card (Used/Total)</string>
+    <string name="info_device_info_more_information">Full Info</string>
     <string name="info_device_firmware_version_dev">Dev</string>
     <string name="info_device_firmware_version_rc">RC</string>
     <string name="info_device_firmware_version_release">Release</string>
