@@ -152,9 +152,11 @@ class FlipperBleManagerImpl constructor(
         }
 
         override fun onServicesInvalidated() {
-            informationApi.reset(this@FlipperBleManagerImpl)
-            flipperRequestApi.reset(this@FlipperBleManagerImpl)
-            flipperRpcInformationApi.reset()
+            scope.launch(bleDispatcher) {
+                informationApi.reset(this@FlipperBleManagerImpl)
+                flipperRequestApi.reset(this@FlipperBleManagerImpl)
+                flipperRpcInformationApi.reset()
+            }
         }
     }
 }

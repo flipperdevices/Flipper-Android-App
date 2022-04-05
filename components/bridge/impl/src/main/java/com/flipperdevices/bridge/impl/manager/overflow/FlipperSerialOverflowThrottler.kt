@@ -59,7 +59,7 @@ class FlipperSerialOverflowThrottler(
         return true
     }
 
-    override fun initialize(bleManager: UnsafeBleManager) {
+    override suspend fun initialize(bleManager: UnsafeBleManager) {
         pendingBytes = null
         bleManager.setNotificationCallbackUnsafe(overflowCharacteristics).with { _, data ->
             updateRemainingBuffer(data)
@@ -71,7 +71,7 @@ class FlipperSerialOverflowThrottler(
         }.enqueue()
     }
 
-    override fun reset(bleManager: UnsafeBleManager) {
+    override suspend fun reset(bleManager: UnsafeBleManager) {
         pendingBytes = null
         bleManager.setNotificationCallbackUnsafe(overflowCharacteristics) // reset (free) callback
     }

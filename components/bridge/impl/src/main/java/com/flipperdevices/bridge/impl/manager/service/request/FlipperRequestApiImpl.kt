@@ -26,7 +26,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -160,12 +159,12 @@ class FlipperRequestApiImpl(
             serialApi.onServiceReceived(gatt)
     }
 
-    override fun initialize(bleManager: UnsafeBleManager) {
+    override suspend fun initialize(bleManager: UnsafeBleManager) {
         serialApiUnsafe.initialize(bleManager)
         serialApi.initialize(bleManager)
     }
 
-    override fun reset(bleManager: UnsafeBleManager) {
+    override suspend fun reset(bleManager: UnsafeBleManager) {
         serialApiUnsafe.reset(bleManager)
         serialApi.reset(bleManager)
     }
