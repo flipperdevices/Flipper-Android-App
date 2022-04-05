@@ -27,6 +27,9 @@ interface SimpleKeyDao {
     )
     fun subscribeByType(fileType: FlipperFileType): Flow<List<Key>>
 
+    @Query("UPDATE keys SET path = :newPath WHERE path = :oldPath AND deleted = :deleted")
+    fun move(oldPath: String, newPath: String, deleted: Boolean)
+
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insert(vararg keys: Key)
 }

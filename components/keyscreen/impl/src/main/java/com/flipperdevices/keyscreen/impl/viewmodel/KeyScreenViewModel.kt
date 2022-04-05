@@ -20,6 +20,8 @@ import com.flipperdevices.keyscreen.impl.model.DeleteState
 import com.flipperdevices.keyscreen.impl.model.FavoriteState
 import com.flipperdevices.keyscreen.impl.model.KeyScreenState
 import com.flipperdevices.keyscreen.impl.model.ShareState
+import com.github.terrakok.cicerone.Router
+import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -51,6 +53,7 @@ class KeyScreenViewModel(
     private val keyScreenState = MutableStateFlow<KeyScreenState>(KeyScreenState.InProgress)
     private val shareDelegate = ShareDelegate(application, keyParser)
     private val saveDelegate = SaveDelegate()
+    private val restoreInProgress = AtomicBoolean(false)
 
     init {
         viewModelScope.launch {
@@ -174,24 +177,41 @@ class KeyScreenViewModel(
         }
     }
 
-    fun onDelete() {
+    fun onDelete(router: Router) {
         val state = keyScreenState.value
         if (state !is KeyScreenState.Ready || state.deleteState == DeleteState.PROGRESS) {
-            warn { "We skip onShare, because state is $state" }
+            warn { "We skip onDelete, because state is $state" }
             return
         }
         val newState = state.copy(deleteState = DeleteState.PROGRESS)
         val isStateSaved = keyScreenState.compareAndSet(state, newState)
         if (!isStateSaved) {
-            onDelete()
+            onDelete(router)
             return
         }
 
         viewModelScope.launch {
-            deleteKeyApi.markDeleted(state.flipperKey.path)
-            keyScreenState.update {
-                if (it is KeyScreenState.Ready) it.copy(deleteState = DeleteState.DELETED) else it
-            }
+            if (state.flipperKey.path.deleted) {
+                deleteKeyApi.deleteMarkedDeleted(state.flipperKey.path)
+            } else deleteKeyApi.markDeleted(state.flipperKey.path)
+            router.exit()
+        }
+    }
+
+    fun onRestore(router: Router) {
+        val state = keyScreenState.value
+        if (state !is KeyScreenState.Ready) {
+            warn { "We skip onRestore, because state is $state" }
+            return
+        }
+
+        if (!restoreInProgress.compareAndSet(false, true)) {
+            return
+        }
+
+        viewModelScope.launch {
+            deleteKeyApi.restore(state.flipperKey.path)
+            router.exit()
         }
     }
 
@@ -203,7 +223,7 @@ class KeyScreenViewModel(
                 parsedKey,
                 if (isFavorite) FavoriteState.FAVORITE else FavoriteState.NOT_FAVORITE,
                 ShareState.NOT_SHARING,
-                DeleteState.NOT_DELETED,
+                if (flipperKey.path.deleted) DeleteState.DELETED else DeleteState.NOT_DELETED,
                 flipperKey
             )
         }

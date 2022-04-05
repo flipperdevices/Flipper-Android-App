@@ -10,12 +10,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableFavorite
+import com.flipperdevices.keyscreen.impl.model.DeleteState
 import com.flipperdevices.keyscreen.impl.model.FavoriteState
 
 @Composable
 fun ComposableCardTitle(
     modifier: Modifier,
     keyName: String,
+    deleteState: DeleteState,
     favoriteState: FavoriteState? = null,
     onSwitchFavorites: ((Boolean) -> Unit)? = null
 ) {
@@ -29,7 +31,10 @@ fun ComposableCardTitle(
             fontWeight = FontWeight.W500,
             fontSize = 18.sp
         )
-        if (favoriteState != null && onSwitchFavorites != null) {
+        if (deleteState == DeleteState.NOT_DELETED &&
+            favoriteState != null &&
+            onSwitchFavorites != null
+        ) {
             ComposableFavorite(favoriteState, onSwitchFavorites)
         }
     }

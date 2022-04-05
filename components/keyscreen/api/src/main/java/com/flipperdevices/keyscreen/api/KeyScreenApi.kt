@@ -9,5 +9,5 @@ interface KeyScreenApi {
     fun getKeyScreenScreen(keyPath: FlipperKeyPath): Screen
 
     @Composable
-    fun KeyCard(key: FlipperKeyParsed)
+    fun KeyCard(key: FlipperKeyParsed, deleted: Boolean)
 }

@@ -10,4 +10,6 @@ interface DeleteKeyApi {
     suspend fun deleteMarkedDeleted(keyPath: FlipperKeyPath)
 
     suspend fun markDeleted(keyPath: FlipperKeyPath)
+
+    suspend fun restore(keyPath: FlipperKeyPath)
 }

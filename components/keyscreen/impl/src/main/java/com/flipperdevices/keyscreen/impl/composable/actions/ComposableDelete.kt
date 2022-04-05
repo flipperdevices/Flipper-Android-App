@@ -15,10 +15,14 @@ fun ComposableDelete(deleteState: DeleteState, onClick: () -> Unit) {
         return
     }
 
+    val descriptionId = if (deleteState == DeleteState.DELETED) {
+        R.string.keyscreen_delete_permanently_text
+    } else R.string.keyscreen_delete_text
+
     ComposableActionRow(
         iconId = R.drawable.ic_trash_icon,
         tintId = DesignSystem.color.red,
-        descriptionId = R.string.keyscreen_delete_text,
+        descriptionId = descriptionId,
         descriptionColorId = DesignSystem.color.red,
         onClick = onClick
     )
