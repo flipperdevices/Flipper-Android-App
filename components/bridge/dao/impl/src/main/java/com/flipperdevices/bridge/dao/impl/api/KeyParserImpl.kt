@@ -66,8 +66,8 @@ class KeyParserImpl @Inject constructor() : KeyParser, LogTagProvider {
         val fileType = FlipperFileType.getByExtension(extension)
         val keyPath = if (fileType == null) {
             warn { "Can't find file type with extension $fileType" }
-            FlipperKeyPath(pathAsFile.parent ?: "", pathAsFile.name)
-        } else FlipperKeyPath(fileType.flipperDir, pathAsFile.name)
+            FlipperKeyPath(pathAsFile.parent ?: "", pathAsFile.name, deleted = false)
+        } else FlipperKeyPath(fileType.flipperDir, pathAsFile.name, deleted = false)
 
         return keyPath to content
     }

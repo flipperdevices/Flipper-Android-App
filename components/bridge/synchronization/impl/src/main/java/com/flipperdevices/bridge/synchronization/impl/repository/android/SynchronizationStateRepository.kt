@@ -17,8 +17,9 @@ class SynchronizationStateRepository(
         for (diffToMark in uniqueDiffs) {
             try {
                 utilsKeyApi.markAsSynchronized(
-                    diffToMark.newHash.keyPath,
-                    deleted = diffToMark.action == KeyAction.DELETED
+                    diffToMark.newHash.keyPath.copy(
+                        deleted = diffToMark.action == KeyAction.DELETED
+                    )
                 )
             } catch (
                 @Suppress("TooGenericExceptionCaught")

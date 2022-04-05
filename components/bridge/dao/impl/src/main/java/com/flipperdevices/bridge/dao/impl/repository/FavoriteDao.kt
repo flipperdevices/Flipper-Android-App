@@ -5,7 +5,6 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.impl.model.FavoriteKey
 import com.flipperdevices.bridge.dao.impl.model.Key
 import kotlinx.coroutines.flow.Flow
@@ -22,10 +21,10 @@ interface FavoriteDao {
         """
             SELECT * FROM favorite_keys 
             JOIN keys ON favorite_keys.key_id = keys.uid 
-            WHERE keys.path = :keyPath
+            WHERE keys.path = :path AND keys.deleted = :deleted
         """
     )
-    suspend fun isFavorite(keyPath: FlipperKeyPath): Map<FavoriteKey, Key>
+    suspend fun isFavorite(path: String, deleted: Boolean): Map<FavoriteKey, Key>
 
     @Query("SELECT * FROM favorite_keys WHERE key_id = :id")
     suspend fun getFavoriteByKeyId(id: Int): FavoriteKey?

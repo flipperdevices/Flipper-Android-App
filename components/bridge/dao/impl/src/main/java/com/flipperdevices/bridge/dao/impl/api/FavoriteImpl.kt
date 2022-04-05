@@ -35,7 +35,7 @@ class FavoriteImpl @Inject constructor(
         val favoriteKeys = keys.mapNotNull {
             val fileType = it.fileType
             return@mapNotNull if (fileType != null) {
-                keyDao.getByPath(it)?.uid
+                keyDao.getByPath(it.pathToKey, it.deleted)?.uid
             } else null
         }.mapIndexed { order, keyId ->
             FavoriteKey(keyId = keyId, order = order)
@@ -45,7 +45,7 @@ class FavoriteImpl @Inject constructor(
     }
 
     override suspend fun isFavorite(keyPath: FlipperKeyPath) = withContext(Dispatchers.IO) {
-        val favoritesResponse = favoriteDao.isFavorite(keyPath)
+        val favoritesResponse = favoriteDao.isFavorite(keyPath.pathToKey, keyPath.deleted)
         return@withContext favoritesResponse.isNotEmpty()
     }
 
@@ -53,7 +53,7 @@ class FavoriteImpl @Inject constructor(
         keyPath: FlipperKeyPath,
         isFavorite: Boolean
     ) = withContext(Dispatchers.IO) {
-        val uid = keyDao.getByPath(keyPath)?.uid ?: return@withContext
+        val uid = keyDao.getByPath(keyPath.pathToKey, keyPath.deleted)?.uid ?: return@withContext
         val favoriteKey = favoriteDao.getFavoriteByKeyId(uid)
         if (favoriteKey != null) {
             if (!isFavorite) {
@@ -76,7 +76,7 @@ class FavoriteImpl @Inject constructor(
         return@withContext favoriteDao.subscribe().map { keys ->
             keys.filter { !it.value.deleted }.map { (favoriteKey, key) ->
                 favoriteKey.order to FlipperKey(
-                    key.path,
+                    key.keyPath,
                     key.content.flipperContent,
                     key.notes,
                     synchronized = key.synchronizedStatus == SynchronizedStatus.SYNCHRONIZED
@@ -90,7 +90,7 @@ class FavoriteImpl @Inject constructor(
             .filter { !it.value.deleted }
             .map { (favoriteKey, key) ->
                 favoriteKey.order to FlipperKey(
-                    key.path,
+                    key.keyPath,
                     key.content.flipperContent,
                     key.notes,
                     synchronized = key.synchronizedStatus == SynchronizedStatus.SYNCHRONIZED

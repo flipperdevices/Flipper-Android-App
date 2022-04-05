@@ -50,7 +50,11 @@ class DiffKeyExecutor(
         diff: KeyDiff
     ) {
         val path = diff.newHash.keyPath
-        val targetPath = FlipperKeyPath(path.fileType!!.flipperDir, path.name)
+        val targetPath = FlipperKeyPath(
+            path.fileType!!.flipperDir,
+            path.name,
+            deleted = false
+        )
 
         when (diff.action) {
             KeyAction.ADD -> {

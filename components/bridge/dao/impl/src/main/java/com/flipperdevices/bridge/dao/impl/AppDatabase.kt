@@ -6,7 +6,6 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.flipperdevices.bridge.dao.impl.converters.DatabaseKeyContentConverter
 import com.flipperdevices.bridge.dao.impl.converters.FlipperFileTypeConverter
-import com.flipperdevices.bridge.dao.impl.converters.FlipperKeyPathConverter
 import com.flipperdevices.bridge.dao.impl.model.FavoriteKey
 import com.flipperdevices.bridge.dao.impl.model.Key
 import com.flipperdevices.bridge.dao.impl.repository.FavoriteDao
@@ -26,14 +25,18 @@ import com.flipperdevices.bridge.dao.impl.repository.KeyDao
         AutoMigration(
             from = 4,
             to = 5
+        ),
+        // From 5 to 6 we just drop database
+        AutoMigration(
+            from = 6,
+            to = 7
         )
     ],
-    version = 6,
+    version = 7,
     exportSchema = true
 )
 @TypeConverters(
     FlipperFileTypeConverter::class,
-    FlipperKeyPathConverter::class,
     DatabaseKeyContentConverter::class
 )
 abstract class AppDatabase : RoomDatabase() {

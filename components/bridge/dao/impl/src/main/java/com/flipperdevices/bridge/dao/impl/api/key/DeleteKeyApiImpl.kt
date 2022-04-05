@@ -39,15 +39,15 @@ class DeleteKeyApiImpl @Inject constructor(
     override suspend fun deleteMarkedDeleted(
         keyPath: FlipperKeyPath
     ) = withContext(Dispatchers.IO) {
-        deleteKeyDao.deleteMarkedDeleted(keyPath)
+        deleteKeyDao.deleteMarkedDeleted(keyPath.pathToKey)
         cleaner.deleteUnusedFiles()
     }
 
     override suspend fun markDeleted(keyPath: FlipperKeyPath) = withContext(Dispatchers.IO) {
-        val existKey = simpleKeyDao.getByPath(keyPath, deleted = true)
+        val existKey = simpleKeyDao.getByPath(keyPath.pathToKey, deleted = true)
         if (existKey != null) {
-            deleteKeyDao.deleteMarkedDeleted(keyPath)
+            deleteKeyDao.deleteMarkedDeleted(keyPath.pathToKey)
         }
-        deleteKeyDao.markDeleted(keyPath)
+        deleteKeyDao.markDeleted(keyPath.pathToKey)
     }
 }
