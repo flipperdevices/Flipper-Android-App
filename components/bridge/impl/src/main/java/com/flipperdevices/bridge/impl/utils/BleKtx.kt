@@ -4,7 +4,7 @@ import android.bluetooth.BluetoothGatt
 import com.flipperdevices.bridge.impl.manager.UnsafeBleManager
 import com.flipperdevices.bridge.impl.manager.service.BluetoothGattServiceWrapper
 
-fun BluetoothGattServiceWrapper.initializeSafe(
+suspend fun BluetoothGattServiceWrapper.initializeSafe(
     manager: UnsafeBleManager,
     onError: (Throwable?) -> Unit
 ) {

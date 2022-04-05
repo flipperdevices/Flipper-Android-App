@@ -20,7 +20,6 @@ import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 private const val FLIPPER_PATH_INTERNAL_STORAGE = "/int/"
@@ -97,11 +96,9 @@ class FlipperRpcInformationApiImpl(
         }
     }
 
-    fun reset() {
-        runBlocking {
-            requestJobs.forEachIterable {
-                it.cancelAndJoin()
-            }
+    suspend fun reset() {
+        requestJobs.forEachIterable {
+            it.cancelAndJoin()
         }
         requestStatusFlow.update { FlipperRequestRpcInformationStatus.NotStarted }
         rpcInformationFlow.update { FlipperRpcInformation() }

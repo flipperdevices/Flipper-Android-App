@@ -76,7 +76,7 @@ class FlipperInformationApiImpl(
         return apiVersionNumber >= Constants.API_SUPPORTED_VERSION
     }
 
-    override fun initialize(bleManager: UnsafeBleManager) {
+    override suspend fun initialize(bleManager: UnsafeBleManager) {
         readInformationService(bleManager)
         readGenericService(bleManager)
         readBattery(bleManager)
@@ -153,7 +153,7 @@ class FlipperInformationApiImpl(
         }
     }
 
-    override fun reset(bleManager: UnsafeBleManager) {
+    override suspend fun reset(bleManager: UnsafeBleManager) {
         informationState.update { FlipperGATTInformation() }
     }
 
