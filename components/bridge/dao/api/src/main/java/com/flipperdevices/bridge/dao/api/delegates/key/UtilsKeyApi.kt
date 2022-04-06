@@ -5,10 +5,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import kotlinx.coroutines.flow.Flow
 
 interface UtilsKeyApi {
-    suspend fun markAsSynchronized(
-        keyPath: FlipperKeyPath,
-        deleted: Boolean
-    )
+    suspend fun markAsSynchronized(keyPath: FlipperKeyPath)
 
     suspend fun updateNote(keyPath: FlipperKeyPath, note: String)
 

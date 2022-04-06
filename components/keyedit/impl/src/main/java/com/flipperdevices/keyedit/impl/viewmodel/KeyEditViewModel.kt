@@ -88,7 +88,11 @@ class KeyEditViewModel(
 
         val extension = flipperKey.path.name.substringAfterLast('.')
         val newFlipperKey = FlipperKey(
-            FlipperKeyPath(flipperKey.path.folder, "${editState.name}.$extension"),
+            FlipperKeyPath(
+                flipperKey.path.folder,
+                "${editState.name}.$extension",
+                flipperKey.path.deleted
+            ),
             flipperKey.keyContent,
             editState.notes,
             synchronized = false

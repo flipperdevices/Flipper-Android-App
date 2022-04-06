@@ -7,17 +7,19 @@ import com.flipperdevices.bridge.dao.impl.model.SynchronizedStatus
 
 internal fun FlipperKey.toDatabaseKey(): Key {
     return Key(
-        path = path,
+        path = path.pathToKey,
+        type = path.fileType,
         content = DatabaseKeyContent(keyContent),
         notes = notes,
         synchronizedStatus = if (synchronized) SynchronizedStatus.SYNCHRONIZED
-        else SynchronizedStatus.NOT_SYNCHRONIZED
+        else SynchronizedStatus.NOT_SYNCHRONIZED,
+        deleted = path.deleted
     )
 }
 
 internal fun Key.toFlipperKey(): FlipperKey {
     return FlipperKey(
-        path = path,
+        path = keyPath,
         keyContent = content.flipperContent,
         notes = notes,
         synchronized = synchronizedStatus == SynchronizedStatus.SYNCHRONIZED

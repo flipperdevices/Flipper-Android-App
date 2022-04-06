@@ -7,6 +7,7 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.keyscreen.api.KeyScreenApi
 import com.flipperdevices.keyscreen.impl.composable.card.ComposableKeyCard
 import com.flipperdevices.keyscreen.impl.fragments.KeyScreenFragment
+import com.flipperdevices.keyscreen.impl.model.DeleteState
 import com.github.terrakok.cicerone.Screen
 import com.github.terrakok.cicerone.androidx.FragmentScreen
 import com.squareup.anvil.annotations.ContributesBinding
@@ -19,10 +20,11 @@ class KeyScreenApiImpl @Inject constructor() : KeyScreenApi {
     }
 
     @Composable
-    override fun KeyCard(key: FlipperKeyParsed) {
+    override fun KeyCard(key: FlipperKeyParsed, deleted: Boolean) {
         ComposableKeyCard(
             parsedKey = key,
-            synchronizationState = null
+            synchronizationState = null,
+            deleteState = if (deleted) DeleteState.DELETED else DeleteState.NOT_DELETED
         )
     }
 }

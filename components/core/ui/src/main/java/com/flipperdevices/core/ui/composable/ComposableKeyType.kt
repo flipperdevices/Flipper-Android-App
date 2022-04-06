@@ -28,10 +28,11 @@ import com.flipperdevices.core.ui.R as DesignSystem
 @Preview
 fun ComposableKeyType(
     type: FlipperFileType? = FlipperFileType.NFC,
+    colorId: Int? = type?.color,
     minWidth: Dp? = 110.dp
 ) {
     val icon = type?.icon ?: DaoR.drawable.ic_fileformat_unknown
-    val color = type?.color ?: DaoR.color.fileformat_color_unknown
+    val color = colorId ?: DaoR.color.fileformat_color_unknown
     val title = type?.humanReadableName
         ?: stringResource(DaoR.string.fileformat_unknown)
 

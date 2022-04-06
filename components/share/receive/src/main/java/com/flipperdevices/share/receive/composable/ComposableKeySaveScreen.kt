@@ -21,7 +21,7 @@ fun ComposableKeySaveScreen(
 ) {
     Column {
         ComposableKeySaveBar(onCancel)
-        keyScreenApi.KeyCard(key = keyParsed)
+        keyScreenApi.KeyCard(key = keyParsed, deleted = false)
         ComposableKeySaveFooter(savingInProgress, onSave, onEdit)
     }
 }

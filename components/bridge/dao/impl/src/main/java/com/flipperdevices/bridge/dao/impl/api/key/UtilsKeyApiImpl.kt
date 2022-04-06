@@ -30,17 +30,20 @@ class UtilsKeyApiImpl @Inject constructor(
     private val simpleKeyApi by simpleKeyApiProvider
 
     override suspend fun markAsSynchronized(
-        keyPath: FlipperKeyPath,
-        deleted: Boolean
+        keyPath: FlipperKeyPath
     ) = withContext(Dispatchers.IO) {
-        utilsKeyDao.markSynchronized(keyPath, deleted, SynchronizedStatus.SYNCHRONIZED)
+        utilsKeyDao.markSynchronized(
+            keyPath.pathToKey,
+            keyPath.deleted,
+            SynchronizedStatus.SYNCHRONIZED
+        )
     }
 
     override suspend fun updateNote(
         keyPath: FlipperKeyPath,
         note: String
     ) = withContext(Dispatchers.IO) {
-        utilsKeyDao.updateNote(keyPath, note)
+        utilsKeyDao.updateNote(keyPath.pathToKey, keyPath.deleted, note)
     }
 
     override fun search(text: String): Flow<List<FlipperKey>> {
@@ -83,6 +86,7 @@ private fun getKeyPathWithDifferentNameWithoutExtension(
 ): FlipperKeyPath {
     return FlipperKeyPath(
         keyPath.folder,
-        "$nameWithoutExtension.${keyPath.name.substringAfterLast('.')}"
+        "$nameWithoutExtension.${keyPath.name.substringAfterLast('.')}",
+        keyPath.deleted
     )
 }

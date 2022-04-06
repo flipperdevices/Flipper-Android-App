@@ -6,6 +6,8 @@
     <string name="keyscreen_share_text">Share</string>
     <string name="keyscreen_edit_text">Edit</string>
     <string name="keyscreen_delete_text">Delete</string>
+    <string name="keyscreen_delete_permanently_text">Delete Permanently</string>
+    <string name="keyscreen_restore_text">Recover Key</string>
     <string name="keyscreen_deleting_text">Deleting</string>
     <string name="keyscreen_title">Key info</string>
     <string name="keyscreen_save_error">Error when saving. Perhaps a key with this name already exists?</string>

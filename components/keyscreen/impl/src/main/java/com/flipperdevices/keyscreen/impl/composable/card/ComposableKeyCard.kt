@@ -24,12 +24,15 @@ import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.core.ui.composable.ComposableKeyType
 import com.flipperdevices.keyscreen.impl.R
+import com.flipperdevices.keyscreen.impl.model.DeleteState
 import com.flipperdevices.keyscreen.impl.model.FavoriteState
 import com.flipperdevices.keyscreen.shared.ComposableKeyContent
 
 @Composable
+@Suppress("LongMethod")
 fun ComposableKeyCard(
     parsedKey: FlipperKeyParsed,
+    deleteState: DeleteState,
     synchronizationState: (@Composable () -> Unit)? = null,
     favoriteState: FavoriteState? = null,
     onSwitchFavorites: ((Boolean) -> Unit)? = null
@@ -42,7 +45,12 @@ fun ComposableKeyCard(
     ) {
         Column {
             Row {
-                ComposableKeyType(parsedKey.fileType)
+                if (deleteState == DeleteState.NOT_DELETED) {
+                    ComposableKeyType(parsedKey.fileType)
+                } else ComposableKeyType(
+                    parsedKey.fileType,
+                    colorId = DesignSystem.color.black_4
+                )
                 if (synchronizationState != null) {
                     Box(
                         modifier = Modifier
@@ -62,6 +70,7 @@ fun ComposableKeyCard(
                     start = 12.dp,
                     end = 12.dp
                 ),
+                deleteState = deleteState,
                 keyName = parsedKey.keyName,
                 favoriteState = favoriteState,
                 onSwitchFavorites = onSwitchFavorites
@@ -109,5 +118,10 @@ private fun ComposableKeyCardPreview() {
         keyType = "EM4100",
         notes = "Test"
     )
-    ComposableKeyCard(parsedKey, synchronizationState = {}, FavoriteState.FAVORITE) {}
+    ComposableKeyCard(
+        parsedKey,
+        DeleteState.NOT_DELETED,
+        synchronizationState = {},
+        FavoriteState.FAVORITE
+    ) {}
 }

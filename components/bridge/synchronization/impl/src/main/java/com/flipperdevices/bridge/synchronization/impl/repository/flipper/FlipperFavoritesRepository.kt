@@ -12,7 +12,7 @@ import java.nio.charset.Charset
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-private val FAVORITES_PATH = FlipperKeyPath("/", "favorites.txt")
+private val FAVORITES_PATH = FlipperKeyPath("/", "favorites.txt", deleted = false)
 
 class FlipperFavoritesRepository : LogTagProvider {
     override val TAG = "FavoritesRepository"
@@ -27,7 +27,8 @@ class FlipperFavoritesRepository : LogTagProvider {
         }.map { (keyFolder, keyName) ->
             return@map FlipperKeyPath(
                 folder = keyFolder,
-                name = keyName
+                name = keyName,
+                deleted = false
             )
         }
     }

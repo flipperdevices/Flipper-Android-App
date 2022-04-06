@@ -31,7 +31,7 @@ class SimpleKeyApiImpl @Inject constructor(
     }
 
     override fun getKeyAsFlow(keyPath: FlipperKeyPath): Flow<FlipperKey?> {
-        return simpleKeyDao.getByPathFlow(keyPath).map {
+        return simpleKeyDao.getByPathFlow(keyPath.pathToKey, keyPath.deleted).map {
             it?.toFlipperKey()
         }
     }
@@ -54,6 +54,7 @@ class SimpleKeyApiImpl @Inject constructor(
     override suspend fun getKey(
         keyPath: FlipperKeyPath
     ): FlipperKey? = withContext(Dispatchers.IO) {
-        return@withContext simpleKeyDao.getByPath(keyPath)?.toFlipperKey()
+        return@withContext simpleKeyDao.getByPath(keyPath.pathToKey, keyPath.deleted)
+            ?.toFlipperKey()
     }
 }

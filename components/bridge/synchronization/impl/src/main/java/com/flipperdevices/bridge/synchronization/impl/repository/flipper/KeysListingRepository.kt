@@ -51,7 +51,8 @@ class KeysListingRepository : LogTagProvider {
             .map {
                 FlipperKeyPath(
                     folder = fileType.flipperDir,
-                    name = it.name
+                    name = it.name,
+                    deleted = false
                 )
             }
     }
