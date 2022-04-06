@@ -70,7 +70,7 @@ private fun CategoryList(
         items(keys) { (flipperKeyParsed, flipperKey) ->
             ComposableKeyCard(
                 Modifier.padding(bottom = 14.dp),
-                syncronizationContent = {
+                synchronizationContent = {
                     synchronizationUiApi.RenderSynchronizationState(
                         flipperKey.synchronized,
                         synchronizationState,

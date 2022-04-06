@@ -2,6 +2,7 @@ package com.flipperdevices.archive.category.composable
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -26,7 +27,6 @@ import com.flipperdevices.archive.category.viewmodels.CategoryViewModelFactory
 import com.flipperdevices.archive.model.CategoryType
 import com.flipperdevices.archive.shared.composable.ComposableAppBar
 import com.flipperdevices.archive.shared.composable.ComposableKeyCard
-import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
@@ -36,8 +36,23 @@ import com.flipperdevices.core.ui.composable.LocalRouter
 
 @Composable
 fun ComposableCategory(
-    categoryType: CategoryType = CategoryType.ByFileType(FlipperFileType.INFRARED),
-    synchronizationUiApi: SynchronizationUiApi,
+    categoryType: CategoryType.ByFileType,
+    synchronizationUiApi: SynchronizationUiApi
+) {
+    val router = LocalRouter.current
+    Column {
+        ComposableAppBar(
+            title = categoryType.fileType.humanReadableName,
+            onBack = { router.exit() }
+        )
+        ComposableCategoryContent(categoryType, synchronizationUiApi)
+    }
+}
+
+@Composable
+fun ColumnScope.ComposableCategoryContent(
+    categoryType: CategoryType,
+    synchronizationUiApi: SynchronizationUiApi?,
     categoryViewModel: CategoryViewModel = viewModel(
         factory = CategoryViewModelFactory(categoryType)
     )
@@ -45,39 +60,32 @@ fun ComposableCategory(
     val categoryState by categoryViewModel.getState().collectAsState()
     val synchronizationState by categoryViewModel.getSynchronizationState().collectAsState()
     val localCategoryState = categoryState
-    val router = LocalRouter.current
 
-    Column {
-        ComposableAppBar(
-            title = when (categoryType) {
-                is CategoryType.ByFileType -> categoryType.fileType.humanReadableName
-                CategoryType.Deleted -> stringResource(R.string.category_deleted_title)
-            },
-            onBack = { router.exit() }
+    val contentModifier = Modifier
+        .weight(weight = 1f)
+        .fillMaxWidth()
+    when (localCategoryState) {
+        is CategoryState.Loaded -> if (localCategoryState.keys.isEmpty()) {
+            CategoryEmpty(contentModifier)
+        } else CategoryList(
+            contentModifier,
+            categoryType,
+            categoryViewModel,
+            synchronizationUiApi,
+            synchronizationState,
+            localCategoryState.keys
         )
-        val contentModifier = Modifier
-            .weight(weight = 1f)
-            .fillMaxWidth()
-        when (localCategoryState) {
-            is CategoryState.Loaded -> if (localCategoryState.keys.isEmpty()) {
-                CategoryEmpty(contentModifier)
-            } else CategoryList(
-                contentModifier,
-                categoryViewModel,
-                synchronizationUiApi,
-                synchronizationState,
-                localCategoryState.keys
-            )
-            CategoryState.Loading -> CategoryLoadingProgress(contentModifier)
-        }
+        CategoryState.Loading -> CategoryLoadingProgress(contentModifier)
     }
 }
 
 @Composable
+@Suppress("LongParameterList")
 private fun CategoryList(
     modifier: Modifier,
+    categoryType: CategoryType,
     categoryViewModel: CategoryViewModel,
-    synchronizationUiApi: SynchronizationUiApi,
+    synchronizationUiApi: SynchronizationUiApi?,
     synchronizationState: SynchronizationState,
     keys: List<Pair<FlipperKeyParsed, FlipperKey>>
 ) {
@@ -88,14 +96,18 @@ private fun CategoryList(
         items(keys) { (flipperKeyParsed, flipperKey) ->
             ComposableKeyCard(
                 Modifier.padding(bottom = 14.dp),
-                syncronizationContent = {
+                synchronizationContent = if (synchronizationUiApi != null) { ->
                     synchronizationUiApi.RenderSynchronizationState(
                         synced = flipperKey.synchronized,
                         synchronizationState = synchronizationState,
                         withText = false
                     )
-                },
-                flipperKeyParsed
+                } else null,
+                flipperKeyParsed,
+                typeColorId = when (categoryType) {
+                    is CategoryType.ByFileType -> categoryType.fileType.color
+                    CategoryType.Deleted -> DesignSystem.color.black_4
+                }
             ) {
                 categoryViewModel.openKeyScreen(router, flipperKey.path)
             }

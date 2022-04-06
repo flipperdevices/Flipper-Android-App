@@ -3,6 +3,7 @@ package com.flipperdevices.archive.category.fragments
 import android.os.Bundle
 import androidx.compose.runtime.Composable
 import com.flipperdevices.archive.category.composable.ComposableCategory
+import com.flipperdevices.archive.category.composable.ComposableDeleted
 import com.flipperdevices.archive.category.di.CategoryComponent
 import com.flipperdevices.archive.model.CategoryType
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
@@ -27,7 +28,10 @@ class CategoryFragment : ComposeFragment() {
     override fun RenderView() {
         val categoryType = arguments?.getParcelable<CategoryType>(EXTRA_CATEGORY_TYPE)
         if (categoryType != null) {
-            ComposableCategory(categoryType, synchronizationUiApi)
+            when (categoryType) {
+                is CategoryType.ByFileType -> ComposableCategory(categoryType, synchronizationUiApi)
+                CategoryType.Deleted -> ComposableDeleted()
+            }
         }
     }
 

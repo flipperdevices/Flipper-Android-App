@@ -16,7 +16,7 @@ class ConnectionObserverComposite(
     private val compositeDispatcher = Dispatchers.Default.limitedParallelism(1)
 
     fun addObserver(observer: SuspendConnectionObserver) {
-        scope.launch {
+        scope.launch(compositeDispatcher) {
             if (observers.contains(observer)) {
                 return@launch
             }
@@ -25,7 +25,7 @@ class ConnectionObserverComposite(
     }
 
     fun removeObserver(observer: SuspendConnectionObserver) {
-        scope.launch {
+        scope.launch(compositeDispatcher) {
             observers.remove(observer)
         }
     }

@@ -1,5 +1,6 @@
 package com.flipperdevices.archive.shared.composable
 
+import androidx.annotation.ColorRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -30,8 +31,9 @@ import com.flipperdevices.core.ui.composable.ComposableKeyType
 @Composable
 fun ComposableKeyCard(
     modifier: Modifier,
-    syncronizationContent: @Composable () -> Unit,
+    synchronizationContent: (@Composable () -> Unit)?,
     flipperKeyParsed: FlipperKeyParsed,
+    @ColorRes typeColorId: Int? = flipperKeyParsed.fileType?.color,
     onCardClicked: () -> Unit
 ) {
     Card(
@@ -46,7 +48,11 @@ fun ComposableKeyCard(
         shape = RoundedCornerShape(size = 10.dp)
     ) {
         Column(Modifier.padding(bottom = 8.dp)) {
-            ComposableKeyCardContent(flipperKeyParsed, syncronizationContent)
+            ComposableKeyCardContent(
+                flipperKeyParsed,
+                typeColorId,
+                synchronizationContent
+            )
         }
     }
 }
@@ -54,10 +60,11 @@ fun ComposableKeyCard(
 @Composable
 private fun ColumnScope.ComposableKeyCardContent(
     flipperKeyParsed: FlipperKeyParsed,
-    syncronizationContent: @Composable () -> Unit
+    @ColorRes typeColorId: Int?,
+    synchronizationContent: (@Composable () -> Unit)?
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        ComposableKeyType(flipperKeyParsed.fileType)
+        ComposableKeyType(flipperKeyParsed.fileType, colorId = typeColorId)
         val protocol = ExtractKeyMetaInformation.extractProtocol(flipperKeyParsed)
         if (protocol != null) {
             Text(
@@ -68,13 +75,15 @@ private fun ColumnScope.ComposableKeyCardContent(
                 fontSize = 12.sp
             )
         }
-        Box(
-            modifier = Modifier
-                .weight(1f)
-                .padding(horizontal = 8.dp, vertical = 8.dp),
-            contentAlignment = Alignment.CenterEnd
-        ) {
-            syncronizationContent()
+        if (synchronizationContent != null) {
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = 8.dp, vertical = 8.dp),
+                contentAlignment = Alignment.CenterEnd
+            ) {
+                synchronizationContent()
+            }
         }
     }
     Text(
