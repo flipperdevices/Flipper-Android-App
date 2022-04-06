@@ -1,5 +1,6 @@
 package com.flipperdevices.core.ui.composable
 
+import androidx.annotation.ColorRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
@@ -28,7 +29,7 @@ import com.flipperdevices.core.ui.R as DesignSystem
 @Preview
 fun ComposableKeyType(
     type: FlipperFileType? = FlipperFileType.NFC,
-    colorId: Int? = type?.color,
+    @ColorRes colorId: Int? = type?.color,
     minWidth: Dp? = 110.dp
 ) {
     val icon = type?.icon ?: DaoR.drawable.ic_fileformat_unknown

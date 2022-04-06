@@ -27,7 +27,7 @@ fun ComposableAppBar(
     title: String,
     onBack: (() -> Unit)? = null
 ) {
-    ComposableAppBarInternal(title = title, onBack = onBack, endContent = null)
+    ComposableAppBar(title = title, onBack = onBack, endContent = null)
 }
 
 @Composable
@@ -37,7 +37,7 @@ fun ComposableAppBar(
     @DrawableRes iconId: Int,
     onIconClick: () -> Unit
 ) {
-    ComposableAppBarInternal(title, onBack) {
+    ComposableAppBar(title, onBack) {
         Icon(
             modifier = it
                 .clickable(
@@ -53,7 +53,7 @@ fun ComposableAppBar(
 }
 
 @Composable
-private fun ComposableAppBarInternal(
+fun ComposableAppBar(
     title: String,
     onBack: (() -> Unit)? = null,
     endContent: (@Composable (Modifier) -> Unit)? = null
@@ -69,7 +69,7 @@ private fun ComposableAppBarInternal(
         }
         Text(
             modifier = Modifier
-                .padding(horizontal = 14.dp, vertical = 8.dp)
+                .padding(start = 14.dp, end = 14.dp, top = 8.dp, bottom = 11.dp)
                 .weight(weight = 1f),
             text = title,
             fontSize = 20.sp,

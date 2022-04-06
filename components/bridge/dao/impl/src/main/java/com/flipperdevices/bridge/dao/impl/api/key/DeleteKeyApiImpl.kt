@@ -56,7 +56,9 @@ class DeleteKeyApiImpl @Inject constructor(
         deleteKeyDao.markDeleted(keyPath.pathToKey)
     }
 
-    override suspend fun restore(keyPath: FlipperKeyPath) {
+    override suspend fun restore(
+        keyPath: FlipperKeyPath
+    ): Unit = withContext(Dispatchers.IO) {
         var newPath = keyPath.pathToKey
         val existKey = simpleKeyDao.getByPath(newPath, deleted = false)
         if (existKey != null) {
@@ -66,7 +68,7 @@ class DeleteKeyApiImpl @Inject constructor(
             } catch (constraintException: SQLiteConstraintException) {
                 error(constraintException) { "When try restore $keyPath" }
                 restore(keyPath)
-                return
+                return@withContext
             }
         }
         deleteKeyDao.restore(newPath)
