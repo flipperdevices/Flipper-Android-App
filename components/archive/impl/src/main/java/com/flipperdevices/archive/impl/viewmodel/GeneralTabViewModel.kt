@@ -10,7 +10,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.core.di.ComponentHolder
-import com.github.terrakok.cicerone.Router
+import com.flipperdevices.core.navigation.global.CiceroneGlobal
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -31,6 +31,9 @@ class GeneralTabViewModel : ViewModel() {
 
     @Inject
     lateinit var searchApi: SearchApi
+
+    @Inject
+    lateinit var ciceroneGlobal: CiceroneGlobal
 
     private val keys = MutableStateFlow<List<FlipperKey>>(emptyList())
     private val favoriteKeys = MutableStateFlow<List<FlipperKey>>(emptyList())
@@ -57,8 +60,8 @@ class GeneralTabViewModel : ViewModel() {
     fun getFavoriteKeys(): StateFlow<List<FlipperKey>> = favoriteKeys
     fun getSynchronizationState(): StateFlow<SynchronizationState> = synchronizationState
 
-    fun onOpenSearch(router: Router) {
-        router.navigateTo(searchApi.getSearchScreen())
+    fun onOpenSearch() {
+        ciceroneGlobal.getRouter().navigateTo(searchApi.getSearchScreen())
     }
 
     fun refresh() {

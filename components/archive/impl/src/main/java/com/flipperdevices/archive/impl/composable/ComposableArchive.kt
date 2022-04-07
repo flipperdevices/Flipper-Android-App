@@ -39,7 +39,6 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.ui.R as DesignSystem
-import com.flipperdevices.core.ui.composable.LocalRouter
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
@@ -52,13 +51,12 @@ fun ComposableArchive(
     val favoriteKeys by tabViewModel.getFavoriteKeys().collectAsState()
     val synchronizationState by tabViewModel.getSynchronizationState().collectAsState()
     val isKeysPresented = !favoriteKeys.isNullOrEmpty() || !keys.isNullOrEmpty()
-    val router = LocalRouter.current
 
     Column(verticalArrangement = Arrangement.Top) {
         ComposableAppBar(
             title = stringResource(R.string.archive_title),
             iconId = R.drawable.ic_search,
-            onIconClick = { tabViewModel.onOpenSearch(router) }
+            onIconClick = { tabViewModel.onOpenSearch() }
         )
         SwipeRefresh(
             state = rememberSwipeRefreshState(false),

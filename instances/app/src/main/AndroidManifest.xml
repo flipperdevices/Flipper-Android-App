@@ -14,6 +14,7 @@
             android:theme="@style/FlipperTheme">
         <activity
                 android:exported="true"
+                android:windowSoftInputMode="adjustResize"
                 android:name="${splashScreenActivity}"
                 android:theme="@style/FlipperTheme.SplashTheme"
                 tools:node="merge">

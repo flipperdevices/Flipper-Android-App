@@ -6,6 +6,7 @@
                 android:exported="false"
                 android:launchMode="singleTask"
                 android:name=".SingleActivity"
-                android:theme="@style/FlipperTheme" />
+                android:theme="@style/FlipperTheme"
+                android:windowSoftInputMode="adjustResize" />
     </application>
 </manifest>
