@@ -6,6 +6,8 @@ import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.LifecycleViewModel
 import com.flipperdevices.info.impl.di.InfoComponent
 import com.flipperdevices.info.impl.model.FirmwareUpdateStatus
@@ -15,7 +17,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-class FirmwareUpdateViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
+class FirmwareUpdateViewModel :
+    LifecycleViewModel(), FlipperBleServiceConsumer, LogTagProvider {
+    override val TAG = "FirmwareUpdateViewModel"
+
     private val connectionState = MutableStateFlow<FirmwareUpdateStatus>(
         FirmwareUpdateStatus.UpToDate
     )
@@ -32,8 +37,11 @@ class FirmwareUpdateViewModel : LifecycleViewModel(), FlipperBleServiceConsumer 
 
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
         serviceApi.connectionInformationApi.getConnectionStateFlow().onEach {
-            if (it is ConnectionState.Ready && !it.isSupported) {
-                connectionState.emit(FirmwareUpdateStatus.Unsupported)
+            info { "Receive connection state: $it" }
+            if (it is ConnectionState.Ready) {
+                if (it.isSupported) {
+                    connectionState.emit(FirmwareUpdateStatus.UpToDate)
+                } else connectionState.emit(FirmwareUpdateStatus.Unsupported)
             }
         }.launchIn(viewModelScope)
     }

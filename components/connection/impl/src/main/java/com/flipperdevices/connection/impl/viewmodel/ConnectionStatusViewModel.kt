@@ -115,6 +115,10 @@ class ConnectionStatusViewModel(
                 R.string.error_connect_information_init_failed
             FlipperBleServiceError.SERVICE_SERIAL_FAILED_INIT ->
                 R.string.error_connect_serial_init_failed
+            FlipperBleServiceError.SERVICE_VERSION_NOT_FOUND ->
+                R.string.error_connect_version_not_found
+            FlipperBleServiceError.SERVICE_VERSION_FAILED_INIT ->
+                R.string.error_connect_version_init_failed
         }
         val application = getApplication<Application>()
         viewModelScope.launch(Dispatchers.Main) {

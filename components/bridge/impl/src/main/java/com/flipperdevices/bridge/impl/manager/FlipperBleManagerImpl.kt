@@ -13,6 +13,7 @@ import com.flipperdevices.bridge.api.manager.ktx.stateAsFlow
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.impl.manager.delegates.FlipperConnectionInformationApiImpl
 import com.flipperdevices.bridge.impl.manager.service.FlipperInformationApiImpl
+import com.flipperdevices.bridge.impl.manager.service.FlipperVersionApiImpl
 import com.flipperdevices.bridge.impl.manager.service.request.FlipperRequestApiImpl
 import com.flipperdevices.bridge.impl.manager.service.requestservice.FlipperRpcInformationApiImpl
 import com.flipperdevices.bridge.impl.utils.initializeSafe
@@ -28,6 +29,7 @@ import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import no.nordicsemi.android.ble.ConnectionPriorityRequest
 
@@ -44,6 +46,7 @@ class FlipperBleManagerImpl constructor(
 
     // Gatt Delegates
     override val informationApi = FlipperInformationApiImpl(scope)
+    override val flipperVersionApi = FlipperVersionApiImpl(settingsStore)
     override val flipperRequestApi = FlipperRequestApiImpl(scope)
 
     // RPC services
@@ -97,31 +100,22 @@ class FlipperBleManagerImpl constructor(
                     ConnectionPriorityRequest.CONNECTION_PRIORITY_HIGH
                 ).enqueue()
 
-                val ignoreSupported = settingsStore.data.first().ignoreUnsupportedVersion
-
+                flipperVersionApi.initializeSafe(this@FlipperBleManagerImpl) {
+                    error(it) { "Error while initialize version api" }
+                    serviceErrorListener.onError(
+                        FlipperBleServiceError.SERVICE_VERSION_FAILED_INIT
+                    )
+                }
                 informationApi.initializeSafe(this@FlipperBleManagerImpl) {
                     error(it) { "Error while initialize information api" }
                     serviceErrorListener.onError(
                         FlipperBleServiceError.SERVICE_INFORMATION_FAILED_INIT
                     )
                 }
-
-                if (ignoreSupported) {
-                    setDeviceSupportedStatus(true)
-                } else {
-                    val isDeviceSupported = informationApi
-                        .checkVersionSupport(this@FlipperBleManagerImpl)
-                    setDeviceSupportedStatus(isDeviceSupported)
-                    if (!isDeviceSupported) {
-                        return@launch
-                    }
-                }
-
                 flipperRequestApi.initializeSafe(this@FlipperBleManagerImpl) {
                     error(it) { "Error while initialize request api" }
                     serviceErrorListener.onError(FlipperBleServiceError.SERVICE_SERIAL_FAILED_INIT)
                 }
-
                 runCatching {
                     flipperRpcInformationApi.initialize(flipperRequestApi)
                 }.onFailure {
@@ -147,6 +141,15 @@ class FlipperBleManagerImpl constructor(
                 error(it) { "Can't find service for information api" }
                 serviceErrorListener.onError(FlipperBleServiceError.SERVICE_INFORMATION_NOT_FOUND)
             }
+            flipperVersionApi.onServiceReceivedSafe(gatt) {
+                error(it) { "Can't find service for version api" }
+                setDeviceSupportedStatus(
+                    runBlocking {
+                        settingsStore.data.first().ignoreUnsupportedVersion
+                    }
+                )
+                serviceErrorListener.onError(FlipperBleServiceError.SERVICE_VERSION_NOT_FOUND)
+            }
 
             return true
         }
@@ -154,6 +157,7 @@ class FlipperBleManagerImpl constructor(
         override fun onServicesInvalidated() {
             scope.launch(bleDispatcher) {
                 informationApi.reset(this@FlipperBleManagerImpl)
+                flipperVersionApi.reset(this@FlipperBleManagerImpl)
                 flipperRequestApi.reset(this@FlipperBleManagerImpl)
                 flipperRpcInformationApi.reset()
             }
