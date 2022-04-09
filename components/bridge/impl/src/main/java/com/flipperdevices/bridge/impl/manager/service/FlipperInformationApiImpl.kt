@@ -49,7 +49,6 @@ class FlipperInformationApiImpl(
         return true
     }
 
-
     override suspend fun initialize(bleManager: UnsafeBleManager) {
         readInformationService(bleManager)
         readGenericService(bleManager)
