@@ -52,7 +52,7 @@ class ConnectViewModel : LifecycleViewModel() {
     }
 
     fun connectAndSynchronize() {
-        if (alreadyRequestConnect.compareAndSet(false, true)) {
+        if (!alreadyRequestConnect.compareAndSet(false, true)) {
             return
         }
         connectRequestState.update { ConnectRequestState.CONNECTING_AND_SYNCHRONIZING }

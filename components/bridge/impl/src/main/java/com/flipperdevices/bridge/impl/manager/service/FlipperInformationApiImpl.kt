@@ -10,7 +10,6 @@ import com.flipperdevices.bridge.impl.di.BridgeImplComponent
 import com.flipperdevices.bridge.impl.manager.UnsafeBleManager
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.PairSettings
 import java.util.UUID
 import javax.inject.Inject
@@ -48,32 +47,6 @@ class FlipperInformationApiImpl(
             infoCharacteristics.putAll(service.characteristics.map { it.uuid to it })
         }
         return true
-    }
-
-    suspend fun checkVersionSupport(bleManager: UnsafeBleManager): Boolean {
-        info { "Start version check" }
-
-        val characteristic = infoCharacteristics[Constants.BLEInformationService.API_VERSION]
-            ?: return false
-
-        info { "Gatt service founded, start subscribe to gatt characteristic" }
-
-        var apiVersion: String? = null
-        bleManager.readCharacteristicUnsafe(characteristic)
-            .with { _, data ->
-                info { "Found information about version $data" }
-                val content = data.value ?: return@with
-                informationState.update {
-                    it.copy(apiVersion = String(content))
-                }
-                apiVersion = String(content)
-                info { "Api version is $apiVersion" }
-            }
-            .await()
-
-        val apiVersionNumber = apiVersion?.toFloatOrNull() ?: return false
-        info { "Parsed api version number is $apiVersionNumber" }
-        return apiVersionNumber >= Constants.API_SUPPORTED_VERSION
     }
 
     override suspend fun initialize(bleManager: UnsafeBleManager) {

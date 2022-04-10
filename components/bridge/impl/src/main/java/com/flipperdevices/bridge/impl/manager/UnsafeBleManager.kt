@@ -91,5 +91,9 @@ abstract class UnsafeBleManager(
             return
         }
         connectionObservers.onDeviceReady(bluetoothDeviceLocal)
+
+        if (!isDeviceSupported) {
+            disconnect().enqueue()
+        }
     }
 }

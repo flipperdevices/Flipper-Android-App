@@ -12,6 +12,7 @@ import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
+import com.flipperdevices.connection.impl.BuildConfig
 import com.flipperdevices.connection.impl.R
 import com.flipperdevices.connection.impl.di.ConnectionComponent
 import com.flipperdevices.connection.impl.dialog.UnsupportedDialogShowHelper
@@ -98,6 +99,10 @@ class ConnectionStatusViewModel(
 
     override fun onServiceBleError(error: FlipperBleServiceError) {
         super.onServiceBleError(error)
+        if (!BuildConfig.INTERNAL) {
+            return
+        }
+
         val errorTextResId = when (error) {
             FlipperBleServiceError.CONNECT_BLUETOOTH_DISABLED ->
                 R.string.error_connect_bluetooth_disabled
@@ -115,6 +120,10 @@ class ConnectionStatusViewModel(
                 R.string.error_connect_information_init_failed
             FlipperBleServiceError.SERVICE_SERIAL_FAILED_INIT ->
                 R.string.error_connect_serial_init_failed
+            FlipperBleServiceError.SERVICE_VERSION_NOT_FOUND ->
+                R.string.error_connect_version_not_found
+            FlipperBleServiceError.SERVICE_VERSION_FAILED_INIT ->
+                R.string.error_connect_version_init_failed
         }
         val application = getApplication<Application>()
         viewModelScope.launch(Dispatchers.Main) {
