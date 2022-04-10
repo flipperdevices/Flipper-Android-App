@@ -64,13 +64,16 @@ class FlipperVersionApiImpl(
         info { "Api version is $apiVersion" }
         val apiVersionNumber = apiVersion.toFloatOrNull()
         info { "Parsed api version number is $apiVersionNumber" }
-        val deviceSupportedStatus = apiVersionNumber != null &&
+        var deviceSupportedStatus = apiVersionNumber != null &&
             apiVersionNumber >= Constants.API_SUPPORTED_VERSION
+        if (ignoreUnsupported) {
+            deviceSupportedStatus = true
+        }
         bleManager.setDeviceSupportedStatus(deviceSupportedStatus)
         flipperVersionState.update {
             it.copy(
                 version = apiVersion,
-                isSupported = ignoreUnsupported || deviceSupportedStatus
+                isSupported = deviceSupportedStatus
             )
         }
     }

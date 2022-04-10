@@ -99,17 +99,16 @@ class FlipperBleManagerImpl constructor(
                 requestConnectionPriority(
                     ConnectionPriorityRequest.CONNECTION_PRIORITY_HIGH
                 ).enqueue()
-
-                flipperVersionApi.initializeSafe(this@FlipperBleManagerImpl) {
-                    error(it) { "Error while initialize version api" }
-                    serviceErrorListener.onError(
-                        FlipperBleServiceError.SERVICE_VERSION_FAILED_INIT
-                    )
-                }
                 informationApi.initializeSafe(this@FlipperBleManagerImpl) {
                     error(it) { "Error while initialize information api" }
                     serviceErrorListener.onError(
                         FlipperBleServiceError.SERVICE_INFORMATION_FAILED_INIT
+                    )
+                }
+                flipperVersionApi.initializeSafe(this@FlipperBleManagerImpl) {
+                    error(it) { "Error while initialize version api" }
+                    serviceErrorListener.onError(
+                        FlipperBleServiceError.SERVICE_VERSION_FAILED_INIT
                     )
                 }
                 flipperRequestApi.initializeSafe(this@FlipperBleManagerImpl) {
