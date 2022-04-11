@@ -65,6 +65,6 @@ class GeneralTabViewModel : ViewModel() {
     }
 
     fun refresh() {
-        synchronizationApi.startSynchronization()
+        synchronizationApi.startSynchronization(force = true)
     }
 }
