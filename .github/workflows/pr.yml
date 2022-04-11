@@ -66,4 +66,4 @@ jobs:
         if: steps.changed-changelog.outputs.any_changed != 'true'
         uses: actions/github-script@v3
         with:
-          script: core.setFailed('CHANGELOG.md has not changed! We need to write human-readable changes in every Pull Request.')
+          script: core.setFailed('CHANGELOG.md has not changed! You need to write human-readable changes in each Pull Request')
