@@ -34,6 +34,8 @@ interface FlipperServiceApi {
      */
     val flipperRpcInformationApi: FlipperRpcInformationApi
 
+    suspend fun disconnect()
+
     suspend fun reconnect()
 
     suspend fun reconnect(deviceId: String)

@@ -15,8 +15,8 @@
     <string name="info_firmware_update_unsupported_desc">Our app doesn’t support installed firmware version</string>
     <string name="info_firmware_update_unsupported_link">[How to update Flipper](https://docs.flipperzero.one/basics/firmware-update)</string>
 
-    <string name="info_device_connect">Connect to Flipper</string>
-    <string name="info_device_connect_and_synchronize">Connect &amp; Synchronize</string>
+    <string name="info_device_connect">Connect</string>
+    <string name="info_device_disconnect">Disconnect</string>
     <string name="info_device_synchronize">Synchronize</string>
     <string name="info_device_play_alert">Play Alert on Flipper</string>
     <string name="info_device_forget">Forget Flipper</string>

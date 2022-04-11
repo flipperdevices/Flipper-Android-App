@@ -73,6 +73,10 @@ class FlipperServiceApiImpl(
         }.launchIn(scope)
     }
 
+    override suspend fun disconnect(): Unit = withContext(dispatcher) {
+        connectDelegate.disconnect()
+    }
+
     override suspend fun reconnect(): Unit = withContext(dispatcher) {
         val deviceId = pairSettingsStore.data.first().deviceId
         connectToDeviceOnStartup(deviceId)
