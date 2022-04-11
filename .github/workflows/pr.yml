@@ -54,6 +54,9 @@ jobs:
     name: "Checking that changelog has changed"
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
       - name: Get change status for CHANGELOG.md
         id: changed-changelog
         uses: tj-actions/changed-files@v18.7
