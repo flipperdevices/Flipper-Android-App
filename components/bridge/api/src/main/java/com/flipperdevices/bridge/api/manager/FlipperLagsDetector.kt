@@ -1,5 +1,6 @@
 package com.flipperdevices.bridge.api.manager
 
+import com.flipperdevices.bridge.api.model.FlipperRequest
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -9,8 +10,15 @@ import kotlinx.coroutines.flow.Flow
  * we restart the connection to the flipper.
  */
 interface FlipperLagsDetector {
-    suspend fun <T> wrapPendingAction(block: suspend () -> T): T
-    fun <T> wrapPendingAction(flow: Flow<T>): Flow<T>
+    /**
+     * @param request for debug purposes
+     */
+    suspend fun <T> wrapPendingAction(request: FlipperRequest?, block: suspend () -> T): T
+
+    /**
+     * @param request for debug purposes
+     */
+    fun <T> wrapPendingAction(request: FlipperRequest?, flow: Flow<T>): Flow<T>
     fun notifyAboutAction()
     fun reset()
 }

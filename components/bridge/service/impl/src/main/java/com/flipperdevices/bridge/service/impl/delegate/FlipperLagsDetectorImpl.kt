@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.service.impl.delegate
 
 import com.flipperdevices.bridge.api.manager.FlipperLagsDetector
+import com.flipperdevices.bridge.api.model.FlipperRequest
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.core.log.BuildConfig
@@ -8,6 +9,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.verbose
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicInteger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,6 +28,7 @@ class FlipperLagsDetectorImpl(
 ) : FlipperLagsDetector, LogTagProvider {
     override val TAG = "FlipperLagsDetector"
 
+    private val pendingCommands = ConcurrentHashMap<FlipperRequest, Unit>()
     private val pendingResponseCounter = AtomicInteger(0)
     private val pendingResponseFlow = MutableSharedFlow<Unit>()
 
@@ -36,7 +39,8 @@ class FlipperLagsDetectorImpl(
                 if (pendingResponseCounter.get() > 0) {
                     error {
                         "We have pending commands, but flipper not respond " +
-                            "${Constants.LAGS_FLIPPER_DETECT_TIMEOUT_MS}ms"
+                            "${Constants.LAGS_FLIPPER_DETECT_TIMEOUT_MS}ms. Pending commands is " +
+                            pendingCommands.keys().toList().joinToString()
                     }
                     serviceApi.reconnect()
                 } else if (pendingResponseCounter.get() < 0) {
@@ -48,23 +52,38 @@ class FlipperLagsDetectorImpl(
         }
     }
 
-    override suspend fun <T> wrapPendingAction(block: suspend () -> T): T {
+    override suspend fun <T> wrapPendingAction(
+        request: FlipperRequest?,
+        block: suspend () -> T
+    ): T {
+        if (BuildConfig.INTERNAL && request != null) {
+            pendingCommands[request] = Unit
+        }
         incrementPendingCounter()
         val result = try {
             block()
         } finally {
+            if (BuildConfig.INTERNAL && request != null) {
+                pendingCommands.remove(request)
+            }
             val pendingCount = pendingResponseCounter.decrementAndGet()
             verbose { "Decrease pending response command, current size is $pendingCount" }
         }
         return result
     }
 
-    override fun <T> wrapPendingAction(flow: Flow<T>): Flow<T> {
+    override fun <T> wrapPendingAction(request: FlipperRequest?, flow: Flow<T>): Flow<T> {
         return flow.onStart {
+            if (BuildConfig.INTERNAL && request != null) {
+                pendingCommands[request] = Unit
+            }
             incrementPendingCounter()
         }.onEach {
             notifyAboutAction()
         }.onCompletion {
+            if (BuildConfig.INTERNAL && request != null) {
+                pendingCommands.remove(request)
+            }
             val pendingCount = pendingResponseCounter.decrementAndGet()
             verbose { "Decrease pending response command, current size is $pendingCount" }
         }

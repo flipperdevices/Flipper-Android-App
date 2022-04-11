@@ -20,8 +20,7 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.shake2report.api.Shake2ReportApi
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -36,17 +35,21 @@ class SynchronizationTask(
     override val TAG = "SynchronizationTask"
 
     private val taskScope = lifecycleScope
+    private val dispatcher = Dispatchers.Default.limitedParallelism(1)
     private val manifestRepository = ManifestRepository()
 
     fun start(onStateUpdate: suspend (SynchronizationState) -> Unit) {
         info { "Start synchronization" }
         serviceProvider.provideServiceApi(this) { serviceApi ->
             info { "Flipper service provided" }
-            taskScope.launch {
+            taskScope.launch(dispatcher) {
                 // Waiting to be connected to the flipper
                 serviceApi.connectionInformationApi.getConnectionStateFlow()
-                    .filter { it is ConnectionState.Ready && it.isSupported }.first()
-                startInternal(serviceApi, onStateUpdate)
+                    .collectLatest {
+                        if (it is ConnectionState.Ready && it.isSupported) {
+                            startInternal(serviceApi, onStateUpdate)
+                        }
+                    }
             }
         }
         taskScope.launch {

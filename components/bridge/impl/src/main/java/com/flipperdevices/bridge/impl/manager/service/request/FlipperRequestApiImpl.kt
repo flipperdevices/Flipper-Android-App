@@ -63,6 +63,7 @@ class FlipperRequestApiImpl(
     override fun request(
         command: FlipperRequest
     ): Flow<Flipper.Main> = lagsDetector.wrapPendingAction(
+        command,
         channelFlow {
             verbose { "Pending commands count: ${requestListeners.size}. Request $command" }
             // Generate unique ID for each command
@@ -92,7 +93,7 @@ class FlipperRequestApiImpl(
 
     override suspend fun request(
         commandFlow: Flow<FlipperRequest>
-    ): Flipper.Main = lagsDetector.wrapPendingAction {
+    ): Flipper.Main = lagsDetector.wrapPendingAction(null) {
         verbose { "Pending commands count: ${requestListeners.size}. Request command flow" }
         // Generate unique ID for each command
         val uniqueId = findEmptyId()
