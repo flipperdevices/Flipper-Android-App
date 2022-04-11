@@ -7,6 +7,7 @@ object Constants {
     const val DEVICENAME_PREFIX = "Flipper"
     const val KEYS_DEFAULT_STORAGE = "/any/"
     const val API_SUPPORTED_VERSION = 0.3f
+    const val LAGS_FLIPPER_DETECT_TIMEOUT_MS = 30 * 1000L // 30 seconds
 
     object GenericService {
         val SERVICE_UUID: UUID = UUID.fromString("00001800-0000-1000-8000-00805f9b34fb")

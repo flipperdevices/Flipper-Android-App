@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.impl.manager.service.request
 
 import android.bluetooth.BluetoothGatt
+import com.flipperdevices.bridge.api.manager.FlipperLagsDetector
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequest
 import com.flipperdevices.bridge.api.model.FlipperSerialSpeed
@@ -17,6 +18,7 @@ import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.log.warn
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.copy
+import com.flipperdevices.protobuf.main
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicInteger
 import kotlinx.coroutines.CoroutineScope
@@ -35,7 +37,8 @@ private typealias OnReceiveResponse = suspend (Flipper.Main) -> Unit
 
 @Suppress("TooManyFunctions")
 class FlipperRequestApiImpl(
-    private val scope: CoroutineScope
+    private val scope: CoroutineScope,
+    private val lagsDetector: FlipperLagsDetector
 ) : FlipperRequestApi,
     BluetoothGattServiceWrapper,
     LogTagProvider {
@@ -44,7 +47,7 @@ class FlipperRequestApiImpl(
     private val requestListeners = ConcurrentHashMap<Int, OnReceiveResponse>()
     private val notificationMutableFlow = MutableSharedFlow<Flipper.Main>()
 
-    private val serialApiUnsafe = FlipperSerialApiImpl(scope)
+    private val serialApiUnsafe = FlipperSerialApiUnsafeImpl(scope, lagsDetector)
     private val requestStorage: FlipperRequestStorage = FlipperRequestStorageImpl()
     private val serialApi = FlipperSerialOverflowThrottler(serialApiUnsafe, scope, requestStorage)
 
@@ -57,33 +60,39 @@ class FlipperRequestApiImpl(
     }
 
     @Suppress("BlockingMethodInNonBlockingContext")
-    override fun request(command: FlipperRequest): Flow<Flipper.Main> = channelFlow {
-        verbose { "Pending commands count: ${requestListeners.size}. Request $command" }
-        // Generate unique ID for each command
-        val uniqueId = findEmptyId()
-        val requestWithId = command.copy(
-            data = command.data.copy {
-                commandId = uniqueId
-            }
-        )
+    override fun request(
+        command: FlipperRequest
+    ): Flow<Flipper.Main> = lagsDetector.wrapPendingAction(
+        channelFlow {
+            verbose { "Pending commands count: ${requestListeners.size}. Request $command" }
+            // Generate unique ID for each command
+            val uniqueId = findEmptyId()
+            val requestWithId = command.copy(
+                data = command.data.copy {
+                    commandId = uniqueId
+                }
+            )
 
-        // Add answer listener to listeners
-        requestListeners[uniqueId] = {
-            send(it)
-            if (!it.hasNext) {
+            // Add answer listener to listeners
+            requestListeners[uniqueId] = {
+                send(it)
+                if (!it.hasNext) {
+                    requestListeners.remove(uniqueId)
+                    close()
+                }
+            }
+
+            requestStorage.sendRequest(requestWithId)
+
+            awaitClose {
                 requestListeners.remove(uniqueId)
-                close()
             }
         }
+    )
 
-        requestStorage.sendRequest(requestWithId)
-
-        awaitClose {
-            requestListeners.remove(uniqueId)
-        }
-    }
-
-    override suspend fun request(commandFlow: Flow<FlipperRequest>): Flipper.Main {
+    override suspend fun request(
+        commandFlow: Flow<FlipperRequest>
+    ): Flipper.Main = lagsDetector.wrapPendingAction {
         verbose { "Pending commands count: ${requestListeners.size}. Request command flow" }
         // Generate unique ID for each command
         val uniqueId = findEmptyId()
@@ -98,7 +107,7 @@ class FlipperRequestApiImpl(
             requestWithoutAnswer(requestWithId)
         }.launchIn(scope)
 
-        return commandAnswer.await()
+        return@wrapPendingAction commandAnswer.await()
     }
 
     override suspend fun requestWithoutAnswer(vararg commands: FlipperRequest) {
@@ -165,6 +174,14 @@ class FlipperRequestApiImpl(
     }
 
     override suspend fun reset(bleManager: UnsafeBleManager) {
+        // Remove all elements from request listeners
+        requestListeners.values.forEach {
+            it.invoke(
+                main {
+                    hasNext = false
+                }
+            )
+        }
         serialApiUnsafe.reset(bleManager)
         serialApi.reset(bleManager)
     }
