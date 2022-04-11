@@ -47,6 +47,7 @@ class TmpSynchronization : LogTagProvider {
     }
 
     fun requestServiceAndReceive() {
+        info { "Request synchronization..." }
         if (!isLaunched.compareAndSet(false, true)) {
             markDirty = true
             info { "Synchronization skipped, because we already in synchronization" }
@@ -66,9 +67,9 @@ class TmpSynchronization : LogTagProvider {
             synchronizationState.update { taskState }
             if (taskState == SynchronizationState.FINISHED) {
                 isLaunched.compareAndSet(true, false)
-            }
-            if (markDirty) {
-                requestServiceAndReceive()
+                if (markDirty) {
+                    requestServiceAndReceive()
+                }
             }
         }
     }

@@ -34,6 +34,8 @@ class SplashScreen : AppCompatActivity(), LogTagProvider {
 
         info { "Open SplashScreen with $intent" }
 
+        synchronizationApi.startSynchronization()
+
         // Open single activity if it is not deeplink
         val uri = intent.data
         if (uri == null) {
@@ -48,8 +50,6 @@ class SplashScreen : AppCompatActivity(), LogTagProvider {
                 openSingleActivityAndFinish(deeplink)
             }
         }
-
-        synchronizationApi.startSynchronization()
     }
 
     private fun openSingleActivityAndFinish(deeplink: Deeplink?) {
