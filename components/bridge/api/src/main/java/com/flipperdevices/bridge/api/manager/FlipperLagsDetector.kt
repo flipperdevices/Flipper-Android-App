@@ -20,5 +20,4 @@ interface FlipperLagsDetector {
      */
     fun <T> wrapPendingAction(request: FlipperRequest?, flow: Flow<T>): Flow<T>
     fun notifyAboutAction()
-    fun reset()
 }

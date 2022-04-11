@@ -55,6 +55,7 @@ class FlipperLagsDetectorImpl(
                         serviceApi.reconnect()
                     }
                 } else if (pendingResponseCounter.get() < 0) {
+                    pendingResponseCounter.set(0)
                     if (BuildConfig.INTERNAL) {
                         error("Pending response counter less than zero")
                     }
@@ -114,10 +115,5 @@ class FlipperLagsDetectorImpl(
         scope.launch(Dispatchers.Default) {
             pendingResponseFlow.emit(Unit)
         }
-    }
-
-    override fun reset() {
-        info { "Reset flipper lags detector" }
-        pendingResponseCounter.set(0)
     }
 }

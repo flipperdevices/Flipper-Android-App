@@ -159,7 +159,6 @@ class FlipperBleManagerImpl constructor(
 
         override fun onServicesInvalidated() {
             scope.launch(bleDispatcher) {
-                lagsDetector.reset()
                 informationApi.reset(this@FlipperBleManagerImpl)
                 flipperVersionApi.reset(this@FlipperBleManagerImpl)
                 flipperRequestApi.reset(this@FlipperBleManagerImpl)
