@@ -1,6 +1,5 @@
 package com.flipperdevices.bridge.service.api
 
-import android.bluetooth.BluetoothDevice
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.manager.delegates.FlipperConnectionInformationApi
 import com.flipperdevices.bridge.api.manager.service.FlipperInformationApi
@@ -37,8 +36,4 @@ interface FlipperServiceApi {
     suspend fun disconnect()
 
     suspend fun reconnect()
-
-    suspend fun reconnect(deviceId: String)
-
-    suspend fun reconnect(device: BluetoothDevice)
 }

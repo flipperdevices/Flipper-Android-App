@@ -1,16 +1,14 @@
 package com.flipperdevices.bridge.service.impl
 
-import android.bluetooth.BluetoothDevice
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import com.flipperdevices.bridge.api.error.FlipperBleServiceError
 import com.flipperdevices.bridge.api.error.FlipperServiceErrorListener
 import com.flipperdevices.bridge.api.manager.FlipperBleManager
 import com.flipperdevices.bridge.impl.manager.FlipperBleManagerImpl
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
-import com.flipperdevices.bridge.service.impl.delegate.FlipperServiceConnectDelegate
+import com.flipperdevices.bridge.service.impl.delegate.FlipperSafeConnectWrapper
 import com.flipperdevices.bridge.service.impl.di.FlipperServiceComponent
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
@@ -21,17 +19,13 @@ import com.flipperdevices.core.preference.pb.Settings
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.withContext
-import no.nordicsemi.android.ble.exception.BluetoothDisabledException
+import kotlinx.coroutines.launch
 
 class FlipperServiceApiImpl(
     context: Context,
     lifecycleOwner: LifecycleOwner,
-    private val serviceErrorListener: FlipperServiceErrorListener
+    serviceErrorListener: FlipperServiceErrorListener
 ) : FlipperServiceApi, LogTagProvider {
     override val TAG = "FlipperServiceApi"
 
@@ -46,12 +40,12 @@ class FlipperServiceApiImpl(
     }
 
     private val scope = lifecycleOwner.lifecycleScope
-    private val dispatcher = Dispatchers.Default.limitedParallelism(1)
     private val bleManager: FlipperBleManager = FlipperBleManagerImpl(
         context, settingsStore, scope, serviceErrorListener
     )
-    private val connectDelegate = FlipperServiceConnectDelegate(bleManager, context)
     private val inited = AtomicBoolean(false)
+    private val flipperSafeConnectWrapper =
+        FlipperSafeConnectWrapper(context, bleManager, scope, serviceErrorListener)
 
     override val connectionInformationApi = bleManager.connectionInformationApi
     override val requestApi = bleManager.flipperRequestApi
@@ -65,59 +59,28 @@ class FlipperServiceApiImpl(
         }
         info { "Internal init and try connect" }
         var deviceId: String? = null
-        pairSettingsStore.data.onEach {
-            if (it.deviceId != deviceId) {
-                deviceId = it.deviceId
-                connectToDeviceOnStartup(deviceId ?: "")
+        scope.launch(Dispatchers.Default) {
+            pairSettingsStore.data.collect {
+                if (it.deviceId != deviceId) {
+                    deviceId = it.deviceId
+                    flipperSafeConnectWrapper.onActiveDeviceUpdate(deviceId)
+                }
             }
-        }.launchIn(scope)
+        }
     }
 
-    override suspend fun disconnect(): Unit = withContext(dispatcher) {
-        connectDelegate.disconnect()
+    override suspend fun disconnect() {
+        flipperSafeConnectWrapper.onActiveDeviceUpdate(null)
     }
 
-    override suspend fun reconnect(): Unit = withContext(dispatcher) {
+    override suspend fun reconnect() {
         val deviceId = pairSettingsStore.data.first().deviceId
-        connectToDeviceOnStartup(deviceId)
+        flipperSafeConnectWrapper.onActiveDeviceUpdate(deviceId)
     }
 
-    override suspend fun reconnect(deviceId: String) = withContext(dispatcher) {
-        info { "Reconnect to device $deviceId" }
-        connectDelegate.reconnect(deviceId)
-    }
-
-    override suspend fun reconnect(device: BluetoothDevice) = withContext(dispatcher) {
-        info { "Reconnect to device ${device.address}" }
-        connectDelegate.reconnect(device)
-    }
-
-    suspend fun close() = withContext(dispatcher) {
+    suspend fun close() {
+        disconnect()
         info { "Disconnect successful, close manager" }
         bleManager.close()
-    }
-
-    private suspend fun connectToDeviceOnStartup(deviceId: String) = withContext(dispatcher) {
-        if (deviceId.isBlank()) {
-            error { "Flipper id not found in storage" }
-            connectDelegate.disconnect()
-            return@withContext
-        }
-
-        try {
-            reconnect(deviceId)
-        } catch (securityException: SecurityException) {
-            serviceErrorListener.onError(FlipperBleServiceError.CONNECT_BLUETOOTH_PERMISSION)
-            error(securityException) { "On initial connect to device" }
-        } catch (bleDisabled: BluetoothDisabledException) {
-            serviceErrorListener.onError(FlipperBleServiceError.CONNECT_BLUETOOTH_DISABLED)
-            error(bleDisabled) { "On initial connect to device" }
-        } catch (timeout: TimeoutCancellationException) {
-            serviceErrorListener.onError(FlipperBleServiceError.CONNECT_TIMEOUT)
-            error(timeout) { "On initial connect to device" }
-        } catch (illegalArgumentException: IllegalArgumentException) {
-            serviceErrorListener.onError(FlipperBleServiceError.CONNECT_REQUIRE_REBOUND)
-            error(illegalArgumentException) { "On initial connect to device" }
-        }
     }
 }
