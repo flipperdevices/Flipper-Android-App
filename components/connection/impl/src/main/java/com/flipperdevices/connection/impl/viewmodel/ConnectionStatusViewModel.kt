@@ -108,10 +108,6 @@ class ConnectionStatusViewModel(
                 R.string.error_connect_bluetooth_disabled
             FlipperBleServiceError.CONNECT_BLUETOOTH_PERMISSION ->
                 R.string.error_connect_bluetooth_permission
-            FlipperBleServiceError.CONNECT_TIMEOUT ->
-                R.string.error_connect_timeout
-            FlipperBleServiceError.CONNECT_REQUIRE_REBOUND ->
-                R.string.error_connect_require_rebound
             FlipperBleServiceError.SERVICE_INFORMATION_NOT_FOUND ->
                 R.string.error_connect_information_not_found
             FlipperBleServiceError.SERVICE_SERIAL_NOT_FOUND ->

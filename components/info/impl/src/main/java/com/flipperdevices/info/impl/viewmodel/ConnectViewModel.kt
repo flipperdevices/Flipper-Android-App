@@ -66,6 +66,14 @@ class ConnectViewModel : LifecycleViewModel() {
         }
     }
 
+    fun onDisconnect() {
+        serviceProvider.provideServiceApi(this) {
+            viewModelScope.launch {
+                it.disconnect()
+            }
+        }
+    }
+
     fun requestSynchronize() {
         synchronizationApi.startSynchronization(force = true)
     }
