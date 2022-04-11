@@ -2,7 +2,6 @@ package com.flipperdevices.bridge.service.impl.delegate
 
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothDevice
 import android.content.Context
 import com.flipperdevices.bridge.api.manager.FlipperBleManager
 import com.flipperdevices.bridge.api.scanner.FlipperScanner
@@ -15,8 +14,10 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import javax.inject.Inject
 import javax.inject.Provider
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
 import no.nordicsemi.android.ble.exception.BluetoothDisabledException
 
@@ -36,10 +37,12 @@ class FlipperServiceConnectDelegate(
         ComponentHolder.component<FlipperServiceComponent>().inject(this)
     }
 
+    private val dispatcher = Dispatchers.Default.limitedParallelism(1)
+
     private val scanner by scannerProvider
     private val adapter by adapterProvider
 
-    suspend fun reconnect(deviceId: String) {
+    suspend fun reconnect(deviceId: String) = withContext(dispatcher) {
         // If we already connected to device, just ignore it
         if (bleManager.connectionInformationApi.isDeviceConnected()) {
             disconnect()
@@ -66,21 +69,7 @@ class FlipperServiceConnectDelegate(
         findAndConnectToDevice(deviceId)
     }
 
-    suspend fun reconnect(device: BluetoothDevice) {
-        // If we already connected to device, just ignore it
-        if (bleManager.connectionInformationApi.isDeviceConnected()) {
-            disconnect()
-        }
-
-        // If Bluetooth disable, return exception
-        if (!adapter.isEnabled) {
-            throw BluetoothDisabledException()
-        }
-
-        bleManager.connectToDevice(device)
-    }
-
-    suspend fun disconnect() {
+    suspend fun disconnect() = withContext(dispatcher) {
         try {
             withTimeout(Constants.BLE.DISCONNECT_TIMEOUT_MS) {
                 bleManager.disconnectDevice()
@@ -96,7 +85,7 @@ class FlipperServiceConnectDelegate(
     @SuppressLint("MissingPermission")
     private suspend fun findAndConnectToDevice(
         deviceId: String
-    ) {
+    ) = withContext(dispatcher) {
         var device = adapter.bondedDevices.find { it.address == deviceId }
 
         if (device == null) {

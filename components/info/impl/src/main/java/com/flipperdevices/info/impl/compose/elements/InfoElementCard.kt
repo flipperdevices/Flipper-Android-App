@@ -20,7 +20,7 @@ import com.flipperdevices.core.ui.R as DesignSystem
 @Composable
 fun InfoElementCard(
     modifier: Modifier,
-    @StringRes titleId: Int,
+    @StringRes titleId: Int? = null,
     content: @Composable ColumnScope.() -> Unit
 ) {
     Card(
@@ -30,18 +30,20 @@ fun InfoElementCard(
         shape = RoundedCornerShape(size = 10.dp)
     ) {
         Column {
-            Text(
-                modifier = Modifier.padding(
-                    start = 12.dp,
-                    end = 12.dp,
-                    top = 12.dp,
-                    bottom = 6.dp
-                ),
-                text = stringResource(titleId),
-                fontWeight = FontWeight.W700,
-                fontSize = 16.sp,
-                color = colorResource(DesignSystem.color.black_100)
-            )
+            if (titleId != null) {
+                Text(
+                    modifier = Modifier.padding(
+                        start = 12.dp,
+                        end = 12.dp,
+                        top = 12.dp,
+                        bottom = 6.dp
+                    ),
+                    text = stringResource(titleId),
+                    fontWeight = FontWeight.W700,
+                    fontSize = 16.sp,
+                    color = colorResource(DesignSystem.color.black_100)
+                )
+            }
             content()
         }
     }

@@ -36,47 +36,60 @@ fun ButtonElementCard(
     @ColorRes colorId: Int,
     onClick: (() -> Unit)?
 ) {
-    var cardModifier = modifier
-        .padding(horizontal = 14.dp)
+    Card(
+        modifier = modifier
+            .padding(horizontal = 14.dp),
+        shape = RoundedCornerShape(size = 10.dp)
+    ) {
+        ButtonElementRow(modifier, iconAngel, titleId, iconId, colorId, onClick)
+    }
+}
+
+@Composable
+fun ButtonElementRow(
+    modifier: Modifier = Modifier,
+    iconAngel: Float = 0f,
+    @StringRes titleId: Int,
+    @DrawableRes iconId: Int,
+    @ColorRes colorId: Int,
+    onClick: (() -> Unit)?
+) {
+    var rowModifier = modifier
+        .fillMaxWidth()
 
     if (onClick != null) {
-        cardModifier = cardModifier.clickable(
+        rowModifier = rowModifier.clickable(
             indication = rememberRipple(),
             onClick = onClick,
             interactionSource = remember { MutableInteractionSource() }
         )
     }
 
-    Card(
-        modifier = cardModifier,
-        shape = RoundedCornerShape(size = 10.dp)
+    val text = stringResource(titleId)
+    val color = colorResource(colorId)
+    Row(
+        modifier = rowModifier,
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        val text = stringResource(titleId)
-        val color = colorResource(colorId)
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                modifier = Modifier
-                    .padding(
-                        start = 12.dp,
-                        top = 12.dp,
-                        end = 10.dp,
-                        bottom = 12.dp
-                    )
-                    .size(size = 24.dp)
-                    .rotate(iconAngel),
-                painter = painterResource(iconId),
-                contentDescription = text,
-                tint = color
-            )
-            Text(
-                text = text,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.W500,
-                color = color
-            )
-        }
+        Icon(
+            modifier = Modifier
+                .padding(
+                    start = 12.dp,
+                    top = 12.dp,
+                    end = 10.dp,
+                    bottom = 12.dp
+                )
+                .size(size = 24.dp)
+                .rotate(iconAngel),
+            painter = painterResource(iconId),
+            contentDescription = text,
+            tint = color
+        )
+        Text(
+            text = text,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.W500,
+            color = color
+        )
     }
 }
