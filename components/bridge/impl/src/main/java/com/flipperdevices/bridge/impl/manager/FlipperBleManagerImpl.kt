@@ -71,7 +71,11 @@ class FlipperBleManagerImpl constructor(
             Constants.BLE.RECONNECT_COUNT,
             Constants.BLE.RECONNECT_TIME_MS.toInt()
         ).useAutoConnect(true)
-            .await()
+            .enqueue()
+
+        // Wait until device is really connected
+        stateAsFlow().filter { it is ConnectionState.Initializing }.first()
+        return@withContext
     }
 
     override fun log(priority: Int, message: String) {
