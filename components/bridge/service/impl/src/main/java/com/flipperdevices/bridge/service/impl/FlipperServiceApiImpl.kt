@@ -8,8 +8,10 @@ import com.flipperdevices.bridge.api.error.FlipperServiceErrorListener
 import com.flipperdevices.bridge.api.manager.FlipperBleManager
 import com.flipperdevices.bridge.impl.manager.FlipperBleManagerImpl
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
+import com.flipperdevices.bridge.service.impl.delegate.FlipperLagsDetectorImpl
 import com.flipperdevices.bridge.service.impl.delegate.FlipperSafeConnectWrapper
 import com.flipperdevices.bridge.service.impl.di.FlipperServiceComponent
+import com.flipperdevices.bridge.service.impl.utils.WeakConnectionStateProvider
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
@@ -40,9 +42,13 @@ class FlipperServiceApiImpl(
     }
 
     private val scope = lifecycleOwner.lifecycleScope
+    private val connectionStateProvider = WeakConnectionStateProvider(scope)
+    private val lagsDetector = FlipperLagsDetectorImpl(scope, this, connectionStateProvider)
     private val bleManager: FlipperBleManager = FlipperBleManagerImpl(
-        context, settingsStore, scope, serviceErrorListener
-    )
+        context, settingsStore, scope, serviceErrorListener, lagsDetector
+    ).apply {
+        connectionStateProvider.initialize(this.connectionInformationApi)
+    }
     private val inited = AtomicBoolean(false)
     private val flipperSafeConnectWrapper =
         FlipperSafeConnectWrapper(context, bleManager, scope, serviceErrorListener)

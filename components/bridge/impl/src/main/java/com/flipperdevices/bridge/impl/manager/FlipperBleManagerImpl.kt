@@ -2,12 +2,14 @@ package com.flipperdevices.bridge.impl.manager
 
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothGatt
+import android.bluetooth.BluetoothGattCharacteristic
 import android.content.Context
 import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.BuildConfig
 import com.flipperdevices.bridge.api.error.FlipperBleServiceError
 import com.flipperdevices.bridge.api.error.FlipperServiceErrorListener
 import com.flipperdevices.bridge.api.manager.FlipperBleManager
+import com.flipperdevices.bridge.api.manager.FlipperLagsDetector
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.ktx.stateAsFlow
 import com.flipperdevices.bridge.api.utils.Constants
@@ -38,16 +40,18 @@ class FlipperBleManagerImpl constructor(
     context: Context,
     private val settingsStore: DataStore<Settings>,
     private val scope: CoroutineScope,
-    private val serviceErrorListener: FlipperServiceErrorListener
+    private val serviceErrorListener: FlipperServiceErrorListener,
+    private val lagsDetector: FlipperLagsDetector
 ) : UnsafeBleManager(scope, context), FlipperBleManager, LogTagProvider {
     override val TAG = "FlipperBleManager"
     private val bleDispatcher = newSingleThreadExecutor(TAG)
         .asCoroutineDispatcher()
 
     // Gatt Delegates
+
     override val informationApi = FlipperInformationApiImpl(scope)
     override val flipperVersionApi = FlipperVersionApiImpl(settingsStore)
-    override val flipperRequestApi = FlipperRequestApiImpl(scope)
+    override val flipperRequestApi = FlipperRequestApiImpl(scope, lagsDetector)
 
     // RPC services
     override val flipperRpcInformationApi = FlipperRpcInformationApiImpl(scope)
@@ -164,6 +168,16 @@ class FlipperBleManagerImpl constructor(
                 flipperRequestApi.reset(this@FlipperBleManagerImpl)
                 flipperRpcInformationApi.reset()
             }
+        }
+
+        override fun onCharacteristicRead(
+            gatt: BluetoothGatt,
+            characteristic: BluetoothGattCharacteristic
+        ) {
+            // This callback is used to know that the flipper is not hanging.
+            @Suppress("DEPRECATION")
+            super.onCharacteristicRead(gatt, characteristic)
+            lagsDetector.notifyAboutAction()
         }
     }
 }
