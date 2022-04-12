@@ -38,9 +38,11 @@ class SynchronizationTask(
     private val dispatcher = Dispatchers.Default.limitedParallelism(1)
     private val manifestRepository = ManifestRepository()
 
-    fun start(onStateUpdate: suspend (SynchronizationState) -> Unit) {
+    fun start(
+        onStateUpdate: suspend (SynchronizationState) -> Unit
+    ) = taskScope.launch(Dispatchers.Main) {
         info { "Start synchronization" }
-        serviceProvider.provideServiceApi(this) { serviceApi ->
+        serviceProvider.provideServiceApi(this@SynchronizationTask) { serviceApi ->
             info { "Flipper service provided" }
             taskScope.launch(dispatcher) {
                 // Waiting to be connected to the flipper

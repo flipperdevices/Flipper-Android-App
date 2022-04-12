@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.service.impl.provider
 
 import android.content.Context
+import android.os.Looper
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -9,6 +10,7 @@ import com.flipperdevices.bridge.api.error.FlipperServiceErrorListener
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.bridge.service.impl.BuildConfig
 import com.flipperdevices.bridge.service.impl.FlipperServiceBinder
 import com.flipperdevices.bridge.service.impl.provider.lifecycle.FlipperServiceConnectionHelper
 import com.flipperdevices.bridge.service.impl.provider.lifecycle.FlipperServiceConnectionHelperImpl
@@ -47,6 +49,10 @@ class FlipperServiceProviderImpl @Inject constructor(
         lifecycleOwner: LifecycleOwner,
         onDestroyEvent: Lifecycle.Event
     ) {
+        if (BuildConfig.INTERNAL && Looper.myLooper() != Looper.getMainLooper()) {
+            error("provideServiceApi() must be called from the main thread")
+        }
+
         info { "Add new consumer: $consumer (${consumer.hashCode()})" }
         serviceConsumers.add(consumer)
         lifecycleOwner.subscribeOnFirst(onDestroyEvent) { disconnectInternal(consumer) }
@@ -65,6 +71,10 @@ class FlipperServiceProviderImpl @Inject constructor(
         onError: (FlipperBleServiceError) -> Unit,
         onBleManager: (FlipperServiceApi) -> Unit
     ) {
+        if (BuildConfig.INTERNAL && Looper.myLooper() != Looper.getMainLooper()) {
+            error("provideServiceApi() must be called from the main thread")
+        }
+
         val consumer = LambdaFlipperBleServiceConsumer(onBleManager, onError)
         provideServiceApi(consumer, lifecycleOwner, onDestroyEvent)
     }
