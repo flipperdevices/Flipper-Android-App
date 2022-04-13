@@ -18,6 +18,7 @@ class UnsupportedDialogShowHelper {
         lateinit var dialog: AlertDialog
 
         dialog = AlertDialog.Builder(activityContext)
+            .setIcon(R.drawable.ic_warning)
             .setTitle(R.string.dialog_unsupported_title)
             .setMessage(R.string.dialog_unsupported_description)
             .setCancelable(true)

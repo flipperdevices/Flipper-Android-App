@@ -18,6 +18,6 @@
     <string name="error_connect_serial_init_failed">Failed initialize serial service</string>
     <string name="error_connect_version_init_failed">Failed initialize version service</string>
 
-    <string name="dialog_unsupported_title">Update Flipper Firmware from PC</string>
-    <string name="dialog_unsupported_description">Our app doesn\'t support installed firmware version</string>
+    <string name="dialog_unsupported_title">Outdated firmware version</string>
+    <string name="dialog_unsupported_description">Firmware version on your Flipper is not supported. Please update it via PC.</string>
 </resources>

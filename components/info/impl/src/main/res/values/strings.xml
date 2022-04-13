@@ -11,8 +11,8 @@
     <string name="info_device_model_name">Flipper Zero</string>
 
     <string name="info_firmware_update_title">Firmware Update</string>
-    <string name="info_firmware_update_unsupported_title">Update Flipper Firmware from PC</string>
-    <string name="info_firmware_update_unsupported_desc">Our app doesn’t support installed firmware version</string>
+    <string name="info_firmware_update_unsupported_title">Outdated firmware version</string>
+    <string name="info_firmware_update_unsupported_desc">Firmware version on your Flipper is not supported. Please update it via PC.</string>
     <string name="info_firmware_update_unsupported_link">[How to update Flipper](https://docs.flipperzero.one/basics/firmware-update)</string>
 
     <string name="info_device_connect">Connect</string>
