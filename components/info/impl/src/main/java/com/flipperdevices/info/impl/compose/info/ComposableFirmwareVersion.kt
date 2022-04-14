@@ -5,7 +5,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.info.impl.R
-import com.flipperdevices.info.impl.model.FirmwareVersion
+import com.flipperdevices.updater.model.FirmwareChannel
+import com.flipperdevices.updater.model.FirmwareVersion
 
 @Composable
 fun ComposableFirmwareVersion(
@@ -54,27 +55,21 @@ private fun ComposableFirmwareVersionValue(
     modifier: Modifier = Modifier,
     version: FirmwareVersion
 ) {
-    val prefixId = when (version) {
-        is FirmwareVersion.Dev -> R.string.info_device_firmware_version_dev
-        is FirmwareVersion.Release -> R.string.info_device_firmware_version_release
-        is FirmwareVersion.ReleaseCandidate -> R.string.info_device_firmware_version_rc
+    val prefixId = when (version.channel) {
+        FirmwareChannel.DEV -> R.string.info_device_firmware_version_dev
+        FirmwareChannel.RELEASE -> R.string.info_device_firmware_version_release
+        FirmwareChannel.RELEASE_CANDIDATE -> R.string.info_device_firmware_version_rc
     }
 
-    val versionText = when (version) {
-        is FirmwareVersion.Dev -> version.commitSHA
-        is FirmwareVersion.Release -> version.version
-        is FirmwareVersion.ReleaseCandidate -> version.version
-    }
-
-    val colorId = when (version) {
-        is FirmwareVersion.Dev -> DesignSystem.color.red
-        is FirmwareVersion.ReleaseCandidate -> DesignSystem.color.purple
-        is FirmwareVersion.Release -> R.color.device_info_release
+    val colorId = when (version.channel) {
+        FirmwareChannel.DEV -> DesignSystem.color.red
+        FirmwareChannel.RELEASE_CANDIDATE -> DesignSystem.color.purple
+        FirmwareChannel.RELEASE -> R.color.device_info_release
     }
 
     ComposableDeviceInfoRowText(
         modifier,
-        text = "${stringResource(prefixId)} $versionText",
+        text = "${stringResource(prefixId)} ${version.version}",
         colorId = colorId
     )
 }

@@ -11,12 +11,15 @@ import com.flipperdevices.info.impl.compose.elements.ComposableConnectedDeviceAc
 import com.flipperdevices.info.impl.compose.elements.ComposableDeviceBar
 import com.flipperdevices.info.impl.compose.elements.ComposableFirmwareUpdate
 import com.flipperdevices.info.impl.compose.elements.ComposablePairDeviceActionCard
+import com.flipperdevices.info.impl.compose.elements.ComposableUpdaterCard
 import com.flipperdevices.info.impl.compose.info.ComposableInfoCard
+import com.flipperdevices.updater.api.UpdaterUIApi
 
 @Composable
-fun ComposableDeviceInfoScreen() {
+fun ComposableDeviceInfoScreen(updaterUiApi: UpdaterUIApi) {
     Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
         ComposableDeviceBar()
+        ComposableUpdaterCard(modifier = Modifier.padding(top = 14.dp), updaterUiApi)
         ComposableFirmwareUpdate(modifier = Modifier.padding(top = 14.dp))
         ComposableInfoCard(modifier = Modifier.padding(top = 14.dp))
         ComposableConnectedDeviceActionCard(modifier = Modifier.padding(top = 14.dp))

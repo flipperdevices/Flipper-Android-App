@@ -64,6 +64,11 @@ dependencies {
     implementation(projects.components.settings.api)
     implementation(projects.components.settings.impl)
 
+    implementation(projects.components.updater.api)
+    implementation(projects.components.updater.impl)
+    implementation(projects.components.updater.downloader)
+    implementation(projects.components.updater.ui)
+
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.dao.impl)
     implementation(projects.components.bridge.synchronization.api)
@@ -80,6 +85,8 @@ dependencies {
     releaseImplementation(projects.components.analytics.shake2report.noop)
     debugImplementation(projects.components.analytics.shake2report.impl)
     internalImplementation(projects.components.analytics.shake2report.impl)
+
+    implementation(libs.ktor.client)
 
     implementation(libs.annotations)
     implementation(libs.ktx)

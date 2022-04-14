@@ -15,7 +15,7 @@ import com.flipperdevices.info.impl.model.DeviceInfo
 import com.flipperdevices.info.impl.model.DeviceInfoRequestStatus
 import com.flipperdevices.info.impl.model.StorageInfo
 import com.flipperdevices.info.impl.model.VerboseDeviceInfo
-import com.flipperdevices.info.impl.utils.FirmwareVersionBuildHelper
+import com.flipperdevices.updater.api.FlipperVersionProviderApi
 import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.FragmentScreen
 import java.lang.Math.max
@@ -38,6 +38,9 @@ class DeviceInfoViewModel :
     @Inject
     lateinit var serviceProvider: FlipperServiceProvider
 
+    @Inject
+    lateinit var flipperVersionProviderApi: FlipperVersionProviderApi
+
     init {
         ComponentHolder.component<InfoComponent>().inject(this)
         serviceProvider.provideServiceApi(this, this)
@@ -48,13 +51,11 @@ class DeviceInfoViewModel :
     fun getDeviceInfoRequestStatus(): StateFlow<DeviceInfoRequestStatus> = deviceInfoRequestStatus
 
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
-        serviceApi.flipperInformationApi.getInformationFlow().onEach { flipperGATTInformation ->
-            val softwareVersion = flipperGATTInformation.softwareVersion
-            val softwareVersionParsed = if (softwareVersion != null) FirmwareVersionBuildHelper
-                .buildFirmwareVersionFromString(softwareVersion) else null
-
-            deviceInfoState.update { it.copy(firmwareVersion = softwareVersionParsed) }
-        }.launchIn(viewModelScope)
+        flipperVersionProviderApi
+            .getCurrentFlipperVersion(viewModelScope, serviceApi)
+            .onEach { firmwareVersion ->
+                deviceInfoState.update { it.copy(firmwareVersion = firmwareVersion) }
+            }.launchIn(viewModelScope)
 
         serviceApi.flipperRpcInformationApi.getRpcInformationFlow().onEach { rpcInformation ->
             deviceInfoState.update {

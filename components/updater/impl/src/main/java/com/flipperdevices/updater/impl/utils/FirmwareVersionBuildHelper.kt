@@ -1,6 +1,7 @@
-package com.flipperdevices.info.impl.utils
+package com.flipperdevices.updater.impl.utils
 
-import com.flipperdevices.info.impl.model.FirmwareVersion
+import com.flipperdevices.updater.model.FirmwareChannel
+import com.flipperdevices.updater.model.FirmwareVersion
 
 private const val DEVICE_VERSION_PART_COUNT = 4
 private const val DEVICE_VERSION_COMMIT_INDEX = 0
@@ -22,11 +23,12 @@ object FirmwareVersionBuildHelper {
         val date = unparsedArray[DEVICE_VERSION_DATE_INDEX]
 
         if (typeVersion.trim() == DEVICE_VERSION_TYPE_DEV) {
-            return FirmwareVersion.Dev(hash, date)
+            return FirmwareVersion(FirmwareChannel.DEV, hash, date)
         }
 
         if (typeVersion.contains(DEVICE_VERSION_TYPE_RC)) {
-            return FirmwareVersion.ReleaseCandidate(
+            return FirmwareVersion(
+                FirmwareChannel.RELEASE_CANDIDATE,
                 typeVersion.replace(
                     "-$DEVICE_VERSION_TYPE_RC",
                     ""
@@ -35,6 +37,10 @@ object FirmwareVersionBuildHelper {
             )
         }
 
-        return FirmwareVersion.Release(typeVersion, date)
+        return FirmwareVersion(
+            FirmwareChannel.RELEASE,
+            typeVersion,
+            date
+        )
     }
 }

@@ -24,6 +24,7 @@
     <string name="info_device_forget_dialog_description">App will no longer be paired with Flipper %1$s</string>
     <string name="info_device_forget_dialog_forget">Forget</string>
 
+    <string name="info_device_update_title">Firmware Update</string>
     <string name="info_device_info_title">Device Info</string>
     <string name="info_device_info_title_card">Flipper Device</string>
     <string name="info_device_info_other_card">Other</string>

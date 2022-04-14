@@ -88,5 +88,10 @@ include(
     ":components:inappnotification:impl",
 
     ":components:settings:api",
-    ":components:settings:impl"
+    ":components:settings:impl",
+
+    ":components:updater:api",
+    ":components:updater:impl",
+    ":components:updater:ui",
+    ":components:updater:downloader"
 )
