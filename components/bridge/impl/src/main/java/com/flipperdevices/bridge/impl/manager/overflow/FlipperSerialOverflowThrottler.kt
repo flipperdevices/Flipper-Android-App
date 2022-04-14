@@ -9,19 +9,19 @@ import com.flipperdevices.bridge.impl.manager.UnsafeBleManager
 import com.flipperdevices.bridge.impl.manager.service.BluetoothGattServiceWrapper
 import com.flipperdevices.bridge.impl.manager.service.getCharacteristicOrLog
 import com.flipperdevices.bridge.impl.manager.service.getServiceOrLog
-import com.flipperdevices.core.ktx.jre.newSingleThreadExecutor
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import java.nio.ByteBuffer
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.asCoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.runBlocking
 import no.nordicsemi.android.ble.data.Data
 
 const val CLASS_TAG = "FlipperSerialOverflowThrottler"
@@ -29,26 +29,22 @@ const val CLASS_TAG = "FlipperSerialOverflowThrottler"
 class FlipperSerialOverflowThrottler(
     private val serialApi: FlipperSerialApi,
     private val scope: CoroutineScope,
-    private val requestStorage: FlipperRequestStorage,
-    private val dispatcher: CoroutineDispatcher = newSingleThreadExecutor(CLASS_TAG)
-        .asCoroutineDispatcher()
+    private val requestStorage: FlipperRequestStorage
 ) : BluetoothGattServiceWrapper,
     LogTagProvider {
     override val TAG = CLASS_TAG
+
+    private val dispatcher: CoroutineDispatcher = Dispatchers.Default.limitedParallelism(1)
+
     private var overflowCharacteristics: BluetoothGattCharacteristic? = null
 
     private var pendingBytes: ByteArray? = null
+    private var overflowBufferJob: Job? = null
 
     /**
      * Bytes waiting to be sent to the device
      */
     private var bufferSizeState = MutableSharedFlow<Int>(replay = 1)
-
-    init {
-        bufferSizeState.onEach { bufferSize ->
-            sendCommandsWhileBufferNotEnd(bufferSize)
-        }.launchIn(scope)
-    }
 
     override fun onServiceReceived(gatt: BluetoothGatt): Boolean {
         val service = getServiceOrLog(gatt, Constants.BLESerialService.SERVICE_UUID) ?: return false
@@ -59,7 +55,9 @@ class FlipperSerialOverflowThrottler(
         return true
     }
 
-    override suspend fun initialize(bleManager: UnsafeBleManager) {
+    override suspend fun initialize(bleManager: UnsafeBleManager) = runBlocking(dispatcher) {
+        overflowBufferJob?.cancelAndJoin()
+        overflowBufferJob = getOverflowBufferJob()
         pendingBytes = null
         bleManager.setNotificationCallbackUnsafe(overflowCharacteristics).with { _, data ->
             updateRemainingBuffer(data)
@@ -71,9 +69,11 @@ class FlipperSerialOverflowThrottler(
         }.enqueue()
     }
 
-    override suspend fun reset(bleManager: UnsafeBleManager) {
+    override suspend fun reset(bleManager: UnsafeBleManager): Unit = runBlocking(dispatcher) {
         pendingBytes = null
         bleManager.setNotificationCallbackUnsafe(overflowCharacteristics) // reset (free) callback
+        overflowBufferJob?.cancelAndJoin()
+        overflowBufferJob = null
     }
 
     @VisibleForTesting
@@ -88,9 +88,9 @@ class FlipperSerialOverflowThrottler(
         }
     }
 
-    private suspend fun sendCommandsWhileBufferNotEnd(
+    private suspend fun CoroutineScope.sendCommandsWhileBufferNotEnd(
         bufferSize: Int
-    ) = withContext(dispatcher) {
+    ) {
         var remainingBufferSize = bufferSize
 
         while (isActive && remainingBufferSize > 0) {
@@ -130,5 +130,13 @@ class FlipperSerialOverflowThrottler(
         val toSend = pendingBytesInternal.copyOf(maxLength)
         pendingBytes = pendingBytesInternal.copyOfRange(maxLength, pendingBytesInternal.size)
         return toSend
+    }
+
+    private fun getOverflowBufferJob(): Job {
+        return scope.launch(Dispatchers.Default) {
+            bufferSizeState.collectLatest { bufferSize ->
+                sendCommandsWhileBufferNotEnd(bufferSize)
+            }
+        }
     }
 }

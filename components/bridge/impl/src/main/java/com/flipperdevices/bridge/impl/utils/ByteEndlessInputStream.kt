@@ -2,8 +2,12 @@ package com.flipperdevices.bridge.impl.utils
 
 import it.unimi.dsi.fastutil.bytes.ByteArrayFIFOQueue
 import java.io.InputStream
+import java.util.concurrent.atomic.AtomicBoolean
+import kotlin.coroutines.cancellation.CancellationException
 
 class ByteEndlessInputStream : InputStream() {
+    private val isRunning = AtomicBoolean(true)
+
     private val queue = ByteArrayFIFOQueue()
     private var balancer = 0
 
@@ -29,10 +33,18 @@ class ByteEndlessInputStream : InputStream() {
     private fun readOneByte(): Byte {
         // Wait while we not emit any bytes in queue
         while (queue.isEmpty) {
+            if (!isRunning.get()) {
+                throw CancellationException()
+            }
             queue.wait()
         }
 
         return queue.dequeueByte()
+    }
+
+    fun stop() {
+        isRunning.compareAndSet(true, false)
+        queue.notifyAll()
     }
 }
 

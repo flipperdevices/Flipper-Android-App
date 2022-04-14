@@ -10,12 +10,11 @@ import com.flipperdevices.bridge.api.manager.observers.ConnectionObserverComposi
 import com.flipperdevices.bridge.api.manager.observers.ConnectionObserverLogger
 import com.flipperdevices.bridge.api.manager.observers.SuspendConnectionObserver
 import com.flipperdevices.bridge.api.utils.Constants
-import com.flipperdevices.core.ktx.jre.newSingleThreadExecutor
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.asCoroutineDispatcher
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import no.nordicsemi.android.ble.BleManager
 
 /**
@@ -33,8 +32,7 @@ internal class FirstPairBleManager(
     private val connectionObservers = ConnectionObserverComposite(
         scope, ConnectionObserverLogger(TAG)
     )
-    private val bleDispatcher = newSingleThreadExecutor(TAG)
-        .asCoroutineDispatcher()
+    private val bleDispatcher = Dispatchers.Default.limitedParallelism(1)
 
     init {
         setConnectionObserver(connectionObservers)
@@ -78,7 +76,7 @@ internal class FirstPairBleManager(
         override fun onServicesInvalidated() = Unit
     }
 
-    suspend fun connectToDevice(device: BluetoothDevice) = withContext(bleDispatcher) {
+    suspend fun connectToDevice(device: BluetoothDevice) = runBlocking(bleDispatcher) {
         connect(device).await()
     }
 

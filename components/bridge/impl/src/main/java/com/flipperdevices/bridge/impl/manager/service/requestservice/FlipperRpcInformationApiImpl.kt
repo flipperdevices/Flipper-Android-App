@@ -40,9 +40,9 @@ class FlipperRpcInformationApiImpl(
     override fun getRequestRpcInformationStatus() = requestStatusFlow
     override fun getRpcInformationFlow() = rpcInformationFlow
 
-    fun initialize(requestApi: FlipperRequestApi) {
-        requestStatusFlow.update { FlipperRequestRpcInformationStatus.InProgress() }
-        requestJobs += scope.launch {
+    suspend fun initialize(requestApi: FlipperRequestApi) {
+        requestStatusFlow.emit(FlipperRequestRpcInformationStatus.InProgress())
+        requestJobs += scope.launch(Dispatchers.Default) {
             receiveStorageInfo(requestApi, FLIPPER_PATH_EXTERNAL_STORAGE) { totalSpace, freeSpace ->
                 info { "Received external storage info: $freeSpace/$totalSpace" }
                 rpcInformationFlow.update {
@@ -58,7 +58,7 @@ class FlipperRpcInformationApiImpl(
                 } else it
             }
         }
-        requestJobs += scope.launch {
+        requestJobs += scope.launch(Dispatchers.Default) {
             receiveStorageInfo(requestApi, FLIPPER_PATH_INTERNAL_STORAGE) { totalSpace, freeSpace ->
                 info { "Received internal storage info: $freeSpace/$totalSpace" }
                 rpcInformationFlow.update {
@@ -100,8 +100,8 @@ class FlipperRpcInformationApiImpl(
         requestJobs.forEachIterable {
             it.cancelAndJoin()
         }
-        requestStatusFlow.update { FlipperRequestRpcInformationStatus.NotStarted }
-        rpcInformationFlow.update { FlipperRpcInformation() }
+        requestStatusFlow.emit(FlipperRequestRpcInformationStatus.NotStarted)
+        rpcInformationFlow.emit(FlipperRpcInformation())
     }
 
     private suspend fun receiveStorageInfo(

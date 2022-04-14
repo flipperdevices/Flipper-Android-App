@@ -13,7 +13,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.runBlocking
 import no.nordicsemi.android.ble.exception.BluetoothDisabledException
 
 class FlipperSafeConnectWrapper(
@@ -30,7 +30,7 @@ class FlipperSafeConnectWrapper(
 
     private val connectDelegate = FlipperServiceConnectDelegate(bleManager, context)
 
-    suspend fun onActiveDeviceUpdate(deviceId: String?) = withContext(dispatcher) {
+    suspend fun onActiveDeviceUpdate(deviceId: String?) = runBlocking(dispatcher) {
         info { "Call cancel and join to current job" }
         currentConnectingJob?.cancelAndJoin()
         info { "Job canceled! Call connect again" }

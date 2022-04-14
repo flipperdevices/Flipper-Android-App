@@ -22,6 +22,7 @@ import com.flipperdevices.protobuf.main
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicInteger
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -47,6 +48,7 @@ class FlipperRequestApiImpl(
     private val requestListeners = ConcurrentHashMap<Int, OnReceiveResponse>()
     private val notificationMutableFlow = MutableSharedFlow<Flipper.Main>()
 
+    private val reader = PeripheralResponseReader(scope)
     private val serialApiUnsafe = FlipperSerialApiUnsafeImpl(scope, lagsDetector)
     private val requestStorage: FlipperRequestStorage = FlipperRequestStorageImpl()
     private val serialApi = FlipperSerialOverflowThrottler(serialApiUnsafe, scope, requestStorage)
@@ -119,26 +121,6 @@ class FlipperRequestApiImpl(
         return serialApiUnsafe.getSpeed()
     }
 
-    private fun subscribeToAnswers() {
-        val reader = PeripheralResponseReader(scope)
-        scope.launch {
-            serialApiUnsafe.receiveBytesFlow().collect {
-                reader.onReceiveBytes(it)
-            }
-        }
-        scope.launch {
-            reader.getResponses().collect {
-                val listener = requestListeners[it.commandId]
-                if (listener == null) {
-                    warn { "Receive package without id $it" }
-                    notificationMutableFlow.emit(it)
-                } else {
-                    listener.invoke(it)
-                }
-            }
-        }
-    }
-
     private fun findEmptyId(): Int {
         var counter: Int
         do {
@@ -165,13 +147,16 @@ class FlipperRequestApiImpl(
     }
 
     override fun onServiceReceived(gatt: BluetoothGatt): Boolean {
-        return serialApiUnsafe.onServiceReceived(gatt) &&
-            serialApi.onServiceReceived(gatt)
+        val serialApiUnsafe = serialApiUnsafe.onServiceReceived(gatt)
+        val serialApi = serialApi.onServiceReceived(gatt)
+
+        return serialApiUnsafe && serialApi
     }
 
     override suspend fun initialize(bleManager: UnsafeBleManager) {
         serialApiUnsafe.initialize(bleManager)
         serialApi.initialize(bleManager)
+        reader.initialize()
     }
 
     override suspend fun reset(bleManager: UnsafeBleManager) {
@@ -185,5 +170,25 @@ class FlipperRequestApiImpl(
         }
         serialApiUnsafe.reset(bleManager)
         serialApi.reset(bleManager)
+        reader.reset()
+    }
+
+    private fun subscribeToAnswers() {
+        scope.launch(Dispatchers.Default) {
+            serialApiUnsafe.receiveBytesFlow().collect {
+                reader.onReceiveBytes(it)
+            }
+        }
+        scope.launch(Dispatchers.Default) {
+            reader.getResponses().collect {
+                val listener = requestListeners[it.commandId]
+                if (listener == null) {
+                    warn { "Receive package without id $it" }
+                    notificationMutableFlow.emit(it)
+                } else {
+                    listener.invoke(it)
+                }
+            }
+        }
     }
 }
