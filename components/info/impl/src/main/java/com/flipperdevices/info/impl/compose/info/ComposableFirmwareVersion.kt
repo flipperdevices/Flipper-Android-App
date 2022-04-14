@@ -51,7 +51,7 @@ fun ComposableFirmwareBuildDate(
 }
 
 @Composable
-private fun ComposableFirmwareVersionValue(
+fun ComposableFirmwareVersionValue(
     modifier: Modifier = Modifier,
     version: FirmwareVersion
 ) {

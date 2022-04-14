@@ -4,6 +4,7 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
+import com.flipperdevices.core.log.verbose
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.downloader.di.DownloaderComponent
 import com.flipperdevices.updater.downloader.model.ArtifactType
@@ -41,6 +42,8 @@ class DownloaderApiImpl @Inject constructor() : DownloaderApi, LogTagProvider {
             error(exception) { "When try receive latest version number" }
             return versionMap
         }
+
+        verbose { "Receive response from server" }
 
         response.channels.map { channel ->
             channel.id to channel.versions.maxByOrNull { it.timestamp }!!

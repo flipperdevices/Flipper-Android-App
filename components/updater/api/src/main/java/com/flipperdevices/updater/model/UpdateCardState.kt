@@ -1,7 +1,4 @@
-package com.flipperdevices.updater.ui.model
-
-import com.flipperdevices.updater.model.DistributionFile
-import com.flipperdevices.updater.model.FirmwareVersion
+package com.flipperdevices.updater.model
 
 sealed class UpdateCardState {
     object InProgress : UpdateCardState()
