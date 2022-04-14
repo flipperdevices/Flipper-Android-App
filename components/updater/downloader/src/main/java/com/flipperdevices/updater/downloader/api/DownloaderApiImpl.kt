@@ -46,9 +46,9 @@ class DownloaderApiImpl @Inject constructor() : DownloaderApi, LogTagProvider {
         verbose { "Receive response from server" }
 
         response.channels.map { channel ->
-            channel.id to channel.versions.maxByOrNull { it.timestamp }!!
-        }.filterNot { it.first != null }
-            .map { it.first!! to it.second }
+            channel.id to channel.versions.maxByOrNull { it.timestamp }
+        }.filter { it.first != null && it.second != null }
+            .map { it.first!! to it.second!! }
             .forEach { (channel, version) ->
                 val updaterFile = version.files.find { it.type == ArtifactType.UPDATE_TGZ }
                     ?: return@forEach
@@ -64,6 +64,8 @@ class DownloaderApiImpl @Inject constructor() : DownloaderApi, LogTagProvider {
                     )
                 )
             }
+
+        verbose { "Result version map is $versionMap" }
 
         return versionMap
     }

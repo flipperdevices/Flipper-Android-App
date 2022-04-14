@@ -3,13 +3,17 @@ package com.flipperdevices.updater.ui.composable
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,7 +33,7 @@ import com.flipperdevices.updater.ui.R
 fun ComposableUpdateButton(
     updateCardState: UpdateCardState
 ) {
-    val buttonModifier = Modifier.padding(all = 12.dp)
+    var buttonModifier = Modifier.padding(all = 12.dp)
 
     when (updateCardState) {
         UpdateCardState.Error -> return
@@ -40,32 +44,40 @@ fun ComposableUpdateButton(
             descriptionId = R.string.update_button_no_updates_desc,
             colorId = DesignSystem.color.black_20
         )
-        is UpdateCardState.UpdateAvailable -> if (updateCardState.isOtherChannel) {
-            ComposableUpdateButton(
-                buttonModifier,
-                textId = R.string.update_button_install,
-                descriptionId = R.string.update_button_install_desc,
-                colorId = DesignSystem.color.accent
+        is UpdateCardState.UpdateAvailable -> {
+            buttonModifier = buttonModifier.clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = rememberRipple(),
+                onClick = { }
             )
-        } else ComposableUpdateButton(
-            buttonModifier,
-            textId = R.string.update_button_update,
-            descriptionId = R.string.update_button_update_desc,
-            colorId = R.color.update_green
-        )
+
+            if (updateCardState.isOtherChannel) {
+                ComposableUpdateButton(
+                    buttonModifier,
+                    textId = R.string.update_button_install,
+                    descriptionId = R.string.update_button_install_desc,
+                    colorId = DesignSystem.color.accent
+                )
+            } else ComposableUpdateButton(
+                buttonModifier,
+                textId = R.string.update_button_update,
+                descriptionId = R.string.update_button_update_desc,
+                colorId = R.color.update_green
+            )
+        }
     }
 }
 
 @Composable
 private fun ComposableUpdateButton(
-    modifier: Modifier,
+    buttonModifier: Modifier,
     @StringRes textId: Int,
     @StringRes descriptionId: Int,
     @ColorRes colorId: Int
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Box(
-            modifier = modifier
+            modifier = buttonModifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(3.dp))
                 .background(colorResource(colorId)),
