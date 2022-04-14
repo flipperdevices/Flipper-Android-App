@@ -9,7 +9,8 @@ sealed class UpdateCardState {
 
     data class UpdateAvailable(
         val lastVersion: FirmwareVersion,
-        val updaterDist: DistributionFile
+        val updaterDist: DistributionFile,
+        val isOtherChannel: Boolean
     ) : UpdateCardState()
 
     object Error : UpdateCardState()

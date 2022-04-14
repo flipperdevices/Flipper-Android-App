@@ -7,4 +7,7 @@ import com.flipperdevices.updater.model.UpdateCardState
 interface UpdaterUIApi {
     @Composable
     fun getUpdateCardState(): State<UpdateCardState>
+
+    @Composable
+    fun RenderUpdateButton(updateCardState: UpdateCardState)
 }

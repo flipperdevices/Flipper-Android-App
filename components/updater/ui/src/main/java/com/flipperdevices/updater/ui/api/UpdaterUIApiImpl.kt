@@ -7,6 +7,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.updater.api.UpdaterUIApi
 import com.flipperdevices.updater.model.UpdateCardState
+import com.flipperdevices.updater.ui.composable.ComposableUpdateButton
 import com.flipperdevices.updater.ui.viewmodel.UpdaterViewModel
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
@@ -17,5 +18,10 @@ class UpdaterUIApiImpl @Inject constructor() : UpdaterUIApi {
     override fun getUpdateCardState(): State<UpdateCardState> {
         val updaterViewModel = viewModel<UpdaterViewModel>()
         return updaterViewModel.getUpdateCardState().collectAsState()
+    }
+
+    @Composable
+    override fun RenderUpdateButton(updateCardState: UpdateCardState) {
+        ComposableUpdateButton(updateCardState)
     }
 }

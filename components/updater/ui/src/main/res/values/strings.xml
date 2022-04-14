@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="update_button_no_updates">NO UPDATES</string>
+    <string name="update_button_no_updates_desc">There are no updates in the selected channel</string>
+    <string name="update_button_install">INSTALL</string>
+    <string name="update_button_install_desc">Firmware on Flipper doesn’t match the selected update channel. Selected version will be installed.</string>
+    <string name="update_button_update">UPDATE</string>
+    <string name="update_button_update_desc">Update Flipper to the latest version</string>
+</resources>

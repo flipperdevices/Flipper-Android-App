@@ -51,12 +51,14 @@ fun ComposableUpdaterCard(
             UpdateCardState.Error -> TODO()
             UpdateCardState.InProgress -> ComposableFirmwareUpdaterInProgress()
             is UpdateCardState.NoUpdate -> ComposableFirmwareUpdaterContent(
+                updaterUiApi,
                 version = cardStateLocal.flipperVersion,
-                isUpdateAvailable = false
+                updateCardState = cardStateLocal
             )
             is UpdateCardState.UpdateAvailable -> ComposableFirmwareUpdaterContent(
+                updaterUiApi,
                 version = cardStateLocal.lastVersion,
-                isUpdateAvailable = true
+                updateCardState = cardStateLocal
             )
         }
     }
@@ -87,11 +89,13 @@ private fun ComposableFirmwareUpdaterInProgress() {
 
 @Composable
 private fun ComposableFirmwareUpdaterContent(
+    updaterUiApi: UpdaterUIApi,
     version: FirmwareVersion,
-    isUpdateAvailable: Boolean
+    updateCardState: UpdateCardState
 ) {
     ComposableDeviceInfoRow(titleId = R.string.info_device_updater_channel, inProgress = false) {
         ComposableFirmwareVersionValue(modifier = it, version = version)
     }
     ComposableInfoDivider()
+    updaterUiApi.RenderUpdateButton(updateCardState)
 }
