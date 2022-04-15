@@ -52,7 +52,7 @@ class FlipperLagsDetectorImpl(
                             pendingCommands.keys().toList().joinToString()
                     }
                     if (connectionState is ConnectionState.Ready && connectionState.isSupported) {
-                        serviceApi.reconnect()
+                        // serviceApi.reconnect()
                     }
                 } else if (pendingResponseCounter.get() < 0) {
                     pendingResponseCounter.set(0)

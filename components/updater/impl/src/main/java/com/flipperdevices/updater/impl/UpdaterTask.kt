@@ -20,7 +20,6 @@ import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 class UpdaterTask(
@@ -31,7 +30,6 @@ class UpdaterTask(
     override val TAG = "UpdaterTask"
 
     private val taskScope = lifecycleScope
-    private val dispatcher = Dispatchers.Default.limitedParallelism(1)
 
     fun start(
         updateFile: DistributionFile,
@@ -40,7 +38,7 @@ class UpdaterTask(
         info { "Start updating" }
         serviceProvider.provideServiceApi(this@UpdaterTask) { serviceApi ->
             info { "Flipper service provided" }
-            runBlocking(dispatcher) {
+            taskScope.launch(Dispatchers.Default) {
                 // Waiting to be connected to the flipper
                 serviceApi.connectionInformationApi.getConnectionStateFlow()
                     .collectLatest {

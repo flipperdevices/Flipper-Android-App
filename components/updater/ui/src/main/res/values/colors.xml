@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="update_green">#2ED832</color>
+    <color name="update_green_background">#A3E899</color>
+    <color name="update_blue_background">#ACC9FA</color>
 </resources>

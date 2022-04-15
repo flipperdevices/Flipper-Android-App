@@ -45,6 +45,8 @@ class UpdaterApiImpl @Inject constructor(
         currentActiveTask = localActiveTask
 
         localActiveTask.start(updateFile) {
+            info { "Downloading state update to $it" }
+
             if (it == UpdatingState.NotStarted) {
                 currentActiveTask?.onStop()
                 currentActiveTask = null
