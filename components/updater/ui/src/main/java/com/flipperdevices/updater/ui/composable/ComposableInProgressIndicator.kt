@@ -111,7 +111,7 @@ private fun ComposableProgressBar(
                     .background(accentColor)
             )
 
-            if (remainingWeight >= 0.0f) {
+            if (remainingWeight > 0.0f) {
                 Box(
                     modifier = Modifier
                         .weight(remainingWeight)

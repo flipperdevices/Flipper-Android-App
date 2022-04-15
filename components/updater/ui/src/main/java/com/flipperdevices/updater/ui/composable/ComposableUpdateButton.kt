@@ -13,6 +13,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,8 +41,8 @@ fun ComposableUpdateButton(
     val updaterViewModel = viewModel<UpdaterViewModel>()
     var buttonModifier = Modifier.padding(all = 12.dp)
 
-    // val updatingState by updaterViewModel.getState().collectAsState()
-    val updatingStateLocal: UpdatingState = UpdatingState.DownloadingFromNetwork(0.5f)
+    val updatingState by updaterViewModel.getState().collectAsState()
+    val updatingStateLocal: UpdatingState = updatingState
     when (updatingStateLocal) {
         UpdatingState.NotStarted -> {}
         is UpdatingState.DownloadingFromNetwork -> {
