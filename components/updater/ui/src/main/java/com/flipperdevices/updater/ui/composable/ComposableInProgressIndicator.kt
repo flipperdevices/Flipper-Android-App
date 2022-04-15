@@ -102,12 +102,16 @@ private fun ComposableProgressBar(
             modifier = Modifier
                 .matchParentSize()
         ) {
-            val remainingWeight = 1.0f - percent
+            val wrapPercent = if (percent <= 0f) {
+                0.01f
+            } else percent
+
+            val remainingWeight = 1.0f - wrapPercent
 
             Box(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .weight(percent)
+                    .weight(wrapPercent)
                     .background(accentColor)
             )
 

@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.update
 class TmpSynchronization : LogTagProvider {
     override val TAG = "TestSynchronization"
 
-    private val isLaunched = AtomicBoolean(false)
+    private val isLaunched = AtomicBoolean(true)
     private val synchronizationState = MutableStateFlow(SynchronizationState.NOT_STARTED)
     private var markDirty = false
 

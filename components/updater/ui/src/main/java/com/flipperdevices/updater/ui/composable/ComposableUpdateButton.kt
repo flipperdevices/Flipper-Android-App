@@ -68,6 +68,7 @@ fun ComposableUpdateButton(
             return
         }
         UpdatingState.Rebooting -> {
+            Text("Rebooting now")
             return
         }
     }
