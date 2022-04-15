@@ -9,8 +9,7 @@ fun FirmwareVersion.isGreaterThan(other: FirmwareVersion): Boolean? {
     }
 
     if (channel == FirmwareChannel.DEV) {
-        // return version != other.version TODO: after test
-        return true
+        return version != other.version
     }
 
     val versionParts = version.split(".")

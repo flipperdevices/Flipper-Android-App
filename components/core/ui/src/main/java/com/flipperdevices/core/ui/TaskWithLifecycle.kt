@@ -1,4 +1,4 @@
-package com.flipperdevices.bridge.synchronization.impl.utils
+package com.flipperdevices.core.ui
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -20,6 +20,9 @@ abstract class TaskWithLifecycle : LifecycleOwner {
     }
 
     suspend fun onStop() = withContext(Dispatchers.Main) {
+        if (registry.currentState == Lifecycle.State.DESTROYED) {
+            return@withContext
+        }
         registry.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
         registry.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
         registry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)

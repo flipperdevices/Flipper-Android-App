@@ -14,14 +14,15 @@ import com.flipperdevices.bridge.synchronization.impl.model.RestartSynchronizati
 import com.flipperdevices.bridge.synchronization.impl.repository.FavoriteSynchronization
 import com.flipperdevices.bridge.synchronization.impl.repository.KeysSynchronization
 import com.flipperdevices.bridge.synchronization.impl.repository.storage.ManifestRepository
-import com.flipperdevices.bridge.synchronization.impl.utils.TaskWithLifecycle
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.ui.TaskWithLifecycle
 import com.flipperdevices.shake2report.api.Shake2ReportApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 class SynchronizationTask(
@@ -45,13 +46,15 @@ class SynchronizationTask(
         serviceProvider.provideServiceApi(this@SynchronizationTask) { serviceApi ->
             info { "Flipper service provided" }
             taskScope.launch(dispatcher) {
-                // Waiting to be connected to the flipper
-                serviceApi.connectionInformationApi.getConnectionStateFlow()
-                    .collectLatest {
-                        if (it is ConnectionState.Ready && it.isSupported) {
-                            startInternal(serviceApi, onStateUpdate)
+                runBlocking {
+                    // Waiting to be connected to the flipper
+                    serviceApi.connectionInformationApi.getConnectionStateFlow()
+                        .collectLatest {
+                            if (it is ConnectionState.Ready && it.isSupported) {
+                                startInternal(serviceApi, onStateUpdate)
+                            }
                         }
-                    }
+                }
             }
         }
         taskScope.launch {

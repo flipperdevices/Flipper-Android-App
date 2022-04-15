@@ -25,14 +25,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.updater.model.UpdateCardState
 import com.flipperdevices.updater.ui.R
+import com.flipperdevices.updater.ui.viewmodel.UpdaterViewModel
 
 @Composable
 fun ComposableUpdateButton(
     updateCardState: UpdateCardState
 ) {
+    val updaterViewModel = viewModel<UpdaterViewModel>()
     var buttonModifier = Modifier.padding(all = 12.dp)
 
     when (updateCardState) {
@@ -48,7 +51,7 @@ fun ComposableUpdateButton(
             buttonModifier = buttonModifier.clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(),
-                onClick = { }
+                onClick = { updaterViewModel.onStart(updateCardState.updaterDist) }
             )
 
             if (updateCardState.isOtherChannel) {
