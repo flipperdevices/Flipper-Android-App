@@ -12,7 +12,6 @@ import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.api.FlipperVersionProviderApi
 import com.flipperdevices.updater.model.UpdateCardState
 import com.flipperdevices.updater.ui.di.UpdaterComponent
-import com.flipperdevices.updater.ui.utils.isGreaterThan
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -65,8 +64,7 @@ class UpdateCardViewModel :
                         updateCardState.emit(UpdateCardState.NoUpdate(flipperFirmwareVersion))
                         return@collectLatest
                     }
-                    val isUpdateAvailable = latestVersionFromNetwork.version
-                        .isGreaterThan(flipperFirmwareVersion) ?: true
+                    val isUpdateAvailable = true
 
                     if (isUpdateAvailable) {
                         updateCardState.emit(

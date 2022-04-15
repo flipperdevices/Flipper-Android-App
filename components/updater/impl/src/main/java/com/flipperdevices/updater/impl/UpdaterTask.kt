@@ -14,6 +14,7 @@ import com.flipperdevices.core.ui.TaskWithLifecycle
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.deleteRequest
 import com.flipperdevices.protobuf.storage.mkdirRequest
+import com.flipperdevices.protobuf.system.System
 import com.flipperdevices.protobuf.system.rebootRequest
 import com.flipperdevices.protobuf.system.updateRequest
 import com.flipperdevices.updater.api.DownloaderApi
@@ -135,13 +136,15 @@ class UpdaterTask(
         serviceApi.requestApi.request(
             main {
                 systemUpdateRequest = updateRequest {
-                    updateFolder = "$flipperPath/update.fuf"
+                    updateManifest = "$flipperPath/update.fuf"
                 }
             }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
         ).collect()
         serviceApi.requestApi.request(
             main {
-                systemRebootRequest = rebootRequest { }
+                systemRebootRequest = rebootRequest {
+                    mode = System.RebootRequest.RebootMode.UPDATE
+                }
             }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
         ).collect()
         onStateUpdate(
