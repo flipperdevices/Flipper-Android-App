@@ -2,7 +2,10 @@
 
 Mobile app to rule all Flipper's family
 
-![ecco](https://user-images.githubusercontent.com/5871715/90445233-04748100-e0e8-11ea-9e74-19390b0acfb4.png)
+![dolphin-dark](https://user-images.githubusercontent.com/5871715/163869541-33904d20-7684-4891-abf9-be0a0c1afe71.png#gh-dark-mode-only)
+![dolphin-light](https://user-images.githubusercontent.com/5871715/163869555-fe5b029d-c4bd-4a29-92b7-fc9c79505106.png#gh-light-mode-only)
+
+
 ## Module arch
 
 ```
