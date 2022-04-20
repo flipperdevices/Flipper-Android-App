@@ -55,6 +55,8 @@ class UpdaterTask(
                     throwable: Throwable
                 ) {
                     error(throwable) { "Error during updating" }
+                } finally {
+                    onStateUpdate(UpdatingState.NotStarted)
                 }
             }
         }
@@ -147,8 +149,5 @@ class UpdaterTask(
                 }
             }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
         ).collect()
-        onStateUpdate(
-            UpdatingState.NotStarted
-        )
     }
 }
