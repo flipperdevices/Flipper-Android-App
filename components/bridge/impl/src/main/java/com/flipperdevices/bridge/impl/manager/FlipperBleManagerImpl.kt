@@ -64,10 +64,10 @@ class FlipperBleManagerImpl constructor(
         scope.launch(bleDispatcher) {
             runBlockingWithLog("disconnect") {
                 disconnect().enqueue()
-                // Wait until device is really disconnected
-                stateAsFlow().filter { it is ConnectionState.Disconnected }.first()
                 return@runBlockingWithLog
             }
+            // Wait until device is really disconnected
+            stateAsFlow().filter { it is ConnectionState.Disconnected }.first()
         }.join()
     }
 
@@ -79,12 +79,12 @@ class FlipperBleManagerImpl constructor(
                     Constants.BLE.RECONNECT_TIME_MS.toInt()
                 ).useAutoConnect(true)
                     .enqueue()
-
-                // Wait until device is really connected
-                stateAsFlow().filter { it is ConnectionState.Initializing }.first()
                 return@runBlockingWithLog
             }
-        }
+
+            // Wait until device is really connected
+            stateAsFlow().filter { it is ConnectionState.Initializing }.first()
+        }.join()
     }
 
     override fun log(priority: Int, message: String) {
