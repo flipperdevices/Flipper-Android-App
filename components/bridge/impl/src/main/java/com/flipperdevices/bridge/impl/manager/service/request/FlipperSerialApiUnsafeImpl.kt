@@ -48,7 +48,7 @@ class FlipperSerialApiUnsafeImpl(
         return serialTxCharacteristic != null && serialRxCharacteristic != null
     }
 
-    override suspend fun initialize(bleManager: UnsafeBleManager) {
+    override fun initialize(bleManager: UnsafeBleManager) {
         bleManagerInternal = bleManager
         bleManager.setNotificationCallbackUnsafe(serialRxCharacteristic).with { _, data ->
             info { "Receive serial data ${data.value?.size}" }
@@ -69,7 +69,7 @@ class FlipperSerialApiUnsafeImpl(
         }
     }
 
-    override suspend fun reset(bleManager: UnsafeBleManager) {
+    override fun reset(bleManager: UnsafeBleManager) {
         // Not exist states in this api
     }
 

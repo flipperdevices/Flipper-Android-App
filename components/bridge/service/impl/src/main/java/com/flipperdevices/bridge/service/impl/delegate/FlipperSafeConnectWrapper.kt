@@ -4,6 +4,7 @@ import android.content.Context
 import com.flipperdevices.bridge.api.error.FlipperBleServiceError
 import com.flipperdevices.bridge.api.error.FlipperServiceErrorListener
 import com.flipperdevices.bridge.api.manager.FlipperBleManager
+import com.flipperdevices.core.ktx.jre.runBlockingWithLog
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
@@ -13,7 +14,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import no.nordicsemi.android.ble.exception.BluetoothDisabledException
 
 class FlipperSafeConnectWrapper(
@@ -30,21 +30,25 @@ class FlipperSafeConnectWrapper(
 
     private val connectDelegate = FlipperServiceConnectDelegate(bleManager, context)
 
-    suspend fun onActiveDeviceUpdate(deviceId: String?) = runBlocking(dispatcher) {
-        info { "Call cancel and join to current job" }
-        currentConnectingJob?.cancelAndJoin()
-        info { "Job canceled! Call connect again" }
-        currentConnectingJob = scope.launch(Dispatchers.Default) {
-            var errorOnDeviceUpdate: Throwable?
-            do {
-                errorOnDeviceUpdate = runCatching {
-                    onActiveDeviceUpdateInternal(deviceId)
-                }.exceptionOrNull()
-                if (errorOnDeviceUpdate != null) {
-                    error(errorOnDeviceUpdate) { "Unexpected error on activeDeviceUpdate" }
+    suspend fun onActiveDeviceUpdate(deviceId: String?) {
+        scope.launch(dispatcher) {
+            runBlockingWithLog {
+                info { "Call cancel and join to current job" }
+                currentConnectingJob?.cancelAndJoin()
+                info { "Job canceled! Call connect again" }
+                currentConnectingJob = scope.launch(Dispatchers.Default) {
+                    var errorOnDeviceUpdate: Throwable?
+                    do {
+                        errorOnDeviceUpdate = runCatching {
+                            onActiveDeviceUpdateInternal(deviceId)
+                        }.exceptionOrNull()
+                        if (errorOnDeviceUpdate != null) {
+                            error(errorOnDeviceUpdate) { "Unexpected error on activeDeviceUpdate" }
+                        }
+                    } while (isActive && errorOnDeviceUpdate != null)
                 }
-            } while (isActive && errorOnDeviceUpdate != null)
-        }
+            }
+        }.join()
     }
 
     private suspend fun onActiveDeviceUpdateInternal(deviceId: String?) {

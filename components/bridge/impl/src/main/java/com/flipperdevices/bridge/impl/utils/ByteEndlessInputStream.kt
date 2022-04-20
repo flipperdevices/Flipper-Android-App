@@ -1,15 +1,39 @@
 package com.flipperdevices.bridge.impl.utils
 
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.verbose
 import it.unimi.dsi.fastutil.bytes.ByteArrayFIFOQueue
 import java.io.InputStream
-import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.coroutines.cancellation.CancellationException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.awaitCancellation
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class ByteEndlessInputStream : InputStream() {
-    private val isRunning = AtomicBoolean(true)
+class ByteEndlessInputStream(
+    private val scope: CoroutineScope
+) : InputStream(), LogTagProvider {
+    override val TAG = "ByteEndlessInputStream"
 
     private val queue = ByteArrayFIFOQueue()
     private var balancer = 0
+
+    init {
+        scope.launch {
+            try {
+                awaitCancellation()
+            } finally {
+                verbose { "Notify about cancel queue. Scope active is: ${scope.isActive}" }
+                withContext(NonCancellable) {
+                    synchronized(queue) {
+                        queue.notifyAll()
+                    }
+                }
+            }
+        }
+    }
 
     fun write(byteArray: ByteArray) = synchronized(queue) {
         byteArray.forEach {
@@ -33,18 +57,16 @@ class ByteEndlessInputStream : InputStream() {
     private fun readOneByte(): Byte {
         // Wait while we not emit any bytes in queue
         while (queue.isEmpty) {
-            if (!isRunning.get()) {
+            if (!scope.isActive) {
                 throw CancellationException()
             }
             queue.wait()
         }
+        if (!scope.isActive) {
+            throw CancellationException()
+        }
 
         return queue.dequeueByte()
-    }
-
-    fun stop() {
-        isRunning.compareAndSet(true, false)
-        queue.notifyAll()
     }
 }
 

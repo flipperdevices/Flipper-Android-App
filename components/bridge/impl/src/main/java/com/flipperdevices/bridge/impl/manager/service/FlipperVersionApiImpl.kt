@@ -7,6 +7,7 @@ import com.flipperdevices.bridge.api.manager.service.FlipperVersionApi
 import com.flipperdevices.bridge.api.model.FlipperVersionInformation
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.impl.manager.UnsafeBleManager
+import com.flipperdevices.core.ktx.jre.runBlockingWithLog
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.Settings
@@ -38,8 +39,10 @@ class FlipperVersionApiImpl(
         return serviceFounded
     }
 
-    override suspend fun initialize(bleManager: UnsafeBleManager) {
-        val ignoreUnsupported = settingsStore.data.first().ignoreUnsupportedVersion
+    override fun initialize(bleManager: UnsafeBleManager) {
+        val ignoreUnsupported = runBlockingWithLog {
+            settingsStore.data.first().ignoreUnsupportedVersion
+        }
 
         bleManager.readCharacteristicUnsafe(apiVersionCharacteristics)
             .with { _, data ->
@@ -52,8 +55,8 @@ class FlipperVersionApiImpl(
             }.enqueue()
     }
 
-    override suspend fun reset(bleManager: UnsafeBleManager) {
-        flipperVersionState.emit(FlipperVersionInformation())
+    override fun reset(bleManager: UnsafeBleManager) {
+        runBlockingWithLog { flipperVersionState.emit(FlipperVersionInformation()) }
     }
 
     private fun onSupportedVersionReceived(

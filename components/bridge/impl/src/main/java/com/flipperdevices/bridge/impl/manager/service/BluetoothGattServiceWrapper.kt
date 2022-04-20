@@ -22,13 +22,13 @@ interface BluetoothGattServiceWrapper {
      * Call when device is ready for reading characteristics
      * Call after {@link #onServiceReceived}
      */
-    suspend fun initialize(bleManager: UnsafeBleManager)
+    fun initialize(bleManager: UnsafeBleManager)
 
     /**
      * Reset stateflows and others stateful component
      * Calls after reconnect to new device or invalidate services
      */
-    suspend fun reset(bleManager: UnsafeBleManager)
+    fun reset(bleManager: UnsafeBleManager)
 }
 
 fun LogTagProvider.getServiceOrLog(gatt: BluetoothGatt, uuid: UUID): BluetoothGattService? {

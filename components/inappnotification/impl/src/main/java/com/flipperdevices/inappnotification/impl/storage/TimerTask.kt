@@ -1,5 +1,6 @@
 package com.flipperdevices.inappnotification.impl.storage
 
+import com.flipperdevices.core.ktx.jre.runBlockingWithLog
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import java.util.concurrent.locks.ReentrantLock
@@ -12,7 +13,6 @@ import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class TimerTask(
     private val delayDuration: Duration,
@@ -36,7 +36,7 @@ class TimerTask(
 
     fun shutdown() {
         lock.withLock {
-            runBlocking {
+            runBlockingWithLog {
                 job?.cancelAndJoin()
             }
         }

@@ -9,10 +9,10 @@ import com.flipperdevices.bridge.impl.manager.UnsafeBleManager
 import com.flipperdevices.bridge.impl.manager.service.BluetoothGattServiceWrapper
 import com.flipperdevices.bridge.impl.manager.service.getCharacteristicOrLog
 import com.flipperdevices.bridge.impl.manager.service.getServiceOrLog
+import com.flipperdevices.core.ktx.jre.runBlockingWithLog
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import java.nio.ByteBuffer
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import no.nordicsemi.android.ble.data.Data
 
 const val CLASS_TAG = "FlipperSerialOverflowThrottler"
@@ -33,8 +32,6 @@ class FlipperSerialOverflowThrottler(
 ) : BluetoothGattServiceWrapper,
     LogTagProvider {
     override val TAG = CLASS_TAG
-
-    private val dispatcher: CoroutineDispatcher = Dispatchers.Default.limitedParallelism(1)
 
     private var overflowCharacteristics: BluetoothGattCharacteristic? = null
 
@@ -55,7 +52,7 @@ class FlipperSerialOverflowThrottler(
         return true
     }
 
-    override suspend fun initialize(bleManager: UnsafeBleManager) = runBlocking(dispatcher) {
+    override fun initialize(bleManager: UnsafeBleManager) = runBlockingWithLog("initialize") {
         overflowBufferJob?.cancelAndJoin()
         overflowBufferJob = getOverflowBufferJob()
         pendingBytes = null
@@ -69,7 +66,7 @@ class FlipperSerialOverflowThrottler(
         }.enqueue()
     }
 
-    override suspend fun reset(bleManager: UnsafeBleManager): Unit = runBlocking(dispatcher) {
+    override fun reset(bleManager: UnsafeBleManager): Unit = runBlockingWithLog("reset") {
         pendingBytes = null
         bleManager.setNotificationCallbackUnsafe(overflowCharacteristics) // reset (free) callback
         overflowBufferJob?.cancelAndJoin()

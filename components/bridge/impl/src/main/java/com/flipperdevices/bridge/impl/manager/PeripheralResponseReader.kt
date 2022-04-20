@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.impl.manager
 
 import com.flipperdevices.bridge.impl.utils.ByteEndlessInputStream
+import com.flipperdevices.core.ktx.jre.runBlockingWithLog
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.protobuf.Flipper
@@ -12,7 +13,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 const val TAG = "PeripheralResponseReader"
 
@@ -23,34 +23,34 @@ class PeripheralResponseReader(
     override val TAG = "PeripheralResponseReader"
     private var byteInputStream: ByteEndlessInputStream? = null
     private val responses = MutableSharedFlow<Flipper.Main>()
-    private val responseReaderDispatcher = Dispatchers.Default.limitedParallelism(1)
     private var responseReaderJob: Job? = null
 
-    suspend fun initialize() = runBlocking(responseReaderDispatcher) {
-        byteInputStream?.stop()
+    fun initialize() = runBlockingWithLog("initialize") {
         responseReaderJob?.cancelAndJoin()
-        byteInputStream = ByteEndlessInputStream()
-        responseReaderJob = parseLoopJob()
+        responseReaderJob = scope.launch {
+            val byteInputStreamLocal = ByteEndlessInputStream(this)
+            byteInputStream = byteInputStreamLocal
+            parseLoopJob(byteInputStreamLocal)
+        }
     }
 
-    suspend fun onReceiveBytes(byteArray: ByteArray) = runBlocking(responseReaderDispatcher) {
+    fun onReceiveBytes(byteArray: ByteArray) {
         info { "Receive proto array with size: ${byteArray.size}" }
         byteInputStream?.write(byteArray)
     }
 
-    suspend fun reset() = runBlocking(responseReaderDispatcher) {
+    fun reset() = runBlockingWithLog("reset") {
         responseReaderJob?.cancelAndJoin()
         responseReaderJob = null
     }
 
     fun getResponses(): Flow<Flipper.Main> = responses
 
-    private fun parseLoopJob(): Job = scope.launch(Dispatchers.Default) {
-        val localByteInputStream = byteInputStream
+    private suspend fun CoroutineScope.parseLoopJob(byteInputStream: ByteEndlessInputStream) {
         while (this.isActive) {
-            val main = Flipper.Main.parseDelimitedFrom(localByteInputStream)
+            val main = Flipper.Main.parseDelimitedFrom(byteInputStream)
             info { "Receive $main response" }
-            scope.launch {
+            scope.launch(Dispatchers.Default) {
                 responses.emit(main)
             }
         }
