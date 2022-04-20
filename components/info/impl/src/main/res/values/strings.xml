@@ -38,5 +38,6 @@
     <string name="info_device_firmware_version_dev">Dev</string>
     <string name="info_device_firmware_version_rc">RC</string>
     <string name="info_device_firmware_version_release">Release</string>
+    <string name="info_device_firmware_version_choice">Choice version</string>
     <string name="info_device_unknown">—</string>
 </resources>

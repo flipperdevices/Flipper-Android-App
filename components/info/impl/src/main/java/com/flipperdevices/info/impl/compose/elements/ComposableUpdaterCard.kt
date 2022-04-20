@@ -20,8 +20,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.compose.info.ComposableDeviceInfoRow
-import com.flipperdevices.info.impl.compose.info.ComposableFirmwareVersionValue
 import com.flipperdevices.info.impl.compose.info.ComposableInfoDivider
+import com.flipperdevices.info.impl.compose.info.ComposableUpdaterFirmwareVersionWithChoice
 import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
 import com.flipperdevices.updater.api.UpdaterUIApi
@@ -44,7 +44,8 @@ fun ComposableUpdaterCard(
         modifier = modifier,
         titleId = R.string.info_device_updater_title
     ) {
-        val cardState by updaterUiApi.getUpdateCardState()
+        val updateCardApi = updaterUiApi.getUpdateCardApi()
+        val cardState by updateCardApi.getUpdateCardState().collectAsState()
         val cardStateLocal = cardState
 
         when (cardStateLocal) {
@@ -94,7 +95,11 @@ private fun ComposableFirmwareUpdaterContent(
     updateCardState: UpdateCardState
 ) {
     ComposableDeviceInfoRow(titleId = R.string.info_device_updater_channel, inProgress = false) {
-        ComposableFirmwareVersionValue(modifier = it, version = version)
+        ComposableUpdaterFirmwareVersionWithChoice(
+            modifier = it,
+            updaterUIApi = updaterUiApi,
+            version = version
+        )
     }
     ComposableInfoDivider()
     updaterUiApi.RenderUpdateButton(updateCardState)
