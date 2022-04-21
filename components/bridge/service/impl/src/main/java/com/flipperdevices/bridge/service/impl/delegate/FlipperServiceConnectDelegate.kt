@@ -14,15 +14,18 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import javax.inject.Inject
 import javax.inject.Provider
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
 import no.nordicsemi.android.ble.exception.BluetoothDisabledException
 
 class FlipperServiceConnectDelegate(
     private val bleManager: FlipperBleManager,
+    private val scope: CoroutineScope,
     private val context: Context
 ) : LogTagProvider {
     override val TAG = "FlipperServiceConnectDelegate"
@@ -42,58 +45,69 @@ class FlipperServiceConnectDelegate(
     private val scanner by scannerProvider
     private val adapter by adapterProvider
 
-    suspend fun reconnect(deviceId: String) = withContext(dispatcher) {
-        // If we already connected to device, just ignore it
-        if (bleManager.connectionInformationApi.isDeviceConnected()) {
-            disconnect()
-        }
-        // If Bluetooth disable, return exception
-        if (!adapter.isEnabled) {
-            throw BluetoothDisabledException()
-        }
+    suspend fun reconnect(deviceId: String) {
+        scope.launch(dispatcher) {
+            runCatching {
+                // If we already connected to device, just ignore it
+                disconnect()
 
-        if (PermissionHelper.getUngrantedPermission(
-                context,
-                PermissionHelper.getRequiredPermissions()
-            ).isNotEmpty()
-        ) {
-            throw SecurityException(
-                """
+                // If Bluetooth disable, return exception
+                if (!adapter.isEnabled) {
+                    throw BluetoothDisabledException()
+                }
+
+                if (PermissionHelper.getUngrantedPermission(
+                        context,
+                        PermissionHelper.getRequiredPermissions()
+                    ).isNotEmpty()
+                ) {
+                    throw SecurityException(
+                        """
                 For connect to Flipper via bluetooth you need grant permission for you application. 
                 Please, check PermissionHelper#checkPermissions
-                """.trimIndent()
-            )
-        }
+                        """.trimIndent()
+                    )
+                }
 
-        // We try find device in manual mode and connect with it
-        findAndConnectToDevice(deviceId)
+                // We try find device in manual mode and connect with it
+                findAndConnectToDevice(deviceId)
+            }
+        }.join()
     }
 
-    suspend fun disconnect() = withContext(dispatcher) {
-        try {
-            withTimeout(Constants.BLE.DISCONNECT_TIMEOUT_MS) {
-                bleManager.disconnectDevice()
+    suspend fun disconnect() {
+        scope.launch(dispatcher) {
+            runBlocking {
+                try {
+                    withTimeout(Constants.BLE.DISCONNECT_TIMEOUT_MS) {
+                        bleManager.disconnectDevice()
+                    }
+                } catch (timeout: TimeoutCancellationException) {
+                    error(timeout.cause) {
+                        "Can't disconnect device with timeout ${Constants.BLE.DISCONNECT_TIMEOUT_MS}"
+                    }
+                }
             }
-        } catch (timeout: TimeoutCancellationException) {
-            error(timeout.cause) {
-                "Can't disconnect device with timeout ${Constants.BLE.DISCONNECT_TIMEOUT_MS}"
-            }
-        }
+        }.join()
     }
 
     // All rights must be obtained before calling this method
     @SuppressLint("MissingPermission")
     private suspend fun findAndConnectToDevice(
         deviceId: String
-    ) = withContext(dispatcher) {
-        var device = adapter.bondedDevices.find { it.address == deviceId }
+    ) {
+        scope.launch(dispatcher) {
+            runBlocking {
+                var device = adapter.bondedDevices.find { it.address == deviceId }
 
-        if (device == null) {
-            device = withTimeout(Constants.BLE.CONNECT_TIME_MS) {
-                scanner.findFlipperById(deviceId).first()
-            }.device
-        }
+                if (device == null) {
+                    device = withTimeout(Constants.BLE.CONNECT_TIME_MS) {
+                        scanner.findFlipperById(deviceId).first()
+                    }.device
+                }
 
-        bleManager.connectToDevice(device)
+                bleManager.connectToDevice(device)
+            }
+        }.join()
     }
 }

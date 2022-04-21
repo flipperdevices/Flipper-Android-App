@@ -28,7 +28,7 @@ class FlipperSafeConnectWrapper(
     private val dispatcher = Dispatchers.Default.limitedParallelism(1)
     private var currentConnectingJob: Job? = null
 
-    private val connectDelegate = FlipperServiceConnectDelegate(bleManager, context)
+    private val connectDelegate = FlipperServiceConnectDelegate(bleManager, scope, context)
 
     suspend fun onActiveDeviceUpdate(deviceId: String?) {
         scope.launch(dispatcher) {

@@ -25,7 +25,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 
-class FlipperServiceApiImpl(
+class FlipperServiceApiImpl constructor(
     context: Context,
     lifecycleOwner: LifecycleOwner,
     serviceErrorListener: FlipperServiceErrorListener
