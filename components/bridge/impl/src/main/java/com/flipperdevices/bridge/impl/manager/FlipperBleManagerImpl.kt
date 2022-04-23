@@ -20,19 +20,18 @@ import com.flipperdevices.bridge.impl.manager.service.request.FlipperRequestApiI
 import com.flipperdevices.bridge.impl.manager.service.requestservice.FlipperRpcInformationApiImpl
 import com.flipperdevices.bridge.impl.utils.initializeSafe
 import com.flipperdevices.bridge.impl.utils.onServiceReceivedSafe
-import com.flipperdevices.core.ktx.jre.newSingleThreadExecutor
+import com.flipperdevices.core.ktx.jre.launchWithLock
+import com.flipperdevices.core.ktx.jre.runBlockingWithLog
+import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.debug
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.Settings
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.sync.Mutex
 import no.nordicsemi.android.ble.ConnectionPriorityRequest
 
 @Suppress("BlockingMethodInNonBlockingContext")
@@ -44,8 +43,7 @@ class FlipperBleManagerImpl constructor(
     private val lagsDetector: FlipperLagsDetector
 ) : UnsafeBleManager(scope, context), FlipperBleManager, LogTagProvider {
     override val TAG = "FlipperBleManager"
-    private val bleDispatcher = newSingleThreadExecutor(TAG)
-        .asCoroutineDispatcher()
+    private val bleMutex = Mutex()
 
     // Gatt Delegates
 
@@ -63,23 +61,31 @@ class FlipperBleManagerImpl constructor(
         info { "FlipperBleManagerImpl: ${this.hashCode()}" }
     }
 
-    override suspend fun disconnectDevice() = withContext(bleDispatcher) {
-        disconnect().enqueue()
+    override suspend fun disconnectDevice() {
+        withLock(bleMutex, "disconnect") {
+            disconnect().enqueue()
+            return@withLock
+        }
+
         // Wait until device is really disconnected
         stateAsFlow().filter { it is ConnectionState.Disconnected }.first()
-        return@withContext
     }
 
-    override suspend fun connectToDevice(device: BluetoothDevice) = withContext(bleDispatcher) {
-        connect(device).retry(
-            Constants.BLE.RECONNECT_COUNT,
-            Constants.BLE.RECONNECT_TIME_MS.toInt()
-        ).useAutoConnect(true)
-            .enqueue()
+    override suspend fun connectToDevice(
+        device: BluetoothDevice
+    ) {
+        withLock(bleMutex, "connect") {
+            connect(device).retry(
+                Constants.BLE.RECONNECT_COUNT,
+                Constants.BLE.RECONNECT_TIME_MS.toInt()
+            ).useAutoConnect(true)
+                .enqueue()
+
+            return@withLock
+        }
 
         // Wait until device is really connected
         stateAsFlow().filter { it is ConnectionState.Initializing }.first()
-        return@withContext
     }
 
     override fun log(priority: Int, message: String) {
@@ -99,36 +105,41 @@ class FlipperBleManagerImpl constructor(
             }
         }
 
-        override fun onDeviceReady() {
-            scope.launch(bleDispatcher) {
-                // Set up large MTU
-                // Also does not work with small MTU because of a bug in Flipper Zero firmware
-                requestMtu(Constants.BLE.MAX_MTU).enqueue()
-                requestConnectionPriority(
-                    ConnectionPriorityRequest.CONNECTION_PRIORITY_HIGH
-                ).enqueue()
-                informationApi.initializeSafe(this@FlipperBleManagerImpl) {
-                    error(it) { "Error while initialize information api" }
-                    serviceErrorListener.onError(
-                        FlipperBleServiceError.SERVICE_INFORMATION_FAILED_INIT
-                    )
-                }
-                flipperVersionApi.initializeSafe(this@FlipperBleManagerImpl) {
-                    error(it) { "Error while initialize version api" }
-                    serviceErrorListener.onError(
-                        FlipperBleServiceError.SERVICE_VERSION_FAILED_INIT
-                    )
-                }
-                flipperRequestApi.initializeSafe(this@FlipperBleManagerImpl) {
-                    error(it) { "Error while initialize request api" }
-                    serviceErrorListener.onError(FlipperBleServiceError.SERVICE_SERIAL_FAILED_INIT)
-                }
-                runCatching {
-                    flipperRpcInformationApi.initialize(flipperRequestApi)
-                }.onFailure {
-                    error(it) { "Error while initialize rpc information api" }
-                }
+        override fun onDeviceReady() = launchWithLock(bleMutex, scope, "init") {
+            // Set up large MTU
+            // Also does not work with small MTU because of a bug in Flipper Zero firmware
+            requestMtu(Constants.BLE.MAX_MTU).enqueue()
+            requestConnectionPriority(
+                ConnectionPriorityRequest.CONNECTION_PRIORITY_HIGH
+            ).enqueue()
+
+            info { "On device ready called" }
+            informationApi.initializeSafe(this@FlipperBleManagerImpl) {
+                error(it) { "Error while initialize information api" }
+                serviceErrorListener.onError(
+                    FlipperBleServiceError.SERVICE_INFORMATION_FAILED_INIT
+                )
             }
+            flipperVersionApi.initializeSafe(this@FlipperBleManagerImpl) {
+                error(it) { "Error while initialize version api" }
+                serviceErrorListener.onError(
+                    FlipperBleServiceError.SERVICE_VERSION_FAILED_INIT
+                )
+            }
+
+            flipperRequestApi.initializeSafe(this@FlipperBleManagerImpl) {
+                error(it) { "Error while initialize request api" }
+                serviceErrorListener.onError(
+                    FlipperBleServiceError.SERVICE_SERIAL_FAILED_INIT
+                )
+            }
+            runCatching {
+                flipperRpcInformationApi.initialize(flipperRequestApi)
+            }.onFailure {
+                error(it) { "Error while initialize rpc information api" }
+            }
+
+            return@launchWithLock
         }
 
         override fun isRequiredServiceSupported(gatt: BluetoothGatt): Boolean {
@@ -151,7 +162,7 @@ class FlipperBleManagerImpl constructor(
             flipperVersionApi.onServiceReceivedSafe(gatt) {
                 error(it) { "Can't find service for version api" }
                 setDeviceSupportedStatus(
-                    runBlocking {
+                    runBlockingWithLog {
                         settingsStore.data.first().ignoreUnsupportedVersion
                     }
                 )
@@ -161,15 +172,14 @@ class FlipperBleManagerImpl constructor(
             return true
         }
 
-        override fun onServicesInvalidated() {
-            scope.launch(bleDispatcher) {
-                informationApi.reset(this@FlipperBleManagerImpl)
-                flipperVersionApi.reset(this@FlipperBleManagerImpl)
-                flipperRequestApi.reset(this@FlipperBleManagerImpl)
-                flipperRpcInformationApi.reset()
-            }
+        override fun onServicesInvalidated() = launchWithLock(bleMutex, scope, "reset") {
+            informationApi.reset(this@FlipperBleManagerImpl)
+            flipperVersionApi.reset(this@FlipperBleManagerImpl)
+            flipperRequestApi.reset(this@FlipperBleManagerImpl)
+            flipperRpcInformationApi.reset()
         }
 
+        @Deprecated("Use {@link ReadRequest#with(DataReceivedCallback)} instead")
         override fun onCharacteristicRead(
             gatt: BluetoothGatt,
             characteristic: BluetoothGattCharacteristic

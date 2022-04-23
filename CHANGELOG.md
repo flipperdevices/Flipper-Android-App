@@ -2,6 +2,7 @@
 
 # 1.1 - In progress
 
+- [BUGFIX] Fix reconnect issues
 - [BUGFIX] Fix synchronization start after first login
 - [Feature] Use new design for unsupported card and for unsupported dialog
 - [Feature] Restart connection if flipper not respond 30 seconds

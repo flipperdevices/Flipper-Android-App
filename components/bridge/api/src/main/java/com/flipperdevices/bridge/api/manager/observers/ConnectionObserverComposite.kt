@@ -13,56 +13,71 @@ class ConnectionObserverComposite(
 ) : ConnectionObserver {
     @Suppress("SpreadOperator")
     private val observers = mutableListOf(*initialObservers)
-    private val compositeDispatcher = Dispatchers.Default.limitedParallelism(1)
 
+    @Synchronized
     fun addObserver(observer: SuspendConnectionObserver) {
-        scope.launch(compositeDispatcher) {
-            if (observers.contains(observer)) {
-                return@launch
-            }
-            observers.add(observer)
+        if (observers.contains(observer)) {
+            return
         }
+        observers.add(observer)
     }
 
+    @Synchronized
     fun removeObserver(observer: SuspendConnectionObserver) {
-        scope.launch(compositeDispatcher) {
-            observers.remove(observer)
-        }
+        observers.remove(observer)
     }
 
+    @Synchronized
     override fun onDeviceConnecting(device: BluetoothDevice) {
-        scope.launch(compositeDispatcher) {
-            observers.forEachIterable { it.onDeviceConnecting(device) }
+        observers.forEachIterable {
+            scope.launch(Dispatchers.Default) {
+                it.onDeviceConnecting(device)
+            }
         }
     }
 
+    @Synchronized
     override fun onDeviceConnected(device: BluetoothDevice) {
-        scope.launch(compositeDispatcher) {
-            observers.forEachIterable { it.onDeviceConnected(device) }
+        observers.forEachIterable {
+            scope.launch(Dispatchers.Default) {
+                it.onDeviceConnected(device)
+            }
         }
     }
 
+    @Synchronized
     override fun onDeviceFailedToConnect(device: BluetoothDevice, reason: Int) {
-        scope.launch(compositeDispatcher) {
-            observers.forEachIterable { it.onDeviceFailedToConnect(device, reason) }
+        observers.forEachIterable {
+            scope.launch(Dispatchers.Default) {
+                it.onDeviceFailedToConnect(device, reason)
+            }
         }
     }
 
+    @Synchronized
     override fun onDeviceReady(device: BluetoothDevice) {
-        scope.launch(compositeDispatcher) {
-            observers.forEachIterable { it.onDeviceReady(device) }
+        observers.forEachIterable {
+            scope.launch(Dispatchers.Default) {
+                it.onDeviceReady(device)
+            }
         }
     }
 
+    @Synchronized
     override fun onDeviceDisconnecting(device: BluetoothDevice) {
-        scope.launch(compositeDispatcher) {
-            observers.forEachIterable { it.onDeviceDisconnecting(device) }
+        observers.forEachIterable {
+            scope.launch(Dispatchers.Default) {
+                it.onDeviceDisconnecting(device)
+            }
         }
     }
 
+    @Synchronized
     override fun onDeviceDisconnected(device: BluetoothDevice, reason: Int) {
-        scope.launch(compositeDispatcher) {
-            observers.forEachIterable { it.onDeviceDisconnected(device, reason) }
+        observers.forEachIterable {
+            scope.launch(Dispatchers.Default) {
+                it.onDeviceDisconnected(device, reason)
+            }
         }
     }
 }

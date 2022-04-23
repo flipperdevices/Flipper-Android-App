@@ -4,6 +4,7 @@ import android.content.Context
 import com.flipperdevices.bridge.api.error.FlipperBleServiceError
 import com.flipperdevices.bridge.api.error.FlipperServiceErrorListener
 import com.flipperdevices.bridge.api.manager.FlipperBleManager
+import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
@@ -13,7 +14,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.sync.Mutex
 import no.nordicsemi.android.ble.exception.BluetoothDisabledException
 
 class FlipperSafeConnectWrapper(
@@ -25,12 +26,14 @@ class FlipperSafeConnectWrapper(
     override val TAG = "FlipperSafeConnectWrapper"
 
     // It makes sure that we don't change the currentConnectingJob variable in different threads
-    private val dispatcher = Dispatchers.Default.limitedParallelism(1)
+    private val mutex = Mutex()
     private var currentConnectingJob: Job? = null
 
     private val connectDelegate = FlipperServiceConnectDelegate(bleManager, context)
 
-    suspend fun onActiveDeviceUpdate(deviceId: String?) = withContext(dispatcher) {
+    suspend fun onActiveDeviceUpdate(
+        deviceId: String?
+    ) = launchWithLock(mutex, scope, "onActiveDeviceUpdate") {
         info { "Call cancel and join to current job" }
         currentConnectingJob?.cancelAndJoin()
         info { "Job canceled! Call connect again" }

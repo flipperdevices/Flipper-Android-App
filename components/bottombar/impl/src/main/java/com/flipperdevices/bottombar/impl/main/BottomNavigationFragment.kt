@@ -22,6 +22,8 @@ import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
 import com.flipperdevices.connection.api.ConnectionApi
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.setStatusBarColor
+import com.flipperdevices.core.ktx.jre.runBlockingWithLog
+import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.navigation.delegates.OnBackPressListener
 import com.flipperdevices.core.preference.pb.SelectedTab
 import com.flipperdevices.core.preference.pb.Settings
@@ -29,9 +31,10 @@ import com.flipperdevices.core.ui.provider.StatusBarColorProvider
 import com.flipperdevices.inappnotification.api.InAppNotificationRenderer
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
 
-class BottomNavigationFragment : Fragment(), OnBackPressListener {
+class BottomNavigationFragment : Fragment(), OnBackPressListener, LogTagProvider {
+    override val TAG = "BottomNavigationFragment"
+
     private val bottomNavigationViewModel by viewModels<BottomNavigationViewModel>()
     private val notificationViewModel by viewModels<InAppNotificationViewModel>()
 
@@ -138,11 +141,11 @@ class BottomNavigationFragment : Fragment(), OnBackPressListener {
     }
 
     private fun getFirstTab(): FlipperBottomTab {
-        return runBlocking {
+        return runBlockingWithLog("selected_tab") {
             val selectedTab = settingsDataStore.data.first().selectedTab
-                ?: return@runBlocking FlipperBottomTab.DEVICE
+                ?: return@runBlockingWithLog FlipperBottomTab.DEVICE
 
-            return@runBlocking when (selectedTab) {
+            return@runBlockingWithLog when (selectedTab) {
                 SelectedTab.UNRECOGNIZED,
                 SelectedTab.DEVICE -> FlipperBottomTab.DEVICE
                 SelectedTab.ARCHIVE -> FlipperBottomTab.ARCHIVE

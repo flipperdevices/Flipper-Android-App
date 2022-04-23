@@ -3,25 +3,28 @@ package com.flipperdevices.firstpair.impl.storage
 import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ktx.jre.runBlockingWithLog
+import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.preference.pb.PairSettings
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
 
-@ContributesBinding(AppGraph::class)
+@ContributesBinding(AppGraph::class, FirstPairStorage::class)
 class FirstPairStorageImpl @Inject constructor(
     private val pairSettingsStore: DataStore<PairSettings>
-) : FirstPairStorage {
+) : FirstPairStorage, LogTagProvider {
+    override val TAG = "FirstPairStorage"
+
     override fun isTosPassed(): Boolean {
-        return runBlocking { pairSettingsStore.data.first() }.tosPassed
+        return runBlockingWithLog { pairSettingsStore.data.first() }.tosPassed
     }
 
     override fun isDeviceSelected(): Boolean {
-        return runBlocking { pairSettingsStore.data.first() }.pairDevicePass
+        return runBlockingWithLog { pairSettingsStore.data.first() }.pairDevicePass
     }
 
-    override fun markTosPassed(): Unit = runBlocking {
+    override fun markTosPassed(): Unit = runBlockingWithLog {
         pairSettingsStore.updateData {
             it.toBuilder()
                 .setTosPassed(true)
@@ -32,7 +35,7 @@ class FirstPairStorageImpl @Inject constructor(
     override fun markDeviceSelected(
         deviceId: String?,
         deviceName: String?
-    ): Unit = runBlocking {
+    ): Unit = runBlockingWithLog {
         pairSettingsStore.updateData {
             var builder = it.toBuilder()
                 .setPairDevicePass(true)

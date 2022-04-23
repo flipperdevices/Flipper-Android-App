@@ -15,13 +15,17 @@ import com.flipperdevices.bridge.synchronization.impl.repository.FavoriteSynchro
 import com.flipperdevices.bridge.synchronization.impl.repository.KeysSynchronization
 import com.flipperdevices.bridge.synchronization.impl.repository.storage.ManifestRepository
 import com.flipperdevices.bridge.synchronization.impl.utils.TaskWithLifecycle
+import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.shake2report.api.Shake2ReportApi
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
 
 class SynchronizationTask(
@@ -35,8 +39,9 @@ class SynchronizationTask(
     override val TAG = "SynchronizationTask"
 
     private val taskScope = lifecycleScope
-    private val dispatcher = Dispatchers.Default.limitedParallelism(1)
+    private val mutex = Mutex()
     private val manifestRepository = ManifestRepository()
+    private var synchronizationJob: Job? = null
 
     fun start(
         onStateUpdate: suspend (SynchronizationState) -> Unit
@@ -44,14 +49,18 @@ class SynchronizationTask(
         info { "Start synchronization" }
         serviceProvider.provideServiceApi(this@SynchronizationTask) { serviceApi ->
             info { "Flipper service provided" }
-            taskScope.launch(dispatcher) {
-                // Waiting to be connected to the flipper
-                serviceApi.connectionInformationApi.getConnectionStateFlow()
-                    .collectLatest {
-                        if (it is ConnectionState.Ready && it.isSupported) {
-                            startInternal(serviceApi, onStateUpdate)
+            launchWithLock(mutex, taskScope) {
+                synchronizationJob?.cancelAndJoin()
+                synchronizationJob = null
+                synchronizationJob = taskScope.launch {
+                    // Waiting to be connected to the flipper
+                    serviceApi.connectionInformationApi.getConnectionStateFlow()
+                        .collectLatest {
+                            if (it is ConnectionState.Ready && it.isSupported) {
+                                startInternal(serviceApi, onStateUpdate)
+                            }
                         }
-                    }
+                }
             }
         }
         taskScope.launch {

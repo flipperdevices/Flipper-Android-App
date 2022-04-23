@@ -6,16 +6,19 @@ import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattService
 import android.content.Context
 import com.flipperdevices.bridge.api.manager.ktx.providers.ConnectionStateProvider
+import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
+import com.flipperdevices.bridge.api.manager.ktx.stateAsFlow
 import com.flipperdevices.bridge.api.manager.observers.ConnectionObserverComposite
 import com.flipperdevices.bridge.api.manager.observers.ConnectionObserverLogger
 import com.flipperdevices.bridge.api.manager.observers.SuspendConnectionObserver
 import com.flipperdevices.bridge.api.utils.Constants
-import com.flipperdevices.core.ktx.jre.newSingleThreadExecutor
+import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.asCoroutineDispatcher
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.sync.Mutex
 import no.nordicsemi.android.ble.BleManager
 
 /**
@@ -24,7 +27,7 @@ import no.nordicsemi.android.ble.BleManager
 @Suppress("BlockingMethodInNonBlockingContext")
 internal class FirstPairBleManager(
     context: Context,
-    scope: CoroutineScope
+    private val scope: CoroutineScope
 ) : BleManager(context),
     LogTagProvider,
     ConnectionStateProvider {
@@ -33,8 +36,7 @@ internal class FirstPairBleManager(
     private val connectionObservers = ConnectionObserverComposite(
         scope, ConnectionObserverLogger(TAG)
     )
-    private val bleDispatcher = newSingleThreadExecutor(TAG)
-        .asCoroutineDispatcher()
+    private val bleMutex = Mutex()
 
     init {
         setConnectionObserver(connectionObservers)
@@ -78,8 +80,13 @@ internal class FirstPairBleManager(
         override fun onServicesInvalidated() = Unit
     }
 
-    suspend fun connectToDevice(device: BluetoothDevice) = withContext(bleDispatcher) {
-        connect(device).await()
+    suspend fun connectToDevice(device: BluetoothDevice) = withLock(bleMutex, "connect") {
+        connect(device)
+            .useAutoConnect(false)
+            .enqueue()
+
+        // Wait until device is really connected
+        stateAsFlow().filter { it is ConnectionState.Initializing }.first()
     }
 
     override fun subscribeOnConnectionState(observer: SuspendConnectionObserver) {

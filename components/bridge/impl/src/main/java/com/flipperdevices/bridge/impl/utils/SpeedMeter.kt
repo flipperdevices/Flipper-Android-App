@@ -18,7 +18,7 @@ class SpeedMeter(scope: CoroutineScope) {
     private var bytesCollected = AtomicLong(0)
 
     init {
-        scope.launch {
+        scope.launch(Dispatchers.Default) {
             calculateSpeedEachSecond()
         }
     }

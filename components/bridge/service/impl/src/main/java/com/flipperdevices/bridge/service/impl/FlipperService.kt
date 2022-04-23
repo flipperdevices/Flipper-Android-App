@@ -12,12 +12,12 @@ import com.flipperdevices.bridge.service.impl.provider.error.CompositeFlipperSer
 import com.flipperdevices.bridge.service.impl.provider.error.CompositeFlipperServiceErrorListenerImpl
 import com.flipperdevices.bridge.service.impl.provider.lifecycle.FlipperServiceLifecycleListener
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.ktx.jre.runBlockingWithLog
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class FlipperService : LifecycleService(), LogTagProvider {
     override val TAG = "FlipperService-${hashCode()}"
@@ -36,7 +36,7 @@ class FlipperService : LifecycleService(), LogTagProvider {
             .dataStoreSettings
             .get()
 
-        if (runBlocking { dataStoreSettings.data.first() }.usedForegroundService) {
+        if (runBlockingWithLog { dataStoreSettings.data.first() }.usedForegroundService) {
             val flipperNotificationLocal = FlipperNotificationHelper(this)
             flipperNotification = flipperNotificationLocal
             startForeground(FLIPPER_NOTIFICATION_ID, flipperNotificationLocal.show())

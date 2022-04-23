@@ -8,12 +8,12 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.impl.model.DatabaseKeyContent
 import com.flipperdevices.core.ktx.jre.createNewFileWithMkDirs
 import com.flipperdevices.core.ktx.jre.md5
+import com.flipperdevices.core.ktx.jre.runBlockingWithLog
 import com.flipperdevices.core.log.BuildConfig
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.preference.FlipperStorageProvider
 import java.io.File
-import kotlinx.coroutines.runBlocking
 
 @ProvidedTypeConverter
 class DatabaseKeyContentConverter(context: Context) : LogTagProvider {
@@ -35,7 +35,7 @@ class DatabaseKeyContentConverter(context: Context) : LogTagProvider {
 
         val keyContentNotNull = keyContent?.flipperContent ?: return null
 
-        return runBlocking {
+        return runBlockingWithLog("convert") {
             keyContentToPathInternal(keyContentNotNull)
         }
     }
