@@ -141,7 +141,7 @@ class BottomNavigationFragment : Fragment(), OnBackPressListener, LogTagProvider
     }
 
     private fun getFirstTab(): FlipperBottomTab {
-        return runBlockingWithLog {
+        return runBlockingWithLog("selected_tab") {
             val selectedTab = settingsDataStore.data.first().selectedTab
                 ?: return@runBlockingWithLog FlipperBottomTab.DEVICE
 

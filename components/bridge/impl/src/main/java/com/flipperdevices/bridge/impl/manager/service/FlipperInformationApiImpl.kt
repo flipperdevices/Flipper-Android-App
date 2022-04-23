@@ -49,7 +49,7 @@ class FlipperInformationApiImpl(
         return true
     }
 
-    override fun initialize(bleManager: UnsafeBleManager) {
+    override suspend fun initialize(bleManager: UnsafeBleManager) {
         readInformationService(bleManager)
         readGenericService(bleManager)
         readBattery(bleManager)
@@ -126,8 +126,8 @@ class FlipperInformationApiImpl(
         }
     }
 
-    override fun reset(bleManager: UnsafeBleManager) {
-        scope.launch { informationState.emit(FlipperGATTInformation()) }
+    override suspend fun reset(bleManager: UnsafeBleManager) {
+        informationState.emit(FlipperGATTInformation())
     }
 
     override fun getInformationFlow(): StateFlow<FlipperGATTInformation> {

@@ -9,7 +9,7 @@ import com.flipperdevices.bridge.impl.manager.UnsafeBleManager
 import com.flipperdevices.bridge.impl.manager.service.BluetoothGattServiceWrapper
 import com.flipperdevices.bridge.impl.manager.service.getCharacteristicOrLog
 import com.flipperdevices.bridge.impl.manager.service.getServiceOrLog
-import com.flipperdevices.core.ktx.jre.runBlockingWithLog
+import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import java.nio.ByteBuffer
@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
 import no.nordicsemi.android.ble.data.Data
 
 const val CLASS_TAG = "FlipperSerialOverflowThrottler"
@@ -35,6 +36,7 @@ class FlipperSerialOverflowThrottler(
 
     private var overflowCharacteristics: BluetoothGattCharacteristic? = null
 
+    private val mutex = Mutex()
     private var pendingBytes: ByteArray? = null
     private var overflowBufferJob: Job? = null
 
@@ -52,7 +54,9 @@ class FlipperSerialOverflowThrottler(
         return true
     }
 
-    override fun initialize(bleManager: UnsafeBleManager) = runBlockingWithLog("initialize") {
+    override suspend fun initialize(
+        bleManager: UnsafeBleManager
+    ) = withLock(mutex, "initialize") {
         overflowBufferJob?.cancelAndJoin()
         overflowBufferJob = getOverflowBufferJob()
         pendingBytes = null
@@ -66,7 +70,9 @@ class FlipperSerialOverflowThrottler(
         }.enqueue()
     }
 
-    override fun reset(bleManager: UnsafeBleManager): Unit = runBlockingWithLog("reset") {
+    override suspend fun reset(
+        bleManager: UnsafeBleManager
+    ) = withLock(mutex, "reset") {
         pendingBytes = null
         bleManager.setNotificationCallbackUnsafe(overflowCharacteristics) // reset (free) callback
         overflowBufferJob?.cancelAndJoin()

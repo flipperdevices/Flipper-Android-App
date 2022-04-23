@@ -11,7 +11,6 @@ import com.flipperdevices.bridge.impl.manager.overflow.FlipperRequestStorage
 import com.flipperdevices.bridge.impl.manager.overflow.FlipperRequestStorageImpl
 import com.flipperdevices.bridge.impl.manager.overflow.FlipperSerialOverflowThrottler
 import com.flipperdevices.bridge.impl.manager.service.BluetoothGattServiceWrapper
-import com.flipperdevices.core.ktx.jre.runBlockingWithLog
 import com.flipperdevices.core.ktx.jre.updateAndGetSafe
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
@@ -154,25 +153,23 @@ class FlipperRequestApiImpl(
         return serialApiUnsafe && serialApi
     }
 
-    override fun initialize(bleManager: UnsafeBleManager) {
+    override suspend fun initialize(bleManager: UnsafeBleManager) {
         serialApiUnsafe.initialize(bleManager)
         serialApi.initialize(bleManager)
         reader.initialize()
     }
 
-    override fun reset(bleManager: UnsafeBleManager) {
+    override suspend fun reset(bleManager: UnsafeBleManager) {
         // Remove all elements from request listeners
         serialApiUnsafe.reset(bleManager)
         serialApi.reset(bleManager)
         reader.reset()
-        runBlockingWithLog("cancel_listener") {
-            requestListeners.values.forEach {
-                it.invoke(
-                    main {
-                        hasNext = false
-                    }
-                )
-            }
+        requestListeners.values.forEach {
+            it.invoke(
+                main {
+                    hasNext = false
+                }
+            )
         }
     }
 

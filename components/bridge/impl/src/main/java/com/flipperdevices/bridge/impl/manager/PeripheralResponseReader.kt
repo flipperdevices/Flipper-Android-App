@@ -1,7 +1,7 @@
 package com.flipperdevices.bridge.impl.manager
 
 import com.flipperdevices.bridge.impl.utils.ByteEndlessInputStream
-import com.flipperdevices.core.ktx.jre.runBlockingWithLog
+import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.protobuf.Flipper
@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
 
 const val TAG = "PeripheralResponseReader"
 
@@ -21,11 +22,12 @@ class PeripheralResponseReader(
     private val scope: CoroutineScope
 ) : LogTagProvider {
     override val TAG = "PeripheralResponseReader"
+    private val mutex = Mutex()
     private var byteInputStream: ByteEndlessInputStream? = null
     private val responses = MutableSharedFlow<Flipper.Main>()
     private var responseReaderJob: Job? = null
 
-    fun initialize() = runBlockingWithLog("initialize") {
+    suspend fun initialize() = withLock(mutex, "initialize") {
         responseReaderJob?.cancelAndJoin()
         responseReaderJob = scope.launch {
             val byteInputStreamLocal = ByteEndlessInputStream(this)
@@ -39,7 +41,7 @@ class PeripheralResponseReader(
         byteInputStream?.write(byteArray)
     }
 
-    fun reset() = runBlockingWithLog("reset") {
+    suspend fun reset() = withLock(mutex, "reset") {
         responseReaderJob?.cancelAndJoin()
         responseReaderJob = null
     }
