@@ -8,16 +8,25 @@ import com.flipperdevices.protobuf.system.pingRequest
 import com.google.protobuf.ByteString
 import java.io.ByteArrayOutputStream
 import java.nio.ByteBuffer
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.async
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
 class ByteEndlessInputStreamTest {
+    lateinit var scope: TestScope
     lateinit var subject: ByteEndlessInputStream
 
     @Before
     fun setUp() {
-        subject = ByteEndlessInputStream()
+        scope = TestScope()
+        subject = ByteEndlessInputStream(scope)
+        scope.advanceUntilIdle()
     }
 
     @Test
@@ -72,5 +81,19 @@ class ByteEndlessInputStreamTest {
 
         val actualMessage = Flipper.Main.parseDelimitedFrom(subject)
         Assert.assertEquals(message, actualMessage)
+    }
+
+    @Test
+    fun `On cancel scope we close stream`() = runTest {
+        var cancelException: Throwable? = null
+        val deffered = async {
+            cancelException = runCatching {
+                Flipper.Main.parseDelimitedFrom(subject)
+            }.exceptionOrNull()
+        }
+        scope.cancel()
+        scope.advanceUntilIdle()
+        deffered.await()
+        Assert.assertTrue(cancelException is CancellationException)
     }
 }
