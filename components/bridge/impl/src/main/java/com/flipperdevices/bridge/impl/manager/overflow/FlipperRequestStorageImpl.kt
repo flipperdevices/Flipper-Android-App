@@ -16,6 +16,28 @@ class FlipperRequestStorageImpl : FlipperRequestStorage {
         info { "Add new request. New request storage size: ${queue.size}" }
     }
 
+    override fun removeRequest(request: FlipperRequest) {
+        val isRemoved = queue.remove(request)
+        if (isRemoved) {
+            info { "Remove request ($isRemoved). New request storage size: ${queue.size}" }
+        }
+    }
+
+    override fun removeIf(filter: (FlipperRequest) -> Boolean) {
+        info {
+            "Start remove from storage by filter. Current request storage size is ${queue.size}"
+        }
+        val notDeletedRequests = mutableListOf<FlipperRequest>()
+        while (!queue.isEmpty()) {
+            val request = queue.poll() ?: continue
+            if (!filter(request)) {
+                notDeletedRequests.add(request)
+            } else info { "Found request for deleted by filter and delete it" }
+        }
+        queue.addAll(notDeletedRequests)
+        info { "Finish remove from storage by filter. Current request storage size is ${queue.size}" }
+    }
+
     override suspend fun getNextRequest(timeout: Long): FlipperRequest? {
         val request = runCatching {
             queue.poll(timeout, TimeUnit.MILLISECONDS)

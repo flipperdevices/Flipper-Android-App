@@ -4,6 +4,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.manager.delegates.toHumanReadableString
+import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.FlipperSerialSpeed
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.protobuf.ProtobufConstants
@@ -27,13 +28,17 @@ import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 import kotlin.random.Random
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -50,6 +55,7 @@ class StressTestViewModel : LifecycleViewModel() {
     private val stressTestState = MutableStateFlow(StressTestState())
     private val speedState = MutableStateFlow(FlipperSerialSpeed())
     private var byteBuffer = ByteArray(size = BUFFER_SIZE)
+    private var stressTestJob: Job? = null
 
     init {
         ComponentHolder.component<StressTestComponent>().inject(this)
@@ -61,13 +67,13 @@ class StressTestViewModel : LifecycleViewModel() {
 
     fun startBruteforce() {
         serviceProvider.provideServiceApi(this) { serviceApi ->
-            viewModelScope.launch {
+            stressTestJob = viewModelScope.launch {
                 if (!isStressTestRunning.compareAndSet(false, true)) {
                     return@launch
                 }
                 writeToLog("Stress test starting")
 
-                while (isStressTestRunning.get()) {
+                while (isActive && isStressTestRunning.get()) {
                     removeTemporaryFile(serviceApi.requestApi)
                     fillBuffer()
                     sendBufferToFile(serviceApi.requestApi)
@@ -86,7 +92,10 @@ class StressTestViewModel : LifecycleViewModel() {
     fun getSpeed(): StateFlow<FlipperSerialSpeed> = speedState
 
     fun stopBruteforce() {
-        isStressTestRunning.set(false)
+        viewModelScope.launch {
+            stressTestJob?.cancelAndJoin()
+            isStressTestRunning.set(false)
+        }
     }
 
     private fun writeToLog(log: String, color: Color = Color.Black) {
@@ -114,7 +123,7 @@ class StressTestViewModel : LifecycleViewModel() {
 
     private suspend fun sendBufferToFile(
         requestApi: FlipperRequestApi
-    ) = withContext(Dispatchers.IO) {
+    ) = withContext(Dispatchers.Default) {
         val splittedBytes = byteBuffer
             .split(ProtobufConstants.MAX_FILE_DATA)
         val requests = splittedBytes
@@ -122,7 +131,17 @@ class StressTestViewModel : LifecycleViewModel() {
                 getWriteRequest(bytes, isLast = index == splittedBytes.lastIndex)
             }
             .asFlow()
-        requestApi.request(requests)
+        requestApi.request(requests, onCancel = { id ->
+            requestApi.request(
+                main {
+                    hasNext = false
+                    commandId = id
+                    storageWriteRequest = writeRequest {
+                        path = TEST_FILE
+                    }
+                }.wrapToRequest(FlipperRequestPriority.RIGHT_NOW)
+            ).collect()
+        })
         writeToLog("Write file with length $BUFFER_SIZE successfully")
     }
 

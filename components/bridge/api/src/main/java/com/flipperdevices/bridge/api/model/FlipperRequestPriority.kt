@@ -6,6 +6,7 @@ package com.flipperdevices.bridge.api.model
  * Enum order is important
  */
 enum class FlipperRequestPriority {
+    RIGHT_NOW,
     FOREGROUND,
     DEFAULT,
     BACKGROUND

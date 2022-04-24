@@ -17,6 +17,17 @@ interface FlipperRequestStorage : LogTagProvider {
     fun sendRequest(vararg requests: FlipperRequest)
 
     /**
+     * If we did not have time to send the request,
+     * it should be removed from the waiting queue.
+     */
+    fun removeRequest(request: FlipperRequest)
+
+    /**
+     * We can remove requests that are waiting their turn using the filter
+     */
+    fun removeIf(filter: (FlipperRequest) -> Boolean)
+
+    /**
      * Call when call site ready to process next request
      * @return null if time is up
      */
