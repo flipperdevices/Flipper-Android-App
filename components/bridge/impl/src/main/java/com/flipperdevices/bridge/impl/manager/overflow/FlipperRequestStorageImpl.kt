@@ -35,7 +35,9 @@ class FlipperRequestStorageImpl : FlipperRequestStorage {
             } else info { "Found request for deleted by filter and delete it" }
         }
         queue.addAll(notDeletedRequests)
-        info { "Finish remove from storage by filter. Current request storage size is ${queue.size}" }
+        info {
+            "Finish remove from storage by filter. Current request storage size is ${queue.size}"
+        }
     }
 
     override suspend fun getNextRequest(timeout: Long): FlipperRequest? {
