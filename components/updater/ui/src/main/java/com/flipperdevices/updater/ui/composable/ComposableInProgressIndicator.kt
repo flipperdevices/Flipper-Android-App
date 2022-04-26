@@ -38,6 +38,7 @@ import com.flipperdevices.updater.ui.viewmodel.UpdaterViewModel
 import kotlin.math.roundToInt
 
 private const val PERCENT_MAX = 100
+private const val PERCENT_MIN = 0.1f
 
 @Composable
 @Suppress("LongParameterList")
@@ -103,7 +104,7 @@ private fun ComposableProgressBar(
                 .matchParentSize()
         ) {
             val wrapPercent = if (percent <= 0f) {
-                0.01f
+                PERCENT_MIN
             } else percent
 
             val remainingWeight = 1.0f - wrapPercent

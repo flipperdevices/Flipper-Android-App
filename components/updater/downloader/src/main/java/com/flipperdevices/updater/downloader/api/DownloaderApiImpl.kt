@@ -94,7 +94,9 @@ class DownloaderApiImpl @Inject constructor(
                 info { "File downloaded in ${tempFile.absolutePath}" }
 
                 downloadAndUnpackDelegate.unpack(tempFile, target)
-                info { "Unpack finished in ${target.absolutePath} ${target.listFiles()?.size} files" }
+                info {
+                    "Unpack finished in ${target.absolutePath} ${target.listFiles()?.size} files"
+                }
             }
         } else {
             downloadAndUnpackDelegate.download(
