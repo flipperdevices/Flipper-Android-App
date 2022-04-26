@@ -12,16 +12,16 @@ import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.model.FirmwareUpdateStatus
 import com.flipperdevices.info.impl.viewmodel.AlarmViewModel
 import com.flipperdevices.info.impl.viewmodel.ConnectViewModel
-import com.flipperdevices.info.impl.viewmodel.DeviceViewModel
+import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
 import com.flipperdevices.info.impl.viewmodel.FirmwareUpdateViewModel
 
 @Composable
 fun ComposableConnectedDeviceActionCard(
     modifier: Modifier,
-    deviceViewModel: DeviceViewModel = viewModel(),
+    deviceStatusViewModel: DeviceStatusViewModel = viewModel(),
     firmwareUpdateViewModel: FirmwareUpdateViewModel = viewModel()
 ) {
-    val deviceState by deviceViewModel.getState().collectAsState()
+    val deviceState by deviceStatusViewModel.getState().collectAsState()
     val firmwareUpdateStatus by firmwareUpdateViewModel.getState().collectAsState()
     if (deviceState is DeviceStatus.NoDevice) {
         return

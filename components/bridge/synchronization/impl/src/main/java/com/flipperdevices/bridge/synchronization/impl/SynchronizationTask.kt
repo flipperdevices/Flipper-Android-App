@@ -14,11 +14,11 @@ import com.flipperdevices.bridge.synchronization.impl.model.RestartSynchronizati
 import com.flipperdevices.bridge.synchronization.impl.repository.FavoriteSynchronization
 import com.flipperdevices.bridge.synchronization.impl.repository.KeysSynchronization
 import com.flipperdevices.bridge.synchronization.impl.repository.storage.ManifestRepository
-import com.flipperdevices.bridge.synchronization.impl.utils.TaskWithLifecycle
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.ui.TaskWithLifecycle
 import com.flipperdevices.shake2report.api.Shake2ReportApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

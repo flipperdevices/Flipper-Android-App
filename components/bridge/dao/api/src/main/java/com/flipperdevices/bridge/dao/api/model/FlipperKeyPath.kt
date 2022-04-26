@@ -4,6 +4,7 @@ import android.os.Parcelable
 import java.io.File
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
@@ -15,8 +16,11 @@ import kotlinx.serialization.Serializable
 @Serializable
 @Parcelize
 data class FlipperKeyPath constructor(
+    @SerialName("folder")
     val folder: String,
+    @SerialName("name")
     val name: String, // With extension
+    @SerialName("deleted")
     val deleted: Boolean
 ) : Parcelable, Comparable<FlipperKeyPath> {
     @IgnoredOnParcel

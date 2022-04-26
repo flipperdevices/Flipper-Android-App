@@ -37,6 +37,9 @@ appcompat = "1.4.1"
 datastore = "1.0.0"
 # https://github.com/vsch/flexmark-java/issues/442
 flexmark = "0.42.14"
+ktor = "1.6.8"
+apache-compress = "1.21"
+apache-codec = "1.15"
 
 # Testing
 junit = "4.12"
@@ -128,6 +131,14 @@ fastutil = { module = "it.unimi.dsi:fastutil", version.ref = "fastutil" }
 annotations = { module = "androidx.annotation:annotation", version.ref = "annotations" }
 appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 
+# Ktor
+ktor-client = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
+ktor-serialization = { module = "io.ktor:ktor-client-serialization", version.ref = "ktor" }
+ktor-logging = { module = "io.ktor:ktor-client-logging-jvm", version.ref = "ktor" }
+
+# Apache commons
+apache-compress = { module = "org.apache.commons:commons-compress", version.ref = "apache-compress" }
+apache-codec = { module = "commons-codec:commons-codec", version.ref = "apache-codec" }
 # BLE
 ble = { module = "no.nordicsemi.android:ble", version.ref = "ble" }
 ble-common = { module = "no.nordicsemi.android:ble-common", version.ref = "ble" }

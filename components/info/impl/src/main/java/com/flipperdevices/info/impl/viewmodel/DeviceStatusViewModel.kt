@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-class DeviceViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
+class DeviceStatusViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
     private val deviceStatus = MutableStateFlow<DeviceStatus>(DeviceStatus.NoDevice)
 
     @Inject

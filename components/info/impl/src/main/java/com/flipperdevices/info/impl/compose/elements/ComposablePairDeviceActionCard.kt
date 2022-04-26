@@ -10,15 +10,15 @@ import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.compose.info.ComposableInfoDivider
 import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.viewmodel.ConnectViewModel
-import com.flipperdevices.info.impl.viewmodel.DeviceViewModel
+import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
 
 @Composable
 fun ComposablePairDeviceActionCard(
     modifier: Modifier,
     connectViewModel: ConnectViewModel = viewModel(),
-    deviceViewModel: DeviceViewModel = viewModel()
+    deviceStatusViewModel: DeviceStatusViewModel = viewModel()
 ) {
-    val deviceState by deviceViewModel.getState().collectAsState()
+    val deviceState by deviceStatusViewModel.getState().collectAsState()
     val localDeviceState = deviceState
 
     InfoElementCard(modifier = modifier) {

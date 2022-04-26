@@ -2,6 +2,7 @@ package com.flipperdevices.info.impl.model
 
 import android.content.Context
 import android.text.format.Formatter
+import com.flipperdevices.updater.model.FirmwareVersion
 
 data class DeviceInfo(
     val firmwareVersion: FirmwareVersion? = null,
@@ -23,21 +24,4 @@ data class StorageInfo(
 
         return "$usedHumanReadable/$totalHumanReadable"
     }
-}
-
-sealed class FirmwareVersion(val buildDate: String? = null) {
-    class Dev(
-        val commitSHA: String,
-        buildDate: String
-    ) : FirmwareVersion(buildDate)
-
-    class Release(
-        val version: String,
-        buildDate: String
-    ) : FirmwareVersion(buildDate)
-
-    class ReleaseCandidate(
-        val version: String,
-        buildDate: String
-    ) : FirmwareVersion(buildDate)
 }

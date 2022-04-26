@@ -31,16 +31,16 @@ import com.flipperdevices.info.impl.compose.elements.InfoElementCard
 import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.model.FirmwareUpdateStatus
 import com.flipperdevices.info.impl.viewmodel.DeviceInfoViewModel
-import com.flipperdevices.info.impl.viewmodel.DeviceViewModel
+import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
 import com.flipperdevices.info.impl.viewmodel.FirmwareUpdateViewModel
 
 @Composable
 fun ComposableInfoCard(
     modifier: Modifier,
-    deviceViewModel: DeviceViewModel = viewModel(),
+    deviceStatusViewModel: DeviceStatusViewModel = viewModel(),
     firmwareUpdateViewModel: FirmwareUpdateViewModel = viewModel()
 ) {
-    val deviceStatus by deviceViewModel.getState().collectAsState()
+    val deviceStatus by deviceStatusViewModel.getState().collectAsState()
     val firmwareUpdateStatus by firmwareUpdateViewModel.getState().collectAsState()
     val isUnsupported = firmwareUpdateStatus is FirmwareUpdateStatus.Unsupported
 
@@ -56,11 +56,11 @@ fun ComposableInfoCard(
 fun ComposableInfoCardContent(
     isUnsupported: Boolean,
     deviceInfoViewModel: DeviceInfoViewModel = viewModel(),
-    deviceViewModel: DeviceViewModel = viewModel()
+    deviceStatusViewModel: DeviceStatusViewModel = viewModel()
 ) {
     val deviceInfo by deviceInfoViewModel.getDeviceInfo().collectAsState()
     val deviceInfoRequestStatus by deviceInfoViewModel.getDeviceInfoRequestStatus().collectAsState()
-    val deviceStatus by deviceViewModel.getState().collectAsState()
+    val deviceStatus by deviceStatusViewModel.getState().collectAsState()
 
     val firmwareVersionInProgress = deviceStatus is DeviceStatus.Connected
 

@@ -26,14 +26,14 @@ import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.compose.bar.ComposableFlipperBattery
 import com.flipperdevices.info.impl.model.DeviceStatus
-import com.flipperdevices.info.impl.viewmodel.DeviceViewModel
+import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
 import kotlin.math.roundToInt
 
 const val FLOAT_TO_PERCENT_QUALIFIER = 100
 
 @Composable
-fun ComposableDeviceBar(deviceViewModel: DeviceViewModel = viewModel()) {
-    val deviceStatus by deviceViewModel.getState().collectAsState()
+fun ComposableDeviceBar(deviceStatusViewModel: DeviceStatusViewModel = viewModel()) {
+    val deviceStatus by deviceStatusViewModel.getState().collectAsState()
     Row(
         modifier = Modifier
             .fillMaxWidth()
