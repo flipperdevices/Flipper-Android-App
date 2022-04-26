@@ -15,4 +15,5 @@ message Settings {
   bool enabled_experimental_functions = 4;
   SelectedTab selected_tab = 5;
   bool ignore_unsupported_version = 6;
+  bool enabled_updater = 7;
 }

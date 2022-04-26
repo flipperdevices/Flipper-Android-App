@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.info.impl.compose.elements.ComposableConnectedDeviceActionCard
@@ -19,7 +20,10 @@ import com.flipperdevices.updater.api.UpdaterUIApi
 fun ComposableDeviceInfoScreen(updaterUiApi: UpdaterUIApi) {
     Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
         ComposableDeviceBar()
-        ComposableUpdaterCard(modifier = Modifier.padding(top = 14.dp), updaterUiApi)
+        val isUpdaterAvailable by updaterUiApi.isUpdaterAvailable()
+        if (isUpdaterAvailable) {
+            ComposableUpdaterCard(modifier = Modifier.padding(top = 14.dp), updaterUiApi)
+        }
         ComposableFirmwareUpdate(modifier = Modifier.padding(top = 14.dp))
         ComposableInfoCard(modifier = Modifier.padding(top = 14.dp))
         ComposableConnectedDeviceActionCard(modifier = Modifier.padding(top = 14.dp))

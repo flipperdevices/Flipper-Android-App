@@ -44,7 +44,7 @@ fun ComposableSettings(
 
         if (settings.enabledExperimentalFunctions) {
             Category(titleId = R.string.category_experimental)
-            ExperimentalCategory()
+            ExperimentalCategory(settings)
         }
 
         if (settings.enabledDebugSettings) {

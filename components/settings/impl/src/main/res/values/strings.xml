@@ -17,5 +17,6 @@
     <string name="experimental_file_manager_desc">Navigating through folders and files in the flipper</string>
     <string name="experimental_screen_streaming">Screen Streaming</string>
     <string name="experimental_screen_streaming_desc">Control and watch your flipper through your phone</string>
-
+    <string name="experimental_updater">Enable Flipper OTA updater</string>
+    <string name="experimental_updater_desc">Adds a card to the Device screen with the ability to update the flipper via Bluetooth</string>
 </resources>
