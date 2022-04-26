@@ -8,6 +8,7 @@ import android.os.IBinder
 import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.service.impl.FlipperService
 import com.flipperdevices.bridge.service.impl.FlipperServiceBinder
+import com.flipperdevices.core.ktx.jre.runBlockingWithLog
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.Settings
@@ -74,8 +75,11 @@ class FlipperServiceConnectionHelperImpl(
             info { "Already request bind, skip invalidate" }
             return
         }
+        val usedBackgroundService = runBlockingWithLog {
+            dataStoreSettings.data.first()
+        }.usedForegroundService
 
-        if (runBlocking { dataStoreSettings.data.first() }.usedForegroundService) {
+        if (usedBackgroundService) {
             // Without it service destroy after unbind
             applicationContext.startService(Intent(applicationContext, FlipperService::class.java))
         }
@@ -92,7 +96,10 @@ class FlipperServiceConnectionHelperImpl(
         info { "#disconnect" }
         val serviceRunning = serviceBinder != null || isRequestedForBind
         if (serviceRunning) {
-            if (runBlocking { dataStoreSettings.data.first() }.usedForegroundService) {
+            val usedForegroundService = runBlocking {
+                dataStoreSettings.data.first()
+            }.usedForegroundService
+            if (usedForegroundService) {
                 info { "Stop service" }
                 val stopIntent = Intent(applicationContext, FlipperService::class.java).apply {
                     action = FlipperService.ACTION_STOP

@@ -1,6 +1,7 @@
 package com.flipperdevices.inappnotification.impl.storage
 
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ktx.jre.runBlockingWithLog
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.inappnotification.api.InAppNotificationListener
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
@@ -11,10 +12,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 private val TIMER_DELAY = 1.seconds
 
@@ -24,8 +22,7 @@ class InAppNotificationStorageImpl @Inject constructor() :
     InAppNotificationStorage,
     LogTagProvider {
     override val TAG = "InAppNotificationStorage"
-    private val storageContext = Dispatchers.Default.limitedParallelism(1)
-    private val coroutineScope = CoroutineScope(storageContext + SupervisorJob())
+    private val coroutineScope = CoroutineScope(SupervisorJob())
     private val timerTask = TimerTask(
         delayDuration = TIMER_DELAY,
         coroutineScope = coroutineScope,
@@ -42,9 +39,7 @@ class InAppNotificationStorageImpl @Inject constructor() :
         }
         this.listener = listener
         timerTask.start()
-        coroutineScope.launch {
-            invalidate()
-        }
+        invalidate()
     }
 
     override fun unsubscribe() {
@@ -52,26 +47,29 @@ class InAppNotificationStorageImpl @Inject constructor() :
         timerTask.shutdown()
     }
 
-    override suspend fun addNotification(notification: InAppNotification) =
-        withContext(storageContext) {
-            pendingNotification.push(notification)
-            invalidate()
-        }
+    @Synchronized
+    override fun addNotification(notification: InAppNotification) {
+        pendingNotification.push(notification)
+        invalidate()
+    }
 
-    private suspend fun invalidate() = withContext(storageContext) {
-        val notificationListener = listener ?: return@withContext
+    @Synchronized
+    private fun invalidate() {
+        val notificationListener = listener ?: return
 
         val currentTime = System.currentTimeMillis()
         if (currentTime < nextNotificationTime) {
-            return@withContext
+            return
         }
 
         if (pendingNotification.empty()) {
-            return@withContext
+            return
         }
 
         val notificationToShown = pendingNotification.pop()
-        notificationListener.onNewNotification(notificationToShown)
+        runBlockingWithLog {
+            notificationListener.onNewNotification(notificationToShown)
+        }
         nextNotificationTime = System.currentTimeMillis() + notificationToShown.durationMs
     }
 }

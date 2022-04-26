@@ -1,8 +1,14 @@
 *.iml
 .gradle
 /local.properties
-/.idea
+/.idea/**
+
+# IDEA/Android Studio Ignore exceptions
 !/.idea/codeStyles
+# Project icon
+!/.idea/icon.png
+
+
 .DS_Store
 /build
 /captures

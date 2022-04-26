@@ -23,8 +23,9 @@ import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 
-class FlipperServiceApiImpl(
+class FlipperServiceApiImpl constructor(
     context: Context,
     lifecycleOwner: LifecycleOwner,
     serviceErrorListener: FlipperServiceErrorListener
@@ -41,7 +42,7 @@ class FlipperServiceApiImpl(
         ComponentHolder.component<FlipperServiceComponent>().inject(this)
     }
 
-    private val scope = lifecycleOwner.lifecycleScope
+    private val scope = lifecycleOwner.lifecycleScope + Dispatchers.Default
     private val connectionStateProvider = WeakConnectionStateProvider(scope)
     private val lagsDetector = FlipperLagsDetectorImpl(scope, this, connectionStateProvider)
     private val bleManager: FlipperBleManager = FlipperBleManagerImpl(

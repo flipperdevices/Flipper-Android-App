@@ -127,7 +127,7 @@ class FlipperInformationApiImpl(
     }
 
     override suspend fun reset(bleManager: UnsafeBleManager) {
-        informationState.update { FlipperGATTInformation() }
+        informationState.emit(FlipperGATTInformation())
     }
 
     override fun getInformationFlow(): StateFlow<FlipperGATTInformation> {
