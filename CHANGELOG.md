@@ -4,6 +4,7 @@
 
 - [BUGFIX] Fix reconnect issues
 - [BUGFIX] Fix synchronization start after first login
+- [Feature] Added an option to cancel existing Flipper RPC requests
 - [Feature] Use new design for unsupported card and for unsupported dialog
 - [Feature] Restart connection if flipper not respond 30 seconds
 - [Feature] Now we can disconnect instantly, without waiting next retry

@@ -14,6 +14,7 @@ import com.flipperdevices.bridge.impl.manager.service.BluetoothGattServiceWrappe
 import com.flipperdevices.core.ktx.jre.updateAndGetSafe
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
+import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.log.warn
 import com.flipperdevices.protobuf.Flipper
@@ -23,16 +24,20 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicInteger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.async
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withContext
 
 private typealias OnReceiveResponse = suspend (Flipper.Main) -> Unit
 
@@ -44,6 +49,8 @@ class FlipperRequestApiImpl(
     BluetoothGattServiceWrapper,
     LogTagProvider {
     override val TAG = "FlipperRequestApi"
+
+    // Start from 1 because 0 is default in protobuf
     private var idCounter = AtomicInteger(1)
     private val requestListeners = ConcurrentHashMap<Int, OnReceiveResponse>()
     private val notificationMutableFlow = MutableSharedFlow<Flipper.Main>()
@@ -54,7 +61,7 @@ class FlipperRequestApiImpl(
     private val serialApi = FlipperSerialOverflowThrottler(serialApiUnsafe, scope, requestStorage)
 
     init {
-        subscribeToAnswers()
+        subscribeToAnswers(scope)
     }
 
     override fun notificationFlow(): Flow<Flipper.Main> {
@@ -69,7 +76,7 @@ class FlipperRequestApiImpl(
         channelFlow {
             verbose { "Pending commands count: ${requestListeners.size}. Request $command" }
             // Generate unique ID for each command
-            val uniqueId = findEmptyId()
+            val uniqueId = findEmptyId(currentId = command.data.commandId)
             val requestWithId = command.copy(
                 data = command.data.copy {
                     commandId = uniqueId
@@ -88,29 +95,55 @@ class FlipperRequestApiImpl(
             requestStorage.sendRequest(requestWithId)
 
             awaitClose {
+                requestStorage.removeRequest(requestWithId)
                 requestListeners.remove(uniqueId)
             }
         }
     )
 
     override suspend fun request(
-        commandFlow: Flow<FlipperRequest>
+        commandFlow: Flow<FlipperRequest>,
+        onCancel: suspend (Int) -> Unit
     ): Flipper.Main = lagsDetector.wrapPendingAction(null) {
         verbose { "Pending commands count: ${requestListeners.size}. Request command flow" }
         // Generate unique ID for each command
         val uniqueId = findEmptyId()
-        val commandAnswer = scope.async { awaitCommandAnswer(uniqueId) }
+        // This is dirty way to understand if request is finished correctly with response
+        var isFinished = false
 
-        commandFlow.onEach { request ->
+        @Suppress("SuspendFunctionOnCoroutineScope")
+        val commandAnswerJob = scope.async {
+            val result = awaitCommandAnswer(uniqueId)
+            isFinished = true
+            return@async result
+        }
+
+        val flowCollectJob = commandFlow.onEach { request ->
             val requestWithId = request.copy(
                 data = request.data.copy {
                     commandId = uniqueId
                 }
             )
-            requestWithoutAnswer(requestWithId)
+            requestStorage.sendRequest(requestWithId)
+        }.onCompletion {
+            if (it != null) {
+                error(it) { "Cancel send because flow is failed" }
+                commandAnswerJob.cancelAndJoin()
+            }
         }.launchIn(scope)
 
-        return@wrapPendingAction commandAnswer.await()
+        return@wrapPendingAction try {
+            commandAnswerJob.await()
+        } finally {
+            withContext(NonCancellable) {
+                flowCollectJob.cancelAndJoin()
+                commandAnswerJob.cancelAndJoin()
+                if (!isFinished) {
+                    info { "Requests with flow with id $uniqueId is canceled" }
+                    onCancel(uniqueId)
+                }
+            }
+        }
     }
 
     override suspend fun requestWithoutAnswer(vararg commands: FlipperRequest) {
@@ -121,7 +154,11 @@ class FlipperRequestApiImpl(
         return serialApiUnsafe.getSpeed()
     }
 
-    private fun findEmptyId(): Int {
+    private fun findEmptyId(currentId: Int = 0): Int {
+        if (currentId != 0 && requestListeners[currentId] == null) {
+            return currentId
+        }
+
         var counter: Int
         do {
             counter = idCounter.updateAndGetSafe {
@@ -143,7 +180,10 @@ class FlipperRequestApiImpl(
             }
         }
 
-        cont.invokeOnCancellation { requestListeners.remove(uniqueId) }
+        cont.invokeOnCancellation {
+            requestStorage.removeIf { it.data.commandId == uniqueId }
+            requestListeners.remove(uniqueId)
+        }
     }
 
     override fun onServiceReceived(gatt: BluetoothGatt): Boolean {
@@ -173,7 +213,7 @@ class FlipperRequestApiImpl(
         }
     }
 
-    private fun subscribeToAnswers() {
+    private fun subscribeToAnswers(scope: CoroutineScope) {
         scope.launch(Dispatchers.Default) {
             serialApiUnsafe.receiveBytesFlow().collect {
                 reader.onReceiveBytes(it)
