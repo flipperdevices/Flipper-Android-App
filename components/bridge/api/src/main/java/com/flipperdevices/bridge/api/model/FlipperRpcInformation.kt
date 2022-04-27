@@ -1,9 +1,13 @@
 package com.flipperdevices.bridge.api.model
 
 data class FlipperRpcInformation(
-    val internalStorageTotal: Long? = null,
-    val internalStorageFree: Long? = null,
-    val externalStorageTotal: Long? = null,
-    val externalStorageFree: Long? = null,
+    val internalStorageStats: StorageStats? = null,
+    val externalStorageStats: StorageStats? = null,
     val otherFields: Map<String, String> = emptyMap()
 )
+
+sealed class StorageStats {
+    object Error : StorageStats()
+
+    data class Loaded(val total: Long, val free: Long) : StorageStats()
+}

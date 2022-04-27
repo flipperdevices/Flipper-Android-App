@@ -5,6 +5,7 @@ import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.LifecycleViewModel
@@ -16,12 +17,15 @@ import com.flipperdevices.updater.model.UpdateCardState
 import com.flipperdevices.updater.ui.di.UpdaterComponent
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
 
 class UpdateCardViewModel :
     LifecycleViewModel(),
@@ -34,6 +38,8 @@ class UpdateCardViewModel :
         UpdateCardState.InProgress
     )
     private val updateChannel = MutableStateFlow<FirmwareChannel?>(null)
+    private var cardStateJob: Job? = null
+    private val mutex = Mutex()
 
     @Inject
     lateinit var downloaderApi: DownloaderApi
@@ -57,9 +63,14 @@ class UpdateCardViewModel :
         }
     }
 
-    override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
-        viewModelScope.launch(Dispatchers.Default) {
+    override fun onServiceApiReady(
+        serviceApi: FlipperServiceApi
+    ) = launchWithLock(mutex, viewModelScope) {
+        cardStateJob?.cancelAndJoin()
+        cardStateJob = null
+        cardStateJob = viewModelScope.launch(Dispatchers.Default) {
             val latestVersionAsync = async { downloaderApi.getLatestVersion() }
+            serviceApi.flipperRpcInformationApi.getRpcInformationFlow()
             combine(
                 updateChannel,
                 flipperVersionProviderApi
