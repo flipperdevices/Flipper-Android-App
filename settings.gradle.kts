@@ -93,5 +93,6 @@ include(
     ":components:updater:api",
     ":components:updater:impl",
     ":components:updater:ui",
-    ":components:updater:downloader"
+    ":components:updater:downloader",
+    ":components:updater:fonts"
 )

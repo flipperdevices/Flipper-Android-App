@@ -26,7 +26,14 @@
 
     <string name="info_device_updater_title">Firmware Update</string>
     <string name="info_device_updater_channel">Update Channel</string>
-    <string name="info_device_error_retry">Retry</string>
+    <string name="info_device_updater_error_retry">Retry</string>
+    <string name="info_device_updater_button_no_updates">NO UPDATES</string>
+    <string name="info_device_updater_button_no_updates_desc">There are no updates in the selected channel</string>
+    <string name="info_device_updater_button_install">INSTALL</string>
+    <string name="info_device_updater_button_install_desc">Firmware on Flipper doesn’t match the selected update channel. Selected version will be installed.</string>
+    <string name="info_device_updater_button_update">UPDATE</string>
+    <string name="info_device_updater_button_update_desc">Update Flipper to the latest version</string>
+
     <string name="info_device_updater_progress">Checking for updates…</string>
     <string name="info_device_info_title">Device Info</string>
     <string name="info_device_info_title_card">Flipper Device</string>

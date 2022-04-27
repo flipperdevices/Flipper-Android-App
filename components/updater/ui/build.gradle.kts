@@ -6,6 +6,7 @@ plugins {
 
 dependencies {
     implementation(projects.components.updater.api)
+    implementation(projects.components.updater.fonts)
 
     implementation(projects.components.core.di)
     implementation(projects.components.core.ui)

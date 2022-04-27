@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.core.ui.composable.painterResourceByKey
+import com.flipperdevices.updater.fonts.R as Fonts
 import com.flipperdevices.updater.ui.R
 import com.flipperdevices.updater.ui.viewmodel.UpdaterViewModel
 import kotlin.math.roundToInt
@@ -142,7 +143,7 @@ private fun ComposableProgressBar(
             color = colorResource(DesignSystem.color.white_100),
             fontWeight = FontWeight.W400,
             fontSize = 40.sp,
-            fontFamily = FontFamily(Font(R.font.flipper))
+            fontFamily = FontFamily(Font(Fonts.font.flipper))
         )
     }
 }

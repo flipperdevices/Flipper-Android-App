@@ -12,8 +12,8 @@ import com.flipperdevices.info.impl.compose.elements.ComposableConnectedDeviceAc
 import com.flipperdevices.info.impl.compose.elements.ComposableDeviceBar
 import com.flipperdevices.info.impl.compose.elements.ComposableFirmwareUpdate
 import com.flipperdevices.info.impl.compose.elements.ComposablePairDeviceActionCard
-import com.flipperdevices.info.impl.compose.elements.ComposableUpdaterCard
 import com.flipperdevices.info.impl.compose.info.ComposableInfoCard
+import com.flipperdevices.info.impl.compose.updater.ComposableUpdaterCard
 import com.flipperdevices.updater.api.UpdaterUIApi
 
 @Composable

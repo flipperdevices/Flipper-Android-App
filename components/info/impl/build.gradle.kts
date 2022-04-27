@@ -17,6 +17,7 @@ dependencies {
     implementation(projects.components.info.api)
     implementation(projects.components.firstpair.api)
     implementation(projects.components.updater.api)
+    implementation(projects.components.updater.fonts)
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.synchronization.api)

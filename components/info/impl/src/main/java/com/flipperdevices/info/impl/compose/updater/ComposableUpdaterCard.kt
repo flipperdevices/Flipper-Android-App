@@ -1,10 +1,9 @@
-package com.flipperdevices.info.impl.compose.elements
+package com.flipperdevices.info.impl.compose.updater
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -27,6 +26,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.core.ui.composable.painterResourceByKey
 import com.flipperdevices.info.impl.R
+import com.flipperdevices.info.impl.compose.elements.InfoElementCard
 import com.flipperdevices.info.impl.compose.info.ComposableDeviceInfoRow
 import com.flipperdevices.info.impl.compose.info.ComposableInfoDivider
 import com.flipperdevices.info.impl.compose.info.ComposableUpdaterFirmwareVersionWithChoice
@@ -77,7 +77,7 @@ fun ComposableUpdaterCard(
 }
 
 @Composable
-private fun ColumnScope.ComposableFirmwareUpdaterError(
+private fun ComposableFirmwareUpdaterError(
     updateCardApi: UpdateCardApi,
     error: UpdateCardState.Error
 ) {
@@ -117,7 +117,7 @@ private fun ColumnScope.ComposableFirmwareUpdaterError(
             )
             .fillMaxWidth()
             .padding(top = 4.dp, bottom = 8.dp),
-        text = stringResource(R.string.info_device_error_retry),
+        text = stringResource(R.string.info_device_updater_error_retry),
         fontWeight = FontWeight.W500,
         fontSize = 16.sp,
         textAlign = TextAlign.Center,
@@ -162,5 +162,5 @@ private fun ComposableFirmwareUpdaterContent(
         )
     }
     ComposableInfoDivider()
-    updaterUiApi.RenderUpdateButton(updateCardState)
+    ComposableUpdateButton(updateCardState)
 }
