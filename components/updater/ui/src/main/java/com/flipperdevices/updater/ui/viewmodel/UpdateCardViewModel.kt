@@ -72,11 +72,22 @@ class UpdateCardViewModel :
     }
 
     override fun retry() {
+        serviceProvider.provideServiceApi(this) {
+            launchWithLock(mutex, viewModelScope, "retry") {
+                cardStateJob?.cancelAndJoin()
+                it.flipperRpcInformationApi.invalidate(it.requestApi)
+                invalidateUnsafe(it)
+            }
+        }
     }
 
     override fun onServiceApiReady(
         serviceApi: FlipperServiceApi
-    ) = launchWithLock(mutex, viewModelScope) {
+    ) = launchWithLock(mutex, viewModelScope, "onServiceApiReady") {
+        invalidateUnsafe(serviceApi)
+    }
+
+    private suspend fun invalidateUnsafe(serviceApi: FlipperServiceApi) {
         cardStateJob?.cancelAndJoin()
         cardStateJob = null
         cardStateJob = viewModelScope.launch(Dispatchers.Default) {

@@ -8,6 +8,7 @@ import com.flipperdevices.bridge.api.model.FlipperRpcInformation
 import com.flipperdevices.bridge.api.model.StorageStats
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.core.ktx.jre.forEachIterable
+import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.verbose
@@ -22,6 +23,7 @@ import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
 
 private const val FLIPPER_PATH_INTERNAL_STORAGE = "/int/"
@@ -31,6 +33,8 @@ class FlipperRpcInformationApiImpl(
     private val scope: CoroutineScope
 ) : FlipperRpcInformationApi, LogTagProvider {
     override val TAG = "FlipperRpcInformationApi"
+
+    private val mutex = Mutex()
     private val rpcInformationFlow = MutableStateFlow(
         FlipperRpcInformation()
     )
@@ -42,7 +46,7 @@ class FlipperRpcInformationApiImpl(
     override fun getRequestRpcInformationStatus() = requestStatusFlow
     override fun getRpcInformationFlow() = rpcInformationFlow
 
-    suspend fun initialize(requestApi: FlipperRequestApi) {
+    suspend fun initialize(requestApi: FlipperRequestApi) = withLock(mutex, "initialize") {
         requestStatusFlow.emit(FlipperRequestRpcInformationStatus.InProgress())
         requestJobs += scope.launch(Dispatchers.Default) {
             receiveStorageInfo(requestApi, FLIPPER_PATH_EXTERNAL_STORAGE) { storageStats ->
@@ -97,7 +101,12 @@ class FlipperRpcInformationApiImpl(
         }
     }
 
-    suspend fun reset() {
+    override suspend fun invalidate(requestApi: FlipperRequestApi) {
+        reset()
+        initialize(requestApi)
+    }
+
+    suspend fun reset() = withLock(mutex, "reset") {
         requestJobs.forEachIterable {
             it.cancelAndJoin()
         }
