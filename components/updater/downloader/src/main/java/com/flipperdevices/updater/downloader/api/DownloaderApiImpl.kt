@@ -4,7 +4,6 @@ import android.content.Context
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.preference.FlipperStorageProvider
@@ -44,12 +43,7 @@ class DownloaderApiImpl @Inject constructor(
         val versionMap: EnumMap<FirmwareChannel, VersionFiles> =
             EnumMap(FirmwareChannel::class.java)
 
-        val response = try {
-            client.get<FirmwareDirectoryListeningResponse>(JSON_URL)
-        } catch (@Suppress("TooGenericExceptionCaught") exception: Throwable) {
-            error(exception) { "When try receive latest version number" }
-            return versionMap
-        }
+        val response = client.get<FirmwareDirectoryListeningResponse>(JSON_URL)
 
         verbose { "Receive response from server" }
 

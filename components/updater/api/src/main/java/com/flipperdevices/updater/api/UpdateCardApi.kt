@@ -7,4 +7,5 @@ import kotlinx.coroutines.flow.StateFlow
 interface UpdateCardApi {
     fun getUpdateCardState(): StateFlow<UpdateCardState>
     fun onSelectChannel(channel: FirmwareChannel?)
+    fun retry()
 }

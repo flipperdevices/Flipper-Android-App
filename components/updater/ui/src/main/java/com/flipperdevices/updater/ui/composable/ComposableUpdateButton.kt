@@ -74,7 +74,7 @@ fun ComposableUpdateButton(
     }
 
     when (updateCardState) {
-        UpdateCardState.Error -> return
+        is UpdateCardState.Error -> return
         UpdateCardState.InProgress -> return
         is UpdateCardState.NoUpdate -> ComposableUpdateButton(
             buttonModifier,

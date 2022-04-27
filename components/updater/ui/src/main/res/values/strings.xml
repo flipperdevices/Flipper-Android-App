@@ -11,4 +11,10 @@
     <string name="update_stage_downloading_desc">Downloading from update server…</string>
     <string name="update_stage_uploading_desc">Uploading Firmware to Flipper…</string>
 
+    <string name="update_card_error_no_internet_title">No internet connection</string>
+    <string name="update_card_error_no_internet_desc">Connect to the internet to see available updates</string>
+    <string name="update_card_error_server_request_title">Server request error</string>
+    <string name="update_card_error_server_request_desc">Server request error</string>
+    <string name="update_card_error_no_sd_title">No SD card</string>
+    <string name="update_card_error_no_sd_desc">Can\'t upload firmware to Flipper</string>
 </resources>
