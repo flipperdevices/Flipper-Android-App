@@ -2,9 +2,8 @@ package com.flipperdevices.settings.impl.composable.category
 
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.composable.LocalRouter
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.composable.elements.SimpleElement
@@ -13,6 +12,7 @@ import com.flipperdevices.settings.impl.viewmodels.DebugViewModel
 
 @Composable
 fun ColumnScope.DebugCategory(
+    settings: Settings,
     debugViewModel: DebugViewModel = viewModel()
 ) {
     val router = LocalRouter.current
@@ -30,12 +30,17 @@ fun ColumnScope.DebugCategory(
         onClick = { debugViewModel.onOpenConnectionScreen() }
     )
 
-    val ignoredSupportedVersionState by debugViewModel
-        .getIgnoredSupportedVersionState().collectAsState()
     SwitchableElement(
         titleId = R.string.debug_ignored_unsupported_version,
         descriptionId = R.string.debug_ignored_unsupported_version_desc,
-        state = ignoredSupportedVersionState,
+        state = settings.ignoreUnsupportedVersion,
         onSwitchState = debugViewModel::onSwitchIgnoreSupportedVersion
+    )
+
+    SwitchableElement(
+        titleId = R.string.debug_ignored_update_version,
+        descriptionId = R.string.debug_ignored_update_version_desc,
+        state = settings.alwaysUpdate,
+        onSwitchState = debugViewModel::onSwitchIgnoreUpdaterVersion
     )
 }

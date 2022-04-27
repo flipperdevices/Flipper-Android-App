@@ -38,7 +38,7 @@ import com.flipperdevices.updater.ui.viewmodel.UpdaterViewModel
 import kotlin.math.roundToInt
 
 private const val PERCENT_MAX = 100
-private const val PERCENT_MIN = 0.1f
+private const val PERCENT_MIN = 0.0001f
 
 @Composable
 @Suppress("LongParameterList")

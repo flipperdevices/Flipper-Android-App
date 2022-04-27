@@ -59,7 +59,7 @@ class DebugViewModel(application: Application) : AndroidViewModel(application) {
     }.stateIn(viewModelScope, SharingStarted.Lazily, false)
 
     fun onSwitchIgnoreSupportedVersion(ignored: Boolean) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Default) {
             settingsDataStore.updateData {
                 it.toBuilder()
                     .setIgnoreUnsupportedVersion(ignored)
@@ -73,6 +73,16 @@ class DebugViewModel(application: Application) : AndroidViewModel(application) {
                     R.string.debug_ignored_unsupported_version_toast,
                     Toast.LENGTH_LONG
                 ).show()
+            }
+        }
+    }
+
+    fun onSwitchIgnoreUpdaterVersion(alwaysUpdate: Boolean) {
+        viewModelScope.launch(Dispatchers.Default) {
+            settingsDataStore.updateData {
+                it.toBuilder()
+                    .setAlwaysUpdate(alwaysUpdate)
+                    .build()
             }
         }
     }

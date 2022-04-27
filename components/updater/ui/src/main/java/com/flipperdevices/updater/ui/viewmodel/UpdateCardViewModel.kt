@@ -1,5 +1,6 @@
 package com.flipperdevices.updater.ui.viewmodel
 
+import androidx.datastore.core.DataStore
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.model.StorageStats
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
@@ -7,9 +8,11 @@ import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.jre.launchWithLock
+import com.flipperdevices.core.ktx.jre.then
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.LifecycleViewModel
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.api.FlipperVersionProviderApi
@@ -20,6 +23,7 @@ import com.flipperdevices.updater.model.UpdateCardState
 import com.flipperdevices.updater.model.VersionFiles
 import com.flipperdevices.updater.ui.R
 import com.flipperdevices.updater.ui.di.UpdaterComponent
+import com.flipperdevices.updater.ui.utils.isGreaterThan
 import java.net.UnknownHostException
 import java.util.EnumMap
 import javax.inject.Inject
@@ -57,6 +61,9 @@ class UpdateCardViewModel :
 
     @Inject
     lateinit var serviceProvider: FlipperServiceProvider
+
+    @Inject
+    lateinit var dataStoreSettings: DataStore<Settings>
 
     init {
         ComponentHolder.component<UpdaterComponent>().inject(this)
@@ -100,26 +107,25 @@ class UpdateCardViewModel :
             combine(
                 updateChannel,
                 flipperVersionProviderApi.getCurrentFlipperVersion(viewModelScope, serviceApi),
-                serviceApi.flipperRpcInformationApi.getRpcInformationFlow()
-            ) { updateChannel, flipperFirmwareVersion, rpcInformation ->
+                serviceApi.flipperRpcInformationApi.getRpcInformationFlow(),
+                dataStoreSettings.data
+            ) { updateChannel, flipperFirmwareVersion, rpcInformation, settings ->
                 val newUpdateChannel = if (
                     updateChannel == null && flipperFirmwareVersion != null
                 ) {
                     flipperFirmwareVersion.channel
                 } else updateChannel
-                return@combine Triple(
-                    newUpdateChannel,
-                    flipperFirmwareVersion,
-                    if (rpcInformation.externalStorageStats != null) {
-                        rpcInformation.externalStorageStats is StorageStats.Loaded
-                    } else null
-                )
-            }.collectLatest { (updateChannel, flipperFirmwareVersion, isFlashExist) ->
+                val isFlashExist = if (rpcInformation.externalStorageStats != null) {
+                    rpcInformation.externalStorageStats is StorageStats.Loaded
+                } else null
+                return@combine newUpdateChannel then flipperFirmwareVersion then isFlashExist then settings.alwaysUpdate
+            }.collectLatest { (updateChannel, flipperFirmwareVersion, isFlashExist, alwaysUpdate) ->
                 updateCardState(
                     updateChannel,
                     flipperFirmwareVersion,
                     latestVersionAsync,
-                    isFlashExist
+                    isFlashExist,
+                    alwaysUpdate
                 )
             }
         }
@@ -129,7 +135,8 @@ class UpdateCardViewModel :
         updateChannel: FirmwareChannel?,
         flipperFirmwareVersion: FirmwareVersion?,
         latestVersionAsync: Deferred<Result<EnumMap<FirmwareChannel, VersionFiles>>>,
-        isFlashExist: Boolean?
+        isFlashExist: Boolean?,
+        alwaysShowUpdate: Boolean
     ) {
         info { "Receive version from flipper $flipperFirmwareVersion" }
         if (flipperFirmwareVersion == null) {
@@ -164,7 +171,8 @@ class UpdateCardViewModel :
             updateCardState.emit(UpdateCardState.NoUpdate(flipperFirmwareVersion))
             return
         }
-        val isUpdateAvailable = true
+        val isUpdateAvailable = alwaysShowUpdate ||
+            latestVersionFromNetwork.version.isGreaterThan(flipperFirmwareVersion) ?: true
 
         if (isUpdateAvailable) {
             updateCardState.emit(
