@@ -27,7 +27,7 @@ class SaveDelegate {
     }
 
     suspend fun onEditSaveInternal(oldKey: FlipperKey, newKey: FlipperKey) {
-        if(oldKey == newKey) return
+        if (oldKey == newKey) return
 
         val newNote = newKey.notes
         if (oldKey.path == newKey.path && !newNote.isNullOrBlank()) {
