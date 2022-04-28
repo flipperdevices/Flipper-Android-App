@@ -5,6 +5,8 @@ import com.flipperdevices.updater.model.UpdatingState
 import kotlinx.coroutines.flow.StateFlow
 
 interface UpdaterApi {
+    fun isUpdateInProcess(): Boolean
+
     fun start(updateFile: DistributionFile)
     suspend fun cancel()
     fun getState(): StateFlow<UpdatingState>

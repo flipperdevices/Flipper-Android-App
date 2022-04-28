@@ -60,4 +60,5 @@ class UpdaterApiImpl @Inject constructor(
     }
 
     override fun getState(): StateFlow<UpdatingState> = updatingState
+    override fun isUpdateInProcess() = isLaunched.get()
 }

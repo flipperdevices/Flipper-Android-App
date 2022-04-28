@@ -8,8 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.info.impl.compose.bar.ComposableDeviceBar
 import com.flipperdevices.info.impl.compose.elements.ComposableConnectedDeviceActionCard
-import com.flipperdevices.info.impl.compose.elements.ComposableDeviceBar
 import com.flipperdevices.info.impl.compose.elements.ComposableFirmwareUpdate
 import com.flipperdevices.info.impl.compose.elements.ComposablePairDeviceActionCard
 import com.flipperdevices.info.impl.compose.info.ComposableInfoCard

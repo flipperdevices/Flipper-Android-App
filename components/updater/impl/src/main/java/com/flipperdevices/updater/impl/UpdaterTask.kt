@@ -59,13 +59,13 @@ class UpdaterTask(
                     // Waiting to be connected to the flipper
                     try {
                         startInternal(updateFile, serviceApi, onStateUpdate)
+                        onStop()
                     } catch (
                         @Suppress("TooGenericExceptionCaught")
                         throwable: Throwable
                     ) {
                         error(throwable) { "Error during updating" }
-                    } finally {
-                        onStateUpdate(UpdatingState.NotStarted)
+                        onStop()
                     }
                 }
             }

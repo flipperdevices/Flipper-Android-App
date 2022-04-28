@@ -27,11 +27,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.info.impl.R
+import com.flipperdevices.updater.api.UpdaterUIApi
 import com.flipperdevices.updater.fonts.R as Fonts
 import com.flipperdevices.updater.model.UpdateCardState
+import com.flipperdevices.updater.model.VersionFiles
 
 @Composable
 fun ComposableUpdateButton(
+    updaterUIApi: UpdaterUIApi,
     updateCardState: UpdateCardState
 ) {
     var buttonModifier = Modifier.padding(all = 12.dp)
@@ -49,7 +52,15 @@ fun ComposableUpdateButton(
             buttonModifier = buttonModifier.clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(),
-                onClick = { }
+                onClick = {
+                    updaterUIApi.openUpdateScreen(
+                        silent = false,
+                        VersionFiles(
+                            updateCardState.lastVersion,
+                            updateCardState.updaterDist
+                        )
+                    )
+                }
             )
 
             if (updateCardState.isOtherChannel) {

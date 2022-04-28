@@ -162,5 +162,5 @@ private fun ComposableFirmwareUpdaterContent(
         )
     }
     ComposableInfoDivider()
-    ComposableUpdateButton(updateCardState)
+    ComposableUpdateButton(updaterUiApi, updateCardState)
 }

@@ -11,4 +11,9 @@
     <string name="update_card_error_server_request_desc">Server request error</string>
     <string name="update_card_error_no_sd_title">No SD card</string>
     <string name="update_card_error_no_sd_desc">Can\'t upload firmware to Flipper</string>
+
+    <string name="update_dialog_title">Start Update?</string>
+    <string name="update_dialog_desc">Synchronization with Flipper will be canceled</string>
+    <string name="update_dialog_yes">Yes</string>
+    <string name="update_dialog_no">No</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.flipperdevices.info.impl.compose.elements
+package com.flipperdevices.info.impl.compose.bar
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,8 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.ui.R as DesignSystem
+import com.flipperdevices.info.drawable.R as ExternalDrawable
 import com.flipperdevices.info.impl.R
-import com.flipperdevices.info.impl.compose.bar.ComposableFlipperBattery
 import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
 import kotlin.math.roundToInt
@@ -57,9 +57,9 @@ fun ComposableDeviceBar(deviceStatusViewModel: DeviceStatusViewModel = viewModel
 @Composable
 private fun FlipperImage(deviceStatus: DeviceStatus) {
     val imageId = when (deviceStatus) {
-        DeviceStatus.NoDevice -> R.drawable.ic_grey_flipper
+        DeviceStatus.NoDevice -> ExternalDrawable.drawable.ic_grey_flipper
         is DeviceStatus.Connected,
-        is DeviceStatus.NoDeviceInformation -> R.drawable.ic_white_flipper
+        is DeviceStatus.NoDeviceInformation -> ExternalDrawable.drawable.ic_white_flipper
     }
     val descriptionId = when (deviceStatus) {
         DeviceStatus.NoDevice -> R.string.info_device_no_device

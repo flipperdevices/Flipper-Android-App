@@ -22,6 +22,8 @@ import com.flipperdevices.core.ui.TaskWithLifecycle
 import com.flipperdevices.shake2report.api.Shake2ReportApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -63,8 +65,15 @@ class SynchronizationTask(
                 }
             }
         }
-        taskScope.launch {
-            onStart()
+        onStart()
+        taskScope.launch(Dispatchers.Default) {
+            try {
+                awaitCancellation()
+            } finally {
+                withContext(NonCancellable) {
+                    onStateUpdate(SynchronizationState.FINISHED)
+                }
+            }
         }
     }
 
@@ -75,6 +84,9 @@ class SynchronizationTask(
         try {
             onStateUpdate(SynchronizationState.IN_PROGRESS)
             launch(serviceApi)
+            withContext(Dispatchers.Main) {
+                onStop()
+            }
         } catch (
             @Suppress("SwallowedException")
             restartException: RestartSynchronizationException
@@ -86,9 +98,9 @@ class SynchronizationTask(
             exception: Throwable
         ) {
             error(exception) { "While synchronization we have error" }
-        } finally {
-            onStateUpdate(SynchronizationState.FINISHED)
-            onStop()
+            withContext(Dispatchers.Main) {
+                onStop()
+            }
         }
     }
 
