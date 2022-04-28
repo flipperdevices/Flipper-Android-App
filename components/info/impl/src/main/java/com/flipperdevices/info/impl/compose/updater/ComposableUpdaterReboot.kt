@@ -2,6 +2,7 @@ package com.flipperdevices.info.impl.compose.updater
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -11,6 +12,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.core.ui.composable.animatedDots
@@ -30,6 +32,7 @@ fun ComposableUpdaterReboot(modifier: Modifier) {
                 contentDescription = title
             )
             Text(
+                modifier = Modifier.padding(top = 6.dp, bottom = 6.dp),
                 text = title,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.W500,
@@ -37,6 +40,7 @@ fun ComposableUpdaterReboot(modifier: Modifier) {
                 textAlign = TextAlign.Center
             )
             Text(
+                modifier = Modifier.padding(bottom = 16.dp),
                 text = stringResource(R.string.info_device_updater_reboot_desc),
                 fontSize = 14.sp,
                 fontWeight = FontWeight.W400,
