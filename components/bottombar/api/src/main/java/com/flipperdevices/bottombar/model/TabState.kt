@@ -3,13 +3,12 @@ package com.flipperdevices.bottombar.model
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.RawRes
-import androidx.annotation.StringRes
 
 private const val MAGIC_NUMBER = 31
 
 @Suppress("LongParameterList")
 sealed class TabState private constructor(
-    @StringRes val textId: Int,
+    val text: String,
     @ColorRes val selectedColor: Int,
     @ColorRes val selectedColorIcon: Int,
     @ColorRes val unselectedColor: Int,
@@ -19,14 +18,14 @@ sealed class TabState private constructor(
     class Static(
         @DrawableRes val selectedIcon: Int,
         @DrawableRes val notSelectedIcon: Int,
-        @StringRes textId: Int,
+        text: String,
         @ColorRes selectedColor: Int,
         @ColorRes selectedColorIcon: Int = selectedColor,
         @ColorRes unselectedColor: Int,
         @ColorRes unselectedColorIcon: Int = unselectedColor,
         textDotsAnimated: Boolean = false
     ) : TabState(
-        textId,
+        text,
         selectedColor,
         selectedColorIcon,
         unselectedColor,
@@ -57,12 +56,12 @@ sealed class TabState private constructor(
     class Animated(
         @RawRes val selectedIcon: Int,
         @RawRes val notSelectedIcon: Int,
-        @StringRes textId: Int,
+        text: String,
         @ColorRes selectedColor: Int,
         @ColorRes unselectedColor: Int,
         textDotsAnimated: Boolean = false
     ) : TabState(
-        textId,
+        text,
         selectedColor,
         selectedColor,
         unselectedColor,
@@ -96,7 +95,7 @@ sealed class TabState private constructor(
 
         other as TabState
 
-        if (textId != other.textId) return false
+        if (text != other.text) return false
         if (selectedColor != other.selectedColor) return false
         if (selectedColorIcon != other.selectedColorIcon) return false
         if (unselectedColor != other.unselectedColor) return false
@@ -107,7 +106,7 @@ sealed class TabState private constructor(
     }
 
     override fun hashCode(): Int {
-        var result = textId
+        var result = text.hashCode()
         result = MAGIC_NUMBER * result + selectedColor
         result = MAGIC_NUMBER * result + selectedColorIcon
         result = MAGIC_NUMBER * result + unselectedColor

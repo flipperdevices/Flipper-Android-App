@@ -7,7 +7,6 @@ import androidx.compose.material.LocalContentColor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -36,7 +35,7 @@ private fun ComposableTabIconStatic(
             if (selected) tabState.selectedIcon
             else tabState.notSelectedIcon
         ),
-        contentDescription = stringResource(tabState.textId),
+        contentDescription = tabState.text,
         tint = LocalContentColor.current.copy(alpha = LocalContentAlpha.current)
     )
 }

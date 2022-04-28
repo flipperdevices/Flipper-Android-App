@@ -12,7 +12,7 @@ object ItemSynchronizationStateMapper {
             return ItemSynchronizationState.SYNCHRONIZED
         }
 
-        if (synchronizationState == SynchronizationState.IN_PROGRESS) {
+        if (synchronizationState is SynchronizationState.InProgress) {
             return ItemSynchronizationState.IN_PROGRESS
         }
 

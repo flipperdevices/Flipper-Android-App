@@ -38,7 +38,7 @@ class GeneralTabViewModel : ViewModel() {
     private val keys = MutableStateFlow<List<FlipperKey>>(emptyList())
     private val favoriteKeys = MutableStateFlow<List<FlipperKey>>(emptyList())
     private val synchronizationState =
-        MutableStateFlow(SynchronizationState.NOT_STARTED)
+        MutableStateFlow<SynchronizationState>(SynchronizationState.NotStarted)
 
     init {
         ComponentHolder.component<ArchiveComponent>().inject(this)

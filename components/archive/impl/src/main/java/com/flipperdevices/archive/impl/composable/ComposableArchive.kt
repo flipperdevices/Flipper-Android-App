@@ -81,7 +81,7 @@ fun ComposableArchive(
         }
 
         if (!isKeysPresented) {
-            if (synchronizationState == SynchronizationState.IN_PROGRESS) {
+            if (synchronizationState is SynchronizationState.InProgress) {
                 ComposableProgress()
             } else ComposableNoKeys()
         }

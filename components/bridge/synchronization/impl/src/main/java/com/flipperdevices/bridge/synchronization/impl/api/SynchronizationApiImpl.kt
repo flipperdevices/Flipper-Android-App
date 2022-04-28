@@ -33,7 +33,9 @@ class SynchronizationApiImpl @Inject constructor(
     override val TAG = "SynchronizationApi"
 
     private val isLaunched = AtomicBoolean(false)
-    private val synchronizationState = MutableStateFlow(SynchronizationState.NOT_STARTED)
+    private val synchronizationState = MutableStateFlow<SynchronizationState>(
+        SynchronizationState.NotStarted
+    )
     private var markDirty = false
 
     private var synchronizationTask: SynchronizationTask? = null
@@ -58,7 +60,7 @@ class SynchronizationApiImpl @Inject constructor(
 
         localSynchronizationTask.start { taskState ->
             synchronizationState.update { taskState }
-            if (taskState == SynchronizationState.FINISHED) {
+            if (taskState == SynchronizationState.Finished) {
                 isLaunched.compareAndSet(true, false)
                 if (markDirty) {
                     startSynchronization()

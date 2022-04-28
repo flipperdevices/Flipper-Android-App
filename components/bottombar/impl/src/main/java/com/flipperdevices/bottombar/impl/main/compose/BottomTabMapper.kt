@@ -3,6 +3,7 @@ package com.flipperdevices.bottombar.impl.main.compose
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.stringResource
 import com.flipperdevices.bottombar.impl.R
 import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
 import com.flipperdevices.bottombar.model.TabState
@@ -22,14 +23,14 @@ fun getTabStateFromFlipperBottomTab(
         FlipperBottomTab.ARCHIVE -> TabState.Static(
             selectedIcon = R.drawable.ic_archive_selected,
             notSelectedIcon = R.drawable.ic_archive_unselected,
-            textId = R.string.bar_title_archive,
+            text = stringResource(R.string.bar_title_archive),
             selectedColor = DesignSystem.color.black_80,
             unselectedColor = DesignSystem.color.black_30
         )
         FlipperBottomTab.OPTIONS -> TabState.Static(
             selectedIcon = R.drawable.ic_options_selected,
             notSelectedIcon = R.drawable.ic_options_unselected,
-            textId = R.string.bar_title_options,
+            text = stringResource(R.string.bar_title_options),
             selectedColor = DesignSystem.color.black_80,
             unselectedColor = DesignSystem.color.black_30
         )

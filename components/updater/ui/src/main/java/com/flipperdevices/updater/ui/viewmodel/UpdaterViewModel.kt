@@ -66,7 +66,7 @@ class UpdaterViewModel : ViewModel(), LogTagProvider {
 
         // Wait until synchronization is really canceled
         synchronizationApi.getSynchronizationState()
-            .filter { it == SynchronizationState.NOT_STARTED || it == SynchronizationState.FINISHED }
+            .filter { it == SynchronizationState.NotStarted || it == SynchronizationState.Finished }
             .first()
 
         info { "Start updating" }

@@ -6,6 +6,7 @@ import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
+import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.impl.executor.AndroidKeyStorage
 import com.flipperdevices.bridge.synchronization.impl.executor.DiffKeyExecutor
 import com.flipperdevices.bridge.synchronization.impl.executor.FlipperKeyStorage
@@ -27,6 +28,11 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.warn
 import com.flipperdevices.shake2report.api.Shake2ReportApi
+import kotlin.math.max
+
+private const val PERCENT_FLIPPER_LISTING_FOLDERS = 0.07f
+private const val PERCENT_FLIPPER_HASH = 0.12f
+private const val PERCENT_FLIPPER_DOWNLOAD = 0.99f
 
 @Suppress("LongParameterList")
 class KeysSynchronization(
@@ -47,10 +53,12 @@ class KeysSynchronization(
     private val androidStorage = AndroidKeyStorage(simpleKeyApi, deleteKeyApi)
     private val synchronizationRepository = SynchronizationStateRepository(utilsKeyApi)
 
-    suspend fun syncKeys(): List<KeyWithHash> {
+    suspend fun syncKeys(
+        onStateUpdate: suspend (SynchronizationState) -> Unit
+    ): List<KeyWithHash> {
         val keysFromAndroid = simpleKeyApi.getAllKeys()
         val hashesFromAndroid = androidHashRepository.calculateHash(keysFromAndroid)
-        val hashesFromFlipper = getManifestOnFlipper()
+        val hashesFromFlipper = getManifestOnFlipper(onStateUpdate)
         info { "Finish receive hashes from Flipper: $hashesFromFlipper" }
         info { "Finish receive hashes from Android: $hashesFromAndroid" }
 
@@ -87,7 +95,15 @@ class KeysSynchronization(
             source = flipperStorage,
             target = androidStorage,
             diffForAndroid
-        )
+        ) { processed, total ->
+            onProgressUpdate(
+                onStateUpdate,
+                processed,
+                total,
+                PERCENT_FLIPPER_HASH,
+                PERCENT_FLIPPER_DOWNLOAD
+            )
+        }
 
         info {
             "[Keys] Android, successful applied " +
@@ -143,12 +159,28 @@ class KeysSynchronization(
         return calculatedHashOnFlipperSorted
     }
 
-    private suspend fun getManifestOnFlipper(): List<KeyWithHash> {
+    private suspend fun getManifestOnFlipper(
+        onStateUpdate: (suspend (SynchronizationState) -> Unit)? = null
+    ): List<KeyWithHash> {
         val keysFromFlipper = keysListingRepository.getAllKeys(requestApi).trackProgressAndReturn {
+            onProgressUpdate(
+                onStateUpdate,
+                it.currentPosition,
+                it.maxPosition,
+                0f,
+                PERCENT_FLIPPER_LISTING_FOLDERS
+            )
             info { "[Hash] Progress is ${it.currentPosition}/${it.maxPosition}: ${it.text}" }
         }
         return flipperHashRepository.calculateHash(requestApi, keysFromFlipper)
             .trackProgressAndReturn {
+                onProgressUpdate(
+                    onStateUpdate,
+                    it.currentPosition,
+                    it.maxPosition,
+                    PERCENT_FLIPPER_LISTING_FOLDERS,
+                    PERCENT_FLIPPER_HASH
+                )
                 info { "[Hash] Progress is ${it.currentPosition}/${it.maxPosition}: ${it.text}" }
             }
     }
@@ -180,5 +212,18 @@ class KeysSynchronization(
 
         simpleKeyApi.insertKey(FlipperKey(newPath, oldKey.keyContent, synchronized = false))
         deleteKeyApi.markDeleted(oldKey.path)
+    }
+
+    private suspend fun onProgressUpdate(
+        onStateUpdate: (suspend (SynchronizationState) -> Unit)?,
+        processed: Int,
+        total: Int,
+        previousStagePercent: Float,
+        stagePercent: Float
+    ) {
+        val whichPercentAllowed = max(0f, stagePercent - previousStagePercent)
+        val taskPercent = processed.toFloat() / total.toFloat()
+        val resultPercent = taskPercent * whichPercentAllowed
+        onStateUpdate?.invoke(SynchronizationState.InProgress(previousStagePercent + resultPercent))
     }
 }

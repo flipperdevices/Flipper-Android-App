@@ -22,25 +22,27 @@ class DiffKeyExecutor(
     suspend fun executeBatch(
         source: AbstractKeyStorage,
         target: AbstractKeyStorage,
-        diffs: List<KeyDiff>
+        diffs: List<KeyDiff>,
+        onProgressUpdate: (suspend (Int, Int) -> Unit)? = null
     ): List<KeyDiff> {
-        return diffs.mapNotNull {
+        return diffs.mapIndexedNotNull { index, diff ->
             try {
-                info { "Execute $it for $source to $target" }
-                execute(source, target, it)
-                return@mapNotNull it
+                info { "Execute $diff for $source to $target" }
+                execute(source, target, diff)
+                onProgressUpdate?.invoke(index, diffs.size)
+                return@mapIndexedNotNull diff
             } catch (
                 @Suppress("detekt:TooGenericExceptionCaught")
                 executeError: Exception
             ) {
-                error(executeError) { "While apply diff $it we have error" }
+                error(executeError) { "While apply diff $diff we have error" }
                 reportApi.reportException(
                     executeError,
                     "diffkeyexecutor",
-                    mapOf("path" to it.newHash.keyPath.toString())
+                    mapOf("path" to diff.newHash.keyPath.toString())
                 )
             }
-            return@mapNotNull null
+            return@mapIndexedNotNull null
         }
     }
 

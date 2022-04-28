@@ -1,7 +1,7 @@
 package com.flipperdevices.bridge.synchronization.api
 
-enum class SynchronizationState {
-    NOT_STARTED,
-    IN_PROGRESS,
-    FINISHED
+sealed class SynchronizationState {
+    object NotStarted : SynchronizationState()
+    data class InProgress(val progress: Float) : SynchronizationState()
+    object Finished : SynchronizationState()
 }
