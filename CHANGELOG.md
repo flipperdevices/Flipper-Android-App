@@ -2,6 +2,7 @@
 
 # 1.1 - In progress
 
+- [BUGFIX] Now we can cancel editing key
 - [BUGFIX] Fix reconnect issues
 - [BUGFIX] Fix synchronization start after first login
 - [Feature] Added an option to cancel existing Flipper RPC requests
