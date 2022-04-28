@@ -33,19 +33,28 @@ import com.flipperdevices.info.impl.compose.info.ComposableUpdaterFirmwareVersio
 import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
 import com.flipperdevices.updater.api.UpdateCardApi
+import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.api.UpdaterUIApi
 import com.flipperdevices.updater.model.FirmwareVersion
 import com.flipperdevices.updater.model.UpdateCardState
+import com.flipperdevices.updater.model.UpdatingState
 
 @Composable
 fun ComposableUpdaterCard(
     modifier: Modifier,
     updaterUiApi: UpdaterUIApi,
+    updaterApi: UpdaterApi,
     deviceStatusViewModel: DeviceStatusViewModel = viewModel()
 ) {
     val deviceStatus by deviceStatusViewModel.getState().collectAsState()
 
     if (deviceStatus !is DeviceStatus.Connected) {
+        val updateStatus by updaterApi.getState().collectAsState()
+
+        if (updateStatus.state == UpdatingState.Rebooting) {
+            ComposableUpdaterReboot(modifier)
+        }
+
         return
     }
 

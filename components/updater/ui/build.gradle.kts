@@ -7,7 +7,7 @@ plugins {
 dependencies {
     implementation(projects.components.updater.api)
     implementation(projects.components.updater.fonts)
-    implementation(projects.components.info.drawable)
+    implementation(projects.components.info.shared)
 
     implementation(projects.components.core.di)
     implementation(projects.components.core.ui)
@@ -19,6 +19,9 @@ dependencies {
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.service.api)
+    implementation(projects.components.bridge.synchronization.api)
+    implementation(projects.components.singleactivity.api)
+    implementation(projects.components.deeplink.api)
 
     // Compose
     implementation(libs.compose.ui)
@@ -28,6 +31,7 @@ dependencies {
 
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.compose)
+    implementation(libs.ktx.fragment)
 
     implementation(libs.cicerone)
 

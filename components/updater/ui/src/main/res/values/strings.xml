@@ -2,8 +2,11 @@
 <resources>
     <string name="update_button_cancel">Cancel</string>
 
-    <string name="update_stage_downloading_desc">Downloading from update server…</string>
-    <string name="update_stage_uploading_desc">Uploading Firmware to Flipper…</string>
+    <string name="update_stage_starting_desc">Starting</string>
+    <string name="update_stage_sync_canceling_desc">Cancel the synchronisation</string>
+    <string name="update_stage_downloading_desc">Downloading from update server</string>
+    <string name="update_stage_uploading_desc">Uploading Firmware to Flipper</string>
+    <string name="update_stage_update_canceling_desc">Canceling the update</string>
 
     <string name="update_card_error_no_internet_title">No internet connection</string>
     <string name="update_card_error_no_internet_desc">Connect to the internet to see available updates</string>
@@ -12,8 +15,13 @@
     <string name="update_card_error_no_sd_title">No SD card</string>
     <string name="update_card_error_no_sd_desc">Can\'t upload firmware to Flipper</string>
 
-    <string name="update_dialog_title">Start Update?</string>
-    <string name="update_dialog_desc">Synchronization with Flipper will be canceled</string>
+    <string name="update_dialog_title">Update Firmware?</string>
+    <string name="update_dialog_sync_title">Start Update?</string>
+    <string name="update_dialog_desc">New Firmware %1$s will be installed</string>
+    <string name="update_dialog_sync_desc">Synchronization with Flipper will be canceled</string>
     <string name="update_dialog_yes">Yes</string>
     <string name="update_dialog_no">No</string>
+
+    <string name="update_screen_title">Updating your Flipper</string>
+    <string name="update_screen_cancel">Cancel</string>
 </resources>

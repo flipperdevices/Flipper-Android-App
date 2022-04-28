@@ -73,6 +73,8 @@ class SynchronizationApiImpl @Inject constructor(
         synchronizationTask?.onStop()
     }
 
+    override fun isSynchronizationRunning() = isLaunched.get()
+
     override fun getSynchronizationState(): StateFlow<SynchronizationState> {
         return synchronizationState
     }

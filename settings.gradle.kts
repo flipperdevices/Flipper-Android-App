@@ -45,7 +45,7 @@ include(
 
     ":components:info:api",
     ":components:info:impl",
-    ":components:info:drawable",
+    ":components:info:shared",
 
     ":components:analytics:shake2report:api",
     ":components:analytics:shake2report:noop",

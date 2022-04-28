@@ -14,6 +14,7 @@ dependencies {
     implementation(projects.components.deeplink.api)
     implementation(projects.components.singleactivity.api)
     implementation(projects.components.firstpair.api)
+    implementation(projects.components.updater.api)
 
     implementation(libs.annotations)
     implementation(libs.appcompat)

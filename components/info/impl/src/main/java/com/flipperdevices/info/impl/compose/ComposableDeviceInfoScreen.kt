@@ -14,15 +14,23 @@ import com.flipperdevices.info.impl.compose.elements.ComposableFirmwareUpdate
 import com.flipperdevices.info.impl.compose.elements.ComposablePairDeviceActionCard
 import com.flipperdevices.info.impl.compose.info.ComposableInfoCard
 import com.flipperdevices.info.impl.compose.updater.ComposableUpdaterCard
+import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.api.UpdaterUIApi
 
 @Composable
-fun ComposableDeviceInfoScreen(updaterUiApi: UpdaterUIApi) {
+fun ComposableDeviceInfoScreen(
+    updaterApi: UpdaterApi,
+    updaterUiApi: UpdaterUIApi
+) {
     Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
         ComposableDeviceBar()
         val isUpdaterAvailable by updaterUiApi.isUpdaterAvailable()
         if (isUpdaterAvailable) {
-            ComposableUpdaterCard(modifier = Modifier.padding(top = 14.dp), updaterUiApi)
+            ComposableUpdaterCard(
+                modifier = Modifier.padding(top = 14.dp),
+                updaterUiApi,
+                updaterApi
+            )
         }
         ComposableFirmwareUpdate(modifier = Modifier.padding(top = 14.dp))
         ComposableInfoCard(modifier = Modifier.padding(top = 14.dp))

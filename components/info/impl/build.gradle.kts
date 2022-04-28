@@ -15,7 +15,7 @@ dependencies {
     implementation(projects.components.core.activityholder)
 
     implementation(projects.components.info.api)
-    implementation(projects.components.info.drawable)
+    implementation(projects.components.info.shared)
 
     implementation(projects.components.firstpair.api)
     implementation(projects.components.updater.api)

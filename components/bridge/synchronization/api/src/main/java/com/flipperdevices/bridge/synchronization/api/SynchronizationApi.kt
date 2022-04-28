@@ -7,5 +7,7 @@ interface SynchronizationApi {
 
     fun getSynchronizationState(): StateFlow<SynchronizationState>
 
+    fun isSynchronizationRunning(): Boolean
+
     suspend fun stop()
 }

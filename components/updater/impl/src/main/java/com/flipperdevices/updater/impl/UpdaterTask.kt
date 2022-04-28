@@ -30,6 +30,7 @@ import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
@@ -44,6 +45,7 @@ class UpdaterTask(
     private val taskScope = lifecycleScope
     private val mutex = Mutex()
     private var updaterJob: Job? = null
+    private var isRebooting = false
 
     fun start(
         updateFile: DistributionFile,
@@ -76,7 +78,9 @@ class UpdaterTask(
                 awaitCancellation()
             } finally {
                 withContext(NonCancellable) {
-                    onStateUpdate(UpdatingState.NotStarted)
+                    if (!isRebooting) {
+                        onStateUpdate(UpdatingState.NotStarted)
+                    }
                 }
             }
         }
@@ -151,13 +155,15 @@ class UpdaterTask(
                     updateManifest = "$flipperPath/update.fuf"
                 }
             }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
-        ).collect()
+        ).first()
+        isRebooting = true
+        onStateUpdate(UpdatingState.Rebooting)
         serviceApi.requestApi.request(
             main {
                 systemRebootRequest = rebootRequest {
                     mode = System.RebootRequest.RebootMode.UPDATE
                 }
             }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
-        ).collect()
+        ).first()
     }
 }

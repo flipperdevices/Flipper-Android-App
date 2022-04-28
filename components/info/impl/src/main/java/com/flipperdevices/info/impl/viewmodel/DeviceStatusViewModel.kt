@@ -11,6 +11,7 @@ import com.flipperdevices.core.preference.pb.PairSettings
 import com.flipperdevices.core.ui.LifecycleViewModel
 import com.flipperdevices.info.impl.di.InfoComponent
 import com.flipperdevices.info.impl.model.DeviceStatus
+import com.flipperdevices.updater.api.UpdaterApi
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,6 +27,9 @@ class DeviceStatusViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
 
     @Inject
     lateinit var dataStorePair: DataStore<PairSettings>
+
+    @Inject
+    lateinit var updaterApi: UpdaterApi
 
     init {
         ComponentHolder.component<InfoComponent>().inject(this)
@@ -54,6 +58,7 @@ class DeviceStatusViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
                 ConnectionState.Initializing,
                 is ConnectionState.Ready,
                 ConnectionState.RetrievingInformation -> {
+                    updaterApi.onDeviceConnected()
                     var deviceName = pairSettings.deviceName
                     if (deviceName.isBlank()) {
                         deviceName = "Unknown"

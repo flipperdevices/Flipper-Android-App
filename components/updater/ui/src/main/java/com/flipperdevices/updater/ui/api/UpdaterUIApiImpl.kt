@@ -5,6 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.navigation.global.CiceroneGlobal
 import com.flipperdevices.core.preference.pb.Settings
@@ -22,9 +23,13 @@ import kotlinx.coroutines.flow.map
 @ContributesBinding(AppGraph::class)
 class UpdaterUIApiImpl @Inject constructor(
     private val dataStoreSettings: DataStore<Settings>,
-    private val globalCicerone: CiceroneGlobal
+    private val globalCicerone: CiceroneGlobal,
+    synchronizationApi: SynchronizationApi
 ) : UpdaterUIApi {
-    private val updaterDialogBuilder = UpdaterDialogBuilder(globalCicerone)
+    private val updaterDialogBuilder = UpdaterDialogBuilder(
+        globalCicerone,
+        synchronizationApi
+    )
 
     @Composable
     override fun getUpdateCardApi(): UpdateCardApi {

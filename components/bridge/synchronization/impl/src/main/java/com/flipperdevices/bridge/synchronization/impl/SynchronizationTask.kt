@@ -84,9 +84,7 @@ class SynchronizationTask(
         try {
             onStateUpdate(SynchronizationState.IN_PROGRESS)
             launch(serviceApi)
-            withContext(Dispatchers.Main) {
-                onStop()
-            }
+            onStateUpdate(SynchronizationState.FINISHED)
         } catch (
             @Suppress("SwallowedException")
             restartException: RestartSynchronizationException

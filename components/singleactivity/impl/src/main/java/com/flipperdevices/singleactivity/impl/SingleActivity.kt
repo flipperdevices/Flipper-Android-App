@@ -16,6 +16,8 @@ import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.firstpair.api.FirstPairApi
 import com.flipperdevices.singleactivity.impl.databinding.SingleActivityBinding
 import com.flipperdevices.singleactivity.impl.di.SingleActivityComponent
+import com.flipperdevices.updater.api.UpdaterApi
+import com.flipperdevices.updater.api.UpdaterUIApi
 import com.github.terrakok.cicerone.Navigator
 import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.AppNavigator
@@ -39,6 +41,12 @@ class SingleActivity : AppCompatActivity(), RouterProvider, LogTagProvider {
 
     @Inject
     lateinit var firstPairApi: FirstPairApi
+
+    @Inject
+    lateinit var updaterApi: UpdaterApi
+
+    @Inject
+    lateinit var updaterUIApi: UpdaterUIApi
 
     lateinit var binding: SingleActivityBinding
 
@@ -86,6 +94,11 @@ class SingleActivity : AppCompatActivity(), RouterProvider, LogTagProvider {
 
         if (firstPairApi.shouldWeOpenPairScreen()) {
             cicerone.getRouter().newRootScreen(firstPairApi.getFirstPairScreen())
+            return
+        }
+
+        if (updaterApi.isUpdateInProcess()) {
+            updaterUIApi.openUpdateScreen(silent = true)
             return
         }
 
