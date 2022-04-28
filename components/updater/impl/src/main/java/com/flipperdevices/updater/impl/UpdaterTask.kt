@@ -156,14 +156,15 @@ class UpdaterTask(
                 }
             }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
         ).first()
-        isRebooting = true
-        onStateUpdate(UpdatingState.Rebooting)
-        serviceApi.requestApi.request(
+
+        serviceApi.requestApi.requestWithoutAnswer(
             main {
                 systemRebootRequest = rebootRequest {
                     mode = System.RebootRequest.RebootMode.UPDATE
                 }
             }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
-        ).first()
+        )
+        isRebooting = true
+        onStateUpdate(UpdatingState.Rebooting)
     }
 }

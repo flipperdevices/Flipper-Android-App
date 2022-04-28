@@ -13,6 +13,7 @@ import com.flipperdevices.bridge.impl.manager.service.getServiceOrLog
 import com.flipperdevices.bridge.impl.utils.SpeedMeter
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.log.verbose
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.combine
@@ -83,7 +84,7 @@ class FlipperSerialApiUnsafeImpl(
         if (data.isEmpty()) {
             return
         }
-        info { "Send bytes to flipper with size: ${data.size}" }
+        verbose { "Send bytes to flipper with size: ${data.size}" }
         val bleManager = bleManagerInternal
         if (bleManager == null) {
             pendingBytes.add(data)

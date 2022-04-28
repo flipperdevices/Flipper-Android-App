@@ -21,6 +21,11 @@
     <string name="update_dialog_sync_desc">Synchronization with Flipper will be canceled</string>
     <string name="update_dialog_yes">Yes</string>
     <string name="update_dialog_no">No</string>
+    <string name="update_cancel_dialog_title">Cancel Update?</string>
+    <string name="update_cancel_dialog_desc">You can restart this update later</string>
+    <string name="update_cancel_dialog_yes">Yes</string>
+    <string name="update_cancel_dialog_no">No</string>
+
 
     <string name="update_screen_title">Updating your Flipper</string>
     <string name="update_screen_cancel">Cancel</string>

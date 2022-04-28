@@ -12,6 +12,7 @@ import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.model.UpdatingState
 import com.flipperdevices.updater.model.VersionFiles
 import com.flipperdevices.updater.ui.di.UpdaterComponent
+import com.flipperdevices.updater.ui.fragments.CancelDialogBuilder
 import com.flipperdevices.updater.ui.model.UpdaterScreenState
 import javax.inject.Inject
 import kotlinx.coroutines.Job
@@ -74,7 +75,11 @@ class UpdaterViewModel : ViewModel(), LogTagProvider {
         updaterApi.start(versionFiles)
     }
 
-    fun cancel() = launchWithLock(mutex, viewModelScope, "cancel") {
+    fun cancel() {
+        CancelDialogBuilder.showDialog { cancelInternal() }
+    }
+
+    fun cancelInternal() = launchWithLock(mutex, viewModelScope, "cancel") {
         updaterJob?.cancelAndJoin()
         updaterJob = null
         updaterScreenState.emit(UpdaterScreenState.CancelingUpdate)
