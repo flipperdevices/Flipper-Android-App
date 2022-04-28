@@ -54,11 +54,12 @@ class UpdaterApiImpl @Inject constructor(
             info { "Downloading state update to $it" }
             withContext(NonCancellable) {
                 updatingState.emit(UpdatingStateWithVersion(it, version = versionFiles.version))
-            }
-            if (it == UpdatingState.NotStarted || it == UpdatingState.Rebooting) {
-                currentActiveTask?.onStop()
-                currentActiveTask = null
-                isLaunched.set(false)
+
+                if (it == UpdatingState.NotStarted || it == UpdatingState.Rebooting) {
+                    currentActiveTask?.onStop()
+                    currentActiveTask = null
+                    isLaunched.set(false)
+                }
             }
         }
     }
@@ -76,5 +77,7 @@ class UpdaterApiImpl @Inject constructor(
     }
 
     override fun getState(): StateFlow<UpdatingStateWithVersion> = updatingState
-    override fun isUpdateInProcess() = isLaunched.get()
+    override fun isUpdateInProcess(): Boolean {
+        return isLaunched.get()
+    }
 }
