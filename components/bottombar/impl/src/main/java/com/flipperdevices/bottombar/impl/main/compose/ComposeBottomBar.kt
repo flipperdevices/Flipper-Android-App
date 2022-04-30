@@ -68,12 +68,14 @@ fun ComposeBottomBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .onGloballyPositioned {
-                    tabHeightPx = it.size.height
+                    tabHeightPx = it.size.height + 1
                 },
             backgroundColor = Color.Transparent,
             selectedTabIndex = selectedIndex,
             contentColor = colorResource(android.R.color.black),
-            indicator = { tabPositions = it }
+            indicator = { tabPositions = it },
+            // remove bottom divider from tabRow
+            divider = { },
         ) {
             tabs.forEachIndexed { index, flipperBottomTab ->
                 ComposeMaterialYouTab(
