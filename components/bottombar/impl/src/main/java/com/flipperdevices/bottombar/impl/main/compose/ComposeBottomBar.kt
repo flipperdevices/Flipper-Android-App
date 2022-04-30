@@ -75,7 +75,7 @@ fun ComposeBottomBar(
             contentColor = colorResource(android.R.color.black),
             indicator = { tabPositions = it },
             // remove bottom divider from tabRow
-            divider = { },
+            divider = { }
         ) {
             tabs.forEachIndexed { index, flipperBottomTab ->
                 ComposeMaterialYouTab(
