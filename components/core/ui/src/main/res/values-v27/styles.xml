@@ -8,6 +8,6 @@
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:statusBarColor">@color/background</item>
         <item name="android:windowLightNavigationBar">true</item>
-        <item name="android:navigationBarColor">@color/background</item>
+        <item name="android:navigationBarColor">@color/white_100</item>
     </style>
 </resources>
