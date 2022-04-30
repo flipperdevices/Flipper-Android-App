@@ -68,7 +68,7 @@ fun ComposeBottomBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .onGloballyPositioned {
-                    tabHeightPx = it.size.height + 1
+                    tabHeightPx = it.size.height
                 },
             backgroundColor = Color.Transparent,
             selectedTabIndex = selectedIndex,
