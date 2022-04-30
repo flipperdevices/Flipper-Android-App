@@ -2,6 +2,7 @@
 
 # 1.1 - In progress
 
+- [BUGFIX] Remove bottom divider from Bottom Bar
 - [BUGFIX] Now we can cancel editing key
 - [BUGFIX] Fix reconnect issues
 - [BUGFIX] Fix synchronization start after first login
