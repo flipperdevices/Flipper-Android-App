@@ -27,6 +27,9 @@ dependencies {
 
     implementation(libs.fastutil)
 
+    // Protobuf jvm
+    implementation(libs.protobuf.jvm)
+
     // Testing
     testImplementation(projects.components.core.test)
     testImplementation(libs.junit)

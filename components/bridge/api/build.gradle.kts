@@ -14,4 +14,7 @@ dependencies {
     implementation(libs.ble.scan)
 
     implementation(libs.appcompat)
+
+    // Protobuf jvm
+    implementation(libs.protobuf.jvm)
 }

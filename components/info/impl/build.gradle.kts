@@ -48,4 +48,7 @@ dependencies {
     implementation(libs.ble.scan)
 
     implementation(libs.cicerone)
+
+    // Protobuf jvm
+    implementation(libs.protobuf.jvm)
 }

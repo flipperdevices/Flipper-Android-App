@@ -28,4 +28,7 @@ dependencies {
     // Dagger deps
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
+
+    // Protobuf jvm
+    implementation(libs.protobuf.jvm)
 }

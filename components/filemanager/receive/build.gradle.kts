@@ -39,4 +39,7 @@ dependencies {
     implementation(libs.lifecycle.compose)
 
     implementation(libs.kotlin.coroutines)
+
+    // Protobuf jvm
+    implementation(libs.protobuf.jvm)
 }

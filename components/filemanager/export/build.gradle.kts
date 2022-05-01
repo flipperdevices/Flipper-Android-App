@@ -54,6 +54,9 @@ dependencies {
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
 
+    // Protobuf jvm
+    implementation(libs.protobuf.jvm)
+
     // Lifecycle
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)

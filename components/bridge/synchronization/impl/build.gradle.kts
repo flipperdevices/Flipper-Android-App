@@ -36,6 +36,9 @@ dependencies {
 
     implementation(libs.kotlin.serialization.json)
 
+    // Protobuf jvm
+    implementation(libs.protobuf.jvm)
+
     // Testing
     testImplementation(projects.components.core.test)
     testImplementation(libs.junit)

@@ -39,4 +39,7 @@ dependencies {
     kapt(libs.dagger.kapt)
 
     implementation(libs.cicerone)
+
+    // Protobuf jvm
+    implementation(libs.protobuf.jvm)
 }
