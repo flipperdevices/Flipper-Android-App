@@ -16,7 +16,7 @@ dependencies {
     implementation(projects.components.core.preference)
 
     implementation(projects.components.bridge.api)
-    implementation(projects.components.bridge.protobuf)
+    implementation(projects.components.bridge.pbutils)
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.dao.api)
 

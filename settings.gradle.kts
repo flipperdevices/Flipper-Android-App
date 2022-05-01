@@ -17,7 +17,7 @@ include(
     ":components:bridge:impl",
     ":components:bridge:service:impl",
     ":components:bridge:service:api",
-    ":components:bridge:protobuf",
+    ":components:bridge:pbutils",
     ":components:bridge:synchronization:api",
     ":components:bridge:synchronization:impl",
     ":components:bridge:synchronization:ui",

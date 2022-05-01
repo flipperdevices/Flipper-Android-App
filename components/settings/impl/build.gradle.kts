@@ -18,7 +18,7 @@ dependencies {
     implementation(projects.components.screenstreaming.api)
 
     implementation(projects.components.bridge.api)
-    implementation(projects.components.bridge.protobuf)
+    implementation(projects.components.bridge.pbutils)
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.synchronization.api)
     implementation(libs.ble.common)

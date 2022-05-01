@@ -5,7 +5,7 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.components.bridge.protobuf)
+    implementation(projects.components.bridge.pbutils)
     implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)
 
