@@ -8,7 +8,7 @@ android-gradle = "7.1.2"
 protobuf = "3.19.4"
 protobuf-gradle = "0.8.18"
 # Protobuf JVM library https://github.com/flipperdevices/flipperzero-protobuf-jvm
-protobuf-jvm = "0.6.17"
+protobuf-jvm = "0.6.6"
 # Temporary solution: please, change also in androidCompose.gradle.kts
 compose = "1.1.0"
 compose_accompanist = "0.23.0"
@@ -152,7 +152,7 @@ image-lottie = { module = "com.airbnb.android:lottie-compose", version.ref = "lo
 # Protobuf
 protobuf-kotlinlite = { module = "com.google.protobuf:protobuf-kotlin-lite", version.ref = "protobuf" }
 protobuf-protoc = { module = "com.google.protobuf:protoc", version.ref = "protobuf" }
-protobuf-jvm = { module = "com.github.Programistich:flipperzero-protobuf-jvm", version.ref = "protobuf-jvm" }
+protobuf-jvm = { module = "com.github.flipperdevices:flipperzero-protobuf-jvm", version.ref = "protobuf-jvm" }
 
 # Testing
 junit = { module = "junit:junit", version.ref = "junit" }
