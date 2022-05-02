@@ -15,3 +15,4 @@
 - [Feature] Now you can delete or restore all keys from trash
 - [Feature] Add recover support to deleted keys (on keyscreen)
 - [CI] Now we check that CHANGELOG.md changed
+- [CI] JVM protobuf library
