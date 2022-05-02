@@ -49,5 +49,4 @@ dependencies {
     implementation(libs.ble.scan)
 
     implementation(libs.cicerone)
-
 }
