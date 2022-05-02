@@ -17,6 +17,7 @@ dependencies {
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.pbutils)
+    implementation(libs.protobuf.jvm)
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.dao.api)
 
@@ -35,9 +36,6 @@ dependencies {
     implementation(libs.lifecycle.runtime.ktx)
 
     implementation(libs.kotlin.serialization.json)
-
-    // Protobuf jvm
-    implementation(libs.protobuf.jvm)
 
     // Testing
     testImplementation(projects.components.core.test)

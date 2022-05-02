@@ -18,6 +18,7 @@ dependencies {
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.pbutils)
+    implementation(libs.protobuf.jvm)
     implementation(projects.components.bridge.service.api)
 
     implementation(libs.annotations)
@@ -39,7 +40,4 @@ dependencies {
     implementation(libs.lifecycle.compose)
 
     implementation(libs.kotlin.coroutines)
-
-    // Protobuf jvm
-    implementation(libs.protobuf.jvm)
 }

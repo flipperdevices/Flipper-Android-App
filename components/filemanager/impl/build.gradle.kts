@@ -15,6 +15,7 @@ dependencies {
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.pbutils)
+    implementation(libs.protobuf.jvm)
 
     implementation(projects.components.filemanager.api)
 
@@ -39,7 +40,4 @@ dependencies {
     kapt(libs.dagger.kapt)
 
     implementation(libs.cicerone)
-
-    // Protobuf jvm
-    implementation(libs.protobuf.jvm)
 }

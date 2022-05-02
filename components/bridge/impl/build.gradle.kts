@@ -12,6 +12,7 @@ dependencies {
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.pbutils)
+    implementation(libs.protobuf.jvm)
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.annotations)
@@ -26,9 +27,6 @@ dependencies {
     kapt(libs.dagger.kapt)
 
     implementation(libs.fastutil)
-
-    // Protobuf jvm
-    implementation(libs.protobuf.jvm)
 
     // Testing
     testImplementation(projects.components.core.test)

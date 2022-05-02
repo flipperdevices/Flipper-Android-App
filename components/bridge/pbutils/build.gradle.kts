@@ -3,7 +3,6 @@ plugins {
 }
 
 dependencies {
-    // Protobuf jvm
     implementation(libs.protobuf.jvm)
 
     implementation(projects.components.core.log)

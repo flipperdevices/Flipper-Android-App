@@ -9,6 +9,7 @@ dependencies {
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.pbutils)
+    implementation(libs.protobuf.jvm)
     implementation(projects.components.bridge.service.api)
 
     implementation(projects.components.core.di)
@@ -28,7 +29,4 @@ dependencies {
     // Dagger deps
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
-
-    // Protobuf jvm
-    implementation(libs.protobuf.jvm)
 }
