@@ -20,9 +20,9 @@ fun RowScope.ComposableWrite(onClick: () -> Unit) {
     showBackground = true
 )
 @Composable
+@Suppress("UnusedPrivateMember")
 private fun ComposableWritePreview() {
     Row {
         ComposableWrite(onClick = { })
     }
-
 }
