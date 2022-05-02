@@ -11,4 +11,6 @@
     <string name="keyscreen_deleting_text">Deleting</string>
     <string name="keyscreen_title">Key info</string>
     <string name="keyscreen_save_error">Error when saving. Perhaps a key with this name already exists?</string>
+    <string name="keyscreen_write">Write</string>
+    <string name="keyscreen_emulate">Emulate</string>
 </resources>
