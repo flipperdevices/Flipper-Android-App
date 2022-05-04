@@ -10,17 +10,12 @@ import com.flipperdevices.protobuf.system.pingRequest
 import com.google.protobuf.ByteString
 import java.io.ByteArrayOutputStream
 import java.nio.ByteBuffer
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import no.nordicsemi.android.ble.data.Data
-import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -35,9 +30,8 @@ import org.mockito.stubbing.OngoingStubbing
 
 @ExperimentalCoroutinesApi
 class FlipperSerialOverflowThrottlerTest {
-    private val dispatcher = StandardTestDispatcher()
-    private val coroutineScope = TestScope(dispatcher)
 
+    private lateinit var coroutineScope: TestScope
     private lateinit var serialApi: FlipperSerialApi
     private lateinit var requestStorage: FlipperRequestStorage
 
@@ -45,8 +39,8 @@ class FlipperSerialOverflowThrottlerTest {
 
     @Before
     fun setUp() {
-        Dispatchers.setMain(dispatcher)
         serialApi = mock()
+        coroutineScope = TestScope()
         requestStorage = mock()
         subject = FlipperSerialOverflowThrottler(
             serialApi,
@@ -55,11 +49,6 @@ class FlipperSerialOverflowThrottlerTest {
         )
 
         subject.onServiceReceived(mock())
-    }
-
-    @After
-    fun tearDown() {
-        Dispatchers.resetMain()
     }
 
     @Test
