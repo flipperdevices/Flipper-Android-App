@@ -12,11 +12,7 @@ plugins {
 
 dependencies {
     implementation(projects.components.core.di)
-    api(libs.protobuf.javalite)
-    api(libs.protobuf.kotlin) {
-        @Suppress("UnstableApiUsage")
-        exclude(libs.protobuf.kotlin.get().module.group)
-    }
+    api(libs.protobuf.kotlinlite)
 
     api(libs.datastore)
 
