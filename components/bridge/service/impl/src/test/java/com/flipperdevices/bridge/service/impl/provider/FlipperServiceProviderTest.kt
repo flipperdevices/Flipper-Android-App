@@ -76,7 +76,7 @@ class FlipperServiceProviderTest {
     }
 
     @Test
-    @Ignore
+    @Ignore("For now we don't stop service when consumer destroy")
     fun `Stop service when consumer destroy`() {
         val consumer = mock<FlipperBleServiceConsumer>()
         val lifecycleOwner = TestLifecycleOwner()
@@ -132,6 +132,7 @@ class FlipperServiceProviderTest {
     }
 
     @Test
+    @Ignore("For now we don't stop service when consumer destroy")
     fun `Request start service after stop`() {
         val firstConsumer = mock<FlipperBleServiceConsumer>()
         val secondConsumer = mock<FlipperBleServiceConsumer>()
