@@ -1,17 +1,21 @@
 package com.flipperdevices.keyscreen.impl.composable.actions
 
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.flipperdevices.keyscreen.impl.R
 
 @Composable
-fun RowScope.ComposableEmulate(onClick: () -> Unit) {
+fun ComposableEmulate(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
     ComposableActionFlipper(
         iconId = R.drawable.ic_emulate,
         descriptionId = R.string.keyscreen_emulate,
         onClick = onClick,
+        modifier = modifier
     )
 }
 
@@ -22,7 +26,7 @@ fun RowScope.ComposableEmulate(onClick: () -> Unit) {
 @Composable
 @Suppress("UnusedPrivateMember")
 private fun ComposableWritePreview() {
-    Row{
+    Row {
         ComposableEmulate(onClick = { })
     }
 }

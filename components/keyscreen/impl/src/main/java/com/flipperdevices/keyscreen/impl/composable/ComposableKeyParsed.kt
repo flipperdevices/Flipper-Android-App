@@ -1,11 +1,10 @@
 package com.flipperdevices.keyscreen.impl.composable
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -55,10 +54,10 @@ fun ComposableKeyParsed(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 24.dp, end = 24.dp, bottom = 24.dp),
+            horizontalArrangement = Arrangement.spacedBy(24.dp)
         ) {
-            ComposableWrite(onClick = {})
-            Spacer(modifier = Modifier.width(36.dp))
-            ComposableEmulate(onClick = {})
+            ComposableWrite(modifier = Modifier.weight(1f), onClick = {})
+            ComposableEmulate(modifier = Modifier.weight(1f), onClick = {})
         }
 
         if (keyScreenState.deleteState == DeleteState.NOT_DELETED) {
