@@ -10,14 +10,19 @@ import com.flipperdevices.protobuf.system.pingRequest
 import com.google.protobuf.ByteString
 import java.io.ByteArrayOutputStream
 import java.nio.ByteBuffer
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import no.nordicsemi.android.ble.data.Data
+import org.junit.After
 import org.junit.Assert
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doAnswer
@@ -28,16 +33,11 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import org.mockito.stubbing.OngoingStubbing
 
-@Ignore(
-    """
-    I can't fix in one day. More info about migration:
-    https://github.com/Kotlin/kotlinx.coroutines/blob/master/kotlinx-coroutines-test/MIGRATION.md
-    """
-)
-// TODO(LionZXY): https://flipperzero.atlassian.net/browse/MOB-75
 @ExperimentalCoroutinesApi
 class FlipperSerialOverflowThrottlerTest {
-    private lateinit var coroutineScope: TestScope
+    private val dispatcher = StandardTestDispatcher()
+    private val coroutineScope = TestScope(dispatcher)
+
     private lateinit var serialApi: FlipperSerialApi
     private lateinit var requestStorage: FlipperRequestStorage
 
@@ -45,8 +45,8 @@ class FlipperSerialOverflowThrottlerTest {
 
     @Before
     fun setUp() {
+        Dispatchers.setMain(dispatcher)
         serialApi = mock()
-        coroutineScope = TestScope()
         requestStorage = mock()
         subject = FlipperSerialOverflowThrottler(
             serialApi,
@@ -57,8 +57,13 @@ class FlipperSerialOverflowThrottlerTest {
         subject.onServiceReceived(mock())
     }
 
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()
+    }
+
     @Test
-    fun `Send request fitting in buffer size`() = runBlockingTest {
+    fun `Send request fitting in buffer size`() = runTest {
         val testRequest = main { systemPingRequest = pingRequest { } }.wrapToRequest()
         val bufferSize = testRequest.data.toDelimitedBytes().size
 
@@ -66,11 +71,13 @@ class FlipperSerialOverflowThrottlerTest {
 
         subject.updateRemainingBuffer(Data(bufferSize.asBytes()))
 
-        verify(serialApi).sendBytes(eq(testRequest.data.toDelimitedBytes()))
+        coroutineScope.launch {
+            verify(serialApi).sendBytes(eq(testRequest.data.toDelimitedBytes()))
+        }
     }
 
     @Test
-    fun `Send request if we fit in buffer`() = runBlockingTest {
+    fun `Send request if we fit in buffer`() = runTest {
         val testRequest = main {
             systemPingRequest = pingRequest { data = ByteString.EMPTY }
         }.wrapToRequest()
@@ -83,11 +90,13 @@ class FlipperSerialOverflowThrottlerTest {
 
         subject.updateRemainingBuffer(Data(bufferSize.asBytes()))
 
-        verify(serialApi).sendBytes(eq(testRequest.data.toDelimitedBytes()))
+        coroutineScope.launch {
+            verify(serialApi).sendBytes(eq(testRequest.data.toDelimitedBytes()))
+        }
     }
 
     @Test
-    fun `Send request larger than buffer`() = runBlockingTest {
+    fun `Send request larger than buffer`() = runTest {
         val testRequest = main {
             storageWriteRequest = writeRequest {
                 file = file {
@@ -115,11 +124,13 @@ class FlipperSerialOverflowThrottlerTest {
 
         subject.updateRemainingBuffer(Data(bufferSize.asBytes()))
 
-        verify(serialApi).sendBytes(eq(expectedBytes.copyOf(bufferSize)))
+        coroutineScope.launch {
+            verify(serialApi).sendBytes(eq(expectedBytes.copyOf(bufferSize)))
 
-        subject.updateRemainingBuffer(Data(bufferSize.asBytes()))
+            subject.updateRemainingBuffer(Data(bufferSize.asBytes()))
 
-        Assert.assertArrayEquals(testRequest.data.toDelimitedBytes(), actualBytes.toByteArray())
+            Assert.assertArrayEquals(testRequest.data.toDelimitedBytes(), actualBytes.toByteArray())
+        }
     }
 }
 
