@@ -7,7 +7,7 @@
 - [BUGFIX] Fix reconnect issues
 - [BUGFIX] Fix synchronization start after first login
 - [Feature] Write and emulate buttons view
-- [Feature] Add update Flipper via OTA
+- [Feature] Add update Flipper via OTA on separate screen
 - [Feature] Added an option to cancel existing Flipper RPC requests
 - [Feature] Use new design for unsupported card and for unsupported dialog
 - [Feature] Restart connection if flipper not respond 30 seconds
