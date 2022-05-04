@@ -2,6 +2,7 @@
 
 # 1.1 - In progress
 
+- [BUGFIX] FlipperSerialOverflowThrottlerTest work
 - [BUGFIX] Remove bottom divider from Bottom Bar
 - [BUGFIX] Now we can cancel editing key
 - [BUGFIX] Fix reconnect issues
