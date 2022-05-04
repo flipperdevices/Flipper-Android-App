@@ -1,17 +1,24 @@
 package com.flipperdevices.keyscreen.impl.composable
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.ui.composable.LocalRouter
 import com.flipperdevices.keyscreen.impl.R
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableDelete
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableEdit
+import com.flipperdevices.keyscreen.impl.composable.actions.ComposableEmulate
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableRestore
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableShare
+import com.flipperdevices.keyscreen.impl.composable.actions.ComposableWrite
 import com.flipperdevices.keyscreen.impl.composable.card.ComposableKeyCard
 import com.flipperdevices.keyscreen.impl.model.DeleteState
 import com.flipperdevices.keyscreen.impl.model.KeyScreenState
@@ -43,6 +50,16 @@ fun ComposableKeyParsed(
             keyScreenState.favoriteState,
             viewModel::setFavorite
         )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 24.dp, end = 24.dp, bottom = 24.dp),
+            horizontalArrangement = Arrangement.spacedBy(24.dp)
+        ) {
+            ComposableWrite(modifier = Modifier.weight(1f), onClick = {})
+            ComposableEmulate(modifier = Modifier.weight(1f), onClick = {})
+        }
+
         if (keyScreenState.deleteState == DeleteState.NOT_DELETED) {
             ComposableEdit(viewModel::onOpenEdit)
             ComposableShare(keyScreenState.shareState, viewModel::onShare)
