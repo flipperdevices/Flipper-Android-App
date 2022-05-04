@@ -7,6 +7,8 @@ anvil = "2.3.11-1-6-10"
 android-gradle = "7.1.2"
 protobuf = "3.19.4"
 protobuf-gradle = "0.8.18"
+# Protobuf JVM library https://github.com/flipperdevices/flipperzero-protobuf-jvm
+protobuf-jvm = "0.6.6"
 # Temporary solution: please, change also in androidCompose.gradle.kts
 compose = "1.1.0"
 compose_accompanist = "0.23.0"
@@ -148,9 +150,9 @@ ble-scan = { module = "no.nordicsemi.android.support.v18:scanner", version.ref =
 image-lottie = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie" }
 
 # Protobuf
-protobuf-javalite = { module = "com.google.protobuf:protobuf-javalite", version.ref = "protobuf" }
-protobuf-kotlin = { module = "com.google.protobuf:protobuf-kotlin", version.ref = "protobuf" }
+protobuf-kotlinlite = { module = "com.google.protobuf:protobuf-kotlin-lite", version.ref = "protobuf" }
 protobuf-protoc = { module = "com.google.protobuf:protoc", version.ref = "protobuf" }
+protobuf-jvm = { module = "com.github.flipperdevices:flipperzero-protobuf-jvm", version.ref = "protobuf-jvm" }
 
 # Testing
 junit = { module = "junit:junit", version.ref = "junit" }

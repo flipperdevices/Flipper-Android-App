@@ -17,7 +17,8 @@ dependencies {
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.dao.api)
-    implementation(projects.components.bridge.protobuf)
+    implementation(projects.components.bridge.pbutils)
+    implementation(libs.protobuf.jvm)
     implementation(projects.components.bridge.service.api)
 
     implementation(libs.annotations)
