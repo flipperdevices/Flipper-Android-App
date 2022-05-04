@@ -1,11 +1,14 @@
 package com.flipperdevices.updater.api
 
-import com.flipperdevices.updater.model.DistributionFile
-import com.flipperdevices.updater.model.UpdatingState
+import com.flipperdevices.updater.model.UpdatingStateWithVersion
+import com.flipperdevices.updater.model.VersionFiles
 import kotlinx.coroutines.flow.StateFlow
 
 interface UpdaterApi {
-    fun start(updateFile: DistributionFile)
+    fun isUpdateInProcess(): Boolean
+    fun getState(): StateFlow<UpdatingStateWithVersion>
+
+    fun onDeviceConnected()
+    fun start(versionFiles: VersionFiles)
     suspend fun cancel()
-    fun getState(): StateFlow<UpdatingState>
 }

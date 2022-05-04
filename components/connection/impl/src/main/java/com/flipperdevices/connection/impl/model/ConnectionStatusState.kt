@@ -6,6 +6,6 @@ sealed class ConnectionStatusState {
     object Connecting : ConnectionStatusState()
     object Unsupported : ConnectionStatusState()
     object Connected : ConnectionStatusState()
-    object Synchronization : ConnectionStatusState()
+    data class Synchronization(val progress: Float) : ConnectionStatusState()
     object Synchronized : ConnectionStatusState()
 }

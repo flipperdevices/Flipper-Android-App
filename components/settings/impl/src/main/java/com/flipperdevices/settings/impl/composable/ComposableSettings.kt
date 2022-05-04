@@ -49,7 +49,7 @@ fun ComposableSettings(
 
         if (settings.enabledDebugSettings) {
             Category(titleId = R.string.category_debug)
-            DebugCategory()
+            DebugCategory(settings)
         }
     }
 }

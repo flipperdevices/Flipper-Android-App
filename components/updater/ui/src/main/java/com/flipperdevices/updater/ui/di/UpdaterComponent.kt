@@ -1,6 +1,7 @@
 package com.flipperdevices.updater.ui.di
 
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.updater.ui.fragments.UpdaterFragment
 import com.flipperdevices.updater.ui.viewmodel.UpdateCardViewModel
 import com.flipperdevices.updater.ui.viewmodel.UpdaterViewModel
 import com.squareup.anvil.annotations.ContributesTo
@@ -9,4 +10,5 @@ import com.squareup.anvil.annotations.ContributesTo
 interface UpdaterComponent {
     fun inject(viewModel: UpdateCardViewModel)
     fun inject(viewModel: UpdaterViewModel)
+    fun inject(fragment: UpdaterFragment)
 }

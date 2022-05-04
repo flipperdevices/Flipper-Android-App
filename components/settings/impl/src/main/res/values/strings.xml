@@ -12,6 +12,8 @@
     <string name="debug_ignored_unsupported_version">Ignored unsupported version</string>
     <string name="debug_ignored_unsupported_version_desc">Does not stop processes in the program if the flipper version is not supported.</string>
     <string name="debug_ignored_unsupported_version_toast">Please restart the application to apply the changes</string>
+    <string name="debug_ignored_update_version">Ignored version in updater</string>
+    <string name="debug_ignored_update_version_desc">If enabled, we always show an update button, even if the version is exactly the same</string>
     <string name="category_experimental">Experimental</string>
     <string name="experimental_file_manager">File Manager</string>
     <string name="experimental_file_manager_desc">Navigating through folders and files in the flipper</string>

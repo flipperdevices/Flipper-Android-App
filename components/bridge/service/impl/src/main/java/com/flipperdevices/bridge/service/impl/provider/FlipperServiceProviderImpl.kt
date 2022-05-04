@@ -85,7 +85,9 @@ class FlipperServiceProviderImpl @Inject constructor(
         // If we not found any consumers, close ble connection and service
         if (serviceConsumers.isEmpty()) {
             info { "Service consumers is empty, stop service" }
-            stopServiceInternal()
+            @Suppress("ForbiddenComment")
+            // TODO: Add timeout
+            // stopServiceInternal()
             return
         }
 
@@ -105,6 +107,7 @@ class FlipperServiceProviderImpl @Inject constructor(
     }
 
     @Synchronized
+    @Suppress("UnusedPrivateMember")
     private fun stopServiceInternal() {
         info { "Internal stop service" }
         resetInternalWithoutInvalidate()

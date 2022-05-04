@@ -22,6 +22,8 @@ import com.flipperdevices.core.ui.TaskWithLifecycle
 import com.flipperdevices.shake2report.api.Shake2ReportApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -63,8 +65,15 @@ class SynchronizationTask(
                 }
             }
         }
-        taskScope.launch {
-            onStart()
+        onStart()
+        taskScope.launch(Dispatchers.Default) {
+            try {
+                awaitCancellation()
+            } finally {
+                withContext(NonCancellable) {
+                    onStateUpdate(SynchronizationState.Finished)
+                }
+            }
         }
     }
 
@@ -73,8 +82,9 @@ class SynchronizationTask(
         onStateUpdate: suspend (SynchronizationState) -> Unit
     ) {
         try {
-            onStateUpdate(SynchronizationState.IN_PROGRESS)
-            launch(serviceApi)
+            onStateUpdate(SynchronizationState.InProgress(0f))
+            launch(serviceApi, onStateUpdate)
+            onStateUpdate(SynchronizationState.Finished)
         } catch (
             @Suppress("SwallowedException")
             restartException: RestartSynchronizationException
@@ -86,13 +96,16 @@ class SynchronizationTask(
             exception: Throwable
         ) {
             error(exception) { "While synchronization we have error" }
-        } finally {
-            onStateUpdate(SynchronizationState.FINISHED)
-            onStop()
+            withContext(Dispatchers.Main) {
+                onStop()
+            }
         }
     }
 
-    private suspend fun launch(serviceApi: FlipperServiceApi) = withContext(Dispatchers.Default) {
+    private suspend fun launch(
+        serviceApi: FlipperServiceApi,
+        onStateUpdate: suspend (SynchronizationState) -> Unit
+    ) = withContext(Dispatchers.Default) {
         val flipperStorage = FlipperKeyStorage(serviceApi.requestApi)
         val favoriteSynchronization = FavoriteSynchronization(
             favoriteApi, manifestRepository, flipperStorage
@@ -107,7 +120,7 @@ class SynchronizationTask(
             reportApi
         )
 
-        val keysHashes = keysSynchronization.syncKeys()
+        val keysHashes = keysSynchronization.syncKeys(onStateUpdate)
         val favorites = favoriteSynchronization.syncFavorites()
 
         // End synchronization keys

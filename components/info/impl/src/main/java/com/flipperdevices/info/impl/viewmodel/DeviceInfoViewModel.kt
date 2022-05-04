@@ -13,12 +13,10 @@ import com.flipperdevices.info.impl.di.InfoComponent
 import com.flipperdevices.info.impl.fragment.FullDeviceInfoFragment
 import com.flipperdevices.info.impl.model.DeviceInfo
 import com.flipperdevices.info.impl.model.DeviceInfoRequestStatus
-import com.flipperdevices.info.impl.model.StorageInfo
 import com.flipperdevices.info.impl.model.VerboseDeviceInfo
 import com.flipperdevices.updater.api.FlipperVersionProviderApi
 import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.FragmentScreen
-import java.lang.Math.max
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -60,14 +58,8 @@ class DeviceInfoViewModel :
         serviceApi.flipperRpcInformationApi.getRpcInformationFlow().onEach { rpcInformation ->
             deviceInfoState.update {
                 it.copy(
-                    flashInt = getStorageInfo(
-                        rpcInformation.internalStorageFree,
-                        rpcInformation.internalStorageTotal
-                    ),
-                    flashSd = getStorageInfo(
-                        rpcInformation.externalStorageFree,
-                        rpcInformation.externalStorageTotal
-                    )
+                    flashInt = rpcInformation.internalStorageStats,
+                    flashSd = rpcInformation.externalStorageStats
                 )
             }
             verboseDeviceInfoState.update {
@@ -88,12 +80,5 @@ class DeviceInfoViewModel :
 
     fun onOpenFullDeviceInfo(router: Router) {
         router.navigateTo(FragmentScreen { FullDeviceInfoFragment() })
-    }
-
-    fun getStorageInfo(free: Long?, total: Long?): StorageInfo? {
-        if (free == null || total == null) {
-            return null
-        }
-        return StorageInfo(max(0, total - free), total)
     }
 }

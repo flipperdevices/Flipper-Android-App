@@ -1,6 +1,7 @@
 package com.flipperdevices.info.impl.compose.elements
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,7 +30,7 @@ fun InfoElementCard(
             .padding(horizontal = 14.dp),
         shape = RoundedCornerShape(size = 10.dp)
     ) {
-        Column {
+        Column(verticalArrangement = Arrangement.SpaceBetween) {
             if (titleId != null) {
                 Text(
                     modifier = Modifier.padding(

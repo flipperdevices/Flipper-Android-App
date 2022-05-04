@@ -1,5 +1,10 @@
 package com.flipperdevices.updater.model
 
+class UpdatingStateWithVersion(
+    val state: UpdatingState,
+    val version: FirmwareVersion?
+)
+
 sealed class UpdatingState {
     object NotStarted : UpdatingState()
 

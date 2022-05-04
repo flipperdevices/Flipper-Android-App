@@ -16,4 +16,5 @@ message Settings {
   SelectedTab selected_tab = 5;
   bool ignore_unsupported_version = 6;
   bool enabled_updater = 7;
+  bool always_update = 8;
 }

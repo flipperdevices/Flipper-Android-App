@@ -1,7 +1,6 @@
 package com.flipperdevices.bridge.synchronization.impl.model
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 
 sealed class ResultWithProgress<T> {
     class InProgress<T>(
@@ -14,7 +13,7 @@ sealed class ResultWithProgress<T> {
 }
 
 suspend fun <T> Flow<ResultWithProgress<T>>.trackProgressAndReturn(
-    onProgressUpdate: (ResultWithProgress.InProgress<T>) -> Unit
+    onProgressUpdate: suspend (ResultWithProgress.InProgress<T>) -> Unit
 ): T {
     var resultObject: T? = null
     collect { result ->

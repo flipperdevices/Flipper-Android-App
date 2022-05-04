@@ -5,11 +5,14 @@ import com.flipperdevices.bridge.api.manager.service.FlipperRpcInformationApi
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.FlipperRequestRpcInformationStatus
 import com.flipperdevices.bridge.api.model.FlipperRpcInformation
+import com.flipperdevices.bridge.api.model.StorageStats
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.core.ktx.jre.forEachIterable
+import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.verbose
+import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.infoRequest
 import com.flipperdevices.protobuf.system.deviceInfoRequest
@@ -20,6 +23,7 @@ import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
 
 private const val FLIPPER_PATH_INTERNAL_STORAGE = "/int/"
@@ -29,6 +33,8 @@ class FlipperRpcInformationApiImpl(
     private val scope: CoroutineScope
 ) : FlipperRpcInformationApi, LogTagProvider {
     override val TAG = "FlipperRpcInformationApi"
+
+    private val mutex = Mutex()
     private val rpcInformationFlow = MutableStateFlow(
         FlipperRpcInformation()
     )
@@ -40,15 +46,14 @@ class FlipperRpcInformationApiImpl(
     override fun getRequestRpcInformationStatus() = requestStatusFlow
     override fun getRpcInformationFlow() = rpcInformationFlow
 
-    suspend fun initialize(requestApi: FlipperRequestApi) {
+    suspend fun initialize(requestApi: FlipperRequestApi) = withLock(mutex, "initialize") {
         requestStatusFlow.emit(FlipperRequestRpcInformationStatus.InProgress())
         requestJobs += scope.launch(Dispatchers.Default) {
-            receiveStorageInfo(requestApi, FLIPPER_PATH_EXTERNAL_STORAGE) { totalSpace, freeSpace ->
-                info { "Received external storage info: $freeSpace/$totalSpace" }
+            receiveStorageInfo(requestApi, FLIPPER_PATH_EXTERNAL_STORAGE) { storageStats ->
+                info { "Received external storage info: $storageStats" }
                 rpcInformationFlow.update {
                     it.copy(
-                        externalStorageTotal = totalSpace,
-                        externalStorageFree = freeSpace
+                        externalStorageStats = storageStats
                     )
                 }
             }
@@ -59,15 +64,15 @@ class FlipperRpcInformationApiImpl(
             }
         }
         requestJobs += scope.launch(Dispatchers.Default) {
-            receiveStorageInfo(requestApi, FLIPPER_PATH_INTERNAL_STORAGE) { totalSpace, freeSpace ->
-                info { "Received internal storage info: $freeSpace/$totalSpace" }
+            receiveStorageInfo(requestApi, FLIPPER_PATH_INTERNAL_STORAGE) { storageStats ->
+                info { "Received internal storage info: $storageStats" }
                 rpcInformationFlow.update {
                     it.copy(
-                        internalStorageTotal = totalSpace,
-                        internalStorageFree = freeSpace
+                        internalStorageStats = storageStats
                     )
                 }
             }
+
             requestStatusFlow.update {
                 if (it is FlipperRequestRpcInformationStatus.InProgress) {
                     it.copy(internalStorageRequestFinished = true)
@@ -96,7 +101,12 @@ class FlipperRpcInformationApiImpl(
         }
     }
 
-    suspend fun reset() {
+    override suspend fun invalidate(requestApi: FlipperRequestApi) {
+        reset()
+        initialize(requestApi)
+    }
+
+    suspend fun reset() = withLock(mutex, "reset") {
         requestJobs.forEachIterable {
             it.cancelAndJoin()
         }
@@ -107,7 +117,7 @@ class FlipperRpcInformationApiImpl(
     private suspend fun receiveStorageInfo(
         requestApi: FlipperRequestApi,
         storagePath: String,
-        spaceInfoReceiver: (Long, Long) -> Unit
+        spaceInfoReceiver: (StorageStats) -> Unit
     ) = withContext(Dispatchers.Default) {
         requestApi.request(
             main {
@@ -116,12 +126,18 @@ class FlipperRpcInformationApiImpl(
                 }
             }.wrapToRequest(FlipperRequestPriority.DEFAULT)
         ).collect { response ->
+            if (response.commandStatus != Flipper.CommandStatus.OK) {
+                spaceInfoReceiver(StorageStats.Error)
+                return@collect
+            }
             if (!response.hasStorageInfoResponse()) {
                 return@collect
             }
             spaceInfoReceiver(
-                response.storageInfoResponse.totalSpace,
-                response.storageInfoResponse.freeSpace
+                StorageStats.Loaded(
+                    total = response.storageInfoResponse.totalSpace,
+                    free = response.storageInfoResponse.freeSpace
+                )
             )
         }
     }

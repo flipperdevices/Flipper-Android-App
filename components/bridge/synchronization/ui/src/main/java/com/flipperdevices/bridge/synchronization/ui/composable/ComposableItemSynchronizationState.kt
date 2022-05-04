@@ -1,7 +1,6 @@
 package com.flipperdevices.bridge.synchronization.ui.composable
 
 import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
@@ -21,11 +20,9 @@ import androidx.compose.ui.unit.sp
 import com.flipperdevices.bridge.synchronization.ui.R
 import com.flipperdevices.bridge.synchronization.ui.model.ItemSynchronizationState
 import com.flipperdevices.core.ui.R as DesignSystem
+import com.flipperdevices.core.ui.composable.animatedDots
 import com.flipperdevices.core.ui.composable.painterResourceByKey
-import kotlin.math.roundToInt
 
-private const val DOTS_COUNT = 3f
-private const val DOTS_DURATION_MS = 3000
 private const val ROTATE_DURATION_MS = 3000
 
 @Composable
@@ -55,14 +52,6 @@ internal fun ComposableItemSynchronizationState(
 
     if (itemSynchronizationState == ItemSynchronizationState.IN_PROGRESS) {
         val infiniteTransition = rememberInfiniteTransition()
-        val dotsCount by infiniteTransition.animateFloat(
-            initialValue = 0f,
-            targetValue = DOTS_COUNT,
-            animationSpec = infiniteRepeatable(
-                animation = tween(DOTS_DURATION_MS, easing = LinearEasing),
-                repeatMode = RepeatMode.Restart
-            )
-        )
         val angelProgress by infiniteTransition.animateFloat(
             initialValue = 0F,
             targetValue = 360F,
@@ -70,7 +59,7 @@ internal fun ComposableItemSynchronizationState(
                 animation = tween(durationMillis = ROTATE_DURATION_MS, easing = LinearEasing)
             )
         )
-        description += ".".repeat(dotsCount.roundToInt())
+        description += animatedDots()
         angel = angelProgress
     }
 

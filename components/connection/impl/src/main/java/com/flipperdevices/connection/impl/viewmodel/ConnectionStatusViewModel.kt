@@ -61,7 +61,7 @@ class ConnectionStatusViewModel(
     }
 
     fun getStatusState(): StateFlow<TabState> = statusState.map(viewModelScope) {
-        ConnectionTabStateMapper.getConnectionTabState(it)
+        ConnectionTabStateMapper.getConnectionTabState(getApplication<Application>(), it)
     }
 
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
@@ -142,7 +142,7 @@ class ConnectionStatusViewModel(
 }
 
 private fun SynchronizationState.toConnectionStatus() = when (this) {
-    SynchronizationState.NOT_STARTED -> ConnectionStatusState.Connected
-    SynchronizationState.IN_PROGRESS -> ConnectionStatusState.Synchronization
-    SynchronizationState.FINISHED -> ConnectionStatusState.Synchronized
+    SynchronizationState.NotStarted -> ConnectionStatusState.Connected
+    is SynchronizationState.InProgress -> ConnectionStatusState.Synchronization(progress)
+    SynchronizationState.Finished -> ConnectionStatusState.Synchronized
 }

@@ -6,6 +6,7 @@ import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
@@ -24,10 +25,14 @@ import com.flipperdevices.updater.model.DownloadProgress
 import com.flipperdevices.updater.model.UpdatingState
 import java.io.File
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.awaitCancellation
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
 
 class UpdaterTask(
@@ -38,6 +43,9 @@ class UpdaterTask(
     override val TAG = "UpdaterTask"
 
     private val taskScope = lifecycleScope
+    private val mutex = Mutex()
+    private var updaterJob: Job? = null
+    private var isRebooting = false
 
     fun start(
         updateFile: DistributionFile,
@@ -46,29 +54,33 @@ class UpdaterTask(
         info { "Start updating" }
         serviceProvider.provideServiceApi(this@UpdaterTask) { serviceApi ->
             info { "Flipper service provided" }
-            taskScope.launch(Dispatchers.Default) {
-                // Waiting to be connected to the flipper
-                try {
-                    startInternal(updateFile, serviceApi, onStateUpdate)
-                } catch (
-                    @Suppress("TooGenericExceptionCaught")
-                    throwable: Throwable
-                ) {
-                    error(throwable) { "Error during updating" }
-                } finally {
-                    onStateUpdate(UpdatingState.NotStarted)
+            launchWithLock(mutex, taskScope) {
+                updaterJob?.cancelAndJoin()
+                updaterJob = null
+                updaterJob = taskScope.launch(Dispatchers.Default) {
+                    // Waiting to be connected to the flipper
+                    try {
+                        startInternal(updateFile, serviceApi, onStateUpdate)
+                        onStop()
+                    } catch (
+                        @Suppress("TooGenericExceptionCaught")
+                        throwable: Throwable
+                    ) {
+                        error(throwable) { "Error during updating" }
+                        onStop()
+                    }
                 }
             }
         }
-        taskScope.launch(Dispatchers.Main) {
-            onStart()
-        }
+        onStart()
         taskScope.launch(Dispatchers.Default) {
             try {
                 awaitCancellation()
             } finally {
                 withContext(NonCancellable) {
-                    onStateUpdate(UpdatingState.NotStarted)
+                    if (!isRebooting) {
+                        onStateUpdate(UpdatingState.NotStarted)
+                    }
                 }
             }
         }
@@ -79,7 +91,9 @@ class UpdaterTask(
         serviceApi: FlipperServiceApi,
         onStateUpdate: suspend (UpdatingState) -> Unit
     ) = FlipperStorageProvider.useTemporaryFolder(context) { tempFolder ->
+        info { "Start update with folder: ${tempFolder.absolutePath}" }
         val updaterFolder = File(tempFolder, updateFile.sha256)
+        onStateUpdate(UpdatingState.DownloadingFromNetwork(percent = 0.0001f))
         downloaderApi.download(updateFile, updaterFolder, decompress = true).collect {
             when (it) {
                 DownloadProgress.Finished ->
@@ -141,13 +155,16 @@ class UpdaterTask(
                     updateManifest = "$flipperPath/update.fuf"
                 }
             }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
-        ).collect()
-        serviceApi.requestApi.request(
+        ).first()
+
+        serviceApi.requestApi.requestWithoutAnswer(
             main {
                 systemRebootRequest = rebootRequest {
                     mode = System.RebootRequest.RebootMode.UPDATE
                 }
             }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
-        ).collect()
+        )
+        isRebooting = true
+        onStateUpdate(UpdatingState.Rebooting)
     }
 }

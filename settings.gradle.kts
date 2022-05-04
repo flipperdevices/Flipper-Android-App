@@ -45,6 +45,7 @@ include(
 
     ":components:info:api",
     ":components:info:impl",
+    ":components:info:shared",
 
     ":components:analytics:shake2report:api",
     ":components:analytics:shake2report:noop",
@@ -93,5 +94,6 @@ include(
     ":components:updater:api",
     ":components:updater:impl",
     ":components:updater:ui",
-    ":components:updater:downloader"
+    ":components:updater:downloader",
+    ":components:updater:fonts"
 )

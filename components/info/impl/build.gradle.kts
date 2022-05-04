@@ -15,8 +15,11 @@ dependencies {
     implementation(projects.components.core.activityholder)
 
     implementation(projects.components.info.api)
+    implementation(projects.components.info.shared)
+
     implementation(projects.components.firstpair.api)
     implementation(projects.components.updater.api)
+    implementation(projects.components.updater.fonts)
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.synchronization.api)
