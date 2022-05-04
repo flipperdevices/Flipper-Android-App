@@ -23,8 +23,6 @@ import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.core.ui.composable.animatedDots
 import com.flipperdevices.core.ui.composable.painterResourceByKey
 
-private const val DOTS_COUNT = 3f
-private const val DOTS_DURATION_MS = 3000
 private const val ROTATE_DURATION_MS = 3000
 
 @Composable

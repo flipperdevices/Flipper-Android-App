@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Assert.assertNotEquals
 import org.junit.Before
 import org.junit.ClassRule
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.anyInt
@@ -75,6 +76,7 @@ class FlipperServiceProviderTest {
     }
 
     @Test
+    @Ignore
     fun `Stop service when consumer destroy`() {
         val consumer = mock<FlipperBleServiceConsumer>()
         val lifecycleOwner = TestLifecycleOwner()

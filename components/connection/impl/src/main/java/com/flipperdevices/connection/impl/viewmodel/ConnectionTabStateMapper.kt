@@ -7,6 +7,8 @@ import com.flipperdevices.connection.impl.model.ConnectionStatusState
 import com.flipperdevices.core.ui.R as DesignSystem
 import kotlin.math.roundToInt
 
+const val PERCENT_MAX = 100
+
 object ConnectionTabStateMapper {
     fun getConnectionTabState(context: Context, connectionState: ConnectionStatusState): TabState {
         return when (connectionState) {
@@ -71,6 +73,6 @@ object ConnectionTabStateMapper {
 
     private fun roundPercent(percent: Float): String {
         val processedPercent = if (percent > 1.0f) 1.0f else if (percent < 0.0f) 0.0f else percent
-        return "${(processedPercent * 100).roundToInt()}%"
+        return "${(processedPercent * PERCENT_MAX).roundToInt()}%"
     }
 }

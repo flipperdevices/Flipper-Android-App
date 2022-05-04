@@ -118,7 +118,9 @@ class UpdateCardViewModel :
                 val isFlashExist = if (rpcInformation.externalStorageStats != null) {
                     rpcInformation.externalStorageStats is StorageStats.Loaded
                 } else null
-                return@combine newUpdateChannel then flipperFirmwareVersion then isFlashExist then settings.alwaysUpdate
+                return@combine newUpdateChannel.then(flipperFirmwareVersion)
+                    .then(isFlashExist)
+                    .then(settings.alwaysUpdate)
             }.collectLatest { (updateChannel, flipperFirmwareVersion, isFlashExist, alwaysUpdate) ->
                 updateCardState(
                     updateChannel,
