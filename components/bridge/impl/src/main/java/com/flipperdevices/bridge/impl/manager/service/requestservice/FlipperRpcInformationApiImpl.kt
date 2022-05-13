@@ -7,6 +7,8 @@ import com.flipperdevices.bridge.api.model.FlipperRequestRpcInformationStatus
 import com.flipperdevices.bridge.api.model.FlipperRpcInformation
 import com.flipperdevices.bridge.api.model.StorageStats
 import com.flipperdevices.bridge.api.model.wrapToRequest
+import com.flipperdevices.bridge.impl.di.BridgeImplComponent
+import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.jre.forEachIterable
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
@@ -16,13 +18,18 @@ import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.infoRequest
 import com.flipperdevices.protobuf.system.deviceInfoRequest
+import com.flipperdevices.shake2report.api.Shake2ReportApi
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
 
@@ -42,6 +49,16 @@ class FlipperRpcInformationApiImpl(
         FlipperRequestRpcInformationStatus.NotStarted
     )
     private val requestJobs = mutableListOf<Job>()
+
+    @Inject
+    lateinit var shake2ReportApi: Shake2ReportApi
+
+    init {
+        ComponentHolder.component<BridgeImplComponent>().inject(this)
+        rpcInformationFlow.onEach {
+            shake2ReportApi.updateRpcInformation(it)
+        }.launchIn(scope + Dispatchers.Default)
+    }
 
     override fun getRequestRpcInformationStatus() = requestStatusFlow
     override fun getRpcInformationFlow() = rpcInformationFlow

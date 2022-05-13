@@ -1,6 +1,9 @@
 package com.flipperdevices.analytics.shake2report.impl
 
 import android.app.Application
+import com.flipperdevices.analytics.shake2report.impl.helper.FlipperInformationMapping
+import com.flipperdevices.bridge.api.model.FlipperGATTInformation
+import com.flipperdevices.bridge.api.model.FlipperRpcInformation
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.shake2report.api.Shake2ReportApi
 import com.squareup.anvil.annotations.ContributesBinding
@@ -15,6 +18,14 @@ object Shake2ReportApiImpl : Shake2ReportApi {
     override fun init(application: Application) {
         instance = Shake2Report(application)
         instance?.register()
+    }
+
+    override fun updateGattInformation(gattInformation: FlipperGATTInformation) {
+        instance?.setExtra(FlipperInformationMapping.convert(gattInformation))
+    }
+
+    override fun updateRpcInformation(rpcInformation: FlipperRpcInformation) {
+        instance?.setExtra(FlipperInformationMapping.convert(rpcInformation))
     }
 
     override fun reportException(throwable: Throwable, tag: String?, extras: Map<String, String>?) {

@@ -14,6 +14,7 @@ import com.flipperdevices.core.activityholder.CurrentActivityHolder
 import com.flipperdevices.core.ktx.android.vibrateCompat
 import com.squareup.seismic.ShakeDetector
 import fr.bipi.tressence.file.FileLoggerTree
+import io.sentry.Sentry
 import io.sentry.SentryLevel
 import io.sentry.android.core.SentryAndroid
 import io.sentry.android.timber.SentryTimberIntegration
@@ -58,6 +59,14 @@ internal class Shake2Report(
         Timber.plant(fileLoggerTree)
 
         shakeDetector.register()
+    }
+
+    fun setExtra(tags: List<Pair<String, String>>) {
+        Sentry.configureScope { scope ->
+            tags.forEach {
+                scope.setExtra(it.first, it.second)
+            }
+        }
     }
 
     internal fun getLogDir(): File {
