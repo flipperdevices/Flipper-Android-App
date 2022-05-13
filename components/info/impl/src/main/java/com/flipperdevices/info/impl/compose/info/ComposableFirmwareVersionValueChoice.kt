@@ -2,7 +2,6 @@ package com.flipperdevices.info.impl.compose.info
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -23,7 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.info.impl.R
-import com.flipperdevices.info.shared.getNameByChannel
+import com.flipperdevices.info.shared.getFullNameByChannel
 import com.flipperdevices.updater.api.UpdaterUIApi
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
@@ -37,26 +36,27 @@ fun ComposableUpdaterFirmwareVersionWithChoice(
     var showMenu by remember { mutableStateOf(false) }
     val updateCardApi = updaterUIApi.getUpdateCardApi()
 
-    Row(
+    Box(
         modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.End
+        contentAlignment = Alignment.CenterEnd
     ) {
-        ComposableFirmwareVersionValue(version = version)
-        Icon(
-            modifier = Modifier
-                .clickable(
-                    indication = rememberRipple(bounded = false),
-                    onClick = { showMenu = true },
-                    interactionSource = remember { MutableInteractionSource() }
-                )
-                .padding(all = 4.dp),
-            painter = painterResource(R.drawable.ic_more),
-            contentDescription = stringResource(R.string.info_device_firmware_version_choice),
-            tint = colorResource(com.flipperdevices.core.ui.R.color.black_30)
-        )
+        Row(
+            modifier = Modifier.clickable(
+                indication = rememberRipple(),
+                onClick = { showMenu = true },
+                interactionSource = remember { MutableInteractionSource() }
+            ),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            ComposableFirmwareVersionValue(version = version)
+            Icon(
+                modifier = Modifier
+                    .padding(all = 4.dp),
+                painter = painterResource(R.drawable.ic_more),
+                contentDescription = stringResource(R.string.info_device_firmware_version_choice),
+                tint = colorResource(com.flipperdevices.core.ui.R.color.black_30)
+            )
 
-        Box {
             DropdownMenu(
                 expanded = showMenu,
                 onDismissRequest = { showMenu = false }
@@ -66,7 +66,7 @@ fun ComposableUpdaterFirmwareVersionWithChoice(
                         updateCardApi.onSelectChannel(channel)
                         showMenu = false
                     }) {
-                        Text(text = stringResource(getNameByChannel(channel)))
+                        Text(text = stringResource(getFullNameByChannel(channel)))
                     }
                 }
             }

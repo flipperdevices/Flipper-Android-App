@@ -17,6 +17,15 @@ fun getNameByChannel(channel: FirmwareChannel): Int {
     }
 }
 
+@StringRes
+fun getFullNameByChannel(channel: FirmwareChannel): Int {
+    return when (channel) {
+        FirmwareChannel.DEV -> R.string.info_device_firmware_version_dev_full
+        FirmwareChannel.RELEASE -> R.string.info_device_firmware_version_release_full
+        FirmwareChannel.RELEASE_CANDIDATE -> R.string.info_device_firmware_version_rc_full
+    }
+}
+
 @Composable
 fun getTextByVersion(version: FirmwareVersion): String {
     return "${stringResource(getNameByChannel(version.channel))} ${version.version}"

@@ -204,12 +204,16 @@ class FlipperRequestApiImpl(
         serialApiUnsafe.reset(bleManager)
         serialApi.reset(bleManager)
         reader.reset()
-        requestListeners.values.forEach {
-            it.invoke(
-                main {
-                    hasNext = false
-                }
-            )
+        while (requestListeners.isNotEmpty()) {
+            val listeners = ArrayList(requestListeners.keys)
+            listeners.forEach { id ->
+                val listener = requestListeners.remove(id)
+                listener?.invoke(
+                    main {
+                        hasNext = false
+                    }
+                )
+            }
         }
     }
 

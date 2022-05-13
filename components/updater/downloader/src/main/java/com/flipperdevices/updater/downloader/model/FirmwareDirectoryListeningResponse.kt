@@ -15,10 +15,10 @@ internal enum class FirmwareChannelEnum(val original: FirmwareChannel) {
     @SerialName("development")
     DEV(FirmwareChannel.DEV),
 
-    @SerialName("release-candidate")
+    @SerialName("release")
     RELEASE(FirmwareChannel.RELEASE),
 
-    @SerialName("release")
+    @SerialName("release-candidate")
     RELEASE_CANDIDATE(FirmwareChannel.RELEASE_CANDIDATE)
 }
 

@@ -1,6 +1,7 @@
 package com.flipperdevices.updater.ui.fragments
 
 import android.content.Context
+import android.view.WindowManager
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -32,6 +33,11 @@ class UpdaterFragment : ComposeFragment() {
         updaterViewModel.start(versionFiles)
     }
 
+    override fun onStart() {
+        super.onStart()
+        activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+    }
+
     @Composable
     override fun RenderView() {
         val updaterScreenState by updaterViewModel.getState().collectAsState()
@@ -40,6 +46,11 @@ class UpdaterFragment : ComposeFragment() {
             return
         }
         ComposableUpdaterScreen(updaterScreenState, updaterViewModel)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
     private fun onFinish() {
