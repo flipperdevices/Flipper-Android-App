@@ -19,7 +19,6 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.TaskWithLifecycle
-import com.flipperdevices.shake2report.api.Shake2ReportApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.NonCancellable
@@ -35,8 +34,7 @@ class SynchronizationTask(
     private val simpleKeyApi: SimpleKeyApi,
     private val deleteKeyApi: DeleteKeyApi,
     private val utilsKeyApi: UtilsKeyApi,
-    private val favoriteApi: FavoriteApi,
-    private val reportApi: Shake2ReportApi
+    private val favoriteApi: FavoriteApi
 ) : TaskWithLifecycle(), LogTagProvider {
     override val TAG = "SynchronizationTask"
 
@@ -116,8 +114,7 @@ class SynchronizationTask(
             utilsKeyApi,
             manifestRepository,
             flipperStorage,
-            serviceApi.requestApi,
-            reportApi
+            serviceApi.requestApi
         )
 
         val keysHashes = keysSynchronization.syncKeys(onStateUpdate)

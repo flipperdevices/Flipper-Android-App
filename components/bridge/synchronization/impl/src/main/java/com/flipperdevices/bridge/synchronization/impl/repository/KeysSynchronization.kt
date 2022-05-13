@@ -27,7 +27,6 @@ import com.flipperdevices.core.log.BuildConfig
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.warn
-import com.flipperdevices.shake2report.api.Shake2ReportApi
 import kotlin.math.max
 
 private const val PERCENT_FLIPPER_LISTING_FOLDERS = 0.07f
@@ -41,12 +40,11 @@ class KeysSynchronization(
     private val utilsKeyApi: UtilsKeyApi,
     private val manifestRepository: ManifestRepository,
     private val flipperStorage: FlipperKeyStorage,
-    private val requestApi: FlipperRequestApi,
-    reportApi: Shake2ReportApi
+    private val requestApi: FlipperRequestApi
 ) : LogTagProvider {
     override val TAG = "KeysSynchronization"
 
-    private val diffKeyExecutor = DiffKeyExecutor(reportApi)
+    private val diffKeyExecutor = DiffKeyExecutor()
     private val keysListingRepository = KeysListingRepository()
     private val flipperHashRepository = FlipperHashRepository()
     private val androidHashRepository = AndroidHashRepository()
