@@ -10,11 +10,13 @@ enum SelectedTab {
 }
 
 message Settings {
+  reserved 7; // Already unused tags
+
   bool used_foreground_service = 2;
   bool enabled_debug_settings = 3;
   bool enabled_experimental_functions = 4;
   SelectedTab selected_tab = 5;
   bool ignore_unsupported_version = 6;
-  bool enabled_updater = 7;
   bool always_update = 8;
+  bool shake_to_report = 9;
 }

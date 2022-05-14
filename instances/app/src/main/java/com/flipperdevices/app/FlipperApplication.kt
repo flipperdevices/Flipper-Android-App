@@ -17,14 +17,15 @@ class FlipperApplication : Application() {
 
         ComponentHolder.components += DaggerAppComponent.factory()
             .create(
-                this,
+                context = this,
+                application = this,
                 ApplicationParams(startApplicationClass = SplashScreen::class)
             )
 
         if (BuildConfig.INTERNAL) {
             Timber.plant(Timber.DebugTree())
             val shake2report = ComponentHolder.component<MainComponent>().shake2report.get()
-            shake2report.init(this)
+            shake2report.init()
         }
 
         info { "Start Flipper Application with version ${BuildConfig.VERSION_NAME}" }

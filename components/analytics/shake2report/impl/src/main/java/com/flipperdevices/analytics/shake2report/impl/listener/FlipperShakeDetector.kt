@@ -23,14 +23,20 @@ private const val SHAKE2REPORT_ACTION = "com.flipperdevices.SHAKE_ACTION"
  */
 @Suppress("TooManyFunctions")
 class FlipperShakeDetector(
-    private val delegateListener: ShakeDetector.Listener,
-    private val application: Application
+    private val application: Application,
+    private val onShake: () -> Unit
 ) : ShakeDetector.Listener, BroadcastReceiver(), Application.ActivityLifecycleCallbacks {
+    private val sensorManager by lazy {
+        ContextCompat.getSystemService(
+            application,
+            SensorManager::class.java
+        )
+    }
+
     private val seismicShakeDetector = ShakeDetector(this)
     private var lastShakeTimestamp = 0L
 
     fun register() {
-        val sensorManager = ContextCompat.getSystemService(application, SensorManager::class.java)
         seismicShakeDetector.start(sensorManager)
 
         application.registerReceiver(this, IntentFilter(SHAKE2REPORT_ACTION))
@@ -51,7 +57,7 @@ class FlipperShakeDetector(
         }
         lastShakeTimestamp = System.currentTimeMillis()
 
-        delegateListener.hearShake()
+        onShake()
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {

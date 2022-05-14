@@ -16,9 +16,6 @@ import com.flipperdevices.settings.impl.di.SettingsComponent
 import com.github.terrakok.cicerone.Router
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -54,10 +51,6 @@ class DebugViewModel(application: Application) : AndroidViewModel(application) {
         cicerone.getRouter().navigateTo(firstPairApi.getFirstPairScreen())
     }
 
-    fun getIgnoredSupportedVersionState() = settingsDataStore.data.map {
-        it.ignoreUnsupportedVersion
-    }.stateIn(viewModelScope, SharingStarted.Lazily, false)
-
     fun onSwitchIgnoreSupportedVersion(ignored: Boolean) {
         viewModelScope.launch(Dispatchers.Default) {
             settingsDataStore.updateData {
@@ -66,14 +59,7 @@ class DebugViewModel(application: Application) : AndroidViewModel(application) {
                     .build()
             }
 
-            withContext(Dispatchers.Main) {
-                val context = getApplication<Application>()
-                Toast.makeText(
-                    context,
-                    R.string.debug_ignored_unsupported_version_toast,
-                    Toast.LENGTH_LONG
-                ).show()
-            }
+            askRestartApp()
         }
     }
 
@@ -85,5 +71,25 @@ class DebugViewModel(application: Application) : AndroidViewModel(application) {
                     .build()
             }
         }
+    }
+
+    fun onSwitchShakeToReport(shakeToReport: Boolean) {
+        viewModelScope.launch(Dispatchers.Default) {
+            settingsDataStore.updateData {
+                it.toBuilder()
+                    .setShakeToReport(shakeToReport)
+                    .build()
+            }
+            askRestartApp()
+        }
+    }
+
+    private suspend fun askRestartApp() = withContext(Dispatchers.Main) {
+        val context = getApplication<Application>()
+        Toast.makeText(
+            context,
+            R.string.debug_ignored_unsupported_version_toast,
+            Toast.LENGTH_LONG
+        ).show()
     }
 }

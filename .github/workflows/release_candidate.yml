@@ -128,30 +128,3 @@ jobs:
         with:
           name: artifacts-release
           path: ${{ steps.artifacts_copy.outputs.path }}
-  upload_to_firebase:
-    name: Upload to Firebase App Distribution
-    runs-on: ubuntu-latest
-    needs: [ build_internal, build_release ]
-    steps:
-      - uses: actions/download-artifact@v2
-        id: download-internal
-        with:
-          name: artifacts-internal
-      - uses: actions/download-artifact@v2
-        id: download-release
-        with:
-          name: artifacts-release
-      - name: Upload artifact to Firebase App Distribution
-        uses: wzieba/Firebase-Distribution-Github-Action@v1
-        with:
-          appId: ${{ secrets.FIREBASE_APP_ID }}
-          token: ${{ secrets.FIREBASE_TOKEN }}
-          groups: release-candidate
-          file: ${{steps.download-internal.outputs.download-path}}/flipper-zero-internal.aab
-      - name: Upload artifact to release candidate group
-        uses: wzieba/Firebase-Distribution-Github-Action@v1
-        with:
-          appId: ${{ secrets.FIREBASE_APP_ID }}
-          token: ${{ secrets.FIREBASE_TOKEN }}
-          groups: release-candidate
-          file: ${{steps.download-release.outputs.download-path}}/flipper-zero-release.aab

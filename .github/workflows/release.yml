@@ -29,7 +29,7 @@ jobs:
           echo "::set-output name=major_version::${MAJOR_VERSION}"
       - name: Build production release
         run: |
-          ./gradlew :instances:app:assembleRelease :instances:app:bundleRelease \
+          ./gradlew :instances:app:assembleInternal :instances:app:bundleInternal \
             -Dversion_code=${{ steps.buildnumber.outputs.build_number }} \
             -Dversion_name="${{ steps.vars.outputs.major_version }}"
       - name: Sign release AAB

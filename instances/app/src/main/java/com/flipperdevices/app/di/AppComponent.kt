@@ -1,5 +1,6 @@
 package com.flipperdevices.app.di
 
+import android.app.Application
 import android.content.Context
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.ApplicationParams
@@ -21,6 +22,7 @@ interface AppComponent {
     interface Factory {
         fun create(
             @BindsInstance context: Context,
+            @BindsInstance application: Application,
             @BindsInstance applicationParams: ApplicationParams
         ): AppComponent
     }

@@ -6,14 +6,11 @@ import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.shake2report.api.Shake2ReportApi
 
 /**
  * This class execute diff for
  */
-class DiffKeyExecutor(
-    private val reportApi: Shake2ReportApi
-) : LogTagProvider {
+class DiffKeyExecutor : LogTagProvider {
     override val TAG = "DiffKeyExecutor"
 
     /**
@@ -36,11 +33,6 @@ class DiffKeyExecutor(
                 executeError: Exception
             ) {
                 error(executeError) { "While apply diff $diff we have error" }
-                reportApi.reportException(
-                    executeError,
-                    "diffkeyexecutor",
-                    mapOf("path" to diff.newHash.keyPath.toString())
-                )
             }
             return@mapIndexedNotNull null
         }

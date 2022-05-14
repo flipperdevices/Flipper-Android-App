@@ -43,4 +43,11 @@ fun ColumnScope.DebugCategory(
         state = settings.alwaysUpdate,
         onSwitchState = debugViewModel::onSwitchIgnoreUpdaterVersion
     )
+
+    SwitchableElement(
+        titleId = R.string.debug_shake2report,
+        descriptionId = R.string.debug_shake2report_desc,
+        state = settings.shakeToReport,
+        onSwitchState = debugViewModel::onSwitchShakeToReport
+    )
 }

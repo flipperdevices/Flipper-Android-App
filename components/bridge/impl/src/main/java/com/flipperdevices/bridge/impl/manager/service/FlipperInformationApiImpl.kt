@@ -11,14 +11,19 @@ import com.flipperdevices.bridge.impl.manager.UnsafeBleManager
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.preference.pb.PairSettings
+import com.flipperdevices.shake2report.api.Shake2ReportApi
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Provider
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 
 private const val MAX_BATTERY_LEVEL = 100
 
@@ -32,8 +37,14 @@ class FlipperInformationApiImpl(
     @Inject
     lateinit var dataStoreFirstPair: Provider<DataStore<PairSettings>>
 
+    @Inject
+    lateinit var shake2ReportApi: Shake2ReportApi
+
     init {
         ComponentHolder.component<BridgeImplComponent>().inject(this)
+        informationState.onEach {
+            shake2ReportApi.updateGattInformation(it)
+        }.launchIn(scope + Dispatchers.Default)
     }
 
     override fun onServiceReceived(gatt: BluetoothGatt): Boolean {

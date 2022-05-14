@@ -7,7 +7,6 @@ import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.composable.LocalRouter
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.composable.elements.SimpleElement
-import com.flipperdevices.settings.impl.composable.elements.SwitchableElement
 import com.flipperdevices.settings.impl.viewmodels.ExperimentalViewModel
 
 @Composable
@@ -26,11 +25,5 @@ fun ColumnScope.ExperimentalCategory(
         titleId = R.string.experimental_screen_streaming,
         descriptionId = R.string.experimental_screen_streaming_desc,
         onClick = { experimentalViewModel.onScreenStreaming(router) }
-    )
-    SwitchableElement(
-        titleId = R.string.experimental_updater,
-        descriptionId = R.string.experimental_updater_desc,
-        state = settings.enabledUpdater,
-        onSwitchState = experimentalViewModel::onSwitchUpdaterEnabled
     )
 }

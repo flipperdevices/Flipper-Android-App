@@ -11,7 +11,6 @@ import com.flipperdevices.bridge.synchronization.impl.SynchronizationTask
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.flipperdevices.shake2report.api.Shake2ReportApi
 import com.squareup.anvil.annotations.ContributesBinding
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
@@ -27,8 +26,7 @@ class SynchronizationApiImpl @Inject constructor(
     private val simpleKeyApi: SimpleKeyApi,
     private val deleteKeyApi: DeleteKeyApi,
     private val utilsKeyApi: UtilsKeyApi,
-    private val favoriteApi: FavoriteApi,
-    private val reportApi: Shake2ReportApi
+    private val favoriteApi: FavoriteApi
 ) : SynchronizationApi, LogTagProvider {
     override val TAG = "SynchronizationApi"
 
@@ -54,8 +52,7 @@ class SynchronizationApiImpl @Inject constructor(
             simpleKeyApi = simpleKeyApi,
             deleteKeyApi = deleteKeyApi,
             utilsKeyApi = utilsKeyApi,
-            favoriteApi = favoriteApi,
-            reportApi = reportApi
+            favoriteApi = favoriteApi
         )
 
         localSynchronizationTask.start { taskState ->
