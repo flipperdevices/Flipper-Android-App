@@ -2,14 +2,15 @@ package com.flipperdevices.analytics.shake2report.impl.activity
 
 import android.content.ClipData
 import android.content.ClipboardManager
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.flipperdevices.analytics.shake2report.impl.InternalShake2Report
 import com.flipperdevices.analytics.shake2report.impl.R
-import com.flipperdevices.analytics.shake2report.impl.Shake2Report
 import com.flipperdevices.analytics.shake2report.impl.databinding.ActivityShake2reportBinding
 import com.flipperdevices.analytics.shake2report.impl.di.Shake2ReportComponent
 import com.flipperdevices.analytics.shake2report.impl.helper.Shake2ReportDialog
@@ -23,6 +24,7 @@ import io.sentry.protocol.Message
 import io.sentry.protocol.SentryId
 import java.io.File
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -37,7 +39,9 @@ private val SENTRY_TIMEOUT_MS = TimeUnit.MILLISECONDS.convert(1, TimeUnit.MINUTE
 
 class Shake2ReportActivity : AppCompatActivity() {
     private lateinit var binding: ActivityShake2reportBinding
-    private lateinit var shake2Report: Shake2Report
+
+    @Inject
+    lateinit var internalShake2Report: InternalShake2Report
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +49,6 @@ class Shake2ReportActivity : AppCompatActivity() {
         ComponentHolder.component<Shake2ReportComponent>().inject(this)
 
         setContentView(binding.root)
-        // shake2Report = shake2ReportApi.instance
-        //    ?: shake2ReportApi.initAndGet(applicationContext as Application)
 
         binding.closeBtn.setOnClickListener {
             finish()
@@ -77,7 +79,7 @@ class Shake2ReportActivity : AppCompatActivity() {
 
     @Suppress("BlockingMethodInNonBlockingContext")
     private suspend fun compressLogFolder(): File = withContext(Dispatchers.IO) {
-        val logDir = shake2Report.getLogDir()
+        val logDir = internalShake2Report.logDir
         val zipFile = ZipFile(
             File(
                 application.cacheDir,
@@ -94,13 +96,13 @@ class Shake2ReportActivity : AppCompatActivity() {
     }
 
     private suspend fun saveScreenshotToLogFolder() = withContext(Dispatchers.IO) {
-        val logDir = shake2Report.getLogDir()
-        /*val screenshot = Shake2ReportApiImpl.instance?.getScreenshotAndReset() ?: return@withContext null
+        val logDir = internalShake2Report.logDir
+        val screenshot = internalShake2Report.getScreenshotAndReset() ?: return@withContext null
         val screenshotFile = File(logDir, FILE_SCREENSHOT)
         screenshotFile.delete()
         screenshotFile.outputStream().use { out ->
             screenshot.compress(Bitmap.CompressFormat.PNG, QUALITY_SCREENSHOT, out)
-        }*/
+        }
     }
 
     private suspend fun sendingReport(

@@ -8,17 +8,25 @@ import android.graphics.Canvas
 import android.os.Vibrator
 import android.util.Log
 import androidx.core.content.ContextCompat
+import androidx.datastore.core.DataStore
 import com.flipperdevices.analytics.shake2report.impl.activity.Shake2ReportActivity
 import com.flipperdevices.analytics.shake2report.impl.listener.FlipperShakeDetector
 import com.flipperdevices.core.activityholder.CurrentActivityHolder
+import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.android.vibrateCompat
-import com.squareup.seismic.ShakeDetector
+import com.flipperdevices.core.preference.pb.Settings
+import com.squareup.anvil.annotations.ContributesBinding
 import fr.bipi.tressence.file.FileLoggerTree
 import io.sentry.Sentry
 import io.sentry.SentryLevel
 import io.sentry.android.core.SentryAndroid
 import io.sentry.android.timber.SentryTimberIntegration
 import java.io.File
+import java.util.concurrent.atomic.AtomicBoolean
+import javax.inject.Inject
+import javax.inject.Singleton
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 
 private const val FILE_LOG_DIR = "log"
@@ -26,15 +34,33 @@ private const val FILE_LOG_SIZE = 1024 * 1024 // 1 MB
 private const val FILE_LOG_LIMIT = 20
 private const val VIBRATOR_TIME_MS = 500L
 
-internal class Shake2Report(
-    private val application: Application
-) : ShakeDetector.Listener {
-    private val shakeDetector = FlipperShakeDetector(this, application)
-    private var vibrator = ContextCompat.getSystemService(application, Vibrator::class.java)
-    private var logDir: File = File(application.cacheDir, FILE_LOG_DIR)
+@Singleton
+@ContributesBinding(AppGraph::class, InternalShake2Report::class)
+class Shake2ReportImpl @Inject constructor(
+    private val application: Application,
+    private val dataStore: DataStore<Settings>
+) : InternalShake2Report {
+    private val alreadyRegistered = AtomicBoolean(false)
+
+    private val shakeDetector by lazy {
+        FlipperShakeDetector(application) {
+            hearShake()
+        }
+    }
+    private val vibrator by lazy {
+        ContextCompat.getSystemService(
+            application,
+            Vibrator::class.java
+        )
+    }
+    override val logDir: File by lazy { File(application.cacheDir, FILE_LOG_DIR) }
     private var screenshot: Bitmap? = null
 
-    fun register() {
+    override fun register() {
+        if (!alreadyRegistered.compareAndSet(false, true)) {
+            return
+        }
+
         SentryAndroid.init(application) { options ->
             options.addIntegration(
                 SentryTimberIntegration(
@@ -58,10 +84,13 @@ internal class Shake2Report(
             .build()
         Timber.plant(fileLoggerTree)
 
-        shakeDetector.register()
+        val shake2ReportEnabled = runBlocking { dataStore.data.first().shakeToReport }
+        if (shake2ReportEnabled) {
+            shakeDetector.register()
+        }
     }
 
-    fun setExtra(tags: List<Pair<String, String>>) {
+    override fun setExtra(tags: List<Pair<String, String>>) {
         Sentry.configureScope { scope ->
             tags.forEach {
                 scope.setExtra(it.first, it.second)
@@ -69,17 +98,13 @@ internal class Shake2Report(
         }
     }
 
-    internal fun getLogDir(): File {
-        return logDir
-    }
-
-    internal fun getScreenshotAndReset(): Bitmap? {
+    override fun getScreenshotAndReset(): Bitmap? {
         val screenshotToReturn = screenshot
         screenshot = null
         return screenshotToReturn
     }
 
-    override fun hearShake() {
+    private fun hearShake() {
         vibrator?.vibrateCompat(VIBRATOR_TIME_MS)
         screenshot = takeScreenshot()
 

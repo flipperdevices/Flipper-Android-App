@@ -1,6 +1,5 @@
 package com.flipperdevices.shake2report.noop
 
-import android.app.Application
 import android.content.Context
 import com.flipperdevices.bridge.api.model.FlipperGATTInformation
 import com.flipperdevices.bridge.api.model.FlipperRpcInformation
@@ -12,7 +11,7 @@ import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class)
 class Shake2ReportStub @Inject constructor() : Shake2ReportApi {
-    override fun init(application: Application) {
+    override fun init() {
         // Do nothing
     }
 

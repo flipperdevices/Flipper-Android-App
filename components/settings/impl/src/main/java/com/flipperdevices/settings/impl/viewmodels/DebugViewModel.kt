@@ -71,14 +71,7 @@ class DebugViewModel(application: Application) : AndroidViewModel(application) {
                     .build()
             }
 
-            withContext(Dispatchers.Main) {
-                val context = getApplication<Application>()
-                Toast.makeText(
-                    context,
-                    R.string.debug_ignored_unsupported_version_toast,
-                    Toast.LENGTH_LONG
-                ).show()
-            }
+            askRestartApp()
         }
     }
 
@@ -99,6 +92,16 @@ class DebugViewModel(application: Application) : AndroidViewModel(application) {
                     .setShakeToReport(shakeToReport)
                     .build()
             }
+            askRestartApp()
         }
+    }
+
+    private suspend fun askRestartApp() = withContext(Dispatchers.Main) {
+        val context = getApplication<Application>()
+        Toast.makeText(
+            context,
+            R.string.debug_ignored_unsupported_version_toast,
+            Toast.LENGTH_LONG
+        ).show()
     }
 }
