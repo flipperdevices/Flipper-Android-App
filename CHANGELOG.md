@@ -7,6 +7,7 @@
 - [BUGFIX] Now we can cancel editing key
 - [BUGFIX] Fix reconnect issues
 - [BUGFIX] Fix synchronization start after first login
+- [Feature] Add report bug button
 - [Feature] Write and emulate buttons view
 - [Feature] Add update Flipper via OTA on separate screen
 - [Feature] Added an option to cancel existing Flipper RPC requests
