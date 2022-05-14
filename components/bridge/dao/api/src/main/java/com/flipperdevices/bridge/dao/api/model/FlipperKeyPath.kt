@@ -21,7 +21,7 @@ data class FlipperKeyPath constructor(
     @SerialName("name")
     val name: String, // With extension
     @SerialName("deleted")
-    val deleted: Boolean
+    val deleted: Boolean = false
 ) : Parcelable, Comparable<FlipperKeyPath> {
     @IgnoredOnParcel
     val pathToKey: String by lazy { File(folder, name).path }
