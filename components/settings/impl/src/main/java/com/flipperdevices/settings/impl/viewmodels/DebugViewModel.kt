@@ -1,7 +1,6 @@
 package com.flipperdevices.settings.impl.viewmodels
 
 import android.app.Application
-import android.content.Context
 import android.widget.Toast
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.AndroidViewModel
@@ -14,7 +13,6 @@ import com.flipperdevices.debug.api.StressTestApi
 import com.flipperdevices.firstpair.api.FirstPairApi
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.di.SettingsComponent
-import com.flipperdevices.shake2report.api.Shake2ReportApi
 import com.github.terrakok.cicerone.Router
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -37,9 +35,6 @@ class DebugViewModel(application: Application) : AndroidViewModel(application) {
     @Inject
     lateinit var settingsDataStore: DataStore<Settings>
 
-    @Inject
-    lateinit var shakeToReportApi: Shake2ReportApi
-
     init {
         ComponentHolder.component<SettingsComponent>().inject(this)
     }
@@ -54,13 +49,6 @@ class DebugViewModel(application: Application) : AndroidViewModel(application) {
 
     fun onOpenConnectionScreen() {
         cicerone.getRouter().navigateTo(firstPairApi.getFirstPairScreen())
-    }
-
-    fun onReportBug(context: Context) {
-        val screen = shakeToReportApi.reportBugScreen(context)
-        if (screen != null) {
-            cicerone.getRouter().navigateTo(screen)
-        }
     }
 
     fun onSwitchIgnoreSupportedVersion(ignored: Boolean) {

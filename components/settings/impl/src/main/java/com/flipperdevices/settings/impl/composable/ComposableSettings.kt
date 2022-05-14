@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -17,6 +18,7 @@ import com.flipperdevices.settings.impl.composable.category.DebugCategory
 import com.flipperdevices.settings.impl.composable.category.ExperimentalCategory
 import com.flipperdevices.settings.impl.composable.category.GeneralCategory
 import com.flipperdevices.settings.impl.composable.elements.Category
+import com.flipperdevices.settings.impl.composable.elements.SimpleElement
 import com.flipperdevices.settings.impl.viewmodels.SettingsViewModel
 
 @Preview(
@@ -51,5 +53,11 @@ fun ComposableSettings(
             Category(titleId = R.string.category_debug)
             DebugCategory(settings)
         }
+
+        val context = LocalContext.current
+        SimpleElement(
+            titleId = R.string.debug_shake2report_open,
+            onClick = { settingsViewModel.onReportBug(context) }
+        )
     }
 }
