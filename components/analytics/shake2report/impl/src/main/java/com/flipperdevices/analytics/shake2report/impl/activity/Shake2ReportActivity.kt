@@ -1,9 +1,7 @@
 package com.flipperdevices.analytics.shake2report.impl.activity
 
-import android.app.Application
 import android.content.ClipData
 import android.content.ClipboardManager
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.StringRes
@@ -12,9 +10,10 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.flipperdevices.analytics.shake2report.impl.R
 import com.flipperdevices.analytics.shake2report.impl.Shake2Report
-import com.flipperdevices.analytics.shake2report.impl.Shake2ReportApiImpl
 import com.flipperdevices.analytics.shake2report.impl.databinding.ActivityShake2reportBinding
+import com.flipperdevices.analytics.shake2report.impl.di.Shake2ReportComponent
 import com.flipperdevices.analytics.shake2report.impl.helper.Shake2ReportDialog
+import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.toast
 import io.sentry.Attachment
 import io.sentry.Sentry
@@ -43,9 +42,11 @@ class Shake2ReportActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityShake2reportBinding.inflate(layoutInflater)
+        ComponentHolder.component<Shake2ReportComponent>().inject(this)
+
         setContentView(binding.root)
-        shake2Report = Shake2ReportApiImpl.instance
-            ?: Shake2ReportApiImpl.initAndGet(applicationContext as Application)
+        // shake2Report = shake2ReportApi.instance
+        //    ?: shake2ReportApi.initAndGet(applicationContext as Application)
 
         binding.closeBtn.setOnClickListener {
             finish()
@@ -94,13 +95,12 @@ class Shake2ReportActivity : AppCompatActivity() {
 
     private suspend fun saveScreenshotToLogFolder() = withContext(Dispatchers.IO) {
         val logDir = shake2Report.getLogDir()
-        val screenshot =
-            Shake2ReportApiImpl.instance?.getScreenshotAndReset() ?: return@withContext null
+        /*val screenshot = Shake2ReportApiImpl.instance?.getScreenshotAndReset() ?: return@withContext null
         val screenshotFile = File(logDir, FILE_SCREENSHOT)
         screenshotFile.delete()
         screenshotFile.outputStream().use { out ->
             screenshot.compress(Bitmap.CompressFormat.PNG, QUALITY_SCREENSHOT, out)
-        }
+        }*/
     }
 
     private suspend fun sendingReport(

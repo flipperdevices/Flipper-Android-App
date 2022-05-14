@@ -11,6 +11,7 @@ dependencies {
     implementation(projects.components.core.ui)
     implementation(projects.components.core.navigation)
     implementation(projects.components.core.preference)
+    implementation(projects.components.analytics.shake2report.api)
 
     implementation(projects.components.debug.api)
     implementation(projects.components.firstpair.api)

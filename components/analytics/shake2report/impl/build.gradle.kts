@@ -9,8 +9,10 @@ dependencies {
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.di)
     implementation(projects.components.core.activityholder)
+    implementation(projects.components.core.preference)
     implementation(projects.components.bridge.api)
 
+    implementation(libs.cicerone)
     implementation(libs.annotations)
     implementation(libs.appcompat)
 

@@ -14,11 +14,12 @@
     <string name="debug_ignored_unsupported_version_toast">Please restart the application to apply the changes</string>
     <string name="debug_ignored_update_version">Ignored version in updater</string>
     <string name="debug_ignored_update_version_desc">If enabled, we always show an update button, even if the version is exactly the same</string>
+    <string name="debug_shake2report">Enabling shake bug report</string>
+    <string name="debug_shake2report_open">Report bug</string>
+    <string name="debug_shake2report_desc">You can shake the phone to report problems</string>
     <string name="category_experimental">Experimental</string>
     <string name="experimental_file_manager">File Manager</string>
     <string name="experimental_file_manager_desc">Navigating through folders and files in the flipper</string>
     <string name="experimental_screen_streaming">Screen Streaming</string>
     <string name="experimental_screen_streaming_desc">Control and watch your flipper through your phone</string>
-    <string name="experimental_updater">Enable Flipper OTA updater</string>
-    <string name="experimental_updater_desc">Adds a card to the Device screen with the ability to update the flipper via Bluetooth</string>
 </resources>

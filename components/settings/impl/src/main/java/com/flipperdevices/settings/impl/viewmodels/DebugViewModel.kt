@@ -1,6 +1,7 @@
 package com.flipperdevices.settings.impl.viewmodels
 
 import android.app.Application
+import android.content.Context
 import android.widget.Toast
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.AndroidViewModel
@@ -13,12 +14,10 @@ import com.flipperdevices.debug.api.StressTestApi
 import com.flipperdevices.firstpair.api.FirstPairApi
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.di.SettingsComponent
+import com.flipperdevices.shake2report.api.Shake2ReportApi
 import com.github.terrakok.cicerone.Router
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -38,6 +37,9 @@ class DebugViewModel(application: Application) : AndroidViewModel(application) {
     @Inject
     lateinit var settingsDataStore: DataStore<Settings>
 
+    @Inject
+    lateinit var shakeToReportApi: Shake2ReportApi
+
     init {
         ComponentHolder.component<SettingsComponent>().inject(this)
     }
@@ -54,9 +56,12 @@ class DebugViewModel(application: Application) : AndroidViewModel(application) {
         cicerone.getRouter().navigateTo(firstPairApi.getFirstPairScreen())
     }
 
-    fun getIgnoredSupportedVersionState() = settingsDataStore.data.map {
-        it.ignoreUnsupportedVersion
-    }.stateIn(viewModelScope, SharingStarted.Lazily, false)
+    fun onReportBug(context: Context) {
+        val screen = shakeToReportApi.reportBugScreen(context)
+        if (screen != null) {
+            cicerone.getRouter().navigateTo(screen)
+        }
+    }
 
     fun onSwitchIgnoreSupportedVersion(ignored: Boolean) {
         viewModelScope.launch(Dispatchers.Default) {
@@ -82,6 +87,16 @@ class DebugViewModel(application: Application) : AndroidViewModel(application) {
             settingsDataStore.updateData {
                 it.toBuilder()
                     .setAlwaysUpdate(alwaysUpdate)
+                    .build()
+            }
+        }
+    }
+
+    fun onSwitchShakeToReport(shakeToReport: Boolean) {
+        viewModelScope.launch(Dispatchers.Default) {
+            settingsDataStore.updateData {
+                it.toBuilder()
+                    .setShakeToReport(shakeToReport)
                     .build()
             }
         }

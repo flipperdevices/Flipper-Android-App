@@ -1,10 +1,12 @@
 package com.flipperdevices.shake2report.noop
 
 import android.app.Application
+import android.content.Context
 import com.flipperdevices.bridge.api.model.FlipperGATTInformation
 import com.flipperdevices.bridge.api.model.FlipperRpcInformation
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.shake2report.api.Shake2ReportApi
+import com.github.terrakok.cicerone.Screen
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
@@ -13,6 +15,8 @@ class Shake2ReportStub @Inject constructor() : Shake2ReportApi {
     override fun init(application: Application) {
         // Do nothing
     }
+
+    override fun reportBugScreen(context: Context): Screen? = null
 
     override fun updateGattInformation(gattInformation: FlipperGATTInformation) {
         // Do nothing

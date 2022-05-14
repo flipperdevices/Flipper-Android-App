@@ -9,6 +9,7 @@ dependencies {
     implementation(projects.components.bridge.api)
     implementation(projects.components.core.di)
 
+    implementation(libs.cicerone)
     implementation(libs.annotations)
     implementation(libs.appcompat)
 

@@ -2,6 +2,7 @@ package com.flipperdevices.settings.impl.composable.category
 
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.composable.LocalRouter
@@ -42,5 +43,18 @@ fun ColumnScope.DebugCategory(
         descriptionId = R.string.debug_ignored_update_version_desc,
         state = settings.alwaysUpdate,
         onSwitchState = debugViewModel::onSwitchIgnoreUpdaterVersion
+    )
+
+    SwitchableElement(
+        titleId = R.string.debug_shake2report,
+        descriptionId = R.string.debug_shake2report_desc,
+        state = settings.shakeToReport,
+        onSwitchState = debugViewModel::onSwitchShakeToReport
+    )
+
+    val context = LocalContext.current
+    SimpleElement(
+        titleId = R.string.debug_shake2report_open,
+        onClick = { debugViewModel.onReportBug(context) }
     )
 }
