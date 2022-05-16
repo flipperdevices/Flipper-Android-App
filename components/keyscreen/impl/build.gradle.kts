@@ -14,8 +14,13 @@ dependencies {
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.navigation)
     implementation(projects.components.core.preference)
+
+    implementation(projects.components.bridge.api)
+    implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.dao.api)
+    implementation(projects.components.bridge.pbutils)
     implementation(projects.components.bridge.synchronization.api)
+    implementation(libs.protobuf.jvm)
 
     implementation(projects.components.keyedit.api)
 
@@ -32,6 +37,7 @@ dependencies {
     implementation(libs.cicerone)
     implementation(libs.appcompat)
 
+    implementation(libs.lifecycle.compose)
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.ktx.fragment)

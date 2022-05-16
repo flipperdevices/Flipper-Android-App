@@ -1,25 +1,30 @@
 package com.flipperdevices.keyscreen.impl.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.flipperdevices.bridge.api.model.FlipperRequestPriority
+import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.delegates.KeyParser
 import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
+import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.toast
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.warn
+import com.flipperdevices.core.ui.AndroidLifecycleViewModel
 import com.flipperdevices.keyscreen.impl.R
 import com.flipperdevices.keyscreen.impl.di.KeyScreenComponent
 import com.flipperdevices.keyscreen.impl.model.DeleteState
 import com.flipperdevices.keyscreen.impl.model.FavoriteState
 import com.flipperdevices.keyscreen.impl.model.KeyScreenState
 import com.flipperdevices.keyscreen.impl.model.ShareState
+import com.flipperdevices.protobuf.app.startRequest
+import com.flipperdevices.protobuf.main
 import com.github.terrakok.cicerone.Router
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
@@ -31,7 +36,7 @@ import kotlinx.coroutines.launch
 class KeyScreenViewModel(
     private val keyPath: FlipperKeyPath?,
     application: Application
-) : AndroidViewModel(application), LogTagProvider {
+) : AndroidLifecycleViewModel(application), LogTagProvider {
     override val TAG = "KeyScreenViewModel"
 
     @Inject
@@ -45,6 +50,9 @@ class KeyScreenViewModel(
 
     @Inject
     lateinit var keyParser: KeyParser
+
+    @Inject
+    lateinit var serviceProvider: FlipperServiceProvider
 
     init {
         ComponentHolder.component<KeyScreenComponent>().inject(this)
@@ -96,6 +104,21 @@ class KeyScreenViewModel(
                         FavoriteState.FAVORITE
                     } else FavoriteState.NOT_FAVORITE
                 ) else it
+            }
+        }
+    }
+
+    fun onEmulate(flipperAppName: String, keyPath: FlipperKeyPath) {
+        serviceProvider.provideServiceApi(this) { service ->
+            viewModelScope.launch {
+                service.requestApi.requestWithoutAnswer(
+                    main {
+                        appStartRequest = startRequest {
+                            name = flipperAppName
+                            args = keyPath.getPathOnFlipper()
+                        }
+                    }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
+                )
             }
         }
     }

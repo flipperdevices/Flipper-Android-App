@@ -1,8 +1,6 @@
 package com.flipperdevices.keyscreen.impl.composable
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -18,7 +16,6 @@ import com.flipperdevices.keyscreen.impl.composable.actions.ComposableEdit
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableEmulate
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableRestore
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableShare
-import com.flipperdevices.keyscreen.impl.composable.actions.ComposableWrite
 import com.flipperdevices.keyscreen.impl.composable.card.ComposableKeyCard
 import com.flipperdevices.keyscreen.impl.model.DeleteState
 import com.flipperdevices.keyscreen.impl.model.KeyScreenState
@@ -50,14 +47,16 @@ fun ComposableKeyParsed(
             keyScreenState.favoriteState,
             viewModel::setFavorite
         )
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 24.dp, end = 24.dp, bottom = 24.dp),
-            horizontalArrangement = Arrangement.spacedBy(24.dp)
-        ) {
-            ComposableWrite(modifier = Modifier.weight(1f), onClick = {})
-            ComposableEmulate(modifier = Modifier.weight(1f), onClick = {})
+
+        val flipperAppName = keyScreenState.parsedKey.fileType?.flipperAppName
+
+        if (flipperAppName != null) {
+            ComposableEmulate(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 24.dp, end = 24.dp, bottom = 24.dp),
+                onClick = { viewModel.onEmulate(flipperAppName, keyScreenState.flipperKey.path) }
+            )
         }
 
         if (keyScreenState.deleteState == DeleteState.NOT_DELETED) {
