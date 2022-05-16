@@ -37,6 +37,7 @@ dependencies {
     implementation(libs.cicerone)
     implementation(libs.appcompat)
 
+    implementation(libs.lifecycle.compose)
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.ktx.fragment)

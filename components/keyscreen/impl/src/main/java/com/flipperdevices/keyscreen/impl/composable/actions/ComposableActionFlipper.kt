@@ -71,19 +71,28 @@ fun ComposableActionFlipperHorizontal(
     @StringRes descriptionId: Int,
     @ColorRes descriptionColorId: Int = DesignSystem.color.white_100,
     @ColorRes tintId: Int = DesignSystem.color.white_100,
-    onClick: () -> Unit
+    onClick: (() -> Unit)? = null
 ) {
     val descriptionText = stringResource(descriptionId)
 
-    Box(
-        modifier = modifier
-            .clip(shape = RoundedCornerShape(30.dp))
+    var boxModifier = modifier
+        .clip(shape = RoundedCornerShape(30.dp))
+
+    if (onClick != null) {
+        boxModifier = boxModifier
             .background(colorResource(id = DesignSystem.color.accent_secondary))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(),
                 onClick = onClick
-            ),
+            )
+    } else {
+        boxModifier = boxModifier
+            .background(colorResource(id = DesignSystem.color.black_40))
+    }
+
+    Box(
+        modifier = boxModifier,
         contentAlignment = Alignment.Center
     ) {
         Row(
