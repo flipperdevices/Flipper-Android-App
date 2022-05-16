@@ -11,11 +11,11 @@ fun ComposableEmulate(
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
-    ComposableActionFlipper(
+    ComposableActionFlipperHorizontal(
+        modifier = modifier,
         iconId = R.drawable.ic_emulate,
         descriptionId = R.string.keyscreen_emulate,
-        onClick = onClick,
-        modifier = modifier
+        onClick = onClick
     )
 }
 

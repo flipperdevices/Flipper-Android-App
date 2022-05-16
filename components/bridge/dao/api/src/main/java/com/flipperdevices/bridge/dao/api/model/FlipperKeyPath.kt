@@ -7,6 +7,8 @@ import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+private const val FLIPPER_STORAGE_NAME = "/any/"
+
 /**
  * Describe name and path for key.
  * Used as unique id for keys
@@ -39,6 +41,8 @@ data class FlipperKeyPath constructor(
     val nameWithoutExtension by lazy {
         name.substringAfterLast('/').substringBeforeLast(".")
     }
+
+    fun getPathOnFlipper() = File(FLIPPER_STORAGE_NAME, pathToKey).path
 
     override fun toString() = pathToKey
 
