@@ -1,14 +1,18 @@
 package com.flipperdevices.keyedit.impl.viewmodel
 
 import android.content.Context
+import android.os.Vibrator
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.flipperdevices.bridge.api.utils.FlipperSymbolFilter
 import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.delegates.KeyParser
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.ktx.android.vibrateCompat
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.warn
 import com.flipperdevices.keyedit.impl.di.KeyEditComponent
@@ -19,6 +23,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+private const val VIBRATOR_TIME_MS = 500L
+
 private typealias FinishListener = (FlipperKey) -> Unit
 
 class KeyEditViewModel(
@@ -27,7 +33,7 @@ class KeyEditViewModel(
     parsedKey: FlipperKeyParsed? = null
 ) : ViewModel(), LogTagProvider {
     override val TAG = "KeyEditViewModel"
-    private val nameFilter = FlipperSymbolFilter(context)
+    private var vibrator = ContextCompat.getSystemService(context, Vibrator::class.java)
     private val lengthFilter = LengthFilter(context)
 
     @Inject
@@ -47,13 +53,18 @@ class KeyEditViewModel(
     fun getEditState(): StateFlow<KeyEditState> = keyEditState
 
     fun onNameChange(newName: String) {
-        nameFilter.filterUnacceptableSymbol(newName) {
-            lengthFilter.nameLengthFilter(it) { filteredName ->
-                keyEditState.update {
-                    if (it is KeyEditState.Editing) {
-                        it.copy(name = filteredName, savingKeyActive = filteredName.isNotBlank())
-                    } else it
-                }
+        val filteredName = FlipperSymbolFilter.filterUnacceptableSymbol(newName)
+
+        if (filteredName.length != newName.length) {
+            // String contains forbidden characters
+            vibrator?.vibrateCompat(VIBRATOR_TIME_MS)
+        }
+
+        lengthFilter.nameLengthFilter(filteredName) { limitedName ->
+            keyEditState.update {
+                if (it is KeyEditState.Editing) {
+                    it.copy(name = limitedName, savingKeyActive = limitedName.isNotBlank())
+                } else it
             }
         }
     }

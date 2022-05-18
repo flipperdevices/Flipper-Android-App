@@ -13,13 +13,12 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.core.ui.TaskWithLifecycle
 import com.flipperdevices.protobuf.main
-import com.flipperdevices.protobuf.storage.deleteRequest
-import com.flipperdevices.protobuf.storage.mkdirRequest
 import com.flipperdevices.protobuf.system.System
 import com.flipperdevices.protobuf.system.rebootRequest
 import com.flipperdevices.protobuf.system.updateRequest
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.impl.service.UploadFirmwareService
+import com.flipperdevices.updater.impl.utils.FolderCreateHelper
 import com.flipperdevices.updater.model.DistributionFile
 import com.flipperdevices.updater.model.DownloadProgress
 import com.flipperdevices.updater.model.UpdatingState
@@ -29,7 +28,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.cancelAndJoin
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
@@ -111,30 +109,14 @@ class UpdaterTask(
             UpdatingState.UploadOnFlipper(0f)
         )
 
-        val flipperPath = "/ext/update/${updateFile.sha256}"
+        var updateName = updateFile.url.substringAfterLast("/").substringBefore(".")
+        if (updateName.isBlank()) {
+            updateName = updateFile.sha256
+        }
+        val flipperPath = "/ext/update/$updateName"
 
-        serviceApi.requestApi.request(
-            main {
-                storageDeleteRequest = deleteRequest {
-                    path = flipperPath
-                    recursive = true
-                }
-            }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
-        ).collect()
-        serviceApi.requestApi.request(
-            main {
-                storageMkdirRequest = mkdirRequest {
-                    path = "/ext/update"
-                }
-            }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
-        ).collect()
-        serviceApi.requestApi.request(
-            main {
-                storageMkdirRequest = mkdirRequest {
-                    path = flipperPath
-                }
-            }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
-        ).collect()
+        FolderCreateHelper.recreateDirOnFlipper(serviceApi.requestApi, flipperPath)
+
         UploadFirmwareService.upload(
             serviceApi.requestApi,
             updaterFolder,
