@@ -115,7 +115,7 @@ class UpdaterTask(
         }
         val flipperPath = "/ext/update/$updateName"
 
-        FolderCreateHelper.recreateDirOnFlipper(serviceApi.requestApi, flipperPath)
+        FolderCreateHelper.mkdirFolderOnFlipper(serviceApi.requestApi, flipperPath)
 
         UploadFirmwareService.upload(
             serviceApi.requestApi,
