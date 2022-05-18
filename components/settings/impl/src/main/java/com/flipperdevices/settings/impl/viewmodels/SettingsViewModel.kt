@@ -7,13 +7,15 @@ import androidx.lifecycle.viewModelScope
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.navigation.global.CiceroneGlobal
 import com.flipperdevices.core.preference.pb.Settings
+import com.flipperdevices.debug.api.StressTestApi
+import com.flipperdevices.screenstreaming.api.ScreenStreamingApi
 import com.flipperdevices.settings.impl.di.SettingsComponent
 import com.flipperdevices.shake2report.api.Shake2ReportApi
-import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class SettingsViewModel : ViewModel() {
     @Inject
@@ -24,6 +26,12 @@ class SettingsViewModel : ViewModel() {
 
     @Inject
     lateinit var shakeToReportApi: Shake2ReportApi
+
+    @Inject
+    lateinit var screenStreamingApi: ScreenStreamingApi
+
+    @Inject
+    lateinit var stressTestApi: StressTestApi
 
     init {
         ComponentHolder.component<SettingsComponent>().inject(this)

@@ -11,7 +11,6 @@ dependencies {
     implementation(projects.components.core.ui)
     implementation(projects.components.core.ktx)
 
-    implementation(libs.cicerone)
     implementation(libs.appcompat)
 
     implementation(projects.components.bridge.api)
@@ -25,6 +24,7 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
+    implementation(libs.compose.navigation)
 
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.compose)

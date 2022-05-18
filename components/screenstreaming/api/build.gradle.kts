@@ -3,5 +3,5 @@ plugins {
 }
 
 dependencies {
-    implementation(libs.cicerone)
+    implementation(libs.compose.navigation)
 }

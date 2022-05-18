@@ -31,8 +31,6 @@ dependencies {
     implementation(libs.lifecycle.compose)
     implementation(libs.ktx.fragment)
 
-    implementation(libs.cicerone)
-
     // Dagger deps
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)

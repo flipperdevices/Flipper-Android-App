@@ -13,6 +13,7 @@ protobuf-jvm = "0.6.6"
 compose = "1.1.0"
 compose_accompanist = "0.23.0"
 compose_constraint = "1.0.0"
+compose_navigation = "2.4.2"
 room = "2.4.2"
 # Crush after https://github.com/google/dagger/releases/tag/dagger-2.40.4
 dagger = "2.40.3"
@@ -104,6 +105,7 @@ square-anvil-gradle = { module = "com.squareup.anvil:gradle-plugin", version.ref
 
 # Navigation
 cicerone = { module = "com.github.terrakok:cicerone", version.ref = "cicerone" }
+compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "compose_navigation" }
 
 # Bug report dependencies
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }

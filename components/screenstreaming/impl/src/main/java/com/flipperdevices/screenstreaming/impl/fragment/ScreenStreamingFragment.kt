@@ -7,6 +7,7 @@ import com.flipperdevices.screenstreaming.impl.composable.ComposableScreen
 import com.flipperdevices.screenstreaming.impl.model.StreamingState
 import com.flipperdevices.screenstreaming.impl.viewmodel.ScreenStreamingViewModel
 
+@Deprecated(message = "Replace with compose navigation")
 class ScreenStreamingFragment : ComposeFragment() {
     private val screenStreamingViewModel by viewModels<ScreenStreamingViewModel>()
 

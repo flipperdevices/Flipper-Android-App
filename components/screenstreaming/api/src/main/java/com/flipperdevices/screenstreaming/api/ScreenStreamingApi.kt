@@ -1,7 +1,8 @@
 package com.flipperdevices.screenstreaming.api
 
-import com.github.terrakok.cicerone.Screen
+import androidx.compose.runtime.Composable
 
 interface ScreenStreamingApi {
-    fun provideScreen(): Screen
+    @Composable
+    fun ProvideScreen()
 }
