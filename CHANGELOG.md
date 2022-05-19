@@ -1,6 +1,8 @@
 # Changelog
 
-# 1.1 - In progress
+# 1.2 - In progress
+
+# 1.1
 
 - [BUGFIX] Concurrent exception in request api
 - [BUGFIX] Remove bottom divider from Bottom Bar
