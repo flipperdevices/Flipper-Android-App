@@ -4,7 +4,7 @@ object ApkConfig {
     const val APPLICATION_ID = "com.flipperdevices.app"
     const val APPLICATION_ID_SUFFIX = ".dev"
 
-    const val MIN_SDK_VERSION = 21
+    const val MIN_SDK_VERSION = 26
     const val TARGET_SDK_VERSION = 31
     const val COMPILE_SDK_VERSION = 31
 
