@@ -9,6 +9,7 @@
 - [BUGFIX] Fix synchronization start after first login
 - [Feature] Add report bug button
 - [Feature] Emulate button on key screen
+- [Feature] Not not upload file if already exist
 - [Feature] Add update Flipper via OTA on separate screen
 - [Feature] Added an option to cancel existing Flipper RPC requests
 - [Feature] Use new design for unsupported card and for unsupported dialog
