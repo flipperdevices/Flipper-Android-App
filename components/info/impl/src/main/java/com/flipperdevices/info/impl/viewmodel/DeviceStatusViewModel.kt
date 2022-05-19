@@ -58,7 +58,6 @@ class DeviceStatusViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
                 ConnectionState.Initializing,
                 is ConnectionState.Ready,
                 ConnectionState.RetrievingInformation -> {
-                    updaterApi.onDeviceConnected()
                     var deviceName = pairSettings.deviceName
                     if (deviceName.isBlank()) {
                         deviceName = "Unknown"
@@ -69,10 +68,13 @@ class DeviceStatusViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
                             deviceName,
                             connectInProgress = true
                         )
-                    } else DeviceStatus.Connected(
-                        deviceName,
-                        batteryLevel
-                    )
+                    } else {
+                        updaterApi.onDeviceConnected()
+                        DeviceStatus.Connected(
+                            deviceName,
+                            batteryLevel
+                        )
+                    }
                 }
             }
         }.onEach {

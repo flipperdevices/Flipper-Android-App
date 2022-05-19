@@ -54,6 +54,12 @@ fun ComposableUpdateContent(
             iconId = null,
             percent = null
         )
+        UpdaterScreenState.Rebooting -> ComposableInProgressIndicator(
+            accentColorId = DesignSystem.color.accent_secondary,
+            secondColorId = R.color.update_blue_background,
+            iconId = null,
+            percent = null
+        )
         UpdaterScreenState.Finish -> return
     }
 
@@ -88,6 +94,7 @@ private fun DescriptionUpdateText(
         is UpdaterScreenState.DownloadingFromNetwork -> R.string.update_stage_downloading_desc
         UpdaterScreenState.Finish -> R.string.update_stage_update_canceling_desc
         UpdaterScreenState.NotStarted -> R.string.update_stage_starting_desc
+        UpdaterScreenState.Rebooting -> R.string.update_stage_rebooting_desc
         is UpdaterScreenState.UploadOnFlipper -> R.string.update_stage_uploading_desc
     }
 
