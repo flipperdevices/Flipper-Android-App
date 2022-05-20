@@ -17,15 +17,17 @@
     <string name="update_card_error_no_sd_desc">Can\'t upload firmware to Flipper</string>
 
     <string name="update_dialog_title">Update Firmware?</string>
-    <string name="update_dialog_sync_title">Start Update?</string>
+    <string name="update_dialog_sync_title">Pause Synchronization?</string>
     <string name="update_dialog_desc">New Firmware %1$s will be installed</string>
-    <string name="update_dialog_sync_desc">Synchronization with Flipper will be canceled</string>
-    <string name="update_dialog_yes">Yes</string>
-    <string name="update_dialog_no">No</string>
-    <string name="update_cancel_dialog_title">Cancel Update?</string>
-    <string name="update_cancel_dialog_desc">You can restart this update later</string>
-    <string name="update_cancel_dialog_yes">Yes</string>
-    <string name="update_cancel_dialog_no">No</string>
+    <string name="update_dialog_sync_desc">Firmware update is not possible during synchronization. Wait for sync to finish or pause it</string>
+    <string name="update_dialog_sync_yes">Pause</string>
+    <string name="update_dialog_sync_no">Continue</string>
+    <string name="update_dialog_yes">Update</string>
+    <string name="update_dialog_no">Cancel</string>
+    <string name="update_cancel_dialog_title">Abort Update?</string>
+    <string name="update_cancel_dialog_desc">Updating will be interrupted. Flipper will still have the previous firmware version.</string>
+    <string name="update_cancel_dialog_yes">Abort</string>
+    <string name="update_cancel_dialog_no">Continue</string>
 
 
     <string name="update_screen_title">Updating your Flipper</string>
