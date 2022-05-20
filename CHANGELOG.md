@@ -11,6 +11,7 @@
 - [BUGFIX] Now we can cancel editing key
 - [BUGFIX] Fix reconnect issues
 - [BUGFIX] Fix synchronization start after first login
+- [BUGFIX] Fix wording in the settings menu
 - [Feature] Add report bug button
 - [Feature] Emulate button on key screen
 - [Feature] Not not upload file if already exist
