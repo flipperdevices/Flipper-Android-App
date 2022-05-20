@@ -1,6 +1,8 @@
 # Changelog
 
-# 1.2 - In progress
+# 1.1.1 - In progress
+
+- [BUGFIX] Fix text typos in dialog updates
 
 # 1.1
 
