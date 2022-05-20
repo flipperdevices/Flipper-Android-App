@@ -14,12 +14,12 @@
     <string name="debug_ignored_unsupported_version_toast">Please restart the application to apply</string>
     <string name="debug_ignored_update_version">Ignore firmware version in the updater</string>
     <string name="debug_ignored_update_version_desc">If enabled, the app will always display the updater, even if the device is up to date</string>
-    <string name="debug_shake2report">Enable "shake to report"</string>
+    <string name="debug_shake2report">Enable \"shake to report\"</string>
     <string name="debug_shake2report_open">Report a bug</string>
     <string name="debug_shake2report_desc">Shake your phone to submit a bug report</string>
     <string name="category_experimental">Experimental</string>
     <string name="experimental_file_manager">File Manager</string>
     <string name="experimental_file_manager_desc">Navigate through folders and files on your Flipper</string>
     <string name="experimental_screen_streaming">Screen Streaming</string>
-    <string name="experimental_screen_streaming_desc">Control and see your flipper's screen using your phone</string>
+    <string name="experimental_screen_streaming_desc">Control and see your flipper\'s screen using your phone</string>
 </resources>
