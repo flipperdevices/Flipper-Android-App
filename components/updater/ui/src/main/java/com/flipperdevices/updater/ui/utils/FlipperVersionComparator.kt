@@ -13,7 +13,7 @@ fun FirmwareVersion.isGreaterThan(other: FirmwareVersion): Boolean? {
     }
 
     val versionParts = version.split(".")
-    val versionPartsOther = version.split(".")
+    val versionPartsOther = other.version.split(".")
     val major = versionParts.getOrNull(0).extractDigitOrZero()
     val majorOther = versionPartsOther.getOrNull(0).extractDigitOrZero()
     if (major > majorOther) {

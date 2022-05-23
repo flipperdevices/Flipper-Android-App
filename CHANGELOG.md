@@ -2,6 +2,8 @@
 
 # 1.1.1 - In progress
 
+- [Feature] Add rebooting now dialog and state
+- [BUGFIX] Version comparison in updater
 - [BUGFIX] Fix text typos in dialog updates
 
 # 1.1
