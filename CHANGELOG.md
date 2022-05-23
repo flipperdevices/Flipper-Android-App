@@ -1,6 +1,8 @@
 # Changelog
 
-# 1.1.1 - In progress
+# 1.1.2 - In progress
+
+# 1.1.1
 
 - [Feature] Add rebooting now dialog and state
 - [BUGFIX] Version comparison in updater
