@@ -2,6 +2,8 @@
 
 # 1.1.2 - In progress
 
+- [BUGFIX] Fix crash with custom firmware version
+
 # 1.1.1
 
 - [Feature] Add rebooting now dialog and state

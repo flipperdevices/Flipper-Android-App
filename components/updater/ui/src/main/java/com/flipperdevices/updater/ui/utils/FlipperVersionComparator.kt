@@ -40,5 +40,9 @@ fun FirmwareVersion.isGreaterThan(other: FirmwareVersion): Boolean? {
 }
 
 private fun String?.extractDigitOrZero(): Int {
-    return this?.filter { it.isDigit() }?.toInt() ?: 0
+    val stringWithDigit = this?.filter { it.isDigit() }
+    if (stringWithDigit.isNullOrBlank()) {
+        return 0
+    }
+    return stringWithDigit.toInt()
 }
