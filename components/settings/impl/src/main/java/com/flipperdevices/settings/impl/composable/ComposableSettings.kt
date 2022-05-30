@@ -15,6 +15,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.composable.category.DebugCategory
 import com.flipperdevices.settings.impl.composable.category.ExperimentalCategory
@@ -23,7 +24,6 @@ import com.flipperdevices.settings.impl.composable.elements.Category
 import com.flipperdevices.settings.impl.composable.elements.SimpleElement
 import com.flipperdevices.settings.impl.model.NavGraphRoute
 import com.flipperdevices.settings.impl.viewmodels.SettingsViewModel
-import com.flipperdevices.core.ui.R as DesignSystem
 
 @Composable
 fun ComposableSettings(
