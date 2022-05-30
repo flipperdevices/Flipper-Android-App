@@ -11,11 +11,11 @@ import com.flipperdevices.debug.api.StressTestApi
 import com.flipperdevices.screenstreaming.api.ScreenStreamingApi
 import com.flipperdevices.settings.impl.di.SettingsComponent
 import com.flipperdevices.shake2report.api.Shake2ReportApi
+import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class SettingsViewModel : ViewModel() {
     @Inject

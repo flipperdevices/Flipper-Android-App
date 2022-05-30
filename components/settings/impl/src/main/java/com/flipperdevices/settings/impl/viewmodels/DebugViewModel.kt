@@ -12,10 +12,10 @@ import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.firstpair.api.FirstPairApi
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.di.SettingsComponent
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
 class DebugViewModel(application: Application) : AndroidViewModel(application) {
 

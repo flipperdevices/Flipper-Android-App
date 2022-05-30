@@ -5,9 +5,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.flipperdevices.core.navigation.delegates.OnBackPressListener
 import com.flipperdevices.core.ui.ComposeFragment
+import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.settings.impl.composable.ComposableSettings
 import com.flipperdevices.settings.impl.model.NavGraphRoute
-import com.flipperdevices.core.ui.R as DesignSystem
 
 class SettingsFragment : ComposeFragment(), OnBackPressListener {
 
