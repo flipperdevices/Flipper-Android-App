@@ -19,7 +19,11 @@ fun ColumnScope.DebugCategory(
 ) {
     SimpleElement(
         titleId = R.string.debug_stress_test,
-        onClick = { navController.navigate(NavGraphRoute.StressTest.name) }
+        onClick = {
+            navController.navigate(NavGraphRoute.StressTest.name) {
+                popUpTo(NavGraphRoute.Settings.name)
+            }
+        }
     )
     SimpleElement(
         titleId = R.string.debug_start_synchronization,

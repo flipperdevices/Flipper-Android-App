@@ -10,12 +10,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.composable.category.DebugCategory
 import com.flipperdevices.settings.impl.composable.category.ExperimentalCategory
@@ -26,15 +25,11 @@ import com.flipperdevices.settings.impl.model.NavGraphRoute
 import com.flipperdevices.settings.impl.viewmodels.SettingsViewModel
 import com.flipperdevices.core.ui.R as DesignSystem
 
-@Preview(
-    showSystemUi = true,
-    showBackground = true
-)
 @Composable
 fun ComposableSettings(
+    navController: NavHostController,
     settingsViewModel: SettingsViewModel = viewModel()
 ) {
-    val navController = rememberNavController()
     NavHost(navController = navController, startDestination = NavGraphRoute.Settings.name) {
         composable(route = NavGraphRoute.Settings.name) {
             ComposableCommonSetting(navController, settingsViewModel)

@@ -27,6 +27,10 @@ fun ColumnScope.ExperimentalCategory(
     SimpleElement(
         titleId = R.string.experimental_screen_streaming,
         descriptionId = R.string.experimental_screen_streaming_desc,
-        onClick = { navController.navigate(NavGraphRoute.ScreenStreaming.name) }
+        onClick = {
+            navController.navigate(NavGraphRoute.ScreenStreaming.name) {
+                popUpTo(NavGraphRoute.Settings.name)
+            }
+        }
     )
 }
