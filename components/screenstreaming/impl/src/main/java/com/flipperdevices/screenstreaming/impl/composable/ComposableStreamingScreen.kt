@@ -1,6 +1,7 @@
 package com.flipperdevices.screenstreaming.impl.composable
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -12,12 +13,10 @@ import com.flipperdevices.screenstreaming.impl.viewmodel.ScreenStreamingViewMode
 fun ComposableStreamingScreen(
     screenStreamingViewModel: ScreenStreamingViewModel = viewModel()
 ) {
-    val lifecycleState = LocalLifecycleOwner.current.lifecycle.observeAsState()
-    if (lifecycleState.value == Lifecycle.Event.ON_PAUSE) {
-        screenStreamingViewModel.getStreamingState().compareAndSet(
-            expect = StreamingState.ENABLED,
-            update = StreamingState.DISABLED
-        )
+    val lifecycleState by LocalLifecycleOwner.current.lifecycle.observeAsState()
+    when (lifecycleState) {
+        Lifecycle.Event.ON_PAUSE -> screenStreamingViewModel.disableStreaming()
+        else -> {}
     }
 
     ComposableScreen(
@@ -29,16 +28,9 @@ fun ComposableStreamingScreen(
             screenStreamingViewModel.onLongPressButton(button)
         },
         onScreenStreamingSwitch = { state ->
-            if (state == StreamingState.ENABLED) {
-                screenStreamingViewModel.getStreamingState().compareAndSet(
-                    expect = StreamingState.DISABLED,
-                    update = StreamingState.ENABLED
-                )
-            } else if (state == StreamingState.DISABLED) {
-                screenStreamingViewModel.getStreamingState().compareAndSet(
-                    expect = StreamingState.ENABLED,
-                    update = StreamingState.DISABLED
-                )
+            when (state) {
+                StreamingState.ENABLED -> screenStreamingViewModel.enableStreaming()
+                StreamingState.DISABLED -> screenStreamingViewModel.disableStreaming()
             }
         }
     )
