@@ -10,8 +10,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.composable.category.DebugCategory
@@ -19,15 +22,31 @@ import com.flipperdevices.settings.impl.composable.category.ExperimentalCategory
 import com.flipperdevices.settings.impl.composable.category.GeneralCategory
 import com.flipperdevices.settings.impl.composable.elements.Category
 import com.flipperdevices.settings.impl.composable.elements.SimpleElement
+import com.flipperdevices.settings.impl.model.NavGraphRoute
 import com.flipperdevices.settings.impl.viewmodels.SettingsViewModel
 
-@Preview(
-    showSystemUi = true,
-    showBackground = true
-)
 @Composable
 fun ComposableSettings(
+    navController: NavHostController,
     settingsViewModel: SettingsViewModel = viewModel()
+) {
+    NavHost(navController = navController, startDestination = NavGraphRoute.Settings.name) {
+        composable(route = NavGraphRoute.Settings.name) {
+            ComposableCommonSetting(navController, settingsViewModel)
+        }
+        composable(route = NavGraphRoute.ScreenStreaming.name) {
+            settingsViewModel.screenStreamingApi.ProvideScreen()
+        }
+        composable(route = NavGraphRoute.StressTest.name) {
+            settingsViewModel.stressTestApi.StressTestScreen()
+        }
+    }
+}
+
+@Composable
+fun ComposableCommonSetting(
+    navController: NavController,
+    settingsViewModel: SettingsViewModel
 ) {
     val settings by settingsViewModel.getState().collectAsState()
 
@@ -46,12 +65,12 @@ fun ComposableSettings(
 
         if (settings.enabledExperimentalFunctions) {
             Category(titleId = R.string.category_experimental)
-            ExperimentalCategory(settings)
+            ExperimentalCategory(settings, navController)
         }
 
         if (settings.enabledDebugSettings) {
             Category(titleId = R.string.category_debug)
-            DebugCategory(settings)
+            DebugCategory(settings, navController)
         }
 
         val context = LocalContext.current

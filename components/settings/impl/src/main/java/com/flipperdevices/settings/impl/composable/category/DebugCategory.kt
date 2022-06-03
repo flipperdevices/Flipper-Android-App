@@ -3,23 +3,27 @@ package com.flipperdevices.settings.impl.composable.category
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.flipperdevices.core.preference.pb.Settings
-import com.flipperdevices.core.ui.composable.LocalRouter
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.composable.elements.SimpleElement
 import com.flipperdevices.settings.impl.composable.elements.SwitchableElement
+import com.flipperdevices.settings.impl.model.NavGraphRoute
 import com.flipperdevices.settings.impl.viewmodels.DebugViewModel
 
 @Composable
 fun ColumnScope.DebugCategory(
     settings: Settings,
+    navController: NavController,
     debugViewModel: DebugViewModel = viewModel()
 ) {
-    val router = LocalRouter.current
-
     SimpleElement(
         titleId = R.string.debug_stress_test,
-        onClick = { debugViewModel.onOpenStressTest(router) }
+        onClick = {
+            navController.navigate(NavGraphRoute.StressTest.name) {
+                popUpTo(NavGraphRoute.Settings.name)
+            }
+        }
     )
     SimpleElement(
         titleId = R.string.debug_start_synchronization,

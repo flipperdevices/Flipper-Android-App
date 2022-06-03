@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.bridge.api.model.FlipperSerialSpeed
 import com.flipperdevices.debug.stresstest.model.LogLine
 import com.flipperdevices.debug.stresstest.model.StressTestState
@@ -32,7 +33,7 @@ import com.flipperdevices.debug.stresstest.viewmodel.StressTestViewModel
 
 @Composable
 fun ComposableStressTestScreen(
-    viewModel: StressTestViewModel
+    viewModel: StressTestViewModel = viewModel()
 ) {
     val debugLog by viewModel.getDebugLog().collectAsState()
     val stressTestState by viewModel.getStressTestState().collectAsState()

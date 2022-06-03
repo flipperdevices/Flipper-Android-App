@@ -9,19 +9,15 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.navigation.global.CiceroneGlobal
 import com.flipperdevices.core.preference.pb.Settings
-import com.flipperdevices.debug.api.StressTestApi
 import com.flipperdevices.firstpair.api.FirstPairApi
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.di.SettingsComponent
-import com.github.terrakok.cicerone.Router
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class DebugViewModel(application: Application) : AndroidViewModel(application) {
-    @Inject
-    lateinit var stressTestApi: StressTestApi
 
     @Inject
     lateinit var cicerone: CiceroneGlobal
@@ -37,10 +33,6 @@ class DebugViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         ComponentHolder.component<SettingsComponent>().inject(this)
-    }
-
-    fun onOpenStressTest(router: Router) {
-        router.navigateTo(stressTestApi.getStressTestScreen())
     }
 
     fun onStartSynchronization() {

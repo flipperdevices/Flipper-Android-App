@@ -14,6 +14,7 @@ dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.ui)
     implementation(projects.components.core.log)
+    implementation(projects.components.core.ktx)
 
     implementation(libs.annotations)
     implementation(libs.appcompat)
@@ -30,8 +31,6 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.compose)
     implementation(libs.ktx.fragment)
-
-    implementation(libs.cicerone)
 
     // Dagger deps
     implementation(libs.dagger)

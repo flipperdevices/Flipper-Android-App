@@ -11,7 +11,6 @@ dependencies {
     implementation(projects.components.core.ui)
     implementation(projects.components.core.ktx)
 
-    implementation(libs.cicerone)
     implementation(libs.appcompat)
 
     implementation(projects.components.bridge.api)
