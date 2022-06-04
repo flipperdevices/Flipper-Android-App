@@ -19,8 +19,6 @@ class SettingsFragment : ComposeFragment(), OnBackPressListener {
         ComposableSettings(navController = navController)
     }
 
-    override fun getStatusBarColor(): Int = DesignSystem.color.background
-
     override fun onBackPressed(): Boolean {
         val currentDestination = navController.currentDestination ?: return false
         if (currentDestination.route == NavGraphRoute.Settings.name) return false
