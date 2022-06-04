@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.R as DesignSystem
 
 @Composable
+@Suppress("LongParameterList")
 fun SimpleElement(
     modifier: Modifier = Modifier,
     @DrawableRes iconId: Int? = null,
@@ -49,6 +50,7 @@ fun SimpleElement(
 }
 
 @Composable
+@Suppress("LongParameterList")
 fun SimpleElement(
     modifier: Modifier = Modifier,
     @DrawableRes iconId: Int? = null,

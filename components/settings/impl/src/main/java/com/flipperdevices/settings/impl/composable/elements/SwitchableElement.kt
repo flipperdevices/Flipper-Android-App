@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.R
 
 @Composable
+@Suppress("LongParameterList")
 fun SwitchableElement(
     @DrawableRes iconId: Int? = null,
     @StringRes titleId: Int? = null,
