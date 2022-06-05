@@ -24,8 +24,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.settings.impl.R
+import com.flipperdevices.core.ui.R as DesignSystem
 
 @Composable
 fun SimpleElement(
@@ -87,5 +87,7 @@ fun SimpleElement(
 @Composable
 @Suppress("UnusedPrivateMember")
 private fun SimpleElementPreview() {
-    SimpleElement(Modifier, R.string.experimental_screen_streaming, R.string.experimental_screen_streaming_desc)
+    SimpleElement(
+        Modifier, R.string.experimental_screen_streaming, R.string.experimental_screen_streaming_desc
+    )
 }
