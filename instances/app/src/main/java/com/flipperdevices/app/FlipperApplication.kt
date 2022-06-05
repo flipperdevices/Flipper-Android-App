@@ -19,7 +19,10 @@ class FlipperApplication : Application() {
             .create(
                 context = this,
                 application = this,
-                ApplicationParams(startApplicationClass = SplashScreen::class)
+                ApplicationParams(
+                    startApplicationClass = SplashScreen::class,
+                    version = BuildConfig.VERSION_NAME
+                )
             )
 
         if (BuildConfig.INTERNAL) {

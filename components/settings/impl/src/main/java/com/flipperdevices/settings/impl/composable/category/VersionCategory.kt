@@ -18,7 +18,8 @@ import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.settings.impl.R
 
 @Composable
-fun VersionCategory() {
+fun VersionCategory(version: String) {
+    val versionText = "${stringResource(id = R.string.version)}: $version"
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
@@ -29,10 +30,9 @@ fun VersionCategory() {
             fontSize = 12.sp,
             fontWeight = FontWeight.W400,
             color = colorResource(id = DesignSystem.color.black_20)
-
         )
         Text(
-            text = stringResource(id = R.string.version),
+            text = versionText,
             fontSize = 12.sp,
             fontWeight = FontWeight.W400,
             color = colorResource(id = DesignSystem.color.black_40)

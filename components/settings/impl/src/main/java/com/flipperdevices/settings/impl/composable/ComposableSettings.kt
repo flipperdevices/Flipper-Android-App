@@ -26,34 +26,20 @@ import com.flipperdevices.settings.impl.composable.category.VersionCategory
 import com.flipperdevices.settings.impl.composable.elements.AppBar
 import com.flipperdevices.settings.impl.model.NavGraphRoute
 import com.flipperdevices.settings.impl.viewmodels.SettingsViewModel
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun ComposableSettings(
     navController: NavHostController,
     settingsViewModel: SettingsViewModel = viewModel()
 ) {
-    /*
-        When navigate from Options to another screen we have accent color for status bar
-        rememberSystemUiController changed color
-     */
     NavHost(navController = navController, startDestination = NavGraphRoute.Settings.name) {
         composable(route = NavGraphRoute.Settings.name) {
-            rememberSystemUiController().setStatusBarColor(
-                color = colorResource(id = DesignSystem.color.accent)
-            )
             ComposableCommonSetting(navController, settingsViewModel)
         }
         composable(route = NavGraphRoute.ScreenStreaming.name) {
-            rememberSystemUiController().setStatusBarColor(
-                color = colorResource(id = DesignSystem.color.background)
-            )
             settingsViewModel.screenStreamingApi.ProvideScreen()
         }
         composable(route = NavGraphRoute.StressTest.name) {
-            rememberSystemUiController().setStatusBarColor(
-                color = colorResource(id = DesignSystem.color.background)
-            )
             settingsViewModel.stressTestApi.StressTestScreen()
         }
     }
@@ -77,6 +63,6 @@ fun ComposableCommonSetting(
         DebugCategory(settings, navController, settingsViewModel)
         ExperimentalCategory(settings, navController, settingsViewModel)
         BugReportCategory(onClick = { settingsViewModel.onReportBug(context) })
-        VersionCategory()
+        VersionCategory(version = settingsViewModel.versionApp())
     }
 }

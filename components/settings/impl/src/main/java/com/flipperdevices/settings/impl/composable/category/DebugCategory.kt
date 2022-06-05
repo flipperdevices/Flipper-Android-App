@@ -6,6 +6,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.settings.impl.R
+import com.flipperdevices.settings.impl.composable.elements.CategoryElement
 import com.flipperdevices.settings.impl.composable.elements.ClickableElement
 import com.flipperdevices.settings.impl.composable.elements.GrayDivider
 import com.flipperdevices.settings.impl.composable.elements.SimpleElement
@@ -23,12 +24,11 @@ fun DebugCategory(
 ) {
     CardCategory {
         Column {
-            SwitchableElement(
+            CategoryElement(
                 titleId = R.string.debug_options,
                 descriptionId = R.string.debug_options_desc,
                 state = settings.enabledDebugSettings,
-                onSwitchState = settingsViewModel::onSwitchDebug,
-                isCategory = true
+                onSwitchState = settingsViewModel::onSwitchDebug
             )
             if (settings.enabledDebugSettings) {
                 ClickableElement(

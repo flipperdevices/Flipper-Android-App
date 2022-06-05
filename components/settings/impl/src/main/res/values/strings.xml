@@ -26,5 +26,5 @@
 
     <string name="debug_shake2report_open">Report a bug</string>
     <string name="version_name_app">Flipper Mobile App</string>
-    <string name="version">Version:</string>
+    <string name="version">Version</string>
 </resources>

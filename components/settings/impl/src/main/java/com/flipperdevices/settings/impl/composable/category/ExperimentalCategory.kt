@@ -7,9 +7,9 @@ import androidx.navigation.NavController
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.composable.LocalRouter
 import com.flipperdevices.settings.impl.R
+import com.flipperdevices.settings.impl.composable.elements.CategoryElement
 import com.flipperdevices.settings.impl.composable.elements.ClickableElement
 import com.flipperdevices.settings.impl.composable.elements.GrayDivider
-import com.flipperdevices.settings.impl.composable.elements.SwitchableElement
 import com.flipperdevices.settings.impl.model.NavGraphRoute
 import com.flipperdevices.settings.impl.viewmodels.ExperimentalViewModel
 import com.flipperdevices.settings.impl.viewmodels.SettingsViewModel
@@ -25,12 +25,11 @@ fun ExperimentalCategory(
 
     CardCategory {
         Column {
-            SwitchableElement(
+            CategoryElement(
                 titleId = R.string.experimental_options,
                 descriptionId = R.string.experimental_options_desc,
                 state = settings.enabledExperimentalFunctions,
-                onSwitchState = settingsViewModel::onSwitchExperimental,
-                isCategory = true
+                onSwitchState = settingsViewModel::onSwitchExperimental
             )
             if (settings.enabledExperimentalFunctions) {
                 ClickableElement(
