@@ -4,34 +4,44 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Row
-import androidx.compose.material.Switch
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.Icon
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import com.flipperdevices.core.ui.R as DesignSystem
+import com.flipperdevices.settings.impl.R
 
 @Composable
-@Suppress("LongParameterList")
-fun SwitchableElement(
+fun ClickableElement(
     @StringRes titleId: Int? = null,
     @StringRes descriptionId: Int? = null,
-    state: Boolean,
-    onSwitchState: (Boolean) -> Unit
+    onClick: () -> Unit
 ) {
     Row(
         modifier = Modifier.clickable(
             interactionSource = remember { MutableInteractionSource() },
             indication = rememberRipple(),
-            onClick = { onSwitchState(!state) }
+            onClick = onClick
         ),
         verticalAlignment = Alignment.CenterVertically
     ) {
         SimpleElement(
             Modifier.weight(weight = 1f),
-            titleId,
-            descriptionId
+            titleId = titleId,
+            descriptionId = descriptionId
         )
-        Switch(state = state, onSwitchState = onSwitchState)
+        Icon(
+            modifier = Modifier.size(size = 42.dp).padding(16.dp),
+            painter = painterResource(R.drawable.ic_navigate_icon),
+            tint = colorResource(id = DesignSystem.color.black_30),
+            contentDescription = null
+        )
     }
 }

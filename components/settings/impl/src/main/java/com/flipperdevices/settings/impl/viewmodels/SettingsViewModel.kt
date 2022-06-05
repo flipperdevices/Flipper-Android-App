@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.flipperdevices.core.di.ApplicationParams
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.navigation.global.CiceroneGlobal
 import com.flipperdevices.core.preference.pb.Settings
@@ -32,6 +33,9 @@ class SettingsViewModel : ViewModel() {
 
     @Inject
     lateinit var stressTestApi: StressTestApi
+
+    @Inject
+    lateinit var applicationParams: ApplicationParams
 
     init {
         ComponentHolder.component<SettingsComponent>().inject(this)
@@ -73,4 +77,6 @@ class SettingsViewModel : ViewModel() {
             cicerone.getRouter().navigateTo(screen)
         }
     }
+
+    fun versionApp() = applicationParams.version
 }

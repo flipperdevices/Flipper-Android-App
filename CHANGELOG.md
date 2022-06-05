@@ -3,6 +3,7 @@
 # 1.1.2 - In progress
 
 - [BUGFIX] Fix crash with custom firmware version
+- [Feature] Redesign Settings
 
 # 1.1.1
 
