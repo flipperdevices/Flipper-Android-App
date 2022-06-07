@@ -22,7 +22,12 @@ sealed class FlipperKeyContent : Parcelable {
 
     @Parcelize
     data class InternalFile(val file: File) : FlipperKeyContent() {
-        override fun openStream() = FileInputStream(file)
+        override fun openStream(): InputStream {
+            return if (file.exists()) {
+                FileInputStream(file)
+            } else ByteArray(0).inputStream()
+        }
+
         override fun length() = file.length()
     }
 
