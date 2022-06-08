@@ -4,6 +4,7 @@
 
 - [BUGFIX] Fix crash with custom firmware version
 - [BUGFIX] Fix crash when key file not exist
+- [Feature] Add image for updater on Flipper
 - [Feature] Redesign Settings
 
 # 1.1.1
