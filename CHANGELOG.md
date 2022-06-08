@@ -5,6 +5,7 @@
 - [BUGFIX] Fix crash with custom firmware version
 - [BUGFIX] Fix crash when key file not exist
 - [BUGFIX] Ignore file in synchronization which start with dots
+- [Feature] Add image for updater on Flipper
 - [Feature] Redesign Settings
 
 # 1.1.1
