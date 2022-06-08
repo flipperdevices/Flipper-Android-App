@@ -71,6 +71,12 @@ class KeysListingRepository : LogTagProvider {
             }
             return false
         }
+        if (file.name.startsWith(".")) {
+            debug {
+                "File ${file.name} skip, because it starts with dot"
+            }
+            return false
+        }
         val extension = file.name.substringAfterLast(".")
         val fileTypeByExtension = FlipperFileType.getByExtension(extension)
         if (fileTypeByExtension == null) {
