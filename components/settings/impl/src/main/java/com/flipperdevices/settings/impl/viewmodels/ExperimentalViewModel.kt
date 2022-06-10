@@ -4,7 +4,7 @@ import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.preference.pb.Settings
-import com.flipperdevices.core.ui.LifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.filemanager.api.navigation.FileManagerScreenProvider
 import com.flipperdevices.settings.impl.di.SettingsComponent
 import com.github.terrakok.cicerone.Router

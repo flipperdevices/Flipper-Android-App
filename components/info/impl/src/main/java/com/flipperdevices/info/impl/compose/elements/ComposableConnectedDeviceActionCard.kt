@@ -5,7 +5,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.flipperdevices.core.ui.R as DesignSystem
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.compose.info.ComposableInfoDivider
 import com.flipperdevices.info.impl.model.DeviceStatus

@@ -8,7 +8,8 @@ dependencies {
     implementation(projects.components.bridge.synchronization.api)
 
     implementation(projects.components.core.di)
-    implementation(projects.components.core.ui)
+    implementation(projects.components.core.ui.ktx)
+    implementation(projects.components.core.ui.res)
 
     implementation(projects.components.bridge.dao.api)
 

@@ -18,9 +18,6 @@ dependencies {
 <#if shouldGenerateDI>
     implementation(projects.components.core.di)
 </#if>
-<#if needCompose>
-    implementation(projects.components.core.ui)
-</#if>
 <#if isApi>
 
     implementation(libs.cicerone)
@@ -29,6 +26,7 @@ dependencies {
 
     implementation(libs.cicerone)
     implementation(libs.appcompat)
+    implementation(projects.components.core.ui.fragment)
 </#if>
 </#if>
 <#if needCompose>

@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.flipperdevices.core.preference.pb.Settings
-import com.flipperdevices.core.ui.composable.LocalRouter
+import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.composable.elements.CategoryElement
 import com.flipperdevices.settings.impl.composable.elements.ClickableElement

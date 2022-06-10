@@ -11,13 +11,14 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.FlipperStorageProvider
-import com.flipperdevices.core.ui.TaskWithLifecycle
+import com.flipperdevices.core.ui.lifecycle.TaskWithLifecycle
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.system.System
 import com.flipperdevices.protobuf.system.rebootRequest
 import com.flipperdevices.protobuf.system.updateRequest
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.impl.service.UploadFirmwareService
+import com.flipperdevices.updater.impl.tasks.FlipperUpdateImageHelper
 import com.flipperdevices.updater.impl.utils.FolderCreateHelper
 import com.flipperdevices.updater.model.DistributionFile
 import com.flipperdevices.updater.model.DownloadProgress
@@ -39,6 +40,8 @@ class UpdaterTask(
     private val context: Context
 ) : TaskWithLifecycle(), LogTagProvider {
     override val TAG = "UpdaterTask"
+
+    val flipperUpdateImageHelper = FlipperUpdateImageHelper(context)
 
     private val taskScope = lifecycleScope
     private val mutex = Mutex()
@@ -90,6 +93,7 @@ class UpdaterTask(
         onStateUpdate: suspend (UpdatingState) -> Unit
     ) = FlipperStorageProvider.useTemporaryFolder(context) { tempFolder ->
         info { "Start update with folder: ${tempFolder.absolutePath}" }
+
         val updaterFolder = File(tempFolder, updateFile.sha256)
         onStateUpdate(UpdatingState.DownloadingFromNetwork(percent = 0.0001f))
         downloaderApi.download(updateFile, updaterFolder, decompress = true).collect {
@@ -113,6 +117,7 @@ class UpdaterTask(
         if (updateName.isBlank()) {
             updateName = updateFile.sha256
         }
+        flipperUpdateImageHelper.loadImageOnFlipper(serviceApi.requestApi)
         val flipperPath = "/ext/update/$updateName"
 
         FolderCreateHelper.mkdirFolderOnFlipper(serviceApi.requestApi, flipperPath)

@@ -9,8 +9,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.flipperdevices.core.ui.R as DesignSystem
-import com.flipperdevices.core.ui.composable.animatedDots
+import com.flipperdevices.core.ui.ktx.animatedDots
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.info.shared.getColorByChannel
 import com.flipperdevices.info.shared.getTextByVersion
 import com.flipperdevices.updater.model.FirmwareVersion

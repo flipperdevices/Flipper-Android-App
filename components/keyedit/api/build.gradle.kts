@@ -3,8 +3,6 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.components.core.ui)
-
     implementation(projects.components.bridge.dao.api)
 
     implementation(libs.cicerone)

@@ -19,9 +19,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.bridge.synchronization.ui.R
 import com.flipperdevices.bridge.synchronization.ui.model.ItemSynchronizationState
-import com.flipperdevices.core.ui.R as DesignSystem
-import com.flipperdevices.core.ui.composable.animatedDots
-import com.flipperdevices.core.ui.composable.painterResourceByKey
+import com.flipperdevices.core.ui.ktx.animatedDots
+import com.flipperdevices.core.ui.ktx.painterResourceByKey
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 private const val ROTATE_DURATION_MS = 3000
 

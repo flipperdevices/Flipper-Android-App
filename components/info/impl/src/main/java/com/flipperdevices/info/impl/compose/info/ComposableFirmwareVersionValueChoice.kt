@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
-import com.flipperdevices.core.ui.R as DesignSystem
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.shared.getColorByChannel
 import com.flipperdevices.info.shared.getDescriptionByChannel

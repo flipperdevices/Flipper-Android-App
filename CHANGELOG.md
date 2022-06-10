@@ -1,9 +1,15 @@
 # Changelog
 
-# 1.1.2 - In progress
+# 1.1.3 - In progress
+
+- [REFACTOR] Split `core:ui` module
+
+# 1.1.2B
 
 - [BUGFIX] Fix crash with custom firmware version
 - [BUGFIX] Fix crash when key file not exist
+- [BUGFIX] Ignore file in synchronization which start with dots
+- [Feature] Add image for updater on Flipper
 - [Feature] Redesign Settings
 
 # 1.1.1
@@ -31,6 +37,6 @@
 - [Feature] Add disconnect button and improve reconnect
 - [Feature] Now you can delete or restore all keys from trash
 - [Feature] Add recover support to deleted keys (on keyscreen)
-- [Feature] Compose Navigation in "Options" 
+- [Feature] Compose Navigation in "Options"
 - [CI] Now we check that CHANGELOG.md changed
 - [CI] JVM protobuf library

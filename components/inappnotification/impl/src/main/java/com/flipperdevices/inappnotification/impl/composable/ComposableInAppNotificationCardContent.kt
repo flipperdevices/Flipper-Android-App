@@ -17,7 +17,7 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.flipperdevices.core.ui.R as DesignSystem
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.inappnotification.api.model.InAppNotification
 import com.flipperdevices.inappnotification.impl.R
 

@@ -2,7 +2,7 @@ package com.flipperdevices.keyedit.impl.composable
 
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
-import com.flipperdevices.core.ui.R as DesignSystem
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.keyedit.impl.R
 import com.flipperdevices.keyedit.impl.model.SaveButtonState
 import com.flipperdevices.keyscreen.shared.bar.ComposableBarSimpleText

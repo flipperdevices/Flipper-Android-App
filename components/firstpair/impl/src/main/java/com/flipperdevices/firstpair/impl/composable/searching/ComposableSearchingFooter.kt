@@ -15,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.firstpair.impl.R
 
 @Composable
@@ -31,7 +32,7 @@ fun ComposableSearchingFooter(
             .padding(all = 8.dp)
             .fillMaxWidth(),
         text = stringResource(R.string.firstpair_search_skip_connection),
-        color = colorResource(com.flipperdevices.core.ui.R.color.accent_secondary),
+        color = colorResource(DesignSystem.color.accent_secondary),
         fontWeight = FontWeight.W500,
         fontSize = 16.sp,
         textAlign = TextAlign.Center

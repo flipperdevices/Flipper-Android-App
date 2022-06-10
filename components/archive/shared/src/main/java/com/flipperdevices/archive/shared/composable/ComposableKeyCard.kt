@@ -25,8 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.archive.shared.utils.ExtractKeyMetaInformation
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
-import com.flipperdevices.core.ui.R as DesignSystem
-import com.flipperdevices.core.ui.composable.ComposableKeyType
+import com.flipperdevices.core.ui.ktx.ComposableKeyType
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableKeyCard(

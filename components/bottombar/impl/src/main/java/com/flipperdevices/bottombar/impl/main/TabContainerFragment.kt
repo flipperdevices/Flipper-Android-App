@@ -14,7 +14,7 @@ import com.flipperdevices.bottombar.impl.navigate.ScreenTabProvider
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.navigation.delegates.OnBackPressListener
 import com.flipperdevices.core.navigation.delegates.RouterProvider
-import com.flipperdevices.core.ui.provider.StatusBarColorProvider
+import com.flipperdevices.core.ui.fragment.provider.StatusBarColorProvider
 import com.github.terrakok.cicerone.Cicerone
 import com.github.terrakok.cicerone.Navigator
 import com.github.terrakok.cicerone.Router

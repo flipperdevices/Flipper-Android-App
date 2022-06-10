@@ -21,7 +21,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.archive.search.R
-import com.flipperdevices.core.ui.R as DesignSystem
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 internal fun ComposableSearchTextField(

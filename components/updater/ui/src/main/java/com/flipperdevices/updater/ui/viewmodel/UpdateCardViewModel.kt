@@ -13,7 +13,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.Settings
-import com.flipperdevices.core.ui.LifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.api.FlipperVersionProviderApi
 import com.flipperdevices.updater.api.UpdateCardApi

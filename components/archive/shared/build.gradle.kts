@@ -5,7 +5,8 @@ plugins {
 dependencies {
     implementation(projects.components.bridge.dao.api)
 
-    implementation(projects.components.core.ui)
+    implementation(projects.components.core.ui.res)
+    implementation(projects.components.core.ui.ktx)
 
     // Compose
     implementation(libs.compose.ui)

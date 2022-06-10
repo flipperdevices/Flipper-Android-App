@@ -15,7 +15,7 @@ import com.flipperdevices.core.ktx.jre.createClearNewFileWithMkDirs
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.FlipperStorageProvider
-import com.flipperdevices.core.ui.AndroidLifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
 import com.flipperdevices.filemanager.api.share.ShareFile
 import com.flipperdevices.filemanager.export.BuildConfig
 import com.flipperdevices.filemanager.export.R

@@ -25,7 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.flipperdevices.core.ui.R as DesignSystem
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.updater.api.UpdaterUIApi
 import com.flipperdevices.updater.fonts.R as Fonts

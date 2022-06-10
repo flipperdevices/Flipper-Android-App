@@ -8,10 +8,13 @@ dependencies {
     implementation(projects.components.settings.api)
 
     implementation(projects.components.core.di)
-    implementation(projects.components.core.ui)
     implementation(projects.components.core.navigation)
     implementation(projects.components.core.preference)
     implementation(projects.components.analytics.shake2report.api)
+    implementation(projects.components.core.ui.res)
+    implementation(projects.components.core.ui.ktx)
+    implementation(projects.components.core.ui.lifecycle)
+    implementation(projects.components.core.ui.fragment)
 
     implementation(projects.components.debug.api)
     implementation(projects.components.firstpair.api)

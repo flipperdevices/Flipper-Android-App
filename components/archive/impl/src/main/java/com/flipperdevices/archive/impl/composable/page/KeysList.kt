@@ -23,7 +23,7 @@ import com.flipperdevices.archive.impl.composable.key.ComposableKeySmall
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
-import com.flipperdevices.core.ui.R as DesignSystem
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 private const val GRID_WIDTH = 2
 private const val GRID_ROW_WEIGHT = 1f / GRID_WIDTH

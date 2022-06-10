@@ -9,8 +9,8 @@ import com.flipperdevices.archive.model.CategoryType
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.withArgs
-import com.flipperdevices.core.ui.ComposeFragment
-import com.flipperdevices.core.ui.R as DesignSystem
+import com.flipperdevices.core.ui.fragment.ComposeFragment
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import javax.inject.Inject
 
 private const val EXTRA_CATEGORY_TYPE = "category_type"

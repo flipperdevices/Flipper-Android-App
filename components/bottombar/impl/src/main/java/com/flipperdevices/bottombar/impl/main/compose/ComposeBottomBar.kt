@@ -33,13 +33,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
 import com.flipperdevices.connection.api.ConnectionApi
-import com.flipperdevices.core.ui.R as DesignSystem
-import com.google.accompanist.pager.ExperimentalPagerApi
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 const val ANIMATION_WIDTH_CHANGE_DURATION_MS = 250
 const val ANIMATION_OFFSET_CHANGE_DURATION_MS = 150
 
-@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun ComposeBottomBar(
     connectionApi: ConnectionApi,
