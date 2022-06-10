@@ -6,7 +6,7 @@ import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.ComponentHolder
-import com.flipperdevices.core.ui.LifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.keyscreen.impl.di.KeyScreenComponent
 import com.flipperdevices.keyscreen.impl.model.FlipperDeviceState
 import javax.inject.Inject

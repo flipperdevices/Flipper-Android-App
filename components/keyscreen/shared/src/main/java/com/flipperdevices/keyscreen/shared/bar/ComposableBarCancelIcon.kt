@@ -1,5 +1,6 @@
 package com.flipperdevices.keyscreen.shared.bar
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.size
@@ -12,7 +13,6 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.keyscreen.shared.R
 
 @Composable

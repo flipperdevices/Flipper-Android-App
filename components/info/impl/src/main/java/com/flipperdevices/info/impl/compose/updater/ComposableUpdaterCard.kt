@@ -1,5 +1,6 @@
 package com.flipperdevices.info.impl.compose.updater
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -23,8 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.flipperdevices.core.ui.R as DesignSystem
-import com.flipperdevices.core.ui.composable.painterResourceByKey
+import com.flipperdevices.core.ui.ktx.painterResourceByKey
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.compose.elements.InfoElementCard
 import com.flipperdevices.info.impl.compose.info.ComposableDeviceInfoRow

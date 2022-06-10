@@ -1,5 +1,6 @@
 package com.flipperdevices.keyscreen.impl.composable.card
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,8 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
-import com.flipperdevices.core.ui.R as DesignSystem
-import com.flipperdevices.core.ui.composable.ComposableKeyType
+import com.flipperdevices.core.ui.ktx.ComposableKeyType
 import com.flipperdevices.keyscreen.impl.R
 import com.flipperdevices.keyscreen.impl.model.DeleteState
 import com.flipperdevices.keyscreen.impl.model.FavoriteState

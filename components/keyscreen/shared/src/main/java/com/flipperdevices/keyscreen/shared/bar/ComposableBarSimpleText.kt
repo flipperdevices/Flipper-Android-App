@@ -1,5 +1,6 @@
 package com.flipperdevices.keyscreen.shared.bar
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
@@ -14,7 +15,6 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.flipperdevices.core.ui.R as DesignSystem
 
 @Composable
 fun ComposableBarSimpleText(

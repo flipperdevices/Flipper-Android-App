@@ -1,5 +1,6 @@
 package com.flipperdevices.settings.impl.composable.elements
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -15,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.settings.impl.R
 
 @Composable

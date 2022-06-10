@@ -1,5 +1,6 @@
 package com.flipperdevices.firstpair.impl.composable.searching
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Row
@@ -22,7 +23,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.firstpair.impl.R
 import com.flipperdevices.firstpair.impl.model.SearchingState
 

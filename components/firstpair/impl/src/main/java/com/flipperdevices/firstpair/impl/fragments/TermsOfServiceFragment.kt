@@ -1,10 +1,10 @@
 package com.flipperdevices.firstpair.impl.fragments
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.runtime.Composable
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.navigation.requireRouter
-import com.flipperdevices.core.ui.ComposeFragment
-import com.flipperdevices.core.ui.R as DesignSystem
+import com.flipperdevices.core.ui.fragment.ComposeFragment
 import com.flipperdevices.firstpair.impl.composable.tos.ComposableTOS
 import com.flipperdevices.firstpair.impl.di.FirstPairComponent
 import com.flipperdevices.firstpair.impl.storage.FirstPairStorage

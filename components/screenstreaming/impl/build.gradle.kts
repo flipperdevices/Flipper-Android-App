@@ -12,9 +12,9 @@ dependencies {
     implementation(libs.protobuf.jvm)
 
     implementation(projects.components.core.di)
-    implementation(projects.components.core.ui)
     implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)
+    implementation(projects.components.core.ui.lifecycle)
 
     implementation(libs.annotations)
     implementation(libs.appcompat)

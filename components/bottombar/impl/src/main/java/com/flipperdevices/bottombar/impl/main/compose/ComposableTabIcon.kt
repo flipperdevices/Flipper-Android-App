@@ -13,7 +13,7 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.flipperdevices.bottombar.model.TabState
-import com.flipperdevices.core.ui.composable.painterResourceByKey
+import com.flipperdevices.core.ui.ktx.painterResourceByKey
 
 @Composable
 fun ComposableTabIcon(tabState: TabState, selected: Boolean) {

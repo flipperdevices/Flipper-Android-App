@@ -1,5 +1,6 @@
 package com.flipperdevices.keyscreen.impl.composable.actions
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -23,8 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.flipperdevices.core.ui.R as DesignSystem
-import com.flipperdevices.core.ui.composable.painterResourceByKey
+import com.flipperdevices.core.ui.ktx.painterResourceByKey
 
 @Composable
 fun ComposableActionRow(

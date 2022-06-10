@@ -1,5 +1,6 @@
 package com.flipperdevices.info.impl.compose.info
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -54,7 +55,7 @@ fun ComposableUpdaterFirmwareVersionWithChoice(
                     .padding(all = 4.dp),
                 painter = painterResource(R.drawable.ic_more),
                 contentDescription = stringResource(R.string.info_device_firmware_version_choice),
-                tint = colorResource(com.flipperdevices.core.ui.R.color.black_30)
+                tint = colorResource(DesignSystem.color.black_30)
             )
 
             DropdownMenu(

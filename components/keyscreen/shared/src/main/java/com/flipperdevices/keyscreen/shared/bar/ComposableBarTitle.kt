@@ -1,5 +1,6 @@
 package com.flipperdevices.keyscreen.shared.bar
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.annotation.StringRes
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -8,7 +9,6 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.flipperdevices.core.ui.R
 
 @Composable
 fun ComposableBarTitle(modifier: Modifier, text: String) {
@@ -17,7 +17,7 @@ fun ComposableBarTitle(modifier: Modifier, text: String) {
         text = text,
         fontSize = 20.sp,
         fontWeight = FontWeight.W800,
-        color = colorResource(R.color.black_88)
+        color = colorResource(DesignSystem.color.black_88)
     )
 }
 

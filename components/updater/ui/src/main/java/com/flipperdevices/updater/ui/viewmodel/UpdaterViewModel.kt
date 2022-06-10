@@ -12,7 +12,7 @@ import com.flipperdevices.core.ktx.jre.combine
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.ui.LifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.model.UpdatingState
 import com.flipperdevices.updater.model.VersionFiles

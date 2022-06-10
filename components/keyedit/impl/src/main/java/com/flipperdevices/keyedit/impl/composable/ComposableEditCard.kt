@@ -1,5 +1,6 @@
 package com.flipperdevices.keyedit.impl.composable
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -15,8 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
-import com.flipperdevices.core.ui.R as DesignSystem
-import com.flipperdevices.core.ui.composable.ComposableKeyType
+import com.flipperdevices.core.ui.ktx.ComposableKeyType
 import com.flipperdevices.keyedit.impl.R
 import com.flipperdevices.keyedit.impl.viewmodel.KeyEditViewModel
 import com.flipperdevices.keyscreen.shared.ComposableKeyContent

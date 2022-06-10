@@ -1,5 +1,6 @@
 package com.flipperdevices.info.impl.compose.info
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Box
@@ -17,7 +18,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.info.impl.R
 
 @Composable

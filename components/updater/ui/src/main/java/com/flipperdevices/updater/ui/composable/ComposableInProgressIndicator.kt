@@ -1,5 +1,7 @@
 package com.flipperdevices.updater.ui.composable
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.updater.fonts.R as Fonts
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
@@ -25,10 +27,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.flipperdevices.core.ui.R as DesignSystem
-import com.flipperdevices.core.ui.composable.animatedDots
-import com.flipperdevices.core.ui.composable.painterResourceByKey
-import com.flipperdevices.updater.fonts.R as Fonts
+import com.flipperdevices.core.ui.ktx.animatedDots
+import com.flipperdevices.core.ui.ktx.painterResourceByKey
 import kotlin.math.roundToInt
 
 private const val PERCENT_MAX = 100

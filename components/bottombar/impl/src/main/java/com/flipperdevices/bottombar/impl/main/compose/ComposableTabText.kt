@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.bottombar.model.TabState
-import com.flipperdevices.core.ui.composable.animatedDots
+import com.flipperdevices.core.ui.ktx.animatedDots
 
 @Composable
 fun ComposableStatusText(

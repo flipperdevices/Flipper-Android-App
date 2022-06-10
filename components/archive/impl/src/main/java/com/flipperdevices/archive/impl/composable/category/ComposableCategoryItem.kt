@@ -1,5 +1,6 @@
 package com.flipperdevices.archive.impl.composable.category
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -22,8 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.archive.impl.model.CategoryItem
 import com.flipperdevices.archive.impl.viewmodel.CategoryViewModel
-import com.flipperdevices.core.ui.R as DesignSystem
-import com.flipperdevices.core.ui.composable.LocalRouter
+import com.flipperdevices.core.ui.ktx.LocalRouter
 
 @Composable
 fun ComposableCategoryItem(

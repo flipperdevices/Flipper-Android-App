@@ -1,5 +1,6 @@
 package com.flipperdevices.archive.impl.composable.category
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,7 +15,6 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.archive.impl.viewmodel.CategoryViewModel
-import com.flipperdevices.core.ui.R as DesignSystem
 
 @Composable
 fun ComposableCategoryCard() {

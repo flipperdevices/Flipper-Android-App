@@ -1,5 +1,6 @@
 package com.flipperdevices.info.impl.compose.updater
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -14,8 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.flipperdevices.core.ui.R as DesignSystem
-import com.flipperdevices.core.ui.composable.animatedDots
+import com.flipperdevices.core.ui.ktx.animatedDots
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.compose.elements.InfoElementCard
 

@@ -1,5 +1,6 @@
 package com.flipperdevices.info.impl.compose.elements
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.markdown.ClickableUrlText
-import com.flipperdevices.core.ui.R as DesignSystem
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.model.FirmwareUpdateStatus
 import com.flipperdevices.info.impl.viewmodel.FirmwareUpdateViewModel

@@ -1,5 +1,6 @@
 package com.flipperdevices.share.receive.composable
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -20,8 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.flipperdevices.core.ui.R as DesignSystem
-import com.flipperdevices.core.ui.composable.ComposableFlipperButton
+import com.flipperdevices.core.ui.ktx.ComposableFlipperButton
 import com.flipperdevices.share.receive.R
 
 @Composable

@@ -1,10 +1,10 @@
 package com.flipperdevices.connection.impl.viewmodel
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import android.content.Context
 import com.flipperdevices.bottombar.model.TabState
 import com.flipperdevices.connection.impl.R
 import com.flipperdevices.connection.impl.model.ConnectionStatusState
-import com.flipperdevices.core.ui.R as DesignSystem
 import kotlin.math.roundToInt
 
 const val PERCENT_MAX = 100

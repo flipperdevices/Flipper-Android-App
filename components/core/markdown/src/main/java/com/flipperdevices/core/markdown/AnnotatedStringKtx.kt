@@ -1,5 +1,6 @@
 package com.flipperdevices.core.markdown
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.annotation.StringRes
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.LocalTextStyle
@@ -12,13 +13,12 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
-import com.flipperdevices.core.ui.R
 import com.vladsch.flexmark.parser.Parser
 
 @Composable
 fun annotatedStringFromMarkdown(markdown: String): AnnotatedString {
     val parser = remember { Parser.builder().build() }
-    val renderer = rememberRenderer(linkColor = colorResource(R.color.accent_secondary))
+    val renderer = rememberRenderer(linkColor = colorResource(DesignSystem.color.accent_secondary))
     return remember(parser, renderer, markdown) {
         renderer.render(parser.parse(markdown))
     }

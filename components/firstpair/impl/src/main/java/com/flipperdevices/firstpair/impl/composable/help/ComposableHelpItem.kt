@@ -1,5 +1,6 @@
 package com.flipperdevices.firstpair.impl.composable.help
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,7 +17,6 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.markdown.ClickableUrlText
-import com.flipperdevices.core.ui.R as DesignSystem
 
 @Composable
 fun ComposableHelpItem(index: Int, data: HelpOptions) {
