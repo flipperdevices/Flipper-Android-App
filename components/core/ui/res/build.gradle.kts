@@ -3,4 +3,5 @@ plugins {
 }
 
 dependencies {
+    implementation(libs.appcompat)
 }
