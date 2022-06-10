@@ -1,6 +1,5 @@
 package com.flipperdevices.archive.search.composable
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -22,6 +21,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.archive.search.R
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 internal fun ComposableSearchTextField(

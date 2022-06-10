@@ -1,6 +1,5 @@
 package com.flipperdevices.keyscreen.shared.content
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -12,6 +11,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 private fun ComposableKeyItem(name: String, value: String) {

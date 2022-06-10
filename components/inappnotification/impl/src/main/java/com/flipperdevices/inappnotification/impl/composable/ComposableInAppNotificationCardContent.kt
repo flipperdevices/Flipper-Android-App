@@ -1,6 +1,5 @@
 package com.flipperdevices.inappnotification.impl.composable
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -18,6 +17,7 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.inappnotification.api.model.InAppNotification
 import com.flipperdevices.inappnotification.impl.R
 

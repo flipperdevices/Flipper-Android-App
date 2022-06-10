@@ -1,7 +1,5 @@
 package com.flipperdevices.updater.ui.composable
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
-import com.flipperdevices.info.shared.R as SharedInfoResources
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -24,6 +22,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.info.shared.R as SharedInfoResources
 import com.flipperdevices.updater.ui.R
 import com.flipperdevices.updater.ui.model.UpdaterScreenState
 import com.flipperdevices.updater.ui.viewmodel.UpdaterViewModel

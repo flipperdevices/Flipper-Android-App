@@ -1,7 +1,5 @@
 package com.flipperdevices.info.impl.compose.bar
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
-import com.flipperdevices.info.shared.R as ExternalDrawable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -24,9 +22,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
+import com.flipperdevices.info.shared.R as ExternalDrawable
 import kotlin.math.roundToInt
 
 const val FLOAT_TO_PERCENT_QUALIFIER = 100

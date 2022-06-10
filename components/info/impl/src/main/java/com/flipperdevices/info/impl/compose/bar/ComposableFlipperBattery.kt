@@ -1,6 +1,5 @@
 package com.flipperdevices.info.impl.compose.bar
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.annotation.FloatRange
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -19,6 +18,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.info.impl.R
 
 private const val EMPTY_BATTERY = 0f

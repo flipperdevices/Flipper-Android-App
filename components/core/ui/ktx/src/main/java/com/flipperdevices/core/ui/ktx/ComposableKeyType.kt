@@ -1,7 +1,5 @@
 package com.flipperdevices.core.ui.ktx
 
-import com.flipperdevices.bridge.dao.api.R as DaoR
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.annotation.ColorRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
@@ -23,7 +21,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.flipperdevices.bridge.dao.api.R as DaoR
 import com.flipperdevices.bridge.dao.api.model.FlipperFileType
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 @Preview

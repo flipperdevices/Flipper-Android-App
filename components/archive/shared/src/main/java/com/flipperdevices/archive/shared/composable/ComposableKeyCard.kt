@@ -1,6 +1,5 @@
 package com.flipperdevices.archive.shared.composable
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.annotation.ColorRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -27,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import com.flipperdevices.archive.shared.utils.ExtractKeyMetaInformation
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.core.ui.ktx.ComposableKeyType
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableKeyCard(

@@ -1,6 +1,5 @@
 package com.flipperdevices.core.ui.ktx
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -22,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableFlipperButton(

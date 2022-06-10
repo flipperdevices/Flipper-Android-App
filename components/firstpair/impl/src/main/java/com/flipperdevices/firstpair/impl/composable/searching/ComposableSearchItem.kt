@@ -1,6 +1,5 @@
 package com.flipperdevices.firstpair.impl.composable.searching
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -28,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.ktx.ComposableFlipperButton
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.firstpair.impl.R
 
 @Composable

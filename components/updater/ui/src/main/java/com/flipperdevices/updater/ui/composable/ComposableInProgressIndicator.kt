@@ -1,12 +1,11 @@
 package com.flipperdevices.updater.ui.composable
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
-import com.flipperdevices.updater.fonts.R as Fonts
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -20,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -29,6 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.ktx.animatedDots
 import com.flipperdevices.core.ui.ktx.painterResourceByKey
+import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.updater.fonts.R as Fonts
 import kotlin.math.roundToInt
 
 private const val PERCENT_MAX = 100
@@ -54,30 +56,7 @@ fun ComposableInProgressIndicator(
         contentAlignment = Alignment.CenterStart
     ) {
         if (percent != null) {
-            Row(
-                modifier = Modifier
-                    .matchParentSize()
-            ) {
-                val wrapPercent = if (percent <= 0f) {
-                    PERCENT_MIN
-                } else percent
-
-                val remainingWeight = 1.0f - wrapPercent
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .weight(wrapPercent)
-                        .background(accentColor)
-                )
-
-                if (remainingWeight > 0.0f) {
-                    Box(
-                        modifier = Modifier
-                            .weight(remainingWeight)
-                    )
-                }
-            }
+            ComposableProgressRow(percent, accentColor)
         }
 
         if (iconId != null) {
@@ -108,5 +87,33 @@ fun ComposableInProgressIndicator(
             fontSize = 40.sp,
             fontFamily = FontFamily(Font(Fonts.font.flipper))
         )
+    }
+}
+
+@Composable
+private fun BoxScope.ComposableProgressRow(percent: Float, accentColor: Color) {
+    Row(
+        modifier = Modifier
+            .matchParentSize()
+    ) {
+        val wrapPercent = if (percent <= 0f) {
+            PERCENT_MIN
+        } else percent
+
+        val remainingWeight = 1.0f - wrapPercent
+
+        Box(
+            modifier = Modifier
+                .fillMaxHeight()
+                .weight(wrapPercent)
+                .background(accentColor)
+        )
+
+        if (remainingWeight > 0.0f) {
+            Box(
+                modifier = Modifier
+                    .weight(remainingWeight)
+            )
+        }
     }
 }

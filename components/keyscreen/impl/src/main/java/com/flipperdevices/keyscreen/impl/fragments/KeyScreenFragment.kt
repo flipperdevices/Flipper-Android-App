@@ -1,6 +1,5 @@
 package com.flipperdevices.keyscreen.impl.fragments
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -12,6 +11,7 @@ import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.navigation.delegates.OnBackPressListener
 import com.flipperdevices.core.navigation.requireRouter
 import com.flipperdevices.core.ui.fragment.ComposeFragment
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.keyedit.api.KeyEditApi
 import com.flipperdevices.keyscreen.impl.composable.ComposableKeyScreen
 import com.flipperdevices.keyscreen.impl.di.KeyScreenComponent

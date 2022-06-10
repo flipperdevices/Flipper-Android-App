@@ -1,6 +1,5 @@
 package com.flipperdevices.settings.impl.composable
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,6 +17,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.composable.category.BugReportCategory
 import com.flipperdevices.settings.impl.composable.category.DebugCategory

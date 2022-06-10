@@ -1,6 +1,5 @@
 package com.flipperdevices.archive.search.composable
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -23,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.archive.search.R
 import com.flipperdevices.archive.search.viewmodel.SearchViewModel
 import com.flipperdevices.core.ui.ktx.LocalRouter
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableSearchBar(searchViewModel: SearchViewModel) {

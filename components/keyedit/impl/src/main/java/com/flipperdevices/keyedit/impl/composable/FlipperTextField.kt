@@ -1,6 +1,5 @@
 package com.flipperdevices.keyedit.impl.composable
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.interaction.InteractionSource
@@ -29,6 +28,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 private const val ANIMATION_DURATION_MS = 150
 

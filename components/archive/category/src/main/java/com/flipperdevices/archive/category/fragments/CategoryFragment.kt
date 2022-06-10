@@ -1,6 +1,5 @@
 package com.flipperdevices.archive.category.fragments
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import android.os.Bundle
 import androidx.compose.runtime.Composable
 import com.flipperdevices.archive.category.composable.ComposableCategory
@@ -11,6 +10,7 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.ui.fragment.ComposeFragment
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import javax.inject.Inject
 
 private const val EXTRA_CATEGORY_TYPE = "category_type"

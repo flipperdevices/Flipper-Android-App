@@ -46,6 +46,7 @@ fun ButtonElementCard(
 }
 
 @Composable
+@Suppress("LongParameterList")
 fun ButtonElementRow(
     modifier: Modifier = Modifier,
     iconAngel: Float = 0f,
