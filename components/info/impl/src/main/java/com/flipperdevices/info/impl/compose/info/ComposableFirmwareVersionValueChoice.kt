@@ -21,6 +21,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.shared.getFullNameByChannel
 import com.flipperdevices.updater.api.UpdaterUIApi
@@ -54,7 +55,7 @@ fun ComposableUpdaterFirmwareVersionWithChoice(
                     .padding(all = 4.dp),
                 painter = painterResource(R.drawable.ic_more),
                 contentDescription = stringResource(R.string.info_device_firmware_version_choice),
-                tint = colorResource(com.flipperdevices.core.ui.R.color.black_30)
+                tint = colorResource(DesignSystem.color.black_30)
             )
 
             DropdownMenu(

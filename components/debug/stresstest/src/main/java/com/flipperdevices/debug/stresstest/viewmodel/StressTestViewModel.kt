@@ -12,7 +12,7 @@ import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.jre.split
-import com.flipperdevices.core.ui.LifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.debug.stresstest.di.StressTestComponent
 import com.flipperdevices.debug.stresstest.model.LogLine
 import com.flipperdevices.debug.stresstest.model.StressTestState

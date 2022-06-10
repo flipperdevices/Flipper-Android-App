@@ -8,7 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.fragment.app.viewModels
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.withArgs
-import com.flipperdevices.core.ui.ComposeFragment
+import com.flipperdevices.core.ui.fragment.ComposeFragment
 import com.flipperdevices.singleactivity.api.SingleActivityApi
 import com.flipperdevices.updater.model.VersionFiles
 import com.flipperdevices.updater.ui.composable.ComposableUpdaterScreen

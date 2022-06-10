@@ -26,8 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.ktx.jre.titlecaseFirstCharIfItIsLowercase
-import com.flipperdevices.core.ui.R as DesignSystem
-import com.flipperdevices.core.ui.composable.LocalRouter
+import com.flipperdevices.core.ui.ktx.LocalRouter
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.compose.elements.InfoElementCard
 import com.flipperdevices.info.impl.viewmodel.DeviceInfoViewModel

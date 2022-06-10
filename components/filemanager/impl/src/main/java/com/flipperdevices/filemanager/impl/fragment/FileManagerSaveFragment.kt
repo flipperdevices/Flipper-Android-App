@@ -10,7 +10,7 @@ import com.flipperdevices.bottombar.api.BottomNavigationApi
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.navigation.requireRouter
-import com.flipperdevices.core.ui.ComposeFragment
+import com.flipperdevices.core.ui.fragment.ComposeFragment
 import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.filemanager.api.navigation.FileManagerScreenProvider
 import com.flipperdevices.filemanager.api.share.ReceiveApi

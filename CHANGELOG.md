@@ -2,6 +2,8 @@
 
 # 1.1.3 - In progress
 
+- [REFACTOR] Split `core:ui` module
+
 # 1.1.2B
 
 - [BUGFIX] Fix crash with custom firmware version

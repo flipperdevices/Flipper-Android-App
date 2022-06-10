@@ -26,8 +26,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.flipperdevices.core.ui.R as DesignSystem
-import com.flipperdevices.core.ui.composable.ComposableFlipperButton
+import com.flipperdevices.core.ui.ktx.ComposableFlipperButton
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.firstpair.impl.R
 
 @Composable

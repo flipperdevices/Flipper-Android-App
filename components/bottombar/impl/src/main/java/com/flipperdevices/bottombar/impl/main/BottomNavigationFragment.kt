@@ -27,7 +27,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.navigation.delegates.OnBackPressListener
 import com.flipperdevices.core.preference.pb.SelectedTab
 import com.flipperdevices.core.preference.pb.Settings
-import com.flipperdevices.core.ui.provider.StatusBarColorProvider
+import com.flipperdevices.core.ui.fragment.provider.StatusBarColorProvider
 import com.flipperdevices.inappnotification.api.InAppNotificationRenderer
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first

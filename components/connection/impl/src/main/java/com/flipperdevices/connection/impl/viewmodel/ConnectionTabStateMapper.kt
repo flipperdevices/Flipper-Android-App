@@ -4,12 +4,13 @@ import android.content.Context
 import com.flipperdevices.bottombar.model.TabState
 import com.flipperdevices.connection.impl.R
 import com.flipperdevices.connection.impl.model.ConnectionStatusState
-import com.flipperdevices.core.ui.R as DesignSystem
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import kotlin.math.roundToInt
 
 const val PERCENT_MAX = 100
 
 object ConnectionTabStateMapper {
+    @Suppress("LongMethod")
     fun getConnectionTabState(context: Context, connectionState: ConnectionStatusState): TabState {
         return when (connectionState) {
             ConnectionStatusState.NoDevice -> TabState.Static(

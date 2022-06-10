@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.components.core.ui)
+    implementation(projects.components.core.ui.res)
 
     implementation(projects.components.bridge.dao.api)
 

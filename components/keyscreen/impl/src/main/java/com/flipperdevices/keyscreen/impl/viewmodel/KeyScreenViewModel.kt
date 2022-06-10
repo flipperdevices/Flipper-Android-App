@@ -16,7 +16,7 @@ import com.flipperdevices.core.ktx.android.toast
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.warn
-import com.flipperdevices.core.ui.AndroidLifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
 import com.flipperdevices.keyscreen.impl.R
 import com.flipperdevices.keyscreen.impl.di.KeyScreenComponent
 import com.flipperdevices.keyscreen.impl.model.DeleteState

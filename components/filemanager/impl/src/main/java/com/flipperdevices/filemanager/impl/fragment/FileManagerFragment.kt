@@ -7,7 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.fragment.app.viewModels
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.navigation.requireRouter
-import com.flipperdevices.core.ui.ComposeFragment
+import com.flipperdevices.core.ui.fragment.ComposeFragment
 import com.flipperdevices.filemanager.api.navigation.FileManagerScreenProvider
 import com.flipperdevices.filemanager.api.share.ShareApi
 import com.flipperdevices.filemanager.impl.composable.ComposableFileManagerWithDialog

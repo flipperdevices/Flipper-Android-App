@@ -31,8 +31,8 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
-import com.flipperdevices.core.ui.R as DesignSystem
-import com.flipperdevices.core.ui.composable.LocalRouter
+import com.flipperdevices.core.ui.ktx.LocalRouter
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableCategory(

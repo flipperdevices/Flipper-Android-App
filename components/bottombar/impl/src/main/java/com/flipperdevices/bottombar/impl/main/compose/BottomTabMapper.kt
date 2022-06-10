@@ -8,7 +8,7 @@ import com.flipperdevices.bottombar.impl.R
 import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
 import com.flipperdevices.bottombar.model.TabState
 import com.flipperdevices.connection.api.ConnectionApi
-import com.flipperdevices.core.ui.R as DesignSystem
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun getTabStateFromFlipperBottomTab(

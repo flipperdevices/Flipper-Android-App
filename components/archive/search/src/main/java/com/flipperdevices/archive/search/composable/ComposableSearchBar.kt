@@ -21,8 +21,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.archive.search.R
 import com.flipperdevices.archive.search.viewmodel.SearchViewModel
-import com.flipperdevices.core.ui.R as DesignSystem
-import com.flipperdevices.core.ui.composable.LocalRouter
+import com.flipperdevices.core.ui.ktx.LocalRouter
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableSearchBar(searchViewModel: SearchViewModel) {

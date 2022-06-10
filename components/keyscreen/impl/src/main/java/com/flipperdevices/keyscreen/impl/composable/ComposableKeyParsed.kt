@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
-import com.flipperdevices.core.ui.composable.LocalRouter
+import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.keyscreen.impl.R
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableDelete
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableEdit

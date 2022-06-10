@@ -13,7 +13,7 @@ import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.ui.AndroidLifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
 import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.filemanager.receive.di.ShareReceiveComponent
 import com.flipperdevices.filemanager.sharecommon.model.DownloadProgress

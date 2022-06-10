@@ -7,9 +7,9 @@ plugins {
 dependencies {
     implementation(projects.components.inappnotification.api)
     implementation(projects.components.core.di)
-    implementation(projects.components.core.ui)
     implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)
+    implementation(projects.components.core.ui.res)
 
     implementation(libs.cicerone)
     implementation(libs.appcompat)

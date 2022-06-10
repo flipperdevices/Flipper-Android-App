@@ -6,9 +6,9 @@ plugins {
 
 dependencies {
     implementation(projects.components.core.di)
-    implementation(projects.components.core.ui)
     implementation(projects.components.core.log)
     implementation(projects.components.core.navigation)
+    implementation(projects.components.core.ui.res)
 
     implementation(projects.components.bottombar.api)
     implementation(projects.components.deeplink.api)

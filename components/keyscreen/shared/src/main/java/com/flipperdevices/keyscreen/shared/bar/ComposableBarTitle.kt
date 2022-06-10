@@ -8,7 +8,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.flipperdevices.core.ui.R
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableBarTitle(modifier: Modifier, text: String) {
@@ -17,7 +17,7 @@ fun ComposableBarTitle(modifier: Modifier, text: String) {
         text = text,
         fontSize = 20.sp,
         fontWeight = FontWeight.W800,
-        color = colorResource(R.color.black_88)
+        color = colorResource(DesignSystem.color.black_88)
     )
 }
 

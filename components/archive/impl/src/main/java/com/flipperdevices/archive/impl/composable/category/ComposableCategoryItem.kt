@@ -22,8 +22,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.archive.impl.model.CategoryItem
 import com.flipperdevices.archive.impl.viewmodel.CategoryViewModel
-import com.flipperdevices.core.ui.R as DesignSystem
-import com.flipperdevices.core.ui.composable.LocalRouter
+import com.flipperdevices.core.ui.ktx.LocalRouter
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableCategoryItem(

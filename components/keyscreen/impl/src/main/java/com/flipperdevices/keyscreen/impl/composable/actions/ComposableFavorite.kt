@@ -11,8 +11,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.R as DesignSystem
-import com.flipperdevices.core.ui.composable.painterResourceByKey
+import com.flipperdevices.core.ui.ktx.painterResourceByKey
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.keyscreen.impl.model.FavoriteState
 
 private const val ICON_SIZE_DP = 24

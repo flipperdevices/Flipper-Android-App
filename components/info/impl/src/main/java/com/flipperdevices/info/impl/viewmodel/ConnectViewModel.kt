@@ -7,7 +7,7 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.navigation.global.CiceroneGlobal
 import com.flipperdevices.core.preference.pb.PairSettings
-import com.flipperdevices.core.ui.LifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.firstpair.api.FirstPairApi
 import com.flipperdevices.info.impl.di.InfoComponent
 import com.flipperdevices.info.impl.fragment.ForgetDialogApproveHelper

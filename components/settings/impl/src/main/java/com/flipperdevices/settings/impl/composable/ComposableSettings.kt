@@ -17,7 +17,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.flipperdevices.core.ui.R as DesignSystem
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.composable.category.BugReportCategory
 import com.flipperdevices.settings.impl.composable.category.DebugCategory

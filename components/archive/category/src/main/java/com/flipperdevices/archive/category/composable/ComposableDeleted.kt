@@ -24,7 +24,7 @@ import com.flipperdevices.archive.category.R
 import com.flipperdevices.archive.category.viewmodels.DeleteViewModel
 import com.flipperdevices.archive.model.CategoryType
 import com.flipperdevices.archive.shared.composable.ComposableAppBar
-import com.flipperdevices.core.ui.composable.LocalRouter
+import com.flipperdevices.core.ui.ktx.LocalRouter
 
 @Composable
 fun ComposableDeleted() {

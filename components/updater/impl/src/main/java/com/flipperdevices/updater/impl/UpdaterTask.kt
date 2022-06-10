@@ -11,7 +11,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.FlipperStorageProvider
-import com.flipperdevices.core.ui.TaskWithLifecycle
+import com.flipperdevices.core.ui.lifecycle.TaskWithLifecycle
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.system.System
 import com.flipperdevices.protobuf.system.rebootRequest

@@ -20,7 +20,7 @@ import com.flipperdevices.connection.impl.model.ConnectionStatusState
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.jre.map
 import com.flipperdevices.core.preference.pb.PairSettings
-import com.flipperdevices.core.ui.AndroidLifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

@@ -21,8 +21,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.archive.impl.viewmodel.KeyItemViewModel
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
-import com.flipperdevices.core.ui.composable.ComposableKeyType
-import com.flipperdevices.core.ui.composable.LocalRouter
+import com.flipperdevices.core.ui.ktx.ComposableKeyType
+import com.flipperdevices.core.ui.ktx.LocalRouter
 
 @Composable
 fun ComposableKeySmall(

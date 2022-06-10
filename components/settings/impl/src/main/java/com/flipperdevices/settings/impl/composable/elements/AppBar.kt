@@ -13,14 +13,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.flipperdevices.core.ui.R
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun AppBar(@StringRes titleId: Int) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(colorResource(R.color.accent))
+            .background(colorResource(DesignSystem.color.accent))
     ) {
         Text(
             modifier = Modifier
@@ -28,7 +28,7 @@ fun AppBar(@StringRes titleId: Int) {
             text = stringResource(titleId),
             fontSize = 20.sp,
             fontWeight = FontWeight.W700,
-            color = colorResource(R.color.black_100)
+            color = colorResource(DesignSystem.color.black_100)
         )
     }
 }
