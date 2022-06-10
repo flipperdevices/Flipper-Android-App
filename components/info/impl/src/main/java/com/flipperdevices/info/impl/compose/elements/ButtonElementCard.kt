@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-@Suppress("LongParameterList")
 fun ButtonElementCard(
     modifier: Modifier,
     iconAngel: Float = 0f,
@@ -46,7 +45,6 @@ fun ButtonElementCard(
 }
 
 @Composable
-@Suppress("LongParameterList")
 fun ButtonElementRow(
     modifier: Modifier = Modifier,
     iconAngel: Float = 0f,

@@ -37,6 +37,7 @@ include(
     ":components:core:preference",
     ":components:core:ui:ktx",
     ":components:core:ui:res",
+    ":components:core:ui:dialog",
     ":components:core:ui:lifecycle",
     ":components:core:ui:fragment",
     ":components:core:test",

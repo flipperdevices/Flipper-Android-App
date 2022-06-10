@@ -31,7 +31,6 @@ import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
-@Suppress("LongParameterList")
 fun ComposableActionFlipper(
     modifier: Modifier = Modifier,
     @DrawableRes iconId: Int,
@@ -66,7 +65,6 @@ fun ComposableActionFlipper(
 }
 
 @Composable
-@Suppress("LongParameterList")
 fun ComposableActionFlipperHorizontal(
     modifier: Modifier = Modifier,
     @DrawableRes iconId: Int,

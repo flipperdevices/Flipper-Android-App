@@ -33,7 +33,6 @@ private const val PERCENT_FLIPPER_LISTING_FOLDERS = 0.07f
 private const val PERCENT_FLIPPER_HASH = 0.12f
 private const val PERCENT_FLIPPER_DOWNLOAD = 0.99f
 
-@Suppress("LongParameterList")
 class KeysSynchronization(
     private val simpleKeyApi: SimpleKeyApi,
     private val deleteKeyApi: DeleteKeyApi,
