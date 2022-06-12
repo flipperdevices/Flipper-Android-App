@@ -5,7 +5,9 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,6 +23,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInRoot
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -30,7 +35,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.shared.getColorByChannel
 import com.flipperdevices.info.shared.getDescriptionByChannel
@@ -38,7 +45,6 @@ import com.flipperdevices.info.shared.getFullNameByChannel
 import com.flipperdevices.updater.api.UpdaterUIApi
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableUpdaterFirmwareVersionWithChoice(
@@ -48,9 +54,14 @@ fun ComposableUpdaterFirmwareVersionWithChoice(
 ) {
     var showMenu by remember { mutableStateOf(false) }
     val updateCardApi = updaterUIApi.getUpdateCardApi()
+    var positionYParentBox by remember { mutableStateOf(0) }
 
     Box(
-        modifier = modifier,
+        modifier = modifier.onGloballyPositioned {
+            val size = it.size
+            val coordinateByY = it.positionInRoot().y + size.height
+            positionYParentBox = coordinateByY.toInt()
+        },
         contentAlignment = Alignment.CenterEnd
     ) {
         Row(
@@ -72,6 +83,7 @@ fun ComposableUpdaterFirmwareVersionWithChoice(
 
             ComposableDropMenuFirmwareBuild(
                 showMenu = showMenu,
+                coordinateMenuByY = positionYParentBox,
                 onClickMenuItem = {
                     updateCardApi.onSelectChannel(it)
                     showMenu = false
@@ -87,23 +99,37 @@ fun ComposableUpdaterFirmwareVersionWithChoice(
 @Composable
 fun ComposableDropMenuFirmwareBuild(
     showMenu: Boolean,
+    coordinateMenuByY: Int,
     onClickMenuItem: (FirmwareChannel) -> Unit = {},
     onDismissMenu: () -> Unit = {}
 ) {
-    val height = LocalDensity.current.run { 24.dp.toPx() }.toInt()
-    val wight = LocalDensity.current.run { 12.dp.toPx() }.toInt()
+    val wightDeviceInDp = LocalConfiguration.current.screenWidthDp.dp
+    val wightPopupInDp = 240.dp
+
+    val coordinateMenuByX =
+        LocalDensity.current.run { (wightDeviceInDp - wightPopupInDp).toPx() }.toInt()
 
     if (showMenu) {
-        Popup(
+        Dialog(
             onDismissRequest = onDismissMenu,
-            alignment = Alignment.TopEnd,
-            offset = IntOffset(wight, height)
+            properties = DialogProperties(usePlatformDefaultWidth = false)
         ) {
-            Card(
-                modifier = Modifier.width(220.dp),
-                shape = RoundedCornerShape(10.dp)
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clickable {
+                        onDismissMenu.invoke()
+                    }
             ) {
-                ComposableFirmwareColumn(onClickMenuItem)
+                Card(
+                    modifier = Modifier
+                        .width(wightPopupInDp)
+                        .offset { IntOffset(coordinateMenuByX, coordinateMenuByY) }
+                        .padding(end = 14.dp),
+                    shape = RoundedCornerShape(10.dp)
+                ) {
+                    ComposableFirmwareColumn(onClickMenuItem)
+                }
             }
         }
     }
@@ -167,5 +193,5 @@ private fun ComposableFirmwareColumnPreview() {
 @Composable
 @Suppress("UnusedPrivateMember")
 private fun ComposableDropMenuFirmwareBuildPreview() {
-    ComposableDropMenuFirmwareBuild(showMenu = true)
+    ComposableDropMenuFirmwareBuild(showMenu = true, coordinateMenuByY = 0)
 }
