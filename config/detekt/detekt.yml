@@ -698,7 +698,7 @@ style:
     active: true
   UnusedPrivateMember:
     active: true
-    allowedNames: '(_|ignored|expected|serialVersionUID)'
+    allowedNames: '(_|ignored|expected|serialVersionUID|Composable.*Preview)'
   UseArrayLiteralsInAnnotations:
     active: false
   UseCheckNotNull:

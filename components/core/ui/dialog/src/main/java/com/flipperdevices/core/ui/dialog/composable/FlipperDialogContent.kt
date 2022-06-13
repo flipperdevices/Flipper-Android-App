@@ -25,14 +25,16 @@ internal fun FlipperDialogContent(
     text: (@Composable () -> Unit)? = null,
     buttons: @Composable () -> Unit,
     onDismissRequest: (() -> Unit)? = null
-) = Column(Modifier) {
+) = Column(Modifier, horizontalAlignment = Alignment.CenterHorizontally) {
     if (onDismissRequest != null) {
         Box(
-            Modifier.fillMaxWidth().clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple(bounded = false),
-                onClick = onDismissRequest
-            ),
+            Modifier
+                .fillMaxWidth()
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = rememberRipple(bounded = false),
+                    onClick = onDismissRequest
+                ),
             contentAlignment = Alignment.CenterEnd
         ) {
             Image(

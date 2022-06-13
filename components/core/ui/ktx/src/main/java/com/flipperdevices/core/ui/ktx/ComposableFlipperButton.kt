@@ -16,9 +16,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.res.R as DesignSystem
@@ -29,7 +29,10 @@ fun ComposableFlipperButton(
     text: String,
     textPadding: PaddingValues = PaddingValues(vertical = 16.dp, horizontal = 38.dp),
     onClick: () -> Unit = {},
-    fontSize: TextUnit = 16.sp
+    textStyle: TextStyle = TextStyle(
+        fontSize = 16.sp,
+        fontWeight = FontWeight.W700
+    )
 ) {
     Box(
         modifier = modifier
@@ -46,8 +49,7 @@ fun ComposableFlipperButton(
             modifier = Modifier.padding(textPadding),
             text = text,
             color = colorResource(DesignSystem.color.white_100),
-            fontSize = fontSize,
-            fontWeight = FontWeight.W700
+            style = textStyle
         )
     }
 }
@@ -57,7 +59,6 @@ fun ComposableFlipperButton(
     showBackground = true
 )
 @Composable
-@Suppress("UnusedPrivateMember")
 private fun ComposableFlipperButtonPreview() {
     Column {
         ComposableFlipperButton(text = "Test")
