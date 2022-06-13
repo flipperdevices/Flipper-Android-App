@@ -189,7 +189,8 @@ private fun ComposableFirmwareUpdaterInProgress() {
             text = stringResource(R.string.info_device_updater_progress) + animatedDots(),
             fontSize = 14.sp,
             color = colorResource(DesignSystem.color.black_30),
-            fontWeight = FontWeight.W500
+            fontWeight = FontWeight.W400,
+            textAlign = TextAlign.Center
         )
     }
 }
@@ -222,4 +223,13 @@ private fun ComposableFirmwareUpdaterErrorPreview() {
         ComposableFirmwareUpdaterError(UpdateErrorType.UNABLE_TO_SERVER)
         ComposableFirmwareUpdaterError(UpdateErrorType.NO_SD_CARD)
     }
+}
+
+@Preview(
+    showBackground = true,
+    showSystemUi = true
+)
+@Composable
+private fun ComposableFirmwareUpdaterInProgressPreview() {
+    ComposableFirmwareUpdaterInProgress()
 }
