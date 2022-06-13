@@ -26,9 +26,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.flipperdevices.core.ui.ktx.animatedDots
 import com.flipperdevices.core.ui.ktx.painterResourceByKey
 import com.flipperdevices.core.ui.res.R as DesignSystem
-import com.flipperdevices.core.ui.ktx.animatedDots
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.compose.elements.InfoElementCard
 import com.flipperdevices.info.impl.compose.info.ComposableDeviceInfoRow
@@ -217,6 +217,7 @@ private fun ComposableFirmwareUpdaterContent(
     showSystemUi = true
 )
 @Composable
+@Suppress("UnusedPrivateMember")
 private fun ComposableFirmwareUpdaterErrorPreview() {
     Column {
         ComposableFirmwareUpdaterError(UpdateErrorType.NO_INTERNET)
@@ -230,6 +231,7 @@ private fun ComposableFirmwareUpdaterErrorPreview() {
     showSystemUi = true
 )
 @Composable
+@Suppress("UnusedPrivateMember")
 private fun ComposableFirmwareUpdaterInProgressPreview() {
     ComposableFirmwareUpdaterInProgress()
 }
