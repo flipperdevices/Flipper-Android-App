@@ -3,6 +3,7 @@
 # 1.1.3 - In progress
 
 - [REFACTOR] Split `core:ui` module
+- [Feature] Redesign Menu for choose firmware channel
 
 # 1.1.2B
 
