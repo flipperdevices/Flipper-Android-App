@@ -4,6 +4,7 @@
 
 - [REFACTOR] Split `core:ui` module
 - [Feature] New error placeholder in FW Update
+- [Feature] New placeholder when FW Updating
 - [Feature] Redesign Menu for choose firmware channel
 
 # 1.1.2B
