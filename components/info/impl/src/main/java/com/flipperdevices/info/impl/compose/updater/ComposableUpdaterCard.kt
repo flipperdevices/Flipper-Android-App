@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.ui.ktx.painterResourceByKey
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.ktx.animatedDots
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.compose.elements.InfoElementCard
 import com.flipperdevices.info.impl.compose.info.ComposableDeviceInfoRow
@@ -185,7 +186,7 @@ private fun ComposableFirmwareUpdaterInProgress() {
         )
         Text(
             modifier = Modifier.padding(top = 14.dp, bottom = 55.dp),
-            text = stringResource(R.string.info_device_updater_progress),
+            text = stringResource(R.string.info_device_updater_progress) + animatedDots(),
             fontSize = 14.sp,
             color = colorResource(DesignSystem.color.black_30),
             fontWeight = FontWeight.W500
