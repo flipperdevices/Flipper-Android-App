@@ -33,7 +33,7 @@
     <string name="info_device_updater_button_install_desc">Firmware on Flipper doesn’t match the selected update channel. Selected version will be installed.</string>
     <string name="info_device_updater_button_update">UPDATE</string>
     <string name="info_device_updater_button_update_desc">Update Flipper to the latest version</string>
-    <string name="info_device_updater_progress">Checking for updates…</string>
+    <string name="info_device_updater_progress">Waiting for Flipper to finish update.\nReconnecting</string>
     <string name="info_device_updater_reboot_title">Update started</string>
     <string name="info_device_updater_reboot_desc">Now Flipper is updating in offline mode. Look at device screen for info and wait for reconnect.</string>
 
