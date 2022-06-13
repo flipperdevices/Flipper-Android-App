@@ -20,8 +20,8 @@ import com.flipperdevices.updater.api.UpdateCardApi
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
 import com.flipperdevices.updater.model.UpdateCardState
+import com.flipperdevices.updater.model.UpdateErrorType
 import com.flipperdevices.updater.model.VersionFiles
-import com.flipperdevices.updater.ui.R
 import com.flipperdevices.updater.ui.di.UpdaterComponent
 import com.flipperdevices.updater.ui.utils.isGreaterThan
 import java.net.UnknownHostException
@@ -150,11 +150,7 @@ class UpdateCardViewModel :
             return
         } else if (!isFlashExist) {
             updateCardState.emit(
-                UpdateCardState.Error(
-                    iconId = R.drawable.ic_no_sd,
-                    titleId = R.string.update_card_error_no_sd_title,
-                    descriptionId = R.string.update_card_error_no_sd_desc
-                )
+                UpdateCardState.Error(UpdateErrorType.NO_SD_CARD)
             )
             return
         }
@@ -191,21 +187,13 @@ class UpdateCardViewModel :
     private suspend fun processNetworkException(exception: Throwable) {
         if (exception is UnknownHostException) {
             updateCardState.emit(
-                UpdateCardState.Error(
-                    iconId = R.drawable.ic_no_internet,
-                    titleId = R.string.update_card_error_no_internet_title,
-                    descriptionId = R.string.update_card_error_no_internet_desc
-                )
+                UpdateCardState.Error(UpdateErrorType.NO_INTERNET)
             )
             return
         } else {
             error(exception) { "Error while getting latest version from network" }
             updateCardState.emit(
-                UpdateCardState.Error(
-                    iconId = R.drawable.ic_server_error,
-                    titleId = R.string.update_card_error_server_request_title,
-                    descriptionId = R.string.update_card_error_server_request_desc
-                )
+                UpdateCardState.Error(UpdateErrorType.UNABLE_TO_SERVER)
             )
             return
         }
