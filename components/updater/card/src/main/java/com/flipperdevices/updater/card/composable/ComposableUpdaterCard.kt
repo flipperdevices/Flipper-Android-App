@@ -1,4 +1,4 @@
-package com.flipperdevices.info.impl.compose.updater
+package com.flipperdevices.updater.card.composable
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,31 +18,26 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.ui.res.R as DesignSystem
-import com.flipperdevices.info.impl.R
-import com.flipperdevices.info.impl.model.DeviceStatus
-import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
 import com.flipperdevices.info.shared.ComposableDeviceInfoRow
 import com.flipperdevices.info.shared.ComposableInfoDivider
 import com.flipperdevices.info.shared.InfoElementCard
-import com.flipperdevices.updater.api.UpdaterApi
-import com.flipperdevices.updater.api.UpdaterUIApi
+import com.flipperdevices.updater.card.R
+import com.flipperdevices.updater.card.model.FlipperState
+import com.flipperdevices.updater.card.viewmodel.FlipperStateViewModel
+import com.flipperdevices.updater.card.viewmodel.UpdateCardViewModel
 import com.flipperdevices.updater.model.FirmwareVersion
 import com.flipperdevices.updater.model.UpdateCardState
-import com.flipperdevices.updater.model.UpdatingState
 
 @Composable
-fun ComposableUpdaterCard(
+internal fun ComposableUpdaterCardInternal(
     modifier: Modifier,
-    updaterUiApi: UpdaterUIApi,
-    updaterApi: UpdaterApi,
-    deviceStatusViewModel: DeviceStatusViewModel = viewModel()
+    deviceStatusViewModel: FlipperStateViewModel = viewModel(),
+    updateCardViewModel: UpdateCardViewModel = viewModel()
 ) {
     val deviceStatus by deviceStatusViewModel.getState().collectAsState()
 
-    if (deviceStatus !is DeviceStatus.Connected) {
-        val updateStatus by updaterApi.getState().collectAsState()
-
-        if (updateStatus.state == UpdatingState.Rebooting) {
+    if (deviceStatus !is FlipperState.Ready) {
+        if (deviceStatus is FlipperState.Updating) {
             ComposableUpdaterReboot(modifier)
         }
 
@@ -51,29 +46,28 @@ fun ComposableUpdaterCard(
 
     InfoElementCard(
         modifier = modifier,
-        titleId = R.string.info_device_updater_title
+        titleId = R.string.updater_card_updater_title
     ) {
-        val updateCardApi = updaterUiApi.getUpdateCardApi()
-        val cardState by updateCardApi.getUpdateCardState().collectAsState()
+        val cardState by updateCardViewModel.getUpdateCardState().collectAsState()
         val cardStateLocal = cardState
 
         when (cardStateLocal) {
             is UpdateCardState.Error -> {
                 ComposableFirmwareUpdaterError(
                     typeError = cardStateLocal.type,
-                    retryUpdate = updateCardApi::retry
+                    retryUpdate = updateCardViewModel::retry
                 )
             }
             UpdateCardState.InProgress -> ComposableFirmwareUpdaterInProgress()
             is UpdateCardState.NoUpdate -> ComposableFirmwareUpdaterContent(
-                updaterUiApi,
                 version = cardStateLocal.flipperVersion,
-                updateCardState = cardStateLocal
+                updateCardState = cardStateLocal,
+                updateCardViewModel = updateCardViewModel
             )
             is UpdateCardState.UpdateAvailable -> ComposableFirmwareUpdaterContent(
-                updaterUiApi,
                 version = cardStateLocal.lastVersion,
-                updateCardState = cardStateLocal
+                updateCardState = cardStateLocal,
+                updateCardViewModel = updateCardViewModel
             )
         }
     }
@@ -94,7 +88,7 @@ private fun ComposableFirmwareUpdaterInProgress() {
         )
         Text(
             modifier = Modifier.padding(top = 14.dp, bottom = 55.dp),
-            text = stringResource(R.string.info_device_updater_progress),
+            text = stringResource(R.string.updater_card_updater_progress),
             fontSize = 14.sp,
             color = colorResource(DesignSystem.color.black_30),
             fontWeight = FontWeight.W500
@@ -104,17 +98,17 @@ private fun ComposableFirmwareUpdaterInProgress() {
 
 @Composable
 private fun ComposableFirmwareUpdaterContent(
-    updaterUiApi: UpdaterUIApi,
     version: FirmwareVersion,
-    updateCardState: UpdateCardState
+    updateCardState: UpdateCardState,
+    updateCardViewModel: UpdateCardViewModel
 ) {
-    ComposableDeviceInfoRow(titleId = R.string.info_device_updater_channel, inProgress = false) {
+    ComposableDeviceInfoRow(titleId = R.string.updater_card_updater_channel, inProgress = false) {
         ComposableUpdaterFirmwareVersionWithChoice(
             modifier = it,
-            updaterUIApi = updaterUiApi,
+            updateCardViewModel = updateCardViewModel,
             version = version
         )
     }
     ComposableInfoDivider()
-    ComposableUpdateButton(updaterUiApi, updateCardState)
+    ComposableUpdateButton(updateCardState, updateCardViewModel)
 }

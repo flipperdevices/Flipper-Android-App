@@ -24,20 +24,6 @@
     <string name="info_device_forget_dialog_description">App will no longer be paired with Flipper %1$s</string>
     <string name="info_device_forget_dialog_forget">Forget</string>
 
-    <string name="info_device_updater_title">Firmware Update</string>
-    <string name="info_device_updater_channel">Update Channel</string>
-    <string name="info_device_updater_error_retry">Retry</string>
-    <string name="info_device_updater_button_no_updates">NO UPDATES</string>
-    <string name="info_device_updater_button_no_updates_desc">There are no updates in the selected channel</string>
-    <string name="info_device_updater_button_install">INSTALL</string>
-    <string name="info_device_updater_button_install_desc">Firmware on Flipper doesn’t match the selected update channel. Selected version will be installed.</string>
-    <string name="info_device_updater_button_update">UPDATE</string>
-    <string name="info_device_updater_button_update_desc">Update Flipper to the latest version</string>
-    <string name="info_device_updater_progress">Checking for updates…</string>
-    <string name="info_device_updater_reboot_title">Update started</string>
-    <string name="info_device_updater_reboot_desc">Now Flipper is updating in offline mode. Look at device screen for info and wait for reconnect.</string>
-
-
     <string name="info_device_info_title">Device Info</string>
     <string name="info_device_info_title_card">Flipper Device</string>
     <string name="info_device_info_other_card">Other</string>
@@ -47,12 +33,4 @@
     <string name="info_device_info_ext_flash">SD Card (Used/Total)</string>
     <string name="info_device_info_flash_not_found">Not Found</string>
     <string name="info_device_info_more_information">Full Info</string>
-    <string name="info_device_firmware_version_choice">Choice version</string>
-
-    <string name="update_card_error_no_internet_title">No internet connection</string>
-    <string name="update_card_error_no_internet_desc">Can\'t connect to update server</string>
-    <string name="update_card_error_server_request_title">Unable to download firmware </string>
-    <string name="update_card_error_server_request_desc">Can\'t connect to update server</string>
-    <string name="update_card_error_no_sd_title">No SD card</string>
-    <string name="update_card_error_no_sd_desc">Install SD card in Flipper to update firmware</string>
 </resources>

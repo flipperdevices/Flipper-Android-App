@@ -1,4 +1,4 @@
-package com.flipperdevices.updater.screen.utils
+package com.flipperdevices.updater.card.utils
 
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion

@@ -1,4 +1,4 @@
-package com.flipperdevices.info.impl.compose.updater
+package com.flipperdevices.updater.card.composable
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -16,16 +16,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.ktx.animatedDots
 import com.flipperdevices.core.ui.res.R as DesignSystem
-import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.shared.InfoElementCard
+import com.flipperdevices.updater.card.R
 
 @Composable
 fun ComposableUpdaterReboot(modifier: Modifier) {
     InfoElementCard(
         modifier = modifier,
-        titleId = R.string.info_device_updater_title
+        titleId = R.string.updater_card_updater_title
     ) {
-        val title = stringResource(R.string.info_device_updater_reboot_title) + animatedDots()
+        val title = stringResource(R.string.updater_card_updater_reboot_title) + animatedDots()
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Image(
                 painter = painterResource(R.drawable.pic_reboot),
@@ -41,7 +41,7 @@ fun ComposableUpdaterReboot(modifier: Modifier) {
             )
             Text(
                 modifier = Modifier.padding(bottom = 16.dp),
-                text = stringResource(R.string.info_device_updater_reboot_desc),
+                text = stringResource(R.string.updater_card_updater_reboot_desc),
                 fontSize = 14.sp,
                 fontWeight = FontWeight.W400,
                 color = colorResource(DesignSystem.color.black_30),

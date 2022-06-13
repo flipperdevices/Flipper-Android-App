@@ -1,4 +1,4 @@
-package com.flipperdevices.info.impl.compose.updater
+package com.flipperdevices.updater.card.composable
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.ktx.painterResourceByKey
 import com.flipperdevices.core.ui.res.R as DesignSystem
-import com.flipperdevices.info.impl.R
+import com.flipperdevices.updater.card.R
 import com.flipperdevices.updater.model.UpdateErrorType
 
 @Composable
@@ -70,7 +70,7 @@ fun ComposableFirmwareUpdaterError(
             )
             .fillMaxWidth()
             .padding(top = 4.dp, bottom = 8.dp),
-        text = stringResource(R.string.info_device_updater_error_retry),
+        text = stringResource(R.string.updater_card_updater_error_retry),
         fontWeight = FontWeight.W500,
         fontSize = 16.sp,
         textAlign = TextAlign.Center,

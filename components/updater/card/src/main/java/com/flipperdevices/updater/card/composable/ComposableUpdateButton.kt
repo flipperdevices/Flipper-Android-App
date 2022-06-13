@@ -1,4 +1,4 @@
-package com.flipperdevices.info.impl.compose.updater
+package com.flipperdevices.updater.card.composable
 
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
@@ -26,16 +26,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.res.R as DesignSystem
-import com.flipperdevices.info.impl.R
-import com.flipperdevices.updater.api.UpdaterUIApi
+import com.flipperdevices.updater.card.R
+import com.flipperdevices.updater.card.viewmodel.UpdateCardViewModel
 import com.flipperdevices.updater.fonts.R as Fonts
 import com.flipperdevices.updater.model.UpdateCardState
-import com.flipperdevices.updater.model.VersionFiles
 
 @Composable
 fun ComposableUpdateButton(
-    updaterUIApi: UpdaterUIApi,
-    updateCardState: UpdateCardState
+    updateCardState: UpdateCardState,
+    updateCardViewModel: UpdateCardViewModel
 ) {
     var buttonModifier = Modifier.padding(all = 12.dp)
 
@@ -44,8 +43,8 @@ fun ComposableUpdateButton(
         UpdateCardState.InProgress -> return
         is UpdateCardState.NoUpdate -> ComposableUpdateButtonContent(
             buttonModifier,
-            textId = R.string.info_device_updater_button_no_updates,
-            descriptionId = R.string.info_device_updater_button_no_updates_desc,
+            textId = R.string.updater_card_updater_button_no_updates,
+            descriptionId = R.string.updater_card_updater_button_no_updates_desc,
             colorId = DesignSystem.color.black_20
         )
         is UpdateCardState.UpdateAvailable -> {
@@ -53,27 +52,27 @@ fun ComposableUpdateButton(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(),
                 onClick = {
-                    updaterUIApi.openUpdateScreen(
+                    /*updaterUIApi.openUpdateScreen(
                         silent = false,
                         VersionFiles(
                             updateCardState.lastVersion,
                             updateCardState.updaterDist
                         )
-                    )
+                    )*/
                 }
             )
 
             if (updateCardState.isOtherChannel) {
                 ComposableUpdateButtonContent(
                     buttonModifier,
-                    textId = R.string.info_device_updater_button_install,
-                    descriptionId = R.string.info_device_updater_button_install_desc,
+                    textId = R.string.updater_card_updater_button_install,
+                    descriptionId = R.string.updater_card_updater_button_install_desc,
                     colorId = DesignSystem.color.accent
                 )
             } else ComposableUpdateButtonContent(
                 buttonModifier,
-                textId = R.string.info_device_updater_button_update,
-                descriptionId = R.string.info_device_updater_button_update_desc,
+                textId = R.string.updater_card_updater_button_update,
+                descriptionId = R.string.updater_card_updater_button_update_desc,
                 colorId = R.color.update_green
             )
         }

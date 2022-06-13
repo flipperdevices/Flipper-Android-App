@@ -1,4 +1,4 @@
-package com.flipperdevices.updater.screen.viewmodel
+package com.flipperdevices.updater.card.viewmodel
 
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.viewModelScope
@@ -16,14 +16,13 @@ import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.api.FlipperVersionProviderApi
-import com.flipperdevices.updater.api.UpdateCardApi
+import com.flipperdevices.updater.card.di.CardComponent
+import com.flipperdevices.updater.card.utils.isGreaterThan
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
 import com.flipperdevices.updater.model.UpdateCardState
 import com.flipperdevices.updater.model.UpdateErrorType
 import com.flipperdevices.updater.model.VersionFiles
-import com.flipperdevices.updater.screen.di.UpdaterComponent
-import com.flipperdevices.updater.screen.utils.isGreaterThan
 import java.net.UnknownHostException
 import java.util.EnumMap
 import javax.inject.Inject
@@ -42,7 +41,6 @@ import kotlinx.coroutines.sync.Mutex
 class UpdateCardViewModel :
     LifecycleViewModel(),
     FlipperBleServiceConsumer,
-    UpdateCardApi,
     LogTagProvider {
     override val TAG = "UpdaterViewModel"
 
@@ -66,19 +64,19 @@ class UpdateCardViewModel :
     lateinit var dataStoreSettings: DataStore<Settings>
 
     init {
-        ComponentHolder.component<UpdaterComponent>().inject(this)
+        ComponentHolder.component<CardComponent>().inject(this)
         serviceProvider.provideServiceApi(this, this)
     }
 
-    override fun getUpdateCardState(): StateFlow<UpdateCardState> = updateCardState
+    fun getUpdateCardState(): StateFlow<UpdateCardState> = updateCardState
 
-    override fun onSelectChannel(channel: FirmwareChannel?) {
+    fun onSelectChannel(channel: FirmwareChannel?) {
         viewModelScope.launch {
             updateChannel.emit(channel)
         }
     }
 
-    override fun retry() {
+    fun retry() {
         serviceProvider.provideServiceApi(this) {
             launchWithLock(mutex, viewModelScope, "retry") {
                 cardStateJob?.cancelAndJoin()

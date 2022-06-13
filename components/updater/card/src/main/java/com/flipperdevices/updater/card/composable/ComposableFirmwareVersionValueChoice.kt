@@ -1,4 +1,4 @@
-package com.flipperdevices.info.impl.compose.updater
+package com.flipperdevices.updater.card.composable
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -38,23 +38,23 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.flipperdevices.core.ui.res.R as DesignSystem
-import com.flipperdevices.info.impl.R
-import com.flipperdevices.info.impl.compose.info.ComposableFirmwareVersionValue
+import com.flipperdevices.info.shared.ComposableDeviceInfoRowText
 import com.flipperdevices.info.shared.getColorByChannel
 import com.flipperdevices.info.shared.getDescriptionByChannel
 import com.flipperdevices.info.shared.getFullNameByChannel
-import com.flipperdevices.updater.api.UpdaterUIApi
+import com.flipperdevices.info.shared.getTextByVersion
+import com.flipperdevices.updater.card.R
+import com.flipperdevices.updater.card.viewmodel.UpdateCardViewModel
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
 
 @Composable
 fun ComposableUpdaterFirmwareVersionWithChoice(
     modifier: Modifier,
-    updaterUIApi: UpdaterUIApi,
+    updateCardViewModel: UpdateCardViewModel,
     version: FirmwareVersion
 ) {
     var showMenu by remember { mutableStateOf(false) }
-    val updateCardApi = updaterUIApi.getUpdateCardApi()
     var positionYParentBox by remember { mutableStateOf(0) }
 
     Box(
@@ -73,12 +73,15 @@ fun ComposableUpdaterFirmwareVersionWithChoice(
             ),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            ComposableFirmwareVersionValue(version = version)
+            ComposableDeviceInfoRowText(
+                text = getTextByVersion(version),
+                colorId = getColorByChannel(version.channel)
+            )
             Icon(
                 modifier = Modifier
                     .padding(all = 4.dp),
                 painter = painterResource(R.drawable.ic_more),
-                contentDescription = stringResource(R.string.info_device_firmware_version_choice),
+                contentDescription = stringResource(R.string.updater_card_firmware_version_choice),
                 tint = colorResource(DesignSystem.color.black_30)
             )
 
@@ -86,7 +89,7 @@ fun ComposableUpdaterFirmwareVersionWithChoice(
                 showMenu = showMenu,
                 coordinateMenuByY = positionYParentBox,
                 onClickMenuItem = {
-                    updateCardApi.onSelectChannel(it)
+                    updateCardViewModel.onSelectChannel(it)
                     showMenu = false
                 },
                 onDismissMenu = {

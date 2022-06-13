@@ -86,7 +86,7 @@ fun ComposableDeviceInfoRow(
 
 @Composable
 fun ComposableDeviceInfoRowText(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     text: String,
     @ColorRes colorId: Int = DesignSystem.color.black_100
 ) {

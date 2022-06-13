@@ -1,7 +1,6 @@
 package com.flipperdevices.info.impl.compose.info
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.shared.ComposableDeviceInfoRow
 import com.flipperdevices.info.shared.ComposableDeviceInfoRowText
@@ -27,7 +26,11 @@ fun ComposableFirmwareVersion(
         R.string.info_device_info_version,
         firmwareVersionInProgress
     ) {
-        ComposableFirmwareVersionValue(it, firmwareVersion)
+        ComposableDeviceInfoRowText(
+            modifier = it,
+            text = getTextByVersion(firmwareVersion),
+            colorId = getColorByChannel(firmwareVersion.channel)
+        )
     }
 }
 
@@ -49,17 +52,5 @@ fun ComposableFirmwareBuildDate(
         R.string.info_device_info_build_date,
         firmwareVersionInProgress,
         firmwareVersion.buildDate
-    )
-}
-
-@Composable
-fun ComposableFirmwareVersionValue(
-    modifier: Modifier = Modifier,
-    version: FirmwareVersion
-) {
-    ComposableDeviceInfoRowText(
-        modifier,
-        text = getTextByVersion(version),
-        colorId = getColorByChannel(version.channel)
     )
 }
