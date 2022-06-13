@@ -1,8 +1,5 @@
 package com.flipperdevices.updater.model
 
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
-
 sealed class UpdateCardState {
     object InProgress : UpdateCardState()
 
@@ -16,9 +13,5 @@ sealed class UpdateCardState {
         val isOtherChannel: Boolean
     ) : UpdateCardState()
 
-    class Error(
-        @DrawableRes val iconId: Int,
-        @StringRes val titleId: Int,
-        @StringRes val descriptionId: Int
-    ) : UpdateCardState()
+    data class Error(val type: UpdateErrorType) : UpdateCardState()
 }
