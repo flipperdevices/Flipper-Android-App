@@ -48,7 +48,6 @@
     <string name="info_device_info_flash_not_found">Not Found</string>
     <string name="info_device_info_more_information">Full Info</string>
     <string name="info_device_firmware_version_choice">Choice version</string>
-    <string name="info_device_unknown">—</string>
 
     <string name="update_card_error_no_internet_title">No internet connection</string>
     <string name="update_card_error_no_internet_desc">Can\'t connect to update server</string>

@@ -25,6 +25,7 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.model.FirmwareUpdateStatus
 import com.flipperdevices.info.impl.viewmodel.FirmwareUpdateViewModel
+import com.flipperdevices.info.shared.InfoElementCard
 
 @Composable
 fun ComposableFirmwareUpdate(

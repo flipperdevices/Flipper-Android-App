@@ -19,12 +19,11 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.info.impl.R
-import com.flipperdevices.info.impl.compose.elements.InfoElementCard
-import com.flipperdevices.info.impl.compose.info.ComposableDeviceInfoRow
-import com.flipperdevices.info.impl.compose.info.ComposableInfoDivider
-import com.flipperdevices.info.impl.compose.info.ComposableUpdaterFirmwareVersionWithChoice
 import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
+import com.flipperdevices.info.shared.ComposableDeviceInfoRow
+import com.flipperdevices.info.shared.ComposableInfoDivider
+import com.flipperdevices.info.shared.InfoElementCard
 import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.api.UpdaterUIApi
 import com.flipperdevices.updater.model.FirmwareVersion

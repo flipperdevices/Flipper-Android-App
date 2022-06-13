@@ -29,10 +29,7 @@ fun ComposableFlipperButton(
     text: String,
     textPadding: PaddingValues = PaddingValues(vertical = 16.dp, horizontal = 38.dp),
     onClick: () -> Unit = {},
-    textStyle: TextStyle = TextStyle(
-        fontSize = 16.sp,
-        fontWeight = FontWeight.W700
-    )
+    textStyle: TextStyle = TextStyle()
 ) {
     Box(
         modifier = modifier
@@ -49,7 +46,10 @@ fun ComposableFlipperButton(
             modifier = Modifier.padding(textPadding),
             text = text,
             color = colorResource(DesignSystem.color.white_100),
-            style = textStyle
+            style = TextStyle(
+                fontSize = 16.sp,
+                fontWeight = FontWeight.W700
+            ).merge(textStyle)
         )
     }
 }

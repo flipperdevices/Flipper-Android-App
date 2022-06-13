@@ -70,7 +70,7 @@ dependencies {
     implementation(projects.components.updater.api)
     implementation(projects.components.updater.impl)
     implementation(projects.components.updater.downloader)
-    implementation(projects.components.updater.ui)
+    implementation(projects.components.updater.screen)
 
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.dao.impl)

@@ -3,6 +3,9 @@ package com.flipperdevices.info.impl.compose.info
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.flipperdevices.info.impl.R
+import com.flipperdevices.info.shared.ComposableDeviceInfoRow
+import com.flipperdevices.info.shared.ComposableDeviceInfoRowText
+import com.flipperdevices.info.shared.ComposableDeviceInfoRowWithText
 import com.flipperdevices.info.shared.getColorByChannel
 import com.flipperdevices.info.shared.getTextByVersion
 import com.flipperdevices.updater.model.FirmwareVersion

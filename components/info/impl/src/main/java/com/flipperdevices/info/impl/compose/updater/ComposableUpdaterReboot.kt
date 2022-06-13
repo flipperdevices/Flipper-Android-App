@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.ktx.animatedDots
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.info.impl.R
-import com.flipperdevices.info.impl.compose.elements.InfoElementCard
+import com.flipperdevices.info.shared.InfoElementCard
 
 @Composable
 fun ComposableUpdaterReboot(modifier: Modifier) {
