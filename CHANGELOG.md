@@ -3,6 +3,7 @@
 # 1.1.3 - In progress
 
 - [REFACTOR] Split `core:ui` module
+- [Feature] New error placeholder in FW Update
 
 # 1.1.2B
 
