@@ -1,6 +1,6 @@
 package com.flipperdevices.deeplink.api
 
-import android.app.Activity
+import android.content.Context
 import android.net.Uri
 import com.flipperdevices.deeplink.model.Deeplink
 
@@ -15,5 +15,5 @@ interface DeepLinkParser {
      * and second is a throwable if deeplink is null
      */
     @Throws(SecurityException::class)
-    suspend fun fromUri(activity: Activity, uri: Uri): Deeplink?
+    suspend fun fromUri(context: Context, uri: Uri): Deeplink?
 }

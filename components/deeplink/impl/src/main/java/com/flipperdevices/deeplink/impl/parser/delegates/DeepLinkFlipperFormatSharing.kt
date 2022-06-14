@@ -1,6 +1,7 @@
 package com.flipperdevices.deeplink.impl.parser.delegates
 
 import android.app.Activity
+import android.content.Context
 import android.net.Uri
 import com.flipperdevices.bridge.dao.api.delegates.KeyParser
 import com.flipperdevices.core.di.ComponentHolder
@@ -23,7 +24,7 @@ class DeepLinkFlipperFormatSharing : DeepLinkParserDelegate, LogTagProvider {
         ComponentHolder.component<DeepLinkComponent>().inject(this)
     }
 
-    override suspend fun fromUri(activity: Activity, uri: Uri): Deeplink? {
+    override suspend fun fromUri(context: Context, uri: Uri): Deeplink? {
         var pureUri = uri
 
         if (uri.scheme == SCHEME_FLIPPERKEY) {
