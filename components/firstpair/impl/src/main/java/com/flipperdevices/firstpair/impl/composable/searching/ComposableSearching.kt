@@ -15,7 +15,6 @@ import com.flipperdevices.firstpair.impl.model.SearchingContent
 import com.flipperdevices.firstpair.impl.model.SearchingState
 
 @Composable
-@Suppress("LongParameterList")
 fun ComposableSearchingScreen(
     state: SearchingState,
     onBack: () -> Unit,

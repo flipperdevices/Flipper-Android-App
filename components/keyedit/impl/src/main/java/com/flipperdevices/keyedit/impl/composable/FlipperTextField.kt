@@ -33,7 +33,6 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 private const val ANIMATION_DURATION_MS = 150
 
 @Composable
-@Suppress("LongParameterList")
 fun FlipperTextField(
     modifier: Modifier = Modifier,
     title: String? = null,
@@ -93,7 +92,6 @@ private fun FlipperTitle(title: String) {
 }
 
 @Composable
-@Suppress("LongParameterList")
 private fun FlipperTextBox(
     text: String,
     label: @Composable () -> Unit,

@@ -27,13 +27,15 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.info.impl.R
-import com.flipperdevices.info.impl.compose.elements.InfoElementCard
 import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.model.FirmwareUpdateStatus
 import com.flipperdevices.info.impl.model.toString
 import com.flipperdevices.info.impl.viewmodel.DeviceInfoViewModel
 import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
 import com.flipperdevices.info.impl.viewmodel.FirmwareUpdateViewModel
+import com.flipperdevices.info.shared.ComposableDeviceInfoRowWithText
+import com.flipperdevices.info.shared.ComposableInfoDivider
+import com.flipperdevices.info.shared.InfoElementCard
 
 @Composable
 fun ComposableInfoCard(

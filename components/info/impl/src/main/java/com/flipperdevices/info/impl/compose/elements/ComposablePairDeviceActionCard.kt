@@ -7,10 +7,12 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.info.impl.R
-import com.flipperdevices.info.impl.compose.info.ComposableInfoDivider
 import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.viewmodel.ConnectViewModel
 import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
+import com.flipperdevices.info.shared.ButtonElementRow
+import com.flipperdevices.info.shared.ComposableInfoDivider
+import com.flipperdevices.info.shared.InfoElementCard
 
 @Composable
 fun ComposablePairDeviceActionCard(

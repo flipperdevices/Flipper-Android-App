@@ -15,7 +15,6 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bottombar.model.TabState
 
-@Suppress("LongParameterList")
 @Composable
 fun ComposeMaterialYouTab(
     tabState: TabState,

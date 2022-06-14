@@ -10,7 +10,6 @@ import com.flipperdevices.keyscreen.shared.bar.ComposableKeyScreenAppBar
 import com.flipperdevices.share.receive.R
 
 @Composable
-@Suppress("LongParameterList")
 fun ComposableKeySaveScreen(
     keyScreenApi: KeyScreenApi,
     keyParsed: FlipperKeyParsed,

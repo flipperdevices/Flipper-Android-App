@@ -3,9 +3,11 @@
 # 1.1.3 - In progress
 
 - [REFACTOR] Split `core:ui` module
+- [REFACTOR] Move card from `info:impl` to `updater:card`
 - [Feature] New error placeholder in FW Update
 - [Feature] Redesign Menu for choose firmware channel
 - [Feature] Continue Intent after install application by deeplink
+- [Feature] Add Low Battery dialog
 
 # 1.1.2B
 

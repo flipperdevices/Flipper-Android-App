@@ -58,7 +58,6 @@ fun ComposableActionRowInProgress(
 }
 
 @Composable
-@Suppress("LongParameterList")
 private fun ComposableActionRowInternal(
     @DrawableRes iconId: Int? = null,
     @ColorRes tintId: Int = DesignSystem.color.black_100,
