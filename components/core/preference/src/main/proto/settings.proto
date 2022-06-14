@@ -9,6 +9,12 @@ enum SelectedTab {
   OPTIONS = 2;
 }
 
+enum SelectedChannel {
+  RELEASE = 0;
+  RELEASE_CANDIDATE = 1;
+  DEV = 2;
+}
+
 message Settings {
   reserved 7; // Already unused tags
 
@@ -19,4 +25,5 @@ message Settings {
   bool ignore_unsupported_version = 6;
   bool always_update = 8;
   bool shake_to_report = 9;
+  SelectedChannel selected_channel = 10;
 }

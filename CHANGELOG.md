@@ -7,6 +7,7 @@
 - [Feature] New error placeholder in FW Update
 - [Feature] Redesign Menu for choose firmware channel
 - [Feature] Add Low Battery dialog
+- [Feature] Save last open channel for updater
 
 # 1.1.2B
 

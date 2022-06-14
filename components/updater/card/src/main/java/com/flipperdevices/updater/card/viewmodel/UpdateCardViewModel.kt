@@ -12,6 +12,7 @@ import com.flipperdevices.core.ktx.jre.then
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.preference.pb.SelectedChannel
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.updater.api.DownloaderApi
@@ -35,6 +36,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 
@@ -47,7 +49,6 @@ class UpdateCardViewModel :
     private val updateCardState = MutableStateFlow<UpdateCardState>(
         UpdateCardState.InProgress
     )
-    private val updateChannel = MutableStateFlow<FirmwareChannel?>(null)
     private var cardStateJob: Job? = null
     private val mutex = Mutex()
 
@@ -72,7 +73,11 @@ class UpdateCardViewModel :
 
     fun onSelectChannel(channel: FirmwareChannel?) {
         viewModelScope.launch {
-            updateChannel.emit(channel)
+            dataStoreSettings.updateData {
+                it.toBuilder()
+                    .setSelectedChannel(channel.toSelectedChannel())
+                    .build()
+            }
         }
     }
 
@@ -103,7 +108,7 @@ class UpdateCardViewModel :
             }
             serviceApi.flipperRpcInformationApi.getRpcInformationFlow()
             combine(
-                updateChannel,
+                dataStoreSettings.data.map { it.selectedChannel.toFirmwareChannel() },
                 flipperVersionProviderApi.getCurrentFlipperVersion(viewModelScope, serviceApi),
                 serviceApi.flipperRpcInformationApi.getRpcInformationFlow(),
                 dataStoreSettings.data
@@ -196,4 +201,18 @@ class UpdateCardViewModel :
             return
         }
     }
+}
+
+private fun SelectedChannel.toFirmwareChannel(): FirmwareChannel? = when (this) {
+    SelectedChannel.RELEASE -> FirmwareChannel.RELEASE
+    SelectedChannel.RELEASE_CANDIDATE -> FirmwareChannel.RELEASE_CANDIDATE
+    SelectedChannel.DEV -> FirmwareChannel.DEV
+    SelectedChannel.UNRECOGNIZED -> null
+}
+
+private fun FirmwareChannel?.toSelectedChannel(): SelectedChannel = when (this) {
+    FirmwareChannel.RELEASE -> SelectedChannel.RELEASE
+    FirmwareChannel.RELEASE_CANDIDATE -> SelectedChannel.RELEASE_CANDIDATE
+    FirmwareChannel.DEV -> SelectedChannel.DEV
+    null -> SelectedChannel.UNRECOGNIZED
 }
