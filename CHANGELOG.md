@@ -5,6 +5,7 @@
 - [REFACTOR] Split `core:ui` module
 - [Feature] New error placeholder in FW Update
 - [Feature] Redesign Menu for choose firmware channel
+- [Feature] Continue Intent after install application by deeplink
 
 # 1.1.2B
 
