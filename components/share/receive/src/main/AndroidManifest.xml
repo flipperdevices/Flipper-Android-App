@@ -1,1 +1,15 @@
-<manifest package="com.flipperdevices.share.receive" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        package="com.flipperdevices.share.receive">
+
+    <application>
+        <receiver
+                android:enabled="true"
+                android:exported="true"
+                android:name=".ReferrerReceiver">
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>
