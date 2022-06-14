@@ -7,6 +7,7 @@
 - [Feature] New error placeholder in FW Update
 - [Feature] Redesign Menu for choose firmware channel
 - [Feature] Add Low Battery dialog
+- [Feature] Test continue with deeplink in google play
 
 # 1.1.2B
 
