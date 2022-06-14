@@ -1,6 +1,5 @@
 package com.flipperdevices.deeplink.impl.parser
 
-import android.app.Activity
 import android.content.Context
 import android.net.Uri
 import com.flipperdevices.core.di.AppGraph
