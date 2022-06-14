@@ -1,18 +1,22 @@
 package com.flipperdevices.share.receive
 
-import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import com.flipperdevices.deeplink.api.DeepLinkParser
+import com.flipperdevices.share.receive.di.KeyReceiveComponent
 import com.flipperdevices.singleactivity.api.SingleActivityApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 import javax.inject.Inject
 
-class ReferrerReceiver : BroadcastReceiver() {
+class ReferrerReceiver : BroadcastReceiver(), LogTagProvider {
+    override val TAG: String = "ReferrerReceiver"
+
+    private val scope = CoroutineScope(SupervisorJob())
 
     @Inject
     lateinit var singleActivityApi: SingleActivityApi
@@ -20,15 +24,25 @@ class ReferrerReceiver : BroadcastReceiver() {
     @Inject
     lateinit var deepLinkParser: DeepLinkParser
 
-    override fun onReceive(context: Context?, intent: Intent?) {
-        val uri = intent?.data
-        if (uri != null && context != null) {
-            GlobalScope.launch {
-                val deeplink = deepLinkParser.fromUri(context, uri)
-                withContext(Dispatchers.Main) {
-                    singleActivityApi.open(deeplink)
-                }
-            }
-        }
+    init {
+        ComponentHolder.component<KeyReceiveComponent>().inject(this)
+    }
+
+    override fun onReceive(context: Context, intent: Intent?) {
+
+        info { "Intent: $intent" }
+
+//        val pendingResult: PendingResult = goAsync()
+//        val uri = intent?.data ?: return
+//        scope.launch(Dispatchers.Default) {
+//            try {
+//                val deeplink = deepLinkParser.fromUri(context, uri)
+//                withContext(Dispatchers.Main) {
+//                    singleActivityApi.open(deeplink)
+//                }
+//            } finally {
+//                pendingResult.finish()
+//            }
+//        }
     }
 }
