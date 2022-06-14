@@ -7,16 +7,12 @@ import com.flipperdevices.core.ui.fragment.ComposeFragment
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.info.impl.compose.ComposableDeviceInfoScreen
 import com.flipperdevices.info.impl.di.InfoComponent
-import com.flipperdevices.updater.api.UpdaterApi
-import com.flipperdevices.updater.api.UpdaterUIApi
+import com.flipperdevices.updater.api.UpdaterCardApi
 import javax.inject.Inject
 
 class InfoFragment : ComposeFragment() {
     @Inject
-    lateinit var updaterUiApi: UpdaterUIApi
-
-    @Inject
-    lateinit var updaterApi: UpdaterApi
+    lateinit var updaterCardApi: UpdaterCardApi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +21,7 @@ class InfoFragment : ComposeFragment() {
 
     @Composable
     override fun RenderView() {
-        ComposableDeviceInfoScreen(updaterApi, updaterUiApi)
+        ComposableDeviceInfoScreen(updaterCardApi)
     }
 
     override fun getStatusBarColor(): Int = DesignSystem.color.accent

@@ -9,5 +9,6 @@ data class FlipperGATTInformation(
     val manufacturerName: String? = null,
     val hardwareRevision: String? = null,
     val softwareVersion: String? = null,
-    val batteryLevel: Float? = null
+    val batteryLevel: Float? = null,
+    val isCharging: Boolean = false
 )

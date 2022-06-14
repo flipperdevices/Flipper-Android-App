@@ -6,7 +6,6 @@ import androidx.annotation.RawRes
 
 private const val MAGIC_NUMBER = 31
 
-@Suppress("LongParameterList")
 sealed class TabState private constructor(
     val text: String,
     @ColorRes val selectedColor: Int,
@@ -15,6 +14,7 @@ sealed class TabState private constructor(
     @ColorRes val unselectedColorIcon: Int,
     val textDotsAnimated: Boolean
 ) {
+    @Suppress("LongParameterList")
     class Static(
         @DrawableRes val selectedIcon: Int,
         @DrawableRes val notSelectedIcon: Int,

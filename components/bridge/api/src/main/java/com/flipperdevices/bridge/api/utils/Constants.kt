@@ -31,6 +31,9 @@ object Constants {
         val SERVICE_UUID: UUID = UUID.fromString("0000180f-0000-1000-8000-00805f9b34fb")
 
         val BATTERY_LEVEL: UUID = UUID.fromString("00002a19-0000-1000-8000-00805f9b34fb")
+        val BATTERY_POWER_STATE: UUID = UUID.fromString("00002A1A-0000-1000-8000-00805f9b34fb")
+
+        const val BATTERY_POWER_STATE_MASK: Byte = 0b0011_0000
     }
 
     // BLE serial service uuids: service uuid and characteristics uuids

@@ -80,7 +80,6 @@ fun ColumnScope.ComposableCategoryContent(
 }
 
 @Composable
-@Suppress("LongParameterList")
 private fun CategoryList(
     modifier: Modifier,
     categoryType: CategoryType,

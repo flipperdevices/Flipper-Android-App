@@ -37,6 +37,7 @@ include(
     ":components:core:preference",
     ":components:core:ui:ktx",
     ":components:core:ui:res",
+    ":components:core:ui:dialog",
     ":components:core:ui:lifecycle",
     ":components:core:ui:fragment",
     ":components:core:test",
@@ -96,7 +97,8 @@ include(
 
     ":components:updater:api",
     ":components:updater:impl",
-    ":components:updater:ui",
+    ":components:updater:screen",
     ":components:updater:downloader",
+    ":components:updater:card",
     ":components:updater:fonts"
 )

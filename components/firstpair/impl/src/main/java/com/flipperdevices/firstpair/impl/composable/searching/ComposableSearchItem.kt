@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -104,7 +105,7 @@ fun ComposableSearchItem(
                     modifier = Modifier.padding(end = 12.dp),
                     text = stringResource(R.string.firstpair_search_connect_button),
                     textPadding = PaddingValues(horizontal = 18.dp, vertical = 10.dp),
-                    fontSize = 14.sp,
+                    textStyle = TextStyle(fontSize = 14.sp),
                     onClick = onConnectionClick
                 )
             }
