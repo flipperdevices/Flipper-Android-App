@@ -20,4 +20,8 @@
     <string name="update_card_error_server_request_desc">Can\'t connect to update server</string>
     <string name="update_card_error_no_sd_title">No SD card</string>
     <string name="update_card_error_no_sd_desc">Install SD card in Flipper to update firmware</string>
+
+    <string name="update_card_dialog_battery_title">Low Battery on Flipper</string>
+    <string name="update_card_dialog_battery_desc">Charge Flipper to 10% before installing the update</string>
+    <string name="update_card_dialog_battery_btn">Got It</string>
 </resources>

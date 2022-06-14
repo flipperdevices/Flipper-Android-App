@@ -3,16 +3,20 @@ package com.flipperdevices.core.ui.dialog.composable
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -35,7 +39,11 @@ fun FlipperDialog(
             onDismissRequest?.invoke()
         }
     }) {
-        Box(modifier = modifier) {
+        Box(
+            modifier = modifier
+                .clip(RoundedCornerShape(18.dp))
+                .background(colorResource(DesignSystem.color.background))
+        ) {
             FlipperDialogContent(
                 image,
                 title,
@@ -71,7 +79,8 @@ fun FlipperDialog(
                 text = stringResource(titleIdNotNullable),
                 fontWeight = FontWeight.W500,
                 fontSize = 14.sp,
-                color = colorResource(DesignSystem.color.black_100)
+                color = colorResource(DesignSystem.color.black_100),
+                textAlign = TextAlign.Center
             )
         },
         text = textId?.letCompose { textIdNotNullable ->
@@ -79,7 +88,8 @@ fun FlipperDialog(
                 text = stringResource(textIdNotNullable),
                 fontWeight = FontWeight.W400,
                 fontSize = 14.sp,
-                color = colorResource(DesignSystem.color.black_40)
+                color = colorResource(DesignSystem.color.black_40),
+                textAlign = TextAlign.Center
             )
         },
         buttons = {
@@ -89,6 +99,8 @@ fun FlipperDialog(
                 onClick = onClickButton,
                 textPadding = PaddingValues(12.dp)
             )
-        }, onDismissRequest, closeOnClickOutside
+        },
+        onDismissRequest,
+        closeOnClickOutside
     )
 }

@@ -12,6 +12,7 @@ dependencies {
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.lifecycle)
+    implementation(projects.components.core.ui.dialog)
 
     implementation(projects.components.updater.api)
     implementation(projects.components.updater.fonts)

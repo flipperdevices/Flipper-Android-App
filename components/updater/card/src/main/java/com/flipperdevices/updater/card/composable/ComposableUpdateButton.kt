@@ -13,7 +13,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,16 +30,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.updater.card.R
-import com.flipperdevices.updater.card.viewmodel.UpdateCardViewModel
 import com.flipperdevices.updater.fonts.R as Fonts
 import com.flipperdevices.updater.model.UpdateCardState
 
 @Composable
 fun ComposableUpdateButton(
-    updateCardState: UpdateCardState,
-    updateCardViewModel: UpdateCardViewModel
+    updateCardState: UpdateCardState
 ) {
     var buttonModifier = Modifier.padding(all = 12.dp)
+    var pendingUpdateRequest by remember {
+        mutableStateOf<UpdateCardState.UpdateAvailable?>(null)
+    }
+    val localUpdaterRequest = pendingUpdateRequest
+
+    if (localUpdaterRequest != null) {
+        ComposableUpdateRequest(pendingUpdateRequest = localUpdaterRequest) {
+            pendingUpdateRequest = null
+        }
+    }
 
     when (updateCardState) {
         is UpdateCardState.Error -> return
@@ -52,13 +63,7 @@ fun ComposableUpdateButton(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(),
                 onClick = {
-                    /*updaterUIApi.openUpdateScreen(
-                        silent = false,
-                        VersionFiles(
-                            updateCardState.lastVersion,
-                            updateCardState.updaterDist
-                        )
-                    )*/
+                    pendingUpdateRequest = updateCardState
                 }
             )
 
