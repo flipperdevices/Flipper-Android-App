@@ -25,6 +25,8 @@ dependencies {
 
     implementation(projects.components.inappnotification.api)
 
+    implementation(projects.components.singleactivity.api)
+
     implementation(libs.cicerone)
     implementation(libs.appcompat)
 
