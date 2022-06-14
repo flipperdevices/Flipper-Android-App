@@ -8,8 +8,10 @@
 - [Feature] Redesign Menu for choose firmware channel
 - [Feature] Add Low Battery dialog
 - [Feature] Save last open channel for updater
+- [Feature] Show when flipper charging
+- [BUGFIX] Fix incorrect corner radius for battery icon
 
-# 1.1.2B
+# 1.1.2
 
 - [BUGFIX] Fix crash with custom firmware version
 - [BUGFIX] Fix crash when key file not exist

@@ -9,6 +9,7 @@ sealed class DeviceStatus {
 
     data class Connected(
         val deviceName: String,
-        val batteryLevel: Float
+        val batteryLevel: Float,
+        val isCharging: Boolean
     ) : DeviceStatus()
 }

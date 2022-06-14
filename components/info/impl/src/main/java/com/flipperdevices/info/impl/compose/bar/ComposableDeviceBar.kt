@@ -48,7 +48,8 @@ fun ComposableDeviceBar(deviceStatusViewModel: DeviceStatusViewModel = viewModel
             is DeviceStatus.NoDeviceInformation -> NotConnectedText(localDeviceStatus.deviceName)
             is DeviceStatus.Connected -> ConnectedText(
                 localDeviceStatus.deviceName,
-                localDeviceStatus.batteryLevel
+                localDeviceStatus.batteryLevel,
+                localDeviceStatus.isCharging
             )
         }
     }
@@ -94,7 +95,7 @@ private fun NotConnectedText(title: String) {
 }
 
 @Composable
-private fun ConnectedText(title: String, batteryValue: Float) {
+private fun ConnectedText(title: String, batteryValue: Float, isCharging: Boolean) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -106,7 +107,8 @@ private fun ConnectedText(title: String, batteryValue: Float) {
             ) {
                 ComposableFlipperBattery(
                     Modifier.size(width = 30.dp, height = 14.dp),
-                    percent = batteryValue
+                    percent = batteryValue,
+                    isCharging = isCharging
                 )
                 Text(
                     modifier = Modifier.padding(start = 5.dp),

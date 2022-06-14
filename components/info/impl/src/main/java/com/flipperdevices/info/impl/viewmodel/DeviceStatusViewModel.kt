@@ -72,7 +72,8 @@ class DeviceStatusViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
                         updaterApi.onDeviceConnected()
                         DeviceStatus.Connected(
                             deviceName,
-                            batteryLevel
+                            batteryLevel,
+                            flipperInformation.isCharging
                         )
                     }
                 }
