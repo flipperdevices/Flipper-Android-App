@@ -39,6 +39,7 @@ class FlipperServiceApiImpl constructor(
     @Inject
     lateinit var settingsStore: DataStore<Settings>
 
+    @Inject
     lateinit var metricApi: MetricApi
 
     init {
