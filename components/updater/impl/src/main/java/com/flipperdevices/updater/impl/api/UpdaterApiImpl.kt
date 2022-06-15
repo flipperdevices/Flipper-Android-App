@@ -8,9 +8,9 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.impl.UpdaterTask
+import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.model.UpdatingState
-import com.flipperdevices.updater.model.UpdatingStateWithVersion
-import com.flipperdevices.updater.model.VersionFiles
+import com.flipperdevices.updater.model.UpdatingStateWithRequest
 import com.squareup.anvil.annotations.ContributesBinding
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
@@ -30,15 +30,15 @@ class UpdaterApiImpl @Inject constructor(
 ) : UpdaterApi, LogTagProvider {
     override val TAG = "UpdaterApi"
 
-    private val updatingState = MutableStateFlow<UpdatingStateWithVersion>(
-        UpdatingStateWithVersion(UpdatingState.NotStarted, version = null)
+    private val updatingState = MutableStateFlow<UpdatingStateWithRequest>(
+        UpdatingStateWithRequest(UpdatingState.NotStarted, request = null)
     )
 
     private var currentActiveTask: UpdaterTask? = null
     private val isLaunched = AtomicBoolean(false)
 
-    override fun start(versionFiles: VersionFiles) {
-        info { "Request update with file $versionFiles" }
+    override fun start(updateRequest: UpdateRequest) {
+        info { "Request update with file $updateRequest" }
         if (!isLaunched.compareAndSet(false, true)) {
             info { "Update skipped, because we already in update" }
             return
@@ -50,10 +50,10 @@ class UpdaterApiImpl @Inject constructor(
         )
         currentActiveTask = localActiveTask
 
-        localActiveTask.start(versionFiles.updaterFile) {
+        localActiveTask.start(updateRequest) {
             info { "Downloading state update to $it" }
             withContext(NonCancellable) {
-                updatingState.emit(UpdatingStateWithVersion(it, version = versionFiles.version))
+                updatingState.emit(UpdatingStateWithRequest(it, request = updateRequest))
 
                 if (it == UpdatingState.NotStarted || it == UpdatingState.Rebooting) {
                     currentActiveTask?.onStop()
@@ -71,12 +71,12 @@ class UpdaterApiImpl @Inject constructor(
     override fun onDeviceConnected() {
         updatingState.update {
             if (it.state == UpdatingState.Rebooting) {
-                UpdatingStateWithVersion(UpdatingState.NotStarted, version = it.version)
+                UpdatingStateWithRequest(UpdatingState.NotStarted, request = it.request)
             } else it
         }
     }
 
-    override fun getState(): StateFlow<UpdatingStateWithVersion> = updatingState
+    override fun getState(): StateFlow<UpdatingStateWithRequest> = updatingState
     override fun isUpdateInProcess(): Boolean {
         return isLaunched.get()
     }

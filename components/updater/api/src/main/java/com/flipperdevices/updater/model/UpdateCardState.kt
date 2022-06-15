@@ -7,7 +7,8 @@ sealed class UpdateCardState {
         val flipperVersion: FirmwareVersion
     ) : UpdateCardState()
 
-    data class UpdateAvailable(
+    data class UpdateAvailable constructor(
+        val fromVersion: FirmwareVersion,
         val lastVersion: FirmwareVersion,
         val updaterDist: DistributionFile,
         val isOtherChannel: Boolean

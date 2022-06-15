@@ -58,7 +58,7 @@ class SynchronizationApiImpl @Inject constructor(
             metricApi = metricApi
         )
 
-        localSynchronizationTask.start { taskState ->
+        localSynchronizationTask.start(input = Unit) { taskState ->
             synchronizationState.update { taskState }
             if (taskState == SynchronizationState.Finished) {
                 isLaunched.compareAndSet(true, false)

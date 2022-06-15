@@ -1,8 +1,8 @@
 package com.flipperdevices.updater.model
 
-class UpdatingStateWithVersion(
+class UpdatingStateWithRequest(
     val state: UpdatingState,
-    val version: FirmwareVersion?
+    val request: UpdateRequest?
 )
 
 sealed class UpdatingState {

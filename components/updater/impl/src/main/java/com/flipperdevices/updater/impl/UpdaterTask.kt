@@ -17,8 +17,8 @@ import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.impl.service.UploadFirmwareService
 import com.flipperdevices.updater.impl.tasks.FlipperUpdateImageHelper
 import com.flipperdevices.updater.impl.utils.FolderCreateHelper
-import com.flipperdevices.updater.model.DistributionFile
 import com.flipperdevices.updater.model.DownloadProgress
+import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.model.UpdatingState
 import java.io.File
 import kotlinx.coroutines.CoroutineScope
@@ -30,7 +30,7 @@ class UpdaterTask(
     private val serviceProvider: FlipperServiceProvider,
     private val downloaderApi: DownloaderApi,
     private val context: Context
-) : OneTimeExecutionBleTask<DistributionFile, UpdatingState>(serviceProvider),
+) : OneTimeExecutionBleTask<UpdateRequest, UpdatingState>(serviceProvider),
     LogTagProvider {
     override val TAG = "UpdaterTask"
 
@@ -47,14 +47,16 @@ class UpdaterTask(
     override suspend fun startInternal(
         scope: CoroutineScope,
         serviceApi: FlipperServiceApi,
-        input: DistributionFile,
+        input: UpdateRequest,
         stateListener: suspend (UpdatingState) -> Unit
     ) = FlipperStorageProvider.useTemporaryFolder(context) { tempFolder ->
         info { "Start update with folder: ${tempFolder.absolutePath}" }
+        val updateFile = input.updateTo.updaterFile
 
-        val updaterFolder = File(tempFolder, input.sha256)
+
+        val updaterFolder = File(tempFolder, updateFile.sha256)
         stateListener(UpdatingState.DownloadingFromNetwork(percent = 0.0001f))
-        downloaderApi.download(input, updaterFolder, decompress = true).collect {
+        downloaderApi.download(updateFile, updaterFolder, decompress = true).collect {
             when (it) {
                 DownloadProgress.Finished ->
                     stateListener(UpdatingState.DownloadingFromNetwork(1.0f))
@@ -71,9 +73,9 @@ class UpdaterTask(
             UpdatingState.UploadOnFlipper(0f)
         )
 
-        var updateName = input.url.substringAfterLast("/").substringBefore(".")
+        var updateName = updateFile.url.substringAfterLast("/").substringBefore(".")
         if (updateName.isBlank()) {
-            updateName = input.sha256
+            updateName = updateFile.sha256
         }
         flipperUpdateImageHelper.loadImageOnFlipper(serviceApi.requestApi)
         val flipperPath = "/ext/update/$updateName"

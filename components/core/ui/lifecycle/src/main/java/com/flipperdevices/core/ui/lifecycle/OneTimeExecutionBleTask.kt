@@ -17,6 +17,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
 
+/**
+ * This class allows you to run one and only one task
+ * at a time with coroutine scope and flipper ble
+ */
 abstract class OneTimeExecutionBleTask<INPUT, STATE>(
     private val serviceProvider: FlipperServiceProvider
 ) : TaskWithLifecycle(), LogTagProvider {

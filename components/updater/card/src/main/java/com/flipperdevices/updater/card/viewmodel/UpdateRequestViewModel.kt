@@ -10,6 +10,7 @@ import com.flipperdevices.updater.api.UpdaterUIApi
 import com.flipperdevices.updater.card.di.CardComponent
 import com.flipperdevices.updater.card.model.BatteryState
 import com.flipperdevices.updater.model.UpdateCardState
+import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.model.VersionFiles
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,9 +37,12 @@ class UpdateRequestViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
     fun openUpdate(updateAvailable: UpdateCardState.UpdateAvailable) {
         updaterUIApi.openUpdateScreen(
             silent = false,
-            versionFiles = VersionFiles(
-                updateAvailable.lastVersion,
-                updateAvailable.updaterDist
+            updateRequest = UpdateRequest(
+                updateFrom = updateAvailable.fromVersion,
+                updateTo = VersionFiles(
+                    version = updateAvailable.lastVersion,
+                    updaterFile = updateAvailable.updaterDist
+                )
             )
         )
     }

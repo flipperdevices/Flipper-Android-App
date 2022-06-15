@@ -173,15 +173,16 @@ class UpdateCardViewModel :
             return
         }
         val isUpdateAvailable = alwaysShowUpdate ||
-            latestVersionFromNetwork.version.isGreaterThan(flipperFirmwareVersion) ?: true
+                latestVersionFromNetwork.version.isGreaterThan(flipperFirmwareVersion) ?: true
 
         if (isUpdateAvailable) {
             updateCardState.emit(
                 UpdateCardState.UpdateAvailable(
+                    fromVersion = flipperFirmwareVersion,
                     lastVersion = latestVersionFromNetwork.version,
                     updaterDist = latestVersionFromNetwork.updaterFile,
                     isOtherChannel = latestVersionFromNetwork.version.channel
-                        != flipperFirmwareVersion.channel
+                            != flipperFirmwareVersion.channel
                 )
             )
         } else updateCardState.emit(UpdateCardState.NoUpdate(flipperFirmwareVersion))

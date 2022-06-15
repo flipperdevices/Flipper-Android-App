@@ -1,6 +1,6 @@
 package com.flipperdevices.updater.api
 
-import com.flipperdevices.updater.model.VersionFiles
+import com.flipperdevices.updater.model.UpdateRequest
 
 interface UpdaterUIApi {
     /**
@@ -8,6 +8,6 @@ interface UpdaterUIApi {
      */
     fun openUpdateScreen(
         silent: Boolean = false,
-        versionFiles: VersionFiles? = null
+        updateRequest: UpdateRequest? = null
     )
 }
