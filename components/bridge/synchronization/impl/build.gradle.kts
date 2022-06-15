@@ -22,6 +22,7 @@ dependencies {
     implementation(projects.components.bridge.dao.api)
 
     implementation(projects.components.analytics.shake2report.api)
+    implementation(projects.components.analytics.metric.api)
 
     // Compose
     implementation(libs.compose.ui)

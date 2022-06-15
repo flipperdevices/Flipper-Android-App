@@ -6,6 +6,7 @@ import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
+import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
@@ -15,10 +16,13 @@ import com.flipperdevices.bridge.synchronization.impl.repository.FavoriteSynchro
 import com.flipperdevices.bridge.synchronization.impl.repository.KeysSynchronization
 import com.flipperdevices.bridge.synchronization.impl.repository.storage.ManifestRepository
 import com.flipperdevices.core.ktx.jre.launchWithLock
+import com.flipperdevices.core.ktx.jre.toIntSafe
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.TaskWithLifecycle
+import com.flipperdevices.metric.api.MetricApi
+import com.flipperdevices.metric.api.events.complex.SynchronizationEnd
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.NonCancellable
@@ -34,7 +38,8 @@ class SynchronizationTask(
     private val simpleKeyApi: SimpleKeyApi,
     private val deleteKeyApi: DeleteKeyApi,
     private val utilsKeyApi: UtilsKeyApi,
-    private val favoriteApi: FavoriteApi
+    private val favoriteApi: FavoriteApi,
+    private val metricApi: MetricApi
 ) : TaskWithLifecycle(), LogTagProvider {
     override val TAG = "SynchronizationTask"
 
@@ -81,7 +86,10 @@ class SynchronizationTask(
     ) {
         try {
             onStateUpdate(SynchronizationState.InProgress(0f))
+            val startSynchronizationTime = System.currentTimeMillis()
             launch(serviceApi, onStateUpdate)
+            val endSynchronizationTime = System.currentTimeMillis() - startSynchronizationTime
+            reportSynchronizationEnd(endSynchronizationTime)
             onStateUpdate(SynchronizationState.Finished)
         } catch (
             @Suppress("SwallowedException")
@@ -122,5 +130,19 @@ class SynchronizationTask(
 
         // End synchronization keys
         manifestRepository.saveManifest(keysHashes, favorites)
+    }
+
+    private suspend fun reportSynchronizationEnd(totalTime: Long) {
+        val keys = simpleKeyApi.getAllKeys().groupBy { it.path.fileType }
+        metricApi.reportComplexEvent(
+            SynchronizationEnd(
+                subghzCount = keys[FlipperFileType.SUB_GHZ]?.size ?: 0,
+                rfidCount = keys[FlipperFileType.RFID]?.size ?: 0,
+                nfcCount = keys[FlipperFileType.NFC]?.size ?: 0,
+                infraredCount = keys[FlipperFileType.INFRARED]?.size ?: 0,
+                iButtonCount = keys[FlipperFileType.INFRARED]?.size ?: 0,
+                synchronizationTimeMs = totalTime.toIntSafe()
+            )
+        )
     }
 }
