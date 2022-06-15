@@ -3,8 +3,11 @@ package com.flipperdevices.updater.impl.api
 import android.content.Context
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ktx.jre.toIntSafe
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.metric.api.MetricApi
+import com.flipperdevices.metric.api.events.complex.UpdateFlipperStart
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.impl.UpdaterTask
@@ -26,7 +29,8 @@ import kotlinx.coroutines.withContext
 class UpdaterApiImpl @Inject constructor(
     private val serviceProvider: FlipperServiceProvider,
     private val context: Context,
-    private val downloaderApi: DownloaderApi
+    private val downloaderApi: DownloaderApi,
+    private val metricApi: MetricApi
 ) : UpdaterApi, LogTagProvider {
     override val TAG = "UpdaterApi"
 
@@ -49,6 +53,14 @@ class UpdaterApiImpl @Inject constructor(
             context
         )
         currentActiveTask = localActiveTask
+
+        metricApi.reportComplexEvent(
+            UpdateFlipperStart(
+                updateFromVersion = updateRequest.updateFrom.version,
+                updateToVersion = updateRequest.updateTo.version.version,
+                updateId = updateRequest.requestId.toIntSafe()
+            )
+        )
 
         localActiveTask.start(updateRequest) {
             info { "Downloading state update to $it" }

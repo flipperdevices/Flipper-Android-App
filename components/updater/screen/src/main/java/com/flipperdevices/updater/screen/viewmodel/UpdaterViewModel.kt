@@ -13,6 +13,7 @@ import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
+import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.model.UpdatingState
@@ -48,6 +49,9 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
 
     @Inject
     lateinit var serviceProvider: FlipperServiceProvider
+
+    @Inject
+    lateinit var metricApi: MetricApi
 
     init {
         ComponentHolder.component<UpdaterComponent>().inject(this)
