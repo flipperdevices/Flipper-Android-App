@@ -12,6 +12,8 @@ import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.PairSettings
+import com.flipperdevices.metric.api.MetricApi
+import com.flipperdevices.metric.api.events.complex.FlipperGattInfoEvent
 import com.flipperdevices.shake2report.api.Shake2ReportApi
 import java.util.UUID
 import javax.inject.Inject
@@ -31,7 +33,8 @@ import no.nordicsemi.android.ble.data.Data
 private const val MAX_BATTERY_LEVEL = 100
 
 class FlipperInformationApiImpl(
-    private val scope: CoroutineScope
+    private val scope: CoroutineScope,
+    private val metricApi: MetricApi
 ) : BluetoothGattServiceWrapper, FlipperInformationApi, LogTagProvider {
     override val TAG = "FlipperInformationApi"
     private val informationState = MutableStateFlow(FlipperGATTInformation())
@@ -90,8 +93,10 @@ class FlipperInformationApiImpl(
             infoCharacteristics[Constants.BLEInformationService.SOFTWARE_VERSION]
         ).with { _, data ->
             val content = data.value ?: return@with
+            val version = String(content)
+            metricApi.reportComplexEvent(FlipperGattInfoEvent(version))
             informationState.update {
-                it.copy(softwareVersion = String(content))
+                it.copy(softwareVersion = version)
             }
         }.enqueue()
     }

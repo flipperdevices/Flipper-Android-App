@@ -10,10 +10,13 @@ import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.impl.di.BridgeImplComponent
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.jre.forEachIterable
+import com.flipperdevices.core.ktx.jre.toIntSafe
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.verbose
+import com.flipperdevices.metric.api.MetricApi
+import com.flipperdevices.metric.api.events.complex.FlipperRPCInfoEvent
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.infoRequest
@@ -28,6 +31,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import kotlinx.coroutines.sync.Mutex
@@ -37,7 +41,8 @@ private const val FLIPPER_PATH_INTERNAL_STORAGE = "/int/"
 private const val FLIPPER_PATH_EXTERNAL_STORAGE = "/ext/"
 
 class FlipperRpcInformationApiImpl(
-    private val scope: CoroutineScope
+    private val scope: CoroutineScope,
+    private val metricApi: MetricApi
 ) : FlipperRpcInformationApi, LogTagProvider {
     override val TAG = "FlipperRpcInformationApi"
 
@@ -68,11 +73,12 @@ class FlipperRpcInformationApiImpl(
         requestJobs += scope.launch(Dispatchers.Default) {
             receiveStorageInfo(requestApi, FLIPPER_PATH_EXTERNAL_STORAGE) { storageStats ->
                 info { "Received external storage info: $storageStats" }
-                rpcInformationFlow.update {
+                val information = rpcInformationFlow.updateAndGet {
                     it.copy(
                         externalStorageStats = storageStats
                     )
                 }
+                reportMetric(information)
             }
             requestStatusFlow.update {
                 if (it is FlipperRequestRpcInformationStatus.InProgress) {
@@ -83,14 +89,15 @@ class FlipperRpcInformationApiImpl(
         requestJobs += scope.launch(Dispatchers.Default) {
             receiveStorageInfo(requestApi, FLIPPER_PATH_INTERNAL_STORAGE) { storageStats ->
                 info { "Received internal storage info: $storageStats" }
-                rpcInformationFlow.update {
+                val information = rpcInformationFlow.updateAndGet {
                     it.copy(
                         internalStorageStats = storageStats
                     )
                 }
+                reportMetric(information)
             }
 
-            requestStatusFlow.update {
+            requestStatusFlow.updateAndGet {
                 if (it is FlipperRequestRpcInformationStatus.InProgress) {
                     it.copy(internalStorageRequestFinished = true)
                 } else it
@@ -129,6 +136,21 @@ class FlipperRpcInformationApiImpl(
         }
         requestStatusFlow.emit(FlipperRequestRpcInformationStatus.NotStarted)
         rpcInformationFlow.emit(FlipperRpcInformation())
+    }
+
+    private fun reportMetric(information: FlipperRpcInformation) {
+        val externalStats = information.externalStorageStats as? StorageStats.Loaded
+        val internalStats = information.internalStorageStats as? StorageStats.Loaded
+
+        metricApi.reportComplexEvent(
+            FlipperRPCInfoEvent(
+                sdCardIsAvailable = externalStats != null,
+                internalFreeBytes = internalStats?.free?.toIntSafe() ?: 0,
+                internalTotalBytes = internalStats?.total?.toIntSafe() ?: 0,
+                externalFreeBytes = externalStats?.free?.toIntSafe() ?: 0,
+                externalTotalBytes = externalStats?.total?.toIntSafe() ?: 0
+            )
+        )
     }
 
     private suspend fun receiveStorageInfo(

@@ -16,6 +16,8 @@ dependencies {
     implementation(projects.components.core.log)
     implementation(projects.components.core.preference)
 
+    implementation(projects.components.analytics.metric.api)
+
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.pbutils)
     implementation(projects.components.bridge.service.api)
