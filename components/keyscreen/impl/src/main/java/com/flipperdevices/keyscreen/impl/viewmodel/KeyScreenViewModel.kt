@@ -130,6 +130,7 @@ class KeyScreenViewModel(
     }
 
     fun onOpenEdit() {
+        metricApi.reportSimpleEvent(SimpleEvent.OPEN_EDIT)
         keyScreenState.update {
             if (it is KeyScreenState.Ready) {
                 KeyScreenState.Editing(it.flipperKey, it.parsedKey)
@@ -181,6 +182,7 @@ class KeyScreenViewModel(
     }
 
     fun onShare() {
+        metricApi.reportSimpleEvent(SimpleEvent.OPEN_SHARE)
         val keyPathNotNull = keyPath ?: return
         val state = keyScreenState.value
         if (state !is KeyScreenState.Ready || state.shareState == ShareState.PROGRESS) {
