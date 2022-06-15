@@ -7,7 +7,9 @@ import com.flipperdevices.core.ktx.jre.toIntSafe
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.metric.api.MetricApi
+import com.flipperdevices.metric.api.events.complex.UpdateFlipperEnd
 import com.flipperdevices.metric.api.events.complex.UpdateFlipperStart
+import com.flipperdevices.metric.api.events.complex.UpdateStatus
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.impl.UpdaterTask
@@ -77,6 +79,17 @@ class UpdaterApiImpl @Inject constructor(
     }
 
     override suspend fun cancel() {
+        val updateRequest = updatingState.value.request
+        if (updateRequest != null) {
+            metricApi.reportComplexEvent(
+                UpdateFlipperEnd(
+                    updateFrom = updateRequest.updateFrom.version,
+                    updateTo = updateRequest.updateTo.version.version,
+                    updateId = updateRequest.requestId.toIntSafe(),
+                    updateStatus = UpdateStatus.CANCELED
+                )
+            )
+        }
         currentActiveTask?.onStop()
     }
 
