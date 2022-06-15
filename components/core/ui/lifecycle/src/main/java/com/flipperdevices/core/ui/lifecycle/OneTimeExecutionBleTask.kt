@@ -1,0 +1,77 @@
+package com.flipperdevices.core.ui.lifecycle
+
+import androidx.lifecycle.lifecycleScope
+import com.flipperdevices.bridge.service.api.FlipperServiceApi
+import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.core.ktx.jre.launchWithLock
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
+import com.flipperdevices.core.log.info
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.awaitCancellation
+import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.withContext
+
+abstract class OneTimeExecutionBleTask<INPUT, STATE>(
+    private val serviceProvider: FlipperServiceProvider
+) : TaskWithLifecycle(), LogTagProvider {
+    private val taskScope = lifecycleScope
+    private val mutex = Mutex()
+    private var job: Job? = null
+
+    fun start(
+        input: INPUT,
+        stateListener: suspend (STATE) -> Unit
+    ) = taskScope.launch(Dispatchers.Main) {
+        val localScope = this
+        info { "Called start" }
+        serviceProvider.provideServiceApi(this@OneTimeExecutionBleTask) { serviceApi ->
+            info { "Flipper service provided" }
+            launchWithLock(mutex, taskScope) {
+                job?.cancelAndJoin()
+                job = null
+                job = taskScope.launch(Dispatchers.Default) {
+                    // Waiting to be connected to the flipper
+                    try {
+                        startInternal(localScope, serviceApi, input, stateListener)
+                        withContext(Dispatchers.Main) {
+                            onStop()
+                        }
+                    } catch (
+                        @Suppress("TooGenericExceptionCaught")
+                        throwable: Throwable
+                    ) {
+                        error(throwable) { "Error during execution" }
+                        withContext(Dispatchers.Main) {
+                            onStop()
+                        }
+                    }
+                }
+            }
+        }
+        onStart()
+        taskScope.launch(Dispatchers.Default) {
+            try {
+                awaitCancellation()
+            } finally {
+                withContext(NonCancellable) {
+                    onStopAsync(stateListener)
+                }
+            }
+        }
+    }
+
+    abstract suspend fun startInternal(
+        scope: CoroutineScope,
+        serviceApi: FlipperServiceApi,
+        input: INPUT,
+        stateListener: suspend (STATE) -> Unit
+    )
+
+    abstract suspend fun onStopAsync(stateListener: suspend (STATE) -> Unit)
+}
