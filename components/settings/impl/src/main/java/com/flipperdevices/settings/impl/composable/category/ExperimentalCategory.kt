@@ -10,7 +10,6 @@ import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.composable.elements.CategoryElement
 import com.flipperdevices.settings.impl.composable.elements.ClickableElement
 import com.flipperdevices.settings.impl.composable.elements.GrayDivider
-import com.flipperdevices.settings.impl.model.NavGraphRoute
 import com.flipperdevices.settings.impl.viewmodels.ExperimentalViewModel
 import com.flipperdevices.settings.impl.viewmodels.SettingsViewModel
 
@@ -19,7 +18,7 @@ fun ExperimentalCategory(
     settings: Settings,
     navController: NavController,
     settingsViewModel: SettingsViewModel,
-    experimentalViewModel: ExperimentalViewModel = viewModel()
+    experimentalViewModel: ExperimentalViewModel = viewModel(),
 ) {
     val router = LocalRouter.current
 
@@ -42,9 +41,7 @@ fun ExperimentalCategory(
                     titleId = R.string.experimental_screen_streaming,
                     descriptionId = R.string.experimental_screen_streaming_desc,
                     onClick = {
-                        navController.navigate(NavGraphRoute.ScreenStreaming.name) {
-                            popUpTo(NavGraphRoute.Settings.name)
-                        }
+                        experimentalViewModel.onOpenScreenStreaming(navController)
                     }
                 )
             }
