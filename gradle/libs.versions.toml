@@ -43,6 +43,7 @@ flexmark = "0.42.14"
 ktor = "1.6.8"
 apache-compress = "1.21"
 apache-codec = "1.15"
+countly = "21.11.2"
 
 # Testing
 junit = "4.12"
@@ -115,6 +116,7 @@ sentry-gradle = { module = "io.sentry:sentry-android-gradle-plugin", version.ref
 sentry-timber = { module = "io.sentry:sentry-android-timber", version.ref = "sentry-runtime" }
 zip4j = { module = "net.lingala.zip4j:zip4j", version.ref = "zip4j" }
 seismic = { module = "com.squareup:seismic", version.ref = "seismic" }
+countly = { module = "ly.count.android:sdk", version.ref = "countly" }
 
 # KTX
 ktx = { module = "androidx.core:core-ktx", version.ref = "ktx" }

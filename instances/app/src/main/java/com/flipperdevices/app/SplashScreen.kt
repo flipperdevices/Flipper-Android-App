@@ -10,6 +10,8 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.deeplink.api.DeepLinkParser
 import com.flipperdevices.deeplink.model.Deeplink
+import com.flipperdevices.metric.api.MetricApi
+import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.singleactivity.api.SingleActivityApi
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -28,12 +30,16 @@ class SplashScreen : AppCompatActivity(), LogTagProvider {
     @Inject
     lateinit var synchronizationApi: SynchronizationApi
 
+    @Inject
+    lateinit var metricApi: MetricApi
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ComponentHolder.component<MainComponent>().inject(this)
 
         info { "Open SplashScreen with $intent" }
 
+        metricApi.reportSimpleEvent(SimpleEvent.APP_OPEN)
         synchronizationApi.startSynchronization()
 
         // Open single activity if it is not deeplink

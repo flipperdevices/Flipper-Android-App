@@ -26,4 +26,5 @@ message Settings {
   bool always_update = 8;
   bool shake_to_report = 9;
   SelectedChannel selected_channel = 10;
+  string uuid = 11;
 }

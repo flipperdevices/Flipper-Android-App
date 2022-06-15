@@ -90,6 +90,9 @@ dependencies {
     debugImplementation(projects.components.analytics.shake2report.impl)
     internalImplementation(projects.components.analytics.shake2report.impl)
 
+    implementation(projects.components.analytics.metric.api)
+    implementation(projects.components.analytics.metric.impl)
+
     implementation(libs.ktor.client)
 
     implementation(libs.annotations)
