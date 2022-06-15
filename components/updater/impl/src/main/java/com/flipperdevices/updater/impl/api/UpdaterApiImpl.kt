@@ -69,6 +69,23 @@ class UpdaterApiImpl @Inject constructor(
             withContext(NonCancellable) {
                 updatingState.emit(UpdatingStateWithRequest(it, request = updateRequest))
 
+                val endReason: UpdateStatus? = when (it) {
+                    UpdatingState.FailedDownload -> UpdateStatus.FAILED_DOWNLOAD
+                    UpdatingState.FailedPrepare -> UpdateStatus.FAILED_PREPARE
+                    UpdatingState.FailedUpload -> UpdateStatus.FAILED_UPLOAD
+                    else -> null
+                }
+                if (endReason != null) {
+                    metricApi.reportComplexEvent(
+                        UpdateFlipperEnd(
+                            updateFrom = updateRequest.updateFrom.version,
+                            updateTo = updateRequest.updateTo.version.version,
+                            updateId = updateRequest.requestId.toIntSafe(),
+                            updateStatus = endReason
+                        )
+                    )
+                }
+
                 if (it == UpdatingState.NotStarted || it == UpdatingState.Rebooting) {
                     currentActiveTask?.onStop()
                     currentActiveTask = null

@@ -8,6 +8,10 @@ class UpdatingStateWithRequest(
 sealed class UpdatingState {
     object NotStarted : UpdatingState()
 
+    object FailedDownload : UpdatingState()
+    object FailedPrepare : UpdatingState()
+    object FailedUpload : UpdatingState()
+
     data class DownloadingFromNetwork(
         val percent: Float
     ) : UpdatingState()

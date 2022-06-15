@@ -43,9 +43,6 @@ abstract class OneTimeExecutionBleTask<INPUT, STATE>(
                     // Waiting to be connected to the flipper
                     try {
                         startInternal(localScope, serviceApi, input, stateListener)
-                        withContext(Dispatchers.Main) {
-                            onStop()
-                        }
                     } catch (
                         @Suppress("TooGenericExceptionCaught")
                         throwable: Throwable

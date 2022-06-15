@@ -1,11 +1,13 @@
 package com.flipperdevices.updater.impl
 
 import android.content.Context
+import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.core.ui.lifecycle.OneTimeExecutionBleTask
@@ -17,10 +19,12 @@ import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.impl.service.UploadFirmwareService
 import com.flipperdevices.updater.impl.tasks.FlipperUpdateImageHelper
 import com.flipperdevices.updater.impl.utils.FolderCreateHelper
+import com.flipperdevices.updater.model.DistributionFile
 import com.flipperdevices.updater.model.DownloadProgress
 import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.model.UpdatingState
 import java.io.File
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -53,8 +57,55 @@ class UpdaterTask(
         info { "Start update with folder: ${tempFolder.absolutePath}" }
         val updateFile = input.updateTo.updaterFile
 
-
         val updaterFolder = File(tempFolder, updateFile.sha256)
+        try {
+            downloadFirmware(updateFile, updaterFolder, stateListener)
+        } catch (e: Throwable) {
+            error(e) { "Failed when download from network" }
+            if (e !is CancellationException) {
+                stateListener(UpdatingState.FailedDownload)
+            }
+            return@useTemporaryFolder
+        }
+
+        stateListener(
+            UpdatingState.UploadOnFlipper(0f)
+        )
+        val flipperPath = try {
+            prepareToUpload(updateFile, serviceApi.requestApi)
+        } catch (e: Throwable) {
+            error(e) { "Failed when prepare upload to flipper" }
+            if (e !is CancellationException) {
+                stateListener(UpdatingState.FailedPrepare)
+            }
+            return@useTemporaryFolder
+        }
+
+        try {
+            uploadToFlipper(
+                scope,
+                flipperPath,
+                updaterFolder,
+                serviceApi.requestApi,
+                stateListener
+            )
+        } catch (e: Throwable) {
+            error(e) { "Failed when upload to flipper" }
+            if (e !is CancellationException) {
+                stateListener(UpdatingState.FailedUpload)
+            }
+            return@useTemporaryFolder
+        }
+
+        isRebooting = true
+        stateListener(UpdatingState.Rebooting)
+    }
+
+    private suspend fun downloadFirmware(
+        updateFile: DistributionFile,
+        updaterFolder: File,
+        stateListener: suspend (UpdatingState) -> Unit
+    ) {
         stateListener(UpdatingState.DownloadingFromNetwork(percent = 0.0001f))
         downloaderApi.download(updateFile, updaterFolder, decompress = true).collect {
             when (it) {
@@ -68,22 +119,32 @@ class UpdaterTask(
                 DownloadProgress.NotStarted -> stateListener(UpdatingState.NotStarted)
             }
         }
+    }
 
-        stateListener(
-            UpdatingState.UploadOnFlipper(0f)
-        )
-
+    private suspend fun prepareToUpload(
+        updateFile: DistributionFile,
+        requestApi: FlipperRequestApi
+    ): String {
         var updateName = updateFile.url.substringAfterLast("/").substringBefore(".")
         if (updateName.isBlank()) {
             updateName = updateFile.sha256
         }
-        flipperUpdateImageHelper.loadImageOnFlipper(serviceApi.requestApi)
+        flipperUpdateImageHelper.loadImageOnFlipper(requestApi)
         val flipperPath = "/ext/update/$updateName"
 
-        FolderCreateHelper.mkdirFolderOnFlipper(serviceApi.requestApi, flipperPath)
+        FolderCreateHelper.mkdirFolderOnFlipper(requestApi, flipperPath)
+        return flipperPath
+    }
 
+    private suspend fun uploadToFlipper(
+        scope: CoroutineScope,
+        flipperPath: String,
+        updaterFolder: File,
+        requestApi: FlipperRequestApi,
+        stateListener: suspend (UpdatingState) -> Unit
+    ) {
         UploadFirmwareService.upload(
-            serviceApi.requestApi,
+            requestApi,
             updaterFolder,
             flipperPath
         ) { sended, totalBytes ->
@@ -96,7 +157,7 @@ class UpdaterTask(
             }
         }
 
-        serviceApi.requestApi.request(
+        requestApi.request(
             main {
                 systemUpdateRequest = updateRequest {
                     updateManifest = "$flipperPath/update.fuf"
@@ -104,14 +165,12 @@ class UpdaterTask(
             }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
         ).first()
 
-        serviceApi.requestApi.requestWithoutAnswer(
+        requestApi.requestWithoutAnswer(
             main {
                 systemRebootRequest = rebootRequest {
                     mode = System.RebootRequest.RebootMode.UPDATE
                 }
             }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
         )
-        isRebooting = true
-        stateListener(UpdatingState.Rebooting)
     }
 }
