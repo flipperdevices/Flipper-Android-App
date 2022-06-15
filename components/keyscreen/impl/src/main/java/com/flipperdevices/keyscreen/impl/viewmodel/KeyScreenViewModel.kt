@@ -23,6 +23,8 @@ import com.flipperdevices.keyscreen.impl.model.DeleteState
 import com.flipperdevices.keyscreen.impl.model.FavoriteState
 import com.flipperdevices.keyscreen.impl.model.KeyScreenState
 import com.flipperdevices.keyscreen.impl.model.ShareState
+import com.flipperdevices.metric.api.MetricApi
+import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.protobuf.app.startRequest
 import com.flipperdevices.protobuf.main
 import com.github.terrakok.cicerone.Router
@@ -53,6 +55,9 @@ class KeyScreenViewModel(
 
     @Inject
     lateinit var serviceProvider: FlipperServiceProvider
+
+    @Inject
+    lateinit var metricApi: MetricApi
 
     init {
         ComponentHolder.component<KeyScreenComponent>().inject(this)
@@ -109,6 +114,7 @@ class KeyScreenViewModel(
     }
 
     fun onEmulate(flipperAppName: String, keyPath: FlipperKeyPath) {
+        metricApi.reportSimpleEvent(SimpleEvent.OPEN_EMULATE)
         serviceProvider.provideServiceApi(this) { service ->
             viewModelScope.launch {
                 service.requestApi.requestWithoutAnswer(
