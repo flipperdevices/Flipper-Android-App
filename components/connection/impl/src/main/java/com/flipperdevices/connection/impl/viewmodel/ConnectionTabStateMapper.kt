@@ -4,10 +4,8 @@ import android.content.Context
 import com.flipperdevices.bottombar.model.TabState
 import com.flipperdevices.connection.impl.R
 import com.flipperdevices.connection.impl.model.ConnectionStatusState
+import com.flipperdevices.core.ktx.jre.roundPercentToString
 import com.flipperdevices.core.ui.res.R as DesignSystem
-import kotlin.math.roundToInt
-
-const val PERCENT_MAX = 100
 
 object ConnectionTabStateMapper {
     @Suppress("LongMethod")
@@ -56,7 +54,7 @@ object ConnectionTabStateMapper {
                 notSelectedIcon = R.raw.ic_syncing,
                 text = context.getString(
                     R.string.connection_status_syncing,
-                    roundPercent(connectionState.progress)
+                    connectionState.progress.roundPercentToString()
                 ),
                 selectedColor = DesignSystem.color.accent_secondary,
                 unselectedColor = DesignSystem.color.black_30
@@ -70,10 +68,5 @@ object ConnectionTabStateMapper {
                 unselectedColorIcon = DesignSystem.color.accent_secondary
             )
         }
-    }
-
-    private fun roundPercent(percent: Float): String {
-        val processedPercent = if (percent > 1.0f) 1.0f else if (percent < 0.0f) 0.0f else percent
-        return "${(processedPercent * PERCENT_MAX).roundToInt()}%"
     }
 }

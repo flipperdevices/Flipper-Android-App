@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.archive.impl.R
 import com.flipperdevices.archive.impl.composable.category.ComposableCategoryCard
+import com.flipperdevices.archive.impl.composable.page.ArchiveProgressScreen
 import com.flipperdevices.archive.impl.composable.page.ComposableAllKeysTitle
 import com.flipperdevices.archive.impl.composable.page.ComposableFavoriteKeysTitle
 import com.flipperdevices.archive.impl.composable.page.ComposableKeysGrid
@@ -50,8 +51,30 @@ fun ComposableArchive(
     val keys by tabViewModel.getKeys().collectAsState()
     val favoriteKeys by tabViewModel.getFavoriteKeys().collectAsState()
     val synchronizationState by tabViewModel.getSynchronizationState().collectAsState()
+    val localSynchronizationState = synchronizationState
     val isKeysPresented = !favoriteKeys.isNullOrEmpty() || !keys.isNullOrEmpty()
 
+    if (localSynchronizationState is SynchronizationState.InProgress) {
+        ArchiveProgressScreen(localSynchronizationState)
+    } else ComposableArchiveReady(
+        synchronizationUiApi,
+        keys,
+        favoriteKeys,
+        tabViewModel,
+        synchronizationState,
+        isKeysPresented
+    )
+}
+
+@Composable
+private fun ComposableArchiveReady(
+    synchronizationUiApi: SynchronizationUiApi,
+    keys: List<FlipperKey>?,
+    favoriteKeys: List<FlipperKey>,
+    tabViewModel: GeneralTabViewModel,
+    synchronizationState: SynchronizationState,
+    isKeysPresented: Boolean
+) {
     Column(verticalArrangement = Arrangement.Top) {
         ComposableAppBar(
             title = stringResource(R.string.archive_title),
