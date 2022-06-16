@@ -23,7 +23,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 class UpdateStateViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
-    private val flipperStateFlow = MutableStateFlow<FlipperState>(FlipperState.NotReady)
+    private val flipperStateFlow = MutableStateFlow<FlipperState>(FlipperState.NOT_READY)
 
     @Inject
     lateinit var serviceProvider: FlipperServiceProvider
@@ -74,20 +74,20 @@ class UpdateStateViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
                 return@combine when (updaterState.state) {
                     is UpdatingState.Rebooting -> {
                         updaterApi.onDeviceConnected(version)
-                        FlipperState.Ready
+                        FlipperState.READY
                     }
                     is UpdatingState.Complete -> {
-                        FlipperState.Complete
+                        FlipperState.COMPLETE
                     }
                     is UpdatingState.Failed -> {
-                        FlipperState.Failed
+                        FlipperState.FAILED
                     }
-                    else -> FlipperState.Ready
+                    else -> FlipperState.READY
                 }
             }
             return@combine if (updaterState.state is UpdatingState.Rebooting) {
-                FlipperState.Updating
-            } else FlipperState.NotReady
+                FlipperState.UPDATING
+            } else FlipperState.NOT_READY
         }.onEach {
             flipperStateFlow.emit(it)
         }.launchIn(viewModelScope)
