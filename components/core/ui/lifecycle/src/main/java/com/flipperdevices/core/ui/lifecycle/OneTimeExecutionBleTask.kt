@@ -32,7 +32,6 @@ abstract class OneTimeExecutionBleTask<INPUT, STATE>(
         input: INPUT,
         stateListener: suspend (STATE) -> Unit
     ) = taskScope.launch(Dispatchers.Main) {
-        val localScope = this
         info { "Called start" }
         serviceProvider.provideServiceApi(this@OneTimeExecutionBleTask) { serviceApi ->
             info { "Flipper service provided" }
@@ -40,6 +39,7 @@ abstract class OneTimeExecutionBleTask<INPUT, STATE>(
                 job?.cancelAndJoin()
                 job = null
                 job = taskScope.launch(Dispatchers.Default) {
+                    val localScope = this
                     // Waiting to be connected to the flipper
                     try {
                         startInternal(localScope, serviceApi, input, stateListener)

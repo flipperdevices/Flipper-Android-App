@@ -7,8 +7,10 @@ import kotlinx.coroutines.flow.StateFlow
 interface UpdaterApi {
     fun isUpdateInProcess(): Boolean
     fun getState(): StateFlow<UpdatingStateWithRequest>
+    fun resetState()
 
-    fun onDeviceConnected()
+    fun onDeviceConnected(versionName: String)
+
     fun start(updateRequest: UpdateRequest)
     suspend fun cancel()
 }

@@ -110,15 +110,25 @@ class UpdaterApiImpl @Inject constructor(
         currentActiveTask?.onStop()
     }
 
-    override fun onDeviceConnected() {
+    override fun onDeviceConnected(versionName: String) {
         updatingState.update {
             if (it.state == UpdatingState.Rebooting) {
-                UpdatingStateWithRequest(UpdatingState.NotStarted, request = it.request)
+                if (it.request?.updateTo?.version?.version == versionName) {
+                    UpdatingStateWithRequest(UpdatingState.Complete, request = it.request)
+                } else UpdatingStateWithRequest(UpdatingState.Failed, request = it.request)
             } else it
         }
     }
 
     override fun getState(): StateFlow<UpdatingStateWithRequest> = updatingState
+    override fun resetState() {
+        updatingState.update {
+            if (it.state != UpdatingState.NotStarted) {
+                UpdatingStateWithRequest(UpdatingState.NotStarted, request = null)
+            } else it
+        }
+    }
+
     override fun isUpdateInProcess(): Boolean {
         return isLaunched.get()
     }

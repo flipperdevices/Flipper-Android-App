@@ -97,7 +97,7 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
         CancelDialogBuilder.showDialog { cancelInternal() }
     }
 
-    fun cancelInternal() = launchWithLock(mutex, viewModelScope, "cancel") {
+    private fun cancelInternal() = launchWithLock(mutex, viewModelScope, "cancel") {
         updaterJob?.cancelAndJoin()
         updaterJob = null
         updaterScreenState.emit(UpdaterScreenState.CancelingUpdate)
@@ -129,7 +129,12 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
                             percent = state.percent,
                             version = version
                         )
-                    UpdatingState.Rebooting ->
+                    UpdatingState.Rebooting,
+                    UpdatingState.Complete,
+                    UpdatingState.Failed,
+                    UpdatingState.FailedUpload,
+                    UpdatingState.FailedPrepare,
+                    UpdatingState.FailedDownload ->
                         if (connectionState !is ConnectionState.Ready) {
                             UpdaterScreenState.Finish
                         } else UpdaterScreenState.Rebooting

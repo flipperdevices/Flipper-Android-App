@@ -21,4 +21,11 @@ sealed class UpdatingState {
     ) : UpdatingState()
 
     object Rebooting : UpdatingState()
+
+    object Complete : UpdatingState()
+
+    /**
+     * When update process is correct, but after restart version mismatch
+     */
+    object Failed : UpdatingState()
 }
