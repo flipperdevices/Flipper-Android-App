@@ -1,6 +1,5 @@
 package com.flipperdevices.updater.screen.fragments
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import android.content.Context
 import android.view.WindowManager
 import androidx.compose.runtime.Composable
@@ -11,6 +10,7 @@ import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.ui.fragment.ComposeFragment
 import com.flipperdevices.core.ui.fragment.provider.StatusBarColorProvider
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.singleactivity.api.SingleActivityApi
 import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.screen.composable.ComposableUpdaterScreen

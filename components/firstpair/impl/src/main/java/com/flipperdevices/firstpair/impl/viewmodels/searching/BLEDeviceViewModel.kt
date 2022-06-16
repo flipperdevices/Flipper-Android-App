@@ -70,8 +70,8 @@ class BLEDeviceViewModel : ViewModel(), LogTagProvider {
             .collect { devices ->
                 state.update {
                     val devicesList = devices.toList()
-                    if ((it !is ScanState.Founded || it.devices != devices)
-                        && devicesList.isNotEmpty()
+                    if ((it !is ScanState.Founded || it.devices != devices) &&
+                        devicesList.isNotEmpty()
                     ) {
                         ScanState.Founded(devicesList)
                     } else it

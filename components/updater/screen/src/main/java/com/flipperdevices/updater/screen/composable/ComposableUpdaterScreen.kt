@@ -1,7 +1,5 @@
 package com.flipperdevices.updater.screen.composable
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
-import com.flipperdevices.info.shared.R as SharedInfoResources
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
@@ -28,6 +26,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.info.shared.R as SharedInfoResources
 import com.flipperdevices.updater.screen.R
 import com.flipperdevices.updater.screen.model.FailedReason
 import com.flipperdevices.updater.screen.model.UpdaterScreenState
@@ -126,5 +126,6 @@ private fun ComposableUpdaterScreenPreview() {
     ComposableUpdaterScreen(
         UpdaterScreenState.Failed(FailedReason.DOWNLOAD_FROM_NETWORK),
         onCancel = {},
-        onRetry = {})
+        onRetry = {}
+    )
 }

@@ -1,6 +1,5 @@
 package com.flipperdevices.updater.screen.composable
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
@@ -18,6 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.markdown.ClickableUrlText
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.updater.screen.R
 
 @Composable
@@ -61,10 +61,10 @@ fun ComposableFailedUploadContent() {
     ComposableUpdateFailedContent(
         imageId = R.drawable.pic_flipper_upload_failed,
         titleId = R.string.update_screen_failed_flipper_title,
-        descriptionId = R.string.update_screen_failed_flipper_desc,
+        descriptionId = R.string.update_screen_failed_flipper_desc
     ) {
         ClickableUrlText(
-            markdownResId = R.string.update_screen_failed_flipper_link,
+            markdownResId = R.string.update_screen_failed_flipper_link
         )
     }
 }
@@ -74,7 +74,7 @@ fun ComposableFailedDownloadContent(onRetry: () -> Unit) {
     ComposableUpdateFailedContent(
         imageId = R.drawable.pic_server_error,
         titleId = R.string.update_screen_failed_network_title,
-        descriptionId = R.string.update_screen_failed_network_desc,
+        descriptionId = R.string.update_screen_failed_network_desc
     ) {
         Text(
             modifier = Modifier.clickable(onClick = onRetry),
