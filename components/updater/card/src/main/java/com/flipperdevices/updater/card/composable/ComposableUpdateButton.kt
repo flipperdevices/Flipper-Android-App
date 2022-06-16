@@ -96,7 +96,7 @@ private fun ComposableUpdateButtonContent(
         Box(
             modifier = buttonModifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(3.dp))
+                .clip(RoundedCornerShape(9.dp))
                 .background(colorResource(colorId)),
             contentAlignment = Alignment.Center
         ) {
