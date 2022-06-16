@@ -85,9 +85,6 @@ object UploadFirmwareService : LogTagProvider {
                 }
             }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
         ).first()
-        if (response.commandStatus != Flipper.CommandStatus.OK) {
-            error("Failed hash with status ${response.commandStatus}")
-        }
         if (response.hasStorageMd5SumResponse()) {
             return response.storageMd5SumResponse.md5Sum == fileMd5
         }
