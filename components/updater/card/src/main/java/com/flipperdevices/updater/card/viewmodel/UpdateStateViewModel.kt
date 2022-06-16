@@ -6,7 +6,11 @@ import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.ktx.jre.toIntSafe
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
+import com.flipperdevices.metric.api.MetricApi
+import com.flipperdevices.metric.api.events.complex.UpdateFlipperEnd
+import com.flipperdevices.metric.api.events.complex.UpdateStatus
 import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.card.di.CardComponent
 import com.flipperdevices.updater.card.model.FlipperState
@@ -18,7 +22,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-class FlipperStateViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
+class UpdateStateViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
     private val flipperStateFlow = MutableStateFlow<FlipperState>(FlipperState.NotReady)
 
     @Inject
@@ -27,9 +31,31 @@ class FlipperStateViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
     @Inject
     lateinit var updaterApi: UpdaterApi
 
+    @Inject
+    lateinit var metricApi: MetricApi
+
     init {
         ComponentHolder.component<CardComponent>().inject(this)
         serviceProvider.provideServiceApi(consumer = this, lifecycleOwner = this)
+
+        updaterApi.getState().onEach {
+            val updateRequest = it.request
+            val endStatus = when (it.state) {
+                UpdatingState.Complete -> UpdateStatus.COMPLETED
+                UpdatingState.Failed -> UpdateStatus.FAILED
+                else -> null
+            }
+            if (endStatus != null && updateRequest != null) {
+                metricApi.reportComplexEvent(
+                    UpdateFlipperEnd(
+                        updateFrom = updateRequest.updateFrom.version,
+                        updateTo = updateRequest.updateTo.version.version,
+                        updateId = updateRequest.requestId.toIntSafe(),
+                        updateStatus = endStatus
+                    )
+                )
+            }
+        }.launchIn(viewModelScope)
     }
 
     fun getState(): StateFlow<FlipperState> = flipperStateFlow
@@ -45,8 +71,19 @@ class FlipperStateViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
             val version = informationState.softwareVersion
 
             if (isReady && version != null) {
-                updaterApi.onDeviceConnected(version)
-                return@combine FlipperState.Ready
+                return@combine when (updaterState.state) {
+                    is UpdatingState.Rebooting -> {
+                        updaterApi.onDeviceConnected(version)
+                        FlipperState.Ready
+                    }
+                    is UpdatingState.Complete -> {
+                        FlipperState.Complete
+                    }
+                    is UpdatingState.Failed -> {
+                        FlipperState.Failed
+                    }
+                    else -> FlipperState.Ready
+                }
             }
             return@combine if (updaterState.state is UpdatingState.Rebooting) {
                 FlipperState.Updating

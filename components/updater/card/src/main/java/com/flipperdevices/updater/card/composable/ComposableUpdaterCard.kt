@@ -1,5 +1,6 @@
 package com.flipperdevices.updater.card.composable
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -17,31 +18,33 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.info.shared.ComposableDeviceInfoRow
 import com.flipperdevices.info.shared.ComposableInfoDivider
 import com.flipperdevices.info.shared.InfoElementCard
 import com.flipperdevices.updater.card.R
 import com.flipperdevices.updater.card.model.FlipperState
-import com.flipperdevices.updater.card.viewmodel.FlipperStateViewModel
 import com.flipperdevices.updater.card.viewmodel.UpdateCardViewModel
+import com.flipperdevices.updater.card.viewmodel.UpdateStateViewModel
 import com.flipperdevices.updater.model.FirmwareVersion
 import com.flipperdevices.updater.model.UpdateCardState
 
 @Composable
 internal fun ComposableUpdaterCardInternal(
     modifier: Modifier,
-    deviceStatusViewModel: FlipperStateViewModel = viewModel(),
+    deviceStatusViewModel: UpdateStateViewModel = viewModel(),
     updateCardViewModel: UpdateCardViewModel = viewModel()
 ) {
     val deviceStatus by deviceStatusViewModel.getState().collectAsState()
 
-    if (deviceStatus !is FlipperState.Ready) {
-        if (deviceStatus is FlipperState.Updating) {
+    when (deviceStatus) {
+        FlipperState.Complete -> {} //TODO: add dialog
+        FlipperState.Failed -> {} //TODO: add dialog
+        FlipperState.NotReady -> return
+        FlipperState.Updating -> {
             ComposableUpdaterReboot(modifier)
+            return
         }
-
-        return
+        FlipperState.Ready -> {}
     }
 
     InfoElementCard(
