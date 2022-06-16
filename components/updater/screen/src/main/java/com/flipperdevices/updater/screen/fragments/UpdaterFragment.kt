@@ -1,5 +1,6 @@
 package com.flipperdevices.updater.screen.fragments
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import android.content.Context
 import android.view.WindowManager
 import androidx.compose.runtime.Composable
@@ -9,6 +10,7 @@ import androidx.fragment.app.viewModels
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.ui.fragment.ComposeFragment
+import com.flipperdevices.core.ui.fragment.provider.StatusBarColorProvider
 import com.flipperdevices.singleactivity.api.SingleActivityApi
 import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.screen.composable.ComposableUpdaterScreen
@@ -19,7 +21,7 @@ import javax.inject.Inject
 
 private const val EXTRA_UPDATE_REQUEST = "update_request"
 
-class UpdaterFragment : ComposeFragment() {
+class UpdaterFragment : ComposeFragment(), StatusBarColorProvider {
     @Inject
     lateinit var singleActivity: SingleActivityApi
 
@@ -59,6 +61,8 @@ class UpdaterFragment : ComposeFragment() {
     private fun onFinish() {
         singleActivity.open()
     }
+
+    override fun getStatusBarColor() = DesignSystem.color.background
 
     companion object {
         fun getInstance(updateRequest: UpdateRequest?): UpdaterFragment {

@@ -11,6 +11,7 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.core.ui.lifecycle.OneTimeExecutionBleTask
+import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.system.System
 import com.flipperdevices.protobuf.system.rebootRequest
@@ -171,13 +172,16 @@ class UpdaterTask(
             }
         }
 
-        requestApi.request(
+        val response = requestApi.request(
             main {
                 systemUpdateRequest = updateRequest {
                     updateManifest = "$flipperPath/update.fuf"
                 }
             }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
         ).first()
+        if (response.commandStatus != Flipper.CommandStatus.OK) {
+            error("Failed send update request")
+        }
 
         requestApi.requestWithoutAnswer(
             main {
