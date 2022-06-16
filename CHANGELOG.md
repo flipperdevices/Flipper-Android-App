@@ -11,6 +11,7 @@
 - [Feature] Show when flipper charging
 - [Feature] Add metrics (fully anonymously)
 - [BUGFIX] Fix incorrect corner radius for battery icon
+- [CI] Pass countly prod creds in application when building
 
 # 1.1.2
 
