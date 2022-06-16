@@ -45,7 +45,10 @@ class UpdaterFragment : ComposeFragment() {
             onFinish()
             return
         }
-        ComposableUpdaterScreen(updaterScreenState, updaterViewModel)
+        ComposableUpdaterScreen(updaterScreenState, updaterViewModel::cancel) {
+            val updateRequest = arguments?.getParcelable<UpdateRequest>(EXTRA_UPDATE_REQUEST)
+            updaterViewModel.retry(updateRequest)
+        }
     }
 
     override fun onStop() {

@@ -1,5 +1,9 @@
 package com.flipperdevices.updater.screen.composable
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.info.shared.R as SharedInfoResources
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -20,36 +24,51 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.flipperdevices.core.ui.res.R as DesignSystem
-import com.flipperdevices.info.shared.R as SharedInfoResources
 import com.flipperdevices.updater.screen.R
+import com.flipperdevices.updater.screen.model.FailedReason
 import com.flipperdevices.updater.screen.model.UpdaterScreenState
-import com.flipperdevices.updater.screen.viewmodel.UpdaterViewModel
 
 @Composable
 fun ComposableUpdaterScreen(
     updaterScreenState: UpdaterScreenState,
-    updaterViewModel: UpdaterViewModel
+    onCancel: () -> Unit,
+    onRetry: () -> Unit
 ) {
     Column {
         Column(
             Modifier.weight(weight = 1f),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            UpdaterScreenHeader()
-            ComposableUpdateContent(updaterScreenState)
+            if (updaterScreenState is UpdaterScreenState.Failed) {
+                UpdaterScreenHeader(
+                    R.string.update_screen_title_failed,
+                    R.drawable.pic_flipper_update_failed,
+                    bottomPadding = 38.dp
+                )
+            } else UpdaterScreenHeader(
+                R.string.update_screen_title,
+                SharedInfoResources.drawable.ic_white_flipper,
+                bottomPadding = 64.dp
+            )
+            ComposableUpdateContent(updaterScreenState, onRetry)
         }
-        CancelButton(updaterScreenState, updaterViewModel)
+        CancelButton(updaterScreenState, onCancel)
     }
 }
 
 @Composable
-private fun UpdaterScreenHeader() {
+private fun UpdaterScreenHeader(
+    @StringRes titleId: Int,
+    @DrawableRes imageId: Int,
+    bottomPadding: Dp
+) {
     Text(
         modifier = Modifier.padding(top = 48.dp, start = 14.dp, end = 14.dp),
-        text = stringResource(R.string.update_screen_title),
+        text = stringResource(titleId),
         fontSize = 18.sp,
         fontWeight = FontWeight.W700,
         color = colorResource(DesignSystem.color.black_100),
@@ -59,9 +78,9 @@ private fun UpdaterScreenHeader() {
     Image(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 22.dp, start = 14.dp, end = 14.dp, bottom = 64.dp),
-        painter = painterResource(SharedInfoResources.drawable.ic_white_flipper),
-        contentDescription = null,
+            .padding(top = 22.dp, start = 14.dp, end = 14.dp, bottom = bottomPadding),
+        painter = painterResource(imageId),
+        contentDescription = stringResource(titleId),
         contentScale = ContentScale.FillWidth
     )
 }
@@ -69,7 +88,7 @@ private fun UpdaterScreenHeader() {
 @Composable
 private fun CancelButton(
     updaterScreenState: UpdaterScreenState,
-    updaterViewModel: UpdaterViewModel
+    onCancel: () -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -87,7 +106,7 @@ private fun CancelButton(
             modifier = Modifier.clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(),
-                onClick = updaterViewModel::cancel
+                onClick = onCancel
             ),
             text = stringResource(R.string.update_screen_cancel),
             textAlign = TextAlign.Center,
@@ -96,4 +115,16 @@ private fun CancelButton(
             fontWeight = FontWeight.W500
         )
     }
+}
+
+@Composable
+@Preview(
+    showBackground = true,
+    showSystemUi = true
+)
+private fun ComposableUpdaterScreenPreview() {
+    ComposableUpdaterScreen(
+        UpdaterScreenState.Failed(FailedReason.DOWNLOAD_FROM_NETWORK),
+        onCancel = {},
+        onRetry = {})
 }
