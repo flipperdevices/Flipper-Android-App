@@ -63,14 +63,12 @@ class DeviceStatusViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
                         deviceName = "Unknown"
                     }
                     val batteryLevel = flipperInformation.batteryLevel
-                    val flipperVersion = flipperInformation.softwareVersion
-                    if (batteryLevel == null || flipperVersion == null) {
+                    if (batteryLevel == null) {
                         DeviceStatus.NoDeviceInformation(
                             deviceName,
                             connectInProgress = true
                         )
                     } else {
-                        updaterApi.onDeviceConnected(flipperVersion)
                         DeviceStatus.Connected(
                             deviceName,
                             batteryLevel,

@@ -6,7 +6,6 @@ import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.ComponentHolder
-import com.flipperdevices.core.ktx.jre.combine
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.card.di.CardComponent
@@ -15,6 +14,7 @@ import com.flipperdevices.updater.model.UpdatingState
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -35,18 +35,24 @@ class FlipperStateViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
     fun getState(): StateFlow<FlipperState> = flipperStateFlow
 
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
-        serviceApi.connectionInformationApi.getConnectionStateFlow()
-            .combine(updaterApi.getState())
-            .onEach { (connectionState, updaterState) ->
-                val isReady =
-                    connectionState is ConnectionState.Ready && connectionState.isSupported
-                if (!isReady) {
-                    flipperStateFlow.emit(FlipperState.NotReady)
-                    return@onEach
-                }
-                if (updaterState.state is UpdatingState.Rebooting) {
-                    flipperStateFlow.emit(FlipperState.Updating)
-                } else flipperStateFlow.emit(FlipperState.Ready)
-            }.launchIn(viewModelScope)
+        combine(
+            serviceApi.connectionInformationApi.getConnectionStateFlow(),
+            serviceApi.flipperInformationApi.getInformationFlow(),
+            updaterApi.getState()
+        ) { connectionState, informationState, updaterState ->
+            val isReady = connectionState is ConnectionState.Ready
+                    && connectionState.isSupported
+            val version = informationState.softwareVersion
+
+            if (isReady && version != null) {
+                updaterApi.onDeviceConnected(version)
+                return@combine FlipperState.Ready
+            }
+            return@combine if (updaterState.state is UpdatingState.Rebooting) {
+                FlipperState.Updating
+            } else FlipperState.NotReady
+        }.onEach {
+            flipperStateFlow.emit(it)
+        }.launchIn(viewModelScope)
     }
 }
