@@ -13,6 +13,7 @@ import com.flipperdevices.metric.api.events.complex.UpdateStatus
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.impl.UpdaterTask
+import com.flipperdevices.updater.model.FirmwareVersion
 import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.model.UpdatingState
 import com.flipperdevices.updater.model.UpdatingStateWithRequest
@@ -110,10 +111,10 @@ class UpdaterApiImpl @Inject constructor(
         currentActiveTask?.onStop()
     }
 
-    override fun onDeviceConnected(versionName: String) {
+    override fun onDeviceConnected(versionName: FirmwareVersion) {
         updatingState.update {
             if (it.state == UpdatingState.Rebooting) {
-                if (it.request?.updateTo?.version?.version == versionName) {
+                if (it.request?.updateTo?.version?.version == versionName.version) {
                     UpdatingStateWithRequest(UpdatingState.Complete, request = it.request)
                 } else UpdatingStateWithRequest(UpdatingState.Failed, request = it.request)
             } else it
@@ -123,7 +124,7 @@ class UpdaterApiImpl @Inject constructor(
     override fun getState(): StateFlow<UpdatingStateWithRequest> = updatingState
     override fun resetState() {
         updatingState.update {
-            if (it.state != UpdatingState.NotStarted) {
+            if (it.state != UpdatingState.NotStarted && it.state.isFinalState) {
                 UpdatingStateWithRequest(UpdatingState.NotStarted, request = null)
             } else it
         }

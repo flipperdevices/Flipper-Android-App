@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="updater_card_updater_title">Firmware Update</string>
     <string name="updater_card_updater_channel">Update Channel</string>
     <string name="updater_card_updater_error_retry">Retry</string>
@@ -24,4 +24,11 @@
     <string name="update_card_dialog_battery_title">Low Battery on Flipper</string>
     <string name="update_card_dialog_battery_desc">Charge Flipper to 10% before installing the update</string>
     <string name="update_card_dialog_battery_btn">Got It</string>
+    <string name="update_card_dialog_successful_title">Update Successful</string>
+    <string name="update_card_dialog_successful_desc">was installed on your Flipper</string>
+    <string name="update_card_dialog_successful_btn" tools:ignore="ButtonCase,Typos">Ok</string>
+    <string name="update_card_dialog_failed_title">Update Failed</string>
+    <string name="update_card_dialog_failed_desc">wasn\'t installed on your Flipper. Try to install it again</string>
+    <string name="update_card_dialog_failed_btn" tools:ignore="ButtonCase,Typos">Ok</string>
+    <string name="update_card_dialog_unknown_version">Update</string>
 </resources>

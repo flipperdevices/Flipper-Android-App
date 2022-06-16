@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.updater.card.R
+import com.flipperdevices.updater.card.composable.dialogs.ComposableUpdateRequest
 import com.flipperdevices.updater.fonts.R as Fonts
 import com.flipperdevices.updater.model.UpdateCardState
 

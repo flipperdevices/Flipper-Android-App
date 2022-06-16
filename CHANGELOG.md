@@ -10,6 +10,7 @@
 - [Feature] Save last open channel for updater
 - [Feature] Show when flipper charging
 - [Feature] Add metrics (fully anonymously)
+- [Feature] Add dialog about sucs/not update
 - [BUGFIX] Fix incorrect corner radius for battery icon
 
 # 1.1.2
