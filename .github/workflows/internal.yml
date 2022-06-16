@@ -35,6 +35,8 @@ jobs:
       - name: Build internal release
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          COUNTLY_URL: ${{ secrets.COUNTLY_URL_PROD }}
+          COUNTLY_APP_KEY: ${{ secrets.COUNTLY_APP_KEY_PROD }}
         run: |
           ./gradlew :instances:app:assembleInternal :instances:app:bundleInternal \
             -Dversion_code=${{ steps.buildnumber.outputs.build_number }} \

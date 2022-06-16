@@ -72,7 +72,7 @@ class CountlyApiImpl @Inject constructor(
                 } else it
             }
         }
-        info { "Init countly config with uuid ${settings.uuid}" }
+        info { "Init countly config with uuid ${settings.uuid} and ${BuildConfig.COUNTLY_URL}" }
         config.setDeviceId(settings.uuid)
         return sharedInstance.init(config)
     }
