@@ -9,6 +9,7 @@
 - [Feature] Add Low Battery dialog
 - [Feature] Save last open channel for updater
 - [Feature] Show when flipper charging
+- [Feature] Add metrics (fully anonymously)
 - [BUGFIX] Fix incorrect corner radius for battery icon
 
 # 1.1.2
