@@ -19,10 +19,10 @@ data class UpdateFlipperEnd(
 }
 
 enum class UpdateStatus(val id: Int) {
-    COMPLETED(1),
-    CANCELED(2),
-    FAILED_DOWNLOAD(3),
-    FAILED_PREPARE(4),
-    FAILED_UPLOAD(5),
-    FAILED(6)
+    COMPLETED(id = 1),
+    CANCELED(id = 2),
+    FAILED_DOWNLOAD(id = 3),
+    FAILED_PREPARE(id = 4),
+    FAILED_UPLOAD(id = 5),
+    FAILED(id = 6)
 }

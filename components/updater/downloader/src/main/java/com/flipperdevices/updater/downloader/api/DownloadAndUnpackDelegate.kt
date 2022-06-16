@@ -50,7 +50,7 @@ class DownloadAndUnpackDelegateImpl @Inject constructor(
             try {
                 downloadInternal(distributionFile, target, onProgress)
                 isSuccess = true
-            } catch (@Suppress("TooGenericExceptionCaught") throwable: Throwable) {
+            } catch (throwable: Throwable) {
                 tryCount++
                 error(throwable) { "While download $distributionFile to ${target.absolutePath}" }
                 if (tryCount > TRY_MAX_COUNT) {

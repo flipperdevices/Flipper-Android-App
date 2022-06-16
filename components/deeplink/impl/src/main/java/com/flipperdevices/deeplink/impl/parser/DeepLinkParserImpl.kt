@@ -25,7 +25,6 @@ class DeepLinkParserImpl @Inject constructor() : DeepLinkParser, LogTagProvider 
         DeepLinkFileUriCopy()
     )
 
-    @Suppress("TooGenericExceptionCaught")
     override suspend fun fromUri(activity: Activity, uri: Uri): Deeplink? {
         info { "Try parse uri with scheme: ${uri.scheme}, uri: $uri" }
 

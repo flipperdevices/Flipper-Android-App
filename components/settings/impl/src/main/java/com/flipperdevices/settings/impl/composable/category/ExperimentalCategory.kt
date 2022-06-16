@@ -18,7 +18,7 @@ fun ExperimentalCategory(
     settings: Settings,
     navController: NavController,
     settingsViewModel: SettingsViewModel,
-    experimentalViewModel: ExperimentalViewModel = viewModel(),
+    experimentalViewModel: ExperimentalViewModel = viewModel()
 ) {
     val router = LocalRouter.current
 

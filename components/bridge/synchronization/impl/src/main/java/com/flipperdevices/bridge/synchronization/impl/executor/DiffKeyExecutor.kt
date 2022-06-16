@@ -28,10 +28,7 @@ class DiffKeyExecutor : LogTagProvider {
                 execute(source, target, diff)
                 onProgressUpdate?.invoke(index, diffs.size)
                 return@mapIndexedNotNull diff
-            } catch (
-                @Suppress("detekt:TooGenericExceptionCaught")
-                executeError: Exception
-            ) {
+            } catch (executeError: Exception) {
                 error(executeError) { "While apply diff $diff we have error" }
             }
             return@mapIndexedNotNull null

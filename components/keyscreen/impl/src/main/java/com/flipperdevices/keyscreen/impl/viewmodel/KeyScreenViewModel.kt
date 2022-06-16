@@ -165,7 +165,6 @@ class KeyScreenViewModel(
         }
 
         viewModelScope.launch {
-            @Suppress("TooGenericExceptionCaught")
             try {
                 saveDelegate.onEditSaveInternal(
                     currentState.flipperKey,

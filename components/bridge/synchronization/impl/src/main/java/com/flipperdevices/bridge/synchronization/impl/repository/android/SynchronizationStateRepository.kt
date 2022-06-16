@@ -21,10 +21,7 @@ class SynchronizationStateRepository(
                         deleted = diffToMark.action == KeyAction.DELETED
                     )
                 )
-            } catch (
-                @Suppress("TooGenericExceptionCaught")
-                exception: Exception
-            ) {
+            } catch (exception: Exception) {
                 error(exception) { "While mark synchronized $diffToMark" }
             }
         }

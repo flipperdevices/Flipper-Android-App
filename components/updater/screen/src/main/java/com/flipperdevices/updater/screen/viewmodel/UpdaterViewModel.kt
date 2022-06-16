@@ -80,7 +80,7 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
 
         info {
             "Wait until synchronization end. " +
-                    "Current state is ${synchronizationApi.getSynchronizationState().value}"
+                "Current state is ${synchronizationApi.getSynchronizationState().value}"
         }
 
         // Wait until synchronization is really canceled
