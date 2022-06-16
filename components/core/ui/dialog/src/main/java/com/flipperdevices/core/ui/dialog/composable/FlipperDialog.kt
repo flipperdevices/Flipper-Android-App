@@ -1,6 +1,5 @@
 package com.flipperdevices.core.ui.dialog.composable
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
@@ -23,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.flipperdevices.core.ui.ktx.ComposableFlipperButton
 import com.flipperdevices.core.ui.ktx.letCompose
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun FlipperDialog(

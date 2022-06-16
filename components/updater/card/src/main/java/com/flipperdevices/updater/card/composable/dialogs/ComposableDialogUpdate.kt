@@ -1,6 +1,5 @@
 package com.flipperdevices.updater.card.composable.dialogs
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.annotation.StringRes
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -16,6 +15,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.dialog.composable.FlipperDialog
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.info.shared.getColorByChannel
 import com.flipperdevices.info.shared.getTextByVersion
 import com.flipperdevices.updater.card.R
@@ -70,7 +70,6 @@ fun ComposableFailedUpdate(
         }
     )
 }
-
 
 @Composable
 private fun buildAnnotatedStringWithColoredVersion(
