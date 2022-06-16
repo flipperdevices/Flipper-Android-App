@@ -27,4 +27,5 @@ message Settings {
   bool shake_to_report = 9;
   SelectedChannel selected_channel = 10;
   string uuid = 11;
+  bool first_synchronization_passed = 12;
 }

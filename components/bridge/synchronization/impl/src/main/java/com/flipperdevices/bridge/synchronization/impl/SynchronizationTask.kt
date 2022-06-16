@@ -14,6 +14,7 @@ import com.flipperdevices.bridge.synchronization.impl.model.RestartSynchronizati
 import com.flipperdevices.bridge.synchronization.impl.repository.FavoriteSynchronization
 import com.flipperdevices.bridge.synchronization.impl.repository.KeysSynchronization
 import com.flipperdevices.bridge.synchronization.impl.repository.storage.ManifestRepository
+import com.flipperdevices.bridge.synchronization.impl.utils.SynchronizationPercentProvider
 import com.flipperdevices.core.ktx.jre.toIntSafe
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
@@ -25,13 +26,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.withContext
 
+@Suppress("LongParameterList")
 class SynchronizationTask(
     private val serviceProvider: FlipperServiceProvider,
     private val simpleKeyApi: SimpleKeyApi,
     private val deleteKeyApi: DeleteKeyApi,
     private val utilsKeyApi: UtilsKeyApi,
     private val favoriteApi: FavoriteApi,
-    private val metricApi: MetricApi
+    private val metricApi: MetricApi,
+    private val synchronizationProvider: SynchronizationPercentProvider
 ) : OneTimeExecutionBleTask<Unit, SynchronizationState>(serviceProvider), LogTagProvider {
     override val TAG = "SynchronizationTask"
 
@@ -90,7 +93,8 @@ class SynchronizationTask(
             utilsKeyApi,
             manifestRepository,
             flipperStorage,
-            serviceApi.requestApi
+            serviceApi.requestApi,
+            synchronizationProvider
         )
 
         val keysHashes = keysSynchronization.syncKeys(onStateUpdate)
@@ -98,6 +102,7 @@ class SynchronizationTask(
 
         // End synchronization keys
         manifestRepository.saveManifest(keysHashes, favorites)
+        synchronizationProvider.markedAsFinish()
     }
 
     private suspend fun reportSynchronizationEnd(totalTime: Long) {
