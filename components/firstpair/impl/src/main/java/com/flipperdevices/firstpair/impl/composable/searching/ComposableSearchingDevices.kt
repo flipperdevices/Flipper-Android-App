@@ -20,7 +20,7 @@ fun ComposableSearchingDevices(
     onDeviceClick: (DiscoveredBluetoothDevice) -> Unit,
     onRefreshSearching: () -> Unit
 ) {
-    val devices = state.devices.filterNot { it.name.isNullOrEmpty() }
+    val devices = state.devices
 
     SwipeRefresh(
         modifier = modifier,
@@ -35,7 +35,8 @@ fun ComposableSearchingDevices(
                 items = devices,
                 key = { it.address }
             ) { device ->
-                val name = device.name!!.replaceFirst(Constants.DEVICENAME_PREFIX, "")
+                val deviceName = device.name ?: device.address
+                val name = deviceName.replaceFirst(Constants.DEVICENAME_PREFIX, "")
                 val isConnecting = device.address == state.selectedAddress
                 ComposableSearchItem(text = name, isConnecting = isConnecting) {
                     onDeviceClick(device)

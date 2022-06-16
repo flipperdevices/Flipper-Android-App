@@ -156,13 +156,13 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
                             version = version
                         )
 
-                    UpdatingState.FailedUpload ->
+                    UpdatingState.FailedUpload,
+                    UpdatingState.FailedPrepare ->
                         UpdaterScreenState.Failed(FailedReason.UPLOAD_ON_FLIPPER)
                     UpdatingState.FailedDownload ->
                         UpdaterScreenState.Failed(FailedReason.DOWNLOAD_FROM_NETWORK)
                     UpdatingState.Complete,
-                    UpdatingState.Failed,
-                    UpdatingState.FailedPrepare ->
+                    UpdatingState.Failed ->
                         UpdaterScreenState.Finish
                     UpdatingState.Rebooting ->
                         if (connectionState !is ConnectionState.Ready) {

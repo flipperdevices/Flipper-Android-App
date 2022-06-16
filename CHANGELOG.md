@@ -12,6 +12,7 @@
 - [Feature] Add metrics (fully anonymously)
 - [Feature] Add dialog about sucs/not update
 - [BUGFIX] Fix incorrect corner radius for battery icon
+- [BUGFIX] Fix searching pic
 
 # 1.1.2
 
