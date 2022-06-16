@@ -1,4 +1,4 @@
-package com.flipperdevices.updater.card.composable
+package com.flipperdevices.updater.card.composable.dialogs
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState

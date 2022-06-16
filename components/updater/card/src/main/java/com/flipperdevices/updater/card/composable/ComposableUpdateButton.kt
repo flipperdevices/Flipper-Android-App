@@ -1,5 +1,7 @@
 package com.flipperdevices.updater.card.composable
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.updater.fonts.R as Fonts
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
@@ -28,9 +30,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.updater.card.R
-import com.flipperdevices.updater.fonts.R as Fonts
+import com.flipperdevices.updater.card.composable.dialogs.ComposableUpdateRequest
 import com.flipperdevices.updater.model.UpdateCardState
 
 @Composable
