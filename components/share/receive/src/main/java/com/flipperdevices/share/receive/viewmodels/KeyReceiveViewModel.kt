@@ -82,7 +82,7 @@ class KeyReceiveViewModel(
         viewModelScope.launch {
             try {
                 simpleKeyApi.insertKey(localState.flipperKey)
-            } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+            } catch (e: Exception) {
                 error(e) { "While save key ${localState.flipperKey}" }
                 getApplication<Application>().toast(R.string.receive_error_conflict)
                 state.emit(ReceiveState.Pending(localState.flipperKey, localState.parsed))

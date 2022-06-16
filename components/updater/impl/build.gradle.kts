@@ -18,6 +18,8 @@ dependencies {
     implementation(projects.components.core.preference)
     implementation(projects.components.core.ui.lifecycle)
 
+    implementation(projects.components.analytics.metric.api)
+
     implementation(libs.lifecycle.runtime.ktx)
 
     // Compose

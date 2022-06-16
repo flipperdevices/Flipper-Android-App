@@ -51,6 +51,9 @@ include(
     ":components:info:impl",
     ":components:info:shared",
 
+    ":components:analytics:metric:api",
+    ":components:analytics:metric:impl",
+
     ":components:analytics:shake2report:api",
     ":components:analytics:shake2report:noop",
     ":components:analytics:shake2report:impl",

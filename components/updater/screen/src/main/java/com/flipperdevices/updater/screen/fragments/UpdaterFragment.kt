@@ -10,14 +10,14 @@ import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.ui.fragment.ComposeFragment
 import com.flipperdevices.singleactivity.api.SingleActivityApi
-import com.flipperdevices.updater.model.VersionFiles
+import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.screen.composable.ComposableUpdaterScreen
 import com.flipperdevices.updater.screen.di.UpdaterComponent
 import com.flipperdevices.updater.screen.model.UpdaterScreenState
 import com.flipperdevices.updater.screen.viewmodel.UpdaterViewModel
 import javax.inject.Inject
 
-private const val EXTRA_VERSION_FILES = "version_files"
+private const val EXTRA_UPDATE_REQUEST = "update_request"
 
 class UpdaterFragment : ComposeFragment() {
     @Inject
@@ -29,8 +29,8 @@ class UpdaterFragment : ComposeFragment() {
         super.onAttach(context)
         ComponentHolder.component<UpdaterComponent>().inject(this)
 
-        val versionFiles = arguments?.getParcelable<VersionFiles>(EXTRA_VERSION_FILES)
-        updaterViewModel.start(versionFiles)
+        val updateRequest = arguments?.getParcelable<UpdateRequest>(EXTRA_UPDATE_REQUEST)
+        updaterViewModel.start(updateRequest)
     }
 
     override fun onStart() {
@@ -58,9 +58,9 @@ class UpdaterFragment : ComposeFragment() {
     }
 
     companion object {
-        fun getInstance(versionFiles: VersionFiles?): UpdaterFragment {
+        fun getInstance(updateRequest: UpdateRequest?): UpdaterFragment {
             return UpdaterFragment().withArgs {
-                putParcelable(EXTRA_VERSION_FILES, versionFiles)
+                putParcelable(EXTRA_UPDATE_REQUEST, updateRequest)
             }
         }
     }

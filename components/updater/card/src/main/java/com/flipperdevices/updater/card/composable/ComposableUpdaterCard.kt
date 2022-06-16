@@ -23,25 +23,32 @@ import com.flipperdevices.info.shared.ComposableInfoDivider
 import com.flipperdevices.info.shared.InfoElementCard
 import com.flipperdevices.updater.card.R
 import com.flipperdevices.updater.card.model.FlipperState
-import com.flipperdevices.updater.card.viewmodel.FlipperStateViewModel
 import com.flipperdevices.updater.card.viewmodel.UpdateCardViewModel
+import com.flipperdevices.updater.card.viewmodel.UpdateStateViewModel
 import com.flipperdevices.updater.model.FirmwareVersion
 import com.flipperdevices.updater.model.UpdateCardState
 
 @Composable
 internal fun ComposableUpdaterCardInternal(
     modifier: Modifier,
-    deviceStatusViewModel: FlipperStateViewModel = viewModel(),
+    deviceStatusViewModel: UpdateStateViewModel = viewModel(),
     updateCardViewModel: UpdateCardViewModel = viewModel()
 ) {
     val deviceStatus by deviceStatusViewModel.getState().collectAsState()
 
-    if (deviceStatus !is FlipperState.Ready) {
-        if (deviceStatus is FlipperState.Updating) {
-            ComposableUpdaterReboot(modifier)
-        }
-
+    // Not use when, because internal Jetpack Compose crash. ¯\_(ツ)_/¯
+    // https://gist.github.com/LionZXY/609fa537747782d01e8f4cbdcdc882cf
+    if (deviceStatus == FlipperState.UPDATING) {
+        ComposableUpdaterReboot(modifier)
         return
+    }
+
+    when (deviceStatus) {
+        FlipperState.COMPLETE -> {}
+        FlipperState.FAILED -> {}
+        FlipperState.READY -> {}
+        FlipperState.NOT_READY -> return
+        else -> error("Can't find this device status")
     }
 
     InfoElementCard(

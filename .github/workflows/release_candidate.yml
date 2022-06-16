@@ -42,6 +42,8 @@ jobs:
       - name: Build internal release
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          COUNTLY_URL: ${{ secrets.COUNTLY_URL_PROD }}
+          COUNTLY_APP_KEY: ${{ secrets.COUNTLY_APP_KEY_PROD }}
         run: |
           ./gradlew :instances:app:assembleInternal :instances:app:bundleInternal \
             -Dversion_code=${{ needs.generate_version.outputs.minor_version }} \
@@ -92,11 +94,16 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
       - name: Build production release
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          COUNTLY_URL: ${{ secrets.COUNTLY_URL_PROD }}
+          COUNTLY_APP_KEY: ${{ secrets.COUNTLY_APP_KEY_PROD }}
         run: |
           rm -rf **/build
           ./gradlew :instances:app:assembleRelease :instances:app:bundleRelease \
           -Dversion_code=${{ needs.generate_version.outputs.minor_version }} \
-          -Dversion_name="${{ needs.generate_version.outputs.major_version }}.${{ needs.generate_version.outputs.minor_version }}-rc"
+          -Dversion_name="${{ needs.generate_version.outputs.major_version }}.${{ needs.generate_version.outputs.minor_version }}-rc" \
+          -Dis_sentry_publish=true
       - name: Sign release AAB
         id: sign_aab_release
         uses: r0adkll/sign-android-release@v1

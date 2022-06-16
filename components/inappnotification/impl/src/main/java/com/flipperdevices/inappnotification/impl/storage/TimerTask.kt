@@ -45,7 +45,6 @@ class TimerTask(
     @OptIn(ExperimentalTime::class)
     private suspend fun CoroutineScope.launchTimer() {
         while (isActive) {
-            @Suppress("TooGenericExceptionCaught")
             try {
                 block()
             } catch (blockExecutionError: Exception) {

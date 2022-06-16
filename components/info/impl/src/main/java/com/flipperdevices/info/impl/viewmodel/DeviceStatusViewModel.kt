@@ -69,7 +69,6 @@ class DeviceStatusViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
                             connectInProgress = true
                         )
                     } else {
-                        updaterApi.onDeviceConnected()
                         DeviceStatus.Connected(
                             deviceName,
                             batteryLevel,

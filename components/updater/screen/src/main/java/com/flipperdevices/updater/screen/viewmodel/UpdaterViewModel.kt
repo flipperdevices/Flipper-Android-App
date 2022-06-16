@@ -13,9 +13,10 @@ import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
+import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.updater.api.UpdaterApi
+import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.model.UpdatingState
-import com.flipperdevices.updater.model.VersionFiles
 import com.flipperdevices.updater.screen.di.UpdaterComponent
 import com.flipperdevices.updater.screen.fragments.CancelDialogBuilder
 import com.flipperdevices.updater.screen.model.UpdaterScreenState
@@ -49,6 +50,9 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
     @Inject
     lateinit var serviceProvider: FlipperServiceProvider
 
+    @Inject
+    lateinit var metricApi: MetricApi
+
     init {
         ComponentHolder.component<UpdaterComponent>().inject(this)
         serviceProvider.provideServiceApi(this, this)
@@ -58,16 +62,20 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
     fun getState(): StateFlow<UpdaterScreenState> = updaterScreenState
 
     fun start(
-        versionFiles: VersionFiles?
+        updateRequest: UpdateRequest?
     ) = launchWithLock(mutex, viewModelScope, "start") {
-        if (versionFiles == null) {
+        if (updateRequest == null) {
             if (!updaterApi.isUpdateInProcess()) {
                 updaterScreenState.emit(UpdaterScreenState.Finish)
             }
             return@launchWithLock
         }
 
-        updaterScreenState.emit(UpdaterScreenState.CancelingSynchronization(versionFiles.version))
+        updaterScreenState.emit(
+            UpdaterScreenState.CancelingSynchronization(
+                updateRequest.updateTo.version
+            )
+        )
         synchronizationApi.stop()
 
         info {
@@ -82,14 +90,14 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
 
         info { "Start updating" }
 
-        updaterApi.start(versionFiles)
+        updaterApi.start(updateRequest)
     }
 
     fun cancel() {
         CancelDialogBuilder.showDialog { cancelInternal() }
     }
 
-    fun cancelInternal() = launchWithLock(mutex, viewModelScope, "cancel") {
+    private fun cancelInternal() = launchWithLock(mutex, viewModelScope, "cancel") {
         updaterJob?.cancelAndJoin()
         updaterJob = null
         updaterScreenState.emit(UpdaterScreenState.CancelingUpdate)
@@ -99,14 +107,14 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
 
         // Wait until update is really canceled
         updaterApi.getState()
-            .filter { it.state == UpdatingState.NotStarted || it.state == UpdatingState.Rebooting }
+            .filter { it.state.isFinalState }
             .first()
         updaterScreenState.emit(UpdaterScreenState.Finish)
     }
 
     private fun subscribeOnUpdaterFlow(): Job = updaterApi.getState()
         .combine(connectionState).onEach { (updatingState, connectionState) ->
-            val version = updatingState.version
+            val version = updatingState.request?.updateTo?.version
             val state = updatingState.state
             updaterScreenState.emit(
                 when (state) {
@@ -121,6 +129,12 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
                             percent = state.percent,
                             version = version
                         )
+                    UpdatingState.Complete,
+                    UpdatingState.Failed,
+                    UpdatingState.FailedUpload,
+                    UpdatingState.FailedPrepare,
+                    UpdatingState.FailedDownload ->
+                        UpdaterScreenState.Finish
                     UpdatingState.Rebooting ->
                         if (connectionState !is ConnectionState.Ready) {
                             UpdaterScreenState.Finish

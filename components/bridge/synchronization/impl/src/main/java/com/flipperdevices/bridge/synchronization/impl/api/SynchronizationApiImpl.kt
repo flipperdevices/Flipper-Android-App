@@ -11,6 +11,7 @@ import com.flipperdevices.bridge.synchronization.impl.SynchronizationTask
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.metric.api.MetricApi
 import com.squareup.anvil.annotations.ContributesBinding
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
@@ -26,7 +27,8 @@ class SynchronizationApiImpl @Inject constructor(
     private val simpleKeyApi: SimpleKeyApi,
     private val deleteKeyApi: DeleteKeyApi,
     private val utilsKeyApi: UtilsKeyApi,
-    private val favoriteApi: FavoriteApi
+    private val favoriteApi: FavoriteApi,
+    private val metricApi: MetricApi
 ) : SynchronizationApi, LogTagProvider {
     override val TAG = "SynchronizationApi"
 
@@ -52,10 +54,11 @@ class SynchronizationApiImpl @Inject constructor(
             simpleKeyApi = simpleKeyApi,
             deleteKeyApi = deleteKeyApi,
             utilsKeyApi = utilsKeyApi,
-            favoriteApi = favoriteApi
+            favoriteApi = favoriteApi,
+            metricApi = metricApi
         )
 
-        localSynchronizationTask.start { taskState ->
+        localSynchronizationTask.start(input = Unit) { taskState ->
             synchronizationState.update { taskState }
             if (taskState == SynchronizationState.Finished) {
                 isLaunched.compareAndSet(true, false)

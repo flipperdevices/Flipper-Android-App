@@ -10,6 +10,7 @@ dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.preference)
     implementation(projects.components.analytics.shake2report.api)
+    implementation(projects.components.analytics.metric.api)
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.pbutils)

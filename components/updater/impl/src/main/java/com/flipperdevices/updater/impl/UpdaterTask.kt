@@ -1,17 +1,16 @@
 package com.flipperdevices.updater.impl
 
 import android.content.Context
-import androidx.lifecycle.lifecycleScope
+import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
-import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.FlipperStorageProvider
-import com.flipperdevices.core.ui.lifecycle.TaskWithLifecycle
+import com.flipperdevices.core.ui.lifecycle.OneTimeExecutionBleTask
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.system.System
 import com.flipperdevices.protobuf.system.rebootRequest
@@ -22,113 +21,149 @@ import com.flipperdevices.updater.impl.tasks.FlipperUpdateImageHelper
 import com.flipperdevices.updater.impl.utils.FolderCreateHelper
 import com.flipperdevices.updater.model.DistributionFile
 import com.flipperdevices.updater.model.DownloadProgress
+import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.model.UpdatingState
 import java.io.File
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.NonCancellable
-import kotlinx.coroutines.awaitCancellation
-import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.withContext
 
 class UpdaterTask(
-    private val serviceProvider: FlipperServiceProvider,
+    serviceProvider: FlipperServiceProvider,
     private val downloaderApi: DownloaderApi,
     private val context: Context
-) : TaskWithLifecycle(), LogTagProvider {
+) : OneTimeExecutionBleTask<UpdateRequest, UpdatingState>(serviceProvider),
+    LogTagProvider {
     override val TAG = "UpdaterTask"
 
-    val flipperUpdateImageHelper = FlipperUpdateImageHelper(context)
+    private val flipperUpdateImageHelper = FlipperUpdateImageHelper(context)
 
-    private val taskScope = lifecycleScope
-    private val mutex = Mutex()
-    private var updaterJob: Job? = null
-    private var isRebooting = false
+    private var isStoppedManually = false
 
-    fun start(
-        updateFile: DistributionFile,
-        onStateUpdate: suspend (UpdatingState) -> Unit
-    ) = taskScope.launch(Dispatchers.Main) {
-        info { "Start updating" }
-        serviceProvider.provideServiceApi(this@UpdaterTask) { serviceApi ->
-            info { "Flipper service provided" }
-            launchWithLock(mutex, taskScope) {
-                updaterJob?.cancelAndJoin()
-                updaterJob = null
-                updaterJob = taskScope.launch(Dispatchers.Default) {
-                    // Waiting to be connected to the flipper
-                    try {
-                        startInternal(updateFile, serviceApi, onStateUpdate)
-                        onStop()
-                    } catch (
-                        @Suppress("TooGenericExceptionCaught")
-                        throwable: Throwable
-                    ) {
-                        error(throwable) { "Error during updating" }
-                        onStop()
-                    }
-                }
-            }
-        }
-        onStart()
-        taskScope.launch(Dispatchers.Default) {
-            try {
-                awaitCancellation()
-            } finally {
-                withContext(NonCancellable) {
-                    if (!isRebooting) {
-                        onStateUpdate(UpdatingState.NotStarted)
-                    }
-                }
-            }
+    override suspend fun onStopAsync(stateListener: suspend (UpdatingState) -> Unit) {
+        if (!isStoppedManually) {
+            stateListener(UpdatingState.NotStarted)
         }
     }
 
-    private suspend fun startInternal(
-        updateFile: DistributionFile,
+    override suspend fun startInternal(
+        scope: CoroutineScope,
         serviceApi: FlipperServiceApi,
-        onStateUpdate: suspend (UpdatingState) -> Unit
+        input: UpdateRequest,
+        stateListener: suspend (UpdatingState) -> Unit
+    ) {
+        startInternalUnwrapped(scope, serviceApi, input) {
+            if (it.isFinalState) {
+                isStoppedManually = true
+                flipperUpdateImageHelper.stopImageOnFlipperSafe(serviceApi.requestApi)
+            }
+            stateListener(it)
+        }
+    }
+
+    private suspend fun startInternalUnwrapped(
+        scope: CoroutineScope,
+        serviceApi: FlipperServiceApi,
+        input: UpdateRequest,
+        stateListener: suspend (UpdatingState) -> Unit
     ) = FlipperStorageProvider.useTemporaryFolder(context) { tempFolder ->
         info { "Start update with folder: ${tempFolder.absolutePath}" }
+        val updateFile = input.updateTo.updaterFile
 
         val updaterFolder = File(tempFolder, updateFile.sha256)
-        onStateUpdate(UpdatingState.DownloadingFromNetwork(percent = 0.0001f))
+        try {
+            downloadFirmware(updateFile, updaterFolder, stateListener)
+        } catch (e: Throwable) {
+            error(e) { "Failed when download from network" }
+            if (e !is CancellationException) {
+                stateListener(UpdatingState.FailedDownload)
+            }
+            return@useTemporaryFolder
+        }
+
+        stateListener(
+            UpdatingState.UploadOnFlipper(0f)
+        )
+        val flipperPath = try {
+            prepareToUpload(updateFile, serviceApi.requestApi)
+        } catch (e: Throwable) {
+            error(e) { "Failed when prepare upload to flipper" }
+            if (e !is CancellationException) {
+                stateListener(UpdatingState.FailedPrepare)
+            }
+            return@useTemporaryFolder
+        }
+
+        try {
+            uploadToFlipper(
+                scope,
+                flipperPath,
+                updaterFolder,
+                serviceApi.requestApi,
+                stateListener
+            )
+        } catch (e: Throwable) {
+            error(e) { "Failed when upload to flipper" }
+            if (e !is CancellationException) {
+                stateListener(UpdatingState.FailedUpload)
+            }
+            return@useTemporaryFolder
+        }
+
+        stateListener(UpdatingState.Rebooting)
+    }
+
+    private suspend fun downloadFirmware(
+        updateFile: DistributionFile,
+        updaterFolder: File,
+        stateListener: suspend (UpdatingState) -> Unit
+    ) {
+        stateListener(UpdatingState.DownloadingFromNetwork(percent = 0.0001f))
         downloaderApi.download(updateFile, updaterFolder, decompress = true).collect {
             when (it) {
                 DownloadProgress.Finished ->
-                    onStateUpdate(UpdatingState.DownloadingFromNetwork(1.0f))
-                is DownloadProgress.InProgress -> onStateUpdate(
+                    stateListener(UpdatingState.DownloadingFromNetwork(1.0f))
+                is DownloadProgress.InProgress -> stateListener(
                     UpdatingState.DownloadingFromNetwork(
                         it.processedBytes.toFloat() / it.totalBytes.toFloat()
                     )
                 )
-                DownloadProgress.NotStarted -> onStateUpdate(UpdatingState.NotStarted)
+                DownloadProgress.NotStarted -> stateListener(UpdatingState.NotStarted)
             }
         }
+    }
 
-        onStateUpdate(
-            UpdatingState.UploadOnFlipper(0f)
-        )
-
+    private suspend fun prepareToUpload(
+        updateFile: DistributionFile,
+        requestApi: FlipperRequestApi
+    ): String {
         var updateName = updateFile.url.substringAfterLast("/").substringBefore(".")
         if (updateName.isBlank()) {
             updateName = updateFile.sha256
         }
-        flipperUpdateImageHelper.loadImageOnFlipper(serviceApi.requestApi)
+        flipperUpdateImageHelper.loadImageOnFlipper(requestApi)
         val flipperPath = "/ext/update/$updateName"
 
-        FolderCreateHelper.mkdirFolderOnFlipper(serviceApi.requestApi, flipperPath)
+        FolderCreateHelper.mkdirFolderOnFlipper(requestApi, flipperPath)
+        return flipperPath
+    }
 
+    private suspend fun uploadToFlipper(
+        scope: CoroutineScope,
+        flipperPath: String,
+        updaterFolder: File,
+        requestApi: FlipperRequestApi,
+        stateListener: suspend (UpdatingState) -> Unit
+    ) {
         UploadFirmwareService.upload(
-            serviceApi.requestApi,
+            requestApi,
             updaterFolder,
             flipperPath
         ) { sended, totalBytes ->
-            taskScope.launch(Dispatchers.Default) {
-                onStateUpdate(
+            scope.launch(Dispatchers.Default) {
+                stateListener(
                     UpdatingState.UploadOnFlipper(
                         sended.toFloat() / totalBytes.toFloat()
                     )
@@ -136,7 +171,7 @@ class UpdaterTask(
             }
         }
 
-        serviceApi.requestApi.request(
+        requestApi.request(
             main {
                 systemUpdateRequest = updateRequest {
                     updateManifest = "$flipperPath/update.fuf"
@@ -144,14 +179,12 @@ class UpdaterTask(
             }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
         ).first()
 
-        serviceApi.requestApi.requestWithoutAnswer(
+        requestApi.requestWithoutAnswer(
             main {
                 systemRebootRequest = rebootRequest {
                     mode = System.RebootRequest.RebootMode.UPDATE
                 }
             }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
         )
-        isRebooting = true
-        onStateUpdate(UpdatingState.Rebooting)
     }
 }

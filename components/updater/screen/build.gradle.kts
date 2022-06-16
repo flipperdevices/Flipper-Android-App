@@ -25,6 +25,7 @@ dependencies {
     implementation(projects.components.bridge.synchronization.api)
     implementation(projects.components.singleactivity.api)
     implementation(projects.components.deeplink.api)
+    implementation(projects.components.analytics.metric.api)
 
     // Compose
     implementation(libs.compose.ui)

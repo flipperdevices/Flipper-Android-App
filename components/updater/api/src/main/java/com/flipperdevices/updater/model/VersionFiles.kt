@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class VersionFiles(
+data class VersionFiles constructor(
     val version: FirmwareVersion,
     val updaterFile: DistributionFile
 ) : Parcelable

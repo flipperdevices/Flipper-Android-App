@@ -42,7 +42,7 @@ class PairDeviceViewModel(
         if (connectingJob != null) {
             return
         }
-        @Suppress("TooGenericExceptionCaught", "SwallowedException")
+        @Suppress("SwallowedException")
         connectingJob = viewModelScope.launch {
             try {
                 withTimeout(TIMEOUT_MS) {

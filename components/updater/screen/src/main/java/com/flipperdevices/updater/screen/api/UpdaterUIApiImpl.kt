@@ -4,7 +4,7 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.navigation.global.CiceroneGlobal
 import com.flipperdevices.updater.api.UpdaterUIApi
-import com.flipperdevices.updater.model.VersionFiles
+import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.screen.fragments.UpdaterDialogBuilder
 import com.flipperdevices.updater.screen.fragments.UpdaterFragment
 import com.github.terrakok.cicerone.androidx.FragmentScreen
@@ -21,13 +21,13 @@ class UpdaterUIApiImpl @Inject constructor(
         synchronizationApi
     )
 
-    override fun openUpdateScreen(silent: Boolean, versionFiles: VersionFiles?) {
+    override fun openUpdateScreen(silent: Boolean, updateRequest: UpdateRequest?) {
         if (silent) {
             globalCicerone.getRouter().newRootScreen(
                 FragmentScreen {
-                    UpdaterFragment.getInstance(versionFiles)
+                    UpdaterFragment.getInstance(updateRequest)
                 }
             )
-        } else updaterDialogBuilder.showDialog(versionFiles)
+        } else updaterDialogBuilder.showDialog(updateRequest)
     }
 }

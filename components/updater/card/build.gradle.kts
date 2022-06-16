@@ -21,6 +21,8 @@ dependencies {
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.service.api)
 
+    implementation(projects.components.analytics.metric.api)
+
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.compose)

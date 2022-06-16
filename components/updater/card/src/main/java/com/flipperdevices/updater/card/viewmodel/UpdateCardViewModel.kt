@@ -178,6 +178,7 @@ class UpdateCardViewModel :
         if (isUpdateAvailable) {
             updateCardState.emit(
                 UpdateCardState.UpdateAvailable(
+                    fromVersion = flipperFirmwareVersion,
                     lastVersion = latestVersionFromNetwork.version,
                     updaterDist = latestVersionFromNetwork.updaterFile,
                     isOtherChannel = latestVersionFromNetwork.version.channel

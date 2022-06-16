@@ -28,6 +28,7 @@ import com.flipperdevices.core.log.debug
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.Settings
+import com.flipperdevices.metric.api.MetricApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
@@ -40,19 +41,20 @@ class FlipperBleManagerImpl constructor(
     private val settingsStore: DataStore<Settings>,
     private val scope: CoroutineScope,
     private val serviceErrorListener: FlipperServiceErrorListener,
-    private val lagsDetector: FlipperLagsDetector
+    private val lagsDetector: FlipperLagsDetector,
+    private val metricApi: MetricApi
 ) : UnsafeBleManager(scope, context), FlipperBleManager, LogTagProvider {
     override val TAG = "FlipperBleManager"
     private val bleMutex = Mutex()
 
     // Gatt Delegates
 
-    override val informationApi = FlipperInformationApiImpl(scope)
+    override val informationApi = FlipperInformationApiImpl(scope, metricApi)
     override val flipperVersionApi = FlipperVersionApiImpl(settingsStore)
     override val flipperRequestApi = FlipperRequestApiImpl(scope, lagsDetector)
 
     // RPC services
-    override val flipperRpcInformationApi = FlipperRpcInformationApiImpl(scope)
+    override val flipperRpcInformationApi = FlipperRpcInformationApiImpl(scope, metricApi)
 
     // Manager delegates
     override val connectionInformationApi = FlipperConnectionInformationApiImpl(this)
