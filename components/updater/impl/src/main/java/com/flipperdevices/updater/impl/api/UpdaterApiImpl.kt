@@ -86,7 +86,7 @@ class UpdaterApiImpl @Inject constructor(
                     )
                 }
 
-                if (it == UpdatingState.NotStarted || it == UpdatingState.Rebooting) {
+                if (it.isFinalState) {
                     currentActiveTask?.onStop()
                     currentActiveTask = null
                     isLaunched.set(false)

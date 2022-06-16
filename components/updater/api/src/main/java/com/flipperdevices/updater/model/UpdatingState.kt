@@ -5,27 +5,32 @@ class UpdatingStateWithRequest(
     val request: UpdateRequest?
 )
 
-sealed class UpdatingState {
-    object NotStarted : UpdatingState()
+sealed class UpdatingState(
+    /**
+     * true if this state represent stop of update process
+     */
+    val isFinalState: Boolean
+) {
+    object NotStarted : UpdatingState(true)
 
-    object FailedDownload : UpdatingState()
-    object FailedPrepare : UpdatingState()
-    object FailedUpload : UpdatingState()
+    object FailedDownload : UpdatingState(true)
+    object FailedPrepare : UpdatingState(true)
+    object FailedUpload : UpdatingState(true)
 
     data class DownloadingFromNetwork(
         val percent: Float
-    ) : UpdatingState()
+    ) : UpdatingState(false)
 
     data class UploadOnFlipper(
         val percent: Float
-    ) : UpdatingState()
+    ) : UpdatingState(false)
 
-    object Rebooting : UpdatingState()
+    object Rebooting : UpdatingState(true)
 
-    object Complete : UpdatingState()
+    object Complete : UpdatingState(true)
 
     /**
      * When update process is correct, but after restart version mismatch
      */
-    object Failed : UpdatingState()
+    object Failed : UpdatingState(true)
 }

@@ -107,7 +107,7 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
 
         // Wait until update is really canceled
         updaterApi.getState()
-            .filter { it.state == UpdatingState.NotStarted || it.state == UpdatingState.Rebooting }
+            .filter { it.state.isFinalState }
             .first()
         updaterScreenState.emit(UpdaterScreenState.Finish)
     }
@@ -129,12 +129,13 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
                             percent = state.percent,
                             version = version
                         )
-                    UpdatingState.Rebooting,
                     UpdatingState.Complete,
                     UpdatingState.Failed,
                     UpdatingState.FailedUpload,
                     UpdatingState.FailedPrepare,
                     UpdatingState.FailedDownload ->
+                        UpdaterScreenState.Finish
+                    UpdatingState.Rebooting ->
                         if (connectionState !is ConnectionState.Ready) {
                             UpdaterScreenState.Finish
                         } else UpdaterScreenState.Rebooting

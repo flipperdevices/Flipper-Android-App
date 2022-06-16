@@ -31,7 +31,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class UpdaterTask(
-    private val serviceProvider: FlipperServiceProvider,
+    serviceProvider: FlipperServiceProvider,
     private val downloaderApi: DownloaderApi,
     private val context: Context
 ) : OneTimeExecutionBleTask<UpdateRequest, UpdatingState>(serviceProvider),
@@ -40,15 +40,30 @@ class UpdaterTask(
 
     private val flipperUpdateImageHelper = FlipperUpdateImageHelper(context)
 
-    private var isRebooting = false
+    private var isStoppedManually = false
 
     override suspend fun onStopAsync(stateListener: suspend (UpdatingState) -> Unit) {
-        if (!isRebooting) {
+        if (!isStoppedManually) {
             stateListener(UpdatingState.NotStarted)
         }
     }
 
     override suspend fun startInternal(
+        scope: CoroutineScope,
+        serviceApi: FlipperServiceApi,
+        input: UpdateRequest,
+        stateListener: suspend (UpdatingState) -> Unit
+    ) {
+        startInternalUnwrapped(scope, serviceApi, input) {
+            if (it.isFinalState) {
+                isStoppedManually = true
+                flipperUpdateImageHelper.stopImageOnFlipperSafe(serviceApi.requestApi)
+            }
+            stateListener(it)
+        }
+    }
+
+    private suspend fun startInternalUnwrapped(
         scope: CoroutineScope,
         serviceApi: FlipperServiceApi,
         input: UpdateRequest,
@@ -97,7 +112,6 @@ class UpdaterTask(
             return@useTemporaryFolder
         }
 
-        isRebooting = true
         stateListener(UpdatingState.Rebooting)
     }
 
