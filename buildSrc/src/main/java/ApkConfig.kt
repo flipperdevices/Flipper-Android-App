@@ -10,10 +10,10 @@ object ApkConfig {
 
     val VERSION_CODE = getProperty("version_code", Integer.MAX_VALUE.toString()).toInt()
     val VERSION_NAME = getProperty("version_name", "DEBUG_VERSION")!!
-    val COUNTLY_URL = System.getenv("COUNTLY_URL") ?: "https://countly.lionzxy.ru/"
-    val COUNTLY_APP_KEY = System.getenv(
-        "COUNTLY_APP_KEY",
-    ) ?: "171c41398e2459b068869d6409047680896ed062"
+    val COUNTLY_URL = getProperty("countly_url", null/*"https://countly.lionzxy.ru/"*/)!!
+    val COUNTLY_APP_KEY = getProperty(
+        "countly_app_key", null/*"171c41398e2459b068869d6409047680896ed062"*/
+    )!!
 
     val IS_SENTRY_PUBLISH = getProperty("is_sentry_publish", "false").toBoolean()
 }
