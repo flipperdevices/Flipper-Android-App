@@ -30,7 +30,7 @@ class FlipperUpdateImageHelper(
     ) {
         info { "Start streaming" }
         val bytes = loadImageFromResource()
-        val response = requestApi.request(
+        requestApi.request(
             main {
                 guiStartVirtualDisplayRequest = startVirtualDisplayRequest {
                     firstFrame = screenFrame {

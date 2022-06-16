@@ -1,6 +1,6 @@
 package com.flipperdevices.updater.model
 
-class UpdatingStateWithRequest(
+data class UpdatingStateWithRequest(
     val state: UpdatingState,
     val request: UpdateRequest?
 )

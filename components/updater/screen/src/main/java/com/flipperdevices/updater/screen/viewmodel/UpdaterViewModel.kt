@@ -12,6 +12,7 @@ import com.flipperdevices.core.ktx.jre.combine
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.updater.api.UpdaterApi
@@ -24,6 +25,7 @@ import com.flipperdevices.updater.screen.model.UpdaterScreenState
 import javax.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filter
@@ -32,10 +34,12 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.sync.Mutex
 
+private const val CHECK_CANCEL_DELAY = 100L
+
 class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleServiceConsumer {
     override val TAG = "UpdaterViewModel"
 
-    private val updaterScreenState = MutableStateFlow<UpdaterScreenState>(
+    private val updaterScreenStateFlow = MutableStateFlow<UpdaterScreenState>(
         UpdaterScreenState.NotStarted
     )
     private val connectionState = MutableStateFlow<ConnectionState>(ConnectionState.Connecting)
@@ -60,7 +64,7 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
         updaterJob = subscribeOnUpdaterFlow()
     }
 
-    fun getState(): StateFlow<UpdaterScreenState> = updaterScreenState
+    fun getState(): StateFlow<UpdaterScreenState> = updaterScreenStateFlow
 
     fun start(
         updateRequest: UpdateRequest?
@@ -73,12 +77,12 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
     ) {
         if (updateRequest == null) {
             if (!updaterApi.isUpdateInProcess()) {
-                updaterScreenState.emit(UpdaterScreenState.Finish)
+                updaterScreenStateFlow.emit(UpdaterScreenState.Finish)
             }
             return
         }
 
-        updaterScreenState.emit(
+        updaterScreenStateFlow.emit(
             UpdaterScreenState.CancelingSynchronization(
                 updateRequest.updateTo.version
             )
@@ -104,20 +108,21 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
         updateRequest: UpdateRequest?
     ) = launchWithLock(mutex, viewModelScope, "retry") {
         updaterJob?.cancelAndJoin()
-        updaterApi.cancel()
+        updaterApi.cancel(silent = true)
 
         info { "Wait until updating end" }
 
-        // Wait until update is really canceled
-        updaterApi.getState()
-            .filter { it.state.isFinalState }
-            .first()
+        while (updaterApi.isUpdateInProcess()) {
+            delay(CHECK_CANCEL_DELAY)
+        }
+        updaterApi.resetState()
+        updaterJob = subscribeOnUpdaterFlow()
 
         startUnsafe(updateRequest)
     }
 
     fun cancel() {
-        val updateScreenState = updaterScreenState.value
+        val updateScreenState = updaterScreenStateFlow.value
         if (updateScreenState is UpdaterScreenState.Failed) {
             cancelInternal()
         } else CancelDialogBuilder.showDialog { cancelInternal() }
@@ -126,7 +131,7 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
     private fun cancelInternal() = launchWithLock(mutex, viewModelScope, "cancel") {
         updaterJob?.cancelAndJoin()
         updaterJob = null
-        updaterScreenState.emit(UpdaterScreenState.CancelingUpdate)
+        updaterScreenStateFlow.emit(UpdaterScreenState.CancelingUpdate)
         updaterApi.cancel()
 
         info { "Wait until updating end" }
@@ -135,41 +140,45 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
         updaterApi.getState()
             .filter { it.state.isFinalState }
             .first()
-        updaterScreenState.emit(UpdaterScreenState.Finish)
+        updaterScreenStateFlow.emit(UpdaterScreenState.Finish)
     }
 
     private fun subscribeOnUpdaterFlow(): Job = updaterApi.getState()
         .combine(connectionState).onEach { (updatingState, connectionState) ->
             val version = updatingState.request?.updateTo?.version
             val state = updatingState.state
-            updaterScreenState.emit(
-                when (state) {
-                    UpdatingState.NotStarted -> UpdaterScreenState.NotStarted
-                    is UpdatingState.DownloadingFromNetwork ->
-                        UpdaterScreenState.DownloadingFromNetwork(
-                            percent = state.percent,
-                            version = version
-                        )
-                    is UpdatingState.UploadOnFlipper ->
-                        UpdaterScreenState.UploadOnFlipper(
-                            percent = state.percent,
-                            version = version
-                        )
+            val updaterScreenState = when (state) {
+                UpdatingState.NotStarted -> UpdaterScreenState.NotStarted
+                is UpdatingState.DownloadingFromNetwork ->
+                    UpdaterScreenState.DownloadingFromNetwork(
+                        percent = state.percent,
+                        version = version
+                    )
+                is UpdatingState.UploadOnFlipper ->
+                    UpdaterScreenState.UploadOnFlipper(
+                        percent = state.percent,
+                        version = version
+                    )
 
-                    UpdatingState.FailedUpload,
-                    UpdatingState.FailedPrepare ->
-                        UpdaterScreenState.Failed(FailedReason.UPLOAD_ON_FLIPPER)
-                    UpdatingState.FailedDownload ->
-                        UpdaterScreenState.Failed(FailedReason.DOWNLOAD_FROM_NETWORK)
-                    UpdatingState.Complete,
-                    UpdatingState.Failed ->
+                UpdatingState.FailedUpload,
+                UpdatingState.FailedPrepare ->
+                    UpdaterScreenState.Failed(FailedReason.UPLOAD_ON_FLIPPER)
+                UpdatingState.FailedDownload ->
+                    UpdaterScreenState.Failed(FailedReason.DOWNLOAD_FROM_NETWORK)
+                UpdatingState.Complete,
+                UpdatingState.Failed ->
+                    UpdaterScreenState.Finish
+                UpdatingState.Rebooting ->
+                    if (connectionState !is ConnectionState.Ready) {
                         UpdaterScreenState.Finish
-                    UpdatingState.Rebooting ->
-                        if (connectionState !is ConnectionState.Ready) {
-                            UpdaterScreenState.Finish
-                        } else UpdaterScreenState.Rebooting
-                }
-            )
+                    } else UpdaterScreenState.Rebooting
+            }
+            verbose {
+                "From updating state ${updatingState.state} " +
+                    "and connection state $connectionState " +
+                    "produce $updaterScreenState"
+            }
+            updaterScreenStateFlow.emit(updaterScreenState)
         }.launchIn(viewModelScope)
 
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) {

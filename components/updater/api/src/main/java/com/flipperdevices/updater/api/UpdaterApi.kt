@@ -13,5 +13,5 @@ interface UpdaterApi {
     fun onDeviceConnected(versionName: FirmwareVersion)
 
     fun start(updateRequest: UpdateRequest)
-    suspend fun cancel()
+    suspend fun cancel(silent: Boolean = false)
 }

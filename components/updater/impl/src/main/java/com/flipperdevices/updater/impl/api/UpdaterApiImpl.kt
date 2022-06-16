@@ -66,7 +66,7 @@ class UpdaterApiImpl @Inject constructor(
         )
 
         localActiveTask.start(updateRequest) {
-            info { "Downloading state update to $it" }
+            info { "Updater state update to $it" }
             withContext(NonCancellable) {
                 updatingState.emit(UpdatingStateWithRequest(it, request = updateRequest))
 
@@ -96,9 +96,9 @@ class UpdaterApiImpl @Inject constructor(
         }
     }
 
-    override suspend fun cancel() {
+    override suspend fun cancel(silent: Boolean) {
         val updateRequest = updatingState.value.request
-        if (updateRequest != null) {
+        if (updateRequest != null && !silent) {
             metricApi.reportComplexEvent(
                 UpdateFlipperEnd(
                     updateFrom = updateRequest.updateFrom.version,
@@ -123,6 +123,7 @@ class UpdaterApiImpl @Inject constructor(
 
     override fun getState(): StateFlow<UpdatingStateWithRequest> = updatingState
     override fun resetState() {
+        isLaunched.compareAndSet(true, false)
         updatingState.update {
             if (it.state != UpdatingState.NotStarted && it.state.isFinalState) {
                 UpdatingStateWithRequest(UpdatingState.NotStarted, request = null)

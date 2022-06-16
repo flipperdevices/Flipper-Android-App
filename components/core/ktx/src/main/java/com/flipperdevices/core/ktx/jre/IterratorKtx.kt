@@ -1,6 +1,7 @@
 package com.flipperdevices.core.ktx.jre
 
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -8,6 +9,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.plus
 
 /**
  * Parallel map
@@ -20,7 +22,7 @@ fun <T, M> StateFlow<T>.map(
     coroutineScope: CoroutineScope,
     mapper: (value: T) -> M
 ): StateFlow<M> = map { mapper(it) }.stateIn(
-    coroutineScope,
+    coroutineScope + Dispatchers.Default,
     SharingStarted.Eagerly,
     mapper(value)
 )

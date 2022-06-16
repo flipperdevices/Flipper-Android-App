@@ -75,6 +75,9 @@ class UpdaterTask(
 
         val updaterFolder = File(tempFolder, updateFile.sha256)
         try {
+            stateListener(
+                UpdatingState.DownloadingFromNetwork(0f)
+            )
             downloadFirmware(updateFile, updaterFolder, stateListener)
         } catch (e: Throwable) {
             error(e) { "Failed when download from network" }
