@@ -12,6 +12,7 @@
 - [Feature] Add metrics (fully anonymously)
 - [Feature] Add dialog about sucs/not update
 - [Feature] Add failed upload and network dialog
+- [Feature] Change percent scheme for synchronization
 - [BUGFIX] Fix incorrect corner radius for battery icon
 - [BUGFIX] Fix searching pic
 - [CI] Pass countly prod creds in application when building

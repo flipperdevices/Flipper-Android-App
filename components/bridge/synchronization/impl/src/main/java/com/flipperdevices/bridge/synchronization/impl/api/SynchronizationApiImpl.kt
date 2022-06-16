@@ -1,5 +1,6 @@
 package com.flipperdevices.bridge.synchronization.impl.api
 
+import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
@@ -8,9 +9,11 @@ import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.impl.SynchronizationTask
+import com.flipperdevices.bridge.synchronization.impl.utils.SynchronizationPercentProvider
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.metric.api.MetricApi
 import com.squareup.anvil.annotations.ContributesBinding
 import java.util.concurrent.atomic.AtomicBoolean
@@ -22,13 +25,15 @@ import kotlinx.coroutines.flow.update
 
 @Singleton
 @ContributesBinding(AppGraph::class, SynchronizationApi::class)
+@Suppress("LongParameterList")
 class SynchronizationApiImpl @Inject constructor(
     private val serviceProvider: FlipperServiceProvider,
     private val simpleKeyApi: SimpleKeyApi,
     private val deleteKeyApi: DeleteKeyApi,
     private val utilsKeyApi: UtilsKeyApi,
     private val favoriteApi: FavoriteApi,
-    private val metricApi: MetricApi
+    private val metricApi: MetricApi,
+    private val preference: DataStore<Settings>
 ) : SynchronizationApi, LogTagProvider {
     override val TAG = "SynchronizationApi"
 
@@ -55,7 +60,8 @@ class SynchronizationApiImpl @Inject constructor(
             deleteKeyApi = deleteKeyApi,
             utilsKeyApi = utilsKeyApi,
             favoriteApi = favoriteApi,
-            metricApi = metricApi
+            metricApi = metricApi,
+            synchronizationProvider = SynchronizationPercentProvider(preference)
         )
 
         localSynchronizationTask.start(input = Unit) { taskState ->
