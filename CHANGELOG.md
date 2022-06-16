@@ -16,6 +16,7 @@
 - [Feature] Change percent scheme for synchronization
 - [BUGFIX] Fix incorrect corner radius for battery icon
 - [BUGFIX] Fix searching pic
+- [BUGFIX] Fix padding for updater card
 - [CI] Pass countly prod creds in application when building
 
 # 1.1.2

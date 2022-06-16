@@ -111,7 +111,12 @@ private fun ComposableUpdateButtonContent(
             )
         }
         Text(
-            modifier = Modifier.padding(top = 3.dp, bottom = 15.dp),
+            modifier = Modifier.padding(
+                top = 3.dp,
+                bottom = 15.dp,
+                start = 12.dp,
+                end = 12.dp
+            ),
             text = stringResource(descriptionId),
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.W500,
