@@ -59,47 +59,51 @@ fun FlipperDialog(
 fun FlipperDialog(
     modifier: Modifier = Modifier,
     @DrawableRes imageId: Int? = null,
+    imageComposable: (@Composable () -> Unit)? = imageId?.letCompose { imageIdNotNullable ->
+        Image(
+            painter = painterResource(imageIdNotNullable),
+            contentDescription = titleId?.let { stringResource(it) }
+        )
+    },
     @StringRes titleId: Int? = null,
+    titleComposable: (@Composable () -> Unit)? = titleId?.letCompose { titleIdNotNullable ->
+        Text(
+            text = stringResource(titleIdNotNullable),
+            fontWeight = FontWeight.W500,
+            fontSize = 14.sp,
+            color = colorResource(DesignSystem.color.black_100),
+            textAlign = TextAlign.Center
+        )
+    },
     @StringRes textId: Int? = null,
+    textComposable: (@Composable () -> Unit)? = textId?.letCompose {
+        Text(
+            text = stringResource(textId),
+            fontWeight = FontWeight.W400,
+            fontSize = 14.sp,
+            color = colorResource(DesignSystem.color.black_40),
+            textAlign = TextAlign.Center
+        )
+    },
     @StringRes buttonTextId: Int,
+    buttonComposable: @Composable () -> Unit = {
+        ComposableFlipperButton(
+            modifier = Modifier.fillMaxWidth(),
+            text = stringResource(buttonTextId),
+            onClick = onClickButton,
+            textPadding = PaddingValues(12.dp)
+        )
+    },
     onClickButton: () -> Unit,
     onDismissRequest: (() -> Unit)? = null,
     closeOnClickOutside: Boolean = true
 ) {
     FlipperDialog(
         modifier,
-        image = imageId?.letCompose { imageIdNotNullable ->
-            Image(
-                painter = painterResource(imageIdNotNullable),
-                contentDescription = titleId?.let { stringResource(it) }
-            )
-        },
-        title = titleId?.letCompose { titleIdNotNullable ->
-            Text(
-                text = stringResource(titleIdNotNullable),
-                fontWeight = FontWeight.W500,
-                fontSize = 14.sp,
-                color = colorResource(DesignSystem.color.black_100),
-                textAlign = TextAlign.Center
-            )
-        },
-        text = textId?.letCompose { textIdNotNullable ->
-            Text(
-                text = stringResource(textIdNotNullable),
-                fontWeight = FontWeight.W400,
-                fontSize = 14.sp,
-                color = colorResource(DesignSystem.color.black_40),
-                textAlign = TextAlign.Center
-            )
-        },
-        buttons = {
-            ComposableFlipperButton(
-                modifier = Modifier.fillMaxWidth(),
-                text = stringResource(buttonTextId),
-                onClick = onClickButton,
-                textPadding = PaddingValues(12.dp)
-            )
-        },
+        image = imageComposable,
+        title = titleComposable,
+        text = textComposable,
+        buttons = buttonComposable,
         onDismissRequest,
         closeOnClickOutside
     )

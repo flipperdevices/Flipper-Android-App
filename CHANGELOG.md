@@ -10,7 +10,10 @@
 - [Feature] Save last open channel for updater
 - [Feature] Show when flipper charging
 - [Feature] Add metrics (fully anonymously)
+- [Feature] Add dialog about sucs/not update
+- [Feature] Add failed upload and network dialog
 - [BUGFIX] Fix incorrect corner radius for battery icon
+- [BUGFIX] Fix searching pic
 - [CI] Pass countly prod creds in application when building
 
 # 1.1.2

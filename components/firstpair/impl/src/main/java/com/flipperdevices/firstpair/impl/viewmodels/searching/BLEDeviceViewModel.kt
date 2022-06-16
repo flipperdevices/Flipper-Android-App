@@ -19,7 +19,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -70,8 +69,11 @@ class BLEDeviceViewModel : ViewModel(), LogTagProvider {
             }
             .collect { devices ->
                 state.update {
-                    if (it !is ScanState.Founded || it.devices != devices) {
-                        ScanState.Founded(devices.toList())
+                    val devicesList = devices.toList()
+                    if ((it !is ScanState.Founded || it.devices != devices) &&
+                        devicesList.isNotEmpty()
+                    ) {
+                        ScanState.Founded(devicesList)
                     } else it
                 }
             }

@@ -15,13 +15,17 @@ import com.flipperdevices.info.shared.getColorByChannel
 import com.flipperdevices.info.shared.getTextByVersion
 import com.flipperdevices.updater.model.FirmwareVersion
 import com.flipperdevices.updater.screen.R
+import com.flipperdevices.updater.screen.model.FailedReason
 import com.flipperdevices.updater.screen.model.UpdaterScreenState
 
 @Composable
 fun ComposableUpdateContent(
-    updaterScreenState: UpdaterScreenState
+    updaterScreenState: UpdaterScreenState,
+    onRetry: () -> Unit
 ) {
-    FirmwareVersionText(updaterScreenState.version)
+    if (updaterScreenState.version != null) {
+        FirmwareVersionText(updaterScreenState.version)
+    }
 
     when (updaterScreenState) {
         UpdaterScreenState.NotStarted -> ComposableInProgressIndicator(
@@ -60,6 +64,10 @@ fun ComposableUpdateContent(
             iconId = null,
             percent = null
         )
+        is UpdaterScreenState.Failed -> when (updaterScreenState.failedReason) {
+            FailedReason.UPLOAD_ON_FLIPPER -> ComposableFailedUploadContent()
+            FailedReason.DOWNLOAD_FROM_NETWORK -> ComposableFailedDownloadContent(onRetry)
+        }
         UpdaterScreenState.Finish -> return
     }
 
@@ -67,13 +75,9 @@ fun ComposableUpdateContent(
 }
 
 @Composable
-private fun FirmwareVersionText(version: FirmwareVersion?) {
-    val text = if (version != null) {
-        getTextByVersion(version)
-    } else ""
-    val textColor = if (version != null) {
-        colorResource(getColorByChannel(version.channel))
-    } else colorResource(DesignSystem.color.black_100)
+private fun FirmwareVersionText(version: FirmwareVersion) {
+    val text = getTextByVersion(version)
+    val textColor = colorResource(getColorByChannel(version.channel))
 
     Text(
         modifier = Modifier.padding(bottom = 4.dp, start = 24.dp, end = 24.dp),
@@ -96,6 +100,7 @@ private fun DescriptionUpdateText(
         UpdaterScreenState.NotStarted -> R.string.update_stage_starting_desc
         UpdaterScreenState.Rebooting -> R.string.update_stage_rebooting_desc
         is UpdaterScreenState.UploadOnFlipper -> R.string.update_stage_uploading_desc
+        is UpdaterScreenState.Failed -> return
     }
 
     Text(

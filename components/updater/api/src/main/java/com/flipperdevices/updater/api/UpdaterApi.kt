@@ -1,5 +1,6 @@
 package com.flipperdevices.updater.api
 
+import com.flipperdevices.updater.model.FirmwareVersion
 import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.model.UpdatingStateWithRequest
 import kotlinx.coroutines.flow.StateFlow
@@ -9,7 +10,7 @@ interface UpdaterApi {
     fun getState(): StateFlow<UpdatingStateWithRequest>
     fun resetState()
 
-    fun onDeviceConnected(versionName: String)
+    fun onDeviceConnected(versionName: FirmwareVersion)
 
     fun start(updateRequest: UpdateRequest)
     suspend fun cancel()

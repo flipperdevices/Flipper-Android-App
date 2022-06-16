@@ -204,17 +204,21 @@ class FlipperRequestApiImpl(
         serialApiUnsafe.reset(bleManager)
         serialApi.reset(bleManager)
         reader.reset()
+        var counter = 0
         while (requestListeners.isNotEmpty()) {
             val listeners = ArrayList(requestListeners.keys)
             listeners.forEach { id ->
+                counter++
                 val listener = requestListeners.remove(id)
                 listener?.invoke(
                     main {
+                        commandStatus = Flipper.CommandStatus.ERROR
                         hasNext = false
                     }
                 )
             }
         }
+        info { "Complete reset and finish $counter tasks" }
     }
 
     private fun subscribeToAnswers(scope: CoroutineScope) {

@@ -11,6 +11,7 @@ import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.complex.UpdateFlipperEnd
 import com.flipperdevices.metric.api.events.complex.UpdateStatus
+import com.flipperdevices.updater.api.FlipperVersionProviderApi
 import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.card.di.CardComponent
 import com.flipperdevices.updater.card.model.FlipperState
@@ -23,7 +24,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 class UpdateStateViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
-    private val flipperStateFlow = MutableStateFlow<FlipperState>(FlipperState.NOT_READY)
+    private val flipperStateFlow = MutableStateFlow<FlipperState>(FlipperState.NotReady)
 
     @Inject
     lateinit var serviceProvider: FlipperServiceProvider
@@ -33,6 +34,9 @@ class UpdateStateViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
 
     @Inject
     lateinit var metricApi: MetricApi
+
+    @Inject
+    lateinit var versionParser: FlipperVersionProviderApi
 
     init {
         ComponentHolder.component<CardComponent>().inject(this)
@@ -63,33 +67,38 @@ class UpdateStateViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
         combine(
             serviceApi.connectionInformationApi.getConnectionStateFlow(),
-            serviceApi.flipperInformationApi.getInformationFlow(),
+            versionParser.getCurrentFlipperVersion(viewModelScope, serviceApi),
             updaterApi.getState()
-        ) { connectionState, informationState, updaterState ->
+        ) { connectionState, flipperVersion, updaterState ->
             val isReady = connectionState is ConnectionState.Ready &&
                 connectionState.isSupported
-            val version = informationState.softwareVersion
 
-            if (isReady && version != null) {
+            if (isReady && flipperVersion != null) {
                 return@combine when (updaterState.state) {
                     is UpdatingState.Rebooting -> {
-                        updaterApi.onDeviceConnected(version)
-                        FlipperState.READY
+                        updaterApi.onDeviceConnected(
+                            flipperVersion
+                        )
+                        FlipperState.Ready
                     }
                     is UpdatingState.Complete -> {
-                        FlipperState.COMPLETE
+                        FlipperState.Complete(updaterState.request?.updateTo?.version)
                     }
                     is UpdatingState.Failed -> {
-                        FlipperState.FAILED
+                        FlipperState.Failed(updaterState.request?.updateTo?.version)
                     }
-                    else -> FlipperState.READY
+                    else -> FlipperState.Ready
                 }
             }
             return@combine if (updaterState.state is UpdatingState.Rebooting) {
-                FlipperState.UPDATING
-            } else FlipperState.NOT_READY
+                FlipperState.Updating
+            } else FlipperState.NotReady
         }.onEach {
             flipperStateFlow.emit(it)
         }.launchIn(viewModelScope)
+    }
+
+    fun onDismissUpdateDialog() {
+        updaterApi.resetState()
     }
 }

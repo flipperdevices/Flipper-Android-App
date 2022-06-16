@@ -19,6 +19,10 @@ sealed class UpdaterScreenState(
         val percent: Float
     ) : UpdaterScreenState(version)
 
+    class Failed(
+        val failedReason: FailedReason
+    ) : UpdaterScreenState(null)
+
     object Rebooting : UpdaterScreenState(null)
 
     object CancelingUpdate : UpdaterScreenState(null)

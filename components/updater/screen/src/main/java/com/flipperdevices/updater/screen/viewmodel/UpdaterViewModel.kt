@@ -19,6 +19,7 @@ import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.model.UpdatingState
 import com.flipperdevices.updater.screen.di.UpdaterComponent
 import com.flipperdevices.updater.screen.fragments.CancelDialogBuilder
+import com.flipperdevices.updater.screen.model.FailedReason
 import com.flipperdevices.updater.screen.model.UpdaterScreenState
 import javax.inject.Inject
 import kotlinx.coroutines.Job
@@ -64,11 +65,17 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
     fun start(
         updateRequest: UpdateRequest?
     ) = launchWithLock(mutex, viewModelScope, "start") {
+        startUnsafe(updateRequest)
+    }
+
+    private suspend fun startUnsafe(
+        updateRequest: UpdateRequest?
+    ) {
         if (updateRequest == null) {
             if (!updaterApi.isUpdateInProcess()) {
                 updaterScreenState.emit(UpdaterScreenState.Finish)
             }
-            return@launchWithLock
+            return
         }
 
         updaterScreenState.emit(
@@ -93,8 +100,27 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
         updaterApi.start(updateRequest)
     }
 
+    fun retry(
+        updateRequest: UpdateRequest?
+    ) = launchWithLock(mutex, viewModelScope, "retry") {
+        updaterJob?.cancelAndJoin()
+        updaterApi.cancel()
+
+        info { "Wait until updating end" }
+
+        // Wait until update is really canceled
+        updaterApi.getState()
+            .filter { it.state.isFinalState }
+            .first()
+
+        startUnsafe(updateRequest)
+    }
+
     fun cancel() {
-        CancelDialogBuilder.showDialog { cancelInternal() }
+        val updateScreenState = updaterScreenState.value
+        if (updateScreenState is UpdaterScreenState.Failed) {
+            cancelInternal()
+        } else CancelDialogBuilder.showDialog { cancelInternal() }
     }
 
     private fun cancelInternal() = launchWithLock(mutex, viewModelScope, "cancel") {
@@ -129,11 +155,14 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
                             percent = state.percent,
                             version = version
                         )
-                    UpdatingState.Complete,
-                    UpdatingState.Failed,
+
                     UpdatingState.FailedUpload,
-                    UpdatingState.FailedPrepare,
+                    UpdatingState.FailedPrepare ->
+                        UpdaterScreenState.Failed(FailedReason.UPLOAD_ON_FLIPPER)
                     UpdatingState.FailedDownload ->
+                        UpdaterScreenState.Failed(FailedReason.DOWNLOAD_FROM_NETWORK)
+                    UpdatingState.Complete,
+                    UpdatingState.Failed ->
                         UpdaterScreenState.Finish
                     UpdatingState.Rebooting ->
                         if (connectionState !is ConnectionState.Ready) {
