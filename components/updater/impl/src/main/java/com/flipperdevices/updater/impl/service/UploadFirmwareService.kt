@@ -9,6 +9,7 @@ import com.flipperdevices.bridge.protobuf.streamToCommandFlow
 import com.flipperdevices.core.ktx.jre.md5
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.file
 import com.flipperdevices.protobuf.storage.md5sumRequest
@@ -60,7 +61,10 @@ object UploadFirmwareService : LogTagProvider {
                         }
                     )
                 }
-                requestApi.request(requestFlow)
+                val response = requestApi.request(requestFlow)
+                if (response.commandStatus != Flipper.CommandStatus.OK) {
+                    error("Failed with $response")
+                }
             }
         }
     }
@@ -81,6 +85,9 @@ object UploadFirmwareService : LogTagProvider {
                 }
             }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
         ).first()
+        if (response.commandStatus != Flipper.CommandStatus.OK) {
+            error("Failed hash with status ${response.commandStatus}")
+        }
         if (response.hasStorageMd5SumResponse()) {
             return response.storageMd5SumResponse.md5Sum == fileMd5
         }

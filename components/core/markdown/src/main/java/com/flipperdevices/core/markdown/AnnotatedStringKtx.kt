@@ -36,8 +36,8 @@ private fun rememberRenderer(linkColor: Color): AnnotatedStringRenderer {
 
 @Composable
 fun ClickableUrlText(
-    @StringRes markdownResId: Int,
     modifier: Modifier = Modifier,
+    @StringRes markdownResId: Int,
     style: TextStyle = TextStyle.Default
 ) {
     ClickableUrlText(

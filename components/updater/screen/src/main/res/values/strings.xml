@@ -24,5 +24,12 @@
 
 
     <string name="update_screen_title">Updating your Flipper</string>
+    <string name="update_screen_title_failed">Update Failed</string>
     <string name="update_screen_cancel">Cancel</string>
+    <string name="update_screen_failed_flipper_title">Can’t connect to Flipper</string>
+    <string name="update_screen_failed_flipper_desc">1. Check Bluetooth connection with Flipper\n\n2. Make sure Flipper is Turned On\n\n3. If Flipper doesn’t respond, reboot it and connect to the app via Bluetooth\n\n4. Restart firmware update</string>
+    <string name="update_screen_failed_flipper_link">[Read More](https://docs.flipperzero.one/basics/reboot)</string>
+    <string name="update_screen_failed_network_title">Unable to download firmware</string>
+    <string name="update_screen_failed_network_desc">Can\'t connect to update server</string>
+    <string name="update_screen_failed_network_btn">Retry</string>
 </resources>
