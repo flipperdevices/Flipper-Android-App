@@ -67,7 +67,7 @@ class UpdateStateViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
             updaterApi.getState()
         ) { connectionState, informationState, updaterState ->
             val isReady = connectionState is ConnectionState.Ready &&
-                    connectionState.isSupported
+                connectionState.isSupported
             val version = informationState.softwareVersion
 
             if (isReady && version != null) {

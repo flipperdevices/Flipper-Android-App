@@ -182,7 +182,7 @@ class UpdateCardViewModel :
                     lastVersion = latestVersionFromNetwork.version,
                     updaterDist = latestVersionFromNetwork.updaterFile,
                     isOtherChannel = latestVersionFromNetwork.version.channel
-                            != flipperFirmwareVersion.channel
+                        != flipperFirmwareVersion.channel
                 )
             )
         } else updateCardState.emit(UpdateCardState.NoUpdate(flipperFirmwareVersion))
