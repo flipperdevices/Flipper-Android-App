@@ -25,7 +25,6 @@ import javax.inject.Inject
 
 class UpdateStateViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
     private val flipperStateFlow = MutableStateFlow<FlipperUpdateState>(FlipperUpdateState.NotReady)
-    private val deviceStateInProgressFlow = MutableStateFlow<Boolean>(true)
 
     @Inject
     lateinit var serviceProvider: FlipperServiceProvider
@@ -64,29 +63,13 @@ class UpdateStateViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
     }
 
     fun getUpdateState(): StateFlow<FlipperUpdateState> = flipperStateFlow
-    fun getDeviceState(): StateFlow<Boolean> = deviceStateInProgressFlow
 
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
         combine(
             serviceApi.connectionInformationApi.getConnectionStateFlow(),
-            serviceApi.flipperInformationApi.getInformationFlow(),
             versionParser.getCurrentFlipperVersion(viewModelScope, serviceApi),
             updaterApi.getState()
-        ) { connectionState, flipperInformation, flipperVersion, updaterState ->
-
-            val inProgress = when (connectionState) {
-                ConnectionState.Connecting,
-                ConnectionState.Disconnecting,
-                ConnectionState.Initializing,
-                is ConnectionState.Ready,
-                ConnectionState.RetrievingInformation -> {
-                    val batteryLevel = flipperInformation.batteryLevel
-                    batteryLevel == null
-                }
-                else -> false
-            }
-            deviceStateInProgressFlow.emit(inProgress)
-
+        ) { connectionState, flipperVersion, updaterState ->
             val isReady = connectionState is ConnectionState.Ready &&
                 connectionState.isSupported
 

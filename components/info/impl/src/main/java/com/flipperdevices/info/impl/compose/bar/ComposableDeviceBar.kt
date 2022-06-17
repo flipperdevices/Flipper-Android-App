@@ -151,6 +151,7 @@ private fun FlipperName(title: String) {
     showBackground = true
 )
 @Composable
+@Suppress("UnusedPrivateMember")
 private fun FlipperDeviceBarInformationPreview() {
     val deviceStatus = setOf(
         DeviceStatus.NoDevice,

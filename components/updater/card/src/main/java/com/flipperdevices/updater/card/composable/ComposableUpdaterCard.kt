@@ -23,7 +23,9 @@ import com.flipperdevices.info.shared.InfoElementCard
 import com.flipperdevices.updater.card.R
 import com.flipperdevices.updater.card.composable.dialogs.ComposableFailedUpdate
 import com.flipperdevices.updater.card.composable.dialogs.ComposableSuccessfulUpdate
+import com.flipperdevices.updater.card.model.DeviceConnected
 import com.flipperdevices.updater.card.model.FlipperUpdateState
+import com.flipperdevices.updater.card.viewmodel.DeviceConnectedViewModel
 import com.flipperdevices.updater.card.viewmodel.UpdateCardViewModel
 import com.flipperdevices.updater.card.viewmodel.UpdateStateViewModel
 import com.flipperdevices.updater.model.FirmwareChannel
@@ -36,6 +38,7 @@ internal fun ComposableUpdaterCardInternal(
     modifier: Modifier,
     updateStateViewModel: UpdateStateViewModel = viewModel(),
     updateCardViewModel: UpdateCardViewModel = viewModel(),
+    deviceConnectedViewModel: DeviceConnectedViewModel = viewModel()
 ) {
     val updateState by updateStateViewModel.getUpdateState().collectAsState()
     val localDeviceStatus = updateState
@@ -64,7 +67,8 @@ internal fun ComposableUpdaterCardInternal(
         modifier = modifier,
         titleId = R.string.updater_card_updater_title
     ) {
-        val inProgress by updateStateViewModel.getDeviceState().collectAsState()
+        val deviceConnectedState by deviceConnectedViewModel.getDeviceConnected().collectAsState()
+        val inProgress = deviceConnectedState == DeviceConnected.CONNECTING
 
         val cardState by updateCardViewModel.getUpdateCardState().collectAsState()
         val cardStateLocal = cardState

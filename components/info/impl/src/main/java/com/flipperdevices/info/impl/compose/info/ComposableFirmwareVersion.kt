@@ -69,6 +69,7 @@ fun ComposableFirmwareBuildDate(
     showBackground = true
 )
 @Composable
+@Suppress("UnusedPrivateMember")
 private fun ComposableFirmwareVersionAndBuildDate() {
     val firmwareVersion = FirmwareVersion(
         channel = FirmwareChannel.DEV,
