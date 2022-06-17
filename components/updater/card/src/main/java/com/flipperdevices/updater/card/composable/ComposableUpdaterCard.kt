@@ -17,45 +17,46 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.info.shared.ComposableDeviceInfoRow
 import com.flipperdevices.info.shared.ComposableInfoDivider
 import com.flipperdevices.info.shared.InfoElementCard
 import com.flipperdevices.updater.card.R
 import com.flipperdevices.updater.card.composable.dialogs.ComposableFailedUpdate
 import com.flipperdevices.updater.card.composable.dialogs.ComposableSuccessfulUpdate
-import com.flipperdevices.updater.card.model.FlipperState
+import com.flipperdevices.updater.card.model.FlipperUpdateState
 import com.flipperdevices.updater.card.viewmodel.UpdateCardViewModel
 import com.flipperdevices.updater.card.viewmodel.UpdateStateViewModel
+import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
 import com.flipperdevices.updater.model.UpdateCardState
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 internal fun ComposableUpdaterCardInternal(
     modifier: Modifier,
-    deviceStatusViewModel: UpdateStateViewModel = viewModel(),
-    updateCardViewModel: UpdateCardViewModel = viewModel()
+    updateStateViewModel: UpdateStateViewModel = viewModel(),
+    updateCardViewModel: UpdateCardViewModel = viewModel(),
 ) {
-    val deviceStatus by deviceStatusViewModel.getState().collectAsState()
-    val localDeviceStatus = deviceStatus
+    val updateState by updateStateViewModel.getUpdateState().collectAsState()
+    val localDeviceStatus = updateState
     // Not use when, because internal Jetpack Compose crash. ¯\_(ツ)_/¯
     // https://gist.github.com/LionZXY/609fa537747782d01e8f4cbdcdc882cf
-    if (deviceStatus == FlipperState.Updating) {
+    if (updateState == FlipperUpdateState.Updating) {
         ComposableUpdaterReboot(modifier)
         return
     }
 
     when (localDeviceStatus) {
-        is FlipperState.Complete -> ComposableSuccessfulUpdate(
+        is FlipperUpdateState.Complete -> ComposableSuccessfulUpdate(
             localDeviceStatus.version,
-            deviceStatusViewModel::onDismissUpdateDialog
+            updateStateViewModel::onDismissUpdateDialog
         )
-        is FlipperState.Failed -> ComposableFailedUpdate(
+        is FlipperUpdateState.Failed -> ComposableFailedUpdate(
             localDeviceStatus.version,
-            deviceStatusViewModel::onDismissUpdateDialog
+            updateStateViewModel::onDismissUpdateDialog
         )
-        FlipperState.Ready -> {}
-        FlipperState.NotReady -> return
+        FlipperUpdateState.Ready -> {}
+        FlipperUpdateState.NotReady -> return
         else -> error("Can't find this device status")
     }
 
@@ -63,6 +64,8 @@ internal fun ComposableUpdaterCardInternal(
         modifier = modifier,
         titleId = R.string.updater_card_updater_title
     ) {
+        val inProgress by updateStateViewModel.getDeviceState().collectAsState()
+
         val cardState by updateCardViewModel.getUpdateCardState().collectAsState()
         val cardStateLocal = cardState
 
@@ -77,12 +80,14 @@ internal fun ComposableUpdaterCardInternal(
             is UpdateCardState.NoUpdate -> ComposableFirmwareUpdaterContent(
                 version = cardStateLocal.flipperVersion,
                 updateCardState = cardStateLocal,
-                updateCardViewModel = updateCardViewModel
+                onSelectFirmwareChannel = updateCardViewModel::onSelectChannel,
+                inProgress = inProgress
             )
             is UpdateCardState.UpdateAvailable -> ComposableFirmwareUpdaterContent(
                 version = cardStateLocal.lastVersion,
                 updateCardState = cardStateLocal,
-                updateCardViewModel = updateCardViewModel
+                onSelectFirmwareChannel = updateCardViewModel::onSelectChannel,
+                inProgress = inProgress
             )
         }
     }
@@ -115,15 +120,17 @@ private fun ComposableFirmwareUpdaterInProgress() {
 private fun ComposableFirmwareUpdaterContent(
     version: FirmwareVersion,
     updateCardState: UpdateCardState,
-    updateCardViewModel: UpdateCardViewModel
+    inProgress: Boolean,
+    onSelectFirmwareChannel: (FirmwareChannel) -> Unit
 ) {
     ComposableDeviceInfoRow(titleId = R.string.updater_card_updater_channel, inProgress = false) {
         ComposableUpdaterFirmwareVersionWithChoice(
             modifier = it,
-            updateCardViewModel = updateCardViewModel,
-            version = version
+            onSelectFirmwareChannel = onSelectFirmwareChannel,
+            version = version,
+            inProgress = inProgress
         )
     }
     ComposableInfoDivider()
-    ComposableUpdateButton(updateCardState)
+    ComposableUpdateButton(updateCardState, inProgress)
 }
