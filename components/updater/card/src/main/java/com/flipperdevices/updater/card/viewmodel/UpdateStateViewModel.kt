@@ -14,17 +14,17 @@ import com.flipperdevices.metric.api.events.complex.UpdateStatus
 import com.flipperdevices.updater.api.FlipperVersionProviderApi
 import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.card.di.CardComponent
-import com.flipperdevices.updater.card.model.FlipperState
+import com.flipperdevices.updater.card.model.FlipperUpdateState
 import com.flipperdevices.updater.model.UpdatingState
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
 class UpdateStateViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
-    private val flipperStateFlow = MutableStateFlow<FlipperState>(FlipperState.NotReady)
+    private val flipperStateFlow = MutableStateFlow<FlipperUpdateState>(FlipperUpdateState.NotReady)
 
     @Inject
     lateinit var serviceProvider: FlipperServiceProvider
@@ -62,7 +62,7 @@ class UpdateStateViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
         }.launchIn(viewModelScope)
     }
 
-    fun getState(): StateFlow<FlipperState> = flipperStateFlow
+    fun getState(): StateFlow<FlipperUpdateState> = flipperStateFlow
 
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
         combine(
@@ -79,20 +79,20 @@ class UpdateStateViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
                         updaterApi.onDeviceConnected(
                             flipperVersion
                         )
-                        FlipperState.Ready
+                        FlipperUpdateState.Ready
                     }
                     is UpdatingState.Complete -> {
-                        FlipperState.Complete(updaterState.request?.updateTo?.version)
+                        FlipperUpdateState.Complete(updaterState.request?.updateTo?.version)
                     }
                     is UpdatingState.Failed -> {
-                        FlipperState.Failed(updaterState.request?.updateTo?.version)
+                        FlipperUpdateState.Failed(updaterState.request?.updateTo?.version)
                     }
-                    else -> FlipperState.Ready
+                    else -> FlipperUpdateState.Ready
                 }
             }
             return@combine if (updaterState.state is UpdatingState.Rebooting) {
-                FlipperState.Updating
-            } else FlipperState.NotReady
+                FlipperUpdateState.Updating
+            } else FlipperUpdateState.NotReady
         }.onEach {
             flipperStateFlow.emit(it)
         }.launchIn(viewModelScope)
