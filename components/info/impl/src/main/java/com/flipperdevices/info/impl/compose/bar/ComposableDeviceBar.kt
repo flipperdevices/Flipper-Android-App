@@ -156,7 +156,7 @@ private fun FlipperDeviceBarInformationPreview() {
     val deviceStatus = setOf(
         DeviceStatus.NoDevice,
         DeviceStatus.Connected(deviceName = "Flipper", batteryLevel = 0.3f, isCharging = false),
-        DeviceStatus.Connected(deviceName = "Flipper charge", batteryLevel = 0.7f, isCharging = true),
+        DeviceStatus.Connected(deviceName = "Charge", batteryLevel = 0.7f, isCharging = true),
         DeviceStatus.NoDeviceInformation(deviceName = "No device info", connectInProgress = false),
         DeviceStatus.NoDeviceInformation(deviceName = "Connecting...", connectInProgress = true)
     )
