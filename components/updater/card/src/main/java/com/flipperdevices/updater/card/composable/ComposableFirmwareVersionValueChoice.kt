@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.info.shared.ComposableDeviceInfoRowText
 import com.flipperdevices.info.shared.getColorByChannel
 import com.flipperdevices.info.shared.getDescriptionByChannel
@@ -48,14 +49,13 @@ import com.flipperdevices.info.shared.getTextByVersion
 import com.flipperdevices.updater.card.R
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableUpdaterFirmwareVersionWithChoice(
     modifier: Modifier,
     version: FirmwareVersion,
     inProgress: Boolean,
-    onSelectFirmwareChannel: (FirmwareChannel) -> Unit = {},
+    onSelectFirmwareChannel: (FirmwareChannel) -> Unit = {}
 ) {
     var showMenu by remember { mutableStateOf(false) }
     var positionYParentBox by remember { mutableStateOf(0) }

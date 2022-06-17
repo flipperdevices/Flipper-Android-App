@@ -18,7 +18,7 @@ class DeviceConnectedViewModel : LifecycleViewModel(), FlipperBleServiceConsumer
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
         combine(
             serviceApi.connectionInformationApi.getConnectionStateFlow(),
-            serviceApi.flipperInformationApi.getInformationFlow(),
+            serviceApi.flipperInformationApi.getInformationFlow()
         ) { connectionState, flipperInformation ->
             return@combine when (connectionState) {
                 ConnectionState.Connecting,

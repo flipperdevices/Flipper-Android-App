@@ -16,12 +16,12 @@ import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.card.di.CardComponent
 import com.flipperdevices.updater.card.model.FlipperUpdateState
 import com.flipperdevices.updater.model.UpdatingState
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import javax.inject.Inject
 
 class UpdateStateViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
     private val flipperStateFlow = MutableStateFlow<FlipperUpdateState>(FlipperUpdateState.NotReady)

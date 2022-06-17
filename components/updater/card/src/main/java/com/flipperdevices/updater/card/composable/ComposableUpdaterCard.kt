@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.info.shared.ComposableDeviceInfoRow
 import com.flipperdevices.info.shared.ComposableInfoDivider
 import com.flipperdevices.info.shared.InfoElementCard
@@ -31,7 +32,6 @@ import com.flipperdevices.updater.card.viewmodel.UpdateStateViewModel
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
 import com.flipperdevices.updater.model.UpdateCardState
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 internal fun ComposableUpdaterCardInternal(
