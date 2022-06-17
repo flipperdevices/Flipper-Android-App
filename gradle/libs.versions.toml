@@ -82,6 +82,7 @@ compose-material = { module = "androidx.compose.material:material", version.ref 
 # UI - Compose Extension
 compose-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "compose_accompanist" }
 compose-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "compose_accompanist" }
+compose-placeholder = { module = "com.google.accompanist:accompanist-placeholder", version.ref = "compose_accompanist" }
 compose-swipetorefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "compose_accompanist" }
 compose-constraint = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "compose_constraint" }
 
