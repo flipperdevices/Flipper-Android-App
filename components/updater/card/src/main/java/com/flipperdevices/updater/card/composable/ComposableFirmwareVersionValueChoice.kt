@@ -1,5 +1,6 @@
 package com.flipperdevices.updater.card.composable
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -37,22 +39,23 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.info.shared.ComposableDeviceInfoRowText
 import com.flipperdevices.info.shared.getColorByChannel
 import com.flipperdevices.info.shared.getDescriptionByChannel
 import com.flipperdevices.info.shared.getFullNameByChannel
 import com.flipperdevices.info.shared.getTextByVersion
 import com.flipperdevices.updater.card.R
-import com.flipperdevices.updater.card.viewmodel.UpdateCardViewModel
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableUpdaterFirmwareVersionWithChoice(
     modifier: Modifier,
-    updateCardViewModel: UpdateCardViewModel,
-    version: FirmwareVersion
+    version: FirmwareVersion,
+    inProgress: Boolean,
+    onSelectFirmwareChannel: (FirmwareChannel) -> Unit = {},
 ) {
     var showMenu by remember { mutableStateOf(false) }
     var positionYParentBox by remember { mutableStateOf(0) }
@@ -73,31 +76,46 @@ fun ComposableUpdaterFirmwareVersionWithChoice(
             ),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            ComposableDeviceInfoRowText(
-                text = getTextByVersion(version),
-                colorId = getColorByChannel(version.channel)
-            )
-            Icon(
-                modifier = Modifier
-                    .padding(all = 4.dp),
-                painter = painterResource(R.drawable.ic_more),
-                contentDescription = stringResource(R.string.updater_card_firmware_version_choice),
-                tint = colorResource(DesignSystem.color.black_30)
-            )
+            if (inProgress) {
+                ComposablePlaceholderFirmwareBuild()
+            } else {
+                ComposableDeviceInfoRowText(
+                    text = getTextByVersion(version),
+                    colorId = getColorByChannel(version.channel)
+                )
+                Icon(
+                    modifier = Modifier
+                        .padding(all = 4.dp),
+                    painter = painterResource(R.drawable.ic_more),
+                    contentDescription = stringResource(R.string.updater_card_firmware_version_choice),
+                    tint = colorResource(DesignSystem.color.black_30)
+                )
 
-            ComposableDropMenuFirmwareBuild(
-                showMenu = showMenu,
-                coordinateMenuByY = positionYParentBox,
-                onClickMenuItem = {
-                    updateCardViewModel.onSelectChannel(it)
-                    showMenu = false
-                },
-                onDismissMenu = {
-                    showMenu = false
-                }
-            )
+                ComposableDropMenuFirmwareBuild(
+                    showMenu = showMenu,
+                    coordinateMenuByY = positionYParentBox,
+                    onClickMenuItem = {
+                        onSelectFirmwareChannel(it)
+                        showMenu = false
+                    },
+                    onDismissMenu = {
+                        showMenu = false
+                    }
+                )
+            }
         }
     }
+}
+
+@Composable
+fun ComposablePlaceholderFirmwareBuild() {
+    Box(
+        modifier = Modifier
+            .height(16.dp)
+            .width(80.dp)
+            .padding(end = 12.dp)
+            .placeholderConnecting()
+    )
 }
 
 @Composable
@@ -185,17 +203,29 @@ fun ComposableFirmwareColumn(
     showBackground = true
 )
 @Composable
-@Suppress("UnusedPrivateMember")
-private fun ComposableFirmwareColumnPreview() {
-    ComposableFirmwareColumn()
-}
-
-@Preview(
-    showSystemUi = true,
-    showBackground = true
-)
-@Composable
-@Suppress("UnusedPrivateMember")
-private fun ComposableDropMenuFirmwareBuildPreview() {
-    ComposableDropMenuFirmwareBuild(showMenu = true, coordinateMenuByY = 0)
+fun ComposableUpdaterFirmwareVersionWithChoicePreview() {
+    val firmwareVersion = FirmwareVersion(
+        channel = FirmwareChannel.RELEASE,
+        version = "1.1.1"
+    )
+    Column {
+        ComposableUpdaterFirmwareVersionWithChoice(
+            modifier = Modifier
+                .height(50.dp)
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp)
+                .background(colorResource(id = DesignSystem.color.background)),
+            inProgress = false,
+            version = firmwareVersion
+        )
+        ComposableUpdaterFirmwareVersionWithChoice(
+            modifier = Modifier
+                .height(50.dp)
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp)
+                .background(colorResource(id = DesignSystem.color.background)),
+            inProgress = true,
+            version = firmwareVersion
+        )
+    }
 }
