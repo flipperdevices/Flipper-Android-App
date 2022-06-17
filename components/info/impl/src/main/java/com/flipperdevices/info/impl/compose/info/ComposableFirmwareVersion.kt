@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.shared.ComposableDeviceInfoRow
 import com.flipperdevices.info.shared.ComposableDeviceInfoRowText
@@ -16,7 +17,6 @@ import com.flipperdevices.info.shared.getColorByChannel
 import com.flipperdevices.info.shared.getTextByVersion
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableFirmwareVersion(

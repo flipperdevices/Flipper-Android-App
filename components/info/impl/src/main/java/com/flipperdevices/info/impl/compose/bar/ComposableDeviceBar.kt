@@ -22,12 +22,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
-import kotlin.math.roundToInt
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.info.shared.R as ExternalDrawable
+import kotlin.math.roundToInt
 
 const val FLOAT_TO_PERCENT_QUALIFIER = 100
 
@@ -158,7 +158,7 @@ private fun FlipperDeviceBarInformationPreview() {
         DeviceStatus.Connected(deviceName = "Flipper", batteryLevel = 0.3f, isCharging = false),
         DeviceStatus.Connected(deviceName = "Flipper charge", batteryLevel = 0.7f, isCharging = true),
         DeviceStatus.NoDeviceInformation(deviceName = "No device info", connectInProgress = false),
-        DeviceStatus.NoDeviceInformation(deviceName = "Connecting...", connectInProgress = true),
+        DeviceStatus.NoDeviceInformation(deviceName = "Connecting...", connectInProgress = true)
     )
     Column(
         modifier = Modifier.fillMaxWidth(),
