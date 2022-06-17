@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -19,21 +18,27 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
-import com.flipperdevices.info.shared.R as ExternalDrawable
 import kotlin.math.roundToInt
+import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.info.shared.R as ExternalDrawable
 
 const val FLOAT_TO_PERCENT_QUALIFIER = 100
 
 @Composable
 fun ComposableDeviceBar(deviceStatusViewModel: DeviceStatusViewModel = viewModel()) {
     val deviceStatus by deviceStatusViewModel.getState().collectAsState()
+    DeviceBar(deviceStatus)
+}
+
+@Composable
+private fun DeviceBar(deviceStatus: DeviceStatus) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -42,15 +47,19 @@ fun ComposableDeviceBar(deviceStatusViewModel: DeviceStatusViewModel = viewModel
         verticalAlignment = Alignment.CenterVertically
     ) {
         FlipperImage(deviceStatus)
-        val localDeviceStatus = deviceStatus
-        when (localDeviceStatus) {
+        FlipperInformation(deviceStatus)
+    }
+}
+
+@Composable
+private fun FlipperInformation(deviceStatus: DeviceStatus) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        when (deviceStatus) {
             DeviceStatus.NoDevice -> NoDeviceText()
-            is DeviceStatus.NoDeviceInformation -> NotConnectedText(localDeviceStatus.deviceName)
-            is DeviceStatus.Connected -> ConnectedText(
-                localDeviceStatus.deviceName,
-                localDeviceStatus.batteryLevel,
-                localDeviceStatus.isCharging
-            )
+            is DeviceStatus.NoDeviceInformation -> FlipperName(deviceStatus.deviceName)
+            is DeviceStatus.Connected -> ConnectedText(deviceStatus)
         }
     }
 }
@@ -59,8 +68,11 @@ fun ComposableDeviceBar(deviceStatusViewModel: DeviceStatusViewModel = viewModel
 private fun FlipperImage(deviceStatus: DeviceStatus) {
     val imageId = when (deviceStatus) {
         DeviceStatus.NoDevice -> ExternalDrawable.drawable.ic_grey_flipper
-        is DeviceStatus.Connected,
-        is DeviceStatus.NoDeviceInformation -> ExternalDrawable.drawable.ic_white_flipper
+        is DeviceStatus.Connected -> ExternalDrawable.drawable.ic_white_flipper
+        is DeviceStatus.NoDeviceInformation -> {
+            if (deviceStatus.connectInProgress) ExternalDrawable.drawable.ic_grey_flipper
+            else ExternalDrawable.drawable.ic_white_flipper
+        }
     }
     val descriptionId = when (deviceStatus) {
         DeviceStatus.NoDevice -> R.string.info_device_no_device
@@ -86,16 +98,11 @@ private fun NoDeviceText() {
 }
 
 @Composable
-private fun NotConnectedText(title: String) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        FlipperName(title)
-    }
-}
+private fun ConnectedText(deviceStatus: DeviceStatus.Connected) {
+    val title = deviceStatus.deviceName
+    val batteryValue = deviceStatus.batteryLevel
+    val isCharging = deviceStatus.isCharging
 
-@Composable
-private fun ConnectedText(title: String, batteryValue: Float, isCharging: Boolean) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -123,7 +130,7 @@ private fun ConnectedText(title: String, batteryValue: Float, isCharging: Boolea
 }
 
 @Composable
-private fun ColumnScope.FlipperName(title: String) {
+private fun FlipperName(title: String) {
     Text(
         modifier = Modifier.padding(bottom = 3.dp),
         text = title,
@@ -137,4 +144,27 @@ private fun ColumnScope.FlipperName(title: String) {
         fontSize = 12.sp,
         color = colorResource(DesignSystem.color.black_100)
     )
+}
+
+@Preview(
+    showSystemUi = true,
+    showBackground = true
+)
+@Composable
+private fun FlipperDeviceBarInformationPreview() {
+    val deviceStatus = setOf(
+        DeviceStatus.NoDevice,
+        DeviceStatus.Connected(deviceName = "Flipper", batteryLevel = 0.3f, isCharging = false),
+        DeviceStatus.Connected(deviceName = "Flipper charge", batteryLevel = 0.7f, isCharging = true),
+        DeviceStatus.NoDeviceInformation(deviceName = "No device info", connectInProgress = false),
+        DeviceStatus.NoDeviceInformation(deviceName = "Connecting...", connectInProgress = true),
+    )
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        deviceStatus.forEach {
+            DeviceBar(it)
+        }
+    }
 }
