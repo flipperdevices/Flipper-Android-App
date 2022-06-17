@@ -10,11 +10,11 @@ import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.placeholder
 import com.google.accompanist.placeholder.shimmer
 
-fun Modifier.placeholderConnecting() = composed {
+fun Modifier.placeholderConnecting(shape: Int = 4) = composed {
     this.then(
         placeholder(
             visible = true,
-            shape = RoundedCornerShape(4.dp),
+            shape = RoundedCornerShape(shape.dp),
             color = colorResource(id = R.color.black_8).copy(alpha = 0.2f),
             highlight = PlaceholderHighlight.shimmer(
                 highlightColor = colorResource(id = R.color.black_8)
