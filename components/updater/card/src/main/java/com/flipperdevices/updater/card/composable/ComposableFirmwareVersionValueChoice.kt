@@ -87,7 +87,9 @@ fun ComposableUpdaterFirmwareVersionWithChoice(
                     modifier = Modifier
                         .padding(all = 4.dp),
                     painter = painterResource(R.drawable.ic_more),
-                    contentDescription = stringResource(R.string.updater_card_firmware_version_choice),
+                    contentDescription = stringResource(
+                        id = R.string.updater_card_firmware_version_choice
+                    ),
                     tint = colorResource(DesignSystem.color.black_30)
                 )
 

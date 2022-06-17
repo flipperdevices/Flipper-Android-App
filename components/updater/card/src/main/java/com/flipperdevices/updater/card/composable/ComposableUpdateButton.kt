@@ -172,7 +172,10 @@ fun ComposableUpdateButtonPreview() {
         )
     )
     Column(
-        modifier = Modifier.fillMaxSize().padding(12.dp).background(colorResource(id = DesignSystem.color.background))
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(12.dp)
+            .background(colorResource(id = DesignSystem.color.background))
     ) {
         updateCardState.forEach {
             ComposableUpdateButton(it, false)
