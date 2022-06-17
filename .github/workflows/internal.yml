@@ -38,8 +38,6 @@ jobs:
           ./gradlew :instances:app:assembleInternal :instances:app:bundleInternal \
             -Dversion_code=${{ steps.buildnumber.outputs.build_number }} \
             -Dversion_name="${{ steps.vars.outputs.major_version }}.${{ steps.vars.outputs.minor_version }}" \
-            -Dcountly_url="${{ secrets.COUNTLY_URL_PROD }}" \
-            -Dcountly_app_key="${{ secrets.COUNTLY_APP_KEY_PROD }}" \
             -Dis_sentry_publish=true
       - name: Sign AAB
         id: sign_aab
