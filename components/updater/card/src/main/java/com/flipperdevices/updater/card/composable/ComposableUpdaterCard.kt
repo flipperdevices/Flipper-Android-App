@@ -24,9 +24,7 @@ import com.flipperdevices.info.shared.InfoElementCard
 import com.flipperdevices.updater.card.R
 import com.flipperdevices.updater.card.composable.dialogs.ComposableFailedUpdate
 import com.flipperdevices.updater.card.composable.dialogs.ComposableSuccessfulUpdate
-import com.flipperdevices.updater.card.model.DeviceConnected
 import com.flipperdevices.updater.card.model.FlipperUpdateState
-import com.flipperdevices.updater.card.viewmodel.DeviceConnectedViewModel
 import com.flipperdevices.updater.card.viewmodel.UpdateCardViewModel
 import com.flipperdevices.updater.card.viewmodel.UpdateStateViewModel
 import com.flipperdevices.updater.model.FirmwareChannel
@@ -38,7 +36,6 @@ internal fun ComposableUpdaterCardInternal(
     modifier: Modifier,
     updateStateViewModel: UpdateStateViewModel = viewModel(),
     updateCardViewModel: UpdateCardViewModel = viewModel(),
-    deviceConnectedViewModel: DeviceConnectedViewModel = viewModel()
 ) {
     val updateState by updateStateViewModel.getUpdateState().collectAsState()
     val localDeviceStatus = updateState
@@ -67,9 +64,6 @@ internal fun ComposableUpdaterCardInternal(
         modifier = modifier,
         titleId = R.string.updater_card_updater_title
     ) {
-        val deviceConnectedState by deviceConnectedViewModel.getDeviceConnected().collectAsState()
-        val inProgress = deviceConnectedState == DeviceConnected.CONNECTING
-
         val cardState by updateCardViewModel.getUpdateCardState().collectAsState()
         val cardStateLocal = cardState
 
@@ -80,18 +74,20 @@ internal fun ComposableUpdaterCardInternal(
                     retryUpdate = updateCardViewModel::retry
                 )
             }
-            UpdateCardState.InProgress -> ComposableFirmwareUpdaterInProgress()
+            UpdateCardState.InProgress -> ComposableFirmwareUpdaterContent(
+                version = null,
+                updateCardState = cardStateLocal,
+                onSelectFirmwareChannel = updateCardViewModel::onSelectChannel,
+            )
             is UpdateCardState.NoUpdate -> ComposableFirmwareUpdaterContent(
                 version = cardStateLocal.flipperVersion,
                 updateCardState = cardStateLocal,
                 onSelectFirmwareChannel = updateCardViewModel::onSelectChannel,
-                inProgress = inProgress
             )
             is UpdateCardState.UpdateAvailable -> ComposableFirmwareUpdaterContent(
                 version = cardStateLocal.lastVersion,
                 updateCardState = cardStateLocal,
                 onSelectFirmwareChannel = updateCardViewModel::onSelectChannel,
-                inProgress = inProgress
             )
         }
     }
@@ -122,17 +118,16 @@ private fun ComposableFirmwareUpdaterInProgress() {
 
 @Composable
 private fun ComposableFirmwareUpdaterContent(
-    version: FirmwareVersion,
+    version: FirmwareVersion?,
     updateCardState: UpdateCardState,
-    inProgress: Boolean,
-    onSelectFirmwareChannel: (FirmwareChannel) -> Unit
+    onSelectFirmwareChannel: (FirmwareChannel) -> Unit,
 ) {
+    val inProgress = version == null
     ComposableDeviceInfoRow(titleId = R.string.updater_card_updater_channel, inProgress = false) {
         ComposableUpdaterFirmwareVersionWithChoice(
             modifier = it,
             onSelectFirmwareChannel = onSelectFirmwareChannel,
-            version = version,
-            inProgress = inProgress
+            version = version
         )
     }
     ComposableInfoDivider()

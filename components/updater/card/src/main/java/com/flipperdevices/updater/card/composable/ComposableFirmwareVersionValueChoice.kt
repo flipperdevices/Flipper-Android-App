@@ -53,8 +53,7 @@ import com.flipperdevices.updater.model.FirmwareVersion
 @Composable
 fun ComposableUpdaterFirmwareVersionWithChoice(
     modifier: Modifier,
-    version: FirmwareVersion,
-    inProgress: Boolean,
+    version: FirmwareVersion?,
     onSelectFirmwareChannel: (FirmwareChannel) -> Unit = {}
 ) {
     var showMenu by remember { mutableStateOf(false) }
@@ -76,7 +75,7 @@ fun ComposableUpdaterFirmwareVersionWithChoice(
             ),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            if (inProgress) {
+            if (version == null) {
                 ComposablePlaceholderFirmwareBuild()
             } else {
                 ComposableDeviceInfoRowText(
@@ -217,7 +216,6 @@ fun ComposableUpdaterFirmwareVersionWithChoicePreview() {
                 .fillMaxWidth()
                 .padding(horizontal = 12.dp)
                 .background(colorResource(id = DesignSystem.color.background)),
-            inProgress = false,
             version = firmwareVersion
         )
         ComposableUpdaterFirmwareVersionWithChoice(
@@ -226,8 +224,7 @@ fun ComposableUpdaterFirmwareVersionWithChoicePreview() {
                 .fillMaxWidth()
                 .padding(horizontal = 12.dp)
                 .background(colorResource(id = DesignSystem.color.background)),
-            inProgress = true,
-            version = firmwareVersion
+            version = null
         )
     }
 }
