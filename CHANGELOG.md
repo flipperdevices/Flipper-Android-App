@@ -14,6 +14,7 @@
 - [Feature] Add failed upload and network dialog
 - [Feature] Add synchronization percent in archive screen
 - [Feature] Change percent scheme for synchronization
+- [Feature] Placeholder on connecting device status
 - [BUGFIX] Fix incorrect corner radius for battery icon
 - [BUGFIX] Fix searching pic
 - [BUGFIX] Fix padding for updater card

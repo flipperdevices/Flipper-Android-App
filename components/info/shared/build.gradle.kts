@@ -5,6 +5,7 @@ plugins {
 dependencies {
     implementation(projects.components.updater.api)
     implementation(projects.components.core.ui.res)
+    implementation(projects.components.core.ui.ktx)
 
     // Compose
     implementation(libs.compose.ui)
