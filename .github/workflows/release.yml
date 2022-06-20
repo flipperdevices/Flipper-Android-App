@@ -31,7 +31,7 @@ jobs:
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
         run: |
-          ./gradlew :instances:app:assembleInternal :instances:app:bundleInternal \
+          ./gradlew :instances:app:assembleInternal :instances:app:bundleInternal :dumpApkVersion \
             -Dversion_code=${{ steps.buildnumber.outputs.build_number }} \
             -Dversion_name="${{ steps.vars.outputs.major_version }}" \
             -Dcountly_url="${{ secrets.COUNTLY_URL_PROD }}" \
@@ -62,6 +62,7 @@ jobs:
           cp ${{ steps.sign_aab_release.outputs.signedReleaseFile }} artifacts/flipper-zero-release.aab
           cp ${{ steps.sign_apk_release.outputs.signedReleaseFile }} artifacts/flipper-zero-release.apk
           cp instances/app/build/outputs/mapping/internal/mapping.txt artifacts/mapping-release.txt
+          cp build/version/apk-version.properties artifacts/apk-version-release.properties
           echo "::set-output name=path::artifacts/"
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
@@ -111,6 +112,7 @@ jobs:
             ${{steps.download.outputs.download-path}}/flipper-zero-release.aab
             ${{steps.download.outputs.download-path}}/flipper-zero-release.apk
             ${{steps.download.outputs.download-path}}/mapping-release.txt
+            ${{steps.download.outputs.download-path}}/apk-version-release.properties
           tag_name: ${{ steps.vars.outputs.major_version }}
           name: Flipper App ${{ steps.vars.outputs.major_version }}
           draft: false
