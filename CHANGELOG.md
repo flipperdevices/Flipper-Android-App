@@ -19,6 +19,7 @@
 - [BUGFIX] Fix searching pic
 - [BUGFIX] Fix padding for updater card
 - [BUGFIX] Fix update button corner angel
+- [BUGFIX] Fix placeholder state in info and updater card
 - [CI] Pass countly prod creds in application when building
 - [CI] Dump version_code and version_name to apk-version.properties
 
