@@ -1,5 +1,6 @@
 package com.flipperdevices.info.impl.compose.info
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -25,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.ui.ktx.LocalRouter
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.model.FirmwareUpdateStatus
@@ -64,8 +64,11 @@ fun ComposableInfoCardContent(
     val deviceInfo by deviceInfoViewModel.getDeviceInfo().collectAsState()
     val deviceInfoRequestStatus by deviceInfoViewModel.getDeviceInfoRequestStatus().collectAsState()
     val deviceStatus by deviceStatusViewModel.getState().collectAsState()
+    val deviceStatusLocal = deviceStatus
 
-    val firmwareVersionInProgress = deviceStatus is DeviceStatus.Connected
+    val firmwareVersionInProgress = if (deviceStatusLocal is DeviceStatus.NoDeviceInformation) {
+        deviceStatusLocal.connectInProgress
+    } else deviceStatusLocal is DeviceStatus.Connected
 
     ComposableFirmwareVersion(
         deviceInfo.firmwareVersion,
@@ -82,13 +85,13 @@ fun ComposableInfoCardContent(
     ComposableInfoDivider()
     ComposableDeviceInfoRowWithText(
         R.string.info_device_info_int_flash,
-        deviceInfoRequestStatus.internalStorageRequestInProgress,
+        firmwareVersionInProgress || deviceInfoRequestStatus.internalStorageRequestInProgress,
         deviceInfo.flashInt?.toString(LocalContext.current)
     )
     ComposableInfoDivider()
     ComposableDeviceInfoRowWithText(
         R.string.info_device_info_ext_flash,
-        deviceInfoRequestStatus.externalStorageRequestInProgress,
+        firmwareVersionInProgress || deviceInfoRequestStatus.externalStorageRequestInProgress,
         deviceInfo.flashSd?.toString(LocalContext.current)
     )
 }

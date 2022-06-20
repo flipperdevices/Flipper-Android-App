@@ -1,5 +1,6 @@
 package com.flipperdevices.updater.card.composable
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -17,7 +18,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.info.shared.ComposableDeviceInfoRow
 import com.flipperdevices.info.shared.ComposableInfoDivider
 import com.flipperdevices.info.shared.InfoElementCard
@@ -55,8 +55,9 @@ internal fun ComposableUpdaterCardInternal(
             localDeviceStatus.version,
             updateStateViewModel::onDismissUpdateDialog
         )
-        FlipperUpdateState.Ready -> {}
-        FlipperUpdateState.NotReady -> return
+        FlipperUpdateState.Ready,
+        FlipperUpdateState.NotReady -> {
+        }
         else -> error("Can't find this device status")
     }
 
