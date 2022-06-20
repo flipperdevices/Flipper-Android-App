@@ -1,6 +1,8 @@
 # Changelog
 
-# 1.1.3 - In progress
+# 1.1.4 - In progress
+
+# 1.1.3
 
 - [REFACTOR] Split `core:ui` module
 - [REFACTOR] Move card from `info:impl` to `updater:card`
