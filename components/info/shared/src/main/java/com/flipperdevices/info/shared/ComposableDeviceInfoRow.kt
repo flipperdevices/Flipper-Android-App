@@ -2,11 +2,13 @@ package com.flipperdevices.info.shared
 
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -14,9 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
@@ -49,27 +51,23 @@ fun ComposableDeviceInfoRow(
     inProgress: Boolean,
     content: (@Composable (Modifier) -> Unit)?
 ) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(12.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
         Text(
-            modifier = Modifier.padding(all = 12.dp),
             text = text,
             color = colorResource(DesignSystem.color.black_30),
             fontSize = 14.sp,
             fontWeight = FontWeight.W400
         )
-        val contentModifier = Modifier
-            .weight(1f)
-            .padding(end = 12.dp)
         if (content != null) {
-            content(
-                Modifier
-                    .weight(1f)
-                    .padding(end = 12.dp)
-            )
+            content(Modifier)
         } else if (inProgress) {
-            DeviceInfoRowProgressBar(contentModifier)
+            DeviceInfoRowPlaceholder()
         } else ComposableDeviceInfoRowText(
-            contentModifier,
+            Modifier,
             stringResource(R.string.info_device_unknown)
         )
     }
@@ -95,21 +93,16 @@ fun ComposableDeviceInfoRowText(
         text = text,
         fontSize = 14.sp,
         color = colorResource(colorId),
-        fontWeight = FontWeight.W400,
-        textAlign = TextAlign.End
+        fontWeight = FontWeight.W400
     )
 }
 
 @Composable
-private fun DeviceInfoRowProgressBar(modifier: Modifier) {
+private fun DeviceInfoRowPlaceholder() {
     Box(
-        modifier,
-        contentAlignment = Alignment.CenterEnd
-    ) {
-        CircularProgressIndicator(
-            modifier = Modifier.size(16.dp),
-            color = colorResource(DesignSystem.color.black_30),
-            strokeWidth = 1.dp
-        )
-    }
+        modifier = Modifier
+            .height(16.dp)
+            .width(50.dp)
+            .placeholderConnecting()
+    )
 }

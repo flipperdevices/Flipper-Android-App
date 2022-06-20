@@ -14,5 +14,6 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
+    implementation(libs.compose.placeholder)
     implementation(libs.image.lottie)
 }
