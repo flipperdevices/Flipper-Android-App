@@ -140,9 +140,11 @@ fun ComposableDropMenuFirmwareBuild(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .clickable {
-                        onDismissMenu.invoke()
-                    }
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                        onClick = onDismissMenu
+                    )
             ) {
                 Card(
                     modifier = Modifier
