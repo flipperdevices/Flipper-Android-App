@@ -1,13 +1,15 @@
-package com.flipperdevices.metric.impl
+package com.flipperdevices.metric.impl.countly
 
 import android.app.Application
 import androidx.datastore.core.DataStore
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ktx.jre.toIntSafe
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.preference.pb.Settings
+import com.flipperdevices.metric.impl.BuildConfig
 import com.squareup.anvil.annotations.ContributesBinding
 import java.util.UUID
 import javax.inject.Inject
@@ -52,7 +54,7 @@ class CountlyApiImpl @Inject constructor(
         verbose { "Report event $id with $params" }
         if (params == null) {
             countly.events().recordEvent(id)
-        } else countly.events().recordEvent(id, params)
+        } else countly.events().recordEvent(id, filterParams(params))
     }
 
     private fun initCountly(): Countly {
@@ -75,5 +77,18 @@ class CountlyApiImpl @Inject constructor(
         info { "Init countly config with uuid ${settings.uuid} and ${BuildConfig.COUNTLY_URL}" }
         config.setDeviceId(settings.uuid)
         return sharedInstance.init(config)
+    }
+}
+
+private fun filterParams(params: Map<String, Any>): Map<String, Any> {
+    return params.mapValues {
+        return@mapValues when (val mapValue = it.value) {
+            is String,
+            is Int,
+            is Double,
+            is Boolean -> mapValue
+            is Long -> mapValue.toIntSafe()
+            else -> mapValue.toString()
+        }
     }
 }

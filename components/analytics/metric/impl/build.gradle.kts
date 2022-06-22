@@ -24,9 +24,13 @@ dependencies {
 
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)
+    implementation(projects.components.core.ktx)
     implementation(projects.components.core.preference)
 
-    implementation(project.libs.countly)
+    implementation(libs.countly)
+    implementation(libs.protobuf.metric)
+    implementation(libs.ktor.client)
+    implementation(libs.ktor.logging)
 
     // Dagger deps
     implementation(libs.dagger)

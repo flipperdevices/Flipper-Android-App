@@ -6,7 +6,6 @@ import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.ComponentHolder
-import com.flipperdevices.core.ktx.jre.toIntSafe
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.complex.UpdateFlipperEnd
@@ -54,7 +53,7 @@ class UpdateStateViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
                     UpdateFlipperEnd(
                         updateFrom = updateRequest.updateFrom.version,
                         updateTo = updateRequest.updateTo.version.version,
-                        updateId = updateRequest.requestId.toIntSafe(),
+                        updateId = updateRequest.requestId,
                         updateStatus = endStatus
                     )
                 )
