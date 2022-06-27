@@ -3,11 +3,11 @@ package com.flipperdevices.metric.api.events.complex
 import com.flipperdevices.metric.api.events.ComplexEvent
 
 data class FlipperRPCInfoEvent(
-    private val sdCardIsAvailable: Boolean,
-    private val internalFreeBytes: Int,
-    private val internalTotalBytes: Int,
-    private val externalFreeBytes: Int,
-    private val externalTotalBytes: Int
+    val sdCardIsAvailable: Boolean,
+    val internalFreeBytes: Long,
+    val internalTotalBytes: Long,
+    val externalFreeBytes: Long,
+    val externalTotalBytes: Long
 ) : ComplexEvent("flipper_rpc_info") {
     override fun getParamsMap(): Map<String, Any> {
         return mapOf(

@@ -10,7 +10,6 @@ import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.impl.di.BridgeImplComponent
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.jre.forEachIterable
-import com.flipperdevices.core.ktx.jre.toIntSafe
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
@@ -145,10 +144,10 @@ class FlipperRpcInformationApiImpl(
         metricApi.reportComplexEvent(
             FlipperRPCInfoEvent(
                 sdCardIsAvailable = externalStats != null,
-                internalFreeBytes = internalStats?.free?.toIntSafe() ?: 0,
-                internalTotalBytes = internalStats?.total?.toIntSafe() ?: 0,
-                externalFreeBytes = externalStats?.free?.toIntSafe() ?: 0,
-                externalTotalBytes = externalStats?.total?.toIntSafe() ?: 0
+                internalFreeBytes = internalStats?.free ?: 0,
+                internalTotalBytes = internalStats?.total ?: 0,
+                externalFreeBytes = externalStats?.free ?: 0,
+                externalTotalBytes = externalStats?.total ?: 0
             )
         )
     }

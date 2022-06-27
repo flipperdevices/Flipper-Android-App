@@ -3,7 +3,6 @@ package com.flipperdevices.updater.impl.api
 import android.content.Context
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.ktx.jre.toIntSafe
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.metric.api.MetricApi
@@ -61,7 +60,7 @@ class UpdaterApiImpl @Inject constructor(
             UpdateFlipperStart(
                 updateFromVersion = updateRequest.updateFrom.version,
                 updateToVersion = updateRequest.updateTo.version.version,
-                updateId = updateRequest.requestId.toIntSafe()
+                updateId = updateRequest.requestId
             )
         )
 
@@ -81,7 +80,7 @@ class UpdaterApiImpl @Inject constructor(
                         UpdateFlipperEnd(
                             updateFrom = updateRequest.updateFrom.version,
                             updateTo = updateRequest.updateTo.version.version,
-                            updateId = updateRequest.requestId.toIntSafe(),
+                            updateId = updateRequest.requestId,
                             updateStatus = endReason
                         )
                     )
@@ -103,7 +102,7 @@ class UpdaterApiImpl @Inject constructor(
                 UpdateFlipperEnd(
                     updateFrom = updateRequest.updateFrom.version,
                     updateTo = updateRequest.updateTo.version.version,
-                    updateId = updateRequest.requestId.toIntSafe(),
+                    updateId = updateRequest.requestId,
                     updateStatus = UpdateStatus.CANCELED
                 )
             )

@@ -3,9 +3,9 @@ package com.flipperdevices.metric.api.events.complex
 import com.flipperdevices.metric.api.events.ComplexEvent
 
 data class UpdateFlipperStart(
-    private val updateFromVersion: String,
-    private val updateToVersion: String,
-    private val updateId: Int
+    val updateFromVersion: String,
+    val updateToVersion: String,
+    val updateId: Long
 ) : ComplexEvent("update_flipper_start") {
     override fun getParamsMap(): Map<String, Any> {
         return mapOf(

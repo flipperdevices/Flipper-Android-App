@@ -18,6 +18,7 @@ import com.flipperdevices.updater.model.FirmwareVersion
 import com.flipperdevices.updater.model.VersionFiles
 import com.squareup.anvil.annotations.ContributesBinding
 import io.ktor.client.HttpClient
+import io.ktor.client.call.body
 import io.ktor.client.request.get
 import java.io.File
 import java.util.EnumMap
@@ -43,7 +44,7 @@ class DownloaderApiImpl @Inject constructor(
         val versionMap: EnumMap<FirmwareChannel, VersionFiles> =
             EnumMap(FirmwareChannel::class.java)
 
-        val response = client.get<FirmwareDirectoryListeningResponse>(JSON_URL)
+        val response = client.get(urlString = JSON_URL).body<FirmwareDirectoryListeningResponse>()
 
         verbose { "Receive response from server" }
 

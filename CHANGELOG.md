@@ -2,6 +2,7 @@
 
 # 1.1.4 - In progress
 - [BUGFIX] Crash on bad protobuf package
+- [Feature] Add new server for metrics
 
 # 1.1.3
 
