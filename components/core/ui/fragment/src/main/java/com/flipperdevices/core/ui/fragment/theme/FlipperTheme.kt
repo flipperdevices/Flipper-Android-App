@@ -22,15 +22,15 @@ val LocalTypography = compositionLocalOf<FlipperTypography> { error("No local ty
 @Composable
 fun Fragment.FlipperTheme(
     isLight: Boolean = !isSystemInDarkTheme(),
-    content: @Composable () -> Unit,
+    content: @Composable () -> Unit
 ) {
     val pallet = if (isLight) darkPallet else lightPallet
 
     MaterialTheme(
         shapes = Shapes(
-            medium = RoundedCornerShape(size = 10.dp),
+            medium = RoundedCornerShape(size = 10.dp)
         ),
-        colors = pallet.toMaterialColors(isLight),
+        colors = pallet.toMaterialColors(isLight)
     ) {
         CompositionLocalProvider(
             LocalPallet provides pallet,
