@@ -1,42 +1,39 @@
 package com.flipperdevices.core.ui.res
 
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
 val lightPallet = Pallet(
-    accent = Accent,
-    accentSecondary = AccentSecond,
-    background = WhiteBackground,
-    text_100 = Black100,
-    text_88 = Black88,
-    text_80 = Black80,
-    text_60 = Black60,
-    text_40 = Black40,
-    text_30 = Black30,
-    text_20 = Black20,
-    text_16 = Black16,
-    text_12 = Black12,
-    text_8 = Black8,
-    text_4 = Black4,
-    surface = White100
+    background = Color(0xFFFBFBFB),
+    text100 = Color(0xFF000000),
+    text88 = Color(0xFF1C1C1C),
+    text80 = Color(0xFF303030),
+    text60 = Color(0xFF616161),
+    text40 = Color(0xFF919191),
+    text30 = Color(0xFFAAAAAA),
+    text20 = Color(0xFFC1C1C1),
+    text16 = Color(0xFFCCCCCC),
+    text12 = Color(0xFFD6D6D6),
+    text8 = Color(0xFFDFDFDF),
+    text4 = Color(0xFFE9E9E9),
+    surface = Color(0xFFFFFFFF)
 )
 val darkPallet = Pallet(
-    accent = Accent,
-    accentSecondary = AccentSecond,
-    background = BlackBackground,
-    text_100 = Black100,
-    text_88 = Black88,
-    text_80 = Black80,
-    text_60 = Black60,
-    text_40 = Black40,
-    text_30 = Black30,
-    text_20 = Black20,
-    text_16 = Black16,
-    text_12 = Black12,
-    text_8 = Black8,
-    text_4 = Black4,
-    surface = White100
+    background = Color(0xFF000000),
+    text100 = Color(0xFF000000),
+    text88 = Color(0xFF1C1C1C),
+    text80 = Color(0xFF303030),
+    text60 = Color(0xFF616161),
+    text40 = Color(0xFF919191),
+    text30 = Color(0xFFAAAAAA),
+    text20 = Color(0xFFC1C1C1),
+    text16 = Color(0xFFCCCCCC),
+    text12 = Color(0xFFD6D6D6),
+    text8 = Color(0xFFDFDFDF),
+    text4 = Color(0xFFE9E9E9),
+    surface = Color(0xFFFFFFFF)
 )
 
 val typography = Typography(
