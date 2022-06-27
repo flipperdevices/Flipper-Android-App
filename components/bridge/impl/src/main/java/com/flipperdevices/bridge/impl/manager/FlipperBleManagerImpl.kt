@@ -29,6 +29,7 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.metric.api.MetricApi
+import com.flipperdevices.shake2report.api.Shake2ReportApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
@@ -36,13 +37,14 @@ import kotlinx.coroutines.sync.Mutex
 import no.nordicsemi.android.ble.ConnectionPriorityRequest
 
 @Suppress("BlockingMethodInNonBlockingContext")
-class FlipperBleManagerImpl constructor(
+class FlipperBleManagerImpl(
     context: Context,
     private val settingsStore: DataStore<Settings>,
     private val scope: CoroutineScope,
     private val serviceErrorListener: FlipperServiceErrorListener,
     private val lagsDetector: FlipperLagsDetector,
-    private val metricApi: MetricApi
+    sentryApi: Shake2ReportApi,
+    metricApi: MetricApi
 ) : UnsafeBleManager(scope, context), FlipperBleManager, LogTagProvider {
     override val TAG = "FlipperBleManager"
     private val bleMutex = Mutex()
@@ -51,7 +53,7 @@ class FlipperBleManagerImpl constructor(
 
     override val informationApi = FlipperInformationApiImpl(scope, metricApi)
     override val flipperVersionApi = FlipperVersionApiImpl(settingsStore)
-    override val flipperRequestApi = FlipperRequestApiImpl(scope, lagsDetector)
+    override val flipperRequestApi = FlipperRequestApiImpl(scope, lagsDetector, sentryApi)
 
     // RPC services
     override val flipperRpcInformationApi = FlipperRpcInformationApiImpl(scope, metricApi)

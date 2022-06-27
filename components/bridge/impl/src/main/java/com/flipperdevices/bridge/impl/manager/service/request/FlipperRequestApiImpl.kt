@@ -20,6 +20,7 @@ import com.flipperdevices.core.log.warn
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.copy
 import com.flipperdevices.protobuf.main
+import com.flipperdevices.shake2report.api.Shake2ReportApi
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicInteger
 import kotlinx.coroutines.CoroutineScope
@@ -44,7 +45,8 @@ private typealias OnReceiveResponse = suspend (Flipper.Main) -> Unit
 @Suppress("TooManyFunctions")
 class FlipperRequestApiImpl(
     private val scope: CoroutineScope,
-    private val lagsDetector: FlipperLagsDetector
+    private val lagsDetector: FlipperLagsDetector,
+    sentryApi: Shake2ReportApi
 ) : FlipperRequestApi,
     BluetoothGattServiceWrapper,
     LogTagProvider {
@@ -55,7 +57,7 @@ class FlipperRequestApiImpl(
     private val requestListeners = ConcurrentHashMap<Int, OnReceiveResponse>()
     private val notificationMutableFlow = MutableSharedFlow<Flipper.Main>()
 
-    private val reader = PeripheralResponseReader(scope)
+    private val reader = PeripheralResponseReader(scope, sentryApi)
     private val serialApiUnsafe = FlipperSerialApiUnsafeImpl(scope, lagsDetector)
     private val requestStorage: FlipperRequestStorage = FlipperRequestStorageImpl()
     private val serialApi = FlipperSerialOverflowThrottler(serialApiUnsafe, scope, requestStorage)

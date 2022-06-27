@@ -3,8 +3,11 @@ package com.flipperdevices.bridge.impl.manager
 import com.flipperdevices.bridge.impl.utils.ByteEndlessInputStream
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.protobuf.Flipper
+import com.flipperdevices.shake2report.api.Shake2ReportApi
+import java.lang.Exception
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -19,7 +22,8 @@ const val TAG = "PeripheralResponseReader"
 
 @Suppress("BlockingMethodInNonBlockingContext")
 class PeripheralResponseReader(
-    private val scope: CoroutineScope
+    private val scope: CoroutineScope,
+    private val sentryApi: Shake2ReportApi
 ) : LogTagProvider {
     override val TAG = "PeripheralResponseReader"
     private val mutex = Mutex()
@@ -50,10 +54,15 @@ class PeripheralResponseReader(
 
     private suspend fun CoroutineScope.parseLoopJob(byteInputStream: ByteEndlessInputStream) {
         while (this.isActive) {
-            val main = Flipper.Main.parseDelimitedFrom(byteInputStream)
-            info { "Receive $main response" }
-            scope.launch(Dispatchers.Default) {
-                responses.emit(main)
+            try {
+                val main = Flipper.Main.parseDelimitedFrom(byteInputStream)
+                info { "Receive $main response" }
+                scope.launch(Dispatchers.Default) {
+                    responses.emit(main)
+                }
+            } catch (e: Exception) {
+                error(e) { "Failed parse stream" }
+                sentryApi.reportException(e, "protobuf_read")
             }
         }
     }
