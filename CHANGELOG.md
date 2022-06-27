@@ -2,6 +2,8 @@
 
 # 1.1.4 - In progress
 
+- [Feature] Compose Theme
+
 # 1.1.3
 
 - [REFACTOR] Split `core:ui` module
