@@ -1,12 +1,11 @@
-package com.flipperdevices.core.ui.res
+package com.flipperdevices.core.ui.fragment.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.Colors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 @Suppress("MagicNumber")
-data class Pallet(
+data class FlipperPallet(
     val background: Color,
     val text100: Color,
     val text88: Color,
@@ -24,10 +23,9 @@ data class Pallet(
     val accent: Color = Color(0xFFFF8200),
     val accentSecond: Color = Color(0xFF589DFF),
 
-    val green: Color = Color(0xFF34C7A4),
-    val red: Color = Color(0xFFF63F3F),
-    val yellow: Color = Color(0xFFFECF5D),
-    val greenUpdate: Color = Color(0xFF2ED832),
+    val greenFirmware: Color = Color(0xFF2ED832),
+    val purpleFirmware: Color = Color(0xFF8A2BE2),
+    val redFirmware: Color = Color(0xFFF63F3F),
 
     val keyIButton: Color = Color(0xFFE1BBA6),
     val keyRFID: Color = Color(0xFFFFF493),
@@ -37,7 +35,7 @@ data class Pallet(
     val keyBadUSB: Color = Color(0xFFFFBEE9)
 ) {
     @Composable
-    fun toMaterialColors() = Colors(
+    fun toMaterialColors(isLight: Boolean) = Colors(
         primary = Color.Black,
         primaryVariant = Color.Black,
         secondary = Color.Black,
@@ -50,6 +48,6 @@ data class Pallet(
         onBackground = Color.Black,
         onSurface = text40,
         onError = Color.Black,
-        isLight = !isSystemInDarkTheme()
+        isLight = isLight
     )
 }
