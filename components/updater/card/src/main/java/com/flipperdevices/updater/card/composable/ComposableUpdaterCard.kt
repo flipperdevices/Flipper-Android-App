@@ -1,23 +1,10 @@
 package com.flipperdevices.updater.card.composable
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.info.shared.ComposableDeviceInfoRow
 import com.flipperdevices.info.shared.ComposableInfoDivider
 import com.flipperdevices.info.shared.InfoElementCard
@@ -91,29 +78,6 @@ internal fun ComposableUpdaterCardInternal(
                 onSelectFirmwareChannel = updateCardViewModel::onSelectChannel
             )
         }
-    }
-}
-
-@Composable
-private fun ComposableFirmwareUpdaterInProgress() {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        CircularProgressIndicator(
-            modifier = Modifier
-                .padding(top = 55.dp)
-                .size(24.dp),
-            color = colorResource(DesignSystem.color.accent_secondary),
-            strokeWidth = 2.dp
-        )
-        Text(
-            modifier = Modifier.padding(top = 14.dp, bottom = 55.dp),
-            text = stringResource(R.string.updater_card_updater_progress),
-            fontSize = 14.sp,
-            color = colorResource(DesignSystem.color.black_30),
-            fontWeight = FontWeight.W500
-        )
     }
 }
 
