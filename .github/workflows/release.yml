@@ -118,5 +118,6 @@ jobs:
             ${{steps.download.outputs.download-path}}/apk-version-release.properties
           tag_name: ${{ steps.vars.outputs.major_version }}
           name: Flipper App ${{ steps.vars.outputs.major_version }}
+          body_path: .github/changelog/whatsnew-en-US
           draft: false
           prerelease: false
