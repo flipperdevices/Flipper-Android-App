@@ -1,6 +1,9 @@
 # Changelog
 
+# 1.1.5 - In progress
+
 # 1.1.4
+
 - [BUGFIX] Crash on bad protobuf package
 - [Feature] Add new server for metrics
 
