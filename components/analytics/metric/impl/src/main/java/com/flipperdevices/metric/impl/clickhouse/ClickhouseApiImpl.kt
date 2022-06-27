@@ -143,7 +143,7 @@ class ClickhouseApiImpl @Inject constructor(
     private suspend fun reportToServerSafe(event: Metric.MetricEventsCollection): Unit = try {
         val reportRequest = metricReportRequest {
             uuid = getUUID()
-            platform = if (BuildConfig.INTERNAL) {
+            platform = if (BuildConfig.DEBUG) {
                 Metric.MetricReportRequest.Platform.ANDROID_DEBUG
             } else Metric.MetricReportRequest.Platform.ANDROID
             events.add(event)
