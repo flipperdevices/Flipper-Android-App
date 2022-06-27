@@ -48,7 +48,7 @@ class KtorModule {
                             ktorTimber.info { message }
                         }
                     }
-                    level = LogLevel.INFO
+                    level = if (BuildConfig.DEBUG) LogLevel.ALL else LogLevel.INFO
                 }
             }
 

@@ -4,6 +4,7 @@ import androidx.datastore.core.DataStore
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
+import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.metric.api.events.ComplexEvent
 import com.flipperdevices.metric.api.events.SimpleEvent
@@ -27,8 +28,11 @@ import com.flipperdevices.pbmetric.metricEventsCollection
 import com.flipperdevices.pbmetric.metricReportRequest
 import com.squareup.anvil.annotations.ContributesBinding
 import io.ktor.client.HttpClient
+import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
+import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
 import io.ktor.http.isSuccess
 import java.util.UUID
 import javax.inject.Inject
@@ -38,7 +42,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-const val METRIC_API_URL = ""
+const val METRIC_API_URL = "https://metric.flipperdevices.com/report"
 
 @ContributesBinding(AppGraph::class, ClickhouseApi::class)
 class ClickhouseApiImpl @Inject constructor(
@@ -137,19 +141,23 @@ class ClickhouseApiImpl @Inject constructor(
     }
 
     private suspend fun reportToServerSafe(event: Metric.MetricEventsCollection): Unit = try {
-        val reportRequestBytes = metricReportRequest {
+        val reportRequest = metricReportRequest {
             uuid = getUUID()
             platform = if (BuildConfig.INTERNAL) {
                 Metric.MetricReportRequest.Platform.ANDROID_DEBUG
             } else Metric.MetricReportRequest.Platform.ANDROID
             events.add(event)
-        }.toByteArray()
+        }
         val httpResponse = client.post(METRIC_API_URL) {
-            setBody(reportRequestBytes)
+            header(HttpHeaders.ContentType, ContentType.Application.OctetStream)
+            setBody(reportRequest.toByteArray())
         }
         if (!httpResponse.status.isSuccess()) {
-            error { "Failed report event to $METRIC_API_URL $event" }
-        } else Unit
+            error {
+                "Failed report event to $METRIC_API_URL" +
+                    " $reportRequest with code ${httpResponse.status}"
+            }
+        } else verbose { "Sucs send event $event with ${reportRequest.uuid}" }
     } catch (e: Exception) {
         error(e) { "Failed report to server" }
     }
