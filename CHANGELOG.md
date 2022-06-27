@@ -1,6 +1,7 @@
 # Changelog
 
 # 1.1.4 - In progress
+- [BUGFIX] Crash on bad protobuf package
 
 # 1.1.3
 

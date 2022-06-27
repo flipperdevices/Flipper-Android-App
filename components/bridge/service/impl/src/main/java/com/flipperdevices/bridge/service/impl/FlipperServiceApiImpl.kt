@@ -19,6 +19,7 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.PairSettings
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.metric.api.MetricApi
+import com.flipperdevices.shake2report.api.Shake2ReportApi
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -42,6 +43,9 @@ class FlipperServiceApiImpl constructor(
     @Inject
     lateinit var metricApi: MetricApi
 
+    @Inject
+    lateinit var sentryApi: Shake2ReportApi
+
     init {
         ComponentHolder.component<FlipperServiceComponent>().inject(this)
     }
@@ -50,7 +54,7 @@ class FlipperServiceApiImpl constructor(
     private val connectionStateProvider = WeakConnectionStateProvider(scope)
     private val lagsDetector = FlipperLagsDetectorImpl(scope, this, connectionStateProvider)
     private val bleManager: FlipperBleManager = FlipperBleManagerImpl(
-        context, settingsStore, scope, serviceErrorListener, lagsDetector, metricApi
+        context, settingsStore, scope, serviceErrorListener, lagsDetector, sentryApi, metricApi
     ).apply {
         connectionStateProvider.initialize(this.connectionInformationApi)
     }
