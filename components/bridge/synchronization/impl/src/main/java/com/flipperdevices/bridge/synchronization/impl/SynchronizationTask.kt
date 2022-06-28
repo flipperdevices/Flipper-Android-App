@@ -15,7 +15,6 @@ import com.flipperdevices.bridge.synchronization.impl.repository.FavoriteSynchro
 import com.flipperdevices.bridge.synchronization.impl.repository.KeysSynchronization
 import com.flipperdevices.bridge.synchronization.impl.repository.storage.ManifestRepository
 import com.flipperdevices.bridge.synchronization.impl.utils.SynchronizationPercentProvider
-import com.flipperdevices.core.ktx.jre.toIntSafe
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.OneTimeExecutionBleTask
@@ -114,7 +113,7 @@ class SynchronizationTask(
                 nfcCount = keys[FlipperFileType.NFC]?.size ?: 0,
                 infraredCount = keys[FlipperFileType.INFRARED]?.size ?: 0,
                 iButtonCount = keys[FlipperFileType.INFRARED]?.size ?: 0,
-                synchronizationTimeMs = totalTime.toIntSafe()
+                synchronizationTimeMs = totalTime
             )
         )
     }

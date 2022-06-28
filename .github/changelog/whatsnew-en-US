@@ -1,0 +1,9 @@
+Changes and new features:
+— Added new placeholders & dialogs for different statuses and errors
+— Added synchronization percents on the Archive screen
+— Now we lock Flipper for the duration of the update and display a picture with the current status on it
+— Redesign Update Channel menu & Options Screen
+
+Bug fixes:
+— Fixed crash with custom firmware version
+— Fixed synchronization crashes with file, which doesn’t exist or contains unsupported characters in the name

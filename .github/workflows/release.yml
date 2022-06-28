@@ -74,17 +74,20 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
+      - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
         id: download
         with:
           name: artifacts
       - name: Upload to Play Store
-        uses: r0adkll/upload-google-play@v1.0.15
+        uses: r0adkll/upload-google-play@v1.0.17
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_PUBLISHER_JSON }}
           packageName: com.flipperdevices.app
           releaseFiles: ${{steps.download.outputs.download-path}}/flipper-zero-release.aab
           track: production
+          status: draft
+          whatsNewDirectory: .github/changelog
           mappingFile: ${{steps.download.outputs.download-path}}/mapping-release.txt
   upload_to_github:
     name: Upload to Github Releases
@@ -115,5 +118,6 @@ jobs:
             ${{steps.download.outputs.download-path}}/apk-version-release.properties
           tag_name: ${{ steps.vars.outputs.major_version }}
           name: Flipper App ${{ steps.vars.outputs.major_version }}
+          body_path: .github/changelog/whatsnew-en-US
           draft: false
           prerelease: false

@@ -9,6 +9,7 @@ protobuf = "3.19.4"
 protobuf-gradle = "0.8.18"
 # Protobuf JVM library https://github.com/flipperdevices/flipperzero-protobuf-jvm
 protobuf-jvm = "0.7.0"
+protobuf-metric = "ba6eeb2be8"
 # Temporary solution: please, change also in androidCompose.gradle.kts
 compose = "1.1.0"
 compose_accompanist = "0.23.0"
@@ -40,7 +41,7 @@ appcompat = "1.4.1"
 datastore = "1.0.0"
 # https://github.com/vsch/flexmark-java/issues/442
 flexmark = "0.42.14"
-ktor = "1.6.8"
+ktor = "2.0.2"
 apache-compress = "1.21"
 apache-codec = "1.15"
 countly = "21.11.2"
@@ -140,7 +141,8 @@ appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat"
 
 # Ktor
 ktor-client = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
-ktor-serialization = { module = "io.ktor:ktor-client-serialization", version.ref = "ktor" }
+ktor-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-serialization = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-logging = { module = "io.ktor:ktor-client-logging-jvm", version.ref = "ktor" }
 
 # Apache commons
@@ -158,6 +160,7 @@ image-lottie = { module = "com.airbnb.android:lottie-compose", version.ref = "lo
 protobuf-kotlinlite = { module = "com.google.protobuf:protobuf-kotlin-lite", version.ref = "protobuf" }
 protobuf-protoc = { module = "com.google.protobuf:protoc", version.ref = "protobuf" }
 protobuf-jvm = { module = "com.github.flipperdevices:flipperzero-protobuf-jvm", version.ref = "protobuf-jvm" }
+protobuf-metric = { module = "com.github.flipperdevices.flipperzero-protobuf-jvm:protobuf-jvm-metric", version.ref = "protobuf-metric" }
 
 # Testing
 junit = { module = "junit:junit", version.ref = "junit" }

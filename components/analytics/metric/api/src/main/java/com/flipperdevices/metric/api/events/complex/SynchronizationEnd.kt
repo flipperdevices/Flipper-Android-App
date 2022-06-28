@@ -3,12 +3,12 @@ package com.flipperdevices.metric.api.events.complex
 import com.flipperdevices.metric.api.events.ComplexEvent
 
 data class SynchronizationEnd(
-    private val subghzCount: Int,
-    private val rfidCount: Int,
-    private val nfcCount: Int,
-    private val infraredCount: Int,
-    private val iButtonCount: Int,
-    private val synchronizationTimeMs: Int
+    val subghzCount: Int,
+    val rfidCount: Int,
+    val nfcCount: Int,
+    val infraredCount: Int,
+    val iButtonCount: Int,
+    val synchronizationTimeMs: Long
 ) : ComplexEvent("synchronization_end") {
     override fun getParamsMap(): Map<String, Any> {
         return mapOf(

@@ -6,10 +6,10 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.updater.model.DistributionFile
 import com.squareup.anvil.annotations.ContributesBinding
 import io.ktor.client.HttpClient
-import io.ktor.client.features.onDownload
+import io.ktor.client.plugins.onDownload
 import io.ktor.client.request.get
+import io.ktor.client.statement.bodyAsChannel
 import io.ktor.util.cio.writeChannel
-import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.copyAndClose
 import java.io.File
 import javax.inject.Inject
@@ -65,9 +65,9 @@ class DownloadAndUnpackDelegateImpl @Inject constructor(
         target: File,
         onProgress: (suspend (Long, Long) -> Unit)? = null
     ) {
-        val channel = client.get<ByteReadChannel>(distributionFile.url) {
+        val channel = client.get(distributionFile.url) {
             onDownload(onProgress)
-        }
+        }.bodyAsChannel()
         if (target.exists()) {
             target.delete()
         }
