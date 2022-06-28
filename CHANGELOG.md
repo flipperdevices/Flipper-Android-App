@@ -3,6 +3,7 @@
 # 1.1.5 - In progress
 
 - [Feature] Compose Theme
+- [BUGFIX] Remove placeholder update card if device not exist
 
 # 1.1.4
 
