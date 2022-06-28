@@ -25,7 +25,9 @@ abstract class ComposeFragment : Fragment(), StatusBarColorProvider {
     ): View? {
         return ComposeView(requireContext()).apply {
             setContent {
-                FlipperTheme {
+                FlipperTheme(
+                    isLight = true
+                ) {
                     SubComposeWrapper(modifier = Modifier.fillMaxSize()) {
                         RenderView()
                     }
