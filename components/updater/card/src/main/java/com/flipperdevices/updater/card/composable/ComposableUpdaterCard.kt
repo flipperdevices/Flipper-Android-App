@@ -42,9 +42,8 @@ internal fun ComposableUpdaterCardInternal(
             localDeviceStatus.version,
             updateStateViewModel::onDismissUpdateDialog
         )
-        FlipperUpdateState.Ready,
-        FlipperUpdateState.NotReady -> {
-        }
+        FlipperUpdateState.Ready -> {}
+        FlipperUpdateState.NotReady -> return
         else -> error("Can't find this device status")
     }
 
