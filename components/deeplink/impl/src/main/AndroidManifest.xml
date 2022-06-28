@@ -5,6 +5,7 @@
     <application>
         <activity
                 android:exported="true"
+                android:screenOrientation="portrait"
                 android:name="${splashScreenActivity}">
             <intent-filter
                     android:autoVerify="true"
