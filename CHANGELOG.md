@@ -5,6 +5,7 @@
 - [Feature] Compose Theme(new module `core:ui:theme`)
 - [BUGFIX] Lock portrait orientation
 - [BUGFIX] Update card not shown when flipper not connected
+- [BUGFIX] Static URL on dynamic link docs
 
 
 # 1.1.4
