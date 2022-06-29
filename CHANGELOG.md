@@ -3,6 +3,8 @@
 # 1.1.5 - In progress
 
 - [Feature] Compose Theme(new module `core:ui:theme`)
+- [BUGFIX] Install portrait orientation
+
 
 # 1.1.4
 

@@ -17,6 +17,7 @@
 
         <activity
                 android:exported="false"
+                android:screenOrientation="portrait"
                 android:name=".activity.Shake2ReportActivity" />
     </application>
 </manifest>

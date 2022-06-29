@@ -16,6 +16,7 @@
                 android:exported="true"
                 android:windowSoftInputMode="adjustResize"
                 android:name="${splashScreenActivity}"
+                android:screenOrientation="portrait"
                 android:theme="@style/FlipperTheme.SplashTheme"
                 tools:node="merge">
             <intent-filter>
