@@ -2,7 +2,7 @@
 
 # 1.1.5 - In progress
 
-- [Feature] Compose Theme
+- [Feature] Compose Theme(new module `core:ui:theme`)
 
 # 1.1.4
 
