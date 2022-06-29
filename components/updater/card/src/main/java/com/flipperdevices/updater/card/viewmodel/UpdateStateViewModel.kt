@@ -23,7 +23,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 class UpdateStateViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
-    private val flipperStateFlow = MutableStateFlow<FlipperUpdateState>(FlipperUpdateState.NotReady)
+    private val flipperStateFlow = MutableStateFlow<FlipperUpdateState>(
+        FlipperUpdateState.NotConnected
+    )
 
     @Inject
     lateinit var serviceProvider: FlipperServiceProvider
@@ -72,26 +74,25 @@ class UpdateStateViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
             val isReady = connectionState is ConnectionState.Ready &&
                 connectionState.isSupported
 
-            if (isReady && flipperVersion != null) {
-                return@combine when (updaterState.state) {
-                    is UpdatingState.Rebooting -> {
-                        updaterApi.onDeviceConnected(
-                            flipperVersion
-                        )
-                        FlipperUpdateState.Ready
-                    }
-                    is UpdatingState.Complete -> {
-                        FlipperUpdateState.Complete(updaterState.request?.updateTo?.version)
-                    }
-                    is UpdatingState.Failed -> {
-                        FlipperUpdateState.Failed(updaterState.request?.updateTo?.version)
-                    }
-                    else -> FlipperUpdateState.Ready
+            return@combine if (isReady && flipperVersion != null) when (updaterState.state) {
+                is UpdatingState.Rebooting -> {
+                    updaterApi.onDeviceConnected(
+                        flipperVersion
+                    )
+                    FlipperUpdateState.Ready
                 }
-            }
-            return@combine if (updaterState.state is UpdatingState.Rebooting) {
+                is UpdatingState.Complete -> {
+                    FlipperUpdateState.Complete(updaterState.request?.updateTo?.version)
+                }
+                is UpdatingState.Failed -> {
+                    FlipperUpdateState.Failed(updaterState.request?.updateTo?.version)
+                }
+                else -> FlipperUpdateState.Ready
+            } else if (updaterState.state is UpdatingState.Rebooting) {
                 FlipperUpdateState.Updating
-            } else FlipperUpdateState.NotReady
+            } else if (connectionState is ConnectionState.Disconnected) {
+                FlipperUpdateState.NotConnected
+            } else FlipperUpdateState.ConnectingInProgress
         }.onEach {
             flipperStateFlow.emit(it)
         }.launchIn(viewModelScope)
