@@ -27,7 +27,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 
-class FlipperServiceApiImpl constructor(
+class FlipperServiceApiImpl(
     context: Context,
     lifecycleOwner: LifecycleOwner,
     serviceErrorListener: FlipperServiceErrorListener
@@ -54,7 +54,14 @@ class FlipperServiceApiImpl constructor(
     private val connectionStateProvider = WeakConnectionStateProvider(scope)
     private val lagsDetector = FlipperLagsDetectorImpl(scope, this, connectionStateProvider)
     private val bleManager: FlipperBleManager = FlipperBleManagerImpl(
-        context, settingsStore, scope, serviceErrorListener, lagsDetector, sentryApi, metricApi
+        context,
+        settingsStore,
+        pairSettingsStore,
+        scope,
+        serviceErrorListener,
+        lagsDetector,
+        sentryApi,
+        metricApi
     ).apply {
         connectionStateProvider.initialize(this.connectionInformationApi)
     }
