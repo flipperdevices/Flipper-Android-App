@@ -1,4 +1,4 @@
-package com.flipperdevices.core.ui.fragment.theme
+package com.flipperdevices.core.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
@@ -11,15 +11,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.fragment.app.Fragment
-import com.flipperdevices.core.navigation.requireRouter
-import com.flipperdevices.core.ui.ktx.LocalRouter
 
 val LocalPallet = compositionLocalOf<FlipperPallet> { error("No local pallet") }
 val LocalTypography = compositionLocalOf<FlipperTypography> { error("No local typography") }
 
 @Composable
-fun Fragment.FlipperTheme(
+fun FlipperTheme(
     isLight: Boolean,
     content: @Composable () -> Unit
 ) {
@@ -34,7 +31,6 @@ fun Fragment.FlipperTheme(
         CompositionLocalProvider(
             LocalPallet provides pallet,
             LocalTypography provides typography,
-            LocalRouter provides requireRouter(),
             content = content
         )
     }
