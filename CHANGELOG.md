@@ -4,6 +4,7 @@
 
 - [Feature] Compose Theme
 - [BUGFIX] Install portrait orientation
+- [BUGFIX] Static URL on dynamic link docs
 
 # 1.1.4
 
