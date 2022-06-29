@@ -3,7 +3,8 @@
 # 1.1.5 - In progress
 
 - [Feature] Compose Theme(new module `core:ui:theme`)
-- [BUGFIX] Install portrait orientation
+- [BUGFIX] Lock portrait orientation
+- [BUGFIX] Update card not shown when flipper not connected
 
 
 # 1.1.4
