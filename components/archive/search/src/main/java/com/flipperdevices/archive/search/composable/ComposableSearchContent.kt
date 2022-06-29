@@ -14,13 +14,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.flipperdevices.archive.search.R
 import com.flipperdevices.archive.search.model.SearchState
 import com.flipperdevices.archive.search.viewmodel.SearchViewModel
@@ -31,6 +28,8 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
 fun ComposableSearchContent(
@@ -100,22 +99,20 @@ private fun CategoryEmpty(modifier: Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-            painter = painterResource(R.drawable.ic_not_found),
+            painter = painterResource(DesignSystem.drawable.ic_not_found),
             contentDescription = null
         )
         Text(
             modifier = Modifier.padding(top = 12.dp),
             text = stringResource(R.string.search_not_found_title),
-            fontWeight = FontWeight.W500,
-            fontSize = 16.sp,
-            color = colorResource(DesignSystem.color.black_100)
+            style = LocalTypography.current.buttonM16,
+            color = LocalPallet.current.text100
         )
         Text(
             modifier = Modifier.padding(top = 12.dp, start = 98.dp, end = 98.dp),
             text = stringResource(R.string.search_not_found_description),
-            color = colorResource(DesignSystem.color.black_40),
-            fontSize = 16.sp,
-            fontWeight = FontWeight.W400,
+            style = LocalTypography.current.bodyR16,
+            color = LocalPallet.current.text40,
             textAlign = TextAlign.Center
         )
     }

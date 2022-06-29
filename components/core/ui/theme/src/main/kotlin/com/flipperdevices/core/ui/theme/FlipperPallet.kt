@@ -20,6 +20,13 @@ data class FlipperPallet(
     val text4: Color,
     val surface: Color,
 
+    val iconTint100: Color,
+    val iconTint30: Color,
+    val deletedCategoryType: Color,
+    val progressBarCard: Color,
+
+    val favorite: Color = Color(0xFFFECF5D),
+
     val tabInActive: Color = Color(0xFF949494),
     val tabActive: Color = Color(0xFF006EDB),
 
@@ -36,7 +43,8 @@ data class FlipperPallet(
     val keySubGHz: Color = Color(0xFFA5F4BF),
     val keyInfrarred: Color = Color(0xFFFF928B),
     val keyBadUSB: Color = Color(0xFFFFBEE9),
-    val keyUnknown: Color = Color(0xFF999999)
+    val keyUnknown: Color = Color(0xFF999999),
+    val keyDeleted: Color
 ) {
     @Composable
     fun toMaterialColors(isLight: Boolean) = Colors(
