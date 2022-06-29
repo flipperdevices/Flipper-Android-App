@@ -12,18 +12,17 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.flipperdevices.archive.impl.R
 import com.flipperdevices.archive.impl.composable.key.ComposableKeySmall
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 
 private const val GRID_WIDTH = 2
 private const val GRID_ROW_WEIGHT = 1f / GRID_WIDTH
@@ -68,16 +67,15 @@ fun ComposableFavoriteKeysTitle() {
     ) {
         Text(
             text = stringResource(R.string.archive_tab_general_favorite_title),
-            fontWeight = FontWeight.W700,
-            fontSize = 16.sp,
-            color = colorResource(DesignSystem.color.black_100)
+            style = LocalTypography.current.buttonB16,
+            color = LocalPallet.current.text100
         )
         Icon(
             modifier = Modifier
                 .padding(horizontal = 6.dp)
                 .size(size = 20.dp),
             painter = painterResource(DesignSystem.drawable.ic_star_enabled),
-            tint = colorResource(DesignSystem.color.favorite_enabled),
+            tint = LocalPallet.current.favorite,
             contentDescription = null
         )
     }
@@ -88,8 +86,7 @@ fun ComposableAllKeysTitle() {
     Text(
         modifier = Modifier.padding(top = 24.dp, start = 14.dp),
         text = stringResource(R.string.archive_tab_general_all_title),
-        fontWeight = FontWeight.W700,
-        fontSize = 16.sp,
-        color = colorResource(DesignSystem.color.black_100)
+        style = LocalTypography.current.buttonB16,
+        color = LocalPallet.current.text100
     )
 }

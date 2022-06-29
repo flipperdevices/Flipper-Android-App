@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.core.ui.ktx.ComposableKeyType
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyscreen.impl.R
 import com.flipperdevices.keyscreen.impl.model.DeleteState
 import com.flipperdevices.keyscreen.impl.model.FavoriteState
@@ -49,7 +50,7 @@ fun ComposableKeyCard(
                     ComposableKeyType(parsedKey.fileType)
                 } else ComposableKeyType(
                     parsedKey.fileType,
-                    colorId = DesignSystem.color.black_4
+                    colorKey = LocalPallet.current.keyDeleted
                 )
                 if (synchronizationState != null) {
                     Box(

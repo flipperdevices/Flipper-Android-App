@@ -13,15 +13,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.sp
 import com.flipperdevices.archive.search.R
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
 internal fun ComposableSearchTextField(
@@ -34,10 +32,8 @@ internal fun ComposableSearchTextField(
         text,
         label = { SearchTextLabel() },
         onTextChange,
-        TextStyle(
-            color = colorResource(DesignSystem.color.black_100),
-            fontWeight = FontWeight.W400,
-            fontSize = 16.sp
+        LocalTypography.current.bodyR16.copy(
+            color = LocalPallet.current.text100
         )
     )
 }
@@ -86,10 +82,9 @@ private fun SearchTextBox(
 private fun SearchTextLabel() {
     Text(
         text = stringResource(R.string.search_field_hint),
-        fontSize = 16.sp,
-        fontWeight = FontWeight.W400,
+        style = LocalTypography.current.bodyR16,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
-        color = colorResource(DesignSystem.color.black_40)
+        color = LocalPallet.current.text40
     )
 }

@@ -15,6 +15,7 @@ dependencies {
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.fragment)
+    implementation(projects.components.core.ui.theme)
 
     implementation(projects.components.connection.api)
     implementation(projects.components.keyscreen.api)

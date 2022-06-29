@@ -50,7 +50,13 @@ private val lightPallet = FlipperPallet(
     text12 = Color(0xFFD6D6D6),
     text8 = Color(0xFFDFDFDF),
     text4 = Color(0xFFE9E9E9),
-    surface = Color(0xFFFFFFFF)
+    surface = Color(0xFFFFFFFF),
+
+    iconTint100 = Color(0xFF000000),
+    iconTint30 = Color(0xFFAAAAAA),
+    deletedCategoryType = Color(0xFFE9E9E9),
+    keyDeleted = Color(0xFFE9E9E9),
+    progressBarCard = Color(0xFFAAAAAA)
 )
 
 @Suppress("MagicNumber")
@@ -67,7 +73,13 @@ private val darkPallet = FlipperPallet(
     text12 = Color(0xFFD6D6D6),
     text8 = Color(0xFFDFDFDF),
     text4 = Color(0xFFE9E9E9),
-    surface = Color(0xFFFFFFFF)
+    surface = Color(0xFFFFFFFF),
+
+    iconTint100 = Color(0xFF000000),
+    iconTint30 = Color(0xFFAAAAAA),
+    deletedCategoryType = Color(0xFFE9E9E9),
+    keyDeleted = Color(0xFFE9E9E9),
+    progressBarCard = Color(0xFFAAAAAA)
 )
 
 private val typography = FlipperTypography(
@@ -85,6 +97,11 @@ private val typography = FlipperTypography(
         fontSize = 12.sp,
         fontFamily = fontFamily,
         fontWeight = FontWeight.W500
+    ),
+    subtitleR12 = TextStyle(
+        fontSize = 12.sp,
+        fontFamily = fontFamily,
+        fontWeight = FontWeight.W400
     ),
     subtitleB10 = TextStyle(
         fontSize = 10.sp,
