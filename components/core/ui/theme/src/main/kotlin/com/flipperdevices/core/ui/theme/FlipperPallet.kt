@@ -1,4 +1,4 @@
-package com.flipperdevices.core.ui.fragment.theme
+package com.flipperdevices.core.ui.theme
 
 import androidx.compose.material.Colors
 import androidx.compose.runtime.Composable
@@ -20,6 +20,9 @@ data class FlipperPallet(
     val text4: Color,
     val surface: Color,
 
+    val tabInActive: Color = Color(0xFF949494),
+    val tabActive: Color = Color(0xFF006EDB),
+
     val accent: Color = Color(0xFFFF8200),
     val accentSecond: Color = Color(0xFF589DFF),
 
@@ -32,7 +35,8 @@ data class FlipperPallet(
     val keyNFC: Color = Color(0xFF98CEFF),
     val keySubGHz: Color = Color(0xFFA5F4BF),
     val keyInfrarred: Color = Color(0xFFFF928B),
-    val keyBadUSB: Color = Color(0xFFFFBEE9)
+    val keyBadUSB: Color = Color(0xFFFFBEE9),
+    val keyUnknown: Color = Color(0xFF999999)
 ) {
     @Composable
     fun toMaterialColors(isLight: Boolean) = Colors(
