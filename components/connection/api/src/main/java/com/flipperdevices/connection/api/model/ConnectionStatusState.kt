@@ -1,4 +1,4 @@
-package com.flipperdevices.connection.impl.model
+package com.flipperdevices.connection.api.model
 
 sealed class ConnectionStatusState {
     object NoDevice : ConnectionStatusState()

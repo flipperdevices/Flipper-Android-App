@@ -59,7 +59,8 @@ private val lightPallet = FlipperPallet(
     progressBarCard = Color(0xFFAAAAAA),
 
     selectedBottomBar = Color(0xFF303030),
-    unselectedBottomBar = Color(0xFFAAAAAA),
+    unselectedBottomBar40 = Color(0xFF919191),
+    unselectedBottomBar30 = Color(0xFFAAAAAA),
     backgroundBottomBar = Color(0xFFE9E9E9)
 )
 
@@ -86,7 +87,8 @@ private val darkPallet = FlipperPallet(
     progressBarCard = Color(0xFFAAAAAA),
 
     selectedBottomBar = Color(0xFF303030),
-    unselectedBottomBar = Color(0xFFAAAAAA),
+    unselectedBottomBar40 = Color(0xFF919191),
+    unselectedBottomBar30 = Color(0xFFAAAAAA),
     backgroundBottomBar = Color(0xFFE9E9E9)
 )
 

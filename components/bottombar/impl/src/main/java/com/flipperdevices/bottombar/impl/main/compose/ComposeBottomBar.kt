@@ -31,7 +31,7 @@ import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
-import com.flipperdevices.connection.api.ConnectionApi
+import com.flipperdevices.connection.api.api.ConnectionApi
 import com.flipperdevices.core.ui.theme.LocalPallet
 
 const val ANIMATION_WIDTH_CHANGE_DURATION_MS = 250

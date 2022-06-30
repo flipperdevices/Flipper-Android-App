@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="connection_status_connected">Connected</string>
-    <string name="connection_status_not_connected">Not Connected</string>
-    <string name="connection_status_connecting">Connecting</string>
-    <string name="connection_status_unsupported">Unsupported</string>
-    <string name="connection_status_no_device">No Device</string>
-    <string name="connection_status_syncing">Syncing %1$s</string>
-    <string name="connection_status_synced">Synced</string>
-    <string name="connection_status_sync_failed">Sync Failed</string>
-
     <string name="error_connect_bluetooth_disabled">Bluetooth disabled, please enable it</string>
     <string name="error_connect_bluetooth_permission">Can\'t access to Bluetooth</string>
     <string name="error_connect_information_not_found">Can\'t find information gatt service</string>

@@ -47,8 +47,10 @@ data class FlipperPallet(
     val keyDeleted: Color,
 
     val selectedBottomBar: Color,
-    val unselectedBottomBar: Color,
-    val backgroundBottomBar: Color
+    val unselectedBottomBar40: Color,
+    val unselectedBottomBar30: Color,
+    val backgroundBottomBar: Color,
+    val redContentBottomBar: Color = Color(0xFFF63F3F)
 ) {
 
     @Composable

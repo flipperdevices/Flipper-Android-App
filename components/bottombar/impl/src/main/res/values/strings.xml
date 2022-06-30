@@ -2,4 +2,13 @@
 <resources>
     <string name="bar_title_archive">Archive</string>
     <string name="bar_title_options">Options</string>
+
+    <string name="connection_status_connected">Connected</string>
+    <string name="connection_status_not_connected">Not Connected</string>
+    <string name="connection_status_connecting">Connecting</string>
+    <string name="connection_status_unsupported">Unsupported</string>
+    <string name="connection_status_no_device">No Device</string>
+    <string name="connection_status_syncing">Syncing %1$s</string>
+    <string name="connection_status_synced">Synced</string>
+    <string name="connection_status_sync_failed">Sync Failed</string>
 </resources>

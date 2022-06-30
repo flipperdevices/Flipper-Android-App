@@ -19,7 +19,7 @@ import com.flipperdevices.bottombar.impl.main.subnavigation.OnDoublePressOnTab
 import com.flipperdevices.bottombar.impl.main.viewmodel.InAppNotificationState
 import com.flipperdevices.bottombar.impl.main.viewmodel.InAppNotificationViewModel
 import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
-import com.flipperdevices.connection.api.ConnectionApi
+import com.flipperdevices.connection.api.api.ConnectionApi
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.setStatusBarColor
 import com.flipperdevices.core.ktx.jre.runBlockingWithLog
@@ -28,6 +28,7 @@ import com.flipperdevices.core.navigation.delegates.OnBackPressListener
 import com.flipperdevices.core.preference.pb.SelectedTab
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.fragment.provider.StatusBarColorProvider
+import com.flipperdevices.core.ui.theme.FlipperTheme
 import com.flipperdevices.inappnotification.api.InAppNotificationRenderer
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first
@@ -68,9 +69,11 @@ class BottomNavigationFragment : Fragment(), OnBackPressListener, LogTagProvider
         binding.bottomBar.apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                val selectedItem by bottomNavigationViewModel.selectedTab.collectAsState()
-                ComposeBottomBar(connectionApi, selectedItem) {
-                    selectTab(it)
+                FlipperTheme(isLight = true) {
+                    val selectedItem by bottomNavigationViewModel.selectedTab.collectAsState()
+                    ComposeBottomBar(connectionApi, selectedItem) {
+                        selectTab(it)
+                    }
                 }
             }
         }
@@ -82,8 +85,12 @@ class BottomNavigationFragment : Fragment(), OnBackPressListener, LogTagProvider
                 if (localNotificationState !is InAppNotificationState.ShownNotification) {
                     return@setContent
                 }
-                notificationRenderer.InAppNotification(localNotificationState.notification) {
-                    notificationViewModel.onNotificationHidden(localNotificationState.notification)
+                FlipperTheme(isLight = true) {
+                    notificationRenderer.InAppNotification(localNotificationState.notification) {
+                        notificationViewModel.onNotificationHidden(
+                            notification = localNotificationState.notification
+                        )
+                    }
                 }
             }
         }

@@ -2,9 +2,9 @@ package com.flipperdevices.connection.impl.viewmodel
 
 import android.app.Application
 import android.widget.Toast
+import androidx.compose.runtime.Composable
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.viewModelScope
-import com.flipperdevices.bottombar.model.TabState
 import com.flipperdevices.bridge.api.error.FlipperBleServiceError
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
@@ -12,13 +12,12 @@ import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
+import com.flipperdevices.connection.api.model.ConnectionStatusState
 import com.flipperdevices.connection.impl.BuildConfig
 import com.flipperdevices.connection.impl.R
 import com.flipperdevices.connection.impl.di.ConnectionComponent
 import com.flipperdevices.connection.impl.dialog.UnsupportedDialogShowHelper
-import com.flipperdevices.connection.impl.model.ConnectionStatusState
 import com.flipperdevices.core.di.ComponentHolder
-import com.flipperdevices.core.ktx.jre.map
 import com.flipperdevices.core.preference.pb.PairSettings
 import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
 import javax.inject.Inject
@@ -60,9 +59,8 @@ class ConnectionStatusViewModel(
         serviceProvider.provideServiceApi(consumer = this, lifecycleOwner = this)
     }
 
-    fun getStatusState(): StateFlow<TabState> = statusState.map(viewModelScope) {
-        ConnectionTabStateMapper.getConnectionTabState(getApplication<Application>(), it)
-    }
+    @Composable
+    fun getStatusState(): StateFlow<ConnectionStatusState> = statusState
 
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
         serviceApi.connectionInformationApi.getConnectionStateFlow().combine(
