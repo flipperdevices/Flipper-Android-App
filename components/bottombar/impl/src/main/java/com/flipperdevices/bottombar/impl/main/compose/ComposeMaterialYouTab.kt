@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bottombar.model.TabState
 
@@ -41,8 +40,8 @@ fun ComposeMaterialYouTab(
                 contentAlignment = Alignment.Center
             ) {
                 TabTransition(
-                    activeColor = colorResource(tabState.selectedColorIcon),
-                    inactiveColor = colorResource(tabState.unselectedColorIcon),
+                    activeColor = tabState.selectedColorIcon,
+                    inactiveColor = tabState.unselectedColorIcon,
                     selected = selected
                 ) {
                     ComposableTabIcon(tabState, selected)
@@ -50,8 +49,8 @@ fun ComposeMaterialYouTab(
             }
             Box {
                 TabTransition(
-                    activeColor = colorResource(tabState.selectedColor),
-                    inactiveColor = colorResource(tabState.unselectedColor),
+                    activeColor = tabState.selectedColor,
+                    inactiveColor = tabState.unselectedColor,
                     selected = selected
                 ) {
                     ComposableStatusText(tabState)

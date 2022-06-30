@@ -2,7 +2,7 @@
 
 # 1.1.5 - In progress
 
-- [Feature] Compose Theme(module `core:ui:theme`, module `archive`)
+- [Feature] Compose Theme(module `core:ui:theme`, module `archive`, module `bottombar`)
 - [BUGFIX] Lock portrait orientation
 - [BUGFIX] Update card not shown when flipper not connected
 - [BUGFIX] Static URL on dynamic link docs

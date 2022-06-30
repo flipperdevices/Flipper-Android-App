@@ -1,17 +1,18 @@
 package com.flipperdevices.bottombar.model
 
-import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.RawRes
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 
 private const val MAGIC_NUMBER = 31
 
 sealed class TabState private constructor(
     val text: String,
-    @ColorRes val selectedColor: Int,
-    @ColorRes val selectedColorIcon: Int,
-    @ColorRes val unselectedColor: Int,
-    @ColorRes val unselectedColorIcon: Int,
+    val selectedColor: Color,
+    val selectedColorIcon: Color,
+    val unselectedColor: Color,
+    val unselectedColorIcon: Color,
     val textDotsAnimated: Boolean
 ) {
     @Suppress("LongParameterList")
@@ -19,10 +20,10 @@ sealed class TabState private constructor(
         @DrawableRes val selectedIcon: Int,
         @DrawableRes val notSelectedIcon: Int,
         text: String,
-        @ColorRes selectedColor: Int,
-        @ColorRes selectedColorIcon: Int = selectedColor,
-        @ColorRes unselectedColor: Int,
-        @ColorRes unselectedColorIcon: Int = unselectedColor,
+        selectedColor: Color,
+        selectedColorIcon: Color = selectedColor,
+        unselectedColor: Color,
+        unselectedColorIcon: Color = unselectedColor,
         textDotsAnimated: Boolean = false
     ) : TabState(
         text,
@@ -57,8 +58,8 @@ sealed class TabState private constructor(
         @RawRes val selectedIcon: Int,
         @RawRes val notSelectedIcon: Int,
         text: String,
-        @ColorRes selectedColor: Int,
-        @ColorRes unselectedColor: Int,
+        selectedColor: Color,
+        unselectedColor: Color,
         textDotsAnimated: Boolean = false
     ) : TabState(
         text,
@@ -107,10 +108,10 @@ sealed class TabState private constructor(
 
     override fun hashCode(): Int {
         var result = text.hashCode()
-        result = MAGIC_NUMBER * result + selectedColor
-        result = MAGIC_NUMBER * result + selectedColorIcon
-        result = MAGIC_NUMBER * result + unselectedColor
-        result = MAGIC_NUMBER * result + unselectedColorIcon
+        result = MAGIC_NUMBER * result + selectedColor.toArgb()
+        result = MAGIC_NUMBER * result + selectedColorIcon.toArgb()
+        result = MAGIC_NUMBER * result + unselectedColor.toArgb()
+        result = MAGIC_NUMBER * result + unselectedColorIcon.toArgb()
         result = MAGIC_NUMBER * result + textDotsAnimated.hashCode()
         return result
     }

@@ -9,6 +9,7 @@ import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
 import com.flipperdevices.bottombar.model.TabState
 import com.flipperdevices.connection.api.ConnectionApi
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
 
 @Composable
 fun getTabStateFromFlipperBottomTab(
@@ -21,18 +22,18 @@ fun getTabStateFromFlipperBottomTab(
             return tabState
         }
         FlipperBottomTab.ARCHIVE -> TabState.Static(
-            selectedIcon = R.drawable.ic_archive_selected,
-            notSelectedIcon = R.drawable.ic_archive_unselected,
+            selectedIcon = DesignSystem.drawable.ic_archive_selected,
+            notSelectedIcon = DesignSystem.drawable.ic_archive_unselected,
             text = stringResource(R.string.bar_title_archive),
-            selectedColor = DesignSystem.color.black_80,
-            unselectedColor = DesignSystem.color.black_30
+            selectedColor = LocalPallet.current.selectedBottomBar,
+            unselectedColor = LocalPallet.current.unselectedBottomBar
         )
         FlipperBottomTab.OPTIONS -> TabState.Static(
-            selectedIcon = R.drawable.ic_options_selected,
-            notSelectedIcon = R.drawable.ic_options_unselected,
+            selectedIcon = DesignSystem.drawable.ic_options_selected,
+            notSelectedIcon = DesignSystem.drawable.ic_options_unselected,
             text = stringResource(R.string.bar_title_options),
-            selectedColor = DesignSystem.color.black_80,
-            unselectedColor = DesignSystem.color.black_30
+            selectedColor = LocalPallet.current.selectedBottomBar,
+            unselectedColor = LocalPallet.current.unselectedBottomBar
         )
     }
 }

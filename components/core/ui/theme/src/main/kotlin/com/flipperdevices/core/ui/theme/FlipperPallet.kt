@@ -44,8 +44,13 @@ data class FlipperPallet(
     val keyInfrarred: Color = Color(0xFFFF928B),
     val keyBadUSB: Color = Color(0xFFFFBEE9),
     val keyUnknown: Color = Color(0xFF999999),
-    val keyDeleted: Color
+    val keyDeleted: Color,
+
+    val selectedBottomBar: Color,
+    val unselectedBottomBar: Color,
+    val backgroundBottomBar: Color
 ) {
+
     @Composable
     fun toMaterialColors(isLight: Boolean) = Colors(
         primary = Color.Black,

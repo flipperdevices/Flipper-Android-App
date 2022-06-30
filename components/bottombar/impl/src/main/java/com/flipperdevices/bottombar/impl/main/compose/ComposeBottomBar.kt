@@ -28,12 +28,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.debugInspectorInfo
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
 import com.flipperdevices.connection.api.ConnectionApi
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
 
 const val ANIMATION_WIDTH_CHANGE_DURATION_MS = 250
 const val ANIMATION_OFFSET_CHANGE_DURATION_MS = 150
@@ -70,7 +69,7 @@ fun ComposeBottomBar(
                 },
             backgroundColor = Color.Transparent,
             selectedTabIndex = selectedIndex,
-            contentColor = colorResource(android.R.color.black),
+            contentColor = Color.Black,
             indicator = { tabPositions = it },
             // remove bottom divider from tabRow
             divider = { }
@@ -105,7 +104,7 @@ private fun ComposeTabAnimatedBackground(
                 .fillMaxHeight()
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(size = 10.dp))
-                .background(colorResource(DesignSystem.color.black_4))
+                .background(LocalPallet.current.backgroundBottomBar)
         )
     }
 }

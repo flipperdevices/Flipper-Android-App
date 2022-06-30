@@ -56,7 +56,11 @@ private val lightPallet = FlipperPallet(
     iconTint30 = Color(0xFFAAAAAA),
     deletedCategoryType = Color(0xFFE9E9E9),
     keyDeleted = Color(0xFFE9E9E9),
-    progressBarCard = Color(0xFFAAAAAA)
+    progressBarCard = Color(0xFFAAAAAA),
+
+    selectedBottomBar = Color(0xFF303030),
+    unselectedBottomBar = Color(0xFFAAAAAA),
+    backgroundBottomBar = Color(0xFFE9E9E9)
 )
 
 @Suppress("MagicNumber")
@@ -79,7 +83,11 @@ private val darkPallet = FlipperPallet(
     iconTint30 = Color(0xFFAAAAAA),
     deletedCategoryType = Color(0xFFE9E9E9),
     keyDeleted = Color(0xFFE9E9E9),
-    progressBarCard = Color(0xFFAAAAAA)
+    progressBarCard = Color(0xFFAAAAAA),
+
+    selectedBottomBar = Color(0xFF303030),
+    unselectedBottomBar = Color(0xFFAAAAAA),
+    backgroundBottomBar = Color(0xFFE9E9E9)
 )
 
 private val typography = FlipperTypography(
