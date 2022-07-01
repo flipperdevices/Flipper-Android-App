@@ -57,7 +57,8 @@ class FlipperUpdateImageHelper(
     }
 
     private suspend fun loadImageFromResource(): ByteArray = withContext(Dispatchers.IO) {
-        return@withContext context.resources.openRawResource(DesignSystem.raw.update_pic).use { inputStream ->
+        val pictureStream = context.resources.openRawResource(DesignSystem.raw.update_pic)
+        return@withContext pictureStream.use { inputStream ->
             inputStream.readBytes()
         }
     }
