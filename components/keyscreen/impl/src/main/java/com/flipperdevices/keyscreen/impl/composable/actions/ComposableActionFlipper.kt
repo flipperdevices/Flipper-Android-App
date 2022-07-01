@@ -24,10 +24,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
 fun ComposableActionFlipper(
@@ -120,8 +119,7 @@ private fun ComposableActionFlipperContent(
     )
     Text(
         text = descriptionText,
-        fontWeight = FontWeight.W500,
-        fontSize = 16.sp,
-        color = descriptionColor
+        color = descriptionColor,
+        style = LocalTypography.current.buttonM16
     )
 }

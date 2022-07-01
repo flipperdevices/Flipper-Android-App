@@ -21,7 +21,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.settings.impl.R
@@ -70,8 +69,8 @@ fun SimpleElement(
             if (description != null) {
                 Text(
                     text = description,
-                    fontSize = 12.sp,
-                    color = LocalPallet.current.text40
+                    color = LocalPallet.current.text30,
+                    style = LocalTypography.current.subtitleR12
                 )
             }
         }
