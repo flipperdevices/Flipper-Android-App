@@ -86,7 +86,7 @@ private fun ComposableCategoryCounter(counter: Int?) {
     if (counter == null) {
         CircularProgressIndicator(
             modifier = Modifier.size(size = 18.dp),
-            color = LocalPallet.current.progressBarCard
+            color = LocalPallet.current.progressBar
         )
         return
     }

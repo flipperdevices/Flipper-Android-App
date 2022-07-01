@@ -14,16 +14,13 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.core.ui.ktx.ComposableKeyType
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.keyscreen.impl.R
 import com.flipperdevices.keyscreen.impl.model.DeleteState
 import com.flipperdevices.keyscreen.impl.model.FavoriteState
@@ -85,15 +82,14 @@ fun ComposableKeyCard(
                         end = 12.dp
                     ),
                     text = notes ?: stringResource(R.string.keyscreen_card_note_empty),
-                    fontWeight = FontWeight.W400,
-                    fontSize = 14.sp,
-                    color = colorResource(DesignSystem.color.black_30)
+                    color = LocalPallet.current.text30,
+                    style = LocalTypography.current.bodyR14
                 )
             }
 
             Divider(
                 modifier = Modifier.fillMaxWidth(),
-                color = colorResource(DesignSystem.color.black_12)
+                color = LocalPallet.current.divider12
             )
 
             Column(

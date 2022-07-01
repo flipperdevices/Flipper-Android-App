@@ -5,10 +5,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.shared.ComposableDeviceInfoRow
 import com.flipperdevices.info.shared.ComposableDeviceInfoRowText
@@ -38,7 +37,7 @@ fun ComposableFirmwareVersion(
         ComposableDeviceInfoRowText(
             modifier = it,
             text = getTextByVersion(firmwareVersion),
-            colorId = getColorByChannel(firmwareVersion.channel)
+            color = getColorByChannel(firmwareVersion.channel)
         )
     }
 }
@@ -76,7 +75,7 @@ private fun ComposableFirmwareVersionAndBuildDate() {
         version = "1.1.1",
         buildDate = "today"
     )
-    Column(Modifier.width(300.dp).background(colorResource(id = DesignSystem.color.background))) {
+    Column(Modifier.width(300.dp).background(LocalPallet.current.background)) {
         ComposableFirmwareVersion(firmwareVersion, true)
         ComposableFirmwareBuildDate(firmwareVersion, true)
 

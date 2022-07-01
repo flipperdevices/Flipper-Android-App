@@ -11,6 +11,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.flipperdevices.bridge.api.scanner.DiscoveredBluetoothDevice
 import com.flipperdevices.firstpair.impl.R
+import com.flipperdevices.firstpair.impl.composable.common.ComposableSearchingAppBar
 import com.flipperdevices.firstpair.impl.model.SearchingContent
 import com.flipperdevices.firstpair.impl.model.SearchingState
 

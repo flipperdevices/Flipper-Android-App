@@ -13,6 +13,7 @@ import com.flipperdevices.bridge.service.impl.R
 import com.flipperdevices.bridge.service.impl.di.FlipperServiceComponent
 import com.flipperdevices.core.di.ApplicationParams
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import javax.inject.Inject
 
 private const val FLIPPER_NOTIFICATION_CHANNEL = "flipper_service"
@@ -30,7 +31,7 @@ class FlipperNotificationHelper(private val context: Context) {
         NotificationCompat.Builder(context, FLIPPER_NOTIFICATION_CHANNEL)
             .setContentTitle(context.getString(R.string.bridge_service_notification_title))
             .setContentText(context.getString(R.string.bridge_service_notification_desc))
-            .setSmallIcon(R.drawable.ic_notification)
+            .setSmallIcon(DesignSystem.drawable.ic_notification)
             .setSilent(true)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(getIntentForOpenApplication())
@@ -38,7 +39,7 @@ class FlipperNotificationHelper(private val context: Context) {
 
     fun showStopButton() {
         notificationBuilder.addAction(
-            R.drawable.ic_disconnect,
+            DesignSystem.drawable.ic_disconnect,
             context.getString(R.string.bridge_service_notification_action_disconnect),
             FlipperDisconnectBroadcastReceiver.getDisconnectIntent(context)
         )

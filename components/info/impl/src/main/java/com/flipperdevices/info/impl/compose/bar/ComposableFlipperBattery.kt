@@ -14,12 +14,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.res.R as DesignSystem
-import com.flipperdevices.info.impl.R
+import com.flipperdevices.core.ui.theme.LocalPallet
 
 private const val EMPTY_BATTERY = 0f
 private const val FIRST_BATTERY_THRESHOLD = 0.15f
@@ -37,17 +36,17 @@ fun ComposableFlipperBattery(
             BatteryContent(modifier, percent)
             if (isCharging) {
                 Icon(
-                    painter = painterResource(R.drawable.ic_charging),
+                    painter = painterResource(DesignSystem.drawable.ic_charging),
                     contentDescription = null,
-                    tint = colorResource(DesignSystem.color.black_80)
+                    tint = LocalPallet.current.iconTint80
                 )
             }
         }
         Icon(
             modifier = Modifier.padding(start = 1.dp),
-            painter = painterResource(R.drawable.ic_battery_pin),
+            painter = painterResource(DesignSystem.drawable.ic_battery_pin),
             contentDescription = null,
-            tint = colorResource(R.color.battery_backgroud)
+            tint = LocalPallet.current.batteryBackground
         )
     }
 }
@@ -57,17 +56,17 @@ private fun BatteryContent(
     modifier: Modifier = Modifier,
     @FloatRange(from = 0.0, to = 1.0) percent: Float
 ) {
-    val batteryColorId = when (percent) {
-        in EMPTY_BATTERY..FIRST_BATTERY_THRESHOLD -> DesignSystem.color.red
-        in FIRST_BATTERY_THRESHOLD..SECOND_BATTERY_THRESHOLD -> DesignSystem.color.yellow
-        in SECOND_BATTERY_THRESHOLD..FULL_BATTERY -> DesignSystem.color.green
-        else -> DesignSystem.color.red
+    val batteryColor = when (percent) {
+        in EMPTY_BATTERY..FIRST_BATTERY_THRESHOLD -> LocalPallet.current.batteryRed
+        in FIRST_BATTERY_THRESHOLD..SECOND_BATTERY_THRESHOLD -> LocalPallet.current.batteryYellow
+        in SECOND_BATTERY_THRESHOLD..FULL_BATTERY -> LocalPallet.current.batteryGreen
+        else -> LocalPallet.current.batteryRed
     }
 
     Row(
         modifier
             .clip(RoundedCornerShape(3.dp))
-            .background(colorResource(R.color.battery_backgroud))
+            .background(LocalPallet.current.batteryBackground)
             .padding(1.dp)
             .clip(RoundedCornerShape(2.dp))
             .background(Color.White)
@@ -79,7 +78,7 @@ private fun BatteryContent(
             Modifier
                 .weight(weight = percent)
                 .fillMaxHeight()
-                .background(colorResource(batteryColorId))
+                .background(batteryColor)
         )
         if (remainingWeight > 0f) {
             Box(Modifier.weight(remainingWeight))

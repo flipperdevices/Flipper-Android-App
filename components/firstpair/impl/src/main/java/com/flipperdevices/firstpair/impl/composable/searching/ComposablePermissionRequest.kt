@@ -8,17 +8,16 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.markdown.annotatedStringFromMarkdown
 import com.flipperdevices.core.ui.ktx.ComposableFlipperButton
 import com.flipperdevices.core.ui.ktx.painterResourceByKey
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.firstpair.impl.model.SearchingContent
 
 @Composable
@@ -38,16 +37,14 @@ fun ComposablePermissionRequest(modifier: Modifier, state: SearchingContent.Perm
                 bottom = 12.dp
             ),
             text = stringResource(state.title),
-            fontWeight = FontWeight.W500,
-            fontSize = 16.sp,
-            color = colorResource(DesignSystem.color.black_100),
+            color = LocalPallet.current.text100,
+            style = LocalTypography.current.buttonM16,
             textAlign = TextAlign.Center
         )
         Text(
             text = annotatedStringFromMarkdown(state.description),
-            fontWeight = FontWeight.W400,
-            fontSize = 14.sp,
-            color = colorResource(DesignSystem.color.black_40),
+            style = LocalTypography.current.bodyR14,
+            color = LocalPallet.current.text40,
             textAlign = TextAlign.Center
         )
         ComposableFlipperButton(

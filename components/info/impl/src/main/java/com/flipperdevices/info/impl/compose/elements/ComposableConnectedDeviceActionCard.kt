@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.model.FirmwareUpdateStatus
@@ -45,15 +46,15 @@ private fun ComposableSynchronize(
     connectViewModel: ConnectViewModel = viewModel(),
     enabled: Boolean
 ) {
-    val colorId = if (enabled) {
-        DesignSystem.color.accent_secondary
-    } else DesignSystem.color.black_16
+    val color = if (enabled) {
+        LocalPallet.current.accentSecond
+    } else LocalPallet.current.text16
 
     ButtonElementRow(
         modifier = modifier,
         titleId = R.string.info_device_synchronize,
-        iconId = R.drawable.ic_syncing,
-        colorId = colorId,
+        iconId = DesignSystem.drawable.ic_syncing,
+        color = color,
         onClick = if (enabled) {
             connectViewModel::requestSynchronize
         } else null
@@ -67,14 +68,14 @@ private fun ComposableAlarmElement(
     enabled: Boolean
 ) {
     val colorId = if (enabled) {
-        DesignSystem.color.accent_secondary
-    } else DesignSystem.color.black_16
+        LocalPallet.current.accentSecond
+    } else LocalPallet.current.text16
 
     ButtonElementRow(
         modifier = modifier,
         titleId = R.string.info_device_play_alert,
-        iconId = R.drawable.ic_ring,
-        colorId = colorId,
+        iconId = DesignSystem.drawable.ic_ring,
+        color = colorId,
         onClick = if (enabled) {
             alarmViewModel::alarmOnFlipper
         } else null

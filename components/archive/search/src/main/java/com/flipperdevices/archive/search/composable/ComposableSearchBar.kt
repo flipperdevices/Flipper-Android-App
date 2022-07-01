@@ -16,7 +16,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.archive.search.viewmodel.SearchViewModel
@@ -33,7 +32,7 @@ fun ComposableSearchBar(searchViewModel: SearchViewModel) {
     }
 
     Row(
-        modifier = Modifier.background(colorResource(DesignSystem.color.background)),
+        modifier = Modifier.background(LocalPallet.current.background),
         verticalAlignment = Alignment.CenterVertically
     ) {
         ComposableSearchBarBack { router.exit() }

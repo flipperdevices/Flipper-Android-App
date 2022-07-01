@@ -104,5 +104,4 @@ include(
     ":components:updater:screen",
     ":components:updater:downloader",
     ":components:updater:card",
-    ":components:updater:fonts"
 )

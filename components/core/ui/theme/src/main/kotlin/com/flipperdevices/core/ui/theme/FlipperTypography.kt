@@ -8,11 +8,17 @@ import androidx.compose.ui.text.font.FontWeight
 import com.flipperdevices.core.ui.res.R
 
 data class FlipperTypography(
+    val titleB24: TextStyle,
+    val titleB22: TextStyle,
     val titleB20: TextStyle,
+    val titleEB20: TextStyle,
     val titleB18: TextStyle,
+    val titleR18: TextStyle,
+    val titleM18: TextStyle,
 
     val subtitleM12: TextStyle,
     val subtitleR12: TextStyle,
+    val subtitleB12: TextStyle,
     val subtitleB10: TextStyle,
     val subtitleM10: TextStyle,
 
@@ -22,10 +28,13 @@ data class FlipperTypography(
 
     val buttonB16: TextStyle,
     val buttonM16: TextStyle,
-    val buttonB14: TextStyle
+    val buttonB14: TextStyle,
+
+    val updateButton40: TextStyle,
+    val updateText40: TextStyle,
 )
 
-internal val fontFamily = FontFamily(
+internal val robotoFamily = FontFamily(
     Font(R.font.roboto_regular, FontWeight.W400),
     Font(R.font.roboto_italic, FontWeight.W400, FontStyle.Italic),
     Font(R.font.roboto_black, FontWeight.W900),

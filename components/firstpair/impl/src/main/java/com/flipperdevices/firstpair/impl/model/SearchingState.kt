@@ -7,6 +7,7 @@ import android.provider.Settings
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.flipperdevices.bridge.api.scanner.DiscoveredBluetoothDevice
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.firstpair.impl.R
 import com.flipperdevices.firstpair.impl.viewmodels.SearchStateBuilder
 
@@ -78,7 +79,7 @@ sealed class SearchingContent {
     }
 
     class TurnOnBluetooth(searchStateHolder: SearchStateBuilder) : PermissionRequest(
-        image = R.drawable.pic_ble_disabled,
+        image = DesignSystem.drawable.pic_ble_disabled,
         title = R.string.firstpair_permission_enable_bluetooth_title,
         description = R.string.firstpair_permission_enable_bluetooth_desc,
         buttonText = R.string.firstpair_permission_continue,
@@ -90,7 +91,7 @@ sealed class SearchingContent {
         context: Context,
         requestedFirstTime: Boolean
     ) : PermissionRequestWithAppSettings(
-        image = R.drawable.pic_ble_permission_failed,
+        image = DesignSystem.drawable.pic_ble_permission_failed,
         title = R.string.firstpair_permission_bluetooth_title,
         description = R.string.firstpair_permission_bluetooth_desc,
         buttonText = if (requestedFirstTime) {
@@ -105,7 +106,7 @@ sealed class SearchingContent {
         searchStateHolder: SearchStateBuilder,
         context: Context
     ) : PermissionSettingsRequest(
-        image = R.drawable.pic_location_permission,
+        image = DesignSystem.drawable.pic_location_permission,
         title = R.string.firstpair_permission_enable_location_title,
         description = R.string.firstpair_permission_location_desc,
         buttonText = R.string.firstpair_permission_settings,
@@ -118,7 +119,7 @@ sealed class SearchingContent {
         context: Context,
         requestedFirstTime: Boolean
     ) : PermissionRequestWithAppSettings(
-        image = R.drawable.pic_location_permission,
+        image = DesignSystem.drawable.pic_location_permission,
         title = R.string.firstpair_permission_location_title,
         description = R.string.firstpair_permission_location_desc,
         buttonText = if (requestedFirstTime) {
@@ -132,7 +133,7 @@ sealed class SearchingContent {
     class FlipperNotFound(
         private val searchStateHolder: SearchStateBuilder
     ) : PermissionRequest(
-        image = R.drawable.pic_device_not_found,
+        image = DesignSystem.drawable.pic_device_not_found,
         title = R.string.firstpair_device_not_found_title,
         description = R.string.firstpair_device_not_found_desc,
         buttonText = R.string.firstpair_permission_retry,

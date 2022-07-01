@@ -18,12 +18,14 @@ data class FlipperPallet(
     val text12: Color,
     val text8: Color,
     val text4: Color,
-    val surface: Color,
 
     val iconTint100: Color,
+    val iconTint80: Color,
     val iconTint30: Color,
+    val iconTint16: Color,
+
     val deletedCategoryType: Color,
-    val progressBarCard: Color,
+    val progressBar: Color,
 
     val favorite: Color = Color(0xFFFECF5D),
 
@@ -36,6 +38,11 @@ data class FlipperPallet(
     val greenFirmware: Color = Color(0xFF2ED832),
     val purpleFirmware: Color = Color(0xFF8A2BE2),
     val redFirmware: Color = Color(0xFFF63F3F),
+    val grayFirmware: Color = Color(0xFF919191),
+
+    val greenUpdate: Color = Color(0xFF2ED832),
+    val greenUpdateBackground: Color = Color(0xFFA3E899),
+    val blueUpdateBackground: Color = Color(0xFFACC9FA),
 
     val keyIButton: Color = Color(0xFFE1BBA6),
     val keyRFID: Color = Color(0xFFFFF493),
@@ -50,7 +57,21 @@ data class FlipperPallet(
     val unselectedBottomBar40: Color,
     val unselectedBottomBar30: Color,
     val backgroundBottomBar: Color,
-    val redContentBottomBar: Color = Color(0xFFF63F3F)
+    val redContentBottomBar: Color = Color(0xFFF63F3F),
+
+    val unsynchronized: Color,
+    val divider12: Color,
+    val notificationCard: Color,
+
+    val batteryBackground: Color,
+    val batteryRed: Color = Color(0xFFF63F3F),
+    val batteryYellow: Color = Color(0xFFFECF5D),
+    val batteryGreen: Color = Color(0xFF34C7A4),
+
+    val redForgot: Color = Color(0xFFF63F3F),
+    val onButton100: Color,
+    val placeholder: Color,
+    val switchUncheckedTrack: Color
 ) {
 
     @Composable
@@ -60,7 +81,7 @@ data class FlipperPallet(
         secondary = Color.Black,
         secondaryVariant = accent,
         background = Color.Black,
-        surface = surface,
+        surface = onButton100,
         error = Color.Black,
         onPrimary = Color.Black,
         onSecondary = Color.Black,

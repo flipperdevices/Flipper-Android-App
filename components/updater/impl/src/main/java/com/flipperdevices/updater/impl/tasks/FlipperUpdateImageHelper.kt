@@ -7,11 +7,11 @@ import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.screen.screenFrame
 import com.flipperdevices.protobuf.screen.startVirtualDisplayRequest
 import com.flipperdevices.protobuf.screen.stopVirtualDisplayRequest
-import com.flipperdevices.updater.impl.R
 import com.google.protobuf.ByteString
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -57,7 +57,7 @@ class FlipperUpdateImageHelper(
     }
 
     private suspend fun loadImageFromResource(): ByteArray = withContext(Dispatchers.IO) {
-        return@withContext context.resources.openRawResource(R.raw.update_pic).use { inputStream ->
+        return@withContext context.resources.openRawResource(DesignSystem.raw.update_pic).use { inputStream ->
             inputStream.readBytes()
         }
     }

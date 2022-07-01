@@ -27,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.dao.api.model.FlipperFileType
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.filemanager.impl.R
 import com.flipperdevices.filemanager.impl.model.FileItem
 import com.flipperdevices.filemanager.impl.model.FileManagerState
@@ -100,7 +101,7 @@ private fun ComposableFileImage(modifier: Modifier, fileItem: FileItem) {
     if (fileItem.isDirectory) {
         Image(
             modifier = modifier,
-            painter = painterResource(R.drawable.ic_folder),
+            painter = painterResource(DesignSystem.drawable.ic_folder),
             contentDescription = stringResource(R.string.filemanager_folder_pic_desc)
         )
     } else {
@@ -110,7 +111,7 @@ private fun ComposableFileImage(modifier: Modifier, fileItem: FileItem) {
         ) {
             Image(
                 modifier = Modifier.size(size = 48.dp),
-                painter = painterResource(R.drawable.ic_file),
+                painter = painterResource(DesignSystem.drawable.ic_file),
                 contentDescription = stringResource(R.string.filemanager_file_pic_desc)
             )
             val fileIcon = remember(fileItem) {

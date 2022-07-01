@@ -17,17 +17,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.res.R as DesignSystem
-import com.flipperdevices.info.shared.R as SharedInfoResources
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.updater.screen.R
 import com.flipperdevices.updater.screen.model.FailedReason
 import com.flipperdevices.updater.screen.model.UpdaterScreenState
@@ -46,12 +44,12 @@ fun ComposableUpdaterScreen(
             if (updaterScreenState is UpdaterScreenState.Failed) {
                 UpdaterScreenHeader(
                     R.string.update_screen_title_failed,
-                    R.drawable.pic_flipper_update_failed,
+                    DesignSystem.drawable.pic_flipper_update_failed,
                     bottomPadding = 38.dp
                 )
             } else UpdaterScreenHeader(
                 R.string.update_screen_title,
-                SharedInfoResources.drawable.ic_white_flipper,
+                DesignSystem.drawable.ic_white_flipper,
                 bottomPadding = 64.dp
             )
             ComposableUpdateContent(updaterScreenState, onRetry)
@@ -69,9 +67,8 @@ private fun UpdaterScreenHeader(
     Text(
         modifier = Modifier.padding(top = 48.dp, start = 14.dp, end = 14.dp),
         text = stringResource(titleId),
-        fontSize = 18.sp,
-        fontWeight = FontWeight.W700,
-        color = colorResource(DesignSystem.color.black_100),
+        style = LocalTypography.current.titleB18,
+        color = LocalPallet.current.text100,
         textAlign = TextAlign.Center
     )
 
@@ -98,7 +95,7 @@ private fun CancelButton(
     ) {
         if (updaterScreenState == UpdaterScreenState.CancelingUpdate) {
             CircularProgressIndicator(
-                color = colorResource(DesignSystem.color.accent_secondary)
+                color = LocalPallet.current.accentSecond
             )
             return@Box
         }
@@ -110,9 +107,8 @@ private fun CancelButton(
             ),
             text = stringResource(R.string.update_screen_cancel),
             textAlign = TextAlign.Center,
-            color = colorResource(DesignSystem.color.accent_secondary),
-            fontSize = 16.sp,
-            fontWeight = FontWeight.W500
+            color = LocalPallet.current.accentSecond,
+            style = LocalTypography.current.buttonM16
         )
     }
 }

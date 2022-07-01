@@ -17,15 +17,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.model.FirmwareUpdateStatus
@@ -116,9 +115,8 @@ private fun ComposableFullInfoButton(
     ) {
         Text(
             text = stringResource(R.string.info_device_info_more_information),
-            fontSize = 14.sp,
-            fontWeight = FontWeight.W500,
-            color = colorResource(DesignSystem.color.black_16)
+            color = LocalPallet.current.text16,
+            style = LocalTypography.current.bodyM14
         )
         Icon(
             modifier = Modifier
@@ -126,7 +124,7 @@ private fun ComposableFullInfoButton(
                 .size(size = 12.dp),
             painter = painterResource(DesignSystem.drawable.ic_forward),
             contentDescription = stringResource(R.string.info_device_info_more_information),
-            tint = colorResource(DesignSystem.color.black_16)
+            tint = LocalPallet.current.iconTint16
         )
     }
 }

@@ -20,15 +20,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 
 private const val ANIMATION_DURATION_MS = 150
 
@@ -44,10 +42,8 @@ fun FlipperTextField(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
-    val textBoxStyle = TextStyle(
-        fontWeight = FontWeight.W400,
-        fontSize = 16.sp,
-        color = colorResource(DesignSystem.color.black_100)
+    val textBoxStyle = LocalTypography.current.bodyR16.copy(
+        color = LocalPallet.current.text100
     )
 
     Column(modifier) {
@@ -65,9 +61,8 @@ fun FlipperTextField(
                 }
                 Text(
                     text = label,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.W400,
-                    color = colorResource(DesignSystem.color.black_8)
+                    color = LocalPallet.current.text8,
+                    style = LocalTypography.current.bodyR16
                 )
             },
             keyboardOptions = KeyboardOptions(
@@ -85,9 +80,8 @@ private fun FlipperTitle(title: String) {
     Text(
         modifier = Modifier.padding(bottom = 4.dp),
         text = title,
-        fontWeight = FontWeight.W400,
-        fontSize = 16.sp,
-        color = colorResource(DesignSystem.color.black_30)
+        style = LocalTypography.current.bodyR16,
+        color = LocalPallet.current.text30
     )
 }
 
@@ -133,8 +127,8 @@ private fun FlipperTextBoxUnderline(
 ) {
     val isFocused by interactionSource.collectIsFocusedAsState()
     val underlineColor = if (isFocused) {
-        colorResource(DesignSystem.color.accent_secondary)
-    } else colorResource(DesignSystem.color.black_30)
+        LocalPallet.current.accentSecond
+    } else LocalPallet.current.text30
     val underlineColorAnimated by animateColorAsState(
         underlineColor,
         tween(durationMillis = ANIMATION_DURATION_MS)

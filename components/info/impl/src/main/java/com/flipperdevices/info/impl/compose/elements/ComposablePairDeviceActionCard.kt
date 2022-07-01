@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.viewmodel.ConnectViewModel
@@ -42,8 +43,8 @@ fun ComposablePairDeviceActionCard(
 
         ButtonElementRow(
             titleId = R.string.info_device_forget,
-            iconId = R.drawable.ic_disconnection,
-            colorId = DesignSystem.color.red,
+            iconId = DesignSystem.drawable.ic_disconnection,
+            color = LocalPallet.current.redForgot,
             onClick = connectViewModel::showDialogForgetFlipper
         )
     }
@@ -57,8 +58,8 @@ private fun ComposableDisconnectElement(
     ButtonElementRow(
         modifier = modifier,
         titleId = R.string.info_device_disconnect,
-        iconId = R.drawable.ic_bluetooth_disable,
-        colorId = DesignSystem.color.accent_secondary,
+        iconId = DesignSystem.drawable.ic_bluetooth_disable,
+        color = LocalPallet.current.accentSecond,
         onClick = connectViewModel::onDisconnect
     )
 }
@@ -71,8 +72,8 @@ private fun ComposableConnectElement(
     ButtonElementRow(
         modifier = modifier,
         titleId = R.string.info_device_connect,
-        iconId = R.drawable.ic_bluetooth,
-        colorId = DesignSystem.color.accent_secondary,
+        iconId = DesignSystem.drawable.ic_bluetooth,
+        color = LocalPallet.current.accentSecond,
         onClick = connectViewModel::connectAndSynchronize
     )
 }
@@ -85,8 +86,8 @@ private fun ComposableFirstConnectElement(
     ButtonElementRow(
         modifier = modifier,
         titleId = R.string.info_device_connect,
-        iconId = R.drawable.ic_bluetooth,
-        colorId = DesignSystem.color.accent_secondary,
+        iconId = DesignSystem.drawable.ic_bluetooth,
+        color = LocalPallet.current.accentSecond,
         onClick = connectViewModel::goToConnectScreen
     )
 }

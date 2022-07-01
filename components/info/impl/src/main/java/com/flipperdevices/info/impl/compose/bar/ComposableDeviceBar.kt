@@ -14,19 +14,17 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
-import com.flipperdevices.info.shared.R as ExternalDrawable
 import kotlin.math.roundToInt
 
 const val FLOAT_TO_PERCENT_QUALIFIER = 100
@@ -42,7 +40,7 @@ private fun DeviceBar(deviceStatus: DeviceStatus) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(colorResource(DesignSystem.color.accent)),
+            .background(LocalPallet.current.accent),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -67,11 +65,11 @@ private fun FlipperInformation(deviceStatus: DeviceStatus) {
 @Composable
 private fun FlipperImage(deviceStatus: DeviceStatus) {
     val imageId = when (deviceStatus) {
-        DeviceStatus.NoDevice -> ExternalDrawable.drawable.ic_grey_flipper
-        is DeviceStatus.Connected -> ExternalDrawable.drawable.ic_white_flipper
+        DeviceStatus.NoDevice -> DesignSystem.drawable.ic_grey_flipper
+        is DeviceStatus.Connected -> DesignSystem.drawable.ic_white_flipper
         is DeviceStatus.NoDeviceInformation -> {
-            if (deviceStatus.connectInProgress) ExternalDrawable.drawable.ic_grey_flipper
-            else ExternalDrawable.drawable.ic_white_flipper
+            if (deviceStatus.connectInProgress) DesignSystem.drawable.ic_grey_flipper
+            else DesignSystem.drawable.ic_white_flipper
         }
     }
     val descriptionId = when (deviceStatus) {
@@ -91,9 +89,8 @@ private fun FlipperImage(deviceStatus: DeviceStatus) {
 private fun NoDeviceText() {
     Text(
         text = stringResource(R.string.info_device_no_device),
-        fontWeight = FontWeight.W700,
-        fontSize = 16.sp,
-        color = colorResource(DesignSystem.color.black_100)
+        color = LocalPallet.current.text100,
+        style = LocalTypography.current.buttonB16
     )
 }
 
@@ -120,9 +117,8 @@ private fun ConnectedText(deviceStatus: DeviceStatus.Connected) {
                 Text(
                     modifier = Modifier.padding(start = 5.dp),
                     text = "${(batteryValue * FLOAT_TO_PERCENT_QUALIFIER).roundToInt()}%",
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.W400,
-                    color = colorResource(DesignSystem.color.black_100)
+                    color = LocalPallet.current.text100,
+                    style = LocalTypography.current.subtitleR12
                 )
             }
         }
@@ -134,15 +130,13 @@ private fun FlipperName(title: String) {
     Text(
         modifier = Modifier.padding(bottom = 3.dp),
         text = title,
-        fontWeight = FontWeight.W700,
-        fontSize = 16.sp,
-        color = colorResource(DesignSystem.color.black_100)
+        color = LocalPallet.current.text100,
+        style = LocalTypography.current.buttonB16
     )
     Text(
         text = stringResource(R.string.info_device_model_name),
-        fontWeight = FontWeight.W400,
-        fontSize = 12.sp,
-        color = colorResource(DesignSystem.color.black_100)
+        color = LocalPallet.current.text100,
+        style = LocalTypography.current.subtitleR12
     )
 }
 

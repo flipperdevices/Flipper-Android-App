@@ -17,14 +17,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.settings.impl.R
 
 @Composable
@@ -33,9 +32,8 @@ fun SimpleElement(
     @StringRes titleId: Int? = null,
     @StringRes descriptionId: Int? = null,
     onClick: (() -> Unit)? = null,
-    titleTextStyle: TextStyle = TextStyle(
-        fontWeight = FontWeight.W400,
-        fontSize = 14.sp
+    titleTextStyle: TextStyle = LocalTypography.current.bodyR14.copy(
+        color = LocalPallet.current.text100
     )
 ) {
     val title: String? = titleId?.let { stringResource(id = it) }
@@ -73,7 +71,7 @@ fun SimpleElement(
                 Text(
                     text = description,
                     fontSize = 12.sp,
-                    color = colorResource(DesignSystem.color.black_40)
+                    color = LocalPallet.current.text40
                 )
             }
         }

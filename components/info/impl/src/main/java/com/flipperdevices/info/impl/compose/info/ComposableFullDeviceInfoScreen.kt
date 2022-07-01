@@ -18,16 +18,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.ktx.jre.titlecaseFirstCharIfItIsLowercase
 import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.viewmodel.DeviceInfoViewModel
 import com.flipperdevices.info.shared.ComposableDeviceInfoRowWithText
@@ -89,9 +88,7 @@ private fun ComposableFullDeviceInfoScreenBar() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(
-                colorResource(DesignSystem.color.accent)
-            ),
+            .background(LocalPallet.current.accent),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
@@ -104,13 +101,12 @@ private fun ComposableFullDeviceInfoScreenBar() {
                 .padding(start = 14.dp, end = 14.dp, top = 8.dp, bottom = 10.dp),
             painter = painterResource(DesignSystem.drawable.ic_back),
             contentDescription = null,
-            tint = colorResource(DesignSystem.color.black_100)
+            tint = LocalPallet.current.iconTint100
         )
         Text(
             text = stringResource(R.string.info_device_info_title),
-            fontWeight = FontWeight.W700,
-            fontSize = 20.sp,
-            color = colorResource(DesignSystem.color.black_100)
+            color = LocalPallet.current.text100,
+            style = LocalTypography.current.titleB20
         )
     }
 }

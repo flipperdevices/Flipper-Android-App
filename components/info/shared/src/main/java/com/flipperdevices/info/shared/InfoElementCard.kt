@@ -11,12 +11,10 @@ import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
 fun InfoElementCard(
@@ -40,9 +38,8 @@ fun InfoElementCard(
                         bottom = 6.dp
                     ),
                     text = stringResource(titleId),
-                    fontWeight = FontWeight.W700,
-                    fontSize = 16.sp,
-                    color = colorResource(DesignSystem.color.black_100)
+                    color = LocalPallet.current.text100,
+                    style = LocalTypography.current.buttonB16
                 )
             }
             content()

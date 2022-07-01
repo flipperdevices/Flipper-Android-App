@@ -1,4 +1,4 @@
-package com.flipperdevices.firstpair.impl.composable.searching
+package com.flipperdevices.firstpair.impl.composable.common
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -13,14 +13,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.firstpair.impl.R
 
 private const val ICON_HORIZONTAL_PADDING_DP = 14
@@ -44,9 +43,7 @@ fun ComposableSearchingAppBar(
                     indication = rememberRipple(bounded = false),
                     onClick = onBack
                 ),
-            painter = painterResource(
-                DesignSystem.drawable.ic_back
-            ),
+            painter = painterResource(DesignSystem.drawable.ic_back),
             contentDescription = stringResource(R.string.firstpair_search_back)
         )
 
@@ -55,9 +52,8 @@ fun ComposableSearchingAppBar(
                 .fillMaxWidth()
                 .padding(end = (ICON_SIZE + ICON_HORIZONTAL_PADDING_DP * 2).dp),
             text = title,
-            fontWeight = FontWeight.W700,
-            color = colorResource(DesignSystem.color.black_100),
-            fontSize = 22.sp,
+            style = LocalTypography.current.titleB22,
+            color = LocalPallet.current.text100,
             textAlign = TextAlign.Center
         )
     }

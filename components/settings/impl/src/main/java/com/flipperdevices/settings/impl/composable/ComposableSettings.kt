@@ -10,14 +10,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.composable.category.BugReportCategory
 import com.flipperdevices.settings.impl.composable.category.DebugCategory
@@ -56,7 +55,7 @@ fun ComposableCommonSetting(
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
-            .background(colorResource(DesignSystem.color.background)),
+            .background(LocalPallet.current.background),
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
         AppBar(R.string.options)

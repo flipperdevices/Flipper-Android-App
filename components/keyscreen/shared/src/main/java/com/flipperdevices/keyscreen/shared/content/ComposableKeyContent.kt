@@ -7,11 +7,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
 private fun ComposableKeyItem(name: String, value: String) {
@@ -21,15 +19,13 @@ private fun ComposableKeyItem(name: String, value: String) {
     ) {
         Text(
             text = name,
-            fontWeight = FontWeight.W400,
-            fontSize = 16.sp,
-            color = colorResource(DesignSystem.color.black_30)
+            color = LocalPallet.current.text30,
+            style = LocalTypography.current.bodyR16
         )
         Text(
             text = value,
-            fontWeight = FontWeight.W400,
-            fontSize = 16.sp,
-            color = colorResource(DesignSystem.color.black_100)
+            color = LocalPallet.current.text100,
+            style = LocalTypography.current.bodyR16
         )
     }
 }
