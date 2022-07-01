@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.flipperdevices.core.ui.theme.LocalPallet
 
 private const val BUTTON_WEIGHT = 0.3f
 
@@ -93,7 +92,6 @@ private fun ControlButton(
                 onLongClick = { onLongPressButton(button) }
             ),
         painter = painterResource(button.icon),
-        contentDescription = stringResource(button.description),
-        tint = LocalPallet.current.iconTint100
+        contentDescription = stringResource(button.description)
     )
 }

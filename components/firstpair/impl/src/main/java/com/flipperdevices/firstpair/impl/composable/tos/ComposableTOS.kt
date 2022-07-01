@@ -42,7 +42,6 @@ private fun ComposableTutorial(modifier: Modifier) {
                 top = 48.dp
             ),
             text = stringResource(R.string.firstpair_tos_title),
-            color = LocalPallet.current.text100,
             style = LocalTypography.current.titleB24,
             textAlign = TextAlign.Center
         )

@@ -67,8 +67,7 @@ fun ComposableFavoriteKeysTitle() {
     ) {
         Text(
             text = stringResource(R.string.archive_tab_general_favorite_title),
-            style = LocalTypography.current.buttonB16,
-            color = LocalPallet.current.text100
+            style = LocalTypography.current.buttonB16
         )
         Icon(
             modifier = Modifier
@@ -86,7 +85,6 @@ fun ComposableAllKeysTitle() {
     Text(
         modifier = Modifier.padding(top = 24.dp, start = 14.dp),
         text = stringResource(R.string.archive_tab_general_all_title),
-        style = LocalTypography.current.buttonB16,
-        color = LocalPallet.current.text100
+        style = LocalTypography.current.buttonB16
     )
 }

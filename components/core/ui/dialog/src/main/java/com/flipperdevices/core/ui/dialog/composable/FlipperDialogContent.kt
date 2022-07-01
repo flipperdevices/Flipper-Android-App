@@ -18,7 +18,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.dialog.R
 import com.flipperdevices.core.ui.res.R as DesignSystem
-import com.flipperdevices.core.ui.theme.LocalPallet
 
 @Composable
 internal fun FlipperDialogContent(
@@ -43,8 +42,7 @@ internal fun FlipperDialogContent(
                         onClick = onDismissRequest
                     ),
                 painter = painterResource(DesignSystem.drawable.ic_close),
-                contentDescription = stringResource(R.string.core_ui_dialog_close),
-                tint = LocalPallet.current.iconTint100
+                contentDescription = stringResource(R.string.core_ui_dialog_close)
             )
         }
     }

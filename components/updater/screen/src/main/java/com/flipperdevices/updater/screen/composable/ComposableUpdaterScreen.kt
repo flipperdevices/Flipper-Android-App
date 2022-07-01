@@ -68,7 +68,6 @@ private fun UpdaterScreenHeader(
         modifier = Modifier.padding(top = 48.dp, start = 14.dp, end = 14.dp),
         text = stringResource(titleId),
         style = LocalTypography.current.titleB18,
-        color = LocalPallet.current.text100,
         textAlign = TextAlign.Center
     )
 

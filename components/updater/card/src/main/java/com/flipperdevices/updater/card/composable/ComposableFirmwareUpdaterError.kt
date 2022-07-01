@@ -46,7 +46,6 @@ fun ComposableFirmwareUpdaterError(
             modifier = Modifier.padding(top = 4.dp, start = 12.dp, end = 12.dp),
             text = title,
             style = LocalTypography.current.bodyM14,
-            color = LocalPallet.current.text100,
             textAlign = TextAlign.Center
         )
         Text(

@@ -12,7 +12,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.res.R as DesignSystem
-import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyscreen.shared.R
 
 @Composable
@@ -33,7 +32,6 @@ fun ComposableBarCancelIcon(
         modifier = clickableModifier
             .size(24.dp),
         painter = painterResource(DesignSystem.drawable.ic_close_icon),
-        contentDescription = stringResource(R.string.keyscreen_cancel_pic_desc),
-        tint = LocalPallet.current.iconTint100
+        contentDescription = stringResource(R.string.keyscreen_cancel_pic_desc)
     )
 }

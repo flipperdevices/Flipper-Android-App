@@ -35,7 +35,6 @@ private fun ComposableUpdateFailedContent(
     Text(
         modifier = Modifier.padding(start = 24.dp, end = 24.dp, bottom = 14.dp),
         text = stringResource(titleId),
-        color = LocalPallet.current.text100,
         style = LocalTypography.current.bodyM14,
         textAlign = TextAlign.Center
     )

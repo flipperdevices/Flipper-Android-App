@@ -105,8 +105,7 @@ private fun CategoryEmpty(modifier: Modifier) {
         Text(
             modifier = Modifier.padding(top = 12.dp),
             text = stringResource(R.string.search_not_found_title),
-            style = LocalTypography.current.buttonM16,
-            color = LocalPallet.current.text100
+            style = LocalTypography.current.buttonM16
         )
         Text(
             modifier = Modifier.padding(top = 12.dp, start = 98.dp, end = 98.dp),

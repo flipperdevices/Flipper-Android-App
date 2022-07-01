@@ -70,7 +70,6 @@ fun ComposableSearchBarBack(onBack: () -> Unit) {
                 onClick = onBack
             ),
         painter = painterResource(DesignSystem.drawable.ic_back_arrow),
-        contentDescription = null,
-        tint = LocalPallet.current.iconTint100
+        contentDescription = null
     )
 }

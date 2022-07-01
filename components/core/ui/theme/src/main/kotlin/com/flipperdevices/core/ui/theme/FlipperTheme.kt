@@ -74,10 +74,11 @@ private val lightPallet = FlipperPallet(
     notificationCard = Color(0xFFE9E9E9),
 
     batteryBackground = Color(0xFF8D8E92),
-
     placeholder = Color(0xFFDFDFDF),
+    switchUncheckedTrack = Color(0xFF919191),
 
-    switchUncheckedTrack = Color(0xFF919191)
+    surface = Color(0xFFFFFFFF),
+    onSurface = Color(0xFF000000)
 )
 
 @Suppress("MagicNumber")
@@ -115,9 +116,11 @@ private val darkPallet = FlipperPallet(
     notificationCard = Color(0xFFE9E9E9),
 
     batteryBackground = Color(0xFF8D8E92),
-
     placeholder = Color(0xFFDFDFDF),
-    switchUncheckedTrack = Color(0xFF919191)
+    switchUncheckedTrack = Color(0xFF919191),
+
+    surface = Color(0xFFFFFFFF),
+    onSurface = Color(0xFF000000)
 )
 
 private val typography = FlipperTypography(

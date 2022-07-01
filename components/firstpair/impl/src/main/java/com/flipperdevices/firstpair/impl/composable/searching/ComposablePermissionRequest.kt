@@ -37,7 +37,6 @@ fun ComposablePermissionRequest(modifier: Modifier, state: SearchingContent.Perm
                 bottom = 12.dp
             ),
             text = stringResource(state.title),
-            color = LocalPallet.current.text100,
             style = LocalTypography.current.buttonM16,
             textAlign = TextAlign.Center
         )

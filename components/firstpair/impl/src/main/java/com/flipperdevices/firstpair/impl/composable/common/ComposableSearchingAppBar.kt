@@ -18,7 +18,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.res.R as DesignSystem
-import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.firstpair.impl.R
 
@@ -53,7 +52,6 @@ fun ComposableSearchingAppBar(
                 .padding(end = (ICON_SIZE + ICON_HORIZONTAL_PADDING_DP * 2).dp),
             text = title,
             style = LocalTypography.current.titleB22,
-            color = LocalPallet.current.text100,
             textAlign = TextAlign.Center
         )
     }

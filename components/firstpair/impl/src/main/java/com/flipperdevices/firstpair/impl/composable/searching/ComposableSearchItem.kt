@@ -86,7 +86,6 @@ fun ComposableSearchItem(
                     .padding(horizontal = 16.dp),
                 text = text,
                 textAlign = TextAlign.Start,
-                color = LocalPallet.current.text100,
                 style = LocalTypography.current.buttonM16
             )
 

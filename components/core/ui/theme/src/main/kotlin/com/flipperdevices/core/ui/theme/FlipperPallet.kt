@@ -71,7 +71,10 @@ data class FlipperPallet(
     val redForgot: Color = Color(0xFFF63F3F),
     val onButton100: Color,
     val placeholder: Color,
-    val switchUncheckedTrack: Color
+    val switchUncheckedTrack: Color,
+
+    val surface: Color,
+    val onSurface: Color
 ) {
 
     @Composable
@@ -81,12 +84,12 @@ data class FlipperPallet(
         secondary = Color.Black,
         secondaryVariant = accent,
         background = Color.Black,
-        surface = onButton100,
+        surface = surface,
         error = Color.Black,
         onPrimary = Color.Black,
         onSecondary = Color.Black,
         onBackground = Color.Black,
-        onSurface = text40,
+        onSurface = onSurface,
         onError = Color.Black,
         isLight = isLight
     )

@@ -34,7 +34,6 @@ fun ComposableUpdaterReboot(modifier: Modifier) {
                 modifier = Modifier.padding(top = 6.dp, bottom = 6.dp),
                 text = title,
                 style = LocalTypography.current.bodyM14,
-                color = LocalPallet.current.text100,
                 textAlign = TextAlign.Center
             )
             Text(

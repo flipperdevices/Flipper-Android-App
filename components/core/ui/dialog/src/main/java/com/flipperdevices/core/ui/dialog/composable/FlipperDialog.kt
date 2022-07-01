@@ -67,7 +67,6 @@ fun FlipperDialog(
     titleComposable: (@Composable () -> Unit)? = titleId?.letCompose { titleIdNotNullable ->
         Text(
             text = stringResource(titleIdNotNullable),
-            color = LocalPallet.current.text100,
             style = LocalTypography.current.bodyM14,
             textAlign = TextAlign.Center
         )

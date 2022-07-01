@@ -58,8 +58,7 @@ private fun ComposableSearchingProgress() {
             end = 8.dp, top = 8.dp, bottom = 8.dp, start = 18.dp
         ),
         text = stringResource(R.string.firstpair_search_title_status_text),
-        style = LocalTypography.current.titleM18,
-        color = LocalPallet.current.text100
+        style = LocalTypography.current.titleM18
     )
     CircularProgressIndicator(
         modifier = Modifier.size(size = 20.dp),

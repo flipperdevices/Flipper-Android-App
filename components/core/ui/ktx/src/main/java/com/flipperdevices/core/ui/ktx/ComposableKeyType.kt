@@ -22,7 +22,6 @@ import com.flipperdevices.bridge.dao.api.R
 import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperFileType.Companion.colorByFlipperFileType
 import com.flipperdevices.core.ui.res.R as DesignSystem
-import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
@@ -59,7 +58,6 @@ fun ComposableKeyType(
         Text(
             modifier = Modifier.padding(end = 14.dp),
             text = title,
-            color = LocalPallet.current.text100,
             style = LocalTypography.current.bodyM14
         )
     }

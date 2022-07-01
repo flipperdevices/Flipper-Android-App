@@ -18,9 +18,7 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 @Composable
 fun ComposableHelpItem(index: Int, data: HelpOptions) {
     Row {
-        val titleStyle = LocalTypography.current.bodyR16.copy(
-            color = LocalPallet.current.text100
-        )
+        val titleStyle = LocalTypography.current.bodyR16
 
         Text(
             modifier = Modifier.padding(end = 2.dp),

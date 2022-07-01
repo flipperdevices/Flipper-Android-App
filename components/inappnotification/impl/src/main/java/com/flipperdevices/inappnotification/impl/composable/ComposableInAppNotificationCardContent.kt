@@ -15,7 +15,6 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.flipperdevices.core.ui.res.R as DesignSystem
-import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.inappnotification.api.model.InAppNotification
 
@@ -26,12 +25,10 @@ internal fun ComposableInAppNotificationCardContent(notification: InAppNotificat
         Column(modifier = Modifier.padding(top = 9.dp, bottom = 9.dp, end = 12.dp)) {
             Text(
                 text = notification.title,
-                style = LocalTypography.current.subtitleB12,
-                color = LocalPallet.current.text100
+                style = LocalTypography.current.subtitleB12
             )
             Text(
                 text = stringResource(notification.descriptionId),
-                color = LocalPallet.current.text100,
                 style = LocalTypography.current.subtitleR12
             )
         }

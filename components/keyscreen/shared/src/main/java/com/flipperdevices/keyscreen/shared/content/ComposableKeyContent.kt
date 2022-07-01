@@ -2,7 +2,6 @@ package com.flipperdevices.keyscreen.shared.content
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -24,14 +23,13 @@ private fun ComposableKeyItem(name: String, value: String) {
         )
         Text(
             text = value,
-            color = LocalPallet.current.text100,
             style = LocalTypography.current.bodyR16
         )
     }
 }
 
 @Composable
-internal fun ColumnScope.ComposableKeyContent(lines: List<Pair<String, String?>>) {
+internal fun ComposableKeyContent(lines: List<Pair<String, String?>>) {
     lines.filter { it.second != null }.map { it.first to it.second!! }.forEach {
         ComposableKeyItem(it.first, it.second)
     }

@@ -7,7 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
@@ -21,7 +20,6 @@ fun Category(
             top = 48.dp
         ),
         text = stringResource(titleId),
-        style = LocalTypography.current.buttonB14,
-        color = LocalPallet.current.text100
+        style = LocalTypography.current.buttonB14
     )
 }

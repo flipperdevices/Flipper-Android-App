@@ -47,8 +47,7 @@ fun ComposableCategoryItem(
                 .weight(weight = 1f)
                 .padding(vertical = 14.dp),
             text = categoryItem.title,
-            style = LocalTypography.current.bodyM14,
-            color = LocalPallet.current.text100
+            style = LocalTypography.current.bodyM14
         )
         ComposableCategoryCounter(categoryItem.count)
         Box(
@@ -75,8 +74,7 @@ private fun ComposableCategoryIcon(
                 .padding(end = 8.dp)
                 .size(24.dp),
             painter = painterResource(iconId),
-            contentDescription = description,
-            tint = LocalPallet.current.iconTint100
+            contentDescription = description
         )
     }
 }

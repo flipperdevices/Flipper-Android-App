@@ -31,9 +31,7 @@ fun SimpleElement(
     @StringRes titleId: Int? = null,
     @StringRes descriptionId: Int? = null,
     onClick: (() -> Unit)? = null,
-    titleTextStyle: TextStyle = LocalTypography.current.bodyR14.copy(
-        color = LocalPallet.current.text100
-    )
+    titleTextStyle: TextStyle = LocalTypography.current.bodyR14
 ) {
     val title: String? = titleId?.let { stringResource(id = it) }
     val description = descriptionId?.let { stringResource(id = it) }

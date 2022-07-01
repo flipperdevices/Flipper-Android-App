@@ -32,9 +32,7 @@ internal fun ComposableSearchTextField(
         text,
         label = { SearchTextLabel() },
         onTextChange,
-        LocalTypography.current.bodyR16.copy(
-            color = LocalPallet.current.text100
-        )
+        LocalTypography.current.bodyR16
     )
 }
 

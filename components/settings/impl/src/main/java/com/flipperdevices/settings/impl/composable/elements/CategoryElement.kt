@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
@@ -31,9 +30,7 @@ fun CategoryElement(
             Modifier.weight(weight = 1f),
             titleId,
             descriptionId,
-            titleTextStyle = LocalTypography.current.buttonB16.copy(
-                color = LocalPallet.current.text100
-            )
+            titleTextStyle = LocalTypography.current.buttonB16
         )
         Switch(state = state, onSwitchState = onSwitchState)
     }

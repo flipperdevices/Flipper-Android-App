@@ -42,9 +42,7 @@ fun FlipperTextField(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
-    val textBoxStyle = LocalTypography.current.bodyR16.copy(
-        color = LocalPallet.current.text100
-    )
+    val textBoxStyle = LocalTypography.current.bodyR16
 
     Column(modifier) {
         if (title != null) {

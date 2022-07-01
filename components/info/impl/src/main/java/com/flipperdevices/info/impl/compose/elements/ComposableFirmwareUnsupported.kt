@@ -59,7 +59,6 @@ private fun ComposableFirmwareUpdateUnsupported() {
         Text(
             text = stringResource(R.string.info_firmware_update_unsupported_title),
             style = LocalTypography.current.bodyM14,
-            color = LocalPallet.current.text100,
             textAlign = TextAlign.Center
         )
 
