@@ -23,7 +23,7 @@ fun FlipperTheme(
     isLight: Boolean,
     content: @Composable () -> Unit
 ) {
-    val pallet = if (isLight) darkPallet else lightPallet
+    val pallet = if (isLight) lightPallet else darkPallet
 
     MaterialTheme(
         shapes = Shapes(
