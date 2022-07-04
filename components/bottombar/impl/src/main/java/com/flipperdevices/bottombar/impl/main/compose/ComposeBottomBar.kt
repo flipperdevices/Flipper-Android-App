@@ -54,7 +54,7 @@ fun ComposeBottomBar(
         mutableStateOf(0)
     }
     Box(
-        modifier = Modifier.background(Color.White)
+        modifier = Modifier.background(LocalPallet.current.surface)
     ) {
         if (tabPositions.size > selectedIndex) {
             val currentTabPosition = tabPositions[selectedIndex]
