@@ -1,6 +1,6 @@
 # Changelog
 
-# 1.1.5 - In progress
+# 1.1.6 - In progress
 
 - [Feature] Compose Theme(module `core:ui:theme`, module `archive`)
 - [BUGFIX] Lock portrait orientation
@@ -8,7 +8,7 @@
 - [BUGFIX] Static URL on dynamic link docs
 - [BUGFIX] Fix unsupported version comparison
 
-# 1.1.4 - HotFix
+# 1.1.5 - HotFix
 
 - [HOTFIX] Move "Fix unsupported version comparison" to 1.1.4 release
 
