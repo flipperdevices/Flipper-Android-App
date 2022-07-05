@@ -1,6 +1,6 @@
 # Changelog
 
-# 1.1.4 - HotFix
+# 1.1.5 - HotFix
 
 - [HOTFIX] Move "Fix unsupported version comparison" to 1.1.4 release
 
