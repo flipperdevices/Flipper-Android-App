@@ -6,6 +6,11 @@
 - [BUGFIX] Lock portrait orientation
 - [BUGFIX] Update card not shown when flipper not connected
 - [BUGFIX] Static URL on dynamic link docs
+- [BUGFIX] Fix unsupported version comparison
+
+# 1.1.4 - HotFix
+
+- [HOTFIX] Move "Fix unsupported version comparison" to 1.1.4 release
 
 # 1.1.4
 
