@@ -1,6 +1,11 @@
 # Changelog
 
+# 1.1.4 - HotFix
+
+- [HOTFIX] Move "Fix unsupported version comparison" to 1.1.4 release
+
 # 1.1.4
+
 - [BUGFIX] Crash on bad protobuf package
 - [Feature] Add new server for metrics
 
