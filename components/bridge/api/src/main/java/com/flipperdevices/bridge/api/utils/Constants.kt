@@ -7,8 +7,9 @@ import java.util.concurrent.TimeUnit
 object Constants {
     const val DEVICENAME_PREFIX = "Flipper"
     const val KEYS_DEFAULT_STORAGE = "/any/"
-    val API_SUPPORTED_VERSION = FlipperVersionInformation(0, 3)
+    val API_SUPPORTED_VERSION = FlipperVersionInformation(majorVersion = 0, minorVersion = 3)
     const val LAGS_FLIPPER_DETECT_TIMEOUT_MS = 30 * 1000L // 30 seconds
+    const val FLIPPER_AUTODISCONNECT_TIMEOUT_MS = 5 * 60 * 1000L // 5 minutes
 
     object GenericService {
         val SERVICE_UUID: UUID = UUID.fromString("00001800-0000-1000-8000-00805f9b34fb")

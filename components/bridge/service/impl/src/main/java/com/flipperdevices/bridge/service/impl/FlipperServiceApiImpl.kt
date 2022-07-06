@@ -1,5 +1,6 @@
 package com.flipperdevices.bridge.service.impl
 
+import android.app.Application
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.LifecycleOwner
@@ -9,6 +10,7 @@ import com.flipperdevices.bridge.api.manager.FlipperBleManager
 import com.flipperdevices.bridge.impl.manager.FlipperBleManagerImpl
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.impl.delegate.FlipperActionNotifierImpl
+import com.flipperdevices.bridge.service.impl.delegate.FlipperAutoDisconnect
 import com.flipperdevices.bridge.service.impl.delegate.FlipperLagsDetectorImpl
 import com.flipperdevices.bridge.service.impl.delegate.FlipperSafeConnectWrapper
 import com.flipperdevices.bridge.service.impl.di.FlipperServiceComponent
@@ -47,6 +49,9 @@ class FlipperServiceApiImpl constructor(
     @Inject
     lateinit var sentryApi: Shake2ReportApi
 
+    @Inject
+    lateinit var application: Application
+
     init {
         ComponentHolder.component<FlipperServiceComponent>().inject(this)
     }
@@ -54,6 +59,9 @@ class FlipperServiceApiImpl constructor(
     private val scope = lifecycleOwner.lifecycleScope + Dispatchers.Default
     private val connectionStateProvider = WeakConnectionStateProvider(scope)
     private val flipperActionNotifier = FlipperActionNotifierImpl(scope)
+    private val flipperAutoDisconnect = FlipperAutoDisconnect(
+        scope, flipperActionNotifier, this, application
+    )
     private val lagsDetector = FlipperLagsDetectorImpl(
         scope = scope,
         serviceApi = this,
@@ -86,6 +94,7 @@ class FlipperServiceApiImpl constructor(
             error { "Service api already inited" }
             return
         }
+        flipperAutoDisconnect.init()
         info { "Internal init and try connect" }
         var deviceId: String? = null
         scope.launch(Dispatchers.Default) {
