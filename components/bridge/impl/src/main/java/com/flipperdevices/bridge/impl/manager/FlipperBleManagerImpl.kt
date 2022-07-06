@@ -9,7 +9,8 @@ import com.flipperdevices.bridge.BuildConfig
 import com.flipperdevices.bridge.api.error.FlipperBleServiceError
 import com.flipperdevices.bridge.api.error.FlipperServiceErrorListener
 import com.flipperdevices.bridge.api.manager.FlipperBleManager
-import com.flipperdevices.bridge.api.manager.FlipperLagsDetector
+import com.flipperdevices.bridge.api.manager.delegates.FlipperActionNotifier
+import com.flipperdevices.bridge.api.manager.delegates.FlipperLagsDetector
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.ktx.stateAsFlow
 import com.flipperdevices.bridge.api.utils.Constants
@@ -37,14 +38,15 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.sync.Mutex
 import no.nordicsemi.android.ble.ConnectionPriorityRequest
 
-@Suppress("BlockingMethodInNonBlockingContext")
+@Suppress("BlockingMethodInNonBlockingContext", "LongParameterList")
 class FlipperBleManagerImpl(
     context: Context,
     private val settingsStore: DataStore<Settings>,
     dataStore: DataStore<PairSettings>,
     private val scope: CoroutineScope,
     private val serviceErrorListener: FlipperServiceErrorListener,
-    private val lagsDetector: FlipperLagsDetector,
+    flipperLagsDetector: FlipperLagsDetector,
+    private val flipperActionNotifier: FlipperActionNotifier,
     sentryApi: Shake2ReportApi,
     metricApi: MetricApi
 ) : UnsafeBleManager(scope, context), FlipperBleManager, LogTagProvider {
@@ -55,7 +57,9 @@ class FlipperBleManagerImpl(
 
     override val informationApi = FlipperInformationApiImpl(scope, metricApi)
     override val flipperVersionApi = FlipperVersionApiImpl(settingsStore)
-    override val flipperRequestApi = FlipperRequestApiImpl(scope, lagsDetector, sentryApi)
+    override val flipperRequestApi = FlipperRequestApiImpl(
+        scope, flipperActionNotifier, flipperLagsDetector, sentryApi
+    )
 
     // RPC services
     override val flipperRpcInformationApi = FlipperRpcInformationApiImpl(
@@ -195,7 +199,7 @@ class FlipperBleManagerImpl(
             // This callback is used to know that the flipper is not hanging.
             @Suppress("DEPRECATION")
             super.onCharacteristicRead(gatt, characteristic)
-            lagsDetector.notifyAboutAction()
+            flipperActionNotifier.notifyAboutAction()
         }
     }
 }
