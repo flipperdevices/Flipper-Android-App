@@ -1,5 +1,6 @@
 package com.flipperdevices.bridge.impl.manager.service.requestservice
 
+import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.manager.service.FlipperRpcInformationApi
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
@@ -14,6 +15,8 @@ import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.verbose
+import com.flipperdevices.core.preference.pb.HardwareColor
+import com.flipperdevices.core.preference.pb.PairSettings
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.complex.FlipperRPCInfoEvent
 import com.flipperdevices.protobuf.Flipper
@@ -38,10 +41,12 @@ import kotlinx.coroutines.withContext
 
 private const val FLIPPER_PATH_INTERNAL_STORAGE = "/int/"
 private const val FLIPPER_PATH_EXTERNAL_STORAGE = "/ext/"
+private const val FLIPPER_KEY_HARDWARE_COLOR = "hardware_color"
 
 class FlipperRpcInformationApiImpl(
     private val scope: CoroutineScope,
-    private val metricApi: MetricApi
+    private val metricApi: MetricApi,
+    private val dataStore: DataStore<PairSettings>
 ) : FlipperRpcInformationApi, LogTagProvider {
     override val TAG = "FlipperRpcInformationApi"
 
@@ -180,10 +185,33 @@ class FlipperRpcInformationApiImpl(
         }
     }
 
-    private fun onApplyInfo(key: String, value: String) {
+    private suspend fun onApplyInfo(
+        key: String,
+        value: String
+    ) = withContext(Dispatchers.Default) {
         verbose { "Receive: $key=$value" }
-        rpcInformationFlow.update {
-            it.copy(otherFields = it.otherFields.plus(key to value))
+
+        if (key == FLIPPER_KEY_HARDWARE_COLOR) {
+            val id = value.toIntOrNull()
+            if (id != null) {
+                dataStore.updateData {
+                    it.toBuilder()
+                        .setHardwareColor(
+                            when (id) {
+                                HardwareColor.WHITE_VALUE -> HardwareColor.WHITE
+                                HardwareColor.BLACK_VALUE -> HardwareColor.BLACK
+                                else -> HardwareColor.WHITE
+                            }
+                        )
+                        .build()
+                }
+            }
+        }
+
+        rpcInformationFlow.update { rpcInformation ->
+            rpcInformation.copy(
+                otherFields = rpcInformation.otherFields.plus(key to value)
+            )
         }
     }
 }

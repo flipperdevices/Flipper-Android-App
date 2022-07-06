@@ -30,7 +30,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 
-class FlipperServiceApiImpl constructor(
+class FlipperServiceApiImpl(
     context: Context,
     lifecycleOwner: LifecycleOwner,
     serviceErrorListener: FlipperServiceErrorListener
@@ -71,6 +71,7 @@ class FlipperServiceApiImpl constructor(
     private val bleManager: FlipperBleManager = FlipperBleManagerImpl(
         context,
         settingsStore,
+        pairSettingsStore,
         scope,
         serviceErrorListener,
         lagsDetector,

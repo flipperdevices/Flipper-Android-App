@@ -1,7 +1,5 @@
 package com.flipperdevices.updater.screen.composable
 
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -13,6 +11,8 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,14 +23,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.flipperdevices.core.preference.pb.HardwareColor
 import com.flipperdevices.core.ui.res.R as DesignSystem
-import com.flipperdevices.info.shared.R as SharedInfoResources
 import com.flipperdevices.updater.screen.R
 import com.flipperdevices.updater.screen.model.FailedReason
 import com.flipperdevices.updater.screen.model.UpdaterScreenState
+import com.flipperdevices.updater.screen.viewmodel.FlipperColorViewModel
 
 @Composable
 fun ComposableUpdaterScreen(
@@ -43,16 +44,8 @@ fun ComposableUpdaterScreen(
             Modifier.weight(weight = 1f),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if (updaterScreenState is UpdaterScreenState.Failed) {
-                UpdaterScreenHeader(
-                    R.string.update_screen_title_failed,
-                    R.drawable.pic_flipper_update_failed,
-                    bottomPadding = 38.dp
-                )
-            } else UpdaterScreenHeader(
-                R.string.update_screen_title,
-                SharedInfoResources.drawable.ic_white_flipper,
-                bottomPadding = 64.dp
+            UpdaterScreenHeader(
+                isFailed = updaterScreenState is UpdaterScreenState.Failed
             )
             ComposableUpdateContent(updaterScreenState, onRetry)
         }
@@ -62,10 +55,13 @@ fun ComposableUpdaterScreen(
 
 @Composable
 private fun UpdaterScreenHeader(
-    @StringRes titleId: Int,
-    @DrawableRes imageId: Int,
-    bottomPadding: Dp
+    isFailed: Boolean,
+    flipperColorViewModel: FlipperColorViewModel = viewModel()
 ) {
+    val titleId = if (isFailed) {
+        R.string.update_screen_title_failed
+    } else R.string.update_screen_title
+    val bottomPadding = if (isFailed) 38.dp else 64.dp
     Text(
         modifier = Modifier.padding(top = 48.dp, start = 14.dp, end = 14.dp),
         text = stringResource(titleId),
@@ -74,6 +70,17 @@ private fun UpdaterScreenHeader(
         color = colorResource(DesignSystem.color.black_100),
         textAlign = TextAlign.Center
     )
+
+    val flipperColor by flipperColorViewModel.getFlipperColor().collectAsState()
+    val imageId = when (flipperColor) {
+        HardwareColor.UNRECOGNIZED,
+        HardwareColor.WHITE -> if (isFailed) {
+            R.drawable.pic_flipper_update_failed
+        } else R.drawable.pic_flipper_update
+        HardwareColor.BLACK -> if (isFailed) {
+            R.drawable.pic_black_flipper_update_failed
+        } else R.drawable.pic_black_flipper_update
+    }
 
     Image(
         modifier = Modifier
