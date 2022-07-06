@@ -8,6 +8,7 @@ import com.flipperdevices.bridge.api.error.FlipperServiceErrorListener
 import com.flipperdevices.bridge.api.manager.FlipperBleManager
 import com.flipperdevices.bridge.impl.manager.FlipperBleManagerImpl
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
+import com.flipperdevices.bridge.service.impl.delegate.FlipperActionNotifierImpl
 import com.flipperdevices.bridge.service.impl.delegate.FlipperLagsDetectorImpl
 import com.flipperdevices.bridge.service.impl.delegate.FlipperSafeConnectWrapper
 import com.flipperdevices.bridge.service.impl.di.FlipperServiceComponent
@@ -52,9 +53,22 @@ class FlipperServiceApiImpl constructor(
 
     private val scope = lifecycleOwner.lifecycleScope + Dispatchers.Default
     private val connectionStateProvider = WeakConnectionStateProvider(scope)
-    private val lagsDetector = FlipperLagsDetectorImpl(scope, this, connectionStateProvider)
+    private val flipperActionNotifier = FlipperActionNotifierImpl(scope)
+    private val lagsDetector = FlipperLagsDetectorImpl(
+        scope = scope,
+        serviceApi = this,
+        connectionStateProvider = connectionStateProvider,
+        flipperActionNotifier = flipperActionNotifier
+    )
     private val bleManager: FlipperBleManager = FlipperBleManagerImpl(
-        context, settingsStore, scope, serviceErrorListener, lagsDetector, sentryApi, metricApi
+        context,
+        settingsStore,
+        scope,
+        serviceErrorListener,
+        lagsDetector,
+        flipperActionNotifier,
+        sentryApi,
+        metricApi
     ).apply {
         connectionStateProvider.initialize(this.connectionInformationApi)
     }

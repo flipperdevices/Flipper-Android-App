@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.service.impl.delegate
 
-import com.flipperdevices.bridge.api.manager.FlipperLagsDetector
+import com.flipperdevices.bridge.api.manager.delegates.FlipperActionNotifier
+import com.flipperdevices.bridge.api.manager.delegates.FlipperLagsDetector
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.model.FlipperRequest
 import com.flipperdevices.bridge.api.utils.Constants
@@ -17,7 +18,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onCompletion
@@ -26,20 +26,20 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class FlipperLagsDetectorImpl(
-    private val scope: CoroutineScope,
+    scope: CoroutineScope,
     private val serviceApi: FlipperServiceApi,
-    private val connectionStateProvider: WeakConnectionStateProvider
+    private val connectionStateProvider: WeakConnectionStateProvider,
+    private val flipperActionNotifier: FlipperActionNotifier
 ) : FlipperLagsDetector, LogTagProvider {
     override val TAG = "FlipperLagsDetector"
 
     private val pendingCommands = ConcurrentHashMap<FlipperRequest, Unit>()
     private val pendingResponseCounter = AtomicInteger(0)
-    private val pendingResponseFlow = MutableSharedFlow<Unit>()
 
     init {
         scope.launch(Dispatchers.Default) {
             combine(
-                pendingResponseFlow,
+                flipperActionNotifier.getActionFlow(),
                 connectionStateProvider.getConnectionFlow()
             ) { _, connectionState ->
                 connectionState
@@ -91,7 +91,7 @@ class FlipperLagsDetectorImpl(
             }
             incrementPendingCounter(request?.javaClass?.simpleName ?: "")
         }.onEach {
-            notifyAboutAction()
+            flipperActionNotifier.notifyAboutAction()
         }.onCompletion {
             if (BuildConfig.INTERNAL && request != null) {
                 pendingCommands.remove(request)
@@ -106,14 +106,7 @@ class FlipperLagsDetectorImpl(
         verbose { "Increase pending response command $tag, current size is ${pendingCount + 1}" }
         if (pendingCount == 0) {
             info { "Pending response count is zero, so we launch pending flow" }
-            pendingResponseFlow.emit(Unit)
-        }
-    }
-
-    override fun notifyAboutAction() {
-        verbose { "Receive that flipper active" }
-        scope.launch(Dispatchers.Default) {
-            pendingResponseFlow.emit(Unit)
+            flipperActionNotifier.notifyAboutAction()
         }
     }
 }
