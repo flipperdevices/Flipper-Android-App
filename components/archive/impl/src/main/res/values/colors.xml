@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="tab_inactive_color">#949494</color>
-    <color name="tab_active_color">#006EDB</color>
-
-    <color name="archive_description_keytype">#999999</color>
-</resources>

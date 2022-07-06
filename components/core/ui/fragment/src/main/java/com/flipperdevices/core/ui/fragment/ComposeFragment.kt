@@ -6,13 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import com.flipperdevices.core.ktx.android.setStatusBarColor
+import com.flipperdevices.core.navigation.requireRouter
 import com.flipperdevices.core.ui.fragment.provider.StatusBarColorProvider
-import com.flipperdevices.core.ui.fragment.theme.FlipperTheme
+import com.flipperdevices.core.ui.ktx.LocalRouter
+import com.flipperdevices.core.ui.theme.FlipperTheme
 
 /**
  * Fragment with jetpack compose support
@@ -25,11 +28,11 @@ abstract class ComposeFragment : Fragment(), StatusBarColorProvider {
     ): View? {
         return ComposeView(requireContext()).apply {
             setContent {
-                FlipperTheme(
-                    isLight = true
-                ) {
-                    SubComposeWrapper(modifier = Modifier.fillMaxSize()) {
-                        RenderView()
+                FlipperTheme(isLight = true) {
+                    CompositionLocalProvider(LocalRouter provides requireRouter()) {
+                        SubComposeWrapper(modifier = Modifier.fillMaxSize()) {
+                            RenderView()
+                        }
                     }
                 }
             }

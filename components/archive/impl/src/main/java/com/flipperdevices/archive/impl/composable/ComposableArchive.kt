@@ -21,12 +21,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.archive.impl.R
 import com.flipperdevices.archive.impl.composable.category.ComposableCategoryCard
@@ -40,6 +37,8 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
@@ -52,7 +51,7 @@ fun ComposableArchive(
     val favoriteKeys by tabViewModel.getFavoriteKeys().collectAsState()
     val synchronizationState by tabViewModel.getSynchronizationState().collectAsState()
     val localSynchronizationState = synchronizationState
-    val isKeysPresented = !favoriteKeys.isNullOrEmpty() || !keys.isNullOrEmpty()
+    val isKeysPresented = !favoriteKeys.isEmpty() || !keys.isNullOrEmpty()
 
     if (localSynchronizationState is SynchronizationState.InProgress) {
         ArchiveProgressScreen(localSynchronizationState)
@@ -78,7 +77,7 @@ private fun ComposableArchiveReady(
     Column(verticalArrangement = Arrangement.Top) {
         ComposableAppBar(
             title = stringResource(R.string.archive_title),
-            iconId = R.drawable.ic_search,
+            iconId = DesignSystem.drawable.ic_search,
             onIconClick = { tabViewModel.onOpenSearch() }
         )
         SwipeRefresh(
@@ -118,7 +117,7 @@ private fun LazyListScope.KeyCatalog(
     synchronizationUiApi: SynchronizationUiApi,
     synchronizationState: SynchronizationState
 ) {
-    if (!favoriteKeys.isNullOrEmpty()) {
+    if (favoriteKeys.isNotEmpty()) {
         item {
             ComposableFavoriteKeysTitle()
         }
@@ -151,9 +150,8 @@ private fun ColumnScope.ComposableNoKeys() {
     ) {
         Text(
             text = stringResource(R.string.archive_content_empty),
-            fontWeight = FontWeight.W400,
-            fontSize = 16.sp,
-            color = colorResource(DesignSystem.color.black_40)
+            style = LocalTypography.current.bodyR16,
+            color = LocalPallet.current.text40
         )
     }
 }
@@ -177,15 +175,15 @@ private fun ColumnScope.ComposableProgress() {
         )
         Icon(
             modifier = Modifier.rotate(angle),
-            painter = painterResource(R.drawable.ic_progress),
-            tint = colorResource(DesignSystem.color.accent_secondary),
+            painter = painterResource(DesignSystem.drawable.ic_progress),
+            tint = LocalPallet.current.accentSecond,
             contentDescription = stringResource(R.string.archive_sync_progress)
         )
         Text(
             modifier = Modifier.padding(top = 8.dp),
             text = stringResource(R.string.archive_sync_progress),
-            fontSize = 16.sp,
-            color = colorResource(DesignSystem.color.black_40)
+            style = LocalTypography.current.bodyR16,
+            color = LocalPallet.current.text40
         )
     }
 }

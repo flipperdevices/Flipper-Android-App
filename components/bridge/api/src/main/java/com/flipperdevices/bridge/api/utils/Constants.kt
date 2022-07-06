@@ -1,12 +1,13 @@
 package com.flipperdevices.bridge.api.utils
 
+import com.flipperdevices.bridge.api.model.FlipperVersionInformation
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 
 object Constants {
     const val DEVICENAME_PREFIX = "Flipper"
     const val KEYS_DEFAULT_STORAGE = "/any/"
-    const val API_SUPPORTED_VERSION = 0.3f
+    val API_SUPPORTED_VERSION = FlipperVersionInformation(0, 3)
     const val LAGS_FLIPPER_DETECT_TIMEOUT_MS = 30 * 1000L // 30 seconds
 
     object GenericService {

@@ -1,15 +1,16 @@
 package com.flipperdevices.bridge.dao.api.model
 
-import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
-import com.flipperdevices.bridge.dao.api.R
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import com.flipperdevices.core.ui.res.R
+import com.flipperdevices.core.ui.theme.LocalPallet
 
 enum class FlipperFileType(
     val humanReadableName: String,
     val extension: String,
     val flipperDir: String,
     @DrawableRes val icon: Int,
-    @ColorRes val color: Int,
     val flipperAppName: String?
 ) {
     SUB_GHZ(
@@ -17,7 +18,6 @@ enum class FlipperFileType(
         extension = "sub",
         flipperDir = "subghz",
         icon = R.drawable.ic_fileformat_sub,
-        color = R.color.fileformat_color_sub,
         flipperAppName = "Sub-GHz"
     ),
     RFID(
@@ -25,7 +25,6 @@ enum class FlipperFileType(
         extension = "rfid",
         flipperDir = "lfrfid",
         icon = R.drawable.ic_fileformat_rf,
-        color = R.color.fileformat_color_rf,
         flipperAppName = "125 kHz RFID"
     ),
     NFC(
@@ -33,7 +32,6 @@ enum class FlipperFileType(
         extension = "nfc",
         flipperDir = "nfc",
         icon = R.drawable.ic_fileformat_nfc,
-        color = R.color.fileformat_color_nfc,
         flipperAppName = "NFC"
     ),
     INFRARED(
@@ -41,7 +39,6 @@ enum class FlipperFileType(
         extension = "ir",
         flipperDir = "infrared",
         icon = R.drawable.ic_fileformat_ir,
-        color = R.color.fileformat_color_ir,
         flipperAppName = "Infrared"
     ),
     I_BUTTON(
@@ -49,7 +46,6 @@ enum class FlipperFileType(
         extension = "ibtn",
         flipperDir = "ibutton",
         icon = R.drawable.ic_fileformat_ibutton,
-        color = R.color.fileformat_color_ibutton,
         flipperAppName = "iButton"
     );
 
@@ -60,6 +56,18 @@ enum class FlipperFileType(
 
         fun getByExtension(extension: String): FlipperFileType? {
             return extensionToFormat[extension]
+        }
+
+        @Composable
+        fun colorByFlipperFileType(type: FlipperFileType?): Color {
+            return when (type) {
+                SUB_GHZ -> LocalPallet.current.keySubGHz
+                RFID -> LocalPallet.current.keyRFID
+                NFC -> LocalPallet.current.keyNFC
+                INFRARED -> LocalPallet.current.keyInfrarred
+                I_BUTTON -> LocalPallet.current.keyIButton
+                else -> LocalPallet.current.keyUnknown
+            }
         }
     }
 }

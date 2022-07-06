@@ -14,11 +14,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.archive.category.R
 import com.flipperdevices.archive.category.model.CategoryState
@@ -27,12 +24,14 @@ import com.flipperdevices.archive.category.viewmodels.CategoryViewModelFactory
 import com.flipperdevices.archive.model.CategoryType
 import com.flipperdevices.archive.shared.composable.ComposableAppBar
 import com.flipperdevices.archive.shared.composable.ComposableKeyCard
+import com.flipperdevices.bridge.dao.api.model.FlipperFileType.Companion.colorByFlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.ui.ktx.LocalRouter
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
 fun ComposableCategory(
@@ -103,9 +102,9 @@ private fun CategoryList(
                     )
                 } else null,
                 flipperKeyParsed,
-                typeColorId = when (categoryType) {
-                    is CategoryType.ByFileType -> categoryType.fileType.color
-                    CategoryType.Deleted -> DesignSystem.color.black_4
+                typeColor = when (categoryType) {
+                    is CategoryType.ByFileType -> colorByFlipperFileType(categoryType.fileType)
+                    CategoryType.Deleted -> LocalPallet.current.deletedCategoryType
                 }
             ) {
                 categoryViewModel.openKeyScreen(router, flipperKey.path)
@@ -126,9 +125,8 @@ private fun CategoryEmpty(modifier: Modifier) {
     Box(modifier, contentAlignment = Alignment.Center) {
         Text(
             text = stringResource(R.string.category_empty),
-            color = colorResource(DesignSystem.color.black_40),
-            fontSize = 16.sp,
-            fontWeight = FontWeight.W400
+            color = LocalPallet.current.text40,
+            style = LocalTypography.current.bodyR16
         )
     }
 }

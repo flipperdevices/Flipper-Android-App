@@ -40,6 +40,7 @@ include(
     ":components:core:ui:dialog",
     ":components:core:ui:lifecycle",
     ":components:core:ui:fragment",
+    ":components:core:ui:theme",
     ":components:core:test",
     ":components:core:markdown",
     ":components:core:activityholder",

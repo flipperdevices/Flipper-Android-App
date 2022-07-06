@@ -16,6 +16,7 @@ dependencies {
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.fragment)
+    implementation(projects.components.core.ui.theme)
 
     implementation(libs.cicerone)
     implementation(libs.appcompat)

@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.material.ripple.rememberRipple
@@ -14,15 +13,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.archive.impl.viewmodel.KeyItemViewModel
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.ui.ktx.ComposableKeyType
 import com.flipperdevices.core.ui.ktx.LocalRouter
+import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
 fun ComposableKeySmall(
@@ -39,8 +37,7 @@ fun ComposableKeySmall(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(),
                 onClick = { keyItemViewModel.open(keyPath, router) }
-            ),
-        shape = RoundedCornerShape(size = 10.dp)
+            )
     ) {
         Column {
             Row {
@@ -60,8 +57,7 @@ fun ComposableKeySmall(
                     vertical = 12.dp
                 ),
                 text = keyPath.nameWithoutExtension,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.W400,
+                style = LocalTypography.current.bodyR14,
                 overflow = TextOverflow.Ellipsis
             )
         }

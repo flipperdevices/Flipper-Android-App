@@ -1,4 +1,4 @@
-package com.flipperdevices.core.ui.fragment.theme
+package com.flipperdevices.core.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
@@ -11,15 +11,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.fragment.app.Fragment
-import com.flipperdevices.core.navigation.requireRouter
-import com.flipperdevices.core.ui.ktx.LocalRouter
 
 val LocalPallet = compositionLocalOf<FlipperPallet> { error("No local pallet") }
 val LocalTypography = compositionLocalOf<FlipperTypography> { error("No local typography") }
 
 @Composable
-fun Fragment.FlipperTheme(
+fun FlipperTheme(
     isLight: Boolean,
     content: @Composable () -> Unit
 ) {
@@ -34,7 +31,6 @@ fun Fragment.FlipperTheme(
         CompositionLocalProvider(
             LocalPallet provides pallet,
             LocalTypography provides typography,
-            LocalRouter provides requireRouter(),
             content = content
         )
     }
@@ -54,7 +50,13 @@ private val lightPallet = FlipperPallet(
     text12 = Color(0xFFD6D6D6),
     text8 = Color(0xFFDFDFDF),
     text4 = Color(0xFFE9E9E9),
-    surface = Color(0xFFFFFFFF)
+    surface = Color(0xFFFFFFFF),
+
+    iconTint100 = Color(0xFF000000),
+    iconTint30 = Color(0xFFAAAAAA),
+    deletedCategoryType = Color(0xFFE9E9E9),
+    keyDeleted = Color(0xFFE9E9E9),
+    progressBarCard = Color(0xFFAAAAAA)
 )
 
 @Suppress("MagicNumber")
@@ -71,7 +73,13 @@ private val darkPallet = FlipperPallet(
     text12 = Color(0xFFD6D6D6),
     text8 = Color(0xFFDFDFDF),
     text4 = Color(0xFFE9E9E9),
-    surface = Color(0xFFFFFFFF)
+    surface = Color(0xFFFFFFFF),
+
+    iconTint100 = Color(0xFF000000),
+    iconTint30 = Color(0xFFAAAAAA),
+    deletedCategoryType = Color(0xFFE9E9E9),
+    keyDeleted = Color(0xFFE9E9E9),
+    progressBarCard = Color(0xFFAAAAAA)
 )
 
 private val typography = FlipperTypography(
@@ -89,6 +97,11 @@ private val typography = FlipperTypography(
         fontSize = 12.sp,
         fontFamily = fontFamily,
         fontWeight = FontWeight.W500
+    ),
+    subtitleR12 = TextStyle(
+        fontSize = 12.sp,
+        fontFamily = fontFamily,
+        fontWeight = FontWeight.W400
     ),
     subtitleB10 = TextStyle(
         fontSize = 10.sp,

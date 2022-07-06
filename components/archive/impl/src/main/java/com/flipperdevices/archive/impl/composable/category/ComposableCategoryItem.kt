@@ -15,15 +15,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.flipperdevices.archive.impl.model.CategoryItem
 import com.flipperdevices.archive.impl.viewmodel.CategoryViewModel
 import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
 fun ComposableCategoryItem(
@@ -48,9 +47,8 @@ fun ComposableCategoryItem(
                 .weight(weight = 1f)
                 .padding(vertical = 14.dp),
             text = categoryItem.title,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.W500,
-            color = colorResource(DesignSystem.color.black_100)
+            style = LocalTypography.current.bodyM14,
+            color = LocalPallet.current.text100
         )
         ComposableCategoryCounter(categoryItem.count)
         Box(
@@ -60,7 +58,7 @@ fun ComposableCategoryItem(
             Icon(
                 painter = painterResource(DesignSystem.drawable.ic_forward),
                 contentDescription = null,
-                tint = colorResource(DesignSystem.color.black_30)
+                tint = LocalPallet.current.iconTint30
             )
         }
     }
@@ -77,7 +75,8 @@ private fun ComposableCategoryIcon(
                 .padding(end = 8.dp)
                 .size(24.dp),
             painter = painterResource(iconId),
-            contentDescription = description
+            contentDescription = description,
+            tint = LocalPallet.current.iconTint100
         )
     }
 }
@@ -87,7 +86,7 @@ private fun ComposableCategoryCounter(counter: Int?) {
     if (counter == null) {
         CircularProgressIndicator(
             modifier = Modifier.size(size = 18.dp),
-            color = colorResource(DesignSystem.color.black_30)
+            color = LocalPallet.current.progressBarCard
         )
         return
     }
@@ -96,9 +95,8 @@ private fun ComposableCategoryCounter(counter: Int?) {
         Text(
             modifier = Modifier.padding(horizontal = 2.dp),
             text = counter.toString(),
-            fontSize = 14.sp,
-            fontWeight = FontWeight.W500,
-            color = colorResource(DesignSystem.color.black_30)
+            style = LocalTypography.current.bodyM14,
+            color = LocalPallet.current.text30
         )
     }
 }

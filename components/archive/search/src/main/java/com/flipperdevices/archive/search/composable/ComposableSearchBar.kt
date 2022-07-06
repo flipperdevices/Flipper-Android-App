@@ -19,10 +19,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.archive.search.R
 import com.flipperdevices.archive.search.viewmodel.SearchViewModel
 import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
 
 @Composable
 fun ComposableSearchBar(searchViewModel: SearchViewModel) {
@@ -53,7 +53,7 @@ fun ComposableSearchBar(searchViewModel: SearchViewModel) {
                     indication = rememberRipple(bounded = false),
                     onClick = { text = "" }
                 ),
-            painter = painterResource(R.drawable.ic_clear),
+            painter = painterResource(DesignSystem.drawable.ic_clear),
             contentDescription = null
         )
     }
@@ -70,8 +70,8 @@ fun ComposableSearchBarBack(onBack: () -> Unit) {
                 indication = rememberRipple(bounded = false),
                 onClick = onBack
             ),
-        painter = painterResource(R.drawable.ic_back_arrow),
+        painter = painterResource(DesignSystem.drawable.ic_back_arrow),
         contentDescription = null,
-        tint = colorResource(DesignSystem.color.black_100)
+        tint = LocalPallet.current.iconTint100
     )
 }
