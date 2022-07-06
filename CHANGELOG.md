@@ -3,6 +3,7 @@
 # 1.1.6 - In progress
 
 - [Feature] Compose Theme(module `core:ui:theme`, module `archive`)
+- [Feature] Auto disconnect after 5 minutes inactivity
 - [BUGFIX] Lock portrait orientation
 - [BUGFIX] Update card not shown when flipper not connected
 - [BUGFIX] Static URL on dynamic link docs
