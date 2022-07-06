@@ -51,7 +51,7 @@ fun ComposableUpdaterScreen(
                 )
             } else UpdaterScreenHeader(
                 R.string.update_screen_title,
-                SharedInfoResources.drawable.ic_white_flipper,
+                SharedInfoResources.drawable.ic_flipper,
                 bottomPadding = 64.dp
             )
             ComposableUpdateContent(updaterScreenState, onRetry)
