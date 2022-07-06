@@ -2,6 +2,7 @@
 
 # 1.1.6 - In progress
 
+- [Feature] Add black flipper support (update and info screen)
 - [Feature] Compose Theme(module `core:ui:theme`, module `archive`)
 - [BUGFIX] Lock portrait orientation
 - [BUGFIX] Update card not shown when flipper not connected
