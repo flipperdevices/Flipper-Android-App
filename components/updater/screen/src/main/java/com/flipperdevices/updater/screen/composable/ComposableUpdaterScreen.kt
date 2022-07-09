@@ -22,13 +22,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.res.R as DesignSystem
-import com.flipperdevices.core.ui.theme.LocalPallet
-import com.flipperdevices.core.ui.theme.LocalTypography
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.preference.pb.HardwareColor
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.updater.screen.R
 import com.flipperdevices.updater.screen.model.FailedReason
 import com.flipperdevices.updater.screen.model.UpdaterScreenState
@@ -45,10 +43,10 @@ fun ComposableUpdaterScreen(
             Modifier.weight(weight = 1f),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-          UpdaterScreenHeader(
-              isFailed = updaterScreenState is UpdaterScreenState.Failed
-          )
-           ComposableUpdateContent(updaterScreenState, onRetry)
+            UpdaterScreenHeader(
+                isFailed = updaterScreenState is UpdaterScreenState.Failed
+            )
+            ComposableUpdateContent(updaterScreenState, onRetry)
         }
         CancelButton(updaterScreenState, onCancel)
     }
@@ -74,11 +72,11 @@ private fun UpdaterScreenHeader(
     val imageId = when (flipperColor) {
         HardwareColor.UNRECOGNIZED,
         HardwareColor.WHITE -> if (isFailed) {
-            R.drawable.pic_flipper_update_failed
-        } else R.drawable.pic_flipper_update
+            DesignSystem.drawable.pic_flipper_update_failed
+        } else DesignSystem.drawable.pic_flipper_update
         HardwareColor.BLACK -> if (isFailed) {
-            R.drawable.pic_black_flipper_update_failed
-        } else R.drawable.pic_black_flipper_update
+            DesignSystem.drawable.pic_black_flipper_update_failed
+        } else DesignSystem.drawable.pic_black_flipper_update
     }
 
     Image(

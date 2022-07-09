@@ -55,7 +55,7 @@ private fun ComposableUpdateFailedContent(
 @Composable
 fun ComposableFailedUploadContent() {
     ComposableUpdateFailedContent(
-        imageId = R.drawable.ic_flipper_upload_failed,
+        imageId = DesignSystem.drawable.ic_flipper_upload_failed,
         titleId = R.string.update_screen_failed_flipper_title,
         descriptionId = R.string.update_screen_failed_flipper_desc
     ) {
