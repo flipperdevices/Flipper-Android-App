@@ -92,7 +92,8 @@ fun ComposableFooter(onApplyPress: () -> Unit) {
             ),
             markdownResId = R.string.firstpair_tos_footer,
             style = LocalTypography.current.bodyR16.copy(
-                color = LocalPallet.current.text30
+                color = LocalPallet.current.text30,
+                textAlign = TextAlign.Center
             )
         )
     }

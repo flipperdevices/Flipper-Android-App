@@ -74,7 +74,7 @@ fun ComposableFavoriteKeysTitle() {
                 .padding(horizontal = 6.dp)
                 .size(size = 20.dp),
             painter = painterResource(DesignSystem.drawable.ic_star_enabled),
-            tint = LocalPallet.current.favorite,
+            tint = LocalPallet.current.keyFavorite,
             contentDescription = null
         )
     }

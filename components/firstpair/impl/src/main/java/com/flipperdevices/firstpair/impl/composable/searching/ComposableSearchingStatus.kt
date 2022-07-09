@@ -63,7 +63,7 @@ private fun ComposableSearchingProgress() {
     CircularProgressIndicator(
         modifier = Modifier.size(size = 20.dp),
         strokeWidth = 2.dp,
-        color = LocalPallet.current.progressBar
+        color = LocalPallet.current.progressBarGray
     )
 }
 

@@ -17,7 +17,7 @@ import com.vladsch.flexmark.parser.Parser
 @Composable
 fun annotatedStringFromMarkdown(markdown: String): AnnotatedString {
     val parser = remember { Parser.builder().build() }
-    val renderer = rememberRenderer(linkColor = LocalPallet.current.background)
+    val renderer = rememberRenderer(linkColor = LocalPallet.current.accentSecond)
     return remember(parser, renderer, markdown) {
         renderer.render(parser.parse(markdown))
     }

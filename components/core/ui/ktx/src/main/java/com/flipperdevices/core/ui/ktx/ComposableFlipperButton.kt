@@ -43,7 +43,7 @@ fun ComposableFlipperButton(
         Text(
             modifier = Modifier.padding(textPadding),
             text = text,
-            color = LocalPallet.current.onButton100,
+            color = LocalPallet.current.onButton,
             style = LocalTypography.current.buttonB16.merge(textStyle)
         )
     }

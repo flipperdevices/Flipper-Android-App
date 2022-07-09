@@ -7,7 +7,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -29,46 +28,12 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
-fun ComposableActionFlipper(
-    modifier: Modifier = Modifier,
-    @DrawableRes iconId: Int,
-    @StringRes descriptionId: Int,
-    descriptionColor: Color = LocalPallet.current.onButton100,
-    tint: Color = LocalPallet.current.onButton100,
-    onClick: () -> Unit
-) {
-    val descriptionText = stringResource(descriptionId)
-
-    Box(
-        modifier = Modifier
-            .clip(shape = RoundedCornerShape(30.dp))
-            .background(LocalPallet.current.accentSecond)
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple(),
-                onClick = onClick
-            )
-            .then(modifier)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 4.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            ComposableActionFlipperContent(iconId, descriptionText, descriptionColor, tint)
-        }
-    }
-}
-
-@Composable
 fun ComposableActionFlipperHorizontal(
     modifier: Modifier = Modifier,
     @DrawableRes iconId: Int,
     @StringRes descriptionId: Int,
-    descriptionColor: Color = LocalPallet.current.onButton100,
-    tint: Color = LocalPallet.current.onButton100,
+    descriptionColor: Color = LocalPallet.current.actionOnFlipperText,
+    tint: Color = LocalPallet.current.actionOnFlipperIcon,
     onClick: (() -> Unit)? = null
 ) {
     val descriptionText = stringResource(descriptionId)
@@ -78,14 +43,14 @@ fun ComposableActionFlipperHorizontal(
 
     if (onClick != null) {
         boxModifier = boxModifier
-            .background(LocalPallet.current.accentSecond)
+            .background(LocalPallet.current.actionOnFlipperEnable)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(),
                 onClick = onClick
             )
     } else {
-        boxModifier = boxModifier.background(LocalPallet.current.text40)
+        boxModifier = boxModifier.background(LocalPallet.current.actionOnFlipperDisable)
     }
 
     Box(

@@ -23,7 +23,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.animatedDots
 import com.flipperdevices.core.ui.ktx.painterResourceByKey
-import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import kotlin.math.roundToInt
 
@@ -56,8 +55,7 @@ fun ComposableInProgressIndicator(
                     .padding(8.dp)
                     .size(28.dp),
                 painter = painterResourceByKey(iconId),
-                contentDescription = null,
-                tint = LocalPallet.current.onButton100
+                contentDescription = null
             )
         }
 
@@ -73,7 +71,6 @@ fun ComposableInProgressIndicator(
                 .fillMaxWidth(),
             text = progressText,
             textAlign = TextAlign.Center,
-            color = LocalPallet.current.onButton100,
             style = LocalTypography.current.updateText40
         )
     }

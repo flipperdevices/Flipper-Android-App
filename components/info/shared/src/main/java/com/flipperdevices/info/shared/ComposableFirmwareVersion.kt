@@ -43,8 +43,8 @@ fun getTextByVersion(version: FirmwareVersion): String {
 @Composable
 fun getColorByChannel(channel: FirmwareChannel): Color {
     return when (channel) {
-        FirmwareChannel.DEV -> LocalPallet.current.redFirmware
-        FirmwareChannel.RELEASE_CANDIDATE -> LocalPallet.current.greenFirmware
-        FirmwareChannel.RELEASE -> LocalPallet.current.purpleFirmware
+        FirmwareChannel.DEV -> LocalPallet.current.channelFirmwareRed
+        FirmwareChannel.RELEASE_CANDIDATE -> LocalPallet.current.channelFirmwareGreen
+        FirmwareChannel.RELEASE -> LocalPallet.current.channelFirmwarePurple
     }
 }

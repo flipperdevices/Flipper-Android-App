@@ -22,6 +22,7 @@ import com.flipperdevices.bridge.dao.api.R
 import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperFileType.Companion.colorByFlipperFileType
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
@@ -52,13 +53,15 @@ fun ComposableKeyType(
                 .padding(all = 8.dp)
                 .size(size = 24.dp),
             painter = painterResource(icon),
-            contentDescription = title
+            contentDescription = title,
+            tint = LocalPallet.current.keyIcon
         )
 
         Text(
             modifier = Modifier.padding(end = 14.dp),
             text = title,
-            style = LocalTypography.current.bodyM14
+            style = LocalTypography.current.bodyM14,
+            color = LocalPallet.current.keyTitle
         )
     }
 }

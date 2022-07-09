@@ -54,7 +54,7 @@ fun ComposeBottomBar(
         mutableStateOf(0)
     }
     Box(
-        modifier = Modifier.background(LocalPallet.current.surface)
+        modifier = Modifier.background(LocalPallet.current.bottomBarBackground)
     ) {
         if (tabPositions.size > selectedIndex) {
             val currentTabPosition = tabPositions[selectedIndex]
@@ -104,7 +104,7 @@ private fun ComposeTabAnimatedBackground(
                 .fillMaxHeight()
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(size = 10.dp))
-                .background(LocalPallet.current.backgroundBottomBar)
+                .background(LocalPallet.current.bottomBarTabBackground)
         )
     }
 }

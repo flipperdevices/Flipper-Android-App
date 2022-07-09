@@ -3,7 +3,6 @@ package com.flipperdevices.archive.impl.composable.category
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
@@ -18,8 +17,7 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 @Composable
 fun ComposableCategoryCard() {
     Card(
-        modifier = Modifier.padding(top = 14.dp, start = 14.dp, end = 14.dp, bottom = 2.dp),
-        shape = RoundedCornerShape(size = 10.dp)
+        modifier = Modifier.padding(top = 14.dp, start = 14.dp, end = 14.dp, bottom = 2.dp)
     ) {
         ComposableCategoryList()
     }

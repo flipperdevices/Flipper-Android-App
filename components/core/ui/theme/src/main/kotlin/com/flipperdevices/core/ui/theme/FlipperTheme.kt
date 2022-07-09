@@ -1,8 +1,10 @@
 package com.flipperdevices.core.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Shapes
+import androidx.compose.material.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
@@ -24,16 +26,17 @@ fun FlipperTheme(
     content: @Composable () -> Unit
 ) {
     val pallet = if (isLight) lightPallet else darkPallet
+    val colors = pallet.toMaterialColors(isLight)
+    val shapes = Shapes(medium = RoundedCornerShape(size = 10.dp))
 
     MaterialTheme(
-        shapes = Shapes(
-            medium = RoundedCornerShape(size = 10.dp)
-        ),
-        colors = pallet.toMaterialColors(isLight)
+        shapes = shapes,
+        colors = colors
     ) {
         CompositionLocalProvider(
             LocalPallet provides pallet,
             LocalTypography provides typography,
+            LocalContentColor provides colors.contentColorFor(backgroundColor = pallet.background),
             content = content
         )
     }
@@ -41,9 +44,15 @@ fun FlipperTheme(
 
 @Suppress("MagicNumber")
 private val lightPallet = FlipperPallet(
+    accent = Color(0xFFFF8200),
+    accentSecond = Color(0xFF589DFF),
     background = Color(0xFFFBFBFB),
+    error = Color(0xFFFFFFFF),
+    onError = Color(0xFFF63F3F),
+    content = Color(0xFFFFFFFF),
+    onContent = Color(0xFF000000),
+
     text100 = Color(0xFF000000),
-    onButton100 = Color(0xFFFFFFFF),
     text88 = Color(0xFF1C1C1C),
     text80 = Color(0xFF303030),
     text60 = Color(0xFF616161),
@@ -60,34 +69,27 @@ private val lightPallet = FlipperPallet(
     iconTint30 = Color(0xFFAAAAAA),
     iconTint16 = Color(0xFFCCCCCC),
 
-    deletedCategoryType = Color(0xFFE9E9E9),
-    keyDeleted = Color(0xFFE9E9E9),
-    progressBar = Color(0xFFAAAAAA),
-
-    selectedBottomBar = Color(0xFF303030),
-    unselectedBottomBar40 = Color(0xFF919191),
-    unselectedBottomBar30 = Color(0xFFAAAAAA),
-    backgroundBottomBar = Color(0xFFE9E9E9),
-
-    unsynchronized = Color(0xFFAAAAAA),
-    divider12 = Color(0xFFDFDFDF),
-    notificationCard = Color(0xFFE9E9E9),
-
-    batteryBackground = Color(0xFF8D8E92),
-    placeholder = Color(0xFFDFDFDF),
-    switchUncheckedTrack = Color(0xFF919191),
-
-    surface = Color(0xFFFFFFFF),
-    onSurface = Color(0xFF000000)
+    bottomBarBackground = Color(0xFFFFFFFF),
+    bottomBarSelected = Color(0xFF303030),
+    bottomBarSelectedFlipperStatus = Color(0xFF919191),
+    bottomBarUnselected = Color(0xFFAAAAAA),
+    bottomBarTabBackground = Color(0xFFE9E9E9),
+    bottomBarUnsupported = Color(0xFFF63F3F)
 )
 
 @Suppress("MagicNumber")
 private val darkPallet = FlipperPallet(
-    background = Color(0xFFFBFBFB),
-    onButton100 = Color(0xFFFFFFFF),
-    text100 = Color(0xFF000000),
-    text88 = Color(0xFF1C1C1C),
-    text80 = Color(0xFF303030),
+    accent = Color(0xFFFF8200),
+    accentSecond = Color(0xFF589DFF),
+    background = Color(0xFF000000),
+    error = Color(0xFF000000),
+    onError = Color(0xFFF63F3F),
+    content = Color(0xFF1C1C1C),
+    onContent = Color(0xFFFFFFFF),
+
+    text100 = Color(0xFFFFFFFF),
+    text88 = Color(0xFFFFFFE5),
+    text80 = Color(0xFFFFFFD5),
     text60 = Color(0xFF616161),
     text40 = Color(0xFF919191),
     text30 = Color(0xFFAAAAAA),
@@ -97,30 +99,17 @@ private val darkPallet = FlipperPallet(
     text8 = Color(0xFFDFDFDF),
     text4 = Color(0xFFE9E9E9),
 
-    iconTint100 = Color(0xFF000000),
-    iconTint80 = Color(0xFF303030),
+    iconTint100 = Color(0xFFFFFFFF),
+    iconTint80 = Color(0xFFFFFFD5),
     iconTint30 = Color(0xFFAAAAAA),
     iconTint16 = Color(0xFFCCCCCC),
 
-    deletedCategoryType = Color(0xFFE9E9E9),
-    keyDeleted = Color(0xFFE9E9E9),
-    progressBar = Color(0xFFAAAAAA),
-
-    selectedBottomBar = Color(0xFF303030),
-    unselectedBottomBar40 = Color(0xFF919191),
-    unselectedBottomBar30 = Color(0xFFAAAAAA),
-    backgroundBottomBar = Color(0xFFE9E9E9),
-
-    unsynchronized = Color(0xFFAAAAAA),
-    divider12 = Color(0xFFDFDFDF),
-    notificationCard = Color(0xFFE9E9E9),
-
-    batteryBackground = Color(0xFF8D8E92),
-    placeholder = Color(0xFFDFDFDF),
-    switchUncheckedTrack = Color(0xFF919191),
-
-    surface = Color(0xFFFFFFFF),
-    onSurface = Color(0xFF000000)
+    bottomBarBackground = Color(0xFF1C1C1C),
+    bottomBarSelected = Color(0xFFAAAAAA),
+    bottomBarSelectedFlipperStatus = Color(0xFF919191),
+    bottomBarUnselected = Color(0xFFAAAAAA),
+    bottomBarTabBackground = Color(0xFF616161),
+    bottomBarUnsupported = Color(0xFFF63F3F)
 )
 
 private val typography = FlipperTypography(

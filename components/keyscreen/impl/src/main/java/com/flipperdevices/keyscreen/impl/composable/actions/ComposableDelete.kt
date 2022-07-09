@@ -11,7 +11,7 @@ fun ComposableDelete(deleteState: DeleteState, onClick: () -> Unit) {
     if (deleteState == DeleteState.PROGRESS) {
         ComposableActionRowInProgress(
             descriptionId = R.string.keyscreen_deleting_text,
-            descriptionColor = LocalPallet.current.redForgot
+            descriptionColor = LocalPallet.current.keyDelete
         )
         return
     }
@@ -22,9 +22,9 @@ fun ComposableDelete(deleteState: DeleteState, onClick: () -> Unit) {
 
     ComposableActionRow(
         iconId = DesignSystem.drawable.ic_trash_icon,
-        tint = LocalPallet.current.redForgot,
+        tint = LocalPallet.current.keyDelete,
         descriptionId = descriptionId,
-        descriptionColor = LocalPallet.current.redForgot,
+        descriptionColor = LocalPallet.current.keyDelete,
         onClick = onClick
     )
 }

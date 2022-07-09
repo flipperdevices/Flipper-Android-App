@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
@@ -38,8 +37,7 @@ fun ComposableKeyCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(all = 24.dp),
-        shape = RoundedCornerShape(10.dp)
+            .padding(all = 24.dp)
     ) {
         Column {
             Row {

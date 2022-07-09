@@ -104,7 +104,7 @@ private fun CategoryList(
                 flipperKeyParsed,
                 typeColor = when (categoryType) {
                     is CategoryType.ByFileType -> colorByFlipperFileType(categoryType.fileType)
-                    CategoryType.Deleted -> LocalPallet.current.deletedCategoryType
+                    CategoryType.Deleted -> LocalPallet.current.keyDeleted
                 }
             ) {
                 categoryViewModel.openKeyScreen(router, flipperKey.path)

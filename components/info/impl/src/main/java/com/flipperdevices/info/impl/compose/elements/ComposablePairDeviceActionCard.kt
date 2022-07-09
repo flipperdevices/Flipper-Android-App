@@ -44,7 +44,7 @@ fun ComposablePairDeviceActionCard(
         ButtonElementRow(
             titleId = R.string.info_device_forget,
             iconId = DesignSystem.drawable.ic_disconnection,
-            color = LocalPallet.current.redForgot,
+            color = LocalPallet.current.forgetFlipper,
             onClick = connectViewModel::showDialogForgetFlipper
         )
     }

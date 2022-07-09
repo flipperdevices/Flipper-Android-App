@@ -28,38 +28,38 @@ fun ComposableUpdateContent(
 
     when (updaterScreenState) {
         UpdaterScreenState.NotStarted -> ComposableInProgressIndicator(
-            accentColor = LocalPallet.current.greenUpdate,
-            secondColor = LocalPallet.current.greenUpdateBackground,
+            accentColor = LocalPallet.current.updateProgressGreen,
+            secondColor = LocalPallet.current.updateProgressBackgroundGreen,
             iconId = null,
             percent = null
         )
         is UpdaterScreenState.CancelingSynchronization -> ComposableInProgressIndicator(
             accentColor = LocalPallet.current.accentSecond,
-            secondColor = LocalPallet.current.blueUpdateBackground,
+            secondColor = LocalPallet.current.updateProgressBackgroundBlue,
             iconId = null,
             percent = null
         )
         is UpdaterScreenState.DownloadingFromNetwork -> ComposableInProgressIndicator(
-            accentColor = LocalPallet.current.greenUpdate,
-            secondColor = LocalPallet.current.greenUpdateBackground,
+            accentColor = LocalPallet.current.updateProgressGreen,
+            secondColor = LocalPallet.current.updateProgressBackgroundGreen,
             iconId = DesignSystem.drawable.ic_globe,
             percent = updaterScreenState.percent
         )
         is UpdaterScreenState.UploadOnFlipper -> ComposableInProgressIndicator(
             accentColor = LocalPallet.current.accentSecond,
-            secondColor = LocalPallet.current.blueUpdateBackground,
+            secondColor = LocalPallet.current.updateProgressBackgroundBlue,
             iconId = DesignSystem.drawable.ic_bluetooth,
             percent = updaterScreenState.percent
         )
         UpdaterScreenState.CancelingUpdate -> ComposableInProgressIndicator(
             accentColor = LocalPallet.current.accentSecond,
-            secondColor = LocalPallet.current.blueUpdateBackground,
+            secondColor = LocalPallet.current.updateProgressBackgroundBlue,
             iconId = null,
             percent = null
         )
         UpdaterScreenState.Rebooting -> ComposableInProgressIndicator(
             accentColor = LocalPallet.current.accentSecond,
-            secondColor = LocalPallet.current.blueUpdateBackground,
+            secondColor = LocalPallet.current.updateProgressBackgroundBlue,
             iconId = null,
             percent = null
         )

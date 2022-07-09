@@ -38,7 +38,7 @@ internal fun ComposableItemSynchronizationState(
     val color = when (itemSynchronizationState) {
         ItemSynchronizationState.SYNCHRONIZED,
         ItemSynchronizationState.IN_PROGRESS -> LocalPallet.current.accentSecond
-        ItemSynchronizationState.NOT_SYNCHRONIZED -> LocalPallet.current.unsynchronized
+        ItemSynchronizationState.NOT_SYNCHRONIZED -> LocalPallet.current.text30
     }
 
     val descriptionId = when (itemSynchronizationState) {

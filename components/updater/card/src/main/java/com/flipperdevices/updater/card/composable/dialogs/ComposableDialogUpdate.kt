@@ -74,7 +74,7 @@ private fun buildAnnotatedStringWithColoredVersion(
     @StringRes postfixId: Int
 ): AnnotatedString {
     val channelColor = version?.let { getColorByChannel(it.channel) }
-        ?: LocalPallet.current.grayFirmware
+        ?: LocalPallet.current.channelFirmwareUnknown
     val versionText = version?.let { getTextByVersion(it) }
         ?: stringResource(R.string.update_card_dialog_unknown_version)
     val postfixText = stringResource(postfixId)

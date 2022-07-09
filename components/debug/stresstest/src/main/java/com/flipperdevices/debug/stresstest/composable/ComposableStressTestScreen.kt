@@ -21,12 +21,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.bridge.api.model.FlipperSerialSpeed
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.debug.stresstest.model.LogLine
 import com.flipperdevices.debug.stresstest.model.StressTestState
 import com.flipperdevices.debug.stresstest.viewmodel.StressTestViewModel
@@ -61,7 +62,7 @@ private fun ComposableStatus(
         modifier = Modifier.padding(all = 16.dp),
         text = "Success: ${stressTestState.successfulCount} " +
             "Error: ${stressTestState.errorCount}",
-        fontSize = 24.sp
+        style = LocalTypography.current.titleB24
     )
 }
 
@@ -80,7 +81,7 @@ private fun ComposableLog(
             itemsIndexed(debugLog.asReversed()) { index, line ->
                 ComposableLogLine(line)
                 if (index < debugLog.lastIndex) {
-                    Divider(color = Color.Black, thickness = 1.dp)
+                    Divider(color = LocalPallet.current.divider12, thickness = 1.dp)
                 }
             }
         }
@@ -89,10 +90,12 @@ private fun ComposableLog(
 
 @Composable
 private fun ComposableLogLine(line: LogLine) {
+    var style = LocalTypography.current.bodyR14
+    if (line.color != null) style = style.copy(color = line.color)
     Text(
         modifier = Modifier.padding(all = 8.dp),
         text = line.text,
-        color = line.color
+        style = style
     )
 }
 
@@ -109,14 +112,16 @@ private fun ComposableButton(viewModel: StressTestViewModel) {
             Text(
                 modifier = Modifier.padding(all = 16.dp),
                 text = "Start",
-                fontSize = 24.sp
+                fontSize = 24.sp,
+                color = LocalPallet.current.text100
             )
         }
         TextButton(onClick = { viewModel.stopBruteforce() }) {
             Text(
                 modifier = Modifier.padding(all = 16.dp),
                 text = "Stop",
-                fontSize = 24.sp
+                fontSize = 24.sp,
+                color = LocalPallet.current.text100
             )
         }
     }

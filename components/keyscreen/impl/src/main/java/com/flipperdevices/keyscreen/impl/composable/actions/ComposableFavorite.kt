@@ -39,7 +39,7 @@ fun ComposableFavorite(favoriteState: FavoriteState, onSwitchFavorites: (Boolean
             )
             .size(ICON_SIZE_DP.dp),
         painter = painterResourceByKey(iconId),
-        tint = LocalPallet.current.favorite,
+        tint = LocalPallet.current.keyFavorite,
         contentDescription = null
     )
 }

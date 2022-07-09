@@ -87,7 +87,7 @@ fun ComposableUpdateButton(
                 buttonModifier,
                 textId = R.string.updater_card_updater_button_update,
                 descriptionId = R.string.updater_card_updater_button_update_desc,
-                color = LocalPallet.current.greenUpdate
+                color = LocalPallet.current.updateProgressGreen
             )
         }
     }
@@ -122,7 +122,6 @@ private fun ComposableUpdateButtonContent(
                 modifier = Modifier.padding(vertical = 4.dp),
                 text = stringResource(textId),
                 textAlign = TextAlign.Center,
-                color = LocalPallet.current.onButton100,
                 style = LocalTypography.current.updateButton40
             )
         }
