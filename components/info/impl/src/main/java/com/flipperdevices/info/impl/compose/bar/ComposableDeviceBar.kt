@@ -27,7 +27,6 @@ import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
 import com.flipperdevices.info.impl.viewmodel.FlipperColorViewModel
-import com.flipperdevices.info.shared.R as ExternalDrawable
 import kotlin.math.roundToInt
 
 const val FLOAT_TO_PERCENT_QUALIFIER = 100
@@ -73,13 +72,13 @@ private fun FlipperImage(
     val flipperColor by flipperColorViewModel.getFlipperColor().collectAsState()
     val disabledFlipperId = when (flipperColor) {
         HardwareColor.UNRECOGNIZED,
-        HardwareColor.WHITE -> ExternalDrawable.drawable.ic_flipper_disabled
-        HardwareColor.BLACK -> ExternalDrawable.drawable.ic_black_flipper_disabled
+        HardwareColor.WHITE -> DesignSystem.drawable.ic_flipper_disabled
+        HardwareColor.BLACK -> DesignSystem.drawable.ic_black_flipper_disabled
     }
     val flipperId = when (flipperColor) {
         HardwareColor.UNRECOGNIZED,
-        HardwareColor.WHITE -> ExternalDrawable.drawable.ic_flipper
-        HardwareColor.BLACK -> ExternalDrawable.drawable.ic_black_flipper
+        HardwareColor.WHITE -> DesignSystem.drawable.ic_flipper
+        HardwareColor.BLACK -> DesignSystem.drawable.ic_black_flipper
     }
     val imageId = when (deviceStatus) {
         DeviceStatus.NoDevice -> disabledFlipperId
