@@ -19,12 +19,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.flipperdevices.core.preference.pb.HardwareColor
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
+import com.flipperdevices.info.impl.viewmodel.FlipperColorViewModel
+import com.flipperdevices.info.shared.R as ExternalDrawable
 import kotlin.math.roundToInt
 
 const val FLOAT_TO_PERCENT_QUALIFIER = 100
@@ -63,15 +66,30 @@ private fun FlipperInformation(deviceStatus: DeviceStatus) {
 }
 
 @Composable
-private fun FlipperImage(deviceStatus: DeviceStatus) {
+private fun FlipperImage(
+    deviceStatus: DeviceStatus,
+    flipperColorViewModel: FlipperColorViewModel = viewModel()
+) {
+    val flipperColor by flipperColorViewModel.getFlipperColor().collectAsState()
+    val disabledFlipperId = when (flipperColor) {
+        HardwareColor.UNRECOGNIZED,
+        HardwareColor.WHITE -> ExternalDrawable.drawable.ic_flipper_disabled
+        HardwareColor.BLACK -> ExternalDrawable.drawable.ic_black_flipper_disabled
+    }
+    val flipperId = when (flipperColor) {
+        HardwareColor.UNRECOGNIZED,
+        HardwareColor.WHITE -> ExternalDrawable.drawable.ic_flipper
+        HardwareColor.BLACK -> ExternalDrawable.drawable.ic_black_flipper
+    }
     val imageId = when (deviceStatus) {
-        DeviceStatus.NoDevice -> DesignSystem.drawable.ic_grey_flipper
-        is DeviceStatus.Connected -> DesignSystem.drawable.ic_white_flipper
+        DeviceStatus.NoDevice -> disabledFlipperId
+        is DeviceStatus.Connected -> flipperId
         is DeviceStatus.NoDeviceInformation -> {
-            if (deviceStatus.connectInProgress) DesignSystem.drawable.ic_grey_flipper
-            else DesignSystem.drawable.ic_white_flipper
+            if (deviceStatus.connectInProgress) disabledFlipperId
+            else flipperId
         }
     }
+
     val descriptionId = when (deviceStatus) {
         DeviceStatus.NoDevice -> R.string.info_device_no_device
         is DeviceStatus.Connected -> R.string.info_device_connected

@@ -2,7 +2,7 @@ package com.flipperdevices.bridge.impl.manager.service.request
 
 import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattCharacteristic
-import com.flipperdevices.bridge.api.manager.FlipperLagsDetector
+import com.flipperdevices.bridge.api.manager.delegates.FlipperActionNotifier
 import com.flipperdevices.bridge.api.manager.service.FlipperSerialApi
 import com.flipperdevices.bridge.api.model.FlipperSerialSpeed
 import com.flipperdevices.bridge.api.utils.Constants
@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 
 class FlipperSerialApiUnsafeImpl(
     private val scope: CoroutineScope,
-    private val lagsDetector: FlipperLagsDetector
+    private val flipperActionNotifier: FlipperActionNotifier
 ) : FlipperSerialApi, BluetoothGattServiceWrapper, LogTagProvider {
     override val TAG = "FlipperSerialApi"
     private val receiveBytesFlow = MutableSharedFlow<ByteArray>()
@@ -64,7 +64,7 @@ class FlipperSerialApiUnsafeImpl(
         pendingBytes.forEach { data ->
             bleManager.writeCharacteristicUnsafe(serialTxCharacteristic, data)
                 .done {
-                    lagsDetector.notifyAboutAction()
+                    flipperActionNotifier.notifyAboutAction()
                     txSpeed.onReceiveBytes(data.size)
                 }.enqueue()
         }
@@ -93,7 +93,7 @@ class FlipperSerialApiUnsafeImpl(
         bleManager.writeCharacteristicUnsafe(serialTxCharacteristic, data)
             .split()
             .done {
-                lagsDetector.notifyAboutAction()
+                flipperActionNotifier.notifyAboutAction()
                 txSpeed.onReceiveBytes(data.size)
             }
             .enqueue()

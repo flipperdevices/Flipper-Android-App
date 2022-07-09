@@ -1,4 +1,4 @@
-package com.flipperdevices.bridge.api.manager
+package com.flipperdevices.bridge.api.manager.delegates
 
 import com.flipperdevices.bridge.api.model.FlipperRequest
 import kotlinx.coroutines.flow.Flow
@@ -19,5 +19,4 @@ interface FlipperLagsDetector {
      * @param request for debug purposes
      */
     fun <T> wrapPendingAction(request: FlipperRequest?, flow: Flow<T>): Flow<T>
-    fun notifyAboutAction()
 }
