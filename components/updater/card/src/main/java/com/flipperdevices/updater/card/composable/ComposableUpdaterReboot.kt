@@ -32,7 +32,7 @@ fun ComposableUpdaterReboot(modifier: Modifier) {
                 contentDescription = title
             )
             Text(
-                modifier = Modifier.padding(top = 6.dp, bottom = 6.dp),
+                modifier = Modifier.padding(top = 6.dp, bottom = 6.dp, start = 12.dp, end = 12.dp),
                 text = title,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.W500,
@@ -40,7 +40,7 @@ fun ComposableUpdaterReboot(modifier: Modifier) {
                 textAlign = TextAlign.Center
             )
             Text(
-                modifier = Modifier.padding(bottom = 16.dp),
+                modifier = Modifier.padding(bottom = 16.dp, start = 12.dp, end = 12.dp),
                 text = stringResource(R.string.updater_card_updater_reboot_desc),
                 fontSize = 14.sp,
                 fontWeight = FontWeight.W400,
