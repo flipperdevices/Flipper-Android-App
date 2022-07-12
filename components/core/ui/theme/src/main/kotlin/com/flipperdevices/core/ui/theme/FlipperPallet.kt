@@ -37,6 +37,7 @@ data class FlipperPallet(
     val bottomBarUnselected: Color,
     val bottomBarTabBackground: Color,
     val bottomBarUnsupported: Color,
+    val bottomBarContent: Color = Color(0xFF000000),
 
     val channelFirmwareRelease: Color = Color(0xFF2ED832),
     val channelFirmwareReleaseCandidate: Color = Color(0xFF8A2BE2),

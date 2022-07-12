@@ -3,7 +3,6 @@ package com.flipperdevices.bottombar.model
 import androidx.annotation.DrawableRes
 import androidx.annotation.RawRes
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 
 private const val MAGIC_NUMBER = 31
 
@@ -92,9 +91,7 @@ sealed class TabState private constructor(
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as TabState
+        if (other !is TabState) return false
 
         if (text != other.text) return false
         if (selectedColor != other.selectedColor) return false
@@ -108,10 +105,10 @@ sealed class TabState private constructor(
 
     override fun hashCode(): Int {
         var result = text.hashCode()
-        result = MAGIC_NUMBER * result + selectedColor.toArgb()
-        result = MAGIC_NUMBER * result + selectedColorIcon.toArgb()
-        result = MAGIC_NUMBER * result + unselectedColor.toArgb()
-        result = MAGIC_NUMBER * result + unselectedColorIcon.toArgb()
+        result = MAGIC_NUMBER * result + selectedColor.hashCode()
+        result = MAGIC_NUMBER * result + selectedColorIcon.hashCode()
+        result = MAGIC_NUMBER * result + unselectedColor.hashCode()
+        result = MAGIC_NUMBER * result + unselectedColorIcon.hashCode()
         result = MAGIC_NUMBER * result + textDotsAnimated.hashCode()
         return result
     }
