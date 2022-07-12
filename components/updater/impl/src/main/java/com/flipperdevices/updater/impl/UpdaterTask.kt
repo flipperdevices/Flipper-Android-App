@@ -56,15 +56,17 @@ class UpdaterTask(
         serviceApi: FlipperServiceApi,
         input: UpdateRequest,
         stateListener: suspend (UpdatingState) -> Unit
-    ) {
+    ) = try {
         startInternalUnwrapped(scope, serviceApi, input) {
             if (it.isFinalState) {
                 isStoppedManually = true
-                withContext(NonCancellable) {
-                    flipperUpdateImageHelper.stopImageOnFlipperSafe(serviceApi.requestApi)
-                }
             }
+
             stateListener(it)
+        }
+    } finally {
+        withContext(NonCancellable) {
+            flipperUpdateImageHelper.stopImageOnFlipperSafe(serviceApi.requestApi)
         }
     }
 
