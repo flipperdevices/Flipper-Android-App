@@ -1,27 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="accent">#FF8200</color>
-    <color name="accent_secondary">#589DFF</color>
     <color name="background">#FBFBFB</color>
     <color name="navigationBar">#FFFFFF</color>
-
-    <color name="black_100">#000000</color>
-    <color name="black_88">#1C1C1C</color>
-    <color name="black_80">#303030</color>
-    <color name="black_60">#616161</color>
-    <color name="black_40">#919191</color>
-    <color name="black_30">#AAAAAA</color>
-    <color name="black_20">#C1C1C1</color>
-    <color name="black_16">#CCCCCC</color>
-    <color name="black_12">#D6D6D6</color>
-    <color name="black_8">#DFDFDF</color>
-    <color name="black_4">#E9E9E9</color>
-
-    <color name="white_100">#FFFFFF</color>
-    <color name="favorite_enabled">#FECF5D</color>
-
-    <color name="red">#F63F3F</color>
-    <color name="yellow">#FECF5D</color>
-    <color name="green">#34C7A4</color>
-    <color name="purple">#8A2BE2</color>
 </resources>
