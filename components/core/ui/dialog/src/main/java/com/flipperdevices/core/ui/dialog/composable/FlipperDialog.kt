@@ -40,7 +40,7 @@ fun FlipperDialog(
         Box(
             modifier = modifier
                 .clip(RoundedCornerShape(18.dp))
-                .background(LocalPallet.current.background)
+                .background(LocalPallet.current.backgroundDialog)
         ) {
             FlipperDialogContent(
                 image,
@@ -68,7 +68,8 @@ fun FlipperDialog(
         Text(
             text = stringResource(titleIdNotNullable),
             style = LocalTypography.current.bodyM14,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            color = LocalPallet.current.text100
         )
     },
     @StringRes textId: Int? = null,

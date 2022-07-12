@@ -100,11 +100,13 @@ private fun ComposableFullDeviceInfoScreenBar() {
                 )
                 .padding(start = 14.dp, end = 14.dp, top = 8.dp, bottom = 10.dp),
             painter = painterResource(DesignSystem.drawable.ic_back),
+            tint = LocalPallet.current.onAppBar,
             contentDescription = null
         )
         Text(
             text = stringResource(R.string.info_device_info_title),
-            style = LocalTypography.current.titleB20
+            style = LocalTypography.current.titleB20,
+            color = LocalPallet.current.onAppBar
         )
     }
 }

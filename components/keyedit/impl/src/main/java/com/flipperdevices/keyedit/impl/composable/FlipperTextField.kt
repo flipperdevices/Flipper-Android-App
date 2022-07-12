@@ -13,12 +13,12 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Divider
-import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -110,12 +110,15 @@ private fun FlipperTextBox(
         onValueChange = onTextChange,
         interactionSource = interactionSource,
         decorationBox = decorationBox,
-        textStyle = LocalTextStyle.current.merge(textStyle),
+        textStyle = textStyle.copy(
+            color = LocalPallet.current.text100
+        ),
         keyboardOptions = keyboardOptions,
         keyboardActions = KeyboardActions(onDone = {
             focusManager.clearFocus()
         }),
-        enabled = enabled
+        enabled = enabled,
+        cursorBrush = SolidColor(LocalPallet.current.text100)
     )
 }
 

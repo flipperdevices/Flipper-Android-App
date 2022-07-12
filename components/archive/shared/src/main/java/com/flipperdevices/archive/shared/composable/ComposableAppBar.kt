@@ -46,7 +46,8 @@ fun ComposableAppBar(
                 )
                 .size(size = 24.dp),
             painter = painterResource(iconId),
-            contentDescription = null
+            contentDescription = null,
+            tint = LocalPallet.current.onAppBar
         )
     }
 }
@@ -71,7 +72,8 @@ fun ComposableAppBar(
                 .padding(start = 14.dp, end = 14.dp, top = 8.dp, bottom = 11.dp)
                 .weight(weight = 1f),
             text = title,
-            style = LocalTypography.current.titleB20
+            style = LocalTypography.current.titleB20,
+            color = LocalPallet.current.onAppBar
         )
         if (endContent != null) {
             endContent(
@@ -93,6 +95,7 @@ private fun AppBarBackArrow(onBack: () -> Unit) {
             )
             .size(size = 24.dp),
         painter = painterResource(DesignSystem.drawable.ic_back),
-        contentDescription = null
+        contentDescription = null,
+        tint = LocalPallet.current.onAppBar
     )
 }

@@ -106,7 +106,8 @@ private fun FlipperImage(
 private fun NoDeviceText() {
     Text(
         text = stringResource(R.string.info_device_no_device),
-        style = LocalTypography.current.buttonB16
+        style = LocalTypography.current.buttonB16,
+        color = LocalPallet.current.onAppBar
     )
 }
 
@@ -133,7 +134,8 @@ private fun ConnectedText(deviceStatus: DeviceStatus.Connected) {
                 Text(
                     modifier = Modifier.padding(start = 5.dp),
                     text = "${(batteryValue * FLOAT_TO_PERCENT_QUALIFIER).roundToInt()}%",
-                    style = LocalTypography.current.subtitleR12
+                    style = LocalTypography.current.subtitleR12,
+                    color = LocalPallet.current.onAppBar
                 )
             }
         }
@@ -145,11 +147,13 @@ private fun FlipperName(title: String) {
     Text(
         modifier = Modifier.padding(bottom = 3.dp),
         text = title,
-        style = LocalTypography.current.buttonB16
+        style = LocalTypography.current.buttonB16,
+        color = LocalPallet.current.onAppBar
     )
     Text(
         text = stringResource(R.string.info_device_model_name),
-        style = LocalTypography.current.subtitleR12
+        style = LocalTypography.current.subtitleR12,
+        color = LocalPallet.current.onAppBar
     )
 }
 

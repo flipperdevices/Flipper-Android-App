@@ -32,7 +32,7 @@ fun ComposableEditAppBar(
                 SaveButtonState.ENABLED -> ComposableBarSimpleText(
                     modifier = it,
                     text = stringResource(id = R.string.keyedit_bar_save),
-                    color = LocalPallet.current.accent,
+                    color = LocalPallet.current.accentSecond,
                     onClick = onSave
                 )
                 SaveButtonState.DISABLED -> ComposableBarSimpleText(

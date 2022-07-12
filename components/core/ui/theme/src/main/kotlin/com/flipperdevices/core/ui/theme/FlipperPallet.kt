@@ -38,9 +38,9 @@ data class FlipperPallet(
     val bottomBarTabBackground: Color,
     val bottomBarUnsupported: Color,
 
-    val channelFirmwareGreen: Color = Color(0xFF2ED832),
-    val channelFirmwarePurple: Color = Color(0xFF8A2BE2),
-    val channelFirmwareRed: Color = Color(0xFFF63F3F),
+    val channelFirmwareRelease: Color = Color(0xFF2ED832),
+    val channelFirmwareReleaseCandidate: Color = Color(0xFF8A2BE2),
+    val channelFirmwareDev: Color = Color(0xFFF63F3F),
     val channelFirmwareUnknown: Color = Color(0xFF919191),
 
     val updateProgressGreen: Color = Color(0xFF2ED832),
@@ -65,6 +65,7 @@ data class FlipperPallet(
     val batteryYellow: Color = Color(0xFFFECF5D),
     val batteryGreen: Color = Color(0xFF34C7A4),
     val batteryBackground: Color = Color(0xFF8D8E92),
+    val batteryCharging: Color = Color(0xFF303030),
 
     val placeholder: Color = Color(0xFFDFDFDF),
     val divider12: Color = Color(0xFFDFDFDF),
@@ -76,8 +77,14 @@ data class FlipperPallet(
     val actionOnFlipperIcon: Color = Color(0xFFFFFFFF),
 
     val forgetFlipper: Color = Color(0xFFF63F3F),
-    val onButton: Color = Color(0xFFFFFFFF),
+    val onFlipperButton: Color = Color(0xFFFFFFFF),
+    val onFirmwareUpdateButton: Color = Color(0xFFFFFFFF),
+    val onFirmwareUpdateProgress: Color = Color(0xFFFFFFFF),
     val progressBarGray: Color = Color(0xFFAAAAAA),
+    val onAppBar: Color = Color(0xFF000000),
+    val backgroundSwitch: Color = Color(0xFF616161),
+    val disableSwitch: Color,
+    val backgroundDialog: Color
 ) {
 
     @Composable

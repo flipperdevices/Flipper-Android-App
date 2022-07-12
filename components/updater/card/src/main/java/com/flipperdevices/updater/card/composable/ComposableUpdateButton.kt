@@ -122,7 +122,8 @@ private fun ComposableUpdateButtonContent(
                 modifier = Modifier.padding(vertical = 4.dp),
                 text = stringResource(textId),
                 textAlign = TextAlign.Center,
-                style = LocalTypography.current.updateButton40
+                style = LocalTypography.current.updateButton40,
+                color = LocalPallet.current.onFirmwareUpdateButton
             )
         }
         Text(

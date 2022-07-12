@@ -24,7 +24,8 @@ fun AppBar(@StringRes titleId: Int) {
             modifier = Modifier
                 .padding(start = 14.dp, end = 14.dp, top = 8.dp, bottom = 11.dp),
             text = stringResource(titleId),
-            style = LocalTypography.current.titleB20
+            style = LocalTypography.current.titleB20,
+            color = LocalPallet.current.onAppBar
         )
     }
 }
