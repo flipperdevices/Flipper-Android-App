@@ -19,7 +19,7 @@ import com.flipperdevices.bottombar.impl.main.subnavigation.OnDoublePressOnTab
 import com.flipperdevices.bottombar.impl.main.viewmodel.InAppNotificationState
 import com.flipperdevices.bottombar.impl.main.viewmodel.InAppNotificationViewModel
 import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
-import com.flipperdevices.connection.api.api.ConnectionApi
+import com.flipperdevices.connection.api.ConnectionApi
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.setStatusBarColor
 import com.flipperdevices.core.ktx.jre.runBlockingWithLog
