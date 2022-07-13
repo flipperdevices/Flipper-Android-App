@@ -1,10 +1,14 @@
 package com.flipperdevices.core.ui.theme.models
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.AnimationSpec
+import androidx.compose.animation.core.tween
 import androidx.compose.material.Colors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.Color
 
+// After add color to pallet, don`t forget add to switch() method
 @Stable
 @Suppress("MagicNumber")
 data class FlipperPallet(
@@ -90,6 +94,87 @@ data class FlipperPallet(
     val disableSwitch: Color,
     val backgroundDialog: Color
 ) {
+
+    private val animationSpec: AnimationSpec<Color> = tween(durationMillis = 1500)
+
+    @Composable
+    private fun animateColor(
+        targetValue: Color
+    ) = animateColorAsState(targetValue = targetValue, animationSpec = animationSpec).value
+
+    @Composable
+    fun switch() = copy(
+        accent = animateColor(accent),
+        accentSecond = animateColor(accentSecond),
+        onError = animateColor(onError),
+        background = animateColor(background),
+        error = animateColor(error),
+        content = animateColor(content),
+        onContent = animateColor(onContent),
+        text100 = animateColor(text100),
+        text88 = animateColor(text88),
+        text80 = animateColor(text80),
+        text60 = animateColor(text60),
+        text40 = animateColor(text40),
+        text30 = animateColor(text30),
+        text20 = animateColor(text20),
+        text16 = animateColor(text16),
+        text12 = animateColor(text12),
+        text8 = animateColor(text8),
+        text4 = animateColor(text4),
+        iconTint100 = animateColor(iconTint100),
+        iconTint80 = animateColor(iconTint80),
+        iconTint30 = animateColor(iconTint30),
+        iconTint16 = animateColor(iconTint16),
+        bottomBarBackground = animateColor(bottomBarBackground),
+        bottomBarSelected = animateColor(bottomBarSelected),
+        bottomBarSelectedFlipperStatus = animateColor(bottomBarSelectedFlipperStatus),
+        bottomBarUnselected = animateColor(bottomBarTabBackground),
+        bottomBarTabBackground = animateColor(bottomBarTabBackground),
+        bottomBarUnsupported = animateColor(bottomBarUnsupported),
+        bottomBarContent = animateColor(bottomBarContent),
+        channelFirmwareReleaseCandidate = animateColor(channelFirmwareReleaseCandidate),
+        channelFirmwareRelease = animateColor(channelFirmwareRelease),
+        channelFirmwareDev = animateColor(channelFirmwareDev),
+        channelFirmwareUnknown = animateColor(channelFirmwareUnknown),
+        updateProgressGreen = animateColor(updateProgressGreen),
+        updateProgressBackgroundGreen = animateColor(updateProgressBackgroundGreen),
+        updateProgressBlue = animateColor(updateProgressBlue),
+        updateProgressBackgroundBlue = animateColor(updateProgressBackgroundBlue),
+        onFlipperButton = animateColor(onFlipperButton),
+        onFirmwareUpdateButton = animateColor(onFirmwareUpdateButton),
+        onFirmwareUpdateProgress = animateColor(onFirmwareUpdateProgress),
+        keyIButton = animateColor(keyIButton),
+        keyRFID = animateColor(keyRFID),
+        keyNFC = animateColor(keyNFC),
+        keySubGHz = animateColor(keySubGHz),
+        keyInfrarred = animateColor(keyInfrarred),
+        keyBadUSB = animateColor(keyBadUSB),
+        keyUnknown = animateColor(keyUnknown),
+        keyDeleted = animateColor(keyDeleted),
+        keyFavorite = animateColor(keyFavorite),
+        keyTitle = animateColor(keyTitle),
+        keyIcon = animateColor(keyIcon),
+        keyDelete = animateColor(keyDelete),
+        batteryRed = animateColor(batteryRed),
+        batteryYellow = animateColor(batteryYellow),
+        batteryGreen = animateColor(batteryGreen),
+        batteryBackground = animateColor(batteryBackground),
+        batteryCharging = animateColor(batteryCharging),
+        actionOnFlipperDisable = animateColor(actionOnFlipperDisable),
+        actionOnFlipperEnable = animateColor(actionOnFlipperEnable),
+        actionOnFlipperText = animateColor(actionOnFlipperText),
+        actionOnFlipperIcon = animateColor(actionOnFlipperIcon),
+        placeholder = animateColor(placeholder),
+        notificationCard = animateColor(notificationCard),
+        forgetFlipper = animateColor(forgetFlipper),
+        progressBarGray = animateColor(progressBarGray),
+        onAppBar = animateColor(onAppBar),
+        disableBackgroundSwitch = animateColor(disableBackgroundSwitch),
+        divider12 = animateColor(divider12),
+        disableSwitch = animateColor(disableSwitch),
+        backgroundDialog = animateColor(backgroundDialog)
+    )
 
     @Composable
     fun toMaterialColors(isLight: Boolean) = Colors(
