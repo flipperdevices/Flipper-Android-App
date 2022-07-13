@@ -28,7 +28,7 @@ abstract class ComposeFragment : Fragment(), StatusBarColorProvider {
     ): View? {
         return ComposeView(requireContext()).apply {
             setContent {
-                FlipperTheme(isLight = true) {
+                FlipperTheme {
                     CompositionLocalProvider(LocalRouter provides requireRouter()) {
                         SubComposeWrapper(modifier = Modifier.fillMaxSize()) {
                             RenderView()
