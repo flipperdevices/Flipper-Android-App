@@ -11,6 +11,7 @@ dependencies {
     implementation(projects.components.core.navigation)
     implementation(projects.components.core.ui.fragment)
     implementation(projects.components.core.ui.lifecycle)
+    implementation(projects.components.core.ui.res)
 
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.api)

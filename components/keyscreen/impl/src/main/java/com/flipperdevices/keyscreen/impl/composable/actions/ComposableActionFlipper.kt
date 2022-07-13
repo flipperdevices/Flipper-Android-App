@@ -1,6 +1,5 @@
 package com.flipperdevices.keyscreen.impl.composable.actions
 
-import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
@@ -8,7 +7,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -22,55 +20,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.flipperdevices.core.ui.res.R as DesignSystem
-
-@Composable
-fun ComposableActionFlipper(
-    modifier: Modifier = Modifier,
-    @DrawableRes iconId: Int,
-    @StringRes descriptionId: Int,
-    @ColorRes descriptionColorId: Int = DesignSystem.color.white_100,
-    @ColorRes tintId: Int = DesignSystem.color.white_100,
-    onClick: () -> Unit
-) {
-    val descriptionText = stringResource(descriptionId)
-
-    Box(
-        modifier = Modifier
-            .clip(shape = RoundedCornerShape(30.dp))
-            .background(colorResource(id = DesignSystem.color.accent_secondary))
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple(),
-                onClick = onClick
-            )
-            .then(modifier)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 4.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            ComposableActionFlipperContent(iconId, descriptionText, descriptionColorId, tintId)
-        }
-    }
-}
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
 fun ComposableActionFlipperHorizontal(
     modifier: Modifier = Modifier,
     @DrawableRes iconId: Int,
     @StringRes descriptionId: Int,
-    @ColorRes descriptionColorId: Int = DesignSystem.color.white_100,
-    @ColorRes tintId: Int = DesignSystem.color.white_100,
+    descriptionColor: Color = LocalPallet.current.actionOnFlipperText,
+    tint: Color = LocalPallet.current.actionOnFlipperIcon,
     onClick: (() -> Unit)? = null
 ) {
     val descriptionText = stringResource(descriptionId)
@@ -80,15 +43,14 @@ fun ComposableActionFlipperHorizontal(
 
     if (onClick != null) {
         boxModifier = boxModifier
-            .background(colorResource(id = DesignSystem.color.accent_secondary))
+            .background(LocalPallet.current.actionOnFlipperEnable)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(),
                 onClick = onClick
             )
     } else {
-        boxModifier = boxModifier
-            .background(colorResource(id = DesignSystem.color.black_40))
+        boxModifier = boxModifier.background(LocalPallet.current.actionOnFlipperDisable)
     }
 
     Box(
@@ -102,7 +64,7 @@ fun ComposableActionFlipperHorizontal(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            ComposableActionFlipperContent(iconId, descriptionText, descriptionColorId, tintId)
+            ComposableActionFlipperContent(iconId, descriptionText, descriptionColor, tint)
         }
     }
 }
@@ -111,19 +73,18 @@ fun ComposableActionFlipperHorizontal(
 private fun ComposableActionFlipperContent(
     @DrawableRes iconId: Int,
     descriptionText: String,
-    @ColorRes descriptionColorId: Int,
-    @ColorRes tintId: Int
+    descriptionColor: Color,
+    tint: Color
 ) {
     Icon(
         modifier = Modifier.size(size = 36.dp),
         painter = painterResource(iconId),
         contentDescription = descriptionText,
-        tint = colorResource(tintId)
+        tint = tint
     )
     Text(
         text = descriptionText,
-        fontWeight = FontWeight.W500,
-        fontSize = 16.sp,
-        color = colorResource(descriptionColorId)
+        color = descriptionColor,
+        style = LocalTypography.current.buttonM16
     )
 }

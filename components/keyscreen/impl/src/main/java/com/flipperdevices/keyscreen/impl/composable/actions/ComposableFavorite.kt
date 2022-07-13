@@ -9,10 +9,10 @@ import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.painterResourceByKey
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyscreen.impl.model.FavoriteState
 
 private const val ICON_SIZE_DP = 24
@@ -39,7 +39,7 @@ fun ComposableFavorite(favoriteState: FavoriteState, onSwitchFavorites: (Boolean
             )
             .size(ICON_SIZE_DP.dp),
         painter = painterResourceByKey(iconId),
-        tint = colorResource(DesignSystem.color.favorite_enabled),
+        tint = LocalPallet.current.keyFavorite,
         contentDescription = null
     )
 }

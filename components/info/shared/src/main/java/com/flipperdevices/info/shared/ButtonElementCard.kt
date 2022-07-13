@@ -1,6 +1,5 @@
 package com.flipperdevices.info.shared
 
-import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
@@ -19,12 +18,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
 fun ButtonElementCard(
@@ -32,7 +30,7 @@ fun ButtonElementCard(
     iconAngel: Float = 0f,
     @StringRes titleId: Int,
     @DrawableRes iconId: Int,
-    @ColorRes colorId: Int,
+    color: Color,
     onClick: (() -> Unit)?
 ) {
     Card(
@@ -40,7 +38,7 @@ fun ButtonElementCard(
             .padding(horizontal = 14.dp),
         shape = RoundedCornerShape(size = 10.dp)
     ) {
-        ButtonElementRow(modifier, iconAngel, titleId, iconId, colorId, onClick)
+        ButtonElementRow(modifier, iconAngel, titleId, iconId, color, onClick)
     }
 }
 
@@ -50,7 +48,7 @@ fun ButtonElementRow(
     iconAngel: Float = 0f,
     @StringRes titleId: Int,
     @DrawableRes iconId: Int,
-    @ColorRes colorId: Int,
+    color: Color,
     onClick: (() -> Unit)?
 ) {
     var rowModifier = modifier
@@ -65,7 +63,6 @@ fun ButtonElementRow(
     }
 
     val text = stringResource(titleId)
-    val color = colorResource(colorId)
     Row(
         modifier = rowModifier,
         verticalAlignment = Alignment.CenterVertically
@@ -86,8 +83,7 @@ fun ButtonElementRow(
         )
         Text(
             text = text,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.W500,
+            style = LocalTypography.current.bodyR14,
             color = color
         )
     }

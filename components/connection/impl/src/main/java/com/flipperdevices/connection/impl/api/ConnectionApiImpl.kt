@@ -1,20 +1,23 @@
 package com.flipperdevices.connection.impl.api
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.bottombar.model.TabState
 import com.flipperdevices.connection.api.ConnectionApi
 import com.flipperdevices.connection.impl.viewmodel.ConnectionStatusViewModel
+import com.flipperdevices.connection.impl.viewmodel.ConnectionTabStateMapper
 import com.flipperdevices.core.di.AppGraph
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
-import kotlinx.coroutines.flow.StateFlow
 
 @ContributesBinding(AppGraph::class)
 class ConnectionApiImpl @Inject constructor() : ConnectionApi {
     @Composable
-    override fun getConnectionTabState(): StateFlow<TabState> {
+    override fun getConnectionTabState(): TabState {
         val connectionStatusViewModel: ConnectionStatusViewModel = viewModel()
-        return connectionStatusViewModel.getStatusState()
+        val connectionStatusState by connectionStatusViewModel.getStatusState().collectAsState()
+        return ConnectionTabStateMapper.getConnectionTabState(connectionStatusState)
     }
 }

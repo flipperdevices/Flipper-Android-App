@@ -1,16 +1,21 @@
 package com.flipperdevices.core.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Shapes
+import androidx.compose.material.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.flipperdevices.core.ui.res.R
 
 val LocalPallet = compositionLocalOf<FlipperPallet> { error("No local pallet") }
 val LocalTypography = compositionLocalOf<FlipperTypography> { error("No local typography") }
@@ -20,17 +25,18 @@ fun FlipperTheme(
     isLight: Boolean,
     content: @Composable () -> Unit
 ) {
-    val pallet = if (isLight) darkPallet else lightPallet
+    val pallet = if (isLight) lightPallet else darkPallet
+    val colors = pallet.toMaterialColors(isLight)
+    val shapes = Shapes(medium = RoundedCornerShape(size = 10.dp))
 
     MaterialTheme(
-        shapes = Shapes(
-            medium = RoundedCornerShape(size = 10.dp)
-        ),
-        colors = pallet.toMaterialColors(isLight)
+        shapes = shapes,
+        colors = colors
     ) {
         CompositionLocalProvider(
             LocalPallet provides pallet,
             LocalTypography provides typography,
+            LocalContentColor provides colors.contentColorFor(backgroundColor = pallet.background),
             content = content
         )
     }
@@ -38,7 +44,14 @@ fun FlipperTheme(
 
 @Suppress("MagicNumber")
 private val lightPallet = FlipperPallet(
+    accent = Color(0xFFFF8200),
+    accentSecond = Color(0xFF589DFF),
     background = Color(0xFFFBFBFB),
+    error = Color(0xFFFFFFFF),
+    onError = Color(0xFFF63F3F),
+    content = Color(0xFFFFFFFF),
+    onContent = Color(0xFF000000),
+
     text100 = Color(0xFF000000),
     text88 = Color(0xFF1C1C1C),
     text80 = Color(0xFF303030),
@@ -50,21 +63,35 @@ private val lightPallet = FlipperPallet(
     text12 = Color(0xFFD6D6D6),
     text8 = Color(0xFFDFDFDF),
     text4 = Color(0xFFE9E9E9),
-    surface = Color(0xFFFFFFFF),
 
     iconTint100 = Color(0xFF000000),
+    iconTint80 = Color(0xFF303030),
     iconTint30 = Color(0xFFAAAAAA),
-    deletedCategoryType = Color(0xFFE9E9E9),
-    keyDeleted = Color(0xFFE9E9E9),
-    progressBarCard = Color(0xFFAAAAAA)
+    iconTint16 = Color(0xFFCCCCCC),
+
+    bottomBarBackground = Color(0xFFFFFFFF),
+    bottomBarSelected = Color(0xFF303030),
+    bottomBarSelectedFlipperStatus = Color(0xFF919191),
+    bottomBarUnselected = Color(0xFFAAAAAA),
+    bottomBarTabBackground = Color(0xFFE9E9E9),
+    bottomBarUnsupported = Color(0xFFF63F3F),
+    disableSwitch = Color(0xFFDFDFDF),
+    backgroundDialog = Color(0xFFFFFFFF)
 )
 
 @Suppress("MagicNumber")
 private val darkPallet = FlipperPallet(
+    accent = Color(0xFFFF8200),
+    accentSecond = Color(0xFF589DFF),
     background = Color(0xFF000000),
-    text100 = Color(0xFF000000),
-    text88 = Color(0xFF1C1C1C),
-    text80 = Color(0xFF303030),
+    error = Color(0xFF000000),
+    onError = Color(0xFFF63F3F),
+    content = Color(0xFF1C1C1C),
+    onContent = Color(0xFFFFFFFF),
+
+    text100 = Color(0xFFFFFFFF),
+    text88 = Color(0xFFFFFFE5),
+    text80 = Color(0xFFFFFFD5),
     text60 = Color(0xFF616161),
     text40 = Color(0xFF919191),
     text30 = Color(0xFFAAAAAA),
@@ -73,74 +100,124 @@ private val darkPallet = FlipperPallet(
     text12 = Color(0xFFD6D6D6),
     text8 = Color(0xFFDFDFDF),
     text4 = Color(0xFFE9E9E9),
-    surface = Color(0xFFFFFFFF),
 
-    iconTint100 = Color(0xFF000000),
+    iconTint100 = Color(0xFFFFFFFF),
+    iconTint80 = Color(0xFFFFFFD5),
     iconTint30 = Color(0xFFAAAAAA),
-    deletedCategoryType = Color(0xFFE9E9E9),
-    keyDeleted = Color(0xFFE9E9E9),
-    progressBarCard = Color(0xFFAAAAAA)
+    iconTint16 = Color(0xFFCCCCCC),
+
+    bottomBarBackground = Color(0xFF1C1C1C),
+    bottomBarSelected = Color(0xFF303030),
+    bottomBarSelectedFlipperStatus = Color(0xFF919191),
+    bottomBarUnselected = Color(0xFFAAAAAA),
+    bottomBarTabBackground = Color(0xFFE9E9E9),
+    bottomBarUnsupported = Color(0xFFF63F3F),
+
+    divider12 = Color(0xFF616161),
+    channelFirmwareReleaseCandidate = Color(0xFFAA69FA),
+    disableSwitch = Color(0xFF616161),
+    backgroundDialog = Color(0xFF303030)
 )
 
 private val typography = FlipperTypography(
+    titleB24 = TextStyle(
+        fontSize = 24.sp,
+        fontFamily = robotoFamily,
+        fontWeight = FontWeight.W700
+    ),
+    titleB22 = TextStyle(
+        fontSize = 22.sp,
+        fontFamily = robotoFamily,
+        fontWeight = FontWeight.W700
+    ),
     titleB20 = TextStyle(
         fontSize = 20.sp,
-        fontFamily = fontFamily,
+        fontFamily = robotoFamily,
         fontWeight = FontWeight.W700
+    ),
+    titleEB20 = TextStyle(
+        fontSize = 20.sp,
+        fontFamily = robotoFamily,
+        fontWeight = FontWeight.W800
     ),
     titleB18 = TextStyle(
         fontSize = 18.sp,
-        fontFamily = fontFamily,
+        fontFamily = robotoFamily,
+        fontWeight = FontWeight.W700
+    ),
+    titleR18 = TextStyle(
+        fontSize = 18.sp,
+        fontFamily = robotoFamily,
+        fontWeight = FontWeight.W400
+    ),
+    titleM18 = TextStyle(
+        fontSize = 18.sp,
+        fontFamily = robotoFamily,
+        fontWeight = FontWeight.W500
+    ),
+    subtitleB12 = TextStyle(
+        fontSize = 12.sp,
+        fontFamily = robotoFamily,
         fontWeight = FontWeight.W700
     ),
     subtitleM12 = TextStyle(
         fontSize = 12.sp,
-        fontFamily = fontFamily,
+        fontFamily = robotoFamily,
         fontWeight = FontWeight.W500
     ),
     subtitleR12 = TextStyle(
         fontSize = 12.sp,
-        fontFamily = fontFamily,
+        fontFamily = robotoFamily,
         fontWeight = FontWeight.W400
     ),
     subtitleB10 = TextStyle(
         fontSize = 10.sp,
-        fontFamily = fontFamily,
+        fontFamily = robotoFamily,
         fontWeight = FontWeight.W700
     ),
     subtitleM10 = TextStyle(
         fontSize = 10.sp,
-        fontFamily = fontFamily,
+        fontFamily = robotoFamily,
         fontWeight = FontWeight.W500
     ),
     bodyR14 = TextStyle(
         fontSize = 14.sp,
-        fontFamily = fontFamily,
+        fontFamily = robotoFamily,
         fontWeight = FontWeight.W400
     ),
     bodyM14 = TextStyle(
         fontSize = 14.sp,
-        fontFamily = fontFamily,
+        fontFamily = robotoFamily,
         fontWeight = FontWeight.W500
     ),
     bodyR16 = TextStyle(
         fontSize = 16.sp,
-        fontFamily = fontFamily,
+        fontFamily = robotoFamily,
         fontWeight = FontWeight.W400
     ),
     buttonB16 = TextStyle(
         fontSize = 16.sp,
-        fontFamily = fontFamily,
+        fontFamily = robotoFamily,
         fontWeight = FontWeight.W700
     ),
     buttonM16 = TextStyle(
         fontSize = 16.sp,
-        fontFamily = fontFamily,
+        fontFamily = robotoFamily,
         fontWeight = FontWeight.W500
     ),
     buttonB14 = TextStyle(
         fontSize = 14.sp,
-        fontFamily = fontFamily,
+        fontFamily = robotoFamily,
         fontWeight = FontWeight.W700
+    ),
+    updateButton40 = TextStyle(
+        fontSize = 40.sp,
+        fontFamily = FontFamily(Font(R.font.flipper_bold)),
+        fontWeight = FontWeight.W400
+    ),
+    updateText40 = TextStyle(
+        fontSize = 40.sp,
+        fontFamily = FontFamily(Font(R.font.flipper)),
+        fontWeight = FontWeight.W400
     )
 )

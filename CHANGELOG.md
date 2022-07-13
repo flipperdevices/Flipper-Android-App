@@ -2,6 +2,7 @@
 
 # 1.1.6 - In progress
 
+- [Feature] Compose Theme
 - [Feature] Add black flipper support (update and info screen)
 - [Feature] Compose Theme(module `core:ui:theme`, module `archive`)
 - [Feature] Auto disconnect after 5 minutes inactivity

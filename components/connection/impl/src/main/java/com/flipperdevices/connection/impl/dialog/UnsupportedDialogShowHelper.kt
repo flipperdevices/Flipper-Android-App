@@ -3,6 +3,7 @@ package com.flipperdevices.connection.impl.dialog
 import android.app.AlertDialog
 import com.flipperdevices.connection.impl.R
 import com.flipperdevices.core.activityholder.CurrentActivityHolder
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 class UnsupportedDialogShowHelper {
     private var alreadyShown = false
@@ -18,7 +19,7 @@ class UnsupportedDialogShowHelper {
         lateinit var dialog: AlertDialog
 
         dialog = AlertDialog.Builder(activityContext)
-            .setIcon(R.drawable.ic_warning)
+            .setIcon(DesignSystem.drawable.ic_warning)
             .setTitle(R.string.dialog_unsupported_title)
             .setMessage(R.string.dialog_unsupported_description)
             .setCancelable(true)

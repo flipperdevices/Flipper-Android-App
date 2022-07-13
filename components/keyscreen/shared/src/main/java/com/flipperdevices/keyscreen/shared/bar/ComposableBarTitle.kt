@@ -4,20 +4,17 @@ import androidx.annotation.StringRes
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
 fun ComposableBarTitle(modifier: Modifier, text: String) {
     Text(
         modifier = modifier,
         text = text,
-        fontSize = 20.sp,
-        fontWeight = FontWeight.W800,
-        color = colorResource(DesignSystem.color.black_88)
+        color = LocalPallet.current.text88,
+        style = LocalTypography.current.titleEB20
     )
 }
 

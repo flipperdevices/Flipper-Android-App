@@ -11,6 +11,7 @@ dependencies {
     implementation(projects.components.core.navigation)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.ktx)
+    implementation(projects.components.core.ui.theme)
 
     implementation(projects.components.keyedit.api)
 

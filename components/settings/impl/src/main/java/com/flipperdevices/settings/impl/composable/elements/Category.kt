@@ -5,12 +5,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
 fun Category(
@@ -23,8 +20,6 @@ fun Category(
             top = 48.dp
         ),
         text = stringResource(titleId),
-        fontWeight = FontWeight.W700,
-        color = colorResource(DesignSystem.color.black_100),
-        fontSize = 14.sp
+        style = LocalTypography.current.buttonB14
     )
 }

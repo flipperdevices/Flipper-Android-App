@@ -18,17 +18,17 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.ktx.ComposableFlipperButton
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.firstpair.impl.R
 
 @Composable
@@ -57,9 +57,9 @@ fun ComposableSearchItem(
                 Icon(
                     modifier = Modifier
                         .size(width = 60.dp, height = 26.dp),
-                    painter = painterResource(R.drawable.pic_flipper_status),
+                    painter = painterResource(DesignSystem.drawable.pic_flipper_status),
                     contentDescription = stringResource(R.string.firstpair_search_flipper_status),
-                    tint = colorResource(DesignSystem.color.accent_secondary)
+                    tint = LocalPallet.current.accentSecond
                 )
                 Text(
                     modifier = Modifier.padding(
@@ -68,9 +68,8 @@ fun ComposableSearchItem(
                         top = 3.dp
                     ),
                     text = stringResource(R.string.firstpair_search_flipper_model_zero),
-                    color = colorResource(DesignSystem.color.black_30),
-                    fontWeight = FontWeight.W500,
-                    fontSize = 12.sp
+                    color = LocalPallet.current.text30,
+                    style = LocalTypography.current.subtitleM12
                 )
             }
 
@@ -78,7 +77,7 @@ fun ComposableSearchItem(
                 modifier = Modifier
                     .fillMaxHeight()
                     .width(width = 1.dp),
-                color = colorResource(DesignSystem.color.black_8)
+                color = LocalPallet.current.divider12
             )
 
             Text(
@@ -87,9 +86,7 @@ fun ComposableSearchItem(
                     .padding(horizontal = 16.dp),
                 text = text,
                 textAlign = TextAlign.Start,
-                fontWeight = FontWeight.W500,
-                color = colorResource(DesignSystem.color.black_100),
-                fontSize = 16.sp
+                style = LocalTypography.current.buttonM16
             )
 
             if (isConnecting) {
@@ -97,7 +94,7 @@ fun ComposableSearchItem(
                     modifier = Modifier
                         .padding(end = 32.dp)
                         .size(24.dp),
-                    color = colorResource(DesignSystem.color.accent_secondary),
+                    color = LocalPallet.current.accentSecond,
                     strokeWidth = 2.dp
                 )
             } else {

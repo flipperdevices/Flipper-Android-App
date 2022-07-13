@@ -17,17 +17,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.preference.pb.HardwareColor
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.updater.screen.R
 import com.flipperdevices.updater.screen.model.FailedReason
 import com.flipperdevices.updater.screen.model.UpdaterScreenState
@@ -65,9 +64,7 @@ private fun UpdaterScreenHeader(
     Text(
         modifier = Modifier.padding(top = 48.dp, start = 14.dp, end = 14.dp),
         text = stringResource(titleId),
-        fontSize = 18.sp,
-        fontWeight = FontWeight.W700,
-        color = colorResource(DesignSystem.color.black_100),
+        style = LocalTypography.current.titleB18,
         textAlign = TextAlign.Center
     )
 
@@ -75,11 +72,11 @@ private fun UpdaterScreenHeader(
     val imageId = when (flipperColor) {
         HardwareColor.UNRECOGNIZED,
         HardwareColor.WHITE -> if (isFailed) {
-            R.drawable.pic_flipper_update_failed
-        } else R.drawable.pic_flipper_update
+            DesignSystem.drawable.pic_flipper_update_failed
+        } else DesignSystem.drawable.pic_flipper_update
         HardwareColor.BLACK -> if (isFailed) {
-            R.drawable.pic_black_flipper_update_failed
-        } else R.drawable.pic_black_flipper_update
+            DesignSystem.drawable.pic_black_flipper_update_failed
+        } else DesignSystem.drawable.pic_black_flipper_update
     }
 
     Image(
@@ -105,7 +102,7 @@ private fun CancelButton(
     ) {
         if (updaterScreenState == UpdaterScreenState.CancelingUpdate) {
             CircularProgressIndicator(
-                color = colorResource(DesignSystem.color.accent_secondary)
+                color = LocalPallet.current.accentSecond
             )
             return@Box
         }
@@ -117,9 +114,8 @@ private fun CancelButton(
             ),
             text = stringResource(R.string.update_screen_cancel),
             textAlign = TextAlign.Center,
-            color = colorResource(DesignSystem.color.accent_secondary),
-            fontSize = 16.sp,
-            fontWeight = FontWeight.W500
+            color = LocalPallet.current.accentSecond,
+            style = LocalTypography.current.buttonM16
         )
     }
 }

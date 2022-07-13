@@ -6,7 +6,6 @@ plugins {
 
 dependencies {
     implementation(projects.components.updater.api)
-    implementation(projects.components.updater.fonts)
     implementation(projects.components.info.shared)
 
     implementation(projects.components.core.di)
@@ -20,6 +19,7 @@ dependencies {
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.fragment)
     implementation(projects.components.core.ui.lifecycle)
+    implementation(projects.components.core.ui.theme)
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.service.api)

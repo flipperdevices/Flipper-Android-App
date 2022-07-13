@@ -8,24 +8,17 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.markdown.ClickableUrlText
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
 fun ComposableHelpItem(index: Int, data: HelpOptions) {
     Row {
-        val titleStyle = TextStyle(
-            fontSize = 16.sp,
-            fontWeight = FontWeight.W400,
-            color = colorResource(DesignSystem.color.black_100)
-        )
+        val titleStyle = LocalTypography.current.bodyR16
 
         Text(
             modifier = Modifier.padding(end = 2.dp),
@@ -49,10 +42,8 @@ fun ComposableHelpOptionsDescription(
     modifier: Modifier = Modifier,
     data: HelpOptions
 ) {
-    val descriptionStyle = TextStyle(
-        fontWeight = FontWeight.W400,
-        fontSize = 16.sp,
-        color = colorResource(DesignSystem.color.accent_secondary),
+    val descriptionStyle = LocalTypography.current.bodyR16.copy(
+        color = LocalPallet.current.accentSecond,
         textDecoration = TextDecoration.Underline
     )
 

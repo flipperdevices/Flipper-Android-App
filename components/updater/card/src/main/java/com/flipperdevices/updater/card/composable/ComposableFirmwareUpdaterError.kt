@@ -14,15 +14,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.ktx.painterResourceByKey
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.updater.card.R
 import com.flipperdevices.updater.model.UpdateErrorType
 
@@ -46,17 +45,14 @@ fun ComposableFirmwareUpdaterError(
         Text(
             modifier = Modifier.padding(top = 4.dp, start = 12.dp, end = 12.dp),
             text = title,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.W500,
-            color = colorResource(DesignSystem.color.black_100),
+            style = LocalTypography.current.bodyM14,
             textAlign = TextAlign.Center
         )
         Text(
             modifier = Modifier.padding(top = 2.dp, start = 12.dp, end = 12.dp),
             text = description,
-            fontWeight = FontWeight.W400,
-            fontSize = 14.sp,
-            color = colorResource(DesignSystem.color.black_30),
+            style = LocalTypography.current.bodyR14,
+            color = LocalPallet.current.text30,
             textAlign = TextAlign.Center
         )
     }
@@ -71,10 +67,9 @@ fun ComposableFirmwareUpdaterError(
             .fillMaxWidth()
             .padding(top = 4.dp, bottom = 8.dp),
         text = stringResource(R.string.updater_card_updater_error_retry),
-        fontWeight = FontWeight.W500,
-        fontSize = 16.sp,
         textAlign = TextAlign.Center,
-        color = colorResource(DesignSystem.color.accent_secondary)
+        color = LocalPallet.current.accentSecond,
+        style = LocalTypography.current.buttonM16
     )
 }
 
@@ -99,9 +94,9 @@ fun getDescriptionByUpdateError(type: UpdateErrorType): Int {
 @DrawableRes
 fun getImageByUpdateError(type: UpdateErrorType): Int {
     return when (type) {
-        UpdateErrorType.NO_INTERNET -> R.drawable.ic_no_internet
-        UpdateErrorType.UNABLE_TO_SERVER -> R.drawable.ic_server_error
-        UpdateErrorType.NO_SD_CARD -> R.drawable.ic_no_sd
+        UpdateErrorType.NO_INTERNET -> DesignSystem.drawable.ic_no_internet
+        UpdateErrorType.UNABLE_TO_SERVER -> DesignSystem.drawable.ic_server_error
+        UpdateErrorType.NO_SD_CARD -> DesignSystem.drawable.ic_no_sd
     }
 }
 

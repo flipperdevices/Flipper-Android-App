@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
@@ -29,18 +28,17 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.info.shared.ComposableDeviceInfoRowText
 import com.flipperdevices.info.shared.getColorByChannel
 import com.flipperdevices.info.shared.getDescriptionByChannel
@@ -80,16 +78,16 @@ fun ComposableUpdaterFirmwareVersionWithChoice(
             } else {
                 ComposableDeviceInfoRowText(
                     text = getTextByVersion(version),
-                    colorId = getColorByChannel(version.channel)
+                    color = getColorByChannel(version.channel)
                 )
                 Icon(
                     modifier = Modifier
                         .padding(all = 4.dp),
-                    painter = painterResource(R.drawable.ic_more),
+                    painter = painterResource(DesignSystem.drawable.ic_more),
                     contentDescription = stringResource(
                         id = R.string.updater_card_firmware_version_choice
                     ),
-                    tint = colorResource(DesignSystem.color.black_30)
+                    tint = LocalPallet.current.iconTint30
                 )
 
                 ComposableDropMenuFirmwareBuild(
@@ -150,8 +148,7 @@ fun ComposableDropMenuFirmwareBuild(
                     modifier = Modifier
                         .width(wightPopupInDp)
                         .offset { IntOffset(coordinateMenuByX, coordinateMenuByY) }
-                        .padding(end = 14.dp),
-                    shape = RoundedCornerShape(10.dp)
+                        .padding(end = 14.dp)
                 ) {
                     ComposableFirmwareColumn(onClickMenuItem)
                 }
@@ -179,22 +176,20 @@ fun ComposableFirmwareColumn(
             ) {
                 Text(
                     text = stringResource(getFullNameByChannel(channel)),
-                    color = colorResource(getColorByChannel(channel)),
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.W500
+                    color = getColorByChannel(channel),
+                    style = LocalTypography.current.bodyM14
                 )
                 Text(
                     text = stringResource(getDescriptionByChannel(channel)),
-                    color = colorResource(DesignSystem.color.black_40),
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.W400
+                    color = LocalPallet.current.text40,
+                    style = LocalTypography.current.subtitleR12
                 )
             }
             if (channels.lastIndex != index) {
                 Divider(
                     modifier = Modifier.fillMaxWidth(),
                     thickness = 1.dp,
-                    color = colorResource(DesignSystem.color.black_12)
+                    color = LocalPallet.current.divider12
                 )
             }
         }
@@ -217,7 +212,7 @@ fun ComposableUpdaterFirmwareVersionWithChoicePreview() {
                 .height(50.dp)
                 .fillMaxWidth()
                 .padding(horizontal = 12.dp)
-                .background(colorResource(id = DesignSystem.color.background)),
+                .background(LocalPallet.current.background),
             version = firmwareVersion
         )
         ComposableUpdaterFirmwareVersionWithChoice(
@@ -225,7 +220,7 @@ fun ComposableUpdaterFirmwareVersionWithChoicePreview() {
                 .height(50.dp)
                 .fillMaxWidth()
                 .padding(horizontal = 12.dp)
-                .background(colorResource(id = DesignSystem.color.background)),
+                .background(LocalPallet.current.background),
             version = null
         )
     }

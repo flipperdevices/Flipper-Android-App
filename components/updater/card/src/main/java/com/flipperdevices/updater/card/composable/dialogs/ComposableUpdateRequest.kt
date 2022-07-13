@@ -5,6 +5,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.ui.dialog.composable.FlipperDialog
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.updater.card.R
 import com.flipperdevices.updater.card.viewmodel.UpdateRequestViewModel
 import com.flipperdevices.updater.model.UpdateCardState
@@ -24,7 +25,7 @@ fun ComposableUpdateRequest(
     }
 
     FlipperDialog(
-        imageId = R.drawable.pic_flipper_low_battery,
+        imageId = DesignSystem.drawable.pic_flipper_low_battery,
         titleId = R.string.update_card_dialog_battery_title,
         textId = R.string.update_card_dialog_battery_desc,
         buttonTextId = R.string.update_card_dialog_battery_btn,

@@ -1,6 +1,5 @@
 package com.flipperdevices.updater.screen.composable
 
-import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -20,17 +19,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.ktx.animatedDots
 import com.flipperdevices.core.ui.ktx.painterResourceByKey
-import com.flipperdevices.core.ui.res.R as DesignSystem
-import com.flipperdevices.updater.fonts.R as Fonts
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 import kotlin.math.roundToInt
 
 private const val PERCENT_MAX = 100
@@ -38,14 +32,11 @@ private const val PERCENT_MIN = 0.0001f
 
 @Composable
 fun ComposableInProgressIndicator(
-    @ColorRes accentColorId: Int,
-    @ColorRes secondColorId: Int,
+    accentColor: Color,
+    secondColor: Color,
     @DrawableRes iconId: Int?,
     percent: Float?
 ) {
-    val accentColor = colorResource(accentColorId)
-    val secondColor = colorResource(secondColorId)
-
     Box(
         modifier = Modifier
             .defaultMinSize(minHeight = 46.dp)
@@ -66,7 +57,7 @@ fun ComposableInProgressIndicator(
                     .size(28.dp),
                 painter = painterResourceByKey(iconId),
                 contentDescription = null,
-                tint = colorResource(DesignSystem.color.white_100)
+                tint = LocalPallet.current.onFirmwareUpdateProgress
             )
         }
 
@@ -82,10 +73,8 @@ fun ComposableInProgressIndicator(
                 .fillMaxWidth(),
             text = progressText,
             textAlign = TextAlign.Center,
-            color = colorResource(DesignSystem.color.white_100),
-            fontWeight = FontWeight.W400,
-            fontSize = 40.sp,
-            fontFamily = FontFamily(Font(Fonts.font.flipper))
+            style = LocalTypography.current.updateText40,
+            color = LocalPallet.current.onFirmwareUpdateProgress
         )
     }
 }

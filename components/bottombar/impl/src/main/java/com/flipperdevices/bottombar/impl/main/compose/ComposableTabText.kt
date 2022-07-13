@@ -2,10 +2,9 @@ package com.flipperdevices.bottombar.impl.main.compose
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
 import com.flipperdevices.bottombar.model.TabState
 import com.flipperdevices.core.ui.ktx.animatedDots
+import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
 fun ComposableStatusText(
@@ -19,7 +18,6 @@ fun ComposableStatusText(
 
     Text(
         text = animatedText,
-        fontSize = 10.sp,
-        fontWeight = FontWeight.W700
+        style = LocalTypography.current.subtitleB10
     )
 }

@@ -13,15 +13,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
 import com.flipperdevices.bridge.synchronization.ui.R
 import com.flipperdevices.bridge.synchronization.ui.model.ItemSynchronizationState
 import com.flipperdevices.core.ui.ktx.animatedDots
 import com.flipperdevices.core.ui.ktx.painterResourceByKey
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 
 private const val ROTATE_DURATION_MS = 3000
 
@@ -31,15 +30,15 @@ internal fun ComposableItemSynchronizationState(
     withText: Boolean
 ) {
     val iconId = when (itemSynchronizationState) {
-        ItemSynchronizationState.SYNCHRONIZED -> R.drawable.ic_mini_synced
-        ItemSynchronizationState.IN_PROGRESS -> R.drawable.ic_mini_syncing
-        ItemSynchronizationState.NOT_SYNCHRONIZED -> R.drawable.ic_mini_sync_failed
+        ItemSynchronizationState.SYNCHRONIZED -> DesignSystem.drawable.ic_mini_synced
+        ItemSynchronizationState.IN_PROGRESS -> DesignSystem.drawable.ic_mini_syncing
+        ItemSynchronizationState.NOT_SYNCHRONIZED -> DesignSystem.drawable.ic_mini_sync_failed
     }
 
-    val colorId = when (itemSynchronizationState) {
+    val color = when (itemSynchronizationState) {
         ItemSynchronizationState.SYNCHRONIZED,
-        ItemSynchronizationState.IN_PROGRESS -> DesignSystem.color.accent_secondary
-        ItemSynchronizationState.NOT_SYNCHRONIZED -> DesignSystem.color.black_30
+        ItemSynchronizationState.IN_PROGRESS -> LocalPallet.current.accentSecond
+        ItemSynchronizationState.NOT_SYNCHRONIZED -> LocalPallet.current.text30
     }
 
     val descriptionId = when (itemSynchronizationState) {
@@ -68,15 +67,14 @@ internal fun ComposableItemSynchronizationState(
             modifier = Modifier.rotate(angel),
             painter = painterResourceByKey(iconId),
             contentDescription = stringResource(descriptionId),
-            tint = colorResource(colorId)
+            tint = color
         )
 
         if (withText) {
             Text(
                 text = stringResource(descriptionId),
-                fontWeight = FontWeight.W500,
-                fontSize = 10.sp,
-                color = colorResource(colorId)
+                style = LocalTypography.current.subtitleM10,
+                color = color
             )
         }
     }

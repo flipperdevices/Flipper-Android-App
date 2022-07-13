@@ -90,7 +90,6 @@ private fun ComposableKeyCardContent(
         text = flipperKeyParsed.keyName,
         overflow = TextOverflow.Ellipsis,
         maxLines = 1,
-        color = LocalPallet.current.text100,
         style = LocalTypography.current.bodyR14
     )
 

@@ -7,6 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.keyscreen.impl.R
 import com.flipperdevices.keyscreen.impl.model.FlipperDeviceState
 import com.flipperdevices.keyscreen.impl.viewmodel.FlipperDeviceViewModel
@@ -22,7 +23,7 @@ fun ComposableEmulate(
 
     ComposableActionFlipperHorizontal(
         modifier = modifier,
-        iconId = R.drawable.ic_emulate,
+        iconId = DesignSystem.drawable.ic_emulate,
         descriptionId = R.string.keyscreen_emulate,
         onClick = if (enabled) onClick else null
     )

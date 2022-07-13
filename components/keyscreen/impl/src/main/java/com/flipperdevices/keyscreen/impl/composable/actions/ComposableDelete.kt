@@ -2,6 +2,7 @@ package com.flipperdevices.keyscreen.impl.composable.actions
 
 import androidx.compose.runtime.Composable
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyscreen.impl.R
 import com.flipperdevices.keyscreen.impl.model.DeleteState
 
@@ -10,7 +11,7 @@ fun ComposableDelete(deleteState: DeleteState, onClick: () -> Unit) {
     if (deleteState == DeleteState.PROGRESS) {
         ComposableActionRowInProgress(
             descriptionId = R.string.keyscreen_deleting_text,
-            descriptionColorId = DesignSystem.color.red
+            descriptionColor = LocalPallet.current.keyDelete
         )
         return
     }
@@ -20,10 +21,10 @@ fun ComposableDelete(deleteState: DeleteState, onClick: () -> Unit) {
     } else R.string.keyscreen_delete_text
 
     ComposableActionRow(
-        iconId = R.drawable.ic_trash_icon,
-        tintId = DesignSystem.color.red,
+        iconId = DesignSystem.drawable.ic_trash_icon,
+        tint = LocalPallet.current.keyDelete,
         descriptionId = descriptionId,
-        descriptionColorId = DesignSystem.color.red,
+        descriptionColor = LocalPallet.current.keyDelete,
         onClick = onClick
     )
 }

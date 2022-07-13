@@ -9,13 +9,11 @@ import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.firstpair.impl.R
 
 @Composable
@@ -32,9 +30,8 @@ fun ComposableSearchingFooter(
             .padding(all = 8.dp)
             .fillMaxWidth(),
         text = stringResource(R.string.firstpair_search_skip_connection),
-        color = colorResource(DesignSystem.color.accent_secondary),
-        fontWeight = FontWeight.W500,
-        fontSize = 16.sp,
+        color = LocalPallet.current.accentSecond,
+        style = LocalTypography.current.buttonM16,
         textAlign = TextAlign.Center
     )
 }

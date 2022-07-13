@@ -6,9 +6,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableFavorite
 import com.flipperdevices.keyscreen.impl.model.DeleteState
 import com.flipperdevices.keyscreen.impl.model.FavoriteState
@@ -28,8 +27,7 @@ fun ComposableCardTitle(
     ) {
         Text(
             text = keyName,
-            fontWeight = FontWeight.W500,
-            fontSize = 18.sp
+            style = LocalTypography.current.titleM18
         )
         if (deleteState == DeleteState.NOT_DELETED &&
             favoriteState != null &&

@@ -9,12 +9,10 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.settings.impl.R
 
 @Composable
@@ -27,15 +25,13 @@ fun VersionCategory(version: String) {
     ) {
         Text(
             text = stringResource(id = R.string.version_name_app),
-            fontSize = 12.sp,
-            fontWeight = FontWeight.W400,
-            color = colorResource(id = DesignSystem.color.black_20)
+            color = LocalPallet.current.text20,
+            style = LocalTypography.current.subtitleR12
         )
         Text(
             text = versionText,
-            fontSize = 12.sp,
-            fontWeight = FontWeight.W400,
-            color = colorResource(id = DesignSystem.color.black_40)
+            color = LocalPallet.current.text40,
+            style = LocalTypography.current.subtitleR12
         )
         Spacer(modifier = Modifier.height(14.dp))
     }

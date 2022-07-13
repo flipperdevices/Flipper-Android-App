@@ -53,14 +53,15 @@ fun ComposableKeyType(
                 .padding(all = 8.dp)
                 .size(size = 24.dp),
             painter = painterResource(icon),
-            contentDescription = title
+            contentDescription = title,
+            tint = LocalPallet.current.keyIcon
         )
 
         Text(
             modifier = Modifier.padding(end = 14.dp),
             text = title,
-            color = LocalPallet.current.text100,
-            style = LocalTypography.current.bodyM14
+            style = LocalTypography.current.bodyM14,
+            color = LocalPallet.current.keyTitle
         )
     }
 }

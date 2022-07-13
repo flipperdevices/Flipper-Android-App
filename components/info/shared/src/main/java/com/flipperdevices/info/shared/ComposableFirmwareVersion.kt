@@ -1,10 +1,10 @@
 package com.flipperdevices.info.shared
 
-import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
 
@@ -40,11 +40,11 @@ fun getTextByVersion(version: FirmwareVersion): String {
     return "${stringResource(getNameByChannel(version.channel))} ${version.version}"
 }
 
-@ColorRes
-fun getColorByChannel(channel: FirmwareChannel): Int {
+@Composable
+fun getColorByChannel(channel: FirmwareChannel): Color {
     return when (channel) {
-        FirmwareChannel.DEV -> DesignSystem.color.red
-        FirmwareChannel.RELEASE_CANDIDATE -> DesignSystem.color.purple
-        FirmwareChannel.RELEASE -> R.color.device_info_release
+        FirmwareChannel.DEV -> LocalPallet.current.channelFirmwareDev
+        FirmwareChannel.RELEASE_CANDIDATE -> LocalPallet.current.channelFirmwareReleaseCandidate
+        FirmwareChannel.RELEASE -> LocalPallet.current.channelFirmwareRelease
     }
 }

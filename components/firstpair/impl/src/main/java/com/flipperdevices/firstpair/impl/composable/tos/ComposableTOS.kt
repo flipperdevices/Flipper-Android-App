@@ -9,18 +9,16 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.markdown.ClickableUrlText
 import com.flipperdevices.core.ui.ktx.ComposableFlipperButton
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.firstpair.impl.R
 
 @Composable
@@ -44,8 +42,7 @@ private fun ComposableTutorial(modifier: Modifier) {
                 top = 48.dp
             ),
             text = stringResource(R.string.firstpair_tos_title),
-            fontWeight = FontWeight.W700,
-            fontSize = 24.sp,
+            style = LocalTypography.current.titleB24,
             textAlign = TextAlign.Center
         )
 
@@ -55,7 +52,7 @@ private fun ComposableTutorial(modifier: Modifier) {
         ) {
             Image(
                 modifier = Modifier.fillMaxWidth(),
-                painter = painterResource(R.drawable.pic_connecting),
+                painter = painterResource(DesignSystem.drawable.pic_connecting),
                 contentDescription = stringResource(R.string.firstpair_tos_title)
             )
 
@@ -66,7 +63,7 @@ private fun ComposableTutorial(modifier: Modifier) {
                         horizontal = 40.dp,
                         vertical = 8.dp
                     ),
-                painter = painterResource(R.drawable.pic_flipper_instruction),
+                painter = painterResource(DesignSystem.drawable.pic_flipper_instruction),
                 contentDescription = stringResource(R.string.firstpair_tos_description)
             )
         }
@@ -94,11 +91,9 @@ fun ComposableFooter(onApplyPress: () -> Unit) {
                 bottom = 12.dp
             ),
             markdownResId = R.string.firstpair_tos_footer,
-            style = TextStyle(
-                textAlign = TextAlign.Center,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.W400,
-                color = colorResource(DesignSystem.color.black_30)
+            style = LocalTypography.current.bodyR16.copy(
+                color = LocalPallet.current.text30,
+                textAlign = TextAlign.Center
             )
         )
     }

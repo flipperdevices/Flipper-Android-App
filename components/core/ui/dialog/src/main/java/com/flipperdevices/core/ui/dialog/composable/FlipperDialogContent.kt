@@ -13,12 +13,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.dialog.R
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
 
 @Composable
 internal fun FlipperDialogContent(
@@ -42,9 +42,9 @@ internal fun FlipperDialogContent(
                         indication = rememberRipple(bounded = false),
                         onClick = onDismissRequest
                     ),
-                painter = painterResource(R.drawable.ic_close),
-                contentDescription = stringResource(R.string.core_ui_dialog_close),
-                tint = colorResource(DesignSystem.color.black_100)
+                painter = painterResource(DesignSystem.drawable.ic_close),
+                tint = LocalPallet.current.iconTint100,
+                contentDescription = stringResource(R.string.core_ui_dialog_close)
             )
         }
     }

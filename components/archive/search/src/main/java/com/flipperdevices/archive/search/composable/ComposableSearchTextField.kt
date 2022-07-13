@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -12,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -32,9 +32,7 @@ internal fun ComposableSearchTextField(
         text,
         label = { SearchTextLabel() },
         onTextChange,
-        LocalTypography.current.bodyR16.copy(
-            color = LocalPallet.current.text100
-        )
+        LocalTypography.current.bodyR16
     )
 }
 
@@ -62,7 +60,9 @@ private fun SearchTextBox(
         value = text,
         onValueChange = onTextChange,
         decorationBox = decorationBox,
-        textStyle = LocalTextStyle.current.merge(textStyle),
+        textStyle = textStyle.copy(
+            color = LocalPallet.current.text100
+        ),
         singleLine = true,
         keyboardOptions = KeyboardOptions(
             imeAction = ImeAction.Search,
@@ -70,7 +70,8 @@ private fun SearchTextBox(
         ),
         keyboardActions = KeyboardActions(onSearch = {
             focusManager.clearFocus()
-        })
+        }),
+        cursorBrush = SolidColor(LocalPallet.current.text100)
     )
 
     LaunchedEffect(Unit) {

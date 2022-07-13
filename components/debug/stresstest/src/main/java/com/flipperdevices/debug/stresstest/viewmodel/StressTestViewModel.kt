@@ -98,7 +98,7 @@ class StressTestViewModel : LifecycleViewModel() {
         }
     }
 
-    private fun writeToLog(log: String, color: Color = Color.Black) {
+    private fun writeToLog(log: String, color: Color? = null) {
         debugLog.update {
             return@update it.plus(LogLine(log, color))
         }

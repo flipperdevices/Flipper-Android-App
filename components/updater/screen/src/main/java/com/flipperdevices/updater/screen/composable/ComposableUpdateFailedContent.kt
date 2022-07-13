@@ -9,15 +9,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.markdown.ClickableUrlText
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.updater.screen.R
 
 @Composable
@@ -36,18 +35,15 @@ private fun ComposableUpdateFailedContent(
     Text(
         modifier = Modifier.padding(start = 24.dp, end = 24.dp, bottom = 14.dp),
         text = stringResource(titleId),
-        fontWeight = FontWeight.W500,
-        color = colorResource(DesignSystem.color.black_100),
-        fontSize = 14.sp,
+        style = LocalTypography.current.bodyM14,
         textAlign = TextAlign.Center
     )
 
     Text(
         modifier = Modifier.padding(start = 24.dp, end = 24.dp, bottom = 14.dp),
         text = stringResource(descriptionId),
-        fontWeight = FontWeight.W400,
-        color = colorResource(DesignSystem.color.black_40),
-        fontSize = 14.sp,
+        style = LocalTypography.current.bodyR14,
+        color = LocalPallet.current.text40,
         textAlign = TextAlign.Center
     )
 
@@ -59,7 +55,7 @@ private fun ComposableUpdateFailedContent(
 @Composable
 fun ComposableFailedUploadContent() {
     ComposableUpdateFailedContent(
-        imageId = R.drawable.ic_flipper_upload_failed,
+        imageId = DesignSystem.drawable.ic_flipper_upload_failed,
         titleId = R.string.update_screen_failed_flipper_title,
         descriptionId = R.string.update_screen_failed_flipper_desc
     ) {
@@ -72,17 +68,16 @@ fun ComposableFailedUploadContent() {
 @Composable
 fun ComposableFailedDownloadContent(onRetry: () -> Unit) {
     ComposableUpdateFailedContent(
-        imageId = R.drawable.pic_server_error,
+        imageId = DesignSystem.drawable.pic_server_error,
         titleId = R.string.update_screen_failed_network_title,
         descriptionId = R.string.update_screen_failed_network_desc
     ) {
         Text(
             modifier = Modifier.clickable(onClick = onRetry),
             text = stringResource(R.string.update_screen_failed_network_btn),
-            fontWeight = FontWeight.W500,
-            fontSize = 16.sp,
+            style = LocalTypography.current.buttonM16,
             textAlign = TextAlign.Center,
-            color = colorResource(DesignSystem.color.accent_secondary)
+            color = LocalPallet.current.accentSecond
         )
     }
 }

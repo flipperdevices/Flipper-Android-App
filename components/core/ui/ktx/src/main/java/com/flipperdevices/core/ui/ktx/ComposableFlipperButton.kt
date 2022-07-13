@@ -15,13 +15,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
 fun ComposableFlipperButton(
@@ -34,7 +32,7 @@ fun ComposableFlipperButton(
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(size = 30.dp))
-            .background(colorResource(DesignSystem.color.accent_secondary))
+            .background(LocalPallet.current.accentSecond)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(),
@@ -45,11 +43,8 @@ fun ComposableFlipperButton(
         Text(
             modifier = Modifier.padding(textPadding),
             text = text,
-            color = colorResource(DesignSystem.color.white_100),
-            style = TextStyle(
-                fontSize = 16.sp,
-                fontWeight = FontWeight.W700
-            ).merge(textStyle)
+            color = LocalPallet.current.onFlipperButton,
+            style = LocalTypography.current.buttonB16.merge(textStyle)
         )
     }
 }

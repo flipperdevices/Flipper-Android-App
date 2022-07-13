@@ -19,9 +19,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.inappnotification.api.model.InAppNotification
 import kotlin.math.max
 
@@ -56,7 +55,7 @@ private fun ComposableInAppNotificationCard(
                 .padding(all = 14.dp)
                 .fillMaxWidth(),
             shape = RoundedCornerShape(size = 8.dp),
-            backgroundColor = colorResource(DesignSystem.color.black_4)
+            backgroundColor = LocalPallet.current.notificationCard
         ) {
             ComposableInAppNotificationCardContent(notification)
         }

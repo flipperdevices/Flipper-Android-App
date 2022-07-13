@@ -13,9 +13,9 @@ dependencies {
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ui.dialog)
+    implementation(projects.components.core.ui.theme)
 
     implementation(projects.components.updater.api)
-    implementation(projects.components.updater.fonts)
     implementation(projects.components.info.shared)
 
     implementation(projects.components.bridge.api)

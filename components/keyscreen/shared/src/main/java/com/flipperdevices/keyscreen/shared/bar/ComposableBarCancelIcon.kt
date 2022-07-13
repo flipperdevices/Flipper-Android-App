@@ -8,7 +8,6 @@ import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -32,8 +31,7 @@ fun ComposableBarCancelIcon(
     Icon(
         modifier = clickableModifier
             .size(24.dp),
-        painter = painterResource(R.drawable.ic_close_icon),
-        contentDescription = stringResource(R.string.keyscreen_cancel_pic_desc),
-        tint = colorResource(DesignSystem.color.black_100)
+        painter = painterResource(DesignSystem.drawable.ic_close_icon),
+        contentDescription = stringResource(R.string.keyscreen_cancel_pic_desc)
     )
 }

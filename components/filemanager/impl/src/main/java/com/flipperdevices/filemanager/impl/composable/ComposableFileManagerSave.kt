@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.filemanager.api.share.ReceiveApi
 import com.flipperdevices.filemanager.impl.R
@@ -71,7 +72,7 @@ private fun ComposableSaveTopBar(onClickSaveButton: () -> Unit) {
     }, actions = {
             IconButton(onClick = onClickSaveButton) {
                 Icon(
-                    painter = painterResource(R.drawable.ic_ok),
+                    painter = painterResource(DesignSystem.drawable.ic_ok),
                     contentDescription = stringResource(R.string.filemanager_save_action)
                 )
             }

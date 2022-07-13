@@ -4,13 +4,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.ktx.animatedDots
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.info.shared.getColorByChannel
 import com.flipperdevices.info.shared.getTextByVersion
 import com.flipperdevices.updater.model.FirmwareVersion
@@ -29,38 +28,38 @@ fun ComposableUpdateContent(
 
     when (updaterScreenState) {
         UpdaterScreenState.NotStarted -> ComposableInProgressIndicator(
-            accentColorId = R.color.update_green,
-            secondColorId = R.color.update_green_background,
+            accentColor = LocalPallet.current.updateProgressGreen,
+            secondColor = LocalPallet.current.updateProgressBackgroundGreen,
             iconId = null,
             percent = null
         )
         is UpdaterScreenState.CancelingSynchronization -> ComposableInProgressIndicator(
-            accentColorId = DesignSystem.color.accent_secondary,
-            secondColorId = R.color.update_blue_background,
+            accentColor = LocalPallet.current.accentSecond,
+            secondColor = LocalPallet.current.updateProgressBackgroundBlue,
             iconId = null,
             percent = null
         )
         is UpdaterScreenState.DownloadingFromNetwork -> ComposableInProgressIndicator(
-            accentColorId = R.color.update_green,
-            secondColorId = R.color.update_green_background,
-            iconId = R.drawable.ic_globe,
+            accentColor = LocalPallet.current.updateProgressGreen,
+            secondColor = LocalPallet.current.updateProgressBackgroundGreen,
+            iconId = DesignSystem.drawable.ic_globe,
             percent = updaterScreenState.percent
         )
         is UpdaterScreenState.UploadOnFlipper -> ComposableInProgressIndicator(
-            accentColorId = DesignSystem.color.accent_secondary,
-            secondColorId = R.color.update_blue_background,
-            iconId = R.drawable.ic_bluetooth,
+            accentColor = LocalPallet.current.accentSecond,
+            secondColor = LocalPallet.current.updateProgressBackgroundBlue,
+            iconId = DesignSystem.drawable.ic_bluetooth,
             percent = updaterScreenState.percent
         )
         UpdaterScreenState.CancelingUpdate -> ComposableInProgressIndicator(
-            accentColorId = DesignSystem.color.accent_secondary,
-            secondColorId = R.color.update_blue_background,
+            accentColor = LocalPallet.current.accentSecond,
+            secondColor = LocalPallet.current.updateProgressBackgroundBlue,
             iconId = null,
             percent = null
         )
         UpdaterScreenState.Rebooting -> ComposableInProgressIndicator(
-            accentColorId = DesignSystem.color.accent_secondary,
-            secondColorId = R.color.update_blue_background,
+            accentColor = LocalPallet.current.accentSecond,
+            secondColor = LocalPallet.current.updateProgressBackgroundBlue,
             iconId = null,
             percent = null
         )
@@ -77,14 +76,13 @@ fun ComposableUpdateContent(
 @Composable
 private fun FirmwareVersionText(version: FirmwareVersion) {
     val text = getTextByVersion(version)
-    val textColor = colorResource(getColorByChannel(version.channel))
+    val textColor = getColorByChannel(version.channel)
 
     Text(
         modifier = Modifier.padding(bottom = 4.dp, start = 24.dp, end = 24.dp),
         text = text,
         color = textColor,
-        fontSize = 18.sp,
-        fontWeight = FontWeight.W500
+        style = LocalTypography.current.titleM18
     )
 }
 
@@ -106,8 +104,7 @@ private fun DescriptionUpdateText(
     Text(
         modifier = Modifier.padding(horizontal = 12.dp),
         text = stringResource(descriptionId) + animatedDots(),
-        fontWeight = FontWeight.W500,
-        fontSize = 12.sp,
-        color = colorResource(DesignSystem.color.black_30)
+        style = LocalTypography.current.subtitleM12,
+        color = LocalPallet.current.text30
     )
 }

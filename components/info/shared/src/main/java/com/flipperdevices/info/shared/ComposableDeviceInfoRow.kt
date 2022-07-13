@@ -1,6 +1,5 @@
 package com.flipperdevices.info.shared
 
-import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,13 +12,12 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
 fun ComposableDeviceInfoRowWithText(
@@ -58,9 +56,8 @@ fun ComposableDeviceInfoRow(
     ) {
         Text(
             text = text,
-            color = colorResource(DesignSystem.color.black_30),
-            fontSize = 14.sp,
-            fontWeight = FontWeight.W400
+            color = LocalPallet.current.text30,
+            style = LocalTypography.current.bodyR14
         )
         if (content != null) {
             content(Modifier)
@@ -86,14 +83,13 @@ fun ComposableDeviceInfoRow(
 fun ComposableDeviceInfoRowText(
     modifier: Modifier = Modifier,
     text: String,
-    @ColorRes colorId: Int = DesignSystem.color.black_100
+    color: Color = LocalPallet.current.text100
 ) {
     Text(
         modifier = modifier,
         text = text,
-        fontSize = 14.sp,
-        color = colorResource(colorId),
-        fontWeight = FontWeight.W400
+        color = color,
+        style = LocalTypography.current.bodyR14
     )
 }
 

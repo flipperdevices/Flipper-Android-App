@@ -12,17 +12,15 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.flipperdevices.core.ui.ktx.ComposableFlipperButton
 import com.flipperdevices.core.ui.ktx.letCompose
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
 fun FlipperDialog(
@@ -42,7 +40,7 @@ fun FlipperDialog(
         Box(
             modifier = modifier
                 .clip(RoundedCornerShape(18.dp))
-                .background(colorResource(DesignSystem.color.background))
+                .background(LocalPallet.current.backgroundDialog)
         ) {
             FlipperDialogContent(
                 image,
@@ -69,19 +67,17 @@ fun FlipperDialog(
     titleComposable: (@Composable () -> Unit)? = titleId?.letCompose { titleIdNotNullable ->
         Text(
             text = stringResource(titleIdNotNullable),
-            fontWeight = FontWeight.W500,
-            fontSize = 14.sp,
-            color = colorResource(DesignSystem.color.black_100),
-            textAlign = TextAlign.Center
+            style = LocalTypography.current.bodyM14,
+            textAlign = TextAlign.Center,
+            color = LocalPallet.current.text100
         )
     },
     @StringRes textId: Int? = null,
     textComposable: (@Composable () -> Unit)? = textId?.letCompose {
         Text(
             text = stringResource(textId),
-            fontWeight = FontWeight.W400,
-            fontSize = 14.sp,
-            color = colorResource(DesignSystem.color.black_40),
+            color = LocalPallet.current.text40,
+            style = LocalTypography.current.bodyR14,
             textAlign = TextAlign.Center
         )
     },
