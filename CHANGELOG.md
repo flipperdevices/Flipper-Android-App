@@ -10,6 +10,9 @@
 - [BUGFIX] Update card not shown when flipper not connected
 - [BUGFIX] Static URL on dynamic link docs
 - [BUGFIX] Fix unsupported version comparison
+- [BUGFIX] Fix crash on cancel updating
+- [BUGFIX] Fix navigation after updating when phone locked or app not visible
+- [BUGFIX] Fix updating image hide after update failed/canceled
 
 # 1.1.5 - HotFix
 

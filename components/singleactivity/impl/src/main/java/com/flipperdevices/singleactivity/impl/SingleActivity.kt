@@ -89,7 +89,7 @@ class SingleActivity : AppCompatActivity(), RouterProvider, LogTagProvider {
         invalidate()
     }
 
-    private fun invalidate() {
+    fun invalidate() {
         info { "Open clear screen, pending deeplinks size is ${deeplinkStack.size}" }
 
         if (firstPairApi.shouldWeOpenPairScreen()) {
@@ -114,12 +114,18 @@ class SingleActivity : AppCompatActivity(), RouterProvider, LogTagProvider {
 
     override fun onResume() {
         super.onResume()
+        SingleActivityHolder.setUpSingleActivity(this)
         cicerone.getNavigationHolder().setNavigator(navigator)
     }
 
     override fun onPause() {
         cicerone.getNavigationHolder().removeNavigator()
         super.onPause()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        SingleActivityHolder.removeSingleActivity()
     }
 
     override fun onBackPressed() {

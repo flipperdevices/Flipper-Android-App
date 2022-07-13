@@ -13,8 +13,10 @@ import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.verbose
+import com.flipperdevices.core.navigation.global.CiceroneGlobal
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.metric.api.MetricApi
+import com.flipperdevices.singleactivity.api.SingleActivityApi
 import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.model.UpdatingState
@@ -58,6 +60,12 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
     @Inject
     lateinit var metricApi: MetricApi
 
+    @Inject
+    lateinit var ciceroneGlobal: CiceroneGlobal
+
+    @Inject
+    lateinit var singleActivityApi: SingleActivityApi
+
     init {
         ComponentHolder.component<UpdaterComponent>().inject(this)
         serviceProvider.provideServiceApi(this, this)
@@ -77,6 +85,7 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
     ) {
         if (updateRequest == null) {
             if (!updaterApi.isUpdateInProcess()) {
+                singleActivityApi.open()
                 updaterScreenStateFlow.emit(UpdaterScreenState.Finish)
             }
             return
@@ -140,6 +149,7 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
         updaterApi.getState()
             .filter { it.state.isFinalState }
             .first()
+        singleActivityApi.open()
         updaterScreenStateFlow.emit(UpdaterScreenState.Finish)
     }
 
@@ -166,10 +176,13 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
                 UpdatingState.FailedDownload ->
                     UpdaterScreenState.Failed(FailedReason.DOWNLOAD_FROM_NETWORK)
                 UpdatingState.Complete,
-                UpdatingState.Failed ->
+                UpdatingState.Failed -> {
+                    singleActivityApi.open()
                     UpdaterScreenState.Finish
+                }
                 UpdatingState.Rebooting ->
                     if (connectionState !is ConnectionState.Ready) {
+                        singleActivityApi.open()
                         UpdaterScreenState.Finish
                     } else UpdaterScreenState.Rebooting
             }

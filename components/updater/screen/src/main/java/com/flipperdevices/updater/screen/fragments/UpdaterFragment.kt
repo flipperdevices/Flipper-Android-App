@@ -44,9 +44,9 @@ class UpdaterFragment : ComposeFragment(), StatusBarColorProvider {
     override fun RenderView() {
         val updaterScreenState by updaterViewModel.getState().collectAsState()
         if (updaterScreenState is UpdaterScreenState.Finish) {
-            onFinish()
             return
         }
+
         ComposableUpdaterScreen(updaterScreenState, updaterViewModel::cancel) {
             val updateRequest = arguments?.getParcelable<UpdateRequest>(EXTRA_UPDATE_REQUEST)
             updaterViewModel.retry(updateRequest)
@@ -56,10 +56,6 @@ class UpdaterFragment : ComposeFragment(), StatusBarColorProvider {
     override fun onStop() {
         super.onStop()
         activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-    }
-
-    private fun onFinish() {
-        singleActivity.open()
     }
 
     override fun getStatusBarColor() = DesignSystem.color.background
