@@ -28,13 +28,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.debugInspectorInfo
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
-import com.flipperdevices.bottombar.model.TabState
 import com.flipperdevices.connection.api.ConnectionApi
-import com.flipperdevices.core.ui.res.R
 import com.flipperdevices.core.ui.theme.LocalPallet
 
 const val ANIMATION_WIDTH_CHANGE_DURATION_MS = 250
@@ -88,32 +85,6 @@ fun ComposeBottomBar(
                 )
             }
         }
-    }
-}
-
-@Composable
-private fun getTabStateFromFlipperBottomTab(
-    connectionApi: ConnectionApi,
-    bottomTab: FlipperBottomTab
-): TabState {
-    return when (bottomTab) {
-        FlipperBottomTab.DEVICE -> {
-            connectionApi.getConnectionTabState()
-        }
-        FlipperBottomTab.ARCHIVE -> TabState.Static(
-            selectedIcon = R.drawable.ic_archive_selected,
-            notSelectedIcon = R.drawable.ic_archive_unselected,
-            text = stringResource(com.flipperdevices.bottombar.impl.R.string.bar_title_archive),
-            selectedColor = LocalPallet.current.bottomBarSelected,
-            unselectedColor = LocalPallet.current.bottomBarUnselected
-        )
-        FlipperBottomTab.OPTIONS -> TabState.Static(
-            selectedIcon = R.drawable.ic_options_selected,
-            notSelectedIcon = R.drawable.ic_options_unselected,
-            text = stringResource(com.flipperdevices.bottombar.impl.R.string.bar_title_options),
-            selectedColor = LocalPallet.current.bottomBarSelected,
-            unselectedColor = LocalPallet.current.bottomBarUnselected
-        )
     }
 }
 
