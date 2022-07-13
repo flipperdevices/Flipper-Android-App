@@ -44,11 +44,8 @@ fun FlipperTheme(
 
 @Suppress("MagicNumber")
 private val lightPallet = FlipperPallet(
-    accent = Color(0xFFFF8200),
-    accentSecond = Color(0xFF589DFF),
     background = Color(0xFFFBFBFB),
     error = Color(0xFFFFFFFF),
-    onError = Color(0xFFF63F3F),
     content = Color(0xFFFFFFFF),
     onContent = Color(0xFF000000),
 
@@ -69,52 +66,40 @@ private val lightPallet = FlipperPallet(
     iconTint30 = Color(0xFFAAAAAA),
     iconTint16 = Color(0xFFCCCCCC),
 
+    divider12 = Color(0xFFDFDFDF),
+    channelFirmwareReleaseCandidate = Color(0xFF8A2BE2),
     bottomBarBackground = Color(0xFFFFFFFF),
-    bottomBarSelected = Color(0xFF303030),
-    bottomBarSelectedFlipperStatus = Color(0xFF919191),
-    bottomBarUnselected = Color(0xFFAAAAAA),
-    bottomBarTabBackground = Color(0xFFE9E9E9),
-    bottomBarUnsupported = Color(0xFFF63F3F),
     disableSwitch = Color(0xFFDFDFDF),
     backgroundDialog = Color(0xFFFFFFFF)
 )
 
 @Suppress("MagicNumber")
 private val darkPallet = FlipperPallet(
-    accent = Color(0xFFFF8200),
-    accentSecond = Color(0xFF589DFF),
     background = Color(0xFF000000),
     error = Color(0xFF000000),
-    onError = Color(0xFFF63F3F),
     content = Color(0xFF1C1C1C),
     onContent = Color(0xFFFFFFFF),
 
     text100 = Color(0xFFFFFFFF),
-    text88 = Color(0xFFFFFFE5),
-    text80 = Color(0xFFFFFFD5),
-    text60 = Color(0xFF616161),
-    text40 = Color(0xFF919191),
-    text30 = Color(0xFFAAAAAA),
-    text20 = Color(0xFFC1C1C1),
-    text16 = Color(0xFFCCCCCC),
-    text12 = Color(0xFFD6D6D6),
-    text8 = Color(0xFFDFDFDF),
-    text4 = Color(0xFFE9E9E9),
+    text88 = Color(0XFFE9E9E9),
+    text80 = Color(0XFFDFDFDF),
+    text60 = Color(0xFFD6D6D6),
+    text40 = Color(0xFFCCCCCC),
+    text30 = Color(0xFFC1C1C1),
+    text20 = Color(0xFFAAAAAA),
+    text16 = Color(0xFF919191),
+    text12 = Color(0xFF616161),
+    text8 = Color(0xFF616161),
+    text4 = Color(0xFF1C1C1C),
 
     iconTint100 = Color(0xFFFFFFFF),
-    iconTint80 = Color(0xFFFFFFD5),
-    iconTint30 = Color(0xFFAAAAAA),
-    iconTint16 = Color(0xFFCCCCCC),
-
-    bottomBarBackground = Color(0xFF1C1C1C),
-    bottomBarSelected = Color(0xFF303030),
-    bottomBarSelectedFlipperStatus = Color(0xFF919191),
-    bottomBarUnselected = Color(0xFFAAAAAA),
-    bottomBarTabBackground = Color(0xFFE9E9E9),
-    bottomBarUnsupported = Color(0xFFF63F3F),
+    iconTint80 = Color(0XFFDFDFDF),
+    iconTint30 = Color(0xFFC1C1C1),
+    iconTint16 = Color(0xFF919191),
 
     divider12 = Color(0xFF616161),
     channelFirmwareReleaseCandidate = Color(0xFFAA69FA),
+    bottomBarBackground = Color(0xFF1C1C1C),
     disableSwitch = Color(0xFF616161),
     backgroundDialog = Color(0xFF303030)
 )
