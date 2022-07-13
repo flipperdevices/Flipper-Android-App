@@ -13,6 +13,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.animatedDots
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import androidx.compose.material.MaterialTheme
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.info.shared.InfoElementCard
@@ -25,9 +26,13 @@ fun ComposableUpdaterReboot(modifier: Modifier) {
         titleId = R.string.updater_card_updater_title
     ) {
         val title = stringResource(R.string.updater_card_updater_reboot_title) + animatedDots()
+
+        val imageId = if (MaterialTheme.colors.isLight) DesignSystem.drawable.pic_reboot
+        else DesignSystem.drawable.pic_reboot_dark
+
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Image(
-                painter = painterResource(DesignSystem.drawable.pic_reboot),
+                painter = painterResource(imageId),
                 contentDescription = title
             )
             Text(

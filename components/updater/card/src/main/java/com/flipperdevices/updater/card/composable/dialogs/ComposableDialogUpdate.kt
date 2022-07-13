@@ -1,6 +1,7 @@
 package com.flipperdevices.updater.card.composable.dialogs
 
 import androidx.annotation.StringRes
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
@@ -25,8 +26,11 @@ fun ComposableSuccessfulUpdate(
     version: FirmwareVersion?,
     onDismiss: () -> Unit
 ) {
+    val imageId = if (MaterialTheme.colors.isLight) DesignSystem.drawable.pic_update_successfull
+    else DesignSystem.drawable.pic_update_successfull_dark
+
     FlipperDialog(
-        imageId = DesignSystem.drawable.pic_update_successfull,
+        imageId = imageId,
         titleId = R.string.update_card_dialog_successful_title,
         buttonTextId = R.string.update_card_dialog_successful_btn,
         onClickButton = onDismiss,
