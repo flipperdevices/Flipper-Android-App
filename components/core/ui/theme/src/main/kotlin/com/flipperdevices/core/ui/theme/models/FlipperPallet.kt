@@ -1,4 +1,4 @@
-package com.flipperdevices.core.ui.theme
+package com.flipperdevices.core.ui.theme.models
 
 import androidx.compose.material.Colors
 import androidx.compose.runtime.Composable

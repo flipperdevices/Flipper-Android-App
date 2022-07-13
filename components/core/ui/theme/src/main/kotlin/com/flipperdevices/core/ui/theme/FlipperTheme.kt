@@ -1,5 +1,6 @@
 package com.flipperdevices.core.ui.theme
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
@@ -15,16 +16,20 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.flipperdevices.core.preference.pb.SelectedTheme
 import com.flipperdevices.core.ui.res.R
+import com.flipperdevices.core.ui.theme.models.FlipperPallet
+import com.flipperdevices.core.ui.theme.models.FlipperTypography
+import com.flipperdevices.core.ui.theme.models.robotoFamily
 
 val LocalPallet = compositionLocalOf<FlipperPallet> { error("No local pallet") }
 val LocalTypography = compositionLocalOf<FlipperTypography> { error("No local typography") }
 
 @Composable
 fun FlipperTheme(
-    isLight: Boolean,
     content: @Composable () -> Unit
 ) {
+    val isLight = true
     val pallet = if (isLight) lightPallet else darkPallet
     val colors = pallet.toMaterialColors(isLight)
     val shapes = Shapes(medium = RoundedCornerShape(size = 10.dp))
@@ -39,6 +44,15 @@ fun FlipperTheme(
             LocalContentColor provides colors.contentColorFor(backgroundColor = pallet.background),
             content = content
         )
+    }
+}
+
+@Composable
+private fun isLight(theme: SelectedTheme): Boolean {
+    return when (theme) {
+        SelectedTheme.LIGHT -> true
+        SelectedTheme.DARK -> false
+        else -> isSystemInDarkTheme()
     }
 }
 
