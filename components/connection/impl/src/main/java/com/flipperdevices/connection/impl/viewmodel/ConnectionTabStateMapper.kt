@@ -3,8 +3,8 @@ package com.flipperdevices.connection.impl.viewmodel
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.flipperdevices.bottombar.model.TabState
-import com.flipperdevices.connection.api.model.ConnectionStatusState
 import com.flipperdevices.connection.impl.R
+import com.flipperdevices.connection.impl.model.ConnectionStatusState
 import com.flipperdevices.core.ktx.jre.roundPercentToString
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
