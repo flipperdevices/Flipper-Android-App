@@ -38,7 +38,7 @@ fun ComposableFlipperBattery(
                 Icon(
                     painter = painterResource(DesignSystem.drawable.ic_charging),
                     contentDescription = null,
-                    tint = LocalPallet.current.iconTint80
+                    tint = LocalPallet.current.batteryCharging
                 )
             }
         }

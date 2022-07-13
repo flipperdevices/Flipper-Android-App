@@ -1,5 +1,6 @@
 package com.flipperdevices.updater.card.composable.dialogs
 
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -24,8 +25,11 @@ fun ComposableUpdateRequest(
         return
     }
 
+    val imageId = if (MaterialTheme.colors.isLight) DesignSystem.drawable.pic_flipper_low_battery
+    else DesignSystem.drawable.pic_flipper_low_battery_dark
+
     FlipperDialog(
-        imageId = DesignSystem.drawable.pic_flipper_low_battery,
+        imageId = imageId,
         titleId = R.string.update_card_dialog_battery_title,
         textId = R.string.update_card_dialog_battery_desc,
         buttonTextId = R.string.update_card_dialog_battery_btn,
