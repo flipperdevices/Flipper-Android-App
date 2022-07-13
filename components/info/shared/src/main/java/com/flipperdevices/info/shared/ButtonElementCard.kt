@@ -83,7 +83,7 @@ fun ButtonElementRow(
         )
         Text(
             text = text,
-            style = LocalTypography.current.bodyR14,
+            style = LocalTypography.current.bodyM14,
             color = color
         )
     }

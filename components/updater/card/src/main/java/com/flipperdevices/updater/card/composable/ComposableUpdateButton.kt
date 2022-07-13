@@ -129,13 +129,13 @@ private fun ComposableUpdateButtonContent(
         Text(
             modifier = Modifier.padding(
                 top = 3.dp,
-                bottom = 15.dp,
+                bottom = 8.dp,
                 start = 12.dp,
                 end = 12.dp
             ),
             text = stringResource(descriptionId),
             textAlign = TextAlign.Center,
-            style = LocalTypography.current.subtitleM12,
+            style = LocalTypography.current.subtitleR12,
             color = LocalPallet.current.text16
         )
     }
