@@ -16,21 +16,24 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.preference.pb.SelectedTheme
 import com.flipperdevices.core.ui.res.R
 import com.flipperdevices.core.ui.theme.models.FlipperPallet
 import com.flipperdevices.core.ui.theme.models.FlipperTypography
 import com.flipperdevices.core.ui.theme.models.robotoFamily
+import com.flipperdevices.core.ui.theme.viewmodel.ThemeViewModel
 
 val LocalPallet = compositionLocalOf<FlipperPallet> { error("No local pallet") }
 val LocalTypography = compositionLocalOf<FlipperTypography> { error("No local typography") }
 
 @Composable
 fun FlipperTheme(
+    themeViewModel: ThemeViewModel = viewModel(),
     content: @Composable () -> Unit
 ) {
     val isLight = true
-    val pallet = if (isLight) lightPallet else darkPallet
+    val pallet = (if (isLight) lightPallet else darkPallet).switch()
     val colors = pallet.toMaterialColors(isLight)
     val shapes = Shapes(medium = RoundedCornerShape(size = 10.dp))
 
