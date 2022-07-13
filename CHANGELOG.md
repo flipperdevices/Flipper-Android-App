@@ -13,6 +13,7 @@
 - [BUGFIX] Fix crash on cancel updating
 - [BUGFIX] Fix navigation after updating when phone locked or app not visible
 - [BUGFIX] Fix updating image hide after update failed/canceled
+- [BUGFIX] Fix padding and typography on information screen
 
 # 1.1.5 - HotFix
 

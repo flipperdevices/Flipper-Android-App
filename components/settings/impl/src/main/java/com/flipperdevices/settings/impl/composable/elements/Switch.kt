@@ -13,7 +13,7 @@ fun Switch(
     onSwitchState: (Boolean) -> Unit
 ) {
     androidx.compose.material.Switch(
-        modifier = Modifier.padding(all = 12.dp),
+        modifier = Modifier.padding(horizontal = 12.dp),
         checked = state,
         onCheckedChange = onSwitchState,
         colors = SwitchDefaults.colors(
