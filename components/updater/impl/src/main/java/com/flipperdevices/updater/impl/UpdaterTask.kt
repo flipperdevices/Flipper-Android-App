@@ -28,8 +28,10 @@ import java.io.File
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class UpdaterTask(
     serviceProvider: FlipperServiceProvider,
@@ -54,13 +56,17 @@ class UpdaterTask(
         serviceApi: FlipperServiceApi,
         input: UpdateRequest,
         stateListener: suspend (UpdatingState) -> Unit
-    ) {
+    ) = try {
         startInternalUnwrapped(scope, serviceApi, input) {
             if (it.isFinalState) {
                 isStoppedManually = true
-                flipperUpdateImageHelper.stopImageOnFlipperSafe(serviceApi.requestApi)
             }
+
             stateListener(it)
+        }
+    } finally {
+        withContext(NonCancellable) {
+            flipperUpdateImageHelper.stopImageOnFlipperSafe(serviceApi.requestApi)
         }
     }
 

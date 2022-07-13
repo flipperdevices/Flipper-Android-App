@@ -4,4 +4,5 @@ plugins {
 
 dependencies {
     implementation(projects.components.deeplink.api)
+    implementation(libs.cicerone)
 }
