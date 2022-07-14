@@ -14,7 +14,6 @@ import com.flipperdevices.screenstreaming.api.ScreenStreamingApi
 import com.flipperdevices.settings.impl.di.SettingsComponent
 import com.flipperdevices.shake2report.api.Shake2ReportApi
 import javax.inject.Inject
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
@@ -82,8 +81,6 @@ class SettingsViewModel : ViewModel() {
 
     fun onChangeSelectedTheme(theme: SelectedTheme) {
         viewModelScope.launch {
-            // Time for close dropdown menu
-            delay(100)
             dataStoreSettings.updateData {
                 it.toBuilder()
                     .setSelectedTheme(theme)
