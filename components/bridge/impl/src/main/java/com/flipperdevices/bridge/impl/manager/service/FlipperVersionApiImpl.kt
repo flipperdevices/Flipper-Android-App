@@ -3,7 +3,7 @@ package com.flipperdevices.bridge.impl.manager.service
 import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattCharacteristic
 import androidx.datastore.core.DataStore
-import com.flipperdevices.bridge.api.manager.service.FlipperVersionApi
+import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.api.model.FlipperVersionInformation
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.impl.manager.UnsafeBleManager
@@ -11,21 +11,14 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.Settings
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.flow.updateAndGet
 
 class FlipperVersionApiImpl(
     private val settingsStore: DataStore<Settings>
-) : FlipperVersionApi, BluetoothGattServiceWrapper, LogTagProvider {
+) : BluetoothGattServiceWrapper, LogTagProvider {
     override val TAG = "FlipperVersionApi"
 
-    private val flipperVersionState = MutableStateFlow<FlipperVersionInformation?>(null)
     private var apiVersionCharacteristics: BluetoothGattCharacteristic? = null
-
-    override fun getFlipperVersion(): StateFlow<FlipperVersionInformation?> = flipperVersionState
 
     override fun onServiceReceived(gatt: BluetoothGatt): Boolean {
         getServiceOrLog(gatt, Constants.BLEInformationService.SERVICE_UUID)?.let { service ->
@@ -35,15 +28,17 @@ class FlipperVersionApiImpl(
         }
         val serviceFounded = apiVersionCharacteristics != null
         if (!serviceFounded) {
-            flipperVersionState.update {
-                FlipperVersionInformation.Zero
-            }
+            error { "Support version not founded" }
         }
         return serviceFounded
     }
 
     override suspend fun initialize(bleManager: UnsafeBleManager) {
         val ignoreUnsupported = settingsStore.data.first().ignoreUnsupportedVersion
+        if (ignoreUnsupported) {
+            bleManager.setDeviceSupportedStatus(FlipperSupportedState.READY)
+            return
+        }
 
         bleManager.readCharacteristicUnsafe(apiVersionCharacteristics)
             .with { _, data ->
@@ -51,29 +46,24 @@ class FlipperVersionApiImpl(
                 val content = data.value ?: return@with
                 try {
                     val apiVersion = String(content)
-                    onSupportedVersionReceived(bleManager, apiVersion, ignoreUnsupported)
+                    onSupportedVersionReceived(bleManager, apiVersion)
                 } catch (e: Exception) {
                     error(e) { "Failed parse api version $content" }
 
-                    val versionInformation = flipperVersionState.updateAndGet {
-                        it ?: FlipperVersionInformation.Zero
-                    } ?: FlipperVersionInformation.Zero
-
                     bleManager.setDeviceSupportedStatus(
-                        ignoreUnsupported || versionInformation >= Constants.API_SUPPORTED_VERSION
+                        FlipperSupportedState.DEPRECATED_FLIPPER
                     )
                 }
             }.enqueue()
     }
 
     override suspend fun reset(bleManager: UnsafeBleManager) {
-        flipperVersionState.emit(null)
+        // Do nothing
     }
 
     private fun onSupportedVersionReceived(
         bleManager: UnsafeBleManager,
-        apiVersion: String,
-        ignoreUnsupported: Boolean
+        apiVersion: String
     ) {
         info { "Api version is $apiVersion" }
         val filteredApiVersion = apiVersion.replace("[^0-9.]", "")
@@ -86,13 +76,12 @@ class FlipperVersionApiImpl(
             majorVersion = majorPart?.toIntOrNull() ?: 0,
             minorVersion = minorPart?.toIntOrNull() ?: 0
         )
-        var deviceSupportedStatus = versionInformation >= Constants.API_SUPPORTED_VERSION
-        if (ignoreUnsupported) {
-            deviceSupportedStatus = true
-        }
-        bleManager.setDeviceSupportedStatus(deviceSupportedStatus)
-        flipperVersionState.update {
-            versionInformation
-        }
+        bleManager.setDeviceSupportedStatus(versionInformation.toSupportedState())
     }
+}
+
+private fun FlipperVersionInformation.toSupportedState() = when {
+    this < Constants.API_SUPPORTED_VERSION -> FlipperSupportedState.DEPRECATED_FLIPPER
+    this >= Constants.API_MAX_SUPPORTED_VERSION -> FlipperSupportedState.DEPRECATED_APPLICATION
+    else -> FlipperSupportedState.READY
 }

@@ -14,7 +14,7 @@ sealed class ConnectionState {
     object RetrievingInformation : ConnectionState()
 
     /** The initialization is complete, and the device is ready to use. */
-    data class Ready(val isSupported: Boolean) : ConnectionState()
+    data class Ready(val supportedState: FlipperSupportedState) : ConnectionState()
 
     /** The disconnection was initiated. */
     object Disconnecting : ConnectionState()

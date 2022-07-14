@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothGattCharacteristic
 import android.content.Context
 import com.flipperdevices.bridge.api.manager.ktx.providers.BondStateProvider
 import com.flipperdevices.bridge.api.manager.ktx.providers.ConnectionStateProvider
+import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.api.manager.observers.BondingObserverComposite
 import com.flipperdevices.bridge.api.manager.observers.ConnectionObserverComposite
 import com.flipperdevices.bridge.api.manager.observers.ConnectionObserverLogger
@@ -34,7 +35,7 @@ abstract class UnsafeBleManager(
         ConnectionObserverLogger(UNSAFE_BLE_MANAGER_TAG)
     )
     private val bondingObservers = BondingObserverComposite()
-    private var isDeviceSupported: Boolean? = null
+    private var supportedState: FlipperSupportedState? = null
 
     init {
         setConnectionObserver(connectionObservers)
@@ -81,10 +82,10 @@ abstract class UnsafeBleManager(
         setBondingObserver(bondingObservers)
     }
 
-    override fun isSupported() = isDeviceSupported
+    override fun supportState() = supportedState
 
-    fun setDeviceSupportedStatus(isDeviceSupported: Boolean) {
-        this.isDeviceSupported = isDeviceSupported
+    fun setDeviceSupportedStatus(supportedState: FlipperSupportedState) {
+        this.supportedState = supportedState
         val bluetoothDeviceLocal = bluetoothDevice
         if (bluetoothDeviceLocal == null) {
             error { "Bluetooth device is null, but we already invalidate isDeviceSupported" }
@@ -92,7 +93,7 @@ abstract class UnsafeBleManager(
         }
         connectionObservers.onDeviceReady(bluetoothDeviceLocal)
 
-        if (!isDeviceSupported) {
+        if (supportedState != FlipperSupportedState.READY) {
             disconnect().enqueue()
         }
     }

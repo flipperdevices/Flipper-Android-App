@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.synchronization.impl
 
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
+import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
@@ -48,7 +49,9 @@ class SynchronizationTask(
         // Waiting to be connected to the flipper
         serviceApi.connectionInformationApi.getConnectionStateFlow()
             .collectLatest {
-                if (it is ConnectionState.Ready && it.isSupported) {
+                if (it is ConnectionState.Ready &&
+                    it.supportedState == FlipperSupportedState.READY
+                ) {
                     startInternal(serviceApi, stateListener)
                 }
             }

@@ -3,6 +3,7 @@ package com.flipperdevices.bridge.service.impl.delegate
 import com.flipperdevices.bridge.api.manager.delegates.FlipperActionNotifier
 import com.flipperdevices.bridge.api.manager.delegates.FlipperLagsDetector
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
+import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.api.model.FlipperRequest
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
@@ -51,7 +52,9 @@ class FlipperLagsDetectorImpl(
                             "${Constants.LAGS_FLIPPER_DETECT_TIMEOUT_MS}ms. Pending commands is " +
                             pendingCommands.keys().toList().joinToString()
                     }
-                    if (connectionState is ConnectionState.Ready && connectionState.isSupported) {
+                    if (connectionState is ConnectionState.Ready &&
+                        connectionState.supportedState == FlipperSupportedState.READY
+                    ) {
                         serviceApi.reconnect()
                     }
                 } else if (pendingResponseCounter.get() < 0) {
