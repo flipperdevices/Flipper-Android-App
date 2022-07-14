@@ -130,7 +130,7 @@ data class FlipperPallet(
         bottomBarBackground = animateColor(bottomBarBackground),
         bottomBarSelected = animateColor(bottomBarSelected),
         bottomBarSelectedFlipperStatus = animateColor(bottomBarSelectedFlipperStatus),
-        bottomBarUnselected = animateColor(bottomBarTabBackground),
+        bottomBarUnselected = animateColor(bottomBarUnselected),
         bottomBarTabBackground = animateColor(bottomBarTabBackground),
         bottomBarUnsupported = animateColor(bottomBarUnsupported),
         bottomBarContent = animateColor(bottomBarContent),
