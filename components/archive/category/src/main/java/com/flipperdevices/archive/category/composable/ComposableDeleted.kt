@@ -25,6 +25,7 @@ import com.flipperdevices.archive.category.viewmodels.DeleteViewModel
 import com.flipperdevices.archive.model.CategoryType
 import com.flipperdevices.archive.shared.composable.ComposableAppBar
 import com.flipperdevices.core.ui.ktx.LocalRouter
+import com.flipperdevices.core.ui.theme.LocalPallet
 
 @Composable
 fun ComposableDeleted() {
@@ -57,7 +58,8 @@ private fun ComposableDeletedAppBar(
                         onClick = { showMenu = true }
                     ),
                     imageVector = Icons.Default.MoreVert,
-                    contentDescription = null
+                    contentDescription = null,
+                    tint = LocalPallet.current.onAppBar
                 )
                 DropdownMenu(
                     expanded = showMenu,
