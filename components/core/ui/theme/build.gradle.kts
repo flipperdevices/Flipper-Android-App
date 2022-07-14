@@ -8,6 +8,7 @@ dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.preference)
     implementation(projects.components.core.ui.res)
+    implementation(projects.components.core.ktx)
 
     // Compose
     implementation(libs.compose.ui)

@@ -4,6 +4,8 @@ import androidx.datastore.core.DataStore
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.ktx.jre.map
+import com.flipperdevices.core.preference.pb.SelectedTheme
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.theme.di.ThemeComponent
 import javax.inject.Inject
@@ -27,5 +29,7 @@ class ThemeViewModel : ViewModel() {
         )
     }
 
-    fun getState(): StateFlow<Settings> = settingsState
+    fun appTheme(): StateFlow<SelectedTheme> = settingsState.map(viewModelScope) {
+        it.selectedTheme
+    }
 }
