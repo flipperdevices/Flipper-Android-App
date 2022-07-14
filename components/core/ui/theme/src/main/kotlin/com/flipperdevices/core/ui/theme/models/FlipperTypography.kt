@@ -1,4 +1,4 @@
-package com.flipperdevices.core.ui.theme
+package com.flipperdevices.core.ui.theme.models
 
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -31,7 +31,7 @@ data class FlipperTypography(
     val buttonB14: TextStyle,
 
     val updateButton40: TextStyle,
-    val updateText40: TextStyle,
+    val updateText40: TextStyle
 )
 
 internal val robotoFamily = FontFamily(

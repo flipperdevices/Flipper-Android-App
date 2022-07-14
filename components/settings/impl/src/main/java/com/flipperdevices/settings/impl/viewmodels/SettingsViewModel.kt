@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.flipperdevices.core.di.ApplicationParams
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.navigation.global.CiceroneGlobal
+import com.flipperdevices.core.preference.pb.SelectedTheme
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.debug.api.StressTestApi
 import com.flipperdevices.screenstreaming.api.ScreenStreamingApi
@@ -76,6 +77,20 @@ class SettingsViewModel : ViewModel() {
         if (screen != null) {
             cicerone.getRouter().navigateTo(screen)
         }
+    }
+
+    fun onChangeSelectedTheme(theme: SelectedTheme) {
+        viewModelScope.launch {
+            dataStoreSettings.updateData {
+                it.toBuilder()
+                    .setSelectedTheme(theme)
+                    .build()
+            }
+        }
+    }
+
+    fun getSelectedTheme(): SelectedTheme {
+        return settingsState.value.selectedTheme
     }
 
     fun versionApp() = applicationParams.version

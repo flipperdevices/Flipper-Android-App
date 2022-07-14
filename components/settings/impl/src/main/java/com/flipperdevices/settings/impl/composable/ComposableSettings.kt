@@ -21,6 +21,7 @@ import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.composable.category.BugReportCategory
 import com.flipperdevices.settings.impl.composable.category.DebugCategory
 import com.flipperdevices.settings.impl.composable.category.ExperimentalCategory
+import com.flipperdevices.settings.impl.composable.category.ThemeCategory
 import com.flipperdevices.settings.impl.composable.category.VersionCategory
 import com.flipperdevices.settings.impl.composable.elements.AppBar
 import com.flipperdevices.settings.impl.model.NavGraphRoute
@@ -59,6 +60,7 @@ fun ComposableCommonSetting(
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
         AppBar(R.string.options)
+        ThemeCategory(settingsViewModel)
         DebugCategory(settings, navController, settingsViewModel)
         ExperimentalCategory(settings, navController, settingsViewModel)
         BugReportCategory(onClick = { settingsViewModel.onReportBug(context) })

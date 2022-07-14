@@ -15,6 +15,12 @@ enum SelectedChannel {
   DEV = 2;
 }
 
+enum SelectedTheme {
+  SYSTEM = 0;
+  DARK = 1;
+  LIGHT = 2;
+}
+
 message Settings {
   reserved 7; // Already unused tags
 
@@ -28,4 +34,5 @@ message Settings {
   SelectedChannel selected_channel = 10;
   string uuid = 11;
   bool first_synchronization_passed = 12;
+  SelectedTheme selected_theme = 13;
 }
