@@ -13,7 +13,6 @@ fun getTabStateFromFlipperBottomTab(
     connectionApi: ConnectionApi,
     bottomTab: FlipperBottomTab
 ): TabState {
-    connectionApi.CheckAndShowUnsupportedDialog()
     return when (bottomTab) {
         FlipperBottomTab.DEVICE -> {
             connectionApi.getConnectionTabState()

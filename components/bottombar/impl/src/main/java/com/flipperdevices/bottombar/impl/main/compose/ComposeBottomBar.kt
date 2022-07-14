@@ -86,6 +86,7 @@ fun ComposeBottomBar(
             }
         }
     }
+    connectionApi.CheckAndShowUnsupportedDialog()
 }
 
 @Composable
