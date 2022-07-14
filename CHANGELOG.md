@@ -14,6 +14,7 @@
 - [BUGFIX] Fix navigation after updating when phone locked or app not visible
 - [BUGFIX] Fix updating image hide after update failed/canceled
 - [BUGFIX] Fix padding and typography on information screen
+- [BUGFIX] Fix icon color dropdown menu on Deleted keys
 
 # 1.1.5 - HotFix
 
