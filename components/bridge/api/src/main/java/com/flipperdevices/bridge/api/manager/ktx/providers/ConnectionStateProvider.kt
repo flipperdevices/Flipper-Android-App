@@ -1,5 +1,6 @@
 package com.flipperdevices.bridge.api.manager.ktx.providers
 
+import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.api.manager.observers.SuspendConnectionObserver
 import no.nordicsemi.android.ble.annotation.ConnectionState
 
@@ -11,7 +12,7 @@ interface ConnectionStateProvider {
      * false if device not supported
      * true if device supported
      */
-    fun isSupported(): Boolean?
+    fun supportState(): FlipperSupportedState?
 
     @ConnectionState
     fun getConnectionState(): Int

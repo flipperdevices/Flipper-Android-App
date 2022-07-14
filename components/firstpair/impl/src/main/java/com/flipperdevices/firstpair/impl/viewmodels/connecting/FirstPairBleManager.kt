@@ -7,6 +7,7 @@ import android.bluetooth.BluetoothGattService
 import android.content.Context
 import com.flipperdevices.bridge.api.manager.ktx.providers.ConnectionStateProvider
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
+import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.api.manager.ktx.stateAsFlow
 import com.flipperdevices.bridge.api.manager.observers.ConnectionObserverComposite
 import com.flipperdevices.bridge.api.manager.observers.ConnectionObserverLogger
@@ -42,7 +43,7 @@ internal class FirstPairBleManager(
         setConnectionObserver(connectionObservers)
     }
 
-    override fun isSupported() = true
+    override fun supportState() = FlipperSupportedState.READY
 
     override fun getGattCallback(): BleManagerGattCallback = FirstPairBleManagerGattCallback()
 

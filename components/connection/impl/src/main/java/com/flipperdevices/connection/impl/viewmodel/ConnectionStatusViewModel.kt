@@ -7,6 +7,7 @@ import androidx.datastore.core.DataStore
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.error.FlipperBleServiceError
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
+import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
@@ -66,7 +67,9 @@ class ConnectionStatusViewModel(
         serviceApi.connectionInformationApi.getConnectionStateFlow().combine(
             synchronizationApi.getSynchronizationState()
         ) { connectionState, synchronizationState ->
-            if (connectionState is ConnectionState.Ready && connectionState.isSupported) {
+            if (connectionState is ConnectionState.Ready &&
+                connectionState.supportedState == FlipperSupportedState.READY
+            ) {
                 return@combine synchronizationState.toConnectionStatus()
             } else {
                 return@combine connectionState.toConnectionStatus()
@@ -129,8 +132,9 @@ class ConnectionStatusViewModel(
         ConnectionState.Connecting -> ConnectionStatusState.Connecting
         ConnectionState.Initializing -> ConnectionStatusState.Connecting
         ConnectionState.RetrievingInformation -> ConnectionStatusState.Connecting
-        is ConnectionState.Ready -> if (isSupported) ConnectionStatusState.Connected
-        else ConnectionStatusState.Unsupported
+        is ConnectionState.Ready -> if (supportedState == FlipperSupportedState.READY) {
+            ConnectionStatusState.Connected
+        } else ConnectionStatusState.Unsupported
         ConnectionState.Disconnecting -> ConnectionStatusState.Connecting
         is ConnectionState.Disconnected -> if (
             pairSettingsStore.data.first().deviceId.isBlank()

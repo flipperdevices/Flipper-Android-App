@@ -2,6 +2,7 @@ package com.flipperdevices.updater.card.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
+import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
@@ -72,7 +73,7 @@ class UpdateStateViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
             updaterApi.getState()
         ) { connectionState, flipperVersion, updaterState ->
             val isReady = connectionState is ConnectionState.Ready &&
-                connectionState.isSupported
+                connectionState.supportedState == FlipperSupportedState.READY
 
             return@combine if (isReady && flipperVersion != null) when (updaterState.state) {
                 is UpdatingState.Rebooting -> {

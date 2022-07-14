@@ -49,11 +49,11 @@ private fun ProducerScope<ConnectionState>.getConnectionObserver(
     }
 
     override suspend fun onDeviceReady(device: BluetoothDevice) {
-        val isSupported = connectionStateProvider.isSupported()
-        if (isSupported == null) {
+        val supportedState = connectionStateProvider.supportState()
+        if (supportedState == null) {
             send(ConnectionState.RetrievingInformation)
         } else {
-            send(ConnectionState.Ready(isSupported))
+            send(ConnectionState.Ready(supportedState))
         }
     }
 
@@ -72,9 +72,9 @@ private fun getConnectionStateFrom(
     return when (connectionStateProvider.getConnectionState()) {
         BluetoothProfile.STATE_CONNECTING -> ConnectionState.Disconnecting
         BluetoothProfile.STATE_CONNECTED -> if (connectionStateProvider.isReady()) {
-            val isSupported = connectionStateProvider.isSupported()
-            if (isSupported == null) ConnectionState.RetrievingInformation
-            else ConnectionState.Ready(isSupported)
+            val supportedState = connectionStateProvider.supportState()
+            if (supportedState == null) ConnectionState.RetrievingInformation
+            else ConnectionState.Ready(supportedState)
         } else ConnectionState.Initializing
         BluetoothProfile.STATE_DISCONNECTING -> ConnectionState.Disconnecting
         else -> ConnectionState.Disconnected(ConnectionState.Disconnected.Reason.UNKNOWN)
