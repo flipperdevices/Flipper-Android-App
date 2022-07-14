@@ -1,5 +1,6 @@
 package com.flipperdevices.core.ui.theme
 
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.LocalContentColor
@@ -8,7 +9,9 @@ import androidx.compose.material.Shapes
 import androidx.compose.material.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -32,7 +35,10 @@ fun FlipperTheme(
     themeViewModel: ThemeViewModel = viewModel(),
     content: @Composable () -> Unit
 ) {
-    val isLight = true
+    val theme by themeViewModel.getState().collectAsState()
+    val isLight = isLight(theme.selectedTheme)
+    changeXMLColor(theme.selectedTheme)
+
     val pallet = (if (isLight) lightPallet else darkPallet).switch()
     val colors = pallet.toMaterialColors(isLight)
     val shapes = Shapes(medium = RoundedCornerShape(size = 10.dp))
@@ -55,8 +61,17 @@ private fun isLight(theme: SelectedTheme): Boolean {
     return when (theme) {
         SelectedTheme.LIGHT -> true
         SelectedTheme.DARK -> false
-        else -> isSystemInDarkTheme()
+        else -> !isSystemInDarkTheme()
     }
+}
+
+private fun changeXMLColor(theme: SelectedTheme) {
+    val systemThemeId = when (theme) {
+        SelectedTheme.DARK -> AppCompatDelegate.MODE_NIGHT_YES
+        SelectedTheme.LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
+        else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+    }
+    AppCompatDelegate.setDefaultNightMode(systemThemeId)
 }
 
 @Suppress("MagicNumber")

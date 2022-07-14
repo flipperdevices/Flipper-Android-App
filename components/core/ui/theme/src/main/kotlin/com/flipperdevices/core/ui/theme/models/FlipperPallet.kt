@@ -95,13 +95,14 @@ data class FlipperPallet(
     val backgroundDialog: Color
 ) {
 
-    private val animationSpec: AnimationSpec<Color> = tween(durationMillis = 1500)
+    private val animationSpec: AnimationSpec<Color> = tween(durationMillis = 500)
 
     @Composable
     private fun animateColor(
         targetValue: Color
     ) = animateColorAsState(targetValue = targetValue, animationSpec = animationSpec).value
 
+    @Suppress("LongMethod")
     @Composable
     fun switch() = copy(
         accent = animateColor(accent),

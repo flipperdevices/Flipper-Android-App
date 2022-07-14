@@ -16,9 +16,9 @@ enum SelectedChannel {
 }
 
 enum SelectedTheme {
-  DARK = 0;
-  LIGHT = 1;
-  SYSTEM = 2;
+  SYSTEM = 0;
+  DARK = 1;
+  LIGHT = 2;
 }
 
 message Settings {
