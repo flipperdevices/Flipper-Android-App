@@ -35,9 +35,11 @@ fun FlipperTheme(
     themeViewModel: ThemeViewModel = viewModel(),
     content: @Composable () -> Unit
 ) {
-    val theme by themeViewModel.getState().collectAsState()
-    val isLight = isLight(theme.selectedTheme)
-    changeXMLColor(theme.selectedTheme)
+    val setting by themeViewModel.getState().collectAsState()
+    val theme = setting.selectedTheme
+
+    val isLight = isLight(theme)
+    changeXMLColor(theme)
 
     val pallet = (if (isLight) lightPallet else darkPallet).switch()
     val colors = pallet.toMaterialColors(isLight)
