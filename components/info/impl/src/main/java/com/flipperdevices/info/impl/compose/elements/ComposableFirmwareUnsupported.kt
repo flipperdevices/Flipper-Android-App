@@ -6,6 +6,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -49,7 +50,9 @@ fun ComposableFirmwareUpdate(
             titleId = R.string.info_firmware_update_title
         ) {
             ComposableFirmwareUpdateUnsupported(
-                imageId = DesignSystem.drawable.ic_firmware_application_deprecated,
+                imageId = if (MaterialTheme.colors.isLight) {
+                    DesignSystem.drawable.ic_firmware_application_deprecated
+                } else DesignSystem.drawable.ic_firmware_application_deprecated_dark,
                 titleId = R.string.info_firmware_update_application_unsupported_title,
                 descriptionId = R.string.info_firmware_update_application_unsupported_desc,
                 linkId = R.string.info_firmware_update_application_unsupported_link

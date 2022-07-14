@@ -2,6 +2,7 @@ package com.flipperdevices.connection.impl.dialog
 
 import android.content.Intent
 import android.net.Uri
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -17,6 +18,8 @@ import com.flipperdevices.connection.impl.viewmodel.UnsupportedStateViewModel
 import com.flipperdevices.core.ui.dialog.composable.FlipperDialog
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
+private var inThisSessionAlreadyHided = false
+
 @Composable
 fun ComposableUnsupportedDialog(
     viewModel: UnsupportedStateViewModel = viewModel()
@@ -27,7 +30,8 @@ fun ComposableUnsupportedDialog(
         return
     }
     var showDialog by remember { mutableStateOf(true) }
-    if (!showDialog) {
+    if (inThisSessionAlreadyHided || !showDialog) {
+        inThisSessionAlreadyHided = true
         return
     }
 
@@ -46,7 +50,9 @@ fun ComposableUnsupportedDialog(
             val url = stringResource(R.string.dialog_unsupported_application_link)
             val context = LocalContext.current
             FlipperDialog(
-                imageId = DesignSystem.drawable.ic_firmware_application_deprecated,
+                imageId = if (MaterialTheme.colors.isLight) {
+                    DesignSystem.drawable.ic_firmware_application_deprecated
+                } else DesignSystem.drawable.ic_firmware_application_deprecated_dark,
                 titleId = R.string.dialog_unsupported_application_title,
                 textId = R.string.dialog_unsupported_application_description,
                 buttonTextId = R.string.dialog_unsupported_application_btn,
