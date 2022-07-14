@@ -29,7 +29,7 @@ class ThemeViewModel : ViewModel() {
         )
     }
 
-    fun appTheme(): StateFlow<SelectedTheme> = settingsState.map(viewModelScope) {
+    fun getAppTheme(): StateFlow<SelectedTheme> = settingsState.map(viewModelScope) {
         it.selectedTheme
     }
 }
