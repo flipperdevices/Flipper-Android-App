@@ -1,5 +1,7 @@
 package com.flipperdevices.core.ui.theme
 
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
@@ -7,7 +9,10 @@ import androidx.compose.material.Shapes
 import androidx.compose.material.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -15,19 +20,37 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.flipperdevices.core.preference.pb.SelectedTheme
 import com.flipperdevices.core.ui.res.R
+import com.flipperdevices.core.ui.theme.models.FlipperPallet
+import com.flipperdevices.core.ui.theme.models.FlipperTypography
+import com.flipperdevices.core.ui.theme.models.robotoFamily
+import com.flipperdevices.core.ui.theme.viewmodel.ThemeViewModel
 
 val LocalPallet = compositionLocalOf<FlipperPallet> { error("No local pallet") }
 val LocalTypography = compositionLocalOf<FlipperTypography> { error("No local typography") }
 
 @Composable
 fun FlipperTheme(
-    isLight: Boolean,
+    themeViewModel: ThemeViewModel = viewModel(),
     content: @Composable () -> Unit
 ) {
+    val theme by themeViewModel.getAppTheme().collectAsState()
+    val isLight = isLight(theme)
+
     val pallet = if (isLight) lightPallet else darkPallet
     val colors = pallet.toMaterialColors(isLight)
     val shapes = Shapes(medium = RoundedCornerShape(size = 10.dp))
+
+    LaunchedEffect(key1 = theme) {
+        val systemThemeId = when (theme) {
+            SelectedTheme.DARK -> AppCompatDelegate.MODE_NIGHT_YES
+            SelectedTheme.LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
+            else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        }
+        AppCompatDelegate.setDefaultNightMode(systemThemeId)
+    }
 
     MaterialTheme(
         shapes = shapes,
@@ -39,6 +62,15 @@ fun FlipperTheme(
             LocalContentColor provides colors.contentColorFor(backgroundColor = pallet.background),
             content = content
         )
+    }
+}
+
+@Composable
+private fun isLight(theme: SelectedTheme): Boolean {
+    return when (theme) {
+        SelectedTheme.LIGHT -> true
+        SelectedTheme.DARK -> false
+        else -> !isSystemInDarkTheme()
     }
 }
 

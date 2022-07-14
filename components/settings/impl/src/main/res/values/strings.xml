@@ -2,6 +2,13 @@
 <resources>
     <string name="options">Options</string>
 
+    <string name="theme_options">Color Theme</string>
+    <string name="theme_options_desc">System/Light/Dark</string>
+    <string name="theme_options_system">System</string>
+    <string name="theme_options_light">Light</string>
+    <string name="theme_options_dark">Dark</string>
+    <string name="theme_options_unknown">Unknown</string>
+
     <string name="debug_options">Debug Options</string>
     <string name="debug_options_desc">Features for developers and testing</string>
     <string name="debug_stress_test">Stress Test</string>
