@@ -9,6 +9,7 @@ import androidx.compose.material.Shapes
 import androidx.compose.material.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
@@ -35,13 +36,22 @@ fun FlipperTheme(
     themeViewModel: ThemeViewModel = viewModel(),
     content: @Composable () -> Unit
 ) {
-    val theme by themeViewModel.appTheme().collectAsState()
+    val theme by themeViewModel.getAppTheme().collectAsState()
     val isLight = isLight(theme)
-    changeXMLColor(theme)
 
-    val pallet = (if (isLight) lightPallet else darkPallet).switch()
+    val pallet = if (isLight) lightPallet else darkPallet
     val colors = pallet.toMaterialColors(isLight)
     val shapes = Shapes(medium = RoundedCornerShape(size = 10.dp))
+
+    DisposableEffect(key1 = theme) {
+        val systemThemeId = when (theme) {
+            SelectedTheme.DARK -> AppCompatDelegate.MODE_NIGHT_YES
+            SelectedTheme.LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
+            else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        }
+        AppCompatDelegate.setDefaultNightMode(systemThemeId)
+        onDispose { }
+    }
 
     MaterialTheme(
         shapes = shapes,
@@ -63,15 +73,6 @@ private fun isLight(theme: SelectedTheme): Boolean {
         SelectedTheme.DARK -> false
         else -> !isSystemInDarkTheme()
     }
-}
-
-private fun changeXMLColor(theme: SelectedTheme) {
-    val systemThemeId = when (theme) {
-        SelectedTheme.DARK -> AppCompatDelegate.MODE_NIGHT_YES
-        SelectedTheme.LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
-        else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-    }
-    AppCompatDelegate.setDefaultNightMode(systemThemeId)
 }
 
 @Suppress("MagicNumber")
