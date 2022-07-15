@@ -45,6 +45,9 @@ ktor = "2.0.2"
 apache-compress = "1.21"
 apache-codec = "1.15"
 countly = "21.11.2"
+ktlint_runtime = "0.46.1"
+ktlint_gradle = "10.2.0"
+detekt_gradle = "1.20.0"
 
 # Testing
 junit = "4.12"
@@ -167,4 +170,6 @@ junit = { module = "junit:junit", version.ref = "junit" }
 mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito" }
 roboelectric = { module = "org.robolectric:robolectric", version.ref = "roboelectric" }
 
-[bundles]
+[plugins]
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint_gradle" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt_gradle" }
