@@ -1,3 +1,5 @@
+rootProject.name = "FlipperAppBuildSrc"
+
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 @Suppress("UnstableApiUsage")
