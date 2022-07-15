@@ -44,7 +44,7 @@ fun ComposableInfoCard(
 ) {
     val deviceStatus by deviceStatusViewModel.getState().collectAsState()
     val firmwareUpdateStatus by firmwareUpdateViewModel.getState().collectAsState()
-    val isUnsupported = firmwareUpdateStatus == FlipperSupportedState.READY
+    val isUnsupported = firmwareUpdateStatus != FlipperSupportedState.READY
 
     InfoElementCard(modifier, R.string.info_device_info_title) {
         ComposableInfoCardContent(isUnsupported)
