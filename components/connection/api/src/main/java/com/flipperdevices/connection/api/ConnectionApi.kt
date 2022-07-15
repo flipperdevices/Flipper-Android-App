@@ -6,4 +6,7 @@ import com.flipperdevices.bottombar.model.TabState
 interface ConnectionApi {
     @Composable
     fun getConnectionTabState(): TabState
+
+    @Composable
+    fun CheckAndShowUnsupportedDialog()
 }

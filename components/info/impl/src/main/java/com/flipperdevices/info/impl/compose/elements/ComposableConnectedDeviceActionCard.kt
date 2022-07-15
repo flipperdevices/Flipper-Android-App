@@ -5,11 +5,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.model.DeviceStatus
-import com.flipperdevices.info.impl.model.FirmwareUpdateStatus
 import com.flipperdevices.info.impl.viewmodel.AlarmViewModel
 import com.flipperdevices.info.impl.viewmodel.ConnectViewModel
 import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
@@ -31,7 +31,7 @@ fun ComposableConnectedDeviceActionCard(
     }
 
     val enabled = deviceState is DeviceStatus.Connected &&
-        firmwareUpdateStatus is FirmwareUpdateStatus.UpToDate
+        firmwareUpdateStatus == FlipperSupportedState.READY
 
     InfoElementCard(modifier = modifier) {
         ComposableSynchronize(enabled = enabled)

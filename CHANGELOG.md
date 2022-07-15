@@ -6,6 +6,7 @@
 - [Feature] Add black flipper support (update and info screen)
 - [Feature] Compose Theme
 - [Feature] Auto disconnect after 5 minutes inactivity
+- [Feature] Add outdated application dialog
 - [BUGFIX] Lock portrait orientation
 - [BUGFIX] Update card not shown when flipper not connected
 - [BUGFIX] Static URL on dynamic link docs
@@ -14,6 +15,7 @@
 - [BUGFIX] Fix navigation after updating when phone locked or app not visible
 - [BUGFIX] Fix updating image hide after update failed/canceled
 - [BUGFIX] Fix padding and typography on information screen
+- [BUGFIX] Fix icon color dropdown menu on Deleted keys
 
 # 1.1.5 - HotFix
 

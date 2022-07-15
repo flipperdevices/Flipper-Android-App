@@ -21,13 +21,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.model.DeviceStatus
-import com.flipperdevices.info.impl.model.FirmwareUpdateStatus
 import com.flipperdevices.info.impl.model.toString
 import com.flipperdevices.info.impl.viewmodel.DeviceInfoViewModel
 import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
@@ -44,7 +44,7 @@ fun ComposableInfoCard(
 ) {
     val deviceStatus by deviceStatusViewModel.getState().collectAsState()
     val firmwareUpdateStatus by firmwareUpdateViewModel.getState().collectAsState()
-    val isUnsupported = firmwareUpdateStatus is FirmwareUpdateStatus.Unsupported
+    val isUnsupported = firmwareUpdateStatus != FlipperSupportedState.READY
 
     InfoElementCard(modifier, R.string.info_device_info_title) {
         ComposableInfoCardContent(isUnsupported)

@@ -7,6 +7,7 @@ import androidx.datastore.core.DataStore
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.error.FlipperBleServiceError
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
+import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
@@ -15,7 +16,6 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.connection.impl.BuildConfig
 import com.flipperdevices.connection.impl.R
 import com.flipperdevices.connection.impl.di.ConnectionComponent
-import com.flipperdevices.connection.impl.dialog.UnsupportedDialogShowHelper
 import com.flipperdevices.connection.impl.model.ConnectionStatusState
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.preference.pb.PairSettings
@@ -42,7 +42,6 @@ class ConnectionStatusViewModel(
     private val statusState = MutableStateFlow<ConnectionStatusState>(
         ConnectionStatusState.Disconnected
     )
-    private val unsupportedDialogShowHelper = UnsupportedDialogShowHelper()
     private var switchFromSynchronizedJob: Job? = null
 
     @Inject
@@ -66,15 +65,14 @@ class ConnectionStatusViewModel(
         serviceApi.connectionInformationApi.getConnectionStateFlow().combine(
             synchronizationApi.getSynchronizationState()
         ) { connectionState, synchronizationState ->
-            if (connectionState is ConnectionState.Ready && connectionState.isSupported) {
+            if (connectionState is ConnectionState.Ready &&
+                connectionState.supportedState == FlipperSupportedState.READY
+            ) {
                 return@combine synchronizationState.toConnectionStatus()
             } else {
                 return@combine connectionState.toConnectionStatus()
             }
         }.onEach {
-            if (it is ConnectionStatusState.Unsupported) {
-                unsupportedDialogShowHelper.showDialog()
-            }
             if (it is ConnectionStatusState.Synchronized &&
                 switchFromSynchronizedJob == null
             ) {
@@ -129,8 +127,9 @@ class ConnectionStatusViewModel(
         ConnectionState.Connecting -> ConnectionStatusState.Connecting
         ConnectionState.Initializing -> ConnectionStatusState.Connecting
         ConnectionState.RetrievingInformation -> ConnectionStatusState.Connecting
-        is ConnectionState.Ready -> if (isSupported) ConnectionStatusState.Connected
-        else ConnectionStatusState.Unsupported
+        is ConnectionState.Ready -> if (supportedState == FlipperSupportedState.READY) {
+            ConnectionStatusState.Connected
+        } else ConnectionStatusState.Unsupported
         ConnectionState.Disconnecting -> ConnectionStatusState.Connecting
         is ConnectionState.Disconnected -> if (
             pairSettingsStore.data.first().deviceId.isBlank()

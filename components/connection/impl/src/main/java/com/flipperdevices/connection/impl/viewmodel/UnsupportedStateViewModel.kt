@@ -1,4 +1,4 @@
-package com.flipperdevices.info.impl.viewmodel
+package com.flipperdevices.connection.impl.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
@@ -6,40 +6,32 @@ import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.connection.impl.di.ConnectionComponent
 import com.flipperdevices.core.di.ComponentHolder
-import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
-import com.flipperdevices.info.impl.di.InfoComponent
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-class FirmwareUpdateViewModel :
-    LifecycleViewModel(), FlipperBleServiceConsumer, LogTagProvider {
-    override val TAG = "FirmwareUpdateViewModel"
-
-    private val connectionState = MutableStateFlow(
-        FlipperSupportedState.READY
-    )
+class UnsupportedStateViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
+    private val unsupportedStateFlow = MutableStateFlow(FlipperSupportedState.READY)
 
     @Inject
     lateinit var serviceProvider: FlipperServiceProvider
 
     init {
-        ComponentHolder.component<InfoComponent>().inject(this)
-        serviceProvider.provideServiceApi(consumer = this, lifecycleOwner = this)
+        ComponentHolder.component<ConnectionComponent>().inject(this)
+        serviceProvider.provideServiceApi(this, this)
     }
 
-    fun getState(): StateFlow<FlipperSupportedState> = connectionState
+    fun getUnsupportedState(): StateFlow<FlipperSupportedState> = unsupportedStateFlow
 
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
         serviceApi.connectionInformationApi.getConnectionStateFlow().onEach {
-            info { "Receive connection state: $it" }
             if (it is ConnectionState.Ready) {
-                connectionState.emit(it.supportedState)
+                unsupportedStateFlow.emit(it.supportedState)
             }
         }.launchIn(viewModelScope)
     }

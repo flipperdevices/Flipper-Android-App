@@ -12,9 +12,11 @@ import com.flipperdevices.bridge.api.manager.FlipperBleManager
 import com.flipperdevices.bridge.api.manager.delegates.FlipperActionNotifier
 import com.flipperdevices.bridge.api.manager.delegates.FlipperLagsDetector
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
+import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.api.manager.ktx.stateAsFlow
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.impl.manager.delegates.FlipperConnectionInformationApiImpl
+import com.flipperdevices.bridge.impl.manager.service.BluetoothGattServiceWrapper
 import com.flipperdevices.bridge.impl.manager.service.FlipperInformationApiImpl
 import com.flipperdevices.bridge.impl.manager.service.FlipperVersionApiImpl
 import com.flipperdevices.bridge.impl.manager.service.request.FlipperRequestApiImpl
@@ -56,10 +58,11 @@ class FlipperBleManagerImpl(
     // Gatt Delegates
 
     override val informationApi = FlipperInformationApiImpl(scope, metricApi)
-    override val flipperVersionApi = FlipperVersionApiImpl(settingsStore)
     override val flipperRequestApi = FlipperRequestApiImpl(
         scope, flipperActionNotifier, flipperLagsDetector, sentryApi
     )
+    private val flipperVersionApi: BluetoothGattServiceWrapper =
+        FlipperVersionApiImpl(settingsStore)
 
     // RPC services
     override val flipperRpcInformationApi = FlipperRpcInformationApiImpl(
@@ -175,7 +178,9 @@ class FlipperBleManagerImpl(
                 error(it) { "Can't find service for version api" }
                 setDeviceSupportedStatus(
                     runBlockingWithLog {
-                        settingsStore.data.first().ignoreUnsupportedVersion
+                        if (settingsStore.data.first().ignoreUnsupportedVersion) {
+                            FlipperSupportedState.READY
+                        } else FlipperSupportedState.DEPRECATED_FLIPPER
                     }
                 )
                 serviceErrorListener.onError(FlipperBleServiceError.SERVICE_VERSION_NOT_FOUND)
