@@ -36,13 +36,3 @@ java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
 }
-
-configurations.all {
-    resolutionStrategy {
-        eachDependency {
-            when {
-                requested.group == "org.jetbrains.kotlin" -> useVersion(kotlinVersion)
-            }
-        }
-    }
-}
