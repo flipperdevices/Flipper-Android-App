@@ -2,4 +2,5 @@
 <resources>
     <color name="background">#000000</color>
     <color name="navigationBar">#1C1C1C</color>
+    <color name="iconTint100">#FFFFFF</color>
 </resources>
