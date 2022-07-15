@@ -10,7 +10,6 @@ protobuf-gradle = "0.8.18"
 # Protobuf JVM library https://github.com/flipperdevices/flipperzero-protobuf-jvm
 protobuf-jvm = "0.7.0"
 protobuf-metric = "ba6eeb2be8"
-# Temporary solution: please, change also in androidCompose.gradle.kts
 compose = "1.1.0"
 compose_compiler = "1.1.0"
 compose_accompanist = "0.23.0"
