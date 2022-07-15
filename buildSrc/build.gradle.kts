@@ -24,7 +24,6 @@ dependencies {
     implementation(kotlin("stdlib", version = kotlinVersion))
     implementation(kotlin("stdlib-common", version = kotlinVersion))
     implementation(kotlin("stdlib-jdk7", version = kotlinVersion))
-    implementation(kotlin("stdlib-jdk8", version = kotlinVersion))
     implementation(kotlin("reflect", version = kotlinVersion))
 
     implementation(libs.android.gradle)
