@@ -9,6 +9,6 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = resolveVersion("compose_compiler")
+        kotlinCompilerExtensionVersion = resolveVersion("compose-compiler")
     }
 }

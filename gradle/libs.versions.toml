@@ -1,6 +1,6 @@
 [versions]
-kotlin = "1.6.10"
-kt_coroutines = "1.6.0"
+kotlin-general = "1.6.10"
+kotlin-coroutines = "1.6.0"
 ksp = "1.6.10-1.0.2"
 serialization = "1.3.2"
 anvil = "2.3.11-1-6-10"
@@ -11,10 +11,10 @@ protobuf-gradle = "0.8.18"
 protobuf-jvm = "0.7.0"
 protobuf-metric = "ba6eeb2be8"
 compose = "1.1.0"
-compose_compiler = "1.1.0"
-compose_accompanist = "0.23.0"
-compose_constraint = "1.0.0"
-compose_navigation = "2.4.2"
+compose-compiler = "1.1.0"
+compose-accompanist = "0.23.0"
+compose-constraint = "1.0.0"
+compose-navigation = "2.4.2"
 room = "2.4.2"
 # Crush after https://github.com/google/dagger/releases/tag/dagger-2.40.4
 dagger = "2.40.3"
@@ -45,9 +45,9 @@ ktor = "2.0.2"
 apache-compress = "1.21"
 apache-codec = "1.15"
 countly = "21.11.2"
-ktlint_runtime = "0.46.1"
-ktlint_gradle = "10.2.0"
-detekt_gradle = "1.20.0"
+ktlint-runtime = "0.46.1"
+ktlint-gradle = "10.2.0"
+detekt-gradle = "1.20.0"
 
 # Testing
 junit = "4.12"
@@ -59,15 +59,15 @@ roboelectric = "4.7.3"
 android-gradle = { module = "com.android.tools.build:gradle", version.ref = "android-gradle" }
 kotlin-ksp-gradle = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 
-kotlin-annotation-processing = { module = "org.jetbrains.kotlin:kotlin-annotation-processing-embeddable", version.ref = "kotlin" }
-kotlin-compiler = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "kotlin" }
-kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-kotlin-gradle-pluginApi = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin-api", version.ref = "kotlin" }
-kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
-kotlin-stdlib-jdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
+kotlin-annotation-processing = { module = "org.jetbrains.kotlin:kotlin-annotation-processing-embeddable", version.ref = "kotlin-general" }
+kotlin-compiler = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "kotlin-general" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-general" }
+kotlin-gradle-pluginApi = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin-api", version.ref = "kotlin-general" }
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin-general" }
+kotlin-stdlib-jdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin-general" }
 
-kotlin-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kt_coroutines" }
-kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kt_coroutines" }
+kotlin-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlin-coroutines" }
+kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlin-coroutines" }
 
 kotlin-serialization-gradle = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "serialization" }
 kotlin-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
@@ -84,11 +84,11 @@ compose-foundation = { module = "androidx.compose.foundation:foundation", versio
 compose-material = { module = "androidx.compose.material:material", version.ref = "compose" }
 
 # UI - Compose Extension
-compose-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "compose_accompanist" }
-compose-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "compose_accompanist" }
-compose-placeholder = { module = "com.google.accompanist:accompanist-placeholder", version.ref = "compose_accompanist" }
-compose-swipetorefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "compose_accompanist" }
-compose-constraint = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "compose_constraint" }
+compose-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "compose-accompanist" }
+compose-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "compose-accompanist" }
+compose-placeholder = { module = "com.google.accompanist:accompanist-placeholder", version.ref = "compose-accompanist" }
+compose-swipetorefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "compose-accompanist" }
+compose-constraint = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "compose-constraint" }
 
 # Flexmark Markdown
 flexmark-core = { module = "com.vladsch.flexmark:flexmark", version.ref = "flexmark" }
@@ -111,7 +111,7 @@ square-anvil-gradle = { module = "com.squareup.anvil:gradle-plugin", version.ref
 
 # Navigation
 cicerone = { module = "com.github.terrakok:cicerone", version.ref = "cicerone" }
-compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "compose_navigation" }
+compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "compose-navigation" }
 
 # Bug report dependencies
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
@@ -171,5 +171,5 @@ mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "
 roboelectric = { module = "org.robolectric:robolectric", version.ref = "roboelectric" }
 
 [plugins]
-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint_gradle" }
-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt_gradle" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint-gradle" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt-gradle" }

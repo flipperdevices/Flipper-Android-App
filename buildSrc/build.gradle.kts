@@ -7,7 +7,7 @@ repositories {
     google()
 }
 
-val kotlinVersion: String = libs.versions.kotlin.get()
+val kotlinVersion: String = libs.versions.kotlin.general.get()
 
 dependencies {
     compileOnly(gradleApi())
