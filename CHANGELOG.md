@@ -2,9 +2,9 @@
 
 # 1.1.6 - In progress
 
-- [Feature] Compose Theme(with support switch theme)
+- [Feature] Dark Theme(with support switch, splash screen)
 - [Feature] Add black flipper support (update and info screen)
-- [Feature] Compose Theme(module `core:ui:theme`, module `archive`)
+- [Feature] Compose Theme
 - [Feature] Auto disconnect after 5 minutes inactivity
 - [BUGFIX] Lock portrait orientation
 - [BUGFIX] Update card not shown when flipper not connected
