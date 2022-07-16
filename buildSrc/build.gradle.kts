@@ -7,7 +7,7 @@ repositories {
     google()
 }
 
-val kotlinVersion: String = libs.versions.kotlin.get()
+val kotlinVersion: String = libs.versions.kotlin.general.get()
 
 dependencies {
     compileOnly(gradleApi())
@@ -24,7 +24,6 @@ dependencies {
     implementation(kotlin("stdlib", version = kotlinVersion))
     implementation(kotlin("stdlib-common", version = kotlinVersion))
     implementation(kotlin("stdlib-jdk7", version = kotlinVersion))
-    implementation(kotlin("stdlib-jdk8", version = kotlinVersion))
     implementation(kotlin("reflect", version = kotlinVersion))
 
     implementation(libs.android.gradle)
@@ -36,14 +35,4 @@ dependencies {
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
-}
-
-configurations.all {
-    resolutionStrategy {
-        eachDependency {
-            when {
-                requested.group == "org.jetbrains.kotlin" -> useVersion(kotlinVersion)
-            }
-        }
-    }
 }
