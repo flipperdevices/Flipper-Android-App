@@ -2,6 +2,7 @@
 
 # 1.1.6 - In progress
 
+- [Feature] Compose Navigation on "Info" Screen
 - [Feature] Dark Theme(with support switch, splash screen)
 - [Feature] Add black flipper support (update and info screen)
 - [Feature] Compose Theme

@@ -21,12 +21,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
-import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.info.impl.R
+import com.flipperdevices.info.impl.compose.navigation.NavGraphRoute
 import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.model.toString
 import com.flipperdevices.info.impl.viewmodel.DeviceInfoViewModel
@@ -39,6 +40,7 @@ import com.flipperdevices.info.shared.InfoElementCard
 @Composable
 fun ComposableInfoCard(
     modifier: Modifier,
+    navController: NavHostController,
     deviceStatusViewModel: DeviceStatusViewModel = viewModel(),
     firmwareUpdateViewModel: FirmwareUpdateViewModel = viewModel()
 ) {
@@ -49,7 +51,7 @@ fun ComposableInfoCard(
     InfoElementCard(modifier, R.string.info_device_info_title) {
         ComposableInfoCardContent(isUnsupported)
         if (deviceStatus is DeviceStatus.Connected && !isUnsupported) {
-            ComposableFullInfoButton()
+            ComposableFullInfoButton { navController.navigate(NavGraphRoute.FullInfo.name) }
         }
     }
 }
@@ -97,16 +99,14 @@ fun ComposableInfoCardContent(
 
 @Composable
 private fun ComposableFullInfoButton(
-    deviceInfoViewModel: DeviceInfoViewModel = viewModel()
+    onOpenFullDeviceInfo: () -> Unit = {}
 ) {
-    val router = LocalRouter.current
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(
                 indication = rememberRipple(),
-                onClick = { deviceInfoViewModel.onOpenFullDeviceInfo(router) },
+                onClick = onOpenFullDeviceInfo,
                 interactionSource = remember { MutableInteractionSource() }
             )
             .padding(all = 12.dp),
