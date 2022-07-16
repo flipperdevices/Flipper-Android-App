@@ -24,9 +24,9 @@ dependencies {
 // Kotlin 1.7.0 breaks kapt processing for protobuf generated java sources
 // https://youtrack.jetbrains.com/issue/KT-52761/Kotlin-170-breaks-kapt-processing-for-protobuf-generated-java-sources
 android.libraryVariants.all {
-    android.sourceSets[name].apply {
-        java.srcDir("build/generated/source/proto/$name/java")
-        kotlin.srcDir("build/generated/source/proto/$name/kotlin")
+    android.sourceSets[this.name].apply {
+        java.srcDir(project.file("build/generated/source/proto/${this.name}/java"))
+        kotlin.srcDir(project.file("build/generated/source/proto/${this.name}/kotlin"))
     }
 }
 
