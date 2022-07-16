@@ -45,7 +45,8 @@ ktor = "2.0.3"
 apache-compress = "1.21"
 apache-codec = "1.15"
 countly = "21.11.2"
-ktlint-runtime = "0.46.1"
+# https://github.com/JLLeitschuh/ktlint-gradle/issues/589
+ktlint-runtime = "0.45.2"
 ktlint-gradle = "10.2.0"
 detekt-gradle = "1.20.0"
 

@@ -75,6 +75,7 @@ class ClickhouseApiImpl @Inject constructor(
         }
     }
 
+    @Suppress("LongMethod")
     override fun reportComplexEvent(complexEvent: ComplexEvent) {
         val event = when (complexEvent) {
             is FlipperGattInfoEvent -> metricEventsCollection {
