@@ -18,7 +18,7 @@ class InfoFragment : ComposeFragment(), OnBackPressListener {
     @Inject
     lateinit var updaterCardApi: UpdaterCardApi
 
-    private lateinit var navController: NavHostController
+    private var navController: NavHostController? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,14 +28,19 @@ class InfoFragment : ComposeFragment(), OnBackPressListener {
     @Composable
     override fun RenderView() {
         navController = rememberNavController()
-        ComposableDeviceInfoScreen(navController, updaterCardApi)
+        navController?.let {
+            ComposableDeviceInfoScreen(it, updaterCardApi)
+        }
     }
 
     override fun onBackPressed(): Boolean {
-        val currentDestination = navController.currentDestination ?: return false
-        if (currentDestination.route == NavGraphRoute.Info.name) return false
-        navController.popBackStack()
-        return true
+        navController?.let {
+            val currentDestination = it.currentDestination ?: return false
+            if (currentDestination.route == NavGraphRoute.Info.name) return false
+            it.popBackStack()
+            return true
+        }
+        return false
     }
 
     override fun getStatusBarColor(): Int = DesignSystem.color.accent
