@@ -11,20 +11,25 @@ import com.flipperdevices.settings.impl.model.NavGraphRoute
 
 class SettingsFragment : ComposeFragment(), OnBackPressListener {
 
-    private lateinit var navController: NavHostController
+    private var navController: NavHostController? = null
 
     @Composable
     override fun RenderView() {
         navController = rememberNavController()
-        ComposableSettings(navController = navController)
+        navController?.let {
+            ComposableSettings(navController = it)
+        }
     }
 
     override fun getStatusBarColor(): Int = DesignSystem.color.accent
 
     override fun onBackPressed(): Boolean {
-        val currentDestination = navController.currentDestination ?: return false
-        if (currentDestination.route == NavGraphRoute.Settings.name) return false
-        navController.popBackStack()
-        return true
+        navController?.let {
+            val currentDestination = it.currentDestination ?: return false
+            if (currentDestination.route == NavGraphRoute.Settings.name) return false
+            it.popBackStack()
+            return true
+        }
+        return false
     }
 }
