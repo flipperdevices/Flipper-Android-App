@@ -2,7 +2,7 @@
 
 # 1.1.6 - In progress
 
-- [Feature] Dark Theme(with support switch, splash screen)
+- [Feature] Dark Theme(with support switch, splash screen for all android versions)
 - [Feature] Add black flipper support (update and info screen)
 - [Feature] Compose Theme
 - [Feature] Auto disconnect after 5 minutes inactivity
