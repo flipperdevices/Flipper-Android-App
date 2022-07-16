@@ -17,6 +17,7 @@
 - [BUGFIX] Fix updating image hide after update failed/canceled
 - [BUGFIX] Fix padding and typography on information screen
 - [BUGFIX] Fix icon color dropdown menu on Deleted keys
+- [CI] Update deps
 
 # 1.1.5 - HotFix
 
