@@ -1,0 +1,6 @@
+<!-- this xml file allows center branding image on splash screen -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+            android:drawable="@drawable/pic_splashscreen_text_v31"
+            android:gravity="center" />
+</layer-list>
