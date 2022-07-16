@@ -10,13 +10,10 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.info.impl.di.InfoComponent
-import com.flipperdevices.info.impl.fragment.FullDeviceInfoFragment
 import com.flipperdevices.info.impl.model.DeviceInfo
 import com.flipperdevices.info.impl.model.DeviceInfoRequestStatus
 import com.flipperdevices.info.impl.model.VerboseDeviceInfo
 import com.flipperdevices.updater.api.FlipperVersionProviderApi
-import com.github.terrakok.cicerone.Router
-import com.github.terrakok.cicerone.androidx.FragmentScreen
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -76,9 +73,5 @@ class DeviceInfoViewModel :
                     deviceInfoRequestStatus.emit(DeviceInfoRequestStatus())
             }
         }.launchIn(viewModelScope)
-    }
-
-    fun onOpenFullDeviceInfo(router: Router) {
-        router.navigateTo(FragmentScreen { FullDeviceInfoFragment() })
     }
 }

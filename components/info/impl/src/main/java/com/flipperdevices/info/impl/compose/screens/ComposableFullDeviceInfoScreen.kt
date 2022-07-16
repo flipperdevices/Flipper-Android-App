@@ -1,4 +1,4 @@
-package com.flipperdevices.info.impl.compose.info
+package com.flipperdevices.info.impl.compose.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
@@ -22,12 +23,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.flipperdevices.core.ktx.jre.titlecaseFirstCharIfItIsLowercase
-import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.info.impl.R
+import com.flipperdevices.info.impl.compose.info.ComposableInfoCardContent
+import com.flipperdevices.info.impl.compose.navigation.NavGraphRoute
 import com.flipperdevices.info.impl.viewmodel.DeviceInfoViewModel
 import com.flipperdevices.info.shared.ComposableDeviceInfoRowWithText
 import com.flipperdevices.info.shared.ComposableInfoDivider
@@ -35,6 +38,7 @@ import com.flipperdevices.info.shared.InfoElementCard
 
 @Composable
 fun ComposableFullDeviceInfoScreen(
+    navController: NavHostController,
     deviceInfoViewModel: DeviceInfoViewModel = viewModel()
 ) {
     val verboseDeviceInfo by deviceInfoViewModel.getVerboseDeviceInfoState().collectAsState()
@@ -42,7 +46,7 @@ fun ComposableFullDeviceInfoScreen(
         .rpcInformationMap.entries.filterNot { it.key.isBlank() || it.value.isBlank() }
 
     Column {
-        ComposableFullDeviceInfoScreenBar()
+        ComposableFullDeviceInfoScreenBar { navController.navigate(NavGraphRoute.Info.name) }
         Column(
             Modifier
                 .verticalScroll(rememberScrollState())
@@ -83,8 +87,7 @@ private fun ComposableOtherCardContent(
 }
 
 @Composable
-private fun ComposableFullDeviceInfoScreenBar() {
-    val router = LocalRouter.current
+private fun ComposableFullDeviceInfoScreenBar(exit: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -95,7 +98,7 @@ private fun ComposableFullDeviceInfoScreenBar() {
             modifier = Modifier
                 .clickable(
                     indication = rememberRipple(),
-                    onClick = { router.exit() },
+                    onClick = exit,
                     interactionSource = remember { MutableInteractionSource() }
                 )
                 .padding(start = 14.dp, end = 14.dp, top = 8.dp, bottom = 10.dp),
