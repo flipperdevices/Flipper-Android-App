@@ -8,14 +8,20 @@ import com.flipperdevices.core.di.AppGraph
 import com.squareup.anvil.annotations.ContributesTo
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 
 @Module
 @ContributesTo(AppGraph::class)
 class AndroidBleModule {
     @Provides
-    fun provideBluetoothAdapter(context: Context): BluetoothAdapter {
-        val bluetoothManager = ContextCompat.getSystemService(context, BluetoothManager::class.java)
-
+    @Singleton
+    fun provideBluetoothAdapter(bluetoothManager: BluetoothManager?): BluetoothAdapter {
         return bluetoothManager?.adapter ?: BluetoothAdapter.getDefaultAdapter()
+    }
+
+    @Provides
+    @Singleton
+    fun provideBluetoothManager(context: Context): BluetoothManager? {
+        return ContextCompat.getSystemService(context, BluetoothManager::class.java)
     }
 }

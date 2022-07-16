@@ -8,7 +8,7 @@ import no.nordicsemi.android.support.v18.scanner.ScanResult
 @Parcelize
 data class DiscoveredBluetoothDevice(
     val device: BluetoothDevice,
-    private var lastScanResult: ScanResult,
+    private var lastScanResult: ScanResult? = null,
     private var nameInternal: String?,
     private var rssiInternal: Int,
     private var previousRssi: Int,
@@ -16,7 +16,7 @@ data class DiscoveredBluetoothDevice(
 ) : Parcelable {
     // Wrapper for data variables
     val address: String get() = device.address
-    val scanResult: ScanResult get() = lastScanResult
+    val scanResult: ScanResult? get() = lastScanResult
     val name: String? get() = nameInternal
     val rssi: Int get() = rssiInternal
     val highestRssi: Int get() = highestRssiInternal
