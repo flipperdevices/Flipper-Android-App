@@ -37,6 +37,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.info.shared.ComposableDeviceInfoRowText
@@ -202,26 +203,28 @@ fun ComposableFirmwareColumn(
 )
 @Composable
 fun ComposableUpdaterFirmwareVersionWithChoicePreview() {
-    val firmwareVersion = FirmwareVersion(
-        channel = FirmwareChannel.RELEASE,
-        version = "1.1.1"
-    )
-    Column {
-        ComposableUpdaterFirmwareVersionWithChoice(
-            modifier = Modifier
-                .height(50.dp)
-                .fillMaxWidth()
-                .padding(horizontal = 12.dp)
-                .background(LocalPallet.current.background),
-            version = firmwareVersion
+    FlipperThemeInternal {
+        val firmwareVersion = FirmwareVersion(
+            channel = FirmwareChannel.RELEASE,
+            version = "1.1.1"
         )
-        ComposableUpdaterFirmwareVersionWithChoice(
-            modifier = Modifier
-                .height(50.dp)
-                .fillMaxWidth()
-                .padding(horizontal = 12.dp)
-                .background(LocalPallet.current.background),
-            version = null
-        )
+        Column {
+            ComposableUpdaterFirmwareVersionWithChoice(
+                modifier = Modifier
+                    .height(50.dp)
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp)
+                    .background(LocalPallet.current.background),
+                version = firmwareVersion
+            )
+            ComposableUpdaterFirmwareVersionWithChoice(
+                modifier = Modifier
+                    .height(50.dp)
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp)
+                    .background(LocalPallet.current.background),
+                version = null
+            )
+        }
     }
 }
