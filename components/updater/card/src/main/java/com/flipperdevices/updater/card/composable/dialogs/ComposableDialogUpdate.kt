@@ -12,13 +12,16 @@ import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import com.flipperdevices.core.ui.dialog.composable.FlipperDialog
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.info.shared.getColorByChannel
 import com.flipperdevices.info.shared.getTextByVersion
 import com.flipperdevices.updater.card.R
+import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
 
 @Composable
@@ -91,5 +94,57 @@ private fun buildAnnotatedStringWithColoredVersion(
         withStyle(style = SpanStyle(color = postfixColor)) {
             append(postfixText)
         }
+    }
+}
+
+@Preview(
+    showSystemUi = true,
+    showBackground = true
+)
+@Composable
+private fun ComposableSuccessfulUpdateWithoutVersionPreview() {
+    FlipperThemeInternal {
+        ComposableSuccessfulUpdate(version = null) {}
+    }
+}
+
+@Preview(
+    showSystemUi = true,
+    showBackground = true
+)
+@Composable
+private fun ComposableSuccessfulUpdatePreview() {
+    FlipperThemeInternal {
+        val version = FirmwareVersion(
+            channel = FirmwareChannel.DEV,
+            version = "1.7.8"
+        )
+        ComposableSuccessfulUpdate(version = version) {}
+    }
+}
+
+@Preview(
+    showSystemUi = true,
+    showBackground = true
+)
+@Composable
+private fun ComposableFailedUpdateWithoutVersionPreview() {
+    FlipperThemeInternal {
+        ComposableFailedUpdate(version = null) {}
+    }
+}
+
+@Preview(
+    showSystemUi = true,
+    showBackground = true
+)
+@Composable
+private fun ComposableFailedUpdateUpdatePreview() {
+    FlipperThemeInternal {
+        val version = FirmwareVersion(
+            channel = FirmwareChannel.DEV,
+            version = "1.7.8"
+        )
+        ComposableFailedUpdate(version = version) {}
     }
 }

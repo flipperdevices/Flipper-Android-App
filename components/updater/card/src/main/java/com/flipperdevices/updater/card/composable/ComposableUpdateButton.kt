@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
+import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.updater.card.R
@@ -147,31 +148,33 @@ private fun ComposableUpdateButtonContent(
 )
 @Composable
 fun ComposableUpdateButtonPreview() {
-    val version = FirmwareVersion(
-        channel = FirmwareChannel.RELEASE,
-        version = "1.1.1"
-    )
-    val updateCardState = setOf(
-        UpdateCardState.NoUpdate(flipperVersion = version),
-        UpdateCardState.UpdateAvailable(
-            fromVersion = version,
-            lastVersion = version,
-            updaterDist = DistributionFile(
-                url = "123",
-                sha256 = "123"
-            ),
-            isOtherChannel = false
+    FlipperThemeInternal {
+        val version = FirmwareVersion(
+            channel = FirmwareChannel.RELEASE,
+            version = "1.1.1"
         )
-    )
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(12.dp)
-            .background(LocalPallet.current.background)
-    ) {
-        updateCardState.forEach {
-            ComposableUpdateButton(it, false)
-            ComposableUpdateButton(it, true)
+        val updateCardState = setOf(
+            UpdateCardState.NoUpdate(flipperVersion = version),
+            UpdateCardState.UpdateAvailable(
+                fromVersion = version,
+                lastVersion = version,
+                updaterDist = DistributionFile(
+                    url = "123",
+                    sha256 = "123"
+                ),
+                isOtherChannel = false
+            )
+        )
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(12.dp)
+                .background(LocalPallet.current.background)
+        ) {
+            updateCardState.forEach {
+                ComposableUpdateButton(it, false)
+                ComposableUpdateButton(it, true)
+            }
         }
     }
 }

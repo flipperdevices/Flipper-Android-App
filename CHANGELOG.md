@@ -19,6 +19,7 @@
 - [BUGFIX] Fix padding and typography on information screen
 - [BUGFIX] Fix icon color dropdown menu on Deleted keys
 - [CI] Update deps
+- [REFACTOR] Preview for updater card
 
 # 1.1.5 - HotFix
 
