@@ -37,6 +37,18 @@ fun FlipperTheme(
     content: @Composable () -> Unit
 ) {
     val theme by themeViewModel.getAppTheme().collectAsState()
+    FlipperThemeInternal(
+        theme = theme,
+        content = content
+    )
+}
+
+// For preview composable function, because we don`t provide LocalPallet/Typography/MaterialDesign
+@Composable
+fun FlipperThemeInternal(
+    theme: SelectedTheme = SelectedTheme.SYSTEM,
+    content: @Composable () -> Unit
+) {
     val isLight = isLight(theme)
 
     val pallet = if (isLight) lightPallet else darkPallet
