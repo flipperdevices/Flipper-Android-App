@@ -10,5 +10,9 @@
     <string name="info_device_firmware_version_release_full">Release</string>
     <string name="info_device_firmware_version_release_desc">Stable release (recommended)</string>
 
+    <string name="info_device_firmware_version_unknown">Unknown</string>
+    <string name="info_device_firmware_version_unknown_full">Unknown</string>
+    <string name="info_device_firmware_version_unknown_desc">Unknown</string>
+
     <string name="info_device_unknown">—</string>
 </resources>
