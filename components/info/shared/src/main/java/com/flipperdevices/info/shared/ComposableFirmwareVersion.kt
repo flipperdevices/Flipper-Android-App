@@ -14,7 +14,7 @@ fun getNameByChannel(channel: FirmwareChannel): Int {
         FirmwareChannel.DEV -> R.string.info_device_firmware_version_dev
         FirmwareChannel.RELEASE -> R.string.info_device_firmware_version_release
         FirmwareChannel.RELEASE_CANDIDATE -> R.string.info_device_firmware_version_rc
-        FirmwareChannel.UNKNOWN -> R.string.info_device_firmware_version_unknown
+        FirmwareChannel.UNKNOWN -> R.string.info_device_firmware_version_unknown_empty
     }
 }
 
@@ -24,7 +24,7 @@ fun getFullNameByChannel(channel: FirmwareChannel): Int {
         FirmwareChannel.DEV -> R.string.info_device_firmware_version_dev_full
         FirmwareChannel.RELEASE -> R.string.info_device_firmware_version_release_full
         FirmwareChannel.RELEASE_CANDIDATE -> R.string.info_device_firmware_version_rc_full
-        FirmwareChannel.UNKNOWN -> R.string.info_device_firmware_version_unknown_full
+        FirmwareChannel.UNKNOWN -> R.string.info_device_firmware_version_unknown_empty
     }
 }
 
@@ -34,16 +34,13 @@ fun getDescriptionByChannel(channel: FirmwareChannel): Int {
         FirmwareChannel.DEV -> R.string.info_device_firmware_version_dev_desc
         FirmwareChannel.RELEASE -> R.string.info_device_firmware_version_release_desc
         FirmwareChannel.RELEASE_CANDIDATE -> R.string.info_device_firmware_version_rc_desc
-        FirmwareChannel.UNKNOWN -> R.string.info_device_firmware_version_unknown_desc
+        FirmwareChannel.UNKNOWN -> R.string.info_device_firmware_version_unknown_empty
     }
 }
 
 @Composable
 fun getTextByVersion(version: FirmwareVersion): String {
-    return when (version.channel) {
-        FirmwareChannel.UNKNOWN -> version.version
-        else -> "${stringResource(getNameByChannel(version.channel))} ${version.version}"
-    }
+    return "${stringResource(getNameByChannel(version.channel))} ${version.version}".trim()
 }
 
 @Composable
