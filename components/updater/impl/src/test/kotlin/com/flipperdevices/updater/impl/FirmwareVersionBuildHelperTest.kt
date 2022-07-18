@@ -5,66 +5,61 @@ import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
 import org.junit.Assert
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
 
-class FirmwareVersionBuildHelperTest {
+@RunWith(Parameterized::class)
+class FirmwareVersionBuildHelperTest(
+    private val version: String,
+    private val firmwareVersion: FirmwareVersion?
+) {
 
     @Test
-    fun `Correct dev firmware`() {
-        val firmwareVersion = "3b81940f dev 2442 16-07-2022"
-        val parseFirmware =
-            FirmwareVersionBuildHelper.buildFirmwareVersionFromString(firmwareVersion)
-        val actualFirmware = FirmwareVersion(
-            channel = FirmwareChannel.DEV,
-            version = "3b81940f",
-            buildDate = "16-07-2022"
-        )
-        Assert.assertEquals(parseFirmware, actualFirmware)
+    fun `Correct firmware`() {
+        val firmware = FirmwareVersionBuildHelper.buildFirmwareVersionFromString(version)
+        Assert.assertEquals(firmware, firmwareVersion)
     }
 
-    @Test
-    fun `Correct release candidate firmware`() {
-        val firmwareVersion = "2a1d679g 0.63.1-rc 1363 15-07-2022"
-        val parseFirmware =
-            FirmwareVersionBuildHelper.buildFirmwareVersionFromString(firmwareVersion)
-        val actualFirmware = FirmwareVersion(
-            channel = FirmwareChannel.RELEASE_CANDIDATE,
-            version = "0.63.1",
-            buildDate = "15-07-2022"
+    companion object {
+        @JvmStatic
+        @Parameterized.Parameters
+        fun data() = listOf(
+            arrayOf(
+                "fc15d5cc 0.61.1 1333 28-06-2022",
+                FirmwareVersion(
+                    channel = FirmwareChannel.RELEASE,
+                    version = "0.61.1",
+                    buildDate = "28-06-2022"
+                )
+            ),
+            arrayOf(
+                "577a4ba5 0.62.1-rc 1327 12-07-2022",
+                FirmwareVersion(
+                    channel = FirmwareChannel.RELEASE_CANDIDATE,
+                    version = "0.62.1",
+                    buildDate = "12-07-2022"
+                )
+            ),
+            arrayOf(
+                "2a8ea142 dev 2270 11-07-2022",
+                FirmwareVersion(
+                    channel = FirmwareChannel.DEV,
+                    version = "2a8ea142",
+                    buildDate = "11-07-2022"
+                )
+            ),
+            arrayOf(
+                "532082f3 dev-cfw 1784 10-07-2022",
+                FirmwareVersion(
+                    channel = FirmwareChannel.UNKNOWN,
+                    version = "dev-cfw",
+                    buildDate = "10-07-2022"
+                )
+            ),
+            arrayOf(
+                "532082f3 1784 10-07-2022",
+                null
+            )
         )
-        Assert.assertEquals(parseFirmware, actualFirmware)
-    }
-
-    @Test
-    fun `Correct release firmware`() {
-        val firmwareVersion = "3e5d499b 0.62.1 1363 13-07-2022"
-        val parseFirmware =
-            FirmwareVersionBuildHelper.buildFirmwareVersionFromString(firmwareVersion)
-        val actualFirmware = FirmwareVersion(
-            channel = FirmwareChannel.RELEASE,
-            version = "0.62.1",
-            buildDate = "13-07-2022"
-        )
-        Assert.assertEquals(parseFirmware, actualFirmware)
-    }
-
-    @Test
-    fun `Correct unknown firmware`() {
-        val firmwareVersion = "3e5d499b name/2204_bt_forget_devices02d45365 1363 13-07-2022"
-        val parseFirmware =
-            FirmwareVersionBuildHelper.buildFirmwareVersionFromString(firmwareVersion)
-        val actualFirmware = FirmwareVersion(
-            channel = FirmwareChannel.UNKNOWN,
-            version = "name/2204_bt_forget_devices02d45365",
-            buildDate = "13-07-2022"
-        )
-        Assert.assertEquals(parseFirmware, actualFirmware)
-    }
-
-    @Test
-    fun `Uncorrected device version part count`() {
-        val firmwareVersion = "3e5d499b12345671363 13-07-2022"
-        val parseFirmware =
-            FirmwareVersionBuildHelper.buildFirmwareVersionFromString(firmwareVersion)
-        Assert.assertEquals(parseFirmware, null)
     }
 }
