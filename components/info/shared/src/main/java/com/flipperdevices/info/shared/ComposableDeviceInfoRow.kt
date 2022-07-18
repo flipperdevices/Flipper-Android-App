@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.core.ui.theme.LocalPallet
@@ -89,6 +90,22 @@ fun ComposableDeviceInfoRowText(
         modifier = modifier,
         text = text,
         color = color,
+        style = LocalTypography.current.bodyR14
+    )
+}
+
+@Composable
+fun ComposableLongDeviceInfoRowText(
+    modifier: Modifier = Modifier,
+    text: String,
+    color: Color = LocalPallet.current.text100
+) {
+    Text(
+        modifier = modifier.padding(start = 24.dp),
+        text = text,
+        color = color,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
         style = LocalTypography.current.bodyR14
     )
 }
