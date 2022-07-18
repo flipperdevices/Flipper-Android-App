@@ -216,6 +216,6 @@ private fun FirmwareChannel?.toSelectedChannel(): SelectedChannel = when (this) 
     FirmwareChannel.RELEASE -> SelectedChannel.RELEASE
     FirmwareChannel.RELEASE_CANDIDATE -> SelectedChannel.RELEASE_CANDIDATE
     FirmwareChannel.DEV -> SelectedChannel.DEV
-    FirmwareChannel.UNKNOWN -> SelectedChannel.UNRECOGNIZED
+    FirmwareChannel.UNKNOWN -> error("Can`t convert unknown firmware channel to internal channel")
     null -> SelectedChannel.UNRECOGNIZED
 }
