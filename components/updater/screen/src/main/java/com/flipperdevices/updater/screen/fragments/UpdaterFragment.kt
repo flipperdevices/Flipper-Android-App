@@ -26,9 +26,7 @@ class UpdaterFragment : ComposeFragment(), StatusBarColorProvider {
     @Inject
     lateinit var singleActivity: SingleActivityApi
 
-    @Inject
-    lateinit var flipperColorViewModel: FlipperColorViewModel
-
+    private val flipperColorViewModel by viewModels<FlipperColorViewModel>()
     private val updaterViewModel by viewModels<UpdaterViewModel>()
 
     override fun onAttach(context: Context) {
