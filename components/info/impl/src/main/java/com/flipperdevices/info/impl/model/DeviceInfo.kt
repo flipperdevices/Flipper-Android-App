@@ -29,7 +29,7 @@ fun StorageStats.toString(context: Context): String {
             )
             val totalHumanReadable = Formatter.formatFileSize(context, total)
 
-            "$usedHumanReadable/$totalHumanReadable"
+            "$usedHumanReadable / $totalHumanReadable"
         }
     }
 }
