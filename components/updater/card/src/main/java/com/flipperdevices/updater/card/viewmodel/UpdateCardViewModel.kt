@@ -173,7 +173,8 @@ class UpdateCardViewModel :
             return
         }
         val isUpdateAvailable = alwaysShowUpdate ||
-            latestVersionFromNetwork.version.isGreaterThan(flipperFirmwareVersion) ?: true
+            latestVersionFromNetwork.version.isGreaterThan(flipperFirmwareVersion) ?: true ||
+            updateChannel == FirmwareChannel.UNKNOWN
 
         if (isUpdateAvailable) {
             updateCardState.emit(
@@ -215,5 +216,6 @@ private fun FirmwareChannel?.toSelectedChannel(): SelectedChannel = when (this) 
     FirmwareChannel.RELEASE -> SelectedChannel.RELEASE
     FirmwareChannel.RELEASE_CANDIDATE -> SelectedChannel.RELEASE_CANDIDATE
     FirmwareChannel.DEV -> SelectedChannel.DEV
+    FirmwareChannel.UNKNOWN -> SelectedChannel.UNRECOGNIZED
     null -> SelectedChannel.UNRECOGNIZED
 }

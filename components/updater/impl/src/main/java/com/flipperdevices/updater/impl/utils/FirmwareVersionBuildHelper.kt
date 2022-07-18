@@ -8,6 +8,8 @@ private const val DEVICE_VERSION_COMMIT_INDEX = 0
 private const val DEVICE_VERSION_TYPE_INDEX = 1
 private const val DEVICE_VERSION_TYPE_DEV = "dev"
 private const val DEVICE_VERSION_TYPE_RC = "rc"
+private const val DEVICE_VERSION_TYPE_RC_REGEX = "^\\d+\\.\\d+\\.\\d+-rc"
+private const val DEVICE_VERSION_TYPE_RELEASE_REGEX = "^\\d+\\.\\d+\\.\\d+"
 private const val DEVICE_VERSION_DATE_INDEX = 3
 
 object FirmwareVersionBuildHelper {
@@ -26,7 +28,7 @@ object FirmwareVersionBuildHelper {
             return FirmwareVersion(FirmwareChannel.DEV, hash, date)
         }
 
-        if (typeVersion.contains(DEVICE_VERSION_TYPE_RC)) {
+        if (DEVICE_VERSION_TYPE_RC_REGEX.toRegex() matches typeVersion) {
             return FirmwareVersion(
                 FirmwareChannel.RELEASE_CANDIDATE,
                 typeVersion.replace(
@@ -37,8 +39,16 @@ object FirmwareVersionBuildHelper {
             )
         }
 
+        if (DEVICE_VERSION_TYPE_RELEASE_REGEX.toRegex() matches typeVersion) {
+            return FirmwareVersion(
+                FirmwareChannel.RELEASE,
+                typeVersion,
+                date
+            )
+        }
+
         return FirmwareVersion(
-            FirmwareChannel.RELEASE,
+            FirmwareChannel.UNKNOWN,
             typeVersion,
             date
         )

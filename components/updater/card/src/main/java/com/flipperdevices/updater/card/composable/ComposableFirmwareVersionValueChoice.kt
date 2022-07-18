@@ -163,7 +163,7 @@ fun ComposableFirmwareColumn(
     onClickMenuItem: (FirmwareChannel) -> Unit = {}
 ) {
     Column {
-        val channels = FirmwareChannel.values()
+        val channels = FirmwareChannel.values().filter { it != FirmwareChannel.UNKNOWN }
         channels.forEachIndexed { index, channel ->
             Column(
                 modifier = Modifier
