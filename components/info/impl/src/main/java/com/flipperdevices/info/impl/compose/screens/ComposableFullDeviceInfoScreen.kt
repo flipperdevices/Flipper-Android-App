@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
@@ -29,7 +28,7 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.info.impl.R
-import com.flipperdevices.info.impl.compose.info.ComposableInfoCardContent
+import com.flipperdevices.info.impl.compose.elements.ComposableInfoCardContent
 import com.flipperdevices.info.impl.compose.navigation.NavGraphRoute
 import com.flipperdevices.info.impl.viewmodel.DeviceInfoViewModel
 import com.flipperdevices.info.shared.ComposableDeviceInfoRowWithText

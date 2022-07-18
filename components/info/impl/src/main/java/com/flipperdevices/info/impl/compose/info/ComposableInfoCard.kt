@@ -16,7 +16,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -27,14 +26,11 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.info.impl.R
+import com.flipperdevices.info.impl.compose.elements.ComposableInfoCardContent
 import com.flipperdevices.info.impl.compose.navigation.NavGraphRoute
 import com.flipperdevices.info.impl.model.DeviceStatus
-import com.flipperdevices.info.impl.model.toString
-import com.flipperdevices.info.impl.viewmodel.DeviceInfoViewModel
 import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
 import com.flipperdevices.info.impl.viewmodel.FirmwareUpdateViewModel
-import com.flipperdevices.info.shared.ComposableDeviceInfoRowWithText
-import com.flipperdevices.info.shared.ComposableInfoDivider
 import com.flipperdevices.info.shared.InfoElementCard
 
 @Composable
@@ -54,47 +50,6 @@ fun ComposableInfoCard(
             ComposableFullInfoButton { navController.navigate(NavGraphRoute.FullInfo.name) }
         }
     }
-}
-
-@Composable
-fun ComposableInfoCardContent(
-    isUnsupported: Boolean,
-    deviceInfoViewModel: DeviceInfoViewModel = viewModel(),
-    deviceStatusViewModel: DeviceStatusViewModel = viewModel()
-) {
-    val deviceInfo by deviceInfoViewModel.getDeviceInfo().collectAsState()
-    val deviceInfoRequestStatus by deviceInfoViewModel.getDeviceInfoRequestStatus().collectAsState()
-    val deviceStatus by deviceStatusViewModel.getState().collectAsState()
-    val deviceStatusLocal = deviceStatus
-
-    val firmwareVersionInProgress = if (deviceStatusLocal is DeviceStatus.NoDeviceInformation) {
-        deviceStatusLocal.connectInProgress
-    } else deviceStatusLocal is DeviceStatus.Connected
-
-    ComposableFirmwareVersion(
-        deviceInfo.firmwareVersion,
-        firmwareVersionInProgress
-    )
-    ComposableInfoDivider()
-    ComposableFirmwareBuildDate(
-        deviceInfo.firmwareVersion,
-        firmwareVersionInProgress
-    )
-    if (isUnsupported) {
-        return
-    }
-    ComposableInfoDivider()
-    ComposableDeviceInfoRowWithText(
-        R.string.info_device_info_int_flash,
-        firmwareVersionInProgress || deviceInfoRequestStatus.internalStorageRequestInProgress,
-        deviceInfo.flashInt?.toString(LocalContext.current)
-    )
-    ComposableInfoDivider()
-    ComposableDeviceInfoRowWithText(
-        R.string.info_device_info_ext_flash,
-        firmwareVersionInProgress || deviceInfoRequestStatus.externalStorageRequestInProgress,
-        deviceInfo.flashSd?.toString(LocalContext.current)
-    )
 }
 
 @Composable
