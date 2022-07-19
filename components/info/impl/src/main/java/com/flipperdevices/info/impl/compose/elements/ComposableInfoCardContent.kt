@@ -43,7 +43,7 @@ fun ComposableInfoCardContent(
 }
 
 @Composable
-fun ComposableInfoCardContentInternal(
+private fun ComposableInfoCardContentInternal(
     isUnsupported: Boolean,
     deviceInfo: DeviceInfo,
     deviceStatus: DeviceStatus,
