@@ -11,8 +11,6 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,21 +18,18 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.preference.pb.HardwareColor
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.updater.screen.R
-import com.flipperdevices.updater.screen.model.FailedReason
 import com.flipperdevices.updater.screen.model.UpdaterScreenState
-import com.flipperdevices.updater.screen.viewmodel.FlipperColorViewModel
 
 @Composable
 fun ComposableUpdaterScreen(
     updaterScreenState: UpdaterScreenState,
+    flipperColor: HardwareColor,
     onCancel: () -> Unit,
     onRetry: () -> Unit
 ) {
@@ -44,7 +39,8 @@ fun ComposableUpdaterScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             UpdaterScreenHeader(
-                isFailed = updaterScreenState is UpdaterScreenState.Failed
+                isFailed = updaterScreenState is UpdaterScreenState.Failed,
+                flipperColor = flipperColor
             )
             ComposableUpdateContent(updaterScreenState, onRetry)
         }
@@ -55,7 +51,7 @@ fun ComposableUpdaterScreen(
 @Composable
 private fun UpdaterScreenHeader(
     isFailed: Boolean,
-    flipperColorViewModel: FlipperColorViewModel = viewModel()
+    flipperColor: HardwareColor
 ) {
     val titleId = if (isFailed) {
         R.string.update_screen_title_failed
@@ -68,7 +64,6 @@ private fun UpdaterScreenHeader(
         textAlign = TextAlign.Center
     )
 
-    val flipperColor by flipperColorViewModel.getFlipperColor().collectAsState()
     val imageId = when (flipperColor) {
         HardwareColor.UNRECOGNIZED,
         HardwareColor.WHITE -> if (isFailed) {
@@ -118,17 +113,4 @@ private fun CancelButton(
             style = LocalTypography.current.buttonM16
         )
     }
-}
-
-@Composable
-@Preview(
-    showBackground = true,
-    showSystemUi = true
-)
-private fun ComposableUpdaterScreenPreview() {
-    ComposableUpdaterScreen(
-        UpdaterScreenState.Failed(FailedReason.DOWNLOAD_FROM_NETWORK),
-        onCancel = {},
-        onRetry = {}
-    )
 }
