@@ -94,6 +94,9 @@ dependencies {
     implementation(projects.components.analytics.metric.api)
     implementation(projects.components.analytics.metric.impl)
 
+    implementation(projects.components.nfceditor.api)
+    implementation(projects.components.nfceditor.impl)
+
     implementation(libs.ktor.client)
 
     implementation(libs.annotations)

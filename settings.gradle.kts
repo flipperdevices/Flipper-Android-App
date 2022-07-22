@@ -104,4 +104,7 @@ include(
     ":components:updater:screen",
     ":components:updater:downloader",
     ":components:updater:card",
+
+    ":components:nfceditor:api",
+    ":components:nfceditor:impl"
 )
