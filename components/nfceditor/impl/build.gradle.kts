@@ -6,6 +6,8 @@ plugins {
 
 dependencies {
     implementation(projects.components.nfceditor.api)
+
+    implementation(projects.components.core.log)
     implementation(projects.components.core.di)
 
     implementation(libs.cicerone)
@@ -17,6 +19,9 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
+    implementation(libs.compose.insets)
+
+    implementation(libs.lifecycle.compose)
 
     // Dagger deps
     implementation(libs.dagger)
