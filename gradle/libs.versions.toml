@@ -40,6 +40,7 @@ appcompat = "1.4.2"
 datastore = "1.0.0"
 # https://github.com/vsch/flexmark-java/issues/442
 flexmark = "0.42.14"
+markdown = "0.0.3"
 ktor = "2.0.3"
 apache-compress = "1.21"
 apache-codec = "1.15"
@@ -92,8 +93,9 @@ compose-placeholder = { module = "com.google.accompanist:accompanist-placeholder
 compose-swipetorefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "compose-accompanist" }
 compose-constraint = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "compose-constraint" }
 
-# Flexmark Markdown
+# Markdown
 flexmark-core = { module = "com.vladsch.flexmark:flexmark", version.ref = "flexmark" }
+markdown-renderer = { module = "com.github.Programistich:compose-markdown", version.ref = "markdown" }
 
 # Storage
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }

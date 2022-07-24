@@ -33,7 +33,7 @@ fun ComposableUpdaterScreen(
     onCancel: () -> Unit,
     onRetry: () -> Unit
 ) {
-    Column {
+    Column(Modifier.padding(horizontal = 14.dp)) {
         Column(
             Modifier.weight(weight = 1f),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -43,6 +43,10 @@ fun ComposableUpdaterScreen(
                 flipperColor = flipperColor
             )
             ComposableUpdateContent(updaterScreenState, onRetry)
+            val changelog = updaterScreenState.firmwareData?.changelog
+            if (changelog != null) {
+                ComposableChangelog(changelog)
+            }
         }
         CancelButton(updaterScreenState, onCancel)
     }
@@ -56,9 +60,8 @@ private fun UpdaterScreenHeader(
     val titleId = if (isFailed) {
         R.string.update_screen_title_failed
     } else R.string.update_screen_title
-    val bottomPadding = if (isFailed) 38.dp else 64.dp
     Text(
-        modifier = Modifier.padding(top = 48.dp, start = 14.dp, end = 14.dp),
+        modifier = Modifier.padding(vertical = 18.dp),
         text = stringResource(titleId),
         style = LocalTypography.current.titleB18,
         textAlign = TextAlign.Center
@@ -75,9 +78,7 @@ private fun UpdaterScreenHeader(
     }
 
     Image(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 22.dp, start = 14.dp, end = 14.dp, bottom = bottomPadding),
+        modifier = Modifier.fillMaxWidth().padding(bottom = 14.dp),
         painter = painterResource(imageId),
         contentDescription = stringResource(titleId),
         contentScale = ContentScale.FillWidth
@@ -92,7 +93,7 @@ private fun CancelButton(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 8.dp),
+            .padding(top = 7.dp, bottom = 8.dp),
         contentAlignment = Alignment.Center
     ) {
         if (updaterScreenState == UpdaterScreenState.CancelingUpdate) {

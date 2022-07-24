@@ -6,7 +6,8 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class VersionFiles constructor(
     val version: FirmwareVersion,
-    val updaterFile: DistributionFile
+    val updaterFile: DistributionFile,
+    val changelog: String? = null
 ) : Parcelable
 
 @Parcelize

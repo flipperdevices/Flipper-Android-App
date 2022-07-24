@@ -93,7 +93,7 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
 
         updaterScreenStateFlow.emit(
             UpdaterScreenState.CancelingSynchronization(
-                updateRequest.updateTo.version
+                updateRequest.updateTo
             )
         )
         synchronizationApi.stop()
@@ -155,19 +155,19 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
 
     private fun subscribeOnUpdaterFlow(): Job = updaterApi.getState()
         .combine(connectionState).onEach { (updatingState, connectionState) ->
-            val version = updatingState.request?.updateTo?.version
+            val firmwareData = updatingState.request?.updateTo
             val state = updatingState.state
             val updaterScreenState = when (state) {
                 UpdatingState.NotStarted -> UpdaterScreenState.NotStarted
                 is UpdatingState.DownloadingFromNetwork ->
                     UpdaterScreenState.DownloadingFromNetwork(
                         percent = state.percent,
-                        version = version
+                        firmwareData = firmwareData
                     )
                 is UpdatingState.UploadOnFlipper ->
                     UpdaterScreenState.UploadOnFlipper(
                         percent = state.percent,
-                        version = version
+                        firmwareData = firmwareData
                     )
 
                 UpdatingState.FailedUpload,
