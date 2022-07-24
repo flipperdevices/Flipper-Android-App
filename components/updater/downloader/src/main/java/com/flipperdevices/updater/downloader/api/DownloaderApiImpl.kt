@@ -57,14 +57,15 @@ class DownloaderApiImpl @Inject constructor(
                     ?: return@forEach
 
                 versionMap[channel.original] = VersionFiles(
-                    FirmwareVersion(
+                    version = FirmwareVersion(
                         channel.original,
                         version.version.clearVersion()
                     ),
                     updaterFile = DistributionFile(
                         updaterFile.url,
                         updaterFile.sha256
-                    )
+                    ),
+                    changelog = version.changelog
                 )
             }
 

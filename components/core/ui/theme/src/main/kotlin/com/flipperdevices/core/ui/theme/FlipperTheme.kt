@@ -164,6 +164,11 @@ private val typography = FlipperTypography(
         fontFamily = robotoFamily,
         fontWeight = FontWeight.W700
     ),
+    titleSB18 = TextStyle(
+        fontSize = 18.sp,
+        fontFamily = robotoFamily,
+        fontWeight = FontWeight.W600
+    ),
     titleEB20 = TextStyle(
         fontSize = 20.sp,
         fontFamily = robotoFamily,
@@ -208,6 +213,11 @@ private val typography = FlipperTypography(
         fontSize = 10.sp,
         fontFamily = robotoFamily,
         fontWeight = FontWeight.W500
+    ),
+    bodySB14 = TextStyle(
+        fontSize = 14.sp,
+        fontFamily = robotoFamily,
+        fontWeight = FontWeight.W600
     ),
     bodyR14 = TextStyle(
         fontSize = 14.sp,

@@ -13,6 +13,7 @@ data class FlipperTypography(
     val titleB20: TextStyle,
     val titleEB20: TextStyle,
     val titleB18: TextStyle,
+    val titleSB18: TextStyle,
     val titleR18: TextStyle,
     val titleM18: TextStyle,
 
@@ -22,6 +23,7 @@ data class FlipperTypography(
     val subtitleB10: TextStyle,
     val subtitleM10: TextStyle,
 
+    val bodySB14: TextStyle,
     val bodyR14: TextStyle,
     val bodyM14: TextStyle,
     val bodyR16: TextStyle,
