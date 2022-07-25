@@ -33,7 +33,12 @@ class NfcEditorViewModel : LifecycleViewModel(), LogTagProvider, KeyInputBusList
 
     var nfcEditorState by mutableStateOf(
         NfcEditorState(
-            listOf(listOf(NfcEditorCell("0F"), NfcEditorCell("6A"))),
+            listOf(
+                "B6 69 03 36 8A 98 02 00 64 8F 76 14 51 10 37 11".split(" ")
+                    .map { NfcEditorCell(it) },
+                "B6 69 03 36 8A 98 02 00 64 8F 76 14 51 10 37 11".split(" ")
+                    .map { NfcEditorCell(it) }
+            ),
             cursor = null
         )
     )
