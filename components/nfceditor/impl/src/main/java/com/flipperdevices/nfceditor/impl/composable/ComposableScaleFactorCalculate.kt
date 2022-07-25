@@ -22,8 +22,6 @@ private const val SCALE_FACTOR_MULTIPLIER = 0.9f
 fun BoxWithConstraintsScope.calculateScaleFactor(): Float {
     var currentScaleFactor = 1.0f
 
-    // TODO: Improve it to binary search
-
     if (shouldShrink(currentScaleFactor)) {
         do {
             currentScaleFactor *= SCALE_FACTOR_MULTIPLIER
