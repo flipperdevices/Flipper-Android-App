@@ -30,7 +30,7 @@ fun ComposableNfcEditor(nfcEditorViewModel: NfcEditorViewModel = viewModel()) {
                 color = LocalPallet.current.text100,
                 fontFamily = FontFamily(
                     Font(
-                        DesignSystem.font.inconsolata_medium,
+                        DesignSystem.font.roboto_mono_medium,
                         FontWeight.W500,
                         FontStyle.Normal
                     )

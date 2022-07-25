@@ -47,6 +47,14 @@ class NfcEditorViewModel : LifecycleViewModel(), LogTagProvider, KeyInputBusList
     var currentActiveCell by mutableStateOf<NfcEditorCellLocation?>(null)
 
     fun onChangeSelection(location: NfcEditorCellLocation, position: Int) {
+        val localNfcEditorState = nfcEditorState.cursor
+        if (localNfcEditorState != null &&
+            location == localNfcEditorState.location &&
+            position == localNfcEditorState.position
+        ) {
+            return
+        }
+
         val newCursor = if (position >= NFC_CELL_MAX_CURSOR_INDEX) {
             if (location.columnIndex < nfcEditorState.lines[location.lineIndex].lastIndex) {
                 // If it is not last column:
