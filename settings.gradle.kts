@@ -44,6 +44,7 @@ include(
     ":components:core:test",
     ":components:core:markdown",
     ":components:core:activityholder",
+    ":components:core:keyinputbus",
 
     ":components:bottombar:api",
     ":components:bottombar:impl",
@@ -106,5 +107,6 @@ include(
     ":components:updater:card",
 
     ":components:nfceditor:api",
-    ":components:nfceditor:impl"
+    ":components:nfceditor:impl",
+    ":components:nfceditor:sample"
 )

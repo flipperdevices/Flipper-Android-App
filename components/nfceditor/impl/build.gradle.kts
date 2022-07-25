@@ -7,6 +7,8 @@ plugins {
 dependencies {
     implementation(projects.components.nfceditor.api)
 
+    implementation(projects.components.core.keyinputbus)
+    implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.log)
     implementation(projects.components.core.di)
 

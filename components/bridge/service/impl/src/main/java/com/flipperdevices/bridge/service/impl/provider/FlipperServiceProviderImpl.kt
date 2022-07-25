@@ -14,8 +14,8 @@ import com.flipperdevices.bridge.service.impl.BuildConfig
 import com.flipperdevices.bridge.service.impl.FlipperServiceBinder
 import com.flipperdevices.bridge.service.impl.provider.lifecycle.FlipperServiceConnectionHelper
 import com.flipperdevices.bridge.service.impl.provider.lifecycle.FlipperServiceConnectionHelperImpl
-import com.flipperdevices.bridge.service.impl.utils.subscribeOnFirst
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ktx.android.subscribeOnFirst
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info

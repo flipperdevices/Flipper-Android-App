@@ -13,8 +13,7 @@ data class NfcEditorState(
 
 @Stable
 data class NfcEditorCursor(
-    val line: Int,
-    val column: Int,
+    val location: NfcEditorCellLocation,
     @IntRange(from = 0, to = NFC_CELL_MAX_CURSOR_INDEX)
     val position: Int
 )
@@ -22,4 +21,10 @@ data class NfcEditorCursor(
 @Stable
 data class NfcEditorCell(
     val content: String
+)
+
+@Stable
+data class NfcEditorCellLocation(
+    val line: Int,
+    val column: Int
 )

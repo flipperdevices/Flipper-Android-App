@@ -26,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCell
+import com.flipperdevices.nfceditor.impl.model.NfcEditorCellLocation
 import com.flipperdevices.nfceditor.impl.viewmodel.NfcEditorViewModel
 
 @Composable
@@ -38,9 +39,9 @@ fun ComposableEditTextField(nfcEditorViewModel: NfcEditorViewModel = viewModel()
                 line.forEachIndexed { columnIndex, cell ->
                     var focusRequester: FocusRequester? = null
                     var textSelection: TextRange? = null
+                    val cellLocation = NfcEditorCellLocation(lineIndex, columnIndex)
                     if (nfcEditorState.cursor != null &&
-                        nfcEditorState.cursor.line == lineIndex &&
-                        nfcEditorState.cursor.column == columnIndex
+                        nfcEditorState.cursor.location == cellLocation
                     ) {
                         textSelection = TextRange(nfcEditorState.cursor.position)
                         focusRequester = remember { FocusRequester() }
@@ -51,8 +52,7 @@ fun ComposableEditTextField(nfcEditorViewModel: NfcEditorViewModel = viewModel()
                     ComposableNfcCell(
                         nfcEditorViewModel,
                         focusRequester,
-                        lineIndex,
-                        columnIndex,
+                        cellLocation,
                         cell,
                         textSelection
                     )
@@ -66,8 +66,7 @@ fun ComposableEditTextField(nfcEditorViewModel: NfcEditorViewModel = viewModel()
 private fun ComposableNfcCell(
     nfcEditorViewModel: NfcEditorViewModel,
     focusRequester: FocusRequester?,
-    lineIndex: Int,
-    columnIndex: Int,
+    nfcEditorCellLocation: NfcEditorCellLocation,
     cell: NfcEditorCell,
     selection: TextRange?
 ) {
@@ -92,19 +91,21 @@ private fun ComposableNfcCell(
 
     BasicTextField(
         modifier = textFieldModifier.onFocusChanged {
-            keyboardIsOpen = true
+            when (it.isFocused) {
+                true -> nfcEditorViewModel.currentActiveCell = nfcEditorCellLocation
+                false -> if (nfcEditorViewModel.currentActiveCell == nfcEditorCellLocation) {
+                    nfcEditorViewModel.currentActiveCell = null
+                }
+            }
         },
         value = TextFieldValue(
             cell.content,
             selection ?: TextRange.Zero
         ),
         singleLine = true,
-        keyboardActions = KeyboardActions(
-            onAny = { }
-        ),
         textStyle = MaterialTheme.typography.h4,
         onValueChange = {
-            nfcEditorViewModel.onChangeSelection(lineIndex, columnIndex, it.selection.start)
+            nfcEditorViewModel.onChangeSelection(nfcEditorCellLocation, it.selection.start)
         }
     )
 }
