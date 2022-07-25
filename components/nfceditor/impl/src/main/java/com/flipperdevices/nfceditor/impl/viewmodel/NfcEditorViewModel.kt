@@ -41,11 +41,27 @@ class NfcEditorViewModel : LifecycleViewModel(), LogTagProvider, KeyInputBusList
     var currentActiveCell by mutableStateOf<NfcEditorCellLocation?>(null)
 
     fun onChangeSelection(location: NfcEditorCellLocation, position: Int) {
-        val limitedPosition = min(position, NFC_CELL_MAX_CURSOR_INDEX.toInt())
+        val newCursor = if (position >= NFC_CELL_MAX_CURSOR_INDEX) {
+            if (location.columnIndex < nfcEditorState.lines[location.lineIndex].lastIndex) {
+                // If it is not last column:
+                NfcEditorCursor(
+                    lineIndex = location.lineIndex,
+                    columnIndex = location.columnIndex + 1,
+                    position = 0
+                )
+            } else if (location.lineIndex < nfcEditorState.lines.lastIndex) {
+                // If it is not last line:
+                NfcEditorCursor(
+                    lineIndex = location.lineIndex + 1,
+                    columnIndex = 0,
+                    position = 0
+                )
+            } else NfcEditorCursor(location, min(position, NFC_CELL_MAX_CURSOR_INDEX.toInt()))
+        } else NfcEditorCursor(location, position)
         nfcEditorState = nfcEditorState.copy(
-            cursor = NfcEditorCursor(location, limitedPosition)
+            cursor = newCursor
         )
-        println("On change selection: $limitedPosition")
+        println("On change selection. Input $location and $position. Output: $newCursor")
     }
 
     override fun onKeyEvent(keyEvent: KeyEvent) {
@@ -65,22 +81,18 @@ class NfcEditorViewModel : LifecycleViewModel(), LogTagProvider, KeyInputBusList
                 cursor.location,
                 position = cursor.position - 1
             )
-        } else if (cursor.location.column > 0) {
+        } else if (cursor.location.columnIndex > 0) {
             NfcEditorCursor(
-                NfcEditorCellLocation(
-                    line = cursor.location.line,
-                    column = cursor.location.column - 1
-                ),
-                position = NFC_CELL_MAX_CURSOR_INDEX.toInt()
+                lineIndex = cursor.location.lineIndex,
+                columnIndex = cursor.location.columnIndex - 1,
+                position = NFC_CELL_MAX_CURSOR_INDEX.toInt() - 1
             )
-        } else if (cursor.location.line > 0) {
-            val newLineIndex = cursor.location.line - 1
+        } else if (cursor.location.lineIndex > 0) {
+            val newLineIndex = cursor.location.lineIndex - 1
             NfcEditorCursor(
-                NfcEditorCellLocation(
-                    line = newLineIndex,
-                    column = nfcEditorState.lines[newLineIndex].lastIndex
-                ),
-                position = NFC_CELL_MAX_CURSOR_INDEX.toInt()
+                lineIndex = newLineIndex,
+                columnIndex = nfcEditorState.lines[newLineIndex].lastIndex,
+                position = NFC_CELL_MAX_CURSOR_INDEX.toInt() - 1
             )
         } else null
         nfcEditorState = nfcEditorState.copy(cursor = newCursor)
