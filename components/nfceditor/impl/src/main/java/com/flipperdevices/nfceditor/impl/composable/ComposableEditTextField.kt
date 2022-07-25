@@ -87,12 +87,10 @@ private fun ComposableNfcCell(
      * [0|0] [00]
      *
      * -> Press any button
-     *
      * Cursor(0, 1, 0):
      * [|00] [00]
      *
      * -> focusRequester.requestFocus()
-     *
      * [00] [|00]
      *
      * Example if we use lastSelection as default:
