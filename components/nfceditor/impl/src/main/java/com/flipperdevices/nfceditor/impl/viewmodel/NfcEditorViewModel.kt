@@ -8,6 +8,7 @@ import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.keyinputbus.KeyInputBus
 import com.flipperdevices.core.keyinputbus.KeyInputBusListener
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.nfceditor.impl.di.NfcEditorComponent
 import com.flipperdevices.nfceditor.impl.model.NFC_CELL_MAX_CURSOR_INDEX
@@ -69,6 +70,7 @@ class NfcEditorViewModel : LifecycleViewModel(), LogTagProvider, KeyInputBusList
             keyEvent.action == KeyEvent.ACTION_UP &&
             currentActiveCell != null
         ) {
+            info { "On key event $keyEvent" }
             onPressBack()
         }
     }
@@ -76,12 +78,12 @@ class NfcEditorViewModel : LifecycleViewModel(), LogTagProvider, KeyInputBusList
     private fun onPressBack() {
         val cursor = nfcEditorState.cursor ?: return
 
-        val newCursor = if (cursor.position > 0) {
-            NfcEditorCursor(
-                cursor.location,
-                position = cursor.position - 1
-            )
-        } else if (cursor.location.columnIndex > 0) {
+        // Execute only if current selector on zero
+        if (cursor.position > 0) {
+            return
+        }
+
+        val newCursor = if (cursor.location.columnIndex > 0) {
             NfcEditorCursor(
                 lineIndex = cursor.location.lineIndex,
                 columnIndex = cursor.location.columnIndex - 1,

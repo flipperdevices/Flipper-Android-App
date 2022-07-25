@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -19,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
@@ -45,7 +43,7 @@ fun ComposableEditTextField(nfcEditorViewModel: NfcEditorViewModel = viewModel()
                     ) {
                         textSelection = TextRange(nfcEditorState.cursor.position)
                         focusRequester = remember { FocusRequester() }
-                        LaunchedEffect(nfcEditorState.cursor) {
+                        LaunchedEffect(nfcEditorState.cursor.location) {
                             focusRequester.requestFocus()
                         }
                     }
@@ -79,14 +77,34 @@ private fun ComposableNfcCell(
             .focusRequester(focusRequester)
     }
 
-    val keyboardController = LocalSoftwareKeyboardController.current
-    var keyboardIsOpen by remember { mutableStateOf(false) }
-
-    LaunchedEffect(keyboardIsOpen) {
-        if (keyboardIsOpen) {
-            keyboardController?.hide()
-        }
-        keyboardIsOpen = false
+    /**
+     * This hack is needed so that the cursor doesn't jump into the frame
+     * when we haven't yet called focusRequester.requestFocus().
+     * Otherwise, the user will see an incorrect cursor display for a moment.
+     *
+     * Example if we use TextRange.Zero as default:
+     * Cursor(0,0,1):
+     * [0|0] [00]
+     *
+     * -> Press any button
+     *
+     * Cursor(0, 1, 0):
+     * [|00] [00]
+     *
+     * -> focusRequester.requestFocus()
+     *
+     * [00] [|00]
+     *
+     * Example if we use lastSelection as default:
+     * [0|0] [00]
+     * -> Press any button
+     * [0|0] [00]
+     * -> focusRequester.requestFocus()
+     * [00] [|00]
+     */
+    var lastSelection by remember { mutableStateOf(TextRange.Zero) }
+    if (selection != null) {
+        lastSelection = selection
     }
 
     BasicTextField(
@@ -100,7 +118,7 @@ private fun ComposableNfcCell(
         },
         value = TextFieldValue(
             cell.content,
-            selection ?: TextRange.Zero
+            selection ?: lastSelection
         ),
         singleLine = true,
         textStyle = MaterialTheme.typography.h4,

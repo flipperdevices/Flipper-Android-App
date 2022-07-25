@@ -4,6 +4,12 @@ plugins {
     kotlin("kapt")
 }
 
+android {
+    defaultConfig {
+        applicationId = "com.flipperdevices.nfceditor.sample"
+    }
+}
+
 dependencies {
     implementation(projects.components.core.ui.fragment)
     implementation(projects.components.core.ui.theme)
