@@ -85,6 +85,7 @@ compose-foundation = { module = "androidx.compose.foundation:foundation", versio
 compose-material = { module = "androidx.compose.material:material", version.ref = "compose" }
 
 # UI - Compose Extension
+compose-insets = { module = "com.google.accompanist:accompanist-insets", version.ref = "compose-accompanist" }
 compose-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "compose-accompanist" }
 compose-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "compose-accompanist" }
 compose-placeholder = { module = "com.google.accompanist:accompanist-placeholder", version.ref = "compose-accompanist" }

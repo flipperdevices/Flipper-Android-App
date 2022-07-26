@@ -11,6 +11,7 @@ dependencies {
     implementation(projects.components.core.navigation)
     implementation(projects.components.core.preference)
     implementation(projects.components.core.activityholder)
+    implementation(projects.components.core.keyinputbus)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.lifecycle)
@@ -93,6 +94,9 @@ dependencies {
 
     implementation(projects.components.analytics.metric.api)
     implementation(projects.components.analytics.metric.impl)
+
+    implementation(projects.components.nfceditor.api)
+    implementation(projects.components.nfceditor.impl)
 
     implementation(libs.ktor.client)
 
