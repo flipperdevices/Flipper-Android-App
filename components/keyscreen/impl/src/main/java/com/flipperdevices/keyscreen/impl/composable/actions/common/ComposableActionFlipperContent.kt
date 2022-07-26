@@ -15,10 +15,7 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
-fun ComposableActionFlipperContent(
-    @DrawableRes iconId: Int,
-    @StringRes textId: Int
-) {
+fun ComposableActionFlipperContent(@DrawableRes iconId: Int, @StringRes textId: Int) {
     Icon(
         painter = painterResource(id = iconId),
         contentDescription = stringResource(id = textId),

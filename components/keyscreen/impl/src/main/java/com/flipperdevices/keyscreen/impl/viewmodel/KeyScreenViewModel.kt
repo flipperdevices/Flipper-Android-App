@@ -2,8 +2,6 @@ package com.flipperdevices.keyscreen.impl.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.viewModelScope
-import com.flipperdevices.bridge.api.model.FlipperRequestPriority
-import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.delegates.KeyParser
 import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
@@ -25,8 +23,6 @@ import com.flipperdevices.keyscreen.impl.model.KeyScreenState
 import com.flipperdevices.keyscreen.impl.model.ShareState
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
-import com.flipperdevices.protobuf.app.startRequest
-import com.flipperdevices.protobuf.main
 import com.github.terrakok.cicerone.Router
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
@@ -109,22 +105,6 @@ class KeyScreenViewModel(
                         FavoriteState.FAVORITE
                     } else FavoriteState.NOT_FAVORITE
                 ) else it
-            }
-        }
-    }
-
-    fun onEmulate(flipperAppName: String, keyPath: FlipperKeyPath) {
-        metricApi.reportSimpleEvent(SimpleEvent.OPEN_EMULATE)
-        serviceProvider.provideServiceApi(this) { service ->
-            viewModelScope.launch {
-                service.requestApi.requestWithoutAnswer(
-                    main {
-                        appStartRequest = startRequest {
-                            name = flipperAppName
-                            args = keyPath.getPathOnFlipper()
-                        }
-                    }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
-                )
             }
         }
     }

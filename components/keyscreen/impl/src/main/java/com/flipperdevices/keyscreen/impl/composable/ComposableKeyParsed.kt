@@ -54,8 +54,7 @@ fun ComposableKeyParsed(
             ComposableEmulate(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 24.dp, end = 24.dp, bottom = 24.dp),
-                onClick = { viewModel.onEmulate(flipperAppName, keyScreenState.flipperKey.path) }
+                    .padding(start = 24.dp, end = 24.dp, bottom = 24.dp)
             )
         }
 
