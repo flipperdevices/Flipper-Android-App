@@ -2,7 +2,6 @@ package com.flipperdevices.nfceditor.impl.composable
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -33,10 +32,8 @@ fun ComposableNfcLine(
             modifier = Modifier.width((scaleFactor * WIDTH_LINE_INDEX_DP).dp),
             text = lineIndex.toString(),
             textAlign = TextAlign.End,
-            style = LocalTextStyle.current.copy(
-                color = LocalPallet.current.text16,
-                fontSize = (scaleFactor * FONT_SIZE_SP).sp
-            )
+            color = LocalPallet.current.text16,
+            fontSize = (scaleFactor * FONT_SIZE_SP).sp
         )
 
         line.forEachIndexed { columnIndex, cell ->
