@@ -54,8 +54,24 @@ class NfcEditorViewModel : LifecycleViewModel(), LogTagProvider, KeyInputBusList
         private set
 
     var nfcEditorCursor by mutableStateOf<NfcEditorCursor?>(null)
+        private set
 
     var currentActiveCell by mutableStateOf<NfcEditorCellLocation?>(null)
+        private set
+
+    fun onCellFocus(location: NfcEditorCellLocation, isFocused: Boolean) {
+        if (!isFocused) {
+            if (currentActiveCell == location) {
+                currentActiveCell = null
+            }
+            return
+        }
+
+        currentActiveCell = location
+        if (nfcEditorCursor?.location != location) {
+            nfcEditorCursor = NfcEditorCursor(location, position = 0)
+        }
+    }
 
     fun onChangeText(newText: String, location: NfcEditorCellLocation, position: Int) {
         val oldCursor = nfcEditorCursor
@@ -66,6 +82,10 @@ class NfcEditorViewModel : LifecycleViewModel(), LogTagProvider, KeyInputBusList
             return
         }
 
+        if (currentActiveCell != location) {
+            return
+        }
+
         val newCursor = if (position >= NFC_CELL_MAX_CURSOR_INDEX) {
             val newLocation = oldCursor?.location?.increment(nfcEditorState.sectors)
             if (newLocation == null) {
@@ -73,7 +93,7 @@ class NfcEditorViewModel : LifecycleViewModel(), LogTagProvider, KeyInputBusList
             } else NfcEditorCursor(newLocation, position = 0)
         } else NfcEditorCursor(location, position)
 
-        val newText = textUpdaterHelper.getProcessedText(
+        val processedText = textUpdaterHelper.getProcessedText(
             originalText = nfcEditorState[location].content,
             newText = newText,
             oldPosition = if (oldCursor?.location == location) oldCursor.position else 0,
@@ -82,12 +102,12 @@ class NfcEditorViewModel : LifecycleViewModel(), LogTagProvider, KeyInputBusList
 
         nfcEditorState = nfcEditorState.copyWithChangedContent(
             location,
-            newText
+            processedText
         )
         nfcEditorCursor = newCursor
         verbose {
             "On change selection. Input $location and $position. " +
-                "Output: $newCursor with $newText"
+                "Output: $newCursor with $processedText"
         }
     }
 
@@ -132,6 +152,7 @@ class NfcEditorViewModel : LifecycleViewModel(), LogTagProvider, KeyInputBusList
             )
         }
 
+        currentActiveCell = newCursor?.location
         nfcEditorCursor = newCursor
     }
 }

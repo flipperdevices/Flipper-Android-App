@@ -13,7 +13,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import kotlin.math.roundToInt
 
-const val WIDTH_LINE_INDEX_DP = 7
+const val WIDTH_LINE_INDEX_DP = 9
 
 private const val NFC_LINE_BYTE_COUNT = 16
 private const val SCALE_FACTOR_MULTIPLIER = 0.9f

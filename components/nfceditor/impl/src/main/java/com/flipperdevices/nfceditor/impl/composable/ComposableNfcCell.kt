@@ -1,16 +1,15 @@
 package com.flipperdevices.nfceditor.impl.composable
 
-import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.LocalTextStyle
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -33,60 +32,57 @@ fun ComposableNfcCell(
     cell: NfcEditorCell,
     scaleFactor: Float,
     selection: TextRange?,
+    composition: TextRange?,
     onFocusChanged: (isFocused: Boolean) -> Unit,
     onValueChanged: (TextFieldValue) -> Unit
 ) {
+    val paddingDp = remember(scaleFactor) {
+        (scaleFactor * PADDING_CELL_DP).dp
+    }
+    val widthDp = remember(scaleFactor) {
+        (scaleFactor * 2 * WIDTH_LINE_INDEX_DP).dp
+    }
+
     var textFieldModifier = Modifier
-        .width(IntrinsicSize.Min)
-        .padding(start = (scaleFactor * PADDING_CELL_DP).dp)
+        .padding(start = paddingDp)
+        .width(widthDp)
 
     if (focusRequester != null) {
         textFieldModifier = textFieldModifier
             .focusRequester(focusRequester)
     }
 
-    /**
-     * This hack is needed so that the cursor doesn't jump into the frame
-     * when we haven't yet called focusRequester.requestFocus().
-     * Otherwise, the user will see an incorrect cursor display for a moment.
-     *
-     * Example if we use TextRange.Zero as default:
-     * Cursor(0,0,1):
-     * [0|0] [00]
-     *
-     * -> Press any button
-     * Cursor(0, 1, 0):
-     * [|00] [00]
-     *
-     * -> focusRequester.requestFocus()
-     * [00] [|00]
-     *
-     * Example if we use lastSelection as default:
-     * [0|0] [00]
-     * -> Press any button
-     * [0|0] [00]
-     * -> focusRequester.requestFocus()
-     * [00] [|00]
-     */
-    var lastSelection by remember { mutableStateOf(TextRange.Zero) }
-    if (selection != null) {
-        lastSelection = selection
+    val textStyle = key(scaleFactor) {
+        LocalTextStyle.current.copy(
+            fontSize = (scaleFactor * FONT_SIZE_SP).sp
+        )
     }
 
-    BasicTextField(
-        modifier = textFieldModifier.onFocusChanged {
-            onFocusChanged(it.isFocused)
+    if (selection != null && composition != null) {
+        BasicTextField(
+            modifier = textFieldModifier
+                .onFocusChanged {
+                    onFocusChanged(it.isFocused)
+                },
+            value = TextFieldValue(
+                cell.content,
+                selection,
+                TextRange(0, cell.content.length)
+            ),
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+            singleLine = true,
+            textStyle = textStyle,
+            cursorBrush = SolidColor(LocalPallet.current.text100),
+            onValueChange = onValueChanged
+        )
+        return
+    }
+
+    Text(
+        modifier = textFieldModifier.clickable {
+            onFocusChanged(true)
         },
-        value = TextFieldValue(
-            cell.content,
-            selection ?: lastSelection
-        ),
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-        singleLine = true,
-        textStyle = LocalTextStyle.current.copy(
-            fontSize = (scaleFactor * FONT_SIZE_SP).sp
-        ),
-        cursorBrush = SolidColor(LocalPallet.current.text100),
-        onValueChange = onValueChanged
+        text = cell.content,
+        style = textStyle
     )
 }

@@ -5,7 +5,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.text.TextRange
@@ -36,18 +39,24 @@ fun ComposableNfcLine(
             text = visibleIndex.toString(),
             textAlign = TextAlign.End,
             color = LocalPallet.current.text16,
-            fontSize = (scaleFactor * FONT_SIZE_SP).sp
+            fontSize = (scaleFactor * FONT_SIZE_SP).sp,
+            maxLines = 1
         )
 
         line.forEachIndexed { columnIndex, cell ->
             var focusRequester: FocusRequester? = null
             var textSelection: TextRange? = null
-            val cellLocation = NfcEditorCellLocation(sectorIndex, lineIndexInSector, columnIndex)
+            val cellLocation =
+                NfcEditorCellLocation(sectorIndex, lineIndexInSector, columnIndex)
+            var composition by remember { mutableStateOf<TextRange?>(null) }
             if (cursor != null &&
                 cursor.location == cellLocation
             ) {
                 textSelection = TextRange(cursor.position)
                 focusRequester = remember { FocusRequester() }
+                if (composition == null) {
+                    composition = TextRange(0, cell.content.length)
+                }
                 LaunchedEffect(cursor.location) {
                     focusRequester.requestFocus()
                 }
@@ -57,8 +66,14 @@ fun ComposableNfcLine(
                 cell,
                 scaleFactor,
                 textSelection,
+                composition,
                 onFocusChanged = { onFocusChanged(cellLocation, it) },
-                onValueChanged = { onValueChanged(cellLocation, it) }
+                onValueChanged = {
+                    if (composition != it.composition) {
+                        composition = it.composition
+                    }
+                    onValueChanged(cellLocation, it)
+                }
             )
         }
     }

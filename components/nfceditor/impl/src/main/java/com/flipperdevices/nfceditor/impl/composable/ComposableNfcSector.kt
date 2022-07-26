@@ -44,14 +44,7 @@ fun ComposableNfcSector(
                 maxIndexSymbolCount = maxIndexSymbolCount,
                 scaleFactor = scaleFactor,
                 cursor = nfcEditorViewModel.nfcEditorCursor,
-                onFocusChanged = { cellLocation, isFocused ->
-                    when (isFocused) {
-                        true -> nfcEditorViewModel.currentActiveCell = cellLocation
-                        false -> if (nfcEditorViewModel.currentActiveCell == cellLocation) {
-                            nfcEditorViewModel.currentActiveCell = null
-                        }
-                    }
-                },
+                onFocusChanged = nfcEditorViewModel::onCellFocus,
                 onValueChanged = { location, textValue ->
                     nfcEditorViewModel.onChangeText(
                         textValue.text,

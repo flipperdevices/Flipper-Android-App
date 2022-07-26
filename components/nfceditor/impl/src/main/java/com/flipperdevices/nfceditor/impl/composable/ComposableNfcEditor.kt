@@ -7,6 +7,7 @@ import androidx.compose.material.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.key
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
@@ -28,8 +29,9 @@ fun ComposableNfcEditor(nfcEditorViewModel: NfcEditorViewModel = viewModel()) {
             )
         ) {
             val nfcEditorState = nfcEditorViewModel.nfcEditorState
-            val maxIndexSymbolCount =
+            val maxIndexSymbolCount = remember(nfcEditorState) {
                 nfcEditorState.sectors.maxOf { it.lines.maxOf { it.index } }.length()
+            }
 
             val scaleFactor = key(maxIndexSymbolCount) {
                 calculateScaleFactor(maxIndexSymbolCount)
