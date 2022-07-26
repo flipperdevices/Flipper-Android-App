@@ -9,7 +9,22 @@ const val NFC_CELL_MAX_CURSOR_INDEX = 2L
 data class NfcEditorState(
     val lines: List<List<NfcEditorCell>>,
     val cursor: NfcEditorCursor?
-)
+) {
+    fun copyWithChangedCell(
+        location: NfcEditorCellLocation,
+        cell: NfcEditorCell,
+        newCursor: NfcEditorCursor? = cursor
+    ): NfcEditorState {
+        val newLines = lines.toMutableList()
+        val updatedLine = newLines[location.lineIndex].toMutableList()
+        updatedLine[location.columnIndex] = cell
+        newLines[location.lineIndex] = updatedLine
+        return NfcEditorState(
+            lines = newLines,
+            cursor = newCursor
+        )
+    }
+}
 
 @Stable
 data class NfcEditorCursor(

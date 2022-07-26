@@ -2,7 +2,6 @@ package com.flipperdevices.nfceditor.impl.composable
 
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.runtime.Composable
@@ -38,28 +37,27 @@ private fun ComposableNfcEditor(nfcEditorViewModel: NfcEditorViewModel, scaleFac
 
     Column {
         nfcEditorState.lines.forEachIndexed { lineIndex, line ->
-            Row {
-                ComposableNfcLine(
-                    lineIndex,
-                    line,
-                    scaleFactor,
-                    nfcEditorState.cursor,
-                    onFocusChanged = { cellLocation, isFocused ->
-                        when (isFocused) {
-                            true -> nfcEditorViewModel.currentActiveCell = cellLocation
-                            false -> if (nfcEditorViewModel.currentActiveCell == cellLocation) {
-                                nfcEditorViewModel.currentActiveCell = null
-                            }
+            ComposableNfcLine(
+                lineIndex,
+                line,
+                scaleFactor,
+                nfcEditorState.cursor,
+                onFocusChanged = { cellLocation, isFocused ->
+                    when (isFocused) {
+                        true -> nfcEditorViewModel.currentActiveCell = cellLocation
+                        false -> if (nfcEditorViewModel.currentActiveCell == cellLocation) {
+                            nfcEditorViewModel.currentActiveCell = null
                         }
-                    },
-                    onValueChanged = { location, textValue ->
-                        nfcEditorViewModel.onChangeSelection(
-                            location,
-                            textValue.selection.start
-                        )
                     }
-                )
-            }
+                },
+                onValueChanged = { location, textValue ->
+                    nfcEditorViewModel.onChangeText(
+                        textValue.text,
+                        location,
+                        textValue.selection.start
+                    )
+                }
+            )
         }
     }
 }
