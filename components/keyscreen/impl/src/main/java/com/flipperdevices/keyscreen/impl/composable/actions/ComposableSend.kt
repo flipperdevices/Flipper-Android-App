@@ -1,5 +1,6 @@
 package com.flipperdevices.keyscreen.impl.composable.actions
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -7,7 +8,6 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -37,8 +37,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.flipperdevices.core.ui.res.R as DesignSystem
-import androidx.compose.foundation.interaction.MutableInteractionSource
+import com.flipperdevices.core.ui.ktx.onHoldPress
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
@@ -47,7 +46,7 @@ import com.flipperdevices.keyscreen.impl.model.FlipperDeviceState
 import com.flipperdevices.keyscreen.impl.viewmodel.FlipperDeviceViewModel
 
 @Composable
-fun ComposableEmulate(
+fun ComposableSend(
     modifier: Modifier = Modifier,
     onClick: (Boolean) -> Unit = {}
 ) {
@@ -55,38 +54,39 @@ fun ComposableEmulate(
     val flipperDeviceState by flipperDeviceViewModel.getFlipperDeviceState().collectAsState()
     val enabled = flipperDeviceState == FlipperDeviceState.CONNECTED
 
-    ComposableEmulateInternal(
+    ComposableSendInternal(
         modifier = modifier,
         onClick = if (enabled) onClick else null
     )
 }
 
 @Composable
-private fun ComposableEmulateInternal(
+private fun ComposableSendInternal(
     modifier: Modifier = Modifier,
     onClick: ((Boolean) -> Unit)? = {}
 ) {
     val enable = onClick != null
     var isAction by remember { mutableStateOf(false) }
-    val textId = if (isAction) R.string.keyscreen_emulating else R.string.keyscreen_emulate
+    var isNeedAnimation by remember { mutableStateOf(false) }
 
-    val translateAnimation = rememberInfiniteTransition().animateFloat(
-        initialValue = 0f,
-        targetValue = 1500f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(
-                durationMillis = 1500,
-                easing = FastOutLinearInEasing
+    val color = LocalPallet.current.accent
+    var animColor = if (isAction) {
+        val translateAnimation = rememberInfiniteTransition().animateFloat(
+            initialValue = 0f,
+            targetValue = 1500f,
+            animationSpec = infiniteRepeatable(
+                animation = tween(
+                    durationMillis = 1500,
+                    easing = FastOutLinearInEasing
+                )
             )
         )
-    )
-
-    val color = LocalPallet.current.accentSecond
-    val animColor = if (isAction) Brush.horizontalGradient(
-        colors = listOf(color.copy(alpha = 0.9f), color.copy(alpha = 0.4f)),
-        startX = 0f,
-        endX = translateAnimation.value
-    ) else SolidColor(color)
+        Brush.horizontalGradient(
+            colors = listOf(color.copy(alpha = 0.9f), color.copy(alpha = 0.4f)),
+            startX = 0f,
+            endX = translateAnimation.value
+        )
+    } else SolidColor(color)
 
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -102,33 +102,40 @@ private fun ComposableEmulateInternal(
                     color = if (enable) color else LocalPallet.current.text8,
                     shape = RoundedCornerShape(12.dp)
                 )
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null,
-                    onClick = {
-                        isAction = !isAction
+                .onHoldPress(
+                    onLongPressStart = {
+                        isAction = true
                         onClick?.invoke(isAction)
+                    },
+                    onLongPressEnd = {
+                        isAction = false
+                        onClick?.invoke(isAction)
+                    },
+                    onClick = {
+
                     }
                 ),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                painter = painterResource(id = DesignSystem.drawable.ic_emulate),
-                contentDescription = stringResource(id = textId),
+                painter = painterResource(id = DesignSystem.drawable.ic_send),
+                contentDescription = stringResource(id = R.string.keyscreen_send),
                 tint = LocalPallet.current.onFlipperButton
             )
             Spacer(Modifier.width(6.dp))
             Text(
-                text = stringResource(id = textId),
+                text = stringResource(id = R.string.keyscreen_send),
                 style = LocalTypography.current.flipperAction,
                 color = LocalPallet.current.onFlipperButton
             )
         }
-        if (isAction) {
+        if (!isAction) {
             Text(
-                modifier = Modifier.padding(top = 4.dp).height(11.dp),
-                text = stringResource(id = R.string.keyscreen_emulating_desc),
+                modifier = Modifier
+                    .padding(top = 4.dp)
+                    .height(11.dp),
+                text = stringResource(id = R.string.keyscreen_sending_desc),
                 style = LocalTypography.current.subtitleM12,
                 color = LocalPallet.current.text20,
                 textAlign = TextAlign.Center
@@ -144,11 +151,12 @@ private fun ComposableEmulateInternal(
     showBackground = true
 )
 @Composable
-private fun ComposableEmulatePreview() {
+private fun ComposableSendPreview() {
     FlipperThemeInternal {
-        Column(modifier = Modifier.padding(horizontal = 24.dp).fillMaxSize()) {
-            ComposableEmulateInternal()
-            // ComposableEmulateInternal(onClick = null)
+        Column(modifier = Modifier
+            .padding(horizontal = 24.dp)
+            .fillMaxSize()) {
+            ComposableSendInternal()
         }
     }
 }
