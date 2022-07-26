@@ -1,6 +1,7 @@
 package com.flipperdevices.nfceditor.impl.model
 
 import androidx.compose.runtime.Stable
+import kotlin.math.abs
 
 const val NFC_CELL_MAX_CURSOR_INDEX = 2L
 
@@ -95,5 +96,11 @@ data class NfcEditorCellLocation(
                 columnIndex = sectors[newSectorIndex].lines.last().cells.lastIndex
             )
         } else null
+    }
+
+    fun isNear(otherLocation: NfcEditorCellLocation): Boolean {
+        return otherLocation.sectorIndex == sectorIndex &&
+            otherLocation.lineIndex == lineIndex &&
+            abs(otherLocation.columnIndex - columnIndex) <= 1
     }
 }
