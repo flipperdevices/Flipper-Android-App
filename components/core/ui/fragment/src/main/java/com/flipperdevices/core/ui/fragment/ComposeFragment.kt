@@ -9,11 +9,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.SubcomposeLayout
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import com.flipperdevices.core.ktx.android.setStatusBarColor
 import com.flipperdevices.core.navigation.requireRouter
 import com.flipperdevices.core.ui.fragment.provider.StatusBarColorProvider
-import com.flipperdevices.core.ui.fragment.view.FlipperComposeView
 import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.core.ui.theme.FlipperTheme
 
@@ -26,14 +26,19 @@ abstract class ComposeFragment : Fragment(), StatusBarColorProvider {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return FlipperComposeView(requireContext()).apply {
+        return ComposeView(requireContext()).apply {
             setContent {
-                FlipperTheme {
-                    CompositionLocalProvider(LocalRouter provides requireRouter()) {
-                        SubComposeWrapper(modifier = Modifier.fillMaxSize()) {
-                            RenderView()
-                        }
-                    }
+                ComposeViewRenderWithTheme()
+            }
+        }
+    }
+
+    @Composable
+    fun ComposeViewRenderWithTheme() {
+        FlipperTheme {
+            CompositionLocalProvider(LocalRouter provides requireRouter()) {
+                SubComposeWrapper(modifier = Modifier.fillMaxSize()) {
+                    RenderView()
                 }
             }
         }

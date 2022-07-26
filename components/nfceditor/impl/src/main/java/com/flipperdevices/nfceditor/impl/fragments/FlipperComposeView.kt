@@ -1,4 +1,4 @@
-package com.flipperdevices.core.ui.fragment.view
+package com.flipperdevices.nfceditor.impl.fragments
 
 import android.content.Context
 import android.util.AttributeSet
@@ -8,7 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.AbstractComposeView
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.di.provideDelegate
-import com.flipperdevices.core.ui.fragment.di.ComposeFragmentComponent
+import com.flipperdevices.nfceditor.impl.di.NfcEditorComponent
 
 internal class FlipperComposeView(
     context: Context,
@@ -18,7 +18,7 @@ internal class FlipperComposeView(
 
     private val content = mutableStateOf<(@Composable () -> Unit)?>(null)
     private val keyInputBus by ComponentHolder
-        .component<ComposeFragmentComponent>().keyInputBusProvider
+        .component<NfcEditorComponent>().keyInputBusProvider
 
     @Suppress("RedundantVisibilityModifier")
     protected override var shouldCreateCompositionOnAttachedToWindow: Boolean = false

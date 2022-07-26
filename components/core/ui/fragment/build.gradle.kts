@@ -1,7 +1,5 @@
 plugins {
     androidCompose
-    id("com.squareup.anvil")
-    id("kotlin-kapt")
 }
 
 dependencies {
@@ -20,8 +18,4 @@ dependencies {
     implementation(libs.compose.ui)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
-
-    // Dagger deps
-    implementation(libs.dagger)
-    kapt(libs.dagger.kapt)
 }
