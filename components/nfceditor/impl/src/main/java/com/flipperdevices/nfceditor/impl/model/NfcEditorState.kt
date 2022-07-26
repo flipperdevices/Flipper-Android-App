@@ -1,21 +1,15 @@
 package com.flipperdevices.nfceditor.impl.model
 
-import androidx.annotation.IntRange
 import androidx.compose.runtime.Stable
 
 const val NFC_CELL_MAX_CURSOR_INDEX = 2L
 
 @Stable
 data class NfcEditorState(
-    val sectors: List<NfcEditorSector>,
-    val cursor: NfcEditorCursor?
+    val sectors: List<NfcEditorSector>
 ) {
 
-    fun copyWithChangedContent(
-        location: NfcEditorCellLocation,
-        content: String,
-        newCursor: NfcEditorCursor? = cursor
-    ): NfcEditorState {
+    fun copyWithChangedContent(location: NfcEditorCellLocation, content: String): NfcEditorState {
         val newSectors = sectors.toMutableList()
         val newLines = newSectors[location.sectorIndex].lines.toMutableList()
         var updatedLine = newLines[location.lineIndex]
@@ -25,30 +19,13 @@ data class NfcEditorState(
         newLines[location.lineIndex] = updatedLine
         newSectors[location.sectorIndex] = NfcEditorSector(newLines)
         return NfcEditorState(
-            sectors = newSectors,
-            cursor = newCursor
+            sectors = newSectors
         )
     }
 
     operator fun get(location: NfcEditorCellLocation): NfcEditorCell {
         return sectors[location.sectorIndex].lines[location.lineIndex].cells[location.columnIndex]
     }
-}
-
-@Stable
-data class NfcEditorCursor(
-    val location: NfcEditorCellLocation,
-    @IntRange(from = 0, to = NFC_CELL_MAX_CURSOR_INDEX)
-    val position: Int
-) {
-    constructor(sectorIndex: Int, lineIndex: Int, columnIndex: Int, position: Int) : this(
-        NfcEditorCellLocation(
-            sectorIndex,
-            lineIndex,
-            columnIndex
-        ),
-        position
-    )
 }
 
 @Stable

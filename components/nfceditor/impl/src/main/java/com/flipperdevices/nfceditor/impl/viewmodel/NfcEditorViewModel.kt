@@ -48,16 +48,17 @@ class NfcEditorViewModel : LifecycleViewModel(), LogTagProvider, KeyInputBusList
                         )
                     }
                 )
-            },
-            cursor = null
+            }
         )
     )
         private set
 
+    var nfcEditorCursor by mutableStateOf<NfcEditorCursor?>(null)
+
     var currentActiveCell by mutableStateOf<NfcEditorCellLocation?>(null)
 
     fun onChangeText(newText: String, location: NfcEditorCellLocation, position: Int) {
-        val oldCursor = nfcEditorState.cursor
+        val oldCursor = nfcEditorCursor
         if (oldCursor != null &&
             location == oldCursor.location &&
             position == oldCursor.position
@@ -81,9 +82,9 @@ class NfcEditorViewModel : LifecycleViewModel(), LogTagProvider, KeyInputBusList
 
         nfcEditorState = nfcEditorState.copyWithChangedContent(
             location,
-            newText,
-            newCursor = newCursor
+            newText
         )
+        nfcEditorCursor = newCursor
         verbose {
             "On change selection. Input $location and $position. " +
                 "Output: $newCursor with $newText"
@@ -101,7 +102,7 @@ class NfcEditorViewModel : LifecycleViewModel(), LogTagProvider, KeyInputBusList
     }
 
     private fun onPressBack() {
-        val cursor = nfcEditorState.cursor ?: return
+        val cursor = nfcEditorCursor ?: return
 
         // Execute only if current selector on zero
         if (cursor.position > 0) {
@@ -127,9 +128,10 @@ class NfcEditorViewModel : LifecycleViewModel(), LogTagProvider, KeyInputBusList
             )
             nfcEditorState = nfcEditorState.copyWithChangedContent(
                 location,
-                content = newText,
-                newCursor = newCursor
+                content = newText
             )
-        } else nfcEditorState = nfcEditorState.copy(cursor = newCursor)
+        }
+
+        nfcEditorCursor = newCursor
     }
 }
