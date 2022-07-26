@@ -16,6 +16,8 @@ import com.flipperdevices.nfceditor.impl.model.NFC_CELL_MAX_CURSOR_INDEX
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCell
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCellLocation
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCursor
+import com.flipperdevices.nfceditor.impl.model.NfcEditorLine
+import com.flipperdevices.nfceditor.impl.model.NfcEditorSector
 import com.flipperdevices.nfceditor.impl.model.NfcEditorState
 import javax.inject.Inject
 import javax.inject.Provider
@@ -36,12 +38,17 @@ class NfcEditorViewModel : LifecycleViewModel(), LogTagProvider, KeyInputBusList
 
     var nfcEditorState by mutableStateOf(
         NfcEditorState(
-            listOf(
-                "B6 69 03 36 8A 98 02 00 64 8F 76 14 51 10 37 11".split(" ")
-                    .map { NfcEditorCell(it) },
-                "B6 69 03 36 8A 98 02 00 64 8F 76 14 51 10 37 11".split(" ")
-                    .map { NfcEditorCell(it) }
-            ),
+            List(size = (256 / 4)) { sectorIndex ->
+                NfcEditorSector(
+                    List(4) { lineIndex ->
+                        NfcEditorLine(
+                            sectorIndex * 4 + lineIndex,
+                            cells = "B6 69 03 36 8A 98 02 00 64 8F 76 14 51 10 37 11".split(" ")
+                                .map { NfcEditorCell(it) }
+                        )
+                    }
+                )
+            },
             cursor = null
         )
     )
@@ -59,33 +66,22 @@ class NfcEditorViewModel : LifecycleViewModel(), LogTagProvider, KeyInputBusList
         }
 
         val newCursor = if (position >= NFC_CELL_MAX_CURSOR_INDEX) {
-            if (location.columnIndex < nfcEditorState.lines[location.lineIndex].lastIndex) {
-                // If it is not last column:
-                NfcEditorCursor(
-                    lineIndex = location.lineIndex,
-                    columnIndex = location.columnIndex + 1,
-                    position = 0
-                )
-            } else if (location.lineIndex < nfcEditorState.lines.lastIndex) {
-                // If it is not last line:
-                NfcEditorCursor(
-                    lineIndex = location.lineIndex + 1,
-                    columnIndex = 0,
-                    position = 0
-                )
-            } else NfcEditorCursor(location, min(position, NFC_CELL_MAX_CURSOR_INDEX.toInt()))
+            val newLocation = oldCursor?.location?.increment(nfcEditorState.sectors)
+            if (newLocation == null) {
+                NfcEditorCursor(location, min(position, NFC_CELL_MAX_CURSOR_INDEX.toInt()))
+            } else NfcEditorCursor(newLocation, position = 0)
         } else NfcEditorCursor(location, position)
 
         val newText = textUpdaterHelper.getProcessedText(
-            originalText = nfcEditorState.lines[location.lineIndex][location.columnIndex].content,
+            originalText = nfcEditorState[location].content,
             newText = newText,
             oldPosition = if (oldCursor?.location == location) oldCursor.position else 0,
             newPosition = position
         )
 
-        nfcEditorState = nfcEditorState.copyWithChangedCell(
+        nfcEditorState = nfcEditorState.copyWithChangedContent(
             location,
-            NfcEditorCell(newText),
+            newText,
             newCursor = newCursor
         )
         verbose {
@@ -112,34 +108,26 @@ class NfcEditorViewModel : LifecycleViewModel(), LogTagProvider, KeyInputBusList
             return
         }
 
-        val newCursor = if (cursor.location.columnIndex > 0) {
+        val newCursor = cursor.location.decrement(nfcEditorState.sectors)?.let {
             NfcEditorCursor(
-                lineIndex = cursor.location.lineIndex,
-                columnIndex = cursor.location.columnIndex - 1,
-                position = NFC_CELL_MAX_CURSOR_INDEX.toInt() - 1
+                it,
+                NFC_CELL_MAX_CURSOR_INDEX.toInt() - 1
             )
-        } else if (cursor.location.lineIndex > 0) {
-            val newLineIndex = cursor.location.lineIndex - 1
-            NfcEditorCursor(
-                lineIndex = newLineIndex,
-                columnIndex = nfcEditorState.lines[newLineIndex].lastIndex,
-                position = NFC_CELL_MAX_CURSOR_INDEX.toInt() - 1
-            )
-        } else null
+        }
 
         if (newCursor != null) {
             val location = newCursor.location
-            val oldText = nfcEditorState
-                .lines[location.lineIndex][location.columnIndex].content
+            val currentCell = nfcEditorState[location]
+            val oldText = currentCell.content
             val newText = textUpdaterHelper.getProcessedText(
                 originalText = oldText,
                 newText = oldText,
                 oldPosition = NFC_CELL_MAX_CURSOR_INDEX.toInt(),
                 newPosition = newCursor.position
             )
-            nfcEditorState = nfcEditorState.copyWithChangedCell(
+            nfcEditorState = nfcEditorState.copyWithChangedContent(
                 location,
-                NfcEditorCell(newText),
+                content = newText,
                 newCursor = newCursor
             )
         } else nfcEditorState = nfcEditorState.copy(cursor = newCursor)

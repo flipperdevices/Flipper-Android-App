@@ -1,11 +1,12 @@
 package com.flipperdevices.nfceditor.impl.composable
 
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
@@ -27,9 +28,12 @@ fun ComposableNfcEditor(nfcEditorViewModel: NfcEditorViewModel = viewModel()) {
             )
         ) {
             val nfcEditorState = nfcEditorViewModel.nfcEditorState
-            val maxIndexSymbolCount = nfcEditorState.lines.lastIndex.length()
+            val maxIndexSymbolCount =
+                nfcEditorState.sectors.maxOf { it.lines.maxOf { it.index } }.length()
 
-            val scaleFactor = calculateScaleFactor(maxIndexSymbolCount)
+            val scaleFactor = key(maxIndexSymbolCount) {
+                calculateScaleFactor(maxIndexSymbolCount)
+            }
 
             ComposableNfcEditor(
                 nfcEditorState = nfcEditorState,
@@ -48,29 +52,14 @@ private fun ComposableNfcEditor(
     maxIndexSymbolCount: Int,
     scaleFactor: Float
 ) {
-    Column {
-        nfcEditorState.lines.forEachIndexed { lineIndex, line ->
-            ComposableNfcLine(
-                lineIndex,
-                line,
-                maxIndexSymbolCount,
-                scaleFactor,
-                nfcEditorState.cursor,
-                onFocusChanged = { cellLocation, isFocused ->
-                    when (isFocused) {
-                        true -> nfcEditorViewModel.currentActiveCell = cellLocation
-                        false -> if (nfcEditorViewModel.currentActiveCell == cellLocation) {
-                            nfcEditorViewModel.currentActiveCell = null
-                        }
-                    }
-                },
-                onValueChanged = { location, textValue ->
-                    nfcEditorViewModel.onChangeText(
-                        textValue.text,
-                        location,
-                        textValue.selection.start
-                    )
-                }
+    LazyColumn {
+        items(nfcEditorState.sectors.size, key = { it.hashCode() }) { index ->
+            ComposableNfcSector(
+                nfcEditorViewModel = nfcEditorViewModel,
+                nfcEditorState = nfcEditorState,
+                sectorIndex = index,
+                maxIndexSymbolCount = maxIndexSymbolCount,
+                scaleFactor = scaleFactor
             )
         }
     }
