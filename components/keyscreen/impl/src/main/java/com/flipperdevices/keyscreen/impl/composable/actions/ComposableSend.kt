@@ -110,9 +110,6 @@ private fun ComposableSendInternal(
                     onLongPressEnd = {
                         isAction = false
                         onClick?.invoke(isAction)
-                    },
-                    onClick = {
-
                     }
                 ),
             horizontalArrangement = Arrangement.Center,

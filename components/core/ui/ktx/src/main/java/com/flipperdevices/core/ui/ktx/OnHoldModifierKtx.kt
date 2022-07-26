@@ -16,8 +16,7 @@ import kotlinx.coroutines.withTimeout
 
 fun Modifier.onHoldPress(
     onLongPressStart: () -> Unit,
-    onLongPressEnd: () -> Unit,
-    onClick: () -> Unit = {}
+    onLongPressEnd: () -> Unit
 ) =
     pointerInput(Unit) {
         forEachGesture {
@@ -27,7 +26,8 @@ fun Modifier.onHoldPress(
             val change = awaitLongPressOrCancellation(down)
             val wasLongPress = (change == down)
             if (!wasLongPress) {
-                onClick.invoke()
+                onLongPressStart.invoke()
+                onLongPressEnd.invoke()
                 return@forEachGesture
             }
             onLongPressStart()
