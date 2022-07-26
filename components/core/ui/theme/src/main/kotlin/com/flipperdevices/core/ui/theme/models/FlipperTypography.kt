@@ -31,7 +31,8 @@ data class FlipperTypography(
     val buttonB14: TextStyle,
 
     val updateButton40: TextStyle,
-    val updateText40: TextStyle
+    val updateText40: TextStyle,
+    val flipperAction: TextStyle
 )
 
 internal val robotoFamily = FontFamily(

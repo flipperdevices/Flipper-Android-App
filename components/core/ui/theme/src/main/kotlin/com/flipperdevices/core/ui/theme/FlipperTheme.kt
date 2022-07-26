@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Shapes
+import androidx.compose.material.Text
 import androidx.compose.material.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -248,5 +249,10 @@ private val typography = FlipperTypography(
         fontSize = 40.sp,
         fontFamily = FontFamily(Font(R.font.flipper)),
         fontWeight = FontWeight.W400
+    ),
+    flipperAction = TextStyle(
+        fontSize = 23.sp,
+        fontFamily = FontFamily(Font(R.font.flipper_action)),
+        fontWeight = FontWeight.W500
     )
 )
