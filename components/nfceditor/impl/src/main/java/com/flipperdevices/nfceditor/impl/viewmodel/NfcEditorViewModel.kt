@@ -88,7 +88,10 @@ class NfcEditorViewModel : LifecycleViewModel(), LogTagProvider, KeyInputBusList
             NfcEditorCell(newText),
             newCursor = newCursor
         )
-        verbose { "On change selection. Input $location and $position. Output: $newCursor with $newText" }
+        verbose {
+            "On change selection. Input $location and $position. " +
+                "Output: $newCursor with $newText"
+        }
     }
 
     override fun onKeyEvent(keyEvent: KeyEvent) {

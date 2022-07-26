@@ -22,6 +22,7 @@ import com.flipperdevices.nfceditor.impl.model.NfcEditorCursor
 fun ComposableNfcLine(
     lineIndex: Int,
     line: List<NfcEditorCell>,
+    maxIndexSymbolCount: Int,
     scaleFactor: Float,
     cursor: NfcEditorCursor? = null,
     onFocusChanged: (NfcEditorCellLocation, isFocused: Boolean) -> Unit = { _, _ -> },
@@ -29,7 +30,7 @@ fun ComposableNfcLine(
 ) {
     Row {
         Text(
-            modifier = Modifier.width((scaleFactor * WIDTH_LINE_INDEX_DP).dp),
+            modifier = Modifier.width((scaleFactor * WIDTH_LINE_INDEX_DP * maxIndexSymbolCount).dp),
             text = lineIndex.toString(),
             textAlign = TextAlign.End,
             color = LocalPallet.current.text16,

@@ -13,33 +13,36 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import kotlin.math.roundToInt
 
-const val WIDTH_LINE_INDEX_DP = 21
+const val WIDTH_LINE_INDEX_DP = 7
 
 private const val NFC_LINE_BYTE_COUNT = 16
 private const val SCALE_FACTOR_MULTIPLIER = 0.9f
 
+/**
+ * @param maxIndexCount How many numbers can be in the number of lines (line index)
+ */
 @Composable
-fun BoxWithConstraintsScope.calculateScaleFactor(): Float {
+fun BoxWithConstraintsScope.calculateScaleFactor(maxIndexCount: Int): Float {
     var currentScaleFactor = 1.0f
 
-    if (shouldShrink(currentScaleFactor)) {
+    if (shouldShrink(maxIndexCount, currentScaleFactor)) {
         do {
             currentScaleFactor *= SCALE_FACTOR_MULTIPLIER
-        } while (shouldShrink(currentScaleFactor))
+        } while (shouldShrink(maxIndexCount, currentScaleFactor))
         return currentScaleFactor
     } else {
         var previousScaleFactor: Float
         do {
             previousScaleFactor = currentScaleFactor
             currentScaleFactor /= SCALE_FACTOR_MULTIPLIER
-        } while (!shouldShrink(currentScaleFactor))
+        } while (!shouldShrink(maxIndexCount, currentScaleFactor))
         return previousScaleFactor
     }
 }
 
 @OptIn(InternalFoundationTextApi::class)
 @Composable
-private fun BoxWithConstraintsScope.shouldShrink(scaleFactor: Float): Boolean {
+private fun BoxWithConstraintsScope.shouldShrink(maxIndexCount: Int, scaleFactor: Float): Boolean {
     val textStyle = LocalTextStyle.current
 
     // Represent line without index and paddings
@@ -55,7 +58,7 @@ private fun BoxWithConstraintsScope.shouldShrink(scaleFactor: Float): Boolean {
         LocalFontLoader.current
     )
 
-    val otherWidthsDpWithoutScaleFactor = WIDTH_LINE_INDEX_DP +
+    val otherWidthsDpWithoutScaleFactor = (maxIndexCount * WIDTH_LINE_INDEX_DP) +
         (PADDING_CELL_DP * NFC_LINE_BYTE_COUNT)
 
     val otherWidthsPx = with(LocalDensity.current) {
