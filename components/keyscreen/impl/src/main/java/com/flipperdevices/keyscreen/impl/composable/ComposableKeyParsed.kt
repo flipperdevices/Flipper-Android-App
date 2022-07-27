@@ -8,6 +8,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.keyscreen.impl.R
@@ -15,6 +16,7 @@ import com.flipperdevices.keyscreen.impl.composable.actions.ComposableDelete
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableEdit
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableEmulate
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableRestore
+import com.flipperdevices.keyscreen.impl.composable.actions.ComposableSend
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableShare
 import com.flipperdevices.keyscreen.impl.composable.card.ComposableKeyCard
 import com.flipperdevices.keyscreen.impl.model.DeleteState
@@ -48,14 +50,25 @@ fun ComposableKeyParsed(
             viewModel::setFavorite
         )
 
-        val flipperAppName = keyScreenState.parsedKey.fileType?.flipperAppName
+        val fileType = keyScreenState.parsedKey.fileType
 
-        if (flipperAppName != null) {
-            ComposableEmulate(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 24.dp, end = 24.dp, bottom = 24.dp)
-            )
+        if (fileType != null) {
+            val emulateModifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 24.dp, end = 24.dp, bottom = 24.dp)
+            when (fileType) {
+                FlipperFileType.SUB_GHZ -> ComposableSend(
+                    modifier = emulateModifier,
+                    flipperKey = keyScreenState.flipperKey
+                )
+                FlipperFileType.I_BUTTON,
+                FlipperFileType.RFID,
+                FlipperFileType.NFC -> ComposableEmulate(
+                    modifier = emulateModifier,
+                    flipperKey = keyScreenState.flipperKey
+                )
+                FlipperFileType.INFRARED -> {}
+            }
         }
 
         if (keyScreenState.deleteState == DeleteState.NOT_DELETED) {

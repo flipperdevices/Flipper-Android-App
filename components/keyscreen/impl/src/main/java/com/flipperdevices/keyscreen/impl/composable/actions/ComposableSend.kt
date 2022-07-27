@@ -8,9 +8,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.stringResource
@@ -18,33 +15,37 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.core.ui.ktx.onHoldPress
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.keyscreen.impl.R
-import com.flipperdevices.keyscreen.impl.model.FlipperDeviceState
-import com.flipperdevices.keyscreen.impl.viewmodel.FlipperDeviceViewModel
+import com.flipperdevices.keyscreen.impl.model.EmulateButtonState
+import com.flipperdevices.keyscreen.impl.viewmodel.EmulateViewModel
 
 @Composable
-fun ComposableSend(
-    modifier: Modifier = Modifier,
-    onClick: (Boolean) -> Unit = {}
-) {
-    val flipperDeviceViewModel = viewModel<FlipperDeviceViewModel>()
-    val flipperDeviceState by flipperDeviceViewModel.getFlipperDeviceState().collectAsState()
-    val enabled = flipperDeviceState == FlipperDeviceState.CONNECTED
+fun ComposableSend(modifier: Modifier = Modifier, flipperKey: FlipperKey) {
+    val flipperDeviceViewModel = viewModel<EmulateViewModel>()
+    val emulateButtonState by flipperDeviceViewModel.getEmulateButtonStateFlow().collectAsState()
 
-    if (enabled) {
-        ComposableActionDisable(
+    when (emulateButtonState) {
+        EmulateButtonState.DISABLED -> ComposableActionDisable(
+            modifier = modifier,
             textId = R.string.keyscreen_send,
             iconId = DesignSystem.drawable.ic_send
         )
-    } else {
-        ComposableSendInternal(
+        EmulateButtonState.INACTIVE,
+        EmulateButtonState.ACTIVE -> ComposableSendInternal(
             modifier = modifier,
-            onClick = onClick
+            isAction = emulateButtonState == EmulateButtonState.ACTIVE,
+            onLongPressStart = {
+                flipperDeviceViewModel.onStartEmulate(flipperKey)
+            },
+            onLongPressEnd = {
+                flipperDeviceViewModel.onStopEmulate()
+            }
         )
     }
 }
@@ -52,22 +53,17 @@ fun ComposableSend(
 @Composable
 private fun ComposableSendInternal(
     modifier: Modifier = Modifier,
-    onClick: ((Boolean) -> Unit) = {}
+    isAction: Boolean,
+    onLongPressStart: (() -> Unit) = {},
+    onLongPressEnd: (() -> Unit) = {}
 ) {
-    var isAction by remember { mutableStateOf(false) }
     val scale = animateFloatAsState(if (isAction) 1.06f else 1f)
 
     val modifierAction = modifier
         .scale(scale.value)
         .onHoldPress(
-            onLongPressStart = {
-                isAction = true
-                onClick.invoke(isAction)
-            },
-            onLongPressEnd = {
-                isAction = false
-                onClick.invoke(isAction)
-            }
+            onLongPressStart = onLongPressStart,
+            onLongPressEnd = onLongPressEnd
         )
 
     ComposableActionFlipper(
@@ -96,8 +92,12 @@ private fun ComposableSendInternal(
 @Composable
 private fun ComposableSendPreview() {
     FlipperThemeInternal {
-        Column(modifier = Modifier.padding(horizontal = 24.dp).fillMaxSize()) {
-            ComposableSendInternal()
+        Column(
+            modifier = Modifier
+                .padding(horizontal = 24.dp)
+                .fillMaxSize()
+        ) {
+            ComposableSendInternal(isAction = true)
         }
     }
 }

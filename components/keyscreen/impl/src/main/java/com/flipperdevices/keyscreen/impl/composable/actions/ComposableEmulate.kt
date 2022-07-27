@@ -16,6 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
@@ -25,7 +26,7 @@ import com.flipperdevices.keyscreen.impl.model.EmulateButtonState
 import com.flipperdevices.keyscreen.impl.viewmodel.EmulateViewModel
 
 @Composable
-fun ComposableEmulate(modifier: Modifier = Modifier) {
+fun ComposableEmulate(modifier: Modifier = Modifier, flipperKey: FlipperKey) {
     val emulateViewModel = viewModel<EmulateViewModel>()
     val emulateButtonState by emulateViewModel.getEmulateButtonStateFlow().collectAsState()
     when (emulateButtonState) {
@@ -38,7 +39,7 @@ fun ComposableEmulate(modifier: Modifier = Modifier) {
             modifier = modifier,
             isAction = false,
             onClick = {
-                emulateViewModel.onStartEmulate()
+                emulateViewModel.onStartEmulate(flipperKey)
             }
         )
         EmulateButtonState.ACTIVE -> ComposableEmulateInternal(

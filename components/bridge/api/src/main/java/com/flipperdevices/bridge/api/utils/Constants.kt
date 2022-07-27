@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit
 object Constants {
     const val DEVICENAME_PREFIX = "Flipper"
     const val KEYS_DEFAULT_STORAGE = "/any/"
+    const val RPC_START_REQUEST_ARG = "RPC"
     val API_MAX_SUPPORTED_VERSION = FlipperVersionInformation(majorVersion = 1, minorVersion = 0)
     val API_SUPPORTED_VERSION = FlipperVersionInformation(majorVersion = 0, minorVersion = 3)
     const val LAGS_FLIPPER_DETECT_TIMEOUT_MS = 30 * 1000L // 30 seconds
