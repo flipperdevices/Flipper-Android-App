@@ -34,7 +34,7 @@ data class FlipperTypography(
 
     val updateButton40: TextStyle,
     val updateText40: TextStyle,
-
+    val flipperAction: TextStyle,
     val monoSpaceM14: TextStyle
 )
 

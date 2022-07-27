@@ -1,10 +1,11 @@
 package com.flipperdevices.updater.card.composable
 
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -92,12 +93,20 @@ fun getDescriptionByUpdateError(type: UpdateErrorType): Int {
     }
 }
 
-@DrawableRes
+@Composable
 fun getImageByUpdateError(type: UpdateErrorType): Int {
-    return when (type) {
-        UpdateErrorType.NO_INTERNET -> DesignSystem.drawable.ic_no_internet
-        UpdateErrorType.UNABLE_TO_SERVER -> DesignSystem.drawable.ic_server_error
-        UpdateErrorType.NO_SD_CARD -> DesignSystem.drawable.ic_no_sd
+    return if (isSystemInDarkTheme()) {
+        when (type) {
+            UpdateErrorType.NO_INTERNET -> DesignSystem.drawable.ic_no_internet_dark
+            UpdateErrorType.UNABLE_TO_SERVER -> DesignSystem.drawable.ic_server_error_dark
+            UpdateErrorType.NO_SD_CARD -> DesignSystem.drawable.ic_no_sd_dark
+        }
+    } else {
+        when (type) {
+            UpdateErrorType.NO_INTERNET -> DesignSystem.drawable.ic_no_internet
+            UpdateErrorType.UNABLE_TO_SERVER -> DesignSystem.drawable.ic_server_error
+            UpdateErrorType.NO_SD_CARD -> DesignSystem.drawable.ic_no_sd
+        }
     }
 }
 
@@ -108,7 +117,7 @@ fun getImageByUpdateError(type: UpdateErrorType): Int {
 @Composable
 private fun ComposableFirmwareUpdaterErrorPreview() {
     FlipperThemeInternal {
-        Column {
+        Column(Modifier.background(LocalPallet.current.content)) {
             ComposableFirmwareUpdaterError(UpdateErrorType.NO_INTERNET)
             ComposableFirmwareUpdaterError(UpdateErrorType.UNABLE_TO_SERVER)
             ComposableFirmwareUpdaterError(UpdateErrorType.NO_SD_CARD)

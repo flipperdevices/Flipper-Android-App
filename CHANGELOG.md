@@ -22,6 +22,7 @@
 - [BUGFIX] Fix icon color dropdown menu on Deleted keys
 - [CI] Update deps
 - [REFACTOR] Preview (Updater card/screen, Device info)
+- [REFACTOR] Button Emulate/Send
 
 # 1.1.5 - HotFix
 
