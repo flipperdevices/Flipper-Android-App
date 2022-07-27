@@ -16,6 +16,8 @@ dependencies {
     implementation(projects.components.core.log)
     implementation(projects.components.core.di)
 
+    implementation(projects.components.bridge.dao.api)
+
     implementation(libs.cicerone)
     implementation(libs.appcompat)
     implementation(projects.components.core.ui.fragment)
@@ -28,6 +30,7 @@ dependencies {
     implementation(libs.compose.insets)
 
     implementation(libs.lifecycle.compose)
+    implementation(libs.ktx.fragment)
 
     // Dagger deps
     implementation(libs.dagger)

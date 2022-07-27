@@ -49,7 +49,8 @@ data class FlipperKeyPath constructor(
     companion object {
         val DUMMY by lazy {
             FlipperKeyPath(
-                FlipperFileType.NFC.flipperDir, "Test_Key.nfc",
+                FlipperFileType.NFC.flipperDir,
+                "Test_Key.nfc",
                 deleted = false
             )
         }

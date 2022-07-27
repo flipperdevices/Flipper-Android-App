@@ -23,6 +23,9 @@ dependencies {
     implementation(projects.components.nfceditor.api)
     implementation(projects.components.nfceditor.impl)
 
+    implementation(projects.components.bridge.dao.api)
+    implementation(projects.components.bridge.dao.impl)
+
     implementation(projects.components.analytics.shake2report.api)
     releaseImplementation(projects.components.analytics.shake2report.noop)
     debugImplementation(projects.components.analytics.shake2report.impl)

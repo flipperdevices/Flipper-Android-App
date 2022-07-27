@@ -11,7 +11,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.ktx.jre.length
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
@@ -19,7 +18,7 @@ import com.flipperdevices.nfceditor.impl.model.NfcEditorState
 import com.flipperdevices.nfceditor.impl.viewmodel.NfcEditorViewModel
 
 @Composable
-fun ComposableNfcEditor(nfcEditorViewModel: NfcEditorViewModel = viewModel()) {
+fun ComposableNfcEditor(nfcEditorViewModel: NfcEditorViewModel) {
     BoxWithConstraints(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
         CompositionLocalProvider(
             LocalTextStyle provides LocalTypography.current.monoSpaceM14.merge(
@@ -29,8 +28,9 @@ fun ComposableNfcEditor(nfcEditorViewModel: NfcEditorViewModel = viewModel()) {
             )
         ) {
             val nfcEditorState = nfcEditorViewModel.nfcEditorState
-            val maxIndexSymbolCount = remember(nfcEditorState) {
-                nfcEditorState.sectors.maxOf { it.lines.maxOf { it.index } }.length()
+            val maxIndexSymbolCount = remember(constraints, nfcEditorState) {
+                nfcEditorState.sectors.filterNotNull().maxOf { it.lines.maxOf { it.index } }
+                    .length()
             }
 
             val scaleFactor = key(maxIndexSymbolCount) {
