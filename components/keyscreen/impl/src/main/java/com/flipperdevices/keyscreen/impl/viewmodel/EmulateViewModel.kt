@@ -19,6 +19,8 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.keyscreen.impl.di.KeyScreenComponent
 import com.flipperdevices.keyscreen.impl.model.EmulateButtonState
+import com.flipperdevices.keyscreen.impl.tasks.CloseEmulateAppTaskHolder
+import com.flipperdevices.protobuf.app.Application
 import com.flipperdevices.protobuf.app.appButtonPressRequest
 import com.flipperdevices.protobuf.app.appButtonReleaseRequest
 import com.flipperdevices.protobuf.app.appExitRequest
@@ -195,5 +197,22 @@ class EmulateViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
                 }
             }
         }.launchIn(viewModelScope)
+
+        serviceApi.requestApi.notificationFlow().onEach {
+            if (it.hasAppStateResponse()) {
+                if (it.appStateResponse.state == Application.AppState.APP_CLOSED) {
+                    emulateButtonStateFlow.update {
+                        if (it == EmulateButtonState.ACTIVE) {
+                            EmulateButtonState.INACTIVE
+                        } else it
+                    }
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    override fun onCleared() {
+        CloseEmulateAppTaskHolder.closeEmulateApp(serviceProvider)
+        super.onCleared()
     }
 }
