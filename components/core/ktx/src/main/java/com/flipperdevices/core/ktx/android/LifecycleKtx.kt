@@ -1,4 +1,4 @@
-package com.flipperdevices.bridge.service.impl.utils
+package com.flipperdevices.core.ktx.android
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -8,10 +8,7 @@ import androidx.lifecycle.LifecycleOwner
 /**
  * Subscribe on first emitting {@param lifecycleEvent}
  */
-fun LifecycleOwner.subscribeOnFirst(
-    lifecycleEvent: Lifecycle.Event,
-    listener: () -> Unit
-) {
+fun LifecycleOwner.subscribeOnFirst(lifecycleEvent: Lifecycle.Event, listener: () -> Unit) {
     lateinit var observer: LifecycleObserver
     @Suppress("UnusedPrivateMember")
     observer = LifecycleEventObserver { _, event ->

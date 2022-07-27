@@ -32,10 +32,7 @@ val LocalPallet = compositionLocalOf<FlipperPallet> { error("No local pallet") }
 val LocalTypography = compositionLocalOf<FlipperTypography> { error("No local typography") }
 
 @Composable
-fun FlipperTheme(
-    themeViewModel: ThemeViewModel = viewModel(),
-    content: @Composable () -> Unit
-) {
+fun FlipperTheme(themeViewModel: ThemeViewModel = viewModel(), content: @Composable () -> Unit) {
     val theme by themeViewModel.getAppTheme().collectAsState()
     FlipperThemeInternal(
         theme = theme,
@@ -252,6 +249,11 @@ private val typography = FlipperTypography(
     flipperAction = TextStyle(
         fontSize = 24.sp,
         fontFamily = FontFamily(Font(R.font.flipper_action)),
+        fontWeight = FontWeight.W500
+    ),
+    monoSpaceM14 = TextStyle(
+        fontSize = 14.sp,
+        fontFamily = FontFamily(Font(R.font.roboto_mono_medium)),
         fontWeight = FontWeight.W500
     )
 )
