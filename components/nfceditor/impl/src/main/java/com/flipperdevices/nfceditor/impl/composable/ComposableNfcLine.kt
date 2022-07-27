@@ -27,8 +27,8 @@ fun ComposableNfcLine(
     maxIndexSymbolCount: Int,
     scaleFactor: Float,
     cursor: NfcEditorCursor? = null,
-    onFocusChanged: (NfcEditorCellLocation, isFocused: Boolean) -> Unit = { _, _ -> },
-    onValueChanged: (NfcEditorCellLocation, TextFieldValue) -> Unit = { _, _ -> }
+    onFocusChanged: ((NfcEditorCellLocation, isFocused: Boolean) -> Unit)? = null,
+    onValueChanged: ((NfcEditorCellLocation, TextFieldValue) -> Unit)? = null
 ) {
     Row {
         Text(
@@ -65,8 +65,8 @@ fun ComposableNfcLine(
                 scaleFactor,
                 textSelection,
                 isEditable = isEditable,
-                onFocusChanged = { onFocusChanged(cellLocation, it) },
-                onValueChanged = { onValueChanged(cellLocation, it) }
+                onFocusChanged = { onFocusChanged?.invoke(cellLocation, it) },
+                onValueChanged = { onValueChanged?.invoke(cellLocation, it) }
             )
         }
     }

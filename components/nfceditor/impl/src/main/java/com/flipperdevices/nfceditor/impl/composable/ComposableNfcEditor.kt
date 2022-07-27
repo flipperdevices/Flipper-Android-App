@@ -3,6 +3,7 @@ package com.flipperdevices.nfceditor.impl.composable
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -46,12 +47,14 @@ fun ComposableNfcEditor(nfcEditorViewModel: NfcEditorViewModel) {
                 calculateScaleFactor(maxIndexSymbolCount)
             }
 
-            ComposableNfcEditor(
-                nfcEditorState = nfcEditorState,
-                nfcEditorViewModel = nfcEditorViewModel,
-                maxIndexSymbolCount = maxIndexSymbolCount,
-                scaleFactor = scaleFactor
-            )
+            SelectionContainer {
+                ComposableNfcEditor(
+                    nfcEditorState = nfcEditorState,
+                    nfcEditorViewModel = nfcEditorViewModel,
+                    maxIndexSymbolCount = maxIndexSymbolCount,
+                    scaleFactor = scaleFactor
+                )
+            }
         }
     }
 }
