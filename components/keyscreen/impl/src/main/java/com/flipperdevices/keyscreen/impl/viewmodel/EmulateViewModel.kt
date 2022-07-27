@@ -58,7 +58,15 @@ class EmulateViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
 
     fun onStartEmulate(flipperKey: FlipperKey) {
         val fileType = flipperKey.path.fileType ?: return
-        emulateButtonStateFlow.update { EmulateButtonState.ACTIVE }
+
+        emulateButtonStateFlow.update {
+            when (it) {
+                EmulateButtonState.DISABLED -> EmulateButtonState.DISABLED
+                EmulateButtonState.INACTIVE -> EmulateButtonState.ACTIVE
+                EmulateButtonState.ACTIVE -> return
+            }
+        }
+
         serviceProvider.provideServiceApi(this) {
             launchWithLock(mutex, viewModelScope, "start_emulate") {
                 emulateJob?.cancelAndJoin()
@@ -83,7 +91,9 @@ class EmulateViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
         }
     }
 
-    fun onSinglePress() {
+    fun onSinglePress(flipperKey: FlipperKey) {
+        val fileType = flipperKey.path.fileType ?: return
+
         emulateButtonStateFlow.update {
             when (it) {
                 EmulateButtonState.DISABLED -> EmulateButtonState.DISABLED
@@ -93,12 +103,11 @@ class EmulateViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
         }
 
         serviceProvider.provideServiceApi(this) {
-            launchWithLock(mutex, viewModelScope, "stop_emulate") {
+            launchWithLock(mutex, viewModelScope, "single_press") {
                 emulateJob?.cancelAndJoin()
-                it.requestApi.request(
-                    main {
-                    }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
-                ).collect {
+                emulateJob = viewModelScope.launch {
+                    startEmulate(it.requestApi, fileType, flipperKey)
+                    stopEmulate(it.requestApi)
                     emulateButtonStateFlow.emit(EmulateButtonState.INACTIVE)
                 }
             }

@@ -40,6 +40,9 @@ fun ComposableSend(modifier: Modifier = Modifier, flipperKey: FlipperKey) {
         EmulateButtonState.ACTIVE -> ComposableSendInternal(
             modifier = modifier,
             isAction = emulateButtonState == EmulateButtonState.ACTIVE,
+            onTap = {
+                flipperDeviceViewModel.onSinglePress(flipperKey)
+            },
             onLongPressStart = {
                 flipperDeviceViewModel.onStartEmulate(flipperKey)
             },
@@ -54,14 +57,16 @@ fun ComposableSend(modifier: Modifier = Modifier, flipperKey: FlipperKey) {
 private fun ComposableSendInternal(
     modifier: Modifier = Modifier,
     isAction: Boolean,
-    onLongPressStart: (() -> Unit) = {},
-    onLongPressEnd: (() -> Unit) = {}
+    onTap: () -> Unit = {},
+    onLongPressStart: () -> Unit = {},
+    onLongPressEnd: () -> Unit = {}
 ) {
     val scale = animateFloatAsState(if (isAction) 1.06f else 1f)
 
     val modifierAction = modifier
         .scale(scale.value)
         .onHoldPress(
+            onTap = onTap,
             onLongPressStart = onLongPressStart,
             onLongPressEnd = onLongPressEnd
         )
