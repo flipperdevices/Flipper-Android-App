@@ -1,12 +1,15 @@
 package com.flipperdevices.nfceditor.impl.composable
 
-import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.LocalTextStyle
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -16,6 +19,8 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -31,18 +36,62 @@ fun ComposableNfcCell(
     cell: NfcEditorCell,
     scaleFactor: Float,
     selection: TextRange?,
+    isEditable: Boolean,
     onFocusChanged: (isFocused: Boolean) -> Unit,
     onValueChanged: (TextFieldValue) -> Unit
 ) {
+    val paddingDp = remember(scaleFactor) {
+        (scaleFactor * PADDING_CELL_DP).dp
+    }
+    val widthDp = remember(scaleFactor) {
+        (scaleFactor * 2 * WIDTH_LINE_INDEX_DP).dp
+    }
+
     var textFieldModifier = Modifier
-        .width(IntrinsicSize.Min)
-        .padding(start = (scaleFactor * PADDING_CELL_DP).dp)
+        .padding(start = paddingDp)
+        .width(widthDp)
 
     if (focusRequester != null) {
         textFieldModifier = textFieldModifier
             .focusRequester(focusRequester)
     }
 
+    val textStyle = key(scaleFactor) {
+        LocalTextStyle.current.copy(
+            fontSize = (scaleFactor * FONT_SIZE_SP).sp
+        )
+    }
+
+    if (isEditable) {
+        ComposableNfcCellEditable(
+            textFieldModifier.onFocusChanged {
+                onFocusChanged(it.isFocused)
+            },
+            cell,
+            selection,
+            textStyle,
+            onValueChanged
+        )
+        return
+    }
+
+    Text(
+        modifier = textFieldModifier.clickable {
+            onFocusChanged(true)
+        },
+        text = cell.content,
+        style = textStyle
+    )
+}
+
+@Composable
+fun ComposableNfcCellEditable(
+    modifier: Modifier,
+    cell: NfcEditorCell,
+    selection: TextRange?,
+    textStyle: TextStyle,
+    onValueChanged: (TextFieldValue) -> Unit
+) {
     /**
      * This hack is needed so that the cursor doesn't jump into the frame
      * when we haven't yet called focusRequester.requestFocus().
@@ -70,20 +119,24 @@ fun ComposableNfcCell(
     if (selection != null) {
         lastSelection = selection
     }
+    var composition by remember { mutableStateOf<TextRange?>(TextRange(0, cell.content.length)) }
 
     BasicTextField(
-        modifier = textFieldModifier.onFocusChanged {
-            onFocusChanged(it.isFocused)
-        },
+        modifier = modifier,
         value = TextFieldValue(
             cell.content,
-            selection ?: lastSelection
+            selection ?: lastSelection,
+            composition
         ),
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
         singleLine = true,
-        textStyle = LocalTextStyle.current.copy(
-            fontSize = (scaleFactor * FONT_SIZE_SP).sp
-        ),
+        textStyle = textStyle,
         cursorBrush = SolidColor(LocalPallet.current.text100),
-        onValueChange = onValueChanged
+        onValueChange = {
+            if (composition != it.composition) {
+                composition = it.composition
+            }
+            onValueChanged(it)
+        }
     )
 }
