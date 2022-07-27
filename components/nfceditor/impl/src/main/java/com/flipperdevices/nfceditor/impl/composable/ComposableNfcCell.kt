@@ -25,6 +25,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.nfceditor.impl.model.NfcCellType
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCell
 
 const val FONT_SIZE_SP = 14
@@ -51,14 +52,25 @@ fun ComposableNfcCell(
         .padding(start = paddingDp)
         .width(widthDp)
 
+    val textColor = when (cell.cellType) {
+        NfcCellType.SIMPLE -> LocalPallet.current.text100
+        NfcCellType.UID -> LocalPallet.current.nfcCardUIDColor
+        NfcCellType.KEY_A -> LocalPallet.current.nfcCardKeyAColor
+        NfcCellType.ACCESS_BITS -> LocalPallet.current.nfcCardAccessBitsColor
+        NfcCellType.KEY_B -> LocalPallet.current.nfcCardKeyBColor
+    }
+
     if (focusRequester != null) {
         textFieldModifier = textFieldModifier
             .focusRequester(focusRequester)
     }
 
-    val textStyle = key(scaleFactor) {
-        LocalTextStyle.current.copy(
-            fontSize = (scaleFactor * FONT_SIZE_SP).sp
+    val textStyle = key(cell.cellType, scaleFactor) {
+        LocalTextStyle.current.merge(
+            TextStyle(
+                fontSize = (scaleFactor * FONT_SIZE_SP).sp,
+                color = textColor
+            )
         )
     }
 

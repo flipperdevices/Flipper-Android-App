@@ -90,6 +90,11 @@ data class FlipperPallet(
     val onAppBar: Color = Color(0xFF000000),
     val disableBackgroundSwitch: Color = Color(0xFF616161),
 
+    val nfcCardUIDColor: Color = Color(0xFF8A2BE2),
+    val nfcCardKeyAColor: Color = Color(0xFF2ED832),
+    val nfcCardAccessBitsColor: Color = Color(0xFFF63F3F),
+    val nfcCardKeyBColor: Color = Color(0xFF589DFF),
+
     val divider12: Color,
     val disableSwitch: Color,
     val backgroundDialog: Color
@@ -98,9 +103,7 @@ data class FlipperPallet(
     private val animationSpec: AnimationSpec<Color> = tween(durationMillis = 500)
 
     @Composable
-    private fun animateColor(
-        targetValue: Color
-    ) = animateColorAsState(targetValue = targetValue, animationSpec = animationSpec).value
+    private fun animateColor(targetValue: Color) = animateColorAsState(targetValue = targetValue, animationSpec = animationSpec).value
 
     @Suppress("LongMethod")
     @Composable

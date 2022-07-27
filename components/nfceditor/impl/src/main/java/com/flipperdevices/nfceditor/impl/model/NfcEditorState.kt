@@ -16,7 +16,10 @@ data class NfcEditorState(
         val newLines = currentSector.lines.toMutableList()
         var updatedLine = newLines[location.lineIndex]
         val columnsList = updatedLine.cells.toMutableList()
-        columnsList[location.columnIndex] = NfcEditorCell(content)
+        columnsList[location.columnIndex] = NfcEditorCell(
+            content,
+            columnsList[location.columnIndex].cellType
+        )
         updatedLine = updatedLine.copy(cells = columnsList)
         newLines[location.lineIndex] = updatedLine
         newSectors[location.sectorIndex] = NfcEditorSector(newLines)
@@ -33,8 +36,17 @@ data class NfcEditorState(
 
 @Stable
 data class NfcEditorCell(
-    val content: String
+    val content: String,
+    val cellType: NfcCellType
 )
+
+enum class NfcCellType {
+    SIMPLE,
+    UID,
+    KEY_A,
+    ACCESS_BITS,
+    KEY_B
+}
 
 @Stable
 data class NfcEditorLine(
