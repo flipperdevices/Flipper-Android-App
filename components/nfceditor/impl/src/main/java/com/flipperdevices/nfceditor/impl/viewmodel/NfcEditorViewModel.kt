@@ -36,6 +36,7 @@ class NfcEditorViewModel : LifecycleViewModel(), LogTagProvider, KeyInputBusList
 
     private val textUpdaterHelper = TextUpdaterHelper()
 
+    @Suppress("MagicNumber")
     var nfcEditorState by mutableStateOf(
         NfcEditorState(
             List(size = (256 / 4)) { sectorIndex ->
