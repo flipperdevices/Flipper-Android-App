@@ -2,7 +2,7 @@
 
 # 1.1.6 - In progress
 
-- [Feature] Add NFC Editor
+- [Feature] Add NFC Editor with colors
 - [Feature] Support Unknown firmware
 - [Feature] Compose Navigation on "Info" Screen
 - [Feature] Dark Theme(with support switch, splash screen for all android versions)
