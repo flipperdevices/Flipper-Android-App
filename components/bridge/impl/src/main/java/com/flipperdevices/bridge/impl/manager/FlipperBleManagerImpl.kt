@@ -16,7 +16,6 @@ import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.api.manager.ktx.stateAsFlow
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.impl.manager.delegates.FlipperConnectionInformationApiImpl
-import com.flipperdevices.bridge.impl.manager.service.BluetoothGattServiceWrapper
 import com.flipperdevices.bridge.impl.manager.service.FlipperInformationApiImpl
 import com.flipperdevices.bridge.impl.manager.service.FlipperVersionApiImpl
 import com.flipperdevices.bridge.impl.manager.service.request.FlipperRequestApiImpl
@@ -59,14 +58,19 @@ class FlipperBleManagerImpl(
 
     override val informationApi = FlipperInformationApiImpl(scope, metricApi)
     override val flipperRequestApi = FlipperRequestApiImpl(
-        scope, flipperActionNotifier, flipperLagsDetector, sentryApi
+        scope,
+        flipperActionNotifier,
+        flipperLagsDetector,
+        sentryApi
     )
-    private val flipperVersionApi: BluetoothGattServiceWrapper =
+    override val flipperVersionApi =
         FlipperVersionApiImpl(settingsStore)
 
     // RPC services
     override val flipperRpcInformationApi = FlipperRpcInformationApiImpl(
-        scope, metricApi, dataStore
+        scope,
+        metricApi,
+        dataStore
     )
 
     // Manager delegates
@@ -86,9 +90,7 @@ class FlipperBleManagerImpl(
         stateAsFlow().filter { it is ConnectionState.Disconnected }.first()
     }
 
-    override suspend fun connectToDevice(
-        device: BluetoothDevice
-    ) {
+    override suspend fun connectToDevice(device: BluetoothDevice) {
         withLock(bleMutex, "connect") {
             connect(device).retry(
                 Constants.BLE.RECONNECT_COUNT,
@@ -107,8 +109,7 @@ class FlipperBleManagerImpl(
         info { "From BleManager: $message" }
     }
 
-    override fun getGattCallback(): BleManagerGattCallback =
-        FlipperBleManagerGattCallback()
+    override fun getGattCallback(): BleManagerGattCallback = FlipperBleManagerGattCallback()
 
     private inner class FlipperBleManagerGattCallback :
         BleManagerGattCallback() {

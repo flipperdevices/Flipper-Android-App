@@ -9,58 +9,61 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.keyscreen.impl.R
-import com.flipperdevices.keyscreen.impl.model.FlipperDeviceState
-import com.flipperdevices.keyscreen.impl.viewmodel.FlipperDeviceViewModel
+import com.flipperdevices.keyscreen.impl.model.EmulateButtonState
+import com.flipperdevices.keyscreen.impl.viewmodel.EmulateViewModel
 
 @Composable
-fun ComposableEmulate(
-    modifier: Modifier = Modifier,
-    onClick: (Boolean) -> Unit = {}
-) {
-    val flipperDeviceViewModel = viewModel<FlipperDeviceViewModel>()
-    val flipperDeviceState by flipperDeviceViewModel.getFlipperDeviceState().collectAsState()
-    val enabled = flipperDeviceState == FlipperDeviceState.CONNECTED
-
-    if (enabled) {
-        ComposableActionDisable(
+fun ComposableEmulate(modifier: Modifier = Modifier, flipperKey: FlipperKey) {
+    val emulateViewModel = viewModel<EmulateViewModel>()
+    val emulateButtonState by emulateViewModel.getEmulateButtonStateFlow().collectAsState()
+    when (emulateButtonState) {
+        EmulateButtonState.DISABLED -> ComposableActionDisable(
+            modifier = modifier,
             textId = R.string.keyscreen_emulate,
             iconId = DesignSystem.drawable.ic_emulate
         )
-    } else ComposableEmulateInternal(
-        modifier = modifier,
-        onClick = onClick
-    )
+        EmulateButtonState.INACTIVE -> ComposableEmulateInternal(
+            modifier = modifier,
+            isAction = false,
+            onClick = {
+                emulateViewModel.onStartEmulate(flipperKey)
+            }
+        )
+        EmulateButtonState.ACTIVE -> ComposableEmulateInternal(
+            modifier = modifier,
+            isAction = true,
+            onClick = {
+                emulateViewModel.onStopEmulate()
+            }
+        )
+    }
 }
 
 @Composable
 private fun ComposableEmulateInternal(
     modifier: Modifier = Modifier,
-    onClick: ((Boolean) -> Unit) = {}
+    isAction: Boolean,
+    onClick: (() -> Unit) = {}
 ) {
-    var isAction by remember { mutableStateOf(false) }
     val textId = if (isAction) R.string.keyscreen_emulating else R.string.keyscreen_emulate
 
     val modifierAction = modifier.clickable(
         interactionSource = remember { MutableInteractionSource() },
         indication = null,
-        onClick = {
-            isAction = !isAction
-            onClick.invoke(isAction)
-        }
+        onClick = onClick
     )
 
     ComposableActionFlipper(
@@ -90,9 +93,11 @@ private fun ComposableEmulateInternal(
 private fun ComposableEmulatePreview() {
     FlipperThemeInternal {
         Column(
-            modifier = Modifier.padding(horizontal = 24.dp).fillMaxSize()
+            modifier = Modifier
+                .padding(horizontal = 24.dp)
+                .fillMaxSize()
         ) {
-            ComposableEmulateInternal()
+            ComposableEmulateInternal(isAction = true)
         }
     }
 }

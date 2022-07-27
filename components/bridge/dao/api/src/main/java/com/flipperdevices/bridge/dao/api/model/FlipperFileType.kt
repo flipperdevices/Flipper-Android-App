@@ -11,7 +11,7 @@ enum class FlipperFileType(
     val extension: String,
     val flipperDir: String,
     @DrawableRes val icon: Int,
-    val flipperAppName: String?
+    val flipperAppName: String
 ) {
     SUB_GHZ(
         humanReadableName = "Sub-GHz",

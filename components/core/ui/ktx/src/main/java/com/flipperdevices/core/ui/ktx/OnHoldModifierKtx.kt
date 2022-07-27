@@ -15,26 +15,25 @@ import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.withTimeout
 
 fun Modifier.onHoldPress(
+    onTap: () -> Unit,
     onLongPressStart: () -> Unit,
     onLongPressEnd: () -> Unit
-) =
-    pointerInput(Unit) {
-        forEachGesture {
-            val down = awaitPointerEventScope {
-                awaitFirstDown(requireUnconsumed = false)
-            }
-            val change = awaitLongPressOrCancellation(down)
-            val wasLongPress = (change == down)
-            if (!wasLongPress) {
-                onLongPressStart.invoke()
-                onLongPressEnd.invoke()
-                return@forEachGesture
-            }
-            onLongPressStart()
-            awaitPointerEventScope { waitForUpOrCancellation() }
-            onLongPressEnd()
+) = pointerInput(Unit) {
+    forEachGesture {
+        val down = awaitPointerEventScope {
+            awaitFirstDown(requireUnconsumed = false)
         }
+        val change = awaitLongPressOrCancellation(down)
+        val wasLongPress = (change == down)
+        if (!wasLongPress) {
+            onTap()
+            return@forEachGesture
+        }
+        onLongPressStart()
+        awaitPointerEventScope { waitForUpOrCancellation() }
+        onLongPressEnd()
     }
+}
 
 // Copied from internal function in Compose Source Code
 suspend fun PointerInputScope.awaitLongPressOrCancellation(
