@@ -36,7 +36,7 @@ class NfcEditorActivity : AppCompatActivity(), RouterProvider {
         val binding = NfcEditorActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val flipperKey = resources.openRawResource(R.raw.mf_4k_part).use {
+        val flipperKey = resources.openRawResource(R.raw.mf_4k_full).use {
             FlipperKey(
                 path = FlipperKeyPath("test", "test.nfc"),
                 keyContent = FlipperKeyContent.RawData(it.readBytes()),

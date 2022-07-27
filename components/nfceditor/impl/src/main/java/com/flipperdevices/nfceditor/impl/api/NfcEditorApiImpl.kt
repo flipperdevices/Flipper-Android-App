@@ -11,6 +11,7 @@ import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
 private const val SUPPORTED_NFC_FORMAT = 2
+private const val SUPPORTED_NFC_TYPE = "Mifare Classic"
 
 @ContributesBinding(AppGraph::class)
 class NfcEditorApiImpl @Inject constructor() : NfcEditorApi {
@@ -19,6 +20,6 @@ class NfcEditorApiImpl @Inject constructor() : NfcEditorApi {
     }
 
     override fun isSupportedByNfcEditor(parsedKey: FlipperKeyParsed.NFC): Boolean {
-        return parsedKey.version == SUPPORTED_NFC_FORMAT
+        return parsedKey.version == SUPPORTED_NFC_FORMAT && parsedKey.deviceType == SUPPORTED_NFC_TYPE
     }
 }

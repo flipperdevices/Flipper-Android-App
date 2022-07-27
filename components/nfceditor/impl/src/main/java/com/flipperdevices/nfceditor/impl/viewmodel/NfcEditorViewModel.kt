@@ -17,11 +17,8 @@ import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.nfceditor.impl.di.NfcEditorComponent
 import com.flipperdevices.nfceditor.impl.model.NFC_CELL_MAX_CURSOR_INDEX
-import com.flipperdevices.nfceditor.impl.model.NfcEditorCell
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCellLocation
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCursor
-import com.flipperdevices.nfceditor.impl.model.NfcEditorLine
-import com.flipperdevices.nfceditor.impl.model.NfcEditorSector
 import com.flipperdevices.nfceditor.impl.model.NfcEditorState
 import javax.inject.Inject
 import javax.inject.Provider
@@ -46,28 +43,18 @@ class NfcEditorViewModel(
         viewModelScope.launch(Dispatchers.Default) {
             val parsedKey = keyParser.parseKey(flipperKey)
             if (parsedKey !is FlipperKeyParsed.NFC) {
-                // TODO Add exit
+                nfcEditorState = null
                 return@launch
             }
+            nfcEditorState = NfcEditorStateProducerHelper.mapParsedKeyToNfcEditorState(parsedKey)
         }
     }
 
     private val textUpdaterHelper = TextUpdaterHelper()
 
-    @Suppress("MagicNumber")
-    var nfcEditorState by mutableStateOf(
+    var nfcEditorState by mutableStateOf<NfcEditorState?>(
         NfcEditorState(
-            List(size = (256 / 4)) { sectorIndex ->
-                NfcEditorSector(
-                    List(4) { lineIndex ->
-                        NfcEditorLine(
-                            sectorIndex * 4 + lineIndex,
-                            cells = "B6 69 03 36 8A 98 02 00 64 8F 76 14 51 10 37 11".split(" ")
-                                .map { NfcEditorCell(it) }
-                        )
-                    }
-                )
-            }
+            emptyList()
         )
     )
         private set
@@ -104,15 +91,16 @@ class NfcEditorViewModel(
         if (currentActiveCell != location) {
             return
         }
+        val localNfcEditorState = nfcEditorState ?: return
 
         val newCursor = if (position >= NFC_CELL_MAX_CURSOR_INDEX) {
-            val newLocation = oldCursor?.location?.increment(nfcEditorState.sectors)
+            val newLocation = oldCursor?.location?.increment(localNfcEditorState.sectors)
             if (newLocation == null) {
                 NfcEditorCursor(location, min(position, NFC_CELL_MAX_CURSOR_INDEX.toInt()))
             } else NfcEditorCursor(newLocation, position = 0)
         } else NfcEditorCursor(location, position)
 
-        val currentCellContent = nfcEditorState[location]?.content
+        val currentCellContent = localNfcEditorState[location]?.content
 
         val processedText = if (currentCellContent != null) {
             textUpdaterHelper.getProcessedText(
@@ -124,7 +112,7 @@ class NfcEditorViewModel(
         } else null
 
         if (processedText != null) {
-            nfcEditorState = nfcEditorState.copyWithChangedContent(
+            nfcEditorState = localNfcEditorState.copyWithChangedContent(
                 location,
                 processedText
             )
@@ -153,8 +141,9 @@ class NfcEditorViewModel(
         if (cursor.position > 0) {
             return
         }
+        val localNfcEditorState = nfcEditorState ?: return
 
-        val newCursor = cursor.location.decrement(nfcEditorState.sectors)?.let {
+        val newCursor = cursor.location.decrement(localNfcEditorState.sectors)?.let {
             NfcEditorCursor(
                 it,
                 NFC_CELL_MAX_CURSOR_INDEX.toInt() - 1
@@ -163,7 +152,7 @@ class NfcEditorViewModel(
 
         if (newCursor != null) {
             val location = newCursor.location
-            val currentCell = nfcEditorState[location]
+            val currentCell = localNfcEditorState[location]
             if (currentCell != null) {
                 val oldText = currentCell.content
                 val newText = textUpdaterHelper.getProcessedText(
@@ -172,7 +161,7 @@ class NfcEditorViewModel(
                     oldPosition = NFC_CELL_MAX_CURSOR_INDEX.toInt(),
                     newPosition = newCursor.position
                 )
-                nfcEditorState = nfcEditorState.copyWithChangedContent(
+                nfcEditorState = localNfcEditorState.copyWithChangedContent(
                     location,
                     content = newText
                 )

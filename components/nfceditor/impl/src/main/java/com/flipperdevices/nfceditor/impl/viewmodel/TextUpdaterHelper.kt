@@ -2,7 +2,7 @@ package com.flipperdevices.nfceditor.impl.viewmodel
 
 import com.flipperdevices.core.ktx.jre.then
 
-private const val DELETE_SYMBOL = "?"
+const val DELETE_SYMBOL = "?"
 private val ALLOWED_SYMBOL = "^[0-9A-F?]*\$".toRegex()
 
 class TextUpdaterHelper {
