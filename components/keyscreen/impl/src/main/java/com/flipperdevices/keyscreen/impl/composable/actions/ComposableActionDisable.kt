@@ -2,54 +2,35 @@ package com.flipperdevices.keyscreen.impl.composable.actions
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.animation.core.FastOutLinearInEasing
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.FlipperThemeInternal
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.keyscreen.impl.R
 
 @Composable
-fun ComposableActionFlipper(
-    modifier: Modifier,
-    color: Color,
-    @StringRes textId: Int,
+fun ComposableActionDisable(
     @DrawableRes iconId: Int,
-    isAction: Boolean,
-    content: @Composable () -> Unit
+    @StringRes textId: Int,
+    modifier: Modifier = Modifier
 ) {
-    val translateAnimation = rememberInfiniteTransition().animateFloat(
-        initialValue = 0f,
-        targetValue = 1500f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(
-                durationMillis = 1500,
-                easing = FastOutLinearInEasing
-            )
-        )
-    )
-
-    val animColor = if (isAction) Brush.horizontalGradient(
-        colors = listOf(color.copy(alpha = 0.9f), color.copy(alpha = 0.4f)),
-        startX = 0f,
-        endX = translateAnimation.value
-    ) else SolidColor(color)
-
+    val color = LocalPallet.current.text8
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -57,9 +38,8 @@ fun ComposableActionFlipper(
         Row(
             modifier = modifier
                 .clip(RoundedCornerShape(12.dp))
-                .height(49.dp)
-                .fillMaxWidth()
-                .background(animColor)
+                .height(49.dp).fillMaxWidth()
+                .background(color)
                 .border(
                     width = 2.dp,
                     color = color,
@@ -73,6 +53,26 @@ fun ComposableActionFlipper(
                 textId = textId
             )
         }
-        content()
+        Spacer(modifier = Modifier.height(15.dp))
+    }
+}
+
+@Preview(
+    showSystemUi = true,
+    showBackground = true
+)
+@Composable
+private fun ComposableComposableDisableActionPreview() {
+    FlipperThemeInternal {
+        Column(modifier = Modifier.padding(horizontal = 24.dp).fillMaxSize()) {
+            ComposableActionDisable(
+                textId = R.string.keyscreen_emulate,
+                iconId = DesignSystem.drawable.ic_emulate
+            )
+            ComposableActionDisable(
+                textId = R.string.keyscreen_send,
+                iconId = DesignSystem.drawable.ic_send
+            )
+        }
     }
 }
