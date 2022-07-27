@@ -2,11 +2,10 @@ package com.flipperdevices.keyscreen.impl.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
-import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
-import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.api.utils.Constants
+import com.flipperdevices.bridge.api.utils.Constants.API_SUPPORTED_REMOTE_EMULATE
 import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
@@ -183,10 +182,8 @@ class EmulateViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
     }
 
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
-        serviceApi.connectionInformationApi.getConnectionStateFlow().onEach {
-            val buttonEnabled = (it is ConnectionState.Ready) &&
-                it.supportedState == FlipperSupportedState.READY
-            // TODO: Add check for version 0.11
+        serviceApi.flipperVersionApi.getVersionInformationFlow().onEach {
+            val buttonEnabled = it != null && it >= API_SUPPORTED_REMOTE_EMULATE
 
             emulateButtonStateFlow.update { emulateButtonState ->
                 if (buttonEnabled) {

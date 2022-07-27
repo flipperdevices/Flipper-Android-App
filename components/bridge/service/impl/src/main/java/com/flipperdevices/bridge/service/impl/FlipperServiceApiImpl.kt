@@ -60,7 +60,10 @@ class FlipperServiceApiImpl(
     private val connectionStateProvider = WeakConnectionStateProvider(scope)
     private val flipperActionNotifier = FlipperActionNotifierImpl(scope)
     private val flipperAutoDisconnect = FlipperAutoDisconnect(
-        scope, flipperActionNotifier, this, application
+        scope,
+        flipperActionNotifier,
+        this,
+        application
     )
     private val lagsDetector = FlipperLagsDetectorImpl(
         scope = scope,
@@ -89,6 +92,7 @@ class FlipperServiceApiImpl(
     override val requestApi = bleManager.flipperRequestApi
     override val flipperInformationApi = bleManager.informationApi
     override val flipperRpcInformationApi = bleManager.flipperRpcInformationApi
+    override val flipperVersionApi = bleManager.flipperVersionApi
 
     fun internalInit() {
         if (!inited.compareAndSet(false, true)) {

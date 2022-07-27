@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattCharacteristic
 import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
+import com.flipperdevices.bridge.api.manager.service.FlipperVersionApi
 import com.flipperdevices.bridge.api.model.FlipperVersionInformation
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.impl.manager.UnsafeBleManager
@@ -11,14 +12,22 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.Settings
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.update
 
 class FlipperVersionApiImpl(
     private val settingsStore: DataStore<Settings>
-) : BluetoothGattServiceWrapper, LogTagProvider {
+) : BluetoothGattServiceWrapper, FlipperVersionApi, LogTagProvider {
     override val TAG = "FlipperVersionApi"
 
+    private val flipperVersionInformationStateFlow =
+        MutableStateFlow<FlipperVersionInformation?>(null)
+
     private var apiVersionCharacteristics: BluetoothGattCharacteristic? = null
+
+    override fun getVersionInformationFlow(): StateFlow<FlipperVersionInformation?> = flipperVersionInformationStateFlow
 
     override fun onServiceReceived(gatt: BluetoothGatt): Boolean {
         getServiceOrLog(gatt, Constants.BLEInformationService.SERVICE_UUID)?.let { service ->
@@ -61,10 +70,7 @@ class FlipperVersionApiImpl(
         // Do nothing
     }
 
-    private fun onSupportedVersionReceived(
-        bleManager: UnsafeBleManager,
-        apiVersion: String
-    ) {
+    private fun onSupportedVersionReceived(bleManager: UnsafeBleManager, apiVersion: String) {
         info { "Api version is $apiVersion" }
         val filteredApiVersion = apiVersion.replace("[^0-9.]", "")
         info { "Filtered api version is $filteredApiVersion" }
@@ -76,6 +82,7 @@ class FlipperVersionApiImpl(
             majorVersion = majorPart?.toIntOrNull() ?: 0,
             minorVersion = minorPart?.toIntOrNull() ?: 0
         )
+        flipperVersionInformationStateFlow.update { versionInformation }
         bleManager.setDeviceSupportedStatus(versionInformation.toSupportedState())
     }
 }

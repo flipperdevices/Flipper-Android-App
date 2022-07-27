@@ -9,6 +9,10 @@ object Constants {
     const val KEYS_DEFAULT_STORAGE = "/any/"
     const val RPC_START_REQUEST_ARG = "RPC"
     val API_MAX_SUPPORTED_VERSION = FlipperVersionInformation(majorVersion = 1, minorVersion = 0)
+    val API_SUPPORTED_REMOTE_EMULATE = FlipperVersionInformation(
+        majorVersion = 0,
+        minorVersion = 11
+    )
     val API_SUPPORTED_VERSION = FlipperVersionInformation(majorVersion = 0, minorVersion = 3)
     const val LAGS_FLIPPER_DETECT_TIMEOUT_MS = 30 * 1000L // 30 seconds
     const val FLIPPER_AUTODISCONNECT_TIMEOUT_MS = 5 * 60 * 1000L // 5 minutes
