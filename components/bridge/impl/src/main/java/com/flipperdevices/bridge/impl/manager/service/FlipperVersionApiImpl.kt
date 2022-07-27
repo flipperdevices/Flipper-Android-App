@@ -27,7 +27,8 @@ class FlipperVersionApiImpl(
 
     private var apiVersionCharacteristics: BluetoothGattCharacteristic? = null
 
-    override fun getVersionInformationFlow(): StateFlow<FlipperVersionInformation?> = flipperVersionInformationStateFlow
+    override fun getVersionInformationFlow(): StateFlow<FlipperVersionInformation?> =
+        flipperVersionInformationStateFlow
 
     override fun onServiceReceived(gatt: BluetoothGatt): Boolean {
         getServiceOrLog(gatt, Constants.BLEInformationService.SERVICE_UUID)?.let { service ->
