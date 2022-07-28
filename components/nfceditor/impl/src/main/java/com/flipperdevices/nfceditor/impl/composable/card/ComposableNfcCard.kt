@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.LocalTextStyle
@@ -31,7 +32,8 @@ import com.flipperdevices.nfceditor.impl.model.NfcEditorCardType
 @Composable
 fun ComposableNfcCard(nfcEditorCardInfo: NfcEditorCardInfo) {
     Card(
-        modifier = Modifier.padding(14.dp)
+        modifier = Modifier.padding(14.dp),
+        shape = RoundedCornerShape(12.dp)
     ) {
         Box {
             var isOpened by remember { mutableStateOf(true) }
