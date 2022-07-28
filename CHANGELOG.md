@@ -20,6 +20,7 @@
 - [BUGFIX] Fix updating image hide after update failed/canceled
 - [BUGFIX] Fix padding and typography on information screen
 - [BUGFIX] Fix icon color dropdown menu on Deleted keys
+- [BUGFIX] Fix emulate when key edited
 - [CI] Update deps
 - [REFACTOR] Preview (Updater card/screen, Device info)
 - [REFACTOR] Button Emulate/Send with auto close

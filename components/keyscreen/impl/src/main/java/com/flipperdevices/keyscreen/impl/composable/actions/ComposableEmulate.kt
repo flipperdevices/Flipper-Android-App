@@ -29,6 +29,15 @@ import com.flipperdevices.keyscreen.impl.viewmodel.EmulateViewModel
 fun ComposableEmulate(modifier: Modifier = Modifier, flipperKey: FlipperKey) {
     val emulateViewModel = viewModel<EmulateViewModel>()
     val emulateButtonState by emulateViewModel.getEmulateButtonStateFlow().collectAsState()
+    if (!flipperKey.synchronized) {
+        ComposableActionDisable(
+            modifier = modifier,
+            textId = R.string.keyscreen_emulate,
+            iconId = DesignSystem.drawable.ic_emulate
+        )
+        return
+    }
+
     when (emulateButtonState) {
         EmulateButtonState.DISABLED -> ComposableActionDisable(
             modifier = modifier,

@@ -32,6 +32,15 @@ fun ComposableSend(modifier: Modifier = Modifier, flipperKey: FlipperKey) {
     val flipperDeviceViewModel = viewModel<EmulateViewModel>()
     val emulateButtonState by flipperDeviceViewModel.getEmulateButtonStateFlow().collectAsState()
 
+    if (!flipperKey.synchronized) {
+        ComposableActionDisable(
+            modifier = modifier,
+            textId = R.string.keyscreen_send,
+            iconId = DesignSystem.drawable.ic_send
+        )
+        return
+    }
+
     when (emulateButtonState) {
         EmulateButtonState.DISABLED -> ComposableActionDisable(
             modifier = modifier,
