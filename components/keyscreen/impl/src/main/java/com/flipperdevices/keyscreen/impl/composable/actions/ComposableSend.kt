@@ -25,6 +25,8 @@ import com.flipperdevices.keyscreen.impl.R
 import com.flipperdevices.keyscreen.impl.model.EmulateButtonState
 import com.flipperdevices.keyscreen.impl.viewmodel.EmulateViewModel
 
+private const val SEND_BUTTON_SCALE = 1.06f
+
 @Composable
 fun ComposableSend(modifier: Modifier = Modifier, flipperKey: FlipperKey) {
     val flipperDeviceViewModel = viewModel<EmulateViewModel>()
@@ -61,7 +63,7 @@ private fun ComposableSendInternal(
     onLongPressStart: () -> Unit = {},
     onLongPressEnd: () -> Unit = {}
 ) {
-    val scale = animateFloatAsState(if (isAction) 1.06f else 1f)
+    val scale = animateFloatAsState(if (isAction) SEND_BUTTON_SCALE else 1f)
 
     val modifierAction = modifier
         .scale(scale.value)

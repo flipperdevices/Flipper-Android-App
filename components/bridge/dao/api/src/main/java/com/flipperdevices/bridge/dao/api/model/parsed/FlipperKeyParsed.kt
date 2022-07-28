@@ -13,11 +13,18 @@ sealed class FlipperKeyParsed(
         val protocol: String?
     ) : FlipperKeyParsed(keyName, notes, FlipperFileType.INFRARED)
 
+    @Suppress("LongParameterList")
     class NFC(
         keyName: String,
         notes: String?,
         val deviceType: String?,
-        val uid: String?
+        val uid: String?,
+        val version: Int,
+        val atqa: String?,
+        val sak: String?,
+        val mifareClassicType: String?,
+        val dataFormatVersion: Int,
+        val lines: List<Pair<Int, String>>
     ) : FlipperKeyParsed(keyName, notes, FlipperFileType.NFC)
 
     class SubGhz(

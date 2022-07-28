@@ -1,5 +1,6 @@
 package com.flipperdevices.nfceditor.impl.model
 
+@Suppress("ConstructorParameterNaming")
 enum class NfcTypeCard(
     val nameType: String,
     val UID: String,

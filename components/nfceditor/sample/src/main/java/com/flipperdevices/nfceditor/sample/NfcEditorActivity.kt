@@ -2,6 +2,9 @@ package com.flipperdevices.nfceditor.sample
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.flipperdevices.bridge.dao.api.model.FlipperKey
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.navigation.delegates.RouterProvider
 import com.flipperdevices.core.navigation.global.CiceroneGlobal
@@ -33,7 +36,15 @@ class NfcEditorActivity : AppCompatActivity(), RouterProvider {
         val binding = NfcEditorActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        router.newRootScreen(nfcEditorApi.getNfcEditorScreen())
+        val flipperKey = resources.openRawResource(R.raw.mf_4k_full).use {
+            FlipperKey(
+                path = FlipperKeyPath("test", "test.nfc"),
+                keyContent = FlipperKeyContent.RawData(it.readBytes()),
+                synchronized = true
+            )
+        }
+
+        router.newRootScreen(nfcEditorApi.getNfcEditorScreen(flipperKey))
     }
 
     override fun onResume() {

@@ -4,6 +4,10 @@ import android.view.KeyEvent
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.viewModelScope
+import com.flipperdevices.bridge.dao.api.delegates.KeyParser
+import com.flipperdevices.bridge.dao.api.model.FlipperKey
+import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.keyinputbus.KeyInputBus
 import com.flipperdevices.core.keyinputbus.KeyInputBusListener
@@ -13,43 +17,44 @@ import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.nfceditor.impl.di.NfcEditorComponent
 import com.flipperdevices.nfceditor.impl.model.NFC_CELL_MAX_CURSOR_INDEX
-import com.flipperdevices.nfceditor.impl.model.NfcEditorCell
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCellLocation
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCursor
-import com.flipperdevices.nfceditor.impl.model.NfcEditorLine
-import com.flipperdevices.nfceditor.impl.model.NfcEditorSector
 import com.flipperdevices.nfceditor.impl.model.NfcEditorState
 import javax.inject.Inject
 import javax.inject.Provider
 import kotlin.math.min
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class NfcEditorViewModel : LifecycleViewModel(), LogTagProvider, KeyInputBusListener {
+class NfcEditorViewModel(
+    private val flipperKey: FlipperKey
+) : LifecycleViewModel(), LogTagProvider, KeyInputBusListener {
     override val TAG = "NfcEditorViewModel"
 
     @Inject
     lateinit var keyInputBusProvider: Provider<KeyInputBus>
 
+    @Inject
+    lateinit var keyParser: KeyParser
+
     init {
         ComponentHolder.component<NfcEditorComponent>().inject(this)
         keyInputBusProvider.get().subscribe(this, this)
+        viewModelScope.launch(Dispatchers.Default) {
+            val parsedKey = keyParser.parseKey(flipperKey)
+            if (parsedKey !is FlipperKeyParsed.NFC) {
+                nfcEditorState = null
+                return@launch
+            }
+            nfcEditorState = NfcEditorStateProducerHelper.mapParsedKeyToNfcEditorState(parsedKey)
+        }
     }
 
     private val textUpdaterHelper = TextUpdaterHelper()
 
-    @Suppress("MagicNumber")
-    var nfcEditorState by mutableStateOf(
+    var nfcEditorState by mutableStateOf<NfcEditorState?>(
         NfcEditorState(
-            List(size = (256 / 4)) { sectorIndex ->
-                NfcEditorSector(
-                    List(4) { lineIndex ->
-                        NfcEditorLine(
-                            sectorIndex * 4 + lineIndex,
-                            cells = "B6 69 03 36 8A 98 02 00 64 8F 76 14 51 10 37 11".split(" ")
-                                .map { NfcEditorCell(it) }
-                        )
-                    }
-                )
-            }
+            emptyList()
         )
     )
         private set
@@ -86,25 +91,32 @@ class NfcEditorViewModel : LifecycleViewModel(), LogTagProvider, KeyInputBusList
         if (currentActiveCell != location) {
             return
         }
+        val localNfcEditorState = nfcEditorState ?: return
 
         val newCursor = if (position >= NFC_CELL_MAX_CURSOR_INDEX) {
-            val newLocation = oldCursor?.location?.increment(nfcEditorState.sectors)
+            val newLocation = oldCursor?.location?.increment(localNfcEditorState.sectors)
             if (newLocation == null) {
                 NfcEditorCursor(location, min(position, NFC_CELL_MAX_CURSOR_INDEX.toInt()))
             } else NfcEditorCursor(newLocation, position = 0)
         } else NfcEditorCursor(location, position)
 
-        val processedText = textUpdaterHelper.getProcessedText(
-            originalText = nfcEditorState[location].content,
-            newText = newText,
-            oldPosition = if (oldCursor?.location == location) oldCursor.position else 0,
-            newPosition = position
-        )
+        val currentCellContent = localNfcEditorState[location]?.content
 
-        nfcEditorState = nfcEditorState.copyWithChangedContent(
-            location,
-            processedText
-        )
+        val processedText = if (currentCellContent != null) {
+            textUpdaterHelper.getProcessedText(
+                originalText = currentCellContent,
+                newText = newText,
+                oldPosition = if (oldCursor?.location == location) oldCursor.position else 0,
+                newPosition = position
+            )
+        } else null
+
+        if (processedText != null) {
+            nfcEditorState = localNfcEditorState.copyWithChangedContent(
+                location,
+                processedText
+            )
+        }
         nfcEditorCursor = newCursor
         verbose {
             "On change selection. Input $location and $position. " +
@@ -129,8 +141,9 @@ class NfcEditorViewModel : LifecycleViewModel(), LogTagProvider, KeyInputBusList
         if (cursor.position > 0) {
             return
         }
+        val localNfcEditorState = nfcEditorState ?: return
 
-        val newCursor = cursor.location.decrement(nfcEditorState.sectors)?.let {
+        val newCursor = cursor.location.decrement(localNfcEditorState.sectors)?.let {
             NfcEditorCursor(
                 it,
                 NFC_CELL_MAX_CURSOR_INDEX.toInt() - 1
@@ -139,18 +152,20 @@ class NfcEditorViewModel : LifecycleViewModel(), LogTagProvider, KeyInputBusList
 
         if (newCursor != null) {
             val location = newCursor.location
-            val currentCell = nfcEditorState[location]
-            val oldText = currentCell.content
-            val newText = textUpdaterHelper.getProcessedText(
-                originalText = oldText,
-                newText = oldText,
-                oldPosition = NFC_CELL_MAX_CURSOR_INDEX.toInt(),
-                newPosition = newCursor.position
-            )
-            nfcEditorState = nfcEditorState.copyWithChangedContent(
-                location,
-                content = newText
-            )
+            val currentCell = localNfcEditorState[location]
+            if (currentCell != null) {
+                val oldText = currentCell.content
+                val newText = textUpdaterHelper.getProcessedText(
+                    originalText = oldText,
+                    newText = oldText,
+                    oldPosition = NFC_CELL_MAX_CURSOR_INDEX.toInt(),
+                    newPosition = newCursor.position
+                )
+                nfcEditorState = localNfcEditorState.copyWithChangedContent(
+                    location,
+                    content = newText
+                )
+            }
         }
 
         currentActiveCell = newCursor?.location
