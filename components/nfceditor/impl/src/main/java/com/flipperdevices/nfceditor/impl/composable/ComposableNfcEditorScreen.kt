@@ -7,8 +7,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.keyscreen.shared.bar.ComposableBarBackIcon
+import com.flipperdevices.keyscreen.shared.bar.ComposableBarSimpleText
 import com.flipperdevices.keyscreen.shared.bar.ComposableBarTitle
 import com.flipperdevices.keyscreen.shared.bar.ComposableBarTitleWithName
 import com.flipperdevices.keyscreen.shared.bar.ComposableKeyScreenAppBar
@@ -28,9 +30,9 @@ fun ComposableNfcEditorScreen(nfcEditorViewModel: NfcEditorViewModel) {
         return
     }
     Column(modifier = Modifier.fillMaxSize()) {
-        ComposableNfcEditorBar(localNfcEditorState.cardName) {
+        ComposableNfcEditorBar(localNfcEditorState.cardName, onBack = {
             router.exit()
-        }
+        }, onSave = { nfcEditorViewModel.onSave(router) })
 
         ComposableNfcEditor(
             nfcEditorViewModel = nfcEditorViewModel,
@@ -40,7 +42,7 @@ fun ComposableNfcEditorScreen(nfcEditorViewModel: NfcEditorViewModel) {
 }
 
 @Composable
-private fun ComposableNfcEditorBar(keyName: String?, onBack: () -> Unit) {
+private fun ComposableNfcEditorBar(keyName: String?, onBack: () -> Unit, onSave: () -> Unit) {
     ComposableKeyScreenAppBar(
         startBlock = {
             ComposableBarBackIcon(it, onBack)
@@ -55,6 +57,13 @@ private fun ComposableNfcEditorBar(keyName: String?, onBack: () -> Unit) {
                 modifier = it,
                 titleId = R.string.nfceditor_title,
                 name = keyName
+            )
+        },
+        endBlock = {
+            ComposableBarSimpleText(
+                modifier = it,
+                text = stringResource(R.string.nfceditor_btn_save),
+                onClick = onSave
             )
         }
     )

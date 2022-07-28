@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.dao.api.delegates.KeyParser
+import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.core.di.ComponentHolder
@@ -20,6 +21,7 @@ import com.flipperdevices.nfceditor.impl.model.NFC_CELL_MAX_CURSOR_INDEX
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCellLocation
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCursor
 import com.flipperdevices.nfceditor.impl.model.NfcEditorState
+import com.github.terrakok.cicerone.Router
 import javax.inject.Inject
 import javax.inject.Provider
 import kotlin.math.min
@@ -39,6 +41,9 @@ class NfcEditorViewModel(
 
     @Inject
     lateinit var keyParser: KeyParser
+
+    @Inject
+    lateinit var simpleKeyApi: SimpleKeyApi
 
     init {
         ComponentHolder.component<NfcEditorComponent>().inject(this)
@@ -182,5 +187,18 @@ class NfcEditorViewModel(
 
         currentActiveCell = newCursor?.location
         nfcEditorCursor = newCursor
+    }
+
+    fun onSave(router: Router) {
+        val localNfcEditorState = nfcEditorStateFlow.value ?: return
+
+        viewModelScope.launch {
+            val newFlipperKey = NfcEditorStateProducerHelper.produceFlipperKeyFromState(
+                flipperKey,
+                localNfcEditorState
+            )
+            simpleKeyApi.updateKey(flipperKey, newFlipperKey)
+            router.exit()
+        }
     }
 }

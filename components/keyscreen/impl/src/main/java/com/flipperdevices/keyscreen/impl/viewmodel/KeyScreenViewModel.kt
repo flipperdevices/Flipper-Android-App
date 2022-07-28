@@ -149,6 +149,7 @@ class KeyScreenViewModel(
                     currentState.flipperKey,
                     newFlipperKey
                 )
+
                 loadKey(newFlipperKey)
             } catch (e: Exception) {
                 error(e) { "Error while save key after editing" }
