@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Card
 import androidx.compose.material.LocalContentColor
@@ -43,8 +42,7 @@ fun ComposableNfcCard(type: NfcTypeCard) {
             ComposableNfcCardInternal(
                 type = type,
                 isOpened = isOpened,
-                onClick = onClick,
-                height = this.maxHeight
+                onClick = onClick
             )
         }
     }
