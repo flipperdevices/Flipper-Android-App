@@ -16,5 +16,7 @@ interface SimpleKeyApi {
 
     suspend fun insertKey(key: FlipperKey)
 
+    suspend fun updateKey(oldKey: FlipperKey, newKey: FlipperKey)
+
     suspend fun getKey(keyPath: FlipperKeyPath): FlipperKey?
 }

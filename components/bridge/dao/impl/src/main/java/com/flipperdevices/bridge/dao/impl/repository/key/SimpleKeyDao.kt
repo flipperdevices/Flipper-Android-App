@@ -3,6 +3,7 @@ package com.flipperdevices.bridge.dao.impl.repository.key
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.impl.model.Key
 import kotlinx.coroutines.flow.Flow
@@ -10,6 +11,9 @@ import kotlinx.coroutines.flow.Flow
 interface SimpleKeyDao {
     @Query("SELECT * FROM keys WHERE deleted = 0")
     suspend fun getAll(): List<Key>
+
+    @Update
+    fun update(key: Key)
 
     @Query("SELECT * FROM keys WHERE deleted = 0 ")
     fun subscribe(): Flow<List<Key>>

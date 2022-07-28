@@ -1,5 +1,6 @@
 package com.flipperdevices.bridge.dao.impl.api.key
 
+import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
@@ -20,11 +21,13 @@ import kotlinx.coroutines.withContext
 
 @ContributesBinding(AppGraph::class, SimpleKeyApi::class)
 class SimpleKeyApiImpl @Inject constructor(
-    keysDaoProvider: Provider<SimpleKeyDao>
+    keysDaoProvider: Provider<SimpleKeyDao>,
+    favoriteApiProvider: Provider<FavoriteApi>
 ) : SimpleKeyApi, LogTagProvider {
     override val TAG = "SimpleKeyApi"
 
     private val simpleKeyDao by keysDaoProvider
+    private val favoriteApi by favoriteApiProvider
 
     override suspend fun getAllKeys(): List<FlipperKey> = withContext(Dispatchers.IO) {
         return@withContext simpleKeyDao.getAll().map { it.toFlipperKey() }
@@ -49,6 +52,21 @@ class SimpleKeyApiImpl @Inject constructor(
 
     override suspend fun insertKey(key: FlipperKey) = withContext(Dispatchers.IO) {
         simpleKeyDao.insert(key.toDatabaseKey())
+    }
+
+    override suspend fun updateKey(
+        oldKey: FlipperKey,
+        newKey: FlipperKey
+    ) = withContext(Dispatchers.IO) {
+        if (oldKey == newKey) return@withContext
+
+        val oldKeyInDatabase = simpleKeyDao.getByPath(oldKey.path.pathToKey, deleted = false)
+            ?: throw IllegalArgumentException("Can't find old key in database")
+
+        val newKeyInDatabase = newKey.toDatabaseKey().copy(
+            uid = oldKeyInDatabase.uid
+        )
+        simpleKeyDao.update(newKeyInDatabase)
     }
 
     override suspend fun getKey(
