@@ -19,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.res.R as DesignSystem
@@ -55,8 +54,7 @@ fun ComposableNfcCard(type: NfcTypeCard) {
 private fun ComposableNfcCardInternal(
     type: NfcTypeCard,
     isOpened: Boolean,
-    onClick: () -> Unit,
-    height: Dp
+    onClick: () -> Unit
 ) {
     Column(
         // modifier = Modifier.height(height),

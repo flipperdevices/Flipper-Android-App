@@ -21,7 +21,6 @@ import com.flipperdevices.nfceditor.impl.viewmodel.NfcEditorViewModel
 import com.flipperdevices.nfceditor.impl.viewmodel.NfcEditorViewModelFactory
 
 private const val EXTRA_FLIPPER_KEY = "flipper_key"
-private const val EXTRA_FLIPPER_PARSED_NFC_KEY = "flipper_parsed_nfc_key"
 
 class NfcEditorFragment : ComposeFragment() {
     private val viewModel by viewModels<NfcEditorViewModel> {

@@ -35,7 +35,7 @@ fun ComposableSchemeCard() {
         Text(
             text = stringResource(id = R.string.nfc_card_sector).uppercase(),
             fontSize = 6.sp,
-            modifier = Modifier.rotate(-90f)
+            modifier = Modifier.rotate(degrees = -90f)
         )
         Icon(
             painter = painterResource(id = DesignSystem.drawable.ic_bracket),
@@ -81,9 +81,9 @@ private fun ComposableFirstSector() {
         "+ ${stringResource(id = R.string.nfc_card_manufacture_data).uppercase()}"
 
     ComposableSector {
-        repeat(3) {
+        repeat(times = 3) {
             Text(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(weight = 1f),
                 text = "00",
                 style = LocalTextStyle.current
                     .copy(color = LocalPallet.current.nfcCardUIDColor.copy(alpha = 0.6f)),
@@ -91,7 +91,7 @@ private fun ComposableFirstSector() {
             )
         }
         Text(
-            modifier = Modifier.weight(10f),
+            modifier = Modifier.weight(weight = 10f),
             text = text,
             style = LocalTextStyle.current.copy(
                 color = LocalPallet.current.nfcCardUIDColor,
@@ -99,9 +99,9 @@ private fun ComposableFirstSector() {
             ),
             textAlign = TextAlign.Center
         )
-        repeat(3) {
+        repeat(times = 3) {
             Text(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(weight = 1f),
                 text = "00",
                 style = LocalTextStyle.current.copy(
                     color = LocalPallet.current.nfcCardUIDColor.copy(alpha = 0.6f)
@@ -115,9 +115,9 @@ private fun ComposableFirstSector() {
 @Composable
 private fun ComposableWhiteSector() {
     ComposableSector {
-        repeat(16) {
+        repeat(times = 16) {
             Text(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(weight = 1f),
                 text = "00",
                 textAlign = TextAlign.Center
             )
@@ -126,11 +126,12 @@ private fun ComposableWhiteSector() {
 }
 
 @Composable
+@Suppress("LongMethod")
 private fun ComposableSecondSector() {
     ComposableSector {
         repeat(2) {
             Text(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(weight = 1f),
                 text = "00",
                 style = LocalTextStyle.current.copy(
                     color = LocalPallet.current.nfcCardKeyAColor.copy(alpha = 0.5f)
@@ -139,7 +140,7 @@ private fun ComposableSecondSector() {
             )
         }
         Text(
-            modifier = Modifier.weight(2f),
+            modifier = Modifier.weight(weight = 2f),
             text = stringResource(id = R.string.nfc_card_key_a).uppercase(),
             style = LocalTextStyle.current.copy(
                 color = LocalPallet.current.nfcCardKeyAColor,
@@ -150,7 +151,7 @@ private fun ComposableSecondSector() {
 
         repeat(2) {
             Text(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(weight = 1f),
                 text = "00",
                 style = LocalTextStyle.current.copy(
                     color = LocalPallet.current.nfcCardKeyAColor.copy(alpha = 0.5f)
@@ -170,7 +171,7 @@ private fun ComposableSecondSector() {
         )
         repeat(2) {
             Text(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(weight = 1f),
                 text = "00",
                 style = LocalTextStyle.current.copy(
                     color = LocalPallet.current.nfcCardKeyBColor.copy(alpha = 0.5f)
@@ -179,7 +180,7 @@ private fun ComposableSecondSector() {
             )
         }
         Text(
-            modifier = Modifier.weight(2f),
+            modifier = Modifier.weight(weight = 2f),
             text = stringResource(id = R.string.nfc_card_key_b).uppercase(),
             style = LocalTextStyle.current.copy(
                 color = LocalPallet.current.nfcCardKeyBColor,
@@ -189,7 +190,7 @@ private fun ComposableSecondSector() {
         )
         repeat(2) {
             Text(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(weight = 1f),
                 text = "00",
                 style = LocalTextStyle.current.copy(
                     color = LocalPallet.current.nfcCardKeyBColor.copy(alpha = 0.5f)
