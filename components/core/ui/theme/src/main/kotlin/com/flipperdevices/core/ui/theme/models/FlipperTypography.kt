@@ -21,6 +21,7 @@ data class FlipperTypography(
     val subtitleM12: TextStyle,
     val subtitleR12: TextStyle,
     val subtitleB12: TextStyle,
+    val subtitleEB12: TextStyle,
     val subtitleB10: TextStyle,
     val subtitleM10: TextStyle,
 
@@ -34,8 +35,9 @@ data class FlipperTypography(
 
     val updateButton40: TextStyle,
     val updateText40: TextStyle,
-    val flipperAction: TextStyle,
-    val monoSpaceM14: TextStyle
+    val monoSpaceM14: TextStyle,
+    val monoSpaceM10: TextStyle
+    val flipperAction: TextStyle
 )
 
 internal val robotoFamily = FontFamily(
