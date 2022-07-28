@@ -86,7 +86,7 @@ private fun ComposableFirstSector() {
                 modifier = Modifier.weight(1f),
                 text = "00",
                 style = LocalTextStyle.current
-                    .copy(color = LocalPallet.current.purpleNfc.copy(alpha = 0.6f)),
+                    .copy(color = LocalPallet.current.nfcCardUIDColor.copy(alpha = 0.6f)),
                 textAlign = TextAlign.Center
             )
         }
@@ -94,7 +94,7 @@ private fun ComposableFirstSector() {
             modifier = Modifier.weight(10f),
             text = text,
             style = LocalTextStyle.current.copy(
-                color = LocalPallet.current.purpleNfc,
+                color = LocalPallet.current.nfcCardUIDColor,
                 fontWeight = FontWeight.W700
             ),
             textAlign = TextAlign.Center
@@ -104,7 +104,7 @@ private fun ComposableFirstSector() {
                 modifier = Modifier.weight(1f),
                 text = "00",
                 style = LocalTextStyle.current.copy(
-                    color = LocalPallet.current.purpleNfc.copy(alpha = 0.6f)
+                    color = LocalPallet.current.nfcCardUIDColor.copy(alpha = 0.6f)
                 ),
                 textAlign = TextAlign.Center
             )
@@ -133,7 +133,7 @@ private fun ComposableSecondSector() {
                 modifier = Modifier.weight(1f),
                 text = "00",
                 style = LocalTextStyle.current.copy(
-                    color = LocalPallet.current.greenNfc.copy(alpha = 0.5f)
+                    color = LocalPallet.current.nfcCardKeyAColor.copy(alpha = 0.5f)
                 ),
                 textAlign = TextAlign.Center
             )
@@ -142,7 +142,7 @@ private fun ComposableSecondSector() {
             modifier = Modifier.weight(2f),
             text = stringResource(id = R.string.nfc_card_key_a).uppercase(),
             style = LocalTextStyle.current.copy(
-                color = LocalPallet.current.greenNfc,
+                color = LocalPallet.current.nfcCardKeyAColor,
                 fontWeight = FontWeight.W700
             ),
             textAlign = TextAlign.Center
@@ -153,7 +153,7 @@ private fun ComposableSecondSector() {
                 modifier = Modifier.weight(1f),
                 text = "00",
                 style = LocalTextStyle.current.copy(
-                    color = LocalPallet.current.greenNfc.copy(alpha = 0.5f)
+                    color = LocalPallet.current.nfcCardKeyAColor.copy(alpha = 0.5f)
                 ),
                 textAlign = TextAlign.Center
             )
@@ -163,7 +163,7 @@ private fun ComposableSecondSector() {
             modifier = Modifier.weight(weight = 4f),
             text = stringResource(id = R.string.nfc_card_acess_bits).uppercase(),
             style = LocalTextStyle.current.copy(
-                color = LocalPallet.current.redNfc,
+                color = LocalPallet.current.nfcCardAccessBitsColor,
                 fontWeight = FontWeight.W700
             ),
             textAlign = TextAlign.Center
@@ -173,7 +173,7 @@ private fun ComposableSecondSector() {
                 modifier = Modifier.weight(1f),
                 text = "00",
                 style = LocalTextStyle.current.copy(
-                    color = LocalPallet.current.blueNfc.copy(alpha = 0.5f)
+                    color = LocalPallet.current.nfcCardKeyBColor.copy(alpha = 0.5f)
                 ),
                 textAlign = TextAlign.Center
             )
@@ -182,7 +182,7 @@ private fun ComposableSecondSector() {
             modifier = Modifier.weight(2f),
             text = stringResource(id = R.string.nfc_card_key_b).uppercase(),
             style = LocalTextStyle.current.copy(
-                color = LocalPallet.current.blueNfc,
+                color = LocalPallet.current.nfcCardKeyBColor,
                 fontWeight = FontWeight.W700
             ),
             textAlign = TextAlign.Center
@@ -192,7 +192,7 @@ private fun ComposableSecondSector() {
                 modifier = Modifier.weight(1f),
                 text = "00",
                 style = LocalTextStyle.current.copy(
-                    color = LocalPallet.current.blueNfc.copy(alpha = 0.5f)
+                    color = LocalPallet.current.nfcCardKeyBColor.copy(alpha = 0.5f)
                 ),
                 textAlign = TextAlign.Center
             )
