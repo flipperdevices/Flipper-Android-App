@@ -50,7 +50,7 @@ object NfcEditorStateProducerHelper {
             )
             else -> return null
         }
-        return NfcEditorState(sectors)
+        return NfcEditorState(parsedKey.keyName, sectors)
     }
 
     private fun parseMifare(

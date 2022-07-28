@@ -10,4 +10,5 @@
     <string name="content_subghz_protocol">Protocol:</string>
     <string name="content_subghz_key">Key:</string>
     <string name="keyscreen_cancel_pic_desc">Cancel</string>
+    <string name="keyscreen_back_pic_desc">Back</string>
 </resources>

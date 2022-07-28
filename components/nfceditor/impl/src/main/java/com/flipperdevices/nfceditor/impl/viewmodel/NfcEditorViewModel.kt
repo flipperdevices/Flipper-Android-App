@@ -24,6 +24,9 @@ import javax.inject.Inject
 import javax.inject.Provider
 import kotlin.math.min
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class NfcEditorViewModel(
@@ -43,27 +46,32 @@ class NfcEditorViewModel(
         viewModelScope.launch(Dispatchers.Default) {
             val parsedKey = keyParser.parseKey(flipperKey)
             if (parsedKey !is FlipperKeyParsed.NFC) {
-                nfcEditorState = null
+                nfcEditorStateFlow.emit(null)
                 return@launch
             }
-            nfcEditorState = NfcEditorStateProducerHelper.mapParsedKeyToNfcEditorState(parsedKey)
+            nfcEditorStateFlow.emit(
+                NfcEditorStateProducerHelper.mapParsedKeyToNfcEditorState(
+                    parsedKey
+                )
+            )
         }
     }
 
     private val textUpdaterHelper = TextUpdaterHelper()
 
-    var nfcEditorState by mutableStateOf<NfcEditorState?>(
+    private var nfcEditorStateFlow = MutableStateFlow<NfcEditorState?>(
         NfcEditorState(
-            emptyList()
+            sectors = emptyList()
         )
     )
-        private set
 
     var nfcEditorCursor by mutableStateOf<NfcEditorCursor?>(null)
         private set
 
     var currentActiveCell by mutableStateOf<NfcEditorCellLocation?>(null)
         private set
+
+    fun getNfcEditorState(): StateFlow<NfcEditorState?> = nfcEditorStateFlow
 
     fun onCellFocus(location: NfcEditorCellLocation, isFocused: Boolean) {
         if (!isFocused) {
@@ -91,7 +99,7 @@ class NfcEditorViewModel(
         if (currentActiveCell != location) {
             return
         }
-        val localNfcEditorState = nfcEditorState ?: return
+        val localNfcEditorState = nfcEditorStateFlow.value ?: return
 
         val newCursor = if (position >= NFC_CELL_MAX_CURSOR_INDEX) {
             val newLocation = oldCursor?.location?.increment(localNfcEditorState.sectors)
@@ -112,10 +120,12 @@ class NfcEditorViewModel(
         } else null
 
         if (processedText != null) {
-            nfcEditorState = localNfcEditorState.copyWithChangedContent(
-                location,
-                processedText
-            )
+            nfcEditorStateFlow.update {
+                localNfcEditorState.copyWithChangedContent(
+                    location,
+                    processedText
+                )
+            }
         }
         nfcEditorCursor = newCursor
         verbose {
@@ -141,7 +151,7 @@ class NfcEditorViewModel(
         if (cursor.position > 0) {
             return
         }
-        val localNfcEditorState = nfcEditorState ?: return
+        val localNfcEditorState = nfcEditorStateFlow.value ?: return
 
         val newCursor = cursor.location.decrement(localNfcEditorState.sectors)?.let {
             NfcEditorCursor(
@@ -161,10 +171,12 @@ class NfcEditorViewModel(
                     oldPosition = NFC_CELL_MAX_CURSOR_INDEX.toInt(),
                     newPosition = newCursor.position
                 )
-                nfcEditorState = localNfcEditorState.copyWithChangedContent(
-                    location,
-                    content = newText
-                )
+                nfcEditorStateFlow.update {
+                    localNfcEditorState.copyWithChangedContent(
+                        location,
+                        content = newText
+                    )
+                }
             }
         }
 

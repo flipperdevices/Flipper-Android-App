@@ -7,5 +7,5 @@ import com.github.terrakok.cicerone.Screen
 interface NfcEditorApi {
     fun getNfcEditorScreen(flipperKey: FlipperKey): Screen
 
-    fun isSupportedByNfcEditor(parsedKey: FlipperKeyParsed.NFC): Boolean
+    fun isSupportedByNfcEditor(parsedKey: FlipperKeyParsed): Boolean
 }

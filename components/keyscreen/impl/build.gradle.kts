@@ -29,6 +29,7 @@ dependencies {
     implementation(libs.protobuf.jvm)
 
     implementation(projects.components.keyedit.api)
+    implementation(projects.components.nfceditor.api)
 
     // Compose
     implementation(libs.compose.ui)

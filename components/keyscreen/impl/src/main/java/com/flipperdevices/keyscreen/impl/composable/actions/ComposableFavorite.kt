@@ -18,7 +18,11 @@ import com.flipperdevices.keyscreen.impl.model.FavoriteState
 private const val ICON_SIZE_DP = 24
 
 @Composable
-fun ComposableFavorite(favoriteState: FavoriteState, onSwitchFavorites: (Boolean) -> Unit) {
+fun ComposableFavorite(
+    modifier: Modifier,
+    favoriteState: FavoriteState,
+    onSwitchFavorites: (Boolean) -> Unit
+) {
     val iconId = when (favoriteState) {
         FavoriteState.PROGRESS -> {
             CircularProgressIndicator(modifier = Modifier.size(ICON_SIZE_DP.dp))
@@ -29,7 +33,7 @@ fun ComposableFavorite(favoriteState: FavoriteState, onSwitchFavorites: (Boolean
     }
 
     Icon(
-        modifier = Modifier
+        modifier = modifier
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(bounded = false),

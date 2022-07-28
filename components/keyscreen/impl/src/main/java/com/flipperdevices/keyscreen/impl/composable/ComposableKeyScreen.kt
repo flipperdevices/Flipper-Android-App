@@ -15,6 +15,7 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.keyedit.api.KeyEditApi
 import com.flipperdevices.keyscreen.impl.model.KeyScreenState
 import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModel
+import com.flipperdevices.nfceditor.api.NfcEditorApi
 
 @Composable
 fun ComposableKeyScreen(
@@ -22,6 +23,7 @@ fun ComposableKeyScreen(
     synchronizationUiApi: SynchronizationUiApi,
     keyScreenState: KeyScreenState = KeyScreenState.InProgress,
     keyEditApi: KeyEditApi,
+    nfcEditorApi: NfcEditorApi,
     onBack: () -> Unit
 ) {
     when (keyScreenState) {
@@ -30,6 +32,7 @@ fun ComposableKeyScreen(
         is KeyScreenState.Ready -> ComposableKeyParsed(
             viewModel,
             keyScreenState,
+            nfcEditorApi,
             synchronizationUiApi,
             onBack
         )

@@ -17,6 +17,7 @@ import com.flipperdevices.keyscreen.impl.composable.ComposableKeyScreen
 import com.flipperdevices.keyscreen.impl.di.KeyScreenComponent
 import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModel
 import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModelFactory
+import com.flipperdevices.nfceditor.api.NfcEditorApi
 import javax.inject.Inject
 
 private const val EXTRA_KEY_PATH = "flipper_key_path"
@@ -28,6 +29,9 @@ class KeyScreenFragment : ComposeFragment(), OnBackPressListener {
 
     @Inject
     lateinit var synchronizationUiApi: SynchronizationUiApi
+
+    @Inject
+    lateinit var nfcEditor: NfcEditorApi
 
     init {
         ComponentHolder.component<KeyScreenComponent>().inject(this)
@@ -48,6 +52,7 @@ class KeyScreenFragment : ComposeFragment(), OnBackPressListener {
             synchronizationUiApi,
             keyScreenState,
             keyEditApi,
+            nfcEditor,
             onBack = {
                 requireRouter().exit()
             }

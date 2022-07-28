@@ -7,21 +7,19 @@ import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import com.flipperdevices.core.ktx.jre.length
-import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.nfceditor.impl.model.NfcEditorState
 import com.flipperdevices.nfceditor.impl.viewmodel.NfcEditorViewModel
 
 @Composable
-fun ComposableNfcEditor(nfcEditorViewModel: NfcEditorViewModel) {
+fun ComposableNfcEditor(nfcEditorViewModel: NfcEditorViewModel, nfcEditorState: NfcEditorState) {
     BoxWithConstraints(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
         CompositionLocalProvider(
             LocalTextStyle provides LocalTypography.current.monoSpaceM14.merge(
@@ -30,14 +28,6 @@ fun ComposableNfcEditor(nfcEditorViewModel: NfcEditorViewModel) {
                 )
             )
         ) {
-            val nfcEditorState = nfcEditorViewModel.nfcEditorState
-            if (nfcEditorState == null) {
-                val router = LocalRouter.current
-                LaunchedEffect(key1 = nfcEditorState) {
-                    router.exit()
-                }
-                return@CompositionLocalProvider
-            }
             val maxIndexSymbolCount = remember(constraints, nfcEditorState) {
                 nfcEditorState.sectors.filterNotNull().maxOfOrNull { it.lines.maxOf { it.index } }
                     ?.length() ?: 0

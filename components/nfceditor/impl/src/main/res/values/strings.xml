@@ -2,4 +2,5 @@
 <resources>
     <string name="nfceditor_sector_title">Sector: %1$d</string>
     <string name="nfceditor_sector_broke">No Keys Found</string>
+    <string name="nfceditor_title">Edit Dump</string>
 </resources>

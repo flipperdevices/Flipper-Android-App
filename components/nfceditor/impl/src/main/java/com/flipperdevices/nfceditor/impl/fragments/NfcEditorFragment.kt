@@ -16,7 +16,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.ui.fragment.ComposeFragment
-import com.flipperdevices.nfceditor.impl.composable.ComposableNfcEditor
+import com.flipperdevices.nfceditor.impl.composable.ComposableNfcEditorScreen
 import com.flipperdevices.nfceditor.impl.viewmodel.NfcEditorViewModel
 import com.flipperdevices.nfceditor.impl.viewmodel.NfcEditorViewModelFactory
 
@@ -53,7 +53,7 @@ class NfcEditorFragment : ComposeFragment() {
                 .fillMaxSize()
                 .background(MaterialTheme.colors.background)
         ) {
-            ComposableNfcEditor(viewModel)
+            ComposableNfcEditorScreen(viewModel)
         }
     }
 

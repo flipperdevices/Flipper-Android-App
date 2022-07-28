@@ -9,6 +9,7 @@ dependencies {
 
     implementation(projects.components.core.keyinputbus)
     implementation(projects.components.core.ui.lifecycle)
+    implementation(projects.components.core.ui.fragment)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.ktx)
@@ -20,9 +21,10 @@ dependencies {
 
     implementation(projects.components.bridge.dao.api)
 
+    implementation(projects.components.keyscreen.shared)
+
     implementation(libs.cicerone)
     implementation(libs.appcompat)
-    implementation(projects.components.core.ui.fragment)
 
     // Compose
     implementation(libs.compose.ui)

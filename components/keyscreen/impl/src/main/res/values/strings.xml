@@ -5,6 +5,7 @@
     <string name="keyscreen_card_note_empty">Note is empty</string>
     <string name="keyscreen_share_text">Share</string>
     <string name="keyscreen_edit_text">Edit</string>
+    <string name="keyscreen_nfc_edit_text">Edit Dump</string>
     <string name="keyscreen_delete_text">Delete</string>
     <string name="keyscreen_delete_permanently_text">Delete Permanently</string>
     <string name="keyscreen_restore_text">Recover Key</string>
