@@ -3,6 +3,7 @@ package com.flipperdevices.nfceditor.impl.composable.card
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
@@ -14,9 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.res.R as DesignSystem
@@ -59,7 +59,7 @@ private fun ComposableSectorsCard() {
 
 @Composable
 private fun ComposableSector(
-    content: @Composable () -> Unit
+    content: @Composable (RowScope.() -> Unit)
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -69,119 +69,133 @@ private fun ComposableSector(
             text = stringResource(id = R.string.nfc_card_block).uppercase(),
             fontSize = 6.sp
         )
-        content()
+        Row(modifier = Modifier.weight(16f)) {
+            content()
+        }
     }
 }
 
 @Composable
 private fun ComposableFirstSector() {
+    val text = "${stringResource(id = R.string.nfc_card_uid)} " +
+        "+ ${stringResource(id = R.string.nfc_card_manufacture_data).uppercase()}"
+
     ComposableSector {
+        repeat(3) {
+            Text(
+                modifier = Modifier.weight(1f),
+                text = "00",
+                style = LocalTextStyle.current
+                    .copy(color = LocalPallet.current.purpleNfc.copy(alpha = 0.6f)),
+                textAlign = TextAlign.Center
+            )
+        }
         Text(
-            text = buildAnnotatedString {
-                withStyle(
-                    style = LocalTextStyle.current.copy(
-                        color = LocalPallet.current.purpleNfc.copy(alpha = 0.5f)
-                    ).toSpanStyle()
-                ) {
-                    append("00 00 00")
-                }
-                append(" ")
-                withStyle(
-                    style = LocalTextStyle.current.copy(
-                        color = LocalPallet.current.purpleNfc,
-                        fontWeight = FontWeight.W700
-                    ).toSpanStyle()
-                ) {
-                    append("UID + MANUFACTURING DATA")
-                }
-                append(" ")
-                withStyle(
-                    style = LocalTextStyle.current.copy(
-                        color = LocalPallet.current.purpleNfc
-                    ).toSpanStyle()
-                ) {
-                    append("00 00 00")
-                }
-            }
+            modifier = Modifier.weight(10f),
+            text = text,
+            style = LocalTextStyle.current.copy(
+                color = LocalPallet.current.purpleNfc,
+                fontWeight = FontWeight.W700
+            ),
+            textAlign = TextAlign.Center
         )
+        repeat(3) {
+            Text(
+                modifier = Modifier.weight(1f),
+                text = "00",
+                style = LocalTextStyle.current.copy(
+                    color = LocalPallet.current.purpleNfc.copy(alpha = 0.6f)
+                ),
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }
 
 @Composable
 private fun ComposableWhiteSector() {
     ComposableSector {
-        Text(
-            text = buildAnnotatedString {
-                append("00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00")
-            }
-        )
+        repeat(16) {
+            Text(
+                modifier = Modifier.weight(1f),
+                text = "00",
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }
 
 @Composable
 private fun ComposableSecondSector() {
     ComposableSector {
+        repeat(2) {
+            Text(
+                modifier = Modifier.weight(1f),
+                text = "00",
+                style = LocalTextStyle.current.copy(
+                    color = LocalPallet.current.greenNfc.copy(alpha = 0.5f)
+                ),
+                textAlign = TextAlign.Center
+            )
+        }
         Text(
-            text = buildAnnotatedString {
-                withStyle(
-                    style = LocalTextStyle.current.copy(
-                        color = LocalPallet.current.greenNfc.copy(alpha = 0.5f)
-                    ).toSpanStyle()
-                ) {
-                    append("00 00")
-                }
-                append(" ")
-                withStyle(
-                    style = LocalTextStyle.current.copy(
-                        color = LocalPallet.current.greenNfc,
-                        fontWeight = FontWeight.W700
-                    ).toSpanStyle()
-                ) {
-                    append("KEY A")
-                }
-                append(" ")
-                withStyle(
-                    style = LocalTextStyle.current.copy(
-                        color = LocalPallet.current.greenNfc.copy(alpha = 0.5f)
-                    ).toSpanStyle()
-                ) {
-                    append("00 00")
-                }
-                append(" ")
-                withStyle(
-                    style = LocalTextStyle.current.copy(
-                        color = LocalPallet.current.redNfc,
-                        fontWeight = FontWeight.W700
-                    ).toSpanStyle()
-                ) {
-                    append("ACCESS BITS")
-                }
-                append(" ")
-                withStyle(
-                    style = LocalTextStyle.current.copy(
-                        color = LocalPallet.current.blueNfc.copy(alpha = 0.5f)
-                    ).toSpanStyle()
-                ) {
-                    append("00 00")
-                }
-                append(" ")
-                withStyle(
-                    style = LocalTextStyle.current.copy(
-                        color = LocalPallet.current.blueNfc,
-                        fontWeight = FontWeight.W700
-                    ).toSpanStyle()
-                ) {
-                    append("KEY B")
-                }
-                append(" ")
-                withStyle(
-                    style = LocalTextStyle.current.copy(
-                        color = LocalPallet.current.blueNfc.copy(alpha = 0.5f)
-                    ).toSpanStyle()
-                ) {
-                    append("00 00")
-                }
-            }
+            modifier = Modifier.weight(2f),
+            text = stringResource(id = R.string.nfc_card_key_a).uppercase(),
+            style = LocalTextStyle.current.copy(
+                color = LocalPallet.current.greenNfc,
+                fontWeight = FontWeight.W700
+            ),
+            textAlign = TextAlign.Center
         )
+
+        repeat(2) {
+            Text(
+                modifier = Modifier.weight(1f),
+                text = "00",
+                style = LocalTextStyle.current.copy(
+                    color = LocalPallet.current.greenNfc.copy(alpha = 0.5f)
+                ),
+                textAlign = TextAlign.Center
+            )
+        }
+
+        Text(
+            modifier = Modifier.weight(weight = 4f),
+            text = stringResource(id = R.string.nfc_card_acess_bits).uppercase(),
+            style = LocalTextStyle.current.copy(
+                color = LocalPallet.current.redNfc,
+                fontWeight = FontWeight.W700
+            ),
+            textAlign = TextAlign.Center
+        )
+        repeat(2) {
+            Text(
+                modifier = Modifier.weight(1f),
+                text = "00",
+                style = LocalTextStyle.current.copy(
+                    color = LocalPallet.current.blueNfc.copy(alpha = 0.5f)
+                ),
+                textAlign = TextAlign.Center
+            )
+        }
+        Text(
+            modifier = Modifier.weight(2f),
+            text = stringResource(id = R.string.nfc_card_key_b).uppercase(),
+            style = LocalTextStyle.current.copy(
+                color = LocalPallet.current.blueNfc,
+                fontWeight = FontWeight.W700
+            ),
+            textAlign = TextAlign.Center
+        )
+        repeat(2) {
+            Text(
+                modifier = Modifier.weight(1f),
+                text = "00",
+                style = LocalTextStyle.current.copy(
+                    color = LocalPallet.current.blueNfc.copy(alpha = 0.5f)
+                ),
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }

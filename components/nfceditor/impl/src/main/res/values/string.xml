@@ -2,4 +2,11 @@
 <resources>
     <string name="nfc_card_sector">Sector</string>
     <string name="nfc_card_block">Block</string>
+    <string name="nfc_card_uid">UID</string>
+    <string name="nfc_card_atqa">ATQA</string>
+    <string name="nfc_card_sak">SAK</string>
+    <string name="nfc_card_acess_bits">Access Bits</string>
+    <string name="nfc_card_manufacture_data">Manufacturing Data</string>
+    <string name="nfc_card_key_a">Key A</string>
+    <string name="nfc_card_key_b">Key B</string>
 </resources>
