@@ -2,4 +2,17 @@
 <resources>
     <string name="nfceditor_sector_title">Sector: %1$d</string>
     <string name="nfceditor_sector_broke">No Keys Found</string>
+    <string name="nfceditor_title">Edit Dump</string>
+    <string name="nfceditor_btn_save">Save</string>
+    <string name="nfc_card_sector">Sector</string>
+    <string name="nfc_card_block">Block</string>
+    <string name="nfc_card_uid">UID</string>
+    <string name="nfc_card_atqa">ATQA</string>
+    <string name="nfc_card_sak">SAK</string>
+    <string name="nfc_card_acess_bits">Access Bits</string>
+    <string name="nfc_card_manufacture_data">Manufacturing Data</string>
+    <string name="nfc_card_key_a">Key A</string>
+    <string name="nfc_card_key_b">Key B</string>
+    <string name="nfc_card_title_4k">MIFARE Classic 4K</string>
+    <string name="nfc_card_title_1k">MIFARE Classic 1K</string>
 </resources>

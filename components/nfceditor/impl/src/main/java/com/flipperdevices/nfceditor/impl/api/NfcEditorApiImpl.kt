@@ -19,8 +19,9 @@ class NfcEditorApiImpl @Inject constructor() : NfcEditorApi {
         return FragmentScreen { NfcEditorFragment.getInstance(flipperKey) }
     }
 
-    override fun isSupportedByNfcEditor(parsedKey: FlipperKeyParsed.NFC): Boolean {
-        return parsedKey.version == SUPPORTED_NFC_FORMAT &&
+    override fun isSupportedByNfcEditor(parsedKey: FlipperKeyParsed): Boolean {
+        return parsedKey is FlipperKeyParsed.NFC &&
+            parsedKey.version == SUPPORTED_NFC_FORMAT &&
             parsedKey.deviceType == SUPPORTED_NFC_TYPE
     }
 }

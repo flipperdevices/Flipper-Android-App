@@ -13,30 +13,33 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.res.R
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
+import com.flipperdevices.nfceditor.impl.R
+import com.flipperdevices.nfceditor.impl.model.NfcEditorCardType
 
 @Composable
 fun ComposableHeaderCard(
-    nameCard: String,
+    cardType: NfcEditorCardType,
     isOpened: Boolean,
     onClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp)
+            .padding(vertical = 13.dp)
             .padding(horizontal = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        ComposableNameCard(nameCard)
+        ComposableNameCard(cardType)
 
         val imageId = if (isOpened) {
-            R.drawable.ic_more
-        } else R.drawable.ic_more_revert
+            DesignSystem.drawable.ic_more
+        } else DesignSystem.drawable.ic_more_revert
 
         Icon(
             modifier = Modifier.clickable(
@@ -52,7 +55,11 @@ fun ComposableHeaderCard(
 }
 
 @Composable
-private fun ComposableNameCard(nameCard: String) {
+private fun ComposableNameCard(cardType: NfcEditorCardType) {
+    val nameCard = when (cardType) {
+        NfcEditorCardType.MF_1K -> stringResource(R.string.nfc_card_title_1k)
+        NfcEditorCardType.MF_4K -> stringResource(R.string.nfc_card_title_4k)
+    }
     Row(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -63,7 +70,7 @@ private fun ComposableNameCard(nameCard: String) {
             color = LocalPallet.current.onNfcCard
         )
         Icon(
-            painter = painterResource(id = R.drawable.ic_union),
+            painter = painterResource(id = DesignSystem.drawable.ic_union),
             contentDescription = "",
             tint = LocalPallet.current.onNfcCard
         )

@@ -61,7 +61,6 @@ class KeyScreenViewModel(
 
     private val keyScreenState = MutableStateFlow<KeyScreenState>(KeyScreenState.InProgress)
     private val shareDelegate = ShareDelegate(application, keyParser)
-    private val saveDelegate = SaveDelegate()
     private val restoreInProgress = AtomicBoolean(false)
 
     init {
@@ -146,10 +145,11 @@ class KeyScreenViewModel(
 
         viewModelScope.launch {
             try {
-                saveDelegate.onEditSaveInternal(
+                simpleKeyApi.updateKey(
                     currentState.flipperKey,
                     newFlipperKey
                 )
+
                 loadKey(newFlipperKey)
             } catch (e: Exception) {
                 error(e) { "Error while save key after editing" }

@@ -2,10 +2,11 @@ package com.flipperdevices.nfceditor.impl.composable.card
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.LocalTextStyle
@@ -25,26 +26,33 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.nfceditor.impl.model.NfcTypeCard
+import com.flipperdevices.nfceditor.impl.model.NfcEditorCardInfo
+import com.flipperdevices.nfceditor.impl.model.NfcEditorCardType
 
 @Composable
-fun ComposableNfcCard(type: NfcTypeCard) {
+fun ComposableNfcCard(nfcEditorCardInfo: NfcEditorCardInfo) {
     Card(
-        modifier = Modifier.padding(14.dp)
+        modifier = Modifier.padding(14.dp),
+        shape = RoundedCornerShape(12.dp)
     ) {
-        var isOpened by remember { mutableStateOf(true) }
-        val onClick = { isOpened = !isOpened }
-        BoxWithConstraints {
-            Image(
-                painter = painterResource(id = DesignSystem.drawable.nfc_card_back),
-                contentDescription = "",
-                contentScale = ContentScale.FillWidth
-            )
+        Box {
+            var isOpened by remember { mutableStateOf(true) }
+            val onClick = { isOpened = !isOpened }
+            if (isOpened) {
+                Image(
+                    modifier = Modifier.fillMaxWidth(),
+                    painter = painterResource(DesignSystem.drawable.pic_nfccard),
+                    contentDescription = null,
+                    contentScale = ContentScale.FillWidth
+                )
+            }
             ComposableNfcCardInternal(
-                type = type,
+                modifier = if (isOpened) {
+                    Modifier.matchParentSize()
+                } else Modifier,
+                nfcEditorCardInfo = nfcEditorCardInfo,
                 isOpened = isOpened,
-                onClick = onClick,
-                height = this.maxHeight
+                onClick = onClick
             )
         }
     }
@@ -52,12 +60,13 @@ fun ComposableNfcCard(type: NfcTypeCard) {
 
 @Composable
 private fun ComposableNfcCardInternal(
-    type: NfcTypeCard,
+    modifier: Modifier,
+    nfcEditorCardInfo: NfcEditorCardInfo,
     isOpened: Boolean,
     onClick: () -> Unit
 ) {
     Column(
-        // modifier = Modifier.height(height),
+        modifier = modifier,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         CompositionLocalProvider(
@@ -65,10 +74,10 @@ private fun ComposableNfcCardInternal(
                 .copy(fontSize = 10.sp, color = LocalPallet.current.onNfcCard),
             LocalContentColor provides LocalPallet.current.onNfcCard
         ) {
-            ComposableHeaderCard(type.nameType, isOpened, onClick)
+            ComposableHeaderCard(nfcEditorCardInfo.cardType, isOpened, onClick)
             if (isOpened) {
                 ComposableSchemeCard()
-                ComposableAdditionalInfoCard(type)
+                ComposableAdditionalInfoCard(nfcEditorCardInfo)
             }
         }
     }
@@ -81,6 +90,13 @@ private fun ComposableNfcCardInternal(
 @Composable
 private fun ComposableNfcCardPreview() {
     FlipperThemeInternal {
-        ComposableNfcCard(NfcTypeCard.Classic4k)
+        ComposableNfcCard(
+            NfcEditorCardInfo(
+                cardType = NfcEditorCardType.MF_4K,
+                uid = "B6 69 03 36 8A 98 02",
+                atqa = "02 02",
+                sak = "98"
+            )
+        )
     }
 }

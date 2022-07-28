@@ -1,7 +1,11 @@
 package com.flipperdevices.nfceditor.impl.viewmodel
 
+import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
+import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.nfceditor.impl.model.NfcCellType
+import com.flipperdevices.nfceditor.impl.model.NfcEditorCardInfo
+import com.flipperdevices.nfceditor.impl.model.NfcEditorCardType
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCell
 import com.flipperdevices.nfceditor.impl.model.NfcEditorLine
 import com.flipperdevices.nfceditor.impl.model.NfcEditorSector
@@ -32,6 +36,7 @@ private val LINE_4_CELL_RULES = listOf(
     IntRange(KEY_A_INDEX + 1, ACCESS_BITS_INDEX) to NfcCellType.ACCESS_BITS,
     IntRange(ACCESS_BITS_INDEX + 2, KEY_B_INDEX) to NfcCellType.KEY_B
 )
+private const val KEY_BLOCK = "Block"
 
 object NfcEditorStateProducerHelper {
     fun mapParsedKeyToNfcEditorState(parsedKey: FlipperKeyParsed.NFC): NfcEditorState? {
@@ -50,7 +55,21 @@ object NfcEditorStateProducerHelper {
             )
             else -> return null
         }
-        return NfcEditorState(sectors)
+        val cardType = when (parsedKey.mifareClassicType) {
+            MF_4K_NAME -> NfcEditorCardType.MF_4K
+            MF_1K_NAME -> NfcEditorCardType.MF_1K
+            else -> null
+        }
+        var cardInfo: NfcEditorCardInfo? = null
+        if (cardType != null) {
+            cardInfo = NfcEditorCardInfo(
+                cardType = cardType,
+                uid = parsedKey.uid,
+                atqa = parsedKey.atqa,
+                sak = parsedKey.sak
+            )
+        }
+        return NfcEditorState(cardInfo, parsedKey.keyName, sectors)
     }
 
     private fun parseMifare(
@@ -133,5 +152,23 @@ object NfcEditorStateProducerHelper {
             }
         }
         return processedList
+    }
+
+    fun produceFlipperKeyFromState(
+        oldKey: FlipperKey,
+        nfcEditorState: NfcEditorState
+    ): FlipperKey {
+        val fff = FlipperFileFormat.fromFlipperContent(oldKey.keyContent)
+        val pendingFields = nfcEditorState.sectors.filterNotNull().map { it.lines }.flatten()
+            .map { line -> line.index to line.cells.joinToString(" ") { it.content } }
+
+        val orderedMap = fff.orderedDict.toMap(LinkedHashMap(fff.orderedDict.size))
+        pendingFields.forEach {
+            orderedMap["$KEY_BLOCK ${it.first}"] = it.second
+        }
+        return oldKey.copy(
+            keyContent = FlipperFileFormat(orderedMap.toList()),
+            synchronized = false
+        )
     }
 }

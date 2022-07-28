@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.dao.api.delegates.KeyParser
+import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.core.di.ComponentHolder
@@ -20,10 +21,14 @@ import com.flipperdevices.nfceditor.impl.model.NFC_CELL_MAX_CURSOR_INDEX
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCellLocation
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCursor
 import com.flipperdevices.nfceditor.impl.model.NfcEditorState
+import com.github.terrakok.cicerone.Router
 import javax.inject.Inject
 import javax.inject.Provider
 import kotlin.math.min
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class NfcEditorViewModel(
@@ -37,33 +42,41 @@ class NfcEditorViewModel(
     @Inject
     lateinit var keyParser: KeyParser
 
+    @Inject
+    lateinit var simpleKeyApi: SimpleKeyApi
+
     init {
         ComponentHolder.component<NfcEditorComponent>().inject(this)
         keyInputBusProvider.get().subscribe(this, this)
         viewModelScope.launch(Dispatchers.Default) {
             val parsedKey = keyParser.parseKey(flipperKey)
             if (parsedKey !is FlipperKeyParsed.NFC) {
-                nfcEditorState = null
+                nfcEditorStateFlow.emit(null)
                 return@launch
             }
-            nfcEditorState = NfcEditorStateProducerHelper.mapParsedKeyToNfcEditorState(parsedKey)
+            nfcEditorStateFlow.emit(
+                NfcEditorStateProducerHelper.mapParsedKeyToNfcEditorState(
+                    parsedKey
+                )
+            )
         }
     }
 
     private val textUpdaterHelper = TextUpdaterHelper()
 
-    var nfcEditorState by mutableStateOf<NfcEditorState?>(
+    private var nfcEditorStateFlow = MutableStateFlow<NfcEditorState?>(
         NfcEditorState(
-            emptyList()
+            sectors = emptyList()
         )
     )
-        private set
 
     var nfcEditorCursor by mutableStateOf<NfcEditorCursor?>(null)
         private set
 
     var currentActiveCell by mutableStateOf<NfcEditorCellLocation?>(null)
         private set
+
+    fun getNfcEditorState(): StateFlow<NfcEditorState?> = nfcEditorStateFlow
 
     fun onCellFocus(location: NfcEditorCellLocation, isFocused: Boolean) {
         if (!isFocused) {
@@ -91,7 +104,7 @@ class NfcEditorViewModel(
         if (currentActiveCell != location) {
             return
         }
-        val localNfcEditorState = nfcEditorState ?: return
+        val localNfcEditorState = nfcEditorStateFlow.value ?: return
 
         val newCursor = if (position >= NFC_CELL_MAX_CURSOR_INDEX) {
             val newLocation = oldCursor?.location?.increment(localNfcEditorState.sectors)
@@ -112,10 +125,12 @@ class NfcEditorViewModel(
         } else null
 
         if (processedText != null) {
-            nfcEditorState = localNfcEditorState.copyWithChangedContent(
-                location,
-                processedText
-            )
+            nfcEditorStateFlow.update {
+                localNfcEditorState.copyWithChangedContent(
+                    location,
+                    processedText
+                )
+            }
         }
         nfcEditorCursor = newCursor
         verbose {
@@ -141,7 +156,7 @@ class NfcEditorViewModel(
         if (cursor.position > 0) {
             return
         }
-        val localNfcEditorState = nfcEditorState ?: return
+        val localNfcEditorState = nfcEditorStateFlow.value ?: return
 
         val newCursor = cursor.location.decrement(localNfcEditorState.sectors)?.let {
             NfcEditorCursor(
@@ -161,14 +176,29 @@ class NfcEditorViewModel(
                     oldPosition = NFC_CELL_MAX_CURSOR_INDEX.toInt(),
                     newPosition = newCursor.position
                 )
-                nfcEditorState = localNfcEditorState.copyWithChangedContent(
-                    location,
-                    content = newText
-                )
+                nfcEditorStateFlow.update {
+                    localNfcEditorState.copyWithChangedContent(
+                        location,
+                        content = newText
+                    )
+                }
             }
         }
 
         currentActiveCell = newCursor?.location
         nfcEditorCursor = newCursor
+    }
+
+    fun onSave(router: Router) {
+        val localNfcEditorState = nfcEditorStateFlow.value ?: return
+
+        viewModelScope.launch {
+            val newFlipperKey = NfcEditorStateProducerHelper.produceFlipperKeyFromState(
+                flipperKey,
+                localNfcEditorState
+            )
+            simpleKeyApi.updateKey(flipperKey, newFlipperKey)
+            router.exit()
+        }
     }
 }

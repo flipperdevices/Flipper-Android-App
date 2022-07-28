@@ -1,7 +1,6 @@
 package com.flipperdevices.keyscreen.impl.composable.card
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,6 +20,7 @@ import com.flipperdevices.core.ui.ktx.ComposableKeyType
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.keyscreen.impl.R
+import com.flipperdevices.keyscreen.impl.composable.actions.ComposableFavorite
 import com.flipperdevices.keyscreen.impl.model.DeleteState
 import com.flipperdevices.keyscreen.impl.model.FavoriteState
 import com.flipperdevices.keyscreen.shared.ComposableKeyContent
@@ -32,7 +32,8 @@ fun ComposableKeyCard(
     deleteState: DeleteState,
     synchronizationState: (@Composable () -> Unit)? = null,
     favoriteState: FavoriteState? = null,
-    onSwitchFavorites: ((Boolean) -> Unit)? = null
+    onSwitchFavorites: ((Boolean) -> Unit)? = null,
+    onEditName: (() -> Unit)? = null
 ) {
     Card(
         modifier = Modifier
@@ -47,13 +48,24 @@ fun ComposableKeyCard(
                     parsedKey.fileType,
                     colorKey = LocalPallet.current.keyDeleted
                 )
-                if (synchronizationState != null) {
-                    Box(
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(horizontal = 6.dp, vertical = 6.dp),
-                        contentAlignment = Alignment.CenterEnd
+                Row(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(horizontal = 6.dp, vertical = 6.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    if (deleteState == DeleteState.NOT_DELETED &&
+                        favoriteState != null &&
+                        onSwitchFavorites != null
                     ) {
+                        ComposableFavorite(
+                            Modifier.padding(horizontal = 12.dp),
+                            favoriteState,
+                            onSwitchFavorites
+                        )
+                    }
+                    if (synchronizationState != null) {
                         synchronizationState()
                     }
                 }
@@ -68,8 +80,7 @@ fun ComposableKeyCard(
                 ),
                 deleteState = deleteState,
                 keyName = parsedKey.keyName,
-                favoriteState = favoriteState,
-                onSwitchFavorites = onSwitchFavorites
+                onEditName = onEditName
             )
             val notes = parsedKey.notes
             SelectionContainer {

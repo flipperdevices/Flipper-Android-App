@@ -46,6 +46,18 @@ data class FlipperFileFormat(
     }
 
     companion object {
+        fun fromFlipperContent(flipperKeyContent: FlipperKeyContent): FlipperFileFormat {
+            if (flipperKeyContent is FlipperFileFormat) {
+                return flipperKeyContent
+            }
+
+            val fileContent = flipperKeyContent.openStream().use {
+                String(it.readBytes())
+            }
+
+            return fromFileContent(fileContent)
+        }
+
         fun fromFileContent(fileContent: String): FlipperFileFormat {
             val pairs = fileContent.split("\n")
                 .filterNot { it.startsWith("#") }

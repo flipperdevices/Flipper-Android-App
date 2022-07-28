@@ -13,8 +13,8 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.keyscreen.impl.R
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableDelete
-import com.flipperdevices.keyscreen.impl.composable.actions.ComposableEdit
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableEmulate
+import com.flipperdevices.keyscreen.impl.composable.actions.ComposableNfcEdit
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableRestore
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableSend
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableShare
@@ -22,21 +22,23 @@ import com.flipperdevices.keyscreen.impl.composable.card.ComposableKeyCard
 import com.flipperdevices.keyscreen.impl.model.DeleteState
 import com.flipperdevices.keyscreen.impl.model.KeyScreenState
 import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModel
-import com.flipperdevices.keyscreen.shared.bar.ComposableBarCancelIcon
-import com.flipperdevices.keyscreen.shared.bar.ComposableBarTitle
+import com.flipperdevices.keyscreen.shared.bar.ComposableBarBackIcon
+import com.flipperdevices.keyscreen.shared.bar.ComposableBarTitleWithName
 import com.flipperdevices.keyscreen.shared.bar.ComposableKeyScreenAppBar
+import com.flipperdevices.nfceditor.api.NfcEditorApi
 
 @Composable
 fun ComposableKeyParsed(
     viewModel: KeyScreenViewModel,
     keyScreenState: KeyScreenState.Ready,
+    nfcEditorApi: NfcEditorApi,
     synchronizationUiApi: SynchronizationUiApi,
     onBack: () -> Unit
 ) {
     val scrollState = rememberScrollState()
     val router = LocalRouter.current
     Column(modifier = Modifier.verticalScroll(scrollState)) {
-        ComposableKeyScreenBar(onBack)
+        ComposableKeyScreenBar(keyScreenState.flipperKey.path.nameWithoutExtension, onBack)
         ComposableKeyCard(
             keyScreenState.parsedKey,
             keyScreenState.deleteState,
@@ -47,7 +49,8 @@ fun ComposableKeyParsed(
                 )
             } else null,
             keyScreenState.favoriteState,
-            viewModel::setFavorite
+            viewModel::setFavorite,
+            viewModel::onOpenEdit
         )
 
         val fileType = keyScreenState.parsedKey.fileType
@@ -72,7 +75,11 @@ fun ComposableKeyParsed(
         }
 
         if (keyScreenState.deleteState == DeleteState.NOT_DELETED) {
-            ComposableEdit(viewModel::onOpenEdit)
+            if (nfcEditorApi.isSupportedByNfcEditor(keyScreenState.parsedKey)) {
+                ComposableNfcEdit {
+                    router.navigateTo(nfcEditorApi.getNfcEditorScreen(keyScreenState.flipperKey))
+                }
+            }
             ComposableShare(keyScreenState.shareState, viewModel::onShare)
         } else if (keyScreenState.deleteState == DeleteState.DELETED) {
             ComposableRestore {
@@ -87,13 +94,17 @@ fun ComposableKeyParsed(
 }
 
 @Composable
-private fun ComposableKeyScreenBar(onBack: () -> Unit) {
+private fun ComposableKeyScreenBar(keyName: String, onBack: () -> Unit) {
     ComposableKeyScreenAppBar(
-        centerBlock = {
-            ComposableBarTitle(modifier = it, textId = R.string.keyscreen_title)
+        startBlock = {
+            ComposableBarBackIcon(it, onBack)
         },
-        endBlock = {
-            ComposableBarCancelIcon(it, onBack)
+        centerBlock = {
+            ComposableBarTitleWithName(
+                modifier = it,
+                titleId = R.string.keyscreen_title,
+                name = keyName
+            )
         }
     )
 }
