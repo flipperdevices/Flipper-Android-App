@@ -15,6 +15,7 @@ dependencies {
     implementation(projects.components.core.navigation)
     implementation(projects.components.core.log)
     implementation(projects.components.core.di)
+    implementation(projects.components.core.preference)
 
     implementation(libs.cicerone)
     implementation(libs.appcompat)

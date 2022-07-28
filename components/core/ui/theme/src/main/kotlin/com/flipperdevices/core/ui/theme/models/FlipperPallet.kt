@@ -92,7 +92,15 @@ data class FlipperPallet(
 
     val divider12: Color,
     val disableSwitch: Color,
-    val backgroundDialog: Color
+    val backgroundDialog: Color,
+
+    val nfcCardBackground: Color = Color(0xFF4A4A4A),
+    val nfcCardBackgroundSecond: Color = Color(0xFF303030),
+    val onNfcCard: Color = Color(0xFFFFFFFF),
+    val greenNfc: Color = Color(0xFF0BD813),
+    val redNfc: Color = Color(0xFFF63F3F),
+    val blueNfc: Color = Color(0xFF4073CC),
+    val purpleNfc: Color = Color(0xFF8A2BE2)
 ) {
 
     private val animationSpec: AnimationSpec<Color> = tween(durationMillis = 500)
