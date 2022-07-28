@@ -41,7 +41,11 @@ fun ComposableNfcEditor(nfcEditorViewModel: NfcEditorViewModel, nfcEditorState: 
                     ?.length() ?: 0
             }
 
-            val scaleFactor = key(maxIndexSymbolCount) {
+            val scaleFactor = key(
+                constraints.maxWidth,
+                constraints.minWidth,
+                maxIndexSymbolCount
+            ) {
                 calculateScaleFactor(maxIndexSymbolCount)
             }
 
