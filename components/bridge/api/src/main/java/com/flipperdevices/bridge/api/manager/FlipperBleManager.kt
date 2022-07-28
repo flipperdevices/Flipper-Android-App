@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothDevice
 import com.flipperdevices.bridge.api.manager.delegates.FlipperConnectionInformationApi
 import com.flipperdevices.bridge.api.manager.service.FlipperInformationApi
 import com.flipperdevices.bridge.api.manager.service.FlipperRpcInformationApi
+import com.flipperdevices.bridge.api.manager.service.FlipperVersionApi
 
 interface FlipperBleManager {
     // Manager delegates
@@ -13,6 +14,7 @@ interface FlipperBleManager {
     val informationApi: FlipperInformationApi
     val flipperRequestApi: FlipperRequestApi
     val flipperRpcInformationApi: FlipperRpcInformationApi
+    val flipperVersionApi: FlipperVersionApi
 
     /**
      * Connect to device {@param device}

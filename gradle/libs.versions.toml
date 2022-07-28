@@ -7,7 +7,7 @@ android-gradle = "7.2.1"
 protobuf = "3.21.2"
 protobuf-gradle = "0.8.19"
 # Protobuf JVM library https://github.com/flipperdevices/flipperzero-protobuf-jvm
-protobuf-jvm = "0.7.0"
+protobuf-jvm = "0.11.0"
 protobuf-metric = "ba6eeb2be8"
 compose = "1.1.1"
 compose-compiler = "1.2.0"

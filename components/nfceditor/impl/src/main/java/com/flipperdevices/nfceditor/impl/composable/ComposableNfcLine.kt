@@ -20,8 +20,11 @@ import com.flipperdevices.nfceditor.impl.model.NfcEditorCursor
 
 @Composable
 fun ComposableNfcLine(
-    lineIndex: Int,
+    sectorIndex: Int,
+    lineIndexInSector: Int,
+    visibleIndex: Int,
     line: List<NfcEditorCell>,
+    maxIndexSymbolCount: Int,
     scaleFactor: Float,
     cursor: NfcEditorCursor? = null,
     onFocusChanged: (NfcEditorCellLocation, isFocused: Boolean) -> Unit = { _, _ -> },
@@ -29,17 +32,20 @@ fun ComposableNfcLine(
 ) {
     Row {
         Text(
-            modifier = Modifier.width((scaleFactor * WIDTH_LINE_INDEX_DP).dp),
-            text = lineIndex.toString(),
+            modifier = Modifier.width((scaleFactor * WIDTH_LINE_INDEX_DP * maxIndexSymbolCount).dp),
+            text = visibleIndex.toString(),
             textAlign = TextAlign.End,
             color = LocalPallet.current.text16,
-            fontSize = (scaleFactor * FONT_SIZE_SP).sp
+            fontSize = (scaleFactor * FONT_SIZE_SP).sp,
+            maxLines = 1
         )
 
         line.forEachIndexed { columnIndex, cell ->
             var focusRequester: FocusRequester? = null
             var textSelection: TextRange? = null
-            val cellLocation = NfcEditorCellLocation(lineIndex, columnIndex)
+            val cellLocation = remember(sectorIndex, lineIndexInSector, columnIndex) {
+                NfcEditorCellLocation(sectorIndex, lineIndexInSector, columnIndex)
+            }
             if (cursor != null &&
                 cursor.location == cellLocation
             ) {
@@ -49,11 +55,16 @@ fun ComposableNfcLine(
                     focusRequester.requestFocus()
                 }
             }
+            val isEditable = remember(cellLocation, cursor) {
+                cursor != null &&
+                    cellLocation.isNear(cursor.location)
+            }
             ComposableNfcCell(
                 focusRequester,
                 cell,
                 scaleFactor,
                 textSelection,
+                isEditable = isEditable,
                 onFocusChanged = { onFocusChanged(cellLocation, it) },
                 onValueChanged = { onValueChanged(cellLocation, it) }
             )

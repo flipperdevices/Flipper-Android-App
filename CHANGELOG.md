@@ -2,7 +2,7 @@
 
 # 1.1.6 - In progress
 
-- [Feature] [DRAFT] Add NFC Editor
+- [Feature] Add NFC Editor
 - [Feature] Support Unknown firmware
 - [Feature] Compose Navigation on "Info" Screen
 - [Feature] Dark Theme(with support switch, splash screen for all android versions)
@@ -22,6 +22,7 @@
 - [BUGFIX] Fix icon color dropdown menu on Deleted keys
 - [CI] Update deps
 - [REFACTOR] Preview (Updater card/screen, Device info)
+- [REFACTOR] Button Emulate/Send with auto close
 
 # 1.1.5 - HotFix
 
