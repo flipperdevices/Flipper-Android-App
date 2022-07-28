@@ -14,6 +14,7 @@ import com.flipperdevices.core.ktx.android.toast
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.warn
+import com.flipperdevices.core.navigation.global.CiceroneGlobal
 import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
 import com.flipperdevices.keyscreen.impl.R
 import com.flipperdevices.keyscreen.impl.di.KeyScreenComponent
@@ -23,6 +24,7 @@ import com.flipperdevices.keyscreen.impl.model.KeyScreenState
 import com.flipperdevices.keyscreen.impl.model.ShareState
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
+import com.flipperdevices.nfceditor.api.NfcEditorApi
 import com.github.terrakok.cicerone.Router
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
@@ -54,6 +56,12 @@ class KeyScreenViewModel(
 
     @Inject
     lateinit var metricApi: MetricApi
+
+    @Inject
+    lateinit var globalCicerone: CiceroneGlobal
+
+    @Inject
+    lateinit var nfcEditorApi: NfcEditorApi
 
     init {
         ComponentHolder.component<KeyScreenComponent>().inject(this)
@@ -158,6 +166,10 @@ class KeyScreenViewModel(
                 keyScreenState.emit(KeyScreenState.Editing(newFlipperKey, parsed))
             }
         }
+    }
+
+    fun onNfcEdit(flipperKey: FlipperKey) {
+        globalCicerone.getRouter().navigateTo(nfcEditorApi.getNfcEditorScreen(flipperKey))
     }
 
     fun onShare() {

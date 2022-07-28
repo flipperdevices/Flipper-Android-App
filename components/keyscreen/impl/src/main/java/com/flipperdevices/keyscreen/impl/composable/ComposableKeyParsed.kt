@@ -77,7 +77,7 @@ fun ComposableKeyParsed(
         if (keyScreenState.deleteState == DeleteState.NOT_DELETED) {
             if (nfcEditorApi.isSupportedByNfcEditor(keyScreenState.parsedKey)) {
                 ComposableNfcEdit {
-                    router.navigateTo(nfcEditorApi.getNfcEditorScreen(keyScreenState.flipperKey))
+                    viewModel.onNfcEdit(keyScreenState.flipperKey)
                 }
             }
             ComposableShare(keyScreenState.shareState, viewModel::onShare)
