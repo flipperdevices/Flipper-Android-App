@@ -13,4 +13,6 @@
     <string name="nfc_card_manufacture_data">Manufacturing Data</string>
     <string name="nfc_card_key_a">Key A</string>
     <string name="nfc_card_key_b">Key B</string>
+    <string name="nfc_card_title_4k">MIFARE Classic 4K</string>
+    <string name="nfc_card_title_1k">MIFARE Classic 1K</string>
 </resources>

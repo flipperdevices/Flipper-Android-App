@@ -4,6 +4,8 @@ import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.nfceditor.impl.model.NfcCellType
+import com.flipperdevices.nfceditor.impl.model.NfcEditorCardInfo
+import com.flipperdevices.nfceditor.impl.model.NfcEditorCardType
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCell
 import com.flipperdevices.nfceditor.impl.model.NfcEditorLine
 import com.flipperdevices.nfceditor.impl.model.NfcEditorSector
@@ -53,7 +55,21 @@ object NfcEditorStateProducerHelper {
             )
             else -> return null
         }
-        return NfcEditorState(parsedKey.keyName, sectors)
+        val cardType = when (parsedKey.mifareClassicType) {
+            MF_4K_NAME -> NfcEditorCardType.MF_4K
+            MF_1K_NAME -> NfcEditorCardType.MF_1K
+            else -> null
+        }
+        var cardInfo: NfcEditorCardInfo? = null
+        if (cardType != null) {
+            cardInfo = NfcEditorCardInfo(
+                cardType = cardType,
+                uid = parsedKey.uid,
+                atqa = parsedKey.atqa,
+                sak = parsedKey.sak
+            )
+        }
+        return NfcEditorState(cardInfo, parsedKey.keyName, sectors)
     }
 
     private fun parseMifare(

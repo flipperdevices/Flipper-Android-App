@@ -15,6 +15,7 @@ import androidx.compose.ui.text.TextStyle
 import com.flipperdevices.core.ktx.jre.length
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
+import com.flipperdevices.nfceditor.impl.composable.card.ComposableNfcCard
 import com.flipperdevices.nfceditor.impl.model.NfcEditorState
 import com.flipperdevices.nfceditor.impl.viewmodel.NfcEditorViewModel
 
@@ -57,6 +58,11 @@ private fun ComposableNfcEditor(
     scaleFactor: Float
 ) {
     LazyColumn {
+        if (nfcEditorState.nfcEditorCardInfo != null) {
+            item(nfcEditorState.nfcEditorCardInfo.hashCode()) {
+                ComposableNfcCard(nfcEditorState.nfcEditorCardInfo)
+            }
+        }
         items(nfcEditorState.sectors.size, key = { it.hashCode() }) { index ->
             ComposableNfcSector(
                 nfcEditorViewModel = nfcEditorViewModel,

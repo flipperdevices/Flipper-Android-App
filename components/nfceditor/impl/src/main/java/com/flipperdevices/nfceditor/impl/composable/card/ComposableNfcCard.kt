@@ -24,10 +24,11 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.nfceditor.impl.model.NfcTypeCard
+import com.flipperdevices.nfceditor.impl.model.NfcEditorCardInfo
+import com.flipperdevices.nfceditor.impl.model.NfcEditorCardType
 
 @Composable
-fun ComposableNfcCard(type: NfcTypeCard) {
+fun ComposableNfcCard(nfcEditorCardInfo: NfcEditorCardInfo) {
     Card(
         modifier = Modifier.padding(14.dp)
     ) {
@@ -40,7 +41,7 @@ fun ComposableNfcCard(type: NfcTypeCard) {
                 contentScale = ContentScale.FillWidth
             )
             ComposableNfcCardInternal(
-                type = type,
+                nfcEditorCardInfo = nfcEditorCardInfo,
                 isOpened = isOpened,
                 onClick = onClick
             )
@@ -50,12 +51,11 @@ fun ComposableNfcCard(type: NfcTypeCard) {
 
 @Composable
 private fun ComposableNfcCardInternal(
-    type: NfcTypeCard,
+    nfcEditorCardInfo: NfcEditorCardInfo,
     isOpened: Boolean,
     onClick: () -> Unit
 ) {
     Column(
-        // modifier = Modifier.height(height),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         CompositionLocalProvider(
@@ -63,10 +63,10 @@ private fun ComposableNfcCardInternal(
                 .copy(fontSize = 10.sp, color = LocalPallet.current.onNfcCard),
             LocalContentColor provides LocalPallet.current.onNfcCard
         ) {
-            ComposableHeaderCard(type.nameType, isOpened, onClick)
+            ComposableHeaderCard(nfcEditorCardInfo.cardType, isOpened, onClick)
             if (isOpened) {
                 ComposableSchemeCard()
-                ComposableAdditionalInfoCard(type)
+                ComposableAdditionalInfoCard(nfcEditorCardInfo)
             }
         }
     }
@@ -79,6 +79,13 @@ private fun ComposableNfcCardInternal(
 @Composable
 private fun ComposableNfcCardPreview() {
     FlipperThemeInternal {
-        ComposableNfcCard(NfcTypeCard.Classic4k)
+        ComposableNfcCard(
+            NfcEditorCardInfo(
+                cardType = NfcEditorCardType.MF_4K,
+                uid = "B6 69 03 36 8A 98 02",
+                atqa = "02 02",
+                sak = "98"
+            )
+        )
     }
 }

@@ -7,6 +7,7 @@ const val NFC_CELL_MAX_CURSOR_INDEX = 2L
 
 @Stable
 data class NfcEditorState(
+    val nfcEditorCardInfo: NfcEditorCardInfo? = null,
     val cardName: String? = null,
     val sectors: List<NfcEditorSector?>
 ) {
