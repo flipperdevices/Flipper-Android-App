@@ -16,6 +16,8 @@ import kotlin.math.roundToInt
 const val WIDTH_LINE_INDEX_DP = 9
 
 private const val NFC_LINE_BYTE_COUNT = 16
+
+// The accuracy with which we select the scaleFactor
 private const val SCALE_FACTOR_MULTIPLIER = 0.98f
 
 /**
