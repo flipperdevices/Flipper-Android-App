@@ -93,7 +93,8 @@ fun ComposableNfcCell(
             onFocusChanged(true)
         },
         text = cell.content,
-        style = textStyle
+        style = textStyle,
+        maxLines = 1
     )
 }
 

@@ -27,7 +27,6 @@ private const val LINE_1_INDEX = 0
 private val LINE_1_CELL_RULES = listOf(
     IntRange(0, LINE_BYTES_COUNT - 1) to NfcCellType.UID
 )
-private const val LINE_4_INDEX = 3
 private const val KEY_A_INDEX = 5
 private const val ACCESS_BITS_INDEX = 8
 private const val KEY_B_INDEX = 15
@@ -90,7 +89,7 @@ object NfcEditorStateProducerHelper {
                 var cells = parseLine(linesMap[lineIndex])
                 if (lineIndex == LINE_1_INDEX) {
                     cells = applyColorRules(cells, LINE_1_CELL_RULES)
-                } else if (lineIndex == LINE_4_INDEX) {
+                } else if (it == littleSectorsSize - 1) {
                     cells = applyColorRules(cells, LINE_4_CELL_RULES)
                 }
                 sectorLines.add(NfcEditorLine(lineIndex, cells))
@@ -103,7 +102,11 @@ object NfcEditorStateProducerHelper {
             repeat(largeSectorsSize) {
                 val lineIndex =
                     startIndexForLargeLines + largeSectorsSize * sectorIndex + it
-                sectorLines.add(NfcEditorLine(lineIndex, parseLine(linesMap[lineIndex])))
+                var cells = parseLine(linesMap[lineIndex])
+                if (it == largeSectorsSize - 1) {
+                    cells = applyColorRules(cells, LINE_4_CELL_RULES)
+                }
+                sectorLines.add(NfcEditorLine(lineIndex, cells))
             }
             sectors.add(NfcEditorSector(sectorLines))
         }

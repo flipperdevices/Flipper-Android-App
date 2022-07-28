@@ -52,8 +52,8 @@ private fun BoxWithConstraintsScope.shouldShrink(maxIndexCount: Int, scaleFactor
             fontSize = textStyle.fontSize * scaleFactor
         ),
         maxLines = 1,
-        softWrap = true,
-        TextOverflow.Clip,
+        softWrap = false,
+        TextOverflow.Visible,
         LocalDensity.current,
         LocalFontLoader.current
     )
