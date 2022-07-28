@@ -45,6 +45,20 @@ class NfcEditorViewModel(
     @Inject
     lateinit var simpleKeyApi: SimpleKeyApi
 
+    private var nfcEditorStateFlow = MutableStateFlow<NfcEditorState?>(
+        NfcEditorState(
+            sectors = emptyList()
+        )
+    )
+
+    private val textUpdaterHelper = TextUpdaterHelper()
+
+    var nfcEditorCursor by mutableStateOf<NfcEditorCursor?>(null)
+        private set
+
+    var currentActiveCell by mutableStateOf<NfcEditorCellLocation?>(null)
+        private set
+
     init {
         ComponentHolder.component<NfcEditorComponent>().inject(this)
         keyInputBusProvider.get().subscribe(this, this)
@@ -61,20 +75,6 @@ class NfcEditorViewModel(
             )
         }
     }
-
-    private val textUpdaterHelper = TextUpdaterHelper()
-
-    private var nfcEditorStateFlow = MutableStateFlow<NfcEditorState?>(
-        NfcEditorState(
-            sectors = emptyList()
-        )
-    )
-
-    var nfcEditorCursor by mutableStateOf<NfcEditorCursor?>(null)
-        private set
-
-    var currentActiveCell by mutableStateOf<NfcEditorCellLocation?>(null)
-        private set
 
     fun getNfcEditorState(): StateFlow<NfcEditorState?> = nfcEditorStateFlow
 
