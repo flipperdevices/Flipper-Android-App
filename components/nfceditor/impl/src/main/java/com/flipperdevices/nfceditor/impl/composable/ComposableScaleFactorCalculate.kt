@@ -16,7 +16,7 @@ import kotlin.math.roundToInt
 const val WIDTH_LINE_INDEX_DP = 9
 
 private const val NFC_LINE_BYTE_COUNT = 16
-private const val SCALE_FACTOR_MULTIPLIER = 0.9f
+private const val SCALE_FACTOR_MULTIPLIER = 0.98f
 
 /**
  * @param maxIndexCount How many numbers can be in the number of lines (line index)

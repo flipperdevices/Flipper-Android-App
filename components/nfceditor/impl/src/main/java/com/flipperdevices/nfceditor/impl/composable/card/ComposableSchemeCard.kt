@@ -24,41 +24,44 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.nfceditor.impl.R
 
 @Composable
-fun ComposableSchemeCard() {
+@Suppress("MagicNumber")
+fun ComposableSchemeCard(scaleFactor: Float) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(10.dp),
+            .padding((scaleFactor * 10).dp),
         horizontalArrangement = Arrangement.spacedBy(2.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = stringResource(id = R.string.nfc_card_sector).uppercase(),
-            fontSize = 6.sp,
+            fontSize = (scaleFactor * 6).sp,
             modifier = Modifier.rotate(degrees = -90f)
         )
         Icon(
             painter = painterResource(id = DesignSystem.drawable.ic_bracket),
             contentDescription = ""
         )
-        ComposableSectorsCard()
+        ComposableSectorsCard(scaleFactor)
     }
 }
 
 @Composable
-private fun ComposableSectorsCard() {
+private fun ComposableSectorsCard(scaleFactor: Float) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        ComposableFirstSector()
-        ComposableWhiteSector()
-        ComposableWhiteSector()
-        ComposableSecondSector()
+        ComposableFirstSector(scaleFactor)
+        ComposableWhiteSector(scaleFactor)
+        ComposableWhiteSector(scaleFactor)
+        ComposableSecondSector(scaleFactor)
     }
 }
 
 @Composable
+@Suppress("MagicNumber")
 private fun ComposableSector(
+    scaleFactor: Float,
     content: @Composable (RowScope.() -> Unit)
 ) {
     Row(
@@ -66,21 +69,24 @@ private fun ComposableSector(
         horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Text(
-            text = stringResource(id = R.string.nfc_card_block).uppercase(),
-            fontSize = 6.sp
+            text = stringResource(R.string.nfc_card_block).uppercase(),
+            fontSize = (scaleFactor * 6).sp
         )
-        Row(modifier = Modifier.weight(16f)) {
+        Row(
+            modifier = Modifier.weight(weight = 16f),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             content()
         }
     }
 }
 
 @Composable
-private fun ComposableFirstSector() {
+private fun ComposableFirstSector(scaleFactor: Float) {
     val text = "${stringResource(id = R.string.nfc_card_uid)} " +
         "+ ${stringResource(id = R.string.nfc_card_manufacture_data).uppercase()}"
 
-    ComposableSector {
+    ComposableSector(scaleFactor) {
         repeat(times = 3) {
             Text(
                 modifier = Modifier.weight(weight = 1f),
@@ -113,8 +119,8 @@ private fun ComposableFirstSector() {
 }
 
 @Composable
-private fun ComposableWhiteSector() {
-    ComposableSector {
+private fun ComposableWhiteSector(scaleFactor: Float) {
+    ComposableSector(scaleFactor) {
         repeat(times = 16) {
             Text(
                 modifier = Modifier.weight(weight = 1f),
@@ -127,8 +133,8 @@ private fun ComposableWhiteSector() {
 
 @Composable
 @Suppress("LongMethod")
-private fun ComposableSecondSector() {
-    ComposableSector {
+private fun ComposableSecondSector(scaleFactor: Float) {
+    ComposableSector(scaleFactor) {
         repeat(2) {
             Text(
                 modifier = Modifier.weight(weight = 1f),
