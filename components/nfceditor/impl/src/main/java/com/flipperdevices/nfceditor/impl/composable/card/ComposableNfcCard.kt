@@ -30,9 +30,12 @@ import com.flipperdevices.nfceditor.impl.model.NfcEditorCardInfo
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCardType
 
 @Composable
-fun ComposableNfcCard(nfcEditorCardInfo: NfcEditorCardInfo) {
+fun ComposableNfcCard(
+    nfcEditorCardInfo: NfcEditorCardInfo,
+    scaleFactor: Float
+) {
     Card(
-        modifier = Modifier.padding(14.dp),
+        modifier = Modifier.padding(top = 14.dp, bottom = 14.dp, start = 14.dp),
         shape = RoundedCornerShape(12.dp)
     ) {
         Box {
@@ -50,6 +53,7 @@ fun ComposableNfcCard(nfcEditorCardInfo: NfcEditorCardInfo) {
                 modifier = if (isOpened) {
                     Modifier.matchParentSize()
                 } else Modifier,
+                scaleFactor = scaleFactor,
                 nfcEditorCardInfo = nfcEditorCardInfo,
                 isOpened = isOpened,
                 onClick = onClick
@@ -59,11 +63,13 @@ fun ComposableNfcCard(nfcEditorCardInfo: NfcEditorCardInfo) {
 }
 
 @Composable
+@Suppress("MagicNumber")
 private fun ComposableNfcCardInternal(
     modifier: Modifier,
     nfcEditorCardInfo: NfcEditorCardInfo,
     isOpened: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    scaleFactor: Float
 ) {
     Column(
         modifier = modifier,
@@ -71,12 +77,12 @@ private fun ComposableNfcCardInternal(
     ) {
         CompositionLocalProvider(
             LocalTextStyle provides LocalTypography.current.monoSpaceM14
-                .copy(fontSize = 10.sp, color = LocalPallet.current.onNfcCard),
+                .copy(fontSize = (scaleFactor * 10).sp, color = LocalPallet.current.onNfcCard),
             LocalContentColor provides LocalPallet.current.onNfcCard
         ) {
             ComposableHeaderCard(nfcEditorCardInfo.cardType, isOpened, onClick)
             if (isOpened) {
-                ComposableSchemeCard()
+                ComposableSchemeCard(scaleFactor)
                 ComposableAdditionalInfoCard(nfcEditorCardInfo)
             }
         }
@@ -96,7 +102,8 @@ private fun ComposableNfcCardPreview() {
                 uid = "B6 69 03 36 8A 98 02",
                 atqa = "02 02",
                 sak = "98"
-            )
+            ),
+            scaleFactor = 1.0f
         )
     }
 }

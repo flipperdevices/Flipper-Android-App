@@ -2,6 +2,7 @@ package com.flipperdevices.nfceditor.impl.composable
 
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.LocalTextStyle
@@ -12,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ktx.jre.length
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
@@ -21,7 +23,12 @@ import com.flipperdevices.nfceditor.impl.viewmodel.NfcEditorViewModel
 
 @Composable
 fun ComposableNfcEditor(nfcEditorViewModel: NfcEditorViewModel, nfcEditorState: NfcEditorState) {
-    BoxWithConstraints(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+    BoxWithConstraints(
+        Modifier
+            .fillMaxWidth()
+            .padding(end = 14.dp),
+        contentAlignment = Alignment.Center
+    ) {
         CompositionLocalProvider(
             LocalTextStyle provides LocalTypography.current.monoSpaceM14.merge(
                 TextStyle(
@@ -34,7 +41,11 @@ fun ComposableNfcEditor(nfcEditorViewModel: NfcEditorViewModel, nfcEditorState: 
                     ?.length() ?: 0
             }
 
-            val scaleFactor = key(maxIndexSymbolCount) {
+            val scaleFactor = key(
+                constraints.maxWidth,
+                constraints.minWidth,
+                maxIndexSymbolCount
+            ) {
                 calculateScaleFactor(maxIndexSymbolCount)
             }
 
@@ -60,7 +71,7 @@ private fun ComposableNfcEditor(
     LazyColumn {
         if (nfcEditorState.nfcEditorCardInfo != null) {
             item(nfcEditorState.nfcEditorCardInfo.hashCode()) {
-                ComposableNfcCard(nfcEditorState.nfcEditorCardInfo)
+                ComposableNfcCard(nfcEditorState.nfcEditorCardInfo, scaleFactor)
             }
         }
         items(nfcEditorState.sectors.size, key = { it.hashCode() }) { index ->

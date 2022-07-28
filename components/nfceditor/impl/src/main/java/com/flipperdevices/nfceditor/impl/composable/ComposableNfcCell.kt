@@ -1,6 +1,7 @@
 package com.flipperdevices.nfceditor.impl.composable
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
@@ -45,13 +46,10 @@ fun ComposableNfcCell(
     val paddingDp = remember(scaleFactor) {
         (scaleFactor * PADDING_CELL_DP).dp
     }
-    val widthDp = remember(scaleFactor) {
-        (scaleFactor * 2 * WIDTH_LINE_INDEX_DP).dp
-    }
 
     var textFieldModifier = Modifier
         .padding(start = paddingDp)
-        .width(widthDp)
+        .width(IntrinsicSize.Min)
 
     val textColor = when (cell.cellType) {
         NfcCellType.SIMPLE -> LocalPallet.current.text100
