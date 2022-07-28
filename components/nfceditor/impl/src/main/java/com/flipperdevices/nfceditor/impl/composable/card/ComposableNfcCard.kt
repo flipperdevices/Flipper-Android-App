@@ -2,8 +2,9 @@ package com.flipperdevices.nfceditor.impl.composable.card
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Card
 import androidx.compose.material.LocalContentColor
@@ -32,15 +33,21 @@ fun ComposableNfcCard(nfcEditorCardInfo: NfcEditorCardInfo) {
     Card(
         modifier = Modifier.padding(14.dp)
     ) {
-        var isOpened by remember { mutableStateOf(true) }
-        val onClick = { isOpened = !isOpened }
-        BoxWithConstraints {
-            Image(
-                painter = painterResource(id = DesignSystem.drawable.nfc_card_back),
-                contentDescription = "",
-                contentScale = ContentScale.FillWidth
-            )
+        Box {
+            var isOpened by remember { mutableStateOf(true) }
+            val onClick = { isOpened = !isOpened }
+            if (isOpened) {
+                Image(
+                    modifier = Modifier.fillMaxWidth(),
+                    painter = painterResource(DesignSystem.drawable.pic_nfccard),
+                    contentDescription = null,
+                    contentScale = ContentScale.FillWidth
+                )
+            }
             ComposableNfcCardInternal(
+                modifier = if (isOpened) {
+                    Modifier.matchParentSize()
+                } else Modifier,
                 nfcEditorCardInfo = nfcEditorCardInfo,
                 isOpened = isOpened,
                 onClick = onClick
@@ -51,11 +58,13 @@ fun ComposableNfcCard(nfcEditorCardInfo: NfcEditorCardInfo) {
 
 @Composable
 private fun ComposableNfcCardInternal(
+    modifier: Modifier,
     nfcEditorCardInfo: NfcEditorCardInfo,
     isOpened: Boolean,
     onClick: () -> Unit
 ) {
     Column(
+        modifier = modifier,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         CompositionLocalProvider(
