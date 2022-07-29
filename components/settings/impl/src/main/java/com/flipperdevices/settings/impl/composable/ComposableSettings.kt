@@ -17,6 +17,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.filemanager.api.navigation.FileManagerEntry
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.composable.category.BugReportCategory
 import com.flipperdevices.settings.impl.composable.category.DebugCategory
@@ -30,6 +31,7 @@ import com.flipperdevices.settings.impl.viewmodels.SettingsViewModel
 @Composable
 fun ComposableSettings(
     navController: NavHostController,
+    fileManagerEntry: FileManagerEntry,
     settingsViewModel: SettingsViewModel = viewModel()
 ) {
     NavHost(navController = navController, startDestination = NavGraphRoute.Settings.name) {
@@ -41,6 +43,9 @@ fun ComposableSettings(
         }
         composable(route = NavGraphRoute.StressTest.name) {
             settingsViewModel.stressTestApi.StressTestScreen()
+        }
+        with(fileManagerEntry) {
+            composable(navController)
         }
     }
 }

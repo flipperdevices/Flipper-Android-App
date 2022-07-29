@@ -34,7 +34,7 @@ fun ExperimentalCategory(
                 ClickableElement(
                     titleId = R.string.experimental_file_manager,
                     descriptionId = R.string.experimental_file_manager_desc,
-                    onClick = { experimentalViewModel.onOpenFileManager(router) }
+                    onClick = { experimentalViewModel.onOpenFileManager(navController) }
                 )
                 GrayDivider()
                 ClickableElement(

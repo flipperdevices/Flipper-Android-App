@@ -6,12 +6,11 @@ import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
-import com.flipperdevices.filemanager.api.navigation.FileManagerScreenProvider
+import com.flipperdevices.filemanager.api.navigation.FileManagerEntry
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.settings.impl.di.SettingsComponent
 import com.flipperdevices.settings.impl.model.NavGraphRoute
-import com.github.terrakok.cicerone.Router
 import javax.inject.Inject
 
 class ExperimentalViewModel : LifecycleViewModel() {
@@ -19,10 +18,10 @@ class ExperimentalViewModel : LifecycleViewModel() {
     lateinit var serviceProvider: FlipperServiceProvider
 
     @Inject
-    lateinit var fileManager: FileManagerScreenProvider
+    lateinit var dataStoreSetting: DataStore<Settings>
 
     @Inject
-    lateinit var dataStoreSetting: DataStore<Settings>
+    lateinit var fileManagerEntry: FileManagerEntry
 
     @Inject
     lateinit var metricApi: MetricApi
@@ -31,9 +30,9 @@ class ExperimentalViewModel : LifecycleViewModel() {
         ComponentHolder.component<SettingsComponent>().inject(this)
     }
 
-    fun onOpenFileManager(router: Router) {
+    fun onOpenFileManager(navController: NavController) {
         metricApi.reportSimpleEvent(SimpleEvent.EXPERIMENTAL_OPEN_FM)
-        router.navigateTo(fileManager.fileManager())
+        navController.navigate(fileManagerEntry.fileManagerDestination())
     }
 
     fun onOpenScreenStreaming(navController: NavController) {

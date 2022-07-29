@@ -18,7 +18,7 @@ fun ComposableFileManagerWithDialog(
 ) {
     var sharedFile by remember { mutableStateOf<FileItem?>(null) }
 
-    ComposableFileManager(fileManagerState) { itemFile ->
+    ComposableFileManager(fileManagerState = fileManagerState) { itemFile ->
         if (itemFile.isDirectory) {
             onDirectoryClick(itemFile)
         } else {
