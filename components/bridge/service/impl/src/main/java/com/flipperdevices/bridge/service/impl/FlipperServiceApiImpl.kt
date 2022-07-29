@@ -16,6 +16,8 @@ import com.flipperdevices.bridge.service.impl.delegate.FlipperSafeConnectWrapper
 import com.flipperdevices.bridge.service.impl.di.FlipperServiceComponent
 import com.flipperdevices.bridge.service.impl.utils.WeakConnectionStateProvider
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.ktx.jre.launchWithLock
+import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
@@ -26,9 +28,11 @@ import com.flipperdevices.shake2report.api.Shake2ReportApi
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
+import kotlinx.coroutines.sync.Mutex
 
 class FlipperServiceApiImpl(
     context: Context,
@@ -84,9 +88,12 @@ class FlipperServiceApiImpl(
     ).apply {
         connectionStateProvider.initialize(this.connectionInformationApi)
     }
+
     private val inited = AtomicBoolean(false)
+    private val mutex = Mutex()
     private val flipperSafeConnectWrapper =
         FlipperSafeConnectWrapper(context, bleManager, scope, serviceErrorListener)
+    private var disconnectForced = false
 
     override val connectionInformationApi = bleManager.connectionInformationApi
     override val requestApi = bleManager.flipperRequestApi
@@ -101,27 +108,44 @@ class FlipperServiceApiImpl(
         }
         flipperAutoDisconnect.init()
         info { "Internal init and try connect" }
+
         var deviceId: String? = null
         scope.launch(Dispatchers.Default) {
-            pairSettingsStore.data.collect {
-                if (it.deviceId != deviceId) {
-                    deviceId = it.deviceId
-                    flipperSafeConnectWrapper.onActiveDeviceUpdate(deviceId)
+            pairSettingsStore.data.collectLatest {
+                withLock(mutex, "connect") {
+                    if (it.deviceId != deviceId) {
+                        deviceId = it.deviceId
+                        flipperSafeConnectWrapper.onActiveDeviceUpdate(deviceId)
+                    }
                 }
             }
         }
     }
 
-    override suspend fun disconnect() {
-        flipperSafeConnectWrapper.onActiveDeviceUpdate(null)
-    }
-
-    override suspend fun reconnect() {
+    override fun connectIfNotForceDisconnect() = launchWithLock(mutex, scope, "connect_soft") {
+        if (disconnectForced) {
+            return@launchWithLock
+        }
+        if (bleManager.isConnected() || flipperSafeConnectWrapper.isTryingConnected()) {
+            return@launchWithLock
+        }
         val deviceId = pairSettingsStore.data.first().deviceId
         flipperSafeConnectWrapper.onActiveDeviceUpdate(deviceId)
     }
 
-    suspend fun close() {
+    override suspend fun disconnect(isForce: Boolean) = withLock(mutex, "disconnect") {
+        if (isForce) {
+            disconnectForced = true
+        }
+        flipperSafeConnectWrapper.onActiveDeviceUpdate(null)
+    }
+
+    override suspend fun reconnect() = withLock(mutex, "reconnect") {
+        val deviceId = pairSettingsStore.data.first().deviceId
+        flipperSafeConnectWrapper.onActiveDeviceUpdate(deviceId)
+    }
+
+    suspend fun close() = withLock(mutex, "close") {
         disconnect()
         info { "Disconnect successful, close manager" }
         bleManager.close()

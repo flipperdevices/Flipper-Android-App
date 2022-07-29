@@ -60,6 +60,7 @@ class FlipperServiceProviderImpl @Inject constructor(
         invalidate()
         connectionHelper.serviceBinder?.let {
             info { "Found binder object, notify consumer now" }
+            it.serviceApi.connectIfNotForceDisconnect()
             consumer.onServiceApiReady(it.serviceApi)
         }
     }
