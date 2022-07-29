@@ -23,6 +23,7 @@
 - [BUGFIX] Fix emulate when key edited
 - [BUGFIX] Nfceditor on little screens
 - [BUGFIX] Nfceditor legend card background
+- [BUGFIX] Open deeplink on already exist activity
 - [CI] Update deps
 - [REFACTOR] Preview (Updater card/screen, Device info)
 - [REFACTOR] Button Emulate/Send with auto close

@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import com.flipperdevices.bottombar.api.BottomNavigationApi
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.navigation.delegates.OnBackPressListener
 import com.flipperdevices.core.navigation.delegates.RouterProvider
@@ -82,6 +83,10 @@ class SingleActivity : AppCompatActivity(), RouterProvider, LogTagProvider {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         val deeplink = intent?.getParcelableExtra<Deeplink>(LAUNCH_PARAMS_INTENT)
+        openExistActivity(deeplink)
+    }
+
+    fun openExistActivity(deeplink: Deeplink?) {
         info { "Nonfirst open activity with deeplink $deeplink" }
         if (deeplink != null) {
             deeplinkStack.push(deeplink)
@@ -89,8 +94,8 @@ class SingleActivity : AppCompatActivity(), RouterProvider, LogTagProvider {
         invalidate()
     }
 
-    fun invalidate() {
-        info { "Open clear screen, pending deeplinks size is ${deeplinkStack.size}" }
+    private fun invalidate() {
+        info { "Pending deeplinks size is ${deeplinkStack.size}" }
 
         if (firstPairApi.shouldWeOpenPairScreen()) {
             cicerone.getRouter().newRootScreen(firstPairApi.getFirstPairScreen())
@@ -108,7 +113,7 @@ class SingleActivity : AppCompatActivity(), RouterProvider, LogTagProvider {
             info { "Process deeplink $deeplink" }
             deepLinkDispatcher.process(router, deeplink)
         } catch (ignored: EmptyStackException) {
-            // Ignore it, normal behavior
+            error { "Error on pop from deeplink ${ignored.message}" }
         }
     }
 

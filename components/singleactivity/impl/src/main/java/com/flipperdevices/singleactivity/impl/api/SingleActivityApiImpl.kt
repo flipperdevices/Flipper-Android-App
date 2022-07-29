@@ -18,7 +18,7 @@ class SingleActivityApiImpl @Inject constructor(
     override fun open(deeplink: Deeplink?) {
         val currentActivity = SingleActivityHolder.getSingleActivity()
         if (currentActivity != null) {
-            currentActivity.invalidate()
+            currentActivity.openExistActivity(deeplink)
             return
         }
         context.startActivity(
