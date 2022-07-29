@@ -55,7 +55,6 @@ class FlipperBleManagerImpl(
     private val bleMutex = Mutex()
 
     // Gatt Delegates
-
     override val informationApi = FlipperInformationApiImpl(scope, metricApi)
     override val flipperRequestApi = FlipperRequestApiImpl(
         scope,
@@ -192,9 +191,13 @@ class FlipperBleManagerImpl(
 
         override fun onServicesInvalidated() = launchWithLock(bleMutex, scope, "reset") {
             informationApi.reset(this@FlipperBleManagerImpl)
+            info { "Information api reset done" }
             flipperVersionApi.reset(this@FlipperBleManagerImpl)
+            info { "FlipperVersionApi reset done" }
             flipperRequestApi.reset(this@FlipperBleManagerImpl)
+            info { "FlipperRequestApi reset done" }
             flipperRpcInformationApi.reset()
+            info { "FlipperRpcInformationApi reset done" }
         }
 
         @Deprecated("Use {@link ReadRequest#with(DataReceivedCallback)} instead")

@@ -50,6 +50,8 @@ class FlipperSafeConnectWrapper(
         }
     }
 
+    fun isTryingConnected() = currentConnectingJob?.isActive ?: false
+
     private suspend fun onActiveDeviceUpdateInternal(deviceId: String?) {
         if (deviceId.isNullOrBlank()) {
             error { "Flipper id not found in storage" }

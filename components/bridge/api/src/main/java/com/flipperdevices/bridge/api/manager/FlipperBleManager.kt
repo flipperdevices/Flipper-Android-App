@@ -16,6 +16,8 @@ interface FlipperBleManager {
     val flipperRpcInformationApi: FlipperRpcInformationApi
     val flipperVersionApi: FlipperVersionApi
 
+    fun isConnected(): Boolean
+
     /**
      * Connect to device {@param device}
      * Await while disconnect process is not finish

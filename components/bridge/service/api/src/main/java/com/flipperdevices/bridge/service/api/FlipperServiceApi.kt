@@ -39,7 +39,15 @@ interface FlipperServiceApi {
      */
     val flipperVersionApi: FlipperVersionApi
 
-    suspend fun disconnect()
+    /**
+     * If not force disconnect, try connect again
+     */
+    fun connectIfNotForceDisconnect()
+
+    /**
+     * @param isForce if false restore connect after connectIfNotForceDisconnect
+     */
+    suspend fun disconnect(isForce: Boolean = true)
 
     suspend fun reconnect()
 }
