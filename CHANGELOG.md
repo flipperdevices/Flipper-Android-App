@@ -30,6 +30,7 @@
 - [REFACTOR] Preview (Updater card/screen, Device info)
 - [Feature] Button Emulate/Send with auto close
 - [REFACTOR] Add cache for gradle build
+- [REFACTOR] Migrate FileManager to compose navigation
 
 # 1.1.5 - HotFix
 

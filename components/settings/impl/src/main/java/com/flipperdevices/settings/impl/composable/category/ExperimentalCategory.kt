@@ -2,26 +2,23 @@ package com.flipperdevices.settings.impl.composable.category
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.flipperdevices.core.preference.pb.Settings
-import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.composable.elements.CategoryElement
 import com.flipperdevices.settings.impl.composable.elements.ClickableElement
 import com.flipperdevices.settings.impl.composable.elements.GrayDivider
 import com.flipperdevices.settings.impl.viewmodels.ExperimentalViewModel
 import com.flipperdevices.settings.impl.viewmodels.SettingsViewModel
+import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 fun ExperimentalCategory(
     settings: Settings,
     navController: NavController,
     settingsViewModel: SettingsViewModel,
-    experimentalViewModel: ExperimentalViewModel = viewModel()
+    experimentalViewModel: ExperimentalViewModel = tangleViewModel()
 ) {
-    val router = LocalRouter.current
-
     CardCategory {
         Column {
             CategoryElement(
