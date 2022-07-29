@@ -53,7 +53,7 @@ tangle = "0.15.0"
 
 # Testing
 junit = "4.12"
-mockito = "4.6.1"
+mockito = "4.0.0"
 roboelectric = "4.8.1"
 
 [libraries]
