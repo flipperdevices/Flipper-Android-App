@@ -11,6 +11,7 @@
 - [Feature] Auto disconnect after 5 minutes inactivity
 - [Feature] Add outdated application dialog
 - [Feature] Add instantly search for flipper if device already connected or bounded
+- [BUGFIX] Exit from emulate screen
 - [BUGFIX] Lock portrait orientation
 - [BUGFIX] Update card not shown when flipper not connected
 - [BUGFIX] Static URL on dynamic link docs
