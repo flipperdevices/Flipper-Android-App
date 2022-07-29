@@ -6,6 +6,7 @@ on:
       - '**.gradle.kts'
       - 'buildSrc/**'
       - 'gradle/**'
+      - 'gradle.properties'
 
 jobs:
   release_build:
