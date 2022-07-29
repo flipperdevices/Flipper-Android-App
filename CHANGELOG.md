@@ -26,7 +26,8 @@
 - [BUGFIX] Open deeplink on already exist activity
 - [CI] Update deps
 - [REFACTOR] Preview (Updater card/screen, Device info)
-- [REFACTOR] Button Emulate/Send with auto close
+- [Feature] Button Emulate/Send with auto close
+- [REFACTOR] Add cache for gradle build
 
 # 1.1.5 - HotFix
 
