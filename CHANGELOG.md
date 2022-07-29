@@ -12,6 +12,7 @@
 - [Feature] Add outdated application dialog
 - [Feature] Add instantly search for flipper if device already connected or bounded
 - [Feature] Try auto connect on each app open
+- [BUGFIX] Exit from emulate screen
 - [BUGFIX] Lock portrait orientation
 - [BUGFIX] Update card not shown when flipper not connected
 - [BUGFIX] Static URL on dynamic link docs

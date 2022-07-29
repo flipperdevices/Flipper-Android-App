@@ -11,13 +11,11 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
-import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
-import com.flipperdevices.keyscreen.impl.di.KeyScreenComponent
 import com.flipperdevices.keyscreen.impl.model.EmulateButtonState
 import com.flipperdevices.keyscreen.impl.tasks.CloseEmulateAppTaskHolder
 import com.flipperdevices.protobuf.app.Application
@@ -27,7 +25,6 @@ import com.flipperdevices.protobuf.app.appExitRequest
 import com.flipperdevices.protobuf.app.appLoadFileRequest
 import com.flipperdevices.protobuf.app.startRequest
 import com.flipperdevices.protobuf.main
-import javax.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,8 +35,11 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
+import tangle.viewmodel.VMInject
 
-class EmulateViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleServiceConsumer {
+class EmulateViewModel @VMInject constructor(
+    private val serviceProvider: FlipperServiceProvider
+) : LifecycleViewModel(), LogTagProvider, FlipperBleServiceConsumer {
     override val TAG = "EmulateViewModel"
 
     private val emulateButtonStateFlow = MutableStateFlow(EmulateButtonState.DISABLED)
@@ -47,11 +47,7 @@ class EmulateViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
     private val mutex = Mutex()
     private var emulateJob: Job? = null
 
-    @Inject
-    lateinit var serviceProvider: FlipperServiceProvider
-
     init {
-        ComponentHolder.component<KeyScreenComponent>().inject(this)
         serviceProvider.provideServiceApi(this, this)
     }
 
@@ -212,7 +208,9 @@ class EmulateViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
     }
 
     override fun onCleared() {
-        CloseEmulateAppTaskHolder.closeEmulateApp(serviceProvider)
+        if (emulateButtonStateFlow.value == EmulateButtonState.ACTIVE) {
+            CloseEmulateAppTaskHolder.closeEmulateApp(serviceProvider)
+        }
         super.onCleared()
     }
 }

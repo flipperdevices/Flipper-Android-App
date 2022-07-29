@@ -14,7 +14,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.core.ui.ktx.onHoldPress
 import com.flipperdevices.core.ui.res.R as DesignSystem
@@ -24,12 +23,13 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.keyscreen.impl.R
 import com.flipperdevices.keyscreen.impl.model.EmulateButtonState
 import com.flipperdevices.keyscreen.impl.viewmodel.EmulateViewModel
+import tangle.viewmodel.compose.tangleViewModel
 
 private const val SEND_BUTTON_SCALE = 1.06f
 
 @Composable
 fun ComposableSend(modifier: Modifier = Modifier, flipperKey: FlipperKey) {
-    val flipperDeviceViewModel = viewModel<EmulateViewModel>()
+    val flipperDeviceViewModel = tangleViewModel<EmulateViewModel>()
     val emulateButtonState by flipperDeviceViewModel.getEmulateButtonStateFlow().collectAsState()
 
     if (!flipperKey.synchronized) {

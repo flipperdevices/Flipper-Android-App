@@ -7,6 +7,7 @@ import com.flipperdevices.core.activityholder.CurrentActivityHolder
 import com.flipperdevices.core.di.ApplicationParams
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.info
+import tangle.inject.TangleGraph
 import timber.log.Timber
 
 class FlipperApplication : Application() {
@@ -15,7 +16,7 @@ class FlipperApplication : Application() {
 
         CurrentActivityHolder.register(this)
 
-        ComponentHolder.components += DaggerAppComponent.factory()
+        val appComponent = DaggerAppComponent.factory()
             .create(
                 context = this,
                 application = this,
@@ -24,6 +25,9 @@ class FlipperApplication : Application() {
                     version = BuildConfig.VERSION_NAME
                 )
             )
+
+        ComponentHolder.components += appComponent
+        TangleGraph.add(appComponent)
 
         if (BuildConfig.INTERNAL) {
             Timber.plant(Timber.DebugTree())
