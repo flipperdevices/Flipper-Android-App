@@ -49,7 +49,6 @@ countly = "21.11.2"
 ktlint-runtime = "0.45.2"
 ktlint-gradle = "10.2.0"
 detekt-gradle = "1.20.0"
-tangle = "0.15.0"
 
 # Testing
 junit = "4.12"
@@ -111,15 +110,6 @@ square-anvil-compiler-api = { module = "com.squareup.anvil:compiler-api", versio
 square-anvil-compiler-core = { module = "com.squareup.anvil:compiler", version.ref = "anvil" }
 square-anvil-compiler-utils = { module = "com.squareup.anvil:compiler-utils", version.ref = "anvil" }
 square-anvil-gradle = { module = "com.squareup.anvil:gradle-plugin", version.ref = "anvil" }
-
-# Dependency Injection - Tangle
-tangle-fragment-api = { module = "com.rickbusarow.tangle:tangle-fragment-api", version.ref = "tangle" }
-tangle-fragment-compiler = { module = "com.rickbusarow.tangle:tangle-fragment-compiler", version.ref = "tangle" }
-tangle-viewmodel-api = { module = "com.rickbusarow.tangle:tangle-viewmodel-api", version.ref = "tangle" }
-tangle-viewmodel-compiler = { module = "com.rickbusarow.tangle:tangle-viewmodel-compiler", version.ref = "tangle" }
-tangle-viewmodel-compose = { module = "com.rickbusarow.tangle:tangle-viewmodel-compose", version.ref = "tangle" }
-tangle-viewmodel-fragment = { module = "com.rickbusarow.tangle:tangle-viewmodel-fragment", version.ref = "tangle" }
-
 
 # Navigation
 cicerone = { module = "com.github.terrakok:cicerone", version.ref = "cicerone" }
