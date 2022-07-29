@@ -11,6 +11,7 @@
 - [Feature] Auto disconnect after 5 minutes inactivity
 - [Feature] Add outdated application dialog
 - [Feature] Add instantly search for flipper if device already connected or bounded
+- [Feature] Try auto connect on each app open
 - [BUGFIX] Exit from emulate screen
 - [BUGFIX] Lock portrait orientation
 - [BUGFIX] Update card not shown when flipper not connected
@@ -27,7 +28,8 @@
 - [BUGFIX] Open deeplink on already exist activity
 - [CI] Update deps
 - [REFACTOR] Preview (Updater card/screen, Device info)
-- [REFACTOR] Button Emulate/Send with auto close
+- [Feature] Button Emulate/Send with auto close
+- [REFACTOR] Add cache for gradle build
 
 # 1.1.5 - HotFix
 
