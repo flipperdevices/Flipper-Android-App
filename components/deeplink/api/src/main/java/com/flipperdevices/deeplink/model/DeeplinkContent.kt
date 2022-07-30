@@ -6,6 +6,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
 import java.io.File
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
 @Serializable
 sealed class DeeplinkContent : Parcelable {
