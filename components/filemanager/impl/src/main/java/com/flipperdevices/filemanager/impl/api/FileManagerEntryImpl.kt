@@ -1,6 +1,7 @@
 package com.flipperdevices.filemanager.impl.api
 
 import android.net.Uri
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.navigation.NavGraphBuilder
@@ -84,7 +85,9 @@ class FileManagerEntryImpl @Inject constructor(
                 val shareState by receiveViewModel.getReceiveState().collectAsState()
 
                 if (shareState.processCompleted) {
-                    navController.popBackStack()
+                    LaunchedEffect(Unit) {
+                        navController.popBackStack()
+                    }
                 }
 
                 ComposableFileManagerUploadedScreen(
