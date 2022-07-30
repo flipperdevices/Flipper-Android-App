@@ -1,7 +1,6 @@
 package com.flipperdevices.filemanager.impl.viewmodels
 
 import android.content.Context
-import android.content.Intent
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequest
@@ -24,7 +23,6 @@ import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.file
 import com.flipperdevices.protobuf.storage.writeRequest
 import java.io.File
-import java.io.InputStream
 import java.net.URLDecoder
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlinx.coroutines.Dispatchers
@@ -99,7 +97,7 @@ class ReceiveViewModel @VMInject constructor(
         val exception = runCatching {
             uploadToFlipper(serviceApi.requestApi)
         }.exceptionOrNull()
-        cleanUp()
+        deeplinkContent.cleanUp(contentResolver)
         receiveStateFlow.update {
             it.copy(
                 processCompleted = true
@@ -111,7 +109,7 @@ class ReceiveViewModel @VMInject constructor(
     }
 
     private suspend fun uploadToFlipper(requestApi: FlipperRequestApi) {
-        deeplinkContent.openStream().use { fileStream ->
+        deeplinkContent.openStream(contentResolver).use { fileStream ->
             val stream = fileStream ?: return@use
             val filePath = File(path, fileName).absolutePath
             val requestFlow = streamToCommandFlow(
@@ -152,33 +150,6 @@ class ReceiveViewModel @VMInject constructor(
                 }
             })
             info { "File send with response $response" }
-        }
-    }
-
-    private fun DeeplinkContent.openStream(): InputStream? {
-        return when (this) {
-            is DeeplinkContent.ExternalUri -> {
-                contentResolver.openInputStream(uri)
-            }
-            is DeeplinkContent.InternalStorageFile -> {
-                file.inputStream()
-            }
-            is DeeplinkContent.FFFContent -> content.openStream()
-        }
-    }
-
-    private fun cleanUp() {
-        when (deeplinkContent) {
-            is DeeplinkContent.ExternalUri -> {
-                contentResolver.releasePersistableUriPermission(
-                    deeplinkContent.uri,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION
-                )
-            }
-            is DeeplinkContent.InternalStorageFile -> {
-                deeplinkContent.file.delete()
-            }
-            is DeeplinkContent.FFFContent -> {} // Noting
         }
     }
 }
