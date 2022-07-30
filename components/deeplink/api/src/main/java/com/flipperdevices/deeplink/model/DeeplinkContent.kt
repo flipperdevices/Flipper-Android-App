@@ -4,26 +4,37 @@ import android.net.Uri
 import android.os.Parcelable
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
 import java.io.File
+import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
+@Serializable
 sealed class DeeplinkContent : Parcelable {
     @Parcelize
+    @Serializable
     data class FFFContent(
         val filename: String,
         val content: FlipperFileFormat
     ) : DeeplinkContent()
 
     @Parcelize
+    @Serializable
     data class ExternalUri(
         val filename: String?,
         val size: Long?,
-        val uri: Uri
-    ) : DeeplinkContent()
+        val uriString: String
+    ) : DeeplinkContent() {
+        @IgnoredOnParcel
+        val uri by lazy { Uri.parse(uriString) }
+    }
 
     @Parcelize
+    @Serializable
     data class InternalStorageFile(
-        val file: File
-    ) : DeeplinkContent()
+        val filePath: String
+    ) : DeeplinkContent() {
+        @IgnoredOnParcel
+        val file by lazy { File(filePath) }
+    }
 
     fun length(): Long? {
         return when (this) {

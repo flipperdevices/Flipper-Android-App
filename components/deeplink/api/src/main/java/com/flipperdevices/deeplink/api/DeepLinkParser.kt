@@ -1,6 +1,6 @@
 package com.flipperdevices.deeplink.api
 
-import android.app.Activity
+import android.content.Context
 import android.net.Uri
 import com.flipperdevices.deeplink.model.Deeplink
 
@@ -10,10 +10,7 @@ import com.flipperdevices.deeplink.model.Deeplink
 interface DeepLinkParser {
     /**
      * Can be called only from permission owner for uri
-     *
-     * @return golang style, first return argument is a deeplink
-     * and second is a throwable if deeplink is null
      */
     @Throws(SecurityException::class)
-    suspend fun fromUri(activity: Activity, uri: Uri): Deeplink?
+    suspend fun fromUri(context: Context, uri: Uri): Deeplink?
 }

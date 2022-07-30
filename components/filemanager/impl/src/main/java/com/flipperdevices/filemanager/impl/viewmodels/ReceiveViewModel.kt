@@ -1,61 +1,69 @@
-package com.flipperdevices.filemanager.receive.viewmodel
+package com.flipperdevices.filemanager.impl.viewmodels
 
-import android.app.Application
+import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.viewModelScope
+import com.flipperdevices.bridge.api.model.FlipperRequest
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.protobuf.streamToCommandFlow
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
-import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.deeplink.model.DeeplinkContent
-import com.flipperdevices.filemanager.receive.di.ShareReceiveComponent
+import com.flipperdevices.filemanager.impl.api.CONTENT_KEY
+import com.flipperdevices.filemanager.impl.api.PATH_KEY
 import com.flipperdevices.filemanager.sharecommon.model.DownloadProgress
 import com.flipperdevices.filemanager.sharecommon.model.ShareState
+import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.file
 import com.flipperdevices.protobuf.storage.writeRequest
 import java.io.File
 import java.io.InputStream
+import java.net.URLDecoder
 import java.util.concurrent.atomic.AtomicBoolean
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import tangle.inject.TangleParam
+import tangle.viewmodel.VMInject
 
-class ReceiveViewModel(
+class ReceiveViewModel @VMInject constructor(
+    @TangleParam(PATH_KEY)
+    encodedPath: String,
+    @TangleParam(CONTENT_KEY)
     private val deeplinkContent: DeeplinkContent,
-    private val flipperPath: String,
-    application: Application
-) : AndroidLifecycleViewModel(application),
+    context: Context,
+    serviceProvider: FlipperServiceProvider
+) : LifecycleViewModel(),
     FlipperBleServiceConsumer,
     LogTagProvider {
     override val TAG = "ReceiveViewModel"
 
-    @Inject
-    lateinit var serviceProvider: FlipperServiceProvider
+    private val path = URLDecoder.decode(encodedPath, "UTF-8")
 
+    private val fileName by lazy { deeplinkContent.filename() ?: "Unknown" }
     private val uploadStarted = AtomicBoolean(false)
-    private val contentResolver = application.contentResolver
+    private val contentResolver = context.contentResolver
     private val receiveStateFlow = MutableStateFlow(
         ShareState(
+            fileName,
             deeplinkContent.length()?.let {
-                DownloadProgress.Fixed(0L, it)
-            } ?: DownloadProgress.Infinite(0L)
+                DownloadProgress.Fixed(totalSize = it)
+            } ?: DownloadProgress.Infinite()
         )
     )
 
     init {
-        ComponentHolder.component<ShareReceiveComponent>().inject(this)
         serviceProvider.provideServiceApi(consumer = this, lifecycleOwner = this)
     }
 
@@ -78,41 +86,56 @@ class ReceiveViewModel(
         }
     }
 
-    fun cancelUpload() {
-        receiveStateFlow.update {
-            it.copy(dialogShown = false)
-        }
-    }
-
     private suspend fun startUpload(serviceApi: FlipperServiceApi) = withContext(Dispatchers.IO) {
         if (!uploadStarted.compareAndSet(false, true)) {
-            info { "Upload file $deeplinkContent already started" }
+            info { "Upload file $deeplinkContent in $path already started" }
             return@withContext
         }
-        info { "Upload file $deeplinkContent start" }
+        info { "Upload file $deeplinkContent in $path start" }
         val exception = runCatching {
             deeplinkContent.openStream().use { fileStream ->
                 val stream = fileStream ?: return@use
-                val filePath =
-                    File(flipperPath, deeplinkContent.filename() ?: "Unknown").absolutePath
+                val filePath = File(path, fileName).absolutePath
                 val requestFlow = streamToCommandFlow(
-                    stream, deeplinkContent.length()
+                    stream,
+                    deeplinkContent.length()
                 ) { chunkData ->
                     storageWriteRequest = writeRequest {
                         path = filePath
                         file = file { data = chunkData }
                     }
-                }.map {
-                    it.wrapToRequest(FlipperRequestPriority.FOREGROUND)
+                }.map { message ->
+                    FlipperRequest(
+                        data = message,
+                        priority = FlipperRequestPriority.FOREGROUND,
+                        onSendCallback = {
+                            receiveStateFlow.update {
+                                it.copy(
+                                    downloadProgress = it.downloadProgress.updateProgress(
+                                        message.storageWriteRequest.file.data.size().toLong()
+                                    )
+                                )
+                            }
+                        }
+                    )
                 }
-                val response = serviceApi.requestApi.request(requestFlow)
+                val response = serviceApi.requestApi.request(requestFlow, onCancel = { id ->
+                    serviceApi.requestApi.request(
+                        main {
+                            commandId = id
+                            hasNext = false
+                            storageWriteRequest = writeRequest {
+                                path = filePath
+                            }
+                        }.wrapToRequest(FlipperRequestPriority.RIGHT_NOW)
+                    ).collect()
+                })
                 info { "File send with response $response" }
             }
         }.exceptionOrNull()
         cleanUp()
         receiveStateFlow.update {
             it.copy(
-                dialogShown = false,
                 processCompleted = true
             )
         }

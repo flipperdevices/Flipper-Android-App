@@ -45,7 +45,7 @@ fun ComposableSettings(
             settingsViewModel.stressTestApi.StressTestScreen()
         }
         with(fileManagerEntry) {
-            composable(navController)
+            navigation(navController)
         }
     }
 }

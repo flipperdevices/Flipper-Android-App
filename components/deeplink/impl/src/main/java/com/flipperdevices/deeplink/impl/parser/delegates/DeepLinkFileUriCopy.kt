@@ -1,7 +1,7 @@
 package com.flipperdevices.deeplink.impl.parser.delegates
 
-import android.app.Activity
 import android.content.ContentResolver
+import android.content.Context
 import android.net.Uri
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
@@ -16,13 +16,13 @@ class DeepLinkFileUriCopy : DeepLinkParserDelegate, LogTagProvider {
     override val TAG = "DeepLinkFileUriCopy"
 
     // Fallback if DeepLinkFileUriGrantPermission failed: copy from uri to tmp file
-    override suspend fun fromUri(activity: Activity, uri: Uri): Deeplink {
-        val contentResolver = activity.contentResolver
+    override suspend fun fromUri(context: Context, uri: Uri): Deeplink {
+        val contentResolver = context.contentResolver
 
         return Deeplink(
             content = buildInternalFile(
                 contentResolver,
-                activity.cacheDir,
+                context.cacheDir,
                 uri
             )
         )
@@ -51,6 +51,6 @@ class DeepLinkFileUriCopy : DeepLinkParserDelegate, LogTagProvider {
             return@withContext null
         }
 
-        return@withContext DeeplinkContent.InternalStorageFile(temporaryFile)
+        return@withContext DeeplinkContent.InternalStorageFile(temporaryFile.absolutePath)
     }
 }

@@ -21,6 +21,9 @@ dependencies {
     implementation(libs.protobuf.jvm)
 
     implementation(projects.components.filemanager.api)
+    implementation(projects.components.filemanager.sharecommon)
+
+    implementation(libs.kotlin.serialization.json)
 
     implementation(projects.components.deeplink.api)
 

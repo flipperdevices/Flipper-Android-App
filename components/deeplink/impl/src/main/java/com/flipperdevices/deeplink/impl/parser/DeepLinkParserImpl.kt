@@ -1,6 +1,6 @@
 package com.flipperdevices.deeplink.impl.parser
 
-import android.app.Activity
+import android.content.Context
 import android.net.Uri
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
@@ -25,13 +25,13 @@ class DeepLinkParserImpl @Inject constructor() : DeepLinkParser, LogTagProvider 
         DeepLinkFileUriCopy()
     )
 
-    override suspend fun fromUri(activity: Activity, uri: Uri): Deeplink? {
+    override suspend fun fromUri(context: Context, uri: Uri): Deeplink? {
         info { "Try parse uri with scheme: ${uri.scheme}, uri: $uri" }
 
         for (delegate in delegates) {
             try {
                 info { "Try ${delegate.javaClass}..." }
-                val deeplink = delegate.fromUri(activity, uri)
+                val deeplink = delegate.fromUri(context, uri)
                 if (deeplink != null) {
                     return deeplink
                 }

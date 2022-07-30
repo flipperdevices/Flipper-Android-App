@@ -19,15 +19,25 @@ sealed class DownloadProgress(
 
     fun updateProgress(delta: Long): DownloadProgress {
         return when (this) {
-            is Fixed -> Fixed(progress + delta, totalSize)
-            is Infinite -> Infinite(progress + delta)
+            is Fixed -> Fixed(
+                progress = progress + delta,
+                totalSize = totalSize
+            )
+            is Infinite -> Infinite(progress = progress + delta)
         }
     }
 
     fun updateSpeed(newSpeed: Long): DownloadProgress {
         return when (this) {
-            is Fixed -> Fixed(progress, newSpeed, totalSize)
-            is Infinite -> Infinite(progress, speedBytesInSecond)
+            is Fixed -> Fixed(
+                progress = progress,
+                speedBytesInSecond = newSpeed,
+                totalSize = totalSize
+            )
+            is Infinite -> Infinite(
+                progress = progress,
+                speedBytesInSecond = speedBytesInSecond
+            )
         }
     }
 }
