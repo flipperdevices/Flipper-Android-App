@@ -88,7 +88,8 @@ fun ComposableFixedProgress(fixedProgress: DownloadProgress.Fixed) {
         )
         LinearProgressIndicator(
             modifier = Modifier.fillMaxWidth(),
-            progress = animatedProgress
+            progress = animatedProgress,
+            color = L
         )
     }
 }

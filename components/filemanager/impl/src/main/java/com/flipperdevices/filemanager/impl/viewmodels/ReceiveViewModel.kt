@@ -30,9 +30,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 import kotlinx.coroutines.withContext
 import tangle.inject.TangleParam
 import tangle.viewmodel.VMInject
@@ -70,11 +73,11 @@ class ReceiveViewModel @VMInject constructor(
     fun getReceiveState(): StateFlow<ShareState> = receiveStateFlow
 
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Default) {
             startUpload(serviceApi)
         }
-        viewModelScope.launch {
-            serviceApi.requestApi.getSpeed().collect { serialSpeed ->
+        viewModelScope.launch(Dispatchers.Default) {
+            serviceApi.requestApi.getSpeed().onEach { serialSpeed ->
                 receiveStateFlow.update {
                     it.copy(
                         downloadProgress = it.downloadProgress.updateSpeed(
@@ -82,7 +85,7 @@ class ReceiveViewModel @VMInject constructor(
                         )
                     )
                 }
-            }
+            }.launchIn(viewModelScope + Dispatchers.Default)
         }
     }
 
@@ -129,6 +132,9 @@ class ReceiveViewModel @VMInject constructor(
                             }
                         }.wrapToRequest(FlipperRequestPriority.RIGHT_NOW)
                     ).collect()
+                    receiveStateFlow.update {
+                        it.copy(processCompleted = true)
+                    }
                 })
                 info { "File send with response $response" }
             }
