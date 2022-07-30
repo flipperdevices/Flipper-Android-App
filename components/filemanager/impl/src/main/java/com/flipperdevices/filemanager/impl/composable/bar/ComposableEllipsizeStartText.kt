@@ -76,8 +76,8 @@ private fun BoxWithConstraintsScope.shouldShrink(
 )
 @Composable
 private fun ComposableEllipsizeStartTextPreview() {
-    Column() {
+    Column {
         ComposableEllipsizeStartText("Small text")
-        ComposableEllipsizeStartText("abc".repeat(50))
+        ComposableEllipsizeStartText("abc".repeat(n = 50))
     }
 }

@@ -30,7 +30,6 @@ dependencies {
     implementation(projects.components.filemanager.api)
     implementation(projects.components.filemanager.impl)
     implementation(projects.components.filemanager.sharecommon)
-    implementation(projects.components.filemanager.receive)
     implementation(projects.components.filemanager.export)
 
     implementation(projects.components.screenstreaming.api)

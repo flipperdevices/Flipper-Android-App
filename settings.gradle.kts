@@ -28,7 +28,6 @@ include(
     ":components:filemanager:impl",
     ":components:filemanager:sharecommon",
     ":components:filemanager:export",
-    ":components:filemanager:receive",
 
     ":components:core:di",
     ":components:core:ktx",

@@ -3,6 +3,7 @@ package com.flipperdevices.filemanager.impl.viewmodels
 import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.viewModelScope
+import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequest
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
@@ -96,48 +97,7 @@ class ReceiveViewModel @VMInject constructor(
         }
         info { "Upload file $deeplinkContent in $path start" }
         val exception = runCatching {
-            deeplinkContent.openStream().use { fileStream ->
-                val stream = fileStream ?: return@use
-                val filePath = File(path, fileName).absolutePath
-                val requestFlow = streamToCommandFlow(
-                    stream,
-                    deeplinkContent.length()
-                ) { chunkData ->
-                    storageWriteRequest = writeRequest {
-                        path = filePath
-                        file = file { data = chunkData }
-                    }
-                }.map { message ->
-                    FlipperRequest(
-                        data = message,
-                        priority = FlipperRequestPriority.FOREGROUND,
-                        onSendCallback = {
-                            receiveStateFlow.update {
-                                it.copy(
-                                    downloadProgress = it.downloadProgress.updateProgress(
-                                        message.storageWriteRequest.file.data.size().toLong()
-                                    )
-                                )
-                            }
-                        }
-                    )
-                }
-                val response = serviceApi.requestApi.request(requestFlow, onCancel = { id ->
-                    serviceApi.requestApi.request(
-                        main {
-                            commandId = id
-                            hasNext = false
-                            storageWriteRequest = writeRequest {
-                                path = filePath
-                            }
-                        }.wrapToRequest(FlipperRequestPriority.RIGHT_NOW)
-                    ).collect()
-                    receiveStateFlow.update {
-                        it.copy(processCompleted = true)
-                    }
-                })
-                info { "File send with response $response" }
-            }
+            uploadToFlipper(serviceApi.requestApi)
         }.exceptionOrNull()
         cleanUp()
         receiveStateFlow.update {
@@ -147,6 +107,51 @@ class ReceiveViewModel @VMInject constructor(
         }
         if (exception != null) {
             error(exception) { "Can't upload $deeplinkContent" }
+        }
+    }
+
+    private suspend fun uploadToFlipper(requestApi: FlipperRequestApi) {
+        deeplinkContent.openStream().use { fileStream ->
+            val stream = fileStream ?: return@use
+            val filePath = File(path, fileName).absolutePath
+            val requestFlow = streamToCommandFlow(
+                stream,
+                deeplinkContent.length()
+            ) { chunkData ->
+                storageWriteRequest = writeRequest {
+                    path = filePath
+                    file = file { data = chunkData }
+                }
+            }.map { message ->
+                FlipperRequest(
+                    data = message,
+                    priority = FlipperRequestPriority.FOREGROUND,
+                    onSendCallback = {
+                        receiveStateFlow.update {
+                            it.copy(
+                                downloadProgress = it.downloadProgress.updateProgress(
+                                    message.storageWriteRequest.file.data.size().toLong()
+                                )
+                            )
+                        }
+                    }
+                )
+            }
+            val response = requestApi.request(requestFlow, onCancel = { id ->
+                requestApi.request(
+                    main {
+                        commandId = id
+                        hasNext = false
+                        storageWriteRequest = writeRequest {
+                            path = filePath
+                        }
+                    }.wrapToRequest(FlipperRequestPriority.RIGHT_NOW)
+                ).collect()
+                receiveStateFlow.update {
+                    it.copy(processCompleted = true)
+                }
+            })
+            info { "File send with response $response" }
         }
     }
 
