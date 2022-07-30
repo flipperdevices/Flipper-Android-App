@@ -10,6 +10,7 @@ dependencies {
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.navigation)
     implementation(projects.components.core.ui.fragment)
+    implementation(projects.components.core.ui.navigation)
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ui.res)
 
@@ -32,6 +33,7 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
+    implementation(libs.compose.navigation)
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.lifecycle.runtime.ktx)
@@ -40,6 +42,9 @@ dependencies {
 
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
+    implementation(libs.tangle.viewmodel.compose)
+    implementation(libs.tangle.viewmodel.api)
+    anvil(libs.tangle.viewmodel.compiler)
 
     implementation(libs.cicerone)
 }

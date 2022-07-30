@@ -1,45 +1,29 @@
 package com.flipperdevices.settings.impl.viewmodels
 
-import androidx.datastore.core.DataStore
 import androidx.navigation.NavController
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
-import com.flipperdevices.core.di.ComponentHolder
-import com.flipperdevices.core.preference.pb.Settings
+import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
-import com.flipperdevices.filemanager.api.navigation.FileManagerScreenProvider
+import com.flipperdevices.filemanager.api.navigation.FileManagerEntry
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
-import com.flipperdevices.settings.impl.di.SettingsComponent
 import com.flipperdevices.settings.impl.model.NavGraphRoute
-import com.github.terrakok.cicerone.Router
-import javax.inject.Inject
+import javax.inject.Provider
+import tangle.viewmodel.VMInject
 
-class ExperimentalViewModel : LifecycleViewModel() {
-    @Inject
-    lateinit var serviceProvider: FlipperServiceProvider
+class ExperimentalViewModel @VMInject constructor(
+    fileManagerEntryProvider: Provider<FileManagerEntry>,
+    metricApiProvider: Provider<MetricApi>
+) : LifecycleViewModel() {
+    private val fileManagerEntry by fileManagerEntryProvider
+    private val metricApi by metricApiProvider
 
-    @Inject
-    lateinit var fileManager: FileManagerScreenProvider
-
-    @Inject
-    lateinit var dataStoreSetting: DataStore<Settings>
-
-    @Inject
-    lateinit var metricApi: MetricApi
-
-    init {
-        ComponentHolder.component<SettingsComponent>().inject(this)
-    }
-
-    fun onOpenFileManager(router: Router) {
+    fun onOpenFileManager(navController: NavController) {
         metricApi.reportSimpleEvent(SimpleEvent.EXPERIMENTAL_OPEN_FM)
-        router.navigateTo(fileManager.fileManager())
+        navController.navigate(fileManagerEntry.fileManagerDestination())
     }
 
     fun onOpenScreenStreaming(navController: NavController) {
         metricApi.reportSimpleEvent(SimpleEvent.EXPERIMENTAL_OPEN_SCREENSTREAMING)
-        navController.navigate(NavGraphRoute.ScreenStreaming.name) {
-            popUpTo(NavGraphRoute.Settings.name)
-        }
+        navController.navigate(NavGraphRoute.ScreenStreaming.name)
     }
 }

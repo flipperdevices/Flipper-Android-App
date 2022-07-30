@@ -32,8 +32,8 @@ fun ComposableFileManagerSave(
         topBar = { ComposableSaveTopBar(onClickSaveButton) }
     ) { scaffoldPaddings ->
         ComposableFileManager(
-            fileManagerState,
             Modifier.padding(scaffoldPaddings),
+            fileManagerState,
             onOpenFolder
         )
     }

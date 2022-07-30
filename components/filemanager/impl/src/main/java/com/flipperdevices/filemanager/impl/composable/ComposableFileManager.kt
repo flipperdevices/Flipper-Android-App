@@ -34,8 +34,8 @@ import com.flipperdevices.filemanager.impl.model.FileManagerState
 
 @Composable
 fun ComposableFileManager(
-    fileManagerState: FileManagerState,
     modifier: Modifier = Modifier,
+    fileManagerState: FileManagerState,
     onFileClick: (FileItem) -> Unit
 ) {
     Box(
@@ -138,7 +138,7 @@ private fun ComposableFileImage(modifier: Modifier, fileItem: FileItem) {
 @Composable
 fun ComposableFileManagerPreview() {
     ComposableFileManager(
-        FileManagerState(
+        fileManagerState = FileManagerState(
             "/",
             setOf(
                 FileItem.DUMMY_FOLDER,
