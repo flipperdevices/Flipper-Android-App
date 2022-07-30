@@ -10,7 +10,9 @@ sealed class DownloadProgress {
         val totalSize: Long,
         val speedBytesInSecondInternal: Long = 0
     ) : DownloadProgress() {
-        fun toProgressFloat() = progress.toFloat() / totalSize.toFloat()
+        fun toProgressFloat() = if (totalSize != 0L) {
+            progress.toFloat() / totalSize.toFloat()
+        } else 0f
     }
 
     @Stable

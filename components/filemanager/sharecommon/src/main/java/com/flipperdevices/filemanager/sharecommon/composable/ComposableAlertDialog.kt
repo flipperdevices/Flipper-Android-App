@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.filemanager.sharecommon.R
 import com.flipperdevices.filemanager.sharecommon.model.DownloadProgress
 
@@ -89,7 +90,7 @@ fun ComposableFixedProgress(fixedProgress: DownloadProgress.Fixed) {
         LinearProgressIndicator(
             modifier = Modifier.fillMaxWidth(),
             progress = animatedProgress,
-            color = L
+            color = LocalPallet.current.accent
         )
     }
 }

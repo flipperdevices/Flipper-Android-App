@@ -89,4 +89,4 @@ private fun ComposableFileManagerTopBar(path: String, onClickSaveButton: () -> U
     )
 }
 
-private fun isAbleToSafe(path: String) = path != "/" && !path.startsWith("/int/")
+private fun isAbleToSafe(path: String) = path.startsWith("/ext/")

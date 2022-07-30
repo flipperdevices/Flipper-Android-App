@@ -3,6 +3,7 @@ plugins {
 }
 
 dependencies {
+    implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ktx)
 
     implementation(libs.annotations)
