@@ -12,6 +12,7 @@
 - [Feature] Add outdated application dialog
 - [Feature] Add instantly search for flipper if device already connected or bounded
 - [Feature] Try auto connect on each app open
+- [Feature] Add ability to upload file from file manager
 - [BUGFIX] Exit from emulate screen
 - [BUGFIX] Lock portrait orientation
 - [BUGFIX] Update card not shown when flipper not connected
