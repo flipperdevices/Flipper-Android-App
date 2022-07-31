@@ -135,7 +135,4 @@ class ShareViewModel @VMInject constructor(
             )
         }
     }
-
-    private fun incrementProgress(delta: Int) {
-    }
 }
