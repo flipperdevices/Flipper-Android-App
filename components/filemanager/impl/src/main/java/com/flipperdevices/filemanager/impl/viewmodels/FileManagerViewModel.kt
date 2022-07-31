@@ -15,7 +15,6 @@ import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.Storage
 import com.flipperdevices.protobuf.storage.listRequest
 import java.io.File
-import java.net.URLDecoder
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -27,11 +26,9 @@ import tangle.viewmodel.VMInject
 class FileManagerViewModel @VMInject constructor(
     serviceProvider: FlipperServiceProvider,
     @TangleParam(PATH_KEY)
-    path: String
+    private val directory: String
 ) : LifecycleViewModel(), FlipperBleServiceConsumer, LogTagProvider {
     override val TAG = "FileManagerViewModel"
-
-    private val directory = URLDecoder.decode(path, "UTF-8")
 
     private var fileManagerStateFlow =
         MutableStateFlow(FileManagerState(currentPath = directory))

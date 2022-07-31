@@ -1,33 +1,57 @@
 package com.flipperdevices.filemanager.sharecommon.model
 
-sealed class DownloadProgress(
-    val progress: Long,
-    val speedBytesInSecond: Long
-) {
-    class Fixed(
-        progress: Long = 0,
-        val totalSize: Long = Long.MAX_VALUE,
-        speedBytesInSecond: Long = 0
-    ) : DownloadProgress(progress, speedBytesInSecond) {
-        fun toProgressFloat() = progress.toFloat() / totalSize.toFloat()
+import androidx.compose.runtime.Stable
+
+@Stable
+sealed class DownloadProgress {
+    @Stable
+    data class Fixed(
+        val progressInternal: Long = 0,
+        val totalSize: Long,
+        val speedBytesInSecondInternal: Long = 0
+    ) : DownloadProgress() {
+        fun toProgressFloat() = if (totalSize != 0L) {
+            progress.toFloat() / totalSize.toFloat()
+        } else 0f
     }
 
-    class Infinite(
-        progress: Long = 0,
-        speedBytesInSecond: Long = 0
-    ) : DownloadProgress(progress, speedBytesInSecond)
+    @Stable
+    data class Infinite(
+        val progressInternal: Long = 0,
+        val speedBytesInSecondInternal: Long = 0
+    ) : DownloadProgress()
+
+    val progress: Long
+        get() = when (this) {
+            is Fixed -> progressInternal
+            is Infinite -> progressInternal
+        }
+
+    val speedBytesInSecond: Long
+        get() = when (this) {
+            is Fixed -> speedBytesInSecondInternal
+            is Infinite -> speedBytesInSecondInternal
+        }
 
     fun updateProgress(delta: Long): DownloadProgress {
         return when (this) {
-            is Fixed -> Fixed(progress + delta, totalSize)
-            is Infinite -> Infinite(progress + delta)
+            is Fixed -> copy(
+                progressInternal = progressInternal + delta
+            )
+            is Infinite -> copy(
+                progressInternal = progressInternal + delta
+            )
         }
     }
 
     fun updateSpeed(newSpeed: Long): DownloadProgress {
         return when (this) {
-            is Fixed -> Fixed(progress, newSpeed, totalSize)
-            is Infinite -> Infinite(progress, speedBytesInSecond)
+            is Fixed -> copy(
+                speedBytesInSecondInternal = newSpeed
+            )
+            is Infinite -> copy(
+                speedBytesInSecondInternal = newSpeed
+            )
         }
     }
 }

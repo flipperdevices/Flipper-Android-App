@@ -1,4 +1,4 @@
-package com.flipperdevices.filemanager.impl.composable
+package com.flipperdevices.filemanager.impl.composable.list
 
 import android.text.format.Formatter
 import androidx.compose.foundation.Image
@@ -7,13 +7,9 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.ripple.rememberRipple
@@ -24,48 +20,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.dao.api.model.FlipperFileType
-import com.flipperdevices.core.ui.res.R as DesignSystem
-import com.flipperdevices.filemanager.impl.R
+import com.flipperdevices.core.ui.res.R
 import com.flipperdevices.filemanager.impl.model.FileItem
-import com.flipperdevices.filemanager.impl.model.FileManagerState
 
 @Composable
-fun ComposableFileManager(
-    modifier: Modifier = Modifier,
-    fileManagerState: FileManagerState,
-    onFileClick: (FileItem) -> Unit
-) {
-    Box(
-        modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        when {
-            fileManagerState.filesInDirectory.isNotEmpty() -> {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    items(items = fileManagerState.filesInDirectory.toList()) { file ->
-                        ComposableFileItem(file, onFileClick)
-                    }
-                }
-            }
-            fileManagerState.inProgress -> {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(size = 48.dp)
-                )
-            }
-            else -> {
-                Text(text = stringResource(id = R.string.filemanager_empty_folder))
-            }
-        }
-    }
-}
-
-@Composable
-private fun ComposableFileItem(fileItem: FileItem, onFileClick: (FileItem) -> Unit) {
+fun ComposableFileItem(fileItem: FileItem, onFileClick: (FileItem) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -97,12 +58,14 @@ private fun ComposableFileItem(fileItem: FileItem, onFileClick: (FileItem) -> Un
 }
 
 @Composable
-private fun ComposableFileImage(modifier: Modifier, fileItem: FileItem) {
+fun ComposableFileImage(modifier: Modifier, fileItem: FileItem) {
     if (fileItem.isDirectory) {
         Image(
             modifier = modifier,
-            painter = painterResource(DesignSystem.drawable.ic_folder),
-            contentDescription = stringResource(R.string.filemanager_folder_pic_desc)
+            painter = painterResource(R.drawable.ic_folder),
+            contentDescription = stringResource(
+                com.flipperdevices.filemanager.impl.R.string.filemanager_folder_pic_desc
+            )
         )
     } else {
         Box(
@@ -111,8 +74,10 @@ private fun ComposableFileImage(modifier: Modifier, fileItem: FileItem) {
         ) {
             Image(
                 modifier = Modifier.size(size = 48.dp),
-                painter = painterResource(DesignSystem.drawable.ic_file),
-                contentDescription = stringResource(R.string.filemanager_file_pic_desc)
+                painter = painterResource(R.drawable.ic_file),
+                contentDescription = stringResource(
+                    com.flipperdevices.filemanager.impl.R.string.filemanager_file_pic_desc
+                )
             )
             val fileIcon = remember(fileItem) {
                 FlipperFileType.getByExtension(
@@ -129,21 +94,4 @@ private fun ComposableFileImage(modifier: Modifier, fileItem: FileItem) {
             }
         }
     }
-}
-
-@Preview(
-    showBackground = true,
-    showSystemUi = true
-)
-@Composable
-fun ComposableFileManagerPreview() {
-    ComposableFileManager(
-        fileManagerState = FileManagerState(
-            "/",
-            setOf(
-                FileItem.DUMMY_FOLDER,
-                FileItem.DUMMY_FILE
-            )
-        )
-    ) {}
 }

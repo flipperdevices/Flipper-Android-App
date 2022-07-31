@@ -1,7 +1,7 @@
 package com.flipperdevices.deeplink.impl.parser.delegates
 
-import android.app.Activity
 import android.content.ContentResolver
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import com.flipperdevices.deeplink.impl.parser.filename
@@ -12,8 +12,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class DeepLinkFileUriGrantPermission : DeepLinkParserDelegate {
-    override suspend fun fromUri(activity: Activity, uri: Uri): Deeplink? {
-        val contentResolver = activity.contentResolver
+    override suspend fun fromUri(context: Context, uri: Uri): Deeplink? {
+        val contentResolver = context.contentResolver
 
         // We need persistable permission for read file on next activities
         val permissionGranted = runCatching {
@@ -34,7 +34,7 @@ class DeepLinkFileUriGrantPermission : DeepLinkParserDelegate {
         return@withContext DeeplinkContent.ExternalUri(
             filename = uri.filename(contentResolver),
             size = uri.length(contentResolver),
-            uri = uri
+            uriString = uri.toString()
         )
     }
 }

@@ -11,6 +11,7 @@ dependencies {
     implementation(projects.components.core.navigation)
     implementation(projects.components.core.ui.fragment)
     implementation(projects.components.core.ui.navigation)
+    implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ui.res)
 
@@ -21,6 +22,9 @@ dependencies {
     implementation(libs.protobuf.jvm)
 
     implementation(projects.components.filemanager.api)
+    implementation(projects.components.filemanager.sharecommon)
+
+    implementation(libs.kotlin.serialization.json)
 
     implementation(projects.components.deeplink.api)
 
