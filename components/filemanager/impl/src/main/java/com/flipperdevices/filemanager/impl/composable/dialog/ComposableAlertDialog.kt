@@ -1,4 +1,4 @@
-package com.flipperdevices.filemanager.sharecommon.composable
+package com.flipperdevices.filemanager.impl.composable.dialog
 
 import android.text.format.Formatter
 import androidx.compose.animation.core.animateFloatAsState
@@ -19,8 +19,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPallet
-import com.flipperdevices.filemanager.sharecommon.R
-import com.flipperdevices.filemanager.sharecommon.model.DownloadProgress
+import com.flipperdevices.filemanager.impl.R
+import com.flipperdevices.filemanager.impl.model.DownloadProgress
 
 @Composable
 fun ComposableAlertDialog(

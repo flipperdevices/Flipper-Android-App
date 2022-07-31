@@ -1,4 +1,4 @@
-package com.flipperdevices.filemanager.export.viewmodel
+package com.flipperdevices.filemanager.impl.viewmodels
 
 import android.app.Application
 import android.content.Intent
@@ -10,32 +10,34 @@ import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
-import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.jre.createClearNewFileWithMkDirs
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
-import com.flipperdevices.filemanager.api.share.ShareFile
-import com.flipperdevices.filemanager.export.BuildConfig
-import com.flipperdevices.filemanager.export.R
-import com.flipperdevices.filemanager.export.di.ShareComponent
-import com.flipperdevices.filemanager.sharecommon.model.DownloadProgress
-import com.flipperdevices.filemanager.sharecommon.model.ShareState
+import com.flipperdevices.filemanager.impl.BuildConfig
+import com.flipperdevices.filemanager.impl.R
+import com.flipperdevices.filemanager.impl.api.FILE_PATH_KEY
+import com.flipperdevices.filemanager.impl.model.DownloadProgress
+import com.flipperdevices.filemanager.impl.model.ShareFile
+import com.flipperdevices.filemanager.impl.model.ShareState
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.readRequest
 import com.google.protobuf.ByteString
 import java.io.File
 import java.util.concurrent.atomic.AtomicBoolean
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import tangle.inject.TangleParam
+import tangle.viewmodel.VMInject
 
-class ShareViewModel(
+class ShareViewModel @VMInject constructor(
+    flipperServiceProvider: FlipperServiceProvider,
+    @TangleParam(FILE_PATH_KEY)
     private val shareFile: ShareFile,
     application: Application
 ) : AndroidLifecycleViewModel(application),
@@ -57,19 +59,11 @@ class ShareViewModel(
         )
     )
 
-    @Inject
-    lateinit var provider: FlipperServiceProvider
-
     init {
-        ComponentHolder.component<ShareComponent>().inject(this)
-        provider.provideServiceApi(consumer = this, lifecycleOwner = this)
+        flipperServiceProvider.provideServiceApi(consumer = this, lifecycleOwner = this)
     }
 
     fun getShareState(): StateFlow<ShareState> = shareStateFlow
-
-    fun cancelDownload() {
-        shareStateFlow.update { it.copy(dialogShown = false) }
-    }
 
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
         viewModelScope.launch {
@@ -103,11 +97,6 @@ class ShareViewModel(
     }
 
     private suspend fun onCompleteDownload() = withContext(Dispatchers.Main) {
-        if (!shareStateFlow.value.dialogShown) {
-            info { "Not share file, because dialog closed before" }
-            return@withContext
-        }
-
         val context = getApplication<Application>()
         val uri = FileProvider.getUriForFile(
             context,
@@ -129,7 +118,6 @@ class ShareViewModel(
 
         shareStateFlow.update {
             it.copy(
-                dialogShown = false,
                 processCompleted = true
             )
         }

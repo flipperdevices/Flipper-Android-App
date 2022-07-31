@@ -26,8 +26,6 @@ include(
 
     ":components:filemanager:api",
     ":components:filemanager:impl",
-    ":components:filemanager:sharecommon",
-    ":components:filemanager:export",
 
     ":components:core:di",
     ":components:core:ktx",
