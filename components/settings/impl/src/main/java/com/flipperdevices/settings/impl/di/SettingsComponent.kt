@@ -1,8 +1,8 @@
 package com.flipperdevices.settings.impl.di
 
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.settings.impl.fragments.SettingsFragment
 import com.flipperdevices.settings.impl.viewmodels.DebugViewModel
-import com.flipperdevices.settings.impl.viewmodels.ExperimentalViewModel
 import com.flipperdevices.settings.impl.viewmodels.SettingsViewModel
 import com.squareup.anvil.annotations.ContributesTo
 
@@ -10,5 +10,5 @@ import com.squareup.anvil.annotations.ContributesTo
 interface SettingsComponent {
     fun inject(viewModel: SettingsViewModel)
     fun inject(viewModel: DebugViewModel)
-    fun inject(viewModel: ExperimentalViewModel)
+    fun inject(settingsFragment: SettingsFragment)
 }

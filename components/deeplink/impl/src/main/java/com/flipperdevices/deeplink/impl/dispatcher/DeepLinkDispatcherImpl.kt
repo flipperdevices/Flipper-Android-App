@@ -6,7 +6,6 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.deeplink.api.DeepLinkDispatcher
 import com.flipperdevices.deeplink.api.DeepLinkHandler
 import com.flipperdevices.deeplink.model.Deeplink
-import com.flipperdevices.filemanager.api.share.FileManagerDeepLinkHandler
 import com.flipperdevices.share.api.ArchiveKeyDeeplinkHandler
 import com.github.terrakok.cicerone.Router
 import com.squareup.anvil.annotations.ContributesBinding
@@ -14,14 +13,12 @@ import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, DeepLinkDispatcher::class)
 class DeepLinkDispatcherImpl @Inject constructor(
-    fileManagerHandler: FileManagerDeepLinkHandler,
     keyReceiveHandler: ArchiveKeyDeeplinkHandler
 ) : DeepLinkDispatcher, LogTagProvider {
     override val TAG = "DeepLinkDispatcher"
 
-    private val handlers = mutableListOf(
-        keyReceiveHandler,
-        fileManagerHandler
+    private val handlers = mutableListOf<DeepLinkHandler>(
+        keyReceiveHandler
     )
 
     override fun process(router: Router, deeplink: Deeplink): Boolean {

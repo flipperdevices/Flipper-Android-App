@@ -7,6 +7,7 @@ import java.io.FileInputStream
 import java.io.InputStream
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
 /**
  * Describes the contents of the key.
@@ -37,6 +38,7 @@ sealed class FlipperKeyContent : Parcelable {
 }
 
 @Parcelize
+@Serializable
 data class FlipperFileFormat(
     val orderedDict: List<Pair<String, String>>
 ) : FlipperKeyContent(), Parcelable {

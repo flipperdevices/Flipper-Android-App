@@ -50,8 +50,8 @@ class ShareViewModel(
     }
     private val shareStateFlow = MutableStateFlow(
         ShareState(
+            shareFile.name,
             DownloadProgress.Fixed(
-                progress = 0,
                 totalSize = shareFile.size
             )
         )

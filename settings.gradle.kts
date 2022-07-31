@@ -28,7 +28,6 @@ include(
     ":components:filemanager:impl",
     ":components:filemanager:sharecommon",
     ":components:filemanager:export",
-    ":components:filemanager:receive",
 
     ":components:core:di",
     ":components:core:ktx",
@@ -42,6 +41,7 @@ include(
     ":components:core:ui:fragment",
     ":components:core:ui:theme",
     ":components:core:ui:hexkeyboard",
+    ":components:core:ui:navigation",
     ":components:core:test",
     ":components:core:markdown",
     ":components:core:activityholder",
