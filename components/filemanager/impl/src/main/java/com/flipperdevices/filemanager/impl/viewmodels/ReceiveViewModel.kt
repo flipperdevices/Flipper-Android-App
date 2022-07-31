@@ -17,8 +17,8 @@ import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.filemanager.impl.api.CONTENT_KEY
 import com.flipperdevices.filemanager.impl.api.PATH_KEY
-import com.flipperdevices.filemanager.sharecommon.model.DownloadProgress
-import com.flipperdevices.filemanager.sharecommon.model.ShareState
+import com.flipperdevices.filemanager.impl.model.DownloadProgress
+import com.flipperdevices.filemanager.impl.model.ShareState
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.file
 import com.flipperdevices.protobuf.storage.writeRequest

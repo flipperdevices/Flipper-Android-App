@@ -10,7 +10,7 @@ import com.flipperdevices.filemanager.impl.model.FileManagerState
 import com.flipperdevices.filemanager.impl.model.ShareState
 
 @Composable
-fun ComposableFileManagerUploadedScreen(
+fun ComposableFileManagerDownloadScreen(
     fileManagerState: FileManagerState,
     shareState: ShareState,
     onCancel: () -> Unit
@@ -19,7 +19,7 @@ fun ComposableFileManagerUploadedScreen(
         ComposableFileManagerContent(fileManagerState = fileManagerState, onFileClick = {})
         ComposableAlertDialog(
             title = stringResource(
-                R.string.receive_dialog_title,
+                R.string.share_dialog_title,
                 shareState.name
             ),
             downloadProgress = shareState.downloadProgress,

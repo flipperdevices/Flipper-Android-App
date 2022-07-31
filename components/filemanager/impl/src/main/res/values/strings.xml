@@ -5,4 +5,9 @@
     <string name="filemanager_upload_action">Upload file</string>
     <string name="filemanager_empty_folder">Empty folder</string>
     <string name="receive_dialog_title">Upload file %1$s</string>
+    <string name="share_dialog_title">Download file %1$s</string>
+    <string name="share_picker_title">Share key %1$s</string>
+    <string name="share_dialog_progress_text">%1$s from %2$s with speed: %3$s</string>
+    <string name="share_dialog_progress_infinite_text">%1$s with speed: %2$s</string>
+    <string name="share_dialog_btn_close">Cancel</string>
 </resources>

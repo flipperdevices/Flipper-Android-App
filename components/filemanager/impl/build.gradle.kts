@@ -2,12 +2,38 @@ plugins {
     androidCompose
     id("com.squareup.anvil")
     kotlin("kapt")
+    id("kotlin-parcelize")
+    id("kotlinx-serialization")
+}
+
+android {
+    buildTypes {
+        debug {
+            val applicationId = ApkConfig.APPLICATION_ID + ApkConfig.APPLICATION_ID_SUFFIX
+            val shareFileAuthorities = "$applicationId.filemanager.export.provider"
+            manifestPlaceholders["shareFileAuthorities"] = shareFileAuthorities
+            buildConfigField("String", "SHARE_FILE_AUTHORITIES", "\"$shareFileAuthorities\"")
+        }
+        internal {
+            val applicationId = ApkConfig.APPLICATION_ID
+            val shareFileAuthorities = "$applicationId.filemanager.export.provider"
+            manifestPlaceholders["shareFileAuthorities"] = shareFileAuthorities
+            buildConfigField("String", "SHARE_FILE_AUTHORITIES", "\"$shareFileAuthorities\"")
+        }
+        release {
+            val applicationId = ApkConfig.APPLICATION_ID
+            val shareFileAuthorities = "$applicationId.filemanager.export.provider"
+            manifestPlaceholders["shareFileAuthorities"] = shareFileAuthorities
+            buildConfigField("String", "SHARE_FILE_AUTHORITIES", "\"$shareFileAuthorities\"")
+        }
+    }
 }
 
 dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)
+    implementation(projects.components.core.preference)
     implementation(projects.components.core.navigation)
     implementation(projects.components.core.ui.fragment)
     implementation(projects.components.core.ui.navigation)
@@ -22,7 +48,6 @@ dependencies {
     implementation(libs.protobuf.jvm)
 
     implementation(projects.components.filemanager.api)
-    implementation(projects.components.filemanager.sharecommon)
 
     implementation(libs.kotlin.serialization.json)
 
