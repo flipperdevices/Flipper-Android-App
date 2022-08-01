@@ -88,7 +88,7 @@ private fun ComposableFileManagerEditorContent(
         if (loadedState.tooLarge) {
             Text(
                 modifier = Modifier.fillMaxWidth()
-                    .background(LocalPallet.current.warningBackground),
+                    .background(LocalPallet.current.warningColor),
                 text = stringResource(R.string.filemanager_editor_warning),
                 color = LocalPallet.current.textOnWarningBackground
             )
