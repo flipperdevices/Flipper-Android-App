@@ -4,14 +4,12 @@ import android.app.Application
 import android.content.Intent
 import androidx.core.content.FileProvider
 import androidx.lifecycle.viewModelScope
-import com.flipperdevices.bridge.api.model.FlipperRequest
-import com.flipperdevices.bridge.api.model.FlipperRequestPriority
-import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.ktx.jre.createClearNewFileWithMkDirs
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
@@ -21,9 +19,7 @@ import com.flipperdevices.filemanager.impl.api.FILE_PATH_KEY
 import com.flipperdevices.filemanager.impl.model.DownloadProgress
 import com.flipperdevices.filemanager.impl.model.ShareFile
 import com.flipperdevices.filemanager.impl.model.ShareState
-import com.flipperdevices.protobuf.main
-import com.flipperdevices.protobuf.storage.readRequest
-import com.google.protobuf.ByteString
+import com.flipperdevices.filemanager.impl.viewmodels.helpers.DownloadFileHelper
 import java.io.File
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlinx.coroutines.Dispatchers
@@ -45,6 +41,7 @@ class ShareViewModel @VMInject constructor(
     LogTagProvider {
     override val TAG = "ShareViewModel"
     private val downloadStarted = AtomicBoolean(false)
+    private val downloadFileHelper = DownloadFileHelper()
     private val fileInSharedDir by lazy {
         File(FlipperStorageProvider.getSharedKeyFolder(application), shareFile.name).apply {
             createClearNewFileWithMkDirs()
@@ -88,12 +85,28 @@ class ShareViewModel @VMInject constructor(
             return@withContext
         }
         info { "Start download file $shareFile" }
-        serviceApi.requestApi.request(getRequest()).collect {
-            onFileResponseReceived(it.storageReadResponse.file.data)
-            if (!it.hasNext) {
-                onCompleteDownload()
+        val exception = runCatching {
+            downloadFileHelper.downloadFile(
+                serviceApi.requestApi,
+                shareFile.flipperFilePath,
+                fileInSharedDir
+            ) { delta ->
+                shareStateFlow.update {
+                    it.copy(
+                        downloadProgress = it.downloadProgress.updateProgress(delta)
+                    )
+                }
             }
-        }
+        }.exceptionOrNull()
+
+        if (exception != null) {
+            shareStateFlow.update {
+                it.copy(
+                    processCompleted = true
+                )
+            }
+            error(exception) { "Can't download $shareFile" }
+        } else onCompleteDownload()
     }
 
     private suspend fun onCompleteDownload() = withContext(Dispatchers.Main) {
@@ -122,24 +135,4 @@ class ShareViewModel @VMInject constructor(
             )
         }
     }
-
-    private suspend fun onFileResponseReceived(data: ByteString) = withContext(Dispatchers.IO) {
-        incrementProgress(data.size())
-        fileInSharedDir.appendBytes(data.toByteArray())
-    }
-
-    private fun incrementProgress(delta: Int) {
-        shareStateFlow.update {
-            val progress = it.downloadProgress
-            it.copy(
-                downloadProgress = progress.updateProgress(delta.toLong())
-            )
-        }
-    }
-
-    private fun getRequest(): FlipperRequest = main {
-        storageReadRequest = readRequest {
-            path = shareFile.flipperFilePath
-        }
-    }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
 }
