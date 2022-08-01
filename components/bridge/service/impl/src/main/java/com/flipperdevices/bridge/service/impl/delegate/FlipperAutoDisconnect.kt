@@ -41,7 +41,7 @@ class FlipperAutoDisconnect(
                     return@collectLatest
                 }
                 info { "Try auto disconnect flipper" }
-                serviceApi.disconnect(isForce = true)
+                serviceApi.disconnect(isForce = false)
             }
         }
     }
