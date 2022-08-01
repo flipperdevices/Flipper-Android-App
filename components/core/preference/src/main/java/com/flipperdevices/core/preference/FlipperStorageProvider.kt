@@ -9,7 +9,7 @@ object FlipperStorageProvider {
     internal const val DATASTORE_FILENAME_SETTINGS = "settings.pb"
     internal const val DATASTORE_FILENAME_PAIR_SETTINGS = "pair_settings.pb"
 
-    suspend fun <T> useTemporaryFile(context: Context, block: suspend (File) -> T): T {
+    fun getTemporaryFile(context: Context): File {
         var index = 0
         var file: File
         do {
@@ -18,6 +18,11 @@ object FlipperStorageProvider {
         } while (file.exists())
         file.parentFile?.mkdirs()
         file.createNewFile()
+        return file
+    }
+
+    suspend fun <T> useTemporaryFile(context: Context, block: suspend (File) -> T): T {
+        val file = getTemporaryFile(context)
 
         val result = try {
             block(file)

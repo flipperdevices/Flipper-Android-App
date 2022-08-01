@@ -15,6 +15,7 @@
 - [Feature] Add ability to upload file from file manager
 - [Feature] Add ability to download file from file manager
 - [Feature] Update RTC on Flipper by Android App
+- [Feature] Add ability to edit file from file manager
 - [BUGFIX] Exit from emulate screen
 - [BUGFIX] Lock portrait orientation
 - [BUGFIX] Update card not shown when flipper not connected

@@ -2,11 +2,6 @@ package com.flipperdevices.filemanager.impl.viewmodels
 
 import android.content.Context
 import androidx.lifecycle.viewModelScope
-import com.flipperdevices.bridge.api.manager.FlipperRequestApi
-import com.flipperdevices.bridge.api.model.FlipperRequest
-import com.flipperdevices.bridge.api.model.FlipperRequestPriority
-import com.flipperdevices.bridge.api.model.wrapToRequest
-import com.flipperdevices.bridge.protobuf.streamToCommandFlow
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
@@ -19,18 +14,14 @@ import com.flipperdevices.filemanager.impl.api.CONTENT_KEY
 import com.flipperdevices.filemanager.impl.api.PATH_KEY
 import com.flipperdevices.filemanager.impl.model.DownloadProgress
 import com.flipperdevices.filemanager.impl.model.ShareState
-import com.flipperdevices.protobuf.main
-import com.flipperdevices.protobuf.storage.file
-import com.flipperdevices.protobuf.storage.writeRequest
+import com.flipperdevices.filemanager.impl.viewmodels.helpers.UploadFileHelper
 import java.io.File
 import java.net.URLDecoder
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -56,6 +47,7 @@ class ReceiveViewModel @VMInject constructor(
     private val fileName by lazy { deeplinkContent.filename() ?: "Unknown" }
     private val uploadStarted = AtomicBoolean(false)
     private val contentResolver = context.contentResolver
+    private val uploadFileHelper = UploadFileHelper(contentResolver)
     private val receiveStateFlow = MutableStateFlow(
         ShareState(
             fileName,
@@ -95,7 +87,19 @@ class ReceiveViewModel @VMInject constructor(
         }
         info { "Upload file $deeplinkContent in $path start" }
         val exception = runCatching {
-            uploadToFlipper(serviceApi.requestApi)
+            uploadFileHelper.uploadFile(
+                serviceApi.requestApi,
+                deeplinkContent,
+                File(path, fileName).absolutePath
+            ) { delta ->
+                if (delta != null) {
+                    receiveStateFlow.update {
+                        it.copy(
+                            downloadProgress = it.downloadProgress.updateProgress(delta)
+                        )
+                    }
+                } else receiveStateFlow.update { it.copy(processCompleted = true) }
+            }
         }.exceptionOrNull()
         deeplinkContent.cleanUp(contentResolver)
         receiveStateFlow.update {
@@ -105,51 +109,6 @@ class ReceiveViewModel @VMInject constructor(
         }
         if (exception != null) {
             error(exception) { "Can't upload $deeplinkContent" }
-        }
-    }
-
-    private suspend fun uploadToFlipper(requestApi: FlipperRequestApi) {
-        deeplinkContent.openStream(contentResolver).use { fileStream ->
-            val stream = fileStream ?: return@use
-            val filePath = File(path, fileName).absolutePath
-            val requestFlow = streamToCommandFlow(
-                stream,
-                deeplinkContent.length()
-            ) { chunkData ->
-                storageWriteRequest = writeRequest {
-                    path = filePath
-                    file = file { data = chunkData }
-                }
-            }.map { message ->
-                FlipperRequest(
-                    data = message,
-                    priority = FlipperRequestPriority.FOREGROUND,
-                    onSendCallback = {
-                        receiveStateFlow.update {
-                            it.copy(
-                                downloadProgress = it.downloadProgress.updateProgress(
-                                    message.storageWriteRequest.file.data.size().toLong()
-                                )
-                            )
-                        }
-                    }
-                )
-            }
-            val response = requestApi.request(requestFlow, onCancel = { id ->
-                requestApi.request(
-                    main {
-                        commandId = id
-                        hasNext = false
-                        storageWriteRequest = writeRequest {
-                            path = filePath
-                        }
-                    }.wrapToRequest(FlipperRequestPriority.RIGHT_NOW)
-                ).collect()
-                receiveStateFlow.update {
-                    it.copy(processCompleted = true)
-                }
-            })
-            info { "File send with response $response" }
         }
     }
 }

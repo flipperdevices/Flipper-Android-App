@@ -23,7 +23,7 @@ import com.flipperdevices.filemanager.impl.R
 import com.flipperdevices.filemanager.impl.model.DownloadProgress
 
 @Composable
-fun ComposableAlertDialog(
+fun ComposableProgressDialog(
     title: String,
     downloadProgress: DownloadProgress,
     onCancel: () -> Unit

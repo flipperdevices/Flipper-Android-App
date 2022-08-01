@@ -2,6 +2,7 @@
 <resources>
     <string name="filemanager_folder_pic_desc">Folder</string>
     <string name="filemanager_file_pic_desc">File</string>
+    <string name="filemanager_save_action">Save file</string>
     <string name="filemanager_upload_action">Upload file</string>
     <string name="filemanager_empty_folder">Empty folder</string>
     <string name="receive_dialog_title">Upload file %1$s</string>
@@ -10,4 +11,9 @@
     <string name="share_dialog_progress_text">%1$s out of %2$s with speed: %3$s</string>
     <string name="share_dialog_progress_infinite_text">%1$s with speed: %2$s</string>
     <string name="share_dialog_btn_close">Cancel</string>
+    <string name="filemanager_editor_loading_title">Uploading a file to your phone for editing (%1$s)</string>
+    <string name="filemanager_editor_saving_title">Uploading a file to the flipper (%1$s)</string>
+    <string name="filemanager_editor_warning">The file is larger than 1MB and therefore only part of the file is shown. The content will be overwritten when you save it!</string>
+    <string name="filemanager_open_dialog_edit">Edit</string>
+    <string name="filemanager_open_dialog_download">Download &amp; Share</string>
 </resources>
