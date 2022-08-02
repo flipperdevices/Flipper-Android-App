@@ -4,11 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
 import com.flipperdevices.bottombar.api.BottomNavigationApi
-import com.flipperdevices.bridge.service.api.FlipperServiceApi
-import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
@@ -35,8 +31,7 @@ const val LAUNCH_PARAMS_INTENT = "launch_params_intent"
 class SingleActivity :
     AppCompatActivity(),
     RouterProvider,
-    LogTagProvider,
-    FlipperBleServiceConsumer {
+    LogTagProvider {
     override val TAG = "SingleActivity"
 
     @Inject
@@ -56,9 +51,6 @@ class SingleActivity :
 
     @Inject
     lateinit var updaterUIApi: UpdaterUIApi
-
-    @Inject
-    lateinit var serviceApi: FlipperServiceProvider
 
     lateinit var binding: SingleActivityBinding
 
@@ -132,8 +124,6 @@ class SingleActivity :
         super.onResume()
         SingleActivityHolder.setUpSingleActivity(this)
         cicerone.getNavigationHolder().setNavigator(navigator)
-        // Try connect each time to flipper when activity visible
-        serviceApi.provideServiceApi(this, this, Lifecycle.Event.ON_PAUSE)
     }
 
     override fun onPause() {
@@ -153,9 +143,5 @@ class SingleActivity :
         } else {
             cicerone.getRouter().exit()
         }
-    }
-
-    override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
-        serviceApi.connectIfNotForceDisconnect()
     }
 }
