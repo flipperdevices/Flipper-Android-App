@@ -20,6 +20,7 @@ import com.flipperdevices.bridge.impl.manager.service.FlipperInformationApiImpl
 import com.flipperdevices.bridge.impl.manager.service.FlipperVersionApiImpl
 import com.flipperdevices.bridge.impl.manager.service.request.FlipperRequestApiImpl
 import com.flipperdevices.bridge.impl.manager.service.requestservice.FlipperRpcInformationApiImpl
+import com.flipperdevices.bridge.impl.manager.service.requestservice.FlipperRtcUpdateService
 import com.flipperdevices.bridge.impl.utils.initializeSafe
 import com.flipperdevices.bridge.impl.utils.onServiceReceivedSafe
 import com.flipperdevices.core.ktx.jre.launchWithLock
@@ -71,6 +72,7 @@ class FlipperBleManagerImpl(
         metricApi,
         dataStore
     )
+    private val flipperRtcUpdateService = FlipperRtcUpdateService()
 
     // Manager delegates
     override val connectionInformationApi = FlipperConnectionInformationApiImpl(this)
@@ -152,6 +154,11 @@ class FlipperBleManagerImpl(
                 flipperRpcInformationApi.initialize(flipperRequestApi)
             }.onFailure {
                 error(it) { "Error while initialize rpc information api" }
+            }
+            runCatching {
+                flipperRtcUpdateService.initialize(flipperRequestApi)
+            }.onFailure {
+                error(it) { "Error while initialize RTC" }
             }
 
             return@launchWithLock

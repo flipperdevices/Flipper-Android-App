@@ -10,7 +10,7 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.filemanager.impl.R
 
 @Composable
-fun ComposableFileManagerTopBar(path: String, onClickSaveButton: () -> Unit) {
+fun ComposableFileManagerTopBar(path: String, onClickUploadButton: () -> Unit) {
     TopAppBar(
         title = {
             ComposableEllipsizeStartText(
@@ -19,7 +19,7 @@ fun ComposableFileManagerTopBar(path: String, onClickSaveButton: () -> Unit) {
         },
         actions = {
             if (isAbleToSafe(path)) {
-                IconButton(onClick = onClickSaveButton) {
+                IconButton(onClick = onClickUploadButton) {
                     Icon(
                         painter = painterResource(
                             DesignSystem.drawable.ic_upload

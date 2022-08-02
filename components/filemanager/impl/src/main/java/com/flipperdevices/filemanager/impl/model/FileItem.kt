@@ -1,5 +1,8 @@
 package com.flipperdevices.filemanager.impl.model
 
+import androidx.compose.runtime.Stable
+
+@Stable
 data class FileItem(
     val fileName: String,
     val isDirectory: Boolean,

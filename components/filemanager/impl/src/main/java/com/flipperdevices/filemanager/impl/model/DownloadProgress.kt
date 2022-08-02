@@ -1,4 +1,4 @@
-package com.flipperdevices.filemanager.sharecommon.model
+package com.flipperdevices.filemanager.impl.model
 
 import androidx.compose.runtime.Stable
 
