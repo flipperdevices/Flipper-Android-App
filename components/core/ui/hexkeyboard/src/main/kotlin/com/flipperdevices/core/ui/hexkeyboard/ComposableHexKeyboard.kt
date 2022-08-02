@@ -34,11 +34,10 @@ private val LocalKeyAction = compositionLocalOf<(HexKey) -> Unit> { error("No ke
 private const val PART_WIDTH = 1f / 6f
 private const val PART_HEIGHT = 1f / 4f
 
+@Suppress("MagicNumber", "LongMethod")
 @Composable
 fun ComposableHexKeyboard(
-    modifier: Modifier = Modifier
-        .fillMaxWidth()
-        .height(200.dp),
+    modifier: Modifier,
     backgroundKey: Color = MaterialTheme.colors.surface,
     contentColor: Color = MaterialTheme.colors.onSurface,
     textStyle: TextStyle = TextStyle(),
@@ -254,6 +253,7 @@ private fun ComposableKey(
 @Composable
 private fun ComposableHexKeyboardPreview() {
     ComposableHexKeyboard(
+        modifier = Modifier.fillMaxWidth().height(200.dp),
         backgroundKey = Color.LightGray,
         contentColor = Color.Black
     )
