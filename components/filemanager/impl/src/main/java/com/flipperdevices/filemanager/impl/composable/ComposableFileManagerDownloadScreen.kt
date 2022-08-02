@@ -13,16 +13,16 @@ import com.flipperdevices.filemanager.impl.composable.list.ComposableFileManager
 import com.flipperdevices.filemanager.impl.model.FileManagerState
 import com.flipperdevices.filemanager.impl.model.ShareState
 import com.flipperdevices.filemanager.impl.viewmodels.FileManagerViewModel
-import com.flipperdevices.filemanager.impl.viewmodels.ReceiveViewModel
+import com.flipperdevices.filemanager.impl.viewmodels.ShareViewModel
 import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
-fun ComposableFileManagerUploadedScreen(navController: NavController) {
+fun ComposableFileManagerDownloadScreen(navController: NavController) {
     val fileManagerViewModel: FileManagerViewModel = tangleViewModel()
     val fileManagerState by fileManagerViewModel.getFileManagerState().collectAsState()
 
-    val receiveViewModel: ReceiveViewModel = tangleViewModel()
-    val shareState by receiveViewModel.getReceiveState().collectAsState()
+    val shareViewModel: ShareViewModel = tangleViewModel()
+    val shareState by shareViewModel.getShareState().collectAsState()
 
     if (shareState.processCompleted) {
         LaunchedEffect(Unit) {
@@ -30,7 +30,7 @@ fun ComposableFileManagerUploadedScreen(navController: NavController) {
         }
     }
 
-    ComposableFileManagerUploadedScreenInternal(
+    ComposableFileManagerDownloadScreenInternal(
         fileManagerState,
         shareState
     ) {
@@ -39,7 +39,7 @@ fun ComposableFileManagerUploadedScreen(navController: NavController) {
 }
 
 @Composable
-private fun ComposableFileManagerUploadedScreenInternal(
+private fun ComposableFileManagerDownloadScreenInternal(
     fileManagerState: FileManagerState,
     shareState: ShareState,
     onCancel: () -> Unit
@@ -48,7 +48,7 @@ private fun ComposableFileManagerUploadedScreenInternal(
         ComposableFileManagerContent(fileManagerState = fileManagerState, onFileClick = {})
         ComposableProgressDialog(
             title = stringResource(
-                R.string.receive_dialog_title,
+                R.string.share_dialog_title,
                 shareState.name
             ),
             downloadProgress = shareState.downloadProgress,
