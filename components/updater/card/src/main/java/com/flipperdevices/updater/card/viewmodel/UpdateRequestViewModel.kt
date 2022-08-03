@@ -11,7 +11,6 @@ import com.flipperdevices.updater.card.di.CardComponent
 import com.flipperdevices.updater.card.model.BatteryState
 import com.flipperdevices.updater.model.UpdateCardState
 import com.flipperdevices.updater.model.UpdateRequest
-import com.flipperdevices.updater.model.VersionFiles
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -39,10 +38,7 @@ class UpdateRequestViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
             silent = false,
             updateRequest = UpdateRequest(
                 updateFrom = updateAvailable.fromVersion,
-                updateTo = VersionFiles(
-                    version = updateAvailable.lastVersion,
-                    updaterFile = updateAvailable.updaterDist
-                )
+                updateTo = updateAvailable.lastVersion
             )
         )
     }
