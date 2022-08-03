@@ -35,6 +35,7 @@
 - [BUGFIX] Nfceditor on little screens
 - [BUGFIX] Nfceditor legend card background
 - [BUGFIX] Open deeplink on already exist activity
+- [BUGFIX] Not display changelog
 - [CI] Update deps
 - [REFACTOR] Preview (Updater card/screen, Device info)
 - [Feature] Button Emulate/Send with auto close
