@@ -47,6 +47,7 @@ class FlipperAutoDisconnect(
     }
 
     override fun onActivityResumed(activity: Activity) {
+        serviceApi.connectIfNotForceDisconnect()
         activityVisible.set(true)
     }
 

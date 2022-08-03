@@ -17,4 +17,8 @@ object FlipperSymbolFilter {
             .filter { isAcceptableSymbol(it) }
             .toCharArray().let { String(it) }
     }
+
+    fun isAcceptableString(text: String): Boolean {
+        return text.none { !isAcceptableSymbol(it) }
+    }
 }
