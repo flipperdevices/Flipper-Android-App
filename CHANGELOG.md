@@ -2,6 +2,7 @@
 
 # 1.1.6 - In progress
 
+- [Feature] Custom hex keyboard
 - [Feature] Changelog on updater screen
 - [Feature] Add NFC Editor with colors and card
 - [Feature] Support Unknown firmware

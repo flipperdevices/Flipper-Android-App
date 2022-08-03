@@ -38,6 +38,7 @@ include(
     ":components:core:ui:lifecycle",
     ":components:core:ui:fragment",
     ":components:core:ui:theme",
+    ":components:core:ui:hexkeyboard",
     ":components:core:ui:navigation",
     ":components:core:test",
     ":components:core:markdown",
