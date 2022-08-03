@@ -16,6 +16,7 @@ import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.screen.composable.ComposableUpdaterScreen
 import com.flipperdevices.updater.screen.di.UpdaterComponent
 import com.flipperdevices.updater.screen.model.UpdaterScreenState
+import com.flipperdevices.updater.screen.viewmodel.FlipperColorViewModel
 import com.flipperdevices.updater.screen.viewmodel.UpdaterViewModel
 import javax.inject.Inject
 
@@ -25,6 +26,7 @@ class UpdaterFragment : ComposeFragment(), StatusBarColorProvider {
     @Inject
     lateinit var singleActivity: SingleActivityApi
 
+    private val flipperColorViewModel by viewModels<FlipperColorViewModel>()
     private val updaterViewModel by viewModels<UpdaterViewModel>()
 
     override fun onAttach(context: Context) {
@@ -42,12 +44,14 @@ class UpdaterFragment : ComposeFragment(), StatusBarColorProvider {
 
     @Composable
     override fun RenderView() {
+        val flipperColor by flipperColorViewModel.getFlipperColor().collectAsState()
+
         val updaterScreenState by updaterViewModel.getState().collectAsState()
         if (updaterScreenState is UpdaterScreenState.Finish) {
             return
         }
 
-        ComposableUpdaterScreen(updaterScreenState, updaterViewModel::cancel) {
+        ComposableUpdaterScreen(updaterScreenState, flipperColor, updaterViewModel::cancel) {
             val updateRequest = arguments?.getParcelable<UpdateRequest>(EXTRA_UPDATE_REQUEST)
             updaterViewModel.retry(updateRequest)
         }

@@ -27,6 +27,7 @@ fun ComposableChangelog(
         Divider(Modifier.height(1.dp).background(LocalPallet.current.divider12))
         Column(
             modifier = Modifier
+                .weight(1f)
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .padding(top = 24.dp, bottom = 3.dp)

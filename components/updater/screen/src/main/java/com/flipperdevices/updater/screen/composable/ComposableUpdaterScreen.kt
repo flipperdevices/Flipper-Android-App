@@ -33,9 +33,9 @@ fun ComposableUpdaterScreen(
     onCancel: () -> Unit,
     onRetry: () -> Unit
 ) {
-    Column(Modifier.padding(horizontal = 14.dp)) {
+    Column {
         Column(
-            Modifier.weight(weight = 1f),
+            Modifier.weight(weight = 1f).padding(horizontal = 14.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             UpdaterScreenHeader(
@@ -91,23 +91,25 @@ private fun CancelButton(
     onCancel: () -> Unit
 ) {
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 7.dp, bottom = 8.dp),
+        modifier = Modifier.fillMaxWidth(),
         contentAlignment = Alignment.Center
     ) {
         if (updaterScreenState == UpdaterScreenState.CancelingUpdate) {
             CircularProgressIndicator(
+                modifier = Modifier.padding(vertical = 8.dp),
                 color = LocalPallet.current.accentSecond
             )
             return@Box
         }
         Text(
-            modifier = Modifier.clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple(),
-                onClick = onCancel
-            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = rememberRipple(),
+                    onClick = onCancel
+                )
+                .padding(vertical = 8.dp),
             text = stringResource(R.string.update_screen_cancel),
             textAlign = TextAlign.Center,
             color = LocalPallet.current.accentSecond,
