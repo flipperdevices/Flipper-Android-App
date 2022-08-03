@@ -7,7 +7,7 @@ class ImmutableEnumMap<K, V>(keyType: Class<K>) : EnumMap<K, V>(keyType) where K
         return super.get(key) ?: throw NullPointerException("We cant get null value")
     }
     operator fun set(key: K, value: V) {
-        throw RuntimeException("We cant set value in immutable enum map")
+        throw IllegalAccessError("We cant set value in immutable enum map")
     }
     constructor(keyType: Class<K>, items: Array<K>, action: () -> V) : this(keyType) {
         items.forEach { put(it, action()) }
