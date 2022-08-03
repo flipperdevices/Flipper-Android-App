@@ -1,5 +1,5 @@
 plugins {
-    androidLibrary
+    id("androidLibrary")
     id("com.squareup.anvil")
     id("kotlin-kapt")
     id("com.google.devtools.ksp")

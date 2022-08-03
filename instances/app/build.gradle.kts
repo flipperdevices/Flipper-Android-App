@@ -1,5 +1,5 @@
 plugins {
-    androidApplication
+    id("androidApplication")
     id("com.squareup.anvil")
     kotlin("kapt")
 }

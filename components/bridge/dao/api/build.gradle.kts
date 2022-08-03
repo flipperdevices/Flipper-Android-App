@@ -1,5 +1,5 @@
 plugins {
-    androidCompose
+    id("androidCompose")
     id("kotlinx-serialization")
     id("kotlin-parcelize")
 }

@@ -1,7 +1,10 @@
+import com.flipperdevices.buildlogic.plugins.ApkConfig
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
     id("io.sentry.android.gradle")
+    id("flipper.apk-config")
 }
 
 @Suppress("UnstableApiUsage")

@@ -1,5 +1,7 @@
+import com.flipperdevices.buildlogic.plugins.ApkConfig
+
 plugins {
-    androidCompose
+    id("androidCompose")
     id("com.squareup.anvil")
     kotlin("kapt")
     id("kotlin-parcelize")

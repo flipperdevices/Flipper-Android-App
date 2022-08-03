@@ -1,5 +1,5 @@
 plugins {
-    androidLibrary
+    id("androidLibrary")
     id("kotlin-android")
     id("kotlin-parcelize")
 }

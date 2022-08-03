@@ -7,6 +7,7 @@ import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.kotlin.dsl.add
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import com.flipperdevices.buildlogic.plugins.ApkConfig
 
 private const val SPLASH_SCREEN_ACTIVITY = "com.flipperdevices.app.SplashScreen"
 private const val SPLASH_SCREEN_ACTIVITY_KEY = "splashScreenActivity"

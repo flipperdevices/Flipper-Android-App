@@ -1,9 +1,12 @@
+import com.flipperdevices.buildlogic.plugins.ApkConfig
+
 plugins {
-    id("com.android.application") apply false
-    id("com.android.library") apply false
-    kotlin("android") apply false
+    alias(libs.plugins.android.app) apply false
+    alias(libs.plugins.android.lib) apply false
+    alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.detekt)
     alias(libs.plugins.ktlint)
+    id("flipper.apk-config")
 }
 
 tasks.register("clean", Delete::class) {

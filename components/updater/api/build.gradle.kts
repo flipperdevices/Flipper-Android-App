@@ -1,5 +1,5 @@
 plugins {
-    androidCompose
+    id("androidCompose")
     id("kotlin-parcelize")
 }
 

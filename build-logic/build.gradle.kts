@@ -2,11 +2,6 @@ plugins {
     `kotlin-dsl`
 }
 
-repositories {
-    mavenCentral()
-    google()
-}
-
 val kotlinVersion: String = libs.versions.kotlin.general.get()
 
 dependencies {

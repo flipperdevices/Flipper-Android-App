@@ -1,6 +1,6 @@
 plugins {
-    androidLibrary
-    androidCompose
+    id("androidLibrary")
+    id("androidCompose")
     id("com.squareup.anvil")
     id("kotlin-kapt")
     id("kotlinx-serialization")
