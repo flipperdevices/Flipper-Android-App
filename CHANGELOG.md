@@ -18,6 +18,7 @@
 - [Feature] Add ability to edit file from file manager
 - [Feature] Add ability to create file from file manager
 - [BUGFIX] Exit from emulate screen
+- [BUGFIX] Respect emulate order
 - [BUGFIX] Lock portrait orientation
 - [BUGFIX] Update card not shown when flipper not connected
 - [BUGFIX] Static URL on dynamic link docs
