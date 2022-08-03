@@ -1,9 +1,8 @@
 package com.flipperdevices.core.ui.hexkeyboard
 
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
@@ -21,7 +20,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstrainedLayoutReference
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.ConstraintLayoutScope
+import androidx.constraintlayout.compose.Dimension
 
 /**
  * Fields for composition local
@@ -30,9 +32,6 @@ import androidx.constraintlayout.compose.ConstraintLayout
  */
 private val LocalButtonColor = compositionLocalOf<Color> { error("No button background") }
 private val LocalKeyAction = compositionLocalOf<(HexKey) -> Unit> { error("No key action") }
-
-private const val PART_WIDTH = 1f / 6f
-private const val PART_HEIGHT = 1f / 4f
 
 @Suppress("MagicNumber", "LongMethod")
 @Composable
@@ -50,176 +49,207 @@ fun ComposableHexKeyboard(
         LocalKeyAction provides onClick
     ) {
         ConstraintLayout(modifier = modifier) {
-            val keys = HexKey.values()
-            val refs = keys.map { createRef() }
-            // 789ABC
-            ComposableKey(
-                key = HexKey.Seven,
-                modifier = Modifier.constrainAs(refs[0]) {
-                    top.linkTo(parent.top)
-                    bottom.linkTo(refs[6].top)
-                    start.linkTo(parent.start)
-                    end.linkTo(refs[1].start)
-                }
-            )
-            ComposableKey(
-                key = HexKey.Eight,
-                modifier = Modifier.constrainAs(refs[1]) {
-                    top.linkTo(parent.top)
-                    bottom.linkTo(refs[7].top)
-                    start.linkTo(refs[0].end)
-                    end.linkTo(refs[2].start)
-                }
-            )
-            ComposableKey(
-                key = HexKey.Nine,
-                modifier = Modifier.constrainAs(refs[2]) {
-                    top.linkTo(parent.top)
-                    bottom.linkTo(refs[8].top)
-                    start.linkTo(refs[1].end)
-                    end.linkTo(refs[3].start)
-                }
-            )
-            ComposableKey(
-                key = HexKey.A,
-                modifier = Modifier.constrainAs(refs[3]) {
-                    top.linkTo(parent.top)
-                    bottom.linkTo(refs[9].top)
-                    start.linkTo(refs[2].end)
-                    end.linkTo(refs[4].start)
-                }
-            )
-            ComposableKey(
-                key = HexKey.B,
-                modifier = Modifier.constrainAs(refs[4]) {
-                    top.linkTo(parent.top)
-                    bottom.linkTo(refs[10].top)
-                    start.linkTo(refs[3].end)
-                    end.linkTo(refs[5].start)
-                }
-            )
-            ComposableKey(
-                key = HexKey.C,
-                modifier = Modifier.constrainAs(refs[5]) {
-                    top.linkTo(parent.top)
-                    bottom.linkTo(refs[11].top)
-                    start.linkTo(refs[4].end)
-                    end.linkTo(parent.end)
-                }
-            )
-            // 456DEF
-            ComposableKey(
-                key = HexKey.Four,
-                modifier = Modifier.constrainAs(refs[6]) {
-                    top.linkTo(refs[0].bottom)
-                    bottom.linkTo(refs[12].top)
-                    start.linkTo(parent.start)
-                    end.linkTo(refs[7].start)
-                }
-            )
-            ComposableKey(
-                key = HexKey.Five,
-                modifier = Modifier.constrainAs(refs[7]) {
-                    top.linkTo(refs[1].bottom)
-                    bottom.linkTo(refs[13].top)
-                    start.linkTo(refs[6].end)
-                    end.linkTo(refs[8].start)
-                }
-            )
-            ComposableKey(
-                key = HexKey.Six,
-                modifier = Modifier.constrainAs(refs[8]) {
-                    top.linkTo(refs[2].bottom)
-                    bottom.linkTo(refs[14].top)
-                    start.linkTo(refs[7].end)
-                    end.linkTo(refs[9].start)
-                }
-            )
-            ComposableKey(
-                key = HexKey.D,
-                modifier = Modifier.constrainAs(refs[9]) {
-                    top.linkTo(refs[3].bottom)
-                    bottom.linkTo(refs[16].top)
-                    start.linkTo(refs[8].end)
-                    end.linkTo(refs[10].start)
-                }
-            )
-            ComposableKey(
-                key = HexKey.E,
-                modifier = Modifier.constrainAs(refs[10]) {
-                    top.linkTo(refs[4].bottom)
-                    bottom.linkTo(refs[17].top)
-                    start.linkTo(refs[9].end)
-                    end.linkTo(refs[11].start)
-                }
-            )
-            ComposableKey(
-                key = HexKey.F,
-                modifier = Modifier.constrainAs(refs[11]) {
-                    top.linkTo(refs[5].bottom)
-                    bottom.linkTo(refs[17].top)
-                    start.linkTo(refs[10].end)
-                    end.linkTo(parent.end)
-                }
-            )
-            // 321
-            ComposableKey(
-                key = HexKey.Three,
-                modifier = Modifier.constrainAs(refs[12]) {
-                    top.linkTo(refs[6].bottom)
-                    bottom.linkTo(refs[15].top)
-                    start.linkTo(parent.start)
-                    end.linkTo(refs[13].start)
-                }
-            )
-            ComposableKey(
-                key = HexKey.Two,
-                modifier = Modifier.constrainAs(refs[13]) {
-                    top.linkTo(refs[7].bottom)
-                    bottom.linkTo(refs[15].top)
-                    start.linkTo(refs[12].end)
-                    end.linkTo(refs[14].start)
-                }
-            )
-            ComposableKey(
-                key = HexKey.One,
-                modifier = Modifier.constrainAs(refs[14]) {
-                    top.linkTo(refs[8].bottom)
-                    bottom.linkTo(refs[15].top)
-                    start.linkTo(refs[13].end)
-                    end.linkTo(refs[16].start)
-                }
-            )
-
-            // 0
-            ComposableKey(
-                key = HexKey.Zero,
-                modifier = Modifier.constrainAs(refs[15]) {
-                    top.linkTo(refs[12].bottom)
-                    bottom.linkTo(parent.bottom)
-                    start.linkTo(parent.start)
-                }.fillMaxWidth(PART_WIDTH * 3)
-            )
-
-            // Clear, Ok
-            ComposableKey(
-                key = HexKey.Clear,
-                modifier = Modifier.constrainAs(refs[16]) {
-                    top.linkTo(refs[10].bottom)
-                    start.linkTo(refs[14].end)
-                    end.linkTo(refs[17].start)
-                }.fillMaxHeight(PART_HEIGHT * 2)
-            )
-            ComposableKey(
-                key = HexKey.Ok,
-                modifier = Modifier.constrainAs(refs[17]) {
-                    top.linkTo(refs[11].bottom)
-                    start.linkTo(refs[16].end)
-                    end.linkTo(parent.end)
-                }.fillMaxWidth(PART_WIDTH * 2).fillMaxHeight(PART_HEIGHT * 2)
-            )
+            val refs: ImmutableEnumMap<HexKey, ConstrainedLayoutReference> =
+                ImmutableEnumMap(HexKey::class.java, HexKey.values()) { createRef() }
+            ComposableKeys123ABC(refs)
+            ComposableKeys456DEF(refs)
+            ComposableKeys7890(refs)
+            ComposableKeysClearOk(refs)
         }
     }
+}
+
+@Composable
+fun ConstraintLayoutScope.ComposableKeys123ABC(
+    refs: ImmutableEnumMap<HexKey, ConstrainedLayoutReference>
+) {
+    ComposableKey(
+        key = HexKey.One,
+        modifier = Modifier.constrainAs(refs[HexKey.One]) {
+            top.linkTo(parent.top)
+            bottom.linkTo(refs[HexKey.Four].top)
+            start.linkTo(parent.start)
+            end.linkTo(refs[HexKey.Two].start)
+        }
+    )
+    ComposableKey(
+        key = HexKey.Two,
+        modifier = Modifier.constrainAs(refs[HexKey.Two]) {
+            top.linkTo(refs[HexKey.One].top)
+            bottom.linkTo(refs[HexKey.One].bottom)
+            start.linkTo(refs[HexKey.One].end)
+            end.linkTo(refs[HexKey.Three].start)
+        }
+    )
+    ComposableKey(
+        key = HexKey.Three,
+        modifier = Modifier.constrainAs(refs[HexKey.Three]) {
+            top.linkTo(refs[HexKey.Two].top)
+            bottom.linkTo(refs[HexKey.Two].bottom)
+            start.linkTo(refs[HexKey.Two].end)
+            end.linkTo(refs[HexKey.A].start)
+        }
+    )
+    ComposableKey(
+        key = HexKey.A,
+        modifier = Modifier.constrainAs(refs[HexKey.A]) {
+            top.linkTo(refs[HexKey.Three].top)
+            bottom.linkTo(refs[HexKey.Three].bottom)
+            start.linkTo(refs[HexKey.Three].end)
+            end.linkTo(refs[HexKey.B].start)
+        }
+    )
+    ComposableKey(
+        key = HexKey.B,
+        modifier = Modifier.constrainAs(refs[HexKey.B]) {
+            top.linkTo(refs[HexKey.A].top)
+            bottom.linkTo(refs[HexKey.A].bottom)
+            start.linkTo(refs[HexKey.A].end)
+            end.linkTo(refs[HexKey.C].start)
+        }
+    )
+    ComposableKey(
+        key = HexKey.C,
+        modifier = Modifier.constrainAs(refs[HexKey.C]) {
+            top.linkTo(refs[HexKey.B].top)
+            bottom.linkTo(refs[HexKey.B].bottom)
+            start.linkTo(refs[HexKey.B].end)
+            end.linkTo(parent.end)
+        }
+    )
+}
+
+@Composable
+private fun ConstraintLayoutScope.ComposableKeys456DEF(
+    refs: ImmutableEnumMap<HexKey, ConstrainedLayoutReference>
+) {
+    ComposableKey(
+        key = HexKey.Four,
+        modifier = Modifier.constrainAs(refs[HexKey.Four]) {
+            top.linkTo(refs[HexKey.One].bottom)
+            bottom.linkTo(refs[HexKey.Seven].top)
+            start.linkTo(parent.start)
+            end.linkTo(refs[HexKey.Five].start)
+        }
+    )
+    ComposableKey(
+        key = HexKey.Five,
+        modifier = Modifier.constrainAs(refs[HexKey.Five]) {
+            top.linkTo(refs[HexKey.Four].top)
+            bottom.linkTo(refs[HexKey.Four].bottom)
+            start.linkTo(refs[HexKey.Four].end)
+            end.linkTo(refs[HexKey.Six].start)
+        }
+    )
+    ComposableKey(
+        key = HexKey.Six,
+        modifier = Modifier.constrainAs(refs[HexKey.Six]) {
+            top.linkTo(refs[HexKey.Five].top)
+            bottom.linkTo(refs[HexKey.Five].bottom)
+            start.linkTo(refs[HexKey.Five].end)
+            end.linkTo(refs[HexKey.D].start)
+        }
+    )
+    ComposableKey(
+        key = HexKey.D,
+        modifier = Modifier.constrainAs(refs[HexKey.D]) {
+            top.linkTo(refs[HexKey.Six].top)
+            bottom.linkTo(refs[HexKey.Six].bottom)
+            start.linkTo(refs[HexKey.Six].end)
+            end.linkTo(refs[HexKey.E].start)
+        }
+    )
+    ComposableKey(
+        key = HexKey.E,
+        modifier = Modifier.constrainAs(refs[HexKey.E]) {
+            top.linkTo(refs[HexKey.D].top)
+            bottom.linkTo(refs[HexKey.D].bottom)
+            start.linkTo(refs[HexKey.D].end)
+            end.linkTo(refs[HexKey.F].start)
+        }
+    )
+    ComposableKey(
+        key = HexKey.F,
+        modifier = Modifier.constrainAs(refs[HexKey.F]) {
+            top.linkTo(refs[HexKey.E].top)
+            bottom.linkTo(refs[HexKey.E].bottom)
+            start.linkTo(refs[HexKey.E].end)
+            end.linkTo(parent.end)
+        }
+    )
+}
+
+@Composable
+private fun ConstraintLayoutScope.ComposableKeys7890(
+    refs: ImmutableEnumMap<HexKey, ConstrainedLayoutReference>
+) {
+    ComposableKey(
+        key = HexKey.Seven,
+        modifier = Modifier.constrainAs(refs[HexKey.Seven]) {
+            top.linkTo(refs[HexKey.Four].bottom)
+            bottom.linkTo(refs[HexKey.Zero].top)
+            start.linkTo(parent.start)
+            end.linkTo(refs[HexKey.Eight].start)
+        }
+    )
+    ComposableKey(
+        key = HexKey.Eight,
+        modifier = Modifier.constrainAs(refs[HexKey.Eight]) {
+            top.linkTo(refs[HexKey.Seven].top)
+            bottom.linkTo(refs[HexKey.Seven].bottom)
+            start.linkTo(refs[HexKey.Seven].end)
+            end.linkTo(refs[HexKey.Nine].start)
+        }
+    )
+    ComposableKey(
+        key = HexKey.Nine,
+        modifier = Modifier.constrainAs(refs[HexKey.Nine]) {
+            top.linkTo(refs[HexKey.Eight].top)
+            bottom.linkTo(refs[HexKey.Eight].bottom)
+            start.linkTo(refs[HexKey.Eight].end)
+            end.linkTo(refs[HexKey.Six].end)
+        }
+    )
+    ComposableKey(
+        key = HexKey.Zero,
+        modifier = Modifier.constrainAs(refs[HexKey.Zero]) {
+            top.linkTo(refs[HexKey.Seven].bottom)
+            bottom.linkTo(parent.bottom)
+            start.linkTo(refs[HexKey.Seven].start)
+            end.linkTo(refs[HexKey.Nine].end)
+
+            width = Dimension.fillToConstraints
+        }
+    )
+}
+
+@Composable
+private fun ConstraintLayoutScope.ComposableKeysClearOk(
+    refs: ImmutableEnumMap<HexKey, ConstrainedLayoutReference>
+) {
+    ComposableKey(
+        key = HexKey.Clear,
+        modifier = Modifier.constrainAs(refs[HexKey.Clear]) {
+            top.linkTo(refs[HexKey.Nine].top)
+            bottom.linkTo(refs[HexKey.Zero].bottom)
+            start.linkTo(refs[HexKey.D].start)
+            end.linkTo(refs[HexKey.D].end)
+
+            height = Dimension.fillToConstraints
+        }
+    )
+    ComposableKey(
+        key = HexKey.Ok,
+        modifier = Modifier.constrainAs(refs[HexKey.Ok]) {
+            top.linkTo(refs[HexKey.E].bottom)
+            bottom.linkTo(refs[HexKey.Zero].bottom)
+            start.linkTo(refs[HexKey.E].start)
+            end.linkTo(refs[HexKey.F].end)
+
+            height = Dimension.fillToConstraints
+            width = Dimension.fillToConstraints
+        }
+    )
 }
 
 @Composable
@@ -229,7 +259,7 @@ private fun ComposableKey(
 ) {
     val onClick = LocalKeyAction.current
     Button(
-        modifier = modifier.fillMaxWidth(PART_WIDTH).fillMaxHeight(PART_HEIGHT).padding(4.dp),
+        modifier = modifier,
         onClick = { onClick.invoke(key) },
         colors = ButtonDefaults.buttonColors(
             backgroundColor = LocalButtonColor.current,
@@ -237,12 +267,15 @@ private fun ComposableKey(
         ),
         elevation = null
     ) {
-        if (key == HexKey.Clear) {
-            Icon(
+        val text = key.title.toString()
+        when (key) {
+            HexKey.Clear -> Icon(
                 imageVector = Icons.Filled.ArrowBack,
-                contentDescription = key.title
+                contentDescription = text
             )
-        } else Text(text = key.title)
+            HexKey.Ok -> Text(text = "Ok")
+            else -> Text(text = text)
+        }
     }
 }
 
@@ -253,7 +286,7 @@ private fun ComposableKey(
 @Composable
 private fun ComposableHexKeyboardPreview() {
     ComposableHexKeyboard(
-        modifier = Modifier.fillMaxWidth().height(200.dp),
+        modifier = Modifier.fillMaxWidth().height(200.dp).background(Color.Cyan),
         backgroundKey = Color.LightGray,
         contentColor = Color.Black
     )
