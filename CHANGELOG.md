@@ -2,6 +2,7 @@
 
 # 1.1.6 - In progress
 
+- [Feature] Changelog on updater screen
 - [Feature] Add NFC Editor with colors and card
 - [Feature] Support Unknown firmware
 - [Feature] Compose Navigation on "Info" Screen

@@ -1,5 +1,8 @@
 package com.flipperdevices.updater.screen.composable
 
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -22,8 +25,11 @@ fun ComposableUpdateContent(
     updaterScreenState: UpdaterScreenState,
     onRetry: () -> Unit
 ) {
-    if (updaterScreenState.version != null) {
-        FirmwareVersionText(updaterScreenState.version)
+    val version = updaterScreenState.firmwareData?.version
+    if (version != null) {
+        FirmwareVersionText(version)
+    } else {
+        Spacer(modifier = Modifier.height(29.dp)) // 21 + 8
     }
 
     when (updaterScreenState) {
@@ -79,7 +85,7 @@ private fun FirmwareVersionText(version: FirmwareVersion) {
     val textColor = getColorByChannel(version.channel)
 
     Text(
-        modifier = Modifier.padding(bottom = 4.dp, start = 24.dp, end = 24.dp),
+        modifier = Modifier.heightIn(21.dp),
         text = text,
         color = textColor,
         style = LocalTypography.current.titleM18
@@ -102,7 +108,7 @@ private fun DescriptionUpdateText(
     }
 
     Text(
-        modifier = Modifier.padding(horizontal = 12.dp),
+        modifier = Modifier.padding(bottom = 12.dp),
         text = stringResource(descriptionId) + animatedDots(),
         style = LocalTypography.current.subtitleM12,
         color = LocalPallet.current.text30

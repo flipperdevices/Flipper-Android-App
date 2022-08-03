@@ -1,23 +1,23 @@
 package com.flipperdevices.updater.screen.model
 
-import com.flipperdevices.updater.model.FirmwareVersion
+import com.flipperdevices.updater.model.VersionFiles
 
 sealed class UpdaterScreenState(
-    val version: FirmwareVersion?
+    val firmwareData: VersionFiles?
 ) {
     object NotStarted : UpdaterScreenState(null)
 
-    class CancelingSynchronization(version: FirmwareVersion?) : UpdaterScreenState(version)
+    class CancelingSynchronization(firmwareData: VersionFiles?) : UpdaterScreenState(firmwareData)
 
     class DownloadingFromNetwork(
-        version: FirmwareVersion?,
+        firmwareData: VersionFiles?,
         val percent: Float
-    ) : UpdaterScreenState(version)
+    ) : UpdaterScreenState(firmwareData)
 
     class UploadOnFlipper(
-        version: FirmwareVersion?,
+        firmwareData: VersionFiles?,
         val percent: Float
-    ) : UpdaterScreenState(version)
+    ) : UpdaterScreenState(firmwareData)
 
     class Failed(
         val failedReason: FailedReason

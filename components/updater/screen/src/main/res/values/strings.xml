@@ -32,4 +32,5 @@
     <string name="update_screen_failed_network_title">Unable to download firmware</string>
     <string name="update_screen_failed_network_desc">Can\'t connect to update server</string>
     <string name="update_screen_failed_network_btn">Retry</string>
+    <string name="update_screen_whats_new">What`s new</string>
 </resources>

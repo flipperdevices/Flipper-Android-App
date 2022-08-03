@@ -35,7 +35,7 @@ fun ComposableUpdaterScreen(
 ) {
     Column {
         Column(
-            Modifier.weight(weight = 1f),
+            Modifier.weight(weight = 1f).padding(horizontal = 14.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             UpdaterScreenHeader(
@@ -43,6 +43,10 @@ fun ComposableUpdaterScreen(
                 flipperColor = flipperColor
             )
             ComposableUpdateContent(updaterScreenState, onRetry)
+            val changelog = updaterScreenState.firmwareData?.changelog
+            if (changelog != null) {
+                ComposableChangelog(changelog)
+            }
         }
         CancelButton(updaterScreenState, onCancel)
     }
@@ -56,9 +60,8 @@ private fun UpdaterScreenHeader(
     val titleId = if (isFailed) {
         R.string.update_screen_title_failed
     } else R.string.update_screen_title
-    val bottomPadding = if (isFailed) 38.dp else 64.dp
     Text(
-        modifier = Modifier.padding(top = 48.dp, start = 14.dp, end = 14.dp),
+        modifier = Modifier.padding(vertical = 18.dp),
         text = stringResource(titleId),
         style = LocalTypography.current.titleB18,
         textAlign = TextAlign.Center
@@ -75,9 +78,7 @@ private fun UpdaterScreenHeader(
     }
 
     Image(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 22.dp, start = 14.dp, end = 14.dp, bottom = bottomPadding),
+        modifier = Modifier.fillMaxWidth().padding(bottom = 14.dp),
         painter = painterResource(imageId),
         contentDescription = stringResource(titleId),
         contentScale = ContentScale.FillWidth
@@ -90,23 +91,25 @@ private fun CancelButton(
     onCancel: () -> Unit
 ) {
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 8.dp),
+        modifier = Modifier.fillMaxWidth(),
         contentAlignment = Alignment.Center
     ) {
         if (updaterScreenState == UpdaterScreenState.CancelingUpdate) {
             CircularProgressIndicator(
+                modifier = Modifier.padding(vertical = 8.dp),
                 color = LocalPallet.current.accentSecond
             )
             return@Box
         }
         Text(
-            modifier = Modifier.clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple(),
-                onClick = onCancel
-            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = rememberRipple(),
+                    onClick = onCancel
+                )
+                .padding(vertical = 8.dp),
             text = stringResource(R.string.update_screen_cancel),
             textAlign = TextAlign.Center,
             color = LocalPallet.current.accentSecond,
