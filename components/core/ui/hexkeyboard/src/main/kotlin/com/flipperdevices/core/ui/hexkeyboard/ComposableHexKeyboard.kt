@@ -3,6 +3,7 @@ package com.flipperdevices.core.ui.hexkeyboard
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
@@ -70,6 +71,9 @@ fun ConstraintLayoutScope.ComposableKeys123ABC(
             bottom.linkTo(refs[HexKey.Four].top)
             start.linkTo(parent.start)
             end.linkTo(refs[HexKey.Two].start)
+
+            height = Dimension.fillToConstraints
+            width = Dimension.fillToConstraints
         }
     )
     ComposableKey(
@@ -79,6 +83,9 @@ fun ConstraintLayoutScope.ComposableKeys123ABC(
             bottom.linkTo(refs[HexKey.One].bottom)
             start.linkTo(refs[HexKey.One].end)
             end.linkTo(refs[HexKey.Three].start)
+
+            height = Dimension.fillToConstraints
+            width = Dimension.fillToConstraints
         }
     )
     ComposableKey(
@@ -88,6 +95,9 @@ fun ConstraintLayoutScope.ComposableKeys123ABC(
             bottom.linkTo(refs[HexKey.Two].bottom)
             start.linkTo(refs[HexKey.Two].end)
             end.linkTo(refs[HexKey.A].start)
+
+            height = Dimension.fillToConstraints
+            width = Dimension.fillToConstraints
         }
     )
     ComposableKey(
@@ -97,6 +107,9 @@ fun ConstraintLayoutScope.ComposableKeys123ABC(
             bottom.linkTo(refs[HexKey.Three].bottom)
             start.linkTo(refs[HexKey.Three].end)
             end.linkTo(refs[HexKey.B].start)
+
+            height = Dimension.fillToConstraints
+            width = Dimension.fillToConstraints
         }
     )
     ComposableKey(
@@ -106,6 +119,9 @@ fun ConstraintLayoutScope.ComposableKeys123ABC(
             bottom.linkTo(refs[HexKey.A].bottom)
             start.linkTo(refs[HexKey.A].end)
             end.linkTo(refs[HexKey.C].start)
+
+            height = Dimension.fillToConstraints
+            width = Dimension.fillToConstraints
         }
     )
     ComposableKey(
@@ -115,6 +131,9 @@ fun ConstraintLayoutScope.ComposableKeys123ABC(
             bottom.linkTo(refs[HexKey.B].bottom)
             start.linkTo(refs[HexKey.B].end)
             end.linkTo(parent.end)
+
+            height = Dimension.fillToConstraints
+            width = Dimension.fillToConstraints
         }
     )
 }
@@ -130,6 +149,9 @@ private fun ConstraintLayoutScope.ComposableKeys456DEF(
             bottom.linkTo(refs[HexKey.Seven].top)
             start.linkTo(parent.start)
             end.linkTo(refs[HexKey.Five].start)
+
+            height = Dimension.fillToConstraints
+            width = Dimension.fillToConstraints
         }
     )
     ComposableKey(
@@ -139,6 +161,9 @@ private fun ConstraintLayoutScope.ComposableKeys456DEF(
             bottom.linkTo(refs[HexKey.Four].bottom)
             start.linkTo(refs[HexKey.Four].end)
             end.linkTo(refs[HexKey.Six].start)
+
+            height = Dimension.fillToConstraints
+            width = Dimension.fillToConstraints
         }
     )
     ComposableKey(
@@ -148,6 +173,9 @@ private fun ConstraintLayoutScope.ComposableKeys456DEF(
             bottom.linkTo(refs[HexKey.Five].bottom)
             start.linkTo(refs[HexKey.Five].end)
             end.linkTo(refs[HexKey.D].start)
+
+            height = Dimension.fillToConstraints
+            width = Dimension.fillToConstraints
         }
     )
     ComposableKey(
@@ -157,6 +185,9 @@ private fun ConstraintLayoutScope.ComposableKeys456DEF(
             bottom.linkTo(refs[HexKey.Six].bottom)
             start.linkTo(refs[HexKey.Six].end)
             end.linkTo(refs[HexKey.E].start)
+
+            height = Dimension.fillToConstraints
+            width = Dimension.fillToConstraints
         }
     )
     ComposableKey(
@@ -166,6 +197,9 @@ private fun ConstraintLayoutScope.ComposableKeys456DEF(
             bottom.linkTo(refs[HexKey.D].bottom)
             start.linkTo(refs[HexKey.D].end)
             end.linkTo(refs[HexKey.F].start)
+
+            height = Dimension.fillToConstraints
+            width = Dimension.fillToConstraints
         }
     )
     ComposableKey(
@@ -175,6 +209,9 @@ private fun ConstraintLayoutScope.ComposableKeys456DEF(
             bottom.linkTo(refs[HexKey.E].bottom)
             start.linkTo(refs[HexKey.E].end)
             end.linkTo(parent.end)
+
+            height = Dimension.fillToConstraints
+            width = Dimension.fillToConstraints
         }
     )
 }
@@ -190,6 +227,9 @@ private fun ConstraintLayoutScope.ComposableKeys7890(
             bottom.linkTo(refs[HexKey.Zero].top)
             start.linkTo(parent.start)
             end.linkTo(refs[HexKey.Eight].start)
+
+            height = Dimension.fillToConstraints
+            width = Dimension.fillToConstraints
         }
     )
     ComposableKey(
@@ -199,6 +239,9 @@ private fun ConstraintLayoutScope.ComposableKeys7890(
             bottom.linkTo(refs[HexKey.Seven].bottom)
             start.linkTo(refs[HexKey.Seven].end)
             end.linkTo(refs[HexKey.Nine].start)
+
+            height = Dimension.fillToConstraints
+            width = Dimension.fillToConstraints
         }
     )
     ComposableKey(
@@ -208,6 +251,9 @@ private fun ConstraintLayoutScope.ComposableKeys7890(
             bottom.linkTo(refs[HexKey.Eight].bottom)
             start.linkTo(refs[HexKey.Eight].end)
             end.linkTo(refs[HexKey.Six].end)
+
+            height = Dimension.fillToConstraints
+            width = Dimension.fillToConstraints
         }
     )
     ComposableKey(
@@ -218,6 +264,7 @@ private fun ConstraintLayoutScope.ComposableKeys7890(
             start.linkTo(refs[HexKey.Seven].start)
             end.linkTo(refs[HexKey.Nine].end)
 
+            height = Dimension.fillToConstraints
             width = Dimension.fillToConstraints
         }
     )
@@ -230,11 +277,12 @@ private fun ConstraintLayoutScope.ComposableKeysClearOk(
     ComposableKey(
         key = HexKey.Clear,
         modifier = Modifier.constrainAs(refs[HexKey.Clear]) {
-            top.linkTo(refs[HexKey.Nine].top)
-            bottom.linkTo(refs[HexKey.Zero].bottom)
-            start.linkTo(refs[HexKey.D].start)
-            end.linkTo(refs[HexKey.D].end)
+            top.linkTo(refs[HexKey.D].bottom)
+            bottom.linkTo(parent.bottom)
+            start.linkTo(refs[HexKey.Nine].end)
+            end.linkTo(refs[HexKey.Ok].start)
 
+            width = Dimension.fillToConstraints
             height = Dimension.fillToConstraints
         }
     )
@@ -242,9 +290,9 @@ private fun ConstraintLayoutScope.ComposableKeysClearOk(
         key = HexKey.Ok,
         modifier = Modifier.constrainAs(refs[HexKey.Ok]) {
             top.linkTo(refs[HexKey.E].bottom)
-            bottom.linkTo(refs[HexKey.Zero].bottom)
+            bottom.linkTo(parent.bottom)
             start.linkTo(refs[HexKey.E].start)
-            end.linkTo(refs[HexKey.F].end)
+            end.linkTo(parent.end)
 
             height = Dimension.fillToConstraints
             width = Dimension.fillToConstraints
@@ -259,7 +307,7 @@ private fun ComposableKey(
 ) {
     val onClick = LocalKeyAction.current
     Button(
-        modifier = modifier,
+        modifier = modifier.padding(4.dp),
         onClick = { onClick.invoke(key) },
         colors = ButtonDefaults.buttonColors(
             backgroundColor = LocalButtonColor.current,
