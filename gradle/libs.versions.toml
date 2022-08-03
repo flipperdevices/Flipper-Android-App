@@ -94,7 +94,7 @@ compose-constraint = { module = "androidx.constraintlayout:constraintlayout-comp
 
 # Markdown
 flexmark-core = { module = "com.vladsch.flexmark:flexmark", version.ref = "flexmark" }
-markdown-renderer = { module = "com.github.Programistich:compose-markdown", version.ref = "markdown" }
+markdown-renderer = { module = "com.github.Programistich.multiplatform-markdown-renderer:multiplatform-markdown-renderer-android", version.ref = "markdown" }
 
 # Storage
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
