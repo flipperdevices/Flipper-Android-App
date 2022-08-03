@@ -9,8 +9,7 @@ sealed class UpdateCardState {
 
     data class UpdateAvailable constructor(
         val fromVersion: FirmwareVersion,
-        val lastVersion: FirmwareVersion,
-        val updaterDist: DistributionFile,
+        val lastVersion: VersionFiles,
         val isOtherChannel: Boolean
     ) : UpdateCardState()
 

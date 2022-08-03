@@ -25,6 +25,7 @@ import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
 import com.flipperdevices.updater.model.UpdateCardState
 import com.flipperdevices.updater.model.UpdateErrorType
+import com.flipperdevices.updater.model.VersionFiles
 
 @Composable
 internal fun ComposableUpdaterCardInternal(
@@ -95,7 +96,7 @@ private fun ComposableUpdaterCard(
                 onSelectFirmwareChannel = onSelectChannel
             )
             is UpdateCardState.UpdateAvailable -> ComposableFirmwareUpdaterContent(
-                version = cardStateLocal.lastVersion,
+                version = cardStateLocal.lastVersion.version,
                 updateCardState = cardStateLocal,
                 onSelectFirmwareChannel = onSelectChannel
             )
@@ -115,15 +116,19 @@ private fun ComposableUpdaterCardPreview() {
             UpdateCardState.InProgress,
             UpdateCardState.NoUpdate(lastVersion),
             UpdateCardState.UpdateAvailable(
-                lastVersion = lastVersion,
                 fromVersion = lastVersion,
-                updaterDist = DistributionFile(url = "", sha256 = ""),
+                lastVersion = VersionFiles(
+                    version = lastVersion,
+                    updaterFile = DistributionFile(url = "", sha256 = "")
+                ),
                 isOtherChannel = false
             ),
             UpdateCardState.UpdateAvailable(
-                lastVersion = lastVersion,
                 fromVersion = lastVersion,
-                updaterDist = DistributionFile(url = "", sha256 = ""),
+                lastVersion = VersionFiles(
+                    version = lastVersion,
+                    updaterFile = DistributionFile(url = "", sha256 = "")
+                ),
                 isOtherChannel = true
             ),
             UpdateCardState.Error(UpdateErrorType.NO_SD_CARD),

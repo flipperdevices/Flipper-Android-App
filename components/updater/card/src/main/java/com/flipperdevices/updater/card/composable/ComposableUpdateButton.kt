@@ -36,6 +36,7 @@ import com.flipperdevices.updater.model.DistributionFile
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
 import com.flipperdevices.updater.model.UpdateCardState
+import com.flipperdevices.updater.model.VersionFiles
 
 @Composable
 fun ComposableUpdateButton(
@@ -157,10 +158,9 @@ fun ComposableUpdateButtonPreview() {
             UpdateCardState.NoUpdate(flipperVersion = version),
             UpdateCardState.UpdateAvailable(
                 fromVersion = version,
-                lastVersion = version,
-                updaterDist = DistributionFile(
-                    url = "123",
-                    sha256 = "123"
+                lastVersion = VersionFiles(
+                    version = version,
+                    updaterFile = DistributionFile(url = "", sha256 = "")
                 ),
                 isOtherChannel = false
             )
