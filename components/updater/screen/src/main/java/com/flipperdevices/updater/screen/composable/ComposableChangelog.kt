@@ -36,12 +36,17 @@ fun ComposableChangelog(
                 style = LocalTypography.current.titleSB18,
                 textAlign = TextAlign.Left
             )
-            val text = changelog.replace("\r\n\r\n", "\r\n").replace("\r", "")
             ComposableMarkdown(
-                content = text,
+                content = removeLineBreakChangelog(changelog),
                 modifier = Modifier.fillMaxSize()
             )
         }
         Divider(Modifier.height(1.dp).background(LocalPallet.current.divider12))
     }
+}
+
+private fun removeLineBreakChangelog(changelog: String): String {
+    return changelog
+        .replace("\r\n\r\n", "\r\n")
+        .replace("\r", "")
 }
