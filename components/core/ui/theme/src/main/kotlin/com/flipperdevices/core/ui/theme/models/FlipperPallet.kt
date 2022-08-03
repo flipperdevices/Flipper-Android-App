@@ -100,7 +100,7 @@ data class FlipperPallet(
     val nfcCardBackgroundSecond: Color = Color(0xFF303030),
     val onNfcCard: Color = Color(0xFFFFFFFF),
 
-    val warningBackground: Color = Color(0xFFF63F3F),
+    val warningColor: Color = Color(0xFFF63F3F),
     val textOnWarningBackground: Color = Color(0xFFFFFFFF)
 ) {
     @Composable

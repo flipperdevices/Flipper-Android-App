@@ -15,8 +15,6 @@ dependencies {
     implementation(projects.components.singleactivity.api)
     implementation(projects.components.firstpair.api)
     implementation(projects.components.updater.api)
-    implementation(projects.components.bridge.api)
-    implementation(projects.components.bridge.service.api)
 
     implementation(libs.annotations)
     implementation(libs.appcompat)
