@@ -4,20 +4,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.core.ui.theme.models.FlipperPallet
 import com.flipperdevices.core.ui.theme.models.FlipperTypography
-import com.programistich.markdown.compose.ComposeMarkdown
-import com.programistich.markdown.model.MarkdownColors
-import com.programistich.markdown.model.MarkdownTypography
+import com.mikepenz.markdown.compose.Markdown
+import com.mikepenz.markdown.model.MarkdownColors
+import com.mikepenz.markdown.model.MarkdownPadding
+import com.mikepenz.markdown.model.MarkdownTypography
 
 @Composable
 fun ComposableMarkdown(content: String, modifier: Modifier) {
-    ComposeMarkdown(
+    Markdown(
         content = content,
         colors = LocalPallet.current.toMarkdownColor(),
         typography = LocalTypography.current.toMarkdownTypography(),
+        padding = markdownPadding(),
         modifier = modifier
     )
 }
@@ -29,8 +33,6 @@ private fun FlipperPallet.toMarkdownColor(): MarkdownColors {
             get() = text20
         override val text: Color
             get() = text100
-        override val url: Color
-            get() = accentSecond
     }
 }
 
@@ -53,6 +55,8 @@ private fun FlipperTypography.toMarkdownTypography(): MarkdownTypography {
             get() = bodySB14
         override val h6: TextStyle
             get() = bodySB14
+        override val list: TextStyle
+            get() = bodyR14
         override val ordered: TextStyle
             get() = bodyR14
         override val paragraph: TextStyle
@@ -61,5 +65,17 @@ private fun FlipperTypography.toMarkdownTypography(): MarkdownTypography {
             get() = bodyR14
         override val text: TextStyle
             get() = bodyR14
+    }
+}
+
+@Composable
+fun markdownPadding(): MarkdownPadding {
+    return object : MarkdownPadding {
+        override val block: Dp
+            get() = 2.dp
+        override val indentList: Dp
+            get() = 4.dp
+        override val list: Dp
+            get() = 1.dp
     }
 }
