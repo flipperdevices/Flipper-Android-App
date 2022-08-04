@@ -42,6 +42,7 @@
 - [Feature] Button Emulate/Send with auto close
 - [REFACTOR] Add cache for gradle build
 - [REFACTOR] Migrate FileManager to compose navigation
+- [REFACTOR] Changelog with scroll
 
 # 1.1.5 - HotFix
 
