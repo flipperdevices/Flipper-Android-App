@@ -27,6 +27,8 @@ dependencies {
     implementation(libs.sentry.gradle)
 
     implementation(project(":plugins:apk-config"))
+
+    implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 }
 
 java {

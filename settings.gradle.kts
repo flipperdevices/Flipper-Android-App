@@ -1,4 +1,6 @@
 pluginManagement {
+    includeBuild("build-logic")
+
     repositories {
         google()
         gradlePluginPortal()
@@ -17,8 +19,6 @@ dependencyResolutionManagement {
 rootProject.name = "FlipperApp"
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-
-includeBuild("build-logic")
 
 include(
     ":instances:app",

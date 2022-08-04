@@ -1,14 +1,4 @@
+// Deprecated: needed for backport capability. Delete that file, in next release
 plugins {
-    id("androidLibrary")
-}
-
-@Suppress("UnstableApiUsage")
-android {
-    buildFeatures {
-        compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = resolveVersion("compose-compiler")
-    }
+    id("flipper.android-compose")
 }

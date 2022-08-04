@@ -6,6 +6,6 @@ import org.gradle.api.Project
 class ApkConfigPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         // no-op
-        // just add ApkConfig to build scripts
+        // just add ApkConfig to build scripts classpath
     }
 }
