@@ -1,19 +1,18 @@
 import com.flipperdevices.buildlogic.plugins.ApkConfig
 
 plugins {
-    alias(libs.plugins.android.app) apply false
-    alias(libs.plugins.android.lib) apply false
-    alias(libs.plugins.kotlin.android) apply false
-    alias(libs.plugins.detekt)
-    alias(libs.plugins.ktlint)
+    id("com.android.application") apply false
+    id("com.android.library") apply false
+    id("kotlin-android") apply false
+    id("kotlinx-serialization") apply false
+    id("com.google.devtools.ksp") apply false
+    id("com.squareup.anvil") apply false
+    id("com.google.protobuf") apply false
+    id("io.gitlab.arturbosch.detekt") apply false
+    id("org.jlleitschuh.gradle.ktlint") apply false
+
     id("flipper.apk-config")
 }
-
-tasks.register("clean", Delete::class) {
-    delete(rootProject.buildDir)
-}
-
-val ktLintVersion: String = libs.versions.ktlint.runtime.get()
 
 subprojects {
     apply {
@@ -22,7 +21,7 @@ subprojects {
     }
 
     ktlint {
-        version.set(ktLintVersion)
+        version.set(libs.versions.ktlint.runtime)
         android.set(true)
         verbose.set(true)
         outputToConsole.set(true)

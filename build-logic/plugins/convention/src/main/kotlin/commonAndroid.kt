@@ -132,8 +132,20 @@ private fun Project.suppressOptIn() {
 fun DependencyHandler.internalImplementation(dependencyNotation: Any): Dependency? =
     add("internalImplementation", dependencyNotation)
 
+fun <BuildTypeT> NamedDomainObjectContainer<BuildTypeT>.debug(
+    action: BuildTypeT.() -> Unit
+) {
+    maybeCreate("debug").action()
+}
+
 fun <BuildTypeT> NamedDomainObjectContainer<BuildTypeT>.internal(
     action: BuildTypeT.() -> Unit
 ) {
     maybeCreate("internal").action()
+}
+
+fun <BuildTypeT> NamedDomainObjectContainer<BuildTypeT>.release(
+    action: BuildTypeT.() -> Unit
+) {
+    maybeCreate("release").action()
 }

@@ -63,8 +63,7 @@ kotlin-ksp-gradle = { module = "com.google.devtools.ksp:com.google.devtools.ksp.
 
 kotlin-annotation-processing = { module = "org.jetbrains.kotlin:kotlin-annotation-processing-embeddable", version.ref = "kotlin-general" }
 kotlin-compiler = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "kotlin-general" }
-kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-general" }
-kotlin-gradle-pluginApi = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin-api", version.ref = "kotlin-general" }
+kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-general" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin-general" }
 kotlin-stdlib-jdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin-general" }
 
@@ -75,6 +74,8 @@ kotlin-serialization-gradle = { module = "org.jetbrains.kotlin:kotlin-serializat
 kotlin-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization-json" }
 
 protobuf-gradle = { module = "com.google.protobuf:protobuf-gradle-plugin", version.ref = "protobuf-gradle" }
+detekt-gradle = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt-gradle" }
+ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlint-gradle" }
 
 datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
 

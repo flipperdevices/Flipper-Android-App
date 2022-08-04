@@ -9,6 +9,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        gradlePluginPortal()
     }
 
     versionCatalogs {
@@ -20,7 +21,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "build-logic"
 
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+//enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 include(
     ":plugins:convention",
