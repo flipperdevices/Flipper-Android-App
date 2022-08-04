@@ -1,8 +1,8 @@
 plugins {
 <#if needCompose>
-    androidCompose
+    id("androidCompose")
 <#else>
-    androidLibrary
+    id("androidLibrary")
 </#if>
 <#if shouldGenerateDI>
     id("com.squareup.anvil")
