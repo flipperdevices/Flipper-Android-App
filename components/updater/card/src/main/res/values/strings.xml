@@ -11,7 +11,7 @@
     <string name="updater_card_updater_button_update_desc">Update Flipper to the latest version</string>
     <string name="updater_card_updater_progress">Checking for updates…</string>
     <string name="updater_card_updater_reboot_title">Update started</string>
-    <string name="updater_card_updater_reboot_desc">Now Flipper is updating in offline mode. Look at device screen for info and wait for reconnect.</string>
+    <string name="updater_card_updater_reboot_desc">Flipper is updating in offline mode. Look at the device screen for info and wait for reconnection.</string>
     <string name="updater_card_firmware_version_choice">Choice version</string>
 
     <string name="update_card_error_no_internet_title">No internet connection</string>

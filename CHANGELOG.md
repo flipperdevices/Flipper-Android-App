@@ -43,6 +43,7 @@
 - [REFACTOR] Add cache for gradle build
 - [REFACTOR] Migrate FileManager to compose navigation
 - [REFACTOR] Changelog with scroll
+- [REFACTOR] Change text on updater flipper status
 
 # 1.1.5 - HotFix
 
