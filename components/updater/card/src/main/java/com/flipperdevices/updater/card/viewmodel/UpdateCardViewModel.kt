@@ -37,11 +37,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
@@ -119,8 +119,9 @@ class UpdateCardViewModel :
                 dataStoreSettings.data.map { it.selectedChannel.toFirmwareChannel() },
                 flipperVersionProviderApi.getCurrentFlipperVersion(viewModelScope, serviceApi),
                 serviceApi.flipperRpcInformationApi.getRpcInformationFlow(),
-                dataStoreSettings.data
-            ) { updateChannel, flipperFirmwareVersion, rpcInformation, settings ->
+                dataStoreSettings.data,
+                notExistAssets(serviceApi)
+            ) { updateChannel, flipperFirmwareVersion, rpcInformation, settings, assert ->
                 val newUpdateChannel = if (
                     updateChannel == null && flipperFirmwareVersion != null
                 ) {
@@ -129,10 +130,9 @@ class UpdateCardViewModel :
                 val isFlashExist = if (rpcInformation.externalStorageStats != null) {
                     rpcInformation.externalStorageStats is StorageStats.Loaded
                 } else null
-                val notExistAssets = notExistAssets(serviceApi)
                 return@combine newUpdateChannel.then(flipperFirmwareVersion)
                     .then(isFlashExist)
-                    .then(settings.alwaysUpdate || notExistAssets)
+                    .then(settings.alwaysUpdate || assert)
             }.collectLatest { (updateChannel, flipperFirmwareVersion, isFlashExist, alwaysUpdate) ->
                 updateCardState(
                     updateChannel,
@@ -212,19 +212,19 @@ class UpdateCardViewModel :
         }
     }
 
-    private suspend fun notExistAssets(serviceApi: FlipperServiceApi): Boolean {
-        val response = serviceApi.requestApi.request(
+    private fun notExistAssets(serviceApi: FlipperServiceApi): Flow<Boolean> {
+        return serviceApi.requestApi.request(
             main {
                 storageMd5SumRequest = md5sumRequest {
                     path = PATH_TO_MANIFEST
                 }
             }.wrapToRequest(FlipperRequestPriority.BACKGROUND)
-        ).first()
-        // if md5sum return error, we suppose assets not exist
-        val notExistAssets =
-            response.commandStatus == Flipper.CommandStatus.ERROR_STORAGE_NOT_EXIST
-        info { "Not exist manifest response: $notExistAssets" }
-        return notExistAssets
+        ).map { response ->
+            // if md5sum return not ok, we suppose assets not exist
+            val notExistAssets = (response.commandStatus != Flipper.CommandStatus.OK)
+            info { "Not exist manifest response: $notExistAssets" }
+            notExistAssets
+        }
     }
 }
 
