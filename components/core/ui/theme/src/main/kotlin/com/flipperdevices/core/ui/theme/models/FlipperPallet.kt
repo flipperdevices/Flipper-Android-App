@@ -81,7 +81,7 @@ data class FlipperPallet(
     val actionOnFlipperIcon: Color = Color(0xFFFFFFFF),
 
     val placeholder: Color = Color(0xFFDFDFDF),
-    val notificationCard: Color = Color(0xFFE9E9E9),
+    val notificationCard: Color,
     val forgetFlipper: Color = Color(0xFFF63F3F),
     val progressBarGray: Color = Color(0xFFAAAAAA),
     val onAppBar: Color = Color(0xFF000000),

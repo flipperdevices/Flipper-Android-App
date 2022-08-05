@@ -37,6 +37,8 @@
 - [BUGFIX] Open deeplink on already exist activity
 - [BUGFIX] Not display changelog
 - [BUGFIX] Changelog support `[text]`
+- [BUGFIX] Change background color card in notification
+- [BUGFIX] Fix padding on placeholder firmware version
 - [CI] Update deps
 - [REFACTOR] Preview (Updater card/screen, Device info)
 - [Feature] Button Emulate/Send with auto close

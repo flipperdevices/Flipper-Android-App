@@ -113,7 +113,6 @@ fun ComposablePlaceholderFirmwareBuild() {
         modifier = Modifier
             .height(16.dp)
             .width(80.dp)
-            .padding(end = 12.dp)
             .placeholderConnecting()
     )
 }
