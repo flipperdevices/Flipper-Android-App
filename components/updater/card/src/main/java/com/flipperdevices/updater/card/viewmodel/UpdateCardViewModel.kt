@@ -2,7 +2,9 @@ package com.flipperdevices.updater.card.viewmodel
 
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.viewModelScope
+import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.StorageStats
+import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
@@ -15,6 +17,9 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.SelectedChannel
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
+import com.flipperdevices.protobuf.Flipper
+import com.flipperdevices.protobuf.main
+import com.flipperdevices.protobuf.storage.md5sumRequest
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.api.FlipperVersionProviderApi
 import com.flipperdevices.updater.card.di.CardComponent
@@ -32,6 +37,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -39,6 +45,8 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
+
+private const val PATH_TO_MANIFEST = "/ext/Manifest"
 
 class UpdateCardViewModel :
     LifecycleViewModel(),
@@ -111,8 +119,9 @@ class UpdateCardViewModel :
                 dataStoreSettings.data.map { it.selectedChannel.toFirmwareChannel() },
                 flipperVersionProviderApi.getCurrentFlipperVersion(viewModelScope, serviceApi),
                 serviceApi.flipperRpcInformationApi.getRpcInformationFlow(),
-                dataStoreSettings.data
-            ) { updateChannel, flipperFirmwareVersion, rpcInformation, settings ->
+                dataStoreSettings.data,
+                isManifestExist(serviceApi)
+            ) { updateChannel, flipperFirmwareVersion, rpcInformation, settings, isManifestExist ->
                 val newUpdateChannel = if (
                     updateChannel == null && flipperFirmwareVersion != null
                 ) {
@@ -123,7 +132,7 @@ class UpdateCardViewModel :
                 } else null
                 return@combine newUpdateChannel.then(flipperFirmwareVersion)
                     .then(isFlashExist)
-                    .then(settings.alwaysUpdate)
+                    .then(settings.alwaysUpdate || !isManifestExist)
             }.collectLatest { (updateChannel, flipperFirmwareVersion, isFlashExist, alwaysUpdate) ->
                 updateCardState(
                     updateChannel,
@@ -200,6 +209,21 @@ class UpdateCardViewModel :
                 UpdateCardState.Error(UpdateErrorType.UNABLE_TO_SERVER)
             )
             return
+        }
+    }
+
+    private fun isManifestExist(serviceApi: FlipperServiceApi): Flow<Boolean> {
+        return serviceApi.requestApi.request(
+            main {
+                storageMd5SumRequest = md5sumRequest {
+                    path = PATH_TO_MANIFEST
+                }
+            }.wrapToRequest(FlipperRequestPriority.BACKGROUND)
+        ).map { response ->
+            // if md5sum return not ok, we suppose assets not exist
+            val exist = (response.commandStatus == Flipper.CommandStatus.OK)
+            info { "Exist manifest response: $exist" }
+            exist
         }
     }
 }

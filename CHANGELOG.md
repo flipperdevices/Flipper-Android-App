@@ -2,6 +2,7 @@
 
 # 1.1.6 - In progress
 
+- [Feature] Offer update, if assets not exit on Flipper
 - [Feature] Custom hex keyboard
 - [Feature] Changelog on updater screen
 - [Feature] Add NFC Editor with colors and card

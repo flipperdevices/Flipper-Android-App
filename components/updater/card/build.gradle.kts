@@ -20,6 +20,7 @@ dependencies {
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.service.api)
+    implementation(libs.protobuf.jvm)
 
     implementation(projects.components.analytics.metric.api)
 
