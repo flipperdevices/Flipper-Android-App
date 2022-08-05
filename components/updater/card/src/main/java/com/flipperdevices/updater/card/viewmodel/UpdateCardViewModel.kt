@@ -2,7 +2,9 @@ package com.flipperdevices.updater.card.viewmodel
 
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.viewModelScope
+import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.StorageStats
+import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
@@ -15,6 +17,9 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.SelectedChannel
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
+import com.flipperdevices.protobuf.Flipper
+import com.flipperdevices.protobuf.main
+import com.flipperdevices.protobuf.storage.md5sumRequest
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.api.FlipperVersionProviderApi
 import com.flipperdevices.updater.card.di.CardComponent
@@ -36,9 +41,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
+
+private const val PATH_TO_MANIFEST = "/ext/Manifest"
 
 class UpdateCardViewModel :
     LifecycleViewModel(),
@@ -121,9 +129,10 @@ class UpdateCardViewModel :
                 val isFlashExist = if (rpcInformation.externalStorageStats != null) {
                     rpcInformation.externalStorageStats is StorageStats.Loaded
                 } else null
+                val notExistAssets = notExistAssets(serviceApi)
                 return@combine newUpdateChannel.then(flipperFirmwareVersion)
                     .then(isFlashExist)
-                    .then(settings.alwaysUpdate)
+                    .then(settings.alwaysUpdate || notExistAssets)
             }.collectLatest { (updateChannel, flipperFirmwareVersion, isFlashExist, alwaysUpdate) ->
                 updateCardState(
                     updateChannel,
@@ -201,6 +210,21 @@ class UpdateCardViewModel :
             )
             return
         }
+    }
+
+    private suspend fun notExistAssets(serviceApi: FlipperServiceApi): Boolean {
+        val response = serviceApi.requestApi.request(
+            main {
+                storageMd5SumRequest = md5sumRequest {
+                    path = PATH_TO_MANIFEST
+                }
+            }.wrapToRequest(FlipperRequestPriority.BACKGROUND)
+        ).first()
+        // if md5sum return error, we suppose assets not exist
+        val notExistAssets =
+            response.commandStatus == Flipper.CommandStatus.ERROR_STORAGE_NOT_EXIST
+        info { "Not exist manifest response: $notExistAssets" }
+        return notExistAssets
     }
 }
 
