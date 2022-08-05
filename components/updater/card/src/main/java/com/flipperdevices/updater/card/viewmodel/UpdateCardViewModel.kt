@@ -120,8 +120,8 @@ class UpdateCardViewModel :
                 flipperVersionProviderApi.getCurrentFlipperVersion(viewModelScope, serviceApi),
                 serviceApi.flipperRpcInformationApi.getRpcInformationFlow(),
                 dataStoreSettings.data,
-                notExistAssets(serviceApi)
-            ) { updateChannel, flipperFirmwareVersion, rpcInformation, settings, assert ->
+                isManifestExist(serviceApi)
+            ) { updateChannel, flipperFirmwareVersion, rpcInformation, settings, isManifestExist ->
                 val newUpdateChannel = if (
                     updateChannel == null && flipperFirmwareVersion != null
                 ) {
@@ -132,7 +132,7 @@ class UpdateCardViewModel :
                 } else null
                 return@combine newUpdateChannel.then(flipperFirmwareVersion)
                     .then(isFlashExist)
-                    .then(settings.alwaysUpdate || assert)
+                    .then(settings.alwaysUpdate || !isManifestExist)
             }.collectLatest { (updateChannel, flipperFirmwareVersion, isFlashExist, alwaysUpdate) ->
                 updateCardState(
                     updateChannel,
@@ -212,7 +212,7 @@ class UpdateCardViewModel :
         }
     }
 
-    private fun notExistAssets(serviceApi: FlipperServiceApi): Flow<Boolean> {
+    private fun isManifestExist(serviceApi: FlipperServiceApi): Flow<Boolean> {
         return serviceApi.requestApi.request(
             main {
                 storageMd5SumRequest = md5sumRequest {
@@ -221,9 +221,9 @@ class UpdateCardViewModel :
             }.wrapToRequest(FlipperRequestPriority.BACKGROUND)
         ).map { response ->
             // if md5sum return not ok, we suppose assets not exist
-            val notExistAssets = (response.commandStatus != Flipper.CommandStatus.OK)
-            info { "Not exist manifest response: $notExistAssets" }
-            notExistAssets
+            val exist = (response.commandStatus == Flipper.CommandStatus.OK)
+            info { "Exist manifest response: $exist" }
+            exist
         }
     }
 }
