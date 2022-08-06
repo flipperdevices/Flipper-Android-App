@@ -92,6 +92,9 @@ class UpdateCardViewModel :
     fun retry() {
         serviceProvider.provideServiceApi(this) {
             launchWithLock(mutex, viewModelScope, "retry") {
+                // in this case we get heavy information from fw server and flipper
+                // that's why we set state in progress
+                updateCardState.emit(UpdateCardState.InProgress)
                 cardStateJob?.cancelAndJoin()
                 it.flipperRpcInformationApi.invalidate(it.requestApi)
                 invalidateUnsafe(it)
