@@ -1,7 +1,6 @@
 package com.flipperdevices.bottombar.model
 
 import androidx.annotation.DrawableRes
-import androidx.annotation.RawRes
 import androidx.compose.ui.graphics.Color
 
 private const val MAGIC_NUMBER = 31
@@ -53,9 +52,12 @@ sealed class TabState private constructor(
         }
     }
 
+    @Suppress("LongParameterList")
     class Animated(
-        @RawRes val selectedIcon: Int,
-        @RawRes val notSelectedIcon: Int,
+        @DrawableRes val selectedIcon: Int,
+        @DrawableRes val selectedBackground: Int,
+        @DrawableRes val notSelectedIcon: Int,
+        @DrawableRes val notSelectedBackground: Int,
         text: String,
         selectedColor: Color,
         unselectedColor: Color,

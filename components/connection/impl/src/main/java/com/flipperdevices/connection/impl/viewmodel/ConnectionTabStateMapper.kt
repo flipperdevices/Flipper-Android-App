@@ -29,8 +29,10 @@ object ConnectionTabStateMapper {
                 unselectedColor = LocalPallet.current.bottomBarUnselected
             )
             ConnectionStatusState.Connecting -> TabState.Animated(
-                selectedIcon = DesignSystem.raw.ic_connecting_filled,
-                notSelectedIcon = DesignSystem.raw.ic_connecting,
+                selectedIcon = DesignSystem.drawable.ic_connection_selected,
+                selectedBackground = DesignSystem.drawable.ic_connection_selected_bg,
+                notSelectedIcon = DesignSystem.drawable.ic_connection_unselected,
+                notSelectedBackground = DesignSystem.drawable.ic_connection_unselected_bg,
                 text = stringResource(id = R.string.connection_status_connecting),
                 selectedColor = LocalPallet.current.bottomBarSelectedFlipperStatus,
                 unselectedColor = LocalPallet.current.bottomBarUnselected,
@@ -53,8 +55,10 @@ object ConnectionTabStateMapper {
                 unselectedColorIcon = LocalPallet.current.accentSecond
             )
             is ConnectionStatusState.Synchronization -> TabState.Animated(
-                selectedIcon = DesignSystem.raw.ic_syncing_filled,
-                notSelectedIcon = DesignSystem.raw.ic_syncing,
+                selectedIcon = DesignSystem.drawable.ic_syncing_selected,
+                selectedBackground = DesignSystem.drawable.ic_syncing_selected_bg,
+                notSelectedIcon = DesignSystem.drawable.ic_syncing_unselected,
+                notSelectedBackground = DesignSystem.drawable.ic_syncing_unselected_bg,
                 text = stringResource(
                     id =
                     R.string.connection_status_syncing,
