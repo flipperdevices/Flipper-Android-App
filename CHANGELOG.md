@@ -40,6 +40,7 @@
 - [BUGFIX] Changelog support `[text]`
 - [BUGFIX] Change background color card in notification
 - [BUGFIX] Fix padding on placeholder firmware version
+- [BUGFIX] In progress state when retry updater card
 - [CI] Update deps
 - [REFACTOR] Preview (Updater card/screen, Device info)
 - [Feature] Button Emulate/Send with auto close
