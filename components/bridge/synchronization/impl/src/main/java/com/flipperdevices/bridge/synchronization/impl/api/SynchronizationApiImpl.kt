@@ -49,11 +49,14 @@ class SynchronizationApiImpl @Inject constructor(
     override fun startSynchronization(force: Boolean) {
         info { "Request synchronization..." }
         if (!isLaunched.compareAndSet(false, true)) {
-            markDirty = true
+            if (force) {
+                markDirty = true
+            }
             info { "Synchronization skipped, because we already in synchronization" }
             return
         }
         markDirty = false
+        synchronizationState.update { SynchronizationState.InProgress(0f) }
         val localSynchronizationTask = SynchronizationTask(
             serviceProvider = serviceProvider,
             simpleKeyApi = simpleKeyApi,

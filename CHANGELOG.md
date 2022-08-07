@@ -41,6 +41,7 @@
 - [BUGFIX] Change background color card in notification
 - [BUGFIX] Fix padding on placeholder firmware version
 - [BUGFIX] In progress state when retry updater card
+- [BUGFIX] Update synchronization status instantly and respect the flag
 - [CI] Update deps
 - [REFACTOR] Preview (Updater card/screen, Device info)
 - [Feature] Button Emulate/Send with auto close
