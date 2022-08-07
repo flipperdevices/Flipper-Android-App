@@ -106,9 +106,14 @@ class KeyEditViewModel(
             ),
             flipperKey.keyContent,
             editState.notes,
-            synchronized = false
+            // revert, because now its not synchronize
+            synchronized = !isNeedSynchronization(editState)
         )
         finishListener?.invoke(newFlipperKey)
+    }
+
+    private fun isNeedSynchronization(editState: KeyEditState.Editing): Boolean {
+        return editState.name != flipperKey.path.nameWithoutExtension
     }
 
     private fun setUpInitState(parsedKey: FlipperKeyParsed?) {
