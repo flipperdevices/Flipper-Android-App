@@ -1,19 +1,28 @@
 package com.flipperdevices.bottombar.impl.main.compose
 
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Icon
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.LocalContentColor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.animateLottieCompositionAsState
-import com.airbnb.lottie.compose.rememberLottieComposition
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.res.painterResource
 import com.flipperdevices.bottombar.model.TabState
 import com.flipperdevices.core.ui.ktx.painterResourceByKey
+
+private const val FULL_CIRCLE = 360
+private const val TIME_ANIM = 1000
 
 @Composable
 fun ComposableTabIcon(tabState: TabState, selected: Boolean) {
@@ -46,20 +55,33 @@ private fun ComposableTabIconAnimated(
     tabState: TabState.Animated,
     selected: Boolean
 ) {
-    val composition by rememberLottieComposition(
-        LottieCompositionSpec.RawRes(
-            if (selected) tabState.selectedIcon
-            else tabState.notSelectedIcon
+    val iconId = if (selected) tabState.selectedIcon else tabState.notSelectedIcon
+    val backgroundId = if (selected) tabState.selectedBackground else tabState.notSelectedBackground
+
+    val value by rememberInfiniteTransition().animateFloat(
+        0.0f,
+        1.0f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(
+                durationMillis = TIME_ANIM,
+                easing = LinearEasing
+            ),
+            repeatMode = RepeatMode.Restart
         )
     )
-    val progress by animateLottieCompositionAsState(
-        composition,
-        iterations = LottieConstants.IterateForever
-    )
 
-    LottieAnimation(
+    Box(
         modifier = modifier,
-        composition = composition,
-        progress = progress
-    )
+        contentAlignment = Alignment.Center
+    ) {
+        Image(
+            painter = painterResource(id = backgroundId),
+            contentDescription = null
+        )
+        Image(
+            modifier = Modifier.rotate(degrees = value * FULL_CIRCLE),
+            painter = painterResource(id = iconId),
+            contentDescription = null
+        )
+    }
 }
