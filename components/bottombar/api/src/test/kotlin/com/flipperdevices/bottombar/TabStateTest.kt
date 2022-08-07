@@ -12,7 +12,9 @@ class TabStateTest {
         notSelectedIcon = 2,
         text = "TabState Animated 1",
         selectedColor = Color(0xFF111111),
-        unselectedColor = Color(0xFF222222)
+        unselectedColor = Color(0xFF222222),
+        selectedBackground = 0,
+        notSelectedBackground = 0
     )
 
     private val animatedTabStateSecond = TabState.Animated(
@@ -20,7 +22,9 @@ class TabStateTest {
         notSelectedIcon = 2,
         text = "TabState Animated 1",
         selectedColor = Color(0xFF111111),
-        unselectedColor = Color(0xFF222222)
+        unselectedColor = Color(0xFF222222),
+        selectedBackground = 0,
+        notSelectedBackground = 0
     )
 
     private val staticTabStateFirst = TabState.Static(
