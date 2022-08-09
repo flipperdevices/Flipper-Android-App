@@ -24,6 +24,7 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.updater.screen.R
+import com.flipperdevices.updater.screen.model.FailedReason
 import com.flipperdevices.updater.screen.model.UpdaterScreenState
 
 @Composable
@@ -39,7 +40,7 @@ fun ComposableUpdaterScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             UpdaterScreenHeader(
-                isFailed = updaterScreenState is UpdaterScreenState.Failed,
+                updaterScreenState,
                 flipperColor = flipperColor
             )
             ComposableUpdateContent(updaterScreenState, onRetry)
@@ -54,10 +55,10 @@ fun ComposableUpdaterScreen(
 
 @Composable
 private fun UpdaterScreenHeader(
-    isFailed: Boolean,
+    updaterScreenState: UpdaterScreenState,
     flipperColor: HardwareColor
 ) {
-    val titleId = if (isFailed) {
+    val titleId = if (updaterScreenState is UpdaterScreenState.Failed) {
         R.string.update_screen_title_failed
     } else R.string.update_screen_title
     Text(
@@ -69,11 +70,19 @@ private fun UpdaterScreenHeader(
 
     val imageId = when (flipperColor) {
         HardwareColor.UNRECOGNIZED,
-        HardwareColor.WHITE -> if (isFailed) {
-            DesignSystem.drawable.pic_flipper_update_failed
+        HardwareColor.WHITE -> if (updaterScreenState is UpdaterScreenState.Failed) {
+            when (updaterScreenState.failedReason) {
+                FailedReason.FAILED_SUB_GHZ_PROVISIONING ->
+                    DesignSystem.drawable.pic_flipper_update_int_failed
+                else -> DesignSystem.drawable.pic_flipper_update_failed
+            }
         } else DesignSystem.drawable.pic_flipper_update
-        HardwareColor.BLACK -> if (isFailed) {
-            DesignSystem.drawable.pic_black_flipper_update_failed
+        HardwareColor.BLACK -> if (updaterScreenState is UpdaterScreenState.Failed) {
+            when (updaterScreenState.failedReason) {
+                FailedReason.FAILED_SUB_GHZ_PROVISIONING ->
+                    DesignSystem.drawable.pic_black_flipper_update_int_failed
+                else -> DesignSystem.drawable.pic_black_flipper_update_failed
+            }
         } else DesignSystem.drawable.pic_black_flipper_update
     }
 
