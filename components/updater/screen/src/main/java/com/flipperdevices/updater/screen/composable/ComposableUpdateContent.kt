@@ -55,7 +55,7 @@ fun ComposableUpdateContent(
             accentColor = LocalPallet.current.updateProgressGreen,
             secondColor = LocalPallet.current.updateProgressBackgroundGreen,
             iconId = DesignSystem.drawable.ic_globe,
-            percent = updaterScreenState.percent
+            percent = null
         )
         is UpdaterScreenState.UploadOnFlipper -> ComposableInProgressIndicator(
             accentColor = LocalPallet.current.accentSecond,

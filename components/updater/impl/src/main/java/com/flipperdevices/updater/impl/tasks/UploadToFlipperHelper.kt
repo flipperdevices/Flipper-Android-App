@@ -1,4 +1,4 @@
-package com.flipperdevices.updater.impl.service
+package com.flipperdevices.updater.impl.tasks
 
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequest
@@ -6,6 +6,7 @@ import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.protobuf.ProtobufConstants
 import com.flipperdevices.bridge.protobuf.streamToCommandFlow
+import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.md5
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
@@ -14,14 +15,75 @@ import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.file
 import com.flipperdevices.protobuf.storage.md5sumRequest
 import com.flipperdevices.protobuf.storage.writeRequest
+import com.flipperdevices.protobuf.system.System
+import com.flipperdevices.protobuf.system.rebootRequest
+import com.flipperdevices.protobuf.system.updateRequest
+import com.flipperdevices.updater.model.UpdatingState
+import com.squareup.anvil.annotations.ContributesBinding
 import java.io.File
+import javax.inject.Inject
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
-object UploadFirmwareService : LogTagProvider {
-    override val TAG = "UploadFirmwareService"
+interface UploadToFlipperHelper {
+    suspend fun uploadToFlipper(
+        scope: CoroutineScope,
+        flipperPath: String,
+        updaterFolder: File,
+        requestApi: FlipperRequestApi,
+        stateListener: suspend (UpdatingState) -> Unit
+    )
+}
 
-    suspend fun upload(
+@ContributesBinding(AppGraph::class, UploadToFlipperHelper::class)
+class UploadToFlipperHelperImpl @Inject constructor() : UploadToFlipperHelper, LogTagProvider {
+    override val TAG = "UploadToFlipperHelper"
+
+    override suspend fun uploadToFlipper(
+        scope: CoroutineScope,
+        flipperPath: String,
+        updaterFolder: File,
+        requestApi: FlipperRequestApi,
+        stateListener: suspend (UpdatingState) -> Unit
+    ) {
+        upload(
+            requestApi,
+            updaterFolder,
+            flipperPath
+        ) { sended, totalBytes ->
+            scope.launch(Dispatchers.Default) {
+                stateListener(
+                    UpdatingState.UploadOnFlipper(
+                        sended.toFloat() / totalBytes.toFloat()
+                    )
+                )
+            }
+        }
+
+        val response = requestApi.request(
+            main {
+                systemUpdateRequest = updateRequest {
+                    updateManifest = "$flipperPath/update.fuf"
+                }
+            }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
+        ).first()
+        if (response.commandStatus != Flipper.CommandStatus.OK) {
+            error("Failed send update request")
+        }
+
+        requestApi.requestWithoutAnswer(
+            main {
+                systemRebootRequest = rebootRequest {
+                    mode = System.RebootRequest.RebootMode.UPDATE
+                }
+            }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
+        )
+    }
+
+    private suspend fun upload(
         requestApi: FlipperRequestApi,
         folder: File,
         pathOnFlipper: String,

@@ -185,6 +185,15 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
                         singleActivityApi.open()
                         UpdaterScreenState.Finish
                     } else UpdaterScreenState.Rebooting
+                UpdatingState.FailedOutdatedApp -> UpdaterScreenState.Failed(
+                    FailedReason.OUTDATED_APP
+                )
+                UpdatingState.FailedSubGhzProvisioning -> UpdaterScreenState.Failed(
+                    FailedReason.FAILED_SUB_GHZ_PROVISIONING
+                )
+                UpdatingState.SubGhzProvisioning -> UpdaterScreenState.SubGhzProvisioning(
+                    firmwareData
+                )
             }
             verbose {
                 "From updating state ${updatingState.state} " +

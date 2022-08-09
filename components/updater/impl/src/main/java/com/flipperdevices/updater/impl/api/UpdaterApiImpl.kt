@@ -9,9 +9,11 @@ import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.complex.UpdateFlipperEnd
 import com.flipperdevices.metric.api.events.complex.UpdateFlipperStart
 import com.flipperdevices.metric.api.events.complex.UpdateStatus
-import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.impl.UpdaterTask
+import com.flipperdevices.updater.impl.tasks.FirmwareDownloaderHelper
+import com.flipperdevices.updater.impl.tasks.SubGhzProvisioningHelper
+import com.flipperdevices.updater.impl.tasks.UploadToFlipperHelper
 import com.flipperdevices.updater.model.FirmwareVersion
 import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.model.UpdatingState
@@ -30,8 +32,10 @@ import kotlinx.coroutines.withContext
 @ContributesBinding(AppGraph::class, UpdaterApi::class)
 class UpdaterApiImpl @Inject constructor(
     private val serviceProvider: FlipperServiceProvider,
+    private val firmwareDownloaderHelper: FirmwareDownloaderHelper,
+    private val subGhzProvisioningHelper: SubGhzProvisioningHelper,
+    private val uploadToFlipperHelper: UploadToFlipperHelper,
     private val context: Context,
-    private val downloaderApi: DownloaderApi,
     private val metricApi: MetricApi
 ) : UpdaterApi, LogTagProvider {
     override val TAG = "UpdaterApi"
@@ -51,8 +55,10 @@ class UpdaterApiImpl @Inject constructor(
         }
         val localActiveTask = UpdaterTask(
             serviceProvider,
-            downloaderApi,
-            context
+            context,
+            firmwareDownloaderHelper,
+            uploadToFlipperHelper,
+            subGhzProvisioningHelper
         )
         currentActiveTask = localActiveTask
 

@@ -10,8 +10,7 @@ sealed class UpdaterScreenState(
     class CancelingSynchronization(firmwareData: VersionFiles?) : UpdaterScreenState(firmwareData)
 
     class SubGhzProvisioning(
-        firmwareData: VersionFiles?,
-        val percent: Float
+        firmwareData: VersionFiles?
     ) : UpdaterScreenState(firmwareData)
 
     class DownloadingFromNetwork(
