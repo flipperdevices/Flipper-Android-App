@@ -21,6 +21,8 @@ import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.keyscreen.impl.R
+import com.flipperdevices.keyscreen.impl.composable.actions.common.ComposableActionDisable
+import com.flipperdevices.keyscreen.impl.composable.actions.common.ComposableActionFlipper
 import com.flipperdevices.keyscreen.impl.model.EmulateButtonState
 import com.flipperdevices.keyscreen.impl.viewmodel.EmulateViewModel
 import tangle.viewmodel.compose.tangleViewModel
@@ -72,6 +74,7 @@ private fun ComposableSendInternal(
     onLongPressStart: () -> Unit = {},
     onLongPressEnd: () -> Unit = {}
 ) {
+    val textId = if (isAction) R.string.keyscreen_sending else R.string.keyscreen_send
     val scale = animateFloatAsState(if (isAction) SEND_BUTTON_SCALE else 1f)
 
     val modifierAction = modifier
@@ -85,8 +88,9 @@ private fun ComposableSendInternal(
     ComposableActionFlipper(
         modifier = modifierAction,
         color = LocalPallet.current.accent,
-        textId = R.string.keyscreen_send,
+        textId = textId,
         iconId = DesignSystem.drawable.ic_send,
+        animId = DesignSystem.raw.ic_send,
         isAction = isAction
     ) {
         if (!isAction) {
