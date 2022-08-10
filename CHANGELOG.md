@@ -20,6 +20,7 @@
 - [Feature] Update RTC on Flipper by Android App
 - [Feature] Add ability to edit file from file manager
 - [Feature] Add ability to create file from file manager
+- [Feature] Add SubGhz provisioning
 - [BUGFIX] Use selector in nfc editor
 - [BUGFIX] Execute connectIfNotForceDisconnect in FlipperAutoDisconnect
 - [BUGFIX] Exit from emulate screen
