@@ -103,7 +103,8 @@ data class FlipperPallet(
     val warningColor: Color = Color(0xFFF63F3F),
     val textOnWarningBackground: Color = Color(0xFFFFFFFF),
 
-    val substrateActiveCellNfcEditor: Color
+    val substrateActiveCellNfcEditor: Color,
+    val hexKeyboardBackground: Color
 ) {
     @Composable
     fun toMaterialColors(isLight: Boolean) = Colors(

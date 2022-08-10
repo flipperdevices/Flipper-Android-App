@@ -1,6 +1,7 @@
 package com.flipperdevices.nfceditor.impl.composable
 
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
@@ -16,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.hexkeyboard.ComposableHexKeyboard
 import com.flipperdevices.core.ui.ktx.LocalRouter
+import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyscreen.shared.bar.ComposableBarBackIcon
 import com.flipperdevices.keyscreen.shared.bar.ComposableBarSimpleText
 import com.flipperdevices.keyscreen.shared.bar.ComposableBarTitle
@@ -53,7 +55,8 @@ fun ComposableNfcEditorScreen(nfcEditorViewModel: NfcEditorViewModel) {
             offsetForKeyboard = 0.dp
             val offset by animateDpAsState(offsetForKeyboard)
             ComposableHexKeyboard(
-                modifier = Modifier.offset(y = offset),
+                modifier = Modifier.offset(y = offset)
+                    .background(LocalPallet.current.hexKeyboardBackground),
                 keyboardHeight = KEYBOARD_HEIGHT_DP.dp,
                 onClick = nfcEditorViewModel::onKeyInput
             )
