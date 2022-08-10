@@ -21,7 +21,8 @@ fun ComposableNfcSector(
     nfcEditorState: NfcEditorState,
     sectorIndex: Int,
     maxIndexSymbolCount: Int,
-    scaleFactor: Float
+    scaleFactor: Float,
+    onPositionActiveLine: (Int) -> Unit
 ) {
     Column {
         Text(
@@ -40,6 +41,7 @@ fun ComposableNfcSector(
 
         currentSector.lines.forEachIndexed { lineIndex, line ->
             val isNonEditableLine = sectorIndex == 0 && lineIndex == 0
+            val activeCell = nfcEditorViewModel.currentActiveCell
 
             ComposableNfcLine(
                 sectorIndex = sectorIndex,
@@ -48,9 +50,12 @@ fun ComposableNfcSector(
                 line = line.cells,
                 maxIndexSymbolCount = maxIndexSymbolCount,
                 scaleFactor = scaleFactor,
-                activeCell = nfcEditorViewModel.currentActiveCell,
+                activeCell = activeCell,
                 onCellFocus = if (isNonEditableLine) null
-                else nfcEditorViewModel::onCellFocus
+                else nfcEditorViewModel::onCellFocus,
+                onPositionActiveLine = if (activeCell?.sectorIndex == sectorIndex &&
+                    activeCell.lineIndex == lineIndex
+                ) onPositionActiveLine else null
             )
         }
     }

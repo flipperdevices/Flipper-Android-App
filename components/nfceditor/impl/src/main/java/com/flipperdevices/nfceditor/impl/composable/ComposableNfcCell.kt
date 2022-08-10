@@ -29,6 +29,7 @@ const val PADDING_CELL_DP = 3
 fun ComposableNfcCell(
     cell: NfcEditorCell,
     scaleFactor: Float,
+    isEditable: Boolean,
     isActive: Boolean,
     onClick: () -> Unit
 ) {
@@ -36,10 +37,15 @@ fun ComposableNfcCell(
         (scaleFactor * PADDING_CELL_DP).dp
     }
 
-    val textFieldModifier = Modifier
+    var textFieldModifier: Modifier = Modifier
+
+    if (isEditable) {
+        textFieldModifier = textFieldModifier.clickable(onClick = onClick)
+    }
+
+    textFieldModifier = textFieldModifier
         .padding(start = paddingDp, end = paddingDp)
         .width(IntrinsicSize.Min)
-        .clickable(onClick = onClick)
 
     val textColor = when (cell.cellType) {
         NfcCellType.SIMPLE -> LocalPallet.current.text100

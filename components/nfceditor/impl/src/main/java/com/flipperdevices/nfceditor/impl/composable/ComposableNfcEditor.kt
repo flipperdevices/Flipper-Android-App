@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.LocalTextStyle
@@ -80,21 +81,14 @@ private fun ComposableNfcEditor(
     scaleFactor: Float
 ) {
     val lazyColumnState = rememberLazyListState()
-    val scope = rememberCoroutineScope()
-    var previousCell by remember { mutableStateOf<NfcEditorCellLocation?>(null) }
-    val currentActiveCell = nfcEditorViewModel.currentActiveCell
-    if (currentActiveCell != null &&
-        currentActiveCell != previousCell &&
-        !lazyColumnState.isScrollInProgress
-    ) {
-        previousCell = currentActiveCell
-        scope.launch {
-            val newPosition = if (nfcEditorState.nfcEditorCardInfo != null) {
-                currentActiveCell.sectorIndex + 1
-            } else currentActiveCell.sectorIndex
-            lazyColumnState.animateScrollToItem(newPosition)
-        }
-    }
+
+    var scrollOffset by remember { mutableStateOf<Int>(0) }
+    ScrollToActiveCell(
+        lazyColumnState,
+        nfcEditorViewModel.currentActiveCell,
+        nfcEditorState.nfcEditorCardInfo != null,
+        scrollOffset
+    )
     LazyColumn(state = lazyColumnState) {
         item {
             ComposableNfcCard(nfcEditorState.nfcEditorCardInfo, scaleFactor)
@@ -105,8 +99,40 @@ private fun ComposableNfcEditor(
                 nfcEditorState = nfcEditorState,
                 sectorIndex = index,
                 maxIndexSymbolCount = maxIndexSymbolCount,
-                scaleFactor = scaleFactor
+                scaleFactor = scaleFactor,
+                onPositionActiveLine = {
+                    scrollOffset = it
+                }
             )
+        }
+    }
+}
+
+@Composable
+private fun ScrollToActiveCell(
+    lazyColumnState: LazyListState,
+    currentActiveCell: NfcEditorCellLocation?,
+    cardInfoPresented: Boolean,
+    offset: Int
+) {
+    val scope = rememberCoroutineScope()
+
+    var previousCell by remember { mutableStateOf<NfcEditorCellLocation?>(null) }
+    var previousOffset by remember { mutableStateOf(0) }
+
+    @Suppress("ComplexCondition")
+    if (currentActiveCell != null &&
+        currentActiveCell != previousCell &&
+        offset != previousOffset &&
+        !lazyColumnState.isScrollInProgress
+    ) {
+        previousCell = currentActiveCell
+        previousOffset = offset
+        scope.launch {
+            val newPosition = if (cardInfoPresented) {
+                currentActiveCell.sectorIndex + 1
+            } else currentActiveCell.sectorIndex
+            lazyColumnState.animateScrollToItem(newPosition, offset)
         }
     }
 }

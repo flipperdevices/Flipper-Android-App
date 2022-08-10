@@ -6,12 +6,15 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCell
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCellLocation
+import kotlin.math.roundToInt
 
 @Composable
 fun ComposableNfcLine(
@@ -22,9 +25,19 @@ fun ComposableNfcLine(
     maxIndexSymbolCount: Int,
     scaleFactor: Float,
     activeCell: NfcEditorCellLocation? = null,
-    onCellFocus: ((NfcEditorCellLocation) -> Unit)? = null
+    onCellFocus: ((NfcEditorCellLocation) -> Unit)? = null,
+    onPositionActiveLine: ((Int) -> Unit)? = null
 ) {
-    Row {
+    var rowModifier: Modifier = Modifier
+    if (onPositionActiveLine != null) {
+        rowModifier = rowModifier.onGloballyPositioned {
+            onPositionActiveLine(it.positionInParent().y.roundToInt())
+        }
+    }
+
+    Row(
+        modifier = rowModifier
+    ) {
         Text(
             modifier = Modifier.width((scaleFactor * WIDTH_LINE_INDEX_DP * maxIndexSymbolCount).dp),
             text = visibleIndex.toString(),
@@ -42,6 +55,7 @@ fun ComposableNfcLine(
                 cell,
                 scaleFactor,
                 isActive = cellLocation == activeCell,
+                isEditable = onCellFocus != null,
                 onClick = {
                     onCellFocus?.invoke(cellLocation)
                 }
