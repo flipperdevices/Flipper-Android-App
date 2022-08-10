@@ -21,6 +21,7 @@ import com.flipperdevices.updater.screen.model.FailedReason
 import com.flipperdevices.updater.screen.model.UpdaterScreenState
 
 @Composable
+@Suppress("LongMethod", "ComplexMethod")
 fun ComposableUpdateContent(
     updaterScreenState: UpdaterScreenState,
     onRetry: () -> Unit

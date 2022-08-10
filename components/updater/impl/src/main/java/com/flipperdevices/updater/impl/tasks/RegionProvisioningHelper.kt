@@ -8,16 +8,13 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.updater.impl.model.RegionProvisioning
-import com.flipperdevices.updater.impl.model.RegionProvisioningSource
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-private const val COUNTRY_CODE_LENGTH = 2
-
 interface RegionProvisioningHelper {
-    suspend fun provideRegion(regionFromGeoIp: String?): RegionProvisioning?
+    suspend fun provideRegion(regionFromGeoIp: String?): RegionProvisioning
 }
 
 @ContributesBinding(AppGraph::class, RegionProvisioningHelper::class)
@@ -26,64 +23,39 @@ class RegionProvisioningHelperImpl @Inject constructor(
 ) : RegionProvisioningHelper, LogTagProvider {
     override val TAG = "CountryProvisioningHelper"
 
-    override suspend fun provideRegion(regionFromGeoIp: String?): RegionProvisioning? {
-        val simCards = getCountryFromSimCards()
-        if (simCards != null) {
-            return simCards
-        }
-        if (regionFromGeoIp != null &&
-            regionFromGeoIp.isNotBlank() &&
-            regionFromGeoIp.length == COUNTRY_CODE_LENGTH
-        ) {
-            return RegionProvisioning(
-                regionFromGeoIp,
-                RegionProvisioningSource.GEO_IP
-            )
-        }
+    override suspend fun provideRegion(regionFromGeoIp: String?): RegionProvisioning {
+        val (networkCountry, simCountry, isRoaming) = getCountryFromSimCards()
         val systemRegion = getRegionFromSystem()
-        if (systemRegion != null) {
-            return systemRegion
-        }
-        return null
+
+        return RegionProvisioning(
+            regionFromNetwork = networkCountry,
+            regionFromSim = simCountry,
+            isRoaming = isRoaming,
+            regionFromIp = regionFromGeoIp,
+            regionSystem = systemRegion
+        )
     }
 
     @SuppressLint("ObsoleteSdkInt")
-    private fun getRegionFromSystem(): RegionProvisioning? {
+    private fun getRegionFromSystem(): String {
         val locale: String = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             context.resources.configuration.locales[0].country
         } else {
             context.resources.configuration.locale.country
         }
-        if (locale.isNotBlank() && locale.length == COUNTRY_CODE_LENGTH) {
-            return RegionProvisioning(
-                locale,
-                RegionProvisioningSource.SYSTEM
-            )
-        }
-        return null
+        return locale.uppercase()
     }
 
-    private suspend fun getCountryFromSimCards(): RegionProvisioning? =
+    private suspend fun getCountryFromSimCards(): Triple<String?, String?, Boolean> =
         withContext(Dispatchers.Main) {
             val telephonyManager = context.getSystemService(TelephonyManager::class.java)
 
-            val simCountry = telephonyManager.simCountryIso
-            val networkCountryIso = telephonyManager.networkCountryIso
+            val simCountry = telephonyManager.simCountryIso?.uppercase()
+            val networkCountryIso = telephonyManager.networkCountryIso?.uppercase()
+            val isRoaming = telephonyManager.isNetworkRoaming
 
-            info { "Sim card region: $simCountry and network $networkCountryIso" }
+            info { "Sim card region: $simCountry, network $networkCountryIso, roaming $isRoaming" }
 
-            if (networkCountryIso.isNotBlank() && networkCountryIso.length == COUNTRY_CODE_LENGTH) {
-                return@withContext RegionProvisioning(
-                    networkCountryIso,
-                    RegionProvisioningSource.SIM_NETWORK
-                )
-            }
-            if (simCountry.isNotBlank() && simCountry.length == COUNTRY_CODE_LENGTH) {
-                return@withContext RegionProvisioning(
-                    simCountry,
-                    RegionProvisioningSource.SIM_COUNTRY
-                )
-            }
-            return@withContext null
+            return@withContext Triple(simCountry, networkCountryIso, isRoaming)
         }
 }

@@ -5,6 +5,9 @@ import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.protobuf.streamToCommandFlow
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.metric.api.MetricApi
+import com.flipperdevices.metric.api.events.complex.RegionSource
+import com.flipperdevices.metric.api.events.complex.SubGhzProvisioningEvent
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.RegionKt.band
 import com.flipperdevices.protobuf.region
@@ -12,6 +15,8 @@ import com.flipperdevices.protobuf.storage.file
 import com.flipperdevices.protobuf.storage.writeRequest
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.impl.model.FailedUploadSubGhzException
+import com.flipperdevices.updater.impl.model.RegionProvisioning
+import com.flipperdevices.updater.impl.model.RegionProvisioningSource
 import com.google.protobuf.ByteString
 import com.squareup.anvil.annotations.ContributesBinding
 import java.io.ByteArrayInputStream
@@ -31,7 +36,8 @@ interface SubGhzProvisioningHelper {
 @ContributesBinding(AppGraph::class, SubGhzProvisioningHelper::class)
 class SubGhzProvisioningHelperImpl @Inject constructor(
     private val downloaderApi: DownloaderApi,
-    private val regionProvisioningHelper: RegionProvisioningHelper
+    private val regionProvisioningHelper: RegionProvisioningHelper,
+    private val metricApi: MetricApi
 ) : SubGhzProvisioningHelper, LogTagProvider {
     override val TAG = "SubGhzProvisioningHelper"
 
@@ -39,14 +45,17 @@ class SubGhzProvisioningHelperImpl @Inject constructor(
         requestApi: FlipperRequestApi
     ) = withContext(Dispatchers.Default) {
         val response = downloaderApi.getSubGhzProvisioning()
-        val providedRegion = regionProvisioningHelper.provideRegion(response.country)
+        val providedRegions = regionProvisioningHelper.provideRegion(
+            response.country.uppercase()
+        )
+        val (providedRegion, source) = providedRegions.provideRegion()
         val providedBands = if (providedRegion != null) {
-            response.countries[providedRegion.region.uppercase()] ?: response.defaults
+            response.countries[providedRegion.uppercase()] ?: response.defaults
         } else response.defaults
 
         val regionData = region {
             countryCode = ByteString.copyFrom(
-                providedRegion?.region?.uppercase() ?: UNKNOWN_REGION,
+                providedRegion?.uppercase() ?: UNKNOWN_REGION,
                 Charset.forName("ASCII")
             )
             bands.addAll(
@@ -75,5 +84,30 @@ class SubGhzProvisioningHelperImpl @Inject constructor(
         if (writeFileResponse.commandStatus != Flipper.CommandStatus.OK) {
             throw FailedUploadSubGhzException()
         }
+        reportMetric(providedRegions, providedRegion, source ?: RegionProvisioningSource.DEFAULT)
+    }
+
+    private fun reportMetric(
+        regionProvisioning: RegionProvisioning,
+        providedRegion: String?,
+        source: RegionProvisioningSource
+    ) {
+        metricApi.reportComplexEvent(
+            SubGhzProvisioningEvent(
+                regionNetwork = regionProvisioning.regionFromNetwork,
+                regionSimOne = regionProvisioning.regionFromSim,
+                regionIp = regionProvisioning.regionFromIp,
+                regionSystem = regionProvisioning.regionSystem,
+                regionProvided = providedRegion,
+                regionSource = when (source) {
+                    RegionProvisioningSource.SIM_NETWORK -> RegionSource.SIM_NETWORK
+                    RegionProvisioningSource.SIM_COUNTRY -> RegionSource.SIM_COUNTRY
+                    RegionProvisioningSource.GEO_IP -> RegionSource.GEO_IP
+                    RegionProvisioningSource.SYSTEM -> RegionSource.SYSTEM
+                    RegionProvisioningSource.DEFAULT -> RegionSource.DEFAULT
+                },
+                isRoaming = regionProvisioning.isRoaming
+            )
+        )
     }
 }
