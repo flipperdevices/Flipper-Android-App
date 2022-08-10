@@ -2,6 +2,7 @@ package com.flipperdevices.metric.impl.clickhouse
 
 import androidx.datastore.core.DataStore
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.di.ApplicationParams
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.verbose
@@ -40,6 +41,7 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.isSuccess
 import java.util.UUID
 import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -48,14 +50,17 @@ import kotlinx.coroutines.launch
 
 const val METRIC_API_URL = "https://metric.flipperdevices.com/report"
 
+@Singleton
 @ContributesBinding(AppGraph::class, ClickhouseApi::class)
 class ClickhouseApiImpl @Inject constructor(
     private val client: HttpClient,
-    private val dataStore: DataStore<Settings>
+    private val dataStore: DataStore<Settings>,
+    private val applicationParams: ApplicationParams
 ) : ClickhouseApi, LogTagProvider {
     override val TAG = "ClickhouseApi"
 
     private val scope = CoroutineScope(SupervisorJob())
+    private val sessionUUID by lazy { UUID.randomUUID() }
 
     override fun reportSimpleEvent(simpleEvent: SimpleEvent) {
         val openTarget = when (simpleEvent) {
@@ -170,6 +175,8 @@ class ClickhouseApiImpl @Inject constructor(
     private suspend fun reportToServerSafe(event: Metric.MetricEventsCollection): Unit = try {
         val reportRequest = metricReportRequest {
             uuid = getUUID()
+            version = applicationParams.version
+            sessionUuid = sessionUUID.toString()
             platform = if (BuildConfig.DEBUG) {
                 Metric.MetricReportRequest.Platform.ANDROID_DEBUG
             } else Metric.MetricReportRequest.Platform.ANDROID
