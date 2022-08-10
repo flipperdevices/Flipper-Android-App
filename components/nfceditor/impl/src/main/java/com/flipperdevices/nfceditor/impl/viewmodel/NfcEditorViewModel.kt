@@ -52,7 +52,7 @@ class NfcEditorViewModel(
 
     fun getNfcEditorState(): StateFlow<NfcEditorState?> = textUpdaterHelper.getNfcEditorState()
 
-    fun onCellFocus(location: NfcEditorCellLocation) {
+    fun onCellFocus(location: NfcEditorCellLocation?) {
         textUpdaterHelper.onSelectCell(location)
     }
 

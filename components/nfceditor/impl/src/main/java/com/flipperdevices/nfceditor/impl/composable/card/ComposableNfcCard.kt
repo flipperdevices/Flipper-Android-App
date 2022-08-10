@@ -31,9 +31,12 @@ import com.flipperdevices.nfceditor.impl.model.NfcEditorCardType
 
 @Composable
 fun ComposableNfcCard(
-    nfcEditorCardInfo: NfcEditorCardInfo,
+    nfcEditorCardInfo: NfcEditorCardInfo?,
     scaleFactor: Float
 ) {
+    if (nfcEditorCardInfo == null) {
+        return
+    }
     Card(
         modifier = Modifier.padding(top = 14.dp, bottom = 14.dp, start = 14.dp),
         shape = RoundedCornerShape(12.dp),
