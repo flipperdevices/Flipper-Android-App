@@ -82,7 +82,7 @@ private fun ComposableNfcEditor(
 ) {
     val lazyColumnState = rememberLazyListState()
 
-    var scrollOffset by remember { mutableStateOf<Int>(0) }
+    var scrollOffset by remember { mutableStateOf(0) }
     ScrollToActiveCell(
         lazyColumnState,
         nfcEditorViewModel.currentActiveCell,
@@ -90,10 +90,12 @@ private fun ComposableNfcEditor(
         scrollOffset
     )
     LazyColumn(state = lazyColumnState) {
-        item {
-            ComposableNfcCard(nfcEditorState.nfcEditorCardInfo, scaleFactor)
+        if (nfcEditorState.nfcEditorCardInfo != null) {
+            item {
+                ComposableNfcCard(nfcEditorState.nfcEditorCardInfo, scaleFactor)
+            }
         }
-        items(nfcEditorState.sectors.size, key = { it.hashCode() }) { index ->
+        items(nfcEditorState.sectors.size) { index ->
             ComposableNfcSector(
                 nfcEditorViewModel = nfcEditorViewModel,
                 nfcEditorState = nfcEditorState,
@@ -129,6 +131,7 @@ private fun ScrollToActiveCell(
         previousCell = currentActiveCell
         previousOffset = offset
         scope.launch {
+            println("Compose-Flipper: $offset")
             val newPosition = if (cardInfoPresented) {
                 currentActiveCell.sectorIndex + 1
             } else currentActiveCell.sectorIndex

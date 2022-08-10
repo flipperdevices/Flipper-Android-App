@@ -2,15 +2,12 @@ package com.flipperdevices.nfceditor.impl.model
 
 import androidx.compose.runtime.Stable
 
-const val NFC_CELL_MAX_CURSOR_INDEX = 2L
-
 @Stable
 data class NfcEditorState(
     val nfcEditorCardInfo: NfcEditorCardInfo? = null,
     val cardName: String? = null,
     val sectors: List<NfcEditorSector>
 ) {
-
     fun copyWithChangedContent(location: NfcEditorCellLocation, content: String): NfcEditorState {
         val newSectors = sectors.toMutableList()
         val currentSector = newSectors[location.sectorIndex] ?: return this
@@ -24,7 +21,7 @@ data class NfcEditorState(
         updatedLine = updatedLine.copy(cells = columnsList)
         newLines[location.lineIndex] = updatedLine
         newSectors[location.sectorIndex] = NfcEditorSector(newLines)
-        return NfcEditorState(
+        return copy(
             sectors = newSectors
         )
     }
