@@ -6,14 +6,19 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.markdown.ClickableUrlText
+import com.flipperdevices.core.markdown.ComposableMarkdown
+import com.flipperdevices.core.markdown.markdownColors
+import com.flipperdevices.core.markdown.markdownTypography
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
@@ -21,30 +26,37 @@ import com.flipperdevices.updater.screen.R
 
 @Composable
 private fun ComposableUpdateFailedContent(
-    @DrawableRes imageId: Int,
-    @StringRes titleId: Int,
+    @DrawableRes imageId: Int?,
+    @StringRes titleId: Int?,
     @StringRes descriptionId: Int,
-    button: @Composable () -> Unit
+    button: @Composable () -> Unit = {}
 ) {
-    Image(
-        modifier = Modifier.padding(start = 24.dp, end = 24.dp, bottom = 6.dp),
-        painter = painterResource(imageId),
-        contentDescription = stringResource(titleId)
-    )
+    if (imageId != null) {
+        Image(
+            modifier = Modifier.padding(start = 24.dp, end = 24.dp, bottom = 6.dp),
+            painter = painterResource(imageId),
+            contentDescription = titleId?.let { stringResource(it) }
+        )
+    }
 
-    Text(
-        modifier = Modifier.padding(start = 24.dp, end = 24.dp, bottom = 14.dp),
-        text = stringResource(titleId),
-        style = LocalTypography.current.bodyM14,
-        textAlign = TextAlign.Center
-    )
+    if (titleId != null) {
+        Text(
+            modifier = Modifier.padding(start = 24.dp, end = 24.dp, bottom = 14.dp),
+            text = stringResource(titleId),
+            style = LocalTypography.current.bodyM14,
+            textAlign = TextAlign.Center
+        )
+    }
 
-    Text(
+    ComposableMarkdown(
         modifier = Modifier.padding(start = 24.dp, end = 24.dp, bottom = 14.dp),
-        text = stringResource(descriptionId),
-        style = LocalTypography.current.bodyR14,
-        color = LocalPallet.current.text40,
-        textAlign = TextAlign.Center
+        content = stringResource(descriptionId),
+        colors = markdownColors(
+            text = LocalPallet.current.text40
+        ),
+        typography = markdownTypography(
+            textStyle = LocalTypography.current.bodyR14
+        )
     )
 
     Box(Modifier.padding(start = 24.dp, end = 24.dp)) {
@@ -80,4 +92,34 @@ fun ComposableFailedDownloadContent(onRetry: () -> Unit) {
             color = LocalPallet.current.accentSecond
         )
     }
+}
+
+@Composable
+fun ComposableOutdatedApp() {
+    ComposableUpdateFailedContent(
+        imageId = if (MaterialTheme.colors.isLight) {
+            DesignSystem.drawable.ic_firmware_application_deprecated
+        } else DesignSystem.drawable.ic_firmware_application_deprecated_dark,
+        titleId = R.string.update_screen_failed_outdated_app_title,
+        descriptionId = R.string.update_screen_failed_outdated_app_desc
+    ) {
+        ClickableUrlText(
+            markdownResId = R.string.update_screen_failed_network_btn,
+            style = LocalTypography.current.buttonM16.merge(
+                TextStyle(
+                    textAlign = TextAlign.Center,
+                    color = LocalPallet.current.accentSecond
+                )
+            )
+        )
+    }
+}
+
+@Composable
+fun ComposableInternalFlashFailed() {
+    ComposableUpdateFailedContent(
+        imageId = null,
+        titleId = null,
+        descriptionId = R.string.update_screen_failed_int_desc
+    )
 }

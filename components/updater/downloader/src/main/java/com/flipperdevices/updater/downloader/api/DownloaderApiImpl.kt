@@ -11,10 +11,13 @@ import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.downloader.di.DownloaderComponent
 import com.flipperdevices.updater.downloader.model.ArtifactType
 import com.flipperdevices.updater.downloader.model.FirmwareDirectoryListeningResponse
+import com.flipperdevices.updater.downloader.model.SubGhzProvisioningResponse
 import com.flipperdevices.updater.model.DistributionFile
 import com.flipperdevices.updater.model.DownloadProgress
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
+import com.flipperdevices.updater.model.SubGhzProvisioningException
+import com.flipperdevices.updater.model.SubGhzProvisioningModel
 import com.flipperdevices.updater.model.VersionFiles
 import com.squareup.anvil.annotations.ContributesBinding
 import io.ktor.client.HttpClient
@@ -26,7 +29,8 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 
-private const val JSON_URL = "https://update.flipperzero.one/firmware/directory.json"
+private const val UPDATER_URL = "https://update.flipperzero.one/firmware/directory.json"
+private const val SUB_GHZ_URL = "https://update.flipperzero.one/regions/api/v0/bundle"
 
 @ContributesBinding(AppGraph::class, DownloaderApi::class)
 class DownloaderApiImpl @Inject constructor(
@@ -44,7 +48,9 @@ class DownloaderApiImpl @Inject constructor(
         val versionMap: EnumMap<FirmwareChannel, VersionFiles> =
             EnumMap(FirmwareChannel::class.java)
 
-        val response = client.get(urlString = JSON_URL).body<FirmwareDirectoryListeningResponse>()
+        val response = client.get(
+            urlString = UPDATER_URL
+        ).body<FirmwareDirectoryListeningResponse>()
 
         verbose { "Receive response from server" }
 
@@ -74,6 +80,39 @@ class DownloaderApiImpl @Inject constructor(
         return versionMap
     }
 
+    @Throws(SubGhzProvisioningException::class)
+    override suspend fun getSubGhzProvisioning(): SubGhzProvisioningModel {
+        val response = client.get(
+            urlString = SUB_GHZ_URL
+        ).body<SubGhzProvisioningResponse>()
+
+        verbose { "Receive subghz info $response" }
+
+        if (response.error != null) {
+            throw SubGhzProvisioningException(response.error.code, response.error.text)
+        }
+        val successfulResponse =
+            response.success ?: throw SubGhzProvisioningException(
+                errorCode = -1,
+                "Not found response"
+            )
+
+        return SubGhzProvisioningModel(
+            countries = successfulResponse
+                .countriesBands
+                .mapKeys { it.key.uppercase() }
+                .mapValues { entry ->
+                    entry.value.mapNotNull {
+                        successfulResponse.bands[it]?.toSubGhzProvisioningBand()
+                    }
+                },
+            country = successfulResponse.countryCode.uppercase(),
+            defaults = successfulResponse
+                .defaultBands
+                .mapNotNull { successfulResponse.bands[it]?.toSubGhzProvisioningBand() }
+        )
+    }
+
     override fun download(
         distributionFile: DistributionFile,
         target: File,
@@ -83,7 +122,8 @@ class DownloaderApiImpl @Inject constructor(
         if (decompress) {
             FlipperStorageProvider.useTemporaryFile(context) { tempFile ->
                 downloadAndUnpackDelegate.download(
-                    distributionFile, tempFile
+                    distributionFile,
+                    tempFile
                 ) { processedBytes, totalBytes ->
                     send(DownloadProgress.InProgress(processedBytes, totalBytes))
                 }
@@ -96,7 +136,8 @@ class DownloaderApiImpl @Inject constructor(
             }
         } else {
             downloadAndUnpackDelegate.download(
-                distributionFile, target
+                distributionFile,
+                target
             ) { processedBytes, totalBytes ->
                 send(DownloadProgress.InProgress(processedBytes, totalBytes))
             }

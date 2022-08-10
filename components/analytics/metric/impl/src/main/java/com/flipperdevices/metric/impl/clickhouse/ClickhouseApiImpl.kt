@@ -10,6 +10,8 @@ import com.flipperdevices.metric.api.events.ComplexEvent
 import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.metric.api.events.complex.FlipperGattInfoEvent
 import com.flipperdevices.metric.api.events.complex.FlipperRPCInfoEvent
+import com.flipperdevices.metric.api.events.complex.RegionSource
+import com.flipperdevices.metric.api.events.complex.SubGhzProvisioningEvent
 import com.flipperdevices.metric.api.events.complex.SynchronizationEnd
 import com.flipperdevices.metric.api.events.complex.UpdateFlipperEnd
 import com.flipperdevices.metric.api.events.complex.UpdateFlipperStart
@@ -17,10 +19,12 @@ import com.flipperdevices.metric.api.events.complex.UpdateStatus
 import com.flipperdevices.metric.impl.BuildConfig
 import com.flipperdevices.pbmetric.Metric
 import com.flipperdevices.pbmetric.events.OpenOuterClass
+import com.flipperdevices.pbmetric.events.SubghzProvisioning
 import com.flipperdevices.pbmetric.events.UpdateFlipperEndOuterClass
 import com.flipperdevices.pbmetric.events.flipperGattInfo
 import com.flipperdevices.pbmetric.events.flipperRpcInfo
 import com.flipperdevices.pbmetric.events.open
+import com.flipperdevices.pbmetric.events.subGhzProvisioning
 import com.flipperdevices.pbmetric.events.synchronizationEnd
 import com.flipperdevices.pbmetric.events.updateFlipperEnd
 import com.flipperdevices.pbmetric.events.updateFlipperStart
@@ -75,7 +79,7 @@ class ClickhouseApiImpl @Inject constructor(
         }
     }
 
-    @Suppress("LongMethod")
+    @Suppress("LongMethod", "ComplexMethod")
     override fun reportComplexEvent(complexEvent: ComplexEvent) {
         val event = when (complexEvent) {
             is FlipperGattInfoEvent -> metricEventsCollection {
@@ -128,6 +132,28 @@ class ClickhouseApiImpl @Inject constructor(
                     updateFrom = complexEvent.updateFromVersion
                     updateTo = complexEvent.updateToVersion
                     updateId = complexEvent.updateId
+                }
+            }
+            is SubGhzProvisioningEvent -> metricEventsCollection {
+                subghzProvisioning = subGhzProvisioning {
+                    complexEvent.regionNetwork?.let { regionNetwork = it }
+                    complexEvent.regionSimOne?.let { regionSim1 = it }
+                    complexEvent.regionIp?.let { regionIp = it }
+                    complexEvent.regionSystem?.let { regionSystem = it }
+                    complexEvent.regionProvided?.let { regionProvided = it }
+                    isRoaming = complexEvent.isRoaming
+                    regionSource = when (complexEvent.regionSource) {
+                        RegionSource.SIM_NETWORK ->
+                            SubghzProvisioning.SubGhzProvisioning.RegionSource.SIM_NETWORK
+                        RegionSource.SIM_COUNTRY ->
+                            SubghzProvisioning.SubGhzProvisioning.RegionSource.SIM_COUNTRY
+                        RegionSource.GEO_IP ->
+                            SubghzProvisioning.SubGhzProvisioning.RegionSource.GEO_IP
+                        RegionSource.SYSTEM ->
+                            SubghzProvisioning.SubGhzProvisioning.RegionSource.SYSTEM
+                        RegionSource.DEFAULT ->
+                            SubghzProvisioning.SubGhzProvisioning.RegionSource.DEFAULT
+                    }
                 }
             }
             else -> null

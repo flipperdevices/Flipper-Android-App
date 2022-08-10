@@ -3,6 +3,7 @@
     <string name="update_button_cancel">Cancel</string>
 
     <string name="update_stage_starting_desc">Starting</string>
+    <string name="update_stage_subghz_desc">Preparing to update</string>
     <string name="update_stage_sync_canceling_desc">Cancel the synchronisation</string>
     <string name="update_stage_downloading_desc">Downloading from update server</string>
     <string name="update_stage_uploading_desc">Uploading Firmware to Flipper</string>
@@ -22,9 +23,8 @@
     <string name="update_cancel_dialog_yes">Abort</string>
     <string name="update_cancel_dialog_no">Continue</string>
 
-
     <string name="update_screen_title">Updating your Flipper</string>
-    <string name="update_screen_title_failed">Update Failed</string>
+    <string name="update_screen_title_failed">Unable to Update</string>
     <string name="update_screen_cancel">Cancel</string>
     <string name="update_screen_failed_flipper_title">Can’t connect to Flipper</string>
     <string name="update_screen_failed_flipper_desc">1. Check Bluetooth connection with Flipper\n\n2. Make sure Flipper is Turned On\n\n3. If Flipper doesn’t respond, reboot it and connect to the app via Bluetooth\n\n4. Restart firmware update</string>
@@ -32,5 +32,9 @@
     <string name="update_screen_failed_network_title">Unable to download firmware</string>
     <string name="update_screen_failed_network_desc">Can\'t connect to update server</string>
     <string name="update_screen_failed_network_btn">Retry</string>
+    <string name="update_screen_failed_outdated_app_title">Outdated mobile app version</string>
+    <string name="update_screen_failed_outdated_app_desc">Update app to the latest version to install firmware on Flipper</string>
+    <string name="update_screen_failed_outdated_app_btn">[Go to Google Play](https://play.google.com/store/apps/details?id=com.flipperdevices.app)</string>
+    <string name="update_screen_failed_int_desc">Flipper’s **internal flash storage is full or broken**. Free up space or try factory resetting to restore the internal flash storage.</string>
     <string name="update_screen_whats_new">What`s new</string>
 </resources>

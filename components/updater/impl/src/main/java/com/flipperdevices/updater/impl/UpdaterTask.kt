@@ -2,8 +2,6 @@ package com.flipperdevices.updater.impl
 
 import android.content.Context
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
-import com.flipperdevices.bridge.api.model.FlipperRequestPriority
-import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.log.LogTagProvider
@@ -11,32 +9,29 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.core.ui.lifecycle.OneTimeExecutionBleTask
-import com.flipperdevices.protobuf.Flipper
-import com.flipperdevices.protobuf.main
-import com.flipperdevices.protobuf.system.System
-import com.flipperdevices.protobuf.system.rebootRequest
-import com.flipperdevices.protobuf.system.updateRequest
-import com.flipperdevices.updater.api.DownloaderApi
-import com.flipperdevices.updater.impl.service.UploadFirmwareService
+import com.flipperdevices.updater.impl.model.FailedUploadSubGhzException
+import com.flipperdevices.updater.impl.tasks.FirmwareDownloaderHelper
 import com.flipperdevices.updater.impl.tasks.FlipperUpdateImageHelper
+import com.flipperdevices.updater.impl.tasks.SubGhzProvisioningHelper
+import com.flipperdevices.updater.impl.tasks.UploadToFlipperHelper
 import com.flipperdevices.updater.impl.utils.FolderCreateHelper
 import com.flipperdevices.updater.model.DistributionFile
-import com.flipperdevices.updater.model.DownloadProgress
+import com.flipperdevices.updater.model.SubGhzProvisioningException
 import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.model.UpdatingState
 import java.io.File
+import java.net.UnknownHostException
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class UpdaterTask(
     serviceProvider: FlipperServiceProvider,
-    private val downloaderApi: DownloaderApi,
-    private val context: Context
+    private val context: Context,
+    private val firmwareDownloaderHelper: FirmwareDownloaderHelper,
+    private val uploadToFlipperHelper: UploadToFlipperHelper,
+    private val subGhzProvisioningHelper: SubGhzProvisioningHelper
 ) : OneTimeExecutionBleTask<UpdateRequest, UpdatingState>(serviceProvider),
     LogTagProvider {
     override val TAG = "UpdaterTask"
@@ -70,6 +65,7 @@ class UpdaterTask(
         }
     }
 
+    @Suppress("LongMethod")
     private suspend fun startInternalUnwrapped(
         scope: CoroutineScope,
         serviceApi: FlipperServiceApi,
@@ -84,11 +80,33 @@ class UpdaterTask(
             stateListener(
                 UpdatingState.DownloadingFromNetwork(0f)
             )
-            downloadFirmware(updateFile, updaterFolder, stateListener)
+            firmwareDownloaderHelper.downloadFirmware(updateFile, updaterFolder, stateListener)
         } catch (e: Throwable) {
             error(e) { "Failed when download from network" }
             if (e !is CancellationException) {
                 stateListener(UpdatingState.FailedDownload)
+            }
+            return@useTemporaryFolder
+        }
+        try {
+            stateListener(UpdatingState.SubGhzProvisioning)
+            subGhzProvisioningHelper.provideAndUploadSubGhz(serviceApi.requestApi)
+        } catch (e: SubGhzProvisioningException) {
+            error(e) { "Failed receive subghz region" }
+            stateListener(UpdatingState.FailedOutdatedApp)
+            return@useTemporaryFolder
+        } catch (e: FailedUploadSubGhzException) {
+            error(e) { "Failed upload subghz provisioning" }
+            stateListener(UpdatingState.FailedSubGhzProvisioning)
+            return@useTemporaryFolder
+        } catch (e: UnknownHostException) {
+            error(e) { "Failed download subghz information" }
+            stateListener(UpdatingState.FailedDownload)
+            return@useTemporaryFolder
+        } catch (e: Throwable) {
+            error(e) { "Failed when provide subghz provisioning" }
+            if (e !is CancellationException) {
+                stateListener(UpdatingState.FailedPrepare)
             }
             return@useTemporaryFolder
         }
@@ -107,7 +125,7 @@ class UpdaterTask(
         }
 
         try {
-            uploadToFlipper(
+            uploadToFlipperHelper.uploadToFlipper(
                 scope,
                 flipperPath,
                 updaterFolder,
@@ -125,26 +143,6 @@ class UpdaterTask(
         stateListener(UpdatingState.Rebooting)
     }
 
-    private suspend fun downloadFirmware(
-        updateFile: DistributionFile,
-        updaterFolder: File,
-        stateListener: suspend (UpdatingState) -> Unit
-    ) {
-        stateListener(UpdatingState.DownloadingFromNetwork(percent = 0.0001f))
-        downloaderApi.download(updateFile, updaterFolder, decompress = true).collect {
-            when (it) {
-                DownloadProgress.Finished ->
-                    stateListener(UpdatingState.DownloadingFromNetwork(1.0f))
-                is DownloadProgress.InProgress -> stateListener(
-                    UpdatingState.DownloadingFromNetwork(
-                        it.processedBytes.toFloat() / it.totalBytes.toFloat()
-                    )
-                )
-                DownloadProgress.NotStarted -> stateListener(UpdatingState.NotStarted)
-            }
-        }
-    }
-
     private suspend fun prepareToUpload(
         updateFile: DistributionFile,
         requestApi: FlipperRequestApi
@@ -158,46 +156,5 @@ class UpdaterTask(
 
         FolderCreateHelper.mkdirFolderOnFlipper(requestApi, flipperPath)
         return flipperPath
-    }
-
-    private suspend fun uploadToFlipper(
-        scope: CoroutineScope,
-        flipperPath: String,
-        updaterFolder: File,
-        requestApi: FlipperRequestApi,
-        stateListener: suspend (UpdatingState) -> Unit
-    ) {
-        UploadFirmwareService.upload(
-            requestApi,
-            updaterFolder,
-            flipperPath
-        ) { sended, totalBytes ->
-            scope.launch(Dispatchers.Default) {
-                stateListener(
-                    UpdatingState.UploadOnFlipper(
-                        sended.toFloat() / totalBytes.toFloat()
-                    )
-                )
-            }
-        }
-
-        val response = requestApi.request(
-            main {
-                systemUpdateRequest = updateRequest {
-                    updateManifest = "$flipperPath/update.fuf"
-                }
-            }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
-        ).first()
-        if (response.commandStatus != Flipper.CommandStatus.OK) {
-            error("Failed send update request")
-        }
-
-        requestApi.requestWithoutAnswer(
-            main {
-                systemRebootRequest = rebootRequest {
-                    mode = System.RebootRequest.RebootMode.UPDATE
-                }
-            }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
-        )
     }
 }
