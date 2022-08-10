@@ -1,9 +1,5 @@
 package com.flipperdevices.nfceditor.impl.fragments
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +11,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.ktx.android.withArgs
+import com.flipperdevices.core.navigation.delegates.OnBackPressListener
 import com.flipperdevices.core.ui.fragment.ComposeFragment
 import com.flipperdevices.nfceditor.impl.composable.ComposableNfcEditorScreen
 import com.flipperdevices.nfceditor.impl.viewmodel.NfcEditorViewModel
@@ -22,7 +19,7 @@ import com.flipperdevices.nfceditor.impl.viewmodel.NfcEditorViewModelFactory
 
 private const val EXTRA_FLIPPER_KEY = "flipper_key"
 
-class NfcEditorFragment : ComposeFragment() {
+class NfcEditorFragment : ComposeFragment(), OnBackPressListener {
     private val viewModel by viewModels<NfcEditorViewModel> {
         NfcEditorViewModelFactory(
             arguments?.getParcelable(EXTRA_FLIPPER_KEY)
@@ -32,18 +29,6 @@ class NfcEditorFragment : ComposeFragment() {
                     synchronized = false
                 )
         )
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return FlipperComposeView(requireContext()).apply {
-            setContent {
-                ComposeViewRenderWithTheme()
-            }
-        }
     }
 
     @Composable
@@ -61,5 +46,12 @@ class NfcEditorFragment : ComposeFragment() {
         fun getInstance(flipperKey: FlipperKey) = NfcEditorFragment().withArgs {
             putParcelable(EXTRA_FLIPPER_KEY, flipperKey)
         }
+    }
+
+    override fun onBackPressed(): Boolean {
+        return if (viewModel.currentActiveCell != null) {
+            viewModel.onCellFocus(null)
+            true
+        } else false
     }
 }

@@ -7,12 +7,12 @@ plugins {
 dependencies {
     implementation(projects.components.nfceditor.api)
 
-    implementation(projects.components.core.keyinputbus)
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ui.fragment)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.ktx)
+    implementation(projects.components.core.ui.hexkeyboard)
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.navigation)
     implementation(projects.components.core.log)

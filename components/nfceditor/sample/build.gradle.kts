@@ -16,7 +16,6 @@ dependencies {
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)
-    implementation(projects.components.core.keyinputbus)
     implementation(projects.components.core.navigation)
     implementation(projects.components.core.preference)
 

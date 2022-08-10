@@ -21,9 +21,9 @@ fun ComposableNfcSector(
     nfcEditorState: NfcEditorState,
     sectorIndex: Int,
     maxIndexSymbolCount: Int,
-    scaleFactor: Float
+    scaleFactor: Float,
+    onPositionActiveLine: (Int) -> Unit
 ) {
-    val isNonEditableSector = sectorIndex == 0
     Column {
         Text(
             modifier = Modifier.padding(
@@ -39,35 +39,23 @@ fun ComposableNfcSector(
 
         val currentSector = nfcEditorState.sectors[sectorIndex]
 
-        if (currentSector != null) {
-            currentSector.lines.forEachIndexed { lineIndex, line ->
-                ComposableNfcLine(
-                    sectorIndex = sectorIndex,
-                    lineIndexInSector = lineIndex,
-                    visibleIndex = line.index,
-                    line = line.cells,
-                    maxIndexSymbolCount = maxIndexSymbolCount,
-                    scaleFactor = scaleFactor,
-                    cursor = nfcEditorViewModel.nfcEditorCursor,
-                    onFocusChanged = if (isNonEditableSector) null
-                    else nfcEditorViewModel::onCellFocus,
-                    onValueChanged = if (isNonEditableSector) null else {
-                        { location, textValue ->
-                            nfcEditorViewModel.onChangeText(
-                                textValue.text,
-                                location,
-                                textValue.selection.start
-                            )
-                        }
-                    }
-                )
-            }
-        } else {
-            Text(
-                text = stringResource(R.string.nfceditor_sector_broke),
-                color = LocalPallet.current.text40,
-                fontSize = (scaleFactor * 14).sp,
-                style = LocalTypography.current.subtitleB12
+        currentSector.lines.forEachIndexed { lineIndex, line ->
+            val isNonEditableLine = sectorIndex == 0 && lineIndex == 0
+            val activeCell = nfcEditorViewModel.currentActiveCell
+
+            ComposableNfcLine(
+                sectorIndex = sectorIndex,
+                lineIndexInSector = lineIndex,
+                visibleIndex = line.index,
+                line = line.cells,
+                maxIndexSymbolCount = maxIndexSymbolCount,
+                scaleFactor = scaleFactor,
+                activeCell = activeCell,
+                onCellFocus = if (isNonEditableLine) null
+                else nfcEditorViewModel::onCellFocus,
+                onPositionActiveLine = if (activeCell?.sectorIndex == sectorIndex &&
+                    activeCell.lineIndex == lineIndex
+                ) onPositionActiveLine else null
             )
         }
     }

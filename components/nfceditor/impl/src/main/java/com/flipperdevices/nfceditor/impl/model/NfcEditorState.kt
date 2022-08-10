@@ -1,17 +1,13 @@
 package com.flipperdevices.nfceditor.impl.model
 
 import androidx.compose.runtime.Stable
-import kotlin.math.abs
-
-const val NFC_CELL_MAX_CURSOR_INDEX = 2L
 
 @Stable
 data class NfcEditorState(
     val nfcEditorCardInfo: NfcEditorCardInfo? = null,
     val cardName: String? = null,
-    val sectors: List<NfcEditorSector?>
+    val sectors: List<NfcEditorSector>
 ) {
-
     fun copyWithChangedContent(location: NfcEditorCellLocation, content: String): NfcEditorState {
         val newSectors = sectors.toMutableList()
         val currentSector = newSectors[location.sectorIndex] ?: return this
@@ -25,13 +21,13 @@ data class NfcEditorState(
         updatedLine = updatedLine.copy(cells = columnsList)
         newLines[location.lineIndex] = updatedLine
         newSectors[location.sectorIndex] = NfcEditorSector(newLines)
-        return NfcEditorState(
+        return copy(
             sectors = newSectors
         )
     }
 
-    operator fun get(location: NfcEditorCellLocation): NfcEditorCell? {
-        val currentSector = sectors[location.sectorIndex] ?: return null
+    operator fun get(location: NfcEditorCellLocation): NfcEditorCell {
+        val currentSector = sectors[location.sectorIndex]
         return currentSector.lines[location.lineIndex].cells[location.columnIndex]
     }
 }
@@ -67,8 +63,8 @@ data class NfcEditorCellLocation(
     val lineIndex: Int,
     val columnIndex: Int
 ) {
-    fun increment(sectors: List<NfcEditorSector?>): NfcEditorCellLocation? {
-        val currentSector = sectors[sectorIndex] ?: return null
+    fun increment(sectors: List<NfcEditorSector>): NfcEditorCellLocation? {
+        val currentSector = sectors[sectorIndex]
         return if (columnIndex < currentSector.lines[lineIndex].cells.lastIndex) {
             NfcEditorCellLocation(
                 sectorIndex = sectorIndex,
@@ -90,8 +86,8 @@ data class NfcEditorCellLocation(
         } else null
     }
 
-    fun decrement(sectors: List<NfcEditorSector?>): NfcEditorCellLocation? {
-        val currentSector = sectors[sectorIndex] ?: return null
+    fun decrement(sectors: List<NfcEditorSector>): NfcEditorCellLocation? {
+        val currentSector = sectors[sectorIndex]
 
         if (columnIndex > 0) {
             return NfcEditorCellLocation(
@@ -108,14 +104,11 @@ data class NfcEditorCellLocation(
                     .lines[newLineIndex].cells.lastIndex
             )
         } else if (sectorIndex > 0) {
-            var newSectorIndex = sectorIndex - 1
-            while (newSectorIndex >= 0 && sectors[newSectorIndex] == null) {
-                newSectorIndex--
-            }
+            val newSectorIndex = sectorIndex - 1
             if (newSectorIndex < 0) {
                 return null
             }
-            val newSector = sectors[newSectorIndex] ?: return null
+            val newSector = sectors[newSectorIndex]
 
             return NfcEditorCellLocation(
                 sectorIndex = newSectorIndex,
@@ -123,11 +116,5 @@ data class NfcEditorCellLocation(
                 columnIndex = newSector.lines.last().cells.lastIndex
             )
         } else return null
-    }
-
-    fun isNear(otherLocation: NfcEditorCellLocation): Boolean {
-        return otherLocation.sectorIndex == sectorIndex &&
-            otherLocation.lineIndex == lineIndex &&
-            abs(otherLocation.columnIndex - columnIndex) <= 1
     }
 }

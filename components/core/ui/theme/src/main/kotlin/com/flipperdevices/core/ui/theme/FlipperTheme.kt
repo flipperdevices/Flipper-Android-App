@@ -112,7 +112,10 @@ private val lightPallet = FlipperPallet(
     bottomBarBackground = Color(0xFFFFFFFF),
     disableSwitch = Color(0xFFDFDFDF),
     backgroundDialog = Color(0xFFFFFFFF),
-    notificationCard = Color(0xFFE9E9E9)
+    notificationCard = Color(0xFFE9E9E9),
+
+    substrateActiveCellNfcEditor = Color(0xFFDFDFDF),
+    hexKeyboardBackground = Color(0xFF616161)
 )
 
 @Suppress("MagicNumber")
@@ -144,7 +147,10 @@ private val darkPallet = FlipperPallet(
     bottomBarBackground = Color(0xFF1C1C1C),
     disableSwitch = Color(0xFF616161),
     backgroundDialog = Color(0xFF303030),
-    notificationCard = Color(0xFF616161)
+    notificationCard = Color(0xFF616161),
+
+    substrateActiveCellNfcEditor = Color(0xFF616161),
+    hexKeyboardBackground = Color(0xFF000000)
 )
 
 private val typography = FlipperTypography(
