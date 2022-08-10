@@ -42,6 +42,7 @@ class FlipperRtcUpdateService : LogTagProvider {
                 Calendar.SUNDAY -> 7
                 else -> 0
             }
+            year = rightNow.get(Calendar.YEAR)
         }
     }
 }
