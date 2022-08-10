@@ -1,39 +1,87 @@
 package com.flipperdevices.nfceditor.impl.viewmodel
 
-import com.flipperdevices.core.ktx.jre.then
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import com.flipperdevices.core.ui.hexkeyboard.HexKey
+import com.flipperdevices.nfceditor.impl.model.NfcEditorCellLocation
+import com.flipperdevices.nfceditor.impl.model.NfcEditorState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.updateAndGet
 
 const val DELETE_SYMBOL = "?"
-private val ALLOWED_SYMBOL = "^[0-9A-F?]*\$".toRegex()
+const val DELETE_CELL = "$DELETE_SYMBOL$DELETE_SYMBOL"
+const val BYTES_SYMBOL_COUNT = 2
 
 class TextUpdaterHelper {
-    fun getProcessedText(
-        originalText: String,
-        newText: String,
-        oldPosition: Int,
-        newPosition: Int
-    ): String {
-        val newTextFormatted = newText.uppercase()
-        if (!ALLOWED_SYMBOL.matches(newTextFormatted)) {
-            return originalText
+    private var nfcEditorStateFlow = MutableStateFlow<NfcEditorState?>(
+        NfcEditorState(
+            sectors = emptyList()
+        )
+    )
+
+    var currentActiveCell by mutableStateOf<NfcEditorCellLocation?>(null)
+        private set
+    private var backupTextCurrentCell: String? = null
+
+    fun getNfcEditorState(): StateFlow<NfcEditorState?> = nfcEditorStateFlow
+
+    fun onFileLoad(nfcEditorState: NfcEditorState?) {
+        nfcEditorStateFlow.update {
+            nfcEditorState
         }
+    }
 
-        val (minPosition, maxPosition, isDelete) = if (oldPosition < newPosition) {
-            oldPosition then newPosition then false
-        } else if (newPosition < oldPosition) {
-            newPosition then oldPosition then true
-        } else return originalText
-
-        val updatedText = if (isDelete) {
-            originalText.replaceRange(
-                minPosition,
-                maxPosition,
-                DELETE_SYMBOL.repeat(maxPosition - minPosition)
-            )
-        } else {
-            val changedText = newTextFormatted.substring(minPosition, maxPosition)
-            originalText.replaceRange(minPosition, maxPosition, changedText)
+    fun onSelectCell(location: NfcEditorCellLocation?) {
+        val currentNfcEditorState = nfcEditorStateFlow.value ?: return
+        val activeCellLocation = currentActiveCell
+        if (activeCellLocation != null &&
+            currentNfcEditorState[activeCellLocation].content.length != BYTES_SYMBOL_COUNT
+        ) {
+            nfcEditorStateFlow.update {
+                currentNfcEditorState.copyWithChangedContent(
+                    activeCellLocation,
+                    backupTextCurrentCell ?: DELETE_CELL
+                )
+            }
         }
+        currentActiveCell = location
+        backupTextCurrentCell = location?.let { currentNfcEditorState[location].content }
+    }
 
-        return updatedText
+    fun onKeyboardPress(
+        key: HexKey
+    ) {
+        when (key) {
+            HexKey.Ok -> onSelectCell(null)
+            HexKey.Clear -> onPressClear()
+            else -> onAddSymbol(key.title)
+        }
+    }
+
+    private fun onPressClear() {
+        val location = currentActiveCell ?: return
+        var nfcEditorState = nfcEditorStateFlow.value ?: return
+        nfcEditorState = nfcEditorStateFlow.updateAndGet {
+            nfcEditorState.copyWithChangedContent(location, DELETE_CELL)
+        } ?: return
+        onSelectCell(location.decrement(nfcEditorState.sectors))
+    }
+
+    private fun onAddSymbol(symbol: Char) {
+        val location = currentActiveCell ?: return
+        var nfcEditorState = nfcEditorStateFlow.value ?: return
+        var newText = nfcEditorState[location].content + symbol
+        if (newText.length > BYTES_SYMBOL_COUNT) {
+            newText = symbol.toString()
+        }
+        nfcEditorState = nfcEditorStateFlow.updateAndGet {
+            nfcEditorState.copyWithChangedContent(location, newText)
+        } ?: return
+        if (newText.length == BYTES_SYMBOL_COUNT) {
+            onSelectCell(location.increment(nfcEditorState.sectors) ?: location)
+        }
     }
 }

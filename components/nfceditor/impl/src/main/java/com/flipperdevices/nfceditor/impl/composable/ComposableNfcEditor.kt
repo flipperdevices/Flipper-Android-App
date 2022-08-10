@@ -41,7 +41,7 @@ fun ComposableNfcEditor(
             )
         ) {
             val maxIndexSymbolCount = remember(constraints, nfcEditorState) {
-                nfcEditorState.sectors.filterNotNull().maxOfOrNull { it.lines.maxOf { it.index } }
+                nfcEditorState.sectors.maxOfOrNull { it.lines.maxOf { it.index } }
                     ?.length() ?: 0
             }
 
@@ -73,7 +73,7 @@ private fun ComposableNfcEditor(
     scaleFactor: Float
 ) {
     LazyColumn {
-        item(nfcEditorState.nfcEditorCardInfo.hashCode()) {
+        item {
             if (nfcEditorState.nfcEditorCardInfo != null) {
                 ComposableNfcCard(nfcEditorState.nfcEditorCardInfo, scaleFactor)
             }

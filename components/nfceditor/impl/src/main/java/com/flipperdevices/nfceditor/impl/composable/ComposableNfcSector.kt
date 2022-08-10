@@ -38,37 +38,19 @@ fun ComposableNfcSector(
 
         val currentSector = nfcEditorState.sectors[sectorIndex]
 
-        if (currentSector != null) {
-            currentSector.lines.forEachIndexed { lineIndex, line ->
-                val isNonEditableLine = sectorIndex == 0 && lineIndex == 0
+        currentSector.lines.forEachIndexed { lineIndex, line ->
+            val isNonEditableLine = sectorIndex == 0 && lineIndex == 0
 
-                ComposableNfcLine(
-                    sectorIndex = sectorIndex,
-                    lineIndexInSector = lineIndex,
-                    visibleIndex = line.index,
-                    line = line.cells,
-                    maxIndexSymbolCount = maxIndexSymbolCount,
-                    scaleFactor = scaleFactor,
-                    cursor = nfcEditorViewModel.nfcEditorCursor,
-                    onFocusChanged = if (isNonEditableLine) null
-                    else nfcEditorViewModel::onCellFocus,
-                    onValueChanged = if (isNonEditableLine) null else {
-                        { location, textValue ->
-                            nfcEditorViewModel.onChangeText(
-                                textValue.text,
-                                location,
-                                textValue.selection.start
-                            )
-                        }
-                    }
-                )
-            }
-        } else {
-            Text(
-                text = stringResource(R.string.nfceditor_sector_broke),
-                color = LocalPallet.current.text40,
-                fontSize = (scaleFactor * 14).sp,
-                style = LocalTypography.current.subtitleB12
+            ComposableNfcLine(
+                sectorIndex = sectorIndex,
+                lineIndexInSector = lineIndex,
+                visibleIndex = line.index,
+                line = line.cells,
+                maxIndexSymbolCount = maxIndexSymbolCount,
+                scaleFactor = scaleFactor,
+                activeCell = nfcEditorViewModel.currentActiveCell,
+                onCellFocus = if (isNonEditableLine) null
+                else nfcEditorViewModel::onCellFocus
             )
         }
     }

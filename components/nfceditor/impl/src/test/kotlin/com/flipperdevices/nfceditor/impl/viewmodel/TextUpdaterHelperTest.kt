@@ -1,128 +1,145 @@
 package com.flipperdevices.nfceditor.impl.viewmodel
 
+import com.flipperdevices.core.ui.hexkeyboard.HexKey
+import com.flipperdevices.nfceditor.impl.model.NfcCellType
+import com.flipperdevices.nfceditor.impl.model.NfcEditorCell
+import com.flipperdevices.nfceditor.impl.model.NfcEditorCellLocation
+import com.flipperdevices.nfceditor.impl.model.NfcEditorLine
+import com.flipperdevices.nfceditor.impl.model.NfcEditorSector
+import com.flipperdevices.nfceditor.impl.model.NfcEditorState
 import org.junit.Assert
+import org.junit.Before
 import org.junit.Test
 
+private const val TEST_SECTORS = 32
+private const val TEST_LINES = 4
+private const val TEST_CELLS = 16
+
 class TextUpdaterHelperTest {
-    private val underTest: TextUpdaterHelper = TextUpdaterHelper()
+    private lateinit var underTest: TextUpdaterHelper
 
-    @Test
-    fun `delete symbol from 1 index`() {
-        val resultText = underTest.getProcessedText(
-            originalText = "0F",
-            newText = "F",
-            oldPosition = 1,
-            newPosition = 0
+    @Before
+    fun setUp() {
+        underTest = TextUpdaterHelper()
+        underTest.onFileLoad(
+            NfcEditorState(
+                sectors = List(TEST_SECTORS) { sectorIndex ->
+                    NfcEditorSector(
+                        List(TEST_LINES) { lineIndex ->
+                            NfcEditorLine(
+                                sectorIndex * TEST_LINES + lineIndex,
+                                "04 77 70 2A 23 4F 80 08 44 00 12 01 11 00 27 16".split(" ")
+                                    .map { NfcEditorCell(it, NfcCellType.SIMPLE) }
+                            )
+                        }
+                    )
+                }
+            )
         )
-
-        Assert.assertEquals("?F", resultText)
     }
 
     @Test
-    fun `delete symbol from 1 index with same symbol`() {
-        val resultText = underTest.getProcessedText(
-            originalText = "00",
-            newText = "0",
-            oldPosition = 1,
-            newPosition = 0
-        )
+    fun `on press back on start`() {
+        val testedLocation = NfcEditorCellLocation(0, 0, 0)
+        underTest.onSelectCell(testedLocation)
 
-        Assert.assertEquals("?0", resultText)
+        underTest.onKeyboardPress(HexKey.Clear)
+
+        Assert.assertEquals("??", underTest.getNfcEditorState().value?.get(testedLocation)?.content)
+        Assert.assertNull(
+            underTest.currentActiveCell
+        )
     }
 
     @Test
-    fun `delete symbol from 1 index to empty cell`() {
-        val resultText = underTest.getProcessedText(
-            originalText = "F?",
-            newText = "?",
-            oldPosition = 1,
-            newPosition = 0
-        )
+    fun `on press back on same line`() {
+        val testedLocation = NfcEditorCellLocation(0, 0, 1)
+        underTest.onSelectCell(testedLocation)
 
-        Assert.assertEquals("??", resultText)
+        underTest.onKeyboardPress(HexKey.Clear)
+
+        val nfcEditorState = underTest.getNfcEditorState().value
+        Assert.assertNotNull(nfcEditorState)
+        Assert.assertEquals("??", nfcEditorState!![testedLocation].content)
+        Assert.assertEquals("04", nfcEditorState[NfcEditorCellLocation(0, 0, 0)].content)
+        Assert.assertEquals(
+            NfcEditorCellLocation(0, 0, 0),
+            underTest.currentActiveCell
+        )
     }
 
     @Test
-    fun `delete symbol from 2 index`() {
-        val resultText = underTest.getProcessedText(
-            originalText = "0F",
-            newText = "0",
-            oldPosition = 2,
-            newPosition = 1
-        )
+    fun `on press back on another line`() {
+        val testedLocation = NfcEditorCellLocation(0, 1, 0)
+        underTest.onSelectCell(testedLocation)
 
-        Assert.assertEquals("0?", resultText)
+        underTest.onKeyboardPress(HexKey.Clear)
+
+        val nfcEditorState = underTest.getNfcEditorState().value
+        Assert.assertNotNull(nfcEditorState)
+        Assert.assertEquals("??", nfcEditorState!![testedLocation].content)
+        Assert.assertEquals(
+            NfcEditorCellLocation(0, 0, TEST_CELLS - 1),
+            underTest.currentActiveCell
+        )
     }
 
     @Test
-    fun `delete symbol from 2 index with same symbol`() {
-        val resultText = underTest.getProcessedText(
-            originalText = "00",
-            newText = "0",
-            oldPosition = 2,
-            newPosition = 1
-        )
+    fun `on press back on another sector`() {
+        val testedLocation = NfcEditorCellLocation(1, 0, 0)
+        underTest.onSelectCell(testedLocation)
 
-        Assert.assertEquals("0?", resultText)
+        underTest.onKeyboardPress(HexKey.Clear)
+
+        val nfcEditorState = underTest.getNfcEditorState().value
+        Assert.assertNotNull(nfcEditorState)
+        Assert.assertEquals("??", nfcEditorState!![testedLocation].content)
+        Assert.assertEquals(
+            NfcEditorCellLocation(0, TEST_LINES - 1, TEST_CELLS - 1),
+            underTest.currentActiveCell
+        )
+        Assert.assertEquals(
+            NfcEditorCellLocation(0, TEST_LINES - 1, TEST_CELLS - 1),
+            underTest.currentActiveCell
+        )
     }
 
     @Test
-    fun `add symbol from 0 index on existed text`() {
-        val resultText = underTest.getProcessedText(
-            originalText = "0A",
-            newText = "F0A",
-            oldPosition = 0,
-            newPosition = 1
-        )
+    fun `on type text`() {
+        val testedLocation = NfcEditorCellLocation(0, 0, 0)
+        underTest.onSelectCell(testedLocation)
 
-        Assert.assertEquals("FA", resultText)
+        underTest.onKeyboardPress(HexKey.A)
+
+        val nfcEditorState = underTest.getNfcEditorState().value
+        Assert.assertNotNull(nfcEditorState)
+        Assert.assertEquals("A", nfcEditorState!![testedLocation].content)
+        Assert.assertEquals(
+            testedLocation,
+            underTest.currentActiveCell
+        )
     }
 
     @Test
-    fun `add symbol from 0 index on empty cell`() {
-        val resultText = underTest.getProcessedText(
-            originalText = "?A",
-            newText = "F0A",
-            oldPosition = 0,
-            newPosition = 1
+    fun `on type text and restore backup`() {
+        val testedLocation = NfcEditorCellLocation(0, 0, 0)
+        underTest.onSelectCell(testedLocation)
+
+        underTest.onKeyboardPress(HexKey.A)
+
+        var nfcEditorState = underTest.getNfcEditorState().value
+        Assert.assertNotNull(nfcEditorState)
+        Assert.assertEquals("A", nfcEditorState!![testedLocation].content)
+        Assert.assertEquals(
+            testedLocation,
+            underTest.currentActiveCell
         )
-
-        Assert.assertEquals("FA", resultText)
-    }
-
-    @Test
-    fun `add symbol from 1 index on existed text`() {
-        val resultText = underTest.getProcessedText(
-            originalText = "0A",
-            newText = "0FA",
-            oldPosition = 1,
-            newPosition = 2
+        underTest.onSelectCell(NfcEditorCellLocation(0, 0, 1))
+        Assert.assertEquals(
+            NfcEditorCellLocation(0, 0, 1),
+            underTest.currentActiveCell
         )
-
-        Assert.assertEquals("0F", resultText)
-    }
-
-    @Test
-    fun `add symbol from 0 index two symbol`() {
-        val resultText = underTest.getProcessedText(
-            originalText = "0A",
-            newText = "BF0A",
-            oldPosition = 0,
-            newPosition = 2
-        )
-
-        Assert.assertEquals("BF", resultText)
-    }
-
-    @Test
-    fun `remove symbol from 2 index two symbol`() {
-        val resultText = underTest.getProcessedText(
-            originalText = "0A",
-            newText = "",
-            oldPosition = 2,
-            newPosition = 0
-        )
-
-        Assert.assertEquals("??", resultText)
+        nfcEditorState = underTest.getNfcEditorState().value
+        Assert.assertEquals("04", nfcEditorState!![testedLocation].content)
     }
 }

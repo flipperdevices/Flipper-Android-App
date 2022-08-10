@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="nfceditor_sector_title">Sector: %1$d</string>
-    <string name="nfceditor_sector_broke">No Keys Found</string>
     <string name="nfceditor_title">Edit Dump</string>
     <string name="nfceditor_btn_save">Save</string>
     <string name="nfc_card_sector">Sector</string>

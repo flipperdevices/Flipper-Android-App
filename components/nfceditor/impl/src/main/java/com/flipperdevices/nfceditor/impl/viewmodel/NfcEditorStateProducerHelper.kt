@@ -13,7 +13,6 @@ import com.flipperdevices.nfceditor.impl.model.NfcEditorState
 
 private const val EMPTY_BYTE = "$DELETE_SYMBOL$DELETE_SYMBOL"
 private const val LINE_BYTES_COUNT = 16
-private const val BYTES_SYMBOL_COUNT = 2
 private const val MF_4K_NAME = "4K"
 private const val MF_4K_LITTLE_SECTOR_COUNT = 32
 private const val MF_4K_LITTLE_SECTOR_SIZE = 4
