@@ -26,6 +26,7 @@ import com.flipperdevices.filemanager.impl.R
 private const val FILE_MAX_LENGTH = 128
 
 @Composable
+@Suppress("LongMethod")
 fun ComposableInputDialog(
     titleId: Int,
     onFinishEdit: (String?) -> Unit
