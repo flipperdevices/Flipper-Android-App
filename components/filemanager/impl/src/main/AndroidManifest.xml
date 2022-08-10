@@ -12,4 +12,15 @@
                     android:resource="@xml/filepaths" />
         </provider>
     </application>
+
+    <!--
+        https://developer.android.com/reference/android/content/Intent#ACTION_GET_CONTENT
+        https://developer.android.com/about/versions/11/privacy/package-visibility
+    -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.GET_CONTENT" />
+            <data android:mimeType="*/*"/>
+        </intent>
+    </queries>
 </manifest>
