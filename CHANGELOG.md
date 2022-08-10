@@ -1,6 +1,8 @@
 # Changelog
 
-# 1.1.6 - In progress
+# 1.2.1 - In progress
+
+# 1.2.0
 
 - [Feature] Upload key-file from file manager
 - [Feature] Offer update, if assets not exit on Flipper
