@@ -22,9 +22,13 @@ import com.flipperdevices.nfceditor.impl.model.NfcEditorState
 import com.flipperdevices.nfceditor.impl.viewmodel.NfcEditorViewModel
 
 @Composable
-fun ComposableNfcEditor(nfcEditorViewModel: NfcEditorViewModel, nfcEditorState: NfcEditorState) {
+fun ComposableNfcEditor(
+    modifier: Modifier,
+    nfcEditorViewModel: NfcEditorViewModel,
+    nfcEditorState: NfcEditorState
+) {
     BoxWithConstraints(
-        Modifier
+        modifier
             .fillMaxWidth()
             .padding(end = 14.dp),
         contentAlignment = Alignment.Center
@@ -69,8 +73,8 @@ private fun ComposableNfcEditor(
     scaleFactor: Float
 ) {
     LazyColumn {
-        if (nfcEditorState.nfcEditorCardInfo != null) {
-            item(nfcEditorState.nfcEditorCardInfo.hashCode()) {
+        item(nfcEditorState.nfcEditorCardInfo.hashCode()) {
+            if (nfcEditorState.nfcEditorCardInfo != null) {
                 ComposableNfcCard(nfcEditorState.nfcEditorCardInfo, scaleFactor)
             }
         }

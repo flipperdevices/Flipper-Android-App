@@ -1,6 +1,5 @@
 package com.flipperdevices.nfceditor.impl.viewmodel
 
-import android.view.KeyEvent
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -10,11 +9,9 @@ import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.core.di.ComponentHolder
-import com.flipperdevices.core.keyinputbus.KeyInputBus
-import com.flipperdevices.core.keyinputbus.KeyInputBusListener
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.verbose
+import com.flipperdevices.core.ui.hexkeyboard.HexKey
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.nfceditor.impl.di.NfcEditorComponent
 import com.flipperdevices.nfceditor.impl.model.NFC_CELL_MAX_CURSOR_INDEX
@@ -23,7 +20,6 @@ import com.flipperdevices.nfceditor.impl.model.NfcEditorCursor
 import com.flipperdevices.nfceditor.impl.model.NfcEditorState
 import com.github.terrakok.cicerone.Router
 import javax.inject.Inject
-import javax.inject.Provider
 import kotlin.math.min
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,11 +29,8 @@ import kotlinx.coroutines.launch
 
 class NfcEditorViewModel(
     private val flipperKey: FlipperKey
-) : LifecycleViewModel(), LogTagProvider, KeyInputBusListener {
+) : LifecycleViewModel(), LogTagProvider {
     override val TAG = "NfcEditorViewModel"
-
-    @Inject
-    lateinit var keyInputBusProvider: Provider<KeyInputBus>
 
     @Inject
     lateinit var keyParser: KeyParser
@@ -61,7 +54,6 @@ class NfcEditorViewModel(
 
     init {
         ComponentHolder.component<NfcEditorComponent>().inject(this)
-        keyInputBusProvider.get().subscribe(this, this)
         viewModelScope.launch(Dispatchers.Default) {
             val parsedKey = keyParser.parseKey(flipperKey)
             if (parsedKey !is FlipperKeyParsed.NFC) {
@@ -139,16 +131,6 @@ class NfcEditorViewModel(
         }
     }
 
-    override fun onKeyEvent(keyEvent: KeyEvent) {
-        if (keyEvent.keyCode == KeyEvent.KEYCODE_DEL &&
-            keyEvent.action == KeyEvent.ACTION_UP &&
-            currentActiveCell != null
-        ) {
-            info { "On key event $keyEvent" }
-            onPressBack()
-        }
-    }
-
     private fun onPressBack() {
         val cursor = nfcEditorCursor ?: return
 
@@ -199,6 +181,18 @@ class NfcEditorViewModel(
             )
             simpleKeyApi.updateKey(flipperKey, newFlipperKey)
             router.exit()
+        }
+    }
+
+    fun onKeyInput(hexKey: HexKey) {
+        when (hexKey) {
+            HexKey.Clear -> {
+                onPressBack()
+            }
+            HexKey.Ok -> {
+                currentActiveCell = null
+            }
+            else -> {}
         }
     }
 }

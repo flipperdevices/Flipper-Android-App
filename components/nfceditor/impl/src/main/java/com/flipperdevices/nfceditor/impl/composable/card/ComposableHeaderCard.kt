@@ -38,8 +38,8 @@ fun ComposableHeaderCard(
         ComposableNameCard(cardType)
 
         val imageId = if (isOpened) {
-            DesignSystem.drawable.ic_more
-        } else DesignSystem.drawable.ic_more_revert
+            DesignSystem.drawable.ic_more_revert
+        } else DesignSystem.drawable.ic_more
 
         Icon(
             modifier = Modifier.clickable(

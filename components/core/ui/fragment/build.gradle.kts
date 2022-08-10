@@ -8,7 +8,6 @@ dependencies {
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.navigation)
-    implementation(projects.components.core.keyinputbus)
 
     implementation(libs.cicerone)
 

@@ -8,6 +8,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import com.flipperdevices.core.ui.hexkeyboard.ComposableHexKeyboard
 import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.keyscreen.shared.bar.ComposableBarBackIcon
 import com.flipperdevices.keyscreen.shared.bar.ComposableBarSimpleText
@@ -33,11 +34,16 @@ fun ComposableNfcEditorScreen(nfcEditorViewModel: NfcEditorViewModel) {
         ComposableNfcEditorBar(localNfcEditorState.cardName, onBack = {
             router.exit()
         }, onSave = { nfcEditorViewModel.onSave(router) })
-
         ComposableNfcEditor(
+            modifier = Modifier.weight(1f),
             nfcEditorViewModel = nfcEditorViewModel,
             nfcEditorState = localNfcEditorState
         )
+        if (nfcEditorViewModel.currentActiveCell != null) {
+            ComposableHexKeyboard(
+                onClick = nfcEditorViewModel::onKeyInput
+            )
+        }
     }
 }
 

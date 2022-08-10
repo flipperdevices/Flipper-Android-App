@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstrainedLayoutReference
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -32,12 +33,12 @@ import androidx.constraintlayout.compose.ConstraintLayout
 private val LocalButtonColor = compositionLocalOf<Color> { error("No button background") }
 private val LocalKeyAction = compositionLocalOf<(HexKey) -> Unit> { error("No key action") }
 
-@Suppress("MagicNumber", "LongMethod")
 @Composable
 fun ComposableHexKeyboard(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     backgroundKey: Color = MaterialTheme.colors.surface,
     contentColor: Color = MaterialTheme.colors.onSurface,
+    keyboardHeight: Dp = 256.dp,
     textStyle: TextStyle = TextStyle(),
     onClick: (HexKey) -> Unit = {}
 ) {
@@ -47,7 +48,11 @@ fun ComposableHexKeyboard(
         LocalButtonColor provides backgroundKey,
         LocalKeyAction provides onClick
     ) {
-        ConstraintLayout(modifier = modifier) {
+        ConstraintLayout(
+            modifier = modifier
+                .fillMaxWidth()
+                .height(keyboardHeight)
+        ) {
             val refs: ImmutableEnumMap<HexKey, ConstrainedLayoutReference> =
                 ImmutableEnumMap(HexKey::class.java, HexKey.values()) { createRef() }
             ComposableKeys123(refs)
@@ -94,7 +99,7 @@ internal fun ComposableKey(
 @Composable
 private fun ComposableHexKeyboardPreview() {
     ComposableHexKeyboard(
-        modifier = Modifier.fillMaxWidth().height(200.dp).background(Color.Cyan),
+        modifier = Modifier.background(Color.Cyan),
         backgroundKey = Color.LightGray,
         contentColor = Color.Black
     )

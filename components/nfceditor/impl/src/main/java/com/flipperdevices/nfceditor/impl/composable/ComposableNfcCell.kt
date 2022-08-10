@@ -9,6 +9,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
@@ -19,6 +20,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalTextInputService
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -133,25 +135,27 @@ fun ComposableNfcCellEditable(
     }
     var composition by remember { mutableStateOf<TextRange?>(TextRange(0, cell.content.length)) }
 
-    BasicTextField(
-        modifier = modifier,
-        value = TextFieldValue(
-            cell.content,
-            selection ?: lastSelection,
-            composition
-        ),
-        keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Ascii,
-            imeAction = ImeAction.Next
-        ),
-        singleLine = true,
-        textStyle = textStyle,
-        cursorBrush = SolidColor(LocalPallet.current.text100),
-        onValueChange = {
-            if (composition != it.composition) {
-                composition = it.composition
+    CompositionLocalProvider(LocalTextInputService provides null) {
+        BasicTextField(
+            modifier = modifier,
+            value = TextFieldValue(
+                cell.content,
+                selection ?: lastSelection,
+                composition
+            ),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Ascii,
+                imeAction = ImeAction.Next
+            ),
+            singleLine = true,
+            textStyle = textStyle,
+            cursorBrush = SolidColor(LocalPallet.current.text100),
+            onValueChange = {
+                if (composition != it.composition) {
+                    composition = it.composition
+                }
+                onValueChanged(it)
             }
-            onValueChanged(it)
-        }
-    )
+        )
+    }
 }
