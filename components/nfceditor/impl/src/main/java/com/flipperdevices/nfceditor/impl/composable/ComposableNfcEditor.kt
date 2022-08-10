@@ -138,7 +138,6 @@ private fun ScrollToActiveCell(
         previousCell = currentActiveCell
         previousOffset = offset
         scope.launch {
-            println("Compose-Flipper: $offset")
             val newPosition = if (cardInfoPresented) {
                 currentActiveCell.sectorIndex + 1
             } else currentActiveCell.sectorIndex
