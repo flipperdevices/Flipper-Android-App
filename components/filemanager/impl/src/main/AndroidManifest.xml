@@ -3,7 +3,7 @@
 
     <application>
         <provider
-                android:authorities="com.flipperdevices.filemanager.impl"
+                android:authorities="${shareFileAuthorities}"
                 android:exported="false"
                 android:grantUriPermissions="true"
                 android:name="androidx.core.content.FileProvider">
