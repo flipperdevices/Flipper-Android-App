@@ -18,7 +18,6 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.flipperdevices.core.ui.ktx.ComposeLottiePic
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 
@@ -26,7 +25,7 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 fun ComposableActionFlipperContent(
     @DrawableRes iconId: Int,
     @StringRes textId: Int,
-    @RawRes animId: Int? = null,
+    @RawRes animId: Int? = null
 ) {
     if (animId != null) {
         val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(animId))
@@ -39,8 +38,7 @@ fun ComposableActionFlipperContent(
             composition = composition,
             progress = { animateState }
         )
-    }
-    else {
+    } else {
         Icon(
             painter = painterResource(id = iconId),
             contentDescription = stringResource(id = textId),

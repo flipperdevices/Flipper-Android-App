@@ -1,5 +1,6 @@
 package com.flipperdevices.keyscreen.impl.viewmodel
 
+import android.app.Application as FlipperApp
 import android.os.Vibrator
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewModelScope
@@ -10,6 +11,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.core.ktx.android.vibrateCompat
 import com.flipperdevices.core.ktx.jre.combine
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
@@ -17,8 +19,6 @@ import com.flipperdevices.keyscreen.impl.model.EmulateButtonState
 import com.flipperdevices.keyscreen.impl.tasks.CloseEmulateAppTaskHolder
 import com.flipperdevices.keyscreen.impl.viewmodel.helpers.EmulateHelper
 import com.flipperdevices.protobuf.app.Application
-import android.app.Application as FlipperApp
-import com.flipperdevices.core.ktx.android.vibrateCompat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -33,7 +33,7 @@ private const val VIBRATOR_TIME = 100L
 class EmulateViewModel @VMInject constructor(
     private val serviceProvider: FlipperServiceProvider,
     private val emulateHelper: EmulateHelper,
-    application: FlipperApp,
+    application: FlipperApp
 ) : LifecycleViewModel(), LogTagProvider, FlipperBleServiceConsumer {
     override val TAG = "EmulateViewModel"
 
