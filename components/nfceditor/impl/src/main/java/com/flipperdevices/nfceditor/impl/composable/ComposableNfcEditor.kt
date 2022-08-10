@@ -18,6 +18,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ktx.jre.length
@@ -83,13 +84,19 @@ private fun ComposableNfcEditor(
     val lazyColumnState = rememberLazyListState()
 
     var scrollOffset by remember { mutableStateOf(0) }
+    var offsetToCenter by remember { mutableStateOf(0) }
     ScrollToActiveCell(
         lazyColumnState,
         nfcEditorViewModel.currentActiveCell,
         nfcEditorState.nfcEditorCardInfo != null,
-        scrollOffset
+        scrollOffset - offsetToCenter
     )
-    LazyColumn(state = lazyColumnState) {
+    LazyColumn(
+        modifier = Modifier.onGloballyPositioned {
+            offsetToCenter = it.size.height / 2
+        },
+        state = lazyColumnState
+    ) {
         if (nfcEditorState.nfcEditorCardInfo != null) {
             item {
                 ComposableNfcCard(nfcEditorState.nfcEditorCardInfo, scaleFactor)
