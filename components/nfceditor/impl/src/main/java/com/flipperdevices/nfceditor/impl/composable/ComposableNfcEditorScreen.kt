@@ -24,6 +24,8 @@ import com.flipperdevices.keyscreen.shared.bar.ComposableKeyScreenAppBar
 import com.flipperdevices.nfceditor.impl.R
 import com.flipperdevices.nfceditor.impl.viewmodel.NfcEditorViewModel
 
+private const val KEYBOARD_HEIGHT_DP = 256
+
 @Composable
 fun ComposableNfcEditorScreen(nfcEditorViewModel: NfcEditorViewModel) {
     val nfcEditorState by nfcEditorViewModel.getNfcEditorState().collectAsState()
@@ -46,15 +48,16 @@ fun ComposableNfcEditorScreen(nfcEditorViewModel: NfcEditorViewModel) {
             nfcEditorState = localNfcEditorState
         )
 
-        var offsetForKeyboard by remember { mutableStateOf(256.dp) }
+        var offsetForKeyboard by remember { mutableStateOf(KEYBOARD_HEIGHT_DP.dp) }
         if (nfcEditorViewModel.currentActiveCell != null) {
             offsetForKeyboard = 0.dp
             val offset by animateDpAsState(offsetForKeyboard)
             ComposableHexKeyboard(
                 modifier = Modifier.offset(y = offset),
+                keyboardHeight = KEYBOARD_HEIGHT_DP.dp,
                 onClick = nfcEditorViewModel::onKeyInput
             )
-        } else offsetForKeyboard = 256.dp
+        } else offsetForKeyboard = KEYBOARD_HEIGHT_DP.dp
     }
 }
 
