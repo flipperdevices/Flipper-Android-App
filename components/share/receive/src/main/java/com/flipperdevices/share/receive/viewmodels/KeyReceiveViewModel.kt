@@ -13,7 +13,6 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.deeplink.model.Deeplink
-import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
 import com.flipperdevices.share.receive.R
@@ -51,7 +50,7 @@ class KeyReceiveViewModel(
     init {
         ComponentHolder.component<KeyReceiveComponent>().inject(this)
         internalDeeplinkFlow.onEach {
-            var flipperKey = it?.toFlipperKey()
+            var flipperKey = FlipperKeyParserHelper.toFlipperKey(it)
             if (flipperKey == null) {
                 state.emit(ReceiveState.Finished)
                 return@onEach
@@ -157,11 +156,4 @@ class KeyReceiveViewModel(
         }
         return true
     }
-}
-
-private fun Deeplink?.toFlipperKey(): FlipperKey? {
-    val path = this?.path ?: return null
-    val deeplinkContent = this.content as? DeeplinkContent.FFFContent
-        ?: return null
-    return FlipperKey(path, deeplinkContent.content, synchronized = false)
 }
