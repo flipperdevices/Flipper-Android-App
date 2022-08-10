@@ -13,7 +13,6 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.deeplink.model.Deeplink
-import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
 import com.flipperdevices.share.receive.R
