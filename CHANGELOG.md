@@ -2,6 +2,7 @@
 
 # 1.1.6 - In progress
 
+- [Feature] Upload key-file from file manager
 - [Feature] Offer update, if assets not exit on Flipper
 - [Feature] Custom hex keyboard
 - [Feature] Changelog on updater screen

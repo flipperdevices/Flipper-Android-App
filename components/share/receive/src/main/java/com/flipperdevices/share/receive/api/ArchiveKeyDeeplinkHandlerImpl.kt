@@ -18,13 +18,14 @@ class ArchiveKeyDeeplinkHandlerImpl @Inject constructor(
     private val metricApi: MetricApi
 ) : ArchiveKeyDeeplinkHandler {
     override fun isSupportLink(link: Deeplink): DispatcherPriority? {
-        if (link.path == null || link.content == null) {
-            return null
+        return when (link.content) {
+            is DeeplinkContent.InternalStorageFile ->  DispatcherPriority.DEFAULT
+            is DeeplinkContent.FFFContent -> {
+                if (link.path == null) return null
+                return DispatcherPriority.DEFAULT
+            }
+            else -> null
         }
-        if (link.content is DeeplinkContent.FFFContent) {
-            return DispatcherPriority.DEFAULT
-        }
-        return null
     }
 
     override fun processLink(router: Router, link: Deeplink) {
