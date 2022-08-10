@@ -1,5 +1,7 @@
 package com.flipperdevices.keyscreen.impl.viewmodel
 
+import android.os.Vibrator
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
@@ -15,6 +17,8 @@ import com.flipperdevices.keyscreen.impl.model.EmulateButtonState
 import com.flipperdevices.keyscreen.impl.tasks.CloseEmulateAppTaskHolder
 import com.flipperdevices.keyscreen.impl.viewmodel.helpers.EmulateHelper
 import com.flipperdevices.protobuf.app.Application
+import android.app.Application as FlipperApp
+import com.flipperdevices.core.ktx.android.vibrateCompat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,13 +28,18 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tangle.viewmodel.VMInject
 
+private const val VIBRATOR_TIME = 100L
+
 class EmulateViewModel @VMInject constructor(
     private val serviceProvider: FlipperServiceProvider,
-    private val emulateHelper: EmulateHelper
+    private val emulateHelper: EmulateHelper,
+    application: FlipperApp,
 ) : LifecycleViewModel(), LogTagProvider, FlipperBleServiceConsumer {
     override val TAG = "EmulateViewModel"
 
     private val emulateButtonStateFlow = MutableStateFlow(EmulateButtonState.DISABLED)
+
+    private val vibrator = ContextCompat.getSystemService(application, Vibrator::class.java)
 
     init {
         serviceProvider.provideServiceApi(this, this)
@@ -39,8 +48,9 @@ class EmulateViewModel @VMInject constructor(
     fun getEmulateButtonStateFlow(): StateFlow<EmulateButtonState> = emulateButtonStateFlow
 
     fun onStartEmulate(flipperKey: FlipperKey) {
-        val fileType = flipperKey.path.fileType ?: return
+        vibrator?.vibrateCompat(VIBRATOR_TIME)
 
+        val fileType = flipperKey.path.fileType ?: return
         emulateButtonStateFlow.update {
             when (it) {
                 EmulateButtonState.DISABLED -> EmulateButtonState.DISABLED
@@ -68,9 +78,11 @@ class EmulateViewModel @VMInject constructor(
                 emulateButtonStateFlow.emit(EmulateButtonState.INACTIVE)
             }
         }
+        vibrator?.vibrateCompat(VIBRATOR_TIME)
     }
 
     fun onSinglePress(flipperKey: FlipperKey) {
+        vibrator?.vibrateCompat(VIBRATOR_TIME)
         val fileType = flipperKey.path.fileType ?: return
 
         emulateButtonStateFlow.update {

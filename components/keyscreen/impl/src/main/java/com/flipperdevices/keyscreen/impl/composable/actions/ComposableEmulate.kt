@@ -21,6 +21,8 @@ import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.keyscreen.impl.R
+import com.flipperdevices.keyscreen.impl.composable.actions.common.ComposableActionDisable
+import com.flipperdevices.keyscreen.impl.composable.actions.common.ComposableActionFlipper
 import com.flipperdevices.keyscreen.impl.model.EmulateButtonState
 import com.flipperdevices.keyscreen.impl.viewmodel.EmulateViewModel
 import tangle.viewmodel.compose.tangleViewModel
@@ -80,6 +82,7 @@ private fun ComposableEmulateInternal(
         color = LocalPallet.current.accentSecond,
         textId = textId,
         iconId = DesignSystem.drawable.ic_emulate,
+        animId = DesignSystem.raw.ic_emulate,
         isAction = isAction
     ) {
         if (isAction) {

@@ -50,6 +50,7 @@
 - [REFACTOR] Migrate FileManager to compose navigation
 - [REFACTOR] Changelog with scroll
 - [REFACTOR] Change text on updater flipper status
+- [REFACTOR] Animation and vibration on emulate/send button
 
 # 1.1.5 - HotFix
 

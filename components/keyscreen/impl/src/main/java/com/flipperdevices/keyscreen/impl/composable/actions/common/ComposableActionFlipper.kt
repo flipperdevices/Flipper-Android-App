@@ -1,6 +1,7 @@
-package com.flipperdevices.keyscreen.impl.composable.actions
+package com.flipperdevices.keyscreen.impl.composable.actions.common
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.RawRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.RepeatMode
@@ -32,6 +33,7 @@ fun ComposableActionFlipper(
     color: Color,
     @StringRes textId: Int,
     @DrawableRes iconId: Int,
+    @RawRes animId: Int,
     isAction: Boolean,
     content: @Composable () -> Unit
 ) {
@@ -75,7 +77,8 @@ fun ComposableActionFlipper(
         ) {
             ComposableActionFlipperContent(
                 iconId = iconId,
-                textId = textId
+                textId = textId,
+                animId = if (isAction) animId else null
             )
         }
         content()
