@@ -73,7 +73,11 @@ object DeviceInfoHelper {
     }
 
     // radio Major.Minor.Type (NameType)
-    private fun radioFirmware(radioMajor: String?, radioMinor: String?, radioType: String?): String? {
+    private fun radioFirmware(
+        radioMajor: String?,
+        radioMinor: String?,
+        radioType: String?
+    ): String? {
         val radioTypeName: String? = when (radioType) {
             "1" -> "Full"
             "3" -> "Light"
