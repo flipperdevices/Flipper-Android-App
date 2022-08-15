@@ -8,41 +8,75 @@ import com.flipperdevices.info.impl.model.FirmwareInfo
 import com.flipperdevices.info.impl.model.FlipperDeviceInfo
 import com.flipperdevices.info.impl.model.OtherInfo
 import com.flipperdevices.info.impl.model.RadioStackInfo
+import com.flipperdevices.info.impl.model.RadioStackType
+import com.flipperdevices.updater.model.FirmwareChannel
+
+private const val DEVICE_NAME = "hardware_name"
+private const val HARDWARE_MODEL = "hardware_model"
+private const val HARDWARE_REGION = "hardware_region"
+private const val HARDWARE_REGION_PROV = "hardware_region_provisioned"
+private const val HARDWARE_VERSION = "hardware_ver"
+private const val HARDWARE_OTP_VERSION = "hardware_otp_ver"
+private const val SERIAL_NUMBER = "hardware_uid"
+
+private const val FIRMWARE_COMMIT = "firmware_commit"
+private const val FIRMWARE_BRANCH = "firmware_branch"
+private const val FIRMWARE_BUILD_DATE = "firmware_build_date"
+private const val FIRMWARE_TARGET = "firmware_target"
+private const val PROTOBUF_MAJOR = "protobuf_version_major"
+private const val PROTOBUF_MINOR = "protobuf_version_minor"
+
+private const val RADIO_STACK_MAJOR = "radio_stack_major"
+private const val RADIO_STACK_MINOR = "radio_stack_minor"
+private const val RADIO_STACK_TYPE = "radio_stack_type"
+
+// This fields uses in NOT other section
+private val usedFields = listOf(
+    DEVICE_NAME, HARDWARE_MODEL, HARDWARE_REGION, HARDWARE_REGION_PROV,
+    HARDWARE_VERSION, HARDWARE_OTP_VERSION, SERIAL_NUMBER,
+    FIRMWARE_COMMIT, FIRMWARE_BRANCH, FIRMWARE_BUILD_DATE,
+    FIRMWARE_TARGET, PROTOBUF_MAJOR, PROTOBUF_MINOR,
+    RADIO_STACK_MAJOR, RADIO_STACK_MINOR, RADIO_STACK_TYPE
+)
 
 object DeviceInfoHelper {
     @Composable
-    fun parseFields(fields: Map<String, String>): DeviceFullInfo {
+    fun parseFields(
+        fields: Map<String, String>,
+        firmwareChannel: (String?) -> FirmwareChannel?
+    ): DeviceFullInfo {
         val flipperDeviceInfo = FlipperDeviceInfo(
-            deviceName = fields["hardware_name"],
-            hardwareModel = fields["hardware_model"],
-            hardwareRegion = fields["hardware_region"],
-            hardwareRegionProv = fields["hardware_region_provisioned"],
-            hardwareVersion = fields["hardware_ver"],
-            hardwareOTPVersion = fields["hardware_otp_ver"],
-            serialNumber = fields["hardware_uid"]
+            deviceName = fields[DEVICE_NAME],
+            hardwareModel = fields[HARDWARE_MODEL],
+            hardwareRegion = fields[HARDWARE_REGION],
+            hardwareRegionProv = fields[HARDWARE_REGION_PROV],
+            hardwareVersion = fields[HARDWARE_VERSION],
+            hardwareOTPVersion = fields[HARDWARE_OTP_VERSION],
+            serialNumber = fields[SERIAL_NUMBER]
         )
 
-        val firmwareCommit = fields["firmware_commit"]
-        val firmwareBranch = fields["firmware_branch"]
+        val firmwareCommit = fields[FIRMWARE_COMMIT]
+        val firmwareBranch = fields[FIRMWARE_BRANCH]
         val softwareRevision = softwareRevision(firmwareCommit, firmwareBranch)
 
-        val protobufMajor = fields["protobuf_version_major"]
-        val protobufMinor = fields["protobuf_version_minor"]
+        val protobufMajor = fields[PROTOBUF_MAJOR]
+        val protobufMinor = fields[PROTOBUF_MINOR]
         val protobufVersion = protobufVersion(protobufMajor, protobufMinor)
 
         val firmwareInfo = FirmwareInfo(
-            firmwareCommit = firmwareCommit,
+            firmwareChannel = firmwareChannel(firmwareCommit),
             softwareRevision = softwareRevision,
-            buildDate = fields["firmware_build_date"],
-            target = fields["firmware_target"],
+            buildDate = fields[FIRMWARE_BUILD_DATE],
+            target = fields[FIRMWARE_TARGET],
             protobufVersion = protobufVersion
         )
 
-        val radioMajor = fields["radio_stack_major"]
-        val radioMinor = fields["radio_stack_minor"]
-        val radioType = fields["radio_stack_type"]
+        val radioMajor = fields[RADIO_STACK_MAJOR]
+        val radioMinor = fields[RADIO_STACK_MINOR]
+        val radioType = fields[RADIO_STACK_TYPE]
 
         val radioStackInfo = RadioStackInfo(
+            type = radioType(radioType),
             radioFirmware = radioFirmware(radioMajor, radioMinor, radioType)
         )
 
@@ -58,7 +92,7 @@ object DeviceInfoHelper {
         )
     }
 
-    // branch + commit
+    // softwareRevision Branch.Commit
     private fun softwareRevision(firmwareCommit: String?, firmwareBranch: String?): String? {
         return if (isNotNull(firmwareCommit, firmwareBranch)) {
             val firmwareBranchCapitalize = firmwareBranch?.titlecaseFirstCharIfItIsLowercase()
@@ -72,43 +106,27 @@ object DeviceInfoHelper {
         else null
     }
 
-    // radio Major.Minor.Type (NameType)
+    // radio Major.Minor.Type
     private fun radioFirmware(
         radioMajor: String?,
         radioMinor: String?,
         radioType: String?
     ): String? {
-        val radioTypeName: String? = when (radioType) {
-            "1" -> "Full"
-            "3" -> "Light"
-            "4" -> "Beacon"
-            "5" -> "Basic"
-            "6" -> "Full Ext Adv"
-            "7" -> "HCI Ext Adv"
-            else -> null
-        }
-        return if (isNotNull(radioMajor, radioMinor, radioType, radioTypeName)) {
-            "$radioMajor.$radioMinor.$radioType ($radioTypeName)"
+        return if (isNotNull(radioMajor, radioMinor, radioType)) {
+            "$radioMajor.$radioMinor.$radioType"
         } else null
     }
 
-    // This fields use in NOT other section
-    private val usedFields = listOf(
-        "hardware_name",
-        "hardware_model",
-        "hardware_region",
-        "hardware_region_provisioned",
-        "hardware_ver",
-        "hardware_otp_ver",
-        "hardware_uid",
-        "firmware_commit",
-        "firmware_branch",
-        "firmware_build_date",
-        "firmware_target",
-        "protobuf_version_major",
-        "protobuf_version_minor",
-        "radio_stack_major",
-        "radio_stack_minor",
-        "radio_stack_type"
-    )
+    private fun radioType(radioType: String?): RadioStackType? {
+        return when (radioType) {
+            "1" -> RadioStackType.Full
+            "3" -> RadioStackType.Light
+            "4" -> RadioStackType.Beacon
+            "5" -> RadioStackType.Basic
+            "6" -> RadioStackType.FullExtAdv
+            "7" -> RadioStackType.HCIExtAdv
+            null -> null
+            else -> RadioStackType.Unkwown
+        }
+    }
 }

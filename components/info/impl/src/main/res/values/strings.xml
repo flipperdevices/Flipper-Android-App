@@ -54,4 +54,11 @@
     <string name="full_info_protobuf_version">Protobuf Version</string>
 
     <string name="full_info_radio_firmware">Radio Firmware</string>
+    <string name="radio_stack_type_full">Full</string>
+    <string name="radio_stack_type_light">Light</string>
+    <string name="radio_stack_type_beacon">Beacon</string>
+    <string name="radio_stack_type_basic">Basic</string>
+    <string name="radio_stack_type_full_ext_adv">Full Ext Adv</string>
+    <string name="radio_stack_type_hci_ext_adv">Hci Ext Adv</string>
+    <string name="radio_stack_type_unknown">Unknown</string>
 </resources>

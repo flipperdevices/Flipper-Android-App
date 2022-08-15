@@ -1,9 +1,6 @@
 package com.flipperdevices.info.impl.model
 
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
-import com.flipperdevices.bridge.api.utils.Constants
-import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.updater.model.FirmwareChannel
 
 data class DeviceFullInfo(
     val flipperDevices: FlipperDeviceInfo,
@@ -23,32 +20,21 @@ data class FlipperDeviceInfo(
 )
 
 data class FirmwareInfo(
-    val firmwareCommit: String?,
+    val firmwareChannel: FirmwareChannel?,
     val softwareRevision: String?,
     val buildDate: String?,
     val target: String?,
     val protobufVersion: String?
-) {
-    @Composable
-    fun getFirmwareColor(): Color {
-        if (firmwareCommit == null) return Color.Transparent
-        if (Constants.FirmwareCommit.DEV == firmwareCommit) {
-            return LocalPallet.current.channelFirmwareDev
-        }
-        if (Constants.FirmwareCommit.RELEASE_REGEX.toRegex() matches firmwareCommit) {
-            return LocalPallet.current.channelFirmwareRelease
-        }
-        if (Constants.FirmwareCommit.RC_REGEX.toRegex() matches firmwareCommit) {
-            return LocalPallet.current.channelFirmwareReleaseCandidate
-        }
-
-        return LocalPallet.current.channelFirmwareUnknown
-    }
-}
+)
 
 data class RadioStackInfo(
+    val type: RadioStackType?,
     val radioFirmware: String?
 )
+
+enum class RadioStackType {
+    Full, Light, Beacon, Basic, FullExtAdv, HCIExtAdv, Unkwown
+}
 
 data class OtherInfo(
     val fields: Set<Map.Entry<String, String>> = setOf()

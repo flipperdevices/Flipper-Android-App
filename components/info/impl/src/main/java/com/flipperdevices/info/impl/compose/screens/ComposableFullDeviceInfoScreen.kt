@@ -51,11 +51,11 @@ fun ComposableFullDeviceInfoScreen(
 
     val verboseDeviceInfo by deviceInfoViewModel.getVerboseDeviceInfoState().collectAsState()
     val fields: Map<String, String> = verboseDeviceInfo.rpcInformationMap
-    val fullDeviceInfo = DeviceInfoHelper.parseFields(fields)
+    val deviceInfo = DeviceInfoHelper.parseFields(fields, deviceInfoViewModel::getFirmwareChannel)
 
     Column {
         ComposableFullDeviceInfoScreenBar { navController.navigate(NavGraphRoute.Info.name) }
-        ComposableFullInfoDevice(fullDeviceInfo, inProgress)
+        ComposableFullInfoDevice(deviceInfo, inProgress)
     }
 }
 

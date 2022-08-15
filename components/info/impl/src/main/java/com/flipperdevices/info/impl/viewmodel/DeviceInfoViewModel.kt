@@ -13,7 +13,9 @@ import com.flipperdevices.info.impl.di.InfoComponent
 import com.flipperdevices.info.impl.model.DeviceInfo
 import com.flipperdevices.info.impl.model.DeviceInfoRequestStatus
 import com.flipperdevices.info.impl.model.VerboseDeviceInfo
+import com.flipperdevices.updater.api.FirmwareVersionBuilderApi
 import com.flipperdevices.updater.api.FlipperVersionProviderApi
+import com.flipperdevices.updater.model.FirmwareChannel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -35,6 +37,9 @@ class DeviceInfoViewModel :
 
     @Inject
     lateinit var flipperVersionProviderApi: FlipperVersionProviderApi
+
+    @Inject
+    lateinit var firmwareVersionBuilderApi: FirmwareVersionBuilderApi
 
     init {
         ComponentHolder.component<InfoComponent>().inject(this)
@@ -73,5 +78,10 @@ class DeviceInfoViewModel :
                     deviceInfoRequestStatus.emit(DeviceInfoRequestStatus())
             }
         }.launchIn(viewModelScope)
+    }
+
+    fun getFirmwareChannel(commit: String?): FirmwareChannel? {
+        if (commit == null) return null
+        return firmwareVersionBuilderApi.getFirmwareChannel(commit)
     }
 }

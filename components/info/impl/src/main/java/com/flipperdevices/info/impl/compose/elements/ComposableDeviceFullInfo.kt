@@ -8,18 +8,22 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.core.ktx.jre.isNotNull
 import com.flipperdevices.core.ktx.jre.titlecaseFirstCharIfItIsLowercase
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.model.DeviceFullInfo
 import com.flipperdevices.info.impl.model.FirmwareInfo
 import com.flipperdevices.info.impl.model.FlipperDeviceInfo
 import com.flipperdevices.info.impl.model.RadioStackInfo
+import com.flipperdevices.info.impl.model.RadioStackType
 import com.flipperdevices.info.shared.ComposableDeviceInfoRow
 import com.flipperdevices.info.shared.ComposableDeviceInfoRowWithText
 import com.flipperdevices.info.shared.ComposableInfoDivider
 import com.flipperdevices.info.shared.ComposableLongDeviceInfoRowText
 import com.flipperdevices.info.shared.InfoElementCard
+import com.flipperdevices.info.shared.getColorByChannel
 
 @Composable
 fun ComposableFullInfoDevice(
@@ -27,7 +31,9 @@ fun ComposableFullInfoDevice(
     inProgress: Boolean
 ) {
     Column(
-        modifier = Modifier.verticalScroll(rememberScrollState()).padding(vertical = 14.dp),
+        modifier = Modifier
+            .verticalScroll(rememberScrollState())
+            .padding(vertical = 14.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
         InfoElementCard(Modifier, titleId = R.string.full_info_flipper_device) {
@@ -96,7 +102,7 @@ fun ComposableFirmwareInfo(info: FirmwareInfo, inProgress: Boolean) {
         titleId = R.string.full_info_hardware_otp_version,
         inProgress = inProgress,
         value = info.softwareRevision,
-        color = info.getFirmwareColor()
+        color = info.firmwareChannel?.let { getColorByChannel(it) } ?: Color.Transparent
     )
     ComposableInfoDivider()
     ComposableDeviceInfoRowWithText(
@@ -120,11 +126,28 @@ fun ComposableFirmwareInfo(info: FirmwareInfo, inProgress: Boolean) {
 
 @Composable
 fun ComposableRadioStackInfo(info: RadioStackInfo, inProgress: Boolean) {
+    val text = if(isNotNull(info.type, info.radioFirmware)) {
+        "${info.radioFirmware} (${getNameRadioStackType(info.type)})"
+    } else null
     ComposableDeviceInfoRowWithText(
         titleId = R.string.full_info_radio_stack,
         inProgress = inProgress,
-        value = info.radioFirmware
+        value = text
     )
+}
+
+@Composable
+private fun getNameRadioStackType(radioType: RadioStackType?): String {
+    val textId = when (radioType) {
+        RadioStackType.Full -> R.string.radio_stack_type_full
+        RadioStackType.Light -> R.string.radio_stack_type_light
+        RadioStackType.Beacon -> R.string.radio_stack_type_beacon
+        RadioStackType.Basic -> R.string.radio_stack_type_basic
+        RadioStackType.FullExtAdv -> R.string.radio_stack_type_full_ext_adv
+        RadioStackType.HCIExtAdv -> R.string.radio_stack_type_hci_ext_adv
+        RadioStackType.Unkwown, null -> R.string.radio_stack_type_unknown
+    }
+    return stringResource(id = textId)
 }
 
 @Composable
