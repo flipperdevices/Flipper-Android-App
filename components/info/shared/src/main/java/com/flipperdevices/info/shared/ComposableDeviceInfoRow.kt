@@ -98,13 +98,14 @@ fun ComposableDeviceInfoRowText(
 fun ComposableLongDeviceInfoRowText(
     modifier: Modifier = Modifier,
     text: String,
+    lines: Int = 1,
     color: Color = LocalPallet.current.text100
 ) {
     Text(
         modifier = modifier.padding(start = 24.dp),
         text = text,
         color = color,
-        maxLines = 1,
+        maxLines = lines,
         overflow = TextOverflow.Ellipsis,
         style = LocalTypography.current.bodyR14
     )

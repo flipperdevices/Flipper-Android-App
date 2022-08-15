@@ -2,6 +2,8 @@
 
 # 1.2.1 - In progress
 
+- [REFACTOR] Redesign Full Device Information
+
 # 1.2.0
 
 - [Feature] Upload key-file from file manager

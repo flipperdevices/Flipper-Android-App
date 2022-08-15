@@ -67,4 +67,11 @@ object Constants {
 
         const val DISCONNECT_TIMEOUT_MS = 10 * 1000L
     }
+
+    object FirmwareCommit {
+        const val DEV = "dev"
+        const val RC = "rc"
+        const val RC_REGEX = "^\\d+\\.\\d+\\.\\d+-rc"
+        const val RELEASE_REGEX = "^\\d+\\.\\d+\\.\\d+"
+    }
 }
