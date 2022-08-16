@@ -126,7 +126,7 @@ fun ComposableFirmwareInfo(info: FirmwareInfo, inProgress: Boolean) {
 
 @Composable
 fun ComposableRadioStackInfo(info: RadioStackInfo, inProgress: Boolean) {
-    val text = if(isNotNull(info.type, info.radioFirmware)) {
+    val text = if (isNotNull(info.type, info.radioFirmware)) {
         "${info.radioFirmware} (${getNameRadioStackType(info.type)})"
     } else null
     ComposableDeviceInfoRowWithText(
