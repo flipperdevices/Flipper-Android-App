@@ -3,6 +3,7 @@ package com.flipperdevices.info.impl
 import com.flipperdevices.info.impl.fragment.DeviceInfoHelper
 import com.flipperdevices.info.impl.model.FirmwareInfo
 import com.flipperdevices.info.impl.model.FlipperDeviceInfo
+import com.flipperdevices.info.impl.model.OtherInfo
 import com.flipperdevices.info.impl.model.RadioStackInfo
 import com.flipperdevices.info.impl.model.RadioStackType
 import com.flipperdevices.updater.api.FirmwareVersionBuilderApi
@@ -37,6 +38,8 @@ class DeviceInfoHelperTest {
         "radio_stack_major" to "3",
         "radio_stack_minor" to "5",
         "radio_stack_type" to "7",
+        "other_fields_1" to "1",
+        "other_fields_2" to "2",
     )
 
     private val flipperDeviceInfo = FlipperDeviceInfo(
@@ -62,6 +65,10 @@ class DeviceInfoHelperTest {
         radioFirmware = "3.5.7"
     )
 
+    private val otherFields = OtherInfo(
+        fields = fields.entries.filter { it.key.startsWith("other_fields") }.toSet()
+    )
+
     @Test
     fun `Parse all fields`() {
         val deviceInfo = DeviceInfoHelper.parseFields(
@@ -75,13 +82,14 @@ class DeviceInfoHelperTest {
         Assert.assertEquals(flipperDeviceInfo, deviceInfo.flipperDevices)
         Assert.assertEquals(firmwareInfo, deviceInfo.firmware)
         Assert.assertEquals(radioStackInfo, deviceInfo.radioStack)
+        Assert.assertEquals(otherFields, deviceInfo.other)
     }
 
     @Test
     fun `Parse empty fields`() {
         val copyFields = fields.toMutableMap()
         copyFields.apply {
-            replace("radio_stack_minor", "4")
+            remove("hardware_name")
             remove("firmware_branch")
         }
         val deviceInfo = DeviceInfoHelper.parseFields(
