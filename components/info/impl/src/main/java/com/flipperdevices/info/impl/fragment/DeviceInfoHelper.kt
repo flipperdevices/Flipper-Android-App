@@ -1,6 +1,5 @@
 package com.flipperdevices.info.impl.fragment
 
-import androidx.compose.runtime.Composable
 import com.flipperdevices.core.ktx.jre.isNotNull
 import com.flipperdevices.core.ktx.jre.titlecaseFirstCharIfItIsLowercase
 import com.flipperdevices.info.impl.model.DeviceFullInfo
@@ -40,7 +39,6 @@ private val usedFields = listOf(
 )
 
 object DeviceInfoHelper {
-    @Composable
     fun parseFields(
         fields: Map<String, String>,
         firmwareChannel: (String?) -> FirmwareChannel?
