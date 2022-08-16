@@ -1,7 +1,6 @@
 package com.flipperdevices.updater.impl.api
 
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.api.FirmwareVersionBuilderApi
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
@@ -20,7 +19,7 @@ private const val DEVICE_VERSION_DATE_INDEX = 3
 @ContributesBinding(AppGraph::class, FirmwareVersionBuilderApi::class)
 class FirmwareVersionBuilderApiImpl @Inject constructor() : FirmwareVersionBuilderApi {
     override fun getFirmwareChannel(commit: String): FirmwareChannel {
-        val commitWithoutWhiteSpace= commit.trim()
+        val commitWithoutWhiteSpace = commit.trim()
         if (commitWithoutWhiteSpace == DEVICE_VERSION_TYPE_DEV) {
             return FirmwareChannel.DEV
         }
@@ -47,7 +46,7 @@ class FirmwareVersionBuilderApiImpl @Inject constructor() : FirmwareVersionBuild
         val typeVersion = unparsedArray[DEVICE_VERSION_TYPE_INDEX]
         val date = unparsedArray[DEVICE_VERSION_DATE_INDEX]
 
-        return when(val channel = getFirmwareChannel(typeVersion)) {
+        return when (val channel = getFirmwareChannel(typeVersion)) {
             FirmwareChannel.DEV -> FirmwareVersion(
                 channel = channel,
                 version = hash,
@@ -64,7 +63,7 @@ class FirmwareVersionBuilderApiImpl @Inject constructor() : FirmwareVersionBuild
             FirmwareChannel.RELEASE -> FirmwareVersion(
                 channel = channel,
                 version = typeVersion,
-                buildDate= date
+                buildDate = date
             )
             FirmwareChannel.UNKNOWN -> FirmwareVersion(
                 channel = channel,
