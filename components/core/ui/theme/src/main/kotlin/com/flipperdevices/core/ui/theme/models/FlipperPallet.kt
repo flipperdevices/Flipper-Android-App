@@ -101,6 +101,7 @@ data class FlipperPallet(
     val onNfcCard: Color = Color(0xFFFFFFFF),
 
     val warningColor: Color = Color(0xFFF63F3F),
+    val successfullyColor: Color = Color(0xFF2ED832),
     val textOnWarningBackground: Color = Color(0xFFFFFFFF),
 
     val substrateActiveCellNfcEditor: Color,
