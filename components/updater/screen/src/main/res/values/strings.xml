@@ -7,7 +7,7 @@
     <string name="update_stage_sync_canceling_desc">Cancel the synchronisation</string>
     <string name="update_stage_downloading_desc">Downloading from update server</string>
     <string name="update_stage_uploading_desc">Uploading Firmware to Flipper</string>
-    <string name="update_stage_rebooting_desc">Rebooting the Flipper</string>
+    <string name="update_stage_rebooting_desc">Rebooting Flipper</string>
     <string name="update_stage_update_canceling_desc">Canceling the update</string>
 
     <string name="update_dialog_title">Update Firmware?</string>
