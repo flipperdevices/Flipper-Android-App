@@ -2,6 +2,7 @@
 
 # 1.2.1 - In progress
 
+- [REFACTOR] Redesign Full Device Information
 - [REFACTOR] Redesign dialog after update (change colors)
 
 # 1.2.0

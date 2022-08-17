@@ -1,6 +1,6 @@
 package com.flipperdevices.updater.impl
 
-import com.flipperdevices.updater.impl.utils.FirmwareVersionBuildHelper
+import com.flipperdevices.updater.impl.api.FirmwareVersionBuilderApiImpl
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
 import org.junit.Assert
@@ -16,7 +16,7 @@ class FirmwareVersionBuildHelperTest(
 
     @Test
     fun `Correct firmware`() {
-        val firmware = FirmwareVersionBuildHelper.buildFirmwareVersionFromString(version)
+        val firmware = FirmwareVersionBuilderApiImpl().buildFirmwareVersionFromString(version)
         Assert.assertEquals(firmware, firmwareVersion)
     }
 

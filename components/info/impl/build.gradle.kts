@@ -56,4 +56,8 @@ dependencies {
     implementation(libs.ble.scan)
 
     implementation(libs.cicerone)
+
+    // Testing
+    testImplementation(libs.junit)
+    testImplementation(libs.mockito.kotlin)
 }

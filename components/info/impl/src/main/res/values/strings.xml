@@ -28,12 +28,37 @@
     <string name="info_device_forget_dialog_forget">Forget</string>
 
     <string name="info_device_info_title">Device Info</string>
-    <string name="info_device_info_title_card">Flipper Device</string>
-    <string name="info_device_info_other_card">Other</string>
     <string name="info_device_info_version">Firmware Version</string>
     <string name="info_device_info_build_date">Build Date</string>
     <string name="info_device_info_int_flash">Int. Flash (Used/Total)</string>
     <string name="info_device_info_ext_flash">SD Card (Used/Total)</string>
     <string name="info_device_info_flash_not_found">Not Found</string>
     <string name="info_device_info_more_information">Full Info</string>
+
+    <string name="full_info_flipper_device">Flipper Device</string>
+    <string name="full_info_firmware">Firmware</string>
+    <string name="full_info_radio_stack">Radio Stack</string>
+    <string name="full_info_other">Other</string>
+
+    <string name="full_info_device_name">Device Name</string>
+    <string name="full_info_hardware_model">Hardware Model</string>
+    <string name="full_info_hardware_region">Hardware Region</string>
+    <string name="full_info_hardware_region_provisioned">Hardware Region Provisioned</string>
+    <string name="full_info_hardware_version">Hardware Version</string>
+    <string name="full_info_hardware_otp_version">Hardware OTP Version</string>
+    <string name="full_info_serial_number">Serial Number</string>
+
+    <string name="full_info_software_revision">Software Revision</string>
+    <string name="full_info_build_date">Build Date</string>
+    <string name="full_info_target">Target</string>
+    <string name="full_info_protobuf_version">Protobuf Version</string>
+
+    <string name="full_info_radio_firmware">Radio Firmware</string>
+    <string name="radio_stack_type_full">Full</string>
+    <string name="radio_stack_type_light">Light</string>
+    <string name="radio_stack_type_beacon">Beacon</string>
+    <string name="radio_stack_type_basic">Basic</string>
+    <string name="radio_stack_type_full_ext_adv">Full Ext Adv</string>
+    <string name="radio_stack_type_hci_ext_adv">Hci Ext Adv</string>
+    <string name="radio_stack_type_unknown">Unknown</string>
 </resources>
