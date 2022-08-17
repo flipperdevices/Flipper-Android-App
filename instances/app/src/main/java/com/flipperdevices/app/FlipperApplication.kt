@@ -62,13 +62,13 @@ class FlipperApplication : Application(), LogTagProvider {
                         val response = referrerClient?.installReferrer
                         info {
                             "Install referrer details. " +
-                                "Referrer: ${response?.installReferrer}. " +
-                                "Click timestamp: ${response?.referrerClickTimestampSeconds}. " +
-                                "Install begin: ${response?.installBeginTimestampSeconds}. " +
-                                "Google Play Param: ${response?.googlePlayInstantParam}. " +
-                                "Click timestamp: ${response?.referrerClickTimestampServerSeconds}. " +
-                                "Begin timestamp: ${response?.installBeginTimestampServerSeconds}. " +
-                                "Install version: ${response?.installVersion}. "
+                            "Referrer: ${response?.installReferrer}. " +
+                            "Click timestamp: ${response?.referrerClickTimestampSeconds}. " +
+                            "Install begin: ${response?.installBeginTimestampSeconds}. " +
+                            "Google Play Param: ${response?.googlePlayInstantParam}. " +
+                            "Click timestamp: ${response?.referrerClickTimestampServerSeconds}. " +
+                            "Begin timestamp: ${response?.installBeginTimestampServerSeconds}. " +
+                            "Install version: ${response?.installVersion}. "
                         }
                     }
                     else -> {}
