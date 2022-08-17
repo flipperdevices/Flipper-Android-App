@@ -5,6 +5,8 @@ plugins {
     id("kotlin-kapt")
 }
 
+android.buildFeatures.viewBinding = true
+
 dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)

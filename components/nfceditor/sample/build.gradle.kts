@@ -5,6 +5,8 @@ plugins {
     id("kotlin-kapt")
 }
 
+android.buildFeatures.viewBinding = true
+
 android {
     defaultConfig {
         applicationId = "com.flipperdevices.nfceditor.sample"

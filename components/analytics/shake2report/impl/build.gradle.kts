@@ -5,6 +5,8 @@ plugins {
     id("kotlin-kapt")
 }
 
+android.buildFeatures.viewBinding = true
+
 dependencies {
     implementation(projects.components.analytics.shake2report.api)
     implementation(projects.components.core.ktx)

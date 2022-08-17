@@ -92,7 +92,18 @@ private fun BaseExtension.configureBuildTypes() {
 
 @Suppress("UnstableApiUsage")
 private fun BaseExtension.configureBuildFeatures() {
-    buildFeatures.viewBinding = true
+    // TODO: Disable by default
+    //  BuildConfig is java source code. Java and Kotlin at one time affect build speed.
+    buildFeatures.buildConfig = true
+    // Disable by default. ViewBinding needed only for few modules.
+    // No need to enable this feature for all modules.
+    buildFeatures.viewBinding = false
+    buildFeatures.aidl = false
+    buildFeatures.compose = false
+    buildFeatures.prefab = false
+    buildFeatures.renderScript = false
+    buildFeatures.resValues = false
+    buildFeatures.shaders = false
 }
 
 private fun BaseExtension.configureCompileOptions() {
