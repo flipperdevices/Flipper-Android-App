@@ -188,8 +188,12 @@ roboelectric = { module = "org.robolectric:robolectric", version.ref = "roboelec
 install-referrer = { module = "com.android.installreferrer:installreferrer", version.ref = "install-referrer" }
 
 [plugins]
-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint-gradle" }
-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt-gradle" }
 android-app = { id = "com.android.application", version.ref = "android-gradle" }
 android-lib = { id = "com.android.library", version.ref = "android-gradle" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-general" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-general" }
+kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+square-anvil = { id = "com.squareup.anvil", version.ref = "anvil" }
+protobuf = { id = "com.google.protobuf", version.ref = "protobuf-gradle" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt-gradle" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint-gradle" }
