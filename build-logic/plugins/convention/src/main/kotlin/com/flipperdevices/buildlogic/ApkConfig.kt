@@ -1,4 +1,4 @@
-package com.flipperdevices.buildlogic.plugins
+package com.flipperdevices.buildlogic
 
 import java.lang.System.getProperty
 

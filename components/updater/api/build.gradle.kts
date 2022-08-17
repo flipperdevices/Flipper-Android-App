@@ -1,6 +1,6 @@
 plugins {
     id("flipper.lint")
-    id("androidCompose")
+    id("flipper.android-compose")
     id("kotlin-parcelize")
 }
 

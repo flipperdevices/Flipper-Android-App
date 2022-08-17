@@ -8,7 +8,6 @@ pluginManagement {
 dependencyResolutionManagement {
     repositories {
         google()
-        mavenCentral()
         gradlePluginPortal()
     }
 
@@ -21,9 +20,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "build-logic"
 
-//enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-
 include(
     ":plugins:convention",
-    ":plugins:apk-config",
 )

@@ -5,10 +5,10 @@ import com.google.protobuf.gradle.protoc
 
 plugins {
     id("flipper.lint")
-    id("androidLibrary")
+    id("flipper.android-lib")
     id("com.squareup.anvil")
     id("com.google.protobuf")
-    kotlin("kapt")
+    id("kotlin-kapt")
 }
 
 dependencies {

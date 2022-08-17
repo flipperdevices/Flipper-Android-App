@@ -1,10 +1,10 @@
-import com.flipperdevices.buildlogic.plugins.ApkConfig
+import com.flipperdevices.buildlogic.ApkConfig
 
 plugins {
     id("flipper.lint")
-    id("androidCompose")
+    id("flipper.android-compose")
     id("com.squareup.anvil")
-    kotlin("kapt")
+    id("kotlin-kapt")
     id("kotlin-parcelize")
     id("kotlinx-serialization")
 }

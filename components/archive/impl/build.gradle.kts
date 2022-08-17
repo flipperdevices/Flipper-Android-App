@@ -1,9 +1,9 @@
 plugins {
     id("flipper.lint")
-    id("androidCompose")
+    id("flipper.android-compose")
     id("kotlin-parcelize")
     id("com.squareup.anvil")
-    kotlin("kapt")
+    id("kotlin-kapt")
 }
 
 dependencies {
