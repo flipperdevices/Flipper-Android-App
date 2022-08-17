@@ -116,15 +116,6 @@ object DeviceInfoHelper {
     }
 
     private fun radioType(radioType: String?): RadioStackType? {
-        return when (radioType) {
-            "1" -> RadioStackType.Full
-            "3" -> RadioStackType.Light
-            "4" -> RadioStackType.Beacon
-            "5" -> RadioStackType.Basic
-            "6" -> RadioStackType.FullExtAdv
-            "7" -> RadioStackType.HCIExtAdv
-            null -> null
-            else -> RadioStackType.Unkwown
-        }
+        return RadioStackType.find(radioType)
     }
 }

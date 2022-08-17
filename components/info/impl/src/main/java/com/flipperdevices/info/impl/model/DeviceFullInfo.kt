@@ -32,8 +32,16 @@ data class RadioStackInfo(
     val radioFirmware: String?
 )
 
-enum class RadioStackType {
-    Full, Light, Beacon, Basic, FullExtAdv, HCIExtAdv, Unkwown
+enum class RadioStackType(val id: String) {
+    Full("1"), Light("3"), Beacon("4"),
+    Basic("5"), FullExtAdv("6"), HCIExtAdv("7"), Unkwown("-1");
+
+    companion object {
+        fun find(radioType: String?): RadioStackType? {
+            if (radioType == null) return null
+            return values().associateBy(RadioStackType::id)[radioType] ?: Unkwown
+        }
+    }
 }
 
 data class OtherInfo(
