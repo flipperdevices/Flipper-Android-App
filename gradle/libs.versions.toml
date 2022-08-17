@@ -49,6 +49,7 @@ ktlint-runtime = "0.45.2"
 ktlint-gradle = "10.2.0"
 detekt-gradle = "1.20.0"
 tangle = "0.15.0"
+install-referrer = "2.2"
 
 # Testing
 junit = "4.12"
@@ -162,6 +163,7 @@ ktor-logging = { module = "io.ktor:ktor-client-logging-jvm", version.ref = "ktor
 # Apache commons
 apache-compress = { module = "org.apache.commons:commons-compress", version.ref = "apache-compress" }
 apache-codec = { module = "commons-codec:commons-codec", version.ref = "apache-codec" }
+
 # BLE
 ble = { module = "no.nordicsemi.android:ble", version.ref = "ble" }
 ble-common = { module = "no.nordicsemi.android:ble-common", version.ref = "ble" }
@@ -180,6 +182,9 @@ protobuf-metric = { module = "com.github.flipperdevices.flipperzero-protobuf-jvm
 junit = { module = "junit:junit", version.ref = "junit" }
 mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito" }
 roboelectric = { module = "org.robolectric:robolectric", version.ref = "roboelectric" }
+
+# Google Play Api
+install-referrer = { module = "com.android.installreferrer:installreferrer", version.ref = "install-referrer" }
 
 [plugins]
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint-gradle" }
