@@ -18,17 +18,17 @@ private const val DEVICE_VERSION_DATE_INDEX = 3
 
 @ContributesBinding(AppGraph::class, FirmwareVersionBuilderApi::class)
 class FirmwareVersionBuilderApiImpl @Inject constructor() : FirmwareVersionBuilderApi {
-    override fun getFirmwareChannel(commit: String): FirmwareChannel {
-        val commitWithoutWhiteSpace = commit.trim()
-        if (commitWithoutWhiteSpace == DEVICE_VERSION_TYPE_DEV) {
+    override fun getFirmwareChannel(branch: String): FirmwareChannel {
+        val preparedBranch = branch.trim().lowercase()
+        if (preparedBranch == DEVICE_VERSION_TYPE_DEV) {
             return FirmwareChannel.DEV
         }
 
-        if (DEVICE_VERSION_TYPE_RC_REGEX.toRegex() matches commitWithoutWhiteSpace) {
+        if (DEVICE_VERSION_TYPE_RC_REGEX.toRegex() matches preparedBranch) {
             return FirmwareChannel.RELEASE_CANDIDATE
         }
 
-        if (DEVICE_VERSION_TYPE_RELEASE_REGEX.toRegex() matches commitWithoutWhiteSpace) {
+        if (DEVICE_VERSION_TYPE_RELEASE_REGEX.toRegex() matches preparedBranch) {
             return FirmwareChannel.RELEASE
         }
 

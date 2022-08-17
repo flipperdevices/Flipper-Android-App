@@ -62,7 +62,7 @@ object DeviceInfoHelper {
         val protobufVersion = protobufVersion(protobufMajor, protobufMinor)
 
         val firmwareInfo = FirmwareInfo(
-            firmwareChannel = firmwareChannel(firmwareCommit),
+            firmwareChannel = firmwareChannel(firmwareBranch),
             softwareRevision = softwareRevision,
             buildDate = fields[FIRMWARE_BUILD_DATE],
             target = fields[FIRMWARE_TARGET],
