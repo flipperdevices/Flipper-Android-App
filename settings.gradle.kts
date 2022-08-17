@@ -52,7 +52,6 @@ include(
     ":components:core:test",
     ":components:core:markdown",
     ":components:core:activityholder",
-    ":components:core:keyinputbus",
 
     ":components:bottombar:api",
     ":components:bottombar:impl",
