@@ -115,7 +115,7 @@ class SynchronizationTask(
                 rfidCount = keys[FlipperFileType.RFID]?.size ?: 0,
                 nfcCount = keys[FlipperFileType.NFC]?.size ?: 0,
                 infraredCount = keys[FlipperFileType.INFRARED]?.size ?: 0,
-                iButtonCount = keys[FlipperFileType.INFRARED]?.size ?: 0,
+                iButtonCount = keys[FlipperFileType.I_BUTTON]?.size ?: 0,
                 synchronizationTimeMs = totalTime
             )
         )
