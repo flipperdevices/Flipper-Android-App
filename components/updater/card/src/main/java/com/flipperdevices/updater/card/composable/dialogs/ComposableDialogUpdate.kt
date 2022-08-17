@@ -18,7 +18,6 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.info.shared.getColorByChannel
 import com.flipperdevices.info.shared.getTextByVersion
 import com.flipperdevices.updater.card.R
 import com.flipperdevices.updater.model.FirmwareChannel
@@ -34,13 +33,20 @@ fun ComposableSuccessfulUpdate(
 
     FlipperDialog(
         imageId = imageId,
-        titleId = R.string.update_card_dialog_successful_title,
+        titleComposable = {
+            Text(
+                text = stringResource(R.string.update_card_dialog_successful_title),
+                textAlign = TextAlign.Center,
+                style = LocalTypography.current.bodyM14,
+                color = LocalPallet.current.successfullyColor
+            )
+        },
         buttonTextId = R.string.update_card_dialog_successful_btn,
         onClickButton = onDismiss,
         onDismissRequest = onDismiss,
         textComposable = {
             Text(
-                text = buildAnnotatedStringWithColoredVersion(
+                text = buildAnnotatedStringWithVersion(
                     version = version,
                     postfixId = R.string.update_card_dialog_successful_desc
                 ),
@@ -58,13 +64,20 @@ fun ComposableFailedUpdate(
 ) {
     FlipperDialog(
         imageId = DesignSystem.drawable.pic_update_failed,
-        titleId = R.string.update_card_dialog_failed_title,
+        titleComposable = {
+            Text(
+                text = stringResource(R.string.update_card_dialog_failed_title),
+                textAlign = TextAlign.Center,
+                style = LocalTypography.current.bodyM14,
+                color = LocalPallet.current.warningColor
+            )
+        },
         buttonTextId = R.string.update_card_dialog_failed_btn,
         onClickButton = onDismiss,
         onDismissRequest = onDismiss,
         textComposable = {
             Text(
-                text = buildAnnotatedStringWithColoredVersion(
+                text = buildAnnotatedStringWithVersion(
                     version = version,
                     postfixId = R.string.update_card_dialog_failed_desc
                 ),
@@ -76,11 +89,11 @@ fun ComposableFailedUpdate(
 }
 
 @Composable
-private fun buildAnnotatedStringWithColoredVersion(
+private fun buildAnnotatedStringWithVersion(
     version: FirmwareVersion?,
     @StringRes postfixId: Int
 ): AnnotatedString {
-    val channelColor = version?.let { getColorByChannel(it.channel) }
+    val channelColor = version?.let { LocalPallet.current.text100 }
         ?: LocalPallet.current.channelFirmwareUnknown
     val versionText = version?.let { getTextByVersion(it) }
         ?: stringResource(R.string.update_card_dialog_unknown_version)
