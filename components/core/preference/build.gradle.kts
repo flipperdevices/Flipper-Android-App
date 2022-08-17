@@ -4,6 +4,7 @@ import com.google.protobuf.gradle.protobuf
 import com.google.protobuf.gradle.protoc
 
 plugins {
+    id("flipper.lint")
     id("androidLibrary")
     id("com.squareup.anvil")
     id("com.google.protobuf")

@@ -1,6 +1,7 @@
 import com.flipperdevices.buildlogic.plugins.ApkConfig
 
 plugins {
+    id("flipper.lint")
     id("androidLibrary")
     id("com.squareup.anvil")
     id("kotlin-kapt")

@@ -8,34 +8,10 @@ plugins {
     alias(libs.plugins.kotlin.ksp) apply false
     alias(libs.plugins.square.anvil) apply false
     alias(libs.plugins.protobuf) apply false
-    alias(libs.plugins.detekt)
-    alias(libs.plugins.ktlint)
+    alias(libs.plugins.detekt) apply false
+    alias(libs.plugins.ktlint) apply false
 
     id("flipper.apk-config")
-}
-
-subprojects {
-    apply {
-        plugin("io.gitlab.arturbosch.detekt")
-        plugin("org.jlleitschuh.gradle.ktlint")
-    }
-
-    ktlint {
-        version.set(rootProject.libs.versions.ktlint.runtime)
-        android.set(true)
-        verbose.set(true)
-        outputToConsole.set(true)
-        ignoreFailures.set(false)
-        enableExperimentalRules.set(true)
-        filter {
-            exclude("**/generated/**")
-            include("**/kotlin/**")
-        }
-    }
-
-    detekt {
-        config = rootProject.files("config/detekt/detekt.yml")
-    }
 }
 
 tasks.register("dumpApkVersion") {
