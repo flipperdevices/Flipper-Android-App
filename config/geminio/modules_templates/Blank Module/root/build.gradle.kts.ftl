@@ -1,8 +1,9 @@
 plugins {
+    id("flipper.lint")
 <#if needCompose>
-    androidCompose
+    id("flipper.android-compose")
 <#else>
-    androidLibrary
+    id("flipper.android-lib")
 </#if>
 <#if shouldGenerateDI>
     id("com.squareup.anvil")

@@ -4,6 +4,7 @@
 
 - [REFACTOR] Redesign Full Device Information
 - [REFACTOR] Redesign dialog after update (change colors)
+- [REFACTOR] Migrate to faster build configuration
 
 # 1.2.0
 

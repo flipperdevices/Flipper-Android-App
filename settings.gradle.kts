@@ -1,6 +1,11 @@
-rootProject.name = "FlipperApp"
+pluginManagement {
+    includeBuild("build-logic")
 
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+    repositories {
+        google()
+        gradlePluginPortal()
+    }
+}
 
 dependencyResolutionManagement {
     repositories {
@@ -10,6 +15,10 @@ dependencyResolutionManagement {
         maven("https://oss.sonatype.org/content/repositories/snapshots")
     }
 }
+
+rootProject.name = "FlipperApp"
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 include(
     ":instances:app",
@@ -43,7 +52,6 @@ include(
     ":components:core:test",
     ":components:core:markdown",
     ":components:core:activityholder",
-    ":components:core:keyinputbus",
 
     ":components:bottombar:api",
     ":components:bottombar:impl",

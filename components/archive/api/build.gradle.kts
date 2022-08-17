@@ -1,5 +1,6 @@
 plugins {
-    androidLibrary
+    id("flipper.lint")
+    id("flipper.android-lib")
     id("kotlin-parcelize")
 }
 

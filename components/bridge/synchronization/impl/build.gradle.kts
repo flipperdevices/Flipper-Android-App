@@ -1,6 +1,7 @@
 plugins {
-    androidLibrary
-    androidCompose
+    id("flipper.lint")
+    id("flipper.android-lib")
+    id("flipper.android-compose")
     id("com.squareup.anvil")
     id("kotlin-kapt")
     id("kotlinx-serialization")

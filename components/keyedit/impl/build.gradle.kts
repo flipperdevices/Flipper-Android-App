@@ -1,5 +1,6 @@
 plugins {
-    androidCompose
+    id("flipper.lint")
+    id("flipper.android-compose")
     id("com.squareup.anvil")
     id("kotlin-kapt")
 }

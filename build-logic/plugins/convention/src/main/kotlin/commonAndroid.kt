@@ -7,6 +7,7 @@ import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.kotlin.dsl.add
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import com.flipperdevices.buildlogic.ApkConfig
 
 private const val SPLASH_SCREEN_ACTIVITY = "com.flipperdevices.app.SplashScreen"
 private const val SPLASH_SCREEN_ACTIVITY_KEY = "splashScreenActivity"
@@ -91,7 +92,18 @@ private fun BaseExtension.configureBuildTypes() {
 
 @Suppress("UnstableApiUsage")
 private fun BaseExtension.configureBuildFeatures() {
-    buildFeatures.viewBinding = true
+    // TODO: Disable by default
+    //  BuildConfig is java source code. Java and Kotlin at one time affect build speed.
+    buildFeatures.buildConfig = true
+    // Disable by default. ViewBinding needed only for few modules.
+    // No need to enable this feature for all modules.
+    buildFeatures.viewBinding = false
+    buildFeatures.aidl = false
+    buildFeatures.compose = false
+    buildFeatures.prefab = false
+    buildFeatures.renderScript = false
+    buildFeatures.resValues = false
+    buildFeatures.shaders = false
 }
 
 private fun BaseExtension.configureCompileOptions() {
@@ -131,8 +143,20 @@ private fun Project.suppressOptIn() {
 fun DependencyHandler.internalImplementation(dependencyNotation: Any): Dependency? =
     add("internalImplementation", dependencyNotation)
 
+fun <BuildTypeT> NamedDomainObjectContainer<BuildTypeT>.debug(
+    action: BuildTypeT.() -> Unit
+) {
+    maybeCreate("debug").action()
+}
+
 fun <BuildTypeT> NamedDomainObjectContainer<BuildTypeT>.internal(
     action: BuildTypeT.() -> Unit
 ) {
     maybeCreate("internal").action()
+}
+
+fun <BuildTypeT> NamedDomainObjectContainer<BuildTypeT>.release(
+    action: BuildTypeT.() -> Unit
+) {
+    maybeCreate("release").action()
 }

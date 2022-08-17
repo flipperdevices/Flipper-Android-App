@@ -1,3 +1,7 @@
+import com.android.build.gradle.BaseExtension
+import com.flipperdevices.buildlogic.ApkConfig
+import io.sentry.android.gradle.extensions.SentryPluginExtension
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -5,7 +9,7 @@ plugins {
 }
 
 @Suppress("UnstableApiUsage")
-android {
+configure<BaseExtension> {
     commonAndroid(project)
 
     defaultConfig {
@@ -25,7 +29,7 @@ android {
     }
 }
 
-sentry {
+configure<SentryPluginExtension> {
     autoUploadProguardMapping.set(ApkConfig.IS_SENTRY_PUBLISH)
 
     ignoredBuildTypes.set(setOf("release", "debug"))

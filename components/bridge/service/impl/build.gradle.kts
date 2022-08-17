@@ -1,7 +1,8 @@
 plugins {
-    androidLibrary
+    id("flipper.lint")
+    id("flipper.android-lib")
     id("com.squareup.anvil")
-    kotlin("kapt")
+    id("kotlin-kapt")
 }
 
 android {

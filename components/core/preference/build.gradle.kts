@@ -4,10 +4,11 @@ import com.google.protobuf.gradle.protobuf
 import com.google.protobuf.gradle.protoc
 
 plugins {
-    androidLibrary
+    id("flipper.lint")
+    id("flipper.android-lib")
     id("com.squareup.anvil")
     id("com.google.protobuf")
-    kotlin("kapt")
+    id("kotlin-kapt")
 }
 
 dependencies {

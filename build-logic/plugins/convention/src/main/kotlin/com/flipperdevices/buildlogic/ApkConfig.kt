@@ -1,3 +1,5 @@
+package com.flipperdevices.buildlogic
+
 import java.lang.System.getProperty
 
 object ApkConfig {
