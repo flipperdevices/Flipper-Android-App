@@ -35,5 +35,11 @@ dependencies {
     kapt(libs.dagger.kapt)
 
     // Testing
+    testImplementation(projects.components.core.test)
     testImplementation(libs.junit)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.ktx.testing)
+    testImplementation(libs.roboelectric)
+    testImplementation(libs.lifecycle.test)
+    testImplementation(libs.kotlin.coroutines.test)
 }
