@@ -2,13 +2,11 @@ package com.flipperdevices.updater.downloader.api
 
 import android.content.Context
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.updater.api.DownloaderApi
-import com.flipperdevices.updater.downloader.di.DownloaderComponent
 import com.flipperdevices.updater.downloader.model.ArtifactType
 import com.flipperdevices.updater.downloader.model.FirmwareDirectoryListeningResponse
 import com.flipperdevices.updater.downloader.model.SubGhzProvisioningResponse
@@ -39,10 +37,6 @@ class DownloaderApiImpl @Inject constructor(
     private val downloadAndUnpackDelegate: DownloadAndUnpackDelegate
 ) : DownloaderApi, LogTagProvider {
     override val TAG = "DownloaderApi"
-
-    init {
-        ComponentHolder.component<DownloaderComponent>().inject(this)
-    }
 
     override suspend fun getLatestVersion(): EnumMap<FirmwareChannel, VersionFiles> {
         val versionMap: EnumMap<FirmwareChannel, VersionFiles> =

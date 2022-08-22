@@ -42,4 +42,10 @@ dependencies {
     testImplementation(libs.roboelectric)
     testImplementation(libs.lifecycle.test)
     testImplementation(libs.kotlin.coroutines.test)
+    testImplementation(projects.components.updater.downloader)
+    testImplementation(libs.ktor.client)
+    testImplementation(libs.ktor.negotiation)
+    testImplementation(libs.ktor.serialization)
+    testImplementation(libs.ktor.mock)
+    testImplementation(libs.kotlin.serialization.json)
 }

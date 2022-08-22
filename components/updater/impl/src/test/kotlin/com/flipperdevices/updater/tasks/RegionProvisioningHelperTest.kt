@@ -150,6 +150,21 @@ class RegionProvisioningHelperTest {
         Assert.assertFalse(actualRegion.isRoaming)
     }
 
+    @Test
+    fun `provide region from default`() = runTest {
+        val actualRegion = underTest.provideRegion("WW")
+
+        Assert.assertEquals("WW", actualRegion.regionFromIp)
+        Assert.assertEquals(
+            "WW" to RegionProvisioningSource.GEO_IP,
+            actualRegion.provideRegion()
+        )
+        Assert.assertNull(actualRegion.regionFromSim)
+        Assert.assertNull(actualRegion.regionFromNetwork)
+        Assert.assertTrue(actualRegion.regionSystem?.isEmpty() ?: false)
+        Assert.assertFalse(actualRegion.isRoaming)
+    }
+
     @After
     fun tearDown() {
         Dispatchers.resetMain()
