@@ -5,6 +5,7 @@
 - [REFACTOR] Redesign Full Device Information
 - [REFACTOR] Redesign dialog after update (change colors)
 - [REFACTOR] Migrate to faster build configuration
+- [REFACTOR] Add test for subghz provisioning
 
 # 1.2.0
 

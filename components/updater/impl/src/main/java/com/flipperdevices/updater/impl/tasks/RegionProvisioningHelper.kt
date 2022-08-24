@@ -24,7 +24,7 @@ class RegionProvisioningHelperImpl @Inject constructor(
     override val TAG = "CountryProvisioningHelper"
 
     override suspend fun provideRegion(regionFromGeoIp: String?): RegionProvisioning {
-        val (networkCountry, simCountry, isRoaming) = getCountryFromSimCards()
+        val (simCountry, networkCountry, isRoaming) = getCountryFromSimCards()
         val systemRegion = getRegionFromSystem()
 
         return RegionProvisioning(
@@ -50,8 +50,8 @@ class RegionProvisioningHelperImpl @Inject constructor(
         withContext(Dispatchers.Main) {
             val telephonyManager = context.getSystemService(TelephonyManager::class.java)
 
-            val simCountry = telephonyManager.simCountryIso?.uppercase()
-            val networkCountryIso = telephonyManager.networkCountryIso?.uppercase()
+            val simCountry = telephonyManager.simCountryIso
+            val networkCountryIso = telephonyManager.networkCountryIso
             val isRoaming = telephonyManager.isNetworkRoaming
 
             info { "Sim card region: $simCountry, network $networkCountryIso, roaming $isRoaming" }
