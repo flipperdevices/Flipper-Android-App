@@ -2,6 +2,7 @@ package com.flipperdevices.bridge.synchronization.impl.api
 
 import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
+import com.flipperdevices.bridge.dao.api.delegates.FlipperFileApi
 import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
@@ -33,7 +34,8 @@ class SynchronizationApiImpl @Inject constructor(
     private val utilsKeyApi: UtilsKeyApi,
     private val favoriteApi: FavoriteApi,
     private val metricApi: MetricApi,
-    private val preference: DataStore<Settings>
+    private val preference: DataStore<Settings>,
+    private val flipperFileApi: FlipperFileApi
 ) : SynchronizationApi, LogTagProvider {
     override val TAG = "SynchronizationApi"
 
@@ -64,7 +66,8 @@ class SynchronizationApiImpl @Inject constructor(
             utilsKeyApi = utilsKeyApi,
             favoriteApi = favoriteApi,
             metricApi = metricApi,
-            synchronizationProvider = SynchronizationPercentProvider(preference)
+            synchronizationProvider = SynchronizationPercentProvider(preference),
+            flipperFileApi = flipperFileApi
         )
 
         localSynchronizationTask.start(input = Unit) { taskState ->

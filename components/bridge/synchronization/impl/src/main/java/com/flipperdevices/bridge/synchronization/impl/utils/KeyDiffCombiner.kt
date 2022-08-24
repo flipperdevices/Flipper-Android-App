@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.synchronization.impl.utils
 
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
+import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.synchronization.impl.model.DiffSource
 import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
 import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
@@ -35,10 +36,10 @@ object KeyDiffCombiner {
     @Suppress("ComplexMethod")
     private fun resolveConflict(first: KeyDiff, second: KeyDiff): KeyDiff? {
         /**
-         * If the file is shadow, we always give preference
+         * If the file is shadow, we always give priority
          * to a copy of the file from the flipper.
          */
-        if (first.newHash.keyPath.isShadowFile) {
+        if (first.newHash.keyPath.fileType == FlipperFileType.SHADOW_NFC) {
             if (first.source == DiffSource.FLIPPER) {
                 return first
             }

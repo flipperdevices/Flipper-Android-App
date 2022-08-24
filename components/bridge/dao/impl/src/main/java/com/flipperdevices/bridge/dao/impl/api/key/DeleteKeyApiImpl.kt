@@ -1,11 +1,13 @@
 package com.flipperdevices.bridge.dao.impl.api.key
 
 import android.database.sqlite.SQLiteConstraintException
+import androidx.room.withTransaction
 import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
+import com.flipperdevices.bridge.dao.impl.AppDatabase
 import com.flipperdevices.bridge.dao.impl.api.delegates.KeyContentCleaner
 import com.flipperdevices.bridge.dao.impl.ktx.toFlipperKey
 import com.flipperdevices.bridge.dao.impl.repository.key.DeleteKeyDao
@@ -27,7 +29,8 @@ class DeleteKeyApiImpl @Inject constructor(
     deleteKeysDaoProvider: Provider<DeleteKeyDao>,
     simpleKeysDaoProvider: Provider<SimpleKeyDao>,
     utilsKeyApiProvider: Provider<UtilsKeyApi>,
-    cleanerProvider: Provider<KeyContentCleaner>
+    cleanerProvider: Provider<KeyContentCleaner>,
+    databaseProvider: Provider<AppDatabase>
 ) : DeleteKeyApi, LogTagProvider {
     override val TAG = "DeleteKeyApi"
 
@@ -35,6 +38,7 @@ class DeleteKeyApiImpl @Inject constructor(
     private val simpleKeyDao by simpleKeysDaoProvider
     private val utilsKeyApi by utilsKeyApiProvider
     private val cleaner by cleanerProvider
+    private val database by databaseProvider
 
     override fun getDeletedKeyAsFlow(): Flow<List<FlipperKey>> {
         return deleteKeyDao.subscribeOnDeletedKeys().map { list ->
@@ -57,27 +61,28 @@ class DeleteKeyApiImpl @Inject constructor(
         deleteKeyDao.markDeleted(keyPath.pathToKey)
     }
 
-    // TODO(MOB-395): Move to transaction
     override suspend fun restore(
         keyPath: FlipperFilePath
     ): Unit = withContext(Dispatchers.IO) {
-        var newPath = keyPath.pathToKey
-        val existKey = simpleKeyDao.getByPath(newPath, deleted = false)
-        if (existKey != null) {
-            newPath = utilsKeyApi.findAvailablePath(
-                FlipperKeyPath(
-                    keyPath,
-                    deleted = false
-                )
-            ).path.pathToKey
-            try {
-                simpleKeyDao.move(keyPath.pathToKey, newPath, deleted = true)
-            } catch (constraintException: SQLiteConstraintException) {
-                error(constraintException) { "When try restore $keyPath" }
-                restore(keyPath)
-                return@withContext
+        database.withTransaction {
+            var newPath = keyPath.pathToKey
+            val existKey = simpleKeyDao.getByPath(newPath, deleted = false)
+            if (existKey != null) {
+                newPath = utilsKeyApi.findAvailablePath(
+                    FlipperKeyPath(
+                        keyPath,
+                        deleted = false
+                    )
+                ).path.pathToKey
+                try {
+                    simpleKeyDao.move(keyPath.pathToKey, newPath, deleted = true)
+                } catch (constraintException: SQLiteConstraintException) {
+                    error(constraintException) { "When try restore $keyPath" }
+                    restore(keyPath)
+                    return@withTransaction
+                }
             }
+            deleteKeyDao.restore(newPath)
         }
-        deleteKeyDao.restore(newPath)
     }
 }

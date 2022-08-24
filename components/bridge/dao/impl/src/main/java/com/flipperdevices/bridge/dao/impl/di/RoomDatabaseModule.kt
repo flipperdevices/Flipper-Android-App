@@ -32,6 +32,9 @@ class RoomDatabaseModule {
     }
 
     @Provides
+    fun provideAdditionFileDao(database: AppDatabase) = database.additionalFileDao()
+
+    @Provides
     fun provideFavoriteDao(database: AppDatabase) = database.favoriteDao()
 
     @Provides

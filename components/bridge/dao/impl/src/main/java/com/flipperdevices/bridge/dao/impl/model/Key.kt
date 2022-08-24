@@ -19,7 +19,9 @@ import java.io.File
     ]
 )
 data class Key(
-    @PrimaryKey(autoGenerate = true) val uid: Int = 0,
+    @ColumnInfo(name = "uid")
+    @PrimaryKey(autoGenerate = true)
+    val uid: Int = 0,
     @ColumnInfo(name = "path") val path: String,
     // Denormalize for performance
     @ColumnInfo(name = "type") val type: FlipperKeyType?,

@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.synchronization.impl.repository
 
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
+import com.flipperdevices.bridge.dao.api.delegates.FlipperFileApi
 import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
@@ -36,7 +37,8 @@ class KeysSynchronization(
     private val manifestRepository: ManifestRepository,
     private val flipperStorage: FlipperKeyStorage,
     private val requestApi: FlipperRequestApi,
-    private val synchronizationPercentProvider: SynchronizationPercentProvider
+    private val synchronizationPercentProvider: SynchronizationPercentProvider,
+    private val flipperFileApi: FlipperFileApi
 ) : LogTagProvider {
     override val TAG = "KeysSynchronization"
 
@@ -44,7 +46,7 @@ class KeysSynchronization(
     private val keysListingRepository = KeysListingRepository()
     private val flipperHashRepository = FlipperHashRepository()
     private val androidHashRepository = AndroidHashRepository()
-    private val androidStorage = AndroidKeyStorage(simpleKeyApi, deleteKeyApi)
+    private val androidStorage = AndroidKeyStorage(simpleKeyApi, deleteKeyApi, flipperFileApi)
     private val synchronizationRepository = SynchronizationStateRepository(utilsKeyApi)
 
     suspend fun syncKeys(

@@ -2,10 +2,12 @@ package com.flipperdevices.bridge.dao.impl.api.key
 
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.dao.impl.ktx.toDatabaseKey
 import com.flipperdevices.bridge.dao.impl.ktx.toFlipperKey
+import com.flipperdevices.bridge.dao.impl.model.DatabaseKeyContent
 import com.flipperdevices.bridge.dao.impl.repository.key.SimpleKeyDao
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.provideDelegate
@@ -64,6 +66,12 @@ class SimpleKeyApiImpl @Inject constructor(
             uid = oldKeyInDatabase.uid
         )
         simpleKeyDao.update(newKeyInDatabase)
+    }
+
+    override suspend fun updateKeyContent(keyPath: FlipperKeyPath, content: FlipperKeyContent) {
+        val existedKey = simpleKeyDao.getByPath(keyPath.path.pathToKey, keyPath.deleted)
+            ?: error("Can't find $keyPath")
+        simpleKeyDao.update(existedKey.copy(content = DatabaseKeyContent(content)))
     }
 
     override suspend fun getKey(

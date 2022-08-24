@@ -3,7 +3,6 @@ package com.flipperdevices.bridge.synchronization.impl.repository.flipper
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.impl.executor.FlipperKeyStorage
 import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
 import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
@@ -35,8 +34,8 @@ class FlipperFavoritesRepository : LogTagProvider {
     private suspend fun getFavoritesFromFlipper(
         flipperKeyStorage: FlipperKeyStorage
     ): List<String> = withContext(Dispatchers.IO) {
-        val favoritesFile = flipperKeyStorage.loadKey(
-            FlipperKeyPath(FAVORITES_PATH, deleted = false)
+        val favoritesFile = flipperKeyStorage.loadFile(
+            FAVORITES_PATH
         ).openStream().use {
             it.readBytes().toString(Charset.defaultCharset())
         }
@@ -60,8 +59,8 @@ class FlipperFavoritesRepository : LogTagProvider {
         val newFavoritesFile = resultFavoritesList.joinToString("\n") {
             it.getPathOnFlipper()
         } + "\n"
-        flipperKeyStorage.saveKey(
-            FlipperKeyPath(FAVORITES_PATH, deleted = false),
+        flipperKeyStorage.saveFile(
+            FAVORITES_PATH,
             FlipperKeyContent.RawData(newFavoritesFile.toByteArray())
         )
     }

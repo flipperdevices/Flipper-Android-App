@@ -5,8 +5,8 @@ import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
+import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
-import com.flipperdevices.bridge.dao.api.model.SHADOW_FILE_EXTENSION
 import com.flipperdevices.bridge.synchronization.impl.model.ResultWithProgress
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.debug
@@ -78,7 +78,10 @@ class KeysListingRepository : LogTagProvider {
             return false
         }
         val extension = file.name.substringAfterLast(".")
-        if (extension == SHADOW_FILE_EXTENSION && requestedType == FlipperKeyType.NFC) {
+
+        if (FlipperFileType.getByExtension(extension) == FlipperFileType.SHADOW_NFC &&
+            requestedType == FlipperKeyType.NFC
+        ) {
             return true
         }
         val fileTypeByExtension = FlipperKeyType.getByExtension(extension)

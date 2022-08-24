@@ -24,20 +24,21 @@ data class FlipperFilePath constructor(
     val nameWithExtension: String // With extension
 ) : Parcelable, Comparable<FlipperFilePath> {
     @IgnoredOnParcel
+    private val extension: String
+        get() = nameWithExtension.substringAfterLast('.')
+
+    @IgnoredOnParcel
     val pathToKey: String by lazy { File(folder, nameWithExtension).path }
 
     @IgnoredOnParcel
     val keyType: FlipperKeyType? by lazy {
-        FlipperKeyType.getByExtension(
-            nameWithExtension.substringAfterLast('.')
-        )
+        FlipperKeyType.getByExtension(extension)
     }
 
-    /**
-     * NFC shadow file
-     */
-    val isShadowFile: Boolean
-        get() = nameWithExtension.substringAfterLast('.') == SHADOW_FILE_EXTENSION
+    @IgnoredOnParcel
+    val fileType: FlipperFileType by lazy {
+        FlipperFileType.getByExtension(extension)
+    }
 
     @IgnoredOnParcel
     val nameWithoutExtension by lazy {
