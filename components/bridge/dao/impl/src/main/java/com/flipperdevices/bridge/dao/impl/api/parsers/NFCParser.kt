@@ -1,8 +1,10 @@
 package com.flipperdevices.bridge.dao.impl.api.parsers
 
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
+import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
+import java.nio.charset.Charset
 
 private const val KEY_TYPE = "Device type"
 private const val KEY_VERSION = "Version"
@@ -18,7 +20,16 @@ class NFCParser : KeyParserDelegate {
         flipperKey: FlipperKey,
         fff: FlipperFileFormat
     ): FlipperKeyParsed {
-        val keyContentAsMap = fff.orderedDict.toMap()
+        val shadowFile = flipperKey
+            .additionalFiles
+            .find { it.path.fileType == FlipperFileType.SHADOW_NFC }
+        val actualNfcFFF = if (shadowFile != null) {
+            val fileContent = flipperKey.keyContent.openStream().use {
+                it.readBytes().toString(Charset.defaultCharset())
+            }
+            FlipperFileFormat.fromFileContent(fileContent)
+        } else fff
+        val keyContentAsMap = actualNfcFFF.orderedDict.toMap()
 
         val lines = keyContentAsMap.filter { it.key.startsWith(KEY_BLOCK) }.map {
             it.key.replace(KEY_BLOCK, "").trim().toIntOrNull() to it.value

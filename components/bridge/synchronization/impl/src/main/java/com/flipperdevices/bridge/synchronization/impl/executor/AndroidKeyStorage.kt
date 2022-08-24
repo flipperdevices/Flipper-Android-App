@@ -25,7 +25,9 @@ class AndroidKeyStorage(
             FlipperFileType.KEY -> simpleKeyApi.getKey(
                 FlipperKeyPath(filePath, deleted = false)
             )?.mainFile?.content ?: error("Can't found $filePath")
-            FlipperFileType.SHADOW_NFC -> flipperFileApi.getFile(filePath).content
+            FlipperFileType.SHADOW_NFC -> {
+                flipperFileApi.getFile(filePath).content
+            }
             FlipperFileType.OTHER ->
                 error("I cannot process a file that is neither a key nor a shadow file: $filePath")
         }

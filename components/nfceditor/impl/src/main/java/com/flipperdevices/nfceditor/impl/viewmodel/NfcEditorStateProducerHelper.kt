@@ -1,6 +1,8 @@
 package com.flipperdevices.nfceditor.impl.viewmodel
 
+import com.flipperdevices.bridge.dao.api.model.FlipperFile
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
+import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.nfceditor.impl.model.NfcCellType
@@ -161,13 +163,30 @@ object NfcEditorStateProducerHelper {
         nfcEditorState: NfcEditorState
     ): FlipperKey {
         val fff = FlipperFileFormat.fromFlipperContent(oldKey.keyContent)
-        val pendingFields = nfcEditorState.sectors.filterNotNull().map { it.lines }.flatten()
+        val pendingFields = nfcEditorState.sectors.map { it.lines }.flatten()
             .map { line -> line.index to line.cells.joinToString(" ") { it.content } }
 
         val orderedMap = fff.orderedDict.toMap(LinkedHashMap(fff.orderedDict.size))
         pendingFields.forEach {
             orderedMap["$KEY_BLOCK ${it.first}"] = it.second
         }
+
+        val shadowFile = oldKey.additionalFiles
+            .find { it.path.fileType == FlipperFileType.SHADOW_NFC }
+        if (shadowFile != null) {
+            val newAdditionalFiles = oldKey.additionalFiles.minus(shadowFile)
+                .plus(
+                    FlipperFile(
+                        path = shadowFile.path,
+                        content = FlipperFileFormat(orderedMap.toList())
+                    )
+                )
+            return oldKey.copy(
+                additionalFiles = newAdditionalFiles,
+                synchronized = false
+            )
+        }
+
         return oldKey.copy(
             mainFile = oldKey.mainFile.copy(content = FlipperFileFormat(orderedMap.toList())),
             synchronized = false

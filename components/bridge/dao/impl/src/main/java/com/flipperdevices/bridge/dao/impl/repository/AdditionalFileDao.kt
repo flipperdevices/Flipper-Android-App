@@ -4,17 +4,15 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import androidx.room.RewriteQueriesToDropUnusedColumns
 import androidx.room.Update
 import com.flipperdevices.bridge.dao.impl.model.FlipperAdditionalFile
 
 @Dao
 interface AdditionalFileDao {
     @Query(
-        "SELECT * FROM flipper_files JOIN keys ON flipper_files.key_id == keys.uid " +
+        "SELECT flipper_files.* FROM flipper_files JOIN keys ON flipper_files.key_id == keys.uid " +
             "WHERE flipper_files.path = :path AND keys.deleted = :keyDeleted"
     )
-    @RewriteQueriesToDropUnusedColumns
     suspend fun getByPath(path: String, keyDeleted: Boolean): FlipperAdditionalFile?
 
     @Delete
