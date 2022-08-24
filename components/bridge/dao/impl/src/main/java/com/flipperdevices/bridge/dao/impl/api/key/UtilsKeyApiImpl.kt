@@ -7,6 +7,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.impl.ktx.toFlipperKey
 import com.flipperdevices.bridge.dao.impl.model.SynchronizedStatus
+import com.flipperdevices.bridge.dao.impl.repository.AdditionalFileDao
 import com.flipperdevices.bridge.dao.impl.repository.key.UtilsKeyDao
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.provideDelegate
@@ -23,12 +24,14 @@ import kotlinx.coroutines.withContext
 @ContributesBinding(AppGraph::class, UtilsKeyApi::class)
 class UtilsKeyApiImpl @Inject constructor(
     utilsKeysDaoProvider: Provider<UtilsKeyDao>,
-    simpleKeyApiProvider: Provider<SimpleKeyApi>
+    simpleKeyApiProvider: Provider<SimpleKeyApi>,
+    flipperAdditionalDaoProvider: Provider<AdditionalFileDao>
 ) : UtilsKeyApi, LogTagProvider {
     override val TAG = "UtilsKeyApi"
 
     private val utilsKeyDao by utilsKeysDaoProvider
     private val simpleKeyApi by simpleKeyApiProvider
+    private val flipperAdditionalDao by flipperAdditionalDaoProvider
 
     override suspend fun markAsSynchronized(
         keyPath: FlipperKeyPath
@@ -50,7 +53,7 @@ class UtilsKeyApiImpl @Inject constructor(
     override fun search(text: String): Flow<List<FlipperKey>> {
         val searchQuery = "%$text%"
         return utilsKeyDao.search(searchQuery).map { list ->
-            list.map { it.toFlipperKey() }
+            list.map { it.toFlipperKey(flipperAdditionalDao) }
         }
     }
 

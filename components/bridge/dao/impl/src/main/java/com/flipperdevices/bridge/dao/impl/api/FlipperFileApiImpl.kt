@@ -4,8 +4,10 @@ import com.flipperdevices.bridge.dao.api.delegates.FlipperFileApi
 import com.flipperdevices.bridge.dao.api.model.FlipperFile
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperFileType
+import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
+import com.flipperdevices.bridge.dao.impl.ktx.toDatabaseFile
 import com.flipperdevices.bridge.dao.impl.ktx.toFlipperFile
 import com.flipperdevices.bridge.dao.impl.model.DatabaseKeyContent
 import com.flipperdevices.bridge.dao.impl.model.FlipperAdditionalFile
@@ -50,6 +52,41 @@ class FlipperFileApiImpl @Inject constructor(
             keyId = foundedKey.uid
         )
         additionalFileDao.insert(faf)
+    }
+
+    override suspend fun updateAdditionalFiles(
+        id: Int,
+        newAdditionalFiles: List<FlipperFile>
+    ) {
+        val additionalFilesToRemove = additionalFileDao.getFilesForKeyWithId(id)
+            .map { it.path to it }.toMap(HashMap())
+        newAdditionalFiles.forEach {
+            val additionalFile = it.toDatabaseFile(id)
+            val existedFile = additionalFilesToRemove.remove(additionalFile.path)
+            if (existedFile != null) {
+                additionalFileDao.update(additionalFile.copy(uid = existedFile.uid))
+            } else additionalFileDao.insert(additionalFile)
+        }
+        additionalFilesToRemove.values.forEach {
+            additionalFileDao.delete(it)
+        }
+    }
+
+    override suspend fun renameAdditionalFiles(id: Int, newKey: FlipperKey) {
+        val newName = newKey.path.nameWithoutExtension
+        val newAdditionalFiles = additionalFileDao
+            .getFilesForKeyWithId(id)
+            .map {
+                val path = it.filePath
+                it.copy(
+                    path = path.copy(
+                        nameWithExtension = "$newName.${path.extension}"
+                    ).pathToKey
+                )
+            }
+        newAdditionalFiles.forEach {
+            additionalFileDao.update(it)
+        }
     }
 
     override suspend fun updateFileContent(

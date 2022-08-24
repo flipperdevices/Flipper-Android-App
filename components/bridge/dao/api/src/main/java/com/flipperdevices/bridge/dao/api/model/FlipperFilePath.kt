@@ -24,7 +24,7 @@ data class FlipperFilePath constructor(
     val nameWithExtension: String // With extension
 ) : Parcelable, Comparable<FlipperFilePath> {
     @IgnoredOnParcel
-    private val extension: String
+    val extension: String
         get() = nameWithExtension.substringAfterLast('.')
 
     @IgnoredOnParcel

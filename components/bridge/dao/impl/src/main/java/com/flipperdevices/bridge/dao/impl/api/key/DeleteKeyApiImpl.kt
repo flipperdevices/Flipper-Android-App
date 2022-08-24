@@ -10,6 +10,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.impl.AppDatabase
 import com.flipperdevices.bridge.dao.impl.api.delegates.KeyContentCleaner
 import com.flipperdevices.bridge.dao.impl.ktx.toFlipperKey
+import com.flipperdevices.bridge.dao.impl.repository.AdditionalFileDao
 import com.flipperdevices.bridge.dao.impl.repository.key.DeleteKeyDao
 import com.flipperdevices.bridge.dao.impl.repository.key.SimpleKeyDao
 import com.flipperdevices.core.di.AppGraph
@@ -30,7 +31,8 @@ class DeleteKeyApiImpl @Inject constructor(
     simpleKeysDaoProvider: Provider<SimpleKeyDao>,
     utilsKeyApiProvider: Provider<UtilsKeyApi>,
     cleanerProvider: Provider<KeyContentCleaner>,
-    databaseProvider: Provider<AppDatabase>
+    databaseProvider: Provider<AppDatabase>,
+    additionalFileDaoProvider: Provider<AdditionalFileDao>
 ) : DeleteKeyApi, LogTagProvider {
     override val TAG = "DeleteKeyApi"
 
@@ -39,10 +41,11 @@ class DeleteKeyApiImpl @Inject constructor(
     private val utilsKeyApi by utilsKeyApiProvider
     private val cleaner by cleanerProvider
     private val database by databaseProvider
+    private val additionalFileDao by additionalFileDaoProvider
 
     override fun getDeletedKeyAsFlow(): Flow<List<FlipperKey>> {
         return deleteKeyDao.subscribeOnDeletedKeys().map { list ->
-            list.map { it.toFlipperKey() }
+            list.map { it.toFlipperKey(additionalFileDao) }
         }
     }
 

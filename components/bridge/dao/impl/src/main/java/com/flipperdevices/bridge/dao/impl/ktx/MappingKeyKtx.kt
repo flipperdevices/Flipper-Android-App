@@ -5,6 +5,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.impl.model.DatabaseKeyContent
 import com.flipperdevices.bridge.dao.impl.model.Key
 import com.flipperdevices.bridge.dao.impl.model.SynchronizedStatus
+import com.flipperdevices.bridge.dao.impl.repository.AdditionalFileDao
 
 internal fun FlipperKey.toDatabaseKey(): Key {
     return Key(
@@ -18,7 +19,7 @@ internal fun FlipperKey.toDatabaseKey(): Key {
     )
 }
 
-internal fun Key.toFlipperKey(): FlipperKey {
+internal suspend fun Key.toFlipperKey(additionalFileDao: AdditionalFileDao): FlipperKey {
     return FlipperKey(
         mainFile = FlipperFile(
             path = mainFilePath,
@@ -26,6 +27,7 @@ internal fun Key.toFlipperKey(): FlipperKey {
         ),
         notes = notes,
         synchronized = synchronizedStatus == SynchronizedStatus.SYNCHRONIZED,
-        deleted = deleted
+        deleted = deleted,
+        additionalFiles = additionalFileDao.getFilesForKeyWithId(uid).map { it.toFlipperFile() }
     )
 }
