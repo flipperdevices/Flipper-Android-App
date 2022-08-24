@@ -3,9 +3,8 @@ package com.flipperdevices.bridge.synchronization.impl.executor
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
-import com.flipperdevices.bridge.api.utils.Constants
+import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.protobuf.streamToCommandFlow
 import com.flipperdevices.core.ktx.jre.flatten
 import com.flipperdevices.core.log.LogTagProvider
@@ -15,22 +14,21 @@ import com.flipperdevices.protobuf.storage.deleteRequest
 import com.flipperdevices.protobuf.storage.file
 import com.flipperdevices.protobuf.storage.readRequest
 import com.flipperdevices.protobuf.storage.writeRequest
-import java.io.File
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.flow.toList
 
-class FlipperKeyStorage constructor(
+class FlipperKeyStorage(
     private val requestApi: FlipperRequestApi
 ) : AbstractKeyStorage, LogTagProvider {
     override val TAG = "FlipperKeyStorage"
 
-    override suspend fun loadKey(keyPath: FlipperKeyPath): FlipperKeyContent {
+    override suspend fun loadFile(filePath: FlipperFilePath): FlipperKeyContent {
         val responseBytes = requestApi.request(
             main {
                 storageReadRequest = readRequest {
-                    path = File(Constants.KEYS_DEFAULT_STORAGE, keyPath.pathToKey).path
+                    path = filePath.getPathOnFlipper()
                 }
             }.wrapToRequest(FlipperRequestPriority.BACKGROUND)
         ).toList().map { it.storageReadResponse.file.data.toByteArray() }.flatten()
@@ -38,11 +36,15 @@ class FlipperKeyStorage constructor(
         return FlipperKeyContent.RawData(responseBytes)
     }
 
-    override suspend fun saveKey(
-        keyPath: FlipperKeyPath,
+    override suspend fun modify(filePath: FlipperFilePath, newContent: FlipperKeyContent) {
+        saveFile(filePath, newContent)
+    }
+
+    override suspend fun saveFile(
+        filePath: FlipperFilePath,
         keyContent: FlipperKeyContent
     ) = keyContent.openStream().use { stream ->
-        val pathToFlipperFile = File(Constants.KEYS_DEFAULT_STORAGE, keyPath.pathToKey).path
+        val pathToFlipperFile = filePath.getPathOnFlipper()
         val response = streamToCommandFlow(stream, keyContent.length()) { chunkData ->
             storageWriteRequest = writeRequest {
                 path = pathToFlipperFile
@@ -65,11 +67,11 @@ class FlipperKeyStorage constructor(
         return@use
     }
 
-    override suspend fun deleteKey(keyPath: FlipperKeyPath) {
+    override suspend fun deleteFile(filePath: FlipperFilePath) {
         requestApi.request(
             main {
                 storageDeleteRequest = deleteRequest {
-                    path = File(Constants.KEYS_DEFAULT_STORAGE, keyPath.pathToKey).path
+                    path = filePath.getPathOnFlipper()
                 }
             }.wrapToRequest(FlipperRequestPriority.BACKGROUND)
         ).single()

@@ -7,14 +7,17 @@ import androidx.room.TypeConverters
 import com.flipperdevices.bridge.dao.impl.converters.DatabaseKeyContentConverter
 import com.flipperdevices.bridge.dao.impl.converters.FlipperFileTypeConverter
 import com.flipperdevices.bridge.dao.impl.model.FavoriteKey
+import com.flipperdevices.bridge.dao.impl.model.FlipperAdditionalFile
 import com.flipperdevices.bridge.dao.impl.model.Key
+import com.flipperdevices.bridge.dao.impl.repository.AdditionalFileDao
 import com.flipperdevices.bridge.dao.impl.repository.FavoriteDao
 import com.flipperdevices.bridge.dao.impl.repository.KeyDao
 
 @Database(
     entities = [
         Key::class,
-        FavoriteKey::class
+        FavoriteKey::class,
+        FlipperAdditionalFile::class
     ],
     autoMigrations = [
         AutoMigration(
@@ -30,9 +33,13 @@ import com.flipperdevices.bridge.dao.impl.repository.KeyDao
         AutoMigration(
             from = 6,
             to = 7
+        ),
+        AutoMigration(
+            from = 7,
+            to = 8
         )
     ],
-    version = 7,
+    version = 8,
     exportSchema = true
 )
 @TypeConverters(
@@ -42,4 +49,5 @@ import com.flipperdevices.bridge.dao.impl.repository.KeyDao
 abstract class AppDatabase : RoomDatabase() {
     abstract fun keyDao(): KeyDao
     abstract fun favoriteDao(): FavoriteDao
+    abstract fun additionalFileDao(): AdditionalFileDao
 }

@@ -55,8 +55,13 @@ class KeyReceiveViewModel(
                 state.emit(ReceiveState.Finished)
                 return@onEach
             }
-            val newPath = utilsKeyApi.findAvailablePath(flipperKey.path)
-            flipperKey = flipperKey.copy(path = newPath)
+            val newPath = utilsKeyApi.findAvailablePath(flipperKey.getKeyPath())
+            flipperKey = flipperKey.copy(
+                mainFile = flipperKey.mainFile.copy(
+                    path = newPath.path
+                ),
+                deleted = newPath.deleted
+            )
             state.emit(ReceiveState.Pending(flipperKey, keyParser.parseKey(flipperKey)))
         }.launchIn(viewModelScope)
     }

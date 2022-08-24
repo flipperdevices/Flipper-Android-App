@@ -50,7 +50,7 @@ class EmulateViewModel @VMInject constructor(
     fun onStartEmulate(flipperKey: FlipperKey) {
         vibrator?.vibrateCompat(VIBRATOR_TIME)
 
-        val fileType = flipperKey.path.fileType ?: return
+        val fileType = flipperKey.path.keyType ?: return
         emulateButtonStateFlow.update {
             when (it) {
                 EmulateButtonState.DISABLED -> EmulateButtonState.DISABLED
@@ -83,7 +83,7 @@ class EmulateViewModel @VMInject constructor(
 
     fun onSinglePress(flipperKey: FlipperKey) {
         vibrator?.vibrateCompat(VIBRATOR_TIME)
-        val fileType = flipperKey.path.fileType ?: return
+        val fileType = flipperKey.path.keyType ?: return
 
         emulateButtonStateFlow.update {
             when (it) {

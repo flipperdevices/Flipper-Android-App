@@ -7,11 +7,13 @@ import com.flipperdevices.core.ktx.jre.pmap
 
 class AndroidHashRepository {
     suspend fun calculateHash(keys: List<FlipperKey>): List<KeyWithHash> {
-        return keys.pmap {
-            KeyWithHash(
-                it.path,
-                it.keyContent.openStream().md5()
-            )
-        }
+        return keys.pmap { flipperKey ->
+            flipperKey.additionalFiles.plus(flipperKey.mainFile).map {
+                KeyWithHash(
+                    it.path,
+                    it.content.openStream().md5()
+                )
+            }
+        }.flatten()
     }
 }

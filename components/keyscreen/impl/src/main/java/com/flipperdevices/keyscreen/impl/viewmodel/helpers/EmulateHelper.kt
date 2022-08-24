@@ -4,8 +4,8 @@ import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.api.utils.Constants
-import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.ktx.jre.withLockResult
@@ -55,7 +55,7 @@ class EmulateHelper @Inject constructor() : LogTagProvider {
     suspend fun startEmulate(
         scope: CoroutineScope,
         requestApi: FlipperRequestApi,
-        fileType: FlipperFileType,
+        fileType: FlipperKeyType,
         flipperKey: FlipperKey
     ) = withLockResult(mutex, "start") {
         if (isRunning) {
@@ -76,7 +76,7 @@ class EmulateHelper @Inject constructor() : LogTagProvider {
     private suspend fun startEmulateInternal(
         scope: CoroutineScope,
         requestApi: FlipperRequestApi,
-        fileType: FlipperFileType,
+        fileType: FlipperKeyType,
         flipperKey: FlipperKey
     ): Boolean {
         info { "startEmulateInternal" }
@@ -109,7 +109,7 @@ class EmulateHelper @Inject constructor() : LogTagProvider {
             error { "Failed start key with error $appLoadFileResponse" }
             return false
         }
-        if (fileType != FlipperFileType.SUB_GHZ) {
+        if (fileType != FlipperKeyType.SUB_GHZ) {
             info { "Skip execute button press: $appLoadFileResponse" }
             return true
         }
@@ -131,7 +131,7 @@ class EmulateHelper @Inject constructor() : LogTagProvider {
     private suspend fun tryOpenApp(
         scope: CoroutineScope,
         requestApi: FlipperRequestApi,
-        fileType: FlipperFileType
+        fileType: FlipperKeyType
     ): Boolean {
         val stateAppFlow = MutableStateFlow(Application.AppState.UNRECOGNIZED)
         val pendingStateJob = requestApi

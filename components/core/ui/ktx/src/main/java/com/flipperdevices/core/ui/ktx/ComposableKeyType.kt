@@ -19,8 +19,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.dao.api.R
-import com.flipperdevices.bridge.dao.api.model.FlipperFileType
-import com.flipperdevices.bridge.dao.api.model.FlipperFileType.Companion.colorByFlipperFileType
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyType.Companion.colorByFlipperKeyType
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
@@ -28,8 +28,8 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 @Composable
 @Preview
 fun ComposableKeyType(
-    type: FlipperFileType? = FlipperFileType.NFC,
-    colorKey: Color = colorByFlipperFileType(type),
+    type: FlipperKeyType? = FlipperKeyType.NFC,
+    colorKey: Color = colorByFlipperKeyType(type),
     minWidth: Dp? = 110.dp
 ) {
     val icon = type?.icon ?: DesignSystem.drawable.ic_fileformat_unknown

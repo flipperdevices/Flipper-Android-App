@@ -8,7 +8,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.bridge.dao.api.model.FlipperFileType
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.keyscreen.impl.R
@@ -44,7 +44,7 @@ fun ComposableKeyParsed(
             keyScreenState.deleteState,
             synchronizationState = if (keyScreenState.deleteState == DeleteState.NOT_DELETED) { ->
                 synchronizationUiApi.RenderSynchronizationState(
-                    keyScreenState.flipperKey.path,
+                    keyScreenState.flipperKey.getKeyPath(),
                     withText = true
                 )
             } else null,
@@ -60,17 +60,17 @@ fun ComposableKeyParsed(
                 .fillMaxWidth()
                 .padding(start = 24.dp, end = 24.dp, bottom = 24.dp)
             when (fileType) {
-                FlipperFileType.SUB_GHZ -> ComposableSend(
+                FlipperKeyType.SUB_GHZ -> ComposableSend(
                     modifier = emulateModifier,
                     flipperKey = keyScreenState.flipperKey
                 )
-                FlipperFileType.I_BUTTON,
-                FlipperFileType.RFID,
-                FlipperFileType.NFC -> ComposableEmulate(
+                FlipperKeyType.I_BUTTON,
+                FlipperKeyType.RFID,
+                FlipperKeyType.NFC -> ComposableEmulate(
                     modifier = emulateModifier,
                     flipperKey = keyScreenState.flipperKey
                 )
-                FlipperFileType.INFRARED -> {}
+                FlipperKeyType.INFRARED -> {}
             }
         }
 

@@ -1,17 +1,17 @@
 package com.flipperdevices.bridge.dao.api.model.parsed
 
-import com.flipperdevices.bridge.dao.api.model.FlipperFileType
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 
 sealed class FlipperKeyParsed(
     val keyName: String,
     val notes: String?,
-    val fileType: FlipperFileType?
+    val fileType: FlipperKeyType?
 ) {
     class Infrared(
         keyName: String,
         notes: String?,
         val protocol: String?
-    ) : FlipperKeyParsed(keyName, notes, FlipperFileType.INFRARED)
+    ) : FlipperKeyParsed(keyName, notes, FlipperKeyType.INFRARED)
 
     @Suppress("LongParameterList")
     class NFC(
@@ -25,33 +25,33 @@ sealed class FlipperKeyParsed(
         val mifareClassicType: String?,
         val dataFormatVersion: Int,
         val lines: List<Pair<Int, String>>
-    ) : FlipperKeyParsed(keyName, notes, FlipperFileType.NFC)
+    ) : FlipperKeyParsed(keyName, notes, FlipperKeyType.NFC)
 
     class SubGhz(
         keyName: String,
         notes: String?,
         val protocol: String?,
         val key: String?
-    ) : FlipperKeyParsed(keyName, notes, FlipperFileType.SUB_GHZ)
+    ) : FlipperKeyParsed(keyName, notes, FlipperKeyType.SUB_GHZ)
 
     class IButton(
         keyName: String,
         notes: String?,
         val keyType: String?,
         val data: String?
-    ) : FlipperKeyParsed(keyName, notes, FlipperFileType.I_BUTTON)
+    ) : FlipperKeyParsed(keyName, notes, FlipperKeyType.I_BUTTON)
 
     class RFID(
         keyName: String,
         notes: String?,
         val data: String?,
         val keyType: String?
-    ) : FlipperKeyParsed(keyName, notes, FlipperFileType.RFID)
+    ) : FlipperKeyParsed(keyName, notes, FlipperKeyType.RFID)
 
     class Unrecognized(
         keyName: String,
         notes: String?,
-        fileType: FlipperFileType?,
+        fileType: FlipperKeyType?,
         val orderedDict: List<Pair<String, String>>
     ) : FlipperKeyParsed(keyName, notes, fileType)
 }

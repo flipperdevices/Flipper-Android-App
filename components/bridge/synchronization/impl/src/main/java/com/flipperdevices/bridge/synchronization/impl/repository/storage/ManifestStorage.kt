@@ -1,7 +1,7 @@
 package com.flipperdevices.bridge.synchronization.impl.repository.storage
 
 import android.content.Context
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
+import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.synchronization.impl.model.KeyWithHash
 import com.flipperdevices.bridge.synchronization.impl.model.ManifestFile
 import java.io.File
@@ -16,7 +16,7 @@ class ManifestStorage(context: Context) {
 
     suspend fun save(
         keys: List<KeyWithHash>,
-        favorites: List<FlipperKeyPath>
+        favorites: List<FlipperFilePath>
     ) = withContext(Dispatchers.IO) {
         if (file.exists()) {
             file.delete()

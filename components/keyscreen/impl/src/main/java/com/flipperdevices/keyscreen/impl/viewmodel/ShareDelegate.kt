@@ -17,7 +17,7 @@ class ShareDelegate(
 
     suspend fun share(flipperKey: FlipperKey) {
         val link = keyParser.keyToUrl(flipperKey)
-        info { "Share ${flipperKey.path.name} with link $link" }
+        info { "Share ${flipperKey.path.nameWithExtension} with link $link" }
         shareLink(flipperKey, link)
     }
 
@@ -29,7 +29,7 @@ class ShareDelegate(
 
         intent.type = "text/plain"
         intent.putExtra(Intent.EXTRA_TEXT, link)
-        intent.putExtra(Intent.EXTRA_TITLE, flipperKey.path.name)
+        intent.putExtra(Intent.EXTRA_TITLE, flipperKey.path.nameWithExtension)
 
         val chooserIntent = Intent.createChooser(intent, null)
         chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

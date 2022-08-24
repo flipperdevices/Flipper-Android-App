@@ -21,6 +21,7 @@ dependencies {
     implementation(projects.components.core.preference)
 
     implementation(projects.components.bridge.dao.api)
+    implementation(projects.components.bridge.synchronization.api)
 
     implementation(projects.components.keyscreen.shared)
 

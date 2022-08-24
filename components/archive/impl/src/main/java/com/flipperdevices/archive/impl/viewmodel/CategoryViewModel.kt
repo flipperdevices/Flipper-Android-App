@@ -10,7 +10,7 @@ import com.flipperdevices.archive.impl.model.CategoryItem
 import com.flipperdevices.archive.model.CategoryType
 import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
-import com.flipperdevices.bridge.dao.api.model.FlipperFileType
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.jre.map
 import com.github.terrakok.cicerone.Router
@@ -37,8 +37,8 @@ class CategoryViewModel(
     @Inject
     lateinit var categoryApi: CategoryApi
 
-    private val categoriesFlow = MutableStateFlow<Map<FlipperFileType, CategoryItem>>(
-        FlipperFileType.values().map {
+    private val categoriesFlow = MutableStateFlow<Map<FlipperKeyType, CategoryItem>>(
+        FlipperKeyType.values().map {
             it to CategoryItem(it.icon, it.humanReadableName, null, CategoryType.ByFileType(it))
         }.toMap(TreeMap())
     )
@@ -75,7 +75,7 @@ class CategoryViewModel(
             )
         }.launchIn(viewModelScope)
 
-        FlipperFileType.values().forEach { fileType ->
+        FlipperKeyType.values().forEach { fileType ->
             simpleKeyApi.getExistKeysAsFlow(fileType).onEach { keys ->
                 categoriesFlow.update {
                     val mutableMap = TreeMap(it)

@@ -5,6 +5,7 @@ import com.flipperdevices.bridge.dao.api.delegates.KeyParser
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
+import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.ui.hexkeyboard.HexKey
@@ -28,6 +29,9 @@ class NfcEditorViewModel(
 
     @Inject
     lateinit var simpleKeyApi: SimpleKeyApi
+
+    @Inject
+    lateinit var synchronizationApi: SynchronizationApi
 
     private val textUpdaterHelper = TextUpdaterHelper()
 
@@ -69,6 +73,7 @@ class NfcEditorViewModel(
                 localNfcEditorState
             )
             simpleKeyApi.updateKey(flipperKey, newFlipperKey)
+            synchronizationApi.startSynchronization(force = true)
             router.exit()
         }
     }

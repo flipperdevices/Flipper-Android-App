@@ -4,7 +4,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.flipperdevices.bridge.dao.api.model.FlipperFileType
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.dao.impl.model.Key
 import kotlinx.coroutines.flow.Flow
 
@@ -29,7 +29,7 @@ interface SimpleKeyDao {
        SELECT * FROM keys WHERE type = :fileType AND deleted = 0 
         """
     )
-    fun subscribeByType(fileType: FlipperFileType): Flow<List<Key>>
+    fun subscribeByType(fileType: FlipperKeyType): Flow<List<Key>>
 
     @Query("UPDATE keys SET path = :newPath WHERE path = :oldPath AND deleted = :deleted")
     fun move(oldPath: String, newPath: String, deleted: Boolean)

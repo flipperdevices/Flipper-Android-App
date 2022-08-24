@@ -16,7 +16,7 @@ class KeyItemViewModel : ViewModel() {
         ComponentHolder.component<ArchiveComponent>().inject(this)
     }
 
-    fun open(path: FlipperKeyPath, router: Router) {
+    fun open(router: Router, path: FlipperKeyPath) {
         router.navigateTo(keyScreenApi.getKeyScreenScreen(path))
     }
 }

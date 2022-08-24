@@ -1,7 +1,7 @@
 package com.flipperdevices.bridge.synchronization.impl.repository.storage
 
 import android.content.Context
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
+import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.synchronization.impl.di.SynchronizationComponent
 import com.flipperdevices.bridge.synchronization.impl.model.DiffSource
 import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
@@ -20,7 +20,7 @@ class ManifestRepository {
         ComponentHolder.component<SynchronizationComponent>().inject(this)
     }
 
-    suspend fun saveManifest(keys: List<KeyWithHash>, favorites: List<FlipperKeyPath>) {
+    suspend fun saveManifest(keys: List<KeyWithHash>, favorites: List<FlipperFilePath>) {
         manifestStorage.save(keys, favorites)
     }
 
@@ -34,7 +34,7 @@ class ManifestRepository {
     }
 
     suspend fun compareFavoritesWithManifest(
-        favorites: List<FlipperKeyPath>,
+        favorites: List<FlipperFilePath>,
         diffSource: DiffSource
     ): List<KeyDiff> {
         val manifestFile = manifestStorage.load()

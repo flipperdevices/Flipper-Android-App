@@ -1,6 +1,8 @@
 package com.flipperdevices.bridge.synchronization.impl.executor
 
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
+import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
+import com.flipperdevices.bridge.dao.api.model.FlipperFileType
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
 import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
 import com.flipperdevices.core.log.LogTagProvider
@@ -22,17 +24,19 @@ class DiffKeyExecutor : LogTagProvider {
         diffs: List<KeyDiff>,
         onProgressUpdate: (suspend (Int, Int) -> Unit)? = null
     ): List<KeyDiff> {
-        return diffs.mapIndexedNotNull { index, diff ->
-            try {
-                info { "Execute $diff for $source to $target" }
-                execute(source, target, diff)
-                onProgressUpdate?.invoke(index, diffs.size)
-                return@mapIndexedNotNull diff
-            } catch (executeError: Exception) {
-                error(executeError) { "While apply diff $diff we have error" }
+        val sortedDiffs = diffs.sortedBy { it.newHash.keyPath.fileType.ordinal }
+        return sortedDiffs
+            .mapIndexedNotNull { index, diff ->
+                try {
+                    info { "Execute $diff for $source to $target" }
+                    execute(source, target, diff)
+                    onProgressUpdate?.invoke(index, diffs.size)
+                    return@mapIndexedNotNull diff
+                } catch (executeError: Exception) {
+                    error(executeError) { "While apply diff $diff we have error" }
+                }
+                return@mapIndexedNotNull null
             }
-            return@mapIndexedNotNull null
-        }
     }
 
     private suspend fun execute(
@@ -41,23 +45,26 @@ class DiffKeyExecutor : LogTagProvider {
         diff: KeyDiff
     ) {
         val path = diff.newHash.keyPath
-        val targetPath = FlipperKeyPath(
-            path.fileType!!.flipperDir,
-            path.name,
-            deleted = false
+        val folder = when (path.fileType) {
+            FlipperFileType.KEY -> path.keyType!!.flipperDir
+            FlipperFileType.SHADOW_NFC -> FlipperKeyType.NFC.flipperDir
+            FlipperFileType.OTHER -> error("Don't support file with this type")
+        }
+        val targetPath = FlipperFilePath(
+            folder,
+            path.nameWithExtension
         )
 
         when (diff.action) {
             KeyAction.ADD -> {
-                val content = source.loadKey(path)
-                target.saveKey(targetPath, content)
+                val content = source.loadFile(path)
+                target.saveFile(targetPath, content)
             }
             KeyAction.MODIFIED -> {
-                val content = source.loadKey(path)
-                target.deleteKey(targetPath)
-                target.saveKey(targetPath, content)
+                val content = source.loadFile(path)
+                target.modify(targetPath, content)
             }
-            KeyAction.DELETED -> target.deleteKey(targetPath)
+            KeyAction.DELETED -> target.deleteFile(targetPath)
         }
     }
 }

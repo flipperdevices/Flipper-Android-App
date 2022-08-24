@@ -1,23 +1,22 @@
 package com.flipperdevices.bridge.synchronization.impl.repository.flipper
 
 import com.flipperdevices.bridge.api.utils.Constants
+import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.impl.executor.FlipperKeyStorage
 import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
 import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
 import com.flipperdevices.core.log.LogTagProvider
-import java.io.File
 import java.nio.charset.Charset
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-private val FAVORITES_PATH = FlipperKeyPath("/", "favorites.txt", deleted = false)
+private val FAVORITES_PATH = FlipperFilePath("/", "favorites.txt")
 
 class FlipperFavoritesRepository : LogTagProvider {
     override val TAG = "FavoritesRepository"
 
-    suspend fun getFavorites(flipperKeyStorage: FlipperKeyStorage): List<FlipperKeyPath> {
+    suspend fun getFavorites(flipperKeyStorage: FlipperKeyStorage): List<FlipperFilePath> {
         val favoritesPaths = getFavoritesFromFlipper(flipperKeyStorage)
         return favoritesPaths.map {
             val relativePath = it.replace(Constants.KEYS_DEFAULT_STORAGE, "").replace("/ext/", "")
@@ -25,10 +24,9 @@ class FlipperFavoritesRepository : LogTagProvider {
         }.filter { (keyFolder, keyName) ->
             keyFolder.trim().isNotEmpty() || keyName.trim().isNotEmpty()
         }.map { (keyFolder, keyName) ->
-            return@map FlipperKeyPath(
+            return@map FlipperFilePath(
                 folder = keyFolder,
-                name = keyName,
-                deleted = false
+                nameWithExtension = keyName
             )
         }
     }
@@ -36,7 +34,9 @@ class FlipperFavoritesRepository : LogTagProvider {
     private suspend fun getFavoritesFromFlipper(
         flipperKeyStorage: FlipperKeyStorage
     ): List<String> = withContext(Dispatchers.IO) {
-        val favoritesFile = flipperKeyStorage.loadKey(FAVORITES_PATH).openStream().use {
+        val favoritesFile = flipperKeyStorage.loadFile(
+            FAVORITES_PATH
+        ).openStream().use {
             it.readBytes().toString(Charset.defaultCharset())
         }
         return@withContext favoritesFile
@@ -45,7 +45,7 @@ class FlipperFavoritesRepository : LogTagProvider {
 
     suspend fun applyDiff(
         flipperKeyStorage: FlipperKeyStorage,
-        oldFavorites: List<FlipperKeyPath>,
+        oldFavorites: List<FlipperFilePath>,
         favoritesDiff: List<KeyDiff>
     ) {
         val resultFavoritesList = ArrayList(oldFavorites)
@@ -57,9 +57,9 @@ class FlipperFavoritesRepository : LogTagProvider {
             }
         }
         val newFavoritesFile = resultFavoritesList.joinToString("\n") {
-            File(Constants.KEYS_DEFAULT_STORAGE, it.pathToKey).absolutePath
+            it.getPathOnFlipper()
         } + "\n"
-        flipperKeyStorage.saveKey(
+        flipperKeyStorage.saveFile(
             FAVORITES_PATH,
             FlipperKeyContent.RawData(newFavoritesFile.toByteArray())
         )

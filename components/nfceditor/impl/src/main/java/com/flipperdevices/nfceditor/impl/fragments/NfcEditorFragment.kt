@@ -7,9 +7,10 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.fragment.app.viewModels
+import com.flipperdevices.bridge.dao.api.model.FlipperFile
+import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.navigation.delegates.OnBackPressListener
 import com.flipperdevices.core.ui.fragment.ComposeFragment
@@ -24,9 +25,12 @@ class NfcEditorFragment : ComposeFragment(), OnBackPressListener {
         NfcEditorViewModelFactory(
             arguments?.getParcelable(EXTRA_FLIPPER_KEY)
                 ?: FlipperKey(
-                    FlipperKeyPath.DUMMY,
-                    FlipperKeyContent.RawData(byteArrayOf()),
-                    synchronized = false
+                    mainFile = FlipperFile(
+                        FlipperFilePath.DUMMY,
+                        FlipperKeyContent.RawData(byteArrayOf())
+                    ),
+                    synchronized = false,
+                    deleted = false
                 )
         )
     }
