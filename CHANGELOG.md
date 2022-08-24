@@ -6,6 +6,7 @@
 - [REFACTOR] Redesign dialog after update (change colors)
 - [REFACTOR] Migrate to faster build configuration
 - [REFACTOR] Add test for subghz provisioning
+- [Feature] Add support for NFC Shadow Files
 
 # 1.2.0
 
