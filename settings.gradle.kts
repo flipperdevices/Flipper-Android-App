@@ -29,6 +29,7 @@ include(
     ":components:bridge:pbutils",
     ":components:bridge:synchronization:api",
     ":components:bridge:synchronization:impl",
+    ":components:bridge:synchronization:stub",
     ":components:bridge:synchronization:ui",
     ":components:bridge:dao:api",
     ":components:bridge:dao:impl",

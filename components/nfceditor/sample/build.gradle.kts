@@ -27,6 +27,8 @@ dependencies {
 
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.dao.impl)
+    implementation(projects.components.bridge.synchronization.api)
+    implementation(projects.components.bridge.synchronization.stub)
 
     implementation(projects.components.analytics.shake2report.api)
     releaseImplementation(projects.components.analytics.shake2report.noop)
