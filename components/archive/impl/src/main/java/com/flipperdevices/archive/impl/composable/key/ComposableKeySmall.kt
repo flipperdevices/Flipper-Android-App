@@ -25,7 +25,7 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 @Composable
 fun ComposableKeySmall(
     modifier: Modifier = Modifier,
-    keyPath: FlipperKeyPath = FlipperKeyPath.DUMMY,
+    keyPath: FlipperKeyPath,
     synchronizationContent: @Composable () -> Unit,
     keyItemViewModel: KeyItemViewModel = viewModel()
 ) {
@@ -36,12 +36,12 @@ fun ComposableKeySmall(
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(),
-                onClick = { keyItemViewModel.open(keyPath, router) }
+                onClick = { keyItemViewModel.open(router, keyPath) }
             )
     ) {
         Column {
             Row {
-                ComposableKeyType(keyPath.fileType)
+                ComposableKeyType(keyPath.path.keyType)
                 Box(
                     modifier = Modifier
                         .weight(1f)
@@ -56,7 +56,7 @@ fun ComposableKeySmall(
                     horizontal = 8.dp,
                     vertical = 12.dp
                 ),
-                text = keyPath.nameWithoutExtension,
+                text = keyPath.path.nameWithoutExtension,
                 style = LocalTypography.current.bodyR14,
                 overflow = TextOverflow.Ellipsis
             )

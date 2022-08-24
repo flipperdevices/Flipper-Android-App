@@ -24,8 +24,8 @@ import com.flipperdevices.archive.category.viewmodels.CategoryViewModelFactory
 import com.flipperdevices.archive.model.CategoryType
 import com.flipperdevices.archive.shared.composable.ComposableAppBar
 import com.flipperdevices.archive.shared.composable.ComposableKeyCard
-import com.flipperdevices.bridge.dao.api.model.FlipperFileType.Companion.colorByFlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyType.Companion.colorByFlipperKeyType
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
@@ -103,11 +103,11 @@ private fun CategoryList(
                 } else null,
                 flipperKeyParsed,
                 typeColor = when (categoryType) {
-                    is CategoryType.ByFileType -> colorByFlipperFileType(categoryType.fileType)
+                    is CategoryType.ByFileType -> colorByFlipperKeyType(categoryType.fileType)
                     CategoryType.Deleted -> LocalPallet.current.keyDeleted
                 }
             ) {
-                categoryViewModel.openKeyScreen(router, flipperKey.path)
+                categoryViewModel.openKeyScreen(router, flipperKey.getKeyPath())
             }
         }
     }

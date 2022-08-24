@@ -4,8 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.flipperdevices.bridge.dao.api.model.FlipperFileType
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
+import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import java.io.File
 
 @Entity(
@@ -22,17 +22,17 @@ data class Key(
     @PrimaryKey(autoGenerate = true) val uid: Int = 0,
     @ColumnInfo(name = "path") val path: String,
     // Denormalize for performance
-    @ColumnInfo(name = "type") val type: FlipperFileType?,
+    @ColumnInfo(name = "type") val type: FlipperKeyType?,
     @ColumnInfo(name = "content") val content: DatabaseKeyContent,
     @ColumnInfo(name = "deleted") val deleted: Boolean,
     @ColumnInfo(name = "notes") val notes: String? = null,
     @ColumnInfo(name = "synchronized_status")
     val synchronizedStatus: SynchronizedStatus = SynchronizedStatus.SYNCHRONIZED
 ) {
-    val keyPath: FlipperKeyPath
+    val mainFilePath: FlipperFilePath
         get() {
             val pathNotNull = path
             val file = File(pathNotNull)
-            return FlipperKeyPath(file.parent ?: "", file.name, deleted)
+            return FlipperFilePath(file.parent ?: "", file.name)
         }
 }

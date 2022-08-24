@@ -17,29 +17,31 @@ private const val FLIPPER_STORAGE_NAME = "/any/"
  */
 @Serializable
 @Parcelize
-data class FlipperKeyPath constructor(
+data class FlipperFilePath constructor(
     @SerialName("folder")
     val folder: String,
     @SerialName("name")
-    val name: String, // With extension
-    @SerialName("deleted")
-    val deleted: Boolean = false
-) : Parcelable, Comparable<FlipperKeyPath> {
+    val nameWithExtension: String // With extension
+) : Parcelable, Comparable<FlipperFilePath> {
     @IgnoredOnParcel
-    val pathToKey: String by lazy { File(folder, name).path }
+    val pathToKey: String by lazy { File(folder, nameWithExtension).path }
 
     @IgnoredOnParcel
-    val fileType: FlipperFileType? by lazy {
-        FlipperFileType.getByExtension(
-            name.substringAfterLast(
-                '.'
-            )
+    val keyType: FlipperKeyType? by lazy {
+        FlipperKeyType.getByExtension(
+            nameWithExtension.substringAfterLast('.')
         )
     }
 
+    /**
+     * NFC shadow file
+     */
+    val isShadowFile: Boolean
+        get() = nameWithExtension.substringAfterLast('.') == SHADOW_FILE_EXTENSION
+
     @IgnoredOnParcel
     val nameWithoutExtension by lazy {
-        name.substringAfterLast('/').substringBeforeLast(".")
+        nameWithExtension.substringAfterLast('/').substringBeforeLast(".")
     }
 
     fun getPathOnFlipper() = File(FLIPPER_STORAGE_NAME, pathToKey).path
@@ -48,15 +50,14 @@ data class FlipperKeyPath constructor(
 
     companion object {
         val DUMMY by lazy {
-            FlipperKeyPath(
-                FlipperFileType.NFC.flipperDir,
-                "Test_Key.nfc",
-                deleted = false
+            FlipperFilePath(
+                FlipperKeyType.NFC.flipperDir,
+                "Test_Key.nfc"
             )
         }
     }
 
-    override fun compareTo(other: FlipperKeyPath): Int {
+    override fun compareTo(other: FlipperFilePath): Int {
         return pathToKey.compareTo(other.pathToKey)
     }
 }

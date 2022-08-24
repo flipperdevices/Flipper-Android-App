@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.synchronization.impl.repository.android
 
 import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
 import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
 import com.flipperdevices.core.log.LogTagProvider
@@ -17,7 +18,8 @@ class SynchronizationStateRepository(
         for (diffToMark in uniqueDiffs) {
             try {
                 utilsKeyApi.markAsSynchronized(
-                    diffToMark.newHash.keyPath.copy(
+                    FlipperKeyPath(
+                        diffToMark.newHash.keyPath,
                         deleted = diffToMark.action == KeyAction.DELETED
                     )
                 )

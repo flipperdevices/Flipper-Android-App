@@ -59,7 +59,7 @@ class CategoryViewModel(
 
     fun getSynchronizationState() = synchronizationState.getSynchronizationState()
 
-    fun openKeyScreen(router: Router, flipperKeyPath: FlipperKeyPath) {
-        router.navigateTo(screenApi.getKeyScreenScreen(flipperKeyPath))
+    fun openKeyScreen(router: Router, flipperFilePath: FlipperKeyPath) {
+        router.navigateTo(screenApi.getKeyScreenScreen(flipperFilePath))
     }
 }

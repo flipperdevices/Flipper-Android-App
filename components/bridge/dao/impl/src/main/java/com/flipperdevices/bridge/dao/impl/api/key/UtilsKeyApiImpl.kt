@@ -2,6 +2,7 @@ package com.flipperdevices.bridge.dao.impl.api.key
 
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
+import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.impl.ktx.toFlipperKey
@@ -33,7 +34,7 @@ class UtilsKeyApiImpl @Inject constructor(
         keyPath: FlipperKeyPath
     ) = withContext(Dispatchers.IO) {
         utilsKeyDao.markSynchronized(
-            keyPath.pathToKey,
+            keyPath.path.pathToKey,
             keyPath.deleted,
             SynchronizedStatus.SYNCHRONIZED
         )
@@ -43,7 +44,7 @@ class UtilsKeyApiImpl @Inject constructor(
         keyPath: FlipperKeyPath,
         note: String
     ) = withContext(Dispatchers.IO) {
-        utilsKeyDao.updateNote(keyPath.pathToKey, keyPath.deleted, note)
+        utilsKeyDao.updateNote(keyPath.path.pathToKey, keyPath.deleted, note)
     }
 
     override fun search(text: String): Flow<List<FlipperKey>> {
@@ -54,7 +55,7 @@ class UtilsKeyApiImpl @Inject constructor(
     }
 
     override suspend fun findAvailablePath(keyPath: FlipperKeyPath): FlipperKeyPath {
-        var newNameWithoutExtension = keyPath.nameWithoutExtension
+        var newNameWithoutExtension = keyPath.path.nameWithoutExtension
         var newPath = getKeyPathWithDifferentNameWithoutExtension(
             keyPath,
             newNameWithoutExtension
@@ -66,7 +67,7 @@ class UtilsKeyApiImpl @Inject constructor(
         }
         // Find empty key name
         while (simpleKeyApi.getKey(newPath) != null) {
-            newNameWithoutExtension = "${keyPath.nameWithoutExtension}_${index++}"
+            newNameWithoutExtension = "${keyPath.path.nameWithoutExtension}_${index++}"
             newPath = getKeyPathWithDifferentNameWithoutExtension(
                 keyPath,
                 newNameWithoutExtension
@@ -85,8 +86,10 @@ private fun getKeyPathWithDifferentNameWithoutExtension(
     nameWithoutExtension: String
 ): FlipperKeyPath {
     return FlipperKeyPath(
-        keyPath.folder,
-        "$nameWithoutExtension.${keyPath.name.substringAfterLast('.')}",
+        FlipperFilePath(
+            keyPath.path.folder,
+            "$nameWithoutExtension.${keyPath.path.nameWithExtension.substringAfterLast('.')}"
+        ),
         keyPath.deleted
     )
 }

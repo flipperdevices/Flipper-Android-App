@@ -21,7 +21,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.bridge.dao.api.model.FlipperFileType
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.ui.res.R
 import com.flipperdevices.filemanager.impl.model.FileItem
 
@@ -80,7 +80,7 @@ fun ComposableFileImage(modifier: Modifier, fileItem: FileItem) {
                 )
             )
             val fileIcon = remember(fileItem) {
-                FlipperFileType.getByExtension(
+                FlipperKeyType.getByExtension(
                     fileItem.fileName.substringAfterLast(".")
                 )
             }

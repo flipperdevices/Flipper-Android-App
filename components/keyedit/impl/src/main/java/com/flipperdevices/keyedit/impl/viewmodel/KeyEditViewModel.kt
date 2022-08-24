@@ -8,8 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.utils.FlipperSymbolFilter
 import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.delegates.KeyParser
+import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.vibrateCompat
@@ -97,16 +97,18 @@ class KeyEditViewModel(
             "Save button should be inactive when name is null or blank"
         }
 
-        val extension = flipperKey.path.name.substringAfterLast('.')
+        val extension = flipperKey.path.nameWithExtension.substringAfterLast('.')
         val newFlipperKey = FlipperKey(
-            FlipperKeyPath(
-                flipperKey.path.folder,
-                "${editState.name}.$extension",
-                flipperKey.path.deleted
+            mainFile = flipperKey.mainFile.copy(
+                path = FlipperFilePath(
+                    flipperKey.path.folder,
+                    "${editState.name}.$extension"
+                )
             ),
-            flipperKey.keyContent,
-            editState.notes,
-            synchronized = false
+            flipperKeyType = flipperKey.flipperKeyType,
+            notes = editState.notes,
+            synchronized = false,
+            deleted = flipperKey.deleted
         )
         finishListener?.invoke(newFlipperKey)
     }

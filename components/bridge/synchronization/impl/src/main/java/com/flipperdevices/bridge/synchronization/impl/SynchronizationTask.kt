@@ -6,7 +6,7 @@ import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
-import com.flipperdevices.bridge.dao.api.model.FlipperFileType
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
@@ -87,7 +87,9 @@ class SynchronizationTask(
     ) = withContext(Dispatchers.Default) {
         val flipperStorage = FlipperKeyStorage(serviceApi.requestApi)
         val favoriteSynchronization = FavoriteSynchronization(
-            favoriteApi, manifestRepository, flipperStorage
+            favoriteApi,
+            manifestRepository,
+            flipperStorage
         )
         val keysSynchronization = KeysSynchronization(
             simpleKeyApi,
@@ -108,14 +110,14 @@ class SynchronizationTask(
     }
 
     private suspend fun reportSynchronizationEnd(totalTime: Long) {
-        val keys = simpleKeyApi.getAllKeys().groupBy { it.path.fileType }
+        val keys = simpleKeyApi.getAllKeys().groupBy { it.path.keyType }
         metricApi.reportComplexEvent(
             SynchronizationEnd(
-                subghzCount = keys[FlipperFileType.SUB_GHZ]?.size ?: 0,
-                rfidCount = keys[FlipperFileType.RFID]?.size ?: 0,
-                nfcCount = keys[FlipperFileType.NFC]?.size ?: 0,
-                infraredCount = keys[FlipperFileType.INFRARED]?.size ?: 0,
-                iButtonCount = keys[FlipperFileType.I_BUTTON]?.size ?: 0,
+                subghzCount = keys[FlipperKeyType.SUB_GHZ]?.size ?: 0,
+                rfidCount = keys[FlipperKeyType.RFID]?.size ?: 0,
+                nfcCount = keys[FlipperKeyType.NFC]?.size ?: 0,
+                infraredCount = keys[FlipperKeyType.INFRARED]?.size ?: 0,
+                iButtonCount = keys[FlipperKeyType.I_BUTTON]?.size ?: 0,
                 synchronizationTimeMs = totalTime
             )
         )

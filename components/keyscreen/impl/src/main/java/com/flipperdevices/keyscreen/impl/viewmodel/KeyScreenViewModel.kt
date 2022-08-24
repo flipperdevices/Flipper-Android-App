@@ -213,7 +213,7 @@ class KeyScreenViewModel(
         }
 
         viewModelScope.launch {
-            if (state.flipperKey.path.deleted) {
+            if (state.flipperKey.deleted) {
                 deleteKeyApi.deleteMarkedDeleted(state.flipperKey.path)
             } else deleteKeyApi.markDeleted(state.flipperKey.path)
             router.exit()
@@ -239,13 +239,13 @@ class KeyScreenViewModel(
 
     private suspend fun loadKey(flipperKey: FlipperKey) {
         val parsedKey = keyParser.parseKey(flipperKey)
-        val isFavorite = favoriteApi.isFavorite(flipperKey.path)
+        val isFavorite = favoriteApi.isFavorite(flipperKey.getKeyPath())
         keyScreenState.update {
             KeyScreenState.Ready(
                 parsedKey,
                 if (isFavorite) FavoriteState.FAVORITE else FavoriteState.NOT_FAVORITE,
                 ShareState.NOT_SHARING,
-                if (flipperKey.path.deleted) DeleteState.DELETED else DeleteState.NOT_DELETED,
+                if (flipperKey.deleted) DeleteState.DELETED else DeleteState.NOT_DELETED,
                 flipperKey
             )
         }

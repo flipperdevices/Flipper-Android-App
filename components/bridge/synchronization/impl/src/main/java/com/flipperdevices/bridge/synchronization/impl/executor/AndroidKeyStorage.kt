@@ -2,6 +2,8 @@ package com.flipperdevices.bridge.synchronization.impl.executor
 
 import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
+import com.flipperdevices.bridge.dao.api.model.FlipperFile
+import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
@@ -21,11 +23,18 @@ class AndroidKeyStorage(
 
     override suspend fun saveKey(keyPath: FlipperKeyPath, keyContent: FlipperKeyContent) {
         info { "Save key $keyPath with $keyContent" }
-        val flipperKey = FlipperKey(keyPath, keyContent, synchronized = true)
+        val flipperKey = FlipperKey(
+            mainFile = FlipperFile(
+                keyPath.path,
+                keyContent
+            ),
+            synchronized = true,
+            deleted = keyPath.deleted
+        )
         simpleKeyApi.insertKey(flipperKey)
     }
 
-    override suspend fun deleteKey(keyPath: FlipperKeyPath) {
+    override suspend fun deleteKey(keyPath: FlipperFilePath) {
         info { "Mark delete key $keyPath" }
         deleteKeyApi.markDeleted(keyPath)
     }

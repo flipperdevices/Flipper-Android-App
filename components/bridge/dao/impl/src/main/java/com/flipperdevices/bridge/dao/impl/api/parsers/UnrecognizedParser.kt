@@ -10,9 +10,9 @@ class UnrecognizedParser : KeyParserDelegate {
         fff: FlipperFileFormat
     ): FlipperKeyParsed {
         return FlipperKeyParsed.Unrecognized(
-            flipperKey.path.name,
+            flipperKey.path.nameWithoutExtension,
             flipperKey.notes,
-            flipperKey.path.fileType,
+            flipperKey.path.keyType,
             fff.orderedDict
         )
     }

@@ -3,9 +3,9 @@ package com.flipperdevices.bridge.dao.impl.api
 import android.net.Uri
 import com.flipperdevices.bridge.dao.api.delegates.KeyParser
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
-import com.flipperdevices.bridge.dao.api.model.FlipperFileType
+import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.bridge.dao.impl.api.parsers.IButtonParser
 import com.flipperdevices.bridge.dao.impl.api.parsers.InfraredParser
@@ -35,14 +35,14 @@ class KeyParserImpl @Inject constructor() : KeyParser, LogTagProvider {
     private val urlEncoder = FFFUrlEncoder()
 
     private val parsers by lazy {
-        EnumMap<FlipperFileType, KeyParserDelegate>(
-            FlipperFileType::class.java
+        EnumMap<FlipperKeyType, KeyParserDelegate>(
+            FlipperKeyType::class.java
         ).apply {
-            put(FlipperFileType.I_BUTTON, IButtonParser())
-            put(FlipperFileType.NFC, NFCParser())
-            put(FlipperFileType.RFID, RFIDParser())
-            put(FlipperFileType.SUB_GHZ, SubGhzParser())
-            put(FlipperFileType.INFRARED, InfraredParser())
+            put(FlipperKeyType.I_BUTTON, IButtonParser())
+            put(FlipperKeyType.NFC, NFCParser())
+            put(FlipperKeyType.RFID, RFIDParser())
+            put(FlipperKeyType.SUB_GHZ, SubGhzParser())
+            put(FlipperKeyType.INFRARED, InfraredParser())
         }
     }
     private val unrecognizedParser = UnrecognizedParser()
@@ -54,20 +54,20 @@ class KeyParserImpl @Inject constructor() : KeyParser, LogTagProvider {
             it.readBytes().toString(Charset.defaultCharset())
         }
         val fff = FlipperFileFormat.fromFileContent(fileContent)
-        val parser = parsers[flipperKey.path.fileType] ?: unrecognizedParser
+        val parser = parsers[flipperKey.path.keyType] ?: unrecognizedParser
 
         return@withContext parser.parseKey(flipperKey, fff)
     }
 
-    override suspend fun parseUri(uri: Uri): Pair<FlipperKeyPath, FlipperFileFormat>? {
+    override suspend fun parseUri(uri: Uri): Pair<FlipperFilePath, FlipperFileFormat>? {
         val (path, content) = urlDecoder.uriToContent(uri) ?: return null
         val pathAsFile = File(path)
         val extension = pathAsFile.extension
-        val fileType = FlipperFileType.getByExtension(extension)
+        val fileType = FlipperKeyType.getByExtension(extension)
         val keyPath = if (fileType == null) {
             warn { "Can't find file type with extension $fileType" }
-            FlipperKeyPath(pathAsFile.parent ?: "", pathAsFile.name, deleted = false)
-        } else FlipperKeyPath(fileType.flipperDir, pathAsFile.name, deleted = false)
+            FlipperFilePath(pathAsFile.parent ?: "", pathAsFile.name)
+        } else FlipperFilePath(fileType.flipperDir, pathAsFile.name)
 
         return keyPath to content
     }

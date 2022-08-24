@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.synchronization.impl.repository
 
 import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
+import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.impl.executor.FlipperKeyStorage
 import com.flipperdevices.bridge.synchronization.impl.model.DiffSource
@@ -21,7 +22,7 @@ class FavoriteSynchronization constructor(
 
     private val favoritesRepository = FlipperFavoritesRepository()
 
-    suspend fun syncFavorites(): List<FlipperKeyPath> {
+    suspend fun syncFavorites(): List<FlipperFilePath> {
         val favoritesFromFlipper = favoritesRepository.getFavorites(flipperStorage)
         val favoritesFromAndroid = favoriteApi.getFavorites().map { it.path }
         val diffWithManifestAndFlipper = manifestRepository
@@ -54,12 +55,16 @@ class FavoriteSynchronization constructor(
             diffForFlipper
         ) // Update on Flipper
         val resultFavoritesList = mergedWithManifestList(combinedDiff)
-        favoriteApi.updateFavorites(resultFavoritesList)
+        favoriteApi.updateFavorites(
+            resultFavoritesList.map {
+                FlipperKeyPath(path = it, deleted = false)
+            }
+        )
 
         return resultFavoritesList
     }
 
-    private suspend fun mergedWithManifestList(combinedDiff: List<KeyDiff>): List<FlipperKeyPath> {
+    private suspend fun mergedWithManifestList(combinedDiff: List<KeyDiff>): List<FlipperFilePath> {
         val favoritesFromManifest = manifestRepository.getFavorites() ?: emptyList()
         val resultFavoritesList = ArrayList(favoritesFromManifest)
         for (diff in combinedDiff) {

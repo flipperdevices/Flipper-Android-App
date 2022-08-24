@@ -4,7 +4,6 @@ import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
-import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.impl.executor.AndroidKeyStorage
@@ -109,10 +108,12 @@ class KeysSynchronization(
 
         val manifestHashes = checkSynchronization(
             calculatedHashOnAndroid = ManifestChangeExecutor.applyChanges(
-                hashesFromAndroid, appliedKeysToAndroid
+                hashesFromAndroid,
+                appliedKeysToAndroid
             ),
             calculatedHashOnFlipper = ManifestChangeExecutor.applyChanges(
-                hashesFromFlipper, appliedKeysToFlipper
+                hashesFromFlipper,
+                appliedKeysToFlipper
             )
         )
 
@@ -183,10 +184,11 @@ class KeysSynchronization(
     private suspend fun mergeDiffs(first: List<KeyDiff>, second: List<KeyDiff>): List<KeyDiff> {
         return try {
             KeyDiffCombiner.combineKeyDiffs(
-                first, second
+                first,
+                second
             )
         } catch (conflict: UnresolvedConflictException) {
-            resolveConflict(conflict.path)
+            resolveConflict(FlipperKeyPath(conflict.path, deleted = false))
             throw RestartSynchronizationException()
         }
     }
@@ -205,7 +207,13 @@ class KeysSynchronization(
             simpleKeyApi.getKey(keyPath) ?: error("Can't found key $keyPath on Android side")
         val newPath = utilsKeyApi.findAvailablePath(keyPath)
 
-        simpleKeyApi.insertKey(FlipperKey(newPath, oldKey.keyContent, synchronized = false))
+        simpleKeyApi.insertKey(
+            oldKey.copy(
+                oldKey.mainFile.copy(path = newPath.path),
+                deleted = newPath.deleted,
+                synchronized = false
+            )
+        )
         deleteKeyApi.markDeleted(oldKey.path)
     }
 }

@@ -1,6 +1,6 @@
 package com.flipperdevices.bridge.synchronization.impl.model
 
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
+import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -9,5 +9,5 @@ data class ManifestFile(
     @SerialName("keys")
     val keys: List<KeyWithHash>,
     @SerialName("favorites")
-    val favorites: List<FlipperKeyPath> = emptyList()
+    val favorites: List<FlipperFilePath> = emptyList()
 )

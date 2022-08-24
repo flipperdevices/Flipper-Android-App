@@ -1,9 +1,9 @@
 package com.flipperdevices.bridge.dao.impl.api.key
 
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
-import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.dao.impl.ktx.toDatabaseKey
 import com.flipperdevices.bridge.dao.impl.ktx.toFlipperKey
 import com.flipperdevices.bridge.dao.impl.repository.key.SimpleKeyDao
@@ -31,13 +31,13 @@ class SimpleKeyApiImpl @Inject constructor(
     }
 
     override fun getKeyAsFlow(keyPath: FlipperKeyPath): Flow<FlipperKey?> {
-        return simpleKeyDao.getByPathFlow(keyPath.pathToKey, keyPath.deleted).map {
+        return simpleKeyDao.getByPathFlow(keyPath.path.pathToKey, keyPath.deleted).map {
             it?.toFlipperKey()
         }
     }
 
     override fun getExistKeysAsFlow(
-        fileType: FlipperFileType?
+        fileType: FlipperKeyType?
     ): Flow<List<FlipperKey>> {
         val flowWithFilter = if (fileType == null) {
             simpleKeyDao.subscribe()
@@ -69,7 +69,7 @@ class SimpleKeyApiImpl @Inject constructor(
     override suspend fun getKey(
         keyPath: FlipperKeyPath
     ): FlipperKey? = withContext(Dispatchers.IO) {
-        return@withContext simpleKeyDao.getByPath(keyPath.pathToKey, keyPath.deleted)
+        return@withContext simpleKeyDao.getByPath(keyPath.path.pathToKey, keyPath.deleted)
             ?.toFlipperKey()
     }
 }

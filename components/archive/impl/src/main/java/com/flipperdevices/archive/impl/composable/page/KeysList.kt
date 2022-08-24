@@ -49,7 +49,7 @@ fun LazyListScope.ComposableKeysGrid(
                             withText = false
                         )
                     },
-                    keyPath = it.path
+                    keyPath = it.getKeyPath()
                 )
             }
             repeat(GRID_WIDTH - items.size) {

@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.synchronization.impl.utils
 
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
+import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
+import com.flipperdevices.bridge.synchronization.impl.model.DiffSource
 import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
 import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
 
@@ -31,7 +32,21 @@ object KeyDiffCombiner {
     }
 
     @Throws(UnresolvedConflictException::class)
+    @Suppress("ComplexMethod")
     private fun resolveConflict(first: KeyDiff, second: KeyDiff): KeyDiff? {
+        /**
+         * If the file is shadow, we always give preference
+         * to a copy of the file from the flipper.
+         */
+        if (first.newHash.keyPath.isShadowFile) {
+            if (first.source == DiffSource.FLIPPER) {
+                return first
+            }
+            if (second.source == DiffSource.FLIPPER) {
+                return second
+            }
+        }
+
         return when (first.action) {
             KeyAction.ADD -> when (second.action) {
                 KeyAction.ADD, KeyAction.MODIFIED ->
@@ -54,4 +69,4 @@ object KeyDiffCombiner {
     }
 }
 
-class UnresolvedConflictException(val path: FlipperKeyPath) : RuntimeException()
+class UnresolvedConflictException(val path: FlipperFilePath) : RuntimeException()

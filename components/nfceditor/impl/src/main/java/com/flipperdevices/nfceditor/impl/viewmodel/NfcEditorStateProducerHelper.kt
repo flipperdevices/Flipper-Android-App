@@ -169,7 +169,7 @@ object NfcEditorStateProducerHelper {
             orderedMap["$KEY_BLOCK ${it.first}"] = it.second
         }
         return oldKey.copy(
-            keyContent = FlipperFileFormat(orderedMap.toList()),
+            mainFile = oldKey.mainFile.copy(content = FlipperFileFormat(orderedMap.toList())),
             synchronized = false
         )
     }

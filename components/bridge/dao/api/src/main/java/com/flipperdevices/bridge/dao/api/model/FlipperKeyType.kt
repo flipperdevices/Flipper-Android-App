@@ -6,7 +6,9 @@ import androidx.compose.ui.graphics.Color
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 
-enum class FlipperFileType(
+const val SHADOW_FILE_EXTENSION = "shd"
+
+enum class FlipperKeyType(
     val humanReadableName: String,
     val extension: String,
     val flipperDir: String,
@@ -54,12 +56,12 @@ enum class FlipperFileType(
             values().map { it.extension to it }.toMap()
         }
 
-        fun getByExtension(extension: String): FlipperFileType? {
+        fun getByExtension(extension: String): FlipperKeyType? {
             return extensionToFormat[extension]
         }
 
         @Composable
-        fun colorByFlipperFileType(type: FlipperFileType?): Color {
+        fun colorByFlipperKeyType(type: FlipperKeyType?): Color {
             return when (type) {
                 SUB_GHZ -> LocalPallet.current.keySubGHz
                 RFID -> LocalPallet.current.keyRFID

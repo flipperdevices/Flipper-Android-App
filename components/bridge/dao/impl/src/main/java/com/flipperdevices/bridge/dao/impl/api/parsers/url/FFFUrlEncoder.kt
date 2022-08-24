@@ -1,7 +1,7 @@
 package com.flipperdevices.bridge.dao.impl.api.parsers.url
 
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
+import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.core.log.LogTagProvider
 import java.net.URL
 import java.net.URLEncoder
@@ -9,7 +9,7 @@ import java.net.URLEncoder
 class FFFUrlEncoder : LogTagProvider {
     override val TAG = "FFFUrlEncoder"
 
-    fun keyToUri(path: FlipperKeyPath, fff: FlipperFileFormat): URL {
+    fun keyToUri(path: FlipperFilePath, fff: FlipperFileFormat): URL {
         val query = listOf(QUERY_KEY_PATH to path.pathToKey).plus(fff.orderedDict)
             .filterNot { it.first.isBlank() || it.second.isBlank() }
             .joinToString(QUERY_DELIMITED_CHAR) {

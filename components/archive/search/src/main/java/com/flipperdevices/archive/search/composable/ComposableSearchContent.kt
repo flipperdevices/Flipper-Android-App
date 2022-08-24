@@ -78,7 +78,7 @@ private fun CategoryList(
                 },
                 flipperKeyParsed
             ) {
-                searchViewModel.openKeyScreen(router, flipperKey.path)
+                searchViewModel.openKeyScreen(router, flipperKey.getKeyPath())
             }
         }
     }

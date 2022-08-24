@@ -3,6 +3,7 @@ package com.flipperdevices.bridge.dao.impl.api.key
 import android.database.sqlite.SQLiteConstraintException
 import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
+import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.impl.api.delegates.KeyContentCleaner
@@ -42,13 +43,13 @@ class DeleteKeyApiImpl @Inject constructor(
     }
 
     override suspend fun deleteMarkedDeleted(
-        keyPath: FlipperKeyPath
+        keyPath: FlipperFilePath
     ) = withContext(Dispatchers.IO) {
         deleteKeyDao.deleteMarkedDeleted(keyPath.pathToKey)
         cleaner.deleteUnusedFiles()
     }
 
-    override suspend fun markDeleted(keyPath: FlipperKeyPath) = withContext(Dispatchers.IO) {
+    override suspend fun markDeleted(keyPath: FlipperFilePath) = withContext(Dispatchers.IO) {
         val existKey = simpleKeyDao.getByPath(keyPath.pathToKey, deleted = true)
         if (existKey != null) {
             deleteKeyDao.deleteMarkedDeleted(keyPath.pathToKey)
@@ -56,15 +57,21 @@ class DeleteKeyApiImpl @Inject constructor(
         deleteKeyDao.markDeleted(keyPath.pathToKey)
     }
 
+    // TODO(MOB-395): Move to transaction
     override suspend fun restore(
-        keyPath: FlipperKeyPath
+        keyPath: FlipperFilePath
     ): Unit = withContext(Dispatchers.IO) {
         var newPath = keyPath.pathToKey
         val existKey = simpleKeyDao.getByPath(newPath, deleted = false)
         if (existKey != null) {
-            newPath = utilsKeyApi.findAvailablePath(keyPath.copy(deleted = false)).pathToKey
+            newPath = utilsKeyApi.findAvailablePath(
+                FlipperKeyPath(
+                    keyPath,
+                    deleted = false
+                )
+            ).path.pathToKey
             try {
-                simpleKeyDao.move(keyPath.pathToKey, newPath, keyPath.deleted)
+                simpleKeyDao.move(keyPath.pathToKey, newPath, deleted = true)
             } catch (constraintException: SQLiteConstraintException) {
                 error(constraintException) { "When try restore $keyPath" }
                 restore(keyPath)

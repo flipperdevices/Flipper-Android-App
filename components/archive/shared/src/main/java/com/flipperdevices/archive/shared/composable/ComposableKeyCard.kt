@@ -19,7 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.archive.shared.utils.ExtractKeyMetaInformation
-import com.flipperdevices.bridge.dao.api.model.FlipperFileType.Companion.colorByFlipperFileType
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyType.Companion.colorByFlipperKeyType
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.core.ui.ktx.ComposableKeyType
 import com.flipperdevices.core.ui.theme.LocalPallet
@@ -30,7 +30,7 @@ fun ComposableKeyCard(
     modifier: Modifier,
     synchronizationContent: (@Composable () -> Unit)?,
     flipperKeyParsed: FlipperKeyParsed,
-    typeColor: Color = colorByFlipperFileType(flipperKeyParsed.fileType),
+    typeColor: Color = colorByFlipperKeyType(flipperKeyParsed.fileType),
     onCardClicked: () -> Unit
 ) {
     Card(
