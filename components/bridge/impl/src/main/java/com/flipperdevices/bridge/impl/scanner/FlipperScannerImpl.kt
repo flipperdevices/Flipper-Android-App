@@ -56,26 +56,28 @@ class FlipperScannerImpl @Inject constructor(
             scanner.scanFlow(provideSettings(), provideFilterForDefaultScan()).map {
                 DiscoveredBluetoothDevice(it)
             }
-        ).filter { it.device.name?.startsWith(Constants.DEVICENAME_PREFIX) == true }
-            .map { discoveredBluetoothDevice ->
-                var mutableDevicesList: List<DiscoveredBluetoothDevice> = emptyList()
-                withLock(mutex, "scan_map") {
-                    val alreadyExistDBD = devices.getOrNull(
-                        devices.indexOf(discoveredBluetoothDevice)
-                    )
-                    if (alreadyExistDBD != null) {
-                        val scanResult = discoveredBluetoothDevice.scanResult
-                        if (scanResult != null) {
-                            alreadyExistDBD.update(scanResult)
-                        }
-                    } else {
-                        info { "Find new device $discoveredBluetoothDevice" }
-                        devices.add(discoveredBluetoothDevice)
+        ).filter {
+            it.address.startsWith(Constants.MAC_PREFIX) ||
+                it.name?.startsWith(Constants.DEVICENAME_PREFIX) == true
+        }.map { discoveredBluetoothDevice ->
+            var mutableDevicesList: List<DiscoveredBluetoothDevice> = emptyList()
+            withLock(mutex, "scan_map") {
+                val alreadyExistDBD = devices.getOrNull(
+                    devices.indexOf(discoveredBluetoothDevice)
+                )
+                if (alreadyExistDBD != null) {
+                    val scanResult = discoveredBluetoothDevice.scanResult
+                    if (scanResult != null) {
+                        alreadyExistDBD.update(scanResult)
                     }
-                    mutableDevicesList = devices.toList()
+                } else {
+                    info { "Find new device $discoveredBluetoothDevice" }
+                    devices.add(discoveredBluetoothDevice)
                 }
-                return@map mutableDevicesList
+                mutableDevicesList = devices.toList()
             }
+            return@map mutableDevicesList
+        }
     }
 
     override fun findFlipperById(deviceId: String): Flow<DiscoveredBluetoothDevice> {
@@ -111,7 +113,8 @@ class FlipperScannerImpl @Inject constructor(
         }
 
         return bluetoothManager.getConnectedDevices(BluetoothProfile.GATT).filter {
-            it.name?.startsWith(Constants.DEVICENAME_PREFIX) == true
+            it.address?.startsWith(Constants.MAC_PREFIX) == true ||
+                it.name?.startsWith(Constants.DEVICENAME_PREFIX) == true
         }.map {
             DiscoveredBluetoothDevice(
                 device = it,
@@ -141,6 +144,9 @@ class FlipperScannerImpl @Inject constructor(
                 previousRssi = 0
             )
         }.firstOrNull()
+    }
+
+    private fun filterByMac(macAddress: String) {
     }
 
     private fun provideSettings(): ScanSettings {
