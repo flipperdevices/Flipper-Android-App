@@ -7,6 +7,7 @@
 - [REFACTOR] Migrate to faster build configuration
 - [REFACTOR] Add test for subghz provisioning
 - [Feature] Add support for NFC Shadow Files
+- [REFACTOR] Enable gradle configuration cache
 
 # 1.2.0
 
