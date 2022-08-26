@@ -6,7 +6,7 @@ import androidx.compose.foundation.text.TextDelegate
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalFontLoader
+import androidx.compose.ui.platform.LocalFontFamilyResolver
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
@@ -57,7 +57,7 @@ private fun BoxWithConstraintsScope.shouldShrink(maxIndexCount: Int, scaleFactor
         softWrap = false,
         TextOverflow.Visible,
         LocalDensity.current,
-        LocalFontLoader.current
+        LocalFontFamilyResolver.current
     )
 
     val otherWidthsDpWithoutScaleFactor = (maxIndexCount * WIDTH_LINE_INDEX_DP) +

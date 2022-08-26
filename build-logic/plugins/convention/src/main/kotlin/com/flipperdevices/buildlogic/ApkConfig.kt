@@ -7,8 +7,8 @@ object ApkConfig {
     const val APPLICATION_ID_SUFFIX = ".dev"
 
     const val MIN_SDK_VERSION = 26
-    const val TARGET_SDK_VERSION = 32
-    const val COMPILE_SDK_VERSION = 32
+    const val TARGET_SDK_VERSION = 33
+    const val COMPILE_SDK_VERSION = 33
 
     val VERSION_CODE = getProperty("version_code", Integer.MAX_VALUE.toString()).toInt()
     val VERSION_NAME = getProperty("version_name", "DEBUG_VERSION")!!
