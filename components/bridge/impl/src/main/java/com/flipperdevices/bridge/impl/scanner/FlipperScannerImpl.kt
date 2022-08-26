@@ -101,10 +101,11 @@ class FlipperScannerImpl @Inject constructor(
      * So we take the connected devices and search among them.
      */
     private fun getAlreadyConnectedDevices(): List<DiscoveredBluetoothDevice> {
-        if (ActivityCompat.checkSelfPermission(
-                context,
-                Manifest.permission.BLUETOOTH_CONNECT
-            ) != PackageManager.PERMISSION_GRANTED
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.S &&
+            ActivityCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.BLUETOOTH_CONNECT
+                ) != PackageManager.PERMISSION_GRANTED
         ) {
             return emptyList()
         }
@@ -144,9 +145,6 @@ class FlipperScannerImpl @Inject constructor(
                 previousRssi = 0
             )
         }.firstOrNull()
-    }
-
-    private fun filterByMac(macAddress: String) {
     }
 
     private fun provideSettings(): ScanSettings {

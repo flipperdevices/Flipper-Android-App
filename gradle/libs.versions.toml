@@ -55,6 +55,7 @@ install-referrer = "2.2"
 junit = "4.12"
 mockito = "4.0.0"
 roboelectric = "4.8.1"
+mockk = "1.12.7"
 
 [libraries]
 # Gradle - Core
@@ -184,6 +185,7 @@ protobuf-metric = { module = "com.github.flipperdevices.flipperzero-protobuf-jvm
 junit = { module = "junit:junit", version.ref = "junit" }
 mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito" }
 roboelectric = { module = "org.robolectric:robolectric", version.ref = "roboelectric" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 
 # Google Play Api
 install-referrer = { module = "com.android.installreferrer:installreferrer", version.ref = "install-referrer" }
