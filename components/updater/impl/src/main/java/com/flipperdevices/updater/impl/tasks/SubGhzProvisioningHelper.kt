@@ -2,6 +2,7 @@ package com.flipperdevices.updater.impl.tasks
 
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.wrapToRequest
+import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.protobuf.streamToCommandFlow
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
@@ -26,7 +27,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
-private const val REGION_FILE_PATH = "/int/.region_data"
 private const val UNKNOWN_REGION = "WW"
 
 interface SubGhzProvisioningHelper {
@@ -75,7 +75,7 @@ class SubGhzProvisioningHelperImpl @Inject constructor(
                 fileSize = regionData.size.toLong()
             ) { chunkData ->
                 storageWriteRequest = writeRequest {
-                    path = REGION_FILE_PATH
+                    path = Constants.PATH.REGION_FILE
                     file = file { data = chunkData }
                 }
             }.map { it.wrapToRequest() }

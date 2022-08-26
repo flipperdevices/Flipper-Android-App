@@ -68,4 +68,9 @@ object Constants {
 
         const val DISCONNECT_TIMEOUT_MS = 10 * 1000L
     }
+
+    object PATH {
+        const val MANIFEST_FILE = "/ext/Manifest"
+        const val REGION_FILE = "/int/.region_data"
+    }
 }
