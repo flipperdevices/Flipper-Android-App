@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit
 
 object Constants {
     const val DEVICENAME_PREFIX = "Flipper"
+    const val MAC_PREFIX = "80:E1:26:"
     const val KEYS_DEFAULT_STORAGE = "/any/"
     const val RPC_START_REQUEST_ARG = "RPC"
     val API_MAX_SUPPORTED_VERSION = FlipperVersionInformation(majorVersion = 1, minorVersion = 0)
