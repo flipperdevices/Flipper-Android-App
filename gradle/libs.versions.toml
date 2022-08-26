@@ -1,10 +1,11 @@
 [versions]
-# You also need to raise the version ksp, anvil, compose
+# You also need to bump the version of ksp, anvil, compose
 kotlin-general = "1.7.10"
 kotlin-coroutines = "1.6.4"
 ksp = "1.7.10-1.0.6"
 anvil = "2.4.2"
-android-gradle = "7.2.2"
+# https://issuetracker.google.com/issues/162074215
+android-gradle = "7.3.0-rc01"
 protobuf = "3.21.5"
 protobuf-gradle = "0.8.19"
 # Protobuf JVM library https://github.com/flipperdevices/flipperzero-protobuf-jvm
