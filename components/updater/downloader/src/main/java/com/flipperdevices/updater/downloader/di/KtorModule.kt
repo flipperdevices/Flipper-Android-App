@@ -3,7 +3,7 @@ package com.flipperdevices.updater.downloader.di
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.BuildConfig
 import com.flipperdevices.core.log.TaggedTimber
-import com.flipperdevices.core.log.info
+import com.flipperdevices.core.log.verbose
 import com.squareup.anvil.annotations.ContributesTo
 import dagger.Module
 import dagger.Provides
@@ -45,7 +45,7 @@ class KtorModule {
                 install(Logging) {
                     logger = object : Logger {
                         override fun log(message: String) {
-                            ktorTimber.info { message }
+                            ktorTimber.verbose { message }
                         }
                     }
                     level = if (BuildConfig.DEBUG) LogLevel.ALL else LogLevel.INFO
