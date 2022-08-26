@@ -8,6 +8,7 @@
 - [REFACTOR] Add test for subghz provisioning
 - [Feature] Add support for NFC Shadow Files
 - [FIX] Now search for devices by Mac address and by flipper name
+- [Fix] Subghz provisioning while geoip is null
 
 # 1.2.0
 
