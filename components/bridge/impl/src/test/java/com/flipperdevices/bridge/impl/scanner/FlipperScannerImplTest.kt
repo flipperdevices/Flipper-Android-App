@@ -99,7 +99,7 @@ class FlipperScannerImplTest {
 
     @Test
     fun `find correct single device`() = runTest {
-        val bluetoothDevice = mockk<BluetoothDevice>() {
+        val bluetoothDevice = mockk<BluetoothDevice> {
             every { name } returns "Flipper Test"
             every { address } returns ""
         }
@@ -118,11 +118,11 @@ class FlipperScannerImplTest {
 
     @Test
     fun `find correct two device`() = runTest {
-        val bluetoothDevice = mockk<BluetoothDevice>() {
+        val bluetoothDevice = mockk<BluetoothDevice> {
             every { name } returns "Flipper Test"
             every { address } returns ""
         }
-        val secondBluetoothDevice = mockk<BluetoothDevice>() {
+        val secondBluetoothDevice = mockk<BluetoothDevice> {
             every { name } returns null
             every { address } returns "80:E1:26:AF:AF:26"
         }
@@ -149,7 +149,7 @@ class FlipperScannerImplTest {
 
     @Test
     fun `filter device by mac`() = runTest {
-        val bluetoothDevice = mockk<BluetoothDevice>() {
+        val bluetoothDevice = mockk<BluetoothDevice> {
             every { name } returns null
             every { address } returns "80:E1:26:A1:4C:2D"
         }
@@ -168,7 +168,7 @@ class FlipperScannerImplTest {
 
     @Test
     fun `filter device by name`() = runTest {
-        val bluetoothDevice = mockk<BluetoothDevice>() {
+        val bluetoothDevice = mockk<BluetoothDevice> {
             every { name } returns "Flipper Dumper"
             every { address } returns ""
         }
@@ -187,7 +187,7 @@ class FlipperScannerImplTest {
 
     @Test
     fun `block device with incorrect name`() = runTest {
-        val bluetoothDevice = mockk<BluetoothDevice>() {
+        val bluetoothDevice = mockk<BluetoothDevice> {
             every { name } returns "Dupper"
             every { address } returns ""
         }
@@ -209,7 +209,7 @@ class FlipperScannerImplTest {
 
     @Test
     fun `block device with empty name`() = runTest {
-        val bluetoothDevice = mockk<BluetoothDevice>() {
+        val bluetoothDevice = mockk<BluetoothDevice> {
             every { name } returns ""
             every { address } returns ""
         }
@@ -231,7 +231,7 @@ class FlipperScannerImplTest {
 
     @Test
     fun `block device with incorrect mac`() = runTest {
-        val bluetoothDevice = mockk<BluetoothDevice>() {
+        val bluetoothDevice = mockk<BluetoothDevice> {
             every { name } returns null
             every { address } returns "81:E1:26:A1:4C:2D"
         }
