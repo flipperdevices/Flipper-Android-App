@@ -1,15 +1,16 @@
 [versions]
-kotlin-general = "1.7.0"
+# You also need to raise the version ksp, anvil, compose
+kotlin-general = "1.7.10"
 kotlin-coroutines = "1.6.0"
-ksp = "1.7.0-1.0.6"
-anvil = "2.4.1"
+ksp = "1.7.10-1.0.6"
+anvil = "2.4.2"
 android-gradle = "7.2.2"
 protobuf = "3.21.2"
 protobuf-gradle = "0.8.19"
 # Protobuf JVM library https://github.com/flipperdevices/flipperzero-protobuf-jvm
 protobuf-jvm = "0.12.0-0.3.0"
 compose = "1.1.1"
-compose-compiler = "1.2.0"
+compose-compiler = "1.3.0"
 compose-accompanist = "0.23.0"
 compose-constraint = "1.0.1"
 compose-navigation = "2.5.0"
