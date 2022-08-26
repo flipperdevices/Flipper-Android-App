@@ -7,6 +7,7 @@
 - [REFACTOR] Migrate to faster build configuration
 - [REFACTOR] Add test for subghz provisioning
 - [Feature] Add support for NFC Shadow Files
+- [Fix] Subghz provisioning while geoip is null
 
 # 1.2.0
 

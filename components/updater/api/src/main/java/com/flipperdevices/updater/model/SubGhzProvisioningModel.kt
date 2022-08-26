@@ -2,7 +2,7 @@ package com.flipperdevices.updater.model
 
 data class SubGhzProvisioningModel(
     val countries: Map<String, List<SubGhzProvisioningBand>>,
-    val country: String,
+    val country: String?,
     val defaults: List<SubGhzProvisioningBand>
 )
 

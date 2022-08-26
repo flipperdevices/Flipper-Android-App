@@ -19,7 +19,7 @@ internal data class SubGhzProvisioningSuccessfulResponse(
     @SerialName("countries")
     val countriesBands: Map<String, List<String>>,
     @SerialName("country")
-    val countryCode: String,
+    val countryCode: String? = null,
     @SerialName("default")
     val defaultBands: List<String>
 )

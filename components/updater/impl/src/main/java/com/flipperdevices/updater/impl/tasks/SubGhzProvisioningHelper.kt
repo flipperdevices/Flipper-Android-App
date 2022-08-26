@@ -46,7 +46,7 @@ class SubGhzProvisioningHelperImpl @Inject constructor(
     ) = withContext(Dispatchers.Default) {
         val response = downloaderApi.getSubGhzProvisioning()
         val providedRegions = regionProvisioningHelper.provideRegion(
-            response.country.uppercase()
+            response.country?.uppercase()
         )
         val (providedRegion, source) = providedRegions.provideRegion()
         val providedBands = if (providedRegion != null) {

@@ -100,7 +100,7 @@ class DownloaderApiImpl @Inject constructor(
                         successfulResponse.bands[it]?.toSubGhzProvisioningBand()
                     }
                 },
-            country = successfulResponse.countryCode.uppercase(),
+            country = successfulResponse.countryCode?.uppercase(),
             defaults = successfulResponse
                 .defaultBands
                 .mapNotNull { successfulResponse.bands[it]?.toSubGhzProvisioningBand() }
