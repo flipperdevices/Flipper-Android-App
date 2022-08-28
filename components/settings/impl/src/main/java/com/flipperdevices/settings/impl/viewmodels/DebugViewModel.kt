@@ -27,10 +27,6 @@ class DebugViewModel @VMInject constructor(
         synchronizationApi.startSynchronization(force = true)
     }
 
-    fun onOpenConnectionScreen() {
-        cicerone.getRouter().navigateTo(firstPairApi.getFirstPairScreen())
-    }
-
     fun onSwitchIgnoreSupportedVersion(ignored: Boolean) {
         viewModelScope.launch(Dispatchers.Default) {
             settingsDataStore.updateData {
@@ -61,6 +57,16 @@ class DebugViewModel @VMInject constructor(
                     .build()
             }
             askRestartApp()
+        }
+    }
+
+    fun onSwitchIgnoreSubGhzProvisioning(ignoreSubGhzProvisioningOnZeroRegion: Boolean) {
+        viewModelScope.launch(Dispatchers.Default) {
+            settingsDataStore.updateData {
+                it.toBuilder()
+                    .setIgnoreSubghzProvisioningOnZeroRegion(ignoreSubGhzProvisioningOnZeroRegion)
+                    .build()
+            }
         }
     }
 

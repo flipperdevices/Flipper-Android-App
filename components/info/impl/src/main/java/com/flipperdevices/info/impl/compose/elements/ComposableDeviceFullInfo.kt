@@ -46,7 +46,7 @@ fun ComposableFullInfoDevice(
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
         InfoElementCard(Modifier, titleId = R.string.full_info_flipper_device) {
-            ComposableFlipperDevicesInfo(fullDeviceInfo.flipperDevices, inProgress)
+            ComposableFlipperDevicesInfo(fullDeviceInfo.flipperDeviceInfo, inProgress)
         }
         InfoElementCard(Modifier, titleId = R.string.full_info_firmware) {
             ComposableFirmwareInfo(deviceInfoViewModel, fullDeviceInfo.firmware, inProgress)

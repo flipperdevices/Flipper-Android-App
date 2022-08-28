@@ -54,6 +54,11 @@ class SubGhzProvisioningHelperImpl @Inject constructor(
     override suspend fun provideAndUploadSubGhz(
         serviceApi: FlipperServiceApi
     ) = withContext(Dispatchers.Default) {
+        if (skipProvisioning(serviceApi.flipperRpcInformationApi)) {
+            info { "Skip provisioning" }
+            return@withContext
+        }
+
         val response = downloaderApi.getSubGhzProvisioning()
         val providedRegions = regionProvisioningHelper.provideRegion(
             response.country?.uppercase()
@@ -106,7 +111,7 @@ class SubGhzProvisioningHelperImpl @Inject constructor(
         }
         info { "Try receive rpcInformationStatus" }
 
-        val rpcInformationStatus = withTimeoutOrNull(RPC_INFORMATION_TIMEOUT_MS) {
+        withTimeoutOrNull(RPC_INFORMATION_TIMEOUT_MS) {
             flipperRpcInformationApi.getRequestRpcInformationStatus()
                 .filter {
                     it is FlipperRequestRpcInformationStatus.InProgress &&
@@ -115,8 +120,15 @@ class SubGhzProvisioningHelperImpl @Inject constructor(
         } ?: return false
 
         val rpcInformation = flipperRpcInformationApi.getRpcInformationFlow().first()
-        // rpcInformation.otherFields
-        return false
+        val hardwareRegion = rpcInformation.flipperDeviceInfo.hardwareRegion?.toIntOrNull()
+            ?: return false
+        if (hardwareRegion != 0) {
+            info { "Hardware region not zero, so return false" }
+            return false
+        }
+        info { "Region hardware 0 and configuration enabled, skip subghz provisioning" }
+
+        return true
     }
 
     private fun reportMetric(

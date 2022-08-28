@@ -46,11 +46,6 @@ fun DebugCategory(
                     onClick = { debugViewModel.onStartSynchronization() }
                 )
                 GrayDivider()
-                ClickableElement(
-                    titleId = R.string.debug_connection_to_another,
-                    descriptionId = R.string.debug_connection_to_another_desc,
-                    onClick = { debugViewModel.onOpenConnectionScreen() }
-                )
                 GrayDivider()
                 SwitchableElement(
                     titleId = R.string.debug_ignored_unsupported_version,
@@ -71,6 +66,13 @@ fun DebugCategory(
                     descriptionId = R.string.debug_shake2report_desc,
                     state = settings.shakeToReport,
                     onSwitchState = debugViewModel::onSwitchShakeToReport
+                )
+                GrayDivider()
+                SwitchableElement(
+                    titleId = R.string.debug_subghz_provisioning_ignore,
+                    descriptionId = R.string.debug_subghz_provisioning_ignore_desc,
+                    state = settings.ignoreSubghzProvisioningOnZeroRegion,
+                    onSwitchState = debugViewModel::onSwitchIgnoreSubGhzProvisioning
                 )
             }
         }

@@ -3,7 +3,7 @@ package com.flipperdevices.bridge.api.model
 data class FlipperRpcInformation(
     val internalStorageStats: StorageStats? = null,
     val externalStorageStats: StorageStats? = null,
-    val flipperDevices: FlipperDeviceInfo = FlipperDeviceInfo(),
+    val flipperDeviceInfo: FlipperDeviceInfo = FlipperDeviceInfo(),
     val firmware: FirmwareInfo = FirmwareInfo(),
     val radioStack: RadioStackInfo = RadioStackInfo(),
     val otherFields: Map<String, String> = emptyMap(),

@@ -95,7 +95,7 @@ internal object DeviceInfoHelper {
         return FlipperRpcInformation(
             internalStorageStats = rawInformation.internalStorageStats,
             externalStorageStats = rawInformation.externalStorageStats,
-            flipperDevices = flipperDeviceInfo,
+            flipperDeviceInfo = flipperDeviceInfo,
             firmware = firmwareInfo,
             radioStack = radioStackInfo,
             otherFields = fields.minus(usedFields),
