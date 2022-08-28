@@ -2,6 +2,7 @@ package com.flipperdevices.info.impl.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.model.FlipperRequestRpcInformationStatus
+import com.flipperdevices.bridge.api.model.FlipperRpcInformation
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
@@ -12,34 +13,28 @@ import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.info.impl.di.InfoComponent
 import com.flipperdevices.info.impl.model.DeviceInfo
 import com.flipperdevices.info.impl.model.DeviceInfoRequestStatus
-import com.flipperdevices.info.impl.model.VerboseDeviceInfo
 import com.flipperdevices.updater.api.FirmwareVersionBuilderApi
 import com.flipperdevices.updater.api.FlipperVersionProviderApi
 import com.flipperdevices.updater.model.FirmwareChannel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
+import tangle.viewmodel.VMInject
 
-class DeviceInfoViewModel :
+class DeviceInfoViewModel @VMInject constructor(
+    serviceProvider: FlipperServiceProvider,
+    private val flipperVersionProviderApi: FlipperVersionProviderApi,
+    private val firmwareVersionBuilderApi: FirmwareVersionBuilderApi
+) :
     LifecycleViewModel(),
     FlipperBleServiceConsumer,
     LogTagProvider {
     override val TAG = "DeviceInfoViewModel"
     private val deviceInfoState = MutableStateFlow(DeviceInfo())
-    private val verboseDeviceInfoState = MutableStateFlow(VerboseDeviceInfo())
+    private val flipperRpcInformationState = MutableStateFlow(FlipperRpcInformation())
     private val deviceInfoRequestStatus = MutableStateFlow(DeviceInfoRequestStatus())
-
-    @Inject
-    lateinit var serviceProvider: FlipperServiceProvider
-
-    @Inject
-    lateinit var flipperVersionProviderApi: FlipperVersionProviderApi
-
-    @Inject
-    lateinit var firmwareVersionBuilderApi: FirmwareVersionBuilderApi
 
     init {
         ComponentHolder.component<InfoComponent>().inject(this)
@@ -47,7 +42,7 @@ class DeviceInfoViewModel :
     }
 
     fun getDeviceInfo(): StateFlow<DeviceInfo> = deviceInfoState
-    fun getVerboseDeviceInfoState(): StateFlow<VerboseDeviceInfo> = verboseDeviceInfoState
+    fun getFlipperRpcInformation(): StateFlow<FlipperRpcInformation> = flipperRpcInformationState
     fun getDeviceInfoRequestStatus(): StateFlow<DeviceInfoRequestStatus> = deviceInfoRequestStatus
 
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
@@ -64,9 +59,7 @@ class DeviceInfoViewModel :
                     flashSd = rpcInformation.externalStorageStats
                 )
             }
-            verboseDeviceInfoState.update {
-                it.copy(rpcInformationMap = rpcInformation.otherFields)
-            }
+            flipperRpcInformationState.emit(rpcInformation)
         }.launchIn(viewModelScope)
 
         serviceApi.flipperRpcInformationApi.getRequestRpcInformationStatus().onEach {

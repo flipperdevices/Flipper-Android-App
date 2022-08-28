@@ -27,15 +27,15 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.compose.elements.ComposableFullInfoDevice
 import com.flipperdevices.info.impl.compose.navigation.NavGraphRoute
-import com.flipperdevices.info.impl.fragment.DeviceInfoHelper
 import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.viewmodel.DeviceInfoViewModel
 import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
+import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 fun ComposableFullDeviceInfoScreen(
     navController: NavHostController,
-    deviceInfoViewModel: DeviceInfoViewModel = viewModel(),
+    deviceInfoViewModel: DeviceInfoViewModel = tangleViewModel(),
     deviceStatusViewModel: DeviceStatusViewModel = viewModel()
 ) {
     val deviceStatus by deviceStatusViewModel.getState().collectAsState()
@@ -49,13 +49,11 @@ fun ComposableFullDeviceInfoScreen(
             deviceInfoRequestStatus.rpcDeviceInfoRequestInProgress
     }
 
-    val verboseDeviceInfo by deviceInfoViewModel.getVerboseDeviceInfoState().collectAsState()
-    val fields: Map<String, String> = verboseDeviceInfo.rpcInformationMap
-    val deviceInfo = DeviceInfoHelper.parseFields(fields, deviceInfoViewModel::getFirmwareChannel)
+    val flipperRpcInformation by deviceInfoViewModel.getFlipperRpcInformation().collectAsState()
 
     Column {
         ComposableFullDeviceInfoScreenBar { navController.navigate(NavGraphRoute.Info.name) }
-        ComposableFullInfoDevice(deviceInfo, inProgress)
+        ComposableFullInfoDevice(deviceInfoViewModel, flipperRpcInformation, inProgress)
     }
 }
 

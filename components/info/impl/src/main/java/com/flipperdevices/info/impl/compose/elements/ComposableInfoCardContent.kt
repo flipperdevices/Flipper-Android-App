@@ -23,11 +23,12 @@ import com.flipperdevices.info.shared.ComposableInfoDivider
 import com.flipperdevices.info.shared.InfoElementCard
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
+import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 fun ComposableInfoCardContent(
     isUnsupported: Boolean,
-    deviceInfoViewModel: DeviceInfoViewModel = viewModel(),
+    deviceInfoViewModel: DeviceInfoViewModel = tangleViewModel(),
     deviceStatusViewModel: DeviceStatusViewModel = viewModel()
 ) {
     val deviceInfo by deviceInfoViewModel.getDeviceInfo().collectAsState()

@@ -1,14 +1,14 @@
-package com.flipperdevices.info.impl.fragment
+package com.flipperdevices.bridge.impl.manager.service.requestservice
 
+import com.flipperdevices.bridge.api.model.FirmwareInfo
+import com.flipperdevices.bridge.api.model.FlipperDeviceInfo
+import com.flipperdevices.bridge.api.model.FlipperRpcInformation
+import com.flipperdevices.bridge.api.model.RadioStackInfo
+import com.flipperdevices.bridge.api.model.RadioStackType
+import com.flipperdevices.bridge.api.model.SemVer
+import com.flipperdevices.bridge.api.model.StorageStats
 import com.flipperdevices.core.ktx.jre.isNotNull
 import com.flipperdevices.core.ktx.jre.titlecaseFirstCharIfItIsLowercase
-import com.flipperdevices.info.impl.model.DeviceFullInfo
-import com.flipperdevices.info.impl.model.FirmwareInfo
-import com.flipperdevices.info.impl.model.FlipperDeviceInfo
-import com.flipperdevices.info.impl.model.OtherInfo
-import com.flipperdevices.info.impl.model.RadioStackInfo
-import com.flipperdevices.info.impl.model.RadioStackType
-import com.flipperdevices.updater.model.FirmwareChannel
 
 private const val DEVICE_NAME = "hardware_name"
 private const val HARDWARE_MODEL = "hardware_model"
@@ -24,25 +24,34 @@ private const val FIRMWARE_BUILD_DATE = "firmware_build_date"
 private const val FIRMWARE_TARGET = "firmware_target"
 private const val PROTOBUF_MAJOR = "protobuf_version_major"
 private const val PROTOBUF_MINOR = "protobuf_version_minor"
+private const val DEVICE_INFO_MAJOR = "device_info_major"
+private const val DEVICE_INFO_MINOR = "device_info_minor"
 
 private const val RADIO_STACK_MAJOR = "radio_stack_major"
 private const val RADIO_STACK_MINOR = "radio_stack_minor"
 private const val RADIO_STACK_TYPE = "radio_stack_type"
 
 // This fields uses in NOT other section
-private val usedFields = listOf(
+private val usedFields = setOf(
     DEVICE_NAME, HARDWARE_MODEL, HARDWARE_REGION, HARDWARE_REGION_PROV,
     HARDWARE_VERSION, HARDWARE_OTP_VERSION, SERIAL_NUMBER,
     FIRMWARE_COMMIT, FIRMWARE_BRANCH, FIRMWARE_BUILD_DATE,
     FIRMWARE_TARGET, PROTOBUF_MAJOR, PROTOBUF_MINOR,
-    RADIO_STACK_MAJOR, RADIO_STACK_MINOR, RADIO_STACK_TYPE
+    RADIO_STACK_MAJOR, RADIO_STACK_MINOR, RADIO_STACK_TYPE,
+    DEVICE_INFO_MAJOR, DEVICE_INFO_MINOR
 )
 
-object DeviceInfoHelper {
-    fun parseFields(
-        fields: Map<String, String>,
-        firmwareChannel: (String?) -> FirmwareChannel?
-    ): DeviceFullInfo {
+internal data class InternalFlipperRpcInformationRaw(
+    val internalStorageStats: StorageStats? = null,
+    val externalStorageStats: StorageStats? = null,
+    val otherFields: Map<String, String> = emptyMap()
+)
+
+internal object DeviceInfoHelper {
+    fun mapRawRpcInformation(
+        rawInformation: InternalFlipperRpcInformationRaw
+    ): FlipperRpcInformation {
+        val fields = rawInformation.otherFields
         val flipperDeviceInfo = FlipperDeviceInfo(
             deviceName = fields[DEVICE_NAME],
             hardwareModel = fields[HARDWARE_MODEL],
@@ -61,12 +70,17 @@ object DeviceInfoHelper {
         val protobufMinor = fields[PROTOBUF_MINOR]
         val protobufVersion = protobufVersion(protobufMajor, protobufMinor)
 
+        val deviceInfoMajor = fields[DEVICE_INFO_MAJOR]
+        val deviceInfoMinor = fields[DEVICE_INFO_MINOR]
+        val deviceInfoVersion = deviceInfoVersion(deviceInfoMajor, deviceInfoMinor)
+
         val firmwareInfo = FirmwareInfo(
-            firmwareChannel = firmwareChannel(firmwareBranch),
+            firmwareBranch = firmwareBranch,
             softwareRevision = softwareRevision,
             buildDate = fields[FIRMWARE_BUILD_DATE],
             target = fields[FIRMWARE_TARGET],
-            protobufVersion = protobufVersion
+            protobufVersion = protobufVersion,
+            deviceInfoVersion = deviceInfoVersion
         )
 
         val radioMajor = fields[RADIO_STACK_MAJOR]
@@ -78,15 +92,14 @@ object DeviceInfoHelper {
             radioFirmware = radioFirmware(radioMajor, radioMinor, radioType)
         )
 
-        val otherInfo = OtherInfo(
-            fields = fields.filterNot { usedFields.contains(it.key) }.entries
-        )
-
-        return DeviceFullInfo(
-            flipperDeviceInfo,
-            firmwareInfo,
-            radioStackInfo,
-            otherInfo
+        return FlipperRpcInformation(
+            internalStorageStats = rawInformation.internalStorageStats,
+            externalStorageStats = rawInformation.externalStorageStats,
+            flipperDevices = flipperDeviceInfo,
+            firmware = firmwareInfo,
+            radioStack = radioStackInfo,
+            otherFields = fields.minus(usedFields),
+            allFields = fields
         )
     }
 
@@ -99,8 +112,20 @@ object DeviceInfoHelper {
     }
 
     // protobuf Major.Minor
-    private fun protobufVersion(protobufMajor: String?, protobufMinor: String?): String? {
-        return if (isNotNull(protobufMajor, protobufMinor)) "$protobufMajor.$protobufMinor"
+    private fun protobufVersion(protobufMajor: String?, protobufMinor: String?): SemVer? {
+        return if (isNotNull(protobufMajor, protobufMinor)) SemVer(
+            protobufMajor?.toIntOrNull() ?: 0,
+            protobufMinor?.toIntOrNull() ?: 0
+        )
+        else null
+    }
+
+    // deviceInfo Major.Minor
+    private fun deviceInfoVersion(deviceInfoMajor: String?, deviceInfoMinor: String?): SemVer? {
+        return if (isNotNull(deviceInfoMajor, deviceInfoMinor)) SemVer(
+            deviceInfoMajor?.toIntOrNull() ?: 0,
+            deviceInfoMinor?.toIntOrNull() ?: 0
+        )
         else null
     }
 

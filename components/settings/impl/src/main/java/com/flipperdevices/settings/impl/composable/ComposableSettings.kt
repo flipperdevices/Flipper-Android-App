@@ -11,7 +11,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -27,12 +26,13 @@ import com.flipperdevices.settings.impl.composable.category.VersionCategory
 import com.flipperdevices.settings.impl.composable.elements.AppBar
 import com.flipperdevices.settings.impl.model.NavGraphRoute
 import com.flipperdevices.settings.impl.viewmodels.SettingsViewModel
+import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 fun ComposableSettings(
     navController: NavHostController,
     fileManagerEntry: FileManagerEntry,
-    settingsViewModel: SettingsViewModel = viewModel()
+    settingsViewModel: SettingsViewModel = tangleViewModel()
 ) {
     NavHost(navController = navController, startDestination = NavGraphRoute.Settings.name) {
         composable(route = NavGraphRoute.Settings.name) {
@@ -66,9 +66,14 @@ fun ComposableCommonSetting(
     ) {
         AppBar(R.string.options)
         ThemeCategory(settingsViewModel)
-        DebugCategory(settings, navController, settingsViewModel)
+        if (settings.expertMode) {
+            DebugCategory(settings, navController, settingsViewModel)
+        }
         ExperimentalCategory(settings, navController, settingsViewModel)
         BugReportCategory(onClick = { settingsViewModel.onReportBug(context) })
-        VersionCategory(version = settingsViewModel.versionApp())
+        VersionCategory(
+            version = settingsViewModel.versionApp(),
+            onActivateExpertMode = settingsViewModel::onExpertModeActivate
+        )
     }
 }

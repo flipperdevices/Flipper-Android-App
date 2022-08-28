@@ -1,24 +1,32 @@
 package com.flipperdevices.info.impl.compose.elements
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.bridge.api.model.FirmwareInfo
+import com.flipperdevices.bridge.api.model.FlipperDeviceInfo
+import com.flipperdevices.bridge.api.model.FlipperRpcInformation
+import com.flipperdevices.bridge.api.model.RadioStackInfo
+import com.flipperdevices.bridge.api.model.RadioStackType
 import com.flipperdevices.core.ktx.jre.isNotNull
 import com.flipperdevices.core.ktx.jre.titlecaseFirstCharIfItIsLowercase
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.info.impl.R
-import com.flipperdevices.info.impl.model.DeviceFullInfo
-import com.flipperdevices.info.impl.model.FirmwareInfo
-import com.flipperdevices.info.impl.model.FlipperDeviceInfo
-import com.flipperdevices.info.impl.model.RadioStackInfo
-import com.flipperdevices.info.impl.model.RadioStackType
+import com.flipperdevices.info.impl.viewmodel.DeviceInfoViewModel
 import com.flipperdevices.info.shared.ComposableDeviceInfoRow
+import com.flipperdevices.info.shared.ComposableDeviceInfoRowText
 import com.flipperdevices.info.shared.ComposableDeviceInfoRowWithText
 import com.flipperdevices.info.shared.ComposableInfoDivider
 import com.flipperdevices.info.shared.ComposableLongDeviceInfoRowText
@@ -27,7 +35,8 @@ import com.flipperdevices.info.shared.getColorByChannel
 
 @Composable
 fun ComposableFullInfoDevice(
-    fullDeviceInfo: DeviceFullInfo,
+    deviceInfoViewModel: DeviceInfoViewModel,
+    fullDeviceInfo: FlipperRpcInformation,
     inProgress: Boolean
 ) {
     Column(
@@ -40,19 +49,22 @@ fun ComposableFullInfoDevice(
             ComposableFlipperDevicesInfo(fullDeviceInfo.flipperDevices, inProgress)
         }
         InfoElementCard(Modifier, titleId = R.string.full_info_firmware) {
-            ComposableFirmwareInfo(fullDeviceInfo.firmware, inProgress)
+            ComposableFirmwareInfo(deviceInfoViewModel, fullDeviceInfo.firmware, inProgress)
         }
         InfoElementCard(Modifier, titleId = R.string.full_info_radio_stack) {
             ComposableRadioStackInfo(fullDeviceInfo.radioStack, inProgress)
         }
         InfoElementCard(Modifier, titleId = R.string.full_info_other) {
-            ComposableOtherInfo(fullDeviceInfo.other.fields, inProgress)
+            ComposableOtherInfo(fullDeviceInfo.otherFields.entries, inProgress)
         }
     }
 }
 
 @Composable
-private fun ComposableFlipperDevicesInfo(info: FlipperDeviceInfo, inProgress: Boolean) {
+private fun ComposableFlipperDevicesInfo(
+    info: FlipperDeviceInfo,
+    inProgress: Boolean
+) {
     ComposableDeviceInfoRowWithText(
         titleId = R.string.full_info_device_name,
         inProgress = inProgress,
@@ -71,7 +83,7 @@ private fun ComposableFlipperDevicesInfo(info: FlipperDeviceInfo, inProgress: Bo
         value = info.hardwareRegion
     )
     ComposableInfoDivider()
-    ComposableDeviceInfoRowWithText(
+    ComposableCountryRow(
         titleId = R.string.full_info_hardware_region_provisioned,
         inProgress = inProgress,
         value = info.hardwareRegionProv
@@ -97,12 +109,17 @@ private fun ComposableFlipperDevicesInfo(info: FlipperDeviceInfo, inProgress: Bo
 }
 
 @Composable
-fun ComposableFirmwareInfo(info: FirmwareInfo, inProgress: Boolean) {
+fun ComposableFirmwareInfo(
+    deviceInfoViewModel: DeviceInfoViewModel,
+    info: FirmwareInfo,
+    inProgress: Boolean
+) {
+    val firmwareChannel = deviceInfoViewModel.getFirmwareChannel(info.firmwareBranch)
     ComposableSoftwareRevision(
-        titleId = R.string.full_info_hardware_otp_version,
+        titleId = R.string.full_info_software_revision,
         inProgress = inProgress,
         value = info.softwareRevision,
-        color = info.firmwareChannel?.let { getColorByChannel(it) } ?: Color.Transparent
+        color = firmwareChannel?.let { getColorByChannel(it) } ?: Color.Transparent
     )
     ComposableInfoDivider()
     ComposableDeviceInfoRowWithText(
@@ -120,7 +137,13 @@ fun ComposableFirmwareInfo(info: FirmwareInfo, inProgress: Boolean) {
     ComposableDeviceInfoRowWithText(
         titleId = R.string.full_info_protobuf_version,
         inProgress = inProgress,
-        value = info.protobufVersion
+        value = info.protobufVersion?.toString()
+    )
+    ComposableInfoDivider()
+    ComposableDeviceInfoRowWithText(
+        titleId = R.string.full_info_device_info_version,
+        inProgress = inProgress,
+        value = info.deviceInfoVersion?.toString()
     )
 }
 
@@ -185,6 +208,33 @@ private fun ComposableSoftwareRevision(
                 lines = 2,
                 color = color
             )
+        }
+    }
+}
+
+@Composable
+private fun ComposableCountryRow(
+    titleId: Int,
+    value: String?,
+    inProgress: Boolean
+) {
+    if (value == null) {
+        ComposableDeviceInfoRow(titleId = titleId, inProgress = inProgress, null)
+    } else {
+        ComposableDeviceInfoRow(titleId, inProgress) { modifier ->
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                if (value == "RU") {
+                    Image(
+                        modifier = Modifier.height(height = 16.dp)
+                            .padding(horizontal = 6.dp),
+                        painter = painterResource(DesignSystem.drawable.rus_new_flag),
+                        contentDescription = stringResource(
+                            R.string.full_info_hardware_region_provisioned_ru
+                        )
+                    )
+                }
+                ComposableDeviceInfoRowText(modifier = modifier, text = value)
+            }
         }
     }
 }

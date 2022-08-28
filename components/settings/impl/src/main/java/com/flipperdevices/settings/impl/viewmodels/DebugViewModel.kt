@@ -6,34 +6,22 @@ import androidx.datastore.core.DataStore
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
-import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.navigation.global.CiceroneGlobal
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.firstpair.api.FirstPairApi
 import com.flipperdevices.settings.impl.R
-import com.flipperdevices.settings.impl.di.SettingsComponent
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import tangle.viewmodel.VMInject
 
-class DebugViewModel(application: Application) : AndroidViewModel(application) {
-
-    @Inject
-    lateinit var cicerone: CiceroneGlobal
-
-    @Inject
-    lateinit var firstPairApi: FirstPairApi
-
-    @Inject
-    lateinit var synchronizationApi: SynchronizationApi
-
-    @Inject
-    lateinit var settingsDataStore: DataStore<Settings>
-
-    init {
-        ComponentHolder.component<SettingsComponent>().inject(this)
-    }
+class DebugViewModel @VMInject constructor(
+    application: Application,
+    private val cicerone: CiceroneGlobal,
+    private val firstPairApi: FirstPairApi,
+    private val synchronizationApi: SynchronizationApi,
+    private val settingsDataStore: DataStore<Settings>
+) : AndroidViewModel(application) {
 
     fun onStartSynchronization() {
         synchronizationApi.startSynchronization(force = true)

@@ -1,6 +1,6 @@
 package com.flipperdevices.bridge.api.utils
 
-import com.flipperdevices.bridge.api.model.FlipperVersionInformation
+import com.flipperdevices.bridge.api.model.SemVer
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 
@@ -9,12 +9,12 @@ object Constants {
     const val MAC_PREFIX = "80:E1:26:"
     const val KEYS_DEFAULT_STORAGE = "/any/"
     const val RPC_START_REQUEST_ARG = "RPC"
-    val API_MAX_SUPPORTED_VERSION = FlipperVersionInformation(majorVersion = 1, minorVersion = 0)
-    val API_SUPPORTED_REMOTE_EMULATE = FlipperVersionInformation(
+    val API_MAX_SUPPORTED_VERSION = SemVer(majorVersion = 1, minorVersion = 0)
+    val API_SUPPORTED_REMOTE_EMULATE = SemVer(
         majorVersion = 0,
         minorVersion = 11
     )
-    val API_SUPPORTED_VERSION = FlipperVersionInformation(majorVersion = 0, minorVersion = 3)
+    val API_SUPPORTED_VERSION = SemVer(majorVersion = 0, minorVersion = 3)
     const val LAGS_FLIPPER_DETECT_TIMEOUT_MS = 30 * 1000L // 30 seconds
     const val FLIPPER_AUTODISCONNECT_TIMEOUT_MS = 5 * 60 * 1000L // 5 minutes
 
