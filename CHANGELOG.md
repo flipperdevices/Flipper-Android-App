@@ -11,6 +11,7 @@
 - [FIX] Now search for devices by Mac address and by flipper name
 - [Fix] Subghz provisioning while geoip is null
 - [REFACTOR] Bump all deps version
+- [Feature] Do not provide SubGhz provisioning on zero hardware region
 
 # 1.2.0
 
