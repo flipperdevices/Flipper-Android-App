@@ -51,7 +51,7 @@ object FlipperInformationMapping {
                 tagsList.add(FLIPPER_RPC_INFO_INT_FREE to stats.free.toString())
             }
         }
-        gattInformation.otherFields.forEach { (key, value) ->
+        gattInformation.allFields.forEach { (key, value) ->
             tagsList.add("${FLIPPER_RPC_INFO_PREFIX}_$key" to value)
         }
         return tagsList

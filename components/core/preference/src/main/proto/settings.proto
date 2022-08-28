@@ -35,4 +35,6 @@ message Settings {
   string uuid = 11;
   bool first_synchronization_passed = 12;
   SelectedTheme selected_theme = 13;
+  bool expert_mode = 14;
+  bool ignore_subghz_provisioning_on_zero_region = 15;
 }
