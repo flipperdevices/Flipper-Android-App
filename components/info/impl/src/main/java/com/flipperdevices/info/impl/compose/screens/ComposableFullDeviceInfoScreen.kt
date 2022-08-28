@@ -25,8 +25,8 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.info.impl.R
-import com.flipperdevices.info.impl.compose.elements.ComposableFullInfoDevice
 import com.flipperdevices.info.impl.compose.navigation.NavGraphRoute
+import com.flipperdevices.info.impl.compose.screens.fullinfo.ComposableFullInfoDevice
 import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.viewmodel.DeviceInfoViewModel
 import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
