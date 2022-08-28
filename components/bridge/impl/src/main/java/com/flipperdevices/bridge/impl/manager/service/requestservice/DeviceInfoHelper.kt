@@ -75,7 +75,6 @@ internal object DeviceInfoHelper {
         val deviceInfoVersion = deviceInfoVersion(deviceInfoMajor, deviceInfoMinor)
 
         val firmwareInfo = FirmwareInfo(
-            firmwareBranch = firmwareBranch,
             softwareRevision = softwareRevision,
             buildDate = fields[FIRMWARE_BUILD_DATE],
             target = fields[FIRMWARE_TARGET],

@@ -27,7 +27,6 @@ data class FlipperDeviceInfo(
 )
 
 data class FirmwareInfo(
-    val firmwareBranch: String? = null,
     val softwareRevision: String? = null,
     val buildDate: String? = null,
     val target: String? = null,

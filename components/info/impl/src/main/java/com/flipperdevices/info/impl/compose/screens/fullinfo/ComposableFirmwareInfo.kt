@@ -17,7 +17,7 @@ fun ComposableFirmwareInfo(
     info: FirmwareInfo,
     inProgress: Boolean
 ) {
-    val firmwareChannel = deviceInfoViewModel.getFirmwareChannel(info.firmwareBranch)
+    val firmwareChannel = deviceInfoViewModel.getFirmwareChannel(info.softwareRevision)
     ComposableSoftwareRevision(
         titleId = R.string.full_info_software_revision,
         inProgress = inProgress,
