@@ -1,5 +1,6 @@
 package com.flipperdevices.bridge.api.scanner
 
+import android.annotation.SuppressLint
 import android.bluetooth.BluetoothDevice
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
@@ -24,7 +25,8 @@ data class DiscoveredBluetoothDevice(
     constructor(scanResult: ScanResult) : this(
         device = scanResult.device,
         lastScanResult = scanResult,
-        nameInternal = scanResult.scanRecord?.deviceName,
+        nameInternal = scanResult.scanRecord?.deviceName
+            ?: scanResult.device.getNameSafe(),
         rssiInternal = scanResult.rssi,
         previousRssi = scanResult.rssi,
         highestRssiInternal = scanResult.rssi
@@ -48,4 +50,13 @@ data class DiscoveredBluetoothDevice(
     }
 
     override fun hashCode() = device.hashCode()
+}
+
+@SuppressLint("MissingPermission")
+private fun BluetoothDevice.getNameSafe(): String? {
+    return try {
+        name
+    } catch (ignored: Exception) {
+        null
+    }
 }

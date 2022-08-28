@@ -8,6 +8,9 @@
 - [REFACTOR] Add test for subghz provisioning
 - [Feature] Add support for NFC Shadow Files
 - [REFACTOR] Enable gradle configuration cache
+- [FIX] Now search for devices by Mac address and by flipper name
+- [Fix] Subghz provisioning while geoip is null
+- [REFACTOR] Bump all deps version
 
 # 1.2.0
 

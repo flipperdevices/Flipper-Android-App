@@ -14,6 +14,7 @@ import com.flipperdevices.core.ktx.jre.then
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.preference.pb.SelectedChannel
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
@@ -52,7 +53,7 @@ class UpdateCardViewModel :
     LifecycleViewModel(),
     FlipperBleServiceConsumer,
     LogTagProvider {
-    override val TAG = "UpdaterViewModel"
+    override val TAG = "UpdateCardViewModel"
 
     private val updateCardState = MutableStateFlow<UpdateCardState>(
         UpdateCardState.InProgress
@@ -114,7 +115,7 @@ class UpdateCardViewModel :
         cardStateJob = viewModelScope.launch(Dispatchers.Default) {
             val latestVersionAsync = async {
                 val result = runCatching { downloaderApi.getLatestVersion() }
-                info { "latestVersionAsyncResult: $result" }
+                verbose { "latestVersionAsyncResult: $result" }
                 return@async result
             }
             serviceApi.flipperRpcInformationApi.getRpcInformationFlow()
@@ -179,7 +180,7 @@ class UpdateCardViewModel :
 
         val latestVersionFromNetwork = latestVersionFromNetworkResult
             .getOrNull()?.get(updateChannel)
-        info { "Latest version from network is $latestVersionFromNetwork" }
+        info { "Latest version from network is ${latestVersionFromNetwork?.version}" }
         if (latestVersionFromNetwork == null) {
             updateCardState.emit(UpdateCardState.NoUpdate(flipperFirmwareVersion))
             return
