@@ -102,7 +102,9 @@ class SubGhzProvisioningHelperImpl @Inject constructor(
         reportMetric(providedRegions, providedRegion, source ?: RegionProvisioningSource.DEFAULT)
     }
 
-    private suspend fun skipProvisioning(flipperRpcInformationApi: FlipperRpcInformationApi): Boolean {
+    private suspend fun skipProvisioning(
+        flipperRpcInformationApi: FlipperRpcInformationApi
+    ): Boolean {
         val ignoreSubGhzProvisioning = settings.data.first().ignoreSubghzProvisioningOnZeroRegion
         info { "ignoreSubGhzProvisioning disabled, so continue subghz provisioning" }
 

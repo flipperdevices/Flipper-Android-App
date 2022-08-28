@@ -6,9 +6,7 @@ import androidx.datastore.core.DataStore
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
-import com.flipperdevices.core.navigation.global.CiceroneGlobal
 import com.flipperdevices.core.preference.pb.Settings
-import com.flipperdevices.firstpair.api.FirstPairApi
 import com.flipperdevices.settings.impl.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,8 +15,6 @@ import tangle.viewmodel.VMInject
 
 class DebugViewModel @VMInject constructor(
     application: Application,
-    private val cicerone: CiceroneGlobal,
-    private val firstPairApi: FirstPairApi,
     private val synchronizationApi: SynchronizationApi,
     private val settingsDataStore: DataStore<Settings>
 ) : AndroidViewModel(application) {
