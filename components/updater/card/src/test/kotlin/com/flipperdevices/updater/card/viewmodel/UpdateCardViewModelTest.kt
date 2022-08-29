@@ -100,21 +100,15 @@ class UpdateCardViewModelTest {
         } returns flowOf(true)
     }
 
-    private val updateAvailable = UpdateCardState.UpdateAvailable(
-        fromVersion = FirmwareVersion(
-            channel = FirmwareChannel.DEV,
-            version = "0.54.3"
-        ),
-        lastVersion = VersionFiles(
-            version = FirmwareVersion(
-                channel = FirmwareChannel.DEV,
-                version = "0.54.3"
-            ),
-            updaterFile = DistributionFile(url = "", sha256 = ""),
-            changelog = ""
-        ),
-        isOtherChannel = false
-    )
+    @Test
+    fun `No flags for new update`() = runTest {
+        updateCardViewModel.onServiceApiReady(serviceApi)
+        val state = updateCardViewModel
+            .getUpdateCardState()
+            .filter { it != UpdateCardState.InProgress }
+            .first()
+        Assert.assertTrue(state is UpdateCardState.NoUpdate)
+    }
 
     @Test
     fun `Not exist manifest on flipper`() = runTest {
