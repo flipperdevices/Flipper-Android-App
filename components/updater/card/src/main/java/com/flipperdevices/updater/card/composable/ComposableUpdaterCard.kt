@@ -26,12 +26,13 @@ import com.flipperdevices.updater.model.FirmwareVersion
 import com.flipperdevices.updater.model.UpdateCardState
 import com.flipperdevices.updater.model.UpdateErrorType
 import com.flipperdevices.updater.model.VersionFiles
+import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 internal fun ComposableUpdaterCardInternal(
     modifier: Modifier,
     updateStateViewModel: UpdateStateViewModel = viewModel(),
-    updateCardViewModel: UpdateCardViewModel = viewModel()
+    updateCardViewModel: UpdateCardViewModel = tangleViewModel()
 ) {
     val updateState by updateStateViewModel.getUpdateState().collectAsState()
     val localDeviceStatus = updateState

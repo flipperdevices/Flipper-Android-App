@@ -4,6 +4,7 @@ import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.api.manager.service.FlipperRpcInformationApi
 import com.flipperdevices.bridge.api.model.FlipperRequestRpcInformationStatus
 import com.flipperdevices.bridge.api.model.wrapToRequest
+import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.protobuf.streamToCommandFlow
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.core.di.AppGraph
@@ -34,7 +35,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
 
-private const val REGION_FILE_PATH = "/int/.region_data"
 private const val UNKNOWN_REGION = "WW"
 private const val RPC_INFORMATION_TIMEOUT_MS = 1_000L * 60 // 10 seconds
 
@@ -90,7 +90,7 @@ class SubGhzProvisioningHelperImpl @Inject constructor(
                 fileSize = regionData.size.toLong()
             ) { chunkData ->
                 storageWriteRequest = writeRequest {
-                    path = REGION_FILE_PATH
+                    path = Constants.PATH.REGION_FILE
                     file = file { data = chunkData }
                 }
             }.map { it.wrapToRequest() }
