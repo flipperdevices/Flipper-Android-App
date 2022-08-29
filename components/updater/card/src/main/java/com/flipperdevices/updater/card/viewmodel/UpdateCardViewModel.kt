@@ -140,7 +140,7 @@ class UpdateCardViewModel @VMInject constructor(
             isSubGhzProvisioningExist(serviceApi)
         ) { setting, isManifestExist, isSubGhzProvisioningExist ->
             // TODO check previous region
-            return@combine setting.alwaysUpdate || isManifestExist || isSubGhzProvisioningExist
+            return@combine setting.alwaysUpdate || !isManifestExist || !isSubGhzProvisioningExist
         }
     }
 
