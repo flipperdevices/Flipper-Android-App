@@ -7,12 +7,13 @@
 - [REFACTOR] Migrate to faster build configuration
 - [REFACTOR] Add test for subghz provisioning
 - [REFACTOR] Enable gradle configuration cache
+- [REFACTOR] Bump all deps version
 - [Feature] Add support for NFC Shadow Files
 - [Feature] Offer update, if region file not exit on Flipper
+- [Feature] Offer update, if region changes
+- [Feature] Do not provide SubGhz provisioning on zero hardware region
 - [FIX] Now search for devices by Mac address and by flipper name
 - [Fix] Subghz provisioning while geoip is null
-- [REFACTOR] Bump all deps version
-- [Feature] Do not provide SubGhz provisioning on zero hardware region
 
 # 1.2.0
 

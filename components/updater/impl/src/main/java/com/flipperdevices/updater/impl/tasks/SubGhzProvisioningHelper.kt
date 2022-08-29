@@ -20,6 +20,7 @@ import com.flipperdevices.protobuf.region
 import com.flipperdevices.protobuf.storage.file
 import com.flipperdevices.protobuf.storage.writeRequest
 import com.flipperdevices.updater.api.DownloaderApi
+import com.flipperdevices.updater.api.SubGhzProvisioningHelperApi
 import com.flipperdevices.updater.impl.model.FailedUploadSubGhzException
 import com.flipperdevices.updater.impl.model.RegionProvisioning
 import com.flipperdevices.updater.impl.model.RegionProvisioningSource
@@ -38,18 +39,22 @@ import kotlinx.coroutines.withTimeoutOrNull
 private const val UNKNOWN_REGION = "WW"
 private const val RPC_INFORMATION_TIMEOUT_MS = 1_000L * 60 // 10 seconds
 
-interface SubGhzProvisioningHelper {
-    suspend fun provideAndUploadSubGhz(serviceApi: FlipperServiceApi)
-}
-
-@ContributesBinding(AppGraph::class, SubGhzProvisioningHelper::class)
+@ContributesBinding(AppGraph::class, SubGhzProvisioningHelperApi::class)
 class SubGhzProvisioningHelperImpl @Inject constructor(
     private val downloaderApi: DownloaderApi,
     private val regionProvisioningHelper: RegionProvisioningHelper,
     private val metricApi: MetricApi,
     private val settings: DataStore<Settings>
-) : SubGhzProvisioningHelper, LogTagProvider {
+) : SubGhzProvisioningHelperApi, LogTagProvider {
     override val TAG = "SubGhzProvisioningHelper"
+
+    override suspend fun getRegion(): String? {
+        val response = downloaderApi.getSubGhzProvisioning()
+        val providedRegions = regionProvisioningHelper.provideRegion(
+            response.country?.uppercase()
+        )
+        return providedRegions.provideRegion().first?.uppercase()
+    }
 
     override suspend fun provideAndUploadSubGhz(
         serviceApi: FlipperServiceApi
@@ -68,9 +73,11 @@ class SubGhzProvisioningHelperImpl @Inject constructor(
             response.countries[providedRegion.uppercase()] ?: response.defaults
         } else response.defaults
 
+        val finalCodeRegion = providedRegion?.uppercase() ?: UNKNOWN_REGION
+
         val regionData = region {
             countryCode = ByteString.copyFrom(
-                providedRegion?.uppercase() ?: UNKNOWN_REGION,
+                finalCodeRegion,
                 Charset.forName("ASCII")
             )
             bands.addAll(
@@ -99,6 +106,7 @@ class SubGhzProvisioningHelperImpl @Inject constructor(
         if (writeFileResponse.commandStatus != Flipper.CommandStatus.OK) {
             throw FailedUploadSubGhzException()
         }
+        rememberRegion(code = finalCodeRegion)
         reportMetric(providedRegions, providedRegion, source ?: RegionProvisioningSource.DEFAULT)
     }
 
@@ -155,5 +163,13 @@ class SubGhzProvisioningHelperImpl @Inject constructor(
                 isRoaming = regionProvisioning.isRoaming
             )
         )
+    }
+
+    private suspend fun rememberRegion(code: String) {
+        settings.updateData {
+            it.toBuilder()
+                .setRegion(code)
+                .build()
+        }
     }
 }

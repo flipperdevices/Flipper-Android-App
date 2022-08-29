@@ -15,10 +15,10 @@ import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.updater.api.DownloaderApi
+import com.flipperdevices.updater.api.SubGhzProvisioningHelperApi
 import com.flipperdevices.updater.downloader.api.DownloaderApiImpl
 import com.flipperdevices.updater.impl.model.RegionProvisioning
 import com.flipperdevices.updater.impl.tasks.RegionProvisioningHelper
-import com.flipperdevices.updater.impl.tasks.SubGhzProvisioningHelper
 import com.flipperdevices.updater.impl.tasks.SubGhzProvisioningHelperImpl
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
@@ -59,7 +59,7 @@ class SubGhzProvisioningHelperTest(
     private lateinit var regionProvisioningHelper: RegionProvisioningHelper
     private lateinit var metricApi: MetricApi
     private lateinit var settings: DataStore<Settings>
-    private lateinit var underTest: SubGhzProvisioningHelper
+    private lateinit var underTest: SubGhzProvisioningHelperApi
 
     @Before
     fun setUp() = runTest {
@@ -221,6 +221,11 @@ class SubGhzProvisioningHelperTest(
             it.data.storageWriteRequest.file.data.toByteArray()
         }.flatten()
         Assert.assertTrue(expectedBytes.contentEquals(sendBytes))
+    }
+
+    @Test
+    fun `Get region`() = runTest {
+        Assert.assertEquals(underTest.getRegion(), countryName)
     }
 
     companion object {

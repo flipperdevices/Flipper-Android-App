@@ -13,6 +13,7 @@ import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.preference.pb.settings
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.api.FlipperVersionProviderApi
+import com.flipperdevices.updater.api.SubGhzProvisioningHelperApi
 import com.flipperdevices.updater.card.utils.FileExistHelper
 import com.flipperdevices.updater.model.DistributionFile
 import com.flipperdevices.updater.model.FirmwareChannel
@@ -44,12 +45,14 @@ class UpdateCardViewModelTest {
     private val dataStoreSettings: DataStore<Settings> = mockk()
     private val serviceApi: FlipperServiceApi = mockk()
     private val fileExistHelper: FileExistHelper = mockk()
+    private val subGhzProvisioningHelperApi: SubGhzProvisioningHelperApi = mockk()
     private val updateCardViewModel: UpdateCardViewModel = UpdateCardViewModel(
         downloaderApi = downloaderApi,
         flipperVersionProviderApi = flipperVersionProviderApi,
         serviceProvider = serviceProvider,
         dataStoreSettings = dataStoreSettings,
-        fileExistHelper = fileExistHelper
+        fileExistHelper = fileExistHelper,
+        subGhzProvisioningHelperApi = subGhzProvisioningHelperApi
     )
 
     @Before
@@ -70,6 +73,7 @@ class UpdateCardViewModelTest {
             )
             versionMap
         }
+        coEvery { subGhzProvisioningHelperApi.getRegion() } returns "UA"
         every { serviceApi.flipperRpcInformationApi } returns mockk()
         every {
             serviceApi.flipperRpcInformationApi.getRpcInformationFlow()
@@ -84,6 +88,7 @@ class UpdateCardViewModelTest {
             settings {
                 selectedChannel = SelectedChannel.DEV
                 alwaysUpdate = false
+                region = "UA"
             }
         )
         every {
@@ -156,5 +161,27 @@ class UpdateCardViewModelTest {
             .filter { it != UpdateCardState.InProgress }
             .first()
         Assert.assertTrue(state is UpdateCardState.UpdateAvailable)
+    }
+
+    @Test
+    fun `The region now and the previous one are different`() = runTest {
+        coEvery { subGhzProvisioningHelperApi.getRegion() } returns "USA"
+        updateCardViewModel.onServiceApiReady(serviceApi)
+        val state = updateCardViewModel
+            .getUpdateCardState()
+            .filter { it != UpdateCardState.InProgress }
+            .first()
+        Assert.assertTrue(state is UpdateCardState.UpdateAvailable)
+    }
+
+    @Test
+    fun `The region now and the previous one are same`() = runTest {
+        // UA now, previous UA too
+        updateCardViewModel.onServiceApiReady(serviceApi)
+        val state = updateCardViewModel
+            .getUpdateCardState()
+            .filter { it != UpdateCardState.InProgress }
+            .first()
+        Assert.assertTrue(state is UpdateCardState.NoUpdate)
     }
 }

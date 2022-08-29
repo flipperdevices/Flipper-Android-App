@@ -9,10 +9,10 @@ import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.complex.UpdateFlipperEnd
 import com.flipperdevices.metric.api.events.complex.UpdateFlipperStart
 import com.flipperdevices.metric.api.events.complex.UpdateStatus
+import com.flipperdevices.updater.api.SubGhzProvisioningHelperApi
 import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.impl.UpdaterTask
 import com.flipperdevices.updater.impl.tasks.FirmwareDownloaderHelper
-import com.flipperdevices.updater.impl.tasks.SubGhzProvisioningHelper
 import com.flipperdevices.updater.impl.tasks.UploadToFlipperHelper
 import com.flipperdevices.updater.model.FirmwareVersion
 import com.flipperdevices.updater.model.UpdateRequest
@@ -33,7 +33,7 @@ import kotlinx.coroutines.withContext
 class UpdaterApiImpl @Inject constructor(
     private val serviceProvider: FlipperServiceProvider,
     private val firmwareDownloaderHelper: FirmwareDownloaderHelper,
-    private val subGhzProvisioningHelper: SubGhzProvisioningHelper,
+    private val subGhzProvisioningHelper: SubGhzProvisioningHelperApi,
     private val uploadToFlipperHelper: UploadToFlipperHelper,
     private val context: Context,
     private val metricApi: MetricApi

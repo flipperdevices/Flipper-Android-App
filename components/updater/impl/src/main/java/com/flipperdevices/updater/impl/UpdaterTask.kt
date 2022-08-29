@@ -9,10 +9,10 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.core.ui.lifecycle.OneTimeExecutionBleTask
+import com.flipperdevices.updater.api.SubGhzProvisioningHelperApi
 import com.flipperdevices.updater.impl.model.FailedUploadSubGhzException
 import com.flipperdevices.updater.impl.tasks.FirmwareDownloaderHelper
 import com.flipperdevices.updater.impl.tasks.FlipperUpdateImageHelper
-import com.flipperdevices.updater.impl.tasks.SubGhzProvisioningHelper
 import com.flipperdevices.updater.impl.tasks.UploadToFlipperHelper
 import com.flipperdevices.updater.impl.utils.FolderCreateHelper
 import com.flipperdevices.updater.model.DistributionFile
@@ -31,7 +31,7 @@ class UpdaterTask(
     private val context: Context,
     private val firmwareDownloaderHelper: FirmwareDownloaderHelper,
     private val uploadToFlipperHelper: UploadToFlipperHelper,
-    private val subGhzProvisioningHelper: SubGhzProvisioningHelper
+    private val subGhzProvisioningHelper: SubGhzProvisioningHelperApi
 ) : OneTimeExecutionBleTask<UpdateRequest, UpdatingState>(serviceProvider),
     LogTagProvider {
     override val TAG = "UpdaterTask"

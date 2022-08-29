@@ -37,4 +37,5 @@ message Settings {
   SelectedTheme selected_theme = 13;
   bool expert_mode = 14;
   bool ignore_subghz_provisioning_on_zero_region = 15;
+  string region = 16;
 }

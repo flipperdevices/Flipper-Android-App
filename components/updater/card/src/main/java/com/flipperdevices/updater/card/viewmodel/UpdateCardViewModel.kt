@@ -18,6 +18,7 @@ import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.api.FlipperVersionProviderApi
+import com.flipperdevices.updater.api.SubGhzProvisioningHelperApi
 import com.flipperdevices.updater.card.utils.FileExistHelper
 import com.flipperdevices.updater.card.utils.isGreaterThan
 import com.flipperdevices.updater.model.FirmwareChannel
@@ -46,7 +47,8 @@ class UpdateCardViewModel @VMInject constructor(
     private val flipperVersionProviderApi: FlipperVersionProviderApi,
     private val serviceProvider: FlipperServiceProvider,
     private val dataStoreSettings: DataStore<Settings>,
-    private val fileExistHelper: FileExistHelper
+    private val fileExistHelper: FileExistHelper,
+    private val subGhzProvisioningHelperApi: SubGhzProvisioningHelperApi
 ) :
     LifecycleViewModel(),
     FlipperBleServiceConsumer,
@@ -140,8 +142,9 @@ class UpdateCardViewModel @VMInject constructor(
             isManifestExist(serviceApi),
             isSubGhzProvisioningExist(serviceApi)
         ) { setting, isManifestExist, isSubGhzProvisioningExist ->
-            // TODO check previous region
-            return@combine setting.alwaysUpdate || !isManifestExist || !isSubGhzProvisioningExist
+            val isRegionChanged = subGhzProvisioningHelperApi.getRegion() != setting.region
+            return@combine setting.alwaysUpdate || !isManifestExist ||
+                !isSubGhzProvisioningExist || isRegionChanged
         }
     }
 
