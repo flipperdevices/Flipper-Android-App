@@ -1,11 +1,16 @@
 package com.flipperdevices.updater.impl.tasks
 
-import com.flipperdevices.bridge.api.manager.FlipperRequestApi
+import androidx.datastore.core.DataStore
+import com.flipperdevices.bridge.api.manager.service.FlipperRpcInformationApi
+import com.flipperdevices.bridge.api.model.FlipperRequestRpcInformationStatus
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.protobuf.streamToCommandFlow
+import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
+import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.complex.RegionSource
 import com.flipperdevices.metric.api.events.complex.SubGhzProvisioningEvent
@@ -24,26 +29,36 @@ import java.io.ByteArrayInputStream
 import java.nio.charset.Charset
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeoutOrNull
 
 private const val UNKNOWN_REGION = "WW"
+private const val RPC_INFORMATION_TIMEOUT_MS = 1_000L * 60 // 10 seconds
 
 interface SubGhzProvisioningHelper {
-    suspend fun provideAndUploadSubGhz(requestApi: FlipperRequestApi)
+    suspend fun provideAndUploadSubGhz(serviceApi: FlipperServiceApi)
 }
 
 @ContributesBinding(AppGraph::class, SubGhzProvisioningHelper::class)
 class SubGhzProvisioningHelperImpl @Inject constructor(
     private val downloaderApi: DownloaderApi,
     private val regionProvisioningHelper: RegionProvisioningHelper,
-    private val metricApi: MetricApi
+    private val metricApi: MetricApi,
+    private val settings: DataStore<Settings>
 ) : SubGhzProvisioningHelper, LogTagProvider {
     override val TAG = "SubGhzProvisioningHelper"
 
     override suspend fun provideAndUploadSubGhz(
-        requestApi: FlipperRequestApi
+        serviceApi: FlipperServiceApi
     ) = withContext(Dispatchers.Default) {
+        if (skipProvisioning(serviceApi.flipperRpcInformationApi)) {
+            info { "Skip provisioning" }
+            return@withContext
+        }
+
         val response = downloaderApi.getSubGhzProvisioning()
         val providedRegions = regionProvisioningHelper.provideRegion(
             response.country?.uppercase()
@@ -79,12 +94,43 @@ class SubGhzProvisioningHelperImpl @Inject constructor(
                     file = file { data = chunkData }
                 }
             }.map { it.wrapToRequest() }
-            requestApi.request(flow)
+            serviceApi.requestApi.request(flow)
         }
         if (writeFileResponse.commandStatus != Flipper.CommandStatus.OK) {
             throw FailedUploadSubGhzException()
         }
         reportMetric(providedRegions, providedRegion, source ?: RegionProvisioningSource.DEFAULT)
+    }
+
+    private suspend fun skipProvisioning(
+        flipperRpcInformationApi: FlipperRpcInformationApi
+    ): Boolean {
+        val ignoreSubGhzProvisioning = settings.data.first().ignoreSubghzProvisioningOnZeroRegion
+        info { "ignoreSubGhzProvisioning disabled, so continue subghz provisioning" }
+
+        if (!ignoreSubGhzProvisioning) {
+            return false
+        }
+        info { "Try receive rpcInformationStatus" }
+
+        withTimeoutOrNull(RPC_INFORMATION_TIMEOUT_MS) {
+            flipperRpcInformationApi.getRequestRpcInformationStatus()
+                .filter {
+                    it is FlipperRequestRpcInformationStatus.InProgress &&
+                        it.rpcDeviceInfoRequestFinished
+                }.first()
+        } ?: return false
+
+        val rpcInformation = flipperRpcInformationApi.getRpcInformationFlow().first()
+        val hardwareRegion = rpcInformation.flipperDeviceInfo.hardwareRegion?.toIntOrNull()
+            ?: return false
+        if (hardwareRegion != 0) {
+            info { "Hardware region not zero, so return false" }
+            return false
+        }
+        info { "Region hardware 0 and configuration enabled, skip subghz provisioning" }
+
+        return true
     }
 
     private fun reportMetric(

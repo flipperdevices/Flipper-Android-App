@@ -79,7 +79,7 @@ class Shake2ReportImpl @Inject constructor(
             .withFileName("timber-${System.currentTimeMillis()}-%g.log")
             .withSizeLimit(FILE_LOG_SIZE)
             .withFileLimit(FILE_LOG_LIMIT)
-            .withMinPriority(Log.VERBOSE)
+            .withMinPriority(Log.INFO)
             .appendToFile(false)
             .build()
         Timber.plant(fileLoggerTree)

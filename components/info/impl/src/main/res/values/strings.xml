@@ -44,6 +44,7 @@
     <string name="full_info_hardware_model">Hardware Model</string>
     <string name="full_info_hardware_region">Hardware Region</string>
     <string name="full_info_hardware_region_provisioned">Hardware Region Provisioned</string>
+    <string name="full_info_hardware_region_provisioned_ru">Russia Will Be Free</string>
     <string name="full_info_hardware_version">Hardware Version</string>
     <string name="full_info_hardware_otp_version">Hardware OTP Version</string>
     <string name="full_info_serial_number">Serial Number</string>
@@ -52,6 +53,7 @@
     <string name="full_info_build_date">Build Date</string>
     <string name="full_info_target">Target</string>
     <string name="full_info_protobuf_version">Protobuf Version</string>
+    <string name="full_info_device_info_version">Device Info</string>
 
     <string name="full_info_radio_firmware">Radio Firmware</string>
     <string name="radio_stack_type_full">Full</string>

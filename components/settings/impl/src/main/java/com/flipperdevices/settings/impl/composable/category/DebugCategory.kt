@@ -2,7 +2,6 @@ package com.flipperdevices.settings.impl.composable.category
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.settings.impl.R
@@ -14,13 +13,14 @@ import com.flipperdevices.settings.impl.composable.elements.SwitchableElement
 import com.flipperdevices.settings.impl.model.NavGraphRoute
 import com.flipperdevices.settings.impl.viewmodels.DebugViewModel
 import com.flipperdevices.settings.impl.viewmodels.SettingsViewModel
+import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 fun DebugCategory(
     settings: Settings,
     navController: NavController,
     settingsViewModel: SettingsViewModel,
-    debugViewModel: DebugViewModel = viewModel()
+    debugViewModel: DebugViewModel = tangleViewModel()
 ) {
     CardCategory {
         Column {
@@ -46,11 +46,6 @@ fun DebugCategory(
                     onClick = { debugViewModel.onStartSynchronization() }
                 )
                 GrayDivider()
-                ClickableElement(
-                    titleId = R.string.debug_connection_to_another,
-                    descriptionId = R.string.debug_connection_to_another_desc,
-                    onClick = { debugViewModel.onOpenConnectionScreen() }
-                )
                 GrayDivider()
                 SwitchableElement(
                     titleId = R.string.debug_ignored_unsupported_version,
@@ -71,6 +66,13 @@ fun DebugCategory(
                     descriptionId = R.string.debug_shake2report_desc,
                     state = settings.shakeToReport,
                     onSwitchState = debugViewModel::onSwitchShakeToReport
+                )
+                GrayDivider()
+                SwitchableElement(
+                    titleId = R.string.debug_subghz_provisioning_ignore,
+                    descriptionId = R.string.debug_subghz_provisioning_ignore_desc,
+                    state = settings.ignoreSubghzProvisioningOnZeroRegion,
+                    onSwitchState = debugViewModel::onSwitchIgnoreSubGhzProvisioning
                 )
             }
         }
