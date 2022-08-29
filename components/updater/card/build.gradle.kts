@@ -43,7 +43,6 @@ dependencies {
 
     // Testing
     testImplementation(libs.junit)
-    testImplementation(libs.mockito.kotlin)
     testImplementation(libs.kotlin.coroutines.test)
     testImplementation(libs.roboelectric)
     testImplementation(libs.ktx.testing)
