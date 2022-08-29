@@ -5,12 +5,12 @@ import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.manager.service.FlipperRpcInformationApi
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.FlipperRequestRpcInformationStatus
-import com.flipperdevices.bridge.api.model.FlipperRpcInformation
 import com.flipperdevices.bridge.api.model.StorageStats
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.impl.di.BridgeImplComponent
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.jre.forEachIterable
+import com.flipperdevices.core.ktx.jre.map
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
@@ -52,7 +52,7 @@ class FlipperRpcInformationApiImpl(
 
     private val mutex = Mutex()
     private val rpcInformationFlow = MutableStateFlow(
-        FlipperRpcInformation()
+        InternalFlipperRpcInformationRaw()
     )
     private val requestStatusFlow = MutableStateFlow<FlipperRequestRpcInformationStatus>(
         FlipperRequestRpcInformationStatus.NotStarted
@@ -65,12 +65,15 @@ class FlipperRpcInformationApiImpl(
     init {
         ComponentHolder.component<BridgeImplComponent>().inject(this)
         rpcInformationFlow.onEach {
-            shake2ReportApi.updateRpcInformation(it)
+            shake2ReportApi.updateRpcInformation(DeviceInfoHelper.mapRawRpcInformation(it))
         }.launchIn(scope + Dispatchers.Default)
     }
 
     override fun getRequestRpcInformationStatus() = requestStatusFlow
     override fun getRpcInformationFlow() = rpcInformationFlow
+        .map(scope + Dispatchers.Default) {
+            DeviceInfoHelper.mapRawRpcInformation(it)
+        }
 
     suspend fun initialize(requestApi: FlipperRequestApi) = withLock(mutex, "initialize") {
         requestStatusFlow.emit(FlipperRequestRpcInformationStatus.InProgress())
@@ -139,10 +142,10 @@ class FlipperRpcInformationApiImpl(
             it.cancelAndJoin()
         }
         requestStatusFlow.emit(FlipperRequestRpcInformationStatus.NotStarted)
-        rpcInformationFlow.emit(FlipperRpcInformation())
+        rpcInformationFlow.emit(InternalFlipperRpcInformationRaw())
     }
 
-    private fun reportMetric(information: FlipperRpcInformation) {
+    private fun reportMetric(information: InternalFlipperRpcInformationRaw) {
         val externalStats = information.externalStorageStats as? StorageStats.Loaded
         val internalStats = information.internalStorageStats as? StorageStats.Loaded
 

@@ -206,14 +206,20 @@ class FlipperRequestApiImpl(
     override suspend fun reset(bleManager: UnsafeBleManager) {
         // Remove all elements from request listeners
         serialApiUnsafe.reset(bleManager)
+        info { "Serial api unsafe reset done" }
         serialApi.reset(bleManager)
+        info { "Serial api reset done" }
         reader.reset()
+        info { "Reader reset done" }
         var counter = 0
+        info { "Found ${requestListeners.size} request, start clean" }
         while (requestListeners.isNotEmpty()) {
+            info { "Start iteration for clean ${requestListeners.size} requests" }
             val listeners = ArrayList(requestListeners.keys)
             listeners.forEach { id ->
                 counter++
                 val listener = requestListeners.remove(id)
+                info { "Invoke close for $listener" }
                 listener?.invoke(
                     main {
                         commandStatus = Flipper.CommandStatus.ERROR

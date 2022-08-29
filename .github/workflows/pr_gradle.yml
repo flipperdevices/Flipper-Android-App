@@ -4,7 +4,7 @@ on:
   pull_request:
     paths:
       - '**.gradle.kts'
-      - 'buildSrc/**'
+      - 'build-logic/**'
       - 'gradle/**'
       - 'gradle.properties'
 
@@ -50,4 +50,4 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
       - name: Build internal
-        run: ./gradlew assembleInternal
+        run: ./gradlew assembleInternal bundleInternal

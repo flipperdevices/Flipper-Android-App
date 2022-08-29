@@ -1,3 +1,4 @@
+import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.gradle.BaseExtension
 import com.flipperdevices.buildlogic.ApkConfig
 import io.sentry.android.gradle.extensions.SentryPluginExtension
@@ -26,6 +27,14 @@ configure<BaseExtension> {
         release {
             isShrinkResources = true
         }
+    }
+}
+
+configure<ApplicationExtension> {
+    // https://issuetracker.google.com/issues/162074215
+    dependenciesInfo {
+        includeInBundle = false
+        includeInApk = false
     }
 }
 

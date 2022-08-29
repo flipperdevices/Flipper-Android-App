@@ -90,7 +90,7 @@ class UpdaterTask(
         }
         try {
             stateListener(UpdatingState.SubGhzProvisioning)
-            subGhzProvisioningHelper.provideAndUploadSubGhz(serviceApi.requestApi)
+            subGhzProvisioningHelper.provideAndUploadSubGhz(serviceApi)
         } catch (e: SubGhzProvisioningException) {
             error(e) { "Failed receive subghz region" }
             stateListener(UpdatingState.FailedOutdatedApp)

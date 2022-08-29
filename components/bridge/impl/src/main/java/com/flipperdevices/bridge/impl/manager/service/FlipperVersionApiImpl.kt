@@ -5,7 +5,7 @@ import android.bluetooth.BluetoothGattCharacteristic
 import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.api.manager.service.FlipperVersionApi
-import com.flipperdevices.bridge.api.model.FlipperVersionInformation
+import com.flipperdevices.bridge.api.model.SemVer
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.impl.manager.UnsafeBleManager
 import com.flipperdevices.core.log.LogTagProvider
@@ -22,13 +22,13 @@ class FlipperVersionApiImpl(
 ) : BluetoothGattServiceWrapper, FlipperVersionApi, LogTagProvider {
     override val TAG = "FlipperVersionApi"
 
-    private val flipperVersionInformationStateFlow =
-        MutableStateFlow<FlipperVersionInformation?>(null)
+    private val semVerStateFlow =
+        MutableStateFlow<SemVer?>(null)
 
     private var apiVersionCharacteristics: BluetoothGattCharacteristic? = null
 
-    override fun getVersionInformationFlow(): StateFlow<FlipperVersionInformation?> =
-        flipperVersionInformationStateFlow
+    override fun getVersionInformationFlow(): StateFlow<SemVer?> =
+        semVerStateFlow
 
     override fun onServiceReceived(gatt: BluetoothGatt): Boolean {
         getServiceOrLog(gatt, Constants.BLEInformationService.SERVICE_UUID)?.let { service ->
@@ -79,16 +79,16 @@ class FlipperVersionApiImpl(
         val majorPart = parts.firstOrNull()
         val minorPart = if (parts.size >= 2) parts[1] else null
         info { "Founded ${parts.size} parts. Major part is $majorPart, minor is $minorPart" }
-        val versionInformation = FlipperVersionInformation(
+        val versionInformation = SemVer(
             majorVersion = majorPart?.toIntOrNull() ?: 0,
             minorVersion = minorPart?.toIntOrNull() ?: 0
         )
-        flipperVersionInformationStateFlow.update { versionInformation }
+        semVerStateFlow.update { versionInformation }
         bleManager.setDeviceSupportedStatus(versionInformation.toSupportedState())
     }
 }
 
-private fun FlipperVersionInformation.toSupportedState() = when {
+private fun SemVer.toSupportedState() = when {
     this < Constants.API_SUPPORTED_VERSION -> FlipperSupportedState.DEPRECATED_FLIPPER
     this >= Constants.API_MAX_SUPPORTED_VERSION -> FlipperSupportedState.DEPRECATED_APPLICATION
     else -> FlipperSupportedState.READY

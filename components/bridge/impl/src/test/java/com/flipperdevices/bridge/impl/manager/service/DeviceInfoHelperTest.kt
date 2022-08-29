@@ -1,53 +1,34 @@
-package com.flipperdevices.info.impl
+package com.flipperdevices.bridge.impl.manager.service
 
-import com.flipperdevices.info.impl.fragment.DeviceInfoHelper
-import com.flipperdevices.info.impl.model.DeviceFullInfo
-import com.flipperdevices.info.impl.model.FirmwareInfo
-import com.flipperdevices.info.impl.model.FlipperDeviceInfo
-import com.flipperdevices.info.impl.model.OtherInfo
-import com.flipperdevices.info.impl.model.RadioStackInfo
-import com.flipperdevices.info.impl.model.RadioStackType
-import com.flipperdevices.updater.api.FirmwareVersionBuilderApi
-import com.flipperdevices.updater.model.FirmwareChannel
+import com.flipperdevices.bridge.api.model.FirmwareInfo
+import com.flipperdevices.bridge.api.model.FlipperDeviceInfo
+import com.flipperdevices.bridge.api.model.FlipperRpcInformation
+import com.flipperdevices.bridge.api.model.RadioStackInfo
+import com.flipperdevices.bridge.api.model.RadioStackType
+import com.flipperdevices.bridge.api.model.SemVer
+import com.flipperdevices.bridge.impl.manager.service.requestservice.DeviceInfoHelper
+import com.flipperdevices.bridge.impl.manager.service.requestservice.InternalFlipperRpcInformationRaw
 import org.junit.Assert
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
-import org.mockito.kotlin.any
-import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.whenever
 
 @RunWith(Parameterized::class)
 class DeviceInfoHelperTest(
     private val fields: Map<String, String>,
-    private val firmwareChannel: FirmwareChannel,
-    private val info: DeviceFullInfo
+    private val infoExpected: FlipperRpcInformation
 ) {
-
-    private lateinit var firmwareVersionBuilderApi: FirmwareVersionBuilderApi
-
-    @Before
-    fun setup() {
-        firmwareVersionBuilderApi = mock()
-    }
-
     @Test
     fun `Parse fields`() {
-        whenever(firmwareVersionBuilderApi.getFirmwareChannel(any())).doReturn(firmwareChannel)
-        val deviceInfo = DeviceInfoHelper.parseFields(
-            fields = fields,
-            firmwareChannel = {
-                firmwareVersionBuilderApi.getFirmwareChannel(
-                    branch = it ?: throw NullPointerException("")
-                )
-            }
+        val deviceInfo = DeviceInfoHelper.mapRawRpcInformation(
+            InternalFlipperRpcInformationRaw(
+                otherFields = fields
+            )
         )
-        Assert.assertEquals(info.flipperDevices, deviceInfo.flipperDevices)
-        Assert.assertEquals(info.firmware, deviceInfo.firmware)
-        Assert.assertEquals(info.radioStack, deviceInfo.radioStack)
-        Assert.assertEquals(info.other, deviceInfo.other)
+        Assert.assertEquals(infoExpected.flipperDeviceInfo, deviceInfo.flipperDeviceInfo)
+        Assert.assertEquals(infoExpected.firmware, deviceInfo.firmware)
+        Assert.assertEquals(infoExpected.radioStack, deviceInfo.radioStack)
+        Assert.assertEquals(infoExpected.otherFields, deviceInfo.otherFields)
     }
 
     companion object {
@@ -74,11 +55,10 @@ class DeviceInfoHelperTest(
                     "radio_stack_minor" to "5",
                     "radio_stack_type" to "7",
                     "other_fields_1" to "1",
-                    "other_fields_2" to "2",
+                    "other_fields_2" to "2"
                 ),
-                FirmwareChannel.DEV,
-                DeviceFullInfo(
-                    flipperDevices = FlipperDeviceInfo(
+                FlipperRpcInformation(
+                    flipperDeviceInfo = FlipperDeviceInfo(
                         deviceName = "My Flipper",
                         hardwareModel = "Flipper Zero",
                         hardwareRegion = "1",
@@ -88,21 +68,18 @@ class DeviceInfoHelperTest(
                         serialNumber = "ABC456"
                     ),
                     firmware = FirmwareInfo(
-                        firmwareChannel = FirmwareChannel.DEV,
                         softwareRevision = "Dev12345 dev",
                         buildDate = "2077-98-11",
                         target = "7",
-                        protobufVersion = "0.1"
+                        protobufVersion = SemVer(0, 1)
                     ),
                     radioStack = RadioStackInfo(
                         type = RadioStackType.HCIExtAdv,
                         radioFirmware = "3.5.7"
                     ),
-                    other = OtherInfo(
-                        fields = mapOf(
-                            "other_fields_1" to "1",
-                            "other_fields_2" to "2",
-                        ).entries
+                    otherFields = mapOf(
+                        "other_fields_1" to "1",
+                        "other_fields_2" to "2"
                     )
                 )
             ),
@@ -122,11 +99,10 @@ class DeviceInfoHelperTest(
                     "radio_stack_major" to "3",
                     "radio_stack_minor" to "5",
                     "radio_stack_type" to "4",
-                    "other_fields_1" to "1",
+                    "other_fields_1" to "1"
                 ),
-                FirmwareChannel.UNKNOWN,
-                DeviceFullInfo(
-                    flipperDevices = FlipperDeviceInfo(
+                FlipperRpcInformation(
+                    flipperDeviceInfo = FlipperDeviceInfo(
                         deviceName = null,
                         hardwareModel = "Flipper Zero",
                         hardwareRegion = "1",
@@ -136,7 +112,6 @@ class DeviceInfoHelperTest(
                         serialNumber = "ABC456"
                     ),
                     firmware = FirmwareInfo(
-                        firmwareChannel = FirmwareChannel.UNKNOWN,
                         softwareRevision = "Unknown 1234",
                         buildDate = "2077-98-11",
                         target = "7",
@@ -146,10 +121,8 @@ class DeviceInfoHelperTest(
                         type = RadioStackType.Beacon,
                         radioFirmware = "3.5.4"
                     ),
-                    other = OtherInfo(
-                        fields = mapOf(
-                            "other_fields_1" to "1",
-                        ).entries
+                    otherFields = mapOf(
+                        "other_fields_1" to "1"
                     )
                 )
             )
