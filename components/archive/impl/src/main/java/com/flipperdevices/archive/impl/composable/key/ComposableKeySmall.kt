@@ -19,7 +19,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.archive.impl.viewmodel.KeyItemViewModel
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.ui.ktx.ComposableKeyType
-import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
@@ -29,14 +28,13 @@ fun ComposableKeySmall(
     synchronizationContent: @Composable () -> Unit,
     keyItemViewModel: KeyItemViewModel = viewModel()
 ) {
-    val router = LocalRouter.current
     Card(
         modifier = modifier
             .padding(horizontal = 7.dp, vertical = 6.dp)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(),
-                onClick = { keyItemViewModel.open(router, keyPath) }
+                onClick = { keyItemViewModel.open(keyPath) }
             )
     ) {
         Column {
