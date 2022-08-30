@@ -21,9 +21,21 @@ class UpdateOfferHelper @Inject constructor(
             isManifestExist(serviceApi),
             isSubGhzProvisioningExist(serviceApi)
         ) { setting, isManifestExist, isSubGhzProvisioningExist ->
-            val isRegionChanged = subGhzProvisioningHelper.getRegion() != setting.lastProvidedRegion
             return@combine setting.alwaysUpdate || !isManifestExist ||
-                !isSubGhzProvisioningExist || isRegionChanged
+                !isSubGhzProvisioningExist || isRegionChanged(setting.lastProvidedRegion)
+        }
+    }
+
+    private suspend fun isRegionChanged(lastProvidedRegion: String): Boolean {
+        return try {
+            // In this case, when the region is received, we can get an error.
+            // When we receive new firmware we handle errors with the internet(and setup state),
+            // so in this case we will return that the region has changed
+            // to be sure to flash a new region if we got into a bad timing for obtaining a region
+            val currentRegion = subGhzProvisioningHelper.getRegion()
+            currentRegion != lastProvidedRegion
+        } catch (exception: Exception) {
+            true
         }
     }
 
