@@ -3,7 +3,6 @@ package com.flipperdevices.updater.card.viewmodel
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.model.StorageStats
-import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
@@ -18,14 +17,13 @@ import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.api.FlipperVersionProviderApi
-import com.flipperdevices.updater.card.utils.FileExistHelper
+import com.flipperdevices.updater.card.helpers.UpdateOfferHelper
 import com.flipperdevices.updater.card.utils.isGreaterThan
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
 import com.flipperdevices.updater.model.UpdateCardState
 import com.flipperdevices.updater.model.UpdateErrorType
 import com.flipperdevices.updater.model.VersionFiles
-import com.flipperdevices.updater.subghz.helpers.SubGhzProvisioningHelper
 import java.net.UnknownHostException
 import java.util.EnumMap
 import kotlinx.coroutines.Deferred
@@ -33,7 +31,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancelAndJoin
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -47,8 +44,7 @@ class UpdateCardViewModel @VMInject constructor(
     private val flipperVersionProviderApi: FlipperVersionProviderApi,
     private val serviceProvider: FlipperServiceProvider,
     private val dataStoreSettings: DataStore<Settings>,
-    private val fileExistHelper: FileExistHelper,
-    private val subGhzProvisioningHelper: SubGhzProvisioningHelper
+    private val updateOfferHelper: UpdateOfferHelper
 ) :
     LifecycleViewModel(),
     FlipperBleServiceConsumer,
@@ -109,7 +105,7 @@ class UpdateCardViewModel @VMInject constructor(
                 flipperVersionProviderApi.getCurrentFlipperVersion(viewModelScope, serviceApi),
                 serviceApi.flipperRpcInformationApi.getRpcInformationFlow(),
                 dataStoreSettings.data,
-                isAlwaysUpdate(serviceApi)
+                updateOfferHelper.isAlwaysUpdate(serviceApi)
             ) { flipperFirmwareVersion, rpcInformation, settings, isAlwaysUpdate ->
                 val updateChannel = settings.selectedChannel.toFirmwareChannel()
                 val newUpdateChannel = if (
@@ -134,26 +130,6 @@ class UpdateCardViewModel @VMInject constructor(
                 )
             }
         }
-    }
-
-    private fun isAlwaysUpdate(serviceApi: FlipperServiceApi): Flow<Boolean> {
-        return combine(
-            dataStoreSettings.data,
-            isManifestExist(serviceApi),
-            isSubGhzProvisioningExist(serviceApi)
-        ) { setting, isManifestExist, isSubGhzProvisioningExist ->
-            val isRegionChanged = subGhzProvisioningHelper.getRegion() != setting.lastProvidedRegion
-            return@combine setting.alwaysUpdate || !isManifestExist ||
-                !isSubGhzProvisioningExist || isRegionChanged
-        }
-    }
-
-    private fun isManifestExist(serviceApi: FlipperServiceApi): Flow<Boolean> {
-        return fileExistHelper.isFileExist(Constants.PATH.MANIFEST_FILE, serviceApi.requestApi)
-    }
-
-    private fun isSubGhzProvisioningExist(serviceApi: FlipperServiceApi): Flow<Boolean> {
-        return fileExistHelper.isFileExist(Constants.PATH.REGION_FILE, serviceApi.requestApi)
     }
 
     private suspend fun updateCardState(

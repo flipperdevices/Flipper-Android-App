@@ -3,6 +3,7 @@ package com.flipperdevices.updater.card.utils
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.md5sumResponse
+import com.flipperdevices.updater.card.helpers.FileExistHelper
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.collectLatest
