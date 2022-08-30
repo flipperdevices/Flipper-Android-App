@@ -8,6 +8,8 @@
 - [REFACTOR] Add test for subghz provisioning
 - [REFACTOR] Enable gradle configuration cache
 - [REFACTOR] Bump all deps version
+- [REFACTOR] Bump all deps version
+- [REFACTOR] Remove bottom bar on key screen
 - [Feature] Add support for NFC Shadow Files
 - [Feature] Offer update, if region file not exit on Flipper
 - [Feature] Offer update, if region changes
