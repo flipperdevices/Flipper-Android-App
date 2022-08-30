@@ -1,4 +1,4 @@
-package com.flipperdevices.updater.impl.tasks
+package com.flipperdevices.updater.subghz.helpers
 
 import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.api.manager.service.FlipperRpcInformationApi
@@ -20,10 +20,9 @@ import com.flipperdevices.protobuf.region
 import com.flipperdevices.protobuf.storage.file
 import com.flipperdevices.protobuf.storage.writeRequest
 import com.flipperdevices.updater.api.DownloaderApi
-import com.flipperdevices.updater.api.SubGhzProvisioningHelperApi
-import com.flipperdevices.updater.impl.model.FailedUploadSubGhzException
-import com.flipperdevices.updater.impl.model.RegionProvisioning
-import com.flipperdevices.updater.impl.model.RegionProvisioningSource
+import com.flipperdevices.updater.subghz.helpers.model.RegionProvisioning
+import com.flipperdevices.updater.subghz.helpers.model.RegionProvisioningSource
+import com.flipperdevices.updater.subghz.model.FailedUploadSubGhzException
 import com.google.protobuf.ByteString
 import com.squareup.anvil.annotations.ContributesBinding
 import java.io.ByteArrayInputStream
@@ -39,13 +38,18 @@ import kotlinx.coroutines.withTimeoutOrNull
 private const val UNKNOWN_REGION = "WW"
 private const val RPC_INFORMATION_TIMEOUT_MS = 1_000L * 60 // 10 seconds
 
-@ContributesBinding(AppGraph::class, SubGhzProvisioningHelperApi::class)
+interface SubGhzProvisioningHelper {
+    suspend fun provideAndUploadSubGhz(serviceApi: FlipperServiceApi)
+    suspend fun getRegion(): String?
+}
+
+@ContributesBinding(AppGraph::class, SubGhzProvisioningHelper::class)
 class SubGhzProvisioningHelperImpl @Inject constructor(
     private val downloaderApi: DownloaderApi,
     private val regionProvisioningHelper: RegionProvisioningHelper,
     private val metricApi: MetricApi,
     private val settings: DataStore<Settings>
-) : SubGhzProvisioningHelperApi, LogTagProvider {
+) : SubGhzProvisioningHelper, LogTagProvider {
     override val TAG = "SubGhzProvisioningHelper"
 
     override suspend fun getRegion(): String? {
@@ -168,7 +172,7 @@ class SubGhzProvisioningHelperImpl @Inject constructor(
     private suspend fun rememberRegion(code: String) {
         settings.updateData {
             it.toBuilder()
-                .setRegion(code)
+                .setLastProvidedRegion(code)
                 .build()
         }
     }

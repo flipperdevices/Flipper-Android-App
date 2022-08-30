@@ -115,6 +115,7 @@ include(
     ":components:updater:screen",
     ":components:updater:downloader",
     ":components:updater:card",
+    ":components:updater:subghz",
 
     ":components:nfceditor:api",
     ":components:nfceditor:impl",

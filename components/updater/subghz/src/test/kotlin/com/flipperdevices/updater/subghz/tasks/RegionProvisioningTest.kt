@@ -1,7 +1,7 @@
-package com.flipperdevices.updater.tasks
+package com.flipperdevices.updater.subghz.tasks
 
-import com.flipperdevices.updater.impl.model.RegionProvisioning
-import com.flipperdevices.updater.impl.model.RegionProvisioningSource
+import com.flipperdevices.updater.subghz.helpers.model.RegionProvisioning
+import com.flipperdevices.updater.subghz.helpers.model.RegionProvisioningSource
 import org.junit.Assert
 import org.junit.Test
 

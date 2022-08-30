@@ -1,4 +1,4 @@
-package com.flipperdevices.updater.tasks
+package com.flipperdevices.updater.subghz.tasks
 
 import androidx.datastore.core.DataStore
 import androidx.test.platform.app.InstrumentationRegistry
@@ -15,11 +15,11 @@ import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.updater.api.DownloaderApi
-import com.flipperdevices.updater.api.SubGhzProvisioningHelperApi
 import com.flipperdevices.updater.downloader.api.DownloaderApiImpl
-import com.flipperdevices.updater.impl.model.RegionProvisioning
-import com.flipperdevices.updater.impl.tasks.RegionProvisioningHelper
-import com.flipperdevices.updater.impl.tasks.SubGhzProvisioningHelperImpl
+import com.flipperdevices.updater.subghz.helpers.RegionProvisioningHelper
+import com.flipperdevices.updater.subghz.helpers.SubGhzProvisioningHelper
+import com.flipperdevices.updater.subghz.helpers.SubGhzProvisioningHelperImpl
+import com.flipperdevices.updater.subghz.helpers.model.RegionProvisioning
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respond
@@ -59,7 +59,7 @@ class SubGhzProvisioningHelperTest(
     private lateinit var regionProvisioningHelper: RegionProvisioningHelper
     private lateinit var metricApi: MetricApi
     private lateinit var settings: DataStore<Settings>
-    private lateinit var underTest: SubGhzProvisioningHelperApi
+    private lateinit var underTest: SubGhzProvisioningHelper
 
     @Before
     fun setUp() = runTest {

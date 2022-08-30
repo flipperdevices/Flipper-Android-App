@@ -40,7 +40,7 @@ appcompat = "1.5.0"
 datastore = "1.0.0"
 # https://github.com/vsch/flexmark-java/issues/442
 flexmark = "0.42.14"
-markdown = "0.1.5"
+markdown = "0.1.2"
 ktor = "2.1.0"
 apache-compress = "1.21"
 apache-codec = "1.15"

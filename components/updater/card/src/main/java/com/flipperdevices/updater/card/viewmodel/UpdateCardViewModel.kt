@@ -18,7 +18,6 @@ import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.api.FlipperVersionProviderApi
-import com.flipperdevices.updater.api.SubGhzProvisioningHelperApi
 import com.flipperdevices.updater.card.utils.FileExistHelper
 import com.flipperdevices.updater.card.utils.isGreaterThan
 import com.flipperdevices.updater.model.FirmwareChannel
@@ -26,6 +25,7 @@ import com.flipperdevices.updater.model.FirmwareVersion
 import com.flipperdevices.updater.model.UpdateCardState
 import com.flipperdevices.updater.model.UpdateErrorType
 import com.flipperdevices.updater.model.VersionFiles
+import com.flipperdevices.updater.subghz.helpers.SubGhzProvisioningHelper
 import java.net.UnknownHostException
 import java.util.EnumMap
 import kotlinx.coroutines.Deferred
@@ -48,7 +48,7 @@ class UpdateCardViewModel @VMInject constructor(
     private val serviceProvider: FlipperServiceProvider,
     private val dataStoreSettings: DataStore<Settings>,
     private val fileExistHelper: FileExistHelper,
-    private val subGhzProvisioningHelperApi: SubGhzProvisioningHelperApi
+    private val subGhzProvisioningHelper: SubGhzProvisioningHelper
 ) :
     LifecycleViewModel(),
     FlipperBleServiceConsumer,
@@ -142,7 +142,7 @@ class UpdateCardViewModel @VMInject constructor(
             isManifestExist(serviceApi),
             isSubGhzProvisioningExist(serviceApi)
         ) { setting, isManifestExist, isSubGhzProvisioningExist ->
-            val isRegionChanged = subGhzProvisioningHelperApi.getRegion() != setting.region
+            val isRegionChanged = subGhzProvisioningHelper.getRegion() != setting.lastProvidedRegion
             return@combine setting.alwaysUpdate || !isManifestExist ||
                 !isSubGhzProvisioningExist || isRegionChanged
         }
