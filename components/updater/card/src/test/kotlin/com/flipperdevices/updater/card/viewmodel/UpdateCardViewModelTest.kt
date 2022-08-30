@@ -13,13 +13,13 @@ import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.preference.pb.settings
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.api.FlipperVersionProviderApi
-import com.flipperdevices.updater.api.SubGhzProvisioningHelperApi
-import com.flipperdevices.updater.card.utils.FileExistHelper
+import com.flipperdevices.updater.card.helpers.FileExistHelper
 import com.flipperdevices.updater.model.DistributionFile
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
 import com.flipperdevices.updater.model.UpdateCardState
 import com.flipperdevices.updater.model.VersionFiles
+import com.flipperdevices.updater.subghz.helpers.SubGhzProvisioningHelper
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -45,14 +45,14 @@ class UpdateCardViewModelTest {
     private val dataStoreSettings: DataStore<Settings> = mockk()
     private val serviceApi: FlipperServiceApi = mockk()
     private val fileExistHelper: FileExistHelper = mockk()
-    private val subGhzProvisioningHelperApi: SubGhzProvisioningHelperApi = mockk()
+    private val subGhzProvisioningHelper: SubGhzProvisioningHelper = mockk()
     private val updateCardViewModel: UpdateCardViewModel = UpdateCardViewModel(
         downloaderApi = downloaderApi,
         flipperVersionProviderApi = flipperVersionProviderApi,
         serviceProvider = serviceProvider,
         dataStoreSettings = dataStoreSettings,
         fileExistHelper = fileExistHelper,
-        subGhzProvisioningHelperApi = subGhzProvisioningHelperApi
+        subGhzProvisioningHelper = subGhzProvisioningHelper
     )
 
     @Before
@@ -73,7 +73,7 @@ class UpdateCardViewModelTest {
             )
             versionMap
         }
-        coEvery { subGhzProvisioningHelperApi.getRegion() } returns "UA"
+        coEvery { subGhzProvisioningHelper.getRegion() } returns "UA"
         every { serviceApi.flipperRpcInformationApi } returns mockk()
         every {
             serviceApi.flipperRpcInformationApi.getRpcInformationFlow()
@@ -88,7 +88,7 @@ class UpdateCardViewModelTest {
             settings {
                 selectedChannel = SelectedChannel.DEV
                 alwaysUpdate = false
-                region = "UA"
+                lastProvidedRegion = "UA"
             }
         )
         every {
@@ -165,7 +165,7 @@ class UpdateCardViewModelTest {
 
     @Test
     fun `The region now and the previous one are different`() = runTest {
-        coEvery { subGhzProvisioningHelperApi.getRegion() } returns "USA"
+        coEvery { subGhzProvisioningHelper.getRegion() } returns "USA"
         updateCardViewModel.onServiceApiReady(serviceApi)
         val state = updateCardViewModel
             .getUpdateCardState()

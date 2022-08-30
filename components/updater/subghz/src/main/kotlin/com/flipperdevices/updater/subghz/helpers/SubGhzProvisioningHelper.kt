@@ -77,7 +77,7 @@ class SubGhzProvisioningHelperImpl @Inject constructor(
             response.countries[providedRegion.uppercase()] ?: response.defaults
         } else response.defaults
 
-        val finalCodeRegion = providedRegion?.uppercase() ?: UNKNOWN_REGION
+        val finalCodeRegion = getRegion() ?: UNKNOWN_REGION
 
         val regionData = region {
             countryCode = ByteString.copyFrom(
