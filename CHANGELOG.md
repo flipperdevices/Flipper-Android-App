@@ -14,6 +14,7 @@
 - [REFACTOR] Bump all deps version
 - [Feature] Do not provide SubGhz provisioning on zero hardware region
 - [REFACTOR] Remove bottom bar on key screen
+- [REFACTOR] Display error if /int/ full in update progress
 
 # 1.2.0
 

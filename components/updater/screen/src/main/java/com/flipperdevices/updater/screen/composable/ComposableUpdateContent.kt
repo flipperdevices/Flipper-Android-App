@@ -80,7 +80,8 @@ fun ComposableUpdateContent(
             FailedReason.UPLOAD_ON_FLIPPER -> ComposableFailedUploadContent()
             FailedReason.DOWNLOAD_FROM_NETWORK -> ComposableFailedDownloadContent(onRetry)
             FailedReason.OUTDATED_APP -> ComposableOutdatedApp()
-            FailedReason.FAILED_SUB_GHZ_PROVISIONING -> ComposableInternalFlashFailed()
+            FailedReason.FAILED_SUB_GHZ_PROVISIONING,
+            FailedReason.FAILED_INT_STORAGE -> ComposableInternalFlashFailed()
         }
         UpdaterScreenState.Finish -> return
     }

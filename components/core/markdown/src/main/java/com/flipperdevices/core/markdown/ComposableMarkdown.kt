@@ -42,6 +42,7 @@ fun markdownColors(
 
 @Composable
 fun markdownTypography(
+    additionalTextStyle: TextStyle = TextStyle(),
     bulletStyle: TextStyle = LocalTypography.current.bodyR14,
     codeStyle: TextStyle = LocalTypography.current.bodyR14,
     h1Style: TextStyle = LocalTypography.current.bodySB14,
@@ -57,19 +58,19 @@ fun markdownTypography(
     textStyle: TextStyle = LocalTypography.current.bodyR14
 ): MarkdownTypography {
     return object : MarkdownTypography {
-        override val bullet = bulletStyle
-        override val code = codeStyle
-        override val h1 = h1Style
-        override val h2 = h2Style
-        override val h3 = h3Style
-        override val h4 = h4Style
-        override val h5 = h5Style
-        override val h6 = h6Style
-        override val list = listStyle
-        override val ordered = orderedStyle
-        override val paragraph = paragraphStyle
-        override val quote = quoteStyle
-        override val text = textStyle
+        override val bullet = bulletStyle.merge(additionalTextStyle)
+        override val code = codeStyle.merge(additionalTextStyle)
+        override val h1 = h1Style.merge(additionalTextStyle)
+        override val h2 = h2Style.merge(additionalTextStyle)
+        override val h3 = h3Style.merge(additionalTextStyle)
+        override val h4 = h4Style.merge(additionalTextStyle)
+        override val h5 = h5Style.merge(additionalTextStyle)
+        override val h6 = h6Style.merge(additionalTextStyle)
+        override val list = listStyle.merge(additionalTextStyle)
+        override val ordered = orderedStyle.merge(additionalTextStyle)
+        override val paragraph = paragraphStyle.merge(additionalTextStyle)
+        override val quote = quoteStyle.merge(additionalTextStyle)
+        override val text = textStyle.merge(additionalTextStyle)
     }
 }
 

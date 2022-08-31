@@ -134,8 +134,10 @@ class UpdaterTask(
             )
         } catch (e: Throwable) {
             error(e) { "Failed when upload to flipper" }
-            if (e !is CancellationException) {
-                stateListener(UpdatingState.FailedUpload)
+            when (e) {
+                is IllegalStateException -> stateListener(UpdatingState.FailedInternalStorage)
+                is CancellationException -> {}
+                else -> stateListener(UpdatingState.FailedUpload)
             }
             return@useTemporaryFolder
         }
