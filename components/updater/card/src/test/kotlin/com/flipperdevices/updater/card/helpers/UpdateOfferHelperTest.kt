@@ -15,16 +15,12 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
-class UpdateOfferHelperTest {
+class UpdateOfferProviderTest {
     private val serviceApi: FlipperServiceApi = mockk()
     private val dataStoreSettings: DataStore<Settings> = mockk()
     private val fileExistHelper: FileExistHelper = mockk()
     private val subGhzProvisioningHelper: SubGhzProvisioningHelper = mockk()
-    private val updateOfferHelper = UpdateOfferHelper(
-        dataStoreSettings = dataStoreSettings,
-        fileExistHelper = fileExistHelper,
-        subGhzProvisioningHelper = subGhzProvisioningHelper
-    )
+    private val updateOfferHelper = UpdateOfferProvider()
 
     @Before
     fun setup() {

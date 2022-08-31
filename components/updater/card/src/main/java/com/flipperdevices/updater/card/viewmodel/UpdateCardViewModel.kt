@@ -17,7 +17,7 @@ import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.api.FlipperVersionProviderApi
-import com.flipperdevices.updater.card.helpers.UpdateOfferHelper
+import com.flipperdevices.updater.card.helpers.UpdateOfferProvider
 import com.flipperdevices.updater.card.utils.isGreaterThan
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
@@ -44,7 +44,7 @@ class UpdateCardViewModel @VMInject constructor(
     private val flipperVersionProviderApi: FlipperVersionProviderApi,
     private val serviceProvider: FlipperServiceProvider,
     private val dataStoreSettings: DataStore<Settings>,
-    private val updateOfferHelper: UpdateOfferHelper
+    private val updateOfferHelper: UpdateOfferProvider
 ) :
     LifecycleViewModel(),
     FlipperBleServiceConsumer,
@@ -105,7 +105,7 @@ class UpdateCardViewModel @VMInject constructor(
                 flipperVersionProviderApi.getCurrentFlipperVersion(viewModelScope, serviceApi),
                 serviceApi.flipperRpcInformationApi.getRpcInformationFlow(),
                 dataStoreSettings.data,
-                updateOfferHelper.isAlwaysUpdate(serviceApi)
+                updateOfferHelper.isUpdateRequire(serviceApi)
             ) { flipperFirmwareVersion, rpcInformation, settings, isAlwaysUpdate ->
                 val updateChannel = settings.selectedChannel.toFirmwareChannel()
                 val newUpdateChannel = if (
