@@ -17,7 +17,7 @@ import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.api.FlipperVersionProviderApi
-import com.flipperdevices.updater.card.helpers.UpdateOfferProvider
+import com.flipperdevices.updater.card.helpers.UpdateOfferProviderApi
 import com.flipperdevices.updater.card.utils.isGreaterThan
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
@@ -44,7 +44,7 @@ class UpdateCardViewModel @VMInject constructor(
     private val flipperVersionProviderApi: FlipperVersionProviderApi,
     private val serviceProvider: FlipperServiceProvider,
     private val dataStoreSettings: DataStore<Settings>,
-    private val updateOfferHelper: UpdateOfferProvider
+    private val updateOfferHelper: UpdateOfferProviderApi
 ) :
     LifecycleViewModel(),
     FlipperBleServiceConsumer,

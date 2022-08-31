@@ -2,13 +2,16 @@ package com.flipperdevices.updater.card.helpers.delegates
 
 import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
+import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.updater.subghz.helpers.SubGhzProvisioningHelper
+import com.squareup.anvil.annotations.ContributesMultibinding
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class UpdateOfferDelegateCurrentRegion @Inject constructor(
+@ContributesMultibinding(scope = AppGraph::class, boundType = UpdateOfferDelegate::class)
+class UpdateOfferDelegateRegionChange @Inject constructor(
     private val dataStoreSettings: DataStore<Settings>,
     private val subGhzProvisioningHelper: SubGhzProvisioningHelper
 ) : UpdateOfferDelegate {
