@@ -1,0 +1,12 @@
+Flipper Zero is a portable multi-tool for geeks in a toy-like body. This app helps to manage your data on the device, organize keys and share it with other Flipper Zero users
+
+**Features**
+
+* Connect over Bluetooth
+* Firmware Updater
+* Device Info
+* File Manager
+* Screen Streaming and Remote Input
+* Sync capture files (NFC,SubGHz,IR,RFID)
+* Dark Theme
+* Open Source
