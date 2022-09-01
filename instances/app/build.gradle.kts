@@ -115,6 +115,4 @@ dependencies {
 
     implementation(libs.cicerone)
     implementation(libs.timber)
-
-    implementation(libs.install.referrer)
 }

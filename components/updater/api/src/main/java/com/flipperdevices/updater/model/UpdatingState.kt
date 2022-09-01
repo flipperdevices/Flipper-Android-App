@@ -13,6 +13,7 @@ sealed class UpdatingState(
 ) {
     object NotStarted : UpdatingState(true)
 
+    object FailedInternalStorage : UpdatingState(true)
     object FailedSubGhzProvisioning : UpdatingState(true)
     object FailedOutdatedApp : UpdatingState(true)
     object FailedDownload : UpdatingState(true)

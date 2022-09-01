@@ -72,14 +72,16 @@ private fun UpdaterScreenHeader(
         HardwareColor.UNRECOGNIZED,
         HardwareColor.WHITE -> if (updaterScreenState is UpdaterScreenState.Failed) {
             when (updaterScreenState.failedReason) {
-                FailedReason.FAILED_SUB_GHZ_PROVISIONING ->
+                FailedReason.FAILED_SUB_GHZ_PROVISIONING,
+                FailedReason.FAILED_INT_STORAGE ->
                     DesignSystem.drawable.pic_flipper_update_int_failed
                 else -> DesignSystem.drawable.pic_flipper_update_failed
             }
         } else DesignSystem.drawable.pic_flipper_update
         HardwareColor.BLACK -> if (updaterScreenState is UpdaterScreenState.Failed) {
             when (updaterScreenState.failedReason) {
-                FailedReason.FAILED_SUB_GHZ_PROVISIONING ->
+                FailedReason.FAILED_SUB_GHZ_PROVISIONING,
+                FailedReason.FAILED_INT_STORAGE ->
                     DesignSystem.drawable.pic_black_flipper_update_int_failed
                 else -> DesignSystem.drawable.pic_black_flipper_update_failed
             }

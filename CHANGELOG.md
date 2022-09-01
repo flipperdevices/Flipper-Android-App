@@ -9,6 +9,7 @@
 - [REFACTOR] Enable gradle configuration cache
 - [REFACTOR] Bump all deps version
 - [REFACTOR] Remove bottom bar on key screen
+- [REFACTOR] Display error if /int/ full in update progress
 - [Feature] Add support for NFC Shadow Files
 - [Feature] Offer update, if region changes or region file not exit on Flipper
 - [Feature] Do not provide SubGhz provisioning on zero hardware region

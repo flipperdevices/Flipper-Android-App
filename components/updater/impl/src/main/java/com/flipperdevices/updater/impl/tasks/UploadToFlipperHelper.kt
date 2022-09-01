@@ -18,6 +18,7 @@ import com.flipperdevices.protobuf.storage.writeRequest
 import com.flipperdevices.protobuf.system.System
 import com.flipperdevices.protobuf.system.rebootRequest
 import com.flipperdevices.protobuf.system.updateRequest
+import com.flipperdevices.updater.impl.model.IntFlashFullException
 import com.flipperdevices.updater.model.UpdatingState
 import com.squareup.anvil.annotations.ContributesBinding
 import java.io.File
@@ -70,11 +71,15 @@ class UploadToFlipperHelperImpl @Inject constructor() : UploadToFlipperHelper, L
                 }
             }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
         ).first()
-        if (response.commandStatus == Flipper.CommandStatus.ERROR_INVALID_PARAMETERS) {
-            return
-        }
-        if (response.commandStatus != Flipper.CommandStatus.OK) {
-            error("Failed send update request with status ${response.commandStatus}")
+        when (response.commandStatus) {
+            Flipper.CommandStatus.ERROR_INVALID_PARAMETERS -> {
+                val code = response.systemUpdateResponse.code
+                if (code == System.UpdateResponse.UpdateResultCode.IntFull) {
+                    throw IntFlashFullException()
+                }
+            }
+            Flipper.CommandStatus.OK -> {}
+            else -> error("Failed send update request with status ${response.commandStatus}")
         }
 
         requestApi.requestWithoutAnswer(
