@@ -4,16 +4,16 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.ui.dialog.composable.FlipperDialog
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.updater.card.R
 import com.flipperdevices.updater.card.viewmodel.UpdateRequestViewModel
 import com.flipperdevices.updater.model.UpdateCardState
+import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 fun ComposableUpdateRequest(
-    updateRequestViewModel: UpdateRequestViewModel = viewModel(),
+    updateRequestViewModel: UpdateRequestViewModel = tangleViewModel(),
     pendingUpdateRequest: UpdateCardState.UpdateAvailable,
     onDismiss: () -> Unit
 ) {

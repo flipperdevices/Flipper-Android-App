@@ -46,7 +46,6 @@ fun DebugCategory(
                     onClick = { debugViewModel.onStartSynchronization() }
                 )
                 GrayDivider()
-                GrayDivider()
                 SwitchableElement(
                     titleId = R.string.debug_ignored_unsupported_version,
                     descriptionId = R.string.debug_ignored_unsupported_version_desc,

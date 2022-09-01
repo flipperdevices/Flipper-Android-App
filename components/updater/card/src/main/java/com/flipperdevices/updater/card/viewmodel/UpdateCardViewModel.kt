@@ -2,13 +2,10 @@ package com.flipperdevices.updater.card.viewmodel
 
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.viewModelScope
-import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.StorageStats
-import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
-import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.ktx.jre.then
 import com.flipperdevices.core.log.LogTagProvider
@@ -18,12 +15,9 @@ import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.preference.pb.SelectedChannel
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
-import com.flipperdevices.protobuf.Flipper
-import com.flipperdevices.protobuf.main
-import com.flipperdevices.protobuf.storage.md5sumRequest
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.api.FlipperVersionProviderApi
-import com.flipperdevices.updater.card.di.CardComponent
+import com.flipperdevices.updater.card.helpers.UpdateOfferProviderApi
 import com.flipperdevices.updater.card.utils.isGreaterThan
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
@@ -32,24 +26,26 @@ import com.flipperdevices.updater.model.UpdateErrorType
 import com.flipperdevices.updater.model.VersionFiles
 import java.net.UnknownHostException
 import java.util.EnumMap
-import javax.inject.Inject
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancelAndJoin
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
+import tangle.viewmodel.VMInject
 
-private const val PATH_TO_MANIFEST = "/ext/Manifest"
-
-class UpdateCardViewModel :
+class UpdateCardViewModel @VMInject constructor(
+    private val downloaderApi: DownloaderApi,
+    private val flipperVersionProviderApi: FlipperVersionProviderApi,
+    private val serviceProvider: FlipperServiceProvider,
+    private val dataStoreSettings: DataStore<Settings>,
+    private val updateOfferHelper: UpdateOfferProviderApi
+) :
     LifecycleViewModel(),
     FlipperBleServiceConsumer,
     LogTagProvider {
@@ -61,20 +57,7 @@ class UpdateCardViewModel :
     private var cardStateJob: Job? = null
     private val mutex = Mutex()
 
-    @Inject
-    lateinit var downloaderApi: DownloaderApi
-
-    @Inject
-    lateinit var flipperVersionProviderApi: FlipperVersionProviderApi
-
-    @Inject
-    lateinit var serviceProvider: FlipperServiceProvider
-
-    @Inject
-    lateinit var dataStoreSettings: DataStore<Settings>
-
     init {
-        ComponentHolder.component<CardComponent>().inject(this)
         serviceProvider.provideServiceApi(this, this)
     }
 
@@ -118,14 +101,13 @@ class UpdateCardViewModel :
                 verbose { "latestVersionAsyncResult: $result" }
                 return@async result
             }
-            serviceApi.flipperRpcInformationApi.getRpcInformationFlow()
             combine(
-                dataStoreSettings.data.map { it.selectedChannel.toFirmwareChannel() },
                 flipperVersionProviderApi.getCurrentFlipperVersion(viewModelScope, serviceApi),
                 serviceApi.flipperRpcInformationApi.getRpcInformationFlow(),
                 dataStoreSettings.data,
-                isManifestExist(serviceApi)
-            ) { updateChannel, flipperFirmwareVersion, rpcInformation, settings, isManifestExist ->
+                updateOfferHelper.isUpdateRequire(serviceApi)
+            ) { flipperFirmwareVersion, rpcInformation, settings, isAlwaysUpdate ->
+                val updateChannel = settings.selectedChannel.toFirmwareChannel()
                 val newUpdateChannel = if (
                     updateChannel == null && flipperFirmwareVersion != null
                 ) {
@@ -134,9 +116,10 @@ class UpdateCardViewModel :
                 val isFlashExist = if (rpcInformation.externalStorageStats != null) {
                     rpcInformation.externalStorageStats is StorageStats.Loaded
                 } else null
-                return@combine newUpdateChannel.then(flipperFirmwareVersion)
+                return@combine newUpdateChannel
+                    .then(flipperFirmwareVersion)
                     .then(isFlashExist)
-                    .then(settings.alwaysUpdate || !isManifestExist)
+                    .then(isAlwaysUpdate)
             }.collectLatest { (updateChannel, flipperFirmwareVersion, isFlashExist, alwaysUpdate) ->
                 updateCardState(
                     updateChannel,
@@ -213,21 +196,6 @@ class UpdateCardViewModel :
                 UpdateCardState.Error(UpdateErrorType.UNABLE_TO_SERVER)
             )
             return
-        }
-    }
-
-    private fun isManifestExist(serviceApi: FlipperServiceApi): Flow<Boolean> {
-        return serviceApi.requestApi.request(
-            main {
-                storageMd5SumRequest = md5sumRequest {
-                    path = PATH_TO_MANIFEST
-                }
-            }.wrapToRequest(FlipperRequestPriority.BACKGROUND)
-        ).map { response ->
-            // if md5sum return not ok, we suppose assets not exist
-            val exist = (response.commandStatus == Flipper.CommandStatus.OK)
-            info { "Exist manifest response: $exist" }
-            exist
         }
     }
 }

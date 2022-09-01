@@ -17,6 +17,7 @@ dependencies {
     implementation(projects.components.core.ui.theme)
 
     implementation(projects.components.updater.api)
+    implementation(projects.components.updater.subghz)
     implementation(projects.components.info.shared)
 
     implementation(projects.components.bridge.api)
@@ -37,4 +38,14 @@ dependencies {
 
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
+    implementation(libs.tangle.viewmodel.compose)
+    implementation(libs.tangle.viewmodel.api)
+    anvil(libs.tangle.viewmodel.compiler)
+
+    // Testing
+    testImplementation(libs.junit)
+    testImplementation(libs.kotlin.coroutines.test)
+    testImplementation(libs.roboelectric)
+    testImplementation(libs.ktx.testing)
+    testImplementation(libs.mockk)
 }

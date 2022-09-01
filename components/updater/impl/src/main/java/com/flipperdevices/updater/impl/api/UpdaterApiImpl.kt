@@ -12,12 +12,12 @@ import com.flipperdevices.metric.api.events.complex.UpdateStatus
 import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.impl.UpdaterTask
 import com.flipperdevices.updater.impl.tasks.FirmwareDownloaderHelper
-import com.flipperdevices.updater.impl.tasks.SubGhzProvisioningHelper
 import com.flipperdevices.updater.impl.tasks.UploadToFlipperHelper
 import com.flipperdevices.updater.model.FirmwareVersion
 import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.model.UpdatingState
 import com.flipperdevices.updater.model.UpdatingStateWithRequest
+import com.flipperdevices.updater.subghz.helpers.SubGhzProvisioningHelper
 import com.squareup.anvil.annotations.ContributesBinding
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject

@@ -6,13 +6,16 @@
 - [REFACTOR] Redesign dialog after update (change colors)
 - [REFACTOR] Migrate to faster build configuration
 - [REFACTOR] Add test for subghz provisioning
-- [Feature] Add support for NFC Shadow Files
 - [REFACTOR] Enable gradle configuration cache
-- [FIX] Now search for devices by Mac address and by flipper name
-- [Fix] Subghz provisioning while geoip is null
 - [REFACTOR] Bump all deps version
+- [REFACTOR] Remove bottom bar on key screen
+- [Feature] Add support for NFC Shadow Files
+- [Feature] Offer update, if region changes or region file not exit on Flipper
 - [Feature] Do not provide SubGhz provisioning on zero hardware region
 - [Feature] Restart RPC on fail RPC process response or flipper lags
+- [Feature] Prepare for Fdroid app store
+- [FIX] Now search for devices by Mac address and by flipper name
+- [FIX] Subghz provisioning while geoip is null
 
 # 1.2.0
 
