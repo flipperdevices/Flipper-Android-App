@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="emulate_disabled_not_connected">Flipper not connected</string>
+    <string name="emulate_disabled_update_flipper">Update firmware to use this feature</string>
+    <string name="emulate_disabled_not_synchronized">Synchronize the file</string>
+    <string name="emulate_loading_syncing">Syncing</string>
+    <string name="emulate_loading_connecting">Connecting</string>
     <string name="keyscreen_send">Send</string>
     <string name="keyscreen_sending">Sending…</string>
     <string name="keyscreen_sending_desc">Hold to send from Flipper</string>

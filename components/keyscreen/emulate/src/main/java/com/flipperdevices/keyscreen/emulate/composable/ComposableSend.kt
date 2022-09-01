@@ -23,6 +23,8 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.keyscreen.emulate.R
 import com.flipperdevices.keyscreen.emulate.composable.common.ComposableActionDisable
 import com.flipperdevices.keyscreen.emulate.composable.common.ComposableActionFlipper
+import com.flipperdevices.keyscreen.emulate.composable.common.ComposableActionLoading
+import com.flipperdevices.keyscreen.emulate.model.DisableButtonReason
 import com.flipperdevices.keyscreen.emulate.model.EmulateButtonState
 import com.flipperdevices.keyscreen.emulate.viewmodel.EmulateViewModel
 import tangle.viewmodel.compose.tangleViewModel
@@ -38,21 +40,25 @@ fun ComposableSend(modifier: Modifier = Modifier, flipperKey: FlipperKey) {
         ComposableActionDisable(
             modifier = modifier,
             textId = R.string.keyscreen_send,
-            iconId = DesignSystem.drawable.ic_send
+            iconId = DesignSystem.drawable.ic_send,
+            reason = DisableButtonReason.NOT_SYNCHRONIZED
         )
         return
     }
 
     when (emulateButtonState) {
-        EmulateButtonState.DISABLED -> ComposableActionDisable(
+        is EmulateButtonState.Disabled -> {
+            ComposableActionDisable(
+                modifier = modifier,
+                textId = R.string.keyscreen_send,
+                iconId = DesignSystem.drawable.ic_send,
+                reason = (emulateButtonState as EmulateButtonState.Disabled).reason
+            )
+        }
+        EmulateButtonState.Inactive,
+        is EmulateButtonState.Active -> ComposableSendInternal(
             modifier = modifier,
-            textId = R.string.keyscreen_send,
-            iconId = DesignSystem.drawable.ic_send
-        )
-        EmulateButtonState.INACTIVE,
-        EmulateButtonState.ACTIVE -> ComposableSendInternal(
-            modifier = modifier,
-            isAction = emulateButtonState == EmulateButtonState.ACTIVE,
+            isAction = emulateButtonState is EmulateButtonState.Active,
             onTap = {
                 flipperDeviceViewModel.onSinglePress(flipperKey)
             },
@@ -62,6 +68,10 @@ fun ComposableSend(modifier: Modifier = Modifier, flipperKey: FlipperKey) {
             onLongPressEnd = {
                 flipperDeviceViewModel.onStopEmulate()
             }
+        )
+        is EmulateButtonState.Loading -> ComposableActionLoading(
+            modifier = modifier,
+            loadingState = (emulateButtonState as EmulateButtonState.Loading).state
         )
     }
 }
@@ -95,7 +105,6 @@ private fun ComposableSendInternal(
     ) {
         if (!isAction) {
             Text(
-                modifier = Modifier.padding(top = 4.dp),
                 text = stringResource(id = R.string.keyscreen_sending_desc),
                 style = LocalTypography.current.subtitleM12,
                 color = LocalPallet.current.text20,
