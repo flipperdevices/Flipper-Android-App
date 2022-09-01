@@ -56,7 +56,7 @@ fun ComposableActionLoading(
 @Composable
 private fun ComposableLoadingPreview() {
     FlipperThemeInternal {
-        Column() {
+        Column {
             LoadingState.values().forEach {
                 ComposableActionLoading(Modifier, it)
             }

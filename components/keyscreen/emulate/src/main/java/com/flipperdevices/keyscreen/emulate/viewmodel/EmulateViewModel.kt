@@ -109,7 +109,13 @@ class EmulateViewModel @VMInject constructor(
 
         serviceProvider.provideServiceApi(this) {
             viewModelScope.launch(Dispatchers.Default) {
-                emulateHelper.startEmulate(this, it.requestApi, fileType, flipperKey)
+                try {
+                    emulateHelper.startEmulate(this, it.requestApi, fileType, flipperKey)
+                } catch (ignored: AlreadyOpenedAppException) {
+                    emulateHelper.stopEmulate(it.requestApi)
+                    emulateButtonStateFlow.emit(EmulateButtonState.AppAlreadyOpenDialog)
+                    return@launch
+                }
                 emulateHelper.stopEmulate(it.requestApi)
                 emulateButtonStateFlow.emit(EmulateButtonState.Inactive())
             }
