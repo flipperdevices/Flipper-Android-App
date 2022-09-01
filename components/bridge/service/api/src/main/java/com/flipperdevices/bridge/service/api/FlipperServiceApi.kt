@@ -50,4 +50,9 @@ interface FlipperServiceApi {
     suspend fun disconnect(isForce: Boolean = true)
 
     suspend fun reconnect()
+
+    /**
+     * An internal mechanism that allows you to restart the RPC flipper
+     */
+    fun restartRPC()
 }

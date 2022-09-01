@@ -5,6 +5,7 @@ import com.flipperdevices.bridge.api.manager.delegates.FlipperConnectionInformat
 import com.flipperdevices.bridge.api.manager.service.FlipperInformationApi
 import com.flipperdevices.bridge.api.manager.service.FlipperRpcInformationApi
 import com.flipperdevices.bridge.api.manager.service.FlipperVersionApi
+import com.flipperdevices.bridge.api.manager.service.RestartRPCApi
 
 interface FlipperBleManager {
     // Manager delegates
@@ -15,6 +16,7 @@ interface FlipperBleManager {
     val flipperRequestApi: FlipperRequestApi
     val flipperRpcInformationApi: FlipperRpcInformationApi
     val flipperVersionApi: FlipperVersionApi
+    val restartRPCApi: RestartRPCApi
 
     fun isConnected(): Boolean
 

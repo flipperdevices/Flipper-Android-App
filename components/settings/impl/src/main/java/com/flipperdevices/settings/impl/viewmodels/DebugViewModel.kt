@@ -3,10 +3,11 @@ package com.flipperdevices.settings.impl.viewmodels
 import android.app.Application
 import android.widget.Toast
 import androidx.datastore.core.DataStore
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.preference.pb.Settings
+import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
 import com.flipperdevices.settings.impl.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,8 +17,9 @@ import tangle.viewmodel.VMInject
 class DebugViewModel @VMInject constructor(
     application: Application,
     private val synchronizationApi: SynchronizationApi,
-    private val settingsDataStore: DataStore<Settings>
-) : AndroidViewModel(application) {
+    private val settingsDataStore: DataStore<Settings>,
+    private val serviceProvider: FlipperServiceProvider
+) : AndroidLifecycleViewModel(application) {
 
     fun onStartSynchronization() {
         synchronizationApi.startSynchronization(force = true)
@@ -63,6 +65,12 @@ class DebugViewModel @VMInject constructor(
                     .setIgnoreSubghzProvisioningOnZeroRegion(ignoreSubGhzProvisioningOnZeroRegion)
                     .build()
             }
+        }
+    }
+
+    fun restartRpc() {
+        serviceProvider.provideServiceApi(this) {
+            it.restartRPC()
         }
     }
 

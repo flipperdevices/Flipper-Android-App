@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothGatt
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.manager.delegates.FlipperActionNotifier
 import com.flipperdevices.bridge.api.manager.delegates.FlipperLagsDetector
+import com.flipperdevices.bridge.api.manager.service.RestartRPCApi
 import com.flipperdevices.bridge.api.model.FlipperRequest
 import com.flipperdevices.bridge.api.model.FlipperSerialSpeed
 import com.flipperdevices.bridge.impl.manager.PeripheralResponseReader
@@ -48,6 +49,7 @@ class FlipperRequestApiImpl(
     private val scope: CoroutineScope,
     private val flipperActionNotifier: FlipperActionNotifier,
     private val lagsDetector: FlipperLagsDetector,
+    restartRPCApi: RestartRPCApi,
     sentryApi: Shake2ReportApi
 ) : FlipperRequestApi,
     BluetoothGattServiceWrapper,
@@ -59,7 +61,7 @@ class FlipperRequestApiImpl(
     private val requestListeners = ConcurrentHashMap<Int, OnReceiveResponse>()
     private val notificationMutableFlow = MutableSharedFlow<Flipper.Main>()
 
-    private val reader = PeripheralResponseReader(scope, sentryApi)
+    private val reader = PeripheralResponseReader(scope, sentryApi, restartRPCApi)
     private val serialApiUnsafe = FlipperSerialApiUnsafeImpl(scope, flipperActionNotifier)
     private val requestStorage: FlipperRequestStorage = FlipperRequestStorageImpl()
     private val serialApi = FlipperSerialOverflowThrottler(serialApiUnsafe, scope, requestStorage)

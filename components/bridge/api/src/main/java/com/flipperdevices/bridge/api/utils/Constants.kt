@@ -52,6 +52,7 @@ object Constants {
         val TX: UUID = UUID.fromString("19ed82ae-ed21-4c9d-4145-228e62fe0000")
         val RX: UUID = UUID.fromString("19ed82ae-ed21-4c9d-4145-228e61fe0000")
         val OVERFLOW: UUID = UUID.fromString("19ed82ae-ed21-4c9d-4145-228e63fe0000")
+        val RPC_STATE: UUID = UUID.fromString("19ed82ae-ed21-4c9d-4145-228e64fe0000")
     }
 
     object BLE {

@@ -1,5 +1,6 @@
 package com.flipperdevices.bridge.impl.manager
 
+import com.flipperdevices.bridge.api.manager.service.RestartRPCApi
 import com.flipperdevices.bridge.impl.utils.ByteEndlessInputStream
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
@@ -7,7 +8,7 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.shake2report.api.Shake2ReportApi
-import java.lang.Exception
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -23,7 +24,8 @@ const val TAG = "PeripheralResponseReader"
 @Suppress("BlockingMethodInNonBlockingContext")
 class PeripheralResponseReader(
     private val scope: CoroutineScope,
-    private val sentryApi: Shake2ReportApi
+    private val sentryApi: Shake2ReportApi,
+    private val restartRPCApi: RestartRPCApi
 ) : LogTagProvider {
     override val TAG = "PeripheralResponseReader"
     private val mutex = Mutex()
@@ -52,6 +54,7 @@ class PeripheralResponseReader(
 
     fun getResponses(): Flow<Flipper.Main> = responses
 
+    @Suppress("TooGenericExceptionCaught")
     private suspend fun CoroutineScope.parseLoopJob(byteInputStream: ByteEndlessInputStream) {
         while (this.isActive) {
             try {
@@ -60,9 +63,14 @@ class PeripheralResponseReader(
                 scope.launch(Dispatchers.Default) {
                     responses.emit(main)
                 }
+            } catch (ignored: CancellationException) {
+                // ignore
+            } catch (ignored: java.util.concurrent.CancellationException) {
+                // ignore
             } catch (e: Exception) {
                 error(e) { "Failed parse stream" }
                 sentryApi.reportException(e, "protobuf_read")
+                restartRPCApi.restartRpc()
             }
         }
     }

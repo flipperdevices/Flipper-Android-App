@@ -55,7 +55,7 @@ class FlipperLagsDetectorImpl(
                     if (connectionState is ConnectionState.Ready &&
                         connectionState.supportedState == FlipperSupportedState.READY
                     ) {
-                        serviceApi.reconnect()
+                        serviceApi.restartRPC()
                     }
                 } else if (pendingResponseCounter.get() < 0) {
                     pendingResponseCounter.set(0)

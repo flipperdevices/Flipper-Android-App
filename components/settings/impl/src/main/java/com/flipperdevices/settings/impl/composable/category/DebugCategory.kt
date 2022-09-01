@@ -74,6 +74,11 @@ fun DebugCategory(
                     state = settings.ignoreSubghzProvisioningOnZeroRegion,
                     onSwitchState = debugViewModel::onSwitchIgnoreSubGhzProvisioning
                 )
+                GrayDivider()
+                ClickableElement(
+                    titleId = R.string.debug_restart_rpc,
+                    onClick = debugViewModel::restartRpc
+                )
             }
         }
     }
