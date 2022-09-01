@@ -1,1 +1,1 @@
-Flipper Zero companion app for andriod.
+Flipper Zero companion app for android.
