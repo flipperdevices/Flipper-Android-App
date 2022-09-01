@@ -191,6 +191,9 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
                 UpdatingState.FailedSubGhzProvisioning -> UpdaterScreenState.Failed(
                     FailedReason.FAILED_SUB_GHZ_PROVISIONING
                 )
+                UpdatingState.FailedInternalStorage -> UpdaterScreenState.Failed(
+                    FailedReason.FAILED_INT_STORAGE
+                )
                 UpdatingState.SubGhzProvisioning -> UpdaterScreenState.SubGhzProvisioning(
                     firmwareData
                 )

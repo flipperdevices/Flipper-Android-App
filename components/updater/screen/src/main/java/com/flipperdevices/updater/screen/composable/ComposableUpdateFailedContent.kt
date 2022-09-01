@@ -55,7 +55,7 @@ private fun ComposableUpdateFailedContent(
             text = LocalPallet.current.text40
         ),
         typography = markdownTypography(
-            textStyle = LocalTypography.current.bodyR14
+            additionalTextStyle = TextStyle(textAlign = TextAlign.Center)
         )
     )
 
