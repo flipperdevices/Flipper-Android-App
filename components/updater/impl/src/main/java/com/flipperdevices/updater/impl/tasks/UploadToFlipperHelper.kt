@@ -18,6 +18,7 @@ import com.flipperdevices.protobuf.storage.writeRequest
 import com.flipperdevices.protobuf.system.System
 import com.flipperdevices.protobuf.system.rebootRequest
 import com.flipperdevices.protobuf.system.updateRequest
+import com.flipperdevices.updater.impl.model.IntFlashFullException
 import com.flipperdevices.updater.model.UpdatingState
 import com.squareup.anvil.annotations.ContributesBinding
 import java.io.File
@@ -124,8 +125,10 @@ class UploadToFlipperHelperImpl @Inject constructor() : UploadToFlipperHelper, L
                     )
                 }
                 val response = requestApi.request(requestFlow)
-                if (response.commandStatus != Flipper.CommandStatus.OK) {
-                    error("Failed with $response")
+                when (response.commandStatus) {
+                    Flipper.CommandStatus.ERROR_INVALID_PARAMETERS -> throw IntFlashFullException()
+                    Flipper.CommandStatus.OK -> {}
+                    else -> error("Failed with $response")
                 }
             }
         }

@@ -10,6 +10,7 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.core.ui.lifecycle.OneTimeExecutionBleTask
 import com.flipperdevices.updater.impl.model.FailedUploadSubGhzException
+import com.flipperdevices.updater.impl.model.IntFlashFullException
 import com.flipperdevices.updater.impl.tasks.FirmwareDownloaderHelper
 import com.flipperdevices.updater.impl.tasks.FlipperUpdateImageHelper
 import com.flipperdevices.updater.impl.tasks.SubGhzProvisioningHelper
@@ -135,7 +136,7 @@ class UpdaterTask(
         } catch (e: Throwable) {
             error(e) { "Failed when upload to flipper" }
             when (e) {
-                is IllegalStateException -> stateListener(UpdatingState.FailedInternalStorage)
+                is IntFlashFullException -> stateListener(UpdatingState.FailedInternalStorage)
                 is CancellationException -> {}
                 else -> stateListener(UpdatingState.FailedUpload)
             }
