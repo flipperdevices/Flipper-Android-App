@@ -1,4 +1,4 @@
-package com.flipperdevices.updater.tasks
+package com.flipperdevices.updater.subghz.tasks
 
 import androidx.datastore.core.DataStore
 import androidx.test.platform.app.InstrumentationRegistry
@@ -16,10 +16,10 @@ import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.downloader.api.DownloaderApiImpl
-import com.flipperdevices.updater.impl.model.RegionProvisioning
-import com.flipperdevices.updater.impl.tasks.RegionProvisioningHelper
-import com.flipperdevices.updater.impl.tasks.SubGhzProvisioningHelper
-import com.flipperdevices.updater.impl.tasks.SubGhzProvisioningHelperImpl
+import com.flipperdevices.updater.subghz.helpers.RegionProvisioningHelper
+import com.flipperdevices.updater.subghz.helpers.SubGhzProvisioningHelper
+import com.flipperdevices.updater.subghz.helpers.SubGhzProvisioningHelperImpl
+import com.flipperdevices.updater.subghz.helpers.model.RegionProvisioning
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respond
@@ -221,6 +221,11 @@ class SubGhzProvisioningHelperTest(
             it.data.storageWriteRequest.file.data.toByteArray()
         }.flatten()
         Assert.assertTrue(expectedBytes.contentEquals(sendBytes))
+    }
+
+    @Test
+    fun `Get region`() = runTest {
+        Assert.assertEquals(underTest.getRegion(), countryName)
     }
 
     companion object {

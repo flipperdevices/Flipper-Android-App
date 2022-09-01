@@ -70,8 +70,11 @@ class UploadToFlipperHelperImpl @Inject constructor() : UploadToFlipperHelper, L
                 }
             }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
         ).first()
+        if (response.commandStatus == Flipper.CommandStatus.ERROR_INVALID_PARAMETERS) {
+            return
+        }
         if (response.commandStatus != Flipper.CommandStatus.OK) {
-            error("Failed send update request")
+            error("Failed send update request with status ${response.commandStatus}")
         }
 
         requestApi.requestWithoutAnswer(
