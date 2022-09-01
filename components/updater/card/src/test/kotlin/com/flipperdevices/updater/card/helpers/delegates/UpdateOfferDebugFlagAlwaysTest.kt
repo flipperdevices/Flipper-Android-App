@@ -11,10 +11,10 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Test
 
-class UpdateOfferDelegateFlagAlwaysTest {
+class UpdateOfferDebugFlagAlwaysTest {
     private val serviceApi: FlipperServiceApi = mockk()
     private val dataStoreSettings: DataStore<Settings> = mockk()
-    private val delegate: UpdateOfferDelegate = UpdateOfferDelegateFlagAlways(
+    private val delegate: UpdateOfferDelegate = UpdateOfferDebugFlagAlways(
         dataStoreSettings = dataStoreSettings
     )
 

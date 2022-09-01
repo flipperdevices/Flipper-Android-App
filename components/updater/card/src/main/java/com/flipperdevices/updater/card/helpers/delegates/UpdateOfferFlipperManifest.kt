@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 @ContributesMultibinding(scope = AppGraph::class, boundType = UpdateOfferDelegate::class)
-class UpdateOfferDelegateFlipperManifest @Inject constructor(
+class UpdateOfferFlipperManifest @Inject constructor(
     private val fileExistHelper: FileExistHelper
 ) : UpdateOfferDelegate {
 

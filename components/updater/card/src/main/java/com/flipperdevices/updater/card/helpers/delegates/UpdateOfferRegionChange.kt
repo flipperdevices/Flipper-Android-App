@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 @ContributesMultibinding(scope = AppGraph::class, boundType = UpdateOfferDelegate::class)
-class UpdateOfferDelegateRegionChange @Inject constructor(
+class UpdateOfferRegionChange @Inject constructor(
     private val dataStoreSettings: DataStore<Settings>,
     private val subGhzProvisioningHelper: SubGhzProvisioningHelper
 ) : UpdateOfferDelegate {

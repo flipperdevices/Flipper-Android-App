@@ -10,10 +10,10 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Test
 
-class UpdateOfferDelegateFlipperRegionTest {
+class UpdateOfferFlipperRegionTest {
     private val serviceApi: FlipperServiceApi = mockk()
     private val fileExistHelper: FileExistHelper = mockk()
-    private val delegate: UpdateOfferDelegate = UpdateOfferDelegateFlipperRegionFile(
+    private val delegate: UpdateOfferDelegate = UpdateOfferFlipperRegionFile(
         fileExistHelper = fileExistHelper
     )
 

@@ -13,11 +13,11 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Test
 
-class UpdateOfferDelegateRegionChangeTest {
+class UpdateOfferRegionChangeTest {
     private val serviceApi: FlipperServiceApi = mockk()
     private val dataStoreSettings: DataStore<Settings> = mockk()
     private val subGhzProvisioningHelper: SubGhzProvisioningHelper = mockk()
-    private val delegate: UpdateOfferDelegate = UpdateOfferDelegateRegionChange(
+    private val delegate: UpdateOfferDelegate = UpdateOfferRegionChange(
         dataStoreSettings = dataStoreSettings,
         subGhzProvisioningHelper = subGhzProvisioningHelper
     )
