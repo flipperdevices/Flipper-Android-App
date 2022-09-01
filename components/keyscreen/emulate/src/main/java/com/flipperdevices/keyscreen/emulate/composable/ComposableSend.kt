@@ -24,6 +24,7 @@ import com.flipperdevices.keyscreen.emulate.R
 import com.flipperdevices.keyscreen.emulate.composable.common.ComposableActionDisable
 import com.flipperdevices.keyscreen.emulate.composable.common.ComposableActionFlipper
 import com.flipperdevices.keyscreen.emulate.composable.common.ComposableActionLoading
+import com.flipperdevices.keyscreen.emulate.composable.common.ComposableAlreadyOpenedAppDialog
 import com.flipperdevices.keyscreen.emulate.model.DisableButtonReason
 import com.flipperdevices.keyscreen.emulate.model.EmulateButtonState
 import com.flipperdevices.keyscreen.emulate.viewmodel.EmulateViewModel
@@ -33,8 +34,8 @@ private const val SEND_BUTTON_SCALE = 1.06f
 
 @Composable
 fun ComposableSend(modifier: Modifier = Modifier, flipperKey: FlipperKey) {
-    val flipperDeviceViewModel = tangleViewModel<EmulateViewModel>()
-    val emulateButtonState by flipperDeviceViewModel.getEmulateButtonStateFlow().collectAsState()
+    val emulateViewModel = tangleViewModel<EmulateViewModel>()
+    val emulateButtonState by emulateViewModel.getEmulateButtonStateFlow().collectAsState()
 
     if (!flipperKey.synchronized) {
         ComposableActionDisable(
@@ -46,6 +47,10 @@ fun ComposableSend(modifier: Modifier = Modifier, flipperKey: FlipperKey) {
         return
     }
 
+    if (emulateButtonState == EmulateButtonState.AppAlreadyOpenDialog) {
+        ComposableAlreadyOpenedAppDialog(emulateViewModel::closeDialog)
+    }
+
     when (emulateButtonState) {
         is EmulateButtonState.Disabled -> {
             ComposableActionDisable(
@@ -55,18 +60,18 @@ fun ComposableSend(modifier: Modifier = Modifier, flipperKey: FlipperKey) {
                 reason = (emulateButtonState as EmulateButtonState.Disabled).reason
             )
         }
-        EmulateButtonState.Inactive,
+        is EmulateButtonState.Inactive,
         is EmulateButtonState.Active -> ComposableSendInternal(
             modifier = modifier,
             isAction = emulateButtonState is EmulateButtonState.Active,
             onTap = {
-                flipperDeviceViewModel.onSinglePress(flipperKey)
+                emulateViewModel.onSinglePress(flipperKey)
             },
             onLongPressStart = {
-                flipperDeviceViewModel.onStartEmulate(flipperKey)
+                emulateViewModel.onStartEmulate(flipperKey)
             },
             onLongPressEnd = {
-                flipperDeviceViewModel.onStopEmulate()
+                emulateViewModel.onStopEmulate()
             }
         )
         is EmulateButtonState.Loading -> ComposableActionLoading(

@@ -20,6 +20,7 @@ import com.flipperdevices.keyscreen.emulate.model.DisableButtonReason
 import com.flipperdevices.keyscreen.emulate.model.EmulateButtonState
 import com.flipperdevices.keyscreen.emulate.model.LoadingState
 import com.flipperdevices.keyscreen.emulate.tasks.CloseEmulateAppTaskHolder
+import com.flipperdevices.keyscreen.emulate.viewmodel.helpers.AlreadyOpenedAppException
 import com.flipperdevices.keyscreen.emulate.viewmodel.helpers.EmulateHelper
 import com.flipperdevices.protobuf.app.Application
 import kotlinx.coroutines.Dispatchers
@@ -61,18 +62,23 @@ class EmulateViewModel @VMInject constructor(
             when (it) {
                 is EmulateButtonState.Disabled -> it
                 is EmulateButtonState.Loading -> it
-                EmulateButtonState.Inactive -> EmulateButtonState.Active()
+                is EmulateButtonState.Inactive -> EmulateButtonState.Active()
                 is EmulateButtonState.Active -> return
             }
         }
 
         serviceProvider.provideServiceApi(this) {
             viewModelScope.launch(Dispatchers.Default) {
-                val emulateStarted =
+                val emulateStarted = try {
                     emulateHelper.startEmulate(this, it.requestApi, fileType, flipperKey)
+                } catch (ignored: AlreadyOpenedAppException) {
+                    emulateHelper.stopEmulate(it.requestApi)
+                    emulateButtonStateFlow.emit(EmulateButtonState.AppAlreadyOpenDialog)
+                    return@launch
+                }
                 if (!emulateStarted) {
                     emulateHelper.stopEmulate(it.requestApi)
-                    emulateButtonStateFlow.emit(EmulateButtonState.Inactive)
+                    emulateButtonStateFlow.emit(EmulateButtonState.Inactive())
                 }
             }
         }
@@ -82,7 +88,7 @@ class EmulateViewModel @VMInject constructor(
         serviceProvider.provideServiceApi(this) {
             viewModelScope.launch(Dispatchers.Default) {
                 emulateHelper.stopEmulate(it.requestApi)
-                emulateButtonStateFlow.emit(EmulateButtonState.Inactive)
+                emulateButtonStateFlow.emit(EmulateButtonState.Inactive())
             }
         }
         vibrator?.vibrateCompat(VIBRATOR_TIME)
@@ -95,7 +101,7 @@ class EmulateViewModel @VMInject constructor(
         emulateButtonStateFlow.update {
             when (it) {
                 is EmulateButtonState.Disabled -> it
-                EmulateButtonState.Inactive -> EmulateButtonState.Active()
+                is EmulateButtonState.Inactive -> EmulateButtonState.Active()
                 is EmulateButtonState.Active -> return
                 is EmulateButtonState.Loading -> it
             }
@@ -105,8 +111,16 @@ class EmulateViewModel @VMInject constructor(
             viewModelScope.launch(Dispatchers.Default) {
                 emulateHelper.startEmulate(this, it.requestApi, fileType, flipperKey)
                 emulateHelper.stopEmulate(it.requestApi)
-                emulateButtonStateFlow.emit(EmulateButtonState.Inactive)
+                emulateButtonStateFlow.emit(EmulateButtonState.Inactive())
             }
+        }
+    }
+
+    fun closeDialog() {
+        emulateButtonStateFlow.update {
+            if (it == EmulateButtonState.AppAlreadyOpenDialog) {
+                EmulateButtonState.Inactive()
+            } else it
         }
     }
 
@@ -129,7 +143,7 @@ class EmulateViewModel @VMInject constructor(
             ) {
                 EmulateButtonState.Disabled(DisableButtonReason.UPDATE_FLIPPER)
             } else {
-                EmulateButtonState.Inactive
+                EmulateButtonState.Inactive()
             }
         }.onEach { emulateButtonState ->
             emulateButtonStateFlow.emit(emulateButtonState)
@@ -140,7 +154,7 @@ class EmulateViewModel @VMInject constructor(
                 if (unknownMessage.appStateResponse.state == Application.AppState.APP_CLOSED) {
                     emulateButtonStateFlow.update {
                         if (it is EmulateButtonState.Active) {
-                            EmulateButtonState.Inactive
+                            EmulateButtonState.Inactive()
                         } else it
                     }
                 }

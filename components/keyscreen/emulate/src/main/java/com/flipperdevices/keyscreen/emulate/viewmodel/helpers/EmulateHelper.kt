@@ -128,6 +128,7 @@ class EmulateHelper @Inject constructor() : LogTagProvider {
         return true
     }
 
+    @Throws(AlreadyOpenedAppException::class)
     private suspend fun tryOpenApp(
         scope: CoroutineScope,
         requestApi: FlipperRequestApi,
@@ -152,6 +153,10 @@ class EmulateHelper @Inject constructor() : LogTagProvider {
                     }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
                 )
             )
+            if (appStartResponse.commandStatus == Flipper.CommandStatus.ERROR_APP_SYSTEM_LOCKED) {
+                error { "Handle already opened app" }
+                throw AlreadyOpenedAppException()
+            }
             if (appStartResponse.commandStatus != Flipper.CommandStatus.OK) {
                 error { "Failed start rpc app with error $appStartResponse" }
                 return false

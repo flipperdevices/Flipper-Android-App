@@ -24,6 +24,7 @@ import com.flipperdevices.keyscreen.emulate.R
 import com.flipperdevices.keyscreen.emulate.composable.common.ComposableActionDisable
 import com.flipperdevices.keyscreen.emulate.composable.common.ComposableActionFlipper
 import com.flipperdevices.keyscreen.emulate.composable.common.ComposableActionLoading
+import com.flipperdevices.keyscreen.emulate.composable.common.ComposableAlreadyOpenedAppDialog
 import com.flipperdevices.keyscreen.emulate.model.DisableButtonReason
 import com.flipperdevices.keyscreen.emulate.model.EmulateButtonState
 import com.flipperdevices.keyscreen.emulate.viewmodel.EmulateViewModel
@@ -43,6 +44,10 @@ fun ComposableEmulate(modifier: Modifier = Modifier, flipperKey: FlipperKey) {
         return
     }
 
+    if (emulateButtonState == EmulateButtonState.AppAlreadyOpenDialog) {
+        ComposableAlreadyOpenedAppDialog(emulateViewModel::closeDialog)
+    }
+
     when (emulateButtonState) {
         is EmulateButtonState.Disabled -> ComposableActionDisable(
             modifier = modifier,
@@ -55,7 +60,7 @@ fun ComposableEmulate(modifier: Modifier = Modifier, flipperKey: FlipperKey) {
             isAction = true,
             onClick = emulateViewModel::onStopEmulate
         )
-        EmulateButtonState.Inactive -> ComposableEmulateInternal(
+        is EmulateButtonState.Inactive -> ComposableEmulateInternal(
             modifier = modifier,
             isAction = false,
             onClick = {

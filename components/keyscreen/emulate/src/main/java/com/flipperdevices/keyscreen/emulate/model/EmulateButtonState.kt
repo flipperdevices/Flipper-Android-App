@@ -11,7 +11,10 @@ sealed class EmulateButtonState {
     data class Disabled(val reason: DisableButtonReason) : EmulateButtonState()
 
     @Stable
-    object Inactive : EmulateButtonState()
+    open class Inactive : EmulateButtonState()
+
+    @Stable
+    object AppAlreadyOpenDialog : Inactive()
 
     @Stable
     data class Active(val tmp: Unit = Unit) : EmulateButtonState()
