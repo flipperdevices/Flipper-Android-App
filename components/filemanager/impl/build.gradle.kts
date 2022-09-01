@@ -10,25 +10,11 @@ plugins {
 }
 
 android {
-    buildTypes {
-        debug {
-            val applicationId = ApkConfig.APPLICATION_ID + ApkConfig.APPLICATION_ID_SUFFIX
-            val shareFileAuthorities = "$applicationId.filemanager.export.provider"
-            manifestPlaceholders["shareFileAuthorities"] = shareFileAuthorities
-            buildConfigField("String", "SHARE_FILE_AUTHORITIES", "\"$shareFileAuthorities\"")
-        }
-        internal {
-            val applicationId = ApkConfig.APPLICATION_ID
-            val shareFileAuthorities = "$applicationId.filemanager.export.provider"
-            manifestPlaceholders["shareFileAuthorities"] = shareFileAuthorities
-            buildConfigField("String", "SHARE_FILE_AUTHORITIES", "\"$shareFileAuthorities\"")
-        }
-        release {
-            val applicationId = ApkConfig.APPLICATION_ID
-            val shareFileAuthorities = "$applicationId.filemanager.export.provider"
-            manifestPlaceholders["shareFileAuthorities"] = shareFileAuthorities
-            buildConfigField("String", "SHARE_FILE_AUTHORITIES", "\"$shareFileAuthorities\"")
-        }
+    defaultConfig {
+        val applicationId = ApkConfig.APPLICATION_ID
+        val shareFileAuthorities = "$applicationId.filemanager.export.provider"
+        manifestPlaceholders["shareFileAuthorities"] = shareFileAuthorities
+        buildConfigField("String", "SHARE_FILE_AUTHORITIES", "\"$shareFileAuthorities\"")
     }
 }
 

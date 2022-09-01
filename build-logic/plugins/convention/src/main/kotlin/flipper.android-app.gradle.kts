@@ -18,9 +18,6 @@ configure<BaseExtension> {
     }
 
     buildTypes {
-        debug {
-            applicationIdSuffix = ApkConfig.APPLICATION_ID_SUFFIX
-        }
         internal {
             isShrinkResources = true
         }

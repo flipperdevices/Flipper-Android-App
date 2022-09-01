@@ -150,4 +150,8 @@ class FlipperServiceApiImpl(
         info { "Disconnect successful, close manager" }
         bleManager.close()
     }
+
+    override fun restartRPC() {
+        bleManager.restartRPCApi.restartRpc()
+    }
 }

@@ -40,7 +40,8 @@ class FlipperSerialApiUnsafeImpl(
 
     override fun onServiceReceived(gatt: BluetoothGatt): Boolean {
         val service = getServiceOrLog(
-            gatt, Constants.BLESerialService.SERVICE_UUID
+            gatt = gatt,
+            uuid = Constants.BLESerialService.SERVICE_UUID
         ) ?: return false
 
         serialTxCharacteristic = getCharacteristicOrLog(service, Constants.BLESerialService.TX)

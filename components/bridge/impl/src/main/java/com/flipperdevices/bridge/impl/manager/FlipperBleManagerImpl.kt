@@ -18,6 +18,7 @@ import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.impl.manager.delegates.FlipperConnectionInformationApiImpl
 import com.flipperdevices.bridge.impl.manager.service.FlipperInformationApiImpl
 import com.flipperdevices.bridge.impl.manager.service.FlipperVersionApiImpl
+import com.flipperdevices.bridge.impl.manager.service.RestartRPCApiImpl
 import com.flipperdevices.bridge.impl.manager.service.request.FlipperRequestApiImpl
 import com.flipperdevices.bridge.impl.manager.service.requestservice.FlipperRpcInformationApiImpl
 import com.flipperdevices.bridge.impl.manager.service.requestservice.FlipperRtcUpdateService
@@ -56,15 +57,16 @@ class FlipperBleManagerImpl(
     private val bleMutex = Mutex()
 
     // Gatt Delegates
+    override val restartRPCApi = RestartRPCApiImpl()
     override val informationApi = FlipperInformationApiImpl(scope, metricApi)
     override val flipperRequestApi = FlipperRequestApiImpl(
         scope,
         flipperActionNotifier,
         flipperLagsDetector,
+        restartRPCApi,
         sentryApi
     )
-    override val flipperVersionApi =
-        FlipperVersionApiImpl(settingsStore)
+    override val flipperVersionApi = FlipperVersionApiImpl(settingsStore)
 
     // RPC services
     override val flipperRpcInformationApi = FlipperRpcInformationApiImpl(
@@ -150,6 +152,12 @@ class FlipperBleManagerImpl(
                     FlipperBleServiceError.SERVICE_SERIAL_FAILED_INIT
                 )
             }
+            restartRPCApi.initializeSafe(this@FlipperBleManagerImpl) {
+                error(it) { "Error while initialize restart api" }
+                serviceErrorListener.onError(
+                    FlipperBleServiceError.SERVICE_SERIAL_FAILED_INIT
+                )
+            }
             runCatching {
                 flipperRpcInformationApi.initialize(flipperRequestApi)
             }.onFailure {
@@ -192,6 +200,9 @@ class FlipperBleManagerImpl(
                 )
                 serviceErrorListener.onError(FlipperBleServiceError.SERVICE_VERSION_NOT_FOUND)
             }
+            restartRPCApi.onServiceReceivedSafe(gatt) {
+                error(it) { "Can't find service for restart api" }
+            }
 
             return true
         }
@@ -205,6 +216,8 @@ class FlipperBleManagerImpl(
             info { "FlipperRequestApi reset done" }
             flipperRpcInformationApi.reset()
             info { "FlipperRpcInformationApi reset done" }
+            restartRPCApi.reset(this@FlipperBleManagerImpl)
+            info { "RestartRPCApi reset done" }
         }
 
         @Deprecated("Use {@link ReadRequest#with(DataReceivedCallback)} instead")
