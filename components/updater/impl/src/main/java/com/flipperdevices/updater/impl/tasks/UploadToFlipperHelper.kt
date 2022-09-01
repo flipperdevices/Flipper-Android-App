@@ -79,7 +79,7 @@ class UploadToFlipperHelperImpl @Inject constructor() : UploadToFlipperHelper, L
                 }
             }
             Flipper.CommandStatus.OK -> {}
-            else -> error("Failed send update request")
+            else -> error("Failed send update request with status ${response.commandStatus}")
         }
 
         requestApi.requestWithoutAnswer(

@@ -1,4 +1,4 @@
-package com.flipperdevices.updater.impl.tasks
+package com.flipperdevices.updater.subghz.helpers
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -7,7 +7,7 @@ import android.telephony.TelephonyManager
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.flipperdevices.updater.impl.model.RegionProvisioning
+import com.flipperdevices.updater.subghz.helpers.model.RegionProvisioning
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers

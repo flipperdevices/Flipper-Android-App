@@ -1,4 +1,4 @@
-package com.flipperdevices.updater.card.utils
+package com.flipperdevices.updater.card.helpers
 
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority

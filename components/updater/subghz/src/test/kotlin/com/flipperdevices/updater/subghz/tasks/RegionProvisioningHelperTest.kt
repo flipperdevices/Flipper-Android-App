@@ -1,12 +1,12 @@
-package com.flipperdevices.updater.tasks
+package com.flipperdevices.updater.subghz.tasks
 
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
 import android.os.LocaleList
 import android.telephony.TelephonyManager
-import com.flipperdevices.updater.impl.model.RegionProvisioningSource
-import com.flipperdevices.updater.impl.tasks.RegionProvisioningHelperImpl
+import com.flipperdevices.updater.subghz.helpers.RegionProvisioningHelperImpl
+import com.flipperdevices.updater.subghz.helpers.model.RegionProvisioningSource
 import java.util.Locale
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers

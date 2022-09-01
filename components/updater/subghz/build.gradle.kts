@@ -7,7 +7,6 @@ plugins {
 
 dependencies {
     implementation(projects.components.updater.api)
-    implementation(projects.components.updater.subghz)
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.pbutils)

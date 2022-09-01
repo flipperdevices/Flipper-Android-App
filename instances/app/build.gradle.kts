@@ -71,6 +71,7 @@ dependencies {
     implementation(projects.components.updater.downloader)
     implementation(projects.components.updater.screen)
     implementation(projects.components.updater.card)
+    implementation(projects.components.updater.subghz)
 
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.dao.impl)
@@ -114,6 +115,4 @@ dependencies {
 
     implementation(libs.cicerone)
     implementation(libs.timber)
-
-    implementation(libs.install.referrer)
 }
