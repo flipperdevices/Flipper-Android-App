@@ -1,4 +1,4 @@
-package com.flipperdevices.keyscreen.impl.composable.actions
+package com.flipperdevices.keyscreen.emulate.composable
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -20,11 +20,14 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.keyscreen.impl.R
-import com.flipperdevices.keyscreen.impl.composable.actions.common.ComposableActionDisable
-import com.flipperdevices.keyscreen.impl.composable.actions.common.ComposableActionFlipper
-import com.flipperdevices.keyscreen.impl.model.EmulateButtonState
-import com.flipperdevices.keyscreen.impl.viewmodel.EmulateViewModel
+import com.flipperdevices.keyscreen.emulate.R
+import com.flipperdevices.keyscreen.emulate.composable.common.ComposableActionDisable
+import com.flipperdevices.keyscreen.emulate.composable.common.ComposableActionFlipper
+import com.flipperdevices.keyscreen.emulate.composable.common.ComposableActionLoading
+import com.flipperdevices.keyscreen.emulate.composable.common.ComposableAlreadyOpenedAppDialog
+import com.flipperdevices.keyscreen.emulate.model.DisableButtonReason
+import com.flipperdevices.keyscreen.emulate.model.EmulateButtonState
+import com.flipperdevices.keyscreen.emulate.viewmodel.EmulateViewModel
 import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
@@ -35,30 +38,38 @@ fun ComposableEmulate(modifier: Modifier = Modifier, flipperKey: FlipperKey) {
         ComposableActionDisable(
             modifier = modifier,
             textId = R.string.keyscreen_emulate,
-            iconId = DesignSystem.drawable.ic_emulate
+            iconId = DesignSystem.drawable.ic_emulate,
+            reason = DisableButtonReason.NOT_SYNCHRONIZED
         )
         return
     }
 
+    if (emulateButtonState == EmulateButtonState.AppAlreadyOpenDialog) {
+        ComposableAlreadyOpenedAppDialog(emulateViewModel::closeDialog)
+    }
+
     when (emulateButtonState) {
-        EmulateButtonState.DISABLED -> ComposableActionDisable(
+        is EmulateButtonState.Disabled -> ComposableActionDisable(
             modifier = modifier,
             textId = R.string.keyscreen_emulate,
-            iconId = DesignSystem.drawable.ic_emulate
+            iconId = DesignSystem.drawable.ic_emulate,
+            reason = (emulateButtonState as EmulateButtonState.Disabled).reason
         )
-        EmulateButtonState.INACTIVE -> ComposableEmulateInternal(
+        is EmulateButtonState.Active -> ComposableEmulateInternal(
+            modifier = modifier,
+            isAction = true,
+            onClick = emulateViewModel::onStopEmulate
+        )
+        is EmulateButtonState.Inactive -> ComposableEmulateInternal(
             modifier = modifier,
             isAction = false,
             onClick = {
                 emulateViewModel.onStartEmulate(flipperKey)
             }
         )
-        EmulateButtonState.ACTIVE -> ComposableEmulateInternal(
+        is EmulateButtonState.Loading -> ComposableActionLoading(
             modifier = modifier,
-            isAction = true,
-            onClick = {
-                emulateViewModel.onStopEmulate()
-            }
+            loadingState = (emulateButtonState as EmulateButtonState.Loading).state
         )
     }
 }
@@ -87,7 +98,6 @@ private fun ComposableEmulateInternal(
     ) {
         if (isAction) {
             Text(
-                modifier = Modifier.padding(top = 4.dp),
                 text = stringResource(id = R.string.keyscreen_emulating_desc),
                 style = LocalTypography.current.subtitleM12,
                 color = LocalPallet.current.text20,

@@ -55,6 +55,7 @@ dependencies {
 
     implementation(projects.components.keyscreen.api)
     implementation(projects.components.keyscreen.impl)
+    implementation(projects.components.keyscreen.emulate)
     implementation(projects.components.keyscreen.shared)
 
     implementation(projects.components.keyedit.api)

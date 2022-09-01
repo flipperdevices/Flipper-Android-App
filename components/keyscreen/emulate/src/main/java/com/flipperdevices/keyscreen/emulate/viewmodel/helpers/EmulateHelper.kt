@@ -1,4 +1,4 @@
-package com.flipperdevices.keyscreen.impl.viewmodel.helpers
+package com.flipperdevices.keyscreen.emulate.viewmodel.helpers
 
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
@@ -128,6 +128,7 @@ class EmulateHelper @Inject constructor() : LogTagProvider {
         return true
     }
 
+    @Throws(AlreadyOpenedAppException::class)
     private suspend fun tryOpenApp(
         scope: CoroutineScope,
         requestApi: FlipperRequestApi,
@@ -152,6 +153,10 @@ class EmulateHelper @Inject constructor() : LogTagProvider {
                     }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
                 )
             )
+            if (appStartResponse.commandStatus == Flipper.CommandStatus.ERROR_APP_SYSTEM_LOCKED) {
+                error { "Handle already opened app" }
+                throw AlreadyOpenedAppException()
+            }
             if (appStartResponse.commandStatus != Flipper.CommandStatus.OK) {
                 error { "Failed start rpc app with error $appStartResponse" }
                 return false

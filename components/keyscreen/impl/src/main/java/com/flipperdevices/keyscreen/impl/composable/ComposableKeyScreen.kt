@@ -13,6 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.keyedit.api.KeyEditApi
+import com.flipperdevices.keyscreen.api.KeyEmulateApi
 import com.flipperdevices.keyscreen.impl.model.KeyScreenState
 import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModel
 import com.flipperdevices.nfceditor.api.NfcEditorApi
@@ -24,6 +25,7 @@ fun ComposableKeyScreen(
     keyScreenState: KeyScreenState = KeyScreenState.InProgress,
     keyEditApi: KeyEditApi,
     nfcEditorApi: NfcEditorApi,
+    keyEmulateApi: KeyEmulateApi,
     onBack: () -> Unit
 ) {
     when (keyScreenState) {
@@ -34,6 +36,7 @@ fun ComposableKeyScreen(
             keyScreenState,
             nfcEditorApi,
             synchronizationUiApi,
+            keyEmulateApi,
             onBack
         )
         is KeyScreenState.Editing -> keyEditApi.EditScreen(

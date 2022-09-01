@@ -8,15 +8,13 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.ui.ktx.LocalRouter
+import com.flipperdevices.keyscreen.api.KeyEmulateApi
 import com.flipperdevices.keyscreen.impl.R
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableDelete
-import com.flipperdevices.keyscreen.impl.composable.actions.ComposableEmulate
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableNfcEdit
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableRestore
-import com.flipperdevices.keyscreen.impl.composable.actions.ComposableSend
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableShare
 import com.flipperdevices.keyscreen.impl.composable.card.ComposableKeyCard
 import com.flipperdevices.keyscreen.impl.model.DeleteState
@@ -28,11 +26,13 @@ import com.flipperdevices.keyscreen.shared.bar.ComposableKeyScreenAppBar
 import com.flipperdevices.nfceditor.api.NfcEditorApi
 
 @Composable
+@Suppress("LongParameterList")
 fun ComposableKeyParsed(
     viewModel: KeyScreenViewModel,
     keyScreenState: KeyScreenState.Ready,
     nfcEditorApi: NfcEditorApi,
     synchronizationUiApi: SynchronizationUiApi,
+    keyEmulateApi: KeyEmulateApi,
     onBack: () -> Unit
 ) {
     val scrollState = rememberScrollState()
@@ -53,26 +53,12 @@ fun ComposableKeyParsed(
             viewModel::onOpenEdit
         )
 
-        val fileType = keyScreenState.parsedKey.fileType
-
-        if (fileType != null) {
-            val emulateModifier = Modifier
+        keyEmulateApi.ComposableEmulateButton(
+            Modifier
                 .fillMaxWidth()
-                .padding(start = 24.dp, end = 24.dp, bottom = 24.dp)
-            when (fileType) {
-                FlipperKeyType.SUB_GHZ -> ComposableSend(
-                    modifier = emulateModifier,
-                    flipperKey = keyScreenState.flipperKey
-                )
-                FlipperKeyType.I_BUTTON,
-                FlipperKeyType.RFID,
-                FlipperKeyType.NFC -> ComposableEmulate(
-                    modifier = emulateModifier,
-                    flipperKey = keyScreenState.flipperKey
-                )
-                FlipperKeyType.INFRARED -> {}
-            }
-        }
+                .padding(start = 24.dp, end = 24.dp, bottom = 24.dp),
+            keyScreenState.flipperKey
+        )
 
         if (keyScreenState.deleteState == DeleteState.NOT_DELETED) {
             if (nfcEditorApi.isSupportedByNfcEditor(keyScreenState.parsedKey)) {

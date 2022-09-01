@@ -12,10 +12,4 @@
     <string name="keyscreen_deleting_text">Deleting</string>
     <string name="keyscreen_title">Key info</string>
     <string name="keyscreen_save_error">Error when saving. Perhaps a key with this name already exists?</string>
-    <string name="keyscreen_send">Send</string>
-    <string name="keyscreen_sending">Sending…</string>
-    <string name="keyscreen_sending_desc">Hold to send from Flipper</string>
-    <string name="keyscreen_emulate">Emulate</string>
-    <string name="keyscreen_emulating">Emulating…</string>
-    <string name="keyscreen_emulating_desc">Emulating on Flipper… Tap to stop</string>
 </resources>
