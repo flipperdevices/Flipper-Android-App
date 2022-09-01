@@ -9,7 +9,6 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.core.ui.lifecycle.OneTimeExecutionBleTask
-import com.flipperdevices.updater.impl.model.FailedUploadSubGhzException
 import com.flipperdevices.updater.impl.model.IntFlashFullException
 import com.flipperdevices.updater.impl.tasks.FirmwareDownloaderHelper
 import com.flipperdevices.updater.impl.tasks.FlipperUpdateImageHelper
