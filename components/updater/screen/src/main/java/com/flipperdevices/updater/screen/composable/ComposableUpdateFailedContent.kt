@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.markdown.ClickableUrlText
 import com.flipperdevices.core.markdown.ComposableMarkdown
 import com.flipperdevices.core.markdown.markdownColors
-import com.flipperdevices.core.markdown.markdownTypography
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
@@ -53,9 +52,6 @@ private fun ComposableUpdateFailedContent(
         content = stringResource(descriptionId),
         colors = markdownColors(
             text = LocalPallet.current.text40
-        ),
-        typography = markdownTypography(
-            additionalTextStyle = TextStyle(textAlign = TextAlign.Center)
         )
     )
 
