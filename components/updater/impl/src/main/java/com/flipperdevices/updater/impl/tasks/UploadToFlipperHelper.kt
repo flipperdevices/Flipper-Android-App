@@ -71,8 +71,15 @@ class UploadToFlipperHelperImpl @Inject constructor() : UploadToFlipperHelper, L
                 }
             }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
         ).first()
-        if (response.commandStatus != Flipper.CommandStatus.OK) {
-            error("Failed send update request")
+        when (response.commandStatus) {
+            Flipper.CommandStatus.ERROR_INVALID_PARAMETERS -> {
+                val code = response.systemUpdateResponse.code
+                if (code == System.UpdateResponse.UpdateResultCode.IntFull) {
+                    throw IntFlashFullException()
+                }
+            }
+            Flipper.CommandStatus.OK -> {}
+            else -> error("Failed send update request")
         }
 
         requestApi.requestWithoutAnswer(
@@ -125,10 +132,8 @@ class UploadToFlipperHelperImpl @Inject constructor() : UploadToFlipperHelper, L
                     )
                 }
                 val response = requestApi.request(requestFlow)
-                when (response.commandStatus) {
-                    Flipper.CommandStatus.ERROR_INVALID_PARAMETERS -> throw IntFlashFullException()
-                    Flipper.CommandStatus.OK -> {}
-                    else -> error("Failed with $response")
+                if (response.commandStatus != Flipper.CommandStatus.OK) {
+                    error("Failed with $response")
                 }
             }
         }
