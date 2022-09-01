@@ -8,6 +8,7 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.shake2report.api.Shake2ReportApi
+import com.google.protobuf.InvalidProtocolBufferException
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -67,6 +68,9 @@ class PeripheralResponseReader(
                 // ignore
             } catch (ignored: java.util.concurrent.CancellationException) {
                 // ignore
+            } catch (invalidProtocol: InvalidProtocolBufferException) {
+                error(invalidProtocol) { "Broke protocol" }
+                restartRPCApi.restartRpc()
             } catch (e: Exception) {
                 error(e) { "Failed parse stream" }
                 sentryApi.reportException(e, "protobuf_read")

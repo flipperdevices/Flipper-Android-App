@@ -12,6 +12,7 @@
 - [Fix] Subghz provisioning while geoip is null
 - [REFACTOR] Bump all deps version
 - [Feature] Do not provide SubGhz provisioning on zero hardware region
+- [Feature] Restart RPC on fail RPC process response or flipper lags
 
 # 1.2.0
 
