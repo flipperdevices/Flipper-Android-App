@@ -1,4 +1,4 @@
-package com.flipperdevices.keyscreen.impl.viewmodel
+package com.flipperdevices.keyscreen.emulate.viewmodel
 
 import android.app.Application as FlipperApp
 import android.os.Vibrator
@@ -15,9 +15,9 @@ import com.flipperdevices.core.ktx.android.vibrateCompat
 import com.flipperdevices.core.ktx.jre.combine
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
-import com.flipperdevices.keyscreen.impl.model.EmulateButtonState
-import com.flipperdevices.keyscreen.impl.tasks.CloseEmulateAppTaskHolder
-import com.flipperdevices.keyscreen.impl.viewmodel.helpers.EmulateHelper
+import com.flipperdevices.keyscreen.emulate.model.EmulateButtonState
+import com.flipperdevices.keyscreen.emulate.tasks.CloseEmulateAppTaskHolder
+import com.flipperdevices.keyscreen.emulate.viewmodel.helpers.EmulateHelper
 import com.flipperdevices.protobuf.app.Application
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

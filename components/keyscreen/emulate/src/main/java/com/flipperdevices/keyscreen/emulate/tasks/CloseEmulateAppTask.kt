@@ -1,9 +1,9 @@
-package com.flipperdevices.keyscreen.impl.tasks
+package com.flipperdevices.keyscreen.emulate.tasks
 
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.ui.lifecycle.OneTimeExecutionBleTask
-import com.flipperdevices.keyscreen.impl.viewmodel.helpers.EmulateHelper
+import com.flipperdevices.keyscreen.emulate.viewmodel.helpers.EmulateHelper
 import kotlinx.coroutines.CoroutineScope
 
 class CloseEmulateAppTask(

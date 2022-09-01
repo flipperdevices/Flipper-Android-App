@@ -1,4 +1,4 @@
-package com.flipperdevices.keyscreen.impl.composable.actions
+package com.flipperdevices.keyscreen.emulate.composable
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Column
@@ -20,11 +20,11 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.keyscreen.impl.R
-import com.flipperdevices.keyscreen.impl.composable.actions.common.ComposableActionDisable
-import com.flipperdevices.keyscreen.impl.composable.actions.common.ComposableActionFlipper
-import com.flipperdevices.keyscreen.impl.model.EmulateButtonState
-import com.flipperdevices.keyscreen.impl.viewmodel.EmulateViewModel
+import com.flipperdevices.keyscreen.emulate.R
+import com.flipperdevices.keyscreen.emulate.composable.common.ComposableActionDisable
+import com.flipperdevices.keyscreen.emulate.composable.common.ComposableActionFlipper
+import com.flipperdevices.keyscreen.emulate.model.EmulateButtonState
+import com.flipperdevices.keyscreen.emulate.viewmodel.EmulateViewModel
 import tangle.viewmodel.compose.tangleViewModel
 
 private const val SEND_BUTTON_SCALE = 1.06f

@@ -1,4 +1,4 @@
-package com.flipperdevices.keyscreen.impl.composable.actions.common
+package com.flipperdevices.keyscreen.emulate.composable.common
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
-import com.flipperdevices.keyscreen.impl.R
+import com.flipperdevices.keyscreen.emulate.R
 
 @Composable
 fun ComposableActionDisable(

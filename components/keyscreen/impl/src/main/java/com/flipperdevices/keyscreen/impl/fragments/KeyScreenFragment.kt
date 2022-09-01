@@ -13,6 +13,7 @@ import com.flipperdevices.core.navigation.requireRouter
 import com.flipperdevices.core.ui.fragment.ComposeFragment
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.keyedit.api.KeyEditApi
+import com.flipperdevices.keyscreen.api.KeyEmulateApi
 import com.flipperdevices.keyscreen.impl.composable.ComposableKeyScreen
 import com.flipperdevices.keyscreen.impl.di.KeyScreenComponent
 import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModel
@@ -32,6 +33,9 @@ class KeyScreenFragment : ComposeFragment(), OnBackPressListener {
 
     @Inject
     lateinit var nfcEditor: NfcEditorApi
+
+    @Inject
+    lateinit var keyEmulateApi: KeyEmulateApi
 
     init {
         ComponentHolder.component<KeyScreenComponent>().inject(this)
@@ -53,6 +57,7 @@ class KeyScreenFragment : ComposeFragment(), OnBackPressListener {
             keyScreenState,
             keyEditApi,
             nfcEditor,
+            keyEmulateApi,
             onBack = {
                 requireRouter().exit()
             }

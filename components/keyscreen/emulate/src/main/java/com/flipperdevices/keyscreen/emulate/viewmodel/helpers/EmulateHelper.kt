@@ -1,4 +1,4 @@
-package com.flipperdevices.keyscreen.impl.viewmodel.helpers
+package com.flipperdevices.keyscreen.emulate.viewmodel.helpers
 
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
