@@ -1,1 +1,1 @@
-Flipper Zero companion app for android.
+Organize data and keys on your Flipper Zero device
