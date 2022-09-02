@@ -7,6 +7,6 @@ assignees: ''
 
 ---
 
-# What are you want to add or change
+# What are you wanting to add or change
 
 # What questions do you have
