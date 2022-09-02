@@ -7,4 +7,4 @@ assignees: ''
 
 ---
 
-Shortly (or not) describe what are you will do
+Shortly (or not) describe what you will do
