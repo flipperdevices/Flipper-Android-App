@@ -26,6 +26,7 @@ import com.flipperdevices.bridge.synchronization.impl.utils.SynchronizationPerce
 import com.flipperdevices.bridge.synchronization.impl.utils.UnresolvedConflictException
 import com.flipperdevices.core.log.BuildConfig
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.warn
 
@@ -190,7 +191,11 @@ class KeysSynchronization(
                 second
             )
         } catch (conflict: UnresolvedConflictException) {
-            resolveConflict(FlipperKeyPath(conflict.path, deleted = false))
+            try {
+                resolveConflict(FlipperKeyPath(conflict.path, deleted = false))
+            } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+                error(e) { "Error during resolve conflict $conflict" }
+            }
             throw RestartSynchronizationException()
         }
     }
@@ -209,13 +214,13 @@ class KeysSynchronization(
             simpleKeyApi.getKey(keyPath) ?: error("Can't found key $keyPath on Android side")
         val newPath = utilsKeyApi.findAvailablePath(keyPath)
 
-        simpleKeyApi.insertKey(
+        simpleKeyApi.updateKey(
+            oldKey,
             oldKey.copy(
                 oldKey.mainFile.copy(path = newPath.path),
                 deleted = newPath.deleted,
                 synchronized = false
             )
         )
-        deleteKeyApi.markDeleted(oldKey.path)
     }
 }
