@@ -23,7 +23,7 @@ private const val BUTTON_HEIGHT_DP = 49
 
 @Composable
 @Suppress("LongParameterList")
-fun ComposableEmulateButton(
+fun ComposableEmulateButtonOld(
     modifier: Modifier,
     buttonModifier: Modifier = Modifier,
     buttonContent: (@Composable () -> Unit),

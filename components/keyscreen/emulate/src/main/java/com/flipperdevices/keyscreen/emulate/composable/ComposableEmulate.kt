@@ -93,7 +93,7 @@ private fun ComposableEmulateInternal(
         color = LocalPallet.current.accentSecond,
         textId = textId,
         iconId = DesignSystem.drawable.ic_emulate,
-        animId = DesignSystem.raw.ic_emulate,
+        animId = DesignSystem.raw.ic_emulating,
         isAction = isAction
     ) {
         if (isAction) {

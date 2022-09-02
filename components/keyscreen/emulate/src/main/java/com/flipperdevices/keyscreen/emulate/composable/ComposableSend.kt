@@ -105,7 +105,7 @@ private fun ComposableSendInternal(
         color = LocalPallet.current.accent,
         textId = textId,
         iconId = DesignSystem.drawable.ic_send,
-        animId = DesignSystem.raw.ic_send,
+        animId = DesignSystem.raw.ic_sending,
         isAction = isAction
     ) {
         if (!isAction) {

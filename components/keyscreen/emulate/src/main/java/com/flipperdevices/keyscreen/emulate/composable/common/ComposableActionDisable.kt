@@ -32,7 +32,7 @@ fun ComposableActionDisable(
     @StringRes textId: Int,
     reason: DisableButtonReason
 ) {
-    ComposableEmulateButton(
+    ComposableEmulateButtonOld(
         modifier,
         buttonContent = {
             ComposableActionFlipperContent(

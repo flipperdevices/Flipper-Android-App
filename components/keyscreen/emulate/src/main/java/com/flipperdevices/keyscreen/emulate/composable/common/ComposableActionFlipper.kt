@@ -47,7 +47,7 @@ fun ComposableActionFlipper(
         )
     ) else SolidColor(color)
 
-    ComposableEmulateButton(
+    ComposableEmulateButtonOld(
         modifier = modifier,
         buttonModifier = Modifier,
         buttonContent = {

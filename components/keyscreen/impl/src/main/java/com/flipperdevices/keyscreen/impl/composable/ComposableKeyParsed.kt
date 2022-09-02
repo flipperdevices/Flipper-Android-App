@@ -40,6 +40,7 @@ fun ComposableKeyParsed(
     Column(modifier = Modifier.verticalScroll(scrollState)) {
         ComposableKeyScreenBar(keyScreenState.flipperKey.path.nameWithoutExtension, onBack)
         ComposableKeyCard(
+            Modifier.padding(all = 24.dp),
             keyScreenState.parsedKey,
             keyScreenState.deleteState,
             synchronizationState = if (keyScreenState.deleteState == DeleteState.NOT_DELETED) { ->
