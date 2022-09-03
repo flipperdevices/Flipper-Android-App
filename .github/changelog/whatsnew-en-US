@@ -1,13 +1,13 @@
-Changes and new features:
+Changes and New Features:
 - NFC Dumps Editor (for cards MIFARE Classic 1K & 4K) with a HEX keyboard
 - Supporting Dark Theme
 - Added changelog of current Flipper firmware release
 - Handling unknown firmware and outdated app version
 - Displaying black Flipper graphics
-- Flipper disconnects from app after 5 minutes inactivity
-- Added file uploading, downloading, editing in the File Manager
+- Flipper disconnects from app after 5 minutes of inactivity
+- Added file uploading, downloading, and editing in the File Manager
 - Updated Emulate & Send buttons
 
-Bug fixes:
+Bug Fixes:
 - Fixed crashes with updating
 - Lock portrait orientation
