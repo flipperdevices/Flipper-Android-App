@@ -2,6 +2,7 @@
 
 # 1.2.1 - In progress
 
+- [REFACTOR] Change Flipper logo
 - [REFACTOR] Redesign Full Device Information
 - [REFACTOR] Redesign dialog after update (change colors)
 - [REFACTOR] Migrate to faster build configuration

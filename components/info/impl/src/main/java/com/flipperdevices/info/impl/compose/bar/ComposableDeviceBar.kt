@@ -72,13 +72,13 @@ private fun FlipperImage(
     val flipperColor by flipperColorViewModel.getFlipperColor().collectAsState()
     val disabledFlipperId = when (flipperColor) {
         HardwareColor.UNRECOGNIZED,
-        HardwareColor.WHITE -> DesignSystem.drawable.ic_flipper_disabled
-        HardwareColor.BLACK -> DesignSystem.drawable.ic_black_flipper_disabled
+        HardwareColor.WHITE -> DesignSystem.drawable.pic_flipper_disabled
+        HardwareColor.BLACK -> DesignSystem.drawable.pic_black_flipper_disabled
     }
     val flipperId = when (flipperColor) {
         HardwareColor.UNRECOGNIZED,
-        HardwareColor.WHITE -> DesignSystem.drawable.ic_flipper
-        HardwareColor.BLACK -> DesignSystem.drawable.ic_black_flipper
+        HardwareColor.WHITE -> DesignSystem.drawable.pic_flipper
+        HardwareColor.BLACK -> DesignSystem.drawable.pic_black_flipper
     }
     val imageId = when (deviceStatus) {
         DeviceStatus.NoDevice -> disabledFlipperId
