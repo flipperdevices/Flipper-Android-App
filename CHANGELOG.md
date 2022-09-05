@@ -20,6 +20,7 @@
 - [Feature] Handle errors while emulate/send
 - [FIX] Now search for devices by Mac address and by flipper name
 - [FIX] Subghz provisioning while geoip is null
+- [FIX] Update gradle binary to match conf and checksum for security
 
 # 1.2.0
 
