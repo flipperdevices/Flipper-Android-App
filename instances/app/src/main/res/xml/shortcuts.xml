@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <capability android:name="actions.intent.OPEN_APP_FEATURE">
+        <intent
+            android:targetPackage="com.flipperdevices.app"
+            android:targetClass="com.flipperdevices.app.SplashScreen">
+        <parameter
+            android:name="feature"
+            android:key="featureParam"/>
+        </intent>
+    </capability>
+    <shortcut
+            android:shortcutId="find"
+            android:shortcutShortLabel="@string/app_name">
+        <capability-binding android:key="actions.intent.OPEN_APP_FEATURE">
+            <parameter-binding
+                android:key="feature"
+                android:value="featureParam"/>
+        </capability-binding>
+    </shortcut>
+</shortcuts>
