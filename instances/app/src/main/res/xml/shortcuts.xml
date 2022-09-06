@@ -6,7 +6,7 @@
             android:targetClass="com.flipperdevices.app.SplashScreen">
         <parameter
             android:name="feature"
-            android:key="featureParam"/>
+            android:key="@array/find"/>
         </intent>
     </capability>
     <shortcut
