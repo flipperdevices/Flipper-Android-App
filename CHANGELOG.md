@@ -17,6 +17,7 @@
 - [Feature] Restart RPC on fail RPC process response or flipper lags
 - [Feature] Prepare for Fdroid app store
 - [Feature] Handle errors while emulate/send
+- [Feature] New emulate/send buttons
 - [FIX] Now search for devices by Mac address and by flipper name
 - [FIX] Subghz provisioning while geoip is null
 
