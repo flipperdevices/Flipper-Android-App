@@ -9,4 +9,7 @@ sealed class EmulateProgress {
 
     @Stable
     data class Growing(val duration: Long) : EmulateProgress()
+
+    @Stable
+    data class GrowingAndStop(val duration: Long) : EmulateProgress()
 }

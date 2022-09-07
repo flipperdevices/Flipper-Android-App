@@ -38,7 +38,12 @@ class SubGhzViewModel @VMInject constructor(
         keyType: FlipperKeyType,
         flipperKey: FlipperKey
     ) {
-        val appStarted = calculateTimeoutAndStartEmulate(scope, requestApi, flipperKey)
+        val appStarted = calculateTimeoutAndStartEmulate(
+            scope = scope,
+            requestApi = requestApi,
+            flipperKey = flipperKey,
+            oneTimePress = false
+        )
 
         if (!appStarted) {
             emulateHelper.stopEmulateForce(requestApi)
@@ -76,14 +81,15 @@ class SubGhzViewModel @VMInject constructor(
         requestApi: FlipperRequestApi,
         flipperKey: FlipperKey
     ) {
-        calculateTimeoutAndStartEmulate(scope, requestApi, flipperKey)
+        calculateTimeoutAndStartEmulate(scope, requestApi, flipperKey, oneTimePress = true)
         emulateHelper.stopEmulate(viewModelScope, requestApi)
     }
 
     private suspend fun calculateTimeoutAndStartEmulate(
         scope: CoroutineScope,
         requestApi: FlipperRequestApi,
-        flipperKey: FlipperKey
+        flipperKey: FlipperKey,
+        oneTimePress: Boolean
     ): Boolean {
         val parsedKey = keyParser.parseKey(flipperKey)
 
@@ -104,7 +110,13 @@ class SubGhzViewModel @VMInject constructor(
                 timeout ?: SUBGHZ_DEFAULT_TIMEOUT_MS
             )
             if (appStarted && timeout != null) {
-                emulateButtonStateFlow.emit(
+                if (oneTimePress) {
+                    emulateButtonStateFlow.emit(
+                        EmulateButtonState.Active(
+                            progress = EmulateProgress.GrowingAndStop(timeout)
+                        )
+                    )
+                } else emulateButtonStateFlow.emit(
                     EmulateButtonState.Active(
                         progress = EmulateProgress.Growing(timeout)
                     )
