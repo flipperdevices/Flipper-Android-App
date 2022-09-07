@@ -20,7 +20,7 @@ class CloseEmulateAppTask(
         input: Unit,
         stateListener: suspend (Unit) -> Unit
     ) {
-        emulateHelper.stopEmulate(serviceApi.requestApi)
+        emulateHelper.stopEmulateForce(serviceApi.requestApi)
         // Waiting until the emulation stops
         emulateHelper.getRunningState().filter { !it }.first()
         stateListener(Unit)

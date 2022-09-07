@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.lifecycle.runtime.ktx)
 
     // Testing
+    testImplementation(projects.components.core.test)
     testImplementation(libs.junit)
     testImplementation(libs.kotlin.coroutines.test)
     testImplementation(libs.roboelectric)

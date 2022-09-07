@@ -8,6 +8,7 @@ import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.api.utils.Constants.API_SUPPORTED_REMOTE_EMULATE
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
@@ -34,6 +35,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tangle.viewmodel.VMInject
 
+private const val SUBGHZ_TIMEOUT_MS = 500L
 private const val VIBRATOR_TIME = 100L
 
 class EmulateViewModel @VMInject constructor(
@@ -70,17 +72,21 @@ class EmulateViewModel @VMInject constructor(
             }
         }
 
+        val timeout = if (fileType == FlipperKeyType.SUB_GHZ) {
+            SUBGHZ_TIMEOUT_MS
+        } else 0L
+
         serviceProvider.provideServiceApi(this) {
             viewModelScope.launch(Dispatchers.Default) {
                 val emulateStarted = try {
-                    emulateHelper.startEmulate(this, it.requestApi, fileType, flipperKey)
+                    emulateHelper.startEmulate(this, it.requestApi, fileType, flipperKey, timeout)
                 } catch (ignored: AlreadyOpenedAppException) {
-                    emulateHelper.stopEmulate(it.requestApi)
+                    emulateHelper.stopEmulateForce(it.requestApi)
                     emulateButtonStateFlow.emit(EmulateButtonState.AppAlreadyOpenDialog)
                     return@launch
                 }
                 if (!emulateStarted) {
-                    emulateHelper.stopEmulate(it.requestApi)
+                    emulateHelper.stopEmulateForce(it.requestApi)
                     emulateButtonStateFlow.emit(EmulateButtonState.Inactive())
                 }
             }
@@ -90,7 +96,7 @@ class EmulateViewModel @VMInject constructor(
     fun onStopEmulate() {
         serviceProvider.provideServiceApi(this) {
             viewModelScope.launch(Dispatchers.Default) {
-                emulateHelper.stopEmulate(it.requestApi)
+                emulateHelper.stopEmulate(viewModelScope, it.requestApi)
                 emulateButtonStateFlow.emit(EmulateButtonState.Inactive())
             }
         }
@@ -112,16 +118,20 @@ class EmulateViewModel @VMInject constructor(
             }
         }
 
+        val timeout = if (fileType == FlipperKeyType.SUB_GHZ) {
+            SUBGHZ_TIMEOUT_MS
+        } else 0L
+
         serviceProvider.provideServiceApi(this) {
             viewModelScope.launch(Dispatchers.Default) {
                 try {
-                    emulateHelper.startEmulate(this, it.requestApi, fileType, flipperKey)
+                    emulateHelper.startEmulate(this, it.requestApi, fileType, flipperKey, timeout)
                 } catch (ignored: AlreadyOpenedAppException) {
-                    emulateHelper.stopEmulate(it.requestApi)
+                    emulateHelper.stopEmulateForce(it.requestApi)
                     emulateButtonStateFlow.emit(EmulateButtonState.AppAlreadyOpenDialog)
                     return@launch
                 }
-                emulateHelper.stopEmulate(it.requestApi)
+                emulateHelper.stopEmulate(viewModelScope, it.requestApi)
                 emulateButtonStateFlow.emit(EmulateButtonState.Inactive())
             }
         }
