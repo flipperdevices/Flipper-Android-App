@@ -13,9 +13,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.res.R
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.keyscreen.emulate.R
 import com.flipperdevices.keyscreen.emulate.model.EmulateProgress
 import com.flipperdevices.keyscreen.emulate.model.Picture
 
@@ -31,18 +32,18 @@ private fun ComposableEmulateButtonPreview() {
                 modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
                 emulateProgress = EmulateProgress.Infinite,
                 picture = Picture.LottieRes(
-                    picResId = R.raw.ic_emulating,
-                    fallBackPicResId = R.drawable.ic_emulate
+                    picResId = DesignSystem.raw.ic_emulating,
+                    fallBackPicResId = DesignSystem.drawable.ic_emulate
                 ),
-                textId = com.flipperdevices.keyscreen.emulate.R.string.keyscreen_emulating,
+                textId = R.string.keyscreen_emulating,
                 color = LocalPallet.current.actionOnFlipperProgress,
                 progressColor = LocalPallet.current.actionOnFlipperEnable
             )
 
             ComposableEmulateButton(
                 modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
-                picture = Picture.StaticRes(R.drawable.ic_emulate),
-                textId = com.flipperdevices.keyscreen.emulate.R.string.keyscreen_emulate,
+                picture = Picture.StaticRes(DesignSystem.drawable.ic_emulate),
+                textId = R.string.keyscreen_emulate,
                 color = LocalPallet.current.actionOnFlipperEnable
             )
 
@@ -50,18 +51,18 @@ private fun ComposableEmulateButtonPreview() {
                 modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
                 emulateProgress = EmulateProgress.Infinite,
                 picture = Picture.LottieRes(
-                    picResId = R.raw.ic_sending,
-                    fallBackPicResId = R.drawable.ic_send
+                    picResId = DesignSystem.raw.ic_sending,
+                    fallBackPicResId = DesignSystem.drawable.ic_send
                 ),
-                textId = com.flipperdevices.keyscreen.emulate.R.string.keyscreen_sending,
+                textId = R.string.keyscreen_sending,
                 color = LocalPallet.current.actionOnFlipperSubGhzProgress,
                 progressColor = LocalPallet.current.actionOnFlipperSubGhzEnable
             )
 
             ComposableEmulateButton(
                 modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
-                picture = Picture.StaticRes(R.drawable.ic_send),
-                textId = com.flipperdevices.keyscreen.emulate.R.string.keyscreen_send,
+                picture = Picture.StaticRes(DesignSystem.drawable.ic_send),
+                textId = R.string.keyscreen_send,
                 color = LocalPallet.current.actionOnFlipperSubGhzEnable
             )
 
@@ -80,10 +81,13 @@ private fun ComposableEmulateButtonPreview() {
             ComposableEmulateButton(
                 modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
                 emulateProgress = EmulateProgress.Fixed((fixedProgress * 1000).toLong(), 1000),
-                picture = Picture.StaticRes(R.drawable.ic_emulate),
-                textId = com.flipperdevices.keyscreen.emulate.R.string.keyscreen_emulating,
-                color = LocalPallet.current.actionOnFlipperProgress,
-                progressColor = LocalPallet.current.actionOnFlipperEnable
+                picture = Picture.LottieRes(
+                    picResId = DesignSystem.raw.ic_sending,
+                    fallBackPicResId = DesignSystem.drawable.ic_send
+                ),
+                textId = R.string.keyscreen_sending,
+                color = LocalPallet.current.actionOnFlipperSubGhzProgress,
+                progressColor = LocalPallet.current.actionOnFlipperSubGhzEnable
             )
         }
     }

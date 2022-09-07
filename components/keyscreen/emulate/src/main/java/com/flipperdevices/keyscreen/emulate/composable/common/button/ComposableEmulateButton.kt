@@ -2,8 +2,6 @@ package com.flipperdevices.keyscreen.emulate.composable.common.button
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,12 +28,12 @@ private const val BUTTON_HEIGHT_DP = 56
 @Composable
 @Suppress("LongParameterList")
 fun ComposableEmulateButton(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
+    buttonContentModifier: Modifier = Modifier,
     emulateProgress: EmulateProgress? = null,
     @StringRes textId: Int,
-    picture: Picture,
+    picture: Picture?,
     color: Color,
-    onClick: () -> Unit = {},
     progressColor: Color = Color.Transparent
 ) {
     ComposableEmulateProgress(
@@ -45,11 +42,10 @@ fun ComposableEmulateButton(
         progressColor = progressColor
     ) { contentModifier ->
         ComposableEmulateContent(
-            modifier = contentModifier,
+            modifier = contentModifier.then(buttonContentModifier),
             text = stringResource(textId),
             color = color,
-            picture = picture,
-            onClick = onClick
+            picture = picture
         )
     }
 }
@@ -82,23 +78,17 @@ private fun ComposableEmulateProgress(
 private fun ComposableEmulateContent(
     modifier: Modifier,
     text: String,
-    picture: Picture,
-    color: Color,
-    onClick: () -> Unit
+    picture: Picture?,
+    color: Color
 ) {
     Box(
         modifier = modifier
             .fillMaxSize()
             .clip(RoundedCornerShape(12.dp))
-            .background(color)
-            .clickable(
-                interactionSource = MutableInteractionSource(),
-                indication = rememberRipple(),
-                onClick = onClick
-            ),
+            .background(color),
         contentAlignment = Alignment.CenterStart
     ) {
-        picture.Draw(Modifier.padding(vertical = 8.dp, horizontal = 12.dp))
+        picture?.Draw(Modifier.padding(vertical = 8.dp, horizontal = 12.dp))
         Text(
             modifier = Modifier.fillMaxWidth(),
             text = text,

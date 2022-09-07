@@ -37,11 +37,14 @@ fun getEmulateProgressBrush(
     }
 }
 
+private const val FIXED_SIZE_BRUSH_ANGEL = -90f
+
 private fun fixedSizeBrush(backgroundColor: Color, cursorColor: Color, progress: Float): Brush {
-    return Brush.sweepGradient(
-        0f to backgroundColor,
-        max(0f, progress - PROGRESS_BAR_END_PERCENT_FIXED_DELTA) to backgroundColor,
-        progress to cursorColor
+    return rotatableSweepGradient(
+        0f to cursorColor,
+        max(0f, progress - PROGRESS_BAR_END_PERCENT_FIXED_DELTA) to cursorColor,
+        progress to backgroundColor,
+        angel = FIXED_SIZE_BRUSH_ANGEL
     )
 }
 
