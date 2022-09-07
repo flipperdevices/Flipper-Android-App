@@ -40,26 +40,6 @@ fun ComposableSubGhzSendButton(modifier: Modifier = Modifier, flipperKey: Flippe
         ComposableAlreadyOpenedAppDialog(emulateViewModel::closeDialog)
     }
 
-    val buttonActiveModifier = Modifier.onHoldPress(
-        onTap = {
-            if (emulateButtonState is EmulateButtonState.Inactive) {
-                emulateViewModel.onSinglePress(flipperKey)
-            } else if (emulateButtonState is EmulateButtonState.Active) {
-                emulateViewModel.onStopEmulate()
-            }
-        },
-        onLongPressStart = {
-            if (emulateButtonState is EmulateButtonState.Inactive) {
-                emulateViewModel.onStartEmulate(flipperKey)
-            }
-        },
-        onLongPressEnd = {
-            if (emulateButtonState is EmulateButtonState.Active) {
-                emulateViewModel.onStopEmulate()
-            }
-        }
-    )
-
     if (!flipperKey.synchronized) {
         ComposableActionDisable(
             modifier = modifier,
@@ -83,11 +63,11 @@ fun ComposableSubGhzSendButton(modifier: Modifier = Modifier, flipperKey: Flippe
         )
         is EmulateButtonState.Active,
         is EmulateButtonState.Inactive -> {
-            ComposableActiveEmulateInternal(
+            ComposableActiveStateEmulateInternal(
                 modifier = modifier,
-                buttonActiveModifier = buttonActiveModifier,
-                emulateProgress = (emulateButtonState as? EmulateButtonState.Active)?.progress,
-                isActive = emulateButtonState is EmulateButtonState.Active
+                emulateButtonState = emulateButtonState,
+                emulateViewModel = emulateViewModel,
+                flipperKey = flipperKey
             )
         }
         is EmulateButtonState.Loading -> ComposableActionLoading(
@@ -95,6 +75,40 @@ fun ComposableSubGhzSendButton(modifier: Modifier = Modifier, flipperKey: Flippe
             loadingState = (emulateButtonState as EmulateButtonState.Loading).state
         )
     }
+}
+
+@Composable
+private fun ComposableActiveStateEmulateInternal(
+    modifier: Modifier,
+    emulateViewModel: EmulateViewModel,
+    flipperKey: FlipperKey,
+    emulateButtonState: EmulateButtonState
+) {
+    val buttonActiveModifier = Modifier.onHoldPress(
+        onTap = {
+            if (emulateButtonState is EmulateButtonState.Inactive) {
+                emulateViewModel.onSinglePress(flipperKey)
+            } else if (emulateButtonState is EmulateButtonState.Active) {
+                emulateViewModel.onStopEmulate()
+            }
+        },
+        onLongPressStart = {
+            if (emulateButtonState is EmulateButtonState.Inactive) {
+                emulateViewModel.onStartEmulate(flipperKey)
+            }
+        },
+        onLongPressEnd = {
+            if (emulateButtonState is EmulateButtonState.Active) {
+                emulateViewModel.onStopEmulate()
+            }
+        }
+    )
+    ComposableActiveEmulateInternal(
+        modifier = modifier,
+        buttonActiveModifier = buttonActiveModifier,
+        emulateProgress = (emulateButtonState as? EmulateButtonState.Active)?.progress,
+        isActive = emulateButtonState is EmulateButtonState.Active
+    )
 }
 
 /**

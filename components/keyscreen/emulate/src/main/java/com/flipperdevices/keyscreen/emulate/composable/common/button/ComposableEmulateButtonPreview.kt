@@ -20,14 +20,17 @@ import com.flipperdevices.keyscreen.emulate.R
 import com.flipperdevices.keyscreen.emulate.model.EmulateProgress
 import com.flipperdevices.keyscreen.emulate.model.Picture
 
+private const val TOTAL_PROGRESS_PREVIEW = 1000L
+
 @Preview(
     showSystemUi = true,
     showBackground = true
 )
 @Composable
+@Suppress("LongMethod")
 private fun ComposableEmulateButtonPreview() {
-    FlipperThemeInternal() {
-        Column() {
+    FlipperThemeInternal {
+        Column {
             ComposableEmulateButton(
                 modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
                 emulateProgress = EmulateProgress.Infinite,
@@ -80,7 +83,10 @@ private fun ComposableEmulateButtonPreview() {
 
             ComposableEmulateButton(
                 modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
-                emulateProgress = EmulateProgress.Fixed((fixedProgress * 1000).toLong(), 1000),
+                emulateProgress = EmulateProgress.Fixed(
+                    (fixedProgress * TOTAL_PROGRESS_PREVIEW).toLong(),
+                    TOTAL_PROGRESS_PREVIEW
+                ),
                 picture = Picture.LottieRes(
                     picResId = DesignSystem.raw.ic_sending,
                     fallBackPicResId = DesignSystem.drawable.ic_send
