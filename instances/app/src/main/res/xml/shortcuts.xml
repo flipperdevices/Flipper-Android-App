@@ -2,16 +2,17 @@
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
     <capability android:name="actions.intent.OPEN_APP_FEATURE">
         <intent
-            android:targetPackage="com.flipperdevices.app"
+                android:targetPackage="com.flipperdevices.app"
             android:targetClass="com.flipperdevices.app.SplashScreen">
         <parameter
             android:name="feature"
-            android:key="@array/find"/>
+            android:key="featureParam"/>
         </intent>
     </capability>
     <shortcut
             android:shortcutId="find"
-            android:shortcutShortLabel="@string/app_name">
+            android:shortcutShortLabel="@string/shortcut_find"
+            android:shortcutLongLabel="@string/shortcut_find_desc">
         <capability-binding android:key="actions.intent.OPEN_APP_FEATURE">
             <parameter-binding
                 android:key="feature"
