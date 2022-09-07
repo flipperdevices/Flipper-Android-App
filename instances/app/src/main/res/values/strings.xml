@@ -5,9 +5,6 @@
     <string name="home_controller_userspace">User Space</string>
     <string name="home_controller_extensions">Extensions</string>
 
-    <array name="find">
-        <item>find device</item>
-        <item>ping device</item>
-        <item>sound on device</item>
-    </array>
+    <string name="shortcut_find">Find</string>
+    <string name="shortcut_find_desc">Find Device</string>
 </resources>
