@@ -21,12 +21,15 @@ import com.flipperdevices.protobuf.app.appLoadFileRequest
 import com.flipperdevices.protobuf.app.startRequest
 import com.flipperdevices.protobuf.main
 import com.squareup.anvil.annotations.ContributesBinding
+import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.math.max
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
@@ -48,36 +51,51 @@ private const val APP_RETRY_SLEEP_TIME_MS = 1 * 1000L // 1 second
 class EmulateHelper @Inject constructor() : LogTagProvider {
     override val TAG = "EmulateHelper"
 
+    private var isRunning = MutableStateFlow(false)
+
     @Volatile
-    private var isRunning = false
+    private var stopEmulateTimeAllowedMs: Long = 0
+    private val stopInProgress = AtomicBoolean(false)
     private val mutex = Mutex()
+
+    fun getRunningState(): StateFlow<Boolean> = isRunning
 
     suspend fun startEmulate(
         scope: CoroutineScope,
         requestApi: FlipperRequestApi,
         fileType: FlipperKeyType,
-        flipperKey: FlipperKey
+        flipperKey: FlipperKey,
+        minEmulateTime: Long = 0L
     ) = withLockResult(mutex, "start") {
-        if (isRunning) {
+        if (isRunning.value) {
             info { "Emulate already running, start stop" }
             stopEmulateInternal(requestApi)
         }
-        isRunning = true
-        startEmulateInternal(scope, requestApi, fileType, flipperKey)
+        isRunning.emit(true)
+        startEmulateInternal(scope, requestApi, fileType, flipperKey, minEmulateTime)
     }
 
     suspend fun stopEmulate(
+        scope: CoroutineScope,
         requestApi: FlipperRequestApi
-    ) = withLock(mutex, "stop") {
-        stopEmulateInternal(requestApi)
-        isRunning = false
+    ) {
+        if (!stopInProgress.compareAndSet(false, true)) {
+            info { "Return from #stopEmulate because stop already in progress" }
+            return
+        }
+        delay(max(0, stopEmulateTimeAllowedMs - System.currentTimeMillis()))
+        withLock(mutex, "stop") {
+            stopEmulateInternal(requestApi)
+            isRunning.emit(false)
+        }
     }
 
     private suspend fun startEmulateInternal(
         scope: CoroutineScope,
         requestApi: FlipperRequestApi,
         fileType: FlipperKeyType,
-        flipperKey: FlipperKey
+        flipperKey: FlipperKey,
+        minEmulateTime: Long
     ): Boolean {
         info { "startEmulateInternal" }
 
@@ -125,6 +143,7 @@ class EmulateHelper @Inject constructor() : LogTagProvider {
             error { "Failed press subghz key with error $appButtonPressResponse" }
             return false
         }
+        stopEmulateTimeAllowedMs = System.currentTimeMillis() + minEmulateTime
         return true
     }
 

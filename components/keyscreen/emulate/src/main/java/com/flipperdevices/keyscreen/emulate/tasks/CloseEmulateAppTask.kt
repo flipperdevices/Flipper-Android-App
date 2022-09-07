@@ -5,6 +5,8 @@ import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.ui.lifecycle.OneTimeExecutionBleTask
 import com.flipperdevices.keyscreen.emulate.viewmodel.helpers.EmulateHelper
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 
 class CloseEmulateAppTask(
     serviceProvider: FlipperServiceProvider,
@@ -19,6 +21,8 @@ class CloseEmulateAppTask(
         stateListener: suspend (Unit) -> Unit
     ) {
         emulateHelper.stopEmulate(serviceApi.requestApi)
+        // Waiting until the emulation stops
+        emulateHelper.getRunningState().filter { !it }.first()
         stateListener(Unit)
     }
 
