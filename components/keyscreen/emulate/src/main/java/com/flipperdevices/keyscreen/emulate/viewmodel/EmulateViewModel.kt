@@ -57,7 +57,7 @@ abstract class EmulateViewModel(
 
     fun getEmulateButtonStateFlow(): StateFlow<EmulateButtonState> = emulateButtonStateFlow
 
-    fun onStartEmulate(
+    open fun onStartEmulate(
         flipperKey: FlipperKey
     ) {
         info { "#onStartEmulate" }
@@ -107,11 +107,13 @@ abstract class EmulateViewModel(
         }
     }
 
-    fun onStopEmulate() {
+    fun onStopEmulate(force: Boolean = false) {
         info { "#onStopEmulate" }
         serviceProvider.provideServiceApi(this) {
             viewModelScope.launch(Dispatchers.Default) {
-                emulateHelper.stopEmulate(viewModelScope, it.requestApi)
+                if (force) {
+                    emulateHelper.stopEmulateForce(it.requestApi)
+                } else emulateHelper.stopEmulate(viewModelScope, it.requestApi)
             }
         }
         vibrator?.vibrateCompat(VIBRATOR_TIME)

@@ -65,7 +65,10 @@ class SubGhzViewModel @VMInject constructor(
                 is EmulateButtonState.Inactive -> EmulateButtonState.Active(
                     EmulateProgress.Infinite
                 )
-                is EmulateButtonState.Active -> return
+                is EmulateButtonState.Active -> {
+                    super.onStopEmulate(force = true)
+                    return
+                }
             }
         }
 
