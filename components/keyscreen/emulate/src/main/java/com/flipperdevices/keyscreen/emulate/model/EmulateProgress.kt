@@ -8,9 +8,5 @@ sealed class EmulateProgress {
     object Infinite : EmulateProgress()
 
     @Stable
-    data class Fixed(val progress: Long, val total: Long) : EmulateProgress() {
-        fun toProgressFloat() = if (total != 0L) {
-            progress.toFloat() / total.toFloat()
-        } else 0f
-    }
+    data class Growing(val duration: Long) : EmulateProgress()
 }

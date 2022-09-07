@@ -4,6 +4,7 @@ import android.app.Application as FlipperApp
 import android.os.Vibrator
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewModelScope
+import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.api.utils.Constants.API_SUPPORTED_REMOTE_EMULATE
@@ -16,6 +17,7 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.core.ktx.android.vibrateCompat
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.keyscreen.emulate.model.DisableButtonReason
 import com.flipperdevices.keyscreen.emulate.model.EmulateButtonState
@@ -25,6 +27,7 @@ import com.flipperdevices.keyscreen.emulate.tasks.CloseEmulateAppTaskHolder
 import com.flipperdevices.keyscreen.emulate.viewmodel.helpers.AlreadyOpenedAppException
 import com.flipperdevices.keyscreen.emulate.viewmodel.helpers.EmulateHelper
 import com.flipperdevices.protobuf.app.Application
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -33,23 +36,20 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import tangle.viewmodel.VMInject
 
-private const val SUBGHZ_TIMEOUT_MS = 500L
-private const val VIBRATOR_TIME = 100L
+const val VIBRATOR_TIME = 100L
 
-class EmulateViewModel @VMInject constructor(
+abstract class EmulateViewModel(
     private val serviceProvider: FlipperServiceProvider,
     private val emulateHelper: EmulateHelper,
     private val synchronizationApi: SynchronizationApi,
     application: FlipperApp
 ) : LifecycleViewModel(), LogTagProvider, FlipperBleServiceConsumer {
-    override val TAG = "EmulateViewModel"
 
-    private val emulateButtonStateFlow =
+    protected val emulateButtonStateFlow =
         MutableStateFlow<EmulateButtonState>(EmulateButtonState.Loading(LoadingState.CONNECTING))
 
-    private val vibrator = ContextCompat.getSystemService(application, Vibrator::class.java)
+    protected val vibrator = ContextCompat.getSystemService(application, Vibrator::class.java)
 
     init {
         serviceProvider.provideServiceApi(this, this)
@@ -57,7 +57,10 @@ class EmulateViewModel @VMInject constructor(
 
     fun getEmulateButtonStateFlow(): StateFlow<EmulateButtonState> = emulateButtonStateFlow
 
-    fun onStartEmulate(flipperKey: FlipperKey) {
+    fun onStartEmulate(
+        flipperKey: FlipperKey
+    ) {
+        info { "#onStartEmulate" }
         vibrator?.vibrateCompat(VIBRATOR_TIME)
 
         val fileType = flipperKey.path.keyType ?: return
@@ -72,69 +75,46 @@ class EmulateViewModel @VMInject constructor(
             }
         }
 
-        val timeout = if (fileType == FlipperKeyType.SUB_GHZ) {
-            SUBGHZ_TIMEOUT_MS
-        } else 0L
-
         serviceProvider.provideServiceApi(this) {
             viewModelScope.launch(Dispatchers.Default) {
-                val emulateStarted = try {
-                    emulateHelper.startEmulate(this, it.requestApi, fileType, flipperKey, timeout)
-                } catch (ignored: AlreadyOpenedAppException) {
-                    emulateHelper.stopEmulateForce(it.requestApi)
-                    emulateButtonStateFlow.emit(EmulateButtonState.AppAlreadyOpenDialog)
-                    return@launch
-                }
-                if (!emulateStarted) {
-                    emulateHelper.stopEmulateForce(it.requestApi)
-                    emulateButtonStateFlow.emit(EmulateButtonState.Inactive())
-                }
+                onStartEmulateInternal(this, it.requestApi, fileType, flipperKey)
             }
+        }
+    }
+
+    protected open suspend fun onStartEmulateInternal(
+        scope: CoroutineScope,
+        requestApi: FlipperRequestApi,
+        keyType: FlipperKeyType,
+        flipperKey: FlipperKey
+    ) {
+        info { "#onStartEmulateInternal" }
+        val emulateStarted = try {
+            emulateHelper.startEmulate(
+                scope,
+                requestApi,
+                keyType,
+                flipperKey,
+                minEmulateTime = 0L
+            )
+        } catch (ignored: AlreadyOpenedAppException) {
+            emulateHelper.stopEmulateForce(requestApi)
+            emulateButtonStateFlow.emit(EmulateButtonState.AppAlreadyOpenDialog)
+            return
+        }
+        if (!emulateStarted) {
+            emulateHelper.stopEmulateForce(requestApi)
         }
     }
 
     fun onStopEmulate() {
+        info { "#onStopEmulate" }
         serviceProvider.provideServiceApi(this) {
             viewModelScope.launch(Dispatchers.Default) {
                 emulateHelper.stopEmulate(viewModelScope, it.requestApi)
-                emulateButtonStateFlow.emit(EmulateButtonState.Inactive())
             }
         }
         vibrator?.vibrateCompat(VIBRATOR_TIME)
-    }
-
-    fun onSinglePress(flipperKey: FlipperKey) {
-        vibrator?.vibrateCompat(VIBRATOR_TIME)
-        val fileType = flipperKey.path.keyType ?: return
-
-        emulateButtonStateFlow.update {
-            when (it) {
-                is EmulateButtonState.Disabled -> it
-                is EmulateButtonState.Inactive -> EmulateButtonState.Active(
-                    EmulateProgress.Infinite
-                )
-                is EmulateButtonState.Active -> return
-                is EmulateButtonState.Loading -> it
-            }
-        }
-
-        val timeout = if (fileType == FlipperKeyType.SUB_GHZ) {
-            SUBGHZ_TIMEOUT_MS
-        } else 0L
-
-        serviceProvider.provideServiceApi(this) {
-            viewModelScope.launch(Dispatchers.Default) {
-                try {
-                    emulateHelper.startEmulate(this, it.requestApi, fileType, flipperKey, timeout)
-                } catch (ignored: AlreadyOpenedAppException) {
-                    emulateHelper.stopEmulateForce(it.requestApi)
-                    emulateButtonStateFlow.emit(EmulateButtonState.AppAlreadyOpenDialog)
-                    return@launch
-                }
-                emulateHelper.stopEmulate(viewModelScope, it.requestApi)
-                emulateButtonStateFlow.emit(EmulateButtonState.Inactive())
-            }
-        }
     }
 
     fun closeDialog() {

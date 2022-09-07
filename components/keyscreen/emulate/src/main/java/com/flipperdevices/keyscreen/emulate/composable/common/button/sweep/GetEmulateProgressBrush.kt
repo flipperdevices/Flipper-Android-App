@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import com.flipperdevices.core.ktx.jre.toIntSafe
 import com.flipperdevices.keyscreen.emulate.model.EmulateProgress
 import kotlin.math.max
 
@@ -28,10 +29,10 @@ fun getEmulateProgressBrush(
         null -> {
             SolidColor(cursorColor)
         }
-        is EmulateProgress.Fixed -> fixedSizeBrush(
+        is EmulateProgress.Growing -> growingBrush(
             backgroundColor,
             cursorColor,
-            emulateProgress.toProgressFloat()
+            emulateProgress.duration
         )
         EmulateProgress.Infinite -> animatedBrush(backgroundColor, cursorColor)
     }
@@ -39,11 +40,24 @@ fun getEmulateProgressBrush(
 
 private const val FIXED_SIZE_BRUSH_ANGEL = -90f
 
-private fun fixedSizeBrush(backgroundColor: Color, cursorColor: Color, progress: Float): Brush {
+@Composable
+private fun growingBrush(backgroundColor: Color, cursorColor: Color, duration: Long): Brush {
+    val fixedProgress by rememberInfiniteTransition().animateFloat(
+        initialValue = 0f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(
+                durationMillis = duration.toIntSafe(),
+                easing = LinearEasing
+            ),
+            repeatMode = RepeatMode.Restart
+        )
+    )
+
     return rotatableSweepGradient(
         0f to cursorColor,
-        max(0f, progress - PROGRESS_BAR_END_PERCENT_FIXED_DELTA) to cursorColor,
-        progress to backgroundColor,
+        max(0f, fixedProgress - PROGRESS_BAR_END_PERCENT_FIXED_DELTA) to cursorColor,
+        fixedProgress to backgroundColor,
         angel = FIXED_SIZE_BRUSH_ANGEL
     )
 }

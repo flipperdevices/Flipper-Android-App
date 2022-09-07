@@ -18,12 +18,12 @@ import com.flipperdevices.keyscreen.emulate.composable.common.ComposableEmulateB
 import com.flipperdevices.keyscreen.emulate.model.DisableButtonReason
 import com.flipperdevices.keyscreen.emulate.model.EmulateButtonState
 import com.flipperdevices.keyscreen.emulate.model.Picture
-import com.flipperdevices.keyscreen.emulate.viewmodel.EmulateViewModel
+import com.flipperdevices.keyscreen.emulate.viewmodel.SimpleEmulateViewModel
 import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 fun ComposableSimpleEmulateButton(modifier: Modifier = Modifier, flipperKey: FlipperKey) {
-    val emulateViewModel = tangleViewModel<EmulateViewModel>()
+    val emulateViewModel = tangleViewModel<SimpleEmulateViewModel>()
     val emulateButtonState by emulateViewModel.getEmulateButtonStateFlow().collectAsState()
 
     val buttonActiveModifier = Modifier.clickable(
