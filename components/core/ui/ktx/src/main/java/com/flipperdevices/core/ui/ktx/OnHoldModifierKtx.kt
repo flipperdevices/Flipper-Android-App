@@ -14,7 +14,6 @@ import androidx.compose.ui.input.pointer.positionChangeConsumed
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.withTimeout
 
-@Deprecated("Use detectTapGestures instead")
 fun Modifier.onHoldPress(
     onTap: () -> Unit,
     onLongPressStart: () -> Unit,
