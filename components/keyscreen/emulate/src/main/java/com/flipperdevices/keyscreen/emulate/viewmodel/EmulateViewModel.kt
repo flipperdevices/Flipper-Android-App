@@ -18,6 +18,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.keyscreen.emulate.model.DisableButtonReason
 import com.flipperdevices.keyscreen.emulate.model.EmulateButtonState
+import com.flipperdevices.keyscreen.emulate.model.EmulateProgress
 import com.flipperdevices.keyscreen.emulate.model.LoadingState
 import com.flipperdevices.keyscreen.emulate.tasks.CloseEmulateAppTaskHolder
 import com.flipperdevices.keyscreen.emulate.viewmodel.helpers.AlreadyOpenedAppException
@@ -62,7 +63,9 @@ class EmulateViewModel @VMInject constructor(
             when (it) {
                 is EmulateButtonState.Disabled -> it
                 is EmulateButtonState.Loading -> it
-                is EmulateButtonState.Inactive -> EmulateButtonState.Active()
+                is EmulateButtonState.Inactive -> EmulateButtonState.Active(
+                    EmulateProgress.Infinite
+                )
                 is EmulateButtonState.Active -> return
             }
         }
@@ -101,7 +104,9 @@ class EmulateViewModel @VMInject constructor(
         emulateButtonStateFlow.update {
             when (it) {
                 is EmulateButtonState.Disabled -> it
-                is EmulateButtonState.Inactive -> EmulateButtonState.Active()
+                is EmulateButtonState.Inactive -> EmulateButtonState.Active(
+                    EmulateProgress.Infinite
+                )
                 is EmulateButtonState.Active -> return
                 is EmulateButtonState.Loading -> it
             }

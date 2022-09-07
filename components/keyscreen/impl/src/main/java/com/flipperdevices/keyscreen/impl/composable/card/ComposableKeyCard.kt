@@ -28,6 +28,7 @@ import com.flipperdevices.keyscreen.shared.ComposableKeyContent
 @Composable
 @Suppress("LongMethod")
 fun ComposableKeyCard(
+    modifier: Modifier = Modifier,
     parsedKey: FlipperKeyParsed,
     deleteState: DeleteState,
     synchronizationState: (@Composable () -> Unit)? = null,
@@ -36,9 +37,8 @@ fun ComposableKeyCard(
     onEditName: (() -> Unit)? = null
 ) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .padding(all = 24.dp)
     ) {
         Column {
             Row {
@@ -125,9 +125,9 @@ private fun ComposableKeyCardPreview() {
         notes = "Test"
     )
     ComposableKeyCard(
-        parsedKey,
-        DeleteState.NOT_DELETED,
+        parsedKey = parsedKey,
+        deleteState = DeleteState.NOT_DELETED,
         synchronizationState = {},
-        FavoriteState.FAVORITE
-    ) {}
+        favoriteState = FavoriteState.FAVORITE
+    )
 }

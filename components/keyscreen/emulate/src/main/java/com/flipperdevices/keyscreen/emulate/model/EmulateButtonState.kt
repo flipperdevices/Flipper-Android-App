@@ -17,7 +17,7 @@ sealed class EmulateButtonState {
     object AppAlreadyOpenDialog : Inactive()
 
     @Stable
-    data class Active(val tmp: Unit = Unit) : EmulateButtonState()
+    data class Active(val progress: EmulateProgress) : EmulateButtonState()
 }
 
 enum class LoadingState {

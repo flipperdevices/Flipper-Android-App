@@ -1,16 +1,13 @@
 package com.flipperdevices.keyscreen.emulate.composable.common
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material.Text
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.flipperdevices.core.ui.ktx.animatedDots
+import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
-import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.keyscreen.emulate.R
 import com.flipperdevices.keyscreen.emulate.model.LoadingState
 import com.google.accompanist.placeholder.PlaceholderHighlight
@@ -23,29 +20,22 @@ fun ComposableActionLoading(
     loadingState: LoadingState
 ) {
     val placeholderColor = LocalPallet.current.text8.copy(alpha = 0.2f)
-    ComposableEmulateButton(
+    ComposableEmulateButtonWithText(
         modifier = modifier,
-        buttonModifier = modifier.placeholder(
+        buttonModifier = Modifier.placeholder(
             visible = true,
             color = placeholderColor,
             highlight = PlaceholderHighlight.shimmer(
                 highlightColor = LocalPallet.current.placeholder
-            )
+            ),
+            shape = RoundedCornerShape(16.dp)
         ),
-        buttonContent = {},
-        underButtonContent = {
-            val textId = when (loadingState) {
-                LoadingState.CONNECTING -> R.string.emulate_loading_connecting
-                LoadingState.SYNCING -> R.string.emulate_loading_syncing
-            }
-            Text(
-                text = stringResource(textId) + animatedDots(),
-                style = LocalTypography.current.bodyR14,
-                color = LocalPallet.current.text30
-            )
-        },
-        borderColor = null,
-        backgroundBrush = SolidColor(placeholderColor)
+        buttonTextId = R.string.keyscreen_loading,
+        color = LocalPallet.current.text8,
+        textId = when (loadingState) {
+            LoadingState.CONNECTING -> R.string.emulate_loading_connecting
+            LoadingState.SYNCING -> R.string.emulate_loading_syncing
+        }
     )
 }
 
