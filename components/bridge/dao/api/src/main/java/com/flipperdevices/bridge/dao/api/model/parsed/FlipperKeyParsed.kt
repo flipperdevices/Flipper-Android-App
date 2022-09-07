@@ -31,7 +31,8 @@ sealed class FlipperKeyParsed(
         keyName: String,
         notes: String?,
         val protocol: String?,
-        val key: String?
+        val key: String?,
+        val totalTimeMs: Long? = null
     ) : FlipperKeyParsed(keyName, notes, FlipperKeyType.SUB_GHZ)
 
     class IButton(

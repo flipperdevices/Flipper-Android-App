@@ -20,6 +20,7 @@
 - [Feature] Try to intent google assistant command with examples
 - [Feature] Handle errors while emulate/send
 - [Feature] New emulate/send buttons
+- [Feature] New logic for emulate
 - [FIX] Now search for devices by Mac address and by flipper name
 - [FIX] Subghz provisioning while geoip is null
 

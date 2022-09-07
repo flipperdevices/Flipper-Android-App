@@ -7,6 +7,8 @@ import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ktx.jre.TimeHelper
+import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.ktx.jre.withLockResult
 import com.flipperdevices.core.log.LogTagProvider
@@ -23,19 +25,24 @@ import com.flipperdevices.protobuf.main
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.math.max
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withTimeoutOrNull
 
-private const val APP_STARTED_TIMEOUT_MS = 3 * 1000L // 10 seconds
+private const val APP_STARTED_TIMEOUT_MS = 3 * 1000L // 3 seconds
 private const val APP_RETRY_COUNT = 3
 private const val APP_RETRY_SLEEP_TIME_MS = 1 * 1000L // 1 second
 
@@ -48,47 +55,89 @@ private const val APP_RETRY_SLEEP_TIME_MS = 1 * 1000L // 1 second
 class EmulateHelper @Inject constructor() : LogTagProvider {
     override val TAG = "EmulateHelper"
 
+    private var isRunning = MutableStateFlow(false)
+
     @Volatile
-    private var isRunning = false
+    private var stopEmulateTimeAllowedMs: Long = 0
+    private var stopJob: Job? = null
     private val mutex = Mutex()
+
+    fun getRunningState(): StateFlow<Boolean> = isRunning
 
     suspend fun startEmulate(
         scope: CoroutineScope,
         requestApi: FlipperRequestApi,
-        fileType: FlipperKeyType,
-        flipperKey: FlipperKey
+        keyType: FlipperKeyType,
+        flipperKey: FlipperKey,
+        minEmulateTime: Long = 0L
     ) = withLockResult(mutex, "start") {
-        if (isRunning) {
+        if (isRunning.value) {
             info { "Emulate already running, start stop" }
             stopEmulateInternal(requestApi)
         }
-        isRunning = true
-        startEmulateInternal(scope, requestApi, fileType, flipperKey)
+        isRunning.emit(true)
+        startEmulateInternal(scope, requestApi, keyType, flipperKey, minEmulateTime)
     }
 
     suspend fun stopEmulate(
+        scope: CoroutineScope,
         requestApi: FlipperRequestApi
-    ) = withLock(mutex, "stop") {
+    ) = withLock(mutex, "schedule_stop") {
+        if (stopJob != null) {
+            info { "Return from #stopEmulate because stop already in progress" }
+            return@withLock
+        }
+        if (TimeHelper.getNow() > stopEmulateTimeAllowedMs) {
+            info {
+                "Already passed delay, stop immediately " +
+                    "(current: ${TimeHelper.getNow()}/$stopEmulateTimeAllowedMs)"
+            }
+            stopEmulateInternal(requestApi)
+            return@withLock
+        }
+        stopJob = scope.launch(Dispatchers.Default) {
+            try {
+                while (TimeHelper.getNow() < stopEmulateTimeAllowedMs) {
+                    val delayMs = max(0, stopEmulateTimeAllowedMs - TimeHelper.getNow())
+                    info { "Can't stop right now, wait $delayMs ms" }
+                    delay(delayMs)
+                }
+                launchWithLock(mutex, scope, "stop") {
+                    stopEmulateInternal(requestApi)
+                }
+            } finally {
+                stopJob = null
+            }
+        }
+    }
+
+    suspend fun stopEmulateForce(
+        requestApi: FlipperRequestApi
+    ) = withLock(mutex, "force_stop") {
+        if (stopJob != null) {
+            stopJob?.cancelAndJoin()
+            stopJob = null
+        }
         stopEmulateInternal(requestApi)
-        isRunning = false
     }
 
     private suspend fun startEmulateInternal(
         scope: CoroutineScope,
         requestApi: FlipperRequestApi,
-        fileType: FlipperKeyType,
-        flipperKey: FlipperKey
+        keyType: FlipperKeyType,
+        flipperKey: FlipperKey,
+        minEmulateTime: Long
     ): Boolean {
         info { "startEmulateInternal" }
 
-        var appOpen = tryOpenApp(scope, requestApi, fileType)
+        var appOpen = tryOpenApp(scope, requestApi, keyType)
         var retryCount = 0
         while (!appOpen && retryCount < APP_RETRY_COUNT) {
             info { "Failed open app first time, try $retryCount times" }
             retryCount++
             stopEmulateInternal(requestApi)
             delay(APP_RETRY_SLEEP_TIME_MS)
-            appOpen = tryOpenApp(scope, requestApi, fileType)
+            appOpen = tryOpenApp(scope, requestApi, keyType)
         }
         if (!appOpen) {
             info { "Failed open app with $retryCount retry times" }
@@ -109,7 +158,7 @@ class EmulateHelper @Inject constructor() : LogTagProvider {
             error { "Failed start key with error $appLoadFileResponse" }
             return false
         }
-        if (fileType != FlipperKeyType.SUB_GHZ) {
+        if (keyType != FlipperKeyType.SUB_GHZ) {
             info { "Skip execute button press: $appLoadFileResponse" }
             return true
         }
@@ -125,6 +174,7 @@ class EmulateHelper @Inject constructor() : LogTagProvider {
             error { "Failed press subghz key with error $appButtonPressResponse" }
             return false
         }
+        stopEmulateTimeAllowedMs = TimeHelper.getNow() + minEmulateTime
         return true
     }
 
@@ -132,7 +182,7 @@ class EmulateHelper @Inject constructor() : LogTagProvider {
     private suspend fun tryOpenApp(
         scope: CoroutineScope,
         requestApi: FlipperRequestApi,
-        fileType: FlipperKeyType
+        keyType: FlipperKeyType
     ): Boolean {
         val stateAppFlow = MutableStateFlow(Application.AppState.UNRECOGNIZED)
         val pendingStateJob = requestApi
@@ -147,7 +197,7 @@ class EmulateHelper @Inject constructor() : LogTagProvider {
                 flowOf(
                     main {
                         appStartRequest = startRequest {
-                            name = fileType.flipperAppName
+                            name = keyType.flipperAppName
                             args = Constants.RPC_START_REQUEST_ARG
                         }
                     }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
@@ -196,5 +246,6 @@ class EmulateHelper @Inject constructor() : LogTagProvider {
             )
         )
         info { "App exit response: $appExitResponse" }
+        isRunning.emit(false)
     }
 }

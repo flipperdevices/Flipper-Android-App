@@ -1,15 +1,8 @@
 package com.flipperdevices.keyscreen.emulate.composable.common.button
 
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -69,24 +62,9 @@ private fun ComposableEmulateButtonPreview() {
                 color = LocalPallet.current.actionOnFlipperSubGhzEnable
             )
 
-            val fixedProgress by rememberInfiniteTransition().animateFloat(
-                initialValue = 0f,
-                targetValue = 1f,
-                animationSpec = infiniteRepeatable(
-                    animation = tween(
-                        durationMillis = 5000,
-                        easing = LinearEasing
-                    ),
-                    repeatMode = RepeatMode.Restart
-                )
-            )
-
             ComposableEmulateButton(
                 modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
-                emulateProgress = EmulateProgress.Fixed(
-                    (fixedProgress * TOTAL_PROGRESS_PREVIEW).toLong(),
-                    TOTAL_PROGRESS_PREVIEW
-                ),
+                emulateProgress = EmulateProgress.Growing(TOTAL_PROGRESS_PREVIEW),
                 picture = Picture.LottieRes(
                     picResId = DesignSystem.raw.ic_sending,
                     fallBackPicResId = DesignSystem.drawable.ic_send

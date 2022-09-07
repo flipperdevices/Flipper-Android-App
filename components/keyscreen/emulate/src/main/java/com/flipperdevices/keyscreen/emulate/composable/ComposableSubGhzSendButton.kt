@@ -18,12 +18,12 @@ import com.flipperdevices.keyscreen.emulate.model.DisableButtonReason
 import com.flipperdevices.keyscreen.emulate.model.EmulateButtonState
 import com.flipperdevices.keyscreen.emulate.model.EmulateProgress
 import com.flipperdevices.keyscreen.emulate.model.Picture
-import com.flipperdevices.keyscreen.emulate.viewmodel.EmulateViewModel
+import com.flipperdevices.keyscreen.emulate.viewmodel.SubGhzViewModel
 import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 fun ComposableSubGhzSendButton(modifier: Modifier = Modifier, flipperKey: FlipperKey) {
-    val emulateViewModel = tangleViewModel<EmulateViewModel>()
+    val emulateViewModel = tangleViewModel<SubGhzViewModel>()
     val emulateButtonState by emulateViewModel.getEmulateButtonStateFlow().collectAsState()
 
     if (!flipperKey.synchronized) {
@@ -80,27 +80,19 @@ fun ComposableSubGhzSendButton(modifier: Modifier = Modifier, flipperKey: Flippe
 @Composable
 private fun ComposableActiveStateEmulateInternal(
     modifier: Modifier,
-    emulateViewModel: EmulateViewModel,
+    emulateViewModel: SubGhzViewModel,
     flipperKey: FlipperKey,
     emulateButtonState: EmulateButtonState
 ) {
     val buttonActiveModifier = Modifier.onHoldPress(
         onTap = {
-            if (emulateButtonState is EmulateButtonState.Inactive) {
-                emulateViewModel.onSinglePress(flipperKey)
-            } else if (emulateButtonState is EmulateButtonState.Active) {
-                emulateViewModel.onStopEmulate()
-            }
+            emulateViewModel.onSinglePress(flipperKey)
         },
         onLongPressStart = {
-            if (emulateButtonState is EmulateButtonState.Inactive) {
-                emulateViewModel.onStartEmulate(flipperKey)
-            }
+            emulateViewModel.onStartEmulate(flipperKey)
         },
         onLongPressEnd = {
-            if (emulateButtonState is EmulateButtonState.Active) {
-                emulateViewModel.onStopEmulate()
-            }
+            emulateViewModel.onStopEmulate()
         }
     )
     ComposableActiveEmulateInternal(
