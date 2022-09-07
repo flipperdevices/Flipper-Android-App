@@ -46,19 +46,21 @@ fun ComposableEmulateButtonWithText(
             progressColor = progressColor
         )
 
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            modifier = Modifier.padding(top = 4.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             if (iconId != null) {
                 Icon(
                     modifier = Modifier
-                        .size(14.dp)
-                        .padding(horizontal = 4.dp),
+                        .padding(horizontal = 4.dp)
+                        .size(14.dp),
                     painter = painterResource(iconId),
                     contentDescription = textId?.let { stringResource(it) } ?: "",
                     tint = LocalPallet.current.warningColor
                 )
             }
             Text(
-                modifier = Modifier.padding(top = 4.dp),
                 text = textId?.let { stringResource(it) } ?: "",
                 style = LocalTypography.current.subtitleM12,
                 color = LocalPallet.current.text30
