@@ -2,6 +2,7 @@
 
 # 1.2.1 - In progress
 
+- [REFACTOR] Change Flipper logo
 - [REFACTOR] Redesign Full Device Information
 - [REFACTOR] Redesign dialog after update (change colors)
 - [REFACTOR] Migrate to faster build configuration
@@ -16,6 +17,7 @@
 - [Feature] Do not provide SubGhz provisioning on zero hardware region
 - [Feature] Restart RPC on fail RPC process response or flipper lags
 - [Feature] Prepare for Fdroid app store
+- [Feature] Try to intent google assistant command with examples
 - [Feature] Handle errors while emulate/send
 - [Feature] New emulate/send buttons
 - [FIX] Now search for devices by Mac address and by flipper name
