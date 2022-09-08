@@ -36,5 +36,6 @@
     <string name="update_screen_failed_outdated_app_desc">Update app to the latest version to install firmware on Flipper</string>
     <string name="update_screen_failed_outdated_app_btn">[Go to Google Play](https://play.google.com/store/apps/details?id=com.flipperdevices.app)</string>
     <string name="update_screen_failed_int_desc">Flipper’s **internal flash storage is full or broken**. Free up space or try factory resetting to restore the internal flash storage.</string>
+    <string name="update_screen_failed_int_link">[How to do Factory Reset](https://flipp.dev/storage-repair)</string>
     <string name="update_screen_whats_new">What`s new</string>
 </resources>

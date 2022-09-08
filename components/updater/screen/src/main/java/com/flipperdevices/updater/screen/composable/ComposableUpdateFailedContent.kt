@@ -117,5 +117,9 @@ fun ComposableInternalFlashFailed() {
         imageId = null,
         titleId = null,
         descriptionId = R.string.update_screen_failed_int_desc
-    )
+    ) {
+        ClickableUrlText(
+            markdownResId = R.string.update_screen_failed_int_link
+        )
+    }
 }
