@@ -5,10 +5,26 @@ plugins {
     id("kotlin-kapt")
 }
 
+android {
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
+    }
+}
+
 dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.preference)
     implementation(projects.components.core.ui.res)
+    implementation(projects.components.core.ui.theme)
+    implementation(projects.components.core.ui.navigation)
+
+    implementation(projects.components.wearable.setup.api)
+    implementation(projects.components.wearable.setup.impl)
+    implementation(projects.components.wearable.theme)
 
     implementation(libs.appcompat)
     implementation(libs.timber)
@@ -18,6 +34,14 @@ dependencies {
     releaseImplementation(projects.components.analytics.shake2report.noop)
     debugImplementation(projects.components.analytics.shake2report.impl)
     internalImplementation(projects.components.analytics.shake2report.impl)
+
+    // Compose
+    implementation(libs.compose.activity)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.tooling)
+    implementation(libs.compose.wear.foundation)
+    implementation(libs.compose.wear.navigation)
+    implementation(libs.compose.wear.material)
 
     // Dagger deps
     implementation(libs.dagger)

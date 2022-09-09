@@ -111,7 +111,7 @@ data class FlipperPallet(
     val hexKeyboardBackground: Color
 ) {
     @Composable
-    fun toMaterialColors(isLight: Boolean) = Colors(
+    internal fun toMaterialColors(isLight: Boolean) = Colors(
         primary = content,
         primaryVariant = accentSecond,
         secondary = content,

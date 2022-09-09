@@ -16,6 +16,7 @@ compose-accompanist = "0.25.1"
 compose-constraint = "1.0.1"
 compose-navigation = "2.5.1"
 serialization-json = "1.4.0"
+wear = "1.2.0"
 room = "2.4.3"
 dagger = "2.43.2"
 timber = "5.0.1"
@@ -82,6 +83,7 @@ ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref =
 datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
 
 # UI
+compose-activity = { module = "androidx.activity:activity-compose", version.ref = "ktx-activity" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
 compose-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
@@ -147,7 +149,6 @@ countly = { module = "ly.count.android:sdk", version.ref = "countly" }
 ktx = { module = "androidx.core:core-ktx", version.ref = "ktx" }
 ktx-fragment = { module = "androidx.fragment:fragment-ktx", version.ref = "ktx-fragment" }
 ktx-activity = { module = "androidx.activity:activity-ktx", version.ref = "ktx-activity" }
-wearos-activity = { module = "androidx.activity:activity-compose", version.ref = "ktx-activity" }
 ktx-testing = { module = "androidx.test.ext:junit", version.ref = "ktx-testing" }
 
 # Lifecycle
@@ -192,6 +193,9 @@ junit = { module = "junit:junit", version.ref = "junit" }
 mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito" }
 roboelectric = { module = "org.robolectric:robolectric", version.ref = "roboelectric" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+
+# Wear
+androidx-wear = { module = "androidx.wear:wear", version.ref = "wear" }
 
 [plugins]
 android-app = { id = "com.android.application", version.ref = "android-gradle" }

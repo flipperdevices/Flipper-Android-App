@@ -1,11 +1,42 @@
 package com.flipperdevices.wearable
 
 import android.os.Bundle
-import android.os.PersistableBundle
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.Modifier
+import androidx.wear.compose.navigation.SwipeDismissableNavHost
+import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
+import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.di.provideDelegate
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.wearable.di.WearableComponent
+import com.flipperdevices.wearable.setup.api.SetupApi
+import com.flipperdevices.wearable.theme.WearFlipperTheme
 
-class MainWearActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+class MainWearActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val futureEntries by ComponentHolder.component<WearableComponent>().futureEntries
+
+        setContent {
+            WearFlipperTheme {
+                val navController = rememberSwipeDismissableNavController()
+                SwipeDismissableNavHost(
+                    navController = navController,
+                    startDestination = SetupApi.ROUTE,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(LocalPallet.current.background)
+                ) {
+                    futureEntries.forEach {
+                        with(it) {
+                            navigation(navController)
+                        }
+                    }
+                }
+            }
+        }
     }
 }
