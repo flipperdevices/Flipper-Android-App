@@ -9,8 +9,16 @@ dependencies {
     implementation(projects.components.wearable.setup.api)
 
     implementation(projects.components.core.di)
+    implementation(projects.components.core.log)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.navigation)
+    implementation(projects.components.wearable.core.ui.components)
+
+    implementation(libs.kotlin.coroutines)
+    implementation(libs.kotlin.coroutines.play.services)
+
+    implementation(libs.wear)
+    implementation(libs.wear.gms)
 
     // Compose
     implementation(libs.compose.ui)
@@ -18,8 +26,12 @@ dependencies {
     implementation(libs.compose.wear.foundation)
     implementation(libs.compose.wear.material)
     implementation(libs.compose.wear.navigation)
+    implementation(libs.lifecycle.compose)
 
     // Dagger deps
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
+    implementation(libs.tangle.viewmodel.compose)
+    implementation(libs.tangle.viewmodel.api)
+    anvil(libs.tangle.viewmodel.compiler)
 }

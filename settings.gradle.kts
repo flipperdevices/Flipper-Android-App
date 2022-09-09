@@ -124,6 +124,7 @@ include(
     ":components:nfceditor:sample",
 
     ":components:wearable:theme",
+    ":components:wearable:core:ui:components",
     ":components:wearable:setup:api",
     ":components:wearable:setup:impl"
 )
