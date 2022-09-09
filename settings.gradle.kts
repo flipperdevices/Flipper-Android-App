@@ -24,6 +24,7 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 include(
     ":instances:app",
+    ":instances:wearable",
     ":components:bridge:api",
     ":components:bridge:impl",
     ":components:bridge:service:impl",
