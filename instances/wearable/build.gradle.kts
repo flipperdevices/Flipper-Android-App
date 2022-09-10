@@ -18,6 +18,7 @@ android {
 dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.preference)
+    implementation(projects.components.core.activityholder)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.navigation)

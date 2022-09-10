@@ -1,7 +1,9 @@
 package com.flipperdevices.wearable.setup.impl.composable
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.scrollBy
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -31,6 +33,7 @@ import com.flipperdevices.wearable.setup.impl.model.FindPhoneModel
 import com.flipperdevices.wearable.setup.impl.viewmodel.FindPhoneViewModel
 import com.google.android.horologist.compose.layout.fillMaxRectangle
 import kotlinx.coroutines.launch
+import rememberRipple
 
 @Composable
 fun ComposableFindPhone() {
@@ -64,7 +67,10 @@ fun ComposableFindPhone() {
         when (localFindPhoneModel) {
             FindPhoneModel.Loading -> ComposableFindPhoneLoading()
             is FindPhoneModel.Founded -> ComposableFoundedPhone(localFindPhoneModel.phoneName)
-            FindPhoneModel.NotFound -> ComposableNotFoundedPhone()
+            FindPhoneModel.NotFound -> ComposableNotFoundedPhone(
+                findPhoneViewModel::openStore,
+                findPhoneViewModel::checkPhone
+            )
         }
     }
     LaunchedEffect(Unit) {
@@ -81,14 +87,26 @@ private fun ComposableFoundedPhone(name: String) {
 }
 
 @Composable
-private fun ComposableNotFoundedPhone() {
+private fun ComposableNotFoundedPhone(onInstall: () -> Unit, onCheckAgain: () -> Unit) {
     Text(
         text = stringResource(id = R.string.phone_missing),
         style = LocalTypography.current.bodyM14
     )
     ComposableFlipperButton(
-        modifier = Modifier.padding(vertical = 16.dp),
-        text = stringResource(R.string.install_app)
+        modifier = Modifier.padding(top = 16.dp),
+        text = stringResource(R.string.install_app),
+        onClick = onInstall
+    )
+    Text(
+        modifier = Modifier
+            .padding(all = 4.dp)
+            .clickable(
+                interactionSource = MutableInteractionSource(),
+                indication = rememberRipple(),
+                onClick = onCheckAgain
+            ),
+        text = stringResource(id = R.string.check_again),
+        style = LocalTypography.current.subtitleM10
     )
 }
 

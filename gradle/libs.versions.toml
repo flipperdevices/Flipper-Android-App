@@ -19,6 +19,8 @@ horologist = "0.1.9"
 serialization-json = "1.4.0"
 wear = "1.2.0"
 wear-gms = "17.1.0"
+wear-interaction-phone = "1.1.0-alpha03"
+wear-interaction-remote = "1.0.0"
 room = "2.4.3"
 dagger = "2.43.2"
 timber = "5.0.1"
@@ -201,6 +203,8 @@ mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 # Wear
 wear = { module = "androidx.wear:wear", version.ref = "wear" }
 wear-gms = { module = "com.google.android.gms:play-services-wearable", version.ref = "wear-gms" }
+wear-interaction-phone = { module = "androidx.wear:wear-phone-interactions", version.ref = "wear-interaction-phone" }
+wear-interaction-remote = { module = "androidx.wear:wear-remote-interactions", version.ref = "wear-interaction-remote" }
 
 [plugins]
 android-app = { id = "com.android.application", version.ref = "android-gradle" }
