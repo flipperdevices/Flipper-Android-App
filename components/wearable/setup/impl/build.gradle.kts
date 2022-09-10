@@ -26,6 +26,7 @@ dependencies {
     implementation(libs.compose.wear.foundation)
     implementation(libs.compose.wear.material)
     implementation(libs.compose.wear.navigation)
+    implementation(libs.horologist.layout)
     implementation(libs.lifecycle.compose)
 
     // Dagger deps
