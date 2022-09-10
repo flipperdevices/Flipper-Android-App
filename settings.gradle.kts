@@ -127,5 +127,10 @@ include(
     ":components:wearable:core:ui:components",
     ":components:wearable:core:ui:ktx",
     ":components:wearable:setup:api",
-    ":components:wearable:setup:impl"
+    ":components:wearable:setup:impl",
+
+    ":components:wearable:sync:common",
+    ":components:wearable:sync:handheld:api",
+    ":components:wearable:sync:handheld:impl",
+    ":components:wearable:sync:handheld:noop"
 )

@@ -47,7 +47,6 @@ class FindPhoneViewModel(
 
     fun openStore() {
         info { "#openAppInStoreOnPhone" }
-
         val intent = when (PhoneTypeHelper.getPhoneDeviceType(getApplication())) {
             PhoneTypeHelper.DEVICE_TYPE_ANDROID -> {
                 info { "DEVICE_TYPE_ANDROID" }

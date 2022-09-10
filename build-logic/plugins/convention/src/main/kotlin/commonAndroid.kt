@@ -1,4 +1,5 @@
 import com.android.build.gradle.BaseExtension
+import com.flipperdevices.buildlogic.ApkConfig
 import org.gradle.api.JavaVersion
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
@@ -7,14 +8,11 @@ import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.kotlin.dsl.add
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import com.flipperdevices.buildlogic.ApkConfig
 
 private const val SPLASH_SCREEN_ACTIVITY = "com.flipperdevices.app.SplashScreen"
 private const val SPLASH_SCREEN_ACTIVITY_KEY = "splashScreenActivity"
 
 fun BaseExtension.commonAndroid(target: Project) {
-    buildToolsVersion = "31.0.0"
-
     configureDefaultConfig()
     configureBuildTypes()
     configureBuildFeatures()
@@ -126,7 +124,7 @@ private fun Project.suppressOptIn() {
                     "-Xopt-in=com.squareup.anvil.annotations.ExperimentalAnvilApi",
                     "-Xopt-in=kotlin.time.ExperimentalTime",
                     "-Xopt-in=kotlin.RequiresOptIn",
-                    "-Xopt-in=androidx.compose.animation.ExperimentalAnimationApi",
+                    "-Xopt-in=androidx.compose.animation.ExperimentalAnimationApi"
                 )
             }
         }

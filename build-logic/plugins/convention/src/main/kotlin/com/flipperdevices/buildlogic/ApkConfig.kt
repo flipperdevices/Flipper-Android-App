@@ -4,7 +4,6 @@ import java.lang.System.getProperty
 
 object ApkConfig {
     const val APPLICATION_ID = "com.flipperdevices.app"
-    const val APPLICATION_ID_SUFFIX = ".dev"
 
     const val MIN_SDK_VERSION = 26
     const val TARGET_SDK_VERSION = 33
@@ -17,6 +16,7 @@ object ApkConfig {
         "countly_app_key",
         "171c41398e2459b068869d6409047680896ed062"
     )!!
+    val IS_GOOGLE_FEATURE_AVAILABLE = getProperty("is_google_feature", true.toString()).toBoolean()
 
     val IS_SENTRY_PUBLISH = getProperty("is_sentry_publish", "false").toBoolean()
 }
