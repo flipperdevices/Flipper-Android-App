@@ -14,8 +14,10 @@ dependencies {
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.navigation)
+    implementation(projects.components.wearable.core.ui.ktx)
 
     implementation(projects.components.bridge.dao.api)
+    implementation(projects.components.wearable.emulate.api)
 
     implementation(libs.wear.gms)
 

@@ -46,14 +46,14 @@ import kotlinx.coroutines.launch
     device = Devices.WEAR_OS_LARGE_ROUND
 )
 @Composable
-fun ComposableKeysList() {
+fun ComposableKeysList(onKeyOpen: (FlipperWearKey) -> Unit) {
     val keysListViewModel = viewModel<KeysListViewModel>()
     val state by keysListViewModel.getKeysListFlow().collectAsState()
     val localState = state
     when (localState) {
         is KeysListState.Loaded -> if (localState.keys.isEmpty()) {
             ComposableKeysListEmpty()
-        } else ComposableKeysListInternal(localState.keys)
+        } else ComposableKeysListInternal(localState.keys, onKeyOpen)
         KeysListState.Loading -> ComposableKeysListLoading()
     }
 }
@@ -94,7 +94,10 @@ private fun ComposableKeysListEmpty() {
 }
 
 @Composable
-private fun ComposableKeysListInternal(keys: List<FlipperWearKey>) {
+private fun ComposableKeysListInternal(
+    keys: List<FlipperWearKey>,
+    onKeyOpen: (FlipperWearKey) -> Unit
+) {
     val columnScrollState = rememberScalingLazyListState()
     val coroutineScope = rememberCoroutineScope()
     val focusRequester = remember { FocusRequester() }
@@ -121,7 +124,7 @@ private fun ComposableKeysListInternal(keys: List<FlipperWearKey>) {
                 )
             }
             items(favoritesKeys) {
-                ComposableKeysListElement(it)
+                ComposableKeysListElement(it) { onKeyOpen(it) }
             }
             item {
                 ComposableKeysListCategory(
@@ -130,7 +133,7 @@ private fun ComposableKeysListInternal(keys: List<FlipperWearKey>) {
             }
         }
         items(otherKeys) {
-            ComposableKeysListElement(it)
+            ComposableKeysListElement(it) { onKeyOpen(it) }
         }
     }
 

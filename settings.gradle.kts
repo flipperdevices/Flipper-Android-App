@@ -130,6 +130,8 @@ include(
     ":components:wearable:setup:impl",
 
     ":components:wearable:sync:common",
+    ":components:wearable:emulate:api",
+    ":components:wearable:emulate:impl",
     ":components:wearable:sync:wear:api",
     ":components:wearable:sync:wear:impl",
     ":components:wearable:sync:handheld:api",

@@ -27,6 +27,7 @@ class SetupApiImpl @Inject constructor() : SetupApi {
                 ComposableFindPhone(onFoundPhone = {
                     navController.navigate(KeysListApi.ROUTE) {
                         launchSingleTop = true
+                        popUpTo(0)
                     }
                 })
             }

@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -50,10 +51,13 @@ fun ComposableKeysListCategory(
 }
 
 @Composable
-fun ComposableKeysListElement(flipperWearKey: FlipperWearKey) {
+fun ComposableKeysListElement(flipperWearKey: FlipperWearKey, onClick: () -> Unit) {
     val type = flipperWearKey.path.path.keyType
     val icon = type?.icon ?: DesignSystem.drawable.ic_fileformat_unknown
     Row(
+        modifier = Modifier.clickable(
+            onClick = onClick
+        ),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
