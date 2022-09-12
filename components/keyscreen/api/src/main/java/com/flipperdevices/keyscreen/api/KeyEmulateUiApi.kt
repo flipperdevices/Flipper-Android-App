@@ -16,4 +16,10 @@ interface KeyEmulateUiApi {
         color: Color,
         progressColor: Color
     )
+
+    @Composable
+    fun ComposableEmulateLoading(
+        modifier: Modifier,
+        loadingState: LoadingState
+    )
 }

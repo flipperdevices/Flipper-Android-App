@@ -6,7 +6,9 @@ import androidx.compose.ui.graphics.Color
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.keyscreen.api.EmulateProgress
 import com.flipperdevices.keyscreen.api.KeyEmulateUiApi
+import com.flipperdevices.keyscreen.api.LoadingState
 import com.flipperdevices.keyscreen.api.Picture
+import com.flipperdevices.keyscreen.emulate.composable.common.ComposableActionLoading
 import com.flipperdevices.keyscreen.emulate.composable.common.button.ComposableEmulateButton
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
@@ -32,5 +34,10 @@ class KeyEmulateUiApiImpl @Inject constructor() : KeyEmulateUiApi {
             color,
             progressColor
         )
+    }
+
+    @Composable
+    override fun ComposableEmulateLoading(modifier: Modifier, loadingState: LoadingState) {
+        ComposableActionLoading(modifier, loadingState)
     }
 }

@@ -20,9 +20,9 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.keyscreen.api.EmulateProgress
+import com.flipperdevices.keyscreen.api.LoadingState
 import com.flipperdevices.keyscreen.emulate.model.DisableButtonReason
 import com.flipperdevices.keyscreen.emulate.model.EmulateButtonState
-import com.flipperdevices.keyscreen.emulate.model.LoadingState
 import com.flipperdevices.keyscreen.emulate.tasks.CloseEmulateAppTaskHolder
 import com.flipperdevices.keyscreen.emulate.viewmodel.helpers.AlreadyOpenedAppException
 import com.flipperdevices.keyscreen.emulate.viewmodel.helpers.EmulateHelper

@@ -100,6 +100,7 @@ dependencies {
     implementation(projects.components.wearable.sync.handheld.api)
     if (com.flipperdevices.buildlogic.ApkConfig.IS_GOOGLE_FEATURE_AVAILABLE) {
         implementation(projects.components.wearable.sync.handheld.impl)
+        implementation(projects.components.wearable.emulate.handheld.impl)
     } else {
         implementation(projects.components.wearable.sync.handheld.noop)
     }

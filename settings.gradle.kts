@@ -132,11 +132,15 @@ include(
     ":components:wearable:setup:impl",
 
     ":components:wearable:sync:common",
-    ":components:wearable:emulate:api",
-    ":components:wearable:emulate:impl",
     ":components:wearable:sync:wear:api",
     ":components:wearable:sync:wear:impl",
     ":components:wearable:sync:handheld:api",
     ":components:wearable:sync:handheld:impl",
-    ":components:wearable:sync:handheld:noop"
+    ":components:wearable:sync:handheld:noop",
+    ":components:wearable:emulate:wear:api",
+    ":components:wearable:emulate:wear:impl",
+    ":components:wearable:emulate:handheld:api",
+    ":components:wearable:emulate:handheld:impl",
+    ":components:wearable:emulate:handheld:noop",
+    ":components:wearable:emulate:common"
 )

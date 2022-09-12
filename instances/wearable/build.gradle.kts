@@ -25,8 +25,8 @@ dependencies {
 
     implementation(projects.components.wearable.setup.api)
     implementation(projects.components.wearable.setup.impl)
-    implementation(projects.components.wearable.emulate.api)
-    implementation(projects.components.wearable.emulate.impl)
+    implementation(projects.components.wearable.emulate.wear.api)
+    implementation(projects.components.wearable.emulate.wear.impl)
     implementation(projects.components.wearable.sync.wear.api)
     implementation(projects.components.wearable.sync.wear.impl)
     implementation(projects.components.wearable.theme)
