@@ -1,6 +1,7 @@
 package com.flipperdevices.keyscreen.emulate.model
 
 import androidx.compose.runtime.Stable
+import com.flipperdevices.keyscreen.api.EmulateProgress
 
 @Stable
 sealed class EmulateButtonState {

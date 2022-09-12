@@ -1,4 +1,4 @@
-package com.flipperdevices.keyscreen.emulate.model
+package com.flipperdevices.keyscreen.api
 
 import androidx.compose.runtime.Stable
 

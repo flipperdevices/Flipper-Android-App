@@ -11,8 +11,8 @@ import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.ktx.android.vibrateCompat
 import com.flipperdevices.core.log.info
+import com.flipperdevices.keyscreen.api.EmulateProgress
 import com.flipperdevices.keyscreen.emulate.model.EmulateButtonState
-import com.flipperdevices.keyscreen.emulate.model.EmulateProgress
 import com.flipperdevices.keyscreen.emulate.viewmodel.helpers.AlreadyOpenedAppException
 import com.flipperdevices.keyscreen.emulate.viewmodel.helpers.EmulateHelper
 import kotlinx.coroutines.CoroutineScope

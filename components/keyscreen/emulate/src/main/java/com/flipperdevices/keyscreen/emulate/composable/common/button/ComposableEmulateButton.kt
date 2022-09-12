@@ -19,9 +19,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
+import com.flipperdevices.keyscreen.api.EmulateProgress
+import com.flipperdevices.keyscreen.api.Picture
 import com.flipperdevices.keyscreen.emulate.composable.common.button.sweep.getEmulateProgressBrush
-import com.flipperdevices.keyscreen.emulate.model.EmulateProgress
-import com.flipperdevices.keyscreen.emulate.model.Picture
 
 private const val BUTTON_HEIGHT_DP = 56
 

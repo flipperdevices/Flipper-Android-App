@@ -17,9 +17,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
+import com.flipperdevices.keyscreen.api.EmulateProgress
+import com.flipperdevices.keyscreen.api.Picture
 import com.flipperdevices.keyscreen.emulate.composable.common.button.ComposableEmulateButton
-import com.flipperdevices.keyscreen.emulate.model.EmulateProgress
-import com.flipperdevices.keyscreen.emulate.model.Picture
 
 @Composable
 fun ComposableEmulateButtonWithText(

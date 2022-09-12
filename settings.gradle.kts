@@ -27,6 +27,7 @@ include(
     ":instances:wearable",
     ":components:bridge:api",
     ":components:bridge:impl",
+    ":components:bridge:service:noop",
     ":components:bridge:service:impl",
     ":components:bridge:service:api",
     ":components:bridge:pbutils",
@@ -36,6 +37,7 @@ include(
     ":components:bridge:synchronization:ui",
     ":components:bridge:dao:api",
     ":components:bridge:dao:impl",
+    ":components:bridge:dao:noop",
 
     ":components:filemanager:api",
     ":components:filemanager:impl",

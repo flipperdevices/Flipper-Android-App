@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.keyscreen.api.Picture
 import com.flipperdevices.keyscreen.emulate.R
 import com.flipperdevices.keyscreen.emulate.composable.common.ComposableActionDisable
 import com.flipperdevices.keyscreen.emulate.composable.common.ComposableActionLoading
@@ -17,7 +18,6 @@ import com.flipperdevices.keyscreen.emulate.composable.common.ComposableAlreadyO
 import com.flipperdevices.keyscreen.emulate.composable.common.ComposableEmulateButtonWithText
 import com.flipperdevices.keyscreen.emulate.model.DisableButtonReason
 import com.flipperdevices.keyscreen.emulate.model.EmulateButtonState
-import com.flipperdevices.keyscreen.emulate.model.Picture
 import com.flipperdevices.keyscreen.emulate.viewmodel.SimpleEmulateViewModel
 import tangle.viewmodel.compose.tangleViewModel
 

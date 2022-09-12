@@ -7,9 +7,13 @@ plugins {
 
 dependencies {
     implementation(projects.components.wearable.emulate.api)
-    implementation(projects.components.core.ui.navigation)
 
     implementation(projects.components.core.di)
+    implementation(projects.components.core.ui.navigation)
+    implementation(projects.components.core.ui.theme)
+    implementation(projects.components.core.ui.res)
+
+    implementation(projects.components.keyscreen.api)
 
     // Compose
     implementation(libs.compose.ui)
