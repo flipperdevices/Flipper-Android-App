@@ -14,7 +14,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.wearable.setup.impl.R
-import com.flipperdevices.wearable.setup.impl.model.FindPhoneModel
+import com.flipperdevices.wearable.setup.impl.model.FindPhoneState
 import com.google.android.gms.wearable.CapabilityClient
 import com.google.android.gms.wearable.CapabilityInfo
 import com.google.android.gms.wearable.Wearable
@@ -34,7 +34,7 @@ class FindPhoneViewModel(
 ) : AndroidViewModel(application), CapabilityClient.OnCapabilityChangedListener, LogTagProvider {
     override val TAG = "FindPhoneViewModel"
 
-    private val findPhoneModelFlow = MutableStateFlow<FindPhoneModel>(FindPhoneModel.Loading)
+    private val findPhoneStateFlow = MutableStateFlow<FindPhoneState>(FindPhoneState.Loading)
     private val capabilityClient by lazy { Wearable.getCapabilityClient(application) }
     private val remoteActivityHelper by lazy { RemoteActivityHelper(application) }
 
@@ -43,7 +43,7 @@ class FindPhoneViewModel(
         checkPhone()
     }
 
-    fun getFindPhoneModelFlow(): StateFlow<FindPhoneModel> = findPhoneModelFlow
+    fun getFindPhoneModelFlow(): StateFlow<FindPhoneState> = findPhoneStateFlow
 
     fun openStore() {
         info { "#openAppInStoreOnPhone" }
@@ -112,9 +112,9 @@ class FindPhoneViewModel(
     override fun onCapabilityChanged(capabilityInfo: CapabilityInfo) {
         val foundedDevice = capabilityInfo.nodes.firstOrNull()
         if (foundedDevice == null) {
-            findPhoneModelFlow.update { FindPhoneModel.NotFound }
+            findPhoneStateFlow.update { FindPhoneState.NotFound }
         } else {
-            findPhoneModelFlow.update { FindPhoneModel.Founded(foundedDevice.displayName) }
+            findPhoneStateFlow.update { FindPhoneState.Founded }
         }
     }
 

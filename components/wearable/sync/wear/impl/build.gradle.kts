@@ -6,26 +6,21 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.components.wearable.setup.api)
+    implementation(projects.components.wearable.sync.common)
+    implementation(projects.components.wearable.sync.wear.api)
 
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)
-    implementation(projects.components.core.ktx)
-    implementation(projects.components.core.activityholder)
+    implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.navigation)
-    implementation(projects.components.wearable.core.ui.components)
-    implementation(projects.components.wearable.core.ui.ktx)
 
-    implementation(projects.components.wearable.sync.wear.api)
+    implementation(projects.components.bridge.dao.api)
+
+    implementation(libs.wear.gms)
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.kotlin.coroutines.play.services)
-
-    implementation(libs.wear)
-    implementation(libs.wear.gms)
-    implementation(libs.wear.interaction.phone)
-    implementation(libs.wear.interaction.remote)
 
     // Compose
     implementation(libs.compose.ui)
@@ -39,7 +34,4 @@ dependencies {
     // Dagger deps
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
-    implementation(libs.tangle.viewmodel.compose)
-    implementation(libs.tangle.viewmodel.api)
-    anvil(libs.tangle.viewmodel.compiler)
 }

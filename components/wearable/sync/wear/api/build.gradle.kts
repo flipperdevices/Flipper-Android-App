@@ -1,13 +1,12 @@
 plugins {
     id("flipper.lint")
     id("flipper.android-compose")
-    id("kotlin-parcelize")
 }
 
 dependencies {
-    implementation(projects.components.core.ktx)
+    implementation(projects.components.core.ui.navigation)
 
-    implementation(libs.wear.gms)
-
+    // Compose
     implementation(libs.compose.ui)
+    implementation(libs.compose.tooling)
 }

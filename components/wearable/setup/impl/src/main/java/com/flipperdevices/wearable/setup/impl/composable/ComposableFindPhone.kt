@@ -25,32 +25,28 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.wear.compose.material.CircularProgressIndicator
 import androidx.wear.compose.material.Text
-import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.wearable.core.ui.components.ComposableFlipperButton
 import com.flipperdevices.wearable.setup.impl.R
-import com.flipperdevices.wearable.setup.impl.model.FindPhoneModel
+import com.flipperdevices.wearable.setup.impl.model.FindPhoneState
 import com.flipperdevices.wearable.setup.impl.viewmodel.FindPhoneViewModel
 import com.google.android.horologist.compose.layout.fillMaxRectangle
 import kotlinx.coroutines.launch
 import rememberRipple
 
 @Composable
-fun ComposableFindPhone() {
+fun ComposableFindPhone(onFoundPhone: () -> Unit) {
     val findPhoneViewModel = viewModel<FindPhoneViewModel>()
 
     val columnScrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
-
     val focusRequester = remember { FocusRequester() }
 
     Column(
         modifier = Modifier
-            .padding()
             .verticalScroll(columnScrollState)
             .fillMaxRectangle()
             .onRotaryScrollEvent {
-                info { "onRotaryScrollEvent" }
                 coroutineScope.launch {
                     columnScrollState.scrollBy(it.verticalScrollPixels)
                 }
@@ -65,9 +61,9 @@ fun ComposableFindPhone() {
         val localFindPhoneModel = findPhoneModel
 
         when (localFindPhoneModel) {
-            FindPhoneModel.Loading -> ComposableFindPhoneLoading()
-            is FindPhoneModel.Founded -> ComposableFoundedPhone(localFindPhoneModel.phoneName)
-            FindPhoneModel.NotFound -> ComposableNotFoundedPhone(
+            FindPhoneState.Loading -> ComposableFindPhoneLoading()
+            is FindPhoneState.Founded -> onFoundPhone()
+            FindPhoneState.NotFound -> ComposableNotFoundedPhone(
                 findPhoneViewModel::openStore,
                 findPhoneViewModel::checkPhone
             )
@@ -76,14 +72,6 @@ fun ComposableFindPhone() {
     LaunchedEffect(Unit) {
         focusRequester.requestFocus()
     }
-}
-
-@Composable
-private fun ComposableFoundedPhone(name: String) {
-    Text(
-        text = name,
-        style = LocalTypography.current.bodyM14
-    )
 }
 
 @Composable

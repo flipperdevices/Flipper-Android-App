@@ -5,7 +5,6 @@ import android.net.Uri
 import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.ktx.android.fromBytes
 import com.flipperdevices.core.ktx.android.toBytes
 import com.flipperdevices.core.ktx.jre.pmap
 import com.flipperdevices.core.log.LogTagProvider
@@ -46,20 +45,12 @@ class SyncWearableApiImpl @Inject constructor(
 
         val toRemoveUri = mutableListOf<Uri>()
         val alreadyExistItems = dataClient.dataItems.await().map {
-            val path = it.uri.path
-            if (path == null) {
+            val syncItem = WearableSyncItem.fromDataItem(it)
+            if (syncItem == null) {
                 toRemoveUri.add(it.uri)
                 return@map null
             }
-            val data = fromBytes<WearableSyncItemData>(it.data)
-            if (data == null) {
-                toRemoveUri.add(it.uri)
-                return@map null
-            }
-            WearableSyncItem(
-                path = path,
-                data = data
-            ) to it.uri
+            syncItem to it.uri
         }.filterNotNull()
 
         toRemoveUri.addAll(
