@@ -31,13 +31,16 @@ fun ComposableWearEmulate(
             FlipperKeyType.I_BUTTON -> ComposableWearSimpleEmulate(
                 state,
                 keyEmulateUiApi,
-                emulateViewModel::onClickEmulate
+                emulateViewModel::onClickEmulate,
+                emulateViewModel::onStopEmulate
             )
             FlipperKeyType.INFRARED -> onBack()
             FlipperKeyType.SUB_GHZ -> ComposableWearSubGhzEmulate(
                 state,
                 keyEmulateUiApi,
-                emulateViewModel::onClickEmulate
+                emulateViewModel::onClickEmulate,
+                emulateViewModel::onShortEmulate,
+                emulateViewModel::onStopEmulate
             )
         }
     }

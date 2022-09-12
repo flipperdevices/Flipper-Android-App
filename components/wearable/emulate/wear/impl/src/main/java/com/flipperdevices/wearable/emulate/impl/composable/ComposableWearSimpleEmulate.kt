@@ -19,7 +19,8 @@ import rememberRipple
 fun ComposableWearSimpleEmulate(
     state: WearEmulateState,
     keyEmulateUiApi: KeyEmulateUiApi,
-    onClickEmulate: () -> Unit
+    onClickEmulate: () -> Unit,
+    onStopEmulate: () -> Unit
 ) {
     val buttonPadding = Modifier.padding(horizontal = 20.dp, vertical = 10.dp)
     when (state) {
@@ -29,7 +30,11 @@ fun ComposableWearSimpleEmulate(
         )
         is WearEmulateState.Emulating -> keyEmulateUiApi.ComposableEmulateButtonRaw(
             modifier = buttonPadding,
-            buttonContentModifier = Modifier,
+            buttonContentModifier = Modifier.clickable(
+                interactionSource = MutableInteractionSource(),
+                indication = rememberRipple(),
+                onClick = onStopEmulate
+            ),
             emulateProgress = EmulateProgress.Infinite,
             picture = null,
             textId = R.string.keyscreen_emulating,

@@ -12,7 +12,7 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.wearable.emulate.common.WearEmulateConstants.MESSAGE_PATH_EMULATE
 import com.flipperdevices.wearable.emulate.common.WearEmulateConstants.MESSAGE_PATH_EMULATE_CLOSE
-import com.flipperdevices.wearable.emulate.common.WearEmulateConstants.MESSAGE_PATH_EMULATE_RESULT
+import com.flipperdevices.wearable.emulate.common.WearEmulateConstants.MESSAGE_PATH_EMULATE_SHORT
 import com.flipperdevices.wearable.emulate.impl.R
 import com.flipperdevices.wearable.emulate.impl.api.EMULATE_PATH_KEY
 import com.flipperdevices.wearable.emulate.impl.model.WearEmulateState
@@ -93,11 +93,40 @@ class WearEmulateViewModel @VMInject constructor(
             return
         }
         wearEmulateStateFlow.update { WearEmulateState.Emulating(keyType, wearEmulateState.nodeId) }
+        sendCommand(wearEmulateState.nodeId, MESSAGE_PATH_EMULATE)
+    }
+
+    fun onShortEmulate() {
+        info { "Start #onShortEmulate" }
+        val wearEmulateState = wearEmulateStateFlow.value
+        if (wearEmulateState !is WearEmulateState.FoundNode) {
+            error {
+                "Call #onClickEmulate not on FoundNode state. Current state is $wearEmulateState"
+            }
+            return
+        }
+        wearEmulateStateFlow.update { WearEmulateState.Emulating(keyType, wearEmulateState.nodeId) }
+        sendCommand(wearEmulateState.nodeId, MESSAGE_PATH_EMULATE_SHORT)
+    }
+
+    fun onStopEmulate() {
+        info { "Start #onStopEmulate" }
+        val wearEmulateState = wearEmulateStateFlow.value
+        if (wearEmulateState !is WearEmulateState.Emulating) {
+            error {
+                "Call #onStopEmulate not on Emulating state. Current state is $wearEmulateState"
+            }
+            return
+        }
+        sendCommand(wearEmulateState.nodeId, MESSAGE_PATH_EMULATE_CLOSE)
+    }
+
+    private fun sendCommand(nodeId: String, id: String) {
         viewModelScope.launch {
             try {
                 val result = messageClient.sendMessage(
-                    wearEmulateState.nodeId,
-                    MESSAGE_PATH_EMULATE,
+                    nodeId,
+                    id,
                     keyPath.toByteArray(Charset.forName("UTF-8"))
                 ).await()
                 info { "Send with result $result" }
@@ -134,7 +163,7 @@ class WearEmulateViewModel @VMInject constructor(
 
     override fun onMessageReceived(message: MessageEvent) {
         info { "Receive message $message" }
-        if (message.path == MESSAGE_PATH_EMULATE_RESULT) {
+        if (message.path == MESSAGE_PATH_EMULATE_CLOSE) {
             wearEmulateStateFlow.update {
                 if (it is WearEmulateState.Emulating) {
                     WearEmulateState.FoundNode(keyType, it.nodeId)

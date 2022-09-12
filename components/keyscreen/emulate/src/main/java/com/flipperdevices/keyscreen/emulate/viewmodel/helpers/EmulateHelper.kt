@@ -4,7 +4,7 @@ import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.api.utils.Constants
-import com.flipperdevices.bridge.dao.api.model.FlipperKey
+import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.TimeHelper
@@ -14,6 +14,7 @@ import com.flipperdevices.core.ktx.jre.withLockResult
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.keyscreen.api.EmulateHelper
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.app.Application
 import com.flipperdevices.protobuf.app.appButtonPressRequest
@@ -46,26 +47,6 @@ private const val APP_STARTED_TIMEOUT_MS = 3 * 1000L // 3 seconds
 private const val APP_RETRY_COUNT = 3
 private const val APP_RETRY_SLEEP_TIME_MS = 1 * 1000L // 1 second
 
-interface EmulateHelper {
-    fun getRunningState(): StateFlow<Boolean>
-    suspend fun startEmulate(
-        scope: CoroutineScope,
-        requestApi: FlipperRequestApi,
-        keyType: FlipperKeyType,
-        flipperKey: FlipperKey,
-        minEmulateTime: Long = 0L
-    ): Boolean
-
-    suspend fun stopEmulate(
-        scope: CoroutineScope,
-        requestApi: FlipperRequestApi
-    )
-
-    suspend fun stopEmulateForce(
-        requestApi: FlipperRequestApi
-    )
-}
-
 /**
  *  It is very important for us not to call startEmulate if the application
  *  is already running - the flipper is very sensitive to the order of execution.
@@ -88,7 +69,7 @@ class EmulateHelperImpl @Inject constructor() : EmulateHelper, LogTagProvider {
         scope: CoroutineScope,
         requestApi: FlipperRequestApi,
         keyType: FlipperKeyType,
-        flipperKey: FlipperKey,
+        keyPath: FlipperFilePath,
         minEmulateTime: Long
     ) = withLockResult(mutex, "start") {
         if (isRunning.value) {
@@ -96,7 +77,7 @@ class EmulateHelperImpl @Inject constructor() : EmulateHelper, LogTagProvider {
             stopEmulateInternal(requestApi)
         }
         isRunning.emit(true)
-        startEmulateInternal(scope, requestApi, keyType, flipperKey, minEmulateTime)
+        startEmulateInternal(scope, requestApi, keyType, keyPath, minEmulateTime)
     }
 
     override suspend fun stopEmulate(
@@ -145,7 +126,7 @@ class EmulateHelperImpl @Inject constructor() : EmulateHelper, LogTagProvider {
         scope: CoroutineScope,
         requestApi: FlipperRequestApi,
         keyType: FlipperKeyType,
-        flipperKey: FlipperKey,
+        keyPath: FlipperFilePath,
         minEmulateTime: Long
     ): Boolean {
         info { "startEmulateInternal" }
@@ -169,7 +150,7 @@ class EmulateHelperImpl @Inject constructor() : EmulateHelper, LogTagProvider {
             flowOf(
                 main {
                     appLoadFileRequest = appLoadFileRequest {
-                        path = flipperKey.path.getPathOnFlipper()
+                        path = keyPath.getPathOnFlipper()
                     }
                 }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
             )
