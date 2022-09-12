@@ -9,11 +9,21 @@ dependencies {
     implementation(projects.components.wearable.emulate.api)
 
     implementation(projects.components.core.di)
+    implementation(projects.components.core.log)
+    implementation(projects.components.core.ktx)
+    implementation(projects.components.core.activityholder)
     implementation(projects.components.core.ui.navigation)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.res)
 
     implementation(projects.components.keyscreen.api)
+
+    implementation(libs.kotlin.coroutines)
+    implementation(libs.kotlin.coroutines.play.services)
+
+    implementation(libs.wear)
+    implementation(libs.wear.gms)
+    implementation(libs.wear.interaction.phone)
 
     // Compose
     implementation(libs.compose.ui)
