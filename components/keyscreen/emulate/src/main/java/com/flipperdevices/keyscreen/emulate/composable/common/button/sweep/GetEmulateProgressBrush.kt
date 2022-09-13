@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import com.flipperdevices.core.ktx.jre.toIntSafe
-import com.flipperdevices.keyscreen.emulate.model.EmulateProgress
+import com.flipperdevices.keyscreen.api.EmulateProgress
 import kotlin.math.max
 
 private const val PROGRESS_BAR_END_PERCENT_FIXED_DELTA = 0.05f

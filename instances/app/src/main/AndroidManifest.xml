@@ -7,9 +7,9 @@
             android:allowBackup="true"
             android:fullBackupContent="false"
             android:icon="@mipmap/ic_launcher"
+            android:roundIcon="@mipmap/ic_launcher_round"
             android:label="@string/app_name"
             android:name="com.flipperdevices.app.FlipperApplication"
-            android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/FlipperTheme">
         <activity

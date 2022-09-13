@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="phone_missing">You are missing the required phone app, please click on the button below to install it on your phone</string>
+    <string name="install_app">Install</string>
+    <string name="install_app_done">Look at your phone</string>
+    <string name="install_app_fail">Can\'t find the phone</string>
+    <string name="check_again">Check again</string>
+</resources>

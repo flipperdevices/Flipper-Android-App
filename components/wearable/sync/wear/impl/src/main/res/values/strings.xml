@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="keys_category_favorites">Favorites</string>
+    <string name="keys_category_others">Others</string>
+    <string name="keys_not_found">No key was found. Start a sync in the mobile app first and wait for it to finish</string>
+</resources>

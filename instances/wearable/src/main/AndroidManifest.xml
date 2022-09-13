@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        package="com.flipperdevices.wearable">
+
+    <uses-feature android:name="android.hardware.type.watch" />
+
+    <application
+            android:allowBackup="true"
+            android:fullBackupContent="false"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            android:name="com.flipperdevices.wearable.FlipperApplication"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:supportsRtl="true"
+            android:theme="@style/FlipperTheme">
+        <meta-data
+                android:name="com.google.android.wearable.standalone"
+                android:value="false" />
+
+        <activity
+                android:exported="true"
+                android:name=".MainWearActivity"
+                android:theme="@style/FlipperTheme.SplashTheme"
+                android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+    </application>
+</manifest>

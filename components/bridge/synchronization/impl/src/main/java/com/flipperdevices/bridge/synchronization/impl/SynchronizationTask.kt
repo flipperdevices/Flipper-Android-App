@@ -18,10 +18,12 @@ import com.flipperdevices.bridge.synchronization.impl.repository.KeysSynchroniza
 import com.flipperdevices.bridge.synchronization.impl.repository.storage.ManifestRepository
 import com.flipperdevices.bridge.synchronization.impl.utils.SynchronizationPercentProvider
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.OneTimeExecutionBleTask
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.complex.SynchronizationEnd
+import com.flipperdevices.wearable.sync.handheld.api.SyncWearableApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -36,7 +38,8 @@ class SynchronizationTask(
     private val favoriteApi: FavoriteApi,
     private val metricApi: MetricApi,
     private val synchronizationProvider: SynchronizationPercentProvider,
-    private val flipperFileApi: FlipperFileApi
+    private val flipperFileApi: FlipperFileApi,
+    private val syncWearableApi: SyncWearableApi
 ) : OneTimeExecutionBleTask<Unit, SynchronizationState>(serviceProvider), LogTagProvider {
     override val TAG = "SynchronizationTask"
 
@@ -110,6 +113,11 @@ class SynchronizationTask(
         // End synchronization keys
         manifestRepository.saveManifest(keysHashes, favorites)
         synchronizationProvider.markedAsFinish()
+        try {
+            syncWearableApi.updateWearableIndex()
+        } catch (throwable: Exception) {
+            error(throwable) { "Error while try update wearable index" }
+        }
     }
 
     private suspend fun reportSynchronizationEnd(totalTime: Long) {
