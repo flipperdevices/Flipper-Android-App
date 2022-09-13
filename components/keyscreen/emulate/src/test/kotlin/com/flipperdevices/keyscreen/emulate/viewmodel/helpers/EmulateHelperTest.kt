@@ -8,6 +8,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.test.TimberRule
+import com.flipperdevices.keyscreen.api.EmulateHelper
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.app.Application
 import com.flipperdevices.protobuf.app.appStateResponse
@@ -41,24 +42,18 @@ private val appStateResponseOk = main {
 }
 
 class EmulateHelperTest {
-    private lateinit var flipperKey: FlipperKey
     private lateinit var requestApi: FlipperRequestApi
     private lateinit var underTest: EmulateHelper
 
     @Before
     fun setUp() {
-        underTest = EmulateHelper()
+        underTest = EmulateHelperImpl()
         requestApi = mockk() {
             every { notificationFlow() } coAnswers {
                 flowOf(appStateResponseOk)
             }
         }
         mockFlipperRequest()
-        flipperKey = FlipperKey(
-            mainFile = FlipperFile(TEST_KEY_PATH, FlipperKeyContent.RawData(byteArrayOf())),
-            deleted = false,
-            synchronized = false
-        )
     }
 
     @Test
@@ -74,22 +69,39 @@ class EmulateHelperTest {
                 responseOk
             }
         )
-        val startJob = launch(Dispatchers.Default) {
+        var startJob = launch(Dispatchers.Default) {
             underTest.startEmulate(
                 this,
                 requestApi,
                 KEY_TYPE,
-                flipperKey
+                TEST_KEY_PATH
             )
         }
+        startJob.join()
+        startJob = launch(Dispatchers.Default) {
+            underTest.startEmulate(
+                this,
+                requestApi,
+                KEY_TYPE,
+                TEST_KEY_PATH
+            )
+        }
+        startJob.join()
         val stopJob = launch(UnconfinedTestDispatcher()) {
             underTest.stopEmulate(this, requestApi)
         }
-
         stopJob.join()
+        startJob = launch(Dispatchers.Default) {
+            underTest.startEmulate(
+                this,
+                requestApi,
+                KEY_TYPE,
+                TEST_KEY_PATH
+            )
+        }
         startJob.join()
 
-        Assert.assertEquals("[AppLoad, ButtonRelease]", callOrder.toString())
+        Assert.assertEquals("[AppLoad, ButtonRelease, AppLoad, ButtonRelease, AppLoad]", callOrder.toString())
     }
 
     private fun mockFlipperRequest(
