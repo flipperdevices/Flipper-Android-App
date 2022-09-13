@@ -28,19 +28,20 @@ val LocalTypography = compositionLocalOf<FlipperTypography> { error("No local ty
 
 @Composable
 fun FlipperTheme(content: @Composable () -> Unit) {
+    val themeViewModel: ThemeViewModel = viewModel()
+    val theme by themeViewModel.getAppTheme().collectAsState()
     FlipperThemeInternal(
-        content = content
+        content = content,
+        theme = theme
     )
 }
 
 // For preview composable function, because we don`t provide LocalPallet/Typography/MaterialDesign
 @Composable
 fun FlipperThemeInternal(
+    theme: SelectedTheme = SelectedTheme.SYSTEM,
     content: @Composable () -> Unit
 ) {
-    val themeViewModel: ThemeViewModel = viewModel()
-    val theme by themeViewModel.getAppTheme().collectAsState()
-
     val isLight = isLight(isSystemInDarkTheme())
     val pallet = getThemedFlipperPallet(isSystemInDarkTheme())
     val colors = pallet.toMaterialColors(isLight)
