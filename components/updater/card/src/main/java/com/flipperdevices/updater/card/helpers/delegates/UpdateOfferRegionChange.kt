@@ -24,7 +24,7 @@ class UpdateOfferRegionChange @Inject constructor(
             // to be sure to flash a new region if we got into a bad timing for obtaining a region
             val currentRegion = subGhzProvisioningHelper.getRegion()
             currentRegion != lastProvidedRegion
-        } catch (exception: Exception) {
+        } catch (@Suppress("SwallowedException") exception: Exception) {
             true
         }
     }

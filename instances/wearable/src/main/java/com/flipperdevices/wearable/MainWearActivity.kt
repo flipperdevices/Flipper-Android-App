@@ -23,7 +23,8 @@ class MainWearActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val futureEntries by ComponentHolder.component<WearableComponent>().futureEntries
-        val composableFutureEntries by ComponentHolder.component<WearableComponent>().composableFutureEntries
+        val composableFutureEntries by ComponentHolder.component<WearableComponent>()
+            .composableFutureEntries
 
         setContent {
             WearFlipperTheme {

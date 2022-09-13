@@ -26,7 +26,7 @@ class KeysListApiImpl @Inject constructor(
     override fun NavGraphBuilder.navigation(navController: NavHostController) {
         navigation(startDestination = start(), route = ROUTE) {
             composable(ROUTE_START) {
-                ComposableKeysList() {
+                ComposableKeysList {
                     navController.navigate(emulateApi.open(it.path.path.pathToKey))
                 }
             }
