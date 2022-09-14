@@ -243,7 +243,7 @@ jobs:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_PUBLISHER_JSON }}
           packageName: com.flipperdevices.app
           releaseFiles: |
-            ${{steps.download.outputs.download-path}}/flipper-zero-gms.aab
+            ${{steps.download.outputs.download-path}}/flipper-zero-gms.aab, 
             ${{steps.download.outputs.download-path}}/flipper-zero-wear-gms.aab
           track: beta
           mappingFile: ${{steps.download.outputs.download-path}}/mapping-gms.txt
