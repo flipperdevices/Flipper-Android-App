@@ -140,7 +140,7 @@ jobs:
         id: sign_wear_apk
         uses: r0adkll/sign-android-release@v1
         with:
-          releaseDirectory: instances/app/wearable/outputs/apk/internal
+          releaseDirectory: instances/wearable/build/outputs/apk/internal
           signingKeyBase64: ${{ secrets.SIGNING_KEY }}
           alias: ${{ secrets.KEY_ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
