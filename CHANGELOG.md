@@ -12,6 +12,7 @@
 - [REFACTOR] Remove bottom bar on key screen
 - [REFACTOR] Display error if /int/ full in update progress
 - [REFACTOR] Markdown compose bump
+- [REFACTOR] New ci with upload wearos app
 - [Feature] Add support for NFC Shadow Files
 - [Feature] Offer update, if region changes or region file not exit on Flipper
 - [Feature] Do not provide SubGhz provisioning on zero hardware region
