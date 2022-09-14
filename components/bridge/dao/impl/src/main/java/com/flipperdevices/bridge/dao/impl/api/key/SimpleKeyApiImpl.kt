@@ -31,8 +31,14 @@ class SimpleKeyApiImpl @Inject constructor(
     private val simpleKeyDao by keysDaoProvider
     private val additionalFileDao by additionalFileDaoProvider
 
-    override suspend fun getAllKeys(): List<FlipperKey> = withContext(Dispatchers.IO) {
-        return@withContext simpleKeyDao.getAll().map { it.toFlipperKey(additionalFileDao) }
+    override suspend fun getAllKeys(
+        includeDeleted: Boolean
+    ): List<FlipperKey> = withContext(Dispatchers.IO) {
+        return@withContext if (includeDeleted) {
+            simpleKeyDao.getAllIncludeDeleted()
+        } else {
+            simpleKeyDao.getAll()
+        }.map { it.toFlipperKey(additionalFileDao) }
     }
 
     override fun getKeyAsFlow(keyPath: FlipperKeyPath): Flow<FlipperKey?> {

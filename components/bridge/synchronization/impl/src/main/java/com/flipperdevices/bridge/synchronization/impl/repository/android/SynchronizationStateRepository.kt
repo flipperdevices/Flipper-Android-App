@@ -1,9 +1,7 @@
 package com.flipperdevices.bridge.synchronization.impl.repository.android
 
 import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
-import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
-import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
+import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 
@@ -12,19 +10,12 @@ class SynchronizationStateRepository(
 ) : LogTagProvider {
     override val TAG = "SynchronizationStateRepository"
 
-    suspend fun markAsSynchronized(diff: List<KeyDiff>) {
-        val uniqueDiffs = diff
-            .distinctBy { it.newHash.keyPath }
-        for (diffToMark in uniqueDiffs) {
+    suspend fun markAsSynchronized(usedKeys: List<FlipperKey>) {
+        usedKeys.forEach {
             try {
-                utilsKeyApi.markAsSynchronized(
-                    FlipperKeyPath(
-                        diffToMark.newHash.keyPath,
-                        deleted = diffToMark.action == KeyAction.DELETED
-                    )
-                )
-            } catch (exception: Exception) {
-                error(exception) { "While mark synchronized $diffToMark" }
+                utilsKeyApi.markAsSynchronized(it.getKeyPath())
+            } catch (throwable: Exception) {
+                error(throwable) { "Error while marked as synchronized" }
             }
         }
     }

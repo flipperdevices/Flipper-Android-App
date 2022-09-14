@@ -55,7 +55,8 @@ class KeysSynchronization(
     suspend fun syncKeys(
         onStateUpdate: suspend (SynchronizationState) -> Unit
     ): List<KeyWithHash> {
-        val keysFromAndroid = simpleKeyApi.getAllKeys()
+        val allKeysFromAndroid = simpleKeyApi.getAllKeys(incudeDeleted = true)
+        val keysFromAndroid = allKeysFromAndroid.filterNot { it.deleted }
         val hashesFromAndroid = androidHashRepository.calculateHash(keysFromAndroid)
         val hashesFromFlipper = getManifestOnFlipper(onStateUpdate)
         info { "Finish receive hashes from Flipper: $hashesFromFlipper" }
@@ -107,9 +108,7 @@ class KeysSynchronization(
                 "${appliedKeysToAndroid.size} from ${diffForAndroid.size} changes"
         }
 
-        synchronizationRepository.markAsSynchronized(
-            appliedKeysToAndroid.plus(appliedKeysToFlipper)
-        )
+        synchronizationRepository.markAsSynchronized(allKeysFromAndroid)
 
         val manifestHashes = checkSynchronization(
             calculatedHashOnAndroid = ManifestChangeExecutor.applyChanges(

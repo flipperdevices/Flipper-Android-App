@@ -7,7 +7,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import kotlinx.coroutines.flow.Flow
 
 interface SimpleKeyApi {
-    suspend fun getAllKeys(): List<FlipperKey>
+    suspend fun getAllKeys(includeDeleted: Boolean = false): List<FlipperKey>
 
     fun getKeyAsFlow(keyPath: FlipperKeyPath): Flow<FlipperKey?>
 

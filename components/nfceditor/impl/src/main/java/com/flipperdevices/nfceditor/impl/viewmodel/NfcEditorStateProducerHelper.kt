@@ -2,8 +2,10 @@ package com.flipperdevices.nfceditor.impl.viewmodel
 
 import com.flipperdevices.bridge.dao.api.model.FlipperFile
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
+import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
+import com.flipperdevices.bridge.dao.api.model.SHADOW_FILE_EXTENSION
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.nfceditor.impl.model.NfcCellType
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCardInfo
@@ -173,21 +175,19 @@ object NfcEditorStateProducerHelper {
 
         val shadowFile = oldKey.additionalFiles
             .find { it.path.fileType == FlipperFileType.SHADOW_NFC }
-        if (shadowFile != null) {
-            val newAdditionalFiles = oldKey.additionalFiles.minus(shadowFile)
-                .plus(
-                    FlipperFile(
-                        path = shadowFile.path,
-                        content = FlipperFileFormat(orderedMap.toList())
-                    )
+        val newAdditionalFiles = oldKey.additionalFiles.minus(shadowFile)
+            .plus(
+                FlipperFile(
+                    path = FlipperFilePath(
+                        oldKey.mainFile.path.folder,
+                        "${oldKey.mainFile.path.nameWithoutExtension}.$SHADOW_FILE_EXTENSION"
+                    ),
+                    content = FlipperFileFormat(orderedMap.toList())
                 )
-            return oldKey.copy(
-                additionalFiles = newAdditionalFiles
-            )
-        }
+            ).filterNotNull()
 
         return oldKey.copy(
-            mainFile = oldKey.mainFile.copy(content = FlipperFileFormat(orderedMap.toList()))
+            additionalFiles = newAdditionalFiles
         )
     }
 }
