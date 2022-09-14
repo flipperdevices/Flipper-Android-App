@@ -6,6 +6,7 @@ import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.delegates.KeyParser
 import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
+import com.flipperdevices.bridge.dao.api.delegates.key.UpdateKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
@@ -30,11 +31,13 @@ import javax.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class KeyScreenViewModel(
-    private val keyPath: FlipperKeyPath?,
+    keyPath: FlipperKeyPath?,
     application: Application
 ) : AndroidLifecycleViewModel(application), LogTagProvider {
     override val TAG = "KeyScreenViewModel"
@@ -64,6 +67,9 @@ class KeyScreenViewModel(
     lateinit var nfcEditorApi: NfcEditorApi
 
     @Inject
+    lateinit var updaterKeyApi: UpdateKeyApi
+
+    @Inject
     lateinit var keyEditApi: KeyEditApi
 
     init {
@@ -88,7 +94,6 @@ class KeyScreenViewModel(
     fun getKeyScreenState(): StateFlow<KeyScreenState> = keyScreenState
 
     fun setFavorite(isFavorite: Boolean) {
-        val keyPathNotNull = keyPath ?: return
         val state = keyScreenState.value
         if (state !is KeyScreenState.Ready || state.favoriteState == FavoriteState.PROGRESS) {
             warn { "We skip setFavorite, because state is $state" }
@@ -100,7 +105,7 @@ class KeyScreenViewModel(
         }
 
         viewModelScope.launch {
-            favoriteApi.setFavorite(keyPathNotNull, isFavorite)
+            favoriteApi.setFavorite(state.flipperKey.getKeyPath(), isFavorite)
             keyScreenState.update {
                 if (it is KeyScreenState.Ready) it.copy(
                     favoriteState = if (isFavorite) {
@@ -125,7 +130,6 @@ class KeyScreenViewModel(
 
     fun onShare() {
         metricApi.reportSimpleEvent(SimpleEvent.OPEN_SHARE)
-        val keyPathNotNull = keyPath ?: return
         val state = keyScreenState.value
         if (state !is KeyScreenState.Ready || state.shareState == ShareState.PROGRESS) {
             warn { "We skip onShare, because state is $state" }
@@ -136,13 +140,7 @@ class KeyScreenViewModel(
         }
 
         viewModelScope.launch {
-            val flipperKey = simpleKeyApi.getKey(keyPathNotNull)
-            if (flipperKey == null) {
-                keyScreenState.update {
-                    KeyScreenState.Error(R.string.keyscreen_error_notfound_key)
-                }
-                return@launch
-            }
+            val flipperKey = state.flipperKey
             shareDelegate.share(flipperKey)
             keyScreenState.update {
                 if (it is KeyScreenState.Ready) it.copy(shareState = ShareState.NOT_SHARING) else it
@@ -189,12 +187,14 @@ class KeyScreenViewModel(
     }
 
     private suspend fun loadFileAsFlow(keyPathNotNull: FlipperKeyPath) {
-        simpleKeyApi.getKeyAsFlow(keyPathNotNull).collect { flipperKey ->
+        updaterKeyApi.subscribeOnUpdatePath(keyPathNotNull).flatMapLatest {
+            simpleKeyApi.getKeyAsFlow(it)
+        }.collectLatest { flipperKey ->
             if (flipperKey == null) {
                 keyScreenState.update {
                     KeyScreenState.Error(R.string.keyscreen_error_notfound_key)
                 }
-                return@collect
+                return@collectLatest
             }
 
             val parsedKey = keyParser.parseKey(flipperKey)
