@@ -21,6 +21,7 @@
 - [Feature] Handle errors while emulate/send
 - [Feature] New emulate/send buttons
 - [Feature] New logic for emulate
+- [Feature] Bubble for sub-ghz emulate
 - [FIX] Now search for devices by Mac address and by flipper name
 - [FIX] Subghz provisioning while geoip is null
 

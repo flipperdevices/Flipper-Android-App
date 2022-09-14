@@ -3,8 +3,13 @@ package com.flipperdevices.keyscreen.emulate.composable
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInRoot
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.core.ui.ktx.onHoldPress
 import com.flipperdevices.core.ui.res.R as DesignSystem
@@ -14,6 +19,7 @@ import com.flipperdevices.keyscreen.emulate.composable.common.ComposableActionDi
 import com.flipperdevices.keyscreen.emulate.composable.common.ComposableActionLoading
 import com.flipperdevices.keyscreen.emulate.composable.common.ComposableAlreadyOpenedAppDialog
 import com.flipperdevices.keyscreen.emulate.composable.common.ComposableEmulateButtonWithText
+import com.flipperdevices.keyscreen.emulate.composable.common.ComposableHoldToSend
 import com.flipperdevices.keyscreen.emulate.model.DisableButtonReason
 import com.flipperdevices.keyscreen.emulate.model.EmulateButtonState
 import com.flipperdevices.keyscreen.emulate.model.EmulateProgress
@@ -84,8 +90,10 @@ private fun ComposableActiveStateEmulateInternal(
     flipperKey: FlipperKey,
     emulateButtonState: EmulateButtonState
 ) {
+    var openBubble by remember { mutableStateOf(false) }
     val buttonActiveModifier = Modifier.onHoldPress(
         onTap = {
+            openBubble = true
             emulateViewModel.onSinglePress(flipperKey)
         },
         onLongPressStart = {
@@ -95,12 +103,21 @@ private fun ComposableActiveStateEmulateInternal(
             emulateViewModel.onStopEmulate()
         }
     )
+
+    var positionYParentBox by remember { mutableStateOf(0) }
     ComposableActiveEmulateInternal(
-        modifier = modifier,
+        modifier = modifier.onGloballyPositioned {
+            val coordinate = it.positionInRoot()
+            positionYParentBox = coordinate.y.toInt()
+        },
         buttonActiveModifier = buttonActiveModifier,
         emulateProgress = (emulateButtonState as? EmulateButtonState.Active)?.progress,
         isActive = emulateButtonState is EmulateButtonState.Active
     )
+    if (openBubble && emulateButtonState is EmulateButtonState.Inactive) openBubble = false
+    if (openBubble) {
+        ComposableHoldToSend(positionYParentBox)
+    }
 }
 
 /**

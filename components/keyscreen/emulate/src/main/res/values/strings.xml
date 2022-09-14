@@ -15,4 +15,5 @@
     <string name="keyscreen_emulating">Emulating…</string>
     <string name="keyscreen_emulating_desc">Emulating on Flipper… Tap to stop</string>
     <string name="keyscreen_loading">Loading…</string>
+    <string name="keyscreen_bubble_hold">Hold to send continuously</string>
 </resources>
