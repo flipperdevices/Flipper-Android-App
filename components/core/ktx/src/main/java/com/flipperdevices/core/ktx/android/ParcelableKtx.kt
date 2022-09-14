@@ -13,7 +13,7 @@ inline fun <reified T> fromBytes(bytes: ByteArray): T? where T : Parcelable {
     return Parcel.obtain().use {
         unmarshall(bytes, 0, bytes.size)
         setDataPosition(0)
-        if (Build.VERSION.SDK_INT >= 33) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             readParcelable(T::class.java.classLoader, T::class.java)
         } else readParcelable(T::class.java.classLoader)
     }

@@ -53,7 +53,6 @@ class KeyEditViewModel(
     lateinit var updateKeyApi: UpdateKeyApi
 
     private val keyEditState = MutableStateFlow<KeyEditState>(KeyEditState.Loading)
-    private var finishListener: FinishListener? = null
 
     init {
         ComponentHolder.component<KeyEditComponent>().inject(this)
