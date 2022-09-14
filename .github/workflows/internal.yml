@@ -224,26 +224,3 @@ jobs:
           name: Flipper App ${{ steps.vars.outputs.major_version }}.${{ steps.vars.outputs.minor_version }}
           draft: false
           prerelease: true
-  upload_to_playstore:
-    name: Upload to Play Store
-    runs-on: ubuntu-latest
-    needs: build_internal_release_gms
-    steps:
-      - uses: actions/download-artifact@v2
-        id: download
-        with:
-          name: artifacts-gms
-      - name: Debug Print
-        id: print_debug
-        run: |
-          ls ${{steps.download.outputs.download-path}}
-      - name: Upload to Play Store
-        uses: r0adkll/upload-google-play@v1.0.15
-        with:
-          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_PUBLISHER_JSON }}
-          packageName: com.flipperdevices.app
-          releaseFiles: |
-            ${{steps.download.outputs.download-path}}/flipper-zero-gms.aab, 
-            ${{steps.download.outputs.download-path}}/flipper-zero-wear-gms.aab
-          track: beta
-          mappingFile: ${{steps.download.outputs.download-path}}/mapping-gms.txt
