@@ -1,17 +1,8 @@
 package com.flipperdevices.keyedit.api
 
-import androidx.compose.runtime.Composable
-import com.flipperdevices.bridge.dao.api.model.FlipperKey
-import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
+import com.github.terrakok.cicerone.Screen
 
 interface KeyEditApi {
-    /**
-     * @param parsedKey can be null. In this case edit screen parse key itself
-     */
-    @Composable
-    fun EditScreen(
-        flipperKey: FlipperKey,
-        parsedKey: FlipperKeyParsed?,
-        onKeyEditFinished: (FlipperKey) -> Unit
-    )
+    fun getScreen(flipperKeyPath: FlipperKeyPath): Screen
 }

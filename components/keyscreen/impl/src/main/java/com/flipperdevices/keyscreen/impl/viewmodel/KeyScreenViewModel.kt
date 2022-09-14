@@ -10,12 +10,11 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.ComponentHolder
-import com.flipperdevices.core.ktx.android.toast
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.warn
 import com.flipperdevices.core.navigation.global.CiceroneGlobal
 import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
+import com.flipperdevices.keyedit.api.KeyEditApi
 import com.flipperdevices.keyscreen.impl.R
 import com.flipperdevices.keyscreen.impl.di.KeyScreenComponent
 import com.flipperdevices.keyscreen.impl.model.DeleteState
@@ -28,6 +27,7 @@ import com.flipperdevices.nfceditor.api.NfcEditorApi
 import com.github.terrakok.cicerone.Router
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -63,6 +63,9 @@ class KeyScreenViewModel(
     @Inject
     lateinit var nfcEditorApi: NfcEditorApi
 
+    @Inject
+    lateinit var keyEditApi: KeyEditApi
+
     init {
         ComponentHolder.component<KeyScreenComponent>().inject(this)
     }
@@ -70,23 +73,15 @@ class KeyScreenViewModel(
     private val keyScreenState = MutableStateFlow<KeyScreenState>(KeyScreenState.InProgress)
     private val shareDelegate = ShareDelegate(application, keyParser)
     private val restoreInProgress = AtomicBoolean(false)
+    private var loadKeyJob: Job? = null
 
     init {
-        viewModelScope.launch {
+        loadKeyJob = viewModelScope.launch {
             val keyPathNotNull = if (keyPath == null) {
                 keyScreenState.update { KeyScreenState.Error(R.string.keyscreen_error_keypath) }
                 return@launch
             } else keyPath
-            val flipperKey = simpleKeyApi.getKey(keyPathNotNull)
-            if (flipperKey == null) {
-                keyScreenState.update {
-                    KeyScreenState.Error(R.string.keyscreen_error_notfound_key)
-                }
-                return@launch
-            }
-
-            loadKey(flipperKey)
-            return@launch
+            loadFileAsFlow(keyPathNotNull)
         }
     }
 
@@ -116,55 +111,11 @@ class KeyScreenViewModel(
         }
     }
 
-    fun onOpenEdit() {
+    fun onOpenEdit(router: Router) {
         metricApi.reportSimpleEvent(SimpleEvent.OPEN_EDIT)
-        keyScreenState.update {
-            if (it is KeyScreenState.Ready) {
-                KeyScreenState.Editing(it.flipperKey, it.parsedKey)
-            } else it
-        }
-    }
-
-    fun onBack(): Boolean {
         val currentState = keyScreenState.value
-        if (currentState !is KeyScreenState.Editing) {
-            return false
-        }
-        val isStateSaved = keyScreenState.compareAndSet(currentState, KeyScreenState.InProgress)
-        if (!isStateSaved) {
-            return onBack()
-        }
-        viewModelScope.launch {
-            loadKey(currentState.flipperKey)
-        }
-        return true
-    }
-
-    fun onEditFinished(newFlipperKey: FlipperKey) {
-        val currentState = keyScreenState.value
-        if (currentState !is KeyScreenState.Editing) {
-            return
-        }
-        val isStateSaved = keyScreenState.compareAndSet(currentState, KeyScreenState.InProgress)
-        if (!isStateSaved) {
-            onEditFinished(newFlipperKey)
-            return
-        }
-
-        viewModelScope.launch {
-            try {
-                simpleKeyApi.updateKey(
-                    currentState.flipperKey,
-                    newFlipperKey
-                )
-
-                loadKey(newFlipperKey)
-            } catch (e: Exception) {
-                error(e) { "Error while save key after editing" }
-                getApplication<Application>().toast(R.string.keyscreen_save_error)
-                val parsed = keyParser.parseKey(newFlipperKey)
-                keyScreenState.emit(KeyScreenState.Editing(newFlipperKey, parsed))
-            }
+        if (currentState is KeyScreenState.Ready) {
+            router.navigateTo(keyEditApi.getScreen(currentState.flipperKey.getKeyPath()))
         }
     }
 
@@ -237,17 +188,26 @@ class KeyScreenViewModel(
         }
     }
 
-    private suspend fun loadKey(flipperKey: FlipperKey) {
-        val parsedKey = keyParser.parseKey(flipperKey)
-        val isFavorite = favoriteApi.isFavorite(flipperKey.getKeyPath())
-        keyScreenState.update {
-            KeyScreenState.Ready(
-                parsedKey,
-                if (isFavorite) FavoriteState.FAVORITE else FavoriteState.NOT_FAVORITE,
-                ShareState.NOT_SHARING,
-                if (flipperKey.deleted) DeleteState.DELETED else DeleteState.NOT_DELETED,
-                flipperKey
-            )
+    private suspend fun loadFileAsFlow(keyPathNotNull: FlipperKeyPath) {
+        simpleKeyApi.getKeyAsFlow(keyPathNotNull).collect { flipperKey ->
+            if (flipperKey == null) {
+                keyScreenState.update {
+                    KeyScreenState.Error(R.string.keyscreen_error_notfound_key)
+                }
+                return@collect
+            }
+
+            val parsedKey = keyParser.parseKey(flipperKey)
+            val isFavorite = favoriteApi.isFavorite(flipperKey.getKeyPath())
+            keyScreenState.update {
+                KeyScreenState.Ready(
+                    parsedKey,
+                    if (isFavorite) FavoriteState.FAVORITE else FavoriteState.NOT_FAVORITE,
+                    ShareState.NOT_SHARING,
+                    if (flipperKey.deleted) DeleteState.DELETED else DeleteState.NOT_DELETED,
+                    flipperKey
+                )
+            }
         }
     }
 }

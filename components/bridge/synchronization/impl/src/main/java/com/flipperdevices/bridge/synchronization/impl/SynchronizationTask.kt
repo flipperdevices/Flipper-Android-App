@@ -6,6 +6,7 @@ import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.delegates.FlipperFileApi
 import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
+import com.flipperdevices.bridge.dao.api.delegates.key.UpdateKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
@@ -39,7 +40,8 @@ class SynchronizationTask(
     private val metricApi: MetricApi,
     private val synchronizationProvider: SynchronizationPercentProvider,
     private val flipperFileApi: FlipperFileApi,
-    private val syncWearableApi: SyncWearableApi
+    private val syncWearableApi: SyncWearableApi,
+    private val updateKeyApi: UpdateKeyApi
 ) : OneTimeExecutionBleTask<Unit, SynchronizationState>(serviceProvider), LogTagProvider {
     override val TAG = "SynchronizationTask"
 
@@ -104,7 +106,8 @@ class SynchronizationTask(
             flipperStorage,
             serviceApi.requestApi,
             synchronizationProvider,
-            flipperFileApi
+            flipperFileApi,
+            updateKeyApi
         )
 
         val keysHashes = keysSynchronization.syncKeys(onStateUpdate)
