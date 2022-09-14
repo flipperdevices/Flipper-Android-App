@@ -2,7 +2,7 @@ package com.flipperdevices.nfceditor.impl.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.dao.api.delegates.KeyParser
-import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
+import com.flipperdevices.bridge.dao.api.delegates.key.UpdateKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
@@ -28,7 +28,7 @@ class NfcEditorViewModel(
     lateinit var keyParser: KeyParser
 
     @Inject
-    lateinit var simpleKeyApi: SimpleKeyApi
+    lateinit var updateKeyApi: UpdateKeyApi
 
     @Inject
     lateinit var synchronizationApi: SynchronizationApi
@@ -72,7 +72,7 @@ class NfcEditorViewModel(
                 flipperKey,
                 localNfcEditorState
             )
-            simpleKeyApi.updateKey(flipperKey, newFlipperKey)
+            updateKeyApi.updateKey(flipperKey, newFlipperKey)
             synchronizationApi.startSynchronization(force = true)
             router.exit()
         }

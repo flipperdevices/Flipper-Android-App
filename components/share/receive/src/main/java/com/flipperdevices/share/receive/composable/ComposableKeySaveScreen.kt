@@ -15,13 +15,12 @@ fun ComposableKeySaveScreen(
     keyParsed: FlipperKeyParsed,
     savingInProgress: Boolean,
     onSave: () -> Unit,
-    onEdit: () -> Unit,
     onCancel: () -> Unit
 ) {
     Column {
         ComposableKeySaveBar(onCancel)
         keyScreenApi.KeyCard(key = keyParsed, deleted = false)
-        ComposableKeySaveFooter(savingInProgress, onSave, onEdit)
+        ComposableKeySaveFooter(savingInProgress, onSave)
     }
 }
 

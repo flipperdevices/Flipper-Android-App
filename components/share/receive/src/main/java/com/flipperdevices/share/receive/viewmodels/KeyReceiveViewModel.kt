@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.dao.api.delegates.KeyParser
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
-import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.toast
 import com.flipperdevices.core.log.LogTagProvider
@@ -102,63 +101,5 @@ class KeyReceiveViewModel(
             )
             state.emit(ReceiveState.Finished)
         }
-    }
-
-    fun onEdit() {
-        val localState = state.value
-        if (localState !is ReceiveState.Pending) {
-            info { "You can edit key only from pending state, now is $state" }
-            return
-        }
-        val isStateSaved = state.compareAndSet(
-            localState,
-            ReceiveState.Editing(
-                flipperKey = localState.flipperKey,
-                parsed = localState.parsed
-            )
-        )
-        if (!isStateSaved) {
-            onEdit()
-            return
-        }
-    }
-
-    fun onCloseEdit(flipperKey: FlipperKey) {
-        val localState = state.value
-        if (localState !is ReceiveState.Editing) {
-            info { "You can return from edit state only on edit state, now is $state" }
-            return
-        }
-        val isStateSaved = state.compareAndSet(
-            localState,
-            ReceiveState.NotStarted
-        )
-        if (!isStateSaved) {
-            onCloseEdit(flipperKey)
-            return
-        }
-        viewModelScope.launch {
-            val parsed = keyParser.parseKey(flipperKey)
-
-            state.emit(ReceiveState.Pending(flipperKey, parsed))
-        }
-    }
-
-    fun onBack(): Boolean {
-        val currentState = state.value
-        if (currentState !is ReceiveState.Editing) {
-            return false
-        }
-        val isStateSaved = state.compareAndSet(
-            currentState,
-            ReceiveState.Pending(
-                currentState.flipperKey,
-                currentState.parsed
-            )
-        )
-        if (!isStateSaved) {
-            return onBack()
-        }
-        return true
     }
 }

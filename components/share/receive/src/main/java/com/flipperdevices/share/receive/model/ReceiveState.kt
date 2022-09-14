@@ -16,10 +16,5 @@ sealed class ReceiveState {
         val parsed: FlipperKeyParsed
     ) : ReceiveState()
 
-    data class Editing(
-        val flipperKey: FlipperKey,
-        val parsed: FlipperKeyParsed
-    ) : ReceiveState()
-
     object Finished : ReceiveState()
 }

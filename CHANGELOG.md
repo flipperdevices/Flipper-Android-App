@@ -24,6 +24,7 @@
 - [Feature] Add wearos application
 - [FIX] Now search for devices by Mac address and by flipper name
 - [FIX] Subghz provisioning while geoip is null
+- [FIX] Separate screen for edit key
 
 # 1.2.0
 
