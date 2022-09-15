@@ -41,11 +41,11 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.keyscreen.emulate.R
 
-private const val RADIUS = 15f
+private const val RADIUS_SLICE_UNDER_BUBBLE = 15f
+private const val PADDING_END_SLICE_FROM_BUBBLE = 12
 private const val SIZE_BUBBLE = 10
-private const val PADDING_END = 12
-private const val DISTANCE_BUTTON_BUBBLE = 30
-private const val PADDING_BUBBLE_END = 24
+private const val DISTANCE_FROM_BUBBLE_BUTTON = 30
+private const val PADDING_END_BUBBLE_FROM_DEVICE = 24
 private const val DELAY_ANIMATION = 2000
 
 @Composable
@@ -74,8 +74,8 @@ private fun calculateBubblePosition(
     positionXBubble: Int
 ): IntOffset {
     return IntOffset(
-        x = LocalDensity.current.run { PADDING_BUBBLE_END.dp.toPx() }.toInt() * -1,
-        y = positionYEmulateButton - positionXBubble + DISTANCE_BUTTON_BUBBLE
+        x = LocalDensity.current.run { PADDING_END_BUBBLE_FROM_DEVICE.dp.toPx() }.toInt() * -1,
+        y = positionYEmulateButton - positionXBubble + DISTANCE_FROM_BUBBLE_BUTTON
     )
 }
 
@@ -101,7 +101,7 @@ fun ComposableHoldToSendInternal(): IntSize {
         }
         Canvas(
             modifier = Modifier
-                .padding(end = PADDING_END.dp)
+                .padding(end = PADDING_END_SLICE_FROM_BUBBLE.dp)
                 .size(SIZE_BUBBLE.dp)
         ) {
             val trianglePath = Path().apply {
@@ -115,7 +115,7 @@ fun ComposableHoldToSendInternal(): IntSize {
                     outline = Outline.Generic(trianglePath),
                     paint = Paint().apply {
                         color = bubbleColor
-                        pathEffect = PathEffect.cornerPathEffect(RADIUS)
+                        pathEffect = PathEffect.cornerPathEffect(RADIUS_SLICE_UNDER_BUBBLE)
                     }
                 )
             }
