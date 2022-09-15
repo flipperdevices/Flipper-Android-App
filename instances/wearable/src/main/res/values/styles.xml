@@ -1,0 +1,6 @@
+<resources>
+
+    <style name="FlipperTheme.SplashTheme" parent="FlipperTheme">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+    </style>
+</resources>

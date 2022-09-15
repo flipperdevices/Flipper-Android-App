@@ -12,6 +12,7 @@
 - [REFACTOR] Remove bottom bar on key screen
 - [REFACTOR] Display error if /int/ full in update progress
 - [REFACTOR] Markdown compose bump
+- [REFACTOR] New ci with upload wearos app
 - [Feature] Add support for NFC Shadow Files
 - [Feature] Offer update, if region changes or region file not exit on Flipper
 - [Feature] Do not provide SubGhz provisioning on zero hardware region
@@ -22,8 +23,10 @@
 - [Feature] New emulate/send buttons
 - [Feature] New logic for emulate
 - [Feature] Bubble for sub-ghz emulate
+- [Feature] Add wearos application
 - [FIX] Now search for devices by Mac address and by flipper name
 - [FIX] Subghz provisioning while geoip is null
+- [FIX] Separate screen for edit key
 
 # 1.2.0
 

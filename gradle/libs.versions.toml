@@ -1,7 +1,7 @@
 [versions]
 # You also need to bump the version of ksp, anvil, compose
 kotlin-general = "1.7.10"
-kotlin-coroutines = "1.6.4"
+kotlinx = "1.6.4"
 ksp = "1.7.10-1.0.6"
 anvil = "2.4.2"
 android-gradle = "7.2.2"
@@ -10,11 +10,17 @@ protobuf-gradle = "0.8.19"
 # Protobuf JVM library https://github.com/flipperdevices/flipperzero-protobuf-jvm
 protobuf-jvm = "0.12.0-0.3.0"
 compose = "1.2.1"
+compose-wear = "1.0.2"
 compose-compiler = "1.3.0"
 compose-accompanist = "0.25.1"
 compose-constraint = "1.0.1"
 compose-navigation = "2.5.1"
+horologist = "0.1.9"
 serialization-json = "1.4.0"
+wear = "1.2.0"
+wear-gms = "17.1.0"
+wear-interaction-phone = "1.1.0-alpha03"
+wear-interaction-remote = "1.0.0"
 room = "2.4.3"
 dagger = "2.43.2"
 timber = "5.0.1"
@@ -68,8 +74,9 @@ kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin-general" }
 kotlin-stdlib-jdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin-general" }
 
-kotlin-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlin-coroutines" }
-kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlin-coroutines" }
+kotlin-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx" }
+kotlin-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinx" }
+kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx" }
 
 kotlin-serialization-gradle = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin-general" }
 kotlin-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization-json" }
@@ -81,11 +88,17 @@ ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref =
 datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
 
 # UI
+compose-activity = { module = "androidx.activity:activity-compose", version.ref = "ktx-activity" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
 compose-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
 compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
 compose-material = { module = "androidx.compose.material:material", version.ref = "compose" }
+
+# UI - Wear
+compose-wear-material = { module = "androidx.wear.compose:compose-material", version.ref = "compose-wear" }
+compose-wear-foundation = { module = "androidx.wear.compose:compose-foundation", version.ref = "compose-wear" }
+horologist-layout = { module = "com.google.android.horologist:horologist-compose-layout", version.ref = "horologist" }
 
 # UI - Compose Extension
 compose-insets = { module = "com.google.accompanist:accompanist-insets", version.ref = "compose-accompanist" }
@@ -126,6 +139,7 @@ tangle-viewmodel-fragment = { module = "com.rickbusarow.tangle:tangle-viewmodel-
 # Navigation
 cicerone = { module = "com.github.terrakok:cicerone", version.ref = "cicerone" }
 compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "compose-navigation" }
+compose-wear-navigation = { module = "androidx.wear.compose:compose-navigation", version.ref = "compose-wear" }
 
 # Bug report dependencies
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
@@ -185,6 +199,12 @@ junit = { module = "junit:junit", version.ref = "junit" }
 mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito" }
 roboelectric = { module = "org.robolectric:robolectric", version.ref = "roboelectric" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+
+# Wear
+wear = { module = "androidx.wear:wear", version.ref = "wear" }
+wear-gms = { module = "com.google.android.gms:play-services-wearable", version.ref = "wear-gms" }
+wear-interaction-phone = { module = "androidx.wear:wear-phone-interactions", version.ref = "wear-interaction-phone" }
+wear-interaction-remote = { module = "androidx.wear:wear-remote-interactions", version.ref = "wear-interaction-remote" }
 
 [plugins]
 android-app = { id = "com.android.application", version.ref = "android-gradle" }

@@ -182,14 +182,12 @@ object NfcEditorStateProducerHelper {
                     )
                 )
             return oldKey.copy(
-                additionalFiles = newAdditionalFiles,
-                synchronized = false
+                additionalFiles = newAdditionalFiles
             )
         }
 
         return oldKey.copy(
-            mainFile = oldKey.mainFile.copy(content = FlipperFileFormat(orderedMap.toList())),
-            synchronized = false
+            mainFile = oldKey.mainFile.copy(content = FlipperFileFormat(orderedMap.toList()))
         )
     }
 }

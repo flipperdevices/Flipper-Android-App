@@ -14,9 +14,4 @@ sealed class KeyScreenState {
         val deleteState: DeleteState,
         val flipperKey: FlipperKey
     ) : KeyScreenState()
-
-    data class Editing(
-        val flipperKey: FlipperKey,
-        val parsedKey: FlipperKeyParsed
-    ) : KeyScreenState()
 }

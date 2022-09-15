@@ -24,8 +24,10 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 include(
     ":instances:app",
+    ":instances:wearable",
     ":components:bridge:api",
     ":components:bridge:impl",
+    ":components:bridge:service:noop",
     ":components:bridge:service:impl",
     ":components:bridge:service:api",
     ":components:bridge:pbutils",
@@ -35,6 +37,7 @@ include(
     ":components:bridge:synchronization:ui",
     ":components:bridge:dao:api",
     ":components:bridge:dao:impl",
+    ":components:bridge:dao:noop",
 
     ":components:filemanager:api",
     ":components:filemanager:impl",
@@ -120,5 +123,24 @@ include(
 
     ":components:nfceditor:api",
     ":components:nfceditor:impl",
-    ":components:nfceditor:sample"
+    ":components:nfceditor:sample",
+
+    ":components:wearable:theme",
+    ":components:wearable:core:ui:components",
+    ":components:wearable:core:ui:ktx",
+    ":components:wearable:setup:api",
+    ":components:wearable:setup:impl",
+
+    ":components:wearable:sync:common",
+    ":components:wearable:sync:wear:api",
+    ":components:wearable:sync:wear:impl",
+    ":components:wearable:sync:handheld:api",
+    ":components:wearable:sync:handheld:impl",
+    ":components:wearable:sync:handheld:noop",
+    ":components:wearable:emulate:wear:api",
+    ":components:wearable:emulate:wear:impl",
+    ":components:wearable:emulate:handheld:api",
+    ":components:wearable:emulate:handheld:impl",
+    ":components:wearable:emulate:handheld:noop",
+    ":components:wearable:emulate:common"
 )

@@ -5,6 +5,7 @@ import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.delegates.FlipperFileApi
 import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
+import com.flipperdevices.bridge.dao.api.delegates.key.UpdateKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
@@ -16,6 +17,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.metric.api.MetricApi
+import com.flipperdevices.wearable.sync.handheld.api.SyncWearableApi
 import com.squareup.anvil.annotations.ContributesBinding
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
@@ -35,7 +37,9 @@ class SynchronizationApiImpl @Inject constructor(
     private val favoriteApi: FavoriteApi,
     private val metricApi: MetricApi,
     private val preference: DataStore<Settings>,
-    private val flipperFileApi: FlipperFileApi
+    private val flipperFileApi: FlipperFileApi,
+    private val syncWearableApi: SyncWearableApi,
+    private val updateKeyApi: UpdateKeyApi
 ) : SynchronizationApi, LogTagProvider {
     override val TAG = "SynchronizationApi"
 
@@ -67,7 +71,9 @@ class SynchronizationApiImpl @Inject constructor(
             favoriteApi = favoriteApi,
             metricApi = metricApi,
             synchronizationProvider = SynchronizationPercentProvider(preference),
-            flipperFileApi = flipperFileApi
+            flipperFileApi = flipperFileApi,
+            syncWearableApi = syncWearableApi,
+            updateKeyApi = updateKeyApi
         )
 
         localSynchronizationTask.start(input = Unit) { taskState ->

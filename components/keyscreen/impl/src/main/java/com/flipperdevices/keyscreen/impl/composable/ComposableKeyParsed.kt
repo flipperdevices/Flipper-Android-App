@@ -51,7 +51,9 @@ fun ComposableKeyParsed(
             } else null,
             keyScreenState.favoriteState,
             viewModel::setFavorite,
-            viewModel::onOpenEdit
+            onEditName = {
+                viewModel.onOpenEdit(router)
+            }
         )
 
         keyEmulateApi.ComposableEmulateButton(

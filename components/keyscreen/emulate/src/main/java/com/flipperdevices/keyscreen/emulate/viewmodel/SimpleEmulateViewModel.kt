@@ -3,7 +3,7 @@ package com.flipperdevices.keyscreen.emulate.viewmodel
 import android.app.Application
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
-import com.flipperdevices.keyscreen.emulate.viewmodel.helpers.EmulateHelper
+import com.flipperdevices.keyscreen.api.EmulateHelper
 import tangle.viewmodel.VMInject
 
 class SimpleEmulateViewModel @VMInject constructor(
