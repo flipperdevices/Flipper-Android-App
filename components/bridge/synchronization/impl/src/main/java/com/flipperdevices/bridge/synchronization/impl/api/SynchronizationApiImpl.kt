@@ -75,11 +75,14 @@ class SynchronizationApiImpl @Inject constructor(
             syncWearableApi = syncWearableApi,
             updateKeyApi = updateKeyApi
         )
+        info { "Create synchronization task ${localSynchronizationTask.hashCode()}" }
 
         localSynchronizationTask.start(input = Unit) { taskState ->
             synchronizationState.update { taskState }
             if (taskState == SynchronizationState.Finished) {
+                localSynchronizationTask.onStop()
                 isLaunched.compareAndSet(true, false)
+                info { "Mark launched false" }
                 if (markDirty) {
                     startSynchronization()
                 }

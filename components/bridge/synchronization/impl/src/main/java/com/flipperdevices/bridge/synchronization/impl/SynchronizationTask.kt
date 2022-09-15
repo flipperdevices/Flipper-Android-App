@@ -72,6 +72,8 @@ class SynchronizationTask(
         serviceApi: FlipperServiceApi,
         onStateUpdate: suspend (SynchronizationState) -> Unit
     ) {
+        info { "#startInternal" }
+
         try {
             onStateUpdate(SynchronizationState.InProgress(0f))
             val startSynchronizationTime = System.currentTimeMillis()
