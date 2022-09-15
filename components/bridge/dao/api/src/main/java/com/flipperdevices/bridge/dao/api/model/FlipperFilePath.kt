@@ -17,7 +17,7 @@ private const val FLIPPER_STORAGE_NAME = "/any/"
  */
 @Serializable
 @Parcelize
-data class FlipperFilePath constructor(
+data class FlipperFilePath(
     @SerialName("folder")
     val folder: String,
     @SerialName("name")

@@ -10,4 +10,10 @@ sealed class KeyEditState {
         val parsedKey: FlipperKeyParsed,
         val savingKeyActive: Boolean
     ) : KeyEditState()
+
+    data class Saving(
+        val editState: Editing
+    ) : KeyEditState()
+
+    object Failed : KeyEditState()
 }

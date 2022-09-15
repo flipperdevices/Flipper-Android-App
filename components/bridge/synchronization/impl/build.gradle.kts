@@ -22,6 +22,8 @@ dependencies {
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.dao.api)
 
+    implementation(projects.components.wearable.sync.handheld.api)
+
     implementation(projects.components.analytics.shake2report.api)
     implementation(projects.components.analytics.metric.api)
 

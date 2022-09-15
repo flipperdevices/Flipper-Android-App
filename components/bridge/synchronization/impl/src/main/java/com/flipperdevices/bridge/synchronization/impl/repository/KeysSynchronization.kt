@@ -4,6 +4,7 @@ import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.dao.api.delegates.FlipperFileApi
 import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
+import com.flipperdevices.bridge.dao.api.delegates.key.UpdateKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
@@ -39,7 +40,8 @@ class KeysSynchronization(
     private val flipperStorage: FlipperKeyStorage,
     private val requestApi: FlipperRequestApi,
     private val synchronizationPercentProvider: SynchronizationPercentProvider,
-    private val flipperFileApi: FlipperFileApi
+    private val flipperFileApi: FlipperFileApi,
+    private val updateKeyApi: UpdateKeyApi
 ) : LogTagProvider {
     override val TAG = "KeysSynchronization"
 
@@ -214,12 +216,11 @@ class KeysSynchronization(
             simpleKeyApi.getKey(keyPath) ?: error("Can't found key $keyPath on Android side")
         val newPath = utilsKeyApi.findAvailablePath(keyPath)
 
-        simpleKeyApi.updateKey(
+        updateKeyApi.updateKey(
             oldKey,
             oldKey.copy(
                 oldKey.mainFile.copy(path = newPath.path),
-                deleted = newPath.deleted,
-                synchronized = false
+                deleted = newPath.deleted
             )
         )
     }

@@ -7,10 +7,13 @@ plugins {
 
 dependencies {
     implementation(projects.components.core.di)
+    implementation(projects.components.core.ui.ktx)
+    implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.dao.api)
 
     // Compose
     implementation(libs.compose.ui)
+    implementation(libs.compose.foundation)
 
     // Dagger deps
     implementation(libs.dagger)

@@ -7,6 +7,7 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.keyedit.impl.model.KeyEditState
 import com.flipperdevices.keyedit.impl.model.SaveButtonState
 import com.flipperdevices.keyedit.impl.viewmodel.KeyEditViewModel
@@ -19,8 +20,10 @@ fun ComposableEditScreen(
     onSave: () -> Unit
 ) {
     when (state) {
-        KeyEditState.Loading -> ComposableEditScreenLoading()
+        KeyEditState.Loading,
+        is KeyEditState.Saving -> ComposableEditScreenLoading()
         is KeyEditState.Editing -> ComposableEditScreenEditing(viewModel, state, onCancel, onSave)
+        KeyEditState.Failed -> LocalRouter.current.exit()
     }
 }
 

@@ -3,7 +3,7 @@ package com.flipperdevices.keyscreen.emulate.tasks
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.ui.lifecycle.OneTimeExecutionBleTask
-import com.flipperdevices.keyscreen.emulate.viewmodel.helpers.EmulateHelper
+import com.flipperdevices.keyscreen.api.EmulateHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first

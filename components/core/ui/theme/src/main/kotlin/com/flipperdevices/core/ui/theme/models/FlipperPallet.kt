@@ -114,7 +114,7 @@ data class FlipperPallet(
     val bubbleEmulate: Color = Color(0xFFFFFFFF)
 ) {
     @Composable
-    fun toMaterialColors(isLight: Boolean) = Colors(
+    internal fun toMaterialColors(isLight: Boolean) = Colors(
         primary = content,
         primaryVariant = accentSecond,
         secondary = content,

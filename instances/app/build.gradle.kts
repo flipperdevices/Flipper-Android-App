@@ -97,6 +97,15 @@ dependencies {
     implementation(projects.components.nfceditor.api)
     implementation(projects.components.nfceditor.impl)
 
+    implementation(projects.components.wearable.sync.handheld.api)
+    if (com.flipperdevices.buildlogic.ApkConfig.IS_GOOGLE_FEATURE_AVAILABLE) {
+        implementation(libs.wear.gms)
+        implementation(projects.components.wearable.sync.handheld.impl)
+        implementation(projects.components.wearable.emulate.handheld.impl)
+    } else {
+        implementation(projects.components.wearable.sync.handheld.noop)
+    }
+
     implementation(libs.ktor.client)
 
     implementation(libs.annotations)

@@ -1,13 +1,10 @@
 package com.flipperdevices.bridge.dao.impl.api.key
 
-import androidx.room.withTransaction
-import com.flipperdevices.bridge.dao.api.delegates.FlipperFileApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
-import com.flipperdevices.bridge.dao.impl.AppDatabase
 import com.flipperdevices.bridge.dao.impl.ktx.toDatabaseKey
 import com.flipperdevices.bridge.dao.impl.ktx.toFlipperKey
 import com.flipperdevices.bridge.dao.impl.model.DatabaseKeyContent
@@ -27,16 +24,12 @@ import kotlinx.coroutines.withContext
 @ContributesBinding(AppGraph::class, SimpleKeyApi::class)
 class SimpleKeyApiImpl @Inject constructor(
     keysDaoProvider: Provider<SimpleKeyDao>,
-    additionalFileDaoProvider: Provider<AdditionalFileDao>,
-    additionalFileApiProvider: Provider<FlipperFileApi>,
-    databaseProvider: Provider<AppDatabase>
+    additionalFileDaoProvider: Provider<AdditionalFileDao>
 ) : SimpleKeyApi, LogTagProvider {
     override val TAG = "SimpleKeyApi"
 
     private val simpleKeyDao by keysDaoProvider
     private val additionalFileDao by additionalFileDaoProvider
-    private val additionalFileApi by additionalFileApiProvider
-    private val database by databaseProvider
 
     override suspend fun getAllKeys(): List<FlipperKey> = withContext(Dispatchers.IO) {
         return@withContext simpleKeyDao.getAll().map { it.toFlipperKey(additionalFileDao) }
@@ -61,32 +54,6 @@ class SimpleKeyApiImpl @Inject constructor(
 
     override suspend fun insertKey(key: FlipperKey) = withContext(Dispatchers.IO) {
         simpleKeyDao.insert(key.toDatabaseKey())
-    }
-
-    override suspend fun updateKey(
-        oldKey: FlipperKey,
-        newKey: FlipperKey
-    ) = withContext(Dispatchers.IO) {
-        if (oldKey == newKey) return@withContext
-
-        database.withTransaction {
-            val oldKeyInDatabase = simpleKeyDao.getByPath(oldKey.path.pathToKey, deleted = false)
-                ?: throw IllegalArgumentException("Can't find old key in database")
-
-            val newKeyInDatabase = newKey.toDatabaseKey().copy(
-                uid = oldKeyInDatabase.uid
-            )
-            if (oldKey.additionalFiles != newKey.additionalFiles) {
-                additionalFileApi.updateAdditionalFiles(
-                    oldKeyInDatabase.uid,
-                    newKey.additionalFiles
-                )
-            }
-            if (oldKey.path != newKey.path) {
-                additionalFileApi.renameAdditionalFiles(oldKeyInDatabase.uid, newKey)
-            }
-            simpleKeyDao.update(newKeyInDatabase)
-        }
     }
 
     override suspend fun updateKeyContent(keyPath: FlipperKeyPath, content: FlipperKeyContent) {

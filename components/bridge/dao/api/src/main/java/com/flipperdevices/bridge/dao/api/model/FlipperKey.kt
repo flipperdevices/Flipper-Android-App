@@ -9,12 +9,13 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class FlipperKey(
     val mainFile: FlipperFile,
-    val flipperKeyType: FlipperKeyType? = mainFile.path.keyType,
     val additionalFiles: List<FlipperFile> = emptyList(),
     val notes: String? = null,
     val synchronized: Boolean,
     val deleted: Boolean
 ) : Parcelable {
+    val flipperKeyType: FlipperKeyType?
+        get() = mainFile.path.keyType
     val path: FlipperFilePath
         get() = mainFile.path
     val keyContent: FlipperKeyContent
