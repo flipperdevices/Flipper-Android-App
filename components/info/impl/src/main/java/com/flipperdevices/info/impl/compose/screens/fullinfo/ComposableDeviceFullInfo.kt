@@ -32,7 +32,9 @@ fun ComposableFullInfoDevice(
             ComposableFlipperDevicesInfo(fullDeviceInfo.flipperDeviceInfo, inProgress)
         }
         InfoElementCard(Modifier, titleId = R.string.full_info_firmware) {
-            ComposableFirmwareInfo(deviceInfoViewModel, fullDeviceInfo.firmware, inProgress)
+            ComposableFirmwareInfo(fullDeviceInfo.firmware, inProgress) {
+                deviceInfoViewModel.getFirmwareChannel(it)
+            }
         }
         InfoElementCard(Modifier, titleId = R.string.full_info_radio_stack) {
             ComposableRadioStackInfo(fullDeviceInfo.radioStack, inProgress)

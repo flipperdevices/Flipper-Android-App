@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.ripple.rememberRipple
@@ -58,7 +59,7 @@ fun ComposableFullDeviceInfoScreen(
 }
 
 @Composable
-private fun ComposableFullDeviceInfoScreenBar(exit: () -> Unit) {
+private fun ComposableFullDeviceInfoScreenBar(onBack: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -67,17 +68,21 @@ private fun ComposableFullDeviceInfoScreenBar(exit: () -> Unit) {
     ) {
         Icon(
             modifier = Modifier
+                .padding(start = 14.dp, top = 8.dp, bottom = 8.dp)
                 .clickable(
-                    indication = rememberRipple(),
-                    onClick = exit,
+                    indication = rememberRipple(bounded = false),
+                    onClick = onBack,
                     interactionSource = remember { MutableInteractionSource() }
                 )
-                .padding(start = 14.dp, end = 14.dp, top = 8.dp, bottom = 10.dp),
+                .size(size = 24.dp),
             painter = painterResource(DesignSystem.drawable.ic_back),
             tint = LocalPallet.current.onAppBar,
             contentDescription = null
         )
         Text(
+            modifier = Modifier
+                .padding(start = 14.dp, end = 14.dp, top = 8.dp, bottom = 11.dp)
+                .weight(weight = 1f),
             text = stringResource(R.string.info_device_info_title),
             style = LocalTypography.current.titleB20,
             color = LocalPallet.current.onAppBar
