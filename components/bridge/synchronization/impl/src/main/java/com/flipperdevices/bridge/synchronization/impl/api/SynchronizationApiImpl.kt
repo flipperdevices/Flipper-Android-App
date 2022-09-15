@@ -41,7 +41,7 @@ class SynchronizationApiImpl @Inject constructor(
     private val syncWearableApi: SyncWearableApi,
     private val updateKeyApi: UpdateKeyApi
 ) : SynchronizationApi, LogTagProvider {
-    override val TAG = "SynchronizationApi"
+    override val TAG = "SynchronizationApi-${hashCode()}"
 
     private val isLaunched = AtomicBoolean(false)
     private val synchronizationState = MutableStateFlow<SynchronizationState>(

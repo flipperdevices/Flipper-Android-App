@@ -12,6 +12,9 @@ interface SimpleKeyDao {
     @Query("SELECT * FROM keys WHERE deleted = 0")
     suspend fun getAll(): List<Key>
 
+    @Query("SELECT * FROM keys")
+    suspend fun getAllIncludeDeleted(): List<Key>
+
     @Update
     fun update(key: Key)
 
