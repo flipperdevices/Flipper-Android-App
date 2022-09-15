@@ -1,6 +1,6 @@
 package com.flipperdevices.bridge.dao.api.model
 
-private const val SHADOW_FILE_EXTENSION = "shd"
+const val SHADOW_FILE_EXTENSION = "shd"
 
 /**
  * Order is important

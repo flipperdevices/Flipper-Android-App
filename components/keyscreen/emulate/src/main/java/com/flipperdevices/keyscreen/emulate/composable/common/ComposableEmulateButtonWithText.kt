@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.keyscreen.api.EmulateProgress
@@ -46,10 +47,7 @@ fun ComposableEmulateButtonWithText(
             progressColor = progressColor
         )
 
-        Row(
-            modifier = Modifier.padding(top = 4.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
             if (iconId != null) {
                 Icon(
                     modifier = Modifier
@@ -62,7 +60,7 @@ fun ComposableEmulateButtonWithText(
             }
             Text(
                 text = textId?.let { stringResource(it) } ?: "",
-                style = LocalTypography.current.subtitleM12,
+                style = LocalTypography.current.bodyR14.copy(fontSize = 12.sp),
                 color = LocalPallet.current.text30
             )
         }
