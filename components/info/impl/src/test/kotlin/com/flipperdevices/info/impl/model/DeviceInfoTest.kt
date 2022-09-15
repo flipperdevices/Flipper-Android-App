@@ -46,7 +46,7 @@ class DeviceInfoTest {
                     total = 0,
                     free = 20 * 1000
                 )
-            ).isIntStorageEnding()
+            ).isExtStorageEnding()
         )
 
         Assert.assertTrue(
@@ -56,7 +56,7 @@ class DeviceInfoTest {
                     total = 0,
                     free = 20 * 1000 - 1
                 )
-            ).isIntStorageEnding()
+            ).isExtStorageEnding()
         )
 
         Assert.assertFalse(
@@ -66,7 +66,7 @@ class DeviceInfoTest {
                     total = 0,
                     free = 20 * 1000 + 1
                 )
-            ).isIntStorageEnding()
+            ).isExtStorageEnding()
         )
     }
 }
