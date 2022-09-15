@@ -55,7 +55,7 @@ class KeysSynchronization(
     suspend fun syncKeys(
         onStateUpdate: suspend (SynchronizationState) -> Unit
     ): List<KeyWithHash> {
-        val allKeysFromAndroid = simpleKeyApi.getAllKeys(incudeDeleted = true)
+        val allKeysFromAndroid = simpleKeyApi.getAllKeys(includeDeleted = true)
         val keysFromAndroid = allKeysFromAndroid.filterNot { it.deleted }
         val hashesFromAndroid = androidHashRepository.calculateHash(keysFromAndroid)
         val hashesFromFlipper = getManifestOnFlipper(onStateUpdate)
