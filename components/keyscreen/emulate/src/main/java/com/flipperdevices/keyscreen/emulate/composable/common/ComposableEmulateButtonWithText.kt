@@ -47,10 +47,7 @@ fun ComposableEmulateButtonWithText(
             progressColor = progressColor
         )
 
-        Row(
-            modifier = Modifier.padding(top = 0.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
             if (iconId != null) {
                 Icon(
                     modifier = Modifier
