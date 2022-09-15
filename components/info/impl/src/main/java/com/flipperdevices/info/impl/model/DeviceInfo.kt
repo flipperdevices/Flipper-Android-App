@@ -7,7 +7,7 @@ import com.flipperdevices.info.impl.R
 import com.flipperdevices.updater.model.FirmwareVersion
 import kotlin.math.max
 
-private const val ENDING = 20 * 1000 // 20 Kb
+private const val ENDING = 20 * 1024 // 20 Kb
 
 data class DeviceInfo(
     val firmwareVersion: FirmwareVersion? = null,

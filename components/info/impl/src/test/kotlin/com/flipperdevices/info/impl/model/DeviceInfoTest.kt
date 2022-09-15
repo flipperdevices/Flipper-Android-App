@@ -24,7 +24,7 @@ class DeviceInfoTest {
             DeviceInfo(
                 flashInt = StorageStats.Loaded(
                     total = 0,
-                    free = 20 * 1000
+                    free = 20 * 1024
                 )
             ).isIntStorageEnding()
         )
@@ -34,7 +34,7 @@ class DeviceInfoTest {
                 flashInt =
                 StorageStats.Loaded(
                     total = 0,
-                    free = 20 * 1000 - 1
+                    free = 20 * 1024 - 1
                 )
             ).isIntStorageEnding()
         )
@@ -44,7 +44,7 @@ class DeviceInfoTest {
                 flashInt =
                 StorageStats.Loaded(
                     total = 0,
-                    free = 20 * 1000 + 1
+                    free = 20 * 1024 + 1
                 )
             ).isIntStorageEnding()
         )
@@ -56,7 +56,7 @@ class DeviceInfoTest {
             DeviceInfo(
                 flashSd = StorageStats.Loaded(
                     total = 0,
-                    free = 20 * 1000
+                    free = 20 * 1024
                 )
             ).isExtStorageEnding()
         )
@@ -66,7 +66,7 @@ class DeviceInfoTest {
                 flashSd =
                 StorageStats.Loaded(
                     total = 0,
-                    free = 20 * 1000 - 1
+                    free = 20 * 1024 - 1
                 )
             ).isExtStorageEnding()
         )
@@ -76,7 +76,7 @@ class DeviceInfoTest {
                 flashSd =
                 StorageStats.Loaded(
                     total = 0,
-                    free = 20 * 1000 + 1
+                    free = 20 * 1024 + 1
                 )
             ).isExtStorageEnding()
         )
