@@ -18,8 +18,8 @@ import com.flipperdevices.keyscreen.emulate.R
 import com.flipperdevices.keyscreen.emulate.composable.common.ComposableActionDisable
 import com.flipperdevices.keyscreen.emulate.composable.common.ComposableActionLoading
 import com.flipperdevices.keyscreen.emulate.composable.common.ComposableAlreadyOpenedAppDialog
+import com.flipperdevices.keyscreen.emulate.composable.common.ComposableBubbleHoldToSend
 import com.flipperdevices.keyscreen.emulate.composable.common.ComposableEmulateButtonWithText
-import com.flipperdevices.keyscreen.emulate.composable.common.ComposableHoldToSend
 import com.flipperdevices.keyscreen.emulate.model.DisableButtonReason
 import com.flipperdevices.keyscreen.emulate.model.EmulateButtonState
 import com.flipperdevices.keyscreen.emulate.model.EmulateProgress
@@ -90,10 +90,10 @@ private fun ComposableActiveStateEmulateInternal(
     flipperKey: FlipperKey,
     emulateButtonState: EmulateButtonState
 ) {
-    var openBubble by remember { mutableStateOf(false) }
+    var isBubbleOpen by remember { mutableStateOf(false) }
     val buttonActiveModifier = Modifier.onHoldPress(
         onTap = {
-            openBubble = true
+            isBubbleOpen = true
             emulateViewModel.onSinglePress(flipperKey)
         },
         onLongPressStart = {
@@ -104,19 +104,21 @@ private fun ComposableActiveStateEmulateInternal(
         }
     )
 
-    var positionYParentBox by remember { mutableStateOf(0) }
+    var positionYEmulateButton by remember { mutableStateOf(0) }
     ComposableActiveEmulateInternal(
         modifier = modifier.onGloballyPositioned {
             val coordinate = it.positionInRoot()
-            positionYParentBox = coordinate.y.toInt()
+            positionYEmulateButton = coordinate.y.toInt()
         },
         buttonActiveModifier = buttonActiveModifier,
         emulateProgress = (emulateButtonState as? EmulateButtonState.Active)?.progress,
         isActive = emulateButtonState is EmulateButtonState.Active
     )
-    if (openBubble && emulateButtonState is EmulateButtonState.Inactive) openBubble = false
-    if (openBubble) {
-        ComposableHoldToSend(positionYParentBox)
+
+    // After single emulate close bubble
+    if (isBubbleOpen && emulateButtonState is EmulateButtonState.Inactive) isBubbleOpen = false
+    if (isBubbleOpen) {
+        ComposableBubbleHoldToSend(positionYEmulateButton)
     }
 }
 

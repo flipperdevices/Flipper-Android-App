@@ -49,12 +49,12 @@ private const val PADDING_BUBBLE_END = 24
 private const val DELAY_ANIMATION = 2000
 
 @Composable
-fun ComposableHoldToSend(positionYParentBox: Int) {
+fun ComposableBubbleHoldToSend(positionYEmulateButton: Int) {
     var positionBubble by remember { mutableStateOf(IntSize.Zero) }
     var visibleState by remember { mutableStateOf(false) }
     Popup(
         alignment = Alignment.TopEnd,
-        offset = calculateBubblePosition(positionYParentBox, positionBubble),
+        offset = calculateBubblePosition(positionYEmulateButton, positionBubble.height),
         onDismissRequest = {}
     ) {
         LaunchedEffect(Unit) { visibleState = true }
@@ -69,10 +69,13 @@ fun ComposableHoldToSend(positionYParentBox: Int) {
 }
 
 @Composable
-private fun calculateBubblePosition(positionYParentBox: Int, positionBubble: IntSize): IntOffset {
+private fun calculateBubblePosition(
+    positionYEmulateButton: Int,
+    positionXBubble: Int
+): IntOffset {
     return IntOffset(
         x = LocalDensity.current.run { PADDING_BUBBLE_END.dp.toPx() }.toInt() * -1,
-        y = positionYParentBox - positionBubble.height + DISTANCE_BUTTON_BUBBLE
+        y = positionYEmulateButton - positionXBubble + DISTANCE_BUTTON_BUBBLE
     )
 }
 
