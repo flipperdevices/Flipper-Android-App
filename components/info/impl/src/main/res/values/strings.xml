@@ -63,4 +63,5 @@
     <string name="radio_stack_type_full_ext_adv">Full Ext Adv</string>
     <string name="radio_stack_type_hci_ext_adv">Hci Ext Adv</string>
     <string name="radio_stack_type_unknown">Unknown</string>
+    <string name="device_info_share">Share Device Info %1$s</string>
 </resources>

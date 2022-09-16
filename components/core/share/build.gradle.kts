@@ -7,6 +7,15 @@ plugins {
     id("kotlinx-serialization")
 }
 
+android {
+    defaultConfig {
+        val applicationId = com.flipperdevices.buildlogic.ApkConfig.APPLICATION_ID
+        val shareFileAuthorities = "$applicationId.filemanager.export.provider"
+        manifestPlaceholders["shareFileAuthorities"] = shareFileAuthorities
+        buildConfigField("String", "SHARE_FILE_AUTHORITIES", "\"$shareFileAuthorities\"")
+    }
+}
+
 dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)
@@ -18,7 +27,6 @@ dependencies {
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ui.res)
-    implementation(projects.components.core.share)
 
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.api)

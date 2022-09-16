@@ -1,0 +1,26 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        package="com.flipperdevices.core.share">
+
+    <application>
+        <provider
+                android:authorities="${shareFileAuthorities}"
+                android:exported="false"
+                android:grantUriPermissions="true"
+                android:name="androidx.core.content.FileProvider">
+            <meta-data
+                    android:name="android.support.FILE_PROVIDER_PATHS"
+                    android:resource="@xml/filepaths" />
+        </provider>
+    </application>
+
+    <!--
+        https://developer.android.com/reference/android/content/Intent#ACTION_GET_CONTENT
+        https://developer.android.com/about/versions/11/privacy/package-visibility
+    -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.GET_CONTENT" />
+            <data android:mimeType="*/*"/>
+        </intent>
+    </queries>
+</manifest>

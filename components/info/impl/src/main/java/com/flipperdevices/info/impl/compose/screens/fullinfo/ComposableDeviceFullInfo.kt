@@ -15,12 +15,13 @@ import com.flipperdevices.info.impl.viewmodel.DeviceInfoViewModel
 import com.flipperdevices.info.shared.ComposableDeviceInfoRowWithText
 import com.flipperdevices.info.shared.ComposableInfoDivider
 import com.flipperdevices.info.shared.InfoElementCard
+import com.flipperdevices.updater.model.FirmwareChannel
 
 @Composable
 fun ComposableFullInfoDevice(
-    deviceInfoViewModel: DeviceInfoViewModel,
     fullDeviceInfo: FlipperRpcInformation,
-    inProgress: Boolean
+    inProgress: Boolean,
+    getFirmwareChannel: (String?) -> FirmwareChannel?,
 ) {
     Column(
         modifier = Modifier
@@ -32,9 +33,7 @@ fun ComposableFullInfoDevice(
             ComposableFlipperDevicesInfo(fullDeviceInfo.flipperDeviceInfo, inProgress)
         }
         InfoElementCard(Modifier, titleId = R.string.full_info_firmware) {
-            ComposableFirmwareInfo(fullDeviceInfo.firmware, inProgress) {
-                deviceInfoViewModel.getFirmwareChannel(it)
-            }
+            ComposableFirmwareInfo(fullDeviceInfo.firmware, inProgress) { getFirmwareChannel(it) }
         }
         InfoElementCard(Modifier, titleId = R.string.full_info_radio_stack) {
             ComposableRadioStackInfo(fullDeviceInfo.radioStack, inProgress)

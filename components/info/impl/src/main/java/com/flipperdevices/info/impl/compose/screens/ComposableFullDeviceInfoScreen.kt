@@ -29,18 +29,18 @@ import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.compose.navigation.NavGraphRoute
 import com.flipperdevices.info.impl.compose.screens.fullinfo.ComposableFullInfoDevice
 import com.flipperdevices.info.impl.model.DeviceStatus
-import com.flipperdevices.info.impl.viewmodel.DeviceInfoViewModel
 import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
+import com.flipperdevices.info.impl.viewmodel.FullInfoViewModel
 import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 fun ComposableFullDeviceInfoScreen(
     navController: NavHostController,
-    deviceInfoViewModel: DeviceInfoViewModel = tangleViewModel(),
+    fullInfoViewModel: FullInfoViewModel = tangleViewModel(),
     deviceStatusViewModel: DeviceStatusViewModel = viewModel()
 ) {
     val deviceStatus by deviceStatusViewModel.getState().collectAsState()
-    val deviceInfoRequestStatus by deviceInfoViewModel.getDeviceInfoRequestStatus().collectAsState()
+    val deviceInfoRequestStatus by fullInfoViewModel.getDeviceInfoRequestStatus().collectAsState()
     val localDeviceStatus = deviceStatus
 
     val inProgress = if (localDeviceStatus is DeviceStatus.NoDeviceInformation) {
@@ -50,16 +50,24 @@ fun ComposableFullDeviceInfoScreen(
             deviceInfoRequestStatus.rpcDeviceInfoRequestInProgress
     }
 
-    val flipperRpcInformation by deviceInfoViewModel.getFlipperRpcInformation().collectAsState()
+    val flipperRpcInformation by fullInfoViewModel.getFlipperRpcInformation().collectAsState()
 
     Column {
-        ComposableFullDeviceInfoScreenBar { navController.navigate(NavGraphRoute.Info.name) }
-        ComposableFullInfoDevice(deviceInfoViewModel, flipperRpcInformation, inProgress)
+        ComposableFullDeviceInfoScreenBar(
+            onBack = { navController.navigate(NavGraphRoute.Info.name) },
+            onShare = fullInfoViewModel::shareDeviceInfo
+        )
+        ComposableFullInfoDevice(flipperRpcInformation, inProgress) {
+            fullInfoViewModel.getFirmwareChannel(it)
+        }
     }
 }
 
 @Composable
-private fun ComposableFullDeviceInfoScreenBar(onBack: () -> Unit) {
+private fun ComposableFullDeviceInfoScreenBar(
+    onBack: () -> Unit,
+    onShare: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -86,6 +94,18 @@ private fun ComposableFullDeviceInfoScreenBar(onBack: () -> Unit) {
             text = stringResource(R.string.info_device_info_title),
             style = LocalTypography.current.titleB20,
             color = LocalPallet.current.onAppBar
+        )
+        Icon(
+            modifier = Modifier.padding(end = 14.dp)
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = rememberRipple(bounded = false),
+                    onClick = onShare
+                )
+                .size(size = 24.dp),
+            painter = painterResource(DesignSystem.drawable.ic_upload),
+            contentDescription = null,
+            tint = LocalPallet.current.onAppBar
         )
     }
 }

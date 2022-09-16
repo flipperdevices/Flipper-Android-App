@@ -1,5 +1,6 @@
 package com.flipperdevices.info.impl.viewmodel
 
+import android.app.Application
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.model.FlipperRequestRpcInformationStatus
 import com.flipperdevices.bridge.api.model.FlipperRpcInformation
@@ -9,13 +10,11 @@ import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
 import com.flipperdevices.info.impl.di.InfoComponent
 import com.flipperdevices.info.impl.model.DeviceInfo
 import com.flipperdevices.info.impl.model.DeviceInfoRequestStatus
-import com.flipperdevices.updater.api.FirmwareVersionBuilderApi
 import com.flipperdevices.updater.api.FlipperVersionProviderApi
-import com.flipperdevices.updater.model.FirmwareChannel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -26,9 +25,8 @@ import tangle.viewmodel.VMInject
 class DeviceInfoViewModel @VMInject constructor(
     serviceProvider: FlipperServiceProvider,
     private val flipperVersionProviderApi: FlipperVersionProviderApi,
-    private val firmwareVersionBuilderApi: FirmwareVersionBuilderApi
-) :
-    LifecycleViewModel(),
+    application: Application
+) : AndroidLifecycleViewModel(application),
     FlipperBleServiceConsumer,
     LogTagProvider {
     override val TAG = "DeviceInfoViewModel"
@@ -42,7 +40,6 @@ class DeviceInfoViewModel @VMInject constructor(
     }
 
     fun getDeviceInfo(): StateFlow<DeviceInfo> = deviceInfoState
-    fun getFlipperRpcInformation(): StateFlow<FlipperRpcInformation> = flipperRpcInformationState
     fun getDeviceInfoRequestStatus(): StateFlow<DeviceInfoRequestStatus> = deviceInfoRequestStatus
 
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
@@ -71,13 +68,5 @@ class DeviceInfoViewModel @VMInject constructor(
                     deviceInfoRequestStatus.emit(DeviceInfoRequestStatus())
             }
         }.launchIn(viewModelScope)
-    }
-
-    fun getFirmwareChannel(commit: String?): FirmwareChannel? {
-        if (commit == null) return null
-        val preparedCommit = commit.split(" ")
-        if (preparedCommit.isEmpty()) return null
-        val branch = preparedCommit.first()
-        return firmwareVersionBuilderApi.getFirmwareChannel(branch)
     }
 }
