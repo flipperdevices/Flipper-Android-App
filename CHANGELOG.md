@@ -24,6 +24,7 @@
 - [Feature] New logic for emulate
 - [Feature] Bubble for sub-ghz emulate
 - [Feature] Add wearos application
+- [Feature] Warning color on storage info
 - [FIX] Now search for devices by Mac address and by flipper name
 - [FIX] Subghz provisioning while geoip is null
 - [FIX] Separate screen for edit key

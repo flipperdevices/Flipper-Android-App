@@ -75,6 +75,9 @@ class DeviceInfoViewModel @VMInject constructor(
 
     fun getFirmwareChannel(commit: String?): FirmwareChannel? {
         if (commit == null) return null
-        return firmwareVersionBuilderApi.getFirmwareChannel(commit)
+        val preparedCommit = commit.split(" ")
+        if (preparedCommit.isEmpty()) return null
+        val branch = preparedCommit.first()
+        return firmwareVersionBuilderApi.getFirmwareChannel(branch)
     }
 }

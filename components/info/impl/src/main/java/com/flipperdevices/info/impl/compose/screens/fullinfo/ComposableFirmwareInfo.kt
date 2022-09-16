@@ -4,20 +4,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import com.flipperdevices.bridge.api.model.FirmwareInfo
 import com.flipperdevices.info.impl.R
-import com.flipperdevices.info.impl.viewmodel.DeviceInfoViewModel
 import com.flipperdevices.info.shared.ComposableDeviceInfoRow
 import com.flipperdevices.info.shared.ComposableDeviceInfoRowWithText
 import com.flipperdevices.info.shared.ComposableInfoDivider
 import com.flipperdevices.info.shared.ComposableLongDeviceInfoRowText
 import com.flipperdevices.info.shared.getColorByChannel
+import com.flipperdevices.updater.model.FirmwareChannel
 
 @Composable
 fun ComposableFirmwareInfo(
-    deviceInfoViewModel: DeviceInfoViewModel,
     info: FirmwareInfo,
-    inProgress: Boolean
+    inProgress: Boolean,
+    getFirmwareChannel: (String?) -> FirmwareChannel?
 ) {
-    val firmwareChannel = deviceInfoViewModel.getFirmwareChannel(info.softwareRevision)
+    val firmwareChannel = getFirmwareChannel(info.softwareRevision)
     ComposableSoftwareRevision(
         titleId = R.string.full_info_software_revision,
         inProgress = inProgress,
