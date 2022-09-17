@@ -95,7 +95,7 @@ class FullInfoViewModel @VMInject constructor(
         file.createClearNewFileWithMkDirs()
 
         try {
-            addInfoToFile(file, context)
+            addInfoToFile(file)
             ShareHelper.shareFile(
                 context = context,
                 file = file,
@@ -114,17 +114,15 @@ class FullInfoViewModel @VMInject constructor(
         return "dump-$flipperName-$formatDate.txt"
     }
 
-    private fun addInfoToFile(file: File, context: Context) {
+    private fun addInfoToFile(file: File) {
         val builder = StringBuilder()
         flipperRpcInformationState.value.allFields.forEach { (key, value) ->
             builder.appendLine("$key: $value")
         }
         flipperRpcInformationState.value.let {
-            val int = it.internalStorageStats?.toString(context)
-                ?: context.getString(R.string.info_device_info_flash_not_found)
+            val int = it.internalStorageStats.toString()
             builder.appendLine("int_storage:$int")
-            val ext = it.externalStorageStats?.toString(context)
-                ?: context.getString(R.string.info_device_info_flash_not_found)
+            val ext = it.externalStorageStats.toString()
             builder.appendLine("ext_storage:$ext")
         }
         file.appendText(builder.toString())

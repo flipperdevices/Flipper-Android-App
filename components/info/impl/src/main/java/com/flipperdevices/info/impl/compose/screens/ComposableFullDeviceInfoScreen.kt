@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.ripple.rememberRipple
@@ -97,6 +98,7 @@ private fun ComposableFullDeviceInfoScreenBar(
             style = LocalTypography.current.titleB20,
             color = LocalPallet.current.onAppBar
         )
+
         if (!inProgress) {
             Icon(
                 modifier = Modifier.padding(end = 14.dp)
@@ -109,6 +111,12 @@ private fun ComposableFullDeviceInfoScreenBar(
                 painter = painterResource(DesignSystem.drawable.ic_upload),
                 contentDescription = null,
                 tint = LocalPallet.current.onAppBar
+            )
+        } else {
+            CircularProgressIndicator(
+                color = LocalPallet.current.onAppBar,
+                modifier = Modifier.padding(end = 14.dp).size(size = 24.dp),
+                strokeWidth = 3.dp
             )
         }
     }

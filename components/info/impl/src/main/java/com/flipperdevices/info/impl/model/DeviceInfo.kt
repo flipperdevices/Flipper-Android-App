@@ -44,3 +44,10 @@ fun StorageStats.toString(context: Context): String {
         }
     }
 }
+
+fun StorageStats?.toString(): String {
+    return when (this) {
+        StorageStats.Error, null -> "-"
+        is StorageStats.Loaded -> "$free / $total"
+    }
+}
