@@ -9,7 +9,7 @@ import com.flipperdevices.core.ktx.jre.createClearNewFileWithMkDirs
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.preference.FlipperStorageProvider
+import com.flipperdevices.core.share.SharableFile
 import com.flipperdevices.core.share.ShareHelper
 import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
 import com.flipperdevices.filemanager.impl.R
@@ -18,7 +18,6 @@ import com.flipperdevices.filemanager.impl.model.DownloadProgress
 import com.flipperdevices.filemanager.impl.model.ShareFile
 import com.flipperdevices.filemanager.impl.model.ShareState
 import com.flipperdevices.filemanager.impl.viewmodels.helpers.DownloadFileHelper
-import java.io.File
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,7 +40,7 @@ class ShareViewModel @VMInject constructor(
     private val downloadStarted = AtomicBoolean(false)
     private val downloadFileHelper = DownloadFileHelper()
     private val fileInSharedDir by lazy {
-        File(FlipperStorageProvider.getSharedKeyFolder(application), shareFile.name).apply {
+        SharableFile(application, shareFile.name).apply {
             createClearNewFileWithMkDirs()
         }
     }
@@ -111,7 +110,6 @@ class ShareViewModel @VMInject constructor(
         ShareHelper.shareFile(
             context = getApplication<Application>(),
             file = fileInSharedDir,
-            name = shareFile.name,
             resId = R.string.share_picker_title
         )
         shareStateFlow.update {

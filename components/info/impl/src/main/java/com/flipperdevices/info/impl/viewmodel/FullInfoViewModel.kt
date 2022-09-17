@@ -12,7 +12,7 @@ import com.flipperdevices.core.ktx.jre.createClearNewFileWithMkDirs
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.preference.FlipperStorageProvider
+import com.flipperdevices.core.share.SharableFile
 import com.flipperdevices.core.share.ShareHelper
 import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
 import com.flipperdevices.info.impl.R
@@ -91,8 +91,7 @@ class FullInfoViewModel @VMInject constructor(
     fun shareDeviceInfo() {
         val context = getApplication<Application>().applicationContext
 
-        val nameFile = getFileName()
-        val file = File(FlipperStorageProvider.getSharedKeyFolder(context), nameFile)
+        val file = SharableFile(nameFile = getFileName(), context = context)
         file.createClearNewFileWithMkDirs()
 
         try {
@@ -100,7 +99,6 @@ class FullInfoViewModel @VMInject constructor(
             ShareHelper.shareFile(
                 context = context,
                 file = file,
-                name = nameFile,
                 resId = R.string.device_info_share
             )
         } catch (@Suppress("SwallowedException") exception: Exception) {

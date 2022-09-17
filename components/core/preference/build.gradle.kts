@@ -13,6 +13,7 @@ plugins {
 
 dependencies {
     implementation(projects.components.core.di)
+    implementation(projects.components.core.share)
     api(libs.protobuf.kotlinlite)
 
     api(libs.datastore)
