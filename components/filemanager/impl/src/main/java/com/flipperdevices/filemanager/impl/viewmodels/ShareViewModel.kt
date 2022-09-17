@@ -1,8 +1,6 @@
 package com.flipperdevices.filemanager.impl.viewmodels
 
 import android.app.Application
-import android.content.Intent
-import androidx.core.content.FileProvider
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
@@ -11,16 +9,15 @@ import com.flipperdevices.core.ktx.jre.createClearNewFileWithMkDirs
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.preference.FlipperStorageProvider
+import com.flipperdevices.core.share.SharableFile
+import com.flipperdevices.core.share.ShareHelper
 import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
-import com.flipperdevices.filemanager.impl.BuildConfig
 import com.flipperdevices.filemanager.impl.R
 import com.flipperdevices.filemanager.impl.api.FILE_PATH_KEY
 import com.flipperdevices.filemanager.impl.model.DownloadProgress
 import com.flipperdevices.filemanager.impl.model.ShareFile
 import com.flipperdevices.filemanager.impl.model.ShareState
 import com.flipperdevices.filemanager.impl.viewmodels.helpers.DownloadFileHelper
-import java.io.File
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,7 +40,7 @@ class ShareViewModel @VMInject constructor(
     private val downloadStarted = AtomicBoolean(false)
     private val downloadFileHelper = DownloadFileHelper()
     private val fileInSharedDir by lazy {
-        File(FlipperStorageProvider.getSharedKeyFolder(application), shareFile.name).apply {
+        SharableFile(application, shareFile.name).apply {
             createClearNewFileWithMkDirs()
         }
     }
@@ -110,25 +107,11 @@ class ShareViewModel @VMInject constructor(
     }
 
     private suspend fun onCompleteDownload() = withContext(Dispatchers.Main) {
-        val context = getApplication<Application>()
-        val uri = FileProvider.getUriForFile(
-            context,
-            BuildConfig.SHARE_FILE_AUTHORITIES,
-            fileInSharedDir,
-            shareFile.name
+        ShareHelper.shareFile(
+            context = getApplication<Application>(),
+            file = fileInSharedDir,
+            resId = R.string.share_picker_title
         )
-        val intent = Intent(Intent.ACTION_SEND, uri).apply {
-            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            putExtra(Intent.EXTRA_STREAM, uri)
-        }
-        val activityIntent = Intent.createChooser(
-            intent,
-            context.getString(R.string.share_picker_title, shareFile.name)
-        ).apply {
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        }
-        context.startActivity(activityIntent)
-
         shareStateFlow.update {
             it.copy(
                 processCompleted = true
