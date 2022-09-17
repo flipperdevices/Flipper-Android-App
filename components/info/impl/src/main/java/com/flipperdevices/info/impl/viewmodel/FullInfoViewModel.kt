@@ -8,16 +8,14 @@ import com.flipperdevices.bridge.api.model.FlipperRpcInformation
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
-import com.flipperdevices.core.di.ComponentHolder
-import com.flipperdevices.core.ktx.jre.appendNewLine
 import com.flipperdevices.core.ktx.jre.createClearNewFileWithMkDirs
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.core.share.ShareHelper
 import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
 import com.flipperdevices.info.impl.R
-import com.flipperdevices.info.impl.di.InfoComponent
 import com.flipperdevices.info.impl.model.DeviceInfo
 import com.flipperdevices.info.impl.model.DeviceInfoRequestStatus
 import com.flipperdevices.info.impl.model.toString
@@ -48,7 +46,6 @@ class FullInfoViewModel @VMInject constructor(
     private val deviceInfoRequestStatus = MutableStateFlow(DeviceInfoRequestStatus())
 
     init {
-        ComponentHolder.component<InfoComponent>().inject(this)
         serviceProvider.provideServiceApi(this, this)
     }
 
@@ -107,7 +104,7 @@ class FullInfoViewModel @VMInject constructor(
                 resId = R.string.device_info_share
             )
         } catch (@Suppress("SwallowedException") exception: Exception) {
-            error { "Exception when upload device info" }
+            error(exception) { "Exception when upload device info: $exception" }
         }
     }
 
@@ -120,16 +117,18 @@ class FullInfoViewModel @VMInject constructor(
     }
 
     private fun addInfoToFile(file: File, context: Context) {
-        flipperRpcInformationState.value.allFields.forEach { (t, u) ->
-            file.appendNewLine("$t:$u")
+        val builder = StringBuilder()
+        flipperRpcInformationState.value.allFields.forEach { (key, value) ->
+            builder.appendLine("$key: $value")
         }
         flipperRpcInformationState.value.let {
             val int = it.internalStorageStats?.toString(context)
                 ?: context.getString(R.string.info_device_info_flash_not_found)
-            file.appendNewLine("int_storage:$int")
+            builder.appendLine("int_storage:$int")
             val ext = it.externalStorageStats?.toString(context)
                 ?: context.getString(R.string.info_device_info_flash_not_found)
-            file.appendNewLine("ext_storage:$ext")
+            builder.appendLine("ext_storage:$ext")
         }
+        file.appendText(builder.toString())
     }
 }
