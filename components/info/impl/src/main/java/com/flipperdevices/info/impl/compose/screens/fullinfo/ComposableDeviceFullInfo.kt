@@ -11,7 +11,6 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.api.model.FlipperRpcInformation
 import com.flipperdevices.core.ktx.jre.titlecaseFirstCharIfItIsLowercase
 import com.flipperdevices.info.impl.R
-import com.flipperdevices.info.impl.viewmodel.DeviceInfoViewModel
 import com.flipperdevices.info.shared.ComposableDeviceInfoRowWithText
 import com.flipperdevices.info.shared.ComposableInfoDivider
 import com.flipperdevices.info.shared.InfoElementCard
@@ -21,7 +20,7 @@ import com.flipperdevices.updater.model.FirmwareChannel
 fun ComposableFullInfoDevice(
     fullDeviceInfo: FlipperRpcInformation,
     inProgress: Boolean,
-    getFirmwareChannel: (String?) -> FirmwareChannel?,
+    getFirmwareChannel: (String?) -> FirmwareChannel?
 ) {
     Column(
         modifier = Modifier
