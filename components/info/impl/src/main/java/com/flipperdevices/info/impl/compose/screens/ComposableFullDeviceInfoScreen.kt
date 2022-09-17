@@ -116,7 +116,7 @@ private fun ComposableFullDeviceInfoScreenBar(
             CircularProgressIndicator(
                 color = LocalPallet.current.onAppBar,
                 modifier = Modifier.padding(end = 14.dp).size(size = 24.dp),
-                strokeWidth = 3.dp
+                strokeWidth = 2.5.dp
             )
         }
     }
