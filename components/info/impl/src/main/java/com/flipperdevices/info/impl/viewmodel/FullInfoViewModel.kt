@@ -1,7 +1,6 @@
 package com.flipperdevices.info.impl.viewmodel
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.model.FlipperRequestRpcInformationStatus
 import com.flipperdevices.bridge.api.model.FlipperRpcInformation
