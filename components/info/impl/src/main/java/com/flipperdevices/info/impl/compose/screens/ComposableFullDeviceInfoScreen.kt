@@ -55,7 +55,8 @@ fun ComposableFullDeviceInfoScreen(
     Column {
         ComposableFullDeviceInfoScreenBar(
             onBack = { navController.navigate(NavGraphRoute.Info.name) },
-            onShare = fullInfoViewModel::shareDeviceInfo
+            onShare = fullInfoViewModel::shareDeviceInfo,
+            inProgress = inProgress
         )
         ComposableFullInfoDevice(flipperRpcInformation, inProgress) {
             fullInfoViewModel.getFirmwareChannel(it)
@@ -66,7 +67,8 @@ fun ComposableFullDeviceInfoScreen(
 @Composable
 private fun ComposableFullDeviceInfoScreenBar(
     onBack: () -> Unit,
-    onShare: () -> Unit
+    onShare: () -> Unit,
+    inProgress: Boolean
 ) {
     Row(
         modifier = Modifier
@@ -95,17 +97,19 @@ private fun ComposableFullDeviceInfoScreenBar(
             style = LocalTypography.current.titleB20,
             color = LocalPallet.current.onAppBar
         )
-        Icon(
-            modifier = Modifier.padding(end = 14.dp)
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = rememberRipple(bounded = false),
-                    onClick = onShare
-                )
-                .size(size = 24.dp),
-            painter = painterResource(DesignSystem.drawable.ic_upload),
-            contentDescription = null,
-            tint = LocalPallet.current.onAppBar
-        )
+        if (!inProgress) {
+            Icon(
+                modifier = Modifier.padding(end = 14.dp)
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = rememberRipple(bounded = false),
+                        onClick = onShare
+                    )
+                    .size(size = 24.dp),
+                painter = painterResource(DesignSystem.drawable.ic_upload),
+                contentDescription = null,
+                tint = LocalPallet.current.onAppBar
+            )
+        }
     }
 }

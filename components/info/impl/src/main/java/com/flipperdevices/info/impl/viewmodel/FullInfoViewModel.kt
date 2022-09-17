@@ -3,7 +3,6 @@ package com.flipperdevices.info.impl.viewmodel
 import android.app.Application
 import android.content.Context
 import androidx.lifecycle.viewModelScope
-import com.flipperdevices.bridge.api.model.FlipperGATTInformation
 import com.flipperdevices.bridge.api.model.FlipperRequestRpcInformationStatus
 import com.flipperdevices.bridge.api.model.FlipperRpcInformation
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
@@ -47,7 +46,6 @@ class FullInfoViewModel @VMInject constructor(
     private val deviceInfoState = MutableStateFlow(DeviceInfo())
     private val flipperRpcInformationState = MutableStateFlow(FlipperRpcInformation())
     private val deviceInfoRequestStatus = MutableStateFlow(DeviceInfoRequestStatus())
-    private val flipperGATTInformation = MutableStateFlow(FlipperGATTInformation())
 
     init {
         ComponentHolder.component<InfoComponent>().inject(this)
@@ -83,10 +81,6 @@ class FullInfoViewModel @VMInject constructor(
                     deviceInfoRequestStatus.emit(DeviceInfoRequestStatus())
             }
         }.launchIn(viewModelScope)
-
-        serviceApi.flipperInformationApi.getInformationFlow().onEach {
-            flipperGATTInformation.emit(it)
-        }.launchIn(viewModelScope)
     }
 
     fun getFirmwareChannel(commit: String?): FirmwareChannel? {
@@ -112,7 +106,7 @@ class FullInfoViewModel @VMInject constructor(
                 name = nameFile,
                 resId = R.string.device_info_share
             )
-        } catch (exception: Exception) {
+        } catch (@Suppress("SwallowedException") exception: Exception) {
             error { "Exception when upload device info" }
         }
     }
@@ -136,10 +130,6 @@ class FullInfoViewModel @VMInject constructor(
             val ext = it.externalStorageStats?.toString(context)
                 ?: context.getString(R.string.info_device_info_flash_not_found)
             file.appendNewLine("ext_storage:$ext")
-        }
-        flipperGATTInformation.value.let {
-            file.appendNewLine("is_charging:${it.isCharging}")
-            file.appendNewLine("battery_level:${it.batteryLevel}")
         }
     }
 }
