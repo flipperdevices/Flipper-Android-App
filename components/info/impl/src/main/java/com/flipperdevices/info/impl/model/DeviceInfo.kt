@@ -45,9 +45,9 @@ fun StorageStats.toString(context: Context): String {
     }
 }
 
-fun StorageStats?.toString(): String {
+fun StorageStats?.toString(): Pair<String, String> {
     return when (this) {
-        StorageStats.Error, null -> "-"
-        is StorageStats.Loaded -> "$free / $total"
+        StorageStats.Error, null -> "-" to "-"
+        is StorageStats.Loaded -> "$free" to "$total"
     }
 }

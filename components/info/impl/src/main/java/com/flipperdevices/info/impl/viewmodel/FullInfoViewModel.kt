@@ -120,9 +120,12 @@ class FullInfoViewModel @VMInject constructor(
         }
         flipperRpcInformationState.value.let {
             val int = it.internalStorageStats.toString()
-            builder.appendLine("int_storage:$int")
+            builder.appendLine("int_available: ${int.first}")
+            builder.appendLine("int_total: ${int.second}")
+
             val ext = it.externalStorageStats.toString()
-            builder.appendLine("ext_storage:$ext")
+            builder.appendLine("ext_available: ${ext.first}")
+            builder.appendLine("ext_total: ${ext.second}")
         }
         file.appendText(builder.toString())
     }
