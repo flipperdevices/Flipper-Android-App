@@ -1,6 +1,5 @@
 package com.flipperdevices.info.impl.viewmodel
 
-import android.app.Application
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.model.FlipperRequestRpcInformationStatus
 import com.flipperdevices.bridge.api.model.FlipperRpcInformation
@@ -10,7 +9,7 @@ import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.info.impl.di.InfoComponent
 import com.flipperdevices.info.impl.model.DeviceInfo
 import com.flipperdevices.info.impl.model.DeviceInfoRequestStatus
@@ -24,9 +23,8 @@ import tangle.viewmodel.VMInject
 
 class DeviceInfoViewModel @VMInject constructor(
     serviceProvider: FlipperServiceProvider,
-    private val flipperVersionProviderApi: FlipperVersionProviderApi,
-    application: Application
-) : AndroidLifecycleViewModel(application),
+    private val flipperVersionProviderApi: FlipperVersionProviderApi
+) : LifecycleViewModel(),
     FlipperBleServiceConsumer,
     LogTagProvider {
     override val TAG = "DeviceInfoViewModel"
