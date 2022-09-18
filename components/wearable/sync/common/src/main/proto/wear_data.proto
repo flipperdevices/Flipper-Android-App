@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+option java_package = "com.flipperdevices.wearable.sync.common";
+option java_multiple_files = true;
+
+message WearableSyncItemData {
+  bool is_favorite = 1;
+}
