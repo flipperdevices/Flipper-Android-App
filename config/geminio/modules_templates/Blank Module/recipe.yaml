@@ -31,6 +31,12 @@ widgets:
       help: Adds Dagger and Anvil deps, and create di component
       default: false
 
+  - booleanParameter:
+      id: needTesting
+      name: Add test?
+      help: Adds testing library
+      default: true
+
 recipe:
   - mkDirs:
       - ${srcOut}

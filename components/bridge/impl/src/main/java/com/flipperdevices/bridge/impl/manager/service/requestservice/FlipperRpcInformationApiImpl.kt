@@ -23,6 +23,7 @@ import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.infoRequest
 import com.flipperdevices.protobuf.system.deviceInfoRequest
+import com.flipperdevices.protobuf.system.powerInfoRequest
 import com.flipperdevices.shake2report.api.Shake2ReportApi
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
@@ -75,6 +76,7 @@ class FlipperRpcInformationApiImpl(
             DeviceInfoHelper.mapRawRpcInformation(it)
         }
 
+    @Suppress("LongMethod")
     suspend fun initialize(requestApi: FlipperRequestApi) = withLock(mutex, "initialize") {
         requestStatusFlow.emit(FlipperRequestRpcInformationStatus.InProgress())
         requestJobs += scope.launch(Dispatchers.Default) {
@@ -122,6 +124,19 @@ class FlipperRpcInformationApiImpl(
                 onApplyInfo(
                     response.systemDeviceInfoResponse.key,
                     response.systemDeviceInfoResponse.value
+                )
+            }
+            requestApi.request(
+                main {
+                    systemPowerInfoRequest = powerInfoRequest { }
+                }.wrapToRequest(FlipperRequestPriority.BACKGROUND)
+            ).collect { response ->
+                if (!response.hasSystemPowerInfoResponse()) {
+                    return@collect
+                }
+                onApplyInfo(
+                    response.systemPowerInfoResponse.key,
+                    response.systemPowerInfoResponse.value
                 )
             }
             requestStatusFlow.update {

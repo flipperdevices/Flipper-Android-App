@@ -18,6 +18,7 @@ dependencies {
     implementation(projects.components.core.ui.fragment)
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ui.theme)
+    implementation(projects.components.core.share)
 
     implementation(projects.components.info.api)
     implementation(projects.components.info.shared)
@@ -62,6 +63,11 @@ dependencies {
     implementation(libs.cicerone)
 
     // Testing
+    testImplementation(projects.components.core.test)
     testImplementation(libs.junit)
-    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.mockk)
+    testImplementation(libs.ktx.testing)
+    testImplementation(libs.roboelectric)
+    testImplementation(libs.lifecycle.test)
+    testImplementation(libs.kotlin.coroutines.test)
 }

@@ -24,23 +24,25 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 fun ComposableDeviceInfoRowWithText(
     @StringRes titleId: Int,
     inProgress: Boolean,
-    value: String?
+    value: String?,
+    color: Color? = null
 ) {
-    ComposableDeviceInfoRowWithText(stringResource(titleId), inProgress, value)
+    ComposableDeviceInfoRowWithText(stringResource(titleId), inProgress, value, color)
 }
 
 @Composable
 fun ComposableDeviceInfoRowWithText(
     text: String,
     inProgress: Boolean,
-    value: String?
+    value: String?,
+    color: Color? = null
 ) {
     if (value == null) {
         ComposableDeviceInfoRow(text, inProgress, null)
         return
     }
     ComposableDeviceInfoRow(text, inProgress) {
-        ComposableDeviceInfoRowText(modifier = it, text = value)
+        ComposableDeviceInfoRowText(modifier = it, text = value, color = color)
     }
 }
 
@@ -65,7 +67,6 @@ fun ComposableDeviceInfoRow(
         } else if (inProgress) {
             DeviceInfoRowPlaceholder()
         } else ComposableDeviceInfoRowText(
-            Modifier,
             stringResource(R.string.info_device_unknown)
         )
     }
@@ -82,14 +83,14 @@ fun ComposableDeviceInfoRow(
 
 @Composable
 fun ComposableDeviceInfoRowText(
-    modifier: Modifier = Modifier,
     text: String,
-    color: Color = LocalPallet.current.text100
+    modifier: Modifier = Modifier,
+    color: Color? = null
 ) {
     Text(
         modifier = modifier,
         text = text,
-        color = color,
+        color = color ?: LocalPallet.current.text100,
         style = LocalTypography.current.bodyR14
     )
 }

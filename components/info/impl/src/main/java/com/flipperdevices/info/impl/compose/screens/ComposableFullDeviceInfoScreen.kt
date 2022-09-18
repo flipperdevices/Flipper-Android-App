@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.ripple.rememberRipple
@@ -28,18 +30,18 @@ import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.compose.navigation.NavGraphRoute
 import com.flipperdevices.info.impl.compose.screens.fullinfo.ComposableFullInfoDevice
 import com.flipperdevices.info.impl.model.DeviceStatus
-import com.flipperdevices.info.impl.viewmodel.DeviceInfoViewModel
 import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
+import com.flipperdevices.info.impl.viewmodel.FullInfoViewModel
 import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 fun ComposableFullDeviceInfoScreen(
     navController: NavHostController,
-    deviceInfoViewModel: DeviceInfoViewModel = tangleViewModel(),
+    fullInfoViewModel: FullInfoViewModel = tangleViewModel(),
     deviceStatusViewModel: DeviceStatusViewModel = viewModel()
 ) {
     val deviceStatus by deviceStatusViewModel.getState().collectAsState()
-    val deviceInfoRequestStatus by deviceInfoViewModel.getDeviceInfoRequestStatus().collectAsState()
+    val deviceInfoRequestStatus by fullInfoViewModel.getDeviceInfoRequestStatus().collectAsState()
     val localDeviceStatus = deviceStatus
 
     val inProgress = if (localDeviceStatus is DeviceStatus.NoDeviceInformation) {
@@ -49,16 +51,26 @@ fun ComposableFullDeviceInfoScreen(
             deviceInfoRequestStatus.rpcDeviceInfoRequestInProgress
     }
 
-    val flipperRpcInformation by deviceInfoViewModel.getFlipperRpcInformation().collectAsState()
+    val flipperRpcInformation by fullInfoViewModel.getFlipperRpcInformation().collectAsState()
 
     Column {
-        ComposableFullDeviceInfoScreenBar { navController.navigate(NavGraphRoute.Info.name) }
-        ComposableFullInfoDevice(deviceInfoViewModel, flipperRpcInformation, inProgress)
+        ComposableFullDeviceInfoScreenBar(
+            onBack = { navController.navigate(NavGraphRoute.Info.name) },
+            onShare = fullInfoViewModel::shareDeviceInfo,
+            inProgress = inProgress
+        )
+        ComposableFullInfoDevice(flipperRpcInformation, inProgress) {
+            fullInfoViewModel.getFirmwareChannel(it)
+        }
     }
 }
 
 @Composable
-private fun ComposableFullDeviceInfoScreenBar(exit: () -> Unit) {
+private fun ComposableFullDeviceInfoScreenBar(
+    onBack: () -> Unit,
+    onShare: () -> Unit,
+    inProgress: Boolean
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -67,20 +79,45 @@ private fun ComposableFullDeviceInfoScreenBar(exit: () -> Unit) {
     ) {
         Icon(
             modifier = Modifier
+                .padding(start = 14.dp, top = 8.dp, bottom = 8.dp)
                 .clickable(
-                    indication = rememberRipple(),
-                    onClick = exit,
+                    indication = rememberRipple(bounded = false),
+                    onClick = onBack,
                     interactionSource = remember { MutableInteractionSource() }
                 )
-                .padding(start = 14.dp, end = 14.dp, top = 8.dp, bottom = 10.dp),
+                .size(size = 24.dp),
             painter = painterResource(DesignSystem.drawable.ic_back),
             tint = LocalPallet.current.onAppBar,
             contentDescription = null
         )
         Text(
+            modifier = Modifier
+                .padding(start = 14.dp, end = 14.dp, top = 8.dp, bottom = 11.dp)
+                .weight(weight = 1f),
             text = stringResource(R.string.info_device_info_title),
             style = LocalTypography.current.titleB20,
             color = LocalPallet.current.onAppBar
         )
+
+        if (!inProgress) {
+            Icon(
+                modifier = Modifier.padding(end = 14.dp)
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = rememberRipple(bounded = false),
+                        onClick = onShare
+                    )
+                    .size(size = 24.dp),
+                painter = painterResource(DesignSystem.drawable.ic_upload),
+                contentDescription = null,
+                tint = LocalPallet.current.onAppBar
+            )
+        } else {
+            CircularProgressIndicator(
+                color = LocalPallet.current.onAppBar,
+                modifier = Modifier.padding(end = 14.dp).size(size = 24.dp),
+                strokeWidth = 2.5.dp
+            )
+        }
     }
 }

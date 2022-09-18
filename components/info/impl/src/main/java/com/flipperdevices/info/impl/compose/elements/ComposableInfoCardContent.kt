@@ -9,6 +9,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.bridge.api.model.StorageStats
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
+import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.compose.info.ComposableFirmwareBuildDate
 import com.flipperdevices.info.impl.compose.info.ComposableFirmwareVersion
@@ -70,13 +71,15 @@ private fun ComposableInfoCardContentInternal(
     ComposableDeviceInfoRowWithText(
         R.string.info_device_info_int_flash,
         firmwareVersionInProgress || deviceInfoRequestStatus.internalStorageRequestInProgress,
-        deviceInfo.flashInt?.toString(LocalContext.current)
+        deviceInfo.flashInt?.toString(LocalContext.current),
+        color = if (deviceInfo.isIntStorageEnding()) LocalPallet.current.warningColor else null
     )
     ComposableInfoDivider()
     ComposableDeviceInfoRowWithText(
         R.string.info_device_info_ext_flash,
         firmwareVersionInProgress || deviceInfoRequestStatus.externalStorageRequestInProgress,
-        deviceInfo.flashSd?.toString(LocalContext.current)
+        deviceInfo.flashSd?.toString(LocalContext.current),
+        color = if (deviceInfo.isExtStorageEnding()) LocalPallet.current.warningColor else null
     )
 }
 
