@@ -6,6 +6,7 @@ import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.protobuf.streamToCommandFlow
+import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
 import com.flipperdevices.core.ktx.jre.flatten
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
@@ -14,12 +15,16 @@ import com.flipperdevices.protobuf.storage.deleteRequest
 import com.flipperdevices.protobuf.storage.file
 import com.flipperdevices.protobuf.storage.readRequest
 import com.flipperdevices.protobuf.storage.writeRequest
+import com.squareup.anvil.annotations.ContributesBinding
+import javax.inject.Inject
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.flow.toList
 
-class FlipperKeyStorage(
+@StorageType(Platform.FLIPPER)
+@ContributesBinding(TaskGraph::class, AbstractKeyStorage::class)
+class FlipperKeyStorage @Inject constructor(
     private val requestApi: FlipperRequestApi
 ) : AbstractKeyStorage, LogTagProvider {
     override val TAG = "FlipperKeyStorage"

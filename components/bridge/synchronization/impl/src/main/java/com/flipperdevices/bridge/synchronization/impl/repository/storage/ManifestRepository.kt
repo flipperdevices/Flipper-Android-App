@@ -1,30 +1,38 @@
 package com.flipperdevices.bridge.synchronization.impl.repository.storage
 
-import android.content.Context
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
-import com.flipperdevices.bridge.synchronization.impl.di.SynchronizationComponent
+import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
 import com.flipperdevices.bridge.synchronization.impl.model.DiffSource
 import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
 import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
 import com.flipperdevices.bridge.synchronization.impl.model.KeyWithHash
-import com.flipperdevices.core.di.ComponentHolder
+import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
-class ManifestRepository {
-    @Inject
-    lateinit var context: Context
+interface ManifestRepository {
+    suspend fun saveManifest(keys: List<KeyWithHash>, favorites: List<FlipperFilePath>)
+    suspend fun compareKeysWithManifest(
+        keys: List<KeyWithHash>,
+        diffSource: DiffSource
+    ): List<KeyDiff>
 
-    private val manifestStorage by lazy { ManifestStorage(context) }
+    suspend fun compareFavoritesWithManifest(
+        favorites: List<FlipperFilePath>,
+        diffSource: DiffSource
+    ): List<KeyDiff>
 
-    init {
-        ComponentHolder.component<SynchronizationComponent>().inject(this)
-    }
+    suspend fun getFavorites(): List<FlipperFilePath>?
+}
 
-    suspend fun saveManifest(keys: List<KeyWithHash>, favorites: List<FlipperFilePath>) {
+@ContributesBinding(TaskGraph::class, ManifestRepository::class)
+class ManifestRepositoryImpl @Inject constructor(
+    private val manifestStorage: ManifestStorage
+) : ManifestRepository {
+    override suspend fun saveManifest(keys: List<KeyWithHash>, favorites: List<FlipperFilePath>) {
         manifestStorage.save(keys, favorites)
     }
 
-    suspend fun compareKeysWithManifest(
+    override suspend fun compareKeysWithManifest(
         keys: List<KeyWithHash>,
         diffSource: DiffSource
     ): List<KeyDiff> {
@@ -33,7 +41,7 @@ class ManifestRepository {
         return compare(manifestFile.keys, keys, diffSource)
     }
 
-    suspend fun compareFavoritesWithManifest(
+    override suspend fun compareFavoritesWithManifest(
         favorites: List<FlipperFilePath>,
         diffSource: DiffSource
     ): List<KeyDiff> {
@@ -46,7 +54,7 @@ class ManifestRepository {
         return compare(manifestFavoritesWithEmptyHash, favoritesWithEmptyHash, diffSource)
     }
 
-    suspend fun getFavorites() = manifestStorage.load()?.favorites
+    override suspend fun getFavorites() = manifestStorage.load()?.favorites
 }
 
 /**

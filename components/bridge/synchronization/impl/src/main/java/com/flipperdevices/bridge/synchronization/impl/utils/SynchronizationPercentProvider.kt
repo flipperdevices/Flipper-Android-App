@@ -1,7 +1,11 @@
 package com.flipperdevices.bridge.synchronization.impl.utils
 
 import androidx.datastore.core.DataStore
+import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
+import com.flipperdevices.core.di.SingleIn
 import com.flipperdevices.core.preference.pb.Settings
+import com.squareup.anvil.annotations.ContributesBinding
+import javax.inject.Inject
 import kotlin.math.max
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -13,14 +17,35 @@ private const val LISTING_PERCENT = 0.45f
 private const val HASH_PERCENT = 0.9f
 private const val DOWNLOAD_PERCENT = 1f
 
-class SynchronizationPercentProvider(
+interface SynchronizationPercentProvider {
+    fun getListingProgress(
+        processed: Int,
+        total: Int
+    ): Float
+
+    fun getHashProgress(
+        processed: Int,
+        total: Int
+    ): Float
+
+    fun getDownloadProgress(
+        processed: Int,
+        total: Int
+    ): Float
+
+    suspend fun markedAsFinish()
+}
+
+@SingleIn(TaskGraph::class)
+@ContributesBinding(TaskGraph::class, SynchronizationPercentProvider::class)
+class SynchronizationPercentProviderImpl @Inject constructor(
     private val preference: DataStore<Settings>
-) {
+) : SynchronizationPercentProvider {
     private val isFirstTime by lazy {
         runBlocking { !preference.data.first().firstSynchronizationPassed }
     }
 
-    fun getListingProgress(
+    override fun getListingProgress(
         processed: Int,
         total: Int
     ): Float {
@@ -33,7 +58,7 @@ class SynchronizationPercentProvider(
         )
     }
 
-    fun getHashProgress(
+    override fun getHashProgress(
         processed: Int,
         total: Int
     ): Float {
@@ -48,7 +73,7 @@ class SynchronizationPercentProvider(
         )
     }
 
-    fun getDownloadProgress(
+    override fun getDownloadProgress(
         processed: Int,
         total: Int
     ): Float {
@@ -63,7 +88,7 @@ class SynchronizationPercentProvider(
         )
     }
 
-    suspend fun markedAsFinish() {
+    override suspend fun markedAsFinish() {
         preference.updateData {
             it.toBuilder()
                 .setFirstSynchronizationPassed(true)
