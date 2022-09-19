@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - 'rc'
-      - 'ci/rc_and_release'
 
 jobs:
   build_number:
@@ -381,7 +380,7 @@ jobs:
             ${{ steps.artifacts_copy.outputs.path }}/flipper-zero-release-wear-gms-${{ steps.vars.outputs.major_version }}-rc.apk
             ${{ steps.artifacts_copy.outputs.path }}/flipper-zero-release-nogms-${{ steps.vars.outputs.major_version }}-rc.aab
             ${{ steps.artifacts_copy.outputs.path }}/flipper-zero-release-nogms-${{ steps.vars.outputs.major_version }}-rc.apk
-          tag_name: Release Candidate ${{ steps.vars.outputs.major_version }}
+          tag_name: ${{ steps.vars.outputs.major_version }}-rc
           name: Flipper App ${{ steps.vars.outputs.major_version }}-rc
           draft: false
           prerelease: true

@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - 'master'
-      - 'ci/rc_and_release'
 
 jobs:
   build_number:
