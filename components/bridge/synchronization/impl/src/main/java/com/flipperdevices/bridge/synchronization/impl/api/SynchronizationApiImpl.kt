@@ -79,6 +79,7 @@ class SynchronizationApiImpl @Inject constructor(
         localSynchronizationTask.start(input = Unit) { taskState ->
             synchronizationState.update { taskState }
             if (taskState == SynchronizationState.Finished) {
+                localSynchronizationTask.onStop()
                 isLaunched.compareAndSet(true, false)
                 if (markDirty) {
                     startSynchronization()
