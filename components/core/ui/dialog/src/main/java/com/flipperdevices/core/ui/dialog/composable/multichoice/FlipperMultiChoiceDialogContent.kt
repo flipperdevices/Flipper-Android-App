@@ -1,4 +1,4 @@
-package com.flipperdevices.core.ui.dialog.composable
+package com.flipperdevices.core.ui.dialog.composable.multichoice
 
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.clickable
@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
@@ -21,14 +22,10 @@ import com.flipperdevices.core.ui.dialog.R
 import com.flipperdevices.core.ui.theme.LocalPallet
 
 @Composable
-internal fun FlipperDialogContent(
-    image: (@Composable () -> Unit)? = null,
-    title: (@Composable () -> Unit)? = null,
-    text: (@Composable () -> Unit)? = null,
-    buttons: @Composable () -> Unit,
-    onDismissRequest: (() -> Unit)? = null
+internal fun FlipperMultiChoiceDialogContent(
+    model: FlipperMultiChoiceDialogModel
 ) = Column(Modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-    if (onDismissRequest != null) {
+    if (model.onDismissRequest != null) {
         Box(
             Modifier.fillMaxWidth(),
             contentAlignment = Alignment.CenterEnd
@@ -40,7 +37,7 @@ internal fun FlipperDialogContent(
                     .clickable(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = rememberRipple(bounded = false),
-                        onClick = onDismissRequest
+                        onClick = model.onDismissRequest
                     ),
                 painter = painterResource(DesignSystem.drawable.ic_close),
                 tint = LocalPallet.current.iconTint100,
@@ -48,30 +45,36 @@ internal fun FlipperDialogContent(
             )
         }
     }
-    if (image != null) {
+    if (model.imageComposable != null) {
         Box(modifier = Modifier.padding(top = 12.dp, start = 12.dp, end = 12.dp)) {
-            image()
+            model.imageComposable.invoke()
         }
     }
-    if (title != null) {
+    if (model.titleComposable != null) {
         Box(modifier = Modifier.padding(top = 24.dp, start = 12.dp, end = 12.dp)) {
-            title()
+            model.titleComposable.invoke()
         }
     }
-    if (text != null) {
+    if (model.textComposable != null) {
         Box(modifier = Modifier.padding(top = 4.dp, start = 12.dp, end = 12.dp)) {
-            text()
+            model.textComposable.invoke()
         }
     }
 
-    Box(
-        modifier = Modifier.padding(
-            top = 24.dp,
-            start = 12.dp,
-            end = 12.dp,
-            bottom = 12.dp
-        )
-    ) {
-        buttons()
+    if (model.buttonComposables.isNotEmpty()) {
+        Column(
+            modifier = Modifier.padding(
+                top = 24.dp
+            )
+        ) {
+            model.buttonComposables.forEach { buttonComposable ->
+                Divider(
+                    modifier = Modifier.fillMaxWidth(),
+                    thickness = 1.dp,
+                    color = LocalPallet.current.divider12
+                )
+                buttonComposable()
+            }
+        }
     }
 }
