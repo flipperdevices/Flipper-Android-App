@@ -279,20 +279,25 @@ jobs:
     needs: [ build_internal_release_gms, build_internal_release_gms_wearos ]
     steps:
       - uses: actions/download-artifact@v2
-        id: download
+        id: download-gms
         with:
           name: artifacts-gms
       - uses: actions/download-artifact@v2
         id: download-wearos
         with:
           name: artifacts-wearos
+      - name: Copy artifacts
+        id: artifacts_copy
+        run: |
+          mkdir artifacts
+          cp ${{steps.download-gms.outputs.download-path}}/flipper-zero-gms.aab artifacts
+          cp ${{steps.download-wearos.outputs.download-path}}/flipper-zero-wear-gms.aab artifacts
+          echo "::set-output name=path::artifacts"
       - name: Upload to Play Store
         uses: r0adkll/upload-google-play@v1.0.15
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_PUBLISHER_JSON }}
           packageName: com.flipperdevices.app
-          releaseFiles: |
-            ${{steps.download.outputs.download-path}}/flipper-zero-gms.aab,
-            ${{steps.download-wearos.outputs.download-path}}/flipper-zero-wear-gms.aab
+          releaseFiles: "${{ steps.artifacts_copy.outputs.path }}/*.aab"
           track: beta
-          mappingFile: ${{steps.download.outputs.download-path}}/mapping-gms.txt
+          mappingFile: ${{steps.download-gms.outputs.download-path}}/mapping-gms.txt
