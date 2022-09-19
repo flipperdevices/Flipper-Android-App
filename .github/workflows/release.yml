@@ -248,5 +248,5 @@ jobs:
           tag_name: ${{ steps.vars.outputs.major_version }}
           name: Flipper App ${{ steps.vars.outputs.major_version }}
           body_path: .github/changelog/whatsnew-en-US
-          draft: false
+          draft: true
           prerelease: false
