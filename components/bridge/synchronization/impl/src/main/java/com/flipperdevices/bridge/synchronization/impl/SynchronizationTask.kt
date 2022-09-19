@@ -23,7 +23,8 @@ import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 
 interface SynchronizationTask {
@@ -33,9 +34,24 @@ interface SynchronizationTask {
     ): Job
 
     suspend fun onStop()
+
+    interface Builder {
+        fun build(): SynchronizationTask
+    }
 }
 
-@ContributesBinding(AppGraph::class, SynchronizationTask::class)
+@ContributesBinding(AppGraph::class, SynchronizationTask.Builder::class)
+class SynchronizationTaskBuilder @Inject constructor(
+    private val serviceProvider: FlipperServiceProvider,
+    private val simpleKeyApi: SimpleKeyApi,
+    private val metricApi: MetricApi,
+    private val syncWearableApi: SyncWearableApi
+) : SynchronizationTask.Builder {
+    override fun build(): SynchronizationTask {
+        return SynchronizationTaskImpl(serviceProvider, simpleKeyApi, metricApi, syncWearableApi)
+    }
+}
+
 class SynchronizationTaskImpl @Inject constructor(
     serviceProvider: FlipperServiceProvider,
     private val simpleKeyApi: SimpleKeyApi,
@@ -54,13 +70,11 @@ class SynchronizationTaskImpl @Inject constructor(
     ) {
         // Waiting to be connected to the flipper
         serviceApi.connectionInformationApi.getConnectionStateFlow()
-            .collectLatest {
-                if (it is ConnectionState.Ready &&
-                    it.supportedState == FlipperSupportedState.READY
-                ) {
-                    startInternal(serviceApi, stateListener)
-                }
-            }
+            .filter {
+                it is ConnectionState.Ready &&
+                        it.supportedState == FlipperSupportedState.READY
+            }.first()
+        startInternal(serviceApi, stateListener)
     }
 
     override suspend fun onStopAsync(stateListener: suspend (SynchronizationState) -> Unit) {

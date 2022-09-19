@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.update
 @ContributesBinding(AppGraph::class, SynchronizationApi::class)
 @Suppress("LongParameterList")
 class SynchronizationApiImpl @Inject constructor(
-    private val synchronizationTask: SynchronizationTask
+    private val synchronizationTaskBuilder: SynchronizationTask.Builder
 ) : SynchronizationApi, LogTagProvider {
     override val TAG = "SynchronizationApi-${hashCode()}"
 
@@ -26,6 +26,7 @@ class SynchronizationApiImpl @Inject constructor(
     private val synchronizationState = MutableStateFlow<SynchronizationState>(
         SynchronizationState.NotStarted
     )
+    private var synchronizationTask: SynchronizationTask? = null
     private var markDirty = false
 
     @Synchronized
@@ -40,12 +41,13 @@ class SynchronizationApiImpl @Inject constructor(
         }
         markDirty = false
         synchronizationState.update { SynchronizationState.InProgress(0f) }
-        info { "Create synchronization task ${synchronizationTask.hashCode()}" }
+        val localSynchronizationTask = synchronizationTaskBuilder.build()
+        info { "Create synchronization task ${localSynchronizationTask.hashCode()}" }
 
-        synchronizationTask.start(input = Unit) { taskState ->
+        localSynchronizationTask.start(input = Unit) { taskState ->
             synchronizationState.update { taskState }
             if (taskState == SynchronizationState.Finished) {
-                synchronizationTask.onStop()
+                localSynchronizationTask.onStop()
                 isLaunched.compareAndSet(true, false)
                 info { "Mark launched false" }
                 if (markDirty) {
@@ -53,11 +55,12 @@ class SynchronizationApiImpl @Inject constructor(
                 }
             }
         }
+        synchronizationTask = localSynchronizationTask
     }
 
     override suspend fun stop() {
         markDirty = false
-        synchronizationTask.onStop()
+        synchronizationTask?.onStop()
     }
 
     override fun isSynchronizationRunning() = isLaunched.get()
