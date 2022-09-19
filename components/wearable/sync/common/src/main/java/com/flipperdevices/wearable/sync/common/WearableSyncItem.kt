@@ -1,10 +1,8 @@
 package com.flipperdevices.wearable.sync.common
 
-import android.os.Parcelable
 import androidx.compose.runtime.Stable
-import com.flipperdevices.core.ktx.android.fromBytes
 import com.google.android.gms.wearable.DataItem
-import kotlinx.parcelize.Parcelize
+import com.google.protobuf.InvalidProtocolBufferException
 
 @Stable
 data class WearableSyncItem(
@@ -14,13 +12,12 @@ data class WearableSyncItem(
     companion object {
         fun fromDataItem(dataItem: DataItem): WearableSyncItem? {
             val path = dataItem.uri.path ?: return null
-            val data = fromBytes<WearableSyncItemData>(dataItem.data) ?: return null
+            val data = try {
+                WearableSyncItemData.parseFrom(dataItem.data)
+            } catch (e: InvalidProtocolBufferException) {
+                return null
+            }
             return WearableSyncItem(path, data)
         }
     }
 }
-
-@Parcelize
-data class WearableSyncItemData(
-    val isFavorite: Boolean
-) : Parcelable

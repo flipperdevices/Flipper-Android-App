@@ -31,6 +31,8 @@
 - [FIX] Subghz provisioning while geoip is null
 - [FIX] Separate screen for edit key
 - [FIX] Synchronization with shadow files
+- [FIX] Migrate wearos model to protobuf
+- [FIX] Double synchronization
 
 # 1.2.0
 
