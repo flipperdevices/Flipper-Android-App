@@ -241,7 +241,7 @@ jobs:
           track: production
           status: draft
           whatsNewDirectory: .github/changelog
-          mappingFile: ${{steps.download.outputs.download-path}}/mapping-gms.txt
+          mappingFile: ${{steps.download-gms.outputs.download-path}}/mapping-gms.txt
   upload_to_github:
     name: Upload to Github Releases
     runs-on: ubuntu-latest
