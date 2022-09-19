@@ -202,8 +202,8 @@ jobs:
           cp ${{steps.download-gms.outputs.download-path}}/flipper-zero-gms.apk artifacts/flipper-zero-gms-${{ steps.vars.outputs.major_version }}.${{ steps.vars.outputs.minor_version }}.apk
           cp ${{steps.download-gms.outputs.download-path}}/flipper-zero-wear-gms.aab artifacts/flipper-zero-wear-gms-${{ steps.vars.outputs.major_version }}.${{ steps.vars.outputs.minor_version }}.aab
           cp ${{steps.download-gms.outputs.download-path}}/flipper-zero-wear-gms.apk artifacts/flipper-zero-wear-gms-${{ steps.vars.outputs.major_version }}.${{ steps.vars.outputs.minor_version }}.apk
-          cp ${{steps.download-gms.outputs.download-path}}/flipper-zero-nogms.aab artifacts/flipper-zero-nogms-${{ steps.vars.outputs.major_version }}.${{ steps.vars.outputs.minor_version }}.aab
-          cp ${{steps.download-gms.outputs.download-path}}/flipper-zero-nogms.apk artifacts/flipper-zero-nogms-${{ steps.vars.outputs.major_version }}.${{ steps.vars.outputs.minor_version }}.apk
+          cp ${{steps.download-nogms.outputs.download-path}}/flipper-zero-nogms.aab artifacts/flipper-zero-nogms-${{ steps.vars.outputs.major_version }}.${{ steps.vars.outputs.minor_version }}.aab
+          cp ${{steps.download-nogms.outputs.download-path}}/flipper-zero-nogms.apk artifacts/flipper-zero-nogms-${{ steps.vars.outputs.major_version }}.${{ steps.vars.outputs.minor_version }}.apk
           echo "::set-output name=path::artifacts/"
       - name: Create internal Release
         id: create_internal_release
@@ -232,10 +232,6 @@ jobs:
         id: download
         with:
           name: artifacts-gms
-      - name: Debug Print
-        id: print_debug
-        run: |
-          ls ${{steps.download.outputs.download-path}}
       - name: Upload to Play Store
         uses: r0adkll/upload-google-play@v1.0.15
         with:
