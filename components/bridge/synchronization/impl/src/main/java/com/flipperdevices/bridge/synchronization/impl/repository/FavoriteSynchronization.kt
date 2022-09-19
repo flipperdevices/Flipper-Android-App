@@ -39,8 +39,8 @@ class FavoriteSynchronizationImpl @Inject constructor(
 
         info {
             "Receive favorites data. " +
-                    "Flipper: ${favoritesFromFlipper.size} " +
-                    "(Diff - ${diffWithManifestAndFlipper.size}). " +
+                "Flipper: ${favoritesFromFlipper.size} " +
+                "(Diff - ${diffWithManifestAndFlipper.size}). " +
                 "Android: ${favoritesFromAndroid.size} " +
                 "(Diff - ${diffWithManifestAndAndroid.size})"
         }

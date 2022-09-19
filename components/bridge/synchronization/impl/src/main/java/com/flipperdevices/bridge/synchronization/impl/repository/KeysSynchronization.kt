@@ -111,7 +111,7 @@ class KeysSynchronizationImpl @Inject constructor(
 
         info {
             "[Keys] Android, successful applied " +
-                    "${appliedKeysToAndroid.size} from ${diffForAndroid.size} changes"
+                "${appliedKeysToAndroid.size} from ${diffForAndroid.size} changes"
         }
 
         synchronizationRepository.markAsSynchronized(allKeysFromAndroid)
@@ -148,7 +148,7 @@ class KeysSynchronizationImpl @Inject constructor(
 
         check(calculatedHashOnFlipperSorted == calculatedHashOnAndroidSorted) {
             "Calculated hash should be equals. " +
-                    "Flipper: $calculatedHashOnFlipperSorted. Android: $calculatedHashOnAndroidSorted"
+                "Flipper: $calculatedHashOnFlipperSorted. Android: $calculatedHashOnAndroidSorted"
         }
 
         if (BuildConfig.DEBUG) {
@@ -156,7 +156,7 @@ class KeysSynchronizationImpl @Inject constructor(
 
             check(calculatedHashOnFlipperSorted == hashesFromFlipperSorted) {
                 "Calculated and real hash should be equal, please check it" +
-                        "Calculated: $calculatedHashOnFlipperSorted. Real: $hashesFromFlipperSorted"
+                    "Calculated: $calculatedHashOnFlipperSorted. Real: $hashesFromFlipperSorted"
             }
         }
 
