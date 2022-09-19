@@ -72,7 +72,7 @@ class SynchronizationTaskImpl @Inject constructor(
         serviceApi.connectionInformationApi.getConnectionStateFlow()
             .filter {
                 it is ConnectionState.Ready &&
-                        it.supportedState == FlipperSupportedState.READY
+                    it.supportedState == FlipperSupportedState.READY
             }.first()
         startInternal(serviceApi, stateListener)
     }

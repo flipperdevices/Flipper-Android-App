@@ -93,7 +93,7 @@ class KeysSynchronizationImpl @Inject constructor(
 
         info {
             "[Keys] Flipper, successful applied" +
-                    " ${appliedKeysToFlipper.size} from ${diffForFlipper.size} changes"
+                " ${appliedKeysToFlipper.size} from ${diffForFlipper.size} changes"
         }
 
         // Apply changes for Android
