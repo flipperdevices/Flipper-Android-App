@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       number: ${{ steps.vars.outputs.number }}
+      number_wearos: ${{ steps.vars.outputs.number_wearos }}
     steps:
       - name: Generate build number
         id: buildnumber
