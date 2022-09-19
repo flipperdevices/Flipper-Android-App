@@ -74,6 +74,8 @@ jobs:
           mkdir artifacts
           cp ${{ steps.sign_aab.outputs.signedReleaseFile }} artifacts/flipper-zero-nogms.aab
           cp ${{ steps.sign_apk.outputs.signedReleaseFile }} artifacts/flipper-zero-nogms.apk
+          ls instances/app/build/outputs/
+          ls instances/app/build/outputs/mapping/internal/
           cp instances/app/build/outputs/mapping/internal/mapping.txt artifacts/mapping-nogms.txt
           echo "::set-output name=path::artifacts/"
       - name: Upload Artifacts
