@@ -2,6 +2,8 @@
 
 # 1.2.2 - In progress
 
+- [REFACTOR] Migrate synchronization task graph to TaskSynchronizationComponent
+
 # 1.2.1
 
 - [REFACTOR] Change Flipper logo
@@ -15,7 +17,6 @@
 - [REFACTOR] Display error if /int/ full in update progress
 - [REFACTOR] Markdown compose bump
 - [REFACTOR] New ci with upload wearos app
-- [REFACTOR] Migrate synchronization task graph to TaskSynchronizationComponent
 - [Feature] Add support for NFC Shadow Files
 - [Feature] Offer update, if region changes or region file not exit on Flipper
 - [Feature] Do not provide SubGhz provisioning on zero hardware region
