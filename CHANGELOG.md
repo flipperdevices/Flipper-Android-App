@@ -1,6 +1,8 @@
 # Changelog
 
-# 1.2.1 - In progress
+# 1.2.2 - In progress
+
+# 1.2.1
 
 - [REFACTOR] Change Flipper logo
 - [REFACTOR] Redesign Full Device Information
