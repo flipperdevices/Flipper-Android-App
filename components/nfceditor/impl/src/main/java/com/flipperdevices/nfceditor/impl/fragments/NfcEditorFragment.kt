@@ -1,5 +1,6 @@
 package com.flipperdevices.nfceditor.impl.fragments
 
+import android.app.Application
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,6 +25,7 @@ private const val EXTRA_FLIPPER_KEY = "flipper_key"
 class NfcEditorFragment : ComposeFragment(), OnBackPressListener {
     private val viewModel by viewModels<NfcEditorViewModel> {
         NfcEditorViewModelFactory(
+            requireContext().applicationContext as Application,
             arguments?.getParcelable(EXTRA_FLIPPER_KEY)
                 ?: FlipperKey(
                     mainFile = FlipperFile(

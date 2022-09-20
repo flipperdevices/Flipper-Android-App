@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.dao.impl.api.key
 
 import androidx.room.withTransaction
+import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.delegates.FlipperFileApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UpdateKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
@@ -30,13 +31,15 @@ import kotlinx.coroutines.withContext
 class UpdateKeyApiImpl @Inject constructor(
     keysDaoProvider: Provider<SimpleKeyDao>,
     additionalFileApiProvider: Provider<FlipperFileApi>,
-    databaseProvider: Provider<AppDatabase>
+    databaseProvider: Provider<AppDatabase>,
+    favoriteApiProvider: Provider<FavoriteApi>
 ) : UpdateKeyApi, LogTagProvider {
     override val TAG = "UpdateKeyApi"
 
     private val simpleKeyDao by keysDaoProvider
     private val additionalFileApi by additionalFileApiProvider
     private val database by databaseProvider
+    private val favoriteApi by favoriteApiProvider
 
     private val updatePathFlow = MutableSharedFlow<Pair<FlipperKeyPath, FlipperKeyPath>>()
 

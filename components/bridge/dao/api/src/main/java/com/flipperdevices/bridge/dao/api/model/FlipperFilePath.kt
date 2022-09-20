@@ -58,6 +58,10 @@ data class FlipperFilePath(
         }
     }
 
+    fun copyWithChangedName(newNameWithoutExtension: String): FlipperFilePath {
+        return FlipperFilePath(folder, "$newNameWithoutExtension.$extension")
+    }
+
     override fun compareTo(other: FlipperFilePath): Int {
         return pathToKey.compareTo(other.pathToKey)
     }
