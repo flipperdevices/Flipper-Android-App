@@ -30,7 +30,13 @@ data class NfcEditorState(
         newLines[location.lineIndex] = updatedLine
         newSectors[location.sectorIndex] = NfcEditorSector(newLines)
         return copy(
-            sectors = newSectors
+            sectors = newSectors,
+            nfcEditorCardInfo = if (location.isUid(nfcEditorCardInfo)) {
+                nfcEditorCardInfo?.copyWithChangedContent(
+                    location,
+                    content
+                )
+            } else nfcEditorCardInfo
         )
     }
 
@@ -132,6 +138,15 @@ data class NfcEditorCellLocation(
                 columnIndex = newSector.lines.last().cells.lastIndex
             )
         } else return null
+    }
+
+    fun isUid(nfcEditorCardInfo: NfcEditorCardInfo?): Boolean {
+        if (nfcEditorCardInfo == null) {
+            return false
+        }
+        return sectorIndex == 0
+                && lineIndex == 0
+                && columnIndex < nfcEditorCardInfo.fields[CardFieldInfo.UID].size
     }
 }
 
