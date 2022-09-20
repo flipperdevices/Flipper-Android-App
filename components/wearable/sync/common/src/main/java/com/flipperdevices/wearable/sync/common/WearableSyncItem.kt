@@ -14,7 +14,9 @@ data class WearableSyncItem(
             val path = dataItem.uri.path ?: return null
             val data = try {
                 WearableSyncItemData.parseFrom(dataItem.data)
-            } catch (e: InvalidProtocolBufferException) {
+            } catch (
+                @Suppress("SwallowedException") throwable: InvalidProtocolBufferException
+            ) {
                 return null
             }
             return WearableSyncItem(path, data)
