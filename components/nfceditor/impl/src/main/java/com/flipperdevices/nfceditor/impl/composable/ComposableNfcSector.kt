@@ -40,7 +40,6 @@ fun ComposableNfcSector(
         val currentSector = nfcEditorState.sectors[sectorIndex]
 
         currentSector.lines.forEachIndexed { lineIndex, line ->
-            val isNonEditableLine = sectorIndex == 0 && lineIndex == 0
             val activeCell = nfcEditorViewModel.currentActiveCell
 
             ComposableNfcLine(
@@ -51,8 +50,7 @@ fun ComposableNfcSector(
                 maxIndexSymbolCount = maxIndexSymbolCount,
                 scaleFactor = scaleFactor,
                 activeCell = activeCell,
-                onCellFocus = if (isNonEditableLine) null
-                else nfcEditorViewModel::onCellFocus,
+                onCellFocus = nfcEditorViewModel::onCellFocus,
                 onPositionActiveLine = if (activeCell?.sectorIndex == sectorIndex &&
                     activeCell.lineIndex == lineIndex
                 ) onPositionActiveLine else null

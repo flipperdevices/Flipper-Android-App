@@ -7,6 +7,8 @@ import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.SHADOW_FILE_EXTENSION
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
+import com.flipperdevices.core.ui.hexkeyboard.ImmutableEnumMap
+import com.flipperdevices.nfceditor.impl.model.CardFieldInfo
 import com.flipperdevices.nfceditor.impl.model.NfcCellType
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCardInfo
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCardType
@@ -39,6 +41,9 @@ private val LINE_4_CELL_RULES = listOf(
     IntRange(ACCESS_BITS_INDEX + 2, KEY_B_INDEX) to NfcCellType.KEY_B
 )
 private const val KEY_BLOCK = "Block"
+private const val KEY_UID = "UID"
+private const val KEY_ATQA = "ATQA"
+private const val KEY_SAK = "SAK"
 
 object NfcEditorStateProducerHelper {
     fun mapParsedKeyToNfcEditorState(parsedKey: FlipperKeyParsed.NFC): NfcEditorState? {
@@ -64,11 +69,21 @@ object NfcEditorStateProducerHelper {
         }
         var cardInfo: NfcEditorCardInfo? = null
         if (cardType != null) {
+            val fieldsMap = ImmutableEnumMap(
+                CardFieldInfo::class.java,
+                CardFieldInfo.values()
+            ) {
+                val cells = when (it) {
+                    CardFieldInfo.UID -> parsedKey.uid
+                    CardFieldInfo.ATQA -> parsedKey.atqa
+                    CardFieldInfo.SAK -> parsedKey.sak
+                }
+                cells?.split(" ")?.map { cell -> NfcEditorCell(cell, NfcCellType.SIMPLE) }
+                    ?: emptyList()
+            }
             cardInfo = NfcEditorCardInfo(
                 cardType = cardType,
-                uid = parsedKey.uid,
-                atqa = parsedKey.atqa,
-                sak = parsedKey.sak
+                fields = fieldsMap
             )
         }
         return NfcEditorState(cardInfo, parsedKey.keyName, sectors)
@@ -171,6 +186,14 @@ object NfcEditorStateProducerHelper {
         val orderedMap = fff.orderedDict.toMap(LinkedHashMap(fff.orderedDict.size))
         pendingFields.forEach {
             orderedMap["$KEY_BLOCK ${it.first}"] = it.second
+        }
+        if (nfcEditorState.nfcEditorCardInfo != null) {
+            orderedMap[KEY_UID] = nfcEditorState.nfcEditorCardInfo.fields[CardFieldInfo.UID]
+                .joinToString(" ") { it.content }
+            orderedMap[KEY_ATQA] = nfcEditorState.nfcEditorCardInfo.fields[CardFieldInfo.ATQA]
+                .joinToString(" ") { it.content }
+            orderedMap[KEY_SAK] = nfcEditorState.nfcEditorCardInfo.fields[CardFieldInfo.SAK]
+                .joinToString(" ") { it.content }
         }
 
         val shadowFile = oldKey.additionalFiles

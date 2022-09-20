@@ -1,6 +1,7 @@
 package com.flipperdevices.nfceditor.impl.viewmodel
 
 import com.flipperdevices.core.ui.hexkeyboard.HexKey
+import com.flipperdevices.nfceditor.impl.model.EditorField
 import com.flipperdevices.nfceditor.impl.model.NfcCellType
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCell
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCellLocation
@@ -40,7 +41,7 @@ class TextUpdaterHelperTest {
 
     @Test
     fun `on press back on start`() {
-        val testedLocation = NfcEditorCellLocation(0, 0, 0)
+        val testedLocation = NfcEditorCellLocation(EditorField.DATA, 0, 0, 0)
         underTest.onSelectCell(testedLocation)
 
         underTest.onKeyboardPress(HexKey.Clear)
@@ -53,7 +54,7 @@ class TextUpdaterHelperTest {
 
     @Test
     fun `on press back on same line`() {
-        val testedLocation = NfcEditorCellLocation(0, 0, 1)
+        val testedLocation = NfcEditorCellLocation(EditorField.DATA, 0, 0, 1)
         underTest.onSelectCell(testedLocation)
 
         underTest.onKeyboardPress(HexKey.Clear)
@@ -61,16 +62,19 @@ class TextUpdaterHelperTest {
         val nfcEditorState = underTest.getNfcEditorState().value
         Assert.assertNotNull(nfcEditorState)
         Assert.assertEquals("??", nfcEditorState!![testedLocation].content)
-        Assert.assertEquals("04", nfcEditorState[NfcEditorCellLocation(0, 0, 0)].content)
         Assert.assertEquals(
-            NfcEditorCellLocation(0, 0, 0),
+            "04",
+            nfcEditorState[NfcEditorCellLocation(EditorField.DATA, 0, 0, 0)].content
+        )
+        Assert.assertEquals(
+            NfcEditorCellLocation(EditorField.DATA, 0, 0, 0),
             underTest.currentActiveCell
         )
     }
 
     @Test
     fun `on press back on another line`() {
-        val testedLocation = NfcEditorCellLocation(0, 1, 0)
+        val testedLocation = NfcEditorCellLocation(EditorField.DATA, 0, 1, 0)
         underTest.onSelectCell(testedLocation)
 
         underTest.onKeyboardPress(HexKey.Clear)
@@ -79,14 +83,14 @@ class TextUpdaterHelperTest {
         Assert.assertNotNull(nfcEditorState)
         Assert.assertEquals("??", nfcEditorState!![testedLocation].content)
         Assert.assertEquals(
-            NfcEditorCellLocation(0, 0, TEST_CELLS - 1),
+            NfcEditorCellLocation(EditorField.DATA, 0, 0, TEST_CELLS - 1),
             underTest.currentActiveCell
         )
     }
 
     @Test
     fun `on press back on another sector`() {
-        val testedLocation = NfcEditorCellLocation(1, 0, 0)
+        val testedLocation = NfcEditorCellLocation(EditorField.DATA, 1, 0, 0)
         underTest.onSelectCell(testedLocation)
 
         underTest.onKeyboardPress(HexKey.Clear)
@@ -95,18 +99,18 @@ class TextUpdaterHelperTest {
         Assert.assertNotNull(nfcEditorState)
         Assert.assertEquals("??", nfcEditorState!![testedLocation].content)
         Assert.assertEquals(
-            NfcEditorCellLocation(0, TEST_LINES - 1, TEST_CELLS - 1),
+            NfcEditorCellLocation(EditorField.DATA, 0, TEST_LINES - 1, TEST_CELLS - 1),
             underTest.currentActiveCell
         )
         Assert.assertEquals(
-            NfcEditorCellLocation(0, TEST_LINES - 1, TEST_CELLS - 1),
+            NfcEditorCellLocation(EditorField.DATA, 0, TEST_LINES - 1, TEST_CELLS - 1),
             underTest.currentActiveCell
         )
     }
 
     @Test
     fun `on type text`() {
-        val testedLocation = NfcEditorCellLocation(0, 0, 0)
+        val testedLocation = NfcEditorCellLocation(EditorField.DATA, 0, 0, 0)
         underTest.onSelectCell(testedLocation)
 
         underTest.onKeyboardPress(HexKey.A)
@@ -122,7 +126,7 @@ class TextUpdaterHelperTest {
 
     @Test
     fun `on type text and restore backup`() {
-        val testedLocation = NfcEditorCellLocation(0, 0, 0)
+        val testedLocation = NfcEditorCellLocation(EditorField.DATA, 0, 0, 0)
         underTest.onSelectCell(testedLocation)
 
         underTest.onKeyboardPress(HexKey.A)
@@ -134,9 +138,9 @@ class TextUpdaterHelperTest {
             testedLocation,
             underTest.currentActiveCell
         )
-        underTest.onSelectCell(NfcEditorCellLocation(0, 0, 1))
+        underTest.onSelectCell(NfcEditorCellLocation(EditorField.DATA, 0, 0, 1))
         Assert.assertEquals(
-            NfcEditorCellLocation(0, 0, 1),
+            NfcEditorCellLocation(EditorField.DATA, 0, 0, 1),
             underTest.currentActiveCell
         )
         nfcEditorState = underTest.getNfcEditorState().value

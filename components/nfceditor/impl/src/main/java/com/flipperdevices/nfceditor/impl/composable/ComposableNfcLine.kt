@@ -12,6 +12,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.nfceditor.impl.model.EditorField
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCell
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCellLocation
 import kotlin.math.roundToInt
@@ -25,7 +26,7 @@ fun ComposableNfcLine(
     maxIndexSymbolCount: Int,
     scaleFactor: Float,
     activeCell: NfcEditorCellLocation? = null,
-    onCellFocus: ((NfcEditorCellLocation) -> Unit)? = null,
+    onCellFocus: ((NfcEditorCellLocation) -> Unit),
     onPositionActiveLine: ((Int) -> Unit)? = null
 ) {
     var rowModifier: Modifier = Modifier
@@ -49,15 +50,14 @@ fun ComposableNfcLine(
 
         line.forEachIndexed { columnIndex, cell ->
             val cellLocation = remember(sectorIndex, lineIndexInSector, columnIndex) {
-                NfcEditorCellLocation(sectorIndex, lineIndexInSector, columnIndex)
+                NfcEditorCellLocation(EditorField.DATA, sectorIndex, lineIndexInSector, columnIndex)
             }
             ComposableNfcCell(
                 cell,
                 scaleFactor,
                 isActive = cellLocation == activeCell,
-                isEditable = onCellFocus != null,
                 onClick = {
-                    onCellFocus?.invoke(cellLocation)
+                    onCellFocus.invoke(cellLocation)
                 }
             )
         }

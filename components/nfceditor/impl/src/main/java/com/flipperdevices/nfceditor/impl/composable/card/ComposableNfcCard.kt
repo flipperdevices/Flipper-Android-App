@@ -1,5 +1,6 @@
 package com.flipperdevices.nfceditor.impl.composable.card
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,17 +23,23 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.hexkeyboard.ImmutableEnumMap
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
+import com.flipperdevices.nfceditor.impl.model.CardFieldInfo
+import com.flipperdevices.nfceditor.impl.model.NfcCellType
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCardInfo
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCardType
+import com.flipperdevices.nfceditor.impl.model.NfcEditorCell
+import com.flipperdevices.nfceditor.impl.model.NfcEditorCellLocation
 
 @Composable
 fun ComposableNfcCard(
     nfcEditorCardInfo: NfcEditorCardInfo,
-    scaleFactor: Float
+    scaleFactor: Float,
+    currentCell: NfcEditorCellLocation?,
+    onCellClick: (NfcEditorCellLocation) -> Unit
 ) {
     Card(
         modifier = Modifier.padding(top = 14.dp, bottom = 14.dp, start = 14.dp),
@@ -57,7 +64,9 @@ fun ComposableNfcCard(
                 scaleFactor = scaleFactor,
                 nfcEditorCardInfo = nfcEditorCardInfo,
                 isOpened = isOpened,
-                onClick = onClick
+                onClick = onClick,
+                currentCell = currentCell,
+                onCellClick = onCellClick
             )
         }
     }
@@ -70,7 +79,9 @@ private fun ComposableNfcCardInternal(
     nfcEditorCardInfo: NfcEditorCardInfo,
     isOpened: Boolean,
     onClick: () -> Unit,
-    scaleFactor: Float
+    scaleFactor: Float,
+    currentCell: NfcEditorCellLocation?,
+    onCellClick: (NfcEditorCellLocation) -> Unit
 ) {
     Column(
         modifier = modifier,
@@ -84,7 +95,12 @@ private fun ComposableNfcCardInternal(
             ComposableHeaderCard(nfcEditorCardInfo.cardType, isOpened, onClick)
             if (isOpened) {
                 ComposableSchemeCard(scaleFactor)
-                ComposableAdditionalInfoCard(nfcEditorCardInfo)
+                ComposableAdditionalInfoCard(
+                    nfcEditorCardInfo,
+                    currentCell,
+                    scaleFactor,
+                    onCellClick
+                )
             }
         }
     }
@@ -100,11 +116,17 @@ private fun ComposableNfcCardPreview() {
         ComposableNfcCard(
             NfcEditorCardInfo(
                 cardType = NfcEditorCardType.MF_4K,
-                uid = "B6 69 03 36 8A 98 02",
-                atqa = "02 02",
-                sak = "98"
+                ImmutableEnumMap(
+                    CardFieldInfo::class.java,
+                    CardFieldInfo.values()
+                ) {
+                    "B6 69 03 36 8A 98 02".split(" ")
+                        .map { NfcEditorCell(it, NfcCellType.SIMPLE) }
+                }
             ),
-            scaleFactor = 1.0f
+            scaleFactor = 1.0f,
+            currentCell = null,
+            onCellClick = {}
         )
     }
 }
