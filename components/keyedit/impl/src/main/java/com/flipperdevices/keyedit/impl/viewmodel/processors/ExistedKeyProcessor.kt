@@ -17,7 +17,8 @@ class ExistedKeyProcessor @Inject constructor(
     private val parser: KeyParser
 ) : EditableKeyProcessor<EditableKey.Existed> {
     override suspend fun loadKey(
-        editableKey: EditableKey.Existed, onStateUpdate: suspend (KeyEditState) -> Unit
+        editableKey: EditableKey.Existed,
+        onStateUpdate: suspend (KeyEditState) -> Unit
     ) {
         val flipperKey = simpleKeyApi.getKey(editableKey.flipperKeyPath)
         if (flipperKey == null) {
@@ -49,7 +50,8 @@ class ExistedKeyProcessor @Inject constructor(
                     path = FlipperFilePath(
                         editableKey.flipperKeyPath.path.folder, "${editState.name}.$extension"
                     )
-                ), notes = editState.notes
+                ),
+                notes = editState.notes
             )
             updateKeyApi.updateKey(oldKey, newFlipperKey)
             synchronizationApi.startSynchronization(force = true)
@@ -57,5 +59,4 @@ class ExistedKeyProcessor @Inject constructor(
             router.exit()
         }
     }
-
 }

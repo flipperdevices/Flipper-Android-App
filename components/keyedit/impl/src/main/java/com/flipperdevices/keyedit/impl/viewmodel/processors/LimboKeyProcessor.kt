@@ -48,7 +48,6 @@ class LimboKeyProcessor @Inject constructor(
                 newPath.nameWithoutExtension.isNotBlank()
             )
         )
-
     }
 
     override suspend fun onSave(

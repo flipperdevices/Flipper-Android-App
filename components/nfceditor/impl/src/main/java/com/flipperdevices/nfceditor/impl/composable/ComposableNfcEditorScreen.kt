@@ -59,10 +59,10 @@ fun ComposableNfcEditorScreen(nfcEditorViewModel: NfcEditorViewModel) {
         ComposableNfcEditorBar(localNfcEditorState.cardName, onBack = {
             nfcEditorViewModel.onBack(router)
         }, onSave = {
-            nfcEditorViewModel.onSave(router)
-        }, onSaveAs = {
-            nfcEditorViewModel.onSaveAs(router)
-        })
+                nfcEditorViewModel.onSave(router)
+            }, onSaveAs = {
+                nfcEditorViewModel.onSaveAs(router)
+            })
         ComposableNfcEditor(
             modifier = Modifier.weight(1f),
             nfcEditorViewModel = nfcEditorViewModel,
@@ -86,7 +86,10 @@ fun ComposableNfcEditorScreen(nfcEditorViewModel: NfcEditorViewModel) {
 
 @Composable
 private fun ComposableSaveDropDown(
-    isVisible: Boolean, onSave: () -> Unit, onSaveAs: () -> Unit, onDismiss: () -> Unit
+    isVisible: Boolean,
+    onSave: () -> Unit,
+    onSaveAs: () -> Unit,
+    onDismiss: () -> Unit
 ) {
     DropdownMenu(expanded = isVisible, onDismissRequest = onDismiss) {
         DropdownMenuItem(onClick = {
