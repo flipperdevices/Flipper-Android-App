@@ -144,9 +144,9 @@ data class NfcEditorCellLocation(
         if (nfcEditorCardInfo == null) {
             return false
         }
-        return sectorIndex == 0
-                && lineIndex == 0
-                && columnIndex < nfcEditorCardInfo.fields[CardFieldInfo.UID].size
+        return sectorIndex == 0 &&
+            lineIndex == 0 &&
+            columnIndex < nfcEditorCardInfo.fields[CardFieldInfo.UID].size
     }
 }
 

@@ -67,8 +67,9 @@ class TextUpdaterHelper {
             nfcEditorState.copyWithChangedContent(location, DELETE_CELL)
         } ?: return
         val newLocation = when (location.field) {
-            EditorField.CARD -> nfcEditorState.nfcEditorCardInfo?.fieldsAsSectors
-                ?.let { location.decrement(it) }
+            EditorField.CARD ->
+                nfcEditorState.nfcEditorCardInfo?.fieldsAsSectors
+                    ?.let { location.decrement(it) }
             EditorField.DATA -> location.decrement(nfcEditorState.sectors)
         }
         onSelectCell(newLocation ?: location)
@@ -86,8 +87,9 @@ class TextUpdaterHelper {
         } ?: return
         if (newText.length == BYTES_SYMBOL_COUNT) {
             val newLocation = when (location.field) {
-                EditorField.CARD -> nfcEditorState.nfcEditorCardInfo?.fieldsAsSectors
-                    ?.let { location.increment(it) }
+                EditorField.CARD ->
+                    nfcEditorState.nfcEditorCardInfo?.fieldsAsSectors
+                        ?.let { location.increment(it) }
                 EditorField.DATA -> location.increment(nfcEditorState.sectors)
             }
             onSelectCell(newLocation)

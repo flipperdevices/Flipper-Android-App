@@ -2,6 +2,7 @@
 
 # 1.2.2 - In progress
 
+- [Feature] Add ability edit uid and zero block
 - [Feature] Add dialog on exit from nfc editor
 - [REFACTOR] Migrate synchronization task graph to TaskSynchronizationComponent
 
