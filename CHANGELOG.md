@@ -2,6 +2,8 @@
 
 # 1.2.2 - In progress
 
+- [Feature] Add dialog on exit from nfc editor
+
 # 1.2.1
 
 - [REFACTOR] Change Flipper logo

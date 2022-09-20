@@ -71,11 +71,12 @@ class NfcEditorFragment : ComposeFragment(), OnBackPressListener {
     }
 
     override fun onBackPressed(): Boolean {
-        if (viewModel.currentActiveCell != null) {
+        return if (viewModel.currentActiveCell != null) {
             viewModel.onCellFocus(null)
-        } else {
+            true
+        } else if (viewModel.isDirty()) {
             showOnSaveDialogState.update { !it }
-        }
-        return true
+            true
+        } else false
     }
 }

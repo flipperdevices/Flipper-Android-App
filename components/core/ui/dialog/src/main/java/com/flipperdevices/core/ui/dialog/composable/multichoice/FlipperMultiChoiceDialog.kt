@@ -13,7 +13,7 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 @Composable
 fun FlipperMultiChoiceDialog(
     modifier: Modifier = Modifier,
-    model: FlipperMultiChoiceDialogModel,
+    model: FlipperMultiChoiceDialogModel
 ) {
     Dialog(onDismissRequest = {
         if (model.closeOnClickOutside) {
@@ -29,4 +29,3 @@ fun FlipperMultiChoiceDialog(
         }
     }
 }
-

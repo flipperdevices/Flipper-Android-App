@@ -35,6 +35,8 @@ class NfcEditorViewModel(
 
     private val textUpdaterHelper = TextUpdaterHelper()
 
+    private var isDirty = false
+
     val currentActiveCell: NfcEditorCellLocation?
         get() = textUpdaterHelper.currentActiveCell
 
@@ -60,7 +62,12 @@ class NfcEditorViewModel(
         textUpdaterHelper.onSelectCell(location)
     }
 
+    fun isDirty(): Boolean {
+        return isDirty
+    }
+
     fun onKeyInput(hexKey: HexKey) {
+        isDirty = true
         textUpdaterHelper.onKeyboardPress(hexKey)
     }
 
