@@ -2,15 +2,23 @@ package com.flipperdevices.bridge.synchronization.impl.repository.android
 
 import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
+import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
+import com.squareup.anvil.annotations.ContributesBinding
+import javax.inject.Inject
 
-class SynchronizationStateRepository(
+interface SynchronizationStateRepository {
+    suspend fun markAsSynchronized(usedKeys: List<FlipperKey>)
+}
+
+@ContributesBinding(TaskGraph::class, SynchronizationStateRepository::class)
+class SynchronizationStateRepositoryImpl @Inject constructor(
     private val utilsKeyApi: UtilsKeyApi
-) : LogTagProvider {
+) : SynchronizationStateRepository, LogTagProvider {
     override val TAG = "SynchronizationStateRepository"
 
-    suspend fun markAsSynchronized(usedKeys: List<FlipperKey>) {
+    override suspend fun markAsSynchronized(usedKeys: List<FlipperKey>) {
         usedKeys.forEach {
             try {
                 utilsKeyApi.markAsSynchronized(it.getKeyPath())

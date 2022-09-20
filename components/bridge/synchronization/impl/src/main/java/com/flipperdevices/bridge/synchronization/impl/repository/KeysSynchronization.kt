@@ -1,16 +1,16 @@
 package com.flipperdevices.bridge.synchronization.impl.repository
 
-import com.flipperdevices.bridge.api.manager.FlipperRequestApi
-import com.flipperdevices.bridge.dao.api.delegates.FlipperFileApi
-import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UpdateKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
-import com.flipperdevices.bridge.synchronization.impl.executor.AndroidKeyStorage
+import com.flipperdevices.bridge.synchronization.impl.BuildConfig
+import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
+import com.flipperdevices.bridge.synchronization.impl.executor.AbstractKeyStorage
 import com.flipperdevices.bridge.synchronization.impl.executor.DiffKeyExecutor
-import com.flipperdevices.bridge.synchronization.impl.executor.FlipperKeyStorage
+import com.flipperdevices.bridge.synchronization.impl.executor.Platform
+import com.flipperdevices.bridge.synchronization.impl.executor.StorageType
 import com.flipperdevices.bridge.synchronization.impl.model.DiffSource
 import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
 import com.flipperdevices.bridge.synchronization.impl.model.KeyWithHash
@@ -25,34 +25,40 @@ import com.flipperdevices.bridge.synchronization.impl.repository.storage.Manifes
 import com.flipperdevices.bridge.synchronization.impl.utils.KeyDiffCombiner
 import com.flipperdevices.bridge.synchronization.impl.utils.SynchronizationPercentProvider
 import com.flipperdevices.bridge.synchronization.impl.utils.UnresolvedConflictException
-import com.flipperdevices.core.log.BuildConfig
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.warn
+import com.squareup.anvil.annotations.ContributesBinding
+import javax.inject.Inject
 
+interface KeysSynchronization {
+    suspend fun syncKeys(
+        onStateUpdate: suspend (SynchronizationState) -> Unit
+    ): List<KeyWithHash>
+}
+
+@ContributesBinding(TaskGraph::class, KeysSynchronization::class)
 @Suppress("LongParameterList")
-class KeysSynchronization(
+class KeysSynchronizationImpl @Inject constructor(
+    private val diffKeyExecutor: DiffKeyExecutor,
+    private val keysListingRepository: KeysListingRepository,
+    private val flipperHashRepository: FlipperHashRepository,
+    private val androidHashRepository: AndroidHashRepository,
+    @StorageType(Platform.ANDROID)
+    private val androidStorage: AbstractKeyStorage,
+    @StorageType(Platform.FLIPPER)
+    private val flipperStorage: AbstractKeyStorage,
+    private val synchronizationRepository: SynchronizationStateRepository,
     private val simpleKeyApi: SimpleKeyApi,
-    private val deleteKeyApi: DeleteKeyApi,
-    private val utilsKeyApi: UtilsKeyApi,
     private val manifestRepository: ManifestRepository,
-    private val flipperStorage: FlipperKeyStorage,
-    private val requestApi: FlipperRequestApi,
     private val synchronizationPercentProvider: SynchronizationPercentProvider,
-    private val flipperFileApi: FlipperFileApi,
+    private val utilsKeyApi: UtilsKeyApi,
     private val updateKeyApi: UpdateKeyApi
-) : LogTagProvider {
+) : KeysSynchronization, LogTagProvider {
     override val TAG = "KeysSynchronization"
 
-    private val diffKeyExecutor = DiffKeyExecutor()
-    private val keysListingRepository = KeysListingRepository()
-    private val flipperHashRepository = FlipperHashRepository()
-    private val androidHashRepository = AndroidHashRepository()
-    private val androidStorage = AndroidKeyStorage(simpleKeyApi, deleteKeyApi, flipperFileApi)
-    private val synchronizationRepository = SynchronizationStateRepository(utilsKeyApi)
-
-    suspend fun syncKeys(
+    override suspend fun syncKeys(
         onStateUpdate: suspend (SynchronizationState) -> Unit
     ): List<KeyWithHash> {
         val allKeysFromAndroid = simpleKeyApi.getAllKeys(includeDeleted = true)
@@ -160,7 +166,7 @@ class KeysSynchronization(
     private suspend fun getManifestOnFlipper(
         onStateUpdate: (suspend (SynchronizationState) -> Unit)? = null
     ): List<KeyWithHash> {
-        val keysFromFlipper = keysListingRepository.getAllKeys(requestApi).trackProgressAndReturn {
+        val keysFromFlipper = keysListingRepository.getAllKeys().trackProgressAndReturn {
             onStateUpdate?.invoke(
                 SynchronizationState.InProgress(
                     synchronizationPercentProvider.getListingProgress(
@@ -171,7 +177,7 @@ class KeysSynchronization(
             )
             info { "[Hash] Progress is ${it.currentPosition}/${it.maxPosition}: ${it.text}" }
         }
-        return flipperHashRepository.calculateHash(requestApi, keysFromFlipper)
+        return flipperHashRepository.calculateHash(keysFromFlipper)
             .trackProgressAndReturn {
                 onStateUpdate?.invoke(
                     SynchronizationState.InProgress(

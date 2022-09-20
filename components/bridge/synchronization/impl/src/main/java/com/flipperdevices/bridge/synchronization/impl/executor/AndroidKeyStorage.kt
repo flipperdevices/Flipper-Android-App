@@ -9,10 +9,15 @@ import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
+import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.squareup.anvil.annotations.ContributesBinding
+import javax.inject.Inject
 
-class AndroidKeyStorage(
+@StorageType(Platform.ANDROID)
+@ContributesBinding(TaskGraph::class, AbstractKeyStorage::class)
+class AndroidKeyStorage @Inject constructor(
     private val simpleKeyApi: SimpleKeyApi,
     private val deleteKeyApi: DeleteKeyApi,
     private val flipperFileApi: FlipperFileApi

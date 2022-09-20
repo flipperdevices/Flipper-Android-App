@@ -2,6 +2,8 @@
 
 # 1.2.2 - In progress
 
+- [REFACTOR] Migrate synchronization task graph to TaskSynchronizationComponent
+
 # 1.2.1
 
 - [REFACTOR] Change Flipper logo

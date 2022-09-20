@@ -7,6 +7,8 @@ import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.log.warn
+import java.util.concurrent.atomic.AtomicBoolean
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -27,12 +29,17 @@ abstract class OneTimeExecutionBleTask<INPUT, STATE>(
     private val taskScope = lifecycleScope
     private val mutex = Mutex()
     private var job: Job? = null
+    private val isAlreadyLaunched = AtomicBoolean(false)
 
     fun start(
         input: INPUT,
         stateListener: suspend (STATE) -> Unit
     ) = taskScope.launch(Dispatchers.Main) {
         info { "Called start" }
+        if (!isAlreadyLaunched.compareAndSet(false, true)) {
+            warn { "OneTimeExecutionBleTask call again" }
+            return@launch
+        }
         serviceProvider.provideServiceApi(this@OneTimeExecutionBleTask) { serviceApi ->
             info { "Flipper service provided" }
             launchWithLock(mutex, taskScope) {
