@@ -13,6 +13,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.navigation.delegates.OnBackPressListener
+import com.flipperdevices.core.navigation.requireRouter
 import com.flipperdevices.core.ui.fragment.ComposeFragment
 import com.flipperdevices.nfceditor.impl.composable.ComposableNfcEditorScreen
 import com.flipperdevices.nfceditor.impl.viewmodel.NfcEditorViewModel
@@ -53,9 +54,7 @@ class NfcEditorFragment : ComposeFragment(), OnBackPressListener {
     }
 
     override fun onBackPressed(): Boolean {
-        return if (viewModel.currentActiveCell != null) {
-            viewModel.onCellFocus(null)
-            true
-        } else false
+        viewModel.onBack(requireRouter())
+        return true
     }
 }

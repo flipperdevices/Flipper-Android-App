@@ -57,13 +57,13 @@ fun FlipperDialog(
 fun FlipperDialog(
     modifier: Modifier = Modifier,
     @DrawableRes imageId: Int? = null,
+    @StringRes titleId: Int? = null,
     imageComposable: (@Composable () -> Unit)? = imageId?.letCompose { imageIdNotNullable ->
         Image(
             painter = painterResource(imageIdNotNullable),
             contentDescription = titleId?.let { stringResource(it) }
         )
     },
-    @StringRes titleId: Int? = null,
     titleComposable: (@Composable () -> Unit)? = titleId?.letCompose { titleIdNotNullable ->
         Text(
             text = stringResource(titleIdNotNullable),
@@ -82,6 +82,7 @@ fun FlipperDialog(
         )
     },
     @StringRes buttonTextId: Int,
+    onClickButton: () -> Unit,
     buttonComposable: @Composable () -> Unit = {
         ComposableFlipperButton(
             modifier = Modifier.fillMaxWidth(),
@@ -90,7 +91,6 @@ fun FlipperDialog(
             textPadding = PaddingValues(12.dp)
         )
     },
-    onClickButton: () -> Unit,
     onDismissRequest: (() -> Unit)? = null,
     closeOnClickOutside: Boolean = true
 ) {

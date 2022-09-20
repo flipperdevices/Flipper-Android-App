@@ -24,6 +24,7 @@ import com.flipperdevices.keyscreen.shared.bar.ComposableBarTitle
 import com.flipperdevices.keyscreen.shared.bar.ComposableBarTitleWithName
 import com.flipperdevices.keyscreen.shared.bar.ComposableKeyScreenAppBar
 import com.flipperdevices.nfceditor.impl.R
+import com.flipperdevices.nfceditor.impl.composable.dialog.ComposableNfcEditExitDialog
 import com.flipperdevices.nfceditor.impl.viewmodel.NfcEditorViewModel
 
 private const val KEYBOARD_HEIGHT_DP = 256
@@ -40,9 +41,19 @@ fun ComposableNfcEditorScreen(nfcEditorViewModel: NfcEditorViewModel) {
         }
         return
     }
+    val showOnSaveDialog by nfcEditorViewModel.getShowOnSaveDialogState().collectAsState()
+    if (showOnSaveDialog) {
+        ComposableNfcEditExitDialog(
+            onDismiss = nfcEditorViewModel::dismissDialog,
+            onNotSave = { router.exit() },
+            onSave = { nfcEditorViewModel.onSave(router) },
+            onSaveAs = {}
+        )
+    }
+
     Column(modifier = Modifier.fillMaxSize()) {
         ComposableNfcEditorBar(localNfcEditorState.cardName, onBack = {
-            router.exit()
+            nfcEditorViewModel.onBack(router)
         }, onSave = { nfcEditorViewModel.onSave(router) })
         ComposableNfcEditor(
             modifier = Modifier.weight(1f),
@@ -55,7 +66,8 @@ fun ComposableNfcEditorScreen(nfcEditorViewModel: NfcEditorViewModel) {
             offsetForKeyboard = 0.dp
             val offset by animateDpAsState(offsetForKeyboard)
             ComposableHexKeyboard(
-                modifier = Modifier.offset(y = offset)
+                modifier = Modifier
+                    .offset(y = offset)
                     .background(LocalPallet.current.hexKeyboardBackground),
                 keyboardHeight = KEYBOARD_HEIGHT_DP.dp,
                 onClick = nfcEditorViewModel::onKeyInput
