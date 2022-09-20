@@ -3,26 +3,39 @@ package com.flipperdevices.bridge.synchronization.impl.executor
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
+import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
 import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
 import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.squareup.anvil.annotations.ContributesBinding
+import javax.inject.Inject
 
-/**
- * This class execute diff for
- */
-class DiffKeyExecutor : LogTagProvider {
-    override val TAG = "DiffKeyExecutor"
-
-    /**
-     * @return list of diffs which successful applied
-     */
+interface DiffKeyExecutor {
     suspend fun executeBatch(
         source: AbstractKeyStorage,
         target: AbstractKeyStorage,
         diffs: List<KeyDiff>,
         onProgressUpdate: (suspend (Int, Int) -> Unit)? = null
+    ): List<KeyDiff>
+}
+
+/**
+ * This class execute diff for
+ */
+@ContributesBinding(TaskGraph::class, DiffKeyExecutor::class)
+class DiffKeyExecutorImpl @Inject constructor() : DiffKeyExecutor, LogTagProvider {
+    override val TAG = "DiffKeyExecutor"
+
+    /**
+     * @return list of diffs which successful applied
+     */
+    override suspend fun executeBatch(
+        source: AbstractKeyStorage,
+        target: AbstractKeyStorage,
+        diffs: List<KeyDiff>,
+        onProgressUpdate: (suspend (Int, Int) -> Unit)?
     ): List<KeyDiff> {
         val sortedDiffs = diffs.sortedBy { it.newHash.keyPath.fileType.ordinal }
         return sortedDiffs

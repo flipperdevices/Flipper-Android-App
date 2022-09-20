@@ -3,20 +3,35 @@ package com.flipperdevices.bridge.synchronization.impl.repository.flipper
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
+import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
 import com.flipperdevices.bridge.synchronization.impl.executor.FlipperKeyStorage
 import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
 import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
 import com.flipperdevices.core.log.LogTagProvider
+import com.squareup.anvil.annotations.ContributesBinding
 import java.nio.charset.Charset
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 private val FAVORITES_PATH = FlipperFilePath("/", "favorites.txt")
 
-class FlipperFavoritesRepository : LogTagProvider {
+interface FlipperFavoritesRepository {
+    suspend fun getFavorites(flipperKeyStorage: FlipperKeyStorage): List<FlipperFilePath>
+    suspend fun applyDiff(
+        flipperKeyStorage: FlipperKeyStorage,
+        oldFavorites: List<FlipperFilePath>,
+        favoritesDiff: List<KeyDiff>
+    )
+}
+
+@ContributesBinding(TaskGraph::class, FlipperFavoritesRepository::class)
+class FlipperFavoritesRepositoryImpl @Inject constructor() :
+    FlipperFavoritesRepository,
+    LogTagProvider {
     override val TAG = "FavoritesRepository"
 
-    suspend fun getFavorites(flipperKeyStorage: FlipperKeyStorage): List<FlipperFilePath> {
+    override suspend fun getFavorites(flipperKeyStorage: FlipperKeyStorage): List<FlipperFilePath> {
         val favoritesPaths = getFavoritesFromFlipper(flipperKeyStorage)
         return favoritesPaths.map {
             val relativePath = it.replace(Constants.KEYS_DEFAULT_STORAGE, "").replace("/ext/", "")
@@ -43,7 +58,7 @@ class FlipperFavoritesRepository : LogTagProvider {
             .split("\n")
     }
 
-    suspend fun applyDiff(
+    override suspend fun applyDiff(
         flipperKeyStorage: FlipperKeyStorage,
         oldFavorites: List<FlipperFilePath>,
         favoritesDiff: List<KeyDiff>
