@@ -51,7 +51,7 @@ fun ComposableNfcEditorScreen(nfcEditorViewModel: NfcEditorViewModel) {
             onDismiss = nfcEditorViewModel::dismissDialog,
             onNotSave = { router.exit() },
             onSave = { nfcEditorViewModel.onSave(router) },
-            onSaveAs = {}
+            onSaveAs = { nfcEditorViewModel.onSaveAs(router) }
         )
     }
 
