@@ -3,41 +3,42 @@ package com.flipperdevices.keyedit.impl.fragment
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.fragment.app.viewModels
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
+import androidx.compose.runtime.remember
 import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.ui.fragment.ComposeFragment
 import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.keyedit.impl.composable.ComposableEditScreen
+import com.flipperdevices.keyedit.impl.model.EditableKey
 import com.flipperdevices.keyedit.impl.viewmodel.KeyEditViewModel
-import com.flipperdevices.keyedit.impl.viewmodel.KeyEditViewModelFactory
+import tangle.viewmodel.fragment.tangleViewModel
 
-private const val EXTRA_KEY_PATH = "key_path"
+const val EXTRA_EDITABLE_KEY = "editable_key"
+const val EXTRA_TITLE_KEY = "title_key"
 
 class KeyEditFragment : ComposeFragment() {
-    private val keyPath: FlipperKeyPath? by lazy {
-        arguments?.getParcelable(EXTRA_KEY_PATH)
-    }
-    private val viewModel by viewModels<KeyEditViewModel> {
-        KeyEditViewModelFactory(keyPath, requireContext())
-    }
+    private val viewModel by tangleViewModel<KeyEditViewModel>()
 
     @Composable
     override fun RenderView() {
         val router = LocalRouter.current
         val state by viewModel.getEditState().collectAsState()
+        val title = remember {
+            arguments?.getString(EXTRA_TITLE_KEY)
+        }
         ComposableEditScreen(
             viewModel,
-            state,
+            title = title,
+            state = state,
             onCancel = router::exit,
             onSave = { viewModel.onSave(router) }
         )
     }
 
     companion object {
-        fun getInstance(keyPath: FlipperKeyPath): KeyEditFragment {
+        fun getInstance(editableKey: EditableKey, title: String?): KeyEditFragment {
             return KeyEditFragment().withArgs {
-                putParcelable(EXTRA_KEY_PATH, keyPath)
+                putParcelable(EXTRA_EDITABLE_KEY, editableKey)
+                putString(EXTRA_TITLE_KEY, title)
             }
         }
     }

@@ -3,6 +3,7 @@ plugins {
     id("flipper.android-compose")
     id("com.squareup.anvil")
     id("kotlin-kapt")
+    id("kotlin-parcelize")
 }
 
 dependencies {
@@ -20,7 +21,11 @@ dependencies {
     implementation(projects.components.keyscreen.shared)
 
     implementation(projects.components.bridge.dao.api)
+    implementation(projects.components.bridge.synchronization.api)
     implementation(projects.components.bridge.api)
+    implementation(projects.components.inappnotification.api)
+    implementation(projects.components.singleactivity.api)
+    implementation(projects.components.deeplink.api)
 
     implementation(libs.cicerone)
     implementation(libs.appcompat)
@@ -36,6 +41,9 @@ dependencies {
     // Dagger deps
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
+    implementation(libs.tangle.viewmodel.fragment)
+    implementation(libs.tangle.viewmodel.api)
+    anvil(libs.tangle.viewmodel.compiler)
 
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.runtime.ktx)

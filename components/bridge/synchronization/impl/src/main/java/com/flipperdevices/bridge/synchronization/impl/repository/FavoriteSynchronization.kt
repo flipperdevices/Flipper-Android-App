@@ -3,6 +3,7 @@ package com.flipperdevices.bridge.synchronization.impl.repository
 import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
+import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
 import com.flipperdevices.bridge.synchronization.impl.executor.FlipperKeyStorage
 import com.flipperdevices.bridge.synchronization.impl.model.DiffSource
 import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
@@ -12,17 +13,23 @@ import com.flipperdevices.bridge.synchronization.impl.repository.storage.Manifes
 import com.flipperdevices.bridge.synchronization.impl.utils.KeyDiffCombiner
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.squareup.anvil.annotations.ContributesBinding
+import javax.inject.Inject
 
-class FavoriteSynchronization constructor(
+interface FavoriteSynchronization {
+    suspend fun syncFavorites(): List<FlipperFilePath>
+}
+
+@ContributesBinding(TaskGraph::class, FavoriteSynchronization::class)
+class FavoriteSynchronizationImpl @Inject constructor(
     private val favoriteApi: FavoriteApi,
     private val manifestRepository: ManifestRepository,
-    private val flipperStorage: FlipperKeyStorage
-) : LogTagProvider {
+    private val flipperStorage: FlipperKeyStorage,
+    private val favoritesRepository: FlipperFavoritesRepository
+) : FavoriteSynchronization, LogTagProvider {
     override val TAG = "FavoriteSynchronization"
 
-    private val favoritesRepository = FlipperFavoritesRepository()
-
-    suspend fun syncFavorites(): List<FlipperFilePath> {
+    override suspend fun syncFavorites(): List<FlipperFilePath> {
         val favoritesFromFlipper = favoritesRepository.getFavorites(flipperStorage)
         val favoritesFromAndroid = favoriteApi.getFavorites().map { it.path }
         val diffWithManifestAndFlipper = manifestRepository

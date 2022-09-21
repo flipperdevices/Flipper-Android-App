@@ -14,4 +14,12 @@
     <string name="nfc_card_key_b">Key B</string>
     <string name="nfc_card_title_4k">MIFARE Classic 4K</string>
     <string name="nfc_card_title_1k">MIFARE Classic 1K</string>
+    <string name="nfc_dialog_title">Save Changes?</string>
+    <string name="nfc_dialog_text">All unsaved changes will be lost</string>
+    <string name="nfc_dialog_btn_save">Save</string>
+    <string name="nfc_dialog_btn_not_save">Don’t Save</string>
+    <string name="nfc_dialog_btn_save_as">Save Dump As…</string>
+    <string name="nfc_dialog_save_as_title">@string/nfc_dialog_btn_save_as</string>
+    <string name="nfc_popup_save">@string/nfceditor_btn_save</string>
+    <string name="nfc_popup_save_as">Save Dump as…</string>
 </resources>

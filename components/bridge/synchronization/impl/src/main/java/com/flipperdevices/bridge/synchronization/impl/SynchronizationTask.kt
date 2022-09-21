@@ -2,22 +2,15 @@ package com.flipperdevices.bridge.synchronization.impl
 
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
-import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
-import com.flipperdevices.bridge.dao.api.delegates.FlipperFileApi
-import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
-import com.flipperdevices.bridge.dao.api.delegates.key.UpdateKeyApi
-import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
-import com.flipperdevices.bridge.synchronization.impl.executor.FlipperKeyStorage
+import com.flipperdevices.bridge.synchronization.impl.di.DaggerTaskSynchronizationComponent
 import com.flipperdevices.bridge.synchronization.impl.model.RestartSynchronizationException
-import com.flipperdevices.bridge.synchronization.impl.repository.FavoriteSynchronization
-import com.flipperdevices.bridge.synchronization.impl.repository.KeysSynchronization
-import com.flipperdevices.bridge.synchronization.impl.repository.storage.ManifestRepository
-import com.flipperdevices.bridge.synchronization.impl.utils.SynchronizationPercentProvider
+import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
@@ -25,27 +18,49 @@ import com.flipperdevices.core.ui.lifecycle.OneTimeExecutionBleTask
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.complex.SynchronizationEnd
 import com.flipperdevices.wearable.sync.handheld.api.SyncWearableApi
+import com.squareup.anvil.annotations.ContributesBinding
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 
-@Suppress("LongParameterList")
-class SynchronizationTask(
+interface SynchronizationTask {
+    fun start(
+        input: Unit,
+        stateListener: suspend (SynchronizationState) -> Unit
+    ): Job
+
+    suspend fun onStop()
+
+    interface Builder {
+        fun build(): SynchronizationTask
+    }
+}
+
+@ContributesBinding(AppGraph::class, SynchronizationTask.Builder::class)
+class SynchronizationTaskBuilder @Inject constructor(
     private val serviceProvider: FlipperServiceProvider,
     private val simpleKeyApi: SimpleKeyApi,
-    private val deleteKeyApi: DeleteKeyApi,
-    private val utilsKeyApi: UtilsKeyApi,
-    private val favoriteApi: FavoriteApi,
     private val metricApi: MetricApi,
-    private val synchronizationProvider: SynchronizationPercentProvider,
-    private val flipperFileApi: FlipperFileApi,
-    private val syncWearableApi: SyncWearableApi,
-    private val updateKeyApi: UpdateKeyApi
-) : OneTimeExecutionBleTask<Unit, SynchronizationState>(serviceProvider), LogTagProvider {
-    override val TAG = "SynchronizationTask"
+    private val syncWearableApi: SyncWearableApi
+) : SynchronizationTask.Builder {
+    override fun build(): SynchronizationTask {
+        return SynchronizationTaskImpl(serviceProvider, simpleKeyApi, metricApi, syncWearableApi)
+    }
+}
 
-    private val manifestRepository = ManifestRepository()
+class SynchronizationTaskImpl @Inject constructor(
+    serviceProvider: FlipperServiceProvider,
+    private val simpleKeyApi: SimpleKeyApi,
+    private val metricApi: MetricApi,
+    private val syncWearableApi: SyncWearableApi
+) : OneTimeExecutionBleTask<Unit, SynchronizationState>(serviceProvider),
+    SynchronizationTask,
+    LogTagProvider {
+    override val TAG = "SynchronizationTask"
 
     override suspend fun startInternal(
         scope: CoroutineScope,
@@ -55,13 +70,11 @@ class SynchronizationTask(
     ) {
         // Waiting to be connected to the flipper
         serviceApi.connectionInformationApi.getConnectionStateFlow()
-            .collectLatest {
-                if (it is ConnectionState.Ready &&
+            .filter {
+                it is ConnectionState.Ready &&
                     it.supportedState == FlipperSupportedState.READY
-                ) {
-                    startInternal(serviceApi, stateListener)
-                }
-            }
+            }.first()
+        startInternal(serviceApi, stateListener)
     }
 
     override suspend fun onStopAsync(stateListener: suspend (SynchronizationState) -> Unit) {
@@ -72,6 +85,8 @@ class SynchronizationTask(
         serviceApi: FlipperServiceApi,
         onStateUpdate: suspend (SynchronizationState) -> Unit
     ) {
+        info { "#startInternal" }
+
         try {
             onStateUpdate(SynchronizationState.InProgress(0f))
             val startSynchronizationTime = System.currentTimeMillis()
@@ -92,30 +107,19 @@ class SynchronizationTask(
         serviceApi: FlipperServiceApi,
         onStateUpdate: suspend (SynchronizationState) -> Unit
     ) = withContext(Dispatchers.Default) {
-        val flipperStorage = FlipperKeyStorage(serviceApi.requestApi)
-        val favoriteSynchronization = FavoriteSynchronization(
-            favoriteApi,
-            manifestRepository,
-            flipperStorage
-        )
-        val keysSynchronization = KeysSynchronization(
-            simpleKeyApi,
-            deleteKeyApi,
-            utilsKeyApi,
-            manifestRepository,
-            flipperStorage,
-            serviceApi.requestApi,
-            synchronizationProvider,
-            flipperFileApi,
-            updateKeyApi
-        )
+        val taskComponent = DaggerTaskSynchronizationComponent.factory()
+            .create(
+                ComponentHolder.component(),
+                serviceApi.requestApi
+            )
 
-        val keysHashes = keysSynchronization.syncKeys(onStateUpdate)
-        val favorites = favoriteSynchronization.syncFavorites()
+        val keysHashes = taskComponent.keysSynchronization.syncKeys(onStateUpdate)
+        val favorites = taskComponent.favoriteSynchronization.syncFavorites()
 
         // End synchronization keys
-        manifestRepository.saveManifest(keysHashes, favorites)
-        synchronizationProvider.markedAsFinish()
+        taskComponent.manifestRepository.saveManifest(keysHashes, favorites)
+        taskComponent.synchronizationProvider.markedAsFinish()
+
         try {
             syncWearableApi.updateWearableIndex()
         } catch (throwable: Exception) {

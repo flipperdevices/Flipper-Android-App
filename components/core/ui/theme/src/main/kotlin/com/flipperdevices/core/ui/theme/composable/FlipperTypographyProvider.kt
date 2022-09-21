@@ -94,6 +94,11 @@ private val typography = FlipperTypography(
         fontFamily = robotoFamily,
         fontWeight = FontWeight.W600
     ),
+    bodySSB14 = TextStyle(
+        fontSize = 14.sp,
+        fontFamily = robotoFamily,
+        fontWeight = FontWeight.W700
+    ),
     bodyR14 = TextStyle(
         fontSize = 14.sp,
         fontFamily = robotoFamily,

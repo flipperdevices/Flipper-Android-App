@@ -9,8 +9,16 @@ data class NfcEditorState(
     val sectors: List<NfcEditorSector>
 ) {
     fun copyWithChangedContent(location: NfcEditorCellLocation, content: String): NfcEditorState {
+        if (location.field == EditorField.CARD) {
+            return copy(
+                nfcEditorCardInfo = nfcEditorCardInfo?.copyWithChangedContent(
+                    location,
+                    content
+                )
+            )
+        }
         val newSectors = sectors.toMutableList()
-        val currentSector = newSectors[location.sectorIndex] ?: return this
+        val currentSector = newSectors.getOrNull(location.sectorIndex) ?: return this
         val newLines = currentSector.lines.toMutableList()
         var updatedLine = newLines[location.lineIndex]
         val columnsList = updatedLine.cells.toMutableList()
@@ -22,12 +30,22 @@ data class NfcEditorState(
         newLines[location.lineIndex] = updatedLine
         newSectors[location.sectorIndex] = NfcEditorSector(newLines)
         return copy(
-            sectors = newSectors
+            sectors = newSectors,
+            nfcEditorCardInfo = if (location.isUid(nfcEditorCardInfo)) {
+                nfcEditorCardInfo?.copyWithChangedContent(
+                    location,
+                    content
+                )
+            } else nfcEditorCardInfo
         )
     }
 
     operator fun get(location: NfcEditorCellLocation): NfcEditorCell {
-        val currentSector = sectors[location.sectorIndex]
+        val selectableSector = when (location.field) {
+            EditorField.CARD -> nfcEditorCardInfo?.fieldsAsSectors ?: emptyList()
+            EditorField.DATA -> sectors
+        }
+        val currentSector = selectableSector[location.sectorIndex]
         return currentSector.lines[location.lineIndex].cells[location.columnIndex]
     }
 }
@@ -59,6 +77,7 @@ data class NfcEditorSector(
 
 @Stable
 data class NfcEditorCellLocation(
+    val field: EditorField,
     val sectorIndex: Int,
     val lineIndex: Int,
     val columnIndex: Int
@@ -67,18 +86,21 @@ data class NfcEditorCellLocation(
         val currentSector = sectors[sectorIndex]
         return if (columnIndex < currentSector.lines[lineIndex].cells.lastIndex) {
             NfcEditorCellLocation(
+                field = field,
                 sectorIndex = sectorIndex,
                 lineIndex = lineIndex,
                 columnIndex = columnIndex + 1
             )
         } else if (lineIndex < currentSector.lines.lastIndex) {
             NfcEditorCellLocation(
+                field = field,
                 sectorIndex = sectorIndex,
                 lineIndex = lineIndex + 1,
                 columnIndex = 0
             )
         } else if (sectorIndex < sectors.lastIndex) {
             NfcEditorCellLocation(
+                field = field,
                 sectorIndex = sectorIndex + 1,
                 lineIndex = 0,
                 columnIndex = 0
@@ -91,6 +113,7 @@ data class NfcEditorCellLocation(
 
         if (columnIndex > 0) {
             return NfcEditorCellLocation(
+                field = field,
                 sectorIndex = sectorIndex,
                 lineIndex = lineIndex,
                 columnIndex = columnIndex - 1
@@ -98,6 +121,7 @@ data class NfcEditorCellLocation(
         } else if (lineIndex > 0) {
             val newLineIndex = lineIndex - 1
             return NfcEditorCellLocation(
+                field = field,
                 sectorIndex = sectorIndex,
                 lineIndex = newLineIndex,
                 columnIndex = currentSector
@@ -105,16 +129,28 @@ data class NfcEditorCellLocation(
             )
         } else if (sectorIndex > 0) {
             val newSectorIndex = sectorIndex - 1
-            if (newSectorIndex < 0) {
-                return null
-            }
             val newSector = sectors[newSectorIndex]
 
             return NfcEditorCellLocation(
+                field = field,
                 sectorIndex = newSectorIndex,
                 lineIndex = newSector.lines.lastIndex,
                 columnIndex = newSector.lines.last().cells.lastIndex
             )
         } else return null
     }
+
+    fun isUid(nfcEditorCardInfo: NfcEditorCardInfo?): Boolean {
+        if (nfcEditorCardInfo == null) {
+            return false
+        }
+        return sectorIndex == 0 &&
+            lineIndex == 0 &&
+            columnIndex < nfcEditorCardInfo.fields[CardFieldInfo.UID].size
+    }
+}
+
+enum class EditorField {
+    CARD,
+    DATA
 }
