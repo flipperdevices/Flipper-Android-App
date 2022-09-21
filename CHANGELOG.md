@@ -1,6 +1,6 @@
 # Changelog
 
-# 1.2.2
+# 1.2.2 - In progress
 
 - [Feature] Add ability edit uid and zero block
 - [Feature] Add support adaptive monochrome icon
