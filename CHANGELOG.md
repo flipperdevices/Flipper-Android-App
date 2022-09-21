@@ -1,6 +1,10 @@
 # Changelog
 
-# 1.2.1 - In progress
+# 1.2.2
+
+- [Feature] Add support adaptive monochrome icon
+
+# 1.2.1
 
 - [REFACTOR] Change Flipper logo
 - [REFACTOR] Redesign Full Device Information
