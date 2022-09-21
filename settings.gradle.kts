@@ -105,6 +105,7 @@ include(
 
     ":components:keyedit:api",
     ":components:keyedit:impl",
+    ":components:keyedit:noop",
 
     ":components:firstpair:api",
     ":components:firstpair:impl",

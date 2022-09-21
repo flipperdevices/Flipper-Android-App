@@ -79,7 +79,7 @@ fun ComposableInputDialog(
                     onClick = {
                         if (text.isBlank()) {
                             errorText = R.string.add_dialog_error_empty
-                        } else if (!FlipperSymbolFilter.isAcceptableString(text)) {
+                        } else if (!FlipperSymbolFilter.isAcceptableString(text.replace(".", ""))) {
                             errorText = R.string.add_dialog_error_wrong_character
                         } else if (text.length > FILE_MAX_LENGTH) {
                             errorText = R.string.add_dialog_error_too_long
