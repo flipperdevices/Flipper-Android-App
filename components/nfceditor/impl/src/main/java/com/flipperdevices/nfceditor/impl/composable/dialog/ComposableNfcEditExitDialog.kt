@@ -20,7 +20,7 @@ fun ComposableNfcEditExitDialog(
             .setOnDismissRequest(onDismiss)
             .addButton(R.string.nfc_dialog_btn_save, onSave, isActive = true)
             .addButton(R.string.nfc_dialog_btn_not_save, onNotSave)
-            // .addButton(R.string.nfc_dialog_btn_save_as, onSaveAs)
+            .addButton(R.string.nfc_dialog_btn_save_as, onSaveAs)
             .build()
     }
 

@@ -28,7 +28,7 @@ fun ComposableEditCard(
     enabled: Boolean
 ) {
     Card(
-        modifier = Modifier.padding(horizontal = 24.dp, vertical = 2.dp)
+        modifier = Modifier.padding(horizontal = 24.dp, vertical = 14.dp)
     ) {
         Column(
             modifier = Modifier.padding(bottom = 21.dp),

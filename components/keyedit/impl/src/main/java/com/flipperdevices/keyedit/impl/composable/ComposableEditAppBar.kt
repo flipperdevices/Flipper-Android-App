@@ -12,6 +12,7 @@ import com.flipperdevices.keyscreen.shared.bar.ComposableKeyScreenAppBar
 
 @Composable
 fun ComposableEditAppBar(
+    title: String?,
     saveButtonState: SaveButtonState,
     onBack: () -> Unit = {},
     onSave: () -> Unit = {}
@@ -25,7 +26,10 @@ fun ComposableEditAppBar(
             )
         },
         centerBlock = {
-            ComposableBarTitle(modifier = it, textId = R.string.keyedit_bar_title)
+            ComposableBarTitle(
+                modifier = it,
+                text = title ?: stringResource(R.string.keyedit_bar_title)
+            )
         },
         endBlock = {
             when (saveButtonState) {

@@ -2,6 +2,7 @@
 
 # 1.2.2 - In progress
 
+- [Feature] Add save as on nfc editor
 - [Feature] Add dialog on exit from nfc editor
 - [REFACTOR] Migrate synchronization task graph to TaskSynchronizationComponent
 
