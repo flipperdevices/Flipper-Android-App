@@ -3,9 +3,7 @@ package com.flipperdevices.nfceditor.impl.composable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.Text
@@ -29,7 +27,6 @@ const val PADDING_CELL_DP = 3
 fun ComposableNfcCell(
     cell: NfcEditorCell,
     scaleFactor: Float,
-    isEditable: Boolean,
     isActive: Boolean,
     onClick: () -> Unit
 ) {
@@ -37,15 +34,9 @@ fun ComposableNfcCell(
         (scaleFactor * PADDING_CELL_DP).dp
     }
 
-    var textFieldModifier: Modifier = Modifier
-
-    if (isEditable) {
-        textFieldModifier = textFieldModifier.clickable(onClick = onClick)
-    }
-
-    textFieldModifier = textFieldModifier
+    val textFieldModifier = Modifier
+        .clickable(onClick = onClick)
         .padding(start = paddingDp, end = paddingDp)
-        .width(IntrinsicSize.Min)
 
     val textColor = when (cell.cellType) {
         NfcCellType.SIMPLE -> LocalPallet.current.text100

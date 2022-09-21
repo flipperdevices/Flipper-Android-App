@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.flipperdevices.core.ui.hexkeyboard.HexKey
+import com.flipperdevices.nfceditor.impl.model.EditorField
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCellLocation
 import com.flipperdevices.nfceditor.impl.model.NfcEditorState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,9 +30,7 @@ class TextUpdaterHelper {
     fun getNfcEditorState(): StateFlow<NfcEditorState?> = nfcEditorStateFlow
 
     fun onFileLoad(nfcEditorState: NfcEditorState?) {
-        nfcEditorStateFlow.update {
-            nfcEditorState
-        }
+        nfcEditorStateFlow.update { nfcEditorState }
     }
 
     fun onSelectCell(location: NfcEditorCellLocation?) {
@@ -67,7 +66,13 @@ class TextUpdaterHelper {
         nfcEditorState = nfcEditorStateFlow.updateAndGet {
             nfcEditorState.copyWithChangedContent(location, DELETE_CELL)
         } ?: return
-        onSelectCell(location.decrement(nfcEditorState.sectors))
+        val newLocation = when (location.field) {
+            EditorField.CARD ->
+                nfcEditorState.nfcEditorCardInfo?.fieldsAsSectors
+                    ?.let { location.decrement(it) }
+            EditorField.DATA -> location.decrement(nfcEditorState.sectors)
+        }
+        onSelectCell(newLocation)
     }
 
     private fun onAddSymbol(symbol: Char) {
@@ -81,7 +86,13 @@ class TextUpdaterHelper {
             nfcEditorState.copyWithChangedContent(location, newText)
         } ?: return
         if (newText.length == BYTES_SYMBOL_COUNT) {
-            onSelectCell(location.increment(nfcEditorState.sectors) ?: location)
+            val newLocation = when (location.field) {
+                EditorField.CARD ->
+                    nfcEditorState.nfcEditorCardInfo?.fieldsAsSectors
+                        ?.let { location.increment(it) }
+                EditorField.DATA -> location.increment(nfcEditorState.sectors)
+            }
+            onSelectCell(newLocation)
         }
     }
 }
