@@ -72,7 +72,7 @@ class TextUpdaterHelper {
                     ?.let { location.decrement(it) }
             EditorField.DATA -> location.decrement(nfcEditorState.sectors)
         }
-        onSelectCell(newLocation ?: location)
+        onSelectCell(newLocation)
     }
 
     private fun onAddSymbol(symbol: Char) {
