@@ -1,5 +1,7 @@
 package com.flipperdevices.core.ui.theme.composable
 
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -21,6 +23,16 @@ fun getThemedFlipperPallet(systemIsDark: Boolean): FlipperPallet {
 }
 
 @Composable
+fun getThemedFlipperPallet(theme: SelectedTheme): FlipperPallet {
+    return when (theme) {
+        SelectedTheme.LIGHT -> lightPallet
+        SelectedTheme.DARK -> darkPallet
+        SelectedTheme.UNRECOGNIZED,
+        SelectedTheme.SYSTEM -> getThemedFlipperPallet(systemIsDark = isSystemInDarkTheme())
+    }
+}
+
+@Composable
 fun isLight(systemIsDark: Boolean): Boolean {
     val themeViewModel: ThemeViewModel = viewModel()
     val theme by themeViewModel.getAppTheme().collectAsState()
@@ -28,8 +40,19 @@ fun isLight(systemIsDark: Boolean): Boolean {
     return when (theme) {
         SelectedTheme.LIGHT -> true
         SelectedTheme.DARK -> false
-        else -> !systemIsDark
+        SelectedTheme.UNRECOGNIZED,
+        SelectedTheme.SYSTEM -> !systemIsDark
     }
+}
+
+fun setAppCompatDelegateTheme(theme: SelectedTheme) {
+    val systemThemeId = when (theme) {
+        SelectedTheme.LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
+        SelectedTheme.DARK -> AppCompatDelegate.MODE_NIGHT_YES
+        SelectedTheme.UNRECOGNIZED,
+        SelectedTheme.SYSTEM -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+    }
+    AppCompatDelegate.setDefaultNightMode(systemThemeId)
 }
 
 @Suppress("MagicNumber")
