@@ -151,12 +151,12 @@ class UpdaterTask(
     ): String {
         flipperUpdateImageHelper.loadImageOnFlipper(requestApi)
 
-        val internalFolder = updaterFolder
+        val updateName: String = updaterFolder
             .listFiles()
             ?.first { it.isDirectory }
-            ?: error("Not found folder in updaterFolder on prepare upload")
+            ?.name
+            ?: updaterFolder.name
 
-        val updateName = internalFolder.name
         val flipperPath = "/ext/update/$updateName"
 
         FolderCreateHelper.mkdirFolderOnFlipper(requestApi, flipperPath)
