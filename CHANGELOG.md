@@ -9,6 +9,7 @@
 - [REFACTOR] Migrate synchronization task graph to TaskSynchronizationComponent
 - [FIX] Rename updater folder
 - [FIX] Choose app theme from selected theme, not is light
+- [FIX] Check total bytes from server(less 0 mean error from server)
 
 # 1.2.1
 
