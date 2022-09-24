@@ -25,10 +25,10 @@ fun getThemedFlipperPallet(systemIsDark: Boolean): FlipperPallet {
 @Composable
 fun getThemedFlipperPallet(theme: SelectedTheme): FlipperPallet {
     return when (theme) {
-        // TODO for new theme
         SelectedTheme.LIGHT -> lightPallet
         SelectedTheme.DARK -> darkPallet
-        else -> getThemedFlipperPallet(systemIsDark = isSystemInDarkTheme())
+        SelectedTheme.UNRECOGNIZED,
+        SelectedTheme.SYSTEM -> getThemedFlipperPallet(systemIsDark = isSystemInDarkTheme())
     }
 }
 
@@ -38,19 +38,19 @@ fun isLight(systemIsDark: Boolean): Boolean {
     val theme by themeViewModel.getAppTheme().collectAsState()
 
     return when (theme) {
-        // TODO for new theme
         SelectedTheme.LIGHT -> true
         SelectedTheme.DARK -> false
-        else -> !systemIsDark
+        SelectedTheme.UNRECOGNIZED,
+        SelectedTheme.SYSTEM -> !systemIsDark
     }
 }
 
 fun setAppCompatDelegateTheme(theme: SelectedTheme) {
     val systemThemeId = when (theme) {
-        // TODO for new theme
         SelectedTheme.LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
         SelectedTheme.DARK -> AppCompatDelegate.MODE_NIGHT_YES
-        else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        SelectedTheme.UNRECOGNIZED,
+        SelectedTheme.SYSTEM -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
     }
     AppCompatDelegate.setDefaultNightMode(systemThemeId)
 }
