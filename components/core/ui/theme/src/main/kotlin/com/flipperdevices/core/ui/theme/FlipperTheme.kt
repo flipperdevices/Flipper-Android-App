@@ -1,6 +1,5 @@
 package com.flipperdevices.core.ui.theme
 
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.LocalContentColor
@@ -19,6 +18,7 @@ import com.flipperdevices.core.preference.pb.SelectedTheme
 import com.flipperdevices.core.ui.theme.composable.getThemedFlipperPallet
 import com.flipperdevices.core.ui.theme.composable.getTypography
 import com.flipperdevices.core.ui.theme.composable.isLight
+import com.flipperdevices.core.ui.theme.composable.setAppCompatDelegateTheme
 import com.flipperdevices.core.ui.theme.models.FlipperPallet
 import com.flipperdevices.core.ui.theme.models.FlipperTypography
 import com.flipperdevices.core.ui.theme.viewmodel.ThemeViewModel
@@ -42,19 +42,12 @@ fun FlipperThemeInternal(
     theme: SelectedTheme = SelectedTheme.SYSTEM,
     content: @Composable () -> Unit
 ) {
-    val isLight = isLight(isSystemInDarkTheme())
-    val pallet = getThemedFlipperPallet(isSystemInDarkTheme())
+    val isLight = isLight(systemIsDark = isSystemInDarkTheme())
+    val pallet = getThemedFlipperPallet(theme)
     val colors = pallet.toMaterialColors(isLight)
     val shapes = Shapes(medium = RoundedCornerShape(size = 10.dp))
 
-    LaunchedEffect(key1 = theme) {
-        val systemThemeId = when (theme) {
-            SelectedTheme.DARK -> AppCompatDelegate.MODE_NIGHT_YES
-            SelectedTheme.LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
-            else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-        }
-        AppCompatDelegate.setDefaultNightMode(systemThemeId)
-    }
+    LaunchedEffect(key1 = theme) { setAppCompatDelegateTheme(theme) }
 
     MaterialTheme(
         shapes = shapes,
