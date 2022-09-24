@@ -11,7 +11,9 @@ import com.flipperdevices.core.preference.pb.PairSettings
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.info.impl.di.InfoComponent
 import com.flipperdevices.info.impl.model.DeviceStatus
+import com.flipperdevices.updater.api.UpdateStateApi
 import com.flipperdevices.updater.api.UpdaterApi
+import com.flipperdevices.updater.model.FlipperUpdateState
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,6 +23,7 @@ import kotlinx.coroutines.flow.onEach
 
 class DeviceStatusViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
     private val deviceStatus = MutableStateFlow<DeviceStatus>(DeviceStatus.NoDevice)
+    private val updateStatus = MutableStateFlow<FlipperUpdateState>(FlipperUpdateState.NotConnected)
 
     @Inject
     lateinit var serviceProvider: FlipperServiceProvider
@@ -31,14 +34,22 @@ class DeviceStatusViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
     @Inject
     lateinit var updaterApi: UpdaterApi
 
+    @Inject
+    lateinit var updateStateApi: UpdateStateApi
+
     init {
         ComponentHolder.component<InfoComponent>().inject(this)
         serviceProvider.provideServiceApi(consumer = this, lifecycleOwner = this)
     }
 
     fun getState(): StateFlow<DeviceStatus> = deviceStatus
+    fun getUpdateState(): StateFlow<FlipperUpdateState> = updateStatus
 
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
+        updateStateApi.getFlipperUpdateState(serviceApi, viewModelScope).onEach {
+            updateStatus.emit(it)
+        }.launchIn(viewModelScope)
+
         combine(
             serviceApi.connectionInformationApi.getConnectionStateFlow(),
             serviceApi.flipperInformationApi.getInformationFlow(),

@@ -35,19 +35,17 @@ import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
 import com.flipperdevices.info.impl.viewmodel.FirmwareUpdateViewModel
 import com.flipperdevices.info.shared.InfoElementCard
-import com.flipperdevices.updater.card.model.FlipperUpdateState
-import com.flipperdevices.updater.card.viewmodel.UpdateStateViewModel
+import com.flipperdevices.updater.model.FlipperUpdateState
 
 @Composable
 fun ComposableInfoCard(
     modifier: Modifier,
     navController: NavHostController,
     deviceStatusViewModel: DeviceStatusViewModel = viewModel(),
-    firmwareUpdateViewModel: FirmwareUpdateViewModel = viewModel(),
-    updateStateViewModel: UpdateStateViewModel = viewModel()
+    firmwareUpdateViewModel: FirmwareUpdateViewModel = viewModel()
 ) {
     val deviceStatus by deviceStatusViewModel.getState().collectAsState()
-    val updateStatus by updateStateViewModel.getUpdateState().collectAsState()
+    val updateStatus by deviceStatusViewModel.getUpdateState().collectAsState()
     val firmwareUpdateStatus by firmwareUpdateViewModel.getState().collectAsState()
     val isUnsupported = firmwareUpdateStatus != FlipperSupportedState.READY
 
