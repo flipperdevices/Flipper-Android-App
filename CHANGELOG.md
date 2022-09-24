@@ -7,6 +7,7 @@
 - [Feature] Add save as on nfc editor
 - [Feature] Add dialog on exit from nfc editor
 - [REFACTOR] Migrate synchronization task graph to TaskSynchronizationComponent
+- [REFACTOR] Redesign card when we waiting update
 
 # 1.2.1
 
