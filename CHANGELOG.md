@@ -8,6 +8,7 @@
 - [Feature] Add dialog on exit from nfc editor
 - [REFACTOR] Migrate synchronization task graph to TaskSynchronizationComponent
 - [FIX] Rename updater folder
+- [FIX] Choose app theme from selected theme, not is light
 
 # 1.2.1
 
