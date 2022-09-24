@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
+import com.flipperdevices.core.ui.ktx.animatedDots
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
@@ -74,7 +75,7 @@ fun ComposableWaitingFlipper() {
             strokeWidth = 3.dp
         )
         Text(
-            text = stringResource(id = R.string.info_firmware_waiting),
+            text = stringResource(id = R.string.info_firmware_waiting) + animatedDots(),
             color = LocalPallet.current.text30,
             style = LocalTypography.current.bodyR14,
             textAlign = TextAlign.Center
