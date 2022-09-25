@@ -1,6 +1,4 @@
-package com.flipperdevices.updater.card.model
-
-import com.flipperdevices.updater.model.FirmwareVersion
+package com.flipperdevices.updater.model
 
 sealed class FlipperUpdateState {
     object NotConnected : FlipperUpdateState()
