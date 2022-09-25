@@ -40,10 +40,10 @@ class UpdateStateApiImpl @Inject constructor(
                     FlipperUpdateState.Ready
                 }
                 is UpdatingState.Complete -> {
-                    FlipperUpdateState.Complete(updaterState.request?.updateTo?.version)
+                    FlipperUpdateState.Complete(updaterState.request?.updateTo)
                 }
                 is UpdatingState.Failed -> {
-                    FlipperUpdateState.Failed(updaterState.request?.updateTo?.version)
+                    FlipperUpdateState.Failed(updaterState.request?.updateTo)
                 }
                 else -> FlipperUpdateState.Ready
             } else if (updaterState.state is UpdatingState.Rebooting) {
