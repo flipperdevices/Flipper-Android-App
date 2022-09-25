@@ -89,7 +89,9 @@ class UpdateRequestViewModelTest {
                 },
                 withArg {
                     Assert.assertEquals(it.updateFrom, fmVersion)
-                    Assert.assertEquals(it.updateTo, filesVersion)
+                    Assert.assertEquals(it.updateTo, fmVersion)
+                    Assert.assertEquals(it.changelog, null)
+                    Assert.assertEquals(it.content, file)
                 }
             )
         }
