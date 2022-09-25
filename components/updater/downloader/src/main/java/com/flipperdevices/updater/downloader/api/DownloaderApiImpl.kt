@@ -22,6 +22,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import java.io.File
+import java.net.UnknownHostException
 import java.util.EnumMap
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
@@ -120,8 +121,9 @@ class DownloaderApiImpl @Inject constructor(
                     tempFile
                 ) { processedBytes, totalBytes ->
                     if (totalBytes > 0) {
-                        send(DownloadProgress.InProgress(processedBytes, totalBytes))
+                        throw UnknownHostException("Server send total bytes less 0")
                     }
+                    send(DownloadProgress.InProgress(processedBytes, totalBytes))
                 }
                 info { "File downloaded in ${tempFile.absolutePath}" }
 
