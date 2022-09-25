@@ -73,7 +73,7 @@ class UpdaterTask(
         stateListener: suspend (UpdatingState) -> Unit
     ) = FlipperStorageProvider.useTemporaryFolder(context) { tempFolder ->
         info { "Start update with folder: ${tempFolder.absolutePath}" }
-        val updateFile = input.updateTo.updaterFile
+        val updateFile = input.content
 
         val updaterFolder = File(tempFolder, updateFile.sha256)
         try {

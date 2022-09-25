@@ -55,7 +55,7 @@ class UpdateStateViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
                 metricApi.reportComplexEvent(
                     UpdateFlipperEnd(
                         updateFrom = updateRequest.updateFrom.version,
-                        updateTo = updateRequest.updateTo.version.version,
+                        updateTo = updateRequest.updateTo.version,
                         updateId = updateRequest.requestId,
                         updateStatus = endStatus
                     )
@@ -83,10 +83,10 @@ class UpdateStateViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
                     FlipperUpdateState.Ready
                 }
                 is UpdatingState.Complete -> {
-                    FlipperUpdateState.Complete(updaterState.request?.updateTo?.version)
+                    FlipperUpdateState.Complete(updaterState.request?.updateTo)
                 }
                 is UpdatingState.Failed -> {
-                    FlipperUpdateState.Failed(updaterState.request?.updateTo?.version)
+                    FlipperUpdateState.Failed(updaterState.request?.updateTo)
                 }
                 else -> FlipperUpdateState.Ready
             } else if (updaterState.state is UpdatingState.Rebooting) {
