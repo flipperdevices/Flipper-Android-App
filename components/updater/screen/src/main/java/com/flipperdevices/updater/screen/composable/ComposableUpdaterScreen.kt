@@ -44,7 +44,7 @@ fun ComposableUpdaterScreen(
                 flipperColor = flipperColor
             )
             ComposableUpdateContent(updaterScreenState, onRetry)
-            val changelog = updaterScreenState.firmwareData?.changelog
+            val changelog = updaterScreenState.updateRequest?.changelog
             if (changelog != null) {
                 ComposableChangelog(changelog)
             }

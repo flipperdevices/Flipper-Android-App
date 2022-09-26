@@ -26,7 +26,7 @@ fun ComposableUpdateContent(
     updaterScreenState: UpdaterScreenState,
     onRetry: () -> Unit
 ) {
-    val version = updaterScreenState.firmwareData?.version
+    val version = updaterScreenState.updateRequest?.updateTo
     if (version != null) {
         FirmwareVersionText(version)
     } else {

@@ -27,9 +27,9 @@ class UpdaterDialogBuilder(
     private fun showSimpleDialog(activity: Activity, updateRequest: UpdateRequest?) {
         lateinit var dialog: AlertDialog
 
-        val versionNameId = updateRequest?.updateTo?.version?.channel?.let { getNameByChannel(it) }
+        val versionNameId = updateRequest?.updateTo?.channel?.let { getNameByChannel(it) }
         val versionText = if (versionNameId != null) {
-            "<b>${activity.getString(versionNameId)} ${updateRequest.updateTo.version.version}</b>"
+            "<b>${activity.getString(versionNameId)} ${updateRequest.updateTo.version}</b>"
         } else ""
         val descriptionHtml = activity.getString(R.string.update_dialog_desc, versionText)
 

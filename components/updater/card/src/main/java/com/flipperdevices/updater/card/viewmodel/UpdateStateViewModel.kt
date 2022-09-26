@@ -42,7 +42,7 @@ class UpdateStateViewModel @VMInject constructor(
                 metricApi.reportComplexEvent(
                     UpdateFlipperEnd(
                         updateFrom = updateRequest.updateFrom.version,
-                        updateTo = updateRequest.updateTo.version.version,
+                        updateTo = updateRequest.updateTo.version,
                         updateId = updateRequest.requestId,
                         updateStatus = endStatus
                     )
