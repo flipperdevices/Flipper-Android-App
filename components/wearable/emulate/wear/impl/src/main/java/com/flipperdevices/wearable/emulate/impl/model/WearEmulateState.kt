@@ -8,7 +8,7 @@ sealed class WearEmulateState {
     abstract val keyType: FlipperKeyType?
 
     @Stable
-    data class Loading(override val keyType: FlipperKeyType?) : WearEmulateState()
+    data class ConnectingToPhone(override val keyType: FlipperKeyType?) : WearEmulateState()
 
     @Stable
     data class NotFoundNode(override val keyType: FlipperKeyType?) : WearEmulateState()

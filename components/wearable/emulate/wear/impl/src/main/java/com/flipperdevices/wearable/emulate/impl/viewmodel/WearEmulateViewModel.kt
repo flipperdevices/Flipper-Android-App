@@ -13,6 +13,7 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.wearable.emulate.common.WearEmulateConstants.MESSAGE_PATH_EMULATE
 import com.flipperdevices.wearable.emulate.common.WearEmulateConstants.MESSAGE_PATH_EMULATE_CLOSE
 import com.flipperdevices.wearable.emulate.common.WearEmulateConstants.MESSAGE_PATH_EMULATE_SHORT
+import com.flipperdevices.wearable.emulate.common.WearEmulateConstants.OPEN_CHANNEL_EMULATE
 import com.flipperdevices.wearable.emulate.impl.R
 import com.flipperdevices.wearable.emulate.impl.api.EMULATE_PATH_KEY
 import com.flipperdevices.wearable.emulate.impl.model.WearEmulateState
@@ -46,6 +47,7 @@ class WearEmulateViewModel @VMInject constructor(
         MutableStateFlow<WearEmulateState>(WearEmulateState.Loading(keyType))
     private val capabilityClient by lazy { Wearable.getCapabilityClient(application) }
     private val messageClient by lazy { Wearable.getMessageClient(application) }
+    private val channelClient by lazy { Wearable.getChannelClient(application) }
 
     init {
         messageClient.addListener(this)
@@ -75,6 +77,8 @@ class WearEmulateViewModel @VMInject constructor(
             } else {
                 info { "Found node $foundedNode" }
                 wearEmulateStateFlow.emit(WearEmulateState.FoundNode(keyType, foundedNodeId))
+                channelClient.openChannel(nodeId, OPEN_CHANNEL_EMULATE)
+
             }
         } catch (ignored: CancellationException) {
             // Request was cancelled normally
@@ -122,6 +126,7 @@ class WearEmulateViewModel @VMInject constructor(
     }
 
     private fun sendCommand(nodeId: String, id: String) {
+
         viewModelScope.launch {
             try {
                 val result = messageClient.sendMessage(
