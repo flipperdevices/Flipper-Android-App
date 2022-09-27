@@ -22,7 +22,10 @@ interface WearServiceComponentDependencies {
 
 
 @SingleIn(WearHandheldGraph::class)
-@MergeComponent(WearHandheldGraph::class, dependencies = [WearServiceComponentDependencies::class])
+@MergeComponent(
+    WearHandheldGraph::class,
+    dependencies = [WearServiceComponentDependencies::class]
+)
 interface WearServiceComponent : WearServiceComponentDependencies {
     val commandInputStream: WearableCommandInputStream<Main.MainRequest>
     val commandOutputStream: WearableCommandOutputStream<Main.MainResponse>
