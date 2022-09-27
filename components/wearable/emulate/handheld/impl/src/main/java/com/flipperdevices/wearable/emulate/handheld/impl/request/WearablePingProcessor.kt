@@ -17,7 +17,7 @@ import kotlinx.coroutines.plus
 
 @ContributesMultibinding(WearHandheldGraph::class, WearableCommandProcessor::class)
 class WearablePingProcessor @Inject constructor(
-    private val commandInputStream: WearableCommandInputStream<Main.MainResponse>,
+    private val commandInputStream: WearableCommandInputStream<Main.MainRequest>,
     private val commandOutputStream: WearableCommandOutputStream<Main.MainResponse>,
     private val lifecycleOwner: LifecycleOwner
 ) : WearableCommandProcessor {

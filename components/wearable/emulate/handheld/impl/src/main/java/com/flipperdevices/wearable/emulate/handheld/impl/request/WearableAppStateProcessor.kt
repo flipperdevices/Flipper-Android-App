@@ -24,8 +24,6 @@ class WearableAppStateProcessor @Inject constructor(
     private val commandOutputStream: WearableCommandOutputStream<Main.MainResponse>,
     private val lifecycleOwner: LifecycleOwner
 ) : WearableCommandProcessor, FlipperBleServiceConsumer {
-
-
     override fun init() {
         serviceProvider.provideServiceApi(this@WearableAppStateProcessor, lifecycleOwner)
     }
