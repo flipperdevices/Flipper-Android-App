@@ -1,11 +1,11 @@
 package com.flipperdevices.updater.card.composable.dialogs
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.flipperdevices.core.ui.dialog.composable.FlipperDialog
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.updater.card.R
 import com.flipperdevices.updater.card.model.UpdatePending
 import com.flipperdevices.updater.card.viewmodel.UpdateRequestViewModel
