@@ -6,6 +6,7 @@ plugins {
 }
 
 dependencies {
+    implementation("androidx.activity:activity-compose:1.6.0")
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.log)
     implementation(projects.components.core.preference)
@@ -15,6 +16,7 @@ dependencies {
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ui.dialog)
     implementation(projects.components.core.ui.theme)
+    implementation(projects.components.deeplink.api)
 
     implementation(projects.components.updater.api)
     implementation(projects.components.updater.subghz)
@@ -29,6 +31,9 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.compose)
+
+    implementation(libs.annotations)
+    implementation(libs.appcompat)
 
     // Compose
     implementation(libs.compose.ui)

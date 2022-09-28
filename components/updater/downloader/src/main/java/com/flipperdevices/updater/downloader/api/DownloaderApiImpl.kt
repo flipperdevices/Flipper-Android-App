@@ -6,6 +6,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.preference.FlipperStorageProvider
+import com.flipperdevices.updater.api.DownloadAndUnpackDelegate
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.downloader.model.ArtifactType
 import com.flipperdevices.updater.downloader.model.FirmwareDirectoryListeningResponse
@@ -119,7 +120,7 @@ class DownloaderApiImpl @Inject constructor(
                     distributionFile,
                     tempFile
                 ) { processedBytes, totalBytes ->
-                    if (totalBytes > 0) {
+                    if (totalBytes <= 0) {
                         throw IllegalArgumentException("Server send total bytes less 0")
                     }
                     send(DownloadProgress.InProgress(processedBytes, totalBytes))

@@ -65,6 +65,11 @@ class FirmwareVersionBuilderApiImpl @Inject constructor() : FirmwareVersionBuild
                 version = typeVersion,
                 buildDate = date
             )
+            FirmwareChannel.CUSTOM -> FirmwareVersion(
+                channel = channel,
+                version = typeVersion,
+                buildDate = date
+            )
             FirmwareChannel.UNKNOWN -> FirmwareVersion(
                 channel = channel,
                 version = typeVersion,

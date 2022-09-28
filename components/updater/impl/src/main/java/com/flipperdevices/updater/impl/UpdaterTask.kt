@@ -10,11 +10,12 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.core.ui.lifecycle.OneTimeExecutionBleTask
 import com.flipperdevices.updater.impl.model.IntFlashFullException
-import com.flipperdevices.updater.impl.tasks.FirmwareDownloaderHelper
 import com.flipperdevices.updater.impl.tasks.FlipperUpdateImageHelper
+import com.flipperdevices.updater.impl.tasks.UpdateContentHelper
 import com.flipperdevices.updater.impl.tasks.UploadToFlipperHelper
 import com.flipperdevices.updater.impl.utils.FolderCreateHelper
 import com.flipperdevices.updater.model.SubGhzProvisioningException
+import com.flipperdevices.updater.model.UpdateContent
 import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.model.UpdatingState
 import com.flipperdevices.updater.subghz.helpers.SubGhzProvisioningHelper
@@ -29,9 +30,9 @@ import kotlinx.coroutines.withContext
 class UpdaterTask(
     serviceProvider: FlipperServiceProvider,
     private val context: Context,
-    private val firmwareDownloaderHelper: FirmwareDownloaderHelper,
     private val uploadToFlipperHelper: UploadToFlipperHelper,
-    private val subGhzProvisioningHelper: SubGhzProvisioningHelper
+    private val subGhzProvisioningHelper: SubGhzProvisioningHelper,
+    private val updateContentHelper: MutableSet<UpdateContentHelper>
 ) : OneTimeExecutionBleTask<UpdateRequest, UpdatingState>(serviceProvider),
     LogTagProvider {
     override val TAG = "UpdaterTask"
@@ -73,14 +74,11 @@ class UpdaterTask(
         stateListener: suspend (UpdatingState) -> Unit
     ) = FlipperStorageProvider.useTemporaryFolder(context) { tempFolder ->
         info { "Start update with folder: ${tempFolder.absolutePath}" }
-        val updateFile = input.content
+        val updateContent = input.content
 
-        val updaterFolder = File(tempFolder, updateFile.sha256)
+        val updaterFolder = File(tempFolder, updateContent.folderName())
         try {
-            stateListener(
-                UpdatingState.DownloadingFromNetwork(0f)
-            )
-            firmwareDownloaderHelper.downloadFirmware(updateFile, updaterFolder, stateListener)
+            uploadFirmwareLocal(input.content, updaterFolder, stateListener)
         } catch (e: Throwable) {
             error(e) { "Failed when download from network" }
             if (e !is CancellationException) {
@@ -143,6 +141,17 @@ class UpdaterTask(
         }
 
         stateListener(UpdatingState.Rebooting)
+    }
+
+    private suspend fun uploadFirmwareLocal(
+        content: UpdateContent,
+        updaterFolder: File,
+        stateListener: suspend (UpdatingState) -> Unit
+    ) {
+        val helper = updateContentHelper
+            .firstOrNull { it.isSupport(content) }
+            ?: throw IllegalArgumentException("No one helper for upload fw to local")
+        helper.uploadFirmwareLocal(content, updaterFolder, stateListener)
     }
 
     private suspend fun prepareToUpload(

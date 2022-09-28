@@ -3,6 +3,7 @@ package com.flipperdevices.updater.downloader.api
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
+import com.flipperdevices.updater.api.DownloadAndUnpackDelegate
 import com.flipperdevices.updater.model.DistributionFile
 import com.squareup.anvil.annotations.ContributesBinding
 import io.ktor.client.HttpClient
@@ -22,16 +23,6 @@ import org.apache.commons.compress.archivers.tar.TarArchiveInputStream
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream
 
 private const val TRY_MAX_COUNT = 3
-
-interface DownloadAndUnpackDelegate {
-    suspend fun download(
-        distributionFile: DistributionFile,
-        target: File,
-        onProgress: (suspend (Long, Long) -> Unit)? = null
-    )
-
-    suspend fun unpack(source: File, target: File)
-}
 
 @ContributesBinding(AppGraph::class, DownloadAndUnpackDelegate::class)
 class DownloadAndUnpackDelegateImpl @Inject constructor(
@@ -79,7 +70,7 @@ class DownloadAndUnpackDelegateImpl @Inject constructor(
             String(Hex.encodeHex(DigestUtils.sha256(it)))
         }
 
-        if (hash != distributionFile.sha256) {
+        if (hash != distributionFile.sha256 && distributionFile.sha256 != null) {
             throw IllegalStateException(
                 "Hash mismatch. Expected: ${distributionFile.sha256}, actual: $hash"
             )

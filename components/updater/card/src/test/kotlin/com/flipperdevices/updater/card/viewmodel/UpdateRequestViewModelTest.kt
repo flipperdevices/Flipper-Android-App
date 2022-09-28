@@ -9,8 +9,9 @@ import com.flipperdevices.updater.card.model.BatteryState
 import com.flipperdevices.updater.model.DistributionFile
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
+import com.flipperdevices.updater.model.OfficialFirmware
 import com.flipperdevices.updater.model.UpdateCardState
-import com.flipperdevices.updater.model.VersionFiles
+import com.flipperdevices.updater.model.UpdateRequest
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -31,7 +32,8 @@ class UpdateRequestViewModelTest {
     private val updaterUIApi: UpdaterUIApi = mockk(relaxUnitFun = true)
     private val viewModel = UpdateRequestViewModel(
         serviceProvider = serviceProvider,
-        updaterUIApi = updaterUIApi
+        updaterUIApi = updaterUIApi,
+        deeplinkParser = mockk()
     )
 
     @Test
@@ -74,11 +76,14 @@ class UpdateRequestViewModelTest {
     fun `verify call open updater screen`() {
         val fmVersion = FirmwareVersion(channel = FirmwareChannel.DEV, version = "")
         val file = DistributionFile(url = "", sha256 = "")
-        val filesVersion = VersionFiles(version = fmVersion, updaterFile = file)
         viewModel.openUpdate(
             UpdateCardState.UpdateAvailable(
-                fromVersion = fmVersion,
-                lastVersion = filesVersion,
+                update = UpdateRequest(
+                    updateFrom = fmVersion,
+                    updateTo = fmVersion,
+                    content = OfficialFirmware(DistributionFile(url = "", sha256 = "")),
+                    changelog = null
+                ),
                 isOtherChannel = true
             )
         )

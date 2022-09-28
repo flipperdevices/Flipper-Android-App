@@ -22,9 +22,10 @@ import com.flipperdevices.updater.model.DistributionFile
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
 import com.flipperdevices.updater.model.FlipperUpdateState
+import com.flipperdevices.updater.model.OfficialFirmware
 import com.flipperdevices.updater.model.UpdateCardState
 import com.flipperdevices.updater.model.UpdateErrorType
-import com.flipperdevices.updater.model.VersionFiles
+import com.flipperdevices.updater.model.UpdateRequest
 import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
@@ -96,7 +97,12 @@ private fun ComposableUpdaterCard(
                 onSelectFirmwareChannel = onSelectChannel
             )
             is UpdateCardState.UpdateAvailable -> ComposableFirmwareUpdaterContent(
-                version = cardStateLocal.lastVersion.version,
+                version = cardStateLocal.update.updateTo,
+                updateCardState = cardStateLocal,
+                onSelectFirmwareChannel = onSelectChannel
+            )
+            is UpdateCardState.ChooseUpdateFromStorage -> ComposableFirmwareUpdaterContent(
+                version = cardStateLocal.flipperVersion,
                 updateCardState = cardStateLocal,
                 onSelectFirmwareChannel = onSelectChannel
             )
@@ -116,18 +122,20 @@ private fun ComposableUpdaterCardPreview() {
             UpdateCardState.InProgress,
             UpdateCardState.NoUpdate(lastVersion),
             UpdateCardState.UpdateAvailable(
-                fromVersion = lastVersion,
-                lastVersion = VersionFiles(
-                    version = lastVersion,
-                    updaterFile = DistributionFile(url = "", sha256 = "")
+                update = UpdateRequest(
+                    updateFrom = lastVersion,
+                    updateTo = lastVersion,
+                    content = OfficialFirmware(DistributionFile(url = "", sha256 = "")),
+                    changelog = null
                 ),
                 isOtherChannel = false
             ),
             UpdateCardState.UpdateAvailable(
-                fromVersion = lastVersion,
-                lastVersion = VersionFiles(
-                    version = lastVersion,
-                    updaterFile = DistributionFile(url = "", sha256 = "")
+                update = UpdateRequest(
+                    updateFrom = lastVersion,
+                    updateTo = lastVersion,
+                    content = OfficialFirmware(DistributionFile(url = "", sha256 = "")),
+                    changelog = null
                 ),
                 isOtherChannel = true
             ),

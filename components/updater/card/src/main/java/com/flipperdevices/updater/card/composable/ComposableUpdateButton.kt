@@ -1,5 +1,8 @@
 package com.flipperdevices.updater.card.composable
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -35,15 +38,22 @@ import com.flipperdevices.updater.card.composable.dialogs.ComposableUpdateReques
 import com.flipperdevices.updater.model.DistributionFile
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
+import com.flipperdevices.updater.model.OfficialFirmware
 import com.flipperdevices.updater.model.UpdateCardState
-import com.flipperdevices.updater.model.VersionFiles
+import com.flipperdevices.updater.model.UpdateRequest
 
 @Composable
 fun ComposableUpdateButton(
     updateCardState: UpdateCardState,
     inProgress: Boolean
 ) {
+    var uri by remember { mutableStateOf<Uri?>(null) }
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
+        uri = it
+    }
+
     var buttonModifier = Modifier.padding(all = 12.dp)
+
     var pendingUpdateRequest by remember {
         mutableStateOf<UpdateCardState.UpdateAvailable?>(null)
     }
@@ -60,6 +70,14 @@ fun ComposableUpdateButton(
         }
     }
 
+    if (uri != null) {
+        if (updateCardState is UpdateCardState.ChooseUpdateFromStorage) {
+            ComposableUpdateRequest(uri = uri!!, currentVersion = updateCardState.flipperVersion) {
+                pendingUpdateRequest = null
+            }
+        }
+    }
+
     when (updateCardState) {
         is UpdateCardState.Error -> return
         UpdateCardState.InProgress -> return
@@ -67,6 +85,16 @@ fun ComposableUpdateButton(
             buttonModifier,
             textId = R.string.updater_card_updater_button_no_updates,
             descriptionId = R.string.updater_card_updater_button_no_updates_desc,
+            color = LocalPallet.current.text20
+        )
+        is UpdateCardState.ChooseUpdateFromStorage -> ComposableUpdateButtonContent(
+            buttonModifier.clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = rememberRipple(),
+                onClick = { launcher.launch("application/tgz") }
+            ),
+            textId = R.string.updater_card_updater_button_choose_file,
+            descriptionId = R.string.updater_card_updater_button_choose_file_desc,
             color = LocalPallet.current.text20
         )
         is UpdateCardState.UpdateAvailable -> {
@@ -157,10 +185,11 @@ fun ComposableUpdateButtonPreview() {
         val updateCardState = setOf(
             UpdateCardState.NoUpdate(flipperVersion = version),
             UpdateCardState.UpdateAvailable(
-                fromVersion = version,
-                lastVersion = VersionFiles(
-                    version = version,
-                    updaterFile = DistributionFile(url = "", sha256 = "")
+                update = UpdateRequest(
+                    updateFrom = version,
+                    updateTo = version,
+                    content = OfficialFirmware(DistributionFile(url = "", sha256 = "")),
+                    changelog = null
                 ),
                 isOtherChannel = false
             )

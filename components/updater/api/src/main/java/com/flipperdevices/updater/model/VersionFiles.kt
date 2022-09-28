@@ -13,5 +13,5 @@ data class VersionFiles constructor(
 @Parcelize
 data class DistributionFile(
     val url: String,
-    val sha256: String
+    val sha256: String? = null
 ) : Parcelable

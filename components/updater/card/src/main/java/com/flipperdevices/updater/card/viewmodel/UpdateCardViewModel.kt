@@ -21,8 +21,10 @@ import com.flipperdevices.updater.card.helpers.UpdateOfferProviderApi
 import com.flipperdevices.updater.card.utils.isGreaterThan
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
+import com.flipperdevices.updater.model.OfficialFirmware
 import com.flipperdevices.updater.model.UpdateCardState
 import com.flipperdevices.updater.model.UpdateErrorType
+import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.model.VersionFiles
 import java.net.UnknownHostException
 import java.util.EnumMap
@@ -161,6 +163,15 @@ class UpdateCardViewModel @VMInject constructor(
             return
         }
 
+        if (updateChannel == FirmwareChannel.CUSTOM) {
+            updateCardState.emit(
+                UpdateCardState.ChooseUpdateFromStorage(
+                    flipperVersion = flipperFirmwareVersion
+                )
+            )
+            return
+        }
+
         val latestVersionFromNetwork = latestVersionFromNetworkResult
             .getOrNull()?.get(updateChannel)
         info { "Latest version from network is ${latestVersionFromNetwork?.version}" }
@@ -175,8 +186,12 @@ class UpdateCardViewModel @VMInject constructor(
         if (isUpdateAvailable) {
             updateCardState.emit(
                 UpdateCardState.UpdateAvailable(
-                    fromVersion = flipperFirmwareVersion,
-                    lastVersion = latestVersionFromNetwork,
+                    update = UpdateRequest(
+                        updateFrom = flipperFirmwareVersion,
+                        updateTo = latestVersionFromNetwork.version,
+                        changelog = latestVersionFromNetwork.changelog,
+                        content = OfficialFirmware(latestVersionFromNetwork.updaterFile)
+                    ),
                     isOtherChannel = latestVersionFromNetwork.version.channel
                         != flipperFirmwareVersion.channel
                 )
@@ -204,6 +219,7 @@ private fun SelectedChannel.toFirmwareChannel(): FirmwareChannel? = when (this) 
     SelectedChannel.RELEASE -> FirmwareChannel.RELEASE
     SelectedChannel.RELEASE_CANDIDATE -> FirmwareChannel.RELEASE_CANDIDATE
     SelectedChannel.DEV -> FirmwareChannel.DEV
+    SelectedChannel.CUSTOM -> FirmwareChannel.CUSTOM
     SelectedChannel.UNRECOGNIZED -> null
 }
 
@@ -211,6 +227,7 @@ private fun FirmwareChannel?.toSelectedChannel(): SelectedChannel = when (this) 
     FirmwareChannel.RELEASE -> SelectedChannel.RELEASE
     FirmwareChannel.RELEASE_CANDIDATE -> SelectedChannel.RELEASE_CANDIDATE
     FirmwareChannel.DEV -> SelectedChannel.DEV
+    FirmwareChannel.CUSTOM -> SelectedChannel.CUSTOM
     FirmwareChannel.UNKNOWN -> error("Can`t convert unknown firmware channel to internal channel")
     null -> SelectedChannel.UNRECOGNIZED
 }

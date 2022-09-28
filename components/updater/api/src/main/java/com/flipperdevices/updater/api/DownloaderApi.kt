@@ -22,3 +22,13 @@ interface DownloaderApi {
         decompress: Boolean = false
     ): Flow<DownloadProgress>
 }
+
+interface DownloadAndUnpackDelegate {
+    suspend fun download(
+        distributionFile: DistributionFile,
+        target: File,
+        onProgress: (suspend (Long, Long) -> Unit)? = null
+    )
+
+    suspend fun unpack(source: File, target: File)
+}
