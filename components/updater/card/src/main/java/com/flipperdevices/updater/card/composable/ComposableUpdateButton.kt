@@ -1,6 +1,5 @@
 package com.flipperdevices.updater.card.composable
 
-import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
@@ -25,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,6 +35,7 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.updater.card.R
 import com.flipperdevices.updater.card.composable.dialogs.ComposableUpdateRequest
+import com.flipperdevices.updater.card.model.UpdatePending
 import com.flipperdevices.updater.model.DistributionFile
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
@@ -47,34 +48,25 @@ fun ComposableUpdateButton(
     updateCardState: UpdateCardState,
     inProgress: Boolean
 ) {
-    var uri by remember { mutableStateOf<Uri?>(null) }
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
-        uri = it
-    }
-
     var buttonModifier = Modifier.padding(all = 12.dp)
-
-    var pendingUpdateRequest by remember {
-        mutableStateOf<UpdateCardState.UpdateAvailable?>(null)
-    }
-    val localUpdaterRequest = pendingUpdateRequest
-
     if (inProgress) {
         ComposableUpdateButtonPlaceholder(buttonModifier)
         return
     }
 
-    if (localUpdaterRequest != null) {
-        ComposableUpdateRequest(pendingUpdateRequest = localUpdaterRequest) {
-            pendingUpdateRequest = null
+    val context = LocalContext.current
+
+    var pendingUpdateRequest by remember { mutableStateOf<UpdatePending?>(null) }
+    val localUpdaterRequest = pendingUpdateRequest
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        if (uri != null && updateCardState is UpdateCardState.CustomUpdate) {
+            pendingUpdateRequest = UpdatePending.URI(uri, context, updateCardState.flipperVersion)
         }
     }
 
-    if (uri != null) {
-        if (updateCardState is UpdateCardState.ChooseUpdateFromStorage) {
-            ComposableUpdateRequest(uri = uri!!, currentVersion = updateCardState.flipperVersion) {
-                pendingUpdateRequest = null
-            }
+    if (localUpdaterRequest != null) {
+        ComposableUpdateRequest(pendingUpdateRequest = localUpdaterRequest) {
+            pendingUpdateRequest = null
         }
     }
 
@@ -87,22 +79,22 @@ fun ComposableUpdateButton(
             descriptionId = R.string.updater_card_updater_button_no_updates_desc,
             color = LocalPallet.current.text20
         )
-        is UpdateCardState.ChooseUpdateFromStorage -> ComposableUpdateButtonContent(
+        is UpdateCardState.CustomUpdate -> ComposableUpdateButtonContent(
             buttonModifier.clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(),
-                onClick = { launcher.launch("application/tgz") }
+                onClick = { launcher.launch("*/*") }
             ),
             textId = R.string.updater_card_updater_button_choose_file,
             descriptionId = R.string.updater_card_updater_button_choose_file_desc,
-            color = LocalPallet.current.text20
+            color = LocalPallet.current.updateProgressGreen
         )
         is UpdateCardState.UpdateAvailable -> {
             buttonModifier = buttonModifier.clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(),
                 onClick = {
-                    pendingUpdateRequest = updateCardState
+                    pendingUpdateRequest = UpdatePending.Request(updateCardState.update)
                 }
             )
 

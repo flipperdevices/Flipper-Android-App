@@ -165,7 +165,7 @@ class UpdateCardViewModel @VMInject constructor(
 
         if (updateChannel == FirmwareChannel.CUSTOM) {
             updateCardState.emit(
-                UpdateCardState.ChooseUpdateFromStorage(
+                UpdateCardState.CustomUpdate(
                     flipperVersion = flipperFirmwareVersion
                 )
             )

@@ -47,6 +47,15 @@ fun getTextByVersion(version: FirmwareVersion): String {
 }
 
 @Composable
+fun getTextByVersionInChooser(version: FirmwareVersion): String {
+    return when (version.channel) {
+        FirmwareChannel.CUSTOM,
+        FirmwareChannel.UNKNOWN -> stringResource(id = R.string.info_device_firmware_version_custom)
+        else -> getTextByVersion(version)
+    }
+}
+
+@Composable
 fun getColorByChannel(channel: FirmwareChannel): Color {
     return when (channel) {
         FirmwareChannel.DEV -> LocalPallet.current.channelFirmwareDev

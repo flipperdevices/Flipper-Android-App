@@ -101,7 +101,7 @@ private fun ComposableUpdaterCard(
                 updateCardState = cardStateLocal,
                 onSelectFirmwareChannel = onSelectChannel
             )
-            is UpdateCardState.ChooseUpdateFromStorage -> ComposableFirmwareUpdaterContent(
+            is UpdateCardState.CustomUpdate -> ComposableFirmwareUpdaterContent(
                 version = cardStateLocal.flipperVersion,
                 updateCardState = cardStateLocal,
                 onSelectFirmwareChannel = onSelectChannel

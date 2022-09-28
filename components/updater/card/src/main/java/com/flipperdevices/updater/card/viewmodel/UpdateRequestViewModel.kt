@@ -1,7 +1,5 @@
 package com.flipperdevices.updater.card.viewmodel
 
-import android.content.Context
-import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
@@ -12,10 +10,10 @@ import com.flipperdevices.deeplink.api.DeepLinkParser
 import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.updater.api.UpdaterUIApi
 import com.flipperdevices.updater.card.model.BatteryState
+import com.flipperdevices.updater.card.model.UpdatePending
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
 import com.flipperdevices.updater.model.InternalStorageFirmware
-import com.flipperdevices.updater.model.UpdateCardState
 import com.flipperdevices.updater.model.UpdateRequest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -38,22 +36,27 @@ class UpdateRequestViewModel @VMInject constructor(
 
     fun getBatteryState(): StateFlow<BatteryState> = batteryStateFlow
 
-    fun openUpdate(updateAvailable: UpdateCardState.UpdateAvailable) {
-        updaterUIApi.openUpdateScreen(
-            silent = false,
-            updateRequest = updateAvailable.update
-        )
+    fun openUpdate(updatePending: UpdatePending) {
+        when (updatePending) {
+            is UpdatePending.Request -> {
+                updaterUIApi.openUpdateScreen(
+                    silent = false,
+                    updateRequest = updatePending.updateRequest
+                )
+            }
+            is UpdatePending.URI -> openUpdateInternal(updatePending)
+        }
     }
 
-    fun openUpdate(uri: Uri, context: Context, currentVersion: FirmwareVersion) {
+    private fun openUpdateInternal(updatePending: UpdatePending.URI) {
         viewModelScope.launch {
-            val deeplink = deeplinkParser.fromUri(context, uri)
+            val deeplink = deeplinkParser.fromUri(updatePending.context, updatePending.uri)
             val content = deeplink?.content
             if (content is DeeplinkContent.InternalStorageFile) {
                 updaterUIApi.openUpdateScreen(
                     silent = false,
                     updateRequest = UpdateRequest(
-                        updateFrom = currentVersion,
+                        updateFrom = updatePending.currentVersion,
                         updateTo = FirmwareVersion(
                             channel = FirmwareChannel.CUSTOM,
                             version = content.file.getClearName()

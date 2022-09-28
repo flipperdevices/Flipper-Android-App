@@ -124,9 +124,7 @@ class UpdaterApiImpl @Inject constructor(
                     UpdatingStateWithRequest(UpdatingState.Complete, request = it.request)
                 } else if (it.request?.updateTo?.channel != FirmwareChannel.CUSTOM) {
                     UpdatingStateWithRequest(UpdatingState.Failed, request = it.request)
-                } else {
-                    UpdatingStateWithRequest(UpdatingState.Complete, request = it.request)
-                }
+                } else it
             } else it
         }
     }

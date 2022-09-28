@@ -11,6 +11,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.animatedDots
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import androidx.compose.ui.text.style.TextOverflow
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.info.shared.getColorByChannel
@@ -98,7 +99,9 @@ private fun FirmwareVersionText(version: FirmwareVersion) {
         modifier = Modifier.heightIn(21.dp),
         text = text,
         color = textColor,
-        style = LocalTypography.current.titleM18
+        style = LocalTypography.current.titleM18,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis
     )
 }
 
