@@ -3,6 +3,7 @@ package com.flipperdevices.wearable.emulate.handheld.impl.service
 import androidx.lifecycle.lifecycleScope
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import com.flipperdevices.wearable.emulate.handheld.impl.di.DaggerWearServiceComponent
 import com.google.android.gms.wearable.ChannelClient
 
@@ -23,6 +24,7 @@ class WearRequestListenerService :
 
     override fun onChannelOpened(channel: ChannelClient.Channel) {
         super.onChannelOpened(channel)
+        info { "#onChannelOpened $channel" }
         wearServiceComponent.commandInputStream.onOpenChannel(lifecycleScope, channel)
         wearServiceComponent.commandOutputStream.onOpenChannel(lifecycleScope, channel)
     }
@@ -33,6 +35,7 @@ class WearRequestListenerService :
         appSpecificErrorCode: Int
     ) {
         super.onChannelClosed(channel, closeReason, appSpecificErrorCode)
+        info { "#onChannelClosed $channel Reason: $closeReason AppCode: $appSpecificErrorCode" }
         wearServiceComponent.commandInputStream.onCloseChannel(lifecycleScope)
         wearServiceComponent.commandOutputStream.onCloseChannel(lifecycleScope)
     }

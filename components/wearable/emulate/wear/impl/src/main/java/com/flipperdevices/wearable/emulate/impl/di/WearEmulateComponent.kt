@@ -5,10 +5,8 @@ import android.content.Context
 import androidx.lifecycle.LifecycleOwner
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.SingleIn
-import com.flipperdevices.wearable.emulate.common.WearableCommandInputStream
-import com.flipperdevices.wearable.emulate.common.WearableCommandOutputStream
-import com.flipperdevices.wearable.emulate.common.ipcemulate.Main.MainRequest
-import com.flipperdevices.wearable.emulate.common.ipcemulate.Main.MainResponse
+import com.flipperdevices.wearable.emulate.impl.viewmodel.ConnectionChannelHelper
+import com.flipperdevices.wearable.emulate.impl.viewmodel.WearEmulateStateMachine
 import com.squareup.anvil.annotations.ContributesTo
 import com.squareup.anvil.annotations.MergeComponent
 import dagger.BindsInstance
@@ -26,8 +24,8 @@ interface WearEmulateComponentDependencies {
     dependencies = [WearEmulateComponentDependencies::class]
 )
 interface WearEmulateComponent : WearEmulateComponentDependencies {
-    val commandInputStream: WearableCommandInputStream<MainResponse>
-    val commandOutputStream: WearableCommandOutputStream<MainRequest>
+    val wearEmulateStateMachine: WearEmulateStateMachine
+    val connectionChannelHelper: ConnectionChannelHelper
 
     @Component.Factory
     interface Factory {

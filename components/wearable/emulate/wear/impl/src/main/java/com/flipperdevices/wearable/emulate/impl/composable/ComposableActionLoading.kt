@@ -1,15 +1,14 @@
-package com.flipperdevices.keyscreen.emulate.composable.common
+package com.flipperdevices.wearable.emulate.impl.composable
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
-import com.flipperdevices.keyscreen.emulate.R
-import com.flipperdevices.keyscreen.emulate.model.LoadingState
+import com.flipperdevices.keyscreen.api.KeyEmulateUiApi
+import com.flipperdevices.wearable.emulate.impl.R
+import com.flipperdevices.wearable.emulate.impl.model.WearLoadingState
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.placeholder
 import com.google.accompanist.placeholder.shimmer
@@ -17,10 +16,11 @@ import com.google.accompanist.placeholder.shimmer
 @Composable
 fun ComposableActionLoading(
     modifier: Modifier,
-    loadingState: LoadingState
+    keyEmulateApi: KeyEmulateUiApi,
+    loadingState: WearLoadingState
 ) {
     val placeholderColor = LocalPallet.current.text8.copy(alpha = 0.2f)
-    ComposableEmulateButtonWithText(
+    keyEmulateApi.ComposableEmulateButtonWithText(
         modifier = modifier,
         buttonModifier = Modifier.placeholder(
             visible = true,
@@ -30,26 +30,17 @@ fun ComposableActionLoading(
             ),
             shape = RoundedCornerShape(16.dp)
         ),
-        buttonTextId = R.string.keyscreen_loading,
+        buttonTextId = R.string.keyscreen_loading_btn,
         color = LocalPallet.current.text8,
         textId = when (loadingState) {
-            LoadingState.CONNECTING -> R.string.emulate_loading_connecting
-            LoadingState.SYNCING -> R.string.emulate_loading_syncing
-        }
+            WearLoadingState.FINDING_PHONE -> R.string.keyscreen_loading_find_phone
+            WearLoadingState.CONNECTING_PHONE -> R.string.keyscreen_loading_connecting_phone
+            WearLoadingState.TEST_CONNECTION -> R.string.keyscreen_loading_test_connection
+            WearLoadingState.CONNECTING_FLIPPER -> R.string.keyscreen_loading_connecting_flipper
+        },
+        iconId = null,
+        picture = null,
+        progress = null,
+        progressColor = Color.Transparent
     )
-}
-
-@Preview(
-    showBackground = true,
-    showSystemUi = true
-)
-@Composable
-private fun ComposableLoadingPreview() {
-    FlipperThemeInternal {
-        Column {
-            LoadingState.values().forEach {
-                ComposableActionLoading(Modifier, it)
-            }
-        }
-    }
 }
