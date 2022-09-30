@@ -144,5 +144,8 @@ include(
     ":components:wearable:emulate:handheld:api",
     ":components:wearable:emulate:handheld:impl",
     ":components:wearable:emulate:handheld:noop",
-    ":components:wearable:emulate:common"
+    ":components:wearable:emulate:common",
+
+    ":components:widget:api",
+    ":components:widget:impl",
 )

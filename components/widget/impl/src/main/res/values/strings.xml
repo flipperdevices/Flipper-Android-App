@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="flipper_name_default">Flipper</string>
+    <string name="file_name_default">Unknown</string>
+</resources>

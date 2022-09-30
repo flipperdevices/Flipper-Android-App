@@ -32,7 +32,7 @@ widgets:
       default: false
 
   - booleanParameter:
-      id: needTesting
+      id: needTest
       name: Add test?
       help: Adds testing library
       default: true

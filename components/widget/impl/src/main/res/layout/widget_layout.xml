@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:background="@drawable/background"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical">
+
+    <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:paddingEnd="6dp"
+            android:paddingStart="6dp"
+            android:paddingTop="6dp">
+
+        <ImageView
+                android:layout_height="18dp"
+                android:layout_width="18dp"
+                android:src="@drawable/widget_app_logo" />
+
+        <TextView
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:paddingStart="4dp"
+                android:text="@string/flipper_name_default"
+                android:textColor="@android:color/black"
+                android:textSize="12sp"
+                android:textStyle="normal" />
+    </LinearLayout>
+
+
+    <ImageView
+            android:layout_gravity="center_horizontal"
+            android:layout_height="24dp"
+            android:layout_width="24dp"
+            android:padding="4dp"
+            android:src="@drawable/ic_fileformat_sub"
+            android:tint="@android:color/black" />
+
+    <TextView
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:paddingEnd="6dp"
+            android:paddingStart="6dp"
+            android:text="@string/file_name_default"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
+    <ImageView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:paddingBottom="6dp"
+            android:paddingEnd="6dp"
+            android:paddingStart="6dp"
+            android:paddingTop="2dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/send" />
+</LinearLayout>
