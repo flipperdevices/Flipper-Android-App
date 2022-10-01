@@ -4,9 +4,13 @@
         <shape>
             <solid android:color="?colorAccent" />
 
-            <corners android:radius="6dp" />
+            <corners android:radius="12dp" />
         </shape>
     </item>
 
-
+    <item
+            android:bottom="12dp"
+            android:drawable="?buttonTextDrawable"
+            android:gravity="center"
+            android:top="12dp" />
 </layer-list>

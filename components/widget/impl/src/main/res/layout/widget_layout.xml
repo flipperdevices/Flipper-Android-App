@@ -35,9 +35,9 @@
 
             <ProgressBar
                     style="@style/Widget.AppCompat.ProgressBar"
-                    android:background="@drawable/send_round_background"
+                    android:background="@drawable/round_background"
                     android:indeterminateOnly="false"
-                    android:indeterminateTint="#FF8200"
+                    android:indeterminateTint="?colorAccent"
                     android:layout_height="18dp"
                     android:layout_width="18dp"
                     android:progress="50"
@@ -52,20 +52,25 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:layout_width="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="2dp">
 
-        <ImageView
+        <FrameLayout
+                android:background="?defaultKeyLogoDrawable"
+                android:backgroundTint="@android:color/black"
                 android:layout_gravity="center_horizontal"
-                android:layout_height="24dp"
-                android:layout_width="24dp"
-                android:padding="2dp"
-                android:src="@drawable/ic_fileformat_sub"
-                android:tint="@android:color/black" />
+                android:layout_height="20dp"
+                android:layout_width="20dp"
+                android:paddingEnd="2dp"
+                android:paddingStart="2dp" />
 
         <TextView
+                android:ellipsize="end"
                 android:gravity="center"
+                android:includeFontPadding="false"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
+                android:maxLines="1"
                 android:paddingEnd="6dp"
                 android:paddingStart="6dp"
                 android:text="@string/file_name_default"
@@ -80,7 +85,6 @@
             android:paddingBottom="6dp"
             android:paddingEnd="6dp"
             android:paddingStart="6dp"
-            android:paddingTop="2dp"
             android:scaleType="fitXY"
-            android:src="@drawable/send" />
+            android:src="@drawable/btn_background" />
 </LinearLayout>

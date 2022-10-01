@@ -3,5 +3,5 @@
         android:shape="ring"
         android:thickness="2dp"
         android:useLevel="false">
-    <solid android:color="@color/send_background" />
+    <solid android:color="?android:attr/colorSecondary" />
 </shape>
