@@ -30,19 +30,37 @@
                 android:textStyle="normal" />
 
         <FrameLayout
+                android:id="@+id/progress_bar"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content">
 
             <ProgressBar
                     style="@style/Widget.AppCompat.ProgressBar"
+                    android:id="@+id/progress_bar_indeterminate"
+                    android:indeterminateOnly="true"
+                    android:indeterminateTint="?colorAccent"
+                    android:layout_height="18dp"
+                    android:layout_width="18dp"
+                    android:progress="100" />
+
+            <ProgressBar
+                    style="@style/Widget.AppCompat.ProgressBar"
                     android:background="@drawable/round_background"
+                    android:id="@+id/progress_bar_fixed"
                     android:indeterminateOnly="false"
                     android:indeterminateTint="?colorAccent"
                     android:layout_height="18dp"
                     android:layout_width="18dp"
                     android:progress="50"
                     android:progressDrawable="@drawable/send_spinner"
-                    android:rotation="-90" />
+                    android:rotation="-90"
+                    android:visibility="gone" />
+
+            <FrameLayout
+                    android:background="@drawable/stop_rectangle"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content" />
         </FrameLayout>
     </LinearLayout>
 
