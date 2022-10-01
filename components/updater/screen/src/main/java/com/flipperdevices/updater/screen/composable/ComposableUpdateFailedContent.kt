@@ -27,7 +27,7 @@ import com.flipperdevices.updater.screen.R
 private fun ComposableUpdateFailedContent(
     @DrawableRes imageId: Int?,
     @StringRes titleId: Int?,
-    @StringRes descriptionId: Int,
+    @StringRes descriptionId: Int?,
     button: @Composable () -> Unit = {}
 ) {
     if (imageId != null) {
@@ -47,13 +47,15 @@ private fun ComposableUpdateFailedContent(
         )
     }
 
-    ComposableMarkdown(
-        modifier = Modifier.padding(start = 24.dp, end = 24.dp, bottom = 14.dp),
-        content = stringResource(descriptionId),
-        colors = markdownColors(
-            text = LocalPallet.current.text40
+    if (descriptionId != null) {
+        ComposableMarkdown(
+            modifier = Modifier.padding(start = 24.dp, end = 24.dp, bottom = 14.dp),
+            content = stringResource(descriptionId),
+            colors = markdownColors(
+                text = LocalPallet.current.text40
+            )
         )
-    )
+    }
 
     Box(Modifier.padding(start = 24.dp, end = 24.dp)) {
         button()
@@ -122,4 +124,13 @@ fun ComposableInternalFlashFailed() {
             markdownResId = R.string.update_screen_failed_int_link
         )
     }
+}
+
+@Composable
+fun ComposableInternalUpdateFailed() {
+    ComposableUpdateFailedContent(
+        imageId = null,
+        titleId = R.string.update_screen_failed_int_update_dec,
+        descriptionId = null
+    )
 }

@@ -13,7 +13,6 @@ enum SelectedChannel {
   RELEASE = 0;
   RELEASE_CANDIDATE = 1;
   DEV = 2;
-  CUSTOM = 3;
 }
 
 enum SelectedTheme {

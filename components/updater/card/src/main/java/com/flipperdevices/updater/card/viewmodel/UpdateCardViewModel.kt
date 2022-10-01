@@ -56,10 +56,17 @@ class UpdateCardViewModel @VMInject constructor(
     private val updateCardState = MutableStateFlow<UpdateCardState>(
         UpdateCardState.InProgress
     )
+    private val updateChanelFlow = MutableStateFlow<FirmwareChannel?>(null)
+
     private var cardStateJob: Job? = null
     private val mutex = Mutex()
 
     init {
+        viewModelScope.launch {
+            dataStoreSettings.data.collectLatest {
+                updateChanelFlow.emit(it.selectedChannel.toFirmwareChannel())
+            }
+        }
         serviceProvider.provideServiceApi(this, this)
     }
 
@@ -67,10 +74,16 @@ class UpdateCardViewModel @VMInject constructor(
 
     fun onSelectChannel(channel: FirmwareChannel?) {
         viewModelScope.launch {
-            dataStoreSettings.updateData {
-                it.toBuilder()
-                    .setSelectedChannel(channel.toSelectedChannel())
-                    .build()
+            updateChanelFlow.emit(channel)
+            when (channel) {
+                FirmwareChannel.RELEASE,
+                FirmwareChannel.RELEASE_CANDIDATE,
+                FirmwareChannel.DEV -> dataStoreSettings.updateData {
+                    it.toBuilder()
+                        .setSelectedChannel(channel.toSelectedChannel())
+                        .build()
+                }
+                else -> {}
             }
         }
     }
@@ -106,10 +119,9 @@ class UpdateCardViewModel @VMInject constructor(
             combine(
                 flipperVersionProviderApi.getCurrentFlipperVersion(viewModelScope, serviceApi),
                 serviceApi.flipperRpcInformationApi.getRpcInformationFlow(),
-                dataStoreSettings.data,
-                updateOfferHelper.isUpdateRequire(serviceApi)
-            ) { flipperFirmwareVersion, rpcInformation, settings, isAlwaysUpdate ->
-                val updateChannel = settings.selectedChannel.toFirmwareChannel()
+                updateOfferHelper.isUpdateRequire(serviceApi),
+                updateChanelFlow
+            ) { flipperFirmwareVersion, rpcInformation, isAlwaysUpdate, updateChannel ->
                 val newUpdateChannel = if (
                     updateChannel == null && flipperFirmwareVersion != null
                 ) {
@@ -165,9 +177,7 @@ class UpdateCardViewModel @VMInject constructor(
 
         if (updateChannel == FirmwareChannel.CUSTOM) {
             updateCardState.emit(
-                UpdateCardState.CustomUpdate(
-                    flipperVersion = flipperFirmwareVersion
-                )
+                UpdateCardState.CustomUpdate(flipperVersion = flipperFirmwareVersion)
             )
             return
         }
@@ -219,7 +229,6 @@ private fun SelectedChannel.toFirmwareChannel(): FirmwareChannel? = when (this) 
     SelectedChannel.RELEASE -> FirmwareChannel.RELEASE
     SelectedChannel.RELEASE_CANDIDATE -> FirmwareChannel.RELEASE_CANDIDATE
     SelectedChannel.DEV -> FirmwareChannel.DEV
-    SelectedChannel.CUSTOM -> FirmwareChannel.CUSTOM
     SelectedChannel.UNRECOGNIZED -> null
 }
 
@@ -227,7 +236,7 @@ private fun FirmwareChannel?.toSelectedChannel(): SelectedChannel = when (this) 
     FirmwareChannel.RELEASE -> SelectedChannel.RELEASE
     FirmwareChannel.RELEASE_CANDIDATE -> SelectedChannel.RELEASE_CANDIDATE
     FirmwareChannel.DEV -> SelectedChannel.DEV
-    FirmwareChannel.CUSTOM -> SelectedChannel.CUSTOM
-    FirmwareChannel.UNKNOWN -> error("Can`t convert unknown firmware channel to internal channel")
+    FirmwareChannel.UNKNOWN,
+    FirmwareChannel.CUSTOM -> error("Can`t convert unknown firmware channel to internal channel")
     null -> SelectedChannel.UNRECOGNIZED
 }

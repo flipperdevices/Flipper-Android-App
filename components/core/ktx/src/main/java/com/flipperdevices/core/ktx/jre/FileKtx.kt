@@ -34,7 +34,3 @@ fun File.readBytes(limit: Long): ByteArray {
 fun File.readText(limit: Long, charset: Charset = Charsets.UTF_8): String {
     return String(readBytes(limit), charset)
 }
-
-fun File.getClearName(): String {
-    return this.name.substringAfterLast("/").substringBefore(".")
-}

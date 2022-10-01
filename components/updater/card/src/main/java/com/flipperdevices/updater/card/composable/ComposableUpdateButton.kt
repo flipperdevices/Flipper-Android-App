@@ -53,17 +53,8 @@ fun ComposableUpdateButton(
         ComposableUpdateButtonPlaceholder(buttonModifier)
         return
     }
-
-    val context = LocalContext.current
-
     var pendingUpdateRequest by remember { mutableStateOf<UpdatePending?>(null) }
     val localUpdaterRequest = pendingUpdateRequest
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        if (uri != null && updateCardState is UpdateCardState.CustomUpdate) {
-            pendingUpdateRequest = UpdatePending.URI(uri, context, updateCardState.flipperVersion)
-        }
-    }
-
     if (localUpdaterRequest != null) {
         ComposableUpdateRequest(pendingUpdateRequest = localUpdaterRequest) {
             pendingUpdateRequest = null
@@ -79,15 +70,10 @@ fun ComposableUpdateButton(
             descriptionId = R.string.updater_card_updater_button_no_updates_desc,
             color = LocalPallet.current.text20
         )
-        is UpdateCardState.CustomUpdate -> ComposableUpdateButtonContent(
-            buttonModifier.clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple(),
-                onClick = { launcher.launch("*/*") }
-            ),
-            textId = R.string.updater_card_updater_button_choose_file,
-            descriptionId = R.string.updater_card_updater_button_choose_file_desc,
-            color = LocalPallet.current.updateProgressGreen
+        is UpdateCardState.CustomUpdate -> ComposableUpdateButtonContentChooseFile(
+            buttonModifier = buttonModifier,
+            updateCardState = updateCardState,
+            onChoose = { pendingUpdateRequest = it }
         )
         is UpdateCardState.UpdateAvailable -> {
             buttonModifier = buttonModifier.clickable(
@@ -116,7 +102,31 @@ fun ComposableUpdateButton(
 }
 
 @Composable
-fun ComposableUpdateButtonPlaceholder(buttonModifier: Modifier) {
+private fun ComposableUpdateButtonContentChooseFile(
+    buttonModifier: Modifier,
+    updateCardState: UpdateCardState,
+    onChoose: (UpdatePending) -> Unit
+) {
+    val context = LocalContext.current
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        if (uri != null && updateCardState is UpdateCardState.CustomUpdate) {
+            onChoose(UpdatePending.URI(uri, context, updateCardState.flipperVersion))
+        }
+    }
+    ComposableUpdateButtonContent(
+        buttonModifier.clickable(
+            interactionSource = remember { MutableInteractionSource() },
+            indication = rememberRipple(),
+            onClick = { launcher.launch("*/*") }
+        ),
+        textId = R.string.updater_card_updater_button_choose_file,
+        descriptionId = R.string.updater_card_updater_button_choose_file_desc,
+        color = LocalPallet.current.accent
+    )
+}
+
+@Composable
+private fun ComposableUpdateButtonPlaceholder(buttonModifier: Modifier) {
     Box(
         modifier = buttonModifier
             .height(46.dp)

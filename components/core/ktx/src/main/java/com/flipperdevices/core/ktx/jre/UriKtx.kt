@@ -1,4 +1,4 @@
-package com.flipperdevices.deeplink.impl.parser
+package com.flipperdevices.core.ktx.jre
 
 import android.content.ContentResolver
 import android.net.Uri

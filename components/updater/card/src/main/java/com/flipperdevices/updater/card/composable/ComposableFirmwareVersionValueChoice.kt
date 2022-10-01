@@ -44,7 +44,7 @@ import com.flipperdevices.info.shared.ComposableDeviceInfoRowText
 import com.flipperdevices.info.shared.getColorByChannel
 import com.flipperdevices.info.shared.getDescriptionByChannel
 import com.flipperdevices.info.shared.getFullNameByChannel
-import com.flipperdevices.info.shared.getTextByVersionInChooser
+import com.flipperdevices.info.shared.getTextByVersion
 import com.flipperdevices.updater.card.R
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
@@ -78,7 +78,7 @@ fun ComposableUpdaterFirmwareVersionWithChoice(
                 ComposablePlaceholderFirmwareBuild()
             } else {
                 ComposableDeviceInfoRowText(
-                    text = getTextByVersionInChooser(version),
+                    text = getTextByVersion(version),
                     color = getColorByChannel(version.channel)
                 )
                 Icon(

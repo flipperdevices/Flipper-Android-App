@@ -1,7 +1,11 @@
 package com.flipperdevices.updater.impl.tasks
 
+import android.content.Context
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.updater.api.DownloadAndUnpackDelegate
+import com.flipperdevices.deeplink.api.DeepLinkParser
+import com.flipperdevices.deeplink.model.DeeplinkContent
+import com.flipperdevices.updater.api.DownloadAndUnpackDelegateApi
+import com.flipperdevices.updater.impl.model.UpdateContentException
 import com.flipperdevices.updater.model.DistributionFile
 import com.flipperdevices.updater.model.InternalStorageFirmware
 import com.flipperdevices.updater.model.OfficialFirmware
@@ -50,7 +54,9 @@ class UpdateContentHelperOfficial @Inject constructor(
 
 @ContributesMultibinding(scope = AppGraph::class, boundType = UpdateContentHelper::class)
 class UpdateContentHelperInternalStorage @Inject constructor(
-    private val downloadAndUnpackDelegate: DownloadAndUnpackDelegate
+    private val downloadAndUnpackDelegateApi: DownloadAndUnpackDelegateApi,
+    private val deeplinkParser: DeepLinkParser,
+    private val context: Context
 ) : UpdateContentHelper {
     override fun isSupport(updateContent: UpdateContent): Boolean {
         return updateContent is InternalStorageFirmware
@@ -64,8 +70,14 @@ class UpdateContentHelperInternalStorage @Inject constructor(
         if (updateContent !is InternalStorageFirmware) {
             throw IllegalArgumentException("Content not compare")
         }
-        val internalFile = updateContent.file
-        downloadAndUnpackDelegate.unpack(internalFile, updaterFolder)
+        val deeplink = deeplinkParser.fromUri(context, updateContent.uri)?.content
+            ?: throw UpdateContentException()
+
+        if (deeplink is DeeplinkContent.InternalStorageFile) {
+            kotlin.runCatching {
+                downloadAndUnpackDelegateApi.unpack(deeplink.file, updaterFolder)
+            }.onFailure { throw UpdateContentException() }
+        } else throw UpdateContentException()
     }
 }
 

@@ -1,8 +1,7 @@
 package com.flipperdevices.updater.model
 
+import android.net.Uri
 import android.os.Parcelable
-import com.flipperdevices.core.ktx.jre.getClearName
-import java.io.File
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -25,9 +24,12 @@ class OfficialFirmware(
     override fun folderName(): String = distributionFile.sha256 ?: distributionFile.url
 }
 
-class InternalStorageFirmware(val file: File) : UpdateContent() {
+class InternalStorageFirmware(val uri: Uri) : UpdateContent() {
     override fun folderName(): String {
-        return file.getClearName()
+        return uri
+            .path
+            ?.substringBeforeLast("/")
+            ?.substringAfterLast(".") ?: uri.toString()
     }
 }
 

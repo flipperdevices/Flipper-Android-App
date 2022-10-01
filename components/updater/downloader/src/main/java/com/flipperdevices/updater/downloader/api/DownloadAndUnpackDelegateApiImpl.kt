@@ -3,7 +3,7 @@ package com.flipperdevices.updater.downloader.api
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
-import com.flipperdevices.updater.api.DownloadAndUnpackDelegate
+import com.flipperdevices.updater.api.DownloadAndUnpackDelegateApi
 import com.flipperdevices.updater.model.DistributionFile
 import com.squareup.anvil.annotations.ContributesBinding
 import io.ktor.client.HttpClient
@@ -24,10 +24,10 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream
 
 private const val TRY_MAX_COUNT = 3
 
-@ContributesBinding(AppGraph::class, DownloadAndUnpackDelegate::class)
-class DownloadAndUnpackDelegateImpl @Inject constructor(
+@ContributesBinding(AppGraph::class, DownloadAndUnpackDelegateApi::class)
+class DownloadAndUnpackDelegateApiImpl @Inject constructor(
     private val client: HttpClient
-) : DownloadAndUnpackDelegate, LogTagProvider {
+) : DownloadAndUnpackDelegateApi, LogTagProvider {
     override val TAG = "DownloadAndUnpackDelegate"
 
     override suspend fun download(
