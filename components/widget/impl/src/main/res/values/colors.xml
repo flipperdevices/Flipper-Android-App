@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="send">#FF8200</color>
+    <color name="send_background">#1EFF8200</color>
+</resources>

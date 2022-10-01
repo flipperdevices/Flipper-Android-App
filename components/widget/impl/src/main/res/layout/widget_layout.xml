@@ -20,33 +20,57 @@
         <TextView
                 android:layout_gravity="center"
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:paddingEnd="4dp"
                 android:paddingStart="4dp"
                 android:text="@string/flipper_name_default"
                 android:textColor="@android:color/black"
                 android:textSize="12sp"
                 android:textStyle="normal" />
+
+        <FrameLayout
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content">
+
+            <ProgressBar
+                    style="@style/Widget.AppCompat.ProgressBar"
+                    android:background="@drawable/send_round_background"
+                    android:indeterminateOnly="true"
+                    android:indeterminateTint="#FF8200"
+                    android:layout_height="18dp"
+                    android:layout_width="18dp"
+                    android:progress="100" />
+        </FrameLayout>
     </LinearLayout>
 
 
-    <ImageView
-            android:layout_gravity="center_horizontal"
-            android:layout_height="24dp"
-            android:layout_width="24dp"
-            android:padding="4dp"
-            android:src="@drawable/ic_fileformat_sub"
-            android:tint="@android:color/black" />
-
-    <TextView
+    <LinearLayout
             android:gravity="center"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:layout_width="match_parent"
-            android:paddingEnd="6dp"
-            android:paddingStart="6dp"
-            android:text="@string/file_name_default"
-            android:textAlignment="center"
-            android:textColor="@android:color/black"
-            android:textSize="16sp" />
+            android:orientation="vertical">
+
+        <ImageView
+                android:layout_gravity="center_horizontal"
+                android:layout_height="24dp"
+                android:layout_width="24dp"
+                android:padding="2dp"
+                android:src="@drawable/ic_fileformat_sub"
+                android:tint="@android:color/black" />
+
+        <TextView
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:paddingEnd="6dp"
+                android:paddingStart="6dp"
+                android:text="@string/file_name_default"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textSize="16sp" />
+    </LinearLayout>
 
     <ImageView
             android:layout_height="wrap_content"
