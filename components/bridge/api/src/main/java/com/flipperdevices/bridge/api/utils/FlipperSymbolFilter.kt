@@ -17,6 +17,11 @@ object FlipperSymbolFilter {
             .toCharArray().let { String(it) }
     }
 
+    fun filterUnacceptableSymbolInFileName(text: String): String {
+        return text.filter { isAcceptableSymbol(it) || it == '.' }
+            .toCharArray().let { String(it) }
+    }
+
     fun isAcceptableString(text: String): Boolean {
         return text.none { !isAcceptableSymbol(it) }
     }
