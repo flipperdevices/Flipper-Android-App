@@ -6,5 +6,14 @@ sealed class UpdatePendingState {
     object LowBattery : UpdatePendingState()
     object FileExtension : UpdatePendingState()
     object FileBig : UpdatePendingState()
-    data class Ready(val request: UpdateRequest, val isSyncing: Boolean) : UpdatePendingState()
+    data class Ready(
+        val request: UpdateRequest,
+        val syncingState: SyncingState
+    ) : UpdatePendingState()
+}
+
+enum class SyncingState {
+    InProgress,
+    Stop,
+    Complete
 }

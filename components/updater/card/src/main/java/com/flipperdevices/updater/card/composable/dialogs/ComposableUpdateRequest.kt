@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import com.flipperdevices.updater.card.model.SyncingState
 import com.flipperdevices.updater.card.model.UpdatePending
 import com.flipperdevices.updater.card.model.UpdatePendingState
 import com.flipperdevices.updater.card.viewmodel.UpdateRequestViewModel
@@ -17,10 +18,8 @@ fun ComposableUpdateRequest(
 ) {
     val updatePendingState by updateRequestViewModel.getUpdatePendingState().collectAsState()
     val localUpdatePendingState = updatePendingState
-    println("UpdatePendingState: $updatePendingState")
 
     LaunchedEffect(key1 = pendingUpdateRequest) {
-        println("LaunchedEffect")
         updateRequestViewModel.onUpdateRequest(pendingUpdateRequest)
     }
 
@@ -35,14 +34,20 @@ fun ComposableUpdateRequest(
         UpdatePendingState.LowBattery -> FlipperDialogLowBattery(localDismiss)
         is UpdatePendingState.Ready -> {
             val version = localUpdatePendingState.request.updateTo
-            if (localUpdatePendingState.isSyncing) {
-                FlipperDialogSynchronization(localDismiss) {
+            when (localUpdatePendingState.syncingState) {
+                SyncingState.InProgress -> FlipperDialogSynchronization(localDismiss) {
                     updateRequestViewModel.stopSyncAndStartUpdate(localUpdatePendingState.request)
                 }
-            } else FlipperDialogReadyUpdate(version, localDismiss) {
-                updateRequestViewModel.openUpdate(localUpdatePendingState.request)
-                localDismiss()
-                return@FlipperDialogReadyUpdate
+                SyncingState.Complete -> FlipperDialogReadyUpdate(version, localDismiss) {
+                    updateRequestViewModel.openUpdate(localUpdatePendingState.request)
+                    localDismiss()
+                    return@FlipperDialogReadyUpdate
+                }
+                SyncingState.Stop -> {
+                    updateRequestViewModel.openUpdate(localUpdatePendingState.request)
+                    localDismiss()
+                    return
+                }
             }
         }
         null -> {}

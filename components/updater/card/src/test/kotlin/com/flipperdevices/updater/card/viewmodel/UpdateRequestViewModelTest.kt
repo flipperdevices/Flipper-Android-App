@@ -12,6 +12,7 @@ import com.flipperdevices.core.ktx.jre.filename
 import com.flipperdevices.core.ktx.jre.length
 import com.flipperdevices.updater.api.UpdaterUIApi
 import com.flipperdevices.updater.card.model.BatteryState
+import com.flipperdevices.updater.card.model.SyncingState
 import com.flipperdevices.updater.card.model.UpdatePending
 import com.flipperdevices.updater.card.model.UpdatePendingState
 import com.flipperdevices.updater.model.DistributionFile
@@ -57,6 +58,10 @@ class UpdateRequestViewModelTest {
     fun setup() {
         mockkStatic("com.flipperdevices.core.ktx.jre.UriKtxKt")
         every { synchronizationApi.isSynchronizationRunning() } returns false
+        every { serviceApi.flipperInformationApi.getInformationFlow() } answers {
+            MutableStateFlow(FlipperGATTInformation(batteryLevel = 0.3f))
+        }
+        viewModel.onServiceApiReady(serviceApi)
     }
 
     @Test
@@ -70,14 +75,31 @@ class UpdateRequestViewModelTest {
     }
 
     @Test
-    fun `Open update request with not sync`() = runTest {
+    fun `Battery state more 10 percentage`() = runTest {
+        viewModel.onServiceApiReady(serviceApi)
+        val state = viewModel.getBatteryState().first()
+        assert(state is BatteryState.Ready)
+    }
+
+    @Test
+    fun `Battery state more 10 percentage but charge`() = runTest {
+        every { serviceApi.flipperInformationApi.getInformationFlow() } answers {
+            MutableStateFlow(FlipperGATTInformation(batteryLevel = 0.09f, isCharging = true))
+        }
+        viewModel.onServiceApiReady(serviceApi)
+        val state = viewModel.getBatteryState().first()
+        assert(state is BatteryState.Ready)
+    }
+
+    @Test
+    fun `Open update request with sync complete`() = runTest {
         viewModel.onUpdateRequest(requestServer)
         val state = viewModel.getUpdatePendingState().first()
         Assert.assertEquals(
             state,
             UpdatePendingState.Ready(
                 requestServer.updateRequest,
-                false
+                SyncingState.Complete
             )
         )
     }
@@ -91,7 +113,7 @@ class UpdateRequestViewModelTest {
             state,
             UpdatePendingState.Ready(
                 requestServer.updateRequest,
-                true
+                SyncingState.InProgress
             )
         )
     }
@@ -104,7 +126,7 @@ class UpdateRequestViewModelTest {
             state,
             UpdatePendingState.Ready(
                 requestServer.updateRequest,
-                false
+                SyncingState.Stop
             )
         )
     }
