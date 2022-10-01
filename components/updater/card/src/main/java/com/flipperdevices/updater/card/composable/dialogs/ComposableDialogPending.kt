@@ -29,14 +29,14 @@ fun FlipperDialogReadyUpdate(version: FirmwareVersion, onDismiss: () -> Unit, on
 }
 
 @Composable
-fun FlipperDialogSynchronization(onDismiss: () -> Unit, onRun: () -> Unit) {
-    val dialogModel = remember(onDismiss, onRun) {
+fun FlipperDialogSynchronization(onContinue: () -> Unit, onPause: () -> Unit) {
+    val dialogModel = remember(onContinue, onPause) {
         FlipperMultiChoiceDialogModel.Builder()
             .setTitle(R.string.update_card_sync_title)
             .setDescription(R.string.update_card_sync_desc)
-            .setOnDismissRequest(onDismiss)
-            .addButton(R.string.update_card_sync_stop, onRun, isActive = true)
-            .addButton(R.string.update_card_sync_cont, onDismiss)
+            .setOnDismissRequest(onContinue)
+            .addButton(R.string.update_card_sync_cont, onContinue, isActive = true)
+            .addButton(R.string.update_card_sync_stop, onPause)
             .build()
     }
     FlipperMultiChoiceDialog(model = dialogModel)
