@@ -36,11 +36,13 @@
             <ProgressBar
                     style="@style/Widget.AppCompat.ProgressBar"
                     android:background="@drawable/send_round_background"
-                    android:indeterminateOnly="true"
+                    android:indeterminateOnly="false"
                     android:indeterminateTint="#FF8200"
                     android:layout_height="18dp"
                     android:layout_width="18dp"
-                    android:progress="100" />
+                    android:progress="50"
+                    android:progressDrawable="@drawable/send_spinner"
+                    android:rotation="-90" />
         </FrameLayout>
     </LinearLayout>
 
