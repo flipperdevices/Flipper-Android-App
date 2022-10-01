@@ -1,5 +1,7 @@
 package com.flipperdevices.core.ktx.jre
 
+import java.math.RoundingMode
+import java.text.DecimalFormat
 import kotlin.math.abs
 import kotlin.math.log10
 import kotlin.math.roundToInt
@@ -30,4 +32,12 @@ fun Float.roundPercentToString(): String {
 fun Int.length() = when (this) {
     0 -> 1
     else -> log10(abs(toDouble())).toInt() + 1
+}
+
+fun Double.round(decimals: Int = 2): Double {
+    val patter = "#.${"#".repeat(decimals)}"
+    val decimalFormatter = DecimalFormat(patter).apply {
+        roundingMode = RoundingMode.FLOOR
+    }
+    return decimalFormatter.format(this).toDouble()
 }

@@ -9,6 +9,7 @@
 - [REFACTOR] Migrate synchronization task graph to TaskSynchronizationComponent
 - [REFACTOR] Updater: new request model
 - [REFACTOR] Redesign card when we waiting update
+- [REFACTOR] Storage Stats formatter by kibibyte
 - [FIX] Rename updater folder
 - [FIX] Choose app theme from selected theme, not is light
 - [FIX] Check total bytes from server(less 0 mean error from server)
