@@ -10,6 +10,7 @@ import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
@@ -99,7 +100,12 @@ private fun ComposableNfcEditor(
     ) {
         if (nfcEditorState.nfcEditorCardInfo != null) {
             item {
-                ComposableNfcCard(nfcEditorState.nfcEditorCardInfo, scaleFactor)
+                ComposableNfcCard(
+                    nfcEditorState.nfcEditorCardInfo,
+                    scaleFactor,
+                    nfcEditorViewModel.currentActiveCell,
+                    nfcEditorViewModel::onCellFocus
+                )
             }
         }
         items(nfcEditorState.sectors.size) { index ->
@@ -137,11 +143,13 @@ private fun ScrollToActiveCell(
     ) {
         previousCell = currentActiveCell
         previousOffset = offset
-        scope.launch {
-            val newPosition = if (cardInfoPresented) {
-                currentActiveCell.sectorIndex + 1
-            } else currentActiveCell.sectorIndex
-            lazyColumnState.animateScrollToItem(newPosition, offset)
+        LaunchedEffect(key1 = currentActiveCell) {
+            scope.launch {
+                val newPosition = if (cardInfoPresented) {
+                    currentActiveCell.sectorIndex + 1
+                } else currentActiveCell.sectorIndex
+                lazyColumnState.animateScrollToItem(newPosition, offset)
+            }
         }
     }
 }

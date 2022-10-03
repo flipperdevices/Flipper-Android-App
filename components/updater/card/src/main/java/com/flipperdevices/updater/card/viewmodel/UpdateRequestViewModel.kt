@@ -33,7 +33,9 @@ class UpdateRequestViewModel @VMInject constructor(
             silent = false,
             updateRequest = UpdateRequest(
                 updateFrom = updateAvailable.fromVersion,
-                updateTo = updateAvailable.lastVersion
+                updateTo = updateAvailable.lastVersion.version,
+                changelog = updateAvailable.lastVersion.changelog,
+                content = updateAvailable.lastVersion.updaterFile
             )
         )
     }

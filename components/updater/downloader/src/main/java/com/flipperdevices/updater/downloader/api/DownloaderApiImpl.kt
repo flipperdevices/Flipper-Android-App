@@ -119,6 +119,9 @@ class DownloaderApiImpl @Inject constructor(
                     distributionFile,
                     tempFile
                 ) { processedBytes, totalBytes ->
+                    if (totalBytes <= 0) {
+                        throw IllegalArgumentException("Server send total bytes less 0")
+                    }
                     send(DownloadProgress.InProgress(processedBytes, totalBytes))
                 }
                 info { "File downloaded in ${tempFile.absolutePath}" }

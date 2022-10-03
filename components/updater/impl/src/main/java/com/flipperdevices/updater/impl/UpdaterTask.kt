@@ -14,7 +14,6 @@ import com.flipperdevices.updater.impl.tasks.FirmwareDownloaderHelper
 import com.flipperdevices.updater.impl.tasks.FlipperUpdateImageHelper
 import com.flipperdevices.updater.impl.tasks.UploadToFlipperHelper
 import com.flipperdevices.updater.impl.utils.FolderCreateHelper
-import com.flipperdevices.updater.model.DistributionFile
 import com.flipperdevices.updater.model.SubGhzProvisioningException
 import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.model.UpdatingState
@@ -74,7 +73,7 @@ class UpdaterTask(
         stateListener: suspend (UpdatingState) -> Unit
     ) = FlipperStorageProvider.useTemporaryFolder(context) { tempFolder ->
         info { "Start update with folder: ${tempFolder.absolutePath}" }
-        val updateFile = input.updateTo.updaterFile
+        val updateFile = input.content
 
         val updaterFolder = File(tempFolder, updateFile.sha256)
         try {
@@ -116,7 +115,7 @@ class UpdaterTask(
             UpdatingState.UploadOnFlipper(0f)
         )
         val flipperPath = try {
-            prepareToUpload(updateFile, serviceApi.requestApi)
+            prepareToUpload(updaterFolder, serviceApi.requestApi)
         } catch (e: Throwable) {
             error(e) { "Failed when prepare upload to flipper" }
             if (e !is CancellationException) {
@@ -147,14 +146,17 @@ class UpdaterTask(
     }
 
     private suspend fun prepareToUpload(
-        updateFile: DistributionFile,
+        updaterFolder: File,
         requestApi: FlipperRequestApi
     ): String {
-        var updateName = updateFile.url.substringAfterLast("/").substringBefore(".")
-        if (updateName.isBlank()) {
-            updateName = updateFile.sha256
-        }
         flipperUpdateImageHelper.loadImageOnFlipper(requestApi)
+
+        val updateName: String = updaterFolder
+            .listFiles()
+            ?.first { it.isDirectory }
+            ?.name
+            ?: updaterFolder.name
+
         val flipperPath = "/ext/update/$updateName"
 
         FolderCreateHelper.mkdirFolderOnFlipper(requestApi, flipperPath)

@@ -65,7 +65,7 @@ class UpdaterApiImpl @Inject constructor(
         metricApi.reportComplexEvent(
             UpdateFlipperStart(
                 updateFromVersion = updateRequest.updateFrom.version,
-                updateToVersion = updateRequest.updateTo.version.version,
+                updateToVersion = updateRequest.updateTo.version,
                 updateId = updateRequest.requestId
             )
         )
@@ -85,7 +85,7 @@ class UpdaterApiImpl @Inject constructor(
                     metricApi.reportComplexEvent(
                         UpdateFlipperEnd(
                             updateFrom = updateRequest.updateFrom.version,
-                            updateTo = updateRequest.updateTo.version.version,
+                            updateTo = updateRequest.updateTo.version,
                             updateId = updateRequest.requestId,
                             updateStatus = endReason
                         )
@@ -107,7 +107,7 @@ class UpdaterApiImpl @Inject constructor(
             metricApi.reportComplexEvent(
                 UpdateFlipperEnd(
                     updateFrom = updateRequest.updateFrom.version,
-                    updateTo = updateRequest.updateTo.version.version,
+                    updateTo = updateRequest.updateTo.version,
                     updateId = updateRequest.requestId,
                     updateStatus = UpdateStatus.CANCELED
                 )
@@ -119,7 +119,7 @@ class UpdaterApiImpl @Inject constructor(
     override fun onDeviceConnected(versionName: FirmwareVersion) {
         updatingState.update {
             if (it.state == UpdatingState.Rebooting) {
-                if (it.request?.updateTo?.version?.version == versionName.version) {
+                if (it.request?.updateTo?.version == versionName.version) {
                     UpdatingStateWithRequest(UpdatingState.Complete, request = it.request)
                 } else UpdatingStateWithRequest(UpdatingState.Failed, request = it.request)
             } else it

@@ -6,75 +6,49 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.utils.FlipperSymbolFilter
-import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
-import com.flipperdevices.bridge.dao.api.delegates.KeyParser
-import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
-import com.flipperdevices.bridge.dao.api.delegates.key.UpdateKeyApi
-import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
-import com.flipperdevices.bridge.dao.api.model.FlipperKey
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
-import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.vibrateCompat
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.core.log.warn
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.wtf
-import com.flipperdevices.keyedit.impl.di.KeyEditComponent
+import com.flipperdevices.keyedit.impl.fragment.EXTRA_EDITABLE_KEY
+import com.flipperdevices.keyedit.impl.model.EditableKey
 import com.flipperdevices.keyedit.impl.model.KeyEditState
+import com.flipperdevices.keyedit.impl.viewmodel.processors.EditableKeyProcessor
 import com.github.terrakok.cicerone.Router
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
+import tangle.inject.TangleParam
+import tangle.viewmodel.VMInject
 
 private const val VIBRATOR_TIME_MS = 500L
 
-private typealias FinishListener = (FlipperKey) -> Unit
-
-class KeyEditViewModel(
-    private val keyPath: FlipperKeyPath?,
-    context: Context
+class KeyEditViewModel @VMInject constructor(
+    context: Context,
+    @TangleParam(EXTRA_EDITABLE_KEY)
+    private val editableKey: EditableKey,
+    private val existedKeyProcessor: EditableKeyProcessor<EditableKey.Existed>,
+    private val limbKeyProcessor: EditableKeyProcessor<EditableKey.Limb>
 ) : ViewModel(), LogTagProvider {
     override val TAG = "KeyEditViewModel"
+
     private var vibrator = ContextCompat.getSystemService(context, Vibrator::class.java)
     private val lengthFilter = LengthFilter(context)
-
-    @Inject
-    lateinit var favoriteApi: FavoriteApi
-
-    @Inject
-    lateinit var parser: KeyParser
-
-    @Inject
-    lateinit var simpleKeyApi: SimpleKeyApi
-
-    @Inject
-    lateinit var updateKeyApi: UpdateKeyApi
 
     private val keyEditState = MutableStateFlow<KeyEditState>(KeyEditState.Loading)
 
     init {
-        ComponentHolder.component<KeyEditComponent>().inject(this)
         viewModelScope.launch {
-            if (keyPath == null) {
-                keyEditState.emit(KeyEditState.Failed)
-                return@launch
+            when (editableKey) {
+                is EditableKey.Existed -> existedKeyProcessor.loadKey(editableKey) {
+                    keyEditState.emit(it)
+                }
+                is EditableKey.Limb -> limbKeyProcessor.loadKey(editableKey) {
+                    keyEditState.emit(it)
+                }
             }
-            val flipperKey = simpleKeyApi.getKey(keyPath)
-            if (flipperKey == null) {
-                keyEditState.emit(KeyEditState.Failed)
-                return@launch
-            }
-            val parsedKeyLoaded = parser.parseKey(flipperKey)
-            keyEditState.emit(
-                KeyEditState.Editing(
-                    flipperKey.path.nameWithoutExtension,
-                    flipperKey.notes,
-                    parsedKeyLoaded,
-                    flipperKey.path.nameWithoutExtension.isNotBlank()
-                )
-            )
         }
     }
 
@@ -112,10 +86,11 @@ class KeyEditViewModel(
             if (it is KeyEditState.Editing) {
                 KeyEditState.Saving(it)
             } else {
-                warn { "We try edit key without editing state" }
+                com.flipperdevices.core.log.warn { "We try edit key without editing state" }
                 return@onSave
             }
         }
+
         if (savingState !is KeyEditState.Saving) {
             wtf { "Saving state must be saving" }
             return
@@ -123,27 +98,22 @@ class KeyEditViewModel(
         check(!savingState.editState.name.isNullOrBlank()) {
             "Save button should be inactive when name is null or blank"
         }
-
         viewModelScope.launch {
             try {
-                if (keyPath == null) {
-                    return@launch
+                when (editableKey) {
+                    is EditableKey.Existed -> existedKeyProcessor.onSave(
+                        editableKey,
+                        savingState.editState,
+                        router
+                    )
+                    is EditableKey.Limb -> limbKeyProcessor.onSave(
+                        editableKey,
+                        savingState.editState,
+                        router
+                    )
                 }
-                val editState = savingState.editState
-                val oldKey = simpleKeyApi.getKey(keyPath) ?: return@launch
-                val extension = keyPath.path.nameWithExtension.substringAfterLast('.')
-                val newFlipperKey = oldKey.copy(
-                    mainFile = oldKey.mainFile.copy(
-                        path = FlipperFilePath(
-                            keyPath.path.folder,
-                            "${editState.name}.$extension"
-                        )
-                    ),
-                    notes = editState.notes
-                )
-                updateKeyApi.updateKey(oldKey, newFlipperKey)
-            } finally {
-                router.exit()
+            } catch (throwable: Throwable) {
+                error(throwable) { "When save key $editableKey" }
             }
         }
     }

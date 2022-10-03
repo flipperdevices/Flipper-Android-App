@@ -15,6 +15,7 @@ import com.flipperdevices.keyedit.impl.viewmodel.KeyEditViewModel
 @Composable
 fun ComposableEditScreen(
     viewModel: KeyEditViewModel,
+    title: String?,
     state: KeyEditState,
     onCancel: () -> Unit,
     onSave: () -> Unit
@@ -22,7 +23,13 @@ fun ComposableEditScreen(
     when (state) {
         KeyEditState.Loading,
         is KeyEditState.Saving -> ComposableEditScreenLoading()
-        is KeyEditState.Editing -> ComposableEditScreenEditing(viewModel, state, onCancel, onSave)
+        is KeyEditState.Editing -> ComposableEditScreenEditing(
+            viewModel,
+            title,
+            state,
+            onCancel,
+            onSave
+        )
         KeyEditState.Failed -> LocalRouter.current.exit()
     }
 }
@@ -40,6 +47,7 @@ private fun ComposableEditScreenLoading() {
 @Composable
 private fun ComposableEditScreenEditing(
     viewModel: KeyEditViewModel,
+    title: String?,
     state: KeyEditState.Editing,
     onCancel: () -> Unit,
     onSave: () -> Unit
@@ -48,7 +56,7 @@ private fun ComposableEditScreenEditing(
         SaveButtonState.ENABLED
     } else SaveButtonState.DISABLED
     Column {
-        ComposableEditAppBar(buttonState, onCancel, onSave)
+        ComposableEditAppBar(title, buttonState, onCancel, onSave)
         ComposableEditCard(
             viewModel,
             state.name,

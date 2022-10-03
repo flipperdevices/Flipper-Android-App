@@ -6,6 +6,8 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class UpdateRequest(
     val updateFrom: FirmwareVersion,
-    val updateTo: VersionFiles,
+    val updateTo: FirmwareVersion,
+    val changelog: String?,
+    val content: DistributionFile,
     val requestId: Long = System.currentTimeMillis()
 ) : Parcelable
