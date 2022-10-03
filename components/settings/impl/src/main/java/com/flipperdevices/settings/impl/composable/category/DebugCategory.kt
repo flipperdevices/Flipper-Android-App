@@ -90,4 +90,10 @@ private fun DebugCategoryItems(
         titleId = R.string.debug_restart_rpc,
         onClick = debugViewModel::restartRpc
     )
+    GrayDivider()
+    SwitchableElement(
+        titleId = R.string.debug_skip_autosync,
+        state = settings.skipAutoSyncInDebug,
+        onSwitchState = debugViewModel::onSwitchSkipAutoSync
+    )
 }
