@@ -5,9 +5,8 @@ import org.junit.Test
 
 class FlipperSymbolFilterTest {
 
-    private val allowChars =
-        "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!#\$%&'()-@^_`{}~ "
-    private val notAllowChars = "тест"
+    private val allowChars = "Hack your Tesla"
+    private val notAllowChars = "/"
 
     @Test
     fun `Check acceptable letters`() {
