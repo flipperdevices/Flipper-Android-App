@@ -5,30 +5,57 @@ import org.junit.Test
 
 class FlipperSymbolFilterTest {
 
-    private val allowChars = "Hack your Tesla"
-    private val notAllowChars = "/"
-
     @Test
-    fun `Check acceptable letters`() {
-        val isAcceptable = FlipperSymbolFilter.isAcceptableString(allowChars)
-        Assert.assertTrue(isAcceptable)
-    }
-
-    @Test
-    fun `Check not acceptable letters`() {
-        val isAcceptable = FlipperSymbolFilter.isAcceptableString("$allowChars$notAllowChars")
+    fun `Acceptable letters 1`() {
+        val isAcceptable = FlipperSymbolFilter.isAcceptableString("My████key")
         Assert.assertFalse(isAcceptable)
     }
 
     @Test
-    fun `Filter acceptable letters`() {
-        val filter = FlipperSymbolFilter.filterUnacceptableSymbol(allowChars)
-        Assert.assertEquals(allowChars, filter)
+    fun `Acceptable letters 2`() {
+        val isAcceptable = FlipperSymbolFilter.isAcceptableString("My key")
+        Assert.assertTrue(isAcceptable)
     }
 
     @Test
-    fun `Filter not acceptable letters`() {
-        val filter = FlipperSymbolFilter.filterUnacceptableSymbol("$allowChars$notAllowChars")
-        Assert.assertNotEquals("$allowChars$notAllowChars", filter)
+    fun `Acceptable letters 3`() {
+        val isAcceptable = FlipperSymbolFilter.isAcceptableString("My_key")
+        Assert.assertTrue(isAcceptable)
+    }
+
+    @Test
+    fun `Acceptable letters 4`() {
+        val isAcceptable = FlipperSymbolFilter.isAcceptableString("My.key")
+        Assert.assertFalse(isAcceptable)
+    }
+
+    @Test
+    fun `Filter letters 1`() {
+        val acceptable = FlipperSymbolFilter.filterUnacceptableSymbol("My████key")
+        Assert.assertEquals(acceptable, "Mykey")
+    }
+
+    @Test
+    fun `Filter letters 2`() {
+        val acceptable = FlipperSymbolFilter.filterUnacceptableSymbol("My key")
+        Assert.assertEquals(acceptable, "My key")
+    }
+
+    @Test
+    fun `Filter letters 3`() {
+        val acceptable = FlipperSymbolFilter.filterUnacceptableSymbol("My-key")
+        Assert.assertEquals(acceptable, "My-key")
+    }
+
+    @Test
+    fun `Filter letters 4`() {
+        val acceptable = FlipperSymbolFilter.filterUnacceptableSymbol("My.key")
+        Assert.assertEquals(acceptable, "Mykey")
+    }
+
+    @Test
+    fun `Filter letters for file`() {
+        val acceptable = FlipperSymbolFilter.filterUnacceptableSymbolInFileName("My.key")
+        Assert.assertEquals(acceptable, "My.key")
     }
 }
