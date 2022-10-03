@@ -6,20 +6,15 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.deeplink.api.DeepLinkDispatcher
 import com.flipperdevices.deeplink.api.DeepLinkHandler
 import com.flipperdevices.deeplink.model.Deeplink
-import com.flipperdevices.share.api.ArchiveKeyDeeplinkHandler
 import com.github.terrakok.cicerone.Router
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, DeepLinkDispatcher::class)
 class DeepLinkDispatcherImpl @Inject constructor(
-    keyReceiveHandler: ArchiveKeyDeeplinkHandler
+    private val handlers: MutableSet<DeepLinkHandler>
 ) : DeepLinkDispatcher, LogTagProvider {
     override val TAG = "DeepLinkDispatcher"
-
-    private val handlers = mutableListOf<DeepLinkHandler>(
-        keyReceiveHandler
-    )
 
     override fun process(router: Router, deeplink: Deeplink): Boolean {
         val supportedHandlers = handlers.map { it.isSupportLink(deeplink) to it }
@@ -32,15 +27,11 @@ class DeepLinkDispatcherImpl @Inject constructor(
 
         info {
             "Choice handler ${processHandler.second.javaClass} " +
-                "with priority ${processHandler.first}"
+                    "with priority ${processHandler.first}"
         }
 
         processHandler.second.processLink(router, deeplink)
 
         return true
-    }
-
-    override fun registerHandler(deepLinkHandler: DeepLinkHandler) {
-        handlers.add(deepLinkHandler)
     }
 }

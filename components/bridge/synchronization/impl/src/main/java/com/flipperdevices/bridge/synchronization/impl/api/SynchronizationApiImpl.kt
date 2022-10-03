@@ -22,7 +22,7 @@ class SynchronizationApiImpl @Inject constructor(
 ) : SynchronizationApi, LogTagProvider {
     override val TAG = "SynchronizationApi-${hashCode()}"
 
-    private val isLaunched = AtomicBoolean(false)
+    private val isLaunched = AtomicBoolean(true)
     private val synchronizationState = MutableStateFlow<SynchronizationState>(
         SynchronizationState.NotStarted
     )

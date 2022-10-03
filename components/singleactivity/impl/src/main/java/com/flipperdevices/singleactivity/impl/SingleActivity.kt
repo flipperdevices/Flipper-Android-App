@@ -70,7 +70,7 @@ class SingleActivity :
 
         info {
             "Create new activity with hashcode: ${SingleActivity::class.hashCode()}. " +
-                "Deeplink size is ${deeplinkStack.size}"
+                    "Deeplink size is ${deeplinkStack.size}"
         }
 
         if (savedInstanceState == null) {
@@ -89,7 +89,7 @@ class SingleActivity :
         openExistActivity(deeplink)
     }
 
-    fun openExistActivity(deeplink: Deeplink?) {
+    private fun openExistActivity(deeplink: Deeplink?) {
         info { "Nonfirst open activity with deeplink $deeplink" }
         if (deeplink != null) {
             deeplinkStack.push(deeplink)

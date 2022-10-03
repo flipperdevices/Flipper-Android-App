@@ -41,7 +41,7 @@ class DeepLinkFileUriGrantPermission @Inject constructor() : DeepLinkParserDeleg
             return null
         }
 
-        return Deeplink(content = buildExternalUri(contentResolver, uri))
+        return Deeplink.FlipperKey(content = buildExternalUri(contentResolver, uri))
     }
 
     private suspend fun buildExternalUri(

@@ -42,6 +42,9 @@ class DeepLinkFlipperFormatSharing @Inject constructor(
         }
 
         val (path, content) = parser.parseUri(pureUri) ?: return null
-        return Deeplink(path, DeeplinkContent.FFFContent(path.nameWithExtension, content))
+        return Deeplink.FlipperKey(
+            path,
+            DeeplinkContent.FFFContent(path.nameWithExtension, content)
+        )
     }
 }
