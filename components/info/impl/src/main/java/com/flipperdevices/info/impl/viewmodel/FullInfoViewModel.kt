@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.model.FlipperRequestRpcInformationStatus
 import com.flipperdevices.bridge.api.model.FlipperRpcInformation
+import com.flipperdevices.bridge.api.model.StorageStats
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
@@ -17,7 +18,6 @@ import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.model.DeviceInfo
 import com.flipperdevices.info.impl.model.DeviceInfoRequestStatus
-import com.flipperdevices.info.impl.model.toString
 import com.flipperdevices.updater.api.FirmwareVersionBuilderApi
 import com.flipperdevices.updater.api.FlipperVersionProviderApi
 import com.flipperdevices.updater.model.FirmwareChannel
@@ -119,13 +119,17 @@ class FullInfoViewModel @VMInject constructor(
             builder.appendLine("$key: $value")
         }
         flipperRpcInformationState.value.let {
-            val int = it.internalStorageStats.toString()
-            builder.appendLine("int_available: ${int.first}")
-            builder.appendLine("int_total: ${int.second}")
+            val intStorage = it.internalStorageStats
+            if (intStorage is StorageStats.Loaded) {
+                builder.appendLine("int_available: ${intStorage.free}")
+                builder.appendLine("int_total: ${intStorage.total}")
+            }
 
-            val ext = it.externalStorageStats.toString()
-            builder.appendLine("ext_available: ${ext.first}")
-            builder.appendLine("ext_total: ${ext.second}")
+            val extStorage = it.externalStorageStats
+            if (extStorage is StorageStats.Loaded) {
+                builder.appendLine("ext_available: ${extStorage.free}")
+                builder.appendLine("ext_total: ${extStorage.total}")
+            }
         }
         file.appendText(builder.toString())
     }
