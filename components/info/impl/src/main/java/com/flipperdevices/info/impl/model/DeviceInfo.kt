@@ -1,7 +1,6 @@
 package com.flipperdevices.info.impl.model
 
 import android.content.Context
-import android.text.format.Formatter
 import com.flipperdevices.bridge.api.model.StorageStats
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.updater.model.FirmwareVersion
@@ -34,11 +33,11 @@ fun StorageStats.toString(context: Context): String {
             context.getString(R.string.info_device_info_flash_not_found)
         }
         is StorageStats.Loaded -> {
-            val usedHumanReadable = Formatter.formatFileSize(
-                context,
+            val formatter = StorageStateFormatter()
+            val usedHumanReadable = formatter.formatFileSize(
                 max(0L, total - free)
             )
-            val totalHumanReadable = Formatter.formatFileSize(context, total)
+            val totalHumanReadable = formatter.formatFileSize(total)
 
             "$usedHumanReadable / $totalHumanReadable"
         }
