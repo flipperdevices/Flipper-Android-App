@@ -4,15 +4,32 @@ import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.deeplink.api.DeepLinkParserDelegate
 import com.flipperdevices.deeplink.impl.parser.filename
 import com.flipperdevices.deeplink.impl.parser.length
+import com.flipperdevices.deeplink.model.DeepLinkParserDelegatePriority
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkContent
+import com.squareup.anvil.annotations.ContributesMultibinding
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class DeepLinkFileUriGrantPermission : DeepLinkParserDelegate {
-    override suspend fun fromUri(context: Context, uri: Uri): Deeplink? {
+@ContributesMultibinding(AppGraph::class, DeepLinkParserDelegate::class)
+class DeepLinkFileUriGrantPermission @Inject constructor() : DeepLinkParserDelegate {
+    override fun getPriority(
+        context: Context,
+        intent: Intent
+    ): DeepLinkParserDelegatePriority {
+        return if (intent.data == null) {
+            DeepLinkParserDelegatePriority.LOW
+        } else DeepLinkParserDelegatePriority.DEFAULT
+    }
+
+    override suspend fun fromIntent(context: Context, intent: Intent): Deeplink? {
+        val uri = intent.data ?: return null
+
         val contentResolver = context.contentResolver
 
         // We need persistable permission for read file on next activities

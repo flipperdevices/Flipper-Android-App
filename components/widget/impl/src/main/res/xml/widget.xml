@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
+        android:configure="com.flipperdevices.app.SplashScreen"
         android:initialLayout="@layout/initial_layout"
         android:minHeight="40dp"
         android:minWidth="60dp"

@@ -1,33 +1,42 @@
 package com.flipperdevices.deeplink.impl.parser.delegates
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import com.flipperdevices.bridge.dao.api.delegates.KeyParser
-import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.deeplink.impl.di.DeepLinkComponent
+import com.flipperdevices.deeplink.api.DeepLinkParserDelegate
+import com.flipperdevices.deeplink.model.DeepLinkParserDelegatePriority
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkContent
+import com.squareup.anvil.annotations.ContributesMultibinding
 import java.net.URLDecoder
 import javax.inject.Inject
 
 private const val SCHEME_FLIPPERKEY = "flipperkey"
 
-class DeepLinkFlipperFormatSharing : DeepLinkParserDelegate, LogTagProvider {
+@ContributesMultibinding(AppGraph::class, DeepLinkParserDelegate::class)
+class DeepLinkFlipperFormatSharing @Inject constructor(
+    private val parser: KeyParser
+) : DeepLinkParserDelegate, LogTagProvider {
     override val TAG = "DeepLinkFlipperFormatSharing"
 
-    @Inject
-    lateinit var parser: KeyParser
-
-    init {
-        ComponentHolder.component<DeepLinkComponent>().inject(this)
+    override fun getPriority(
+        context: Context,
+        intent: Intent
+    ): DeepLinkParserDelegatePriority {
+        val uri = intent.data ?: return DeepLinkParserDelegatePriority.LOW
+        return if (uri.scheme == SCHEME_FLIPPERKEY) {
+            DeepLinkParserDelegatePriority.HIGH
+        } else DeepLinkParserDelegatePriority.LOW
     }
 
-    override suspend fun fromUri(context: Context, uri: Uri): Deeplink? {
-        var pureUri = uri
+    override suspend fun fromIntent(context: Context, intent: Intent): Deeplink? {
+        var pureUri = intent.data ?: return null
 
-        if (uri.scheme == SCHEME_FLIPPERKEY) {
-            val query = uri.query
+        if (pureUri.scheme == SCHEME_FLIPPERKEY) {
+            val query = pureUri.query
             val decodedQuery = URLDecoder.decode(query, "UTF-8")
             pureUri = Uri.parse(decodedQuery)
         }
