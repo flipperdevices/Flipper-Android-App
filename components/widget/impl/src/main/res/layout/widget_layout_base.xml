@@ -13,6 +13,7 @@
             android:paddingTop="6dp">
 
         <ImageView
+                android:contentDescription="@string/img_app_logo"
                 android:layout_height="18dp"
                 android:layout_width="18dp"
                 android:src="@drawable/widget_app_logo" />

@@ -2,15 +2,9 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape>
-            <solid android:color="?colorAccent" />
+            <solid android:color="@color/disable" />
 
             <corners android:radius="8dp" />
         </shape>
     </item>
-
-    <item
-            android:bottom="12dp"
-            android:drawable="?buttonTextDrawable"
-            android:gravity="center"
-            android:top="12dp" />
 </layer-list>

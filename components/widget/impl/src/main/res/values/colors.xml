@@ -4,4 +4,5 @@
     <color name="send_background">#1EFF8200</color>
     <color name="emulate">#589DFF</color>
     <color name="emulate_background">#1E589DFF</color>
+    <color name="disable">#E9E9E9</color>
 </resources>

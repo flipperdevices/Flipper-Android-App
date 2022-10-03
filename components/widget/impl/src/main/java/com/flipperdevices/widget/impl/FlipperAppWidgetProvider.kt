@@ -15,7 +15,7 @@ class FlipperAppWidgetProvider : AppWidgetProvider() {
         appWidgetIds.forEach { appWidgetId ->
             appWidgetManager.updateAppWidget(
                 appWidgetId,
-                RemoteViews(context.packageName, R.layout.widget_layout_emulate)
+                RemoteViews(context.packageName, R.layout.initial_layout)
             )
         }
     }
