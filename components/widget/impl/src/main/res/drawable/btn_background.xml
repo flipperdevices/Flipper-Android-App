@@ -9,8 +9,8 @@
     </item>
 
     <item
-            android:bottom="12dp"
+            android:bottom="6dp"
             android:drawable="?buttonTextDrawable"
             android:gravity="center"
-            android:top="12dp" />
+            android:top="6dp" />
 </layer-list>

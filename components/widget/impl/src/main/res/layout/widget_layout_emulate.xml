@@ -3,7 +3,7 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:background="@drawable/background"
-        android:theme="@style/Widget.Flipper.Emulate.InProgress">
+        android:theme="@style/Widget.Flipper.Emulate">
 
     <include layout="@layout/widget_layout_base" />
 </FrameLayout>

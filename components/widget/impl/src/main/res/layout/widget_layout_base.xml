@@ -100,7 +100,7 @@
 
     <ImageView
             android:contentDescription="@string/img_btn"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_width="match_parent"
             android:paddingBottom="6dp"
             android:paddingEnd="6dp"
