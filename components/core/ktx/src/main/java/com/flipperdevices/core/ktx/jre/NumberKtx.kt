@@ -35,8 +35,8 @@ fun Int.length() = when (this) {
 }
 
 fun Double.round(decimals: Int = 2): Double {
-    val patter = "#.${"#".repeat(decimals)}"
-    val decimalFormatter = DecimalFormat(patter).apply {
+    val pattern = "#.${"#".repeat(decimals)}"
+    val decimalFormatter = DecimalFormat(pattern).apply {
         roundingMode = RoundingMode.FLOOR
     }
     return decimalFormatter.format(this).toDouble()
