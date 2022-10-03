@@ -3,6 +3,7 @@
     <string name="flipper_name_default">Flipper</string>
     <string name="file_name_default">Unknown</string>
     <string name="img_app_logo">Flipper App logo</string>
+    <string name="img_btn">Button</string>
     <string name="img_disable_btn">Disable button</string>
     <string name="img_add_btn">Add key</string>
 </resources>

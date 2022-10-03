@@ -99,6 +99,7 @@
     </LinearLayout>
 
     <ImageView
+            android:contentDescription="@string/img_btn"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:paddingBottom="6dp"
