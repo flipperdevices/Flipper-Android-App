@@ -19,6 +19,7 @@ sealed class UpdatingState(
     object FailedDownload : UpdatingState(true)
     object FailedPrepare : UpdatingState(true)
     object FailedUpload : UpdatingState(true)
+    object FailedCustomUpdate : UpdatingState(true)
 
     object SubGhzProvisioning : UpdatingState(false)
 

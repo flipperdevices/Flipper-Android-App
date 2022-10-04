@@ -4,8 +4,8 @@ import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import com.flipperdevices.deeplink.impl.parser.filename
-import com.flipperdevices.deeplink.impl.parser.length
+import com.flipperdevices.core.ktx.jre.filename
+import com.flipperdevices.core.ktx.jre.length
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkContent
 import kotlinx.coroutines.Dispatchers

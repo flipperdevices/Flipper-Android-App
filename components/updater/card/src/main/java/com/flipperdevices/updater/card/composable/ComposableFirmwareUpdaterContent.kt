@@ -16,9 +16,10 @@ import com.flipperdevices.updater.card.R
 import com.flipperdevices.updater.model.DistributionFile
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
+import com.flipperdevices.updater.model.OfficialFirmware
 import com.flipperdevices.updater.model.UpdateCardState
 import com.flipperdevices.updater.model.UpdateErrorType
-import com.flipperdevices.updater.model.VersionFiles
+import com.flipperdevices.updater.model.UpdateRequest
 
 @Composable
 fun ComposableFirmwareUpdaterContent(
@@ -53,18 +54,20 @@ fun ComposableFirmwareUpdaterContentPreview() {
             UpdateCardState.InProgress,
             UpdateCardState.NoUpdate(lastVersion),
             UpdateCardState.UpdateAvailable(
-                fromVersion = lastVersion,
-                lastVersion = VersionFiles(
-                    version = lastVersion,
-                    updaterFile = DistributionFile(url = "", sha256 = "")
+                update = UpdateRequest(
+                    updateFrom = lastVersion,
+                    updateTo = lastVersion,
+                    content = OfficialFirmware(DistributionFile(url = "", sha256 = "")),
+                    changelog = null
                 ),
                 isOtherChannel = false
             ),
             UpdateCardState.UpdateAvailable(
-                fromVersion = lastVersion,
-                lastVersion = VersionFiles(
-                    version = lastVersion,
-                    updaterFile = DistributionFile(url = "", sha256 = "")
+                update = UpdateRequest(
+                    updateFrom = lastVersion,
+                    updateTo = lastVersion,
+                    content = OfficialFirmware(DistributionFile(url = "", sha256 = "")),
+                    changelog = null
                 ),
                 isOtherChannel = true
             ),

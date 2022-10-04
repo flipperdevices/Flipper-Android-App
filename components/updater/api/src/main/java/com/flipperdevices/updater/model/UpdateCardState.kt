@@ -7,10 +7,14 @@ sealed class UpdateCardState {
         val flipperVersion: FirmwareVersion
     ) : UpdateCardState()
 
-    data class UpdateAvailable constructor(
-        val fromVersion: FirmwareVersion,
-        val lastVersion: VersionFiles,
+    data class UpdateAvailable(
+        val update: UpdateRequest,
         val isOtherChannel: Boolean
+    ) : UpdateCardState()
+
+    data class CustomUpdate(
+        val flipperVersion: FirmwareVersion,
+        val updateVersion: FirmwareVersion
     ) : UpdateCardState()
 
     data class Error(val type: UpdateErrorType) : UpdateCardState()

@@ -6,9 +6,9 @@
 - [Feature] Add support adaptive monochrome icon
 - [Feature] Add save as on nfc editor
 - [Feature] Add dialog on exit from nfc editor
+- [Feature] Update from internal storage
 - [Feature] Add widgets (only design for now)
 - [REFACTOR] Migrate synchronization task graph to TaskSynchronizationComponent
-- [REFACTOR] Updater: new request model
 - [REFACTOR] Redesign card when we waiting update
 - [REFACTOR] Get last region from flipper
 - [REFACTOR] Storage Stats formatter by kibibyte

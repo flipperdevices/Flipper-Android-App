@@ -2,6 +2,7 @@
 .gradle
 /local.properties
 /.idea/**
+/.fleet/**
 
 # IDEA/Android Studio Ignore exceptions
 !/.idea/codeStyles

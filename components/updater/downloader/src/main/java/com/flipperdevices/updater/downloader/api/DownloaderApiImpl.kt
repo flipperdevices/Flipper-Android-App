@@ -6,6 +6,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.preference.FlipperStorageProvider
+import com.flipperdevices.updater.api.DownloadAndUnpackDelegateApi
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.downloader.model.ArtifactType
 import com.flipperdevices.updater.downloader.model.FirmwareDirectoryListeningResponse
@@ -34,7 +35,7 @@ private const val SUB_GHZ_URL = "https://update.flipperzero.one/regions/api/v0/b
 class DownloaderApiImpl @Inject constructor(
     private val context: Context,
     private val client: HttpClient,
-    private val downloadAndUnpackDelegate: DownloadAndUnpackDelegate
+    private val downloadAndUnpackDelegateApi: DownloadAndUnpackDelegateApi
 ) : DownloaderApi, LogTagProvider {
     override val TAG = "DownloaderApi"
 
@@ -115,7 +116,7 @@ class DownloaderApiImpl @Inject constructor(
         info { "Request download $distributionFile" }
         if (decompress) {
             FlipperStorageProvider.useTemporaryFile(context) { tempFile ->
-                downloadAndUnpackDelegate.download(
+                downloadAndUnpackDelegateApi.download(
                     distributionFile,
                     tempFile
                 ) { processedBytes, totalBytes ->
@@ -126,13 +127,13 @@ class DownloaderApiImpl @Inject constructor(
                 }
                 info { "File downloaded in ${tempFile.absolutePath}" }
 
-                downloadAndUnpackDelegate.unpack(tempFile, target)
+                downloadAndUnpackDelegateApi.unpack(tempFile, target)
                 info {
                     "Unpack finished in ${target.absolutePath} ${target.listFiles()?.size} files"
                 }
             }
         } else {
-            downloadAndUnpackDelegate.download(
+            downloadAndUnpackDelegateApi.download(
                 distributionFile,
                 target
             ) { processedBytes, totalBytes ->

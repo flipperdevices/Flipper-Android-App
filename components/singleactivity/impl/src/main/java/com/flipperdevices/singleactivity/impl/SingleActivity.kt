@@ -106,7 +106,7 @@ class SingleActivity :
         }
 
         if (updaterApi.isUpdateInProcess()) {
-            updaterUIApi.openUpdateScreen(silent = true)
+            updaterUIApi.openUpdateScreen()
             return
         }
 

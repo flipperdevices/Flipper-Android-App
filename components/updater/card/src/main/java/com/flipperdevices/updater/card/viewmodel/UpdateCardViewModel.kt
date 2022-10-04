@@ -21,8 +21,10 @@ import com.flipperdevices.updater.card.helpers.UpdateOfferProviderApi
 import com.flipperdevices.updater.card.utils.isGreaterThan
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
+import com.flipperdevices.updater.model.OfficialFirmware
 import com.flipperdevices.updater.model.UpdateCardState
 import com.flipperdevices.updater.model.UpdateErrorType
+import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.model.VersionFiles
 import java.net.UnknownHostException
 import java.util.EnumMap
@@ -54,10 +56,17 @@ class UpdateCardViewModel @VMInject constructor(
     private val updateCardState = MutableStateFlow<UpdateCardState>(
         UpdateCardState.InProgress
     )
+    private val updateChanelFlow = MutableStateFlow<FirmwareChannel?>(null)
+
     private var cardStateJob: Job? = null
     private val mutex = Mutex()
 
     init {
+        viewModelScope.launch {
+            dataStoreSettings.data.collectLatest {
+                updateChanelFlow.emit(it.selectedChannel.toFirmwareChannel())
+            }
+        }
         serviceProvider.provideServiceApi(this, this)
     }
 
@@ -65,10 +74,16 @@ class UpdateCardViewModel @VMInject constructor(
 
     fun onSelectChannel(channel: FirmwareChannel?) {
         viewModelScope.launch {
-            dataStoreSettings.updateData {
-                it.toBuilder()
-                    .setSelectedChannel(channel.toSelectedChannel())
-                    .build()
+            updateChanelFlow.emit(channel)
+            when (channel) {
+                FirmwareChannel.RELEASE,
+                FirmwareChannel.RELEASE_CANDIDATE,
+                FirmwareChannel.DEV -> dataStoreSettings.updateData {
+                    it.toBuilder()
+                        .setSelectedChannel(channel.toSelectedChannel())
+                        .build()
+                }
+                else -> {}
             }
         }
     }
@@ -104,10 +119,9 @@ class UpdateCardViewModel @VMInject constructor(
             combine(
                 flipperVersionProviderApi.getCurrentFlipperVersion(viewModelScope, serviceApi),
                 serviceApi.flipperRpcInformationApi.getRpcInformationFlow(),
-                dataStoreSettings.data,
-                updateOfferHelper.isUpdateRequire(serviceApi)
-            ) { flipperFirmwareVersion, rpcInformation, settings, isAlwaysUpdate ->
-                val updateChannel = settings.selectedChannel.toFirmwareChannel()
+                updateOfferHelper.isUpdateRequire(serviceApi),
+                updateChanelFlow
+            ) { flipperFirmwareVersion, rpcInformation, isAlwaysUpdate, updateChannel ->
                 val newUpdateChannel = if (
                     updateChannel == null && flipperFirmwareVersion != null
                 ) {
@@ -161,6 +175,16 @@ class UpdateCardViewModel @VMInject constructor(
             return
         }
 
+        if (updateChannel == FirmwareChannel.CUSTOM) {
+            updateCardState.emit(
+                UpdateCardState.CustomUpdate(
+                    flipperVersion = flipperFirmwareVersion,
+                    updateVersion = FirmwareVersion(channel = FirmwareChannel.CUSTOM, version = "")
+                )
+            )
+            return
+        }
+
         val latestVersionFromNetwork = latestVersionFromNetworkResult
             .getOrNull()?.get(updateChannel)
         info { "Latest version from network is ${latestVersionFromNetwork?.version}" }
@@ -175,8 +199,12 @@ class UpdateCardViewModel @VMInject constructor(
         if (isUpdateAvailable) {
             updateCardState.emit(
                 UpdateCardState.UpdateAvailable(
-                    fromVersion = flipperFirmwareVersion,
-                    lastVersion = latestVersionFromNetwork,
+                    update = UpdateRequest(
+                        updateFrom = flipperFirmwareVersion,
+                        updateTo = latestVersionFromNetwork.version,
+                        changelog = latestVersionFromNetwork.changelog,
+                        content = OfficialFirmware(latestVersionFromNetwork.updaterFile)
+                    ),
                     isOtherChannel = latestVersionFromNetwork.version.channel
                         != flipperFirmwareVersion.channel
                 )
@@ -211,6 +239,7 @@ private fun FirmwareChannel?.toSelectedChannel(): SelectedChannel = when (this) 
     FirmwareChannel.RELEASE -> SelectedChannel.RELEASE
     FirmwareChannel.RELEASE_CANDIDATE -> SelectedChannel.RELEASE_CANDIDATE
     FirmwareChannel.DEV -> SelectedChannel.DEV
-    FirmwareChannel.UNKNOWN -> error("Can`t convert unknown firmware channel to internal channel")
+    FirmwareChannel.UNKNOWN,
+    FirmwareChannel.CUSTOM -> error("Can`t convert unknown firmware channel to internal channel")
     null -> SelectedChannel.UNRECOGNIZED
 }

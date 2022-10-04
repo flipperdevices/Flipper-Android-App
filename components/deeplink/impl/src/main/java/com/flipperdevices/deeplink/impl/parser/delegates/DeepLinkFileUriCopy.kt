@@ -3,9 +3,9 @@ package com.flipperdevices.deeplink.impl.parser.delegates
 import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
+import com.flipperdevices.core.ktx.jre.filename
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
-import com.flipperdevices.deeplink.impl.parser.filename
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkContent
 import java.io.File

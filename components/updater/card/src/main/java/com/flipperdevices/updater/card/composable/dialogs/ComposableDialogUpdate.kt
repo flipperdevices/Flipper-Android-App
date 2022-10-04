@@ -4,6 +4,7 @@ import androidx.annotation.StringRes
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -18,6 +19,7 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
+import com.flipperdevices.info.shared.getColorByChannel
 import com.flipperdevices.info.shared.getTextByVersion
 import com.flipperdevices.updater.card.R
 import com.flipperdevices.updater.model.FirmwareChannel
@@ -89,12 +91,38 @@ fun ComposableFailedUpdate(
 }
 
 @Composable
-private fun buildAnnotatedStringWithVersion(
+fun buildAnnotatedStringWithVersion(
     version: FirmwareVersion?,
     @StringRes postfixId: Int
 ): AnnotatedString {
-    val channelColor = version?.let { LocalPallet.current.text100 }
+    val color = version?.let { LocalPallet.current.text100 }
         ?: LocalPallet.current.channelFirmwareUnknown
+    return buildAnnotatedStringWithVersionInternal(version, postfixId, color)
+}
+
+@Composable
+fun buildAnnotatedStringWithVersionColor(
+    version: FirmwareVersion?,
+    @StringRes postfixId: Int
+): AnnotatedString {
+    val color = if (version == null) LocalPallet.current.channelFirmwareUnknown
+    else {
+        when (version.channel) {
+            FirmwareChannel.RELEASE,
+            FirmwareChannel.RELEASE_CANDIDATE,
+            FirmwareChannel.DEV -> getColorByChannel(version.channel)
+            else -> LocalPallet.current.text100
+        }
+    }
+    return buildAnnotatedStringWithVersionInternal(version, postfixId, color)
+}
+
+@Composable
+private fun buildAnnotatedStringWithVersionInternal(
+    version: FirmwareVersion?,
+    @StringRes postfixId: Int,
+    channelColor: Color
+): AnnotatedString {
     val versionText = version?.let { getTextByVersion(it) }
         ?: stringResource(R.string.update_card_dialog_unknown_version)
     val postfixText = stringResource(postfixId)
