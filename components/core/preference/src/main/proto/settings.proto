@@ -23,6 +23,7 @@ enum SelectedTheme {
 
 message Settings {
   reserved 7; // Already unused tags
+  reserved 16; // Already unused last_provided_region
 
   bool used_foreground_service = 2;
   bool enabled_debug_settings = 3;
