@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="keyedit_name_title">Name:</string>
-    <string name="keyedit_name_hint">Key_name</string>
+    <string name="keyedit_name_hint">Key name</string>
     <string name="keyedit_notes_title">Note:</string>
     <string name="keyedit_notes_hint">Enter your note</string>
 

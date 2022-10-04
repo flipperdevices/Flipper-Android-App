@@ -110,7 +110,6 @@ class SubGhzProvisioningHelperImpl @Inject constructor(
         if (writeFileResponse.commandStatus != Flipper.CommandStatus.OK) {
             throw FailedUploadSubGhzException()
         }
-        rememberRegion(code = finalCodeRegion)
         reportMetric(providedRegions, providedRegion, source ?: RegionProvisioningSource.DEFAULT)
     }
 
@@ -167,13 +166,5 @@ class SubGhzProvisioningHelperImpl @Inject constructor(
                 isRoaming = regionProvisioning.isRoaming
             )
         )
-    }
-
-    private suspend fun rememberRegion(code: String) {
-        settings.updateData {
-            it.toBuilder()
-                .setLastProvidedRegion(code)
-                .build()
-        }
     }
 }

@@ -10,9 +10,12 @@
 - [REFACTOR] Migrate synchronization task graph to TaskSynchronizationComponent
 - [REFACTOR] Updater: new request model
 - [REFACTOR] Redesign card when we waiting update
+- [REFACTOR] Get last region from flipper
+- [REFACTOR] Storage Stats formatter by kibibyte
 - [FIX] Rename updater folder
 - [FIX] Choose app theme from selected theme, not is light
 - [FIX] Check total bytes from server(less 0 mean error from server)
+- [FIX] Whitespace in key name and upper first letter in edit screen
 
 # 1.2.1
 
@@ -39,7 +42,7 @@
 - [Feature] Bubble for sub-ghz emulate
 - [Feature] Add wearos application
 - [Feature] Warning color on storage info
-- [Feature] Full device info share with storage stats
+- [Feature] Full device info share with storage stats(nothing when storage not found)
 - [FIX] Now search for devices by Mac address and by flipper name
 - [FIX] Subghz provisioning while geoip is null
 - [FIX] Separate screen for edit key

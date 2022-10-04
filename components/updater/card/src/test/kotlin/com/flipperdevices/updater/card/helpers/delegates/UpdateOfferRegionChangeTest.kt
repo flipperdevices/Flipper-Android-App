@@ -1,63 +1,118 @@
 package com.flipperdevices.updater.card.helpers.delegates
 
-import androidx.datastore.core.DataStore
+import com.flipperdevices.bridge.api.manager.FlipperRequestApi
+import com.flipperdevices.bridge.api.model.FlipperRequest
+import com.flipperdevices.bridge.api.model.FlipperRequestPriority
+import com.flipperdevices.bridge.api.model.wrapToRequest
+import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
-import com.flipperdevices.core.preference.pb.Settings
-import com.flipperdevices.core.preference.pb.settings
+import com.flipperdevices.core.ktx.jre.TimeHelper
+import com.flipperdevices.protobuf.Flipper
+import com.flipperdevices.protobuf.main
+import com.flipperdevices.protobuf.region
+import com.flipperdevices.protobuf.storage.file
+import com.flipperdevices.protobuf.storage.readRequest
+import com.flipperdevices.protobuf.storage.readResponse
+import com.flipperdevices.protobuf.system.pingRequest
 import com.flipperdevices.updater.subghz.helpers.SubGhzProvisioningHelper
+import com.google.protobuf.ByteString
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkObject
+import java.nio.charset.Charset
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
+import org.junit.Before
 import org.junit.Test
 
 class UpdateOfferRegionChangeTest {
+    private lateinit var request: FlipperRequest
+
+    private fun region(code: String) = region {
+        countryCode = ByteString.copyFrom(
+            code,
+            Charset.forName("ASCII")
+        )
+        bands.addAll(listOf())
+    }.toByteString()
+
+    private fun getResponse(region: ByteString): Flipper.Main {
+        return main {
+            commandStatus = Flipper.CommandStatus.OK
+            storageReadResponse = readResponse {
+                file = file { data = region }
+            }
+        }
+    }
+
+    private val requestApi: FlipperRequestApi = mockk()
     private val serviceApi: FlipperServiceApi = mockk()
-    private val dataStoreSettings: DataStore<Settings> = mockk()
     private val subGhzProvisioningHelper: SubGhzProvisioningHelper = mockk()
     private val delegate: UpdateOfferDelegate = UpdateOfferRegionChange(
-        dataStoreSettings = dataStoreSettings,
         subGhzProvisioningHelper = subGhzProvisioningHelper
     )
 
+    @Before
+    fun setup() {
+        mockkObject(TimeHelper)
+        every { TimeHelper.getNanoTime() } returns 0L
+        every { serviceApi.requestApi } returns requestApi
+        request = main {
+            storageReadRequest = readRequest {
+                path = Constants.PATH.REGION_FILE
+            }
+        }.wrapToRequest(FlipperRequestPriority.BACKGROUND)
+    }
+
     @Test
     fun `Same region in storage and now`() = runTest {
-        every { dataStoreSettings.data } returns flowOf(
-            settings {
-                lastProvidedRegion = "UA"
-            }
-        )
-        coEvery { subGhzProvisioningHelper.getRegion() } returns "UA"
-        delegate.isRequire(serviceApi).collect {
-            Assert.assertFalse(it)
+        every { requestApi.request(request) } answers {
+            flowOf(getResponse(region("UA")))
         }
+        coEvery { subGhzProvisioningHelper.getRegion() } returns "UA"
+        delegate.isRequire(serviceApi).collect { Assert.assertFalse(it) }
     }
 
     @Test
     fun `Different region in storage and now`() = runTest {
-        every { dataStoreSettings.data } returns flowOf(
-            settings {
-                lastProvidedRegion = "RU"
-            }
-        )
-        coEvery { subGhzProvisioningHelper.getRegion() } returns "UA"
-        delegate.isRequire(serviceApi).collect {
-            Assert.assertTrue(it)
+        every { requestApi.request(request) } answers {
+            flowOf(getResponse(region("USA")))
         }
+        coEvery { subGhzProvisioningHelper.getRegion() } returns "UA"
+        delegate.isRequire(serviceApi).collect { Assert.assertTrue(it) }
     }
 
     @Test
     fun `Exception when we get current region`() = runTest {
-        every { dataStoreSettings.data } returns flowOf(
-            settings {
-                lastProvidedRegion = "UA"
-            }
-        )
-        coEvery { subGhzProvisioningHelper.getRegion() }.throws(Exception("Some error"))
-        delegate.isRequire(serviceApi).collect {
-            Assert.assertTrue(it)
+        every { requestApi.request(request) } answers {
+            flowOf(getResponse(region("USA")))
         }
+        coEvery { subGhzProvisioningHelper.getRegion() }.throws(Exception("Some error"))
+        delegate.isRequire(serviceApi).collect { Assert.assertTrue(it) }
+    }
+
+    @Test
+    fun `Exception when we get region from flipper`() = runTest {
+        coEvery { subGhzProvisioningHelper.getRegion() } returns "UA"
+        every { serviceApi.requestApi.request(request) } answers {
+            flowOf(
+                main {
+                    commandStatus = Flipper.CommandStatus.ERROR
+                }
+            )
+        }
+        delegate.isRequire(serviceApi).collect { Assert.assertTrue(it) }
+
+        every { serviceApi.requestApi.request(request) } answers {
+            flowOf(
+                main {
+                    commandStatus = Flipper.CommandStatus.OK
+                    pingRequest { }
+                }
+            )
+        }
+        delegate.isRequire(serviceApi).collect { Assert.assertTrue(it) }
     }
 }
