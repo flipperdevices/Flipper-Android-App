@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Widget.Flipper.Send" parent="Theme.AppCompat">
+        <item name="colorAccent">@color/send</item>
+        <item name="android:colorSecondary">@color/send_background</item>
+        <item name="buttonTextDrawable">@drawable/send_text</item>
+        <item name="defaultKeyLogoDrawable">@drawable/ic_fileformat_sub</item>
+    </style>
+
+    <style name="Widget.Flipper.Send.InProgress" parent="Widget.Flipper.Emulate">
+        <item name="buttonTextDrawable">@drawable/sending_text</item>
+    </style>
+
+    <style name="Widget.Flipper.Emulate" parent="Theme.AppCompat">
+        <item name="colorAccent">@color/emulate</item>
+        <item name="android:colorSecondary">@color/emulate_background</item>
+        <item name="buttonTextDrawable">@drawable/emulate_text</item>
+        <item name="defaultKeyLogoDrawable">@drawable/ic_fileformat_nfc</item>
+    </style>
+
+    <style name="Widget.Flipper.Emulate.InProgress" parent="Widget.Flipper.Emulate">
+        <item name="buttonTextDrawable">@drawable/emulating_text</item>
+    </style>
+</resources>
