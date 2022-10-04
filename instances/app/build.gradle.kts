@@ -106,6 +106,9 @@ dependencies {
         implementation(projects.components.wearable.sync.handheld.noop)
     }
 
+    implementation(projects.components.widget.api)
+    implementation(projects.components.widget.impl)
+
     implementation(libs.ktor.client)
 
     implementation(libs.annotations)
