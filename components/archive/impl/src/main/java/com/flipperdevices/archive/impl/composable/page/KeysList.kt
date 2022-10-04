@@ -1,5 +1,6 @@
 package com.flipperdevices.archive.impl.composable.page
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,9 +19,9 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.archive.impl.R
 import com.flipperdevices.archive.impl.composable.key.ComposableKeySmall
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 
@@ -31,7 +32,8 @@ private const val GRID_ROW_WEIGHT = 1f / GRID_WIDTH
 fun LazyListScope.ComposableKeysGrid(
     keys: List<FlipperKey>,
     synchronizationUiApi: SynchronizationUiApi,
-    synchronizationState: SynchronizationState
+    synchronizationState: SynchronizationState,
+    onKeyOpen: (FlipperKeyPath) -> Unit
 ) {
     items(keys.windowed(GRID_WIDTH, GRID_WIDTH, partialWindows = true)) { items ->
         Row(
@@ -49,7 +51,8 @@ fun LazyListScope.ComposableKeysGrid(
                             withText = false
                         )
                     },
-                    keyPath = it.getKeyPath()
+                    keyPath = it.getKeyPath(),
+                    onOpenKey = { onKeyOpen(it.getKeyPath()) }
                 )
             }
             repeat(GRID_WIDTH - items.size) {

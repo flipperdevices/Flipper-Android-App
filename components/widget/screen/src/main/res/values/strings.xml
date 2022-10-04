@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_options_title">Choose Key</string>
+    <string name="widget_options_favorite_title">Favorites</string>
+    <string name="widget_options_all_title">All</string>
+    <string name="widget_options_sync_progress">Syncing with Flipper…</string>
+    <string name="widget_options_content_empty">You have no keys yet</string>
+    <string name="widget_options_sync_percent">Syncing %1$s</string>
+
+</resources>

@@ -1,4 +1,4 @@
-package com.flipperdevices.widget.impl.deeplink
+package com.flipperdevices.widget.screen.deeplink
 
 import android.content.Context
 import android.content.Intent

@@ -45,7 +45,7 @@ class SynchronizationApiImpl @Inject constructor(
             info { "Synchronization skipped, because we already in synchronization" }
             return
         }
-        if (BuildConfig.DEBUG && !force) { // Options only for debug build
+        if (BuildConfig.DEBUG && !force) { // Option only for debug build
             if (runBlockingWithLog { dataStore.data.first().skipAutoSyncInDebug }) {
                 return
             }

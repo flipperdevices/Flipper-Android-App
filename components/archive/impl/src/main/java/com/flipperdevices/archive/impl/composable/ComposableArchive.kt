@@ -1,5 +1,6 @@
 package com.flipperdevices.archive.impl.composable
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -32,11 +33,12 @@ import com.flipperdevices.archive.impl.composable.page.ComposableAllKeysTitle
 import com.flipperdevices.archive.impl.composable.page.ComposableFavoriteKeysTitle
 import com.flipperdevices.archive.impl.composable.page.ComposableKeysGrid
 import com.flipperdevices.archive.impl.viewmodel.GeneralTabViewModel
+import com.flipperdevices.archive.impl.viewmodel.KeyItemViewModel
 import com.flipperdevices.archive.shared.composable.ComposableAppBar
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -51,7 +53,7 @@ fun ComposableArchive(
     val favoriteKeys by tabViewModel.getFavoriteKeys().collectAsState()
     val synchronizationState by tabViewModel.getSynchronizationState().collectAsState()
     val localSynchronizationState = synchronizationState
-    val isKeysPresented = !favoriteKeys.isEmpty() || !keys.isNullOrEmpty()
+    val isKeysPresented = favoriteKeys.isNotEmpty() || !keys.isNullOrEmpty()
 
     if (localSynchronizationState is SynchronizationState.InProgress) {
         ArchiveProgressScreen(localSynchronizationState)
@@ -74,6 +76,7 @@ private fun ComposableArchiveReady(
     synchronizationState: SynchronizationState,
     isKeysPresented: Boolean
 ) {
+    val keyItemViewModel: KeyItemViewModel = viewModel()
     Column(verticalArrangement = Arrangement.Top) {
         ComposableAppBar(
             title = stringResource(R.string.archive_title),
@@ -96,7 +99,8 @@ private fun ComposableArchiveReady(
                         favoriteKeys = favoriteKeys,
                         otherKeys = keys,
                         synchronizationUiApi = synchronizationUiApi,
-                        synchronizationState = synchronizationState
+                        synchronizationState = synchronizationState,
+                        onKeyOpen = keyItemViewModel::open
                     )
                 }
             }
@@ -115,7 +119,8 @@ private fun LazyListScope.KeyCatalog(
     favoriteKeys: List<FlipperKey>,
     otherKeys: List<FlipperKey>?,
     synchronizationUiApi: SynchronizationUiApi,
-    synchronizationState: SynchronizationState
+    synchronizationState: SynchronizationState,
+    onKeyOpen: (FlipperKeyPath) -> Unit
 ) {
     if (favoriteKeys.isNotEmpty()) {
         item {
@@ -124,7 +129,8 @@ private fun LazyListScope.KeyCatalog(
         ComposableKeysGrid(
             favoriteKeys,
             synchronizationUiApi,
-            synchronizationState
+            synchronizationState,
+            onKeyOpen
         )
     }
 
@@ -135,7 +141,8 @@ private fun LazyListScope.KeyCatalog(
         ComposableKeysGrid(
             otherKeys,
             synchronizationUiApi,
-            synchronizationState
+            synchronizationState,
+            onKeyOpen
         )
     }
 }
