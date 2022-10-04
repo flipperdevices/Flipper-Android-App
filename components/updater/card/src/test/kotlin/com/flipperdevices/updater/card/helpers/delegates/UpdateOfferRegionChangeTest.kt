@@ -1,10 +1,12 @@
 package com.flipperdevices.updater.card.helpers.delegates
 
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
+import com.flipperdevices.bridge.api.model.FlipperRequest
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
+import com.flipperdevices.core.ktx.jre.TimeHelper
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.region
@@ -17,6 +19,7 @@ import com.google.protobuf.ByteString
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkObject
 import java.nio.charset.Charset
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -25,11 +28,7 @@ import org.junit.Before
 import org.junit.Test
 
 class UpdateOfferRegionChangeTest {
-    private val request = main {
-        storageReadRequest = readRequest {
-            path = Constants.PATH.REGION_FILE
-        }
-    }.wrapToRequest(FlipperRequestPriority.BACKGROUND)
+    private lateinit var request: FlipperRequest
 
     private fun region(code: String) = region {
         countryCode = ByteString.copyFrom(
@@ -57,7 +56,14 @@ class UpdateOfferRegionChangeTest {
 
     @Before
     fun setup() {
+        mockkObject(TimeHelper)
+        every { TimeHelper.getNanoTime() } returns 0L
         every { serviceApi.requestApi } returns requestApi
+        request = main {
+            storageReadRequest = readRequest {
+                path = Constants.PATH.REGION_FILE
+            }
+        }.wrapToRequest(FlipperRequestPriority.BACKGROUND)
     }
 
     @Test
