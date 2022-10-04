@@ -23,6 +23,7 @@ enum SelectedTheme {
 
 message Settings {
   reserved 7; // Already unused tags
+  reserved 16; // Already unused last_provided_region
 
   bool used_foreground_service = 2;
   bool enabled_debug_settings = 3;
@@ -37,5 +38,4 @@ message Settings {
   SelectedTheme selected_theme = 13;
   bool expert_mode = 14;
   bool ignore_subghz_provisioning_on_zero_region = 15;
-  string last_provided_region = 16;
 }
