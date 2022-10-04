@@ -6,27 +6,21 @@ import org.junit.Test
 class FlipperSymbolFilterTest {
 
     @Test
-    fun `Acceptable letters 1`() {
+    fun `Not acceptable letters 1`() {
         val isAcceptable = FlipperSymbolFilter.isAcceptableString("My████key")
         Assert.assertFalse(isAcceptable)
     }
 
     @Test
-    fun `Acceptable letters 2`() {
-        val isAcceptable = FlipperSymbolFilter.isAcceptableString("My key")
-        Assert.assertTrue(isAcceptable)
-    }
-
-    @Test
-    fun `Acceptable letters 3`() {
-        val isAcceptable = FlipperSymbolFilter.isAcceptableString("My_key")
-        Assert.assertTrue(isAcceptable)
-    }
-
-    @Test
-    fun `Acceptable letters 4`() {
+    fun `Not acceptable letters 2`() {
         val isAcceptable = FlipperSymbolFilter.isAcceptableString("My.key")
         Assert.assertFalse(isAcceptable)
+    }
+
+    @Test
+    fun `Acceptable letters`() {
+        val isAcceptable = FlipperSymbolFilter.isAcceptableString("My key _")
+        Assert.assertTrue(isAcceptable)
     }
 
     @Test
