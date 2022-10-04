@@ -48,7 +48,7 @@ fun ComposableInputDialog(
                     value = text,
                     onValueChange = {
                         errorText = null
-                        text = FlipperSymbolFilter.filterUnacceptableSymbol(it)
+                        text = FlipperSymbolFilter.filterUnacceptableSymbolInFileName(it)
                     },
                     colors = TextFieldDefaults.textFieldColors(
                         cursorColor = LocalPallet.current.text100
