@@ -5,12 +5,3 @@ import java.util.Locale
 fun String.titlecaseFirstCharIfItIsLowercase() = replaceFirstChar {
     if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
 }
-
-fun String?.extension() = this
-    ?.substringAfterLast("/")
-    ?.substringAfterLast(".")
-
-fun String?.nameWithoutExtension(): String = this
-    ?.substringAfterLast('/')
-    ?.substringBeforeLast(".")
-    ?: ""

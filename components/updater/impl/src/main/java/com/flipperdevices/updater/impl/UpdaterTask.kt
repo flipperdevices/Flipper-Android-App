@@ -10,6 +10,7 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.core.ui.lifecycle.OneTimeExecutionBleTask
 import com.flipperdevices.updater.impl.model.IntFlashFullException
+import com.flipperdevices.updater.impl.model.UpdateContentException
 import com.flipperdevices.updater.impl.tasks.FlipperUpdateImageHelper
 import com.flipperdevices.updater.impl.tasks.UpdateContentHelper
 import com.flipperdevices.updater.impl.tasks.UploadToFlipperHelper
@@ -66,7 +67,7 @@ class UpdaterTask(
         }
     }
 
-    @Suppress("LongMethod")
+    @Suppress("LongMethod", "ComplexMethod")
     private suspend fun startInternalUnwrapped(
         scope: CoroutineScope,
         serviceApi: FlipperServiceApi,
@@ -81,8 +82,10 @@ class UpdaterTask(
             uploadFirmwareLocal(input.content, updaterFolder, stateListener)
         } catch (e: Throwable) {
             error(e) { "Failed when download from network" }
-            if (e !is CancellationException) {
-                stateListener(UpdatingState.FailedDownload)
+            when (e) {
+                is UpdateContentException -> stateListener(UpdatingState.FailedCustomUpdate)
+                is CancellationException -> {}
+                else -> stateListener(UpdatingState.FailedDownload)
             }
             return@useTemporaryFolder
         }

@@ -13,18 +13,9 @@ sealed class UpdateCardState {
     ) : UpdateCardState()
 
     data class CustomUpdate(
-        val flipperVersion: FirmwareVersion
+        val flipperVersion: FirmwareVersion,
+        val updateVersion: FirmwareVersion
     ) : UpdateCardState()
 
     data class Error(val type: UpdateErrorType) : UpdateCardState()
-
-    fun getFWVersion(): FirmwareVersion? {
-        return when (this) {
-            is CustomUpdate -> this.flipperVersion
-            is Error -> null
-            InProgress -> null
-            is NoUpdate -> this.flipperVersion
-            is UpdateAvailable -> this.update.updateTo
-        }
-    }
 }

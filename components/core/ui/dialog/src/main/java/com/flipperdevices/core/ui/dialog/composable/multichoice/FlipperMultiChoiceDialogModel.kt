@@ -40,27 +40,23 @@ class FlipperMultiChoiceDialogModel private constructor(
         }
 
         fun setDescription(@StringRes textId: Int): Builder {
-            textComposable = {
-                Text(
-                    text = stringResource(textId),
-                    style = LocalTypography.current.bodyM14,
-                    textAlign = TextAlign.Center,
-                    color = LocalPallet.current.text40
-                )
-            }
+            textComposable = { ComposableDescription(AnnotatedString(stringResource(textId))) }
             return this
         }
 
         fun setDescription(text: AnnotatedString): Builder {
-            textComposable = {
-                Text(
-                    text = text,
-                    style = LocalTypography.current.bodyM14,
-                    textAlign = TextAlign.Center,
-                    color = LocalPallet.current.text40
-                )
-            }
+            textComposable = { ComposableDescription(text) }
             return this
+        }
+
+        @Composable
+        private fun ComposableDescription(text: AnnotatedString) {
+            Text(
+                text = text,
+                style = LocalTypography.current.bodyM14,
+                textAlign = TextAlign.Center,
+                color = LocalPallet.current.text40
+            )
         }
 
         fun setOnDismissRequest(onDismissRequest: () -> Unit): Builder {

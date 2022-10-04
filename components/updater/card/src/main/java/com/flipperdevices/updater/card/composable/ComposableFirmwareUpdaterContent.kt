@@ -27,16 +27,12 @@ fun ComposableFirmwareUpdaterContent(
     updateCardState: UpdateCardState,
     onSelectFirmwareChannel: (FirmwareChannel) -> Unit
 ) {
-    val localVersion = if (updateCardState is UpdateCardState.CustomUpdate) {
-        FirmwareVersion(channel = FirmwareChannel.CUSTOM, version = "")
-    } else version
-
-    val inProgress = localVersion == null
+    val inProgress = version == null
     ComposableDeviceInfoRow(titleId = R.string.updater_card_updater_channel, inProgress = false) {
         ComposableUpdaterFirmwareVersionWithChoice(
             modifier = it,
             onSelectFirmwareChannel = onSelectFirmwareChannel,
-            version = localVersion
+            version = version
         )
     }
     ComposableInfoDivider()

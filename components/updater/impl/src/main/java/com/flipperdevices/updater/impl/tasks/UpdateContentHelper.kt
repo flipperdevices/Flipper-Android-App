@@ -25,6 +25,8 @@ interface UpdateContentHelper {
     )
 }
 
+private const val MANIFEST_NAME = "update.fuf"
+
 @ContributesMultibinding(scope = AppGraph::class, boundType = UpdateContentHelper::class)
 class UpdateContentHelperOfficial @Inject constructor(
     private val firmwareDownloaderHelper: FirmwareDownloaderHelper
@@ -78,6 +80,14 @@ class UpdateContentHelperInternalStorage @Inject constructor(
                 downloadAndUnpackDelegateApi.unpack(deeplink.file, updaterFolder)
             }.onFailure { throw UpdateContentException() }
         } else throw UpdateContentException()
+
+        if (isManifestNotExist(updaterFolder)) throw UpdateContentException()
+    }
+
+    private fun isManifestNotExist(updaterFolder: File): Boolean {
+        val files = updaterFolder.listFiles()?.firstOrNull()?.listFiles()
+        val manifest = files?.filter { it.name == MANIFEST_NAME }
+        return manifest?.isEmpty() ?: true
     }
 }
 

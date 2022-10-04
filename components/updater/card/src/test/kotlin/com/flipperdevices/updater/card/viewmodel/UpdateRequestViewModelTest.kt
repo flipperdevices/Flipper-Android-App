@@ -71,14 +71,14 @@ class UpdateRequestViewModelTest {
         }
         viewModel.onServiceApiReady(serviceApi)
         val state = viewModel.getBatteryState().first()
-        assert(state is BatteryState.Unknown)
+        Assert.assertTrue(state is BatteryState.Unknown)
     }
 
     @Test
     fun `Battery state more 10 percentage`() = runTest {
         viewModel.onServiceApiReady(serviceApi)
         val state = viewModel.getBatteryState().first()
-        assert(state is BatteryState.Ready)
+        Assert.assertTrue(state is BatteryState.Ready)
     }
 
     @Test
@@ -88,7 +88,7 @@ class UpdateRequestViewModelTest {
         }
         viewModel.onServiceApiReady(serviceApi)
         val state = viewModel.getBatteryState().first()
-        assert(state is BatteryState.Ready)
+        Assert.assertTrue(state is BatteryState.Ready)
     }
 
     @Test
@@ -192,6 +192,6 @@ class UpdateRequestViewModelTest {
 
         viewModel.onUpdateRequest(UpdatePending.URI(uri, context, currentVersion))
         val state = viewModel.getUpdatePendingState().first()
-        assert(state is UpdatePendingState.Ready)
+        Assert.assertTrue(state is UpdatePendingState.Ready)
     }
 }

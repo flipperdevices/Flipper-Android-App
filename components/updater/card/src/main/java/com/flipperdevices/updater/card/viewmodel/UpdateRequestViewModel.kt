@@ -5,10 +5,8 @@ import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
-import com.flipperdevices.core.ktx.jre.extension
 import com.flipperdevices.core.ktx.jre.filename
 import com.flipperdevices.core.ktx.jre.length
-import com.flipperdevices.core.ktx.jre.nameWithoutExtension
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.updater.api.UpdaterUIApi
 import com.flipperdevices.updater.card.model.BatteryState
@@ -19,6 +17,7 @@ import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
 import com.flipperdevices.updater.model.InternalStorageFirmware
 import com.flipperdevices.updater.model.UpdateRequest
+import java.io.File
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -47,8 +46,11 @@ class UpdateRequestViewModel @VMInject constructor(
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
         serviceApi.flipperInformationApi.getInformationFlow().onEach {
             val batteryLevel = it.batteryLevel
-            val state = if (batteryLevel == null) BatteryState.Unknown
-            else BatteryState.Ready(it.isCharging, batteryLevel)
+            val state = if (batteryLevel == null) {
+                BatteryState.Unknown
+            } else {
+                BatteryState.Ready(it.isCharging, batteryLevel)
+            }
             batteryFlow.emit(state)
         }.launchIn(viewModelScope)
     }
@@ -91,9 +93,10 @@ class UpdateRequestViewModel @VMInject constructor(
     private fun startUpdateFromFile(updatePending: UpdatePending.URI) {
         viewModelScope.launch {
             val context = updatePending.context
+            val uri = updatePending.uri
             val sizeFile = updatePending.uri.length(context.contentResolver)
-            val filename = updatePending.uri.filename(context.contentResolver)
-            val extension = filename.extension()
+            val file = uri.filename(context.contentResolver)?.let { File(it) }
+            val extension = file?.extension
 
             if (extension != EXT_UPDATER_FILE) {
                 pendingFlow.emit(UpdatePendingState.FileExtension)
@@ -109,7 +112,7 @@ class UpdateRequestViewModel @VMInject constructor(
                 updateFrom = updatePending.currentVersion,
                 updateTo = FirmwareVersion(
                     channel = FirmwareChannel.CUSTOM,
-                    version = filename.nameWithoutExtension()
+                    version = file.nameWithoutExtension
                 ),
                 changelog = null,
                 content = InternalStorageFirmware(updatePending.uri)
