@@ -43,11 +43,12 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 fun ComposableArchive(
     synchronizationUiApi: SynchronizationUiApi,
-    tabViewModel: GeneralTabViewModel = viewModel()
+    tabViewModel: GeneralTabViewModel = tangleViewModel()
 ) {
     val keys by tabViewModel.getKeys().collectAsState()
     val favoriteKeys by tabViewModel.getFavoriteKeys().collectAsState()

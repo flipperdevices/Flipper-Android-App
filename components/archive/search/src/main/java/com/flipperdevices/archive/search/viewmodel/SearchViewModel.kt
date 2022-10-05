@@ -2,6 +2,7 @@ package com.flipperdevices.archive.search.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.flipperdevices.archive.api.SearchApi
 import com.flipperdevices.archive.search.di.SearchComponent
 import com.flipperdevices.archive.search.model.SearchState
 import com.flipperdevices.bridge.dao.api.delegates.KeyParser
@@ -10,7 +11,6 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.core.di.ComponentHolder
-import com.flipperdevices.keyscreen.api.KeyScreenApi
 import com.github.terrakok.cicerone.Router
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
 
-class SearchViewModel : ViewModel() {
+class SearchViewModel(private val exitOnOpen: Boolean) : ViewModel() {
     private val queryFlow = MutableStateFlow("")
     private val searchState = MutableStateFlow<SearchState>(SearchState.Loading)
 
@@ -29,9 +29,6 @@ class SearchViewModel : ViewModel() {
 
     @Inject
     lateinit var keyParser: KeyParser
-
-    @Inject
-    lateinit var keyScreenApi: KeyScreenApi
 
     @Inject
     lateinit var synchronizationApi: SynchronizationApi
@@ -60,6 +57,9 @@ class SearchViewModel : ViewModel() {
     }
 
     fun openKeyScreen(router: Router, keyPath: FlipperKeyPath) {
-        router.navigateTo(keyScreenApi.getKeyScreenScreen(keyPath))
+        router.sendResult(SearchApi.SEARCH_RESULT_KEY, keyPath)
+        if (exitOnOpen) {
+            router.exit()
+        }
     }
 }

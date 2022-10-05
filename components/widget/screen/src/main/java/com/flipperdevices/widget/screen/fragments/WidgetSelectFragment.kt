@@ -1,5 +1,6 @@
 package com.flipperdevices.widget.screen.fragments
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import android.os.Bundle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -46,6 +47,8 @@ class WidgetSelectFragment : ComposeFragment() {
         }
         WidgetOptionsComposable(archiveApi)
     }
+
+    override fun getStatusBarColor(): Int = DesignSystem.color.accent
 
     companion object {
         fun getInstance(widgetId: Int): WidgetSelectFragment {

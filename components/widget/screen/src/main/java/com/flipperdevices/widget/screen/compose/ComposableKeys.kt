@@ -61,7 +61,7 @@ fun ComposableKeys(
                     favoriteKeys = favoriteKeys,
                     otherKeys = keys,
                     synchronizationState = synchronizationState,
-                    onKeyOpen = {}
+                    onKeyOpen = widgetSelectViewModel::onSelectKey
                 )
             }
         }
