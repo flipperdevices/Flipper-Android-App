@@ -5,6 +5,7 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.ktx.jre.withLockResult
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import com.flipperdevices.keyscreen.api.EmulateHelper
 import com.flipperdevices.widget.impl.model.WidgetState
 import com.squareup.anvil.annotations.ContributesBinding
@@ -30,6 +31,7 @@ class WidgetStateStorageImpl @Inject constructor(
     override suspend fun updateState(
         widgetId: Int, state: WidgetState
     ) = withLock(mutex, "update") {
+        info { "Update state for $widgetId to $state" }
         if (state == WidgetState.IN_PROGRESS) {
             stateMap.forEach {
                 stateMap[it.key] = WidgetState.PENDING

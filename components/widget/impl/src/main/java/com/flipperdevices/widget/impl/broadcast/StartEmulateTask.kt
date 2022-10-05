@@ -36,6 +36,7 @@ class StartEmulateTask(
         } catch (throwable: Throwable) {
             error(throwable) { "Failed emulate $input" }
             widgetStateStorage.updateState(input.second, WidgetState.PENDING)
+            invalidateWidgetsTask.invoke()
         }
     }
 
