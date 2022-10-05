@@ -10,6 +10,7 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.deeplink.api.DeepLinkParserDelegate
 import com.flipperdevices.deeplink.impl.parser.filename
 import com.flipperdevices.deeplink.model.DeepLinkParserDelegatePriority
+import com.flipperdevices.core.ktx.jre.filename
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.squareup.anvil.annotations.ContributesMultibinding

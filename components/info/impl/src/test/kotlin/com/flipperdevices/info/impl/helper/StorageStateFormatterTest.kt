@@ -18,6 +18,11 @@ class StorageStateFormatterTest {
             formatter.formatFileSize(1023),
             "1023.0 B"
         )
+
+        Assert.assertEquals(
+            formatter.formatFileSize(300),
+            "300.0 B"
+        )
     }
 
     @Test
@@ -25,6 +30,11 @@ class StorageStateFormatterTest {
         Assert.assertEquals(
             formatter.formatFileSize(1025),
             "1.0 KiB"
+        )
+
+        Assert.assertEquals(
+            formatter.formatFileSize(1100),
+            "1.07 KiB"
         )
 
         Assert.assertEquals(

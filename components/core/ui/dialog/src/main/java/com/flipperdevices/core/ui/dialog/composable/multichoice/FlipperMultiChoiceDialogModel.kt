@@ -5,6 +5,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
@@ -39,15 +40,23 @@ class FlipperMultiChoiceDialogModel private constructor(
         }
 
         fun setDescription(@StringRes textId: Int): Builder {
-            textComposable = {
-                Text(
-                    text = stringResource(textId),
-                    style = LocalTypography.current.bodyM14,
-                    textAlign = TextAlign.Center,
-                    color = LocalPallet.current.text40
-                )
-            }
+            textComposable = { ComposableDescription(AnnotatedString(stringResource(textId))) }
             return this
+        }
+
+        fun setDescription(text: AnnotatedString): Builder {
+            textComposable = { ComposableDescription(text) }
+            return this
+        }
+
+        @Composable
+        private fun ComposableDescription(text: AnnotatedString) {
+            Text(
+                text = text,
+                style = LocalTypography.current.bodyM14,
+                textAlign = TextAlign.Center,
+                color = LocalPallet.current.text40
+            )
         }
 
         fun setOnDismissRequest(onDismissRequest: () -> Unit): Builder {
@@ -62,7 +71,8 @@ class FlipperMultiChoiceDialogModel private constructor(
         ): Builder {
             buttonComposables.add {
                 ComposableFlipperFlatButton(
-                    stringResource(textId), onClick,
+                    stringResource(textId),
+                    onClick,
                     if (isActive) LocalPallet.current.accentSecond else null
                 )
             }

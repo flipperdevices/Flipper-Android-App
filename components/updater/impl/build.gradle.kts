@@ -13,6 +13,7 @@ dependencies {
     implementation(projects.components.bridge.pbutils)
     implementation(libs.protobuf.jvm)
     implementation(projects.components.bridge.service.api)
+    implementation(projects.components.deeplink.api)
 
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)

@@ -1,24 +1,33 @@
 package com.flipperdevices.updater.card.viewmodel
 
+import android.content.ContentResolver
+import android.content.Context
+import android.net.Uri
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.flipperdevices.bridge.api.model.FlipperGATTInformation
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
+import com.flipperdevices.core.ktx.jre.filename
+import com.flipperdevices.core.ktx.jre.length
 import com.flipperdevices.updater.api.UpdaterUIApi
 import com.flipperdevices.updater.card.model.BatteryState
+import com.flipperdevices.updater.card.model.SyncingState
+import com.flipperdevices.updater.card.model.UpdatePending
+import com.flipperdevices.updater.card.model.UpdatePendingState
 import com.flipperdevices.updater.model.DistributionFile
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
-import com.flipperdevices.updater.model.UpdateCardState
-import com.flipperdevices.updater.model.VersionFiles
+import com.flipperdevices.updater.model.OfficialFirmware
+import com.flipperdevices.updater.model.UpdateRequest
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verify
+import io.mockk.mockkStatic
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
@@ -27,37 +36,32 @@ import org.robolectric.annotation.Config
 @RunWith(AndroidJUnit4::class)
 class UpdateRequestViewModelTest {
     private val serviceProvider: FlipperServiceProvider = mockk(relaxUnitFun = true)
-    private val serviceApi: FlipperServiceApi = mockk()
+    private val serviceApi: FlipperServiceApi = mockk(relaxUnitFun = true)
     private val updaterUIApi: UpdaterUIApi = mockk(relaxUnitFun = true)
+    private val synchronizationApi: SynchronizationApi = mockk()
     private val viewModel = UpdateRequestViewModel(
         serviceProvider = serviceProvider,
-        updaterUIApi = updaterUIApi
+        updaterUIApi = updaterUIApi,
+        synchronizationApi = synchronizationApi
     )
 
-    @Test
-    fun `Battery state ready, not charging`() = runTest {
-        every { serviceApi.flipperInformationApi.getInformationFlow() } answers {
-            MutableStateFlow(FlipperGATTInformation(batteryLevel = 0.3f, isCharging = false))
-        }
-        viewModel.onServiceApiReady(serviceApi)
-        val state = viewModel.getBatteryState().filter { it != BatteryState.Unknown }.first()
-        assert(state is BatteryState.Ready)
-        val localState = state as BatteryState.Ready
-        Assert.assertEquals(localState.isCharging, false)
-        Assert.assertEquals(localState.batteryLevel, 0.3f)
-    }
+    private val requestServer = UpdatePending.Request(
+        updateRequest = UpdateRequest(
+            updateFrom = FirmwareVersion(channel = FirmwareChannel.DEV, version = ""),
+            updateTo = FirmwareVersion(channel = FirmwareChannel.DEV, version = ""),
+            content = OfficialFirmware(DistributionFile(url = "", sha256 = "")),
+            changelog = null
+        )
+    )
 
-    @Test
-    fun `Battery state ready, charging`() = runTest {
+    @Before
+    fun setup() {
+        mockkStatic("com.flipperdevices.core.ktx.jre.UriKtxKt")
+        every { synchronizationApi.isSynchronizationRunning() } returns false
         every { serviceApi.flipperInformationApi.getInformationFlow() } answers {
-            MutableStateFlow(FlipperGATTInformation(batteryLevel = 0.3f, isCharging = true))
+            MutableStateFlow(FlipperGATTInformation(batteryLevel = 0.3f))
         }
         viewModel.onServiceApiReady(serviceApi)
-        val state = viewModel.getBatteryState().filter { it != BatteryState.Unknown }.first()
-        assert(state is BatteryState.Ready)
-        val localState = state as BatteryState.Ready
-        Assert.assertEquals(localState.isCharging, true)
-        Assert.assertEquals(localState.batteryLevel, 0.3f)
     }
 
     @Test
@@ -67,33 +71,127 @@ class UpdateRequestViewModelTest {
         }
         viewModel.onServiceApiReady(serviceApi)
         val state = viewModel.getBatteryState().first()
-        assert(state is BatteryState.Unknown)
+        Assert.assertTrue(state is BatteryState.Unknown)
     }
 
     @Test
-    fun `verify call open updater screen`() {
-        val fmVersion = FirmwareVersion(channel = FirmwareChannel.DEV, version = "")
-        val file = DistributionFile(url = "", sha256 = "")
-        val filesVersion = VersionFiles(version = fmVersion, updaterFile = file)
-        viewModel.openUpdate(
-            UpdateCardState.UpdateAvailable(
-                fromVersion = fmVersion,
-                lastVersion = filesVersion,
-                isOtherChannel = true
+    fun `Battery state more 10 percentage`() = runTest {
+        viewModel.onServiceApiReady(serviceApi)
+        val state = viewModel.getBatteryState().first()
+        Assert.assertTrue(state is BatteryState.Ready)
+    }
+
+    @Test
+    fun `Battery state more 10 percentage but charge`() = runTest {
+        every { serviceApi.flipperInformationApi.getInformationFlow() } answers {
+            MutableStateFlow(FlipperGATTInformation(batteryLevel = 0.09f, isCharging = true))
+        }
+        viewModel.onServiceApiReady(serviceApi)
+        val state = viewModel.getBatteryState().first()
+        Assert.assertTrue(state is BatteryState.Ready)
+    }
+
+    @Test
+    fun `Open update request with sync complete`() = runTest {
+        viewModel.onUpdateRequest(requestServer)
+        val state = viewModel.getUpdatePendingState().first()
+        Assert.assertEquals(
+            state,
+            UpdatePendingState.Ready(
+                requestServer.updateRequest,
+                SyncingState.Complete
             )
         )
-        verify {
-            updaterUIApi.openUpdateScreen(
-                withArg {
-                    Assert.assertFalse(it)
-                },
-                withArg {
-                    Assert.assertEquals(it.updateFrom, fmVersion)
-                    Assert.assertEquals(it.updateTo, fmVersion)
-                    Assert.assertEquals(it.changelog, null)
-                    Assert.assertEquals(it.content, file)
-                }
+    }
+
+    @Test
+    fun `Open update request with sync`() = runTest {
+        every { synchronizationApi.isSynchronizationRunning() } returns true
+        viewModel.onUpdateRequest(requestServer)
+        val state = viewModel.getUpdatePendingState().first()
+        Assert.assertEquals(
+            state,
+            UpdatePendingState.Ready(
+                requestServer.updateRequest,
+                SyncingState.InProgress
             )
-        }
+        )
+    }
+
+    @Test
+    fun `Stop sync and start update`() = runTest {
+        viewModel.stopSyncAndStartUpdate(requestServer.updateRequest)
+        val state = viewModel.getUpdatePendingState().first()
+        Assert.assertEquals(
+            state,
+            UpdatePendingState.Ready(
+                requestServer.updateRequest,
+                SyncingState.Stop
+            )
+        )
+    }
+
+    @Test
+    fun `Reset state`() = runTest {
+        viewModel.resetState()
+        val state = viewModel.getUpdatePendingState().first()
+        Assert.assertEquals(
+            state,
+            null
+        )
+    }
+
+    @Test
+    fun `Not update because file not tgz`() = runTest {
+        val context = mockk<Context>()
+        val contentResolver = mockk<ContentResolver>()
+        val uri = Uri.EMPTY
+        val currentVersion = FirmwareVersion(channel = FirmwareChannel.CUSTOM, version = "")
+
+        every { context.contentResolver } returns contentResolver
+        every { uri.length(context.contentResolver) } answers { 0L }
+        every { uri.filename(context.contentResolver) } answers { "file.zip" }
+
+        viewModel.onUpdateRequest(UpdatePending.URI(uri, context, currentVersion))
+        val state = viewModel.getUpdatePendingState().first()
+        Assert.assertEquals(
+            state,
+            UpdatePendingState.FileExtension
+        )
+    }
+
+    @Test
+    fun `Not update because file bigger`() = runTest {
+        val context = mockk<Context>()
+        val contentResolver = mockk<ContentResolver>()
+        val uri = Uri.EMPTY
+        val currentVersion = FirmwareVersion(channel = FirmwareChannel.CUSTOM, version = "")
+
+        every { context.contentResolver } returns contentResolver
+        every { uri.length(contentResolver) } answers { 1024 * 1024 * 1024L * 10 + 1 }
+        every { uri.filename(contentResolver) } answers { "file.tgz" }
+
+        viewModel.onUpdateRequest(UpdatePending.URI(uri, context, currentVersion))
+        val state = viewModel.getUpdatePendingState().first()
+        Assert.assertEquals(
+            state,
+            UpdatePendingState.FileBig
+        )
+    }
+
+    @Test
+    fun `Ready update from internal`() = runTest {
+        val context = mockk<Context>()
+        val contentResolver = mockk<ContentResolver>()
+        val uri = Uri.EMPTY
+        val currentVersion = FirmwareVersion(channel = FirmwareChannel.CUSTOM, version = "")
+
+        every { context.contentResolver } returns contentResolver
+        every { uri.length(context.contentResolver) } answers { 1L }
+        every { uri.filename(context.contentResolver) } answers { "file.tgz" }
+
+        viewModel.onUpdateRequest(UpdatePending.URI(uri, context, currentVersion))
+        val state = viewModel.getUpdatePendingState().first()
+        Assert.assertTrue(state is UpdatePendingState.Ready)
     }
 }

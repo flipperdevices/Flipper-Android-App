@@ -7,6 +7,7 @@ import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.updater.model.DistributionFile
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
+import com.flipperdevices.updater.model.OfficialFirmware
 import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.screen.model.FailedReason
 import com.flipperdevices.updater.screen.model.UpdaterScreenState
@@ -21,7 +22,7 @@ private val updateRequest = UpdateRequest(
         version = "0.65.2 1234"
     ),
     changelog = "",
-    content = DistributionFile(url = "", sha256 = "")
+    content = OfficialFirmware(DistributionFile(url = "", sha256 = ""))
 )
 
 @Composable

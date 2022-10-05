@@ -6,7 +6,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -24,19 +23,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
-import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.updater.card.R
 import com.flipperdevices.updater.card.composable.dialogs.ComposableUpdateRequest
-import com.flipperdevices.updater.model.DistributionFile
-import com.flipperdevices.updater.model.FirmwareChannel
-import com.flipperdevices.updater.model.FirmwareVersion
+import com.flipperdevices.updater.card.composable.pending.ComposableUpdateButtonContentChooseFile
+import com.flipperdevices.updater.card.model.UpdatePending
 import com.flipperdevices.updater.model.UpdateCardState
-import com.flipperdevices.updater.model.VersionFiles
 
 @Composable
 fun ComposableUpdateButton(
@@ -44,16 +39,12 @@ fun ComposableUpdateButton(
     inProgress: Boolean
 ) {
     var buttonModifier = Modifier.padding(all = 12.dp)
-    var pendingUpdateRequest by remember {
-        mutableStateOf<UpdateCardState.UpdateAvailable?>(null)
-    }
-    val localUpdaterRequest = pendingUpdateRequest
-
     if (inProgress) {
         ComposableUpdateButtonPlaceholder(buttonModifier)
         return
     }
-
+    var pendingUpdateRequest by remember { mutableStateOf<UpdatePending?>(null) }
+    val localUpdaterRequest = pendingUpdateRequest
     if (localUpdaterRequest != null) {
         ComposableUpdateRequest(pendingUpdateRequest = localUpdaterRequest) {
             pendingUpdateRequest = null
@@ -69,12 +60,17 @@ fun ComposableUpdateButton(
             descriptionId = R.string.updater_card_updater_button_no_updates_desc,
             color = LocalPallet.current.text20
         )
+        is UpdateCardState.CustomUpdate -> ComposableUpdateButtonContentChooseFile(
+            buttonModifier = buttonModifier,
+            updateCardState = updateCardState,
+            onChoose = { pendingUpdateRequest = it }
+        )
         is UpdateCardState.UpdateAvailable -> {
             buttonModifier = buttonModifier.clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(),
                 onClick = {
-                    pendingUpdateRequest = updateCardState
+                    pendingUpdateRequest = UpdatePending.Request(updateCardState.update)
                 }
             )
 
@@ -96,7 +92,7 @@ fun ComposableUpdateButton(
 }
 
 @Composable
-fun ComposableUpdateButtonPlaceholder(buttonModifier: Modifier) {
+private fun ComposableUpdateButtonPlaceholder(buttonModifier: Modifier) {
     Box(
         modifier = buttonModifier
             .height(46.dp)
@@ -106,7 +102,7 @@ fun ComposableUpdateButtonPlaceholder(buttonModifier: Modifier) {
 }
 
 @Composable
-private fun ComposableUpdateButtonContent(
+fun ComposableUpdateButtonContent(
     buttonModifier: Modifier,
     @StringRes textId: Int,
     @StringRes descriptionId: Int,
@@ -140,41 +136,5 @@ private fun ComposableUpdateButtonContent(
             style = LocalTypography.current.subtitleR12,
             color = LocalPallet.current.text16
         )
-    }
-}
-
-@Preview(
-    showBackground = true,
-    showSystemUi = true
-)
-@Composable
-fun ComposableUpdateButtonPreview() {
-    FlipperThemeInternal {
-        val version = FirmwareVersion(
-            channel = FirmwareChannel.RELEASE,
-            version = "1.1.1"
-        )
-        val updateCardState = setOf(
-            UpdateCardState.NoUpdate(flipperVersion = version),
-            UpdateCardState.UpdateAvailable(
-                fromVersion = version,
-                lastVersion = VersionFiles(
-                    version = version,
-                    updaterFile = DistributionFile(url = "", sha256 = "")
-                ),
-                isOtherChannel = false
-            )
-        )
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(12.dp)
-                .background(LocalPallet.current.background)
-        ) {
-            updateCardState.forEach {
-                ComposableUpdateButton(it, false)
-                ComposableUpdateButton(it, true)
-            }
-        }
     }
 }

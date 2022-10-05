@@ -8,6 +8,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.animatedDots
 import com.flipperdevices.core.ui.res.R as DesignSystem
@@ -82,6 +83,7 @@ fun ComposableUpdateContent(
             FailedReason.OUTDATED_APP -> ComposableOutdatedApp()
             FailedReason.FAILED_SUB_GHZ_PROVISIONING,
             FailedReason.FAILED_INT_STORAGE -> ComposableInternalFlashFailed()
+            FailedReason.FAILED_INTERNAL_UPDATE -> ComposableInternalUpdateFailed()
         }
         UpdaterScreenState.Finish -> return
     }
@@ -98,7 +100,9 @@ private fun FirmwareVersionText(version: FirmwareVersion) {
         modifier = Modifier.heightIn(21.dp),
         text = text,
         color = textColor,
-        style = LocalTypography.current.titleM18
+        style = LocalTypography.current.titleM18,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis
     )
 }
 

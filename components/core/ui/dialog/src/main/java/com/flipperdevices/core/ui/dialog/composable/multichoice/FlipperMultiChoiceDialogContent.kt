@@ -51,7 +51,7 @@ internal fun FlipperMultiChoiceDialogContent(
         }
     }
     if (model.titleComposable != null) {
-        Box(modifier = Modifier.padding(top = 24.dp, start = 12.dp, end = 12.dp)) {
+        Box(modifier = Modifier.padding(top = 12.dp, start = 12.dp, end = 12.dp)) {
             model.titleComposable.invoke()
         }
     }

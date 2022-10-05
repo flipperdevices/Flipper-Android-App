@@ -189,6 +189,9 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
                 UpdatingState.FailedInternalStorage -> UpdaterScreenState.Failed(
                     FailedReason.FAILED_INT_STORAGE
                 )
+                UpdatingState.FailedCustomUpdate -> UpdaterScreenState.Failed(
+                    FailedReason.FAILED_INTERNAL_UPDATE
+                )
                 UpdatingState.SubGhzProvisioning -> UpdaterScreenState.SubGhzProvisioning(
                     updateRequest = updateRequest
                 )

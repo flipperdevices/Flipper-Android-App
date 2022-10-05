@@ -6,9 +6,9 @@
 - [Feature] Add support adaptive monochrome icon
 - [Feature] Add save as on nfc editor
 - [Feature] Add dialog on exit from nfc editor
+- [Feature] Update from internal storage
 - [Feature] Add widgets (only design and key selector for now)
 - [REFACTOR] Migrate synchronization task graph to TaskSynchronizationComponent
-- [REFACTOR] Updater: new request model
 - [REFACTOR] Redesign card when we waiting update
 - [REFACTOR] Get last region from flipper
 - [REFACTOR] Storage Stats formatter by kibibyte
@@ -16,6 +16,7 @@
 - [FIX] Choose app theme from selected theme, not is light
 - [FIX] Check total bytes from server(less 0 mean error from server)
 - [FIX] Whitespace in key name and upper first letter in edit screen
+- [FIX] Formatter convert bytes to string
 
 # 1.2.1
 
