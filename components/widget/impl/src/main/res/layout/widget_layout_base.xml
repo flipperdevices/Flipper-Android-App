@@ -59,6 +59,7 @@
                     android:visibility="gone" />
 
             <FrameLayout
+                    android:id="@+id/progress_stop"
                     android:background="@drawable/stop_rectangle"
                     android:layout_gravity="center"
                     android:layout_height="wrap_content"
@@ -102,6 +103,7 @@
     </LinearLayout>
 
     <ImageView
+            android:id="@+id/button"
             android:contentDescription="@string/img_btn"
             android:layout_height="40dp"
             android:layout_width="match_parent"

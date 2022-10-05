@@ -56,14 +56,14 @@ private const val APP_RETRY_SLEEP_TIME_MS = 1 * 1000L // 1 second
 class EmulateHelperImpl @Inject constructor() : EmulateHelper, LogTagProvider {
     override val TAG = "EmulateHelper"
 
-    private var isRunning = MutableStateFlow(false)
+    private var currentKeyEmulating = MutableStateFlow<FlipperFilePath?>(null)
 
     @Volatile
     private var stopEmulateTimeAllowedMs: Long = 0
     private var stopJob: Job? = null
     private val mutex = Mutex()
 
-    override fun getRunningState(): StateFlow<Boolean> = isRunning
+    override fun getCurrentEmulatingKey(): StateFlow<FlipperFilePath?> = currentKeyEmulating
 
     override suspend fun startEmulate(
         scope: CoroutineScope,
@@ -72,11 +72,11 @@ class EmulateHelperImpl @Inject constructor() : EmulateHelper, LogTagProvider {
         keyPath: FlipperFilePath,
         minEmulateTime: Long
     ) = withLockResult(mutex, "start") {
-        if (isRunning.value) {
+        if (currentKeyEmulating.value != null) {
             info { "Emulate already running, start stop" }
             stopEmulateInternal(requestApi)
         }
-        isRunning.emit(true)
+        currentKeyEmulating.emit(keyPath)
         startEmulateInternal(scope, requestApi, keyType, keyPath, minEmulateTime)
     }
 
@@ -91,7 +91,7 @@ class EmulateHelperImpl @Inject constructor() : EmulateHelper, LogTagProvider {
         if (TimeHelper.getNow() > stopEmulateTimeAllowedMs) {
             info {
                 "Already passed delay, stop immediately " +
-                    "(current: ${TimeHelper.getNow()}/$stopEmulateTimeAllowedMs)"
+                        "(current: ${TimeHelper.getNow()}/$stopEmulateTimeAllowedMs)"
             }
             stopEmulateInternal(requestApi)
             return@withLock
@@ -247,6 +247,6 @@ class EmulateHelperImpl @Inject constructor() : EmulateHelper, LogTagProvider {
             )
         )
         info { "App exit response: $appExitResponse" }
-        isRunning.emit(false)
+        currentKeyEmulating.emit(null)
     }
 }

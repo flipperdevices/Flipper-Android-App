@@ -73,6 +73,8 @@ class WidgetSelectViewModel @VMInject constructor(
     }
 
     fun onOpenSearch(router: Router) {
+        resultListenerDispatcher?.dispose()
+        resultListenerDispatcher = router.setResultListener(SearchApi.SEARCH_RESULT_KEY, this)
         router.navigateTo(searchApi.getSearchScreen(exitOnOpen = true))
     }
 

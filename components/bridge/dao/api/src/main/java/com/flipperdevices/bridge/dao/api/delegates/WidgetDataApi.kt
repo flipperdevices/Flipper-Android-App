@@ -6,6 +6,8 @@ import com.flipperdevices.bridge.dao.api.model.WidgetType
 
 interface WidgetDataApi {
     suspend fun getAll(): List<WidgetData>
+    suspend fun getWidgetDataByWidgetId(widgetId: Int): WidgetData?
+
     suspend fun updateTypeForWidget(
         widgetId: Int,
         type: WidgetType

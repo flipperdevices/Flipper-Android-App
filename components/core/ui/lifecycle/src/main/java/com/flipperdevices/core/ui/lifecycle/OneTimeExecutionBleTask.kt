@@ -65,6 +65,7 @@ abstract class OneTimeExecutionBleTask<INPUT, STATE>(
                 awaitCancellation()
             } finally {
                 withContext(NonCancellable) {
+                    info { "onStopAsync" }
                     onStopAsync(stateListener)
                 }
             }

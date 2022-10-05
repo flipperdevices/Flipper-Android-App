@@ -40,6 +40,17 @@ class WidgetDataApiImpl @Inject constructor(
         }
     }
 
+    override suspend fun getWidgetDataByWidgetId(
+        widgetId: Int
+    ): WidgetData? = withContext(Dispatchers.IO) {
+        val widgetDataElement = widgetDataDao.getWidgetDataById(widgetId)
+            ?: return@withContext null
+        val keyPath = if (widgetDataElement.keyId != null) {
+            simpleKeyDao.getById(widgetDataElement.keyId)?.getFlipperKeyPath()
+        } else null
+        return@withContext WidgetData(widgetDataElement.id, keyPath, widgetDataElement.widgetType)
+    }
+
     override suspend fun updateTypeForWidget(
         widgetId: Int,
         type: WidgetType
