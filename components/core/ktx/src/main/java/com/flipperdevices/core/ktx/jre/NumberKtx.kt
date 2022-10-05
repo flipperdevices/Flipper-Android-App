@@ -34,10 +34,10 @@ fun Int.length() = when (this) {
     else -> log10(abs(toDouble())).toInt() + 1
 }
 
-fun Double.round(decimals: Int = 2): Double {
-    val pattern = "#.${"#".repeat(decimals)}"
+fun Number.roundToString(decimals: Int = 2): String {
+    val pattern = "0.0${"#".repeat(decimals - 1)}"
     val decimalFormatter = DecimalFormat(pattern).apply {
         roundingMode = RoundingMode.FLOOR
     }
-    return decimalFormatter.format(this).toDouble()
+    return decimalFormatter.format(this)
 }

@@ -1,6 +1,6 @@
 package com.flipperdevices.info.impl.model
 
-import com.flipperdevices.core.ktx.jre.round
+import com.flipperdevices.core.ktx.jre.roundToString
 
 private const val B = "B"
 private const val KIB = "KiB"
@@ -15,10 +15,10 @@ class StorageStateFormatter {
     fun formatFileSize(size: Long): String {
         return when {
             size < 0 -> "0 $B"
-            size < MULTIPLIER_BYTES -> "${size.toDouble()} $B"
-            size < KIBIBYTE_BYTES -> "${(size / MULTIPLIER_BYTES).round()} $KIB"
-            size < MIBIBYTE_BYTES -> "${(size / KIBIBYTE_BYTES).round()} $MIB"
-            else -> "${(size / MIBIBYTE_BYTES).round()} $GIB"
+            size < MULTIPLIER_BYTES -> "${size.roundToString()} $B"
+            size < KIBIBYTE_BYTES -> "${(size / MULTIPLIER_BYTES).roundToString()} $KIB"
+            size < MIBIBYTE_BYTES -> "${(size / KIBIBYTE_BYTES).roundToString()} $MIB"
+            else -> "${(size / MIBIBYTE_BYTES).roundToString()} $GIB"
         }
     }
 }
