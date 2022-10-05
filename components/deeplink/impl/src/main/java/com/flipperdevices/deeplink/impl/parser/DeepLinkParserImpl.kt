@@ -23,9 +23,12 @@ class DeepLinkParserImpl @Inject constructor(
     override suspend fun fromUri(context: Context, uri: Uri): Deeplink? {
         info { "Try parse uri with scheme: ${uri.scheme}, uri: $uri" }
 
-        return fromIntent(context, Intent().apply {
-            data = uri
-        })
+        return fromIntent(
+            context,
+            Intent().apply {
+                data = uri
+            }
+        )
     }
 
     override suspend fun fromIntent(context: Context, intent: Intent): Deeplink? {

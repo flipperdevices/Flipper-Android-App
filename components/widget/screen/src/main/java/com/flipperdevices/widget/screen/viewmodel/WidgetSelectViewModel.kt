@@ -54,7 +54,6 @@ class WidgetSelectViewModel @VMInject constructor(
     fun getFavoriteKeysFlow(): StateFlow<List<FlipperKey>> = favoriteKeys
     fun getSynchronizationFlow(): StateFlow<SynchronizationState> = synchronizationState
 
-
     fun refresh() {
         synchronizationApi.startSynchronization(force = true)
     }
@@ -69,6 +68,7 @@ class WidgetSelectViewModel @VMInject constructor(
         }
     }
 
+    @Suppress("UnusedPrivateMember")
     fun onSelectKey(keyPath: FlipperKeyPath) = Unit
 
     override fun onCleared() {

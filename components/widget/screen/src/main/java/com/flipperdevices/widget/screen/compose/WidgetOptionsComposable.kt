@@ -1,6 +1,5 @@
 package com.flipperdevices.widget.screen.compose
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,6 +21,7 @@ import com.flipperdevices.archive.shared.composable.ComposableAppBar
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.core.ktx.jre.roundPercentToString
 import com.flipperdevices.core.ui.ktx.LocalRouter
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.widget.screen.R
@@ -83,5 +83,3 @@ private fun ArchiveProgressScreen(inProgressState: SynchronizationState.InProgre
         )
     }
 }
-
-

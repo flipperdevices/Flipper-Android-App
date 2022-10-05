@@ -27,7 +27,7 @@ class DeepLinkDispatcherImpl @Inject constructor(
 
         info {
             "Choice handler ${processHandler.second.javaClass} " +
-                    "with priority ${processHandler.first}"
+                "with priority ${processHandler.first}"
         }
 
         processHandler.second.processLink(router, deeplink)

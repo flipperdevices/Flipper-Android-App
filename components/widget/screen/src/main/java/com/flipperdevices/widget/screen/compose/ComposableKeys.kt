@@ -38,9 +38,9 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
-fun ComposableKeys(
+fun ColumnScope.ComposableKeys(
     archiveApi: ArchiveApi,
-    widgetSelectViewModel: WidgetSelectViewModel,
+    widgetSelectViewModel: WidgetSelectViewModel
 ) {
     val keys by widgetSelectViewModel.getKeysFlow().collectAsState()
     val favoriteKeys by widgetSelectViewModel.getFavoriteKeysFlow().collectAsState()
@@ -66,8 +66,12 @@ fun ComposableKeys(
             }
         }
     }
+    if (!isKeysPresented) {
+        if (synchronizationState is SynchronizationState.InProgress) {
+            ComposableProgress()
+        } else ComposableNoKeys()
+    }
 }
-
 
 @Suppress("FunctionName")
 private fun LazyListScope.KeyCatalog(
@@ -181,4 +185,3 @@ fun ComposableAllKeysTitle() {
         style = LocalTypography.current.buttonB16
     )
 }
-

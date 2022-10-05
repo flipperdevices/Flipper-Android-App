@@ -15,7 +15,8 @@ private const val WIDGET_OPTIONS_KEY = "appWidgetId"
 private const val EXTRA_ID_WIDGET_INVALID = -1
 
 @ContributesMultibinding(AppGraph::class, DeepLinkParserDelegate::class)
-class WidgetDeeplinkSettingsParserDelegate @Inject constructor() : DeepLinkParserDelegate,
+class WidgetDeeplinkSettingsParserDelegate @Inject constructor() :
+    DeepLinkParserDelegate,
     LogTagProvider {
     override val TAG = "WidgetDeeplinkSettingsParserDelegate"
 
@@ -35,7 +36,7 @@ class WidgetDeeplinkSettingsParserDelegate @Inject constructor() : DeepLinkParse
     }
 
     private fun isWidgetOptionsIntent(intent: Intent): Boolean {
-        return intent.action == WIDGET_OPTIONS_ACTION
-                && intent.extras?.containsKey(WIDGET_OPTIONS_KEY) == true
+        return intent.action == WIDGET_OPTIONS_ACTION &&
+            intent.extras?.containsKey(WIDGET_OPTIONS_KEY) == true
     }
 }

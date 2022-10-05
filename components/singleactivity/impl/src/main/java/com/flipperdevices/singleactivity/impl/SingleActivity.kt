@@ -70,7 +70,7 @@ class SingleActivity :
 
         info {
             "Create new activity with hashcode: ${SingleActivity::class.hashCode()}. " +
-                    "Deeplink size is ${deeplinkStack.size}"
+                "Deeplink size is ${deeplinkStack.size}"
         }
 
         if (savedInstanceState == null) {

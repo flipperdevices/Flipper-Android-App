@@ -14,7 +14,6 @@ import com.github.terrakok.cicerone.androidx.FragmentScreen
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
-
 @ContributesBinding(AppGraph::class)
 class ArchiveApiImpl @Inject constructor(
     private val synchronizationUiApi: SynchronizationUiApi
