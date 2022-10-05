@@ -6,7 +6,9 @@ import androidx.lifecycle.lifecycleScope
 import com.flipperdevices.app.di.MainComponent
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.ktx.android.toFullString
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.deeplink.api.DeepLinkParser
 import com.flipperdevices.deeplink.model.Deeplink
@@ -37,21 +39,19 @@ class SplashScreen : AppCompatActivity(), LogTagProvider {
         super.onCreate(savedInstanceState)
         ComponentHolder.component<MainComponent>().inject(this)
 
-        info { "Open SplashScreen with $intent" }
+        info { "Open SplashScreen with ${intent.toFullString()}" }
 
         metricApi.reportSimpleEvent(SimpleEvent.APP_OPEN)
         synchronizationApi.startSynchronization()
 
-        // Open single activity if it is not deeplink
-        val uri = intent.data
-        if (uri == null) {
-            openSingleActivityAndFinish(null)
-            return
-        }
-
         // Open deeplink
         lifecycleScope.launch {
-            val deeplink = deepLinkParser.fromUri(this@SplashScreen, uri)
+            val deeplink = try {
+                deepLinkParser.fromIntent(this@SplashScreen, intent)
+            } catch (throwable: Exception) {
+                error(throwable) { "Failed parse deeplink" }
+                null
+            }
             withContext(Dispatchers.Main) {
                 openSingleActivityAndFinish(deeplink)
             }

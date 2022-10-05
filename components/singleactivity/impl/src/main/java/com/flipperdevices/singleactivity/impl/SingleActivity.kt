@@ -89,7 +89,7 @@ class SingleActivity :
         openExistActivity(deeplink)
     }
 
-    fun openExistActivity(deeplink: Deeplink?) {
+    private fun openExistActivity(deeplink: Deeplink?) {
         info { "Nonfirst open activity with deeplink $deeplink" }
         if (deeplink != null) {
             deeplinkStack.push(deeplink)

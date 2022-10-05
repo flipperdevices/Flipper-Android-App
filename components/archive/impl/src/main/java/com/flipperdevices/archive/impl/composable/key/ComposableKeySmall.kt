@@ -15,8 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.flipperdevices.archive.impl.viewmodel.KeyItemViewModel
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.ui.ktx.ComposableKeyType
 import com.flipperdevices.core.ui.theme.LocalTypography
@@ -26,7 +24,7 @@ fun ComposableKeySmall(
     modifier: Modifier = Modifier,
     keyPath: FlipperKeyPath,
     synchronizationContent: @Composable () -> Unit,
-    keyItemViewModel: KeyItemViewModel = viewModel()
+    onOpenKey: () -> Unit
 ) {
     Card(
         modifier = modifier
@@ -34,7 +32,7 @@ fun ComposableKeySmall(
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(),
-                onClick = { keyItemViewModel.open(keyPath) }
+                onClick = onOpenKey
             )
     ) {
         Column {

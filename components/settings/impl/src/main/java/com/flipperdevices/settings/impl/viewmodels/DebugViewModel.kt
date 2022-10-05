@@ -68,6 +68,16 @@ class DebugViewModel @VMInject constructor(
         }
     }
 
+    fun onSwitchSkipAutoSync(skipAutoSync: Boolean) {
+        viewModelScope.launch(Dispatchers.Default) {
+            settingsDataStore.updateData {
+                it.toBuilder()
+                    .setSkipAutoSyncInDebug(skipAutoSync)
+                    .build()
+            }
+        }
+    }
+
     fun restartRpc() {
         serviceProvider.provideServiceApi(this) {
             it.restartRPC()

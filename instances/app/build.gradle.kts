@@ -108,6 +108,7 @@ dependencies {
 
     implementation(projects.components.widget.api)
     implementation(projects.components.widget.impl)
+    implementation(projects.components.widget.screen)
 
     implementation(libs.ktor.client)
 

@@ -8,6 +8,4 @@ interface DeepLinkDispatcher {
      * @return false if dispatcher not found handler for this uri
      */
     fun process(router: Router, deeplink: Deeplink): Boolean
-
-    fun registerHandler(deepLinkHandler: DeepLinkHandler)
 }

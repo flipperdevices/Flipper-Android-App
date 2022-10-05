@@ -10,6 +10,7 @@ import com.flipperdevices.deeplink.model.DeeplinkContent
 object FlipperKeyParserHelper {
     fun toFlipperKey(link: Deeplink?): FlipperKey? {
         if (link == null) return null
+        if (link !is Deeplink.FlipperKey) return null
         return when (link.content) {
             is DeeplinkContent.FFFContent -> parseFFFContent(link)
             is DeeplinkContent.InternalStorageFile -> parseInternalFile(link)
@@ -18,6 +19,9 @@ object FlipperKeyParserHelper {
     }
 
     private fun parseFFFContent(link: Deeplink): FlipperKey? {
+        if (link !is Deeplink.FlipperKey) {
+            return null
+        }
         val path = link.path ?: return null
         val deeplinkContent = link.content as? DeeplinkContent.FFFContent ?: return null
         return FlipperKey(
@@ -31,6 +35,9 @@ object FlipperKeyParserHelper {
     }
 
     private fun parseInternalFile(link: Deeplink): FlipperKey? {
+        if (link !is Deeplink.FlipperKey) {
+            return null
+        }
         val deeplinkContent = link.content as? DeeplinkContent.InternalStorageFile ?: return null
         val fileKey = deeplinkContent.file
         return FlipperKey(

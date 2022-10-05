@@ -7,7 +7,7 @@
 - [Feature] Add save as on nfc editor
 - [Feature] Add dialog on exit from nfc editor
 - [Feature] Update from internal storage
-- [Feature] Add widgets (only design for now)
+- [Feature] Add widgets (only design and key selector for now)
 - [REFACTOR] Migrate synchronization task graph to TaskSynchronizationComponent
 - [REFACTOR] Redesign card when we waiting update
 - [REFACTOR] Get last region from flipper

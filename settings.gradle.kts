@@ -147,5 +147,6 @@ include(
     ":components:wearable:emulate:common",
 
     ":components:widget:api",
+    ":components:widget:screen",
     ":components:widget:impl",
 )

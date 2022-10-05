@@ -6,7 +6,9 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.components.core.di)
+    implementation(projects.components.widget.api)
+
+    implementation(projects.components.core.log)
     implementation(projects.components.core.ui.res)
 
     // Dagger deps
