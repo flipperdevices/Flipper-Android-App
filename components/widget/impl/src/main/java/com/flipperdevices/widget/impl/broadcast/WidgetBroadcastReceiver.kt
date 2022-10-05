@@ -52,8 +52,10 @@ class WidgetBroadcastReceiver : BroadcastReceiver(), LogTagProvider {
                 }
                 StartEmulateTask(
                     widgetComponent.serviceProvider,
-                    widgetComponent.emulateHelper
-                ).start(keyPath) {
+                    widgetComponent.emulateHelper,
+                    widgetComponent.widgetStateStorage,
+                    widgetComponent.invalidateWidgetsTask
+                ).start(keyPath to widgetId) {
                     info { "Start task for ${intent.toFullString()} $keyPath is finished" }
                 }
             }
@@ -85,9 +87,17 @@ class WidgetBroadcastReceiver : BroadcastReceiver(), LogTagProvider {
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetAppId)
 
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_MUTABLE)
+                PendingIntent.getBroadcast(
+                    context, widgetAppId, intent,
+                    PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+                )
             } else {
-                PendingIntent.getBroadcast(context, 0, intent, 0)
+                PendingIntent.getBroadcast(
+                    context,
+                    widgetAppId,
+                    intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT
+                )
             }
         }
 
@@ -103,9 +113,17 @@ class WidgetBroadcastReceiver : BroadcastReceiver(), LogTagProvider {
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetAppId)
 
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_MUTABLE)
+                PendingIntent.getBroadcast(
+                    context, widgetAppId, intent,
+                    PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+                )
             } else {
-                PendingIntent.getBroadcast(context, 0, intent, 0)
+                PendingIntent.getBroadcast(
+                    context,
+                    widgetAppId,
+                    intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT
+                )
             }
         }
     }

@@ -14,6 +14,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.ApplicationParams
+import com.flipperdevices.core.ktx.android.toFullString
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.widget.impl.R
@@ -122,12 +123,12 @@ class InvalidateWidgetsTaskImpl @Inject constructor(
 
         val configurePendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             PendingIntent.getActivity(
-                context, 0, intent,
-                PendingIntent.FLAG_MUTABLE
+                context, appWidgetId, intent,
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
             )
         } else {
             PendingIntent.getActivity(
-                context, 0, intent, 0
+                context, appWidgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT
             )
         }
         val view = RemoteViews(context.packageName, R.layout.initial_layout).apply {
@@ -136,6 +137,7 @@ class InvalidateWidgetsTaskImpl @Inject constructor(
                 configurePendingIntent
             )
         }
+        info { "Execute update for widget $appWidgetId with ${intent.toFullString()}" }
         appWidgetManager.updateAppWidget(appWidgetId, view)
     }
 }
