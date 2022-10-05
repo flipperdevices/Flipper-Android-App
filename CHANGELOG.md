@@ -16,6 +16,7 @@
 - [FIX] Choose app theme from selected theme, not is light
 - [FIX] Check total bytes from server(less 0 mean error from server)
 - [FIX] Whitespace in key name and upper first letter in edit screen
+- [FIX] Formatter convert bytes to string
 
 # 1.2.1
 
