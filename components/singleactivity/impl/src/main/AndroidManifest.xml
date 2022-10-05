@@ -6,7 +6,6 @@
                 android:exported="false"
                 android:launchMode="singleTask"
                 android:name=".SingleActivity"
-                android:noHistory="true"
                 android:screenOrientation="portrait"
                 android:theme="@style/FlipperTheme"
                 android:windowSoftInputMode="adjustResize" />
