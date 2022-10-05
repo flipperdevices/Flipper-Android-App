@@ -4,7 +4,7 @@
     <application>
         <receiver
                 android:exported="false"
-                android:name=".FlipperAppWidgetProvider">
+                android:name=".providers.FlipperSimpleWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

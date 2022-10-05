@@ -31,6 +31,7 @@
                 android:textStyle="normal" />
 
         <FrameLayout
+                android:visibility="gone"
                 android:id="@+id/progress_bar"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content">
@@ -74,9 +75,10 @@
             android:orientation="vertical"
             android:paddingBottom="2dp">
 
-        <FrameLayout
-                android:background="?defaultKeyLogoDrawable"
-                android:backgroundTint="@android:color/black"
+        <ImageView
+                android:id="@+id/widget_key_icon"
+                android:src="?defaultKeyLogoDrawable"
+                android:tint="@android:color/black"
                 android:layout_gravity="center_horizontal"
                 android:layout_height="20dp"
                 android:layout_width="20dp"
@@ -84,6 +86,7 @@
                 android:paddingStart="2dp" />
 
         <TextView
+                android:id="@+id/widget_key_name"
                 android:ellipsize="end"
                 android:gravity="center"
                 android:includeFontPadding="false"
