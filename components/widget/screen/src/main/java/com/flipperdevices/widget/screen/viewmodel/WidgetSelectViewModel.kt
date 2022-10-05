@@ -10,6 +10,8 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import com.flipperdevices.core.navigation.global.CiceroneGlobal
 import com.flipperdevices.widget.api.WidgetApi
 import com.flipperdevices.widget.screen.fragments.EXTRA_WIDGET_ID_KEY
@@ -37,7 +39,9 @@ class WidgetSelectViewModel @VMInject constructor(
     private val globalCicerone: CiceroneGlobal,
     @TangleParam(EXTRA_WIDGET_ID_KEY)
     private val widgetId: Int
-) : ViewModel(), ResultListener {
+) : ViewModel(), ResultListener, LogTagProvider {
+    override val TAG = "WidgetSelectViewModel"
+
     private val keys = MutableStateFlow<List<FlipperKey>>(emptyList())
     private val favoriteKeys = MutableStateFlow<List<FlipperKey>>(emptyList())
     private val synchronizationState =
@@ -79,6 +83,7 @@ class WidgetSelectViewModel @VMInject constructor(
     }
 
     fun onSelectKey(keyPath: FlipperKeyPath) {
+        info { "#onSelectKey for $widgetId $keyPath" }
         viewModelScope.launch {
             widgetDataApi.updateKeyForWidget(widgetId, keyPath)
             widgetApi.invalidate()

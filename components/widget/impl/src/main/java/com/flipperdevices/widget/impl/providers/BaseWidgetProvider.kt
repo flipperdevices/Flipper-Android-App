@@ -28,8 +28,9 @@ abstract class BaseWidgetProvider(
     override fun onDeleted(context: Context?, appWidgetIds: IntArray?) {
         super.onDeleted(context, appWidgetIds)
         runBlockingWithLog("deleted") {
+            val widgetDataApi = ComponentHolder.component<WidgetComponent>().widgetDataApi
             appWidgetIds?.forEach { id ->
-                ComponentHolder.component<WidgetComponent>().widgetDataApi.deleteWidget(id)
+                widgetDataApi.deleteWidget(id)
             }
         }
     }

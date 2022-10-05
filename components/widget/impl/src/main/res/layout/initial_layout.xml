@@ -3,6 +3,7 @@
         android:background="@drawable/background"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
+        android:id="@+id/widget_root"
         android:orientation="vertical">
 
     <LinearLayout
