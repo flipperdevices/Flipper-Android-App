@@ -18,7 +18,7 @@ abstract class BaseWidgetProvider(
 
     override fun onReceive(context: Context?, intent: Intent?) {
         super.onReceive(context, intent)
-        info { "Call ${intent?.toFullString()}" }
+        info { "Call ${intent?.toFullString()} for $widgetType" }
         runBlockingWithLog("update") {
             ComponentHolder.component<WidgetComponent>().invalidateWidgetsTask.invoke()
         }

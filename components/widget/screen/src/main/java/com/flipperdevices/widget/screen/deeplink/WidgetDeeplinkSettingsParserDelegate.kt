@@ -39,6 +39,6 @@ class WidgetDeeplinkSettingsParserDelegate @Inject constructor() :
 
     private fun isWidgetOptionsIntent(intent: Intent): Boolean {
         return intent.action == AppWidgetManager.ACTION_APPWIDGET_CONFIGURE &&
-                intent.extras?.containsKey(AppWidgetManager.EXTRA_APPWIDGET_ID) == true
+            intent.extras?.containsKey(AppWidgetManager.EXTRA_APPWIDGET_ID) == true
     }
 }

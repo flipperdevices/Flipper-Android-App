@@ -1,12 +1,12 @@
 package com.flipperdevices.widget.screen.fragments
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import android.os.Bundle
 import androidx.compose.runtime.Composable
 import com.flipperdevices.archive.api.ArchiveApi
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.ui.fragment.ComposeFragment
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.widget.screen.compose.WidgetOptionsComposable
 import com.flipperdevices.widget.screen.di.WidgetComponent
 import com.flipperdevices.widget.screen.viewmodel.WidgetSelectViewModel

@@ -103,7 +103,7 @@ class EmulateHelperImpl @Inject constructor() : EmulateHelper, LogTagProvider {
         if (TimeHelper.getNow() > stopEmulateTimeAllowedMs) {
             info {
                 "Already passed delay, stop immediately " +
-                        "(current: ${TimeHelper.getNow()}/$stopEmulateTimeAllowedMs)"
+                    "(current: ${TimeHelper.getNow()}/$stopEmulateTimeAllowedMs)"
             }
             stopEmulateInternal(requestApi)
             return@withLock

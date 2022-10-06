@@ -14,7 +14,6 @@ dependencies {
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ui.res)
 
-
     implementation(projects.components.keyscreen.api)
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.service.api)

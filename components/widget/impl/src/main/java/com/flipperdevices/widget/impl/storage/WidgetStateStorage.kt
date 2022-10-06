@@ -21,7 +21,8 @@ interface WidgetStateStorage {
 @Singleton
 @ContributesBinding(AppGraph::class, WidgetStateStorage::class)
 class WidgetStateStorageImpl @Inject constructor(
-    private val emulateHelper: EmulateHelper, private val widgetDataApi: WidgetDataApi
+    private val emulateHelper: EmulateHelper,
+    private val widgetDataApi: WidgetDataApi
 ) : WidgetStateStorage, LogTagProvider {
     override val TAG = "WidgetStateStorage"
 
@@ -29,7 +30,8 @@ class WidgetStateStorageImpl @Inject constructor(
     private val mutex = Mutex()
 
     override suspend fun updateState(
-        widgetId: Int, state: WidgetState
+        widgetId: Int,
+        state: WidgetState
     ) = withLock(mutex, "update") {
         info { "Update state for $widgetId to $state" }
         if (state == WidgetState.IN_PROGRESS) {
@@ -52,7 +54,9 @@ class WidgetStateStorageImpl @Inject constructor(
             info { "Widget key path for $widgetId is $widgetKeyPath" }
             val currentActiveEmulating = emulateHelper.getCurrentEmulatingKey().value
             if (currentActiveEmulating == widgetKeyPath.path) {
-                info { "Current active emulating is $currentActiveEmulating, so return IN_PROGRESS" }
+                info {
+                    "Current active emulating is $currentActiveEmulating, so return IN_PROGRESS"
+                }
                 return@withLockResult WidgetState.IN_PROGRESS
             }
         }

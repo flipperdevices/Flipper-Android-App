@@ -21,7 +21,6 @@ private const val FLIPPER_KEY_STOP_ACTION = "com.flipperdevices.widget.impl.broa
 private const val FLIPPER_KEY_PATH_KEY = "flipper_key_path"
 private const val DEFAULT_WIDGET_APP_ID = -1
 
-
 class WidgetBroadcastReceiver : BroadcastReceiver(), LogTagProvider {
     override val TAG = "WidgetBroadcastReceiver"
 
@@ -70,8 +69,6 @@ class WidgetBroadcastReceiver : BroadcastReceiver(), LogTagProvider {
                 }
             }
         }
-
-
     }
 
     companion object {

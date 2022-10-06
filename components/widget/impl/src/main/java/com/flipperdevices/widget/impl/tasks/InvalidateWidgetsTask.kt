@@ -1,6 +1,5 @@
 package com.flipperdevices.widget.impl.tasks
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
@@ -17,6 +16,7 @@ import com.flipperdevices.core.di.ApplicationParams
 import com.flipperdevices.core.ktx.android.toFullString
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.keyscreen.api.DeepLinkOpenKey
 import com.flipperdevices.widget.impl.R
 import com.flipperdevices.widget.impl.broadcast.WidgetBroadcastReceiver
@@ -94,42 +94,50 @@ class InvalidateWidgetsTaskImpl @Inject constructor(
             )
             setOnClickPendingIntent(R.id.progress_stop, stopIntent)
             setOnClickPendingIntent(
-                R.id.error_btn, PendingIntent.getActivity(
+                R.id.error_btn,
+                PendingIntent.getActivity(
                     context,
                     appWidgetId,
                     deepLinkOpenKey.getIntentForOpenKey(flipperKeyPath),
                     PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
                 )
             )
-            when (widgetState) {
-                WidgetState.PENDING -> {
-                    setOnClickPendingIntent(R.id.button, startIntent)
-                    setViewVisibility(R.id.progress_bar, View.GONE)
-                    setViewVisibility(R.id.progress_bar_indeterminate, View.GONE)
-                    setViewVisibility(R.id.error_btn, View.GONE)
-                }
-                WidgetState.IN_PROGRESS -> {
-                    setOnClickPendingIntent(
-                        R.id.button,
-                        WidgetBroadcastReceiver.buildStopIntent(
-                            context,
-                            flipperKeyPath,
-                            appWidgetId
-                        )
-                    )
-                    setViewVisibility(R.id.progress_bar, View.VISIBLE)
-                    setViewVisibility(R.id.progress_bar_indeterminate, View.VISIBLE)
-                    setViewVisibility(R.id.error_btn, View.GONE)
-                }
-                WidgetState.ERROR -> {
-                    setOnClickPendingIntent(R.id.button, startIntent)
-                    setViewVisibility(R.id.progress_bar, View.GONE)
-                    setViewVisibility(R.id.progress_bar_indeterminate, View.GONE)
-                    setViewVisibility(R.id.error_btn, View.VISIBLE)
-                }
-            }
+            updateRemoveView(widgetState, flipperKeyPath, appWidgetId, startIntent)
         }
         appWidgetManager.updateAppWidget(appWidgetId, view)
+    }
+
+    private fun RemoteViews.updateRemoveView(
+        widgetState: WidgetState,
+        flipperKeyPath: FlipperKeyPath,
+        appWidgetId: Int,
+        startIntent: PendingIntent
+    ) = when (widgetState) {
+        WidgetState.PENDING -> {
+            setOnClickPendingIntent(R.id.button, startIntent)
+            setViewVisibility(R.id.progress_bar, View.GONE)
+            setViewVisibility(R.id.progress_bar_indeterminate, View.GONE)
+            setViewVisibility(R.id.error_btn, View.GONE)
+        }
+        WidgetState.IN_PROGRESS -> {
+            setOnClickPendingIntent(
+                R.id.button,
+                WidgetBroadcastReceiver.buildStopIntent(
+                    context,
+                    flipperKeyPath,
+                    appWidgetId
+                )
+            )
+            setViewVisibility(R.id.progress_bar, View.VISIBLE)
+            setViewVisibility(R.id.progress_bar_indeterminate, View.VISIBLE)
+            setViewVisibility(R.id.error_btn, View.GONE)
+        }
+        WidgetState.ERROR -> {
+            setOnClickPendingIntent(R.id.button, startIntent)
+            setViewVisibility(R.id.progress_bar, View.GONE)
+            setViewVisibility(R.id.progress_bar_indeterminate, View.GONE)
+            setViewVisibility(R.id.error_btn, View.VISIBLE)
+        }
     }
 
     @SuppressLint("UnspecifiedImmutableFlag")
