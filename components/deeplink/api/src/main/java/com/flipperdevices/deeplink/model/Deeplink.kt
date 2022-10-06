@@ -15,4 +15,10 @@ sealed class Deeplink : Parcelable {
     data class WidgetOptions(
         val appWidgetId: Int
     ) : Deeplink()
+
+    @Parcelize
+    data class WebUpdate(
+        val url: String,
+        val name: String
+    ) : Deeplink()
 }

@@ -6,6 +6,7 @@ plugins {
 
 dependencies {
     implementation(projects.components.bridge.service.api)
+    implementation(projects.components.deeplink.api)
     implementation(projects.components.core.ktx)
 
     implementation(libs.kotlin.coroutines)
