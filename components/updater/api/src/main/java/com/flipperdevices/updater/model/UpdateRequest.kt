@@ -34,5 +34,5 @@ class InternalStorageFirmware(val uri: Uri) : UpdateContent() {
 }
 
 class WebUpdaterFirmware(val url: String) : UpdateContent() {
-    override fun folderName(): String = url
+    override fun folderName(): String = url.substringBeforeLast("/")
 }

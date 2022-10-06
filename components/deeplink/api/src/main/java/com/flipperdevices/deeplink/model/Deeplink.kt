@@ -20,5 +20,11 @@ sealed class Deeplink : Parcelable {
     @Parcelize
     data class OpenKey(
         val keyPath: FlipperKeyPath
+    )
+    
+    @Parcelize
+    data class WebUpdate(
+        val url: String,
+        val name: String
     ) : Deeplink()
 }

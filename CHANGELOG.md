@@ -6,7 +6,7 @@
 - [Feature] Add support adaptive monochrome icon
 - [Feature] Add save as on nfc editor
 - [Feature] Add dialog on exit from nfc editor
-- [Feature] Update from internal storage
+- [Feature] Update from internal storage and web updater
 - [Feature] Add widgets (only design and key selector for now)
 - [REFACTOR] Migrate synchronization task graph to TaskSynchronizationComponent
 - [REFACTOR] Redesign card when we waiting update
