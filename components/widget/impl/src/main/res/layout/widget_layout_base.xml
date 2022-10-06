@@ -82,7 +82,7 @@
                     android:paddingEnd="2dp"
                     android:paddingStart="2dp"
                     android:src="?defaultKeyLogoDrawable"
-                    android:tint="@android:color/black" />
+                    android:tint="@color/text_color" />
 
             <TextView
                     android:ellipsize="end"
@@ -96,7 +96,7 @@
                     android:paddingStart="6dp"
                     android:text="@string/file_name_default"
                     android:textAlignment="center"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/text_color"
                     android:textSize="16sp" />
         </LinearLayout>
 

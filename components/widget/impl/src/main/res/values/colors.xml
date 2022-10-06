@@ -5,4 +5,6 @@
     <color name="emulate">#589DFF</color>
     <color name="emulate_background">#1E589DFF</color>
     <color name="disable">#E9E9E9</color>
+    <color name="widget_background">#FFFFFF</color>
+    <color name="text_color">#000000</color>
 </resources>

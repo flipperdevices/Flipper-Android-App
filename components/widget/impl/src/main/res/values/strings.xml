@@ -6,4 +6,5 @@
     <string name="img_btn">Button</string>
     <string name="img_disable_btn">Disable button</string>
     <string name="img_add_btn">Add key</string>
+    <string name="widget_description">Emulate Flipper’s keys, cards and signals remotely</string>
 </resources>

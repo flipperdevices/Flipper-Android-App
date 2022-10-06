@@ -2,6 +2,7 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:configure="com.flipperdevices.app.SplashScreen"
+        android:description="@string/widget_description"
         android:initialLayout="@layout/initial_layout"
         android:minHeight="40dp"
         android:minWidth="60dp"
