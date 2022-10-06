@@ -17,6 +17,7 @@ import com.flipperdevices.core.di.ApplicationParams
 import com.flipperdevices.core.ktx.android.toFullString
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.keyscreen.api.DeepLinkOpenKey
 import com.flipperdevices.widget.impl.R
 import com.flipperdevices.widget.impl.broadcast.WidgetBroadcastReceiver
 import com.flipperdevices.widget.impl.model.WidgetState
@@ -33,7 +34,8 @@ class InvalidateWidgetsTaskImpl @Inject constructor(
     private val widgetDataApi: WidgetDataApi,
     private val context: Context,
     private val applicationParams: ApplicationParams,
-    private val widgetStateStorage: WidgetStateStorage
+    private val widgetStateStorage: WidgetStateStorage,
+    private val deepLinkOpenKey: DeepLinkOpenKey
 ) : InvalidateWidgetsTask, LogTagProvider {
     override val TAG = "InvalidateWidgetsTask"
 
@@ -62,13 +64,15 @@ class InvalidateWidgetsTaskImpl @Inject constructor(
         val widgetState = widgetStateStorage.getState(appWidgetId)
         val layoutId = when (flipperKeyPath.path.keyType) {
             FlipperKeyType.SUB_GHZ -> when (widgetState) {
-                WidgetState.PENDING -> R.layout.widget_layout_send
+                WidgetState.PENDING,
+                WidgetState.ERROR -> R.layout.widget_layout_send
                 WidgetState.IN_PROGRESS -> R.layout.widget_layout_sending
             }
             FlipperKeyType.RFID,
             FlipperKeyType.NFC,
             FlipperKeyType.I_BUTTON -> when (widgetState) {
-                WidgetState.PENDING -> R.layout.widget_layout_emulate
+                WidgetState.PENDING,
+                WidgetState.ERROR -> R.layout.widget_layout_emulate
                 WidgetState.IN_PROGRESS -> R.layout.widget_layout_emulating
             }
             null,
@@ -83,19 +87,26 @@ class InvalidateWidgetsTaskImpl @Inject constructor(
                 flipperKeyPath,
                 appWidgetId
             )
+            val startIntent = WidgetBroadcastReceiver.buildStartIntent(
+                context,
+                flipperKeyPath,
+                appWidgetId
+            )
             setOnClickPendingIntent(R.id.progress_stop, stopIntent)
+            setOnClickPendingIntent(
+                R.id.error_btn, PendingIntent.getActivity(
+                    context,
+                    appWidgetId,
+                    deepLinkOpenKey.getIntentForOpenKey(flipperKeyPath),
+                    PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+                )
+            )
             when (widgetState) {
                 WidgetState.PENDING -> {
-                    setOnClickPendingIntent(
-                        R.id.button,
-                        WidgetBroadcastReceiver.buildStartIntent(
-                            context,
-                            flipperKeyPath,
-                            appWidgetId
-                        )
-                    )
+                    setOnClickPendingIntent(R.id.button, startIntent)
                     setViewVisibility(R.id.progress_bar, View.GONE)
                     setViewVisibility(R.id.progress_bar_indeterminate, View.GONE)
+                    setViewVisibility(R.id.error_btn, View.GONE)
                 }
                 WidgetState.IN_PROGRESS -> {
                     setOnClickPendingIntent(
@@ -108,6 +119,13 @@ class InvalidateWidgetsTaskImpl @Inject constructor(
                     )
                     setViewVisibility(R.id.progress_bar, View.VISIBLE)
                     setViewVisibility(R.id.progress_bar_indeterminate, View.VISIBLE)
+                    setViewVisibility(R.id.error_btn, View.GONE)
+                }
+                WidgetState.ERROR -> {
+                    setOnClickPendingIntent(R.id.button, startIntent)
+                    setViewVisibility(R.id.progress_bar, View.GONE)
+                    setViewVisibility(R.id.progress_bar_indeterminate, View.GONE)
+                    setViewVisibility(R.id.error_btn, View.VISIBLE)
                 }
             }
         }

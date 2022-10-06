@@ -28,7 +28,13 @@ data class FlipperFilePath(
         get() = nameWithExtension.substringAfterLast('.')
 
     @IgnoredOnParcel
-    val pathToKey: String by lazy { File(folder, nameWithExtension).path }
+    val pathToKey: String by lazy {
+        var path = File(folder, nameWithExtension).path
+        if (path.firstOrNull() == File.separatorChar) {
+            path = path.replaceFirst(File.separatorChar.toString(), "")
+        }
+        return@lazy path
+    }
 
     @IgnoredOnParcel
     val keyType: FlipperKeyType? by lazy {

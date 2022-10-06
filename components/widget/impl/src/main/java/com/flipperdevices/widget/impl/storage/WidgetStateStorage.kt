@@ -34,7 +34,9 @@ class WidgetStateStorageImpl @Inject constructor(
         info { "Update state for $widgetId to $state" }
         if (state == WidgetState.IN_PROGRESS) {
             stateMap.forEach {
-                stateMap[it.key] = WidgetState.PENDING
+                if (it.value == WidgetState.IN_PROGRESS) {
+                    stateMap[it.key] = WidgetState.PENDING
+                }
             }
         }
         stateMap[widgetId] = state
@@ -43,10 +45,14 @@ class WidgetStateStorageImpl @Inject constructor(
     override suspend fun getState(
         widgetId: Int
     ): WidgetState = withLockResult(mutex, "get") {
+        info { "Get widget state for $widgetId" }
         val widgetData = widgetDataApi.getWidgetDataByWidgetId(widgetId)
         val widgetKeyPath = widgetData?.flipperKeyPath
         if (widgetKeyPath != null) {
-            if (emulateHelper.getCurrentEmulatingKey().value == widgetKeyPath.path) {
+            info { "Widget key path for $widgetId is $widgetKeyPath" }
+            val currentActiveEmulating = emulateHelper.getCurrentEmulatingKey().value
+            if (currentActiveEmulating == widgetKeyPath.path) {
+                info { "Current active emulating is $currentActiveEmulating, so return IN_PROGRESS" }
                 return@withLockResult WidgetState.IN_PROGRESS
             }
         }

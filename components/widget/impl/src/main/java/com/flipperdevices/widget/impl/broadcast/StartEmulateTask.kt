@@ -35,7 +35,7 @@ class StartEmulateTask(
             emulateHelper.startEmulate(scope, serviceApi.requestApi, keyType, input.first.path)
         } catch (throwable: Throwable) {
             error(throwable) { "Failed emulate $input" }
-            widgetStateStorage.updateState(input.second, WidgetState.PENDING)
+            widgetStateStorage.updateState(input.second, WidgetState.ERROR)
             invalidateWidgetsTask.invoke()
         }
     }

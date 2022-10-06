@@ -2,5 +2,6 @@ package com.flipperdevices.widget.impl.model
 
 enum class WidgetState {
     PENDING,
-    IN_PROGRESS
+    IN_PROGRESS,
+    ERROR
 }

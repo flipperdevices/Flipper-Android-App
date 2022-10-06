@@ -8,8 +8,8 @@ plugins {
 dependencies {
     implementation(projects.components.keyscreen.api)
     implementation(projects.components.keyscreen.shared)
-    implementation(projects.components.core.ui.theme)
 
+    implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)
@@ -31,6 +31,7 @@ dependencies {
 
     implementation(projects.components.keyedit.api)
     implementation(projects.components.nfceditor.api)
+    implementation(projects.components.deeplink.api)
 
     // Compose
     implementation(libs.compose.ui)

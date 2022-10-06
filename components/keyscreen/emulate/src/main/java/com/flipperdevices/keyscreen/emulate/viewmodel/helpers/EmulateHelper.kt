@@ -77,7 +77,19 @@ class EmulateHelperImpl @Inject constructor() : EmulateHelper, LogTagProvider {
             stopEmulateInternal(requestApi)
         }
         currentKeyEmulating.emit(keyPath)
-        startEmulateInternal(scope, requestApi, keyType, keyPath, minEmulateTime)
+        try {
+            return@withLockResult startEmulateInternal(
+                scope,
+                requestApi,
+                keyType,
+                keyPath,
+                minEmulateTime
+            )
+        } catch (throwable: Throwable) {
+            error(throwable) { "Failed start $keyPath" }
+            currentKeyEmulating.emit(null)
+            throw throwable
+        }
     }
 
     override suspend fun stopEmulate(
