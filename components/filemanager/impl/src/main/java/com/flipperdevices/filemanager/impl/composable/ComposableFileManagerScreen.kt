@@ -45,7 +45,8 @@ fun ComposableFileManagerScreen(
         ComposableSelectDialog(
             intArrayOf(
                 R.string.filemanager_open_dialog_edit,
-                R.string.filemanager_open_dialog_download
+                R.string.filemanager_open_dialog_download,
+                R.string.filemanager_open_dialog_delete
             )
         ) {
             when (it) {
@@ -54,6 +55,10 @@ fun ComposableFileManagerScreen(
                 }
                 R.string.filemanager_open_dialog_download -> {
                     onDownloadAndShareFile(localFileItem)
+                }
+                R.string.filemanager_open_dialog_delete -> {
+                    fileManagerViewModel.onDeleteAction(localFileItem)
+                    pendingDialogItem = null
                 }
                 else -> pendingDialogItem = null
             }

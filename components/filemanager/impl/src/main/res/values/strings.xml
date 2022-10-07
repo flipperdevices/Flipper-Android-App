@@ -18,6 +18,7 @@
     <string name="filemanager_editor_warning">The file is larger than 1MB and therefore only part of the file is shown. The content will be overwritten when you save it!</string>
     <string name="filemanager_open_dialog_edit">Edit</string>
     <string name="filemanager_open_dialog_download">Download &amp; Share</string>
+    <string name="filemanager_open_dialog_delete">Delete</string>
     <string name="filemanager_add_dialog_file">Create file</string>
     <string name="filemanager_add_dialog_folder">Create folder</string>
     <string name="add_dialog_title_file">Enter file name</string>

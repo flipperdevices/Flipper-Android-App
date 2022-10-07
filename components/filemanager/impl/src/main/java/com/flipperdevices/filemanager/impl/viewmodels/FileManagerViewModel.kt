@@ -16,6 +16,7 @@ import com.flipperdevices.filemanager.impl.model.FileItem
 import com.flipperdevices.filemanager.impl.model.FileManagerState
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.Storage
+import com.flipperdevices.protobuf.storage.deleteRequest
 import com.flipperdevices.protobuf.storage.file
 import com.flipperdevices.protobuf.storage.listRequest
 import com.flipperdevices.protobuf.storage.mkdirRequest
@@ -62,6 +63,24 @@ class FileManagerViewModel @VMInject constructor(
                 fileManagerStateFlow.emit(FileManagerState(currentPath = directory))
                 serviceApi.requestApi.request(
                     getCreateRequest(createFileManagerAction, name)
+                ).collect()
+                invalidate(serviceApi.requestApi)
+            }
+        }
+    }
+
+    fun onDeleteAction(fileItem: FileItem) {
+        fileManagerStateFlow.update { FileManagerState(currentPath = directory) }
+        serviceProvider.provideServiceApi(this) { serviceApi ->
+            launchWithLock(mutex, viewModelScope, "delete") {
+                fileManagerStateFlow.emit(FileManagerState(currentPath = directory))
+                serviceApi.requestApi.request(
+                    main {
+                        storageDeleteRequest = deleteRequest {
+                            path = fileItem.path
+                            recursive = true
+                        }
+                    }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
                 ).collect()
                 invalidate(serviceApi.requestApi)
             }
