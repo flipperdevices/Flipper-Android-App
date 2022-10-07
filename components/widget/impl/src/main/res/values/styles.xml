@@ -8,7 +8,7 @@
         <item name="defaultKeyLogoDrawable">@drawable/ic_fileformat_sub</item>
     </style>
 
-    <style name="Widget.Flipper.Send.InProgress" parent="Widget.Flipper.Emulate">
+    <style name="Widget.Flipper.Send.InProgress" parent="Widget.Flipper.Send">
         <item name="buttonTextDrawable">@drawable/sending_text</item>
     </style>
 

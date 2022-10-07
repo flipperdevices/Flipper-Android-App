@@ -26,13 +26,12 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.widget.screen.R
 import com.flipperdevices.widget.screen.viewmodel.WidgetSelectViewModel
-import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 fun WidgetOptionsComposable(
-    archiveApi: ArchiveApi
+    archiveApi: ArchiveApi,
+    widgetSelectViewModel: WidgetSelectViewModel
 ) {
-    val widgetSelectViewModel = tangleViewModel<WidgetSelectViewModel>()
     val synchronizationState by widgetSelectViewModel.getSynchronizationFlow().collectAsState()
     val localSynchronizationState = synchronizationState
     if (localSynchronizationState is SynchronizationState.InProgress) {

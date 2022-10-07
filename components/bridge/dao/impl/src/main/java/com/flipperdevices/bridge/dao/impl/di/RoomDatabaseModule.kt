@@ -48,4 +48,7 @@ class RoomDatabaseModule {
 
     @Provides
     fun provideUtilsKeyDao(keyDao: KeyDao): UtilsKeyDao = keyDao
+
+    @Provides
+    fun provideWidgetDataDao(database: AppDatabase) = database.widgetDataDao()
 }

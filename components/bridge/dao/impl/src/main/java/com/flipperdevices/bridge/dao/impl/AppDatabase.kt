@@ -9,15 +9,18 @@ import com.flipperdevices.bridge.dao.impl.converters.FlipperFileTypeConverter
 import com.flipperdevices.bridge.dao.impl.model.FavoriteKey
 import com.flipperdevices.bridge.dao.impl.model.FlipperAdditionalFile
 import com.flipperdevices.bridge.dao.impl.model.Key
+import com.flipperdevices.bridge.dao.impl.model.WidgetDataElement
 import com.flipperdevices.bridge.dao.impl.repository.AdditionalFileDao
 import com.flipperdevices.bridge.dao.impl.repository.FavoriteDao
 import com.flipperdevices.bridge.dao.impl.repository.KeyDao
+import com.flipperdevices.bridge.dao.impl.repository.WidgetDataDao
 
 @Database(
     entities = [
         Key::class,
         FavoriteKey::class,
-        FlipperAdditionalFile::class
+        FlipperAdditionalFile::class,
+        WidgetDataElement::class
     ],
     autoMigrations = [
         AutoMigration(
@@ -37,9 +40,13 @@ import com.flipperdevices.bridge.dao.impl.repository.KeyDao
         AutoMigration(
             from = 7,
             to = 8
+        ),
+        AutoMigration(
+            from = 8,
+            to = 9
         )
     ],
-    version = 8,
+    version = 9,
     exportSchema = true
 )
 @TypeConverters(
@@ -50,4 +57,5 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun keyDao(): KeyDao
     abstract fun favoriteDao(): FavoriteDao
     abstract fun additionalFileDao(): AdditionalFileDao
+    abstract fun widgetDataDao(): WidgetDataDao
 }

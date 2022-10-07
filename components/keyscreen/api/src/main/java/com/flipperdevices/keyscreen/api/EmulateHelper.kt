@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 const val SUBGHZ_DEFAULT_TIMEOUT_MS = 500L
 
 interface EmulateHelper {
-    fun getRunningState(): StateFlow<Boolean>
+    fun getCurrentEmulatingKey(): StateFlow<FlipperFilePath?>
     suspend fun startEmulate(
         scope: CoroutineScope,
         requestApi: FlipperRequestApi,
