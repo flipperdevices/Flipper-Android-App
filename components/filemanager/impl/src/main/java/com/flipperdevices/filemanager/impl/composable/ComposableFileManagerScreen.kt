@@ -42,13 +42,15 @@ fun ComposableFileManagerScreen(
     val localFileItem = pendingDialogItem
 
     if (localFileItem != null) {
-        ComposableSelectDialog(
-            intArrayOf(
-                R.string.filemanager_open_dialog_edit,
-                R.string.filemanager_open_dialog_download,
-                R.string.filemanager_open_dialog_delete
-            )
-        ) {
+        val chooseOptions = if (isAbleToDelete(fileManagerState.currentPath)) intArrayOf(
+            R.string.filemanager_open_dialog_edit,
+            R.string.filemanager_open_dialog_download,
+            R.string.filemanager_open_dialog_delete
+        ) else intArrayOf(
+            R.string.filemanager_open_dialog_edit,
+            R.string.filemanager_open_dialog_download
+        )
+        ComposableSelectDialog(chooseOptions) {
             when (it) {
                 R.string.filemanager_open_dialog_edit -> {
                     onOpenEditor(localFileItem)
@@ -176,3 +178,6 @@ private fun ComposableFileManagerScreenInternal(
         )
     }
 }
+
+private fun isAbleToDelete(path: String) = path.startsWith("/ext")
+
