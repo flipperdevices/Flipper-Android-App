@@ -180,4 +180,3 @@ private fun ComposableFileManagerScreenInternal(
 }
 
 private fun isAbleToDelete(path: String) = path.startsWith("/ext")
-

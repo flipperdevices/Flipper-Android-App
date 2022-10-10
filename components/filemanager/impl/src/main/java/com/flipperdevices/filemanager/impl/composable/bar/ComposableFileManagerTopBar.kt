@@ -1,6 +1,5 @@
 package com.flipperdevices.filemanager.impl.composable.bar
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -8,6 +7,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.filemanager.impl.R
 
 @Composable
