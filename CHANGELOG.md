@@ -8,6 +8,7 @@
 - [Feature] Add dialog on exit from nfc editor
 - [Feature] Update from internal storage and web updater
 - [Feature] Add widgets
+- [Feature] Add delete to FM
 - [REFACTOR] Migrate synchronization task graph to TaskSynchronizationComponent
 - [REFACTOR] Redesign card when we waiting update
 - [REFACTOR] Get last region from flipper
