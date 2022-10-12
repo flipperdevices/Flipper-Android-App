@@ -80,7 +80,7 @@ data class FlipperFileFormat(
                 .filterNot { it.startsWith("#") }
                 .map {
                     it.substringBefore(":").trim() to
-                            it.substringAfter(":").trim()
+                        it.substringAfter(":").trim()
                 }.filterNot { it.first.isBlank() || it.second.isBlank() }
 
             return FlipperFileFormat(pairs)
