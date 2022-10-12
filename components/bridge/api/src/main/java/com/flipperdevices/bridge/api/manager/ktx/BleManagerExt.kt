@@ -70,7 +70,7 @@ private fun getConnectionStateFrom(
     connectionStateProvider: ConnectionStateProvider
 ): ConnectionState {
     return when (connectionStateProvider.getConnectionState()) {
-        BluetoothProfile.STATE_CONNECTING -> ConnectionState.Disconnecting
+        BluetoothProfile.STATE_CONNECTING -> ConnectionState.Connecting
         BluetoothProfile.STATE_CONNECTED -> if (connectionStateProvider.isReady()) {
             val supportedState = connectionStateProvider.supportState()
             if (supportedState == null) ConnectionState.RetrievingInformation
