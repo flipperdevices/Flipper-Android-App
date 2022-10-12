@@ -7,4 +7,5 @@
     <string name="archive_title">Archive</string>
     <string name="archive_sync_progress">Syncing with Flipper…</string>
     <string name="archive_sync_percent">Syncing %1$s</string>
+    <string name="archive_sync_cancel">Cancel</string>
 </resources>
