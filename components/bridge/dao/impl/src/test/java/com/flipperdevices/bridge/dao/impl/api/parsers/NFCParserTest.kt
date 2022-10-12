@@ -1,13 +1,14 @@
 package com.flipperdevices.bridge.dao.impl.api.parsers
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry
 import com.flipperdevices.bridge.dao.api.model.FlipperFile
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
+import com.flipperdevices.core.test.readTestAsset
+import com.flipperdevices.core.test.readTestAssetString
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Test
@@ -38,7 +39,7 @@ class NFCParserTest {
 
         val parsedKey = underTest.parseKey(
             flipperKey,
-            FlipperFileFormat.fromFileContent(String(readTestAsset("mf_4k.nfc")))
+            FlipperFileFormat.fromFileContent(readTestAssetString("mf_4k.nfc"))
         )
 
         Assert.assertTrue(parsedKey is FlipperKeyParsed.NFC)
@@ -73,7 +74,7 @@ class NFCParserTest {
 
         val parsedKey = underTest.parseKey(
             flipperKey,
-            FlipperFileFormat.fromFileContent(String(readTestAsset("mf_4k.nfc")))
+            FlipperFileFormat.fromFileContent(readTestAssetString("mf_4k.nfc"))
         )
 
         Assert.assertTrue(parsedKey is FlipperKeyParsed.NFC)
@@ -102,7 +103,7 @@ class NFCParserTest {
 
         val parsedKey = underTest.parseKey(
             flipperKey,
-            FlipperFileFormat.fromFileContent(String(readTestAsset("mf_4k.nfc")))
+            FlipperFileFormat.fromFileContent(readTestAssetString("mf_4k.nfc"))
         )
 
         Assert.assertTrue(parsedKey is FlipperKeyParsed.NFC)
@@ -117,9 +118,4 @@ class NFCParserTest {
             nfcKey.lines[1].first
         )
     }
-}
-
-private fun readTestAsset(path: String): ByteArray {
-    val context = InstrumentationRegistry.getInstrumentation().targetContext
-    return context.resources.assets.open(path).use { it.readBytes() }
 }
