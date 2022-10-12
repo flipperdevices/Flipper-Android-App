@@ -35,6 +35,8 @@
     <string name="experimental_screen_streaming_desc">Control Flipper via phone</string>
 
     <string name="debug_shake2report_open">Report a bug</string>
+    <string name="export_keys">Export keys as archive</string>
+    <string name="export_keys_picker_title">Save the zip with the keys…</string>
     <string name="version_name_app">Flipper Mobile App</string>
     <string name="version">Version</string>
 </resources>
