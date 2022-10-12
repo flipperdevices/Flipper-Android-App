@@ -9,6 +9,7 @@
 - [Feature] Update from internal storage and web updater
 - [Feature] Add widgets
 - [Feature] Add delete to FM
+- [Feature] Add selection in device info card
 - [REFACTOR] Migrate synchronization task graph to TaskSynchronizationComponent
 - [REFACTOR] Redesign card when we waiting update
 - [REFACTOR] Get last region from flipper
