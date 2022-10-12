@@ -70,6 +70,12 @@ class GeneralTabViewModel @VMInject constructor(
         synchronizationApi.startSynchronization(force = true)
     }
 
+    fun cancelSynchronization() {
+        viewModelScope.launch {
+            synchronizationApi.stop()
+        }
+    }
+
     override fun onResult(data: Any) {
         if (data is FlipperKeyPath) {
             ciceroneGlobal.getRouter().navigateTo(
