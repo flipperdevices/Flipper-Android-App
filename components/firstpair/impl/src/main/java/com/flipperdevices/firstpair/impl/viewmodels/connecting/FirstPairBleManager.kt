@@ -28,7 +28,7 @@ import no.nordicsemi.android.ble.BleManager
 @Suppress("BlockingMethodInNonBlockingContext")
 internal class FirstPairBleManager(
     context: Context,
-    private val scope: CoroutineScope
+    scope: CoroutineScope
 ) : BleManager(context),
     LogTagProvider,
     ConnectionStateProvider {
