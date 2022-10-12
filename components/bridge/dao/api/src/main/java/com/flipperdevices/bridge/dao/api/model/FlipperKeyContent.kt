@@ -16,9 +16,24 @@ import kotlinx.serialization.Serializable
  */
 sealed class FlipperKeyContent : Parcelable {
     @Parcelize
-    class RawData(private val bytes: ByteArray) : FlipperKeyContent() {
+    data class RawData(val bytes: ByteArray) : FlipperKeyContent() {
         override fun openStream() = ByteArrayInputStream(bytes)
         override fun length() = bytes.size.toLong()
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (javaClass != other?.javaClass) return false
+
+            other as RawData
+
+            if (!bytes.contentEquals(other.bytes)) return false
+
+            return true
+        }
+
+        override fun hashCode(): Int {
+            return bytes.contentHashCode()
+        }
     }
 
     @Parcelize

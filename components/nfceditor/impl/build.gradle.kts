@@ -46,6 +46,9 @@ dependencies {
 
     // Testing
     testImplementation(projects.components.core.test)
+    testImplementation(libs.roboelectric)
     testImplementation(libs.junit)
+    testImplementation(libs.ktx.testing)
     testImplementation(libs.mockito.kotlin)
+    testImplementation(projects.components.bridge.dao.impl)
 }
