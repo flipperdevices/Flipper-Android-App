@@ -20,9 +20,7 @@ fun File.createClearNewFileWithMkDirs(): Boolean {
         delete()
     }
 
-    createNewFileWithMkDirs()
-
-    return createNewFile()
+    return createNewFileWithMkDirs()
 }
 
 fun File.readBytes(limit: Long): ByteArray {

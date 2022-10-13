@@ -1,0 +1,26 @@
+Filetype: Flipper NFC device
+Version: 2
+# Nfc device type can be UID, Mifare Ultralight, Mifare Classic, Bank card
+Device type: Mifare Classic
+# UID, ATQA and SAK are common for all formats
+UID: 04 77 70 2A 23 4F 80
+ATQA: 44 00
+SAK: 08
+# Mifare Classic specific data
+Mifare Classic type: 1K
+Data format version: 2
+# Mifare Classic blocks, '??' means unknown data
+Block 0: 04 77 70 2A 23 4F 80 08 44 00 12 01 11 00 27 16
+Block 1: 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F
+Block 2: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+Block 3: A0 A1 A2 A3 A4 A5 A0 A1 A2 A3 FB F2 25 DC 5D 58
+Block 4: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+Block 5: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+Block 6: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+Block 7: A8 26 07 B0 1C 0D A8 26 07 B0 29 10 98 9B 68 80
+Block 8: 67 2B 6F 21 23 00 00 00 11 89 78 28 00 00 00 00
+Block 9: FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF
+Block 10: FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF
+Block 11: 2A A0 5E D1 85 6F 2A A0 5E D1 EA AC 88 E5 DC 99
+Block 12: FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF
+Block 13: FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF

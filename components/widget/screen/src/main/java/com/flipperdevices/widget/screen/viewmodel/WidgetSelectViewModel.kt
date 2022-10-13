@@ -29,6 +29,7 @@ import kotlinx.coroutines.launch
 import tangle.inject.TangleParam
 import tangle.viewmodel.VMInject
 
+@Suppress("LongParameterList")
 class WidgetSelectViewModel @VMInject constructor(
     private val simpleKeyApi: SimpleKeyApi,
     private val favoriteApi: FavoriteApi,

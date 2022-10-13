@@ -10,15 +10,19 @@
 - [Feature] Add widgets
 - [Feature] Add delete to FM
 - [Feature] Add selection in device info card
+- [Feature] Add export keys button
 - [REFACTOR] Migrate synchronization task graph to TaskSynchronizationComponent
 - [REFACTOR] Redesign card when we waiting update
 - [REFACTOR] Get last region from flipper
 - [REFACTOR] Storage Stats formatter by kibibyte
+- [REFACTOR] Add test for nfc load/save
 - [FIX] Rename updater folder
 - [FIX] Choose app theme from selected theme, not is light
 - [FIX] Check total bytes from server(less 0 mean error from server)
 - [FIX] Whitespace in key name and upper first letter in edit screen
 - [FIX] Formatter convert bytes to string
+- [FIX] Disconnect while connecting
+- [FIX] Synchronization status when flipper not connected
 
 # 1.2.1
 

@@ -8,13 +8,19 @@ import com.flipperdevices.core.di.ApplicationParams
 import com.flipperdevices.core.navigation.global.CiceroneGlobal
 import com.flipperdevices.core.preference.pb.SelectedTheme
 import com.flipperdevices.core.preference.pb.Settings
+import com.flipperdevices.core.share.ShareHelper
 import com.flipperdevices.debug.api.StressTestApi
 import com.flipperdevices.screenstreaming.api.ScreenStreamingApi
+import com.flipperdevices.settings.impl.R
+import com.flipperdevices.settings.impl.model.ExportState
 import com.flipperdevices.shake2report.api.Shake2ReportApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import tangle.viewmodel.VMInject
 
 class SettingsViewModel @VMInject constructor(
@@ -23,9 +29,9 @@ class SettingsViewModel @VMInject constructor(
     private val shakeToReportApi: Shake2ReportApi,
     val screenStreamingApi: ScreenStreamingApi,
     val stressTestApi: StressTestApi,
-    private val applicationParams: ApplicationParams
+    private val applicationParams: ApplicationParams,
+    private val exportKeysHelper: ExportKeysHelper
 ) : ViewModel() {
-
     private val settingsState by lazy {
         dataStoreSettings.data.stateIn(
             viewModelScope,
@@ -33,8 +39,11 @@ class SettingsViewModel @VMInject constructor(
             initialValue = Settings.getDefaultInstance()
         )
     }
+    private val exportStateFlow = MutableStateFlow(ExportState.NOT_STARTED)
 
     fun getState(): StateFlow<Settings> = settingsState
+
+    fun getExportState(): StateFlow<ExportState> = exportStateFlow
 
     fun onSwitchDebug(value: Boolean) {
         viewModelScope.launch {
@@ -60,6 +69,19 @@ class SettingsViewModel @VMInject constructor(
         val screen = shakeToReportApi.reportBugScreen(context)
         if (screen != null) {
             cicerone.getRouter().navigateTo(screen)
+        }
+    }
+
+    fun onMakeExport(context: Context) {
+        if (!exportStateFlow.compareAndSet(ExportState.NOT_STARTED, ExportState.IN_PROGRESS)) {
+            return
+        }
+        viewModelScope.launch {
+            val file = exportKeysHelper.createBackupArchive()
+            withContext(Dispatchers.Main) {
+                ShareHelper.shareFile(context, file, R.string.export_keys_picker_title)
+                exportStateFlow.compareAndSet(ExportState.IN_PROGRESS, ExportState.NOT_STARTED)
+            }
         }
     }
 

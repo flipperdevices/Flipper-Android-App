@@ -39,6 +39,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.sync.Mutex
+import no.nordicsemi.android.ble.ConnectRequest
 import no.nordicsemi.android.ble.ConnectionPriorityRequest
 
 @Suppress("BlockingMethodInNonBlockingContext", "LongParameterList")
@@ -55,6 +56,9 @@ class FlipperBleManagerImpl(
 ) : UnsafeBleManager(scope, context), FlipperBleManager, LogTagProvider {
     override val TAG = "FlipperBleManager"
     private val bleMutex = Mutex()
+
+    // Store a connection request to cancel it during a disconnection
+    private var connectRequest: ConnectRequest? = null
 
     // Gatt Delegates
     override val restartRPCApi = RestartRPCApiImpl()
@@ -85,6 +89,8 @@ class FlipperBleManagerImpl(
 
     override suspend fun disconnectDevice() {
         withLock(bleMutex, "disconnect") {
+            // Deleting connection requests
+            connectRequest?.cancelPendingConnection()
             disconnect().enqueue()
             return@withLock
         }
@@ -95,11 +101,14 @@ class FlipperBleManagerImpl(
 
     override suspend fun connectToDevice(device: BluetoothDevice) {
         withLock(bleMutex, "connect") {
-            connect(device).retry(
+            val connectRequestLocal = connect(device).retry(
                 Constants.BLE.RECONNECT_COUNT,
                 Constants.BLE.RECONNECT_TIME_MS.toInt()
             ).useAutoConnect(true)
-                .enqueue()
+
+            connectRequestLocal.enqueue()
+
+            connectRequest = connectRequestLocal
 
             return@withLock
         }

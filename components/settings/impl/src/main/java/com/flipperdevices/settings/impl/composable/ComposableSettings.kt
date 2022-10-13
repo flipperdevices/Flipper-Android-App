@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -18,9 +17,10 @@ import androidx.navigation.compose.composable
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.filemanager.api.navigation.FileManagerEntry
 import com.flipperdevices.settings.impl.R
-import com.flipperdevices.settings.impl.composable.category.BugReportCategory
 import com.flipperdevices.settings.impl.composable.category.DebugCategory
 import com.flipperdevices.settings.impl.composable.category.ExperimentalCategory
+import com.flipperdevices.settings.impl.composable.category.ExportKeysCategory
+import com.flipperdevices.settings.impl.composable.category.OtherSettingsCategory
 import com.flipperdevices.settings.impl.composable.category.ThemeCategory
 import com.flipperdevices.settings.impl.composable.category.VersionCategory
 import com.flipperdevices.settings.impl.composable.elements.AppBar
@@ -55,7 +55,6 @@ fun ComposableCommonSetting(
     navController: NavController,
     settingsViewModel: SettingsViewModel
 ) {
-    val context = LocalContext.current
     val settings by settingsViewModel.getState().collectAsState()
 
     Column(
@@ -70,7 +69,8 @@ fun ComposableCommonSetting(
             DebugCategory(settings, navController, settingsViewModel)
         }
         ExperimentalCategory(settings, navController, settingsViewModel)
-        BugReportCategory(onClick = { settingsViewModel.onReportBug(context) })
+        ExportKeysCategory(settingsViewModel)
+        OtherSettingsCategory(settingsViewModel)
         VersionCategory(
             version = settingsViewModel.versionApp(),
             onActivateExpertMode = settingsViewModel::onExpertModeActivate

@@ -1,7 +1,6 @@
 package com.flipperdevices.updater.subghz.tasks
 
 import androidx.datastore.core.DataStore
-import androidx.test.platform.app.InstrumentationRegistry
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.manager.service.FlipperRpcInformationApi
 import com.flipperdevices.bridge.api.model.FlipperDeviceInfo
@@ -11,6 +10,7 @@ import com.flipperdevices.bridge.api.model.FlipperRpcInformation
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.core.ktx.jre.flatten
 import com.flipperdevices.core.preference.pb.Settings
+import com.flipperdevices.core.test.readTestAsset
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.main
@@ -240,9 +240,4 @@ class SubGhzProvisioningHelperTest(
             "WW", null
         )
     }
-}
-
-private fun readTestAsset(path: String): ByteArray {
-    val context = InstrumentationRegistry.getInstrumentation().targetContext
-    return context.resources.assets.open(path).use { it.readBytes() }
 }
