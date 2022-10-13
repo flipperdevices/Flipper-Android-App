@@ -1,8 +1,4 @@
-import com.google.protobuf.gradle.ProtobufConvention
-import com.google.protobuf.gradle.generateProtoTasks
 import com.google.protobuf.gradle.id
-import com.google.protobuf.gradle.protobuf
-import com.google.protobuf.gradle.protoc
 
 plugins {
     id("flipper.lint")
@@ -27,24 +23,13 @@ protobuf {
     }
 
     generateProtoTasks {
-        all().forEach {
-            it.builtins {
+        all().forEach { task ->
+            task.builtins {
                 id("java") {
                     option("lite")
                 }
                 id("kotlin")
             }
-        }
-    }
-}
-
-android {
-    sourceSets {
-        getByName("main").java {
-            // https://github.com/google/protobuf-gradle-plugin/issues/109
-            val protobufConvention = project.convention.getPlugin(ProtobufConvention::class.java)
-            srcDir("${protobufConvention.protobuf.generatedFilesBaseDir}/main/java")
-            srcDir("${protobufConvention.protobuf.generatedFilesBaseDir}/main/kotlin")
         }
     }
 }

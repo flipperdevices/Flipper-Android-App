@@ -28,12 +28,9 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.annotation.Config
 import org.robolectric.util.ReflectionHelpers
 
 @RunWith(AndroidJUnit4::class)
-// https://github.com/robolectric/robolectric/discussions/7338
-@Config(sdk = [30])
 class FlipperScannerImplTest {
     private lateinit var scanner: BluetoothLeScannerCompat
     private lateinit var bluetoothManager: BluetoothManager
