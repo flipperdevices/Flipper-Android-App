@@ -106,9 +106,10 @@ dependencies {
         implementation(projects.components.wearable.sync.handheld.noop)
     }
 
-    implementation(projects.components.widget.api)
-    implementation(projects.components.widget.impl)
-    implementation(projects.components.widget.screen)
+    // Disabled for publishing version 1.2.2 on Google Play
+    //implementation(projects.components.widget.api)
+    //implementation(projects.components.widget.impl)
+    //implementation(projects.components.widget.screen)
 
     implementation(libs.ktor.client)
 
