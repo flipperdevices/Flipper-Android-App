@@ -17,13 +17,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.settings.impl.R
-import com.flipperdevices.settings.impl.composable.elements.ClickableElement
 import com.flipperdevices.settings.impl.composable.elements.SimpleElement
 import com.flipperdevices.settings.impl.model.ExportState
 import com.flipperdevices.settings.impl.viewmodels.SettingsViewModel
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ExportKeysCategory(
@@ -33,7 +32,6 @@ fun ExportKeysCategory(
         ExportKeysElement(settingsViewModel)
     }
 }
-
 
 @Composable
 private fun ExportKeysElement(
