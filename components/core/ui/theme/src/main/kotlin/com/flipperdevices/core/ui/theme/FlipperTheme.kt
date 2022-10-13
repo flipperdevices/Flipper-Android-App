@@ -2,6 +2,7 @@ package com.flipperdevices.core.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Shapes
@@ -59,6 +60,7 @@ fun FlipperThemeInternal(
             LocalPallet provides pallet,
             LocalTypography provides getTypography(),
             LocalContentColor provides colors.contentColorFor(backgroundColor = pallet.background),
+            LocalTextSelectionColors provides pallet.toTextSelectionColors(),
             content = content
         )
     }

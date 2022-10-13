@@ -9,6 +9,7 @@
 - [Feature] Update from internal storage and web updater
 - [Feature] Add widgets
 - [Feature] Add delete to FM
+- [Feature] Add selection in device info card
 - [Feature] Add export keys button
 - [REFACTOR] Migrate synchronization task graph to TaskSynchronizationComponent
 - [REFACTOR] Redesign card when we waiting update
