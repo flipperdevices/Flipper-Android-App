@@ -51,7 +51,6 @@ class SynchronizationApiImpl @Inject constructor(
             }
         }
         markDirty = false
-        synchronizationState.update { SynchronizationState.InProgress(0f) }
         val localSynchronizationTask = synchronizationTaskBuilder.build()
         info { "Create synchronization task ${localSynchronizationTask.hashCode()}" }
 

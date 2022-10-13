@@ -57,7 +57,7 @@ fun ComposableArchive(
     val isKeysPresented = favoriteKeys.isNotEmpty() || !keys.isNullOrEmpty()
 
     if (localSynchronizationState is SynchronizationState.InProgress) {
-        ArchiveProgressScreen(localSynchronizationState)
+        ArchiveProgressScreen(localSynchronizationState, tabViewModel::cancelSynchronization)
     } else ComposableArchiveReady(
         synchronizationUiApi,
         keys,

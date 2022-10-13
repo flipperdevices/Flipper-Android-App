@@ -17,23 +17,25 @@ import com.flipperdevices.core.ui.theme.viewmodel.ThemeViewModel
  * @return the necessary Pallet depending on the theme
  */
 @Composable
-fun getThemedFlipperPallet(systemIsDark: Boolean): FlipperPallet {
-    val isLight = isLight(systemIsDark)
+fun getThemedFlipperPallet(isLight: Boolean): FlipperPallet {
     return if (isLight) lightPallet else darkPallet
 }
 
 @Composable
-fun getThemedFlipperPallet(theme: SelectedTheme): FlipperPallet {
+fun getThemedFlipperPallet(
+    theme: SelectedTheme,
+    isLight: Boolean = !isSystemInDarkTheme()
+): FlipperPallet {
     return when (theme) {
         SelectedTheme.LIGHT -> lightPallet
         SelectedTheme.DARK -> darkPallet
         SelectedTheme.UNRECOGNIZED,
-        SelectedTheme.SYSTEM -> getThemedFlipperPallet(systemIsDark = isSystemInDarkTheme())
+        SelectedTheme.SYSTEM -> getThemedFlipperPallet(isLight)
     }
 }
 
 @Composable
-fun isLight(systemIsDark: Boolean): Boolean {
+fun isLight(systemIsDark: Boolean = isSystemInDarkTheme()): Boolean {
     val themeViewModel: ThemeViewModel = viewModel()
     val theme by themeViewModel.getAppTheme().collectAsState()
 

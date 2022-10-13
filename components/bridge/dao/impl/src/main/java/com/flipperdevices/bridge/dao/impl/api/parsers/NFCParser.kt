@@ -24,7 +24,7 @@ class NFCParser : KeyParserDelegate {
             .additionalFiles
             .find { it.path.fileType == FlipperFileType.SHADOW_NFC }
         val actualNfcFFF = if (shadowFile != null) {
-            val fileContent = flipperKey.keyContent.openStream().use {
+            val fileContent = shadowFile.content.openStream().use {
                 it.readBytes().toString(Charset.defaultCharset())
             }
             FlipperFileFormat.fromFileContent(fileContent)
