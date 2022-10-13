@@ -34,50 +34,9 @@ fun OtherSettingsCategory(
 ) {
     val context = LocalContext.current
     CardCategory {
-        Column {
-            ClickableElement(
-                titleId = R.string.debug_shake2report_open,
-                onClick = { settingsViewModel.onReportBug(context) }
-            )
-            GrayDivider()
-            ExportKeysElement(settingsViewModel)
-        }
-    }
-}
-
-@Composable
-fun ExportKeysElement(
-    settingsViewModel: SettingsViewModel
-) {
-    val context = LocalContext.current
-    val exportState by settingsViewModel.getExportState().collectAsState()
-    Row(
-        modifier = Modifier.clickable(
-            interactionSource = remember { MutableInteractionSource() },
-            indication = rememberRipple(),
-            onClick = { settingsViewModel.onMakeExport(context) }
-        ),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        SimpleElement(
-            Modifier.weight(weight = 1f),
-            titleId = R.string.export_keys,
-            descriptionId = null
+        ClickableElement(
+            titleId = R.string.debug_shake2report_open,
+            onClick = { settingsViewModel.onReportBug(context) }
         )
-        when (exportState) {
-            NOT_STARTED -> Icon(
-                modifier = Modifier
-                    .size(size = 42.dp)
-                    .padding(16.dp),
-                painter = painterResource(DesignSystem.drawable.ic_navigate_icon),
-                tint = LocalPallet.current.iconTint30,
-                contentDescription = null
-            )
-            IN_PROGRESS -> CircularProgressIndicator(
-                modifier = Modifier
-                    .size(size = 42.dp)
-                    .padding(16.dp)
-            )
-        }
     }
 }

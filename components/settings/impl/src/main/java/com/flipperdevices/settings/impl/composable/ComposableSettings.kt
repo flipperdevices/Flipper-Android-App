@@ -19,6 +19,7 @@ import com.flipperdevices.filemanager.api.navigation.FileManagerEntry
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.composable.category.DebugCategory
 import com.flipperdevices.settings.impl.composable.category.ExperimentalCategory
+import com.flipperdevices.settings.impl.composable.category.ExportKeysCategory
 import com.flipperdevices.settings.impl.composable.category.OtherSettingsCategory
 import com.flipperdevices.settings.impl.composable.category.ThemeCategory
 import com.flipperdevices.settings.impl.composable.category.VersionCategory
@@ -68,6 +69,7 @@ fun ComposableCommonSetting(
             DebugCategory(settings, navController, settingsViewModel)
         }
         ExperimentalCategory(settings, navController, settingsViewModel)
+        ExportKeysCategory(settingsViewModel)
         OtherSettingsCategory(settingsViewModel)
         VersionCategory(
             version = settingsViewModel.versionApp(),
