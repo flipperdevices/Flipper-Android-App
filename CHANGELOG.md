@@ -14,6 +14,7 @@
 - [REFACTOR] Get last region from flipper
 - [REFACTOR] Storage Stats formatter by kibibyte
 - [REFACTOR] Add test for nfc load/save
+- [REFACTOR] Bump deps
 - [FIX] Rename updater folder
 - [FIX] Choose app theme from selected theme, not is light
 - [FIX] Check total bytes from server(less 0 mean error from server)
