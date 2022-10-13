@@ -47,11 +47,8 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.whenever
 import org.robolectric.ParameterizedRobolectricTestRunner
-import org.robolectric.annotation.Config
 
 @RunWith(ParameterizedRobolectricTestRunner::class)
-// https://github.com/robolectric/robolectric/discussions/7338
-@Config(sdk = [30])
 class SubGhzProvisioningHelperTest(
     private val countryName: String?
 ) {

@@ -30,9 +30,7 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.annotation.Config
 
-@Config(sdk = [30])
 @RunWith(AndroidJUnit4::class)
 class UpdateRequestViewModelTest {
     private val serviceProvider: FlipperServiceProvider = mockk(relaxUnitFun = true)

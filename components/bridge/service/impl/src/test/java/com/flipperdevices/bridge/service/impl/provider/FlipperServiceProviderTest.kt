@@ -30,11 +30,8 @@ import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
-import org.robolectric.annotation.Config
 
 @RunWith(AndroidJUnit4::class)
-// https://github.com/robolectric/robolectric/discussions/7338
-@Config(sdk = [30])
 class FlipperServiceProviderTest {
     private lateinit var applicationContext: Context
     private lateinit var subject: FlipperServiceProviderImpl

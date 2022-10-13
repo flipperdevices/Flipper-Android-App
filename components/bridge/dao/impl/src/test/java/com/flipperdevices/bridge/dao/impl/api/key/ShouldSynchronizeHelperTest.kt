@@ -11,7 +11,6 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.annotation.Config
 
 private val EXAMPLE_FLIPPER_KEY = FlipperKey(
     mainFile = FlipperFile(
@@ -36,7 +35,6 @@ private val EXAMPLE_FLIPPER_KEY = FlipperKey(
 )
 
 @RunWith(AndroidJUnit4::class)
-@Config(sdk = [30])
 class ShouldSynchronizeHelperTest {
     @Test
     fun `edit name of key`() = runTest {
