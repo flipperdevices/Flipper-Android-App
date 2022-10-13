@@ -1,7 +1,4 @@
-import com.google.protobuf.gradle.generateProtoTasks
 import com.google.protobuf.gradle.id
-import com.google.protobuf.gradle.protobuf
-import com.google.protobuf.gradle.protoc
 
 plugins {
     id("flipper.lint")
@@ -38,8 +35,8 @@ protobuf {
     }
 
     generateProtoTasks {
-        all().forEach {
-            it.builtins {
+        all().forEach { task ->
+            task.builtins {
                 id("java") {
                     option("lite")
                 }
