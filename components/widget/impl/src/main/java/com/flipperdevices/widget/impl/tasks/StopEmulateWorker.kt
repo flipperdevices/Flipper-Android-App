@@ -19,7 +19,8 @@ import kotlinx.coroutines.flow.first
 private const val DEFAULT_WIDGET_APP_ID = -1
 
 class StopEmulateWorker(
-    context: Context, params: WorkerParameters
+    context: Context,
+    params: WorkerParameters
 ) : CoroutineWorker(context, params), LogTagProvider {
     override val TAG = "StopEmulateWorker"
 

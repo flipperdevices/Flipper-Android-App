@@ -1,6 +1,5 @@
 package com.flipperdevices.widget.impl.tasks.invalidate
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
@@ -10,6 +9,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.work.ForegroundInfo
 import androidx.work.WorkManager
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.widget.impl.R
 import com.flipperdevices.widget.impl.model.Constants.WIDGET_NOTIFICATION_CHANNEL
 import java.util.UUID

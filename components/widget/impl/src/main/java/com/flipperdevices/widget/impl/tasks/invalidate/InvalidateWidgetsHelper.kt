@@ -1,6 +1,5 @@
 package com.flipperdevices.widget.impl.tasks.invalidate
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
@@ -17,6 +16,7 @@ import com.flipperdevices.core.di.ApplicationParams
 import com.flipperdevices.core.ktx.android.toFullString
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.keyscreen.api.DeepLinkOpenKey
 import com.flipperdevices.widget.impl.R
 import com.flipperdevices.widget.impl.broadcast.WidgetBroadcastReceiver

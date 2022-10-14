@@ -27,7 +27,8 @@ const val EXTRA_KEY_WIDGET_ID = AppWidgetManager.EXTRA_APPWIDGET_ID
 private const val DEFAULT_WIDGET_APP_ID = -1
 
 class StartEmulateWorker(
-    context: Context, params: WorkerParameters
+    context: Context,
+    params: WorkerParameters
 ) : CoroutineWorker(context, params), LogTagProvider {
     override val TAG = "StartEmulateWorker"
 

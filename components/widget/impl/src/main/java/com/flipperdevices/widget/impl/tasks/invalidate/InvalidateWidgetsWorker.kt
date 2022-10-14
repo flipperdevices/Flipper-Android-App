@@ -9,7 +9,8 @@ import com.flipperdevices.widget.impl.di.WidgetComponent
 import javax.inject.Inject
 
 class InvalidateWidgetsWorker(
-    context: Context, params: WorkerParameters
+    context: Context,
+    params: WorkerParameters
 ) : CoroutineWorker(context, params), LogTagProvider {
     override val TAG = "InvalidateWidgetsTask"
 

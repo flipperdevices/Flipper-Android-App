@@ -17,7 +17,8 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 
 class WaitForEmulateEndWorker(
-    context: Context, params: WorkerParameters
+    context: Context,
+    params: WorkerParameters
 ) : CoroutineWorker(context, params), LogTagProvider {
     override val TAG = "WaitForEmulateEndWorker"
 

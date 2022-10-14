@@ -23,7 +23,8 @@ private const val WAIT_FLIPPER_TIMEOUT_MS = 60 * 1000L // 1 min
 private const val DEFAULT_WIDGET_APP_ID = -1
 
 class WaitingForFlipperConnectWorker(
-    context: Context, params: WorkerParameters
+    context: Context,
+    params: WorkerParameters
 ) : CoroutineWorker(context, params), LogTagProvider {
     override val TAG = "WaitingForFlipperConnectWorker"
 
