@@ -13,7 +13,12 @@
     <string name="notification_widget_cancel">Cancel</string>
     <string name="notification_widget_invalidate_name">Updating widget data</string>
     <string name="notification_widget_invalidate_desc">Check that all data on the widgets are correct</string>
-    <string name="notification_widget_start_name">Start emulating</string>
-    <string name="notification_widget_start_desc">Emulating</string>
-
+    <string name="notification_widget_start_name">Start emulate</string>
+    <string name="notification_widget_start_desc">Send start request for a flipper</string>
+    <string name="notification_widget_emulating_name">Emulating</string>
+    <string name="notification_widget_emulating_desc">Emulating the key</string>
+    <string name="notification_widget_stop_name">Stopping key emulation</string>
+    <string name="notification_widget_stop_desc">Send stop request for a flipper</string>
+    <string name="notification_widget_waiting_flipper_name">Connecting to the Flipper</string>
+    <string name="notification_widget_waiting_flipper_desc">Trying to connect to the flipper</string>
 </resources>

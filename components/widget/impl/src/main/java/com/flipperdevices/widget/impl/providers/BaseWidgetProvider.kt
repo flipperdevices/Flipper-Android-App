@@ -16,11 +16,11 @@ abstract class BaseWidgetProvider(
 ) : AppWidgetProvider(), LogTagProvider {
     override val TAG = "BaseWidgetProvider"
 
-    override fun onReceive(context: Context?, intent: Intent?) {
+    override fun onReceive(context: Context, intent: Intent?) {
         super.onReceive(context, intent)
         info { "Call ${intent?.toFullString()} for $widgetType" }
         runBlockingWithLog("update") {
-            ComponentHolder.component<WidgetComponent>().invalidateWidgetsTask.invoke()
+            ComponentHolder.component<WidgetComponent>().invalidateWidgetsHelper.invoke()
         }
     }
 

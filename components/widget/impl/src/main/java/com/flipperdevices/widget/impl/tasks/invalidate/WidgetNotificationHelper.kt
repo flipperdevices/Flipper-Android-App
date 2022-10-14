@@ -25,8 +25,26 @@ class WidgetNotificationHelper(
     }
 
     fun startForegroundInfo(workerId: UUID): ForegroundInfo {
-        val title = context.getString(R.string.notification_widget_invalidate_name)
-        val description = context.getString(R.string.notification_widget_invalidate_desc)
+        val title = context.getString(R.string.notification_widget_start_name)
+        val description = context.getString(R.string.notification_widget_start_desc)
+        return createForegroundInfo(title, description, workerId)
+    }
+
+    fun emulatingForegroundInfo(workerId: UUID): ForegroundInfo {
+        val title = context.getString(R.string.notification_widget_emulating_name)
+        val description = context.getString(R.string.notification_widget_emulating_desc)
+        return createForegroundInfo(title, description, workerId)
+    }
+
+    fun stopForegroundInfo(workerId: UUID): ForegroundInfo {
+        val title = context.getString(R.string.notification_widget_emulating_name)
+        val description = context.getString(R.string.notification_widget_emulating_desc)
+        return createForegroundInfo(title, description, workerId)
+    }
+
+    fun waitingFlipperForegroundInfo(workerId: UUID): ForegroundInfo {
+        val title = context.getString(R.string.notification_widget_waiting_flipper_name)
+        val description = context.getString(R.string.notification_widget_waiting_flipper_desc)
         return createForegroundInfo(title, description, workerId)
     }
 
