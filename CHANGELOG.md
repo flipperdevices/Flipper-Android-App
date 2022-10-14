@@ -1,13 +1,15 @@
 # Changelog
 
-# 1.2.2 - In progress
+# 1.2.3 - In progress
+
+# 1.2.2
 
 - [Feature] Add ability edit uid and zero block
 - [Feature] Add support adaptive monochrome icon
 - [Feature] Add save as on nfc editor
 - [Feature] Add dialog on exit from nfc editor
 - [Feature] Update from internal storage and web updater
-- [Feature] Add widgets
+- [Feature][Suspended] Add widgets
 - [Feature] Add delete to FM
 - [Feature] Add selection in device info card
 - [Feature] Add export keys button
