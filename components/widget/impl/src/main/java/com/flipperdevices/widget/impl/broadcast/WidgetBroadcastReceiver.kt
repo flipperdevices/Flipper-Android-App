@@ -7,6 +7,9 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import androidx.work.Data
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.toFullString
@@ -14,6 +17,9 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.widget.impl.di.WidgetComponent
 import com.flipperdevices.widget.impl.model.WidgetState
+import com.flipperdevices.widget.impl.tasks.invalidate.EXTRA_KEY_FILE_PATH
+import com.flipperdevices.widget.impl.tasks.invalidate.EXTRA_KEY_WIDGET_ID
+import com.flipperdevices.widget.impl.tasks.invalidate.StartEmulateWorker
 import kotlinx.coroutines.runBlocking
 
 private const val FLIPPER_KEY_START_ACTION = "com.flipperdevices.widget.impl.broadcast.KeyStart"
@@ -26,7 +32,7 @@ class WidgetBroadcastReceiver : BroadcastReceiver(), LogTagProvider {
 
     private val widgetComponent by lazy { ComponentHolder.component<WidgetComponent>() }
 
-    override fun onReceive(context: Context?, intent: Intent?) {
+    override fun onReceive(context: Context, intent: Intent?) {
         info { "Receive intent ${intent?.toFullString()}" }
         @Suppress("DEPRECATION")
         val keyPath = intent?.extras?.getParcelable<FlipperKeyPath>(FLIPPER_KEY_PATH_KEY) ?: return
@@ -49,14 +55,17 @@ class WidgetBroadcastReceiver : BroadcastReceiver(), LogTagProvider {
                     )
                     widgetComponent.invalidateWidgetsTask.invoke()
                 }
-                StartEmulateTask(
-                    widgetComponent.serviceProvider,
-                    widgetComponent.emulateHelper,
-                    widgetComponent.widgetStateStorage,
-                    widgetComponent.invalidateWidgetsTask
-                ).start(keyPath to widgetId) {
-                    info { "Start task for ${intent.toFullString()} $keyPath is finished" }
-                }
+                WorkManager.getInstance(context)
+                    .enqueue(
+                        OneTimeWorkRequestBuilder<StartEmulateWorker>()
+                            .setInputData(
+                                Data.Builder()
+                                    .putString(EXTRA_KEY_FILE_PATH, keyPath.path.pathToKey)
+                                    .putInt(EXTRA_KEY_WIDGET_ID, widgetId)
+                                    .build()
+                            )
+                            .build()
+                    )
             }
             FLIPPER_KEY_STOP_ACTION -> {
                 StopEmulateTask(

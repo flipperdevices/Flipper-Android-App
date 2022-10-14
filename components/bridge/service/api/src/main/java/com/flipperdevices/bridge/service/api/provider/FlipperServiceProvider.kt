@@ -26,4 +26,6 @@ interface FlipperServiceProvider {
         onError: (FlipperBleServiceError) -> Unit = {},
         onBleManager: (FlipperServiceApi) -> Unit
     )
+
+    suspend fun getServiceApi(): FlipperServiceApi
 }

@@ -6,6 +6,7 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.keyscreen.api.EmulateHelper
 import com.flipperdevices.widget.impl.storage.WidgetStateStorage
 import com.flipperdevices.widget.impl.tasks.InvalidateWidgetsTask
+import com.flipperdevices.widget.impl.tasks.invalidate.StartEmulateWorker
 import com.squareup.anvil.annotations.ContributesTo
 
 @ContributesTo(AppGraph::class)
@@ -15,4 +16,6 @@ interface WidgetComponent {
     val emulateHelper: EmulateHelper
     val serviceProvider: FlipperServiceProvider
     val widgetStateStorage: WidgetStateStorage
+
+    fun inject(worker: StartEmulateWorker)
 }

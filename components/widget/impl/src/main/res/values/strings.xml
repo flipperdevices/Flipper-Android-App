@@ -7,4 +7,13 @@
     <string name="img_disable_btn">Disable button</string>
     <string name="img_add_btn">Add key</string>
     <string name="widget_description">Emulate Flipper’s keys, cards and signals remotely</string>
+
+    <string name="notification_widget_channel_name">Widget update</string>
+    <string name="notification_widget_channel_desc">The notification channel, which is used for the internal mechanisms of the widget update</string>
+    <string name="notification_widget_cancel">Cancel</string>
+    <string name="notification_widget_invalidate_name">Updating widget data</string>
+    <string name="notification_widget_invalidate_desc">Check that all data on the widgets are correct</string>
+    <string name="notification_widget_start_name">Start emulating</string>
+    <string name="notification_widget_start_desc">Emulating</string>
+
 </resources>
