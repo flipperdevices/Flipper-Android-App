@@ -149,4 +149,8 @@ include(
     ":components:widget:api",
     ":components:widget:screen",
     ":components:widget:impl",
+
+    ":components:nfc:mfkey32:api",
+    ":components:nfc:tools:api",
+    ":components:nfc:tools:impl",
 )

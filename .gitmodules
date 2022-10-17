@@ -1,0 +1,3 @@
+[submodule "components/nfc/tools/impl/native-nfc-tools"]
+	path = components/nfc/tools/impl/native-nfc-tools
+	url = git@github.com:flipperdevices/flipperzero-nfc-tools.git
