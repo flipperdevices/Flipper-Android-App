@@ -6,6 +6,7 @@
         android:initialLayout="@layout/initial_layout"
         android:minHeight="40dp"
         android:minWidth="60dp"
+        android:previewImage="@drawable/widget_preview"
         android:previewLayout="@layout/widget_layout_emulate"
         android:resizeMode="horizontal|vertical"
         android:targetCellHeight="1"

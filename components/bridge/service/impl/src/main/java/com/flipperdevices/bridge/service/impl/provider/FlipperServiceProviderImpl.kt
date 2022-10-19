@@ -23,6 +23,7 @@ import com.flipperdevices.core.preference.pb.Settings
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.suspendCancellableCoroutine
 
 @Singleton
 @ContributesBinding(AppGraph::class, FlipperServiceProvider::class)
@@ -79,6 +80,30 @@ class FlipperServiceProviderImpl @Inject constructor(
         val consumer = LambdaFlipperBleServiceConsumer(onBleManager, onError)
         provideServiceApi(consumer, lifecycleOwner, onDestroyEvent)
     }
+
+    override suspend fun getServiceApi(): FlipperServiceApi =
+        suspendCancellableCoroutine { continuation ->
+            lateinit var consumer: FlipperBleServiceConsumer
+            consumer = object : FlipperBleServiceConsumer {
+                override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
+                    continuation.resume(serviceApi, onCancellation = {
+                        disconnectInternal(consumer)
+                    })
+                    disconnectInternal(consumer)
+                }
+            }
+            continuation.invokeOnCancellation {
+                disconnectInternal(consumer)
+            }
+            serviceConsumers.add(consumer)
+            invalidate()
+
+            connectionHelper.serviceBinder?.let {
+                info { "Found binder object, notify consumer now" }
+                it.serviceApi.connectIfNotForceDisconnect()
+                consumer.onServiceApiReady(it.serviceApi)
+            }
+        }
 
     @Synchronized
     private fun invalidate() {

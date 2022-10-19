@@ -24,4 +24,8 @@ class FlipperServiceProviderNoop @Inject constructor() : FlipperServiceProvider 
         onError: (FlipperBleServiceError) -> Unit,
         onBleManager: (FlipperServiceApi) -> Unit
     ) = Unit
+
+    override suspend fun getServiceApi(): FlipperServiceApi {
+        throw NotImplementedError()
+    }
 }

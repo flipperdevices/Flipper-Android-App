@@ -106,10 +106,9 @@ dependencies {
         implementation(projects.components.wearable.sync.handheld.noop)
     }
 
-    // Disabled for publishing version 1.2.2 on Google Play
-    //implementation(projects.components.widget.api)
-    //implementation(projects.components.widget.impl)
-    //implementation(projects.components.widget.screen)
+    implementation(projects.components.widget.api)
+    implementation(projects.components.widget.impl)
+    implementation(projects.components.widget.screen)
 
     implementation(libs.ktor.client)
 
@@ -117,6 +116,7 @@ dependencies {
     implementation(libs.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
+    implementation(libs.work.ktx)
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.ktx.activity)
