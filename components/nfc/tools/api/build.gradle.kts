@@ -6,5 +6,4 @@ plugins {
 dependencies {
 
     implementation(libs.cicerone)
-
 }

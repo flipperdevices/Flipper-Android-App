@@ -1,6 +1,5 @@
 package com.flipperdevices.settings.impl.fragments
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import android.os.Bundle
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -9,6 +8,7 @@ import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.navigation.delegates.OnBackPressListener
 import com.flipperdevices.core.ui.fragment.ComposeFragment
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.settings.impl.composable.ComposableSettings
 import com.flipperdevices.settings.impl.di.SettingsComponent
 import com.flipperdevices.settings.impl.model.NavGraphRoute

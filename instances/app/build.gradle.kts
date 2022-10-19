@@ -108,9 +108,9 @@ dependencies {
     }
 
     // Disabled for publishing version 1.2.2 on Google Play
-    //implementation(projects.components.widget.api)
-    //implementation(projects.components.widget.impl)
-    //implementation(projects.components.widget.screen)
+    // implementation(projects.components.widget.api)
+    // implementation(projects.components.widget.impl)
+    // implementation(projects.components.widget.screen)
 
     implementation(projects.components.nfc.mfkey32.api)
     implementation(projects.components.nfc.mfkey32.screen)

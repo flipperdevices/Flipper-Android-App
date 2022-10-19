@@ -38,6 +38,7 @@ fun DebugCategory(
 }
 
 @Composable
+@Suppress("LongMethod")
 private fun DebugCategoryItems(
     navController: NavController,
     debugViewModel: DebugViewModel,

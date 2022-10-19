@@ -9,6 +9,7 @@ object MfKey32Binding {
      * @return less zero if failed recover key
      */
     @JvmStatic
+    @Suppress("LongParameterList")
     external fun tryRecoverKey(
         uid: Long, // serial number
         nt0: Long, // tag challenge first

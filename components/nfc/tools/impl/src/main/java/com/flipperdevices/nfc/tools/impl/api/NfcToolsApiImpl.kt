@@ -13,6 +13,7 @@ import javax.inject.Inject
 class NfcToolsApiImpl @Inject constructor() : NfcToolsApi, LogTagProvider {
     override val TAG = "NfcToolsApi"
 
+    @Suppress("MagicNumber")
     override fun test() {
         val key = MfKey32Binding.tryRecoverKey(
             uid = parseLong("2a234f80", 16),
