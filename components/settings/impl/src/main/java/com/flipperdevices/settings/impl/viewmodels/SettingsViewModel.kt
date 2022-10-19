@@ -23,6 +23,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import tangle.viewmodel.VMInject
 
+@Suppress("LongParameterList")
 class SettingsViewModel @VMInject constructor(
     private val dataStoreSettings: DataStore<Settings>,
     private val cicerone: CiceroneGlobal,

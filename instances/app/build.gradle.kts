@@ -17,6 +17,7 @@ dependencies {
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ui.fragment)
     implementation(projects.components.core.ui.theme)
+    implementation(projects.components.core.ui.navigation)
 
     implementation(projects.components.firstpair.api)
     implementation(projects.components.firstpair.impl)
@@ -105,6 +106,11 @@ dependencies {
     } else {
         implementation(projects.components.wearable.sync.handheld.noop)
     }
+
+    implementation(projects.components.nfc.mfkey32.api)
+    implementation(projects.components.nfc.mfkey32.screen)
+    implementation(projects.components.nfc.tools.api)
+    implementation(projects.components.nfc.tools.impl)
 
     implementation(projects.components.widget.api)
     implementation(projects.components.widget.impl)

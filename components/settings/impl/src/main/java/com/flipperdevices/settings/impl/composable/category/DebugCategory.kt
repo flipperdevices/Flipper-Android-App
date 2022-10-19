@@ -38,6 +38,7 @@ fun DebugCategory(
 }
 
 @Composable
+@Suppress("LongMethod")
 private fun DebugCategoryItems(
     navController: NavController,
     debugViewModel: DebugViewModel,
@@ -95,5 +96,10 @@ private fun DebugCategoryItems(
         titleId = R.string.debug_skip_autosync,
         state = settings.skipAutoSyncInDebug,
         onSwitchState = debugViewModel::onSwitchSkipAutoSync
+    )
+    GrayDivider()
+    ClickableElement(
+        titleId = R.string.debug_open_mfkey32,
+        onClick = { debugViewModel.openMfKey32(navController) }
     )
 }

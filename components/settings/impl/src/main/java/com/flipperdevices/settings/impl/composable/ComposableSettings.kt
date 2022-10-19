@@ -14,8 +14,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.core.ui.theme.LocalPallet
-import com.flipperdevices.filemanager.api.navigation.FileManagerEntry
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.composable.category.DebugCategory
 import com.flipperdevices.settings.impl.composable.category.ExperimentalCategory
@@ -31,7 +31,7 @@ import tangle.viewmodel.compose.tangleViewModel
 @Composable
 fun ComposableSettings(
     navController: NavHostController,
-    fileManagerEntry: FileManagerEntry,
+    aggregatedFeatures: Set<AggregateFeatureEntry>,
     settingsViewModel: SettingsViewModel = tangleViewModel()
 ) {
     NavHost(navController = navController, startDestination = NavGraphRoute.Settings.name) {
@@ -44,8 +44,10 @@ fun ComposableSettings(
         composable(route = NavGraphRoute.StressTest.name) {
             settingsViewModel.stressTestApi.StressTestScreen()
         }
-        with(fileManagerEntry) {
-            navigation(navController)
+        aggregatedFeatures.forEach {
+            with(it) {
+                navigation(navController)
+            }
         }
     }
 }
