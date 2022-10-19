@@ -18,7 +18,7 @@ class SettingsFragment : ComposeFragment(), OnBackPressListener {
     private var navController: NavHostController? = null
 
     @Inject
-    lateinit var aggregatedFeatureEntries: Set<AggregateFeatureEntry>
+    lateinit var aggregatedFeatureEntries: MutableSet<AggregateFeatureEntry>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
