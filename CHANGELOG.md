@@ -2,6 +2,8 @@
 
 # 1.2.3 - In progress
 
+- [REFACTOR] Migrate widgets to WorkManager
+
 # 1.2.2
 
 - [Feature] Add ability edit uid and zero block

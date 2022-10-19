@@ -1,4 +1,4 @@
-package com.flipperdevices.widget.impl.tasks
+package com.flipperdevices.widget.impl.tasks.invalidate
 
 import android.annotation.SuppressLint
 import android.app.PendingIntent
@@ -25,18 +25,18 @@ import com.flipperdevices.widget.impl.storage.WidgetStateStorage
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
-interface InvalidateWidgetsTask {
+interface InvalidateWidgetsHelper {
     suspend fun invoke()
 }
 
-@ContributesBinding(AppGraph::class, InvalidateWidgetsTask::class)
+@ContributesBinding(AppGraph::class, InvalidateWidgetsHelper::class)
 class InvalidateWidgetsTaskImpl @Inject constructor(
     private val widgetDataApi: WidgetDataApi,
     private val context: Context,
     private val applicationParams: ApplicationParams,
     private val widgetStateStorage: WidgetStateStorage,
     private val deepLinkOpenKey: DeepLinkOpenKey
-) : InvalidateWidgetsTask, LogTagProvider {
+) : InvalidateWidgetsHelper, LogTagProvider {
     override val TAG = "InvalidateWidgetsTask"
 
     private val appWidgetManager by lazy { AppWidgetManager.getInstance(context) }

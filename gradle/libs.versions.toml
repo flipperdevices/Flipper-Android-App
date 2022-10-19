@@ -56,6 +56,7 @@ ktlint-runtime = "0.45.2"
 ktlint-gradle = "10.2.0"
 detekt-gradle = "1.21.0"
 tangle = "0.15.1"
+work = "2.7.1"
 
 # Testing
 junit = "4.12"
@@ -205,6 +206,9 @@ wear = { module = "androidx.wear:wear", version.ref = "wear" }
 wear-gms = { module = "com.google.android.gms:play-services-wearable", version.ref = "wear-gms" }
 wear-interaction-phone = { module = "androidx.wear:wear-phone-interactions", version.ref = "wear-interaction-phone" }
 wear-interaction-remote = { module = "androidx.wear:wear-remote-interactions", version.ref = "wear-interaction-remote" }
+
+# Work manager
+work-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "work" }
 
 [plugins]
 android-app = { id = "com.android.application", version.ref = "android-gradle" }

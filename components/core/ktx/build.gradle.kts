@@ -9,6 +9,8 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.kotlin.coroutines)
 
+    implementation(libs.kotlin.coroutines)
+
     // Compose
     implementation(libs.compose.ui)
     implementation(libs.compose.tooling)
