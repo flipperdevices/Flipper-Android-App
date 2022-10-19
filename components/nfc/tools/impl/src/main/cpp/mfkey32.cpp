@@ -1,16 +1,18 @@
 #include <jni.h>
 #include <string>
-#include "nfc-tools/mfkey32v2/crapto1/crapto1.h"
 
+extern "C" {
+#include "nfc-tools/mfkey32v2/crapto1/crapto1.h"
+}
 extern "C"
 JNIEXPORT jstring JNICALL
 Java_com_flipperdevices_nfc_tools_impl_bindings_MfKey32Binding_tryRecoverKey(
         JNIEnv *env,
         jclass clazz,
-        jint uid,
-        jint nt0, jint nr0,
-        jint ar0, jint nt1,
-        jint nr1, jint ar1
+        jlong uid,
+        jlong nt0, jlong nr0,
+        jlong ar0, jlong nt1,
+        jlong nr1, jlong ar1
 ) {
     struct Crypto1State *s, *t;
     uint64_t key;     // recovered key
