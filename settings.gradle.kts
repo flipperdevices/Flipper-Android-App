@@ -151,6 +151,7 @@ include(
     ":components:widget:impl",
 
     ":components:nfc:mfkey32:api",
+    ":components:nfc:mfkey32:screen",
     ":components:nfc:tools:api",
     ":components:nfc:tools:impl",
 )

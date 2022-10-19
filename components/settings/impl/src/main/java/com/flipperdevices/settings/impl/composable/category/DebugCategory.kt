@@ -96,4 +96,9 @@ private fun DebugCategoryItems(
         state = settings.skipAutoSyncInDebug,
         onSwitchState = debugViewModel::onSwitchSkipAutoSync
     )
+    GrayDivider()
+    ClickableElement(
+        titleId = R.string.debug_open_mfkey32,
+        onClick = { debugViewModel.openMfKey32(navController) }
+    )
 }

@@ -1,5 +1,6 @@
 package com.flipperdevices.settings.impl.fragments
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import android.os.Bundle
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -7,8 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.navigation.delegates.OnBackPressListener
 import com.flipperdevices.core.ui.fragment.ComposeFragment
-import com.flipperdevices.core.ui.res.R as DesignSystem
-import com.flipperdevices.filemanager.api.navigation.FileManagerEntry
+import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.settings.impl.composable.ComposableSettings
 import com.flipperdevices.settings.impl.di.SettingsComponent
 import com.flipperdevices.settings.impl.model.NavGraphRoute
@@ -18,7 +18,7 @@ class SettingsFragment : ComposeFragment(), OnBackPressListener {
     private var navController: NavHostController? = null
 
     @Inject
-    lateinit var fileManagerEntry: FileManagerEntry
+    lateinit var aggregatedFeatureEntries: Set<AggregateFeatureEntry>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +29,7 @@ class SettingsFragment : ComposeFragment(), OnBackPressListener {
     override fun RenderView() {
         navController = rememberNavController()
         navController?.let {
-            ComposableSettings(navController = it, fileManagerEntry)
+            ComposableSettings(navController = it, aggregatedFeatureEntries)
         }
     }
 

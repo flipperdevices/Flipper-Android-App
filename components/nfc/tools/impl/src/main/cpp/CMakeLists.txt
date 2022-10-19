@@ -14,6 +14,7 @@ project("mfkey32")
 # You can define multiple libraries, and CMake builds them for you.
 # Gradle automatically packages shared libraries with your APK.
 
+
 file(GLOB_RECURSE SOURCE_FILES
         "nfc-tools/mfkey32v2/crapto1/*.h"
         "nfc-tools/mfkey32v2/crapto1/*.c")
