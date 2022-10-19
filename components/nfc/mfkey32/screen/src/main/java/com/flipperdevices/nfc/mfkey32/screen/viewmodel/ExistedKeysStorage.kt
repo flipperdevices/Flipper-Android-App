@@ -11,7 +11,6 @@ import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.nfc.mfkey32.screen.model.DuplicatedSource
 import com.flipperdevices.nfc.mfkey32.screen.model.FoundedInformation
 import com.flipperdevices.nfc.mfkey32.screen.model.FoundedKey
-import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.file
 import com.flipperdevices.protobuf.storage.writeRequest
 import java.io.ByteArrayInputStream
@@ -46,21 +45,18 @@ class ExistedKeysStorage(
         flipperKeys.addAll(foundedDict)
     }
 
-    suspend fun upload(requestApi: FlipperRequestApi) {
+    suspend fun upload(requestApi: FlipperRequestApi): List<String> {
         val bytesToWrite = userKeys.joinToString("\n").toByteArray()
         ByteArrayInputStream(bytesToWrite).use { stream ->
-            val commandFlow = streamToCommandFlow(stream, fileSize = bytesToWrite.size.toLong()) {
-                main {
-                    storageWriteRequest = writeRequest {
-                        path = FLIPPER_DICT_USER_PATH
-                        file = file {
-                            data = it
-                        }
-                    }
+            val commandFlow = streamToCommandFlow(stream, bytesToWrite.size.toLong()) { chunkData ->
+                storageWriteRequest = writeRequest {
+                    path = FLIPPER_DICT_USER_PATH
+                    file = file { data = chunkData }
                 }
             }
             requestApi.request(commandFlow.map { it.wrapToRequest() })
         }
+        return userKeys.minus(userDict)
     }
 
     suspend fun onNewKey(

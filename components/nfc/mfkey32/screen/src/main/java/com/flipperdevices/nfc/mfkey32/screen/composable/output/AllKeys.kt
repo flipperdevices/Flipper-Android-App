@@ -3,6 +3,7 @@ package com.flipperdevices.nfc.mfkey32.screen.composable.output
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -36,11 +37,13 @@ fun LazyListScope.AllKeys(keys: List<FoundedKey>) {
                 color = LocalPallet.current.text100
             )
         ) {
-            ComposableFoundedKey(
-                Modifier.padding(
-                    start = 14.dp, end = 14.dp, top = 4.dp, bottom = 4.dp
-                ), it
-            )
+            SelectionContainer {
+                ComposableFoundedKey(
+                    Modifier.padding(
+                        start = 14.dp, end = 14.dp, top = 4.dp, bottom = 4.dp
+                    ), it
+                )
+            }
         }
     }
 }

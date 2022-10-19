@@ -3,6 +3,7 @@ package com.flipperdevices.nfc.mfkey32.screen.composable.output
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -22,12 +23,14 @@ fun LazyListScope.UniqueKeys(keys: Set<String>) {
     }
 
     items(keys.toList()) { key ->
-        Text(
-            modifier = Modifier.padding(
-                start = 14.dp, end = 14.dp, top = 4.dp, bottom = 4.dp
-            ),
-            text = key,
-            style = LocalTypography.current.subtitleR12
-        )
+        SelectionContainer {
+            Text(
+                modifier = Modifier.padding(
+                    start = 14.dp, end = 14.dp, top = 4.dp, bottom = 4.dp
+                ),
+                text = key,
+                style = LocalTypography.current.subtitleR12
+            )
+        }
     }
 }

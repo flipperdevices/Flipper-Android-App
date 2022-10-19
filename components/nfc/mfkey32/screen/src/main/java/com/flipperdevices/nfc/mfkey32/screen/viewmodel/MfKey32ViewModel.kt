@@ -80,8 +80,8 @@ class MfKey32ViewModel @VMInject constructor(
                 it.await()
             }
             mfKey32StateFlow.emit(MfKey32State.Uploading)
-            existedKeysStorage.upload(serviceApi.requestApi)
-            //mfKey32StateFlow.emit(MfKey32State.Saved)
+            val addedKeys = existedKeysStorage.upload(serviceApi.requestApi)
+            mfKey32StateFlow.emit(MfKey32State.Saved(addedKeys))
         }
     }
 
@@ -96,9 +96,7 @@ class MfKey32ViewModel @VMInject constructor(
             return
         }
         val foundedKey = FoundedKey(
-            nonce.sectorName,
-            nonce.keyName,
-            key.toString(radix = 16).uppercase()
+            nonce.sectorName, nonce.keyName, key.toString(radix = 16).uppercase()
         )
         existedKeysStorage.onNewKey(foundedKey)
     }

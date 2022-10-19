@@ -2,6 +2,7 @@ package com.flipperdevices.bridge.impl.manager.overflow
 
 import com.flipperdevices.bridge.api.model.FlipperRequest
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.log.verbose
 import java.util.concurrent.PriorityBlockingQueue
 import java.util.concurrent.TimeUnit
 
@@ -12,6 +13,7 @@ class FlipperRequestStorageImpl : FlipperRequestStorage {
     private val queue = PriorityBlockingQueue(QUEUE_INITIAL_CAPACITY, FlipperRequestComparator())
 
     override fun sendRequest(vararg requests: FlipperRequest) {
+        verbose { "Request $requests" }
         queue.addAll(requests)
         info { "Add new request. New request storage size: ${queue.size}" }
     }

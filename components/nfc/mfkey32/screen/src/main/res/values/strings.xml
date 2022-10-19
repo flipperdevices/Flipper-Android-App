@@ -6,6 +6,9 @@
     <string name="mfkey32_calculation_desc">Calculating…</string>
     <string name="mfkey32_uploading_title">Calculation Completed</string>
     <string name="mfkey32_uploading_desc">Syncing with Flipper…</string>
+    <string name="mfkey32_complete_title">New Keys Collected: %1$s</string>
+    <string name="mfkey32_complete_btn">Done</string>
+    <string name="mfkey32_complete_desc">Keys have been added to User Dict.</string>
 
     <string name="mfkey32_founded_all_title">Calculated Keys (%1$s)</string>
     <string name="mfkey32_founded_unique_title">Unique (%1$s)</string>
