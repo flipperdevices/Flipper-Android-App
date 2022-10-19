@@ -1,5 +1,5 @@
 package com.flipperdevices.nfc.tools.api
 
 interface NfcToolsApi {
-    fun test()
+    suspend fun bruteforceKey(mfKey32Nonce: MfKey32Nonce): ULong?
 }

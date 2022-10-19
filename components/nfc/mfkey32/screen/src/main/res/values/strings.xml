@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mfkey32_downloading_title">Calculation Started…</string>
+    <string name="mfkey32_downloading_desc">Downloading raw file from Flipper…</string>
+    <string name="mfkey32_calculation_title">@string/mfkey32_downloading_title</string>
+    <string name="mfkey32_calculation_desc">Calculating…</string>
+    <string name="mfkey32_uploading_title">Calculation Completed</string>
+    <string name="mfkey32_uploading_desc">Syncing with Flipper…</string>
+
+    <string name="mfkey32_founded_all_title">Calculated Keys (%1$s)</string>
+    <string name="mfkey32_founded_unique_title">Unique (%1$s)</string>
+    <string name="mfkey32_founded_duplicated_title">Duplicated (%1$s)</string>
+    <string name="mfkey32_founded_duplicated_flipper">Found in Flipper Dict.</string>
+    <string name="mfkey32_founded_duplicated_user">Found in User Dict.</string>
+</resources>

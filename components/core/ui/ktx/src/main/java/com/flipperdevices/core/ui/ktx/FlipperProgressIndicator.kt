@@ -1,4 +1,4 @@
-package com.flipperdevices.updater.screen.composable
+package com.flipperdevices.core.ui.ktx
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
@@ -21,8 +21,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.ktx.animatedDots
-import com.flipperdevices.core.ui.ktx.painterResourceByKey
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import kotlin.math.roundToInt
@@ -31,16 +29,16 @@ private const val PERCENT_MAX = 100
 private const val PERCENT_MIN = 0.0001f
 
 @Composable
-fun ComposableInProgressIndicator(
+fun FlipperProgressIndicator(
+    modifier: Modifier = Modifier,
     accentColor: Color,
     secondColor: Color,
     @DrawableRes iconId: Int?,
     percent: Float?
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .defaultMinSize(minHeight = 46.dp)
-            .padding(vertical = 8.dp, horizontal = 24.dp)
             .clip(RoundedCornerShape(9.dp))
             .background(secondColor)
             .border(3.dp, accentColor, RoundedCornerShape(9.dp)),

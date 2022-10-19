@@ -1,29 +1,41 @@
 package com.flipperdevices.nfc.mfkey32.screen.composable
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Button
-import androidx.compose.material.Text
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import com.flipperdevices.nfc.mfkey32.screen.composable.output.AllKeys
+import com.flipperdevices.nfc.mfkey32.screen.composable.output.DuplicatedKeys
+import com.flipperdevices.nfc.mfkey32.screen.composable.output.UniqueKeys
+import com.flipperdevices.nfc.mfkey32.screen.composable.progressbar.ComposableMfKey32Progress
 import com.flipperdevices.nfc.mfkey32.screen.viewmodel.MfKey32ViewModel
 import tangle.viewmodel.compose.tangleViewModel
 
-@Preview(
-    showSystemUi = true,
-    showBackground = true
-)
 @Composable
-fun ComposableMfKey32Screen() {
+fun ComposableMfKey32Screen(navController: NavController) {
     val viewModel = tangleViewModel<MfKey32ViewModel>()
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Button(onClick = viewModel::runNfcTool) {
-            Text("Test NFC tool")
+    val state by viewModel.getMfKey32State().collectAsState()
+    val foundedKeys by viewModel.getFoundedInformation().collectAsState()
+    Column {
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
+            item {
+                ComposableMfKey32Progress(navController, state)
+            }
+            if (foundedKeys.keys.isNotEmpty()) {
+                AllKeys(foundedKeys.keys)
+            }
+            if (foundedKeys.uniqueKeys.isNotEmpty()) {
+                UniqueKeys(foundedKeys.uniqueKeys)
+            }
+            if (foundedKeys.duplicated.isNotEmpty()) {
+                DuplicatedKeys(foundedKeys.duplicated)
+            }
         }
     }
 }
+
+

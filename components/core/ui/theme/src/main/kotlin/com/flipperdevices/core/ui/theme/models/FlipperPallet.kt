@@ -114,7 +114,10 @@ data class FlipperPallet(
     val bubbleEmulate: Color = Color(0xFFFFFFFF),
 
     val textSelectionHandle: Color = accent,
-    val textSelectionBackground: Color = accent.copy(alpha = 0.3f)
+    val textSelectionBackground: Color = accent.copy(alpha = 0.3f),
+
+    val calculationMfKey32: Color = accent,
+    val calculationMfKey32Background: Color = accent.copy(alpha = 0.54f),
 ) {
     internal fun toMaterialColors(isLight: Boolean) = Colors(
         primary = content,
