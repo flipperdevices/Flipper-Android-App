@@ -111,6 +111,9 @@ dependencies {
     //implementation(projects.components.widget.impl)
     //implementation(projects.components.widget.screen)
 
+    implementation(projects.components.nfc.tools.api)
+    implementation(projects.components.nfc.tools.impl)
+
     implementation(libs.ktor.client)
 
     implementation(libs.annotations)
