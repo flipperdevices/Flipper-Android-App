@@ -16,7 +16,7 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.nfc.mfkey32.screen.R
 import com.flipperdevices.nfc.mfkey32.screen.model.DuplicatedSource
 
-
+@Suppress("FunctionNaming")
 fun LazyListScope.DuplicatedKeys(keys: Map<String, DuplicatedSource>) {
     item {
         Text(

@@ -20,6 +20,7 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.nfc.mfkey32.screen.R
 import com.flipperdevices.nfc.mfkey32.screen.model.FoundedKey
 
+@Suppress("FunctionNaming")
 fun LazyListScope.AllKeys(keys: List<FoundedKey>) {
     item(keys.size) {
         Text(
@@ -41,7 +42,8 @@ fun LazyListScope.AllKeys(keys: List<FoundedKey>) {
                 ComposableFoundedKey(
                     Modifier.padding(
                         start = 14.dp, end = 14.dp, top = 4.dp, bottom = 4.dp
-                    ), it
+                    ),
+                    it
                 )
             }
         }
@@ -75,5 +77,6 @@ private fun ComposableFoundedKey(modifier: Modifier, foundedKey: FoundedKey) {
             }
             append(" — ")
             append(foundedKey.key)
-        })
+        }
+    )
 }

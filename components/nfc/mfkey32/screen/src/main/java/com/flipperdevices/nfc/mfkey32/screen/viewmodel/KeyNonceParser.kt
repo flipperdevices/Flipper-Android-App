@@ -2,7 +2,6 @@ package com.flipperdevices.nfc.mfkey32.screen.viewmodel
 
 import com.flipperdevices.nfc.tools.api.MfKey32Nonce
 
-
 private const val KEY_SEC = "sec"
 private const val KEY_KEY = "key"
 private const val KEY_UID = "cuid"
@@ -22,7 +21,6 @@ object KeyNonceParser {
     private fun parseLine(line: String): MfKey32Nonce? {
         if (line.isBlank()) return null
         val blocks = line.split(" ").map { it.lowercase() }
-        if (blocks.size < 4) return null
         val params = mutableMapOf<String, String?>()
         for (i in 0..blocks.lastIndex step 2) {
             val key = blocks.getOrNull(i)
@@ -40,7 +38,7 @@ object KeyNonceParser {
             ar0 = params[KEY_AR0]?.toUIntOrNull(radix = 16) ?: return null,
             nt1 = params[KEY_NT1]?.toUIntOrNull(radix = 16) ?: return null,
             nr1 = params[KEY_NR1]?.toUIntOrNull(radix = 16) ?: return null,
-            ar1 = params[KEY_AR1]?.toUIntOrNull(radix = 16) ?: return null,
+            ar1 = params[KEY_AR1]?.toUIntOrNull(radix = 16) ?: return null
         )
     }
 }

@@ -10,7 +10,6 @@ import java.io.FileNotFoundException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-
 object DownloadFileHelper {
     suspend fun downloadFile(
         requestApi: FlipperRequestApi,
@@ -18,11 +17,13 @@ object DownloadFileHelper {
         file: File,
         onUpdateIncrement: (Long) -> Unit = {}
     ) = withContext(Dispatchers.Default) {
-        requestApi.request(main {
-            storageReadRequest = readRequest {
-                path = pathOnFlipper
-            }
-        }.wrapToRequest(FlipperRequestPriority.FOREGROUND)).collect {
+        requestApi.request(
+            main {
+                storageReadRequest = readRequest {
+                    path = pathOnFlipper
+                }
+            }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
+        ).collect {
             if (!it.hasStorageReadResponse()) throw FileNotFoundException()
             val data = it.storageReadResponse.file.data
             file.appendBytes(data.toByteArray())

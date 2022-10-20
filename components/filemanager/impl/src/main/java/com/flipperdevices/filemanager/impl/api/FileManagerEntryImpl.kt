@@ -74,13 +74,13 @@ class FileManagerEntryImpl @Inject constructor(
         path: String,
         deeplinkContent: DeeplinkContent
     ) = "filemanagerupload?path=${Uri.encode(path)}" +
-            "&content=${Uri.encode(Json.encodeToString(deeplinkContent))}"
+        "&content=${Uri.encode(Json.encodeToString(deeplinkContent))}"
 
     private fun downloadFileDestination(
         file: ShareFile,
         pathToDirectory: String = File(file.flipperFilePath).absoluteFile.parent ?: "/"
     ) = "filemanagerdownload?path=${Uri.encode(pathToDirectory)}" +
-            "&filepath=${Uri.encode(Json.encodeToString(file))}"
+        "&filepath=${Uri.encode(Json.encodeToString(file))}"
 
     private fun editorFileDestination(
         file: ShareFile

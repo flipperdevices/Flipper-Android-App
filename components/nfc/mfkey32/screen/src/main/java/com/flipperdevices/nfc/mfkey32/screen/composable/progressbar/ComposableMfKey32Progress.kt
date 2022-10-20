@@ -1,6 +1,5 @@
 package com.flipperdevices.nfc.mfkey32.screen.composable.progressbar
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.core.LinearEasing
@@ -28,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.flipperdevices.core.ui.ktx.ComposableFlipperButton
 import com.flipperdevices.core.ui.ktx.FlipperProgressIndicator
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.nfc.mfkey32.screen.R
@@ -60,7 +60,7 @@ fun ComposableMfKey32Progress(navController: NavController, state: MfKey32State)
             accentColor = LocalPallet.current.calculationMfKey32,
             secondColor = LocalPallet.current.calculationMfKey32Background
         )
-        MfKey32State.Error -> {}// Do nothing
+        MfKey32State.Error -> {} // Do nothing
         is MfKey32State.Saved -> CompleteAttack(state.keys, navController::popBackStack)
     }
 
@@ -116,7 +116,6 @@ private fun CompleteAttack(
     }
 }
 
-
 @Composable
 private fun GrayDivider() = Box(
     modifier = Modifier
@@ -135,7 +134,6 @@ private fun ComposableMfKey32ProgressInternal(
     accentColor: Color,
     secondColor: Color
 ) {
-
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             modifier = Modifier.padding(18.dp),

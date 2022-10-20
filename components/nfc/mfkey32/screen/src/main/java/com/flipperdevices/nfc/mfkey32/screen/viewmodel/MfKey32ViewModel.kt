@@ -6,6 +6,7 @@ import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
@@ -63,6 +64,7 @@ class MfKey32ViewModel @VMInject constructor(
                     info { "Download file progress $it" }
                 }
             } catch (notFoundException: FileNotFoundException) {
+                error(notFoundException) { "Not found $PATH_NONCE_LOG" }
                 mfKey32StateFlow.emit(MfKey32State.Error)
                 return@launch
             }

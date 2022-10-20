@@ -12,6 +12,7 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.nfc.mfkey32.screen.R
 
+@Suppress("FunctionNaming")
 fun LazyListScope.UniqueKeys(keys: Set<String>) {
     item {
         Text(

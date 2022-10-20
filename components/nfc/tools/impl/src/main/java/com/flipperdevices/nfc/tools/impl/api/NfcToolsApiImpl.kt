@@ -12,7 +12,6 @@ import javax.inject.Inject
 class NfcToolsApiImpl @Inject constructor() : NfcToolsApi, LogTagProvider {
     override val TAG = "NfcToolsApi"
 
-
     override suspend fun bruteforceKey(mfKey32Nonce: MfKey32Nonce): ULong? {
         val key = MfKey32Binding.tryRecoverKey(
             uid = mfKey32Nonce.uid.toLong(),
