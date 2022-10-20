@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="mfkey32_title">Mfkey32 (Reader Attack)</string>
     <string name="mfkey32_downloading_title">Calculation Started…</string>
     <string name="mfkey32_downloading_desc">Downloading raw file from Flipper…</string>
     <string name="mfkey32_calculation_title">@string/mfkey32_downloading_title</string>
