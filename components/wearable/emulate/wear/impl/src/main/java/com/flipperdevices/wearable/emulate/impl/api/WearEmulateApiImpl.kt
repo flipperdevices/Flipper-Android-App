@@ -23,7 +23,7 @@ const val EMULATE_PATH_KEY = "path"
 @ContributesBinding(AppGraph::class, WearEmulateApi::class)
 @ContributesMultibinding(AppGraph::class, ComposableFeatureEntry::class)
 class WearEmulateApiImpl @Inject constructor(
-    private val keyEmulateUiApi: KeyEmulateUiApi,
+    private val keyEmulateUiApi: KeyEmulateUiApi
 ) : WearEmulateApi {
     override val featureRoute = "wearosemulate?path={$EMULATE_PATH_KEY}"
 

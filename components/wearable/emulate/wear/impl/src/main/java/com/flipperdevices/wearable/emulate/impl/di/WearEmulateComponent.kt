@@ -7,5 +7,4 @@ import com.squareup.anvil.annotations.ContributesTo
 @ContributesTo(AppGraph::class)
 interface WearEmulateComponent {
     val setupApi: SetupApi
-
 }
