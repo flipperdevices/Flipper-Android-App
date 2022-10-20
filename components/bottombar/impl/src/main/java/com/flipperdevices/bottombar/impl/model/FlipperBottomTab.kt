@@ -6,5 +6,5 @@ package com.flipperdevices.bottombar.impl.model
 enum class FlipperBottomTab {
     DEVICE,
     ARCHIVE,
-    OPTIONS
+    HUB
 }

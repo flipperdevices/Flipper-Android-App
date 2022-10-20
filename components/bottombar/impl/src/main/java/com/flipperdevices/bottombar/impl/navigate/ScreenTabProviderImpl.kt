@@ -3,8 +3,8 @@ package com.flipperdevices.bottombar.impl.navigate
 import com.flipperdevices.archive.api.ArchiveApi
 import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.hub.api.HubApi
 import com.flipperdevices.info.api.screen.InfoScreenProvider
-import com.flipperdevices.settings.api.SettingsApi
 import com.github.terrakok.cicerone.Screen
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
@@ -13,13 +13,13 @@ import javax.inject.Inject
 class ScreenTabProviderImpl @Inject constructor(
     private val infoScreenProvider: InfoScreenProvider,
     private val archiveApi: ArchiveApi,
-    private val settingsApi: SettingsApi
+    private val hubApi: HubApi
 ) : ScreenTabProvider {
     override fun getScreen(tab: FlipperBottomTab): Screen {
         return when (tab) {
             FlipperBottomTab.DEVICE -> infoScreenProvider.deviceInformationScreen()
             FlipperBottomTab.ARCHIVE -> archiveApi.getArchiveScreen()
-            FlipperBottomTab.OPTIONS -> settingsApi.getSettingsScreen()
+            FlipperBottomTab.HUB -> hubApi.getHubScreen()
         }
     }
 }

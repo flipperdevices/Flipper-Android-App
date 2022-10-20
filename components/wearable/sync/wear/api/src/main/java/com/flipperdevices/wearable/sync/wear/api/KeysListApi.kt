@@ -1,11 +1,11 @@
 package com.flipperdevices.wearable.sync.wear.api
 
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
+import com.flipperdevices.core.ui.navigation.FeatureScreenRootRoute
 
 interface KeysListApi : AggregateFeatureEntry {
-    fun start(): String
+    override val ROUTE: FeatureScreenRootRoute
+        get() = FeatureScreenRootRoute.WEAR_KEYS_LIST
 
-    companion object {
-        const val ROUTE = "@wearoskeyslist"
-    }
+    fun start(): String
 }

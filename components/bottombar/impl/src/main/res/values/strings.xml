@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="bar_title_archive">Archive</string>
-    <string name="bar_title_options">Options</string>
+    <string name="bar_title_hub">Hub</string>
 </resources>
