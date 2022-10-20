@@ -13,7 +13,6 @@ import javax.inject.Singleton
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 
-
 @Singleton
 @ContributesBinding(AppGraph::class, MfKey32Api::class)
 class MfKey32ApiImpl @Inject constructor() : MfKey32Api {
@@ -23,11 +22,13 @@ class MfKey32ApiImpl @Inject constructor() : MfKey32Api {
     override suspend fun checkBruteforceFileExist(
         requestApi: FlipperRequestApi
     ) {
-        val response = requestApi.request(main {
-            storageMd5SumRequest = md5sumRequest {
-                path = PATH_NONCE_LOG
-            }
-        }.wrapToRequest()).first()
+        val response = requestApi.request(
+            main {
+                storageMd5SumRequest = md5sumRequest {
+                    path = PATH_NONCE_LOG
+                }
+            }.wrapToRequest()
+        ).first()
         if (response.hasStorageMd5SumResponse()) {
             hasNotificationFlow.emit(true)
         } else hasNotificationFlow.emit(false)

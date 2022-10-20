@@ -18,7 +18,6 @@ class HubApiImpl @Inject constructor(
         it > 0
     }
 
-
     override fun getHubScreen(): Screen {
         return FragmentScreen { HubFragment() }
     }

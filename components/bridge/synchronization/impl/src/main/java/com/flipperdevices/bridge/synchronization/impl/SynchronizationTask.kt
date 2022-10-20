@@ -83,7 +83,7 @@ class SynchronizationTaskImpl(
         serviceApi.connectionInformationApi.getConnectionStateFlow()
             .filter {
                 it is ConnectionState.Ready &&
-                        it.supportedState == FlipperSupportedState.READY
+                    it.supportedState == FlipperSupportedState.READY
             }.first()
         startInternal(scope, serviceApi, stateListener)
     }

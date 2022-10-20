@@ -96,11 +96,13 @@ class MfKey32ViewModel @VMInject constructor(
     }
 
     private suspend fun deleteBruteforceApp(requestApi: FlipperRequestApi) {
-        requestApi.request(main {
-            storageDeleteRequest = deleteRequest {
-                path = PATH_NONCE_LOG
-            }
-        }.wrapToRequest()).collect()
+        requestApi.request(
+            main {
+                storageDeleteRequest = deleteRequest {
+                    path = PATH_NONCE_LOG
+                }
+            }.wrapToRequest()
+        ).collect()
         mfKey32Api.checkBruteforceFileExist(requestApi)
     }
 
