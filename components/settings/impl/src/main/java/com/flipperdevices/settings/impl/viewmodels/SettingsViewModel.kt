@@ -9,8 +9,8 @@ import com.flipperdevices.core.navigation.global.CiceroneGlobal
 import com.flipperdevices.core.preference.pb.SelectedTheme
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.share.ShareHelper
-import com.flipperdevices.debug.api.StressTestApi
-import com.flipperdevices.screenstreaming.api.ScreenStreamingApi
+import com.flipperdevices.debug.api.StressTestFeatureEntry
+import com.flipperdevices.screenstreaming.api.ScreenStreamingFeatureEntry
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.model.ExportState
 import com.flipperdevices.shake2report.api.Shake2ReportApi
@@ -28,8 +28,8 @@ class SettingsViewModel @VMInject constructor(
     private val dataStoreSettings: DataStore<Settings>,
     private val cicerone: CiceroneGlobal,
     private val shakeToReportApi: Shake2ReportApi,
-    val screenStreamingApi: ScreenStreamingApi,
-    val stressTestApi: StressTestApi,
+    val screenStreamingFeatureEntry: ScreenStreamingFeatureEntry,
+    val stressTestFeatureEntry: StressTestFeatureEntry,
     private val applicationParams: ApplicationParams,
     private val exportKeysHelper: ExportKeysHelper
 ) : ViewModel() {

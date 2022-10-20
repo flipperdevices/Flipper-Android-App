@@ -27,7 +27,6 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.info.impl.R
-import com.flipperdevices.info.impl.compose.navigation.NavGraphRoute
 import com.flipperdevices.info.impl.compose.screens.fullinfo.ComposableFullInfoDevice
 import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
@@ -55,7 +54,7 @@ fun ComposableFullDeviceInfoScreen(
 
     Column {
         ComposableFullDeviceInfoScreenBar(
-            onBack = { navController.navigate(NavGraphRoute.Info.name) },
+            onBack = navController::popBackStack,
             onShare = fullInfoViewModel::shareDeviceInfo,
             inProgress = inProgress
         )
@@ -101,7 +100,8 @@ private fun ComposableFullDeviceInfoScreenBar(
 
         if (!inProgress) {
             Icon(
-                modifier = Modifier.padding(end = 14.dp)
+                modifier = Modifier
+                    .padding(end = 14.dp)
                     .clickable(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = rememberRipple(bounded = false),
@@ -115,7 +115,9 @@ private fun ComposableFullDeviceInfoScreenBar(
         } else {
             CircularProgressIndicator(
                 color = LocalPallet.current.onAppBar,
-                modifier = Modifier.padding(end = 14.dp).size(size = 24.dp),
+                modifier = Modifier
+                    .padding(end = 14.dp)
+                    .size(size = 24.dp),
                 strokeWidth = 2.5.dp
             )
         }

@@ -109,8 +109,13 @@ dependencies {
 
     implementation(projects.components.nfc.mfkey32.api)
     implementation(projects.components.nfc.mfkey32.screen)
+    implementation(projects.components.nfc.attack.api)
+    implementation(projects.components.nfc.attack.impl)
     implementation(projects.components.nfc.tools.api)
     implementation(projects.components.nfc.tools.impl)
+
+    implementation(projects.components.hub.api)
+    implementation(projects.components.hub.impl)
 
     implementation(projects.components.widget.api)
     implementation(projects.components.widget.impl)

@@ -9,6 +9,7 @@ import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
+import com.flipperdevices.debug.api.StressTestFeatureEntry
 import com.flipperdevices.nfc.mfkey32.api.MfKey32ScreenEntry
 import com.flipperdevices.settings.impl.R
 import kotlinx.coroutines.Dispatchers
@@ -21,8 +22,13 @@ class DebugViewModel @VMInject constructor(
     private val synchronizationApi: SynchronizationApi,
     private val settingsDataStore: DataStore<Settings>,
     private val serviceProvider: FlipperServiceProvider,
-    private val mfKey32ScreenEntry: MfKey32ScreenEntry
+    private val mfKey32ScreenEntry: MfKey32ScreenEntry,
+    private val stressTestFeatureEntry: StressTestFeatureEntry
 ) : AndroidLifecycleViewModel(application) {
+
+    fun onOpenStressTest(navController: NavController) {
+        navController.navigate(stressTestFeatureEntry.ROUTE.name)
+    }
 
     fun onStartSynchronization() {
         synchronizationApi.startSynchronization(force = true)

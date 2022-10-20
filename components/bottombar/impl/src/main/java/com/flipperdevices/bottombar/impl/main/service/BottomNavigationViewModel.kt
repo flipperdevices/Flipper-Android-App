@@ -35,7 +35,7 @@ class BottomNavigationViewModel : ViewModel() {
                         when (tab) {
                             FlipperBottomTab.DEVICE -> SelectedTab.DEVICE
                             FlipperBottomTab.ARCHIVE -> SelectedTab.ARCHIVE
-                            FlipperBottomTab.OPTIONS -> SelectedTab.OPTIONS
+                            FlipperBottomTab.HUB -> SelectedTab.HUB
                         }
                     ).build()
             }

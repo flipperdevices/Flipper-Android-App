@@ -24,11 +24,14 @@ dependencies {
     implementation(projects.components.connection.api)
     implementation(projects.components.archive.api)
     implementation(projects.components.inappnotification.api)
-    implementation(projects.components.settings.api)
+    implementation(projects.components.hub.api)
 
     implementation(libs.appcompat)
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
+    implementation(libs.tangle.viewmodel.compose)
+    implementation(libs.tangle.viewmodel.api)
+    anvil(libs.tangle.viewmodel.compiler)
 
     implementation(libs.compose.ui)
     implementation(libs.compose.material)

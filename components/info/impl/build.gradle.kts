@@ -16,6 +16,7 @@ dependencies {
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.fragment)
+    implementation(projects.components.core.ui.navigation)
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.share)
@@ -26,6 +27,7 @@ dependencies {
 
     implementation(projects.components.firstpair.api)
     implementation(projects.components.updater.api)
+    implementation(projects.components.settings.api)
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.synchronization.api)

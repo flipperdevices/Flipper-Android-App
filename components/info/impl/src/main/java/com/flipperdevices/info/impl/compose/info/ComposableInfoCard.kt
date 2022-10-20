@@ -23,7 +23,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.core.ui.ktx.animatedDots
 import com.flipperdevices.core.ui.res.R as DesignSystem
@@ -31,7 +30,6 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.compose.elements.ComposableInfoCardContent
-import com.flipperdevices.info.impl.compose.navigation.NavGraphRoute
 import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
 import com.flipperdevices.info.impl.viewmodel.FirmwareUpdateViewModel
@@ -41,7 +39,7 @@ import com.flipperdevices.updater.model.FlipperUpdateState
 @Composable
 fun ComposableInfoCard(
     modifier: Modifier,
-    navController: NavHostController,
+    onOpenFullDeviceInfo: () -> Unit,
     deviceStatusViewModel: DeviceStatusViewModel = viewModel(),
     firmwareUpdateViewModel: FirmwareUpdateViewModel = viewModel()
 ) {
@@ -57,7 +55,7 @@ fun ComposableInfoCard(
         }
         ComposableInfoCardContent(isUnsupported)
         if (deviceStatus is DeviceStatus.Connected && !isUnsupported) {
-            ComposableFullInfoButton { navController.navigate(NavGraphRoute.FullInfo.name) }
+            ComposableFullInfoButton(onOpenFullDeviceInfo)
         }
     }
 }
@@ -67,7 +65,9 @@ fun ComposableWaitingFlipper() {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(12.dp),
-        modifier = Modifier.fillMaxWidth().padding(vertical = 68.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 68.dp)
     ) {
         CircularProgressIndicator(
             modifier = Modifier.size(24.dp),

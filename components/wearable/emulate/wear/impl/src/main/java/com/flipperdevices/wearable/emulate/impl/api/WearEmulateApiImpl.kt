@@ -8,11 +8,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.flipperdevices.keyscreen.api.KeyEmulateUiApi
 import com.flipperdevices.wearable.emulate.api.WearEmulateApi
 import com.flipperdevices.wearable.emulate.impl.composable.ComposableWearEmulate
-import com.flipperdevices.wearable.setup.api.SetupApi
+import com.flipperdevices.wearable.emulate.impl.di.WearEmulateComponent
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
 import javax.inject.Inject
@@ -43,7 +44,9 @@ class WearEmulateApiImpl @Inject constructor(
         ComposableWearEmulate(
             keyEmulateUiApi,
             onNotFoundNode = {
-                navController.navigate(SetupApi.ROUTE) {
+                navController.navigate(
+                    ComponentHolder.component<WearEmulateComponent>().setupApi.get().ROUTE.name
+                ) {
                     popUpTo(0)
                 }
             },

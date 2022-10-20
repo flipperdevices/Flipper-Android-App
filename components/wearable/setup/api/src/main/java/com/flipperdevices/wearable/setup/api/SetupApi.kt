@@ -1,11 +1,11 @@
 package com.flipperdevices.wearable.setup.api
 
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
+import com.flipperdevices.core.ui.navigation.FeatureScreenRootRoute
 
 interface SetupApi : AggregateFeatureEntry {
-    fun start(): String
+    override val ROUTE: FeatureScreenRootRoute
+        get() = FeatureScreenRootRoute.WEAR_SETUP
 
-    companion object {
-        const val ROUTE = "@wearossetup"
-    }
+    fun start(): String
 }

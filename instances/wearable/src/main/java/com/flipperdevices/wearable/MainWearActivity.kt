@@ -25,10 +25,11 @@ class MainWearActivity : ComponentActivity() {
         val futureEntries by ComponentHolder.component<WearableComponent>().futureEntries
         val composableFutureEntries by ComponentHolder.component<WearableComponent>()
             .composableFutureEntries
+        val setupApi by ComponentHolder.component<WearableComponent>().setupApi
 
         setContent {
             WearFlipperTheme {
-                SetUpNavigation(futureEntries, composableFutureEntries)
+                SetUpNavigation(futureEntries, composableFutureEntries, setupApi)
             }
         }
     }
@@ -36,12 +37,13 @@ class MainWearActivity : ComponentActivity() {
     @Composable
     private fun SetUpNavigation(
         futureEntries: Set<AggregateFeatureEntry>,
-        composableFutureEntries: Set<ComposableFeatureEntry>
+        composableFutureEntries: Set<ComposableFeatureEntry>,
+        setupApi: SetupApi
     ) {
         val navController = rememberSwipeDismissableNavController()
         SwipeDismissableNavHost(
             navController = navController,
-            startDestination = SetupApi.ROUTE,
+            startDestination = setupApi.ROUTE.name,
             modifier = Modifier
                 .fillMaxSize()
                 .background(LocalPallet.current.background)

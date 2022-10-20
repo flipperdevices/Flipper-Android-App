@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.TabPosition
 import androidx.compose.material.TabRow
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,9 +31,11 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.bottombar.impl.main.viewmodel.BottomBarViewModel
 import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
 import com.flipperdevices.connection.api.ConnectionApi
 import com.flipperdevices.core.ui.theme.LocalPallet
+import tangle.viewmodel.compose.tangleViewModel
 
 const val ANIMATION_WIDTH_CHANGE_DURATION_MS = 250
 const val ANIMATION_OFFSET_CHANGE_DURATION_MS = 150
@@ -43,16 +46,16 @@ fun ComposeBottomBar(
     selectedItem: FlipperBottomTab = FlipperBottomTab.ARCHIVE,
     onBottomBarClick: (FlipperBottomTab) -> Unit = {}
 ) {
-    val tabs = FlipperBottomTab.values()
+    val tabs = remember { FlipperBottomTab.values() }
     var selectedIndex by remember {
         mutableStateOf(tabs.indexOf(selectedItem))
     }
     var tabPositions by remember {
         mutableStateOf(emptyList<TabPosition>())
     }
-    var tabHeightPx by remember {
-        mutableStateOf(0)
-    }
+    var tabHeightPx by remember { mutableStateOf(0) }
+    val bottomBarViewModel: BottomBarViewModel = tangleViewModel()
+    val hubHasNotification by bottomBarViewModel.hasNotificationHubState().collectAsState()
     Box(
         modifier = Modifier.background(LocalPallet.current.bottomBarBackground)
     ) {
@@ -76,7 +79,11 @@ fun ComposeBottomBar(
         ) {
             tabs.forEachIndexed { index, flipperBottomTab ->
                 ComposeMaterialYouTab(
-                    getTabStateFromFlipperBottomTab(connectionApi, flipperBottomTab),
+                    getTabStateFromFlipperBottomTab(
+                        connectionApi,
+                        flipperBottomTab,
+                        hubHasNotification
+                    ),
                     selected = selectedIndex == index,
                     onClick = {
                         selectedIndex = index
