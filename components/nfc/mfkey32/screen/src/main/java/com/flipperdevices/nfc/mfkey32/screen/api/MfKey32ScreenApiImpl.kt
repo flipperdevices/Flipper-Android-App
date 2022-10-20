@@ -22,7 +22,7 @@ class MfKey32ScreenApiImpl @Inject constructor() : MfKey32ScreenEntry {
     override fun NavGraphBuilder.navigation(navController: NavHostController) {
         navigation(startDestination = startDestination(), route = ROUTE) {
             composable(MAIN_SCREEN_ROUTE) {
-                ComposableMfKey32Screen()
+                ComposableMfKey32Screen(navController)
             }
         }
     }

@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.deeplink.api.DeepLinkParser
 import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.filemanager.api.navigation.FileManagerEntry
@@ -17,6 +18,7 @@ import com.flipperdevices.filemanager.impl.composable.ComposableFileManagerScree
 import com.flipperdevices.filemanager.impl.composable.ComposableFileManagerUploadedScreen
 import com.flipperdevices.filemanager.impl.model.ShareFile
 import com.squareup.anvil.annotations.ContributesBinding
+import com.squareup.anvil.annotations.ContributesMultibinding
 import java.io.File
 import javax.inject.Inject
 import kotlinx.serialization.encodeToString
@@ -35,6 +37,7 @@ private const val FILE_MANAGER_EDITOR_ROUTE =
     "filemanagereditor?filepath={$FILE_PATH_KEY}"
 
 @ContributesBinding(AppGraph::class)
+@ContributesMultibinding(AppGraph::class, AggregateFeatureEntry::class)
 class FileManagerEntryImpl @Inject constructor(
     private val deepLinkParser: DeepLinkParser
 ) : FileManagerEntry {

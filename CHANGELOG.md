@@ -3,7 +3,7 @@
 # 1.2.3 - In progress
 
 - [REFACTOR] Migrate widgets to WorkManager
-- [Feature] Add mfkey32 attack in native layer
+- [Feature] Add mfkey32 attack in debug/options
 
 # 1.2.2
 
