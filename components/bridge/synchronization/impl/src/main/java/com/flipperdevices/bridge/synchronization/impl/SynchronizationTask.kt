@@ -1,5 +1,6 @@
 package com.flipperdevices.bridge.synchronization.impl
 
+import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
@@ -17,12 +18,14 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.OneTimeExecutionBleTask
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.complex.SynchronizationEnd
+import com.flipperdevices.nfc.mfkey32.api.MfKey32Api
 import com.flipperdevices.wearable.sync.handheld.api.SyncWearableApi
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
@@ -45,18 +48,26 @@ class SynchronizationTaskBuilder @Inject constructor(
     private val serviceProvider: FlipperServiceProvider,
     private val simpleKeyApi: SimpleKeyApi,
     private val metricApi: MetricApi,
-    private val syncWearableApi: SyncWearableApi
+    private val syncWearableApi: SyncWearableApi,
+    private val mfKey32Api: MfKey32Api
 ) : SynchronizationTask.Builder {
     override fun build(): SynchronizationTask {
-        return SynchronizationTaskImpl(serviceProvider, simpleKeyApi, metricApi, syncWearableApi)
+        return SynchronizationTaskImpl(
+            serviceProvider,
+            simpleKeyApi,
+            metricApi,
+            syncWearableApi,
+            mfKey32Api
+        )
     }
 }
 
-class SynchronizationTaskImpl @Inject constructor(
+class SynchronizationTaskImpl(
     serviceProvider: FlipperServiceProvider,
     private val simpleKeyApi: SimpleKeyApi,
     private val metricApi: MetricApi,
-    private val syncWearableApi: SyncWearableApi
+    private val syncWearableApi: SyncWearableApi,
+    private val mfKey32Api: MfKey32Api
 ) : OneTimeExecutionBleTask<Unit, SynchronizationState>(serviceProvider),
     SynchronizationTask,
     LogTagProvider {
@@ -72,9 +83,9 @@ class SynchronizationTaskImpl @Inject constructor(
         serviceApi.connectionInformationApi.getConnectionStateFlow()
             .filter {
                 it is ConnectionState.Ready &&
-                    it.supportedState == FlipperSupportedState.READY
+                        it.supportedState == FlipperSupportedState.READY
             }.first()
-        startInternal(serviceApi, stateListener)
+        startInternal(scope, serviceApi, stateListener)
     }
 
     override suspend fun onStopAsync(stateListener: suspend (SynchronizationState) -> Unit) {
@@ -82,11 +93,12 @@ class SynchronizationTaskImpl @Inject constructor(
     }
 
     private suspend fun startInternal(
+        scope: CoroutineScope,
         serviceApi: FlipperServiceApi,
         onStateUpdate: suspend (SynchronizationState) -> Unit
     ) {
         info { "#startInternal" }
-
+        val mfKey32check = scope.async { checkMfKey32Safe(serviceApi.requestApi) }
         try {
             onStateUpdate(SynchronizationState.InProgress(0f))
             val startSynchronizationTime = System.currentTimeMillis()
@@ -94,13 +106,20 @@ class SynchronizationTaskImpl @Inject constructor(
             val endSynchronizationTime = System.currentTimeMillis() - startSynchronizationTime
             reportSynchronizationEnd(endSynchronizationTime)
             onStateUpdate(SynchronizationState.Finished)
+            mfKey32check.await()
         } catch (
             @Suppress("SwallowedException")
             restartException: RestartSynchronizationException
         ) {
             info { "Synchronization request restart" }
-            startInternal(serviceApi, onStateUpdate)
+            startInternal(scope, serviceApi, onStateUpdate)
         }
+    }
+
+    private suspend fun checkMfKey32Safe(requestApi: FlipperRequestApi) = try {
+        mfKey32Api.checkBruteforceFileExist(requestApi)
+    } catch (throwable: Throwable) {
+        error(throwable) { "Failed check mfkey32" }
     }
 
     private suspend fun launch(

@@ -5,4 +5,5 @@ plugins {
 
 dependencies {
     implementation(libs.cicerone)
+    implementation(libs.kotlin.coroutines)
 }

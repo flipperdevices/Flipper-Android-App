@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, MfKey32ScreenEntry::class)
 @ContributesMultibinding(AppGraph::class, AggregateFeatureEntry::class)
-class MfKey32ScreenApiImpl @Inject constructor() : MfKey32ScreenEntry {
+class MfKey32ScreenEntryImpl @Inject constructor() : MfKey32ScreenEntry {
     override fun startDestination() = "@${ROUTE.name}"
     override fun NavGraphBuilder.navigation(navController: NavHostController) {
         navigation(

@@ -1,5 +1,6 @@
 package com.flipperdevices.nfc.attack.impl.composable.elements
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,31 +18,39 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.nfc.attack.impl.R
+import com.flipperdevices.nfc.attack.impl.viewmodel.NfcAttackViewModel
 
 @Composable
-fun MifareClassicComposable(onOpenMfKey32: () -> Unit) {
+fun MifareClassicComposable(
+    nfcAttackViewModel: NfcAttackViewModel,
+    onOpenMfKey32: () -> Unit
+) {
     Card(
         modifier = Modifier.padding(14.dp),
         shape = RoundedCornerShape(10.dp)
     ) {
         Column {
             MifareClassicTitle()
+            val hasMfKey32Notification by nfcAttackViewModel.hasMfKey32Notification()
+                .collectAsState()
             MifareClassicMfKey32(
                 modifier = Modifier.clickable(
                     interactionSource = MutableInteractionSource(),
                     indication = rememberRipple(),
                     onClick = onOpenMfKey32
-                )
+                ),
+                hasNotification = hasMfKey32Notification
             )
         }
     }
@@ -67,7 +76,10 @@ private fun MifareClassicTitle() = Row(
 }
 
 @Composable
-private fun MifareClassicMfKey32(modifier: Modifier) = Row(
+private fun MifareClassicMfKey32(
+    modifier: Modifier,
+    hasNotification: Boolean
+) = Row(
     modifier = modifier,
     verticalAlignment = Alignment.CenterVertically
 ) {
@@ -99,18 +111,20 @@ private fun MifareClassicMfKey32(modifier: Modifier) = Row(
         )
     }
 
-    Box(
-        modifier = Modifier
-            .size(16.dp)
-            .clip(CircleShape)
-            .background(LocalPallet.current.accent),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = "!",
-            style = LocalTypography.current.monoSpaceM10,
-            color = LocalPallet.current.onFlipperButton
-        )
+    if (hasNotification) {
+        Box(
+            modifier = Modifier
+                .size(16.dp)
+                .clip(CircleShape)
+                .background(LocalPallet.current.accent),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "!",
+                style = LocalTypography.current.monoSpaceM10,
+                color = LocalPallet.current.onFlipperButton
+            )
+        }
     }
 
     Icon(

@@ -1,5 +1,6 @@
 package com.flipperdevices.nfc.mfkey32.screen.composable.progressbar
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.core.LinearEasing
@@ -10,6 +11,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -27,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.flipperdevices.core.ui.ktx.ComposableFlipperButton
 import com.flipperdevices.core.ui.ktx.FlipperProgressIndicator
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.nfc.mfkey32.screen.R
@@ -60,7 +61,16 @@ fun ComposableMfKey32Progress(navController: NavController, state: MfKey32State)
             accentColor = LocalPallet.current.calculationMfKey32,
             secondColor = LocalPallet.current.calculationMfKey32Background
         )
-        MfKey32State.Error -> {} // Do nothing
+        MfKey32State.Error -> Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = stringResource(R.string.mfkey32_error_title),
+                style = LocalTypography.current.titleB18,
+                color = LocalPallet.current.text100
+            )
+        }
         is MfKey32State.Saved -> CompleteAttack(state.keys, navController::popBackStack)
     }
 
