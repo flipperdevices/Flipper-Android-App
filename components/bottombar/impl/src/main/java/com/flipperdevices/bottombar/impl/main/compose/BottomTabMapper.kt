@@ -29,7 +29,8 @@ fun getTabStateFromFlipperBottomTab(
             notSelectedIcon = DesignSystem.drawable.ic_hub,
             text = stringResource(R.string.bar_title_hub),
             selectedColor = LocalPallet.current.bottomBarSelected,
-            unselectedColor = LocalPallet.current.bottomBarUnselected
+            unselectedColor = LocalPallet.current.bottomBarUnselected,
+            notificationDotActive = true
         )
     }
 }

@@ -11,7 +11,8 @@ sealed class TabState private constructor(
     val selectedColorIcon: Color,
     val unselectedColor: Color,
     val unselectedColorIcon: Color,
-    val textDotsAnimated: Boolean
+    val textDotsAnimated: Boolean,
+    val notificationDotActive: Boolean
 ) {
     @Suppress("LongParameterList")
     class Static(
@@ -22,14 +23,16 @@ sealed class TabState private constructor(
         selectedColorIcon: Color = selectedColor,
         unselectedColor: Color,
         unselectedColorIcon: Color = unselectedColor,
-        textDotsAnimated: Boolean = false
+        textDotsAnimated: Boolean = false,
+        notificationDotActive: Boolean = false
     ) : TabState(
         text,
         selectedColor,
         selectedColorIcon,
         unselectedColor,
         unselectedColorIcon,
-        textDotsAnimated
+        textDotsAnimated,
+        notificationDotActive
     ) {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
@@ -61,14 +64,16 @@ sealed class TabState private constructor(
         text: String,
         selectedColor: Color,
         unselectedColor: Color,
-        textDotsAnimated: Boolean = false
+        textDotsAnimated: Boolean = false,
+        notificationDotActive: Boolean = false
     ) : TabState(
         text,
         selectedColor,
         selectedColor,
         unselectedColor,
         unselectedColor,
-        textDotsAnimated
+        textDotsAnimated,
+        notificationDotActive
     ) {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
@@ -101,6 +106,7 @@ sealed class TabState private constructor(
         if (unselectedColor != other.unselectedColor) return false
         if (unselectedColorIcon != other.unselectedColorIcon) return false
         if (textDotsAnimated != other.textDotsAnimated) return false
+        if (notificationDotActive != other.notificationDotActive) return false
 
         return true
     }
@@ -112,6 +118,7 @@ sealed class TabState private constructor(
         result = MAGIC_NUMBER * result + unselectedColor.hashCode()
         result = MAGIC_NUMBER * result + unselectedColorIcon.hashCode()
         result = MAGIC_NUMBER * result + textDotsAnimated.hashCode()
+        result = MAGIC_NUMBER * result + notificationDotActive.hashCode()
         return result
     }
 }
