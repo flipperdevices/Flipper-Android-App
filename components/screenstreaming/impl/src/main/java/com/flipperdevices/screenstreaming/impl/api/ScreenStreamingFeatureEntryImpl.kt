@@ -24,5 +24,4 @@ class ScreenStreamingFeatureEntryImpl @Inject constructor() : ScreenStreamingFea
             }
         }
     }
-
 }

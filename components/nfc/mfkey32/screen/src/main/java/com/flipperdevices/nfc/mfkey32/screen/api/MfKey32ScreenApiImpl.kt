@@ -12,7 +12,6 @@ import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
 import javax.inject.Inject
 
-
 @ContributesBinding(AppGraph::class, MfKey32ScreenEntry::class)
 @ContributesMultibinding(AppGraph::class, AggregateFeatureEntry::class)
 class MfKey32ScreenApiImpl @Inject constructor() : MfKey32ScreenEntry {

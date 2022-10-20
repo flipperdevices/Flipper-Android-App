@@ -5,6 +5,7 @@ import androidx.compose.ui.graphics.Color
 
 private const val MAGIC_NUMBER = 31
 
+@Suppress("VariableNaming")
 sealed class TabState private constructor(
     val text: String,
     val selectedColor: Color,

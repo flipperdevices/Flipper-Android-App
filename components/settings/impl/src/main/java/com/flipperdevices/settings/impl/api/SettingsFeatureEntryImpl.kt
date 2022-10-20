@@ -23,5 +23,4 @@ class SettingsFeatureEntryImpl @Inject constructor() : SettingsFeatureEntry {
             }
         }
     }
-
 }

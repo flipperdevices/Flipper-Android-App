@@ -29,5 +29,4 @@ class NFCAttackFeatureEntryImpl @Inject constructor(
             }
         }
     }
-
 }

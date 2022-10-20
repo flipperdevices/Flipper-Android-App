@@ -1,6 +1,5 @@
 package com.flipperdevices.info.impl.compose.screens
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -24,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.info.impl.R
@@ -47,7 +47,7 @@ fun ComposableFullDeviceInfoScreen(
         localDeviceStatus.connectInProgress
     } else {
         localDeviceStatus is DeviceStatus.Connected &&
-                deviceInfoRequestStatus.rpcDeviceInfoRequestInProgress
+            deviceInfoRequestStatus.rpcDeviceInfoRequestInProgress
     }
 
     val flipperRpcInformation by fullInfoViewModel.getFlipperRpcInformation().collectAsState()

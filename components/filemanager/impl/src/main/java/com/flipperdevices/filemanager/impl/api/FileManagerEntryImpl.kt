@@ -66,13 +66,13 @@ class FileManagerEntryImpl @Inject constructor(
         path: String,
         deeplinkContent: DeeplinkContent
     ) = "@${ROUTE.name}upload?path=${Uri.encode(path)}" +
-            "&content=${Uri.encode(Json.encodeToString(deeplinkContent))}"
+        "&content=${Uri.encode(Json.encodeToString(deeplinkContent))}"
 
     private fun downloadFileDestination(
         file: ShareFile,
         pathToDirectory: String = File(file.flipperFilePath).absoluteFile.parent ?: "/"
     ) = "@${ROUTE.name}download?path=${Uri.encode(pathToDirectory)}" +
-            "&filepath=${Uri.encode(Json.encodeToString(file))}"
+        "&filepath=${Uri.encode(Json.encodeToString(file))}"
 
     private fun editorFileDestination(
         file: ShareFile
@@ -110,14 +110,14 @@ class FileManagerEntryImpl @Inject constructor(
             }
             composable(
                 route = "@${ROUTE.name}upload" +
-                        "?path={$PATH_KEY}&content={$CONTENT_KEY}",
+                    "?path={$PATH_KEY}&content={$CONTENT_KEY}",
                 uploadArguments
             ) {
                 ComposableFileManagerUploadedScreen(navController)
             }
             composable(
                 "@${ROUTE.name}download" +
-                        "?path={$PATH_KEY}&filepath={$FILE_PATH_KEY}",
+                    "?path={$PATH_KEY}&filepath={$FILE_PATH_KEY}",
                 downloadArguments
             ) {
                 ComposableFileManagerDownloadScreen(navController)

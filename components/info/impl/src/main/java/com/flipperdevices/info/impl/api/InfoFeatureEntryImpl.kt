@@ -30,8 +30,8 @@ class InfoFeatureEntryImpl @Inject constructor(
                 ComposableDeviceInfoScreen(updaterCardApi, onOpenFullDeviceInfo = {
                     navController.navigate(fullInfo())
                 }, onOpenOptions = {
-                    navController.navigate(settingFeatureEntry.ROUTE.name)
-                })
+                        navController.navigate(settingFeatureEntry.ROUTE.name)
+                    })
             }
             composable("@${ROUTE.name}full") {
                 ComposableFullDeviceInfoScreen(navController)
