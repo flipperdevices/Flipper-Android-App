@@ -1,4 +1,4 @@
-package com.flipperdevices.info.impl.navigation
+package com.flipperdevices.info.impl.api
 
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.info.api.screen.InfoScreenProvider

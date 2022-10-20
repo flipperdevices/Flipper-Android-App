@@ -6,5 +6,9 @@ enum class FeatureScreenRootRoute {
     WEAR_SETUP,
     MFKEY32,
     HUB,
-    NFC_ATTACKS
+    NFC_ATTACKS,
+    DEVICE_INFO,
+    OPTIONS,
+    SCREEN_STREAMING,
+    STRESS_TEST
 }

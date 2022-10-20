@@ -28,7 +28,7 @@ internal const val PATH_KEY = "path"
 internal const val CONTENT_KEY = "content"
 internal const val FILE_PATH_KEY = "file_path"
 
-@ContributesBinding(AppGraph::class)
+@ContributesBinding(AppGraph::class, FileManagerEntry::class)
 @ContributesMultibinding(AppGraph::class, AggregateFeatureEntry::class)
 class FileManagerEntryImpl @Inject constructor(
     private val deepLinkParser: DeepLinkParser
@@ -84,7 +84,7 @@ class FileManagerEntryImpl @Inject constructor(
             route = ROUTE.name
         ) {
             composable(
-                route = "${ROUTE.name}?path={$PATH_KEY}",
+                route = "@${ROUTE.name}?path={$PATH_KEY}",
                 fileManagerArguments
             ) {
                 ComposableFileManagerScreen(
@@ -109,21 +109,21 @@ class FileManagerEntryImpl @Inject constructor(
                 )
             }
             composable(
-                route = "${ROUTE.name}upload" +
+                route = "@${ROUTE.name}upload" +
                         "?path={$PATH_KEY}&content={$CONTENT_KEY}",
                 uploadArguments
             ) {
                 ComposableFileManagerUploadedScreen(navController)
             }
             composable(
-                "${ROUTE.name}download" +
+                "@${ROUTE.name}download" +
                         "?path={$PATH_KEY}&filepath={$FILE_PATH_KEY}",
                 downloadArguments
             ) {
                 ComposableFileManagerDownloadScreen(navController)
             }
             composable(
-                "${ROUTE.name}editor?filepath={$FILE_PATH_KEY}",
+                "@${ROUTE.name}editor?filepath={$FILE_PATH_KEY}",
                 editorArguments
             ) {
                 ComposableFileManagerEditorScreen(navController)

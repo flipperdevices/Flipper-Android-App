@@ -10,7 +10,6 @@ import com.flipperdevices.settings.impl.composable.elements.ClickableElement
 import com.flipperdevices.settings.impl.composable.elements.GrayDivider
 import com.flipperdevices.settings.impl.composable.elements.SimpleElement
 import com.flipperdevices.settings.impl.composable.elements.SwitchableElement
-import com.flipperdevices.settings.impl.model.NavGraphRoute
 import com.flipperdevices.settings.impl.viewmodels.DebugViewModel
 import com.flipperdevices.settings.impl.viewmodels.SettingsViewModel
 import tangle.viewmodel.compose.tangleViewModel
@@ -47,11 +46,7 @@ private fun DebugCategoryItems(
     ClickableElement(
         titleId = R.string.debug_stress_test,
         descriptionId = R.string.debug_stress_test_desc,
-        onClick = {
-            navController.navigate(NavGraphRoute.StressTest.name) {
-                popUpTo(NavGraphRoute.Settings.name)
-            }
-        }
+        onClick = { debugViewModel.onOpenStressTest(navController) }
     )
     GrayDivider()
     SimpleElement(
