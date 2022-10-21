@@ -12,13 +12,12 @@ import com.squareup.anvil.annotations.ContributesTo
 import com.squareup.anvil.annotations.MergeComponent
 import dagger.BindsInstance
 import dagger.Component
-import javax.inject.Provider
 
 @ContributesTo(AppGraph::class)
 interface WearEmulateComponentDependencies {
     val context: Context
     val application: Application
-    val setupApi: Provider<SetupApi>
+    val setupApi: SetupApi
 }
 
 @SingleIn(WearGraph::class)
