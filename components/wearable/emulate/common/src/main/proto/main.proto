@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+import "requests/emulate.proto";
+import "requests/ping.proto";
+import "requests/connect_status.proto";
+
+package ipcemulate;
+option java_package = "com.flipperdevices.wearable.emulate.common.ipcemulate";
+
+message MainRequest {
+  uint32 command_id = 1;
+
+  oneof content {
+    requests.StartEmulateRequest start_emulate = 2;
+    requests.PingRequest ping = 3;
+    requests.SubscribeOnConnectStatusRequest subscribe_on_connect_status = 4;
+    requests.StopEmulateRequest stop_emulate = 5;
+    requests.SendRequest send_request = 6;
+  }
+}
+
+message MainResponse {
+  uint32 command_id = 1;
+
+  oneof content {
+    requests.EmulateStatus emulate_status = 3;
+    requests.PingResponse ping = 4;
+    requests.ConnectStatus connect_status = 5;
+  }
+}

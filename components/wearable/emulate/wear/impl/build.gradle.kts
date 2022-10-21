@@ -18,6 +18,7 @@ dependencies {
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.ktx)
+    implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.wearable.core.ui.ktx)
 
     implementation(projects.components.bridge.dao.api)
@@ -33,9 +34,11 @@ dependencies {
     // Compose
     implementation(libs.compose.ui)
     implementation(libs.compose.tooling)
+    implementation(libs.compose.placeholder)
     implementation(libs.compose.wear.foundation)
     implementation(libs.compose.wear.material)
     implementation(libs.compose.wear.navigation)
+    implementation(libs.horologist.layout)
     implementation(libs.lifecycle.compose)
 
     // Dagger deps

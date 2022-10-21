@@ -2,26 +2,37 @@ package com.flipperdevices.wearable.emulate.impl.model
 
 import androidx.compose.runtime.Stable
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
+import com.flipperdevices.keyscreen.api.EmulateProgress
 
 @Stable
 sealed class WearEmulateState {
-    abstract val keyType: FlipperKeyType?
+    open val keyType: FlipperKeyType? = null
+
+    object NotInitialized : WearEmulateState()
+
+    object NodeFinding : WearEmulateState()
 
     @Stable
-    data class Loading(override val keyType: FlipperKeyType?) : WearEmulateState()
-
-    @Stable
-    data class NotFoundNode(override val keyType: FlipperKeyType?) : WearEmulateState()
-
-    @Stable
-    data class FoundNode(
-        override val keyType: FlipperKeyType?,
+    data class EstablishConnection(
         val nodeId: String
+    ) : WearEmulateState()
+
+    object NotFoundNode : WearEmulateState()
+
+    object TestConnection : WearEmulateState()
+
+    object ConnectingToFlipper : WearEmulateState()
+
+    object UnsupportedFlipper : WearEmulateState()
+
+    @Stable
+    data class ReadyForEmulate(
+        override val keyType: FlipperKeyType?
     ) : WearEmulateState()
 
     @Stable
     data class Emulating(
         override val keyType: FlipperKeyType?,
-        val nodeId: String
+        val progress: EmulateProgress
     ) : WearEmulateState()
 }

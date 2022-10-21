@@ -45,7 +45,7 @@ class WearEmulateApiImpl @Inject constructor(
             keyEmulateUiApi,
             onNotFoundNode = {
                 navController.navigate(
-                    ComponentHolder.component<WearEmulateComponent>().setupApi.get().ROUTE.name
+                    ComponentHolder.component<WearEmulateComponent>().setupApi.ROUTE.name
                 ) {
                     popUpTo(0)
                 }

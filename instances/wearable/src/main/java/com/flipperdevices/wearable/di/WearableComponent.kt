@@ -13,5 +13,5 @@ interface WearableComponent {
     val shake2report: Provider<Shake2ReportApi>
     val futureEntries: Provider<Set<AggregateFeatureEntry>>
     val composableFutureEntries: Provider<Set<ComposableFeatureEntry>>
-    val setupApi: Provider<SetupApi>
+    val setupApi: SetupApi
 }

@@ -54,7 +54,12 @@ class KeysListViewModel(
         }
         val mapByPath = keyState.keys.associateByTo(HashMap()) { it.path }
         datas.forEach {
-            val syncItem = WearableSyncItem.fromDataItem(it.dataItem) ?: return@forEach
+            val syncItem = try {
+                WearableSyncItem.fromDataItem(it.dataItem)
+            } catch (throwable: Exception) {
+                error(throwable) { "While parse $it" }
+                null
+            } ?: return@forEach
             val flipperWearKey = FlipperWearKey(syncItem)
             when (it.type) {
                 TYPE_CHANGED -> mapByPath[flipperWearKey.path] = flipperWearKey

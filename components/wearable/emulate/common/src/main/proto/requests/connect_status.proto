@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package ipcemulate.requests;
+option java_package = "com.flipperdevices.wearable.emulate.common.ipcemulate.requests";
+
+message SubscribeOnConnectStatusRequest {
+  // Empty
+}
+
+enum ConnectStatus {
+  DISCONNECTED = 0;
+  CONNECTING = 1;
+  DISCONNECTING = 2;
+  READY = 3;
+  UNSUPPORTED = 4;
+}

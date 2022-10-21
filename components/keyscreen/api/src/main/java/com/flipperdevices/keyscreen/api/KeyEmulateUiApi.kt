@@ -1,5 +1,6 @@
 package com.flipperdevices.keyscreen.api
 
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -18,8 +19,15 @@ interface KeyEmulateUiApi {
     )
 
     @Composable
-    fun ComposableEmulateLoading(
+    fun ComposableEmulateButtonWithText(
         modifier: Modifier,
-        loadingState: LoadingState
+        buttonModifier: Modifier,
+        progress: EmulateProgress?,
+        @StringRes buttonTextId: Int,
+        @StringRes textId: Int?,
+        @DrawableRes iconId: Int?,
+        picture: Picture?,
+        color: Color,
+        progressColor: Color
     )
 }

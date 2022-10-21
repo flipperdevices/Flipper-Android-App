@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package ipcemulate.requests;
+option java_package = "com.flipperdevices.wearable.emulate.common.ipcemulate.requests";
+
+message StartEmulateRequest {
+  string path = 1;
+}
+
+message StopEmulateRequest {
+  // Empty
+}
+
+message SendRequest {
+  string path = 1;
+}
+
+enum EmulateStatus {
+  EMULATING = 0;
+  STOPPED = 1;
+  FAILED = 2;
+}

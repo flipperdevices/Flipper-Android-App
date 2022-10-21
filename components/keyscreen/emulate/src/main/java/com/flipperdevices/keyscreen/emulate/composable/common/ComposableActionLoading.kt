@@ -8,8 +8,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
-import com.flipperdevices.keyscreen.api.LoadingState
 import com.flipperdevices.keyscreen.emulate.R
+import com.flipperdevices.keyscreen.emulate.model.LoadingState
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.placeholder
 import com.google.accompanist.placeholder.shimmer

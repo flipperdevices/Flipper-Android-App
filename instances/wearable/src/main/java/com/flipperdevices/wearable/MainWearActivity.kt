@@ -25,7 +25,7 @@ class MainWearActivity : ComponentActivity() {
         val futureEntries by ComponentHolder.component<WearableComponent>().futureEntries
         val composableFutureEntries by ComponentHolder.component<WearableComponent>()
             .composableFutureEntries
-        val setupApi by ComponentHolder.component<WearableComponent>().setupApi
+        val setupApi = ComponentHolder.component<WearableComponent>().setupApi
 
         setContent {
             WearFlipperTheme {
