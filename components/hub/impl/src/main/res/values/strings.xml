@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="hub_title">Hub</string>
-    <string name="hub_hfc_title">NFC Attacks</string>
-    <string name="hub_hfc_desc">Crack MIFARE card keys using Flipper Zero brute force attack</string>
+    <string name="hub_hfc_title">NFC Tools</string>
+    <string name="hub_hfc_desc">Callculate MIFARE Classic card keys using Flipper Zero</string>
 </resources>
