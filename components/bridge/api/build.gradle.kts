@@ -16,4 +16,11 @@ dependencies {
     implementation(libs.ble.scan)
 
     implementation(libs.appcompat)
+
+    // Testing
+    testImplementation(libs.junit)
+    testImplementation(libs.kotlin.coroutines.test)
+    testImplementation(libs.roboelectric)
+    testImplementation(libs.ktx.testing)
+    testImplementation(libs.mockk)
 }

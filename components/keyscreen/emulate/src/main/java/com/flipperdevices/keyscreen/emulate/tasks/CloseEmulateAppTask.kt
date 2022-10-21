@@ -22,7 +22,7 @@ class CloseEmulateAppTask(
     ) {
         emulateHelper.stopEmulateForce(serviceApi.requestApi)
         // Waiting until the emulation stops
-        emulateHelper.getRunningState().filter { !it }.first()
+        emulateHelper.getCurrentEmulatingKey().filter { it == null }.first()
         stateListener(Unit)
     }
 

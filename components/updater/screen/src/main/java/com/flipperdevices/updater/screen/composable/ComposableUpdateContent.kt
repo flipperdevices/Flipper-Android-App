@@ -8,7 +8,9 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.core.ui.ktx.FlipperProgressIndicator
 import com.flipperdevices.core.ui.ktx.animatedDots
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
@@ -26,51 +28,59 @@ fun ComposableUpdateContent(
     updaterScreenState: UpdaterScreenState,
     onRetry: () -> Unit
 ) {
-    val version = updaterScreenState.firmwareData?.version
+    val version = updaterScreenState.updateRequest?.updateTo
     if (version != null) {
         FirmwareVersionText(version)
     } else {
         Spacer(modifier = Modifier.height(29.dp)) // 21 + 8
     }
-
+    val modifier = Modifier
+        .padding(vertical = 8.dp, horizontal = 24.dp)
     when (updaterScreenState) {
-        UpdaterScreenState.NotStarted -> ComposableInProgressIndicator(
+        UpdaterScreenState.NotStarted -> FlipperProgressIndicator(
+            modifier = modifier,
             accentColor = LocalPallet.current.updateProgressGreen,
             secondColor = LocalPallet.current.updateProgressBackgroundGreen,
             iconId = null,
             percent = null
         )
-        is UpdaterScreenState.CancelingSynchronization -> ComposableInProgressIndicator(
+        is UpdaterScreenState.CancelingSynchronization -> FlipperProgressIndicator(
+            modifier = modifier,
             accentColor = LocalPallet.current.accentSecond,
             secondColor = LocalPallet.current.updateProgressBackgroundBlue,
             iconId = null,
             percent = null
         )
-        is UpdaterScreenState.DownloadingFromNetwork -> ComposableInProgressIndicator(
+        is UpdaterScreenState.DownloadingFromNetwork -> FlipperProgressIndicator(
+            modifier = modifier,
             accentColor = LocalPallet.current.updateProgressGreen,
             secondColor = LocalPallet.current.updateProgressBackgroundGreen,
             iconId = DesignSystem.drawable.ic_globe,
             percent = updaterScreenState.percent
         )
-        is UpdaterScreenState.SubGhzProvisioning -> ComposableInProgressIndicator(
+        is UpdaterScreenState.SubGhzProvisioning -> FlipperProgressIndicator(
+            modifier = modifier,
             accentColor = LocalPallet.current.updateProgressGreen,
             secondColor = LocalPallet.current.updateProgressBackgroundGreen,
             iconId = DesignSystem.drawable.ic_globe,
             percent = null
         )
-        is UpdaterScreenState.UploadOnFlipper -> ComposableInProgressIndicator(
+        is UpdaterScreenState.UploadOnFlipper -> FlipperProgressIndicator(
+            modifier = modifier,
             accentColor = LocalPallet.current.accentSecond,
             secondColor = LocalPallet.current.updateProgressBackgroundBlue,
             iconId = DesignSystem.drawable.ic_bluetooth,
             percent = updaterScreenState.percent
         )
-        UpdaterScreenState.CancelingUpdate -> ComposableInProgressIndicator(
+        UpdaterScreenState.CancelingUpdate -> FlipperProgressIndicator(
+            modifier = modifier,
             accentColor = LocalPallet.current.accentSecond,
             secondColor = LocalPallet.current.updateProgressBackgroundBlue,
             iconId = null,
             percent = null
         )
-        UpdaterScreenState.Rebooting -> ComposableInProgressIndicator(
+        UpdaterScreenState.Rebooting -> FlipperProgressIndicator(
+            modifier = modifier,
             accentColor = LocalPallet.current.accentSecond,
             secondColor = LocalPallet.current.updateProgressBackgroundBlue,
             iconId = null,
@@ -82,6 +92,7 @@ fun ComposableUpdateContent(
             FailedReason.OUTDATED_APP -> ComposableOutdatedApp()
             FailedReason.FAILED_SUB_GHZ_PROVISIONING,
             FailedReason.FAILED_INT_STORAGE -> ComposableInternalFlashFailed()
+            FailedReason.FAILED_INTERNAL_UPDATE -> ComposableInternalUpdateFailed()
         }
         UpdaterScreenState.Finish -> return
     }
@@ -98,7 +109,9 @@ private fun FirmwareVersionText(version: FirmwareVersion) {
         modifier = Modifier.heightIn(21.dp),
         text = text,
         color = textColor,
-        style = LocalTypography.current.titleM18
+        style = LocalTypography.current.titleM18,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis
     )
 }
 

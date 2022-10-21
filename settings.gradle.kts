@@ -144,5 +144,19 @@ include(
     ":components:wearable:emulate:handheld:api",
     ":components:wearable:emulate:handheld:impl",
     ":components:wearable:emulate:handheld:noop",
-    ":components:wearable:emulate:common"
+    ":components:wearable:emulate:common",
+
+    ":components:widget:api",
+    ":components:widget:screen",
+    ":components:widget:impl",
+
+    ":components:nfc:mfkey32:api",
+    ":components:nfc:mfkey32:screen",
+    ":components:nfc:tools:api",
+    ":components:nfc:tools:impl",
+    ":components:nfc:attack:api",
+    ":components:nfc:attack:impl",
+
+    ":components:hub:api",
+    ":components:hub:impl",
 )

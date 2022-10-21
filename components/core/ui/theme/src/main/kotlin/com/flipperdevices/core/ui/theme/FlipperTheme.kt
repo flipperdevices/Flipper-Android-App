@@ -1,8 +1,8 @@
 package com.flipperdevices.core.ui.theme
 
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Shapes
@@ -19,6 +19,7 @@ import com.flipperdevices.core.preference.pb.SelectedTheme
 import com.flipperdevices.core.ui.theme.composable.getThemedFlipperPallet
 import com.flipperdevices.core.ui.theme.composable.getTypography
 import com.flipperdevices.core.ui.theme.composable.isLight
+import com.flipperdevices.core.ui.theme.composable.setAppCompatDelegateTheme
 import com.flipperdevices.core.ui.theme.models.FlipperPallet
 import com.flipperdevices.core.ui.theme.models.FlipperTypography
 import com.flipperdevices.core.ui.theme.viewmodel.ThemeViewModel
@@ -30,9 +31,11 @@ val LocalTypography = compositionLocalOf<FlipperTypography> { error("No local ty
 fun FlipperTheme(content: @Composable () -> Unit) {
     val themeViewModel: ThemeViewModel = viewModel()
     val theme by themeViewModel.getAppTheme().collectAsState()
+    val isLight = isLight(systemIsDark = isSystemInDarkTheme())
     FlipperThemeInternal(
         content = content,
-        theme = theme
+        theme = theme,
+        isLight = isLight
     )
 }
 
@@ -40,21 +43,14 @@ fun FlipperTheme(content: @Composable () -> Unit) {
 @Composable
 fun FlipperThemeInternal(
     theme: SelectedTheme = SelectedTheme.SYSTEM,
+    isLight: Boolean = !isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    val isLight = isLight(isSystemInDarkTheme())
-    val pallet = getThemedFlipperPallet(isSystemInDarkTheme())
+    val pallet = getThemedFlipperPallet(theme, isLight)
     val colors = pallet.toMaterialColors(isLight)
     val shapes = Shapes(medium = RoundedCornerShape(size = 10.dp))
 
-    LaunchedEffect(key1 = theme) {
-        val systemThemeId = when (theme) {
-            SelectedTheme.DARK -> AppCompatDelegate.MODE_NIGHT_YES
-            SelectedTheme.LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
-            else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-        }
-        AppCompatDelegate.setDefaultNightMode(systemThemeId)
-    }
+    LaunchedEffect(key1 = theme) { setAppCompatDelegateTheme(theme) }
 
     MaterialTheme(
         shapes = shapes,
@@ -64,6 +60,7 @@ fun FlipperThemeInternal(
             LocalPallet provides pallet,
             LocalTypography provides getTypography(),
             LocalContentColor provides colors.contentColorFor(backgroundColor = pallet.background),
+            LocalTextSelectionColors provides pallet.toTextSelectionColors(),
             content = content
         )
     }

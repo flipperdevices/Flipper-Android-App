@@ -10,12 +10,13 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.core.ui.lifecycle.OneTimeExecutionBleTask
 import com.flipperdevices.updater.impl.model.IntFlashFullException
-import com.flipperdevices.updater.impl.tasks.FirmwareDownloaderHelper
+import com.flipperdevices.updater.impl.model.UpdateContentException
 import com.flipperdevices.updater.impl.tasks.FlipperUpdateImageHelper
+import com.flipperdevices.updater.impl.tasks.UpdateContentHelper
 import com.flipperdevices.updater.impl.tasks.UploadToFlipperHelper
 import com.flipperdevices.updater.impl.utils.FolderCreateHelper
-import com.flipperdevices.updater.model.DistributionFile
 import com.flipperdevices.updater.model.SubGhzProvisioningException
+import com.flipperdevices.updater.model.UpdateContent
 import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.model.UpdatingState
 import com.flipperdevices.updater.subghz.helpers.SubGhzProvisioningHelper
@@ -30,9 +31,9 @@ import kotlinx.coroutines.withContext
 class UpdaterTask(
     serviceProvider: FlipperServiceProvider,
     private val context: Context,
-    private val firmwareDownloaderHelper: FirmwareDownloaderHelper,
     private val uploadToFlipperHelper: UploadToFlipperHelper,
-    private val subGhzProvisioningHelper: SubGhzProvisioningHelper
+    private val subGhzProvisioningHelper: SubGhzProvisioningHelper,
+    private val updateContentHelper: MutableSet<UpdateContentHelper>
 ) : OneTimeExecutionBleTask<UpdateRequest, UpdatingState>(serviceProvider),
     LogTagProvider {
     override val TAG = "UpdaterTask"
@@ -66,7 +67,7 @@ class UpdaterTask(
         }
     }
 
-    @Suppress("LongMethod")
+    @Suppress("LongMethod", "ComplexMethod")
     private suspend fun startInternalUnwrapped(
         scope: CoroutineScope,
         serviceApi: FlipperServiceApi,
@@ -74,18 +75,17 @@ class UpdaterTask(
         stateListener: suspend (UpdatingState) -> Unit
     ) = FlipperStorageProvider.useTemporaryFolder(context) { tempFolder ->
         info { "Start update with folder: ${tempFolder.absolutePath}" }
-        val updateFile = input.updateTo.updaterFile
+        val updateContent = input.content
 
-        val updaterFolder = File(tempFolder, updateFile.sha256)
+        val updaterFolder = File(tempFolder, updateContent.folderName())
         try {
-            stateListener(
-                UpdatingState.DownloadingFromNetwork(0f)
-            )
-            firmwareDownloaderHelper.downloadFirmware(updateFile, updaterFolder, stateListener)
+            uploadFirmwareLocal(input.content, updaterFolder, stateListener)
         } catch (e: Throwable) {
             error(e) { "Failed when download from network" }
-            if (e !is CancellationException) {
-                stateListener(UpdatingState.FailedDownload)
+            when (e) {
+                is UpdateContentException -> stateListener(UpdatingState.FailedCustomUpdate)
+                is CancellationException -> {}
+                else -> stateListener(UpdatingState.FailedDownload)
             }
             return@useTemporaryFolder
         }
@@ -116,7 +116,7 @@ class UpdaterTask(
             UpdatingState.UploadOnFlipper(0f)
         )
         val flipperPath = try {
-            prepareToUpload(updateFile, serviceApi.requestApi)
+            prepareToUpload(updaterFolder, serviceApi.requestApi)
         } catch (e: Throwable) {
             error(e) { "Failed when prepare upload to flipper" }
             if (e !is CancellationException) {
@@ -146,15 +146,29 @@ class UpdaterTask(
         stateListener(UpdatingState.Rebooting)
     }
 
+    private suspend fun uploadFirmwareLocal(
+        content: UpdateContent,
+        updaterFolder: File,
+        stateListener: suspend (UpdatingState) -> Unit
+    ) {
+        val helper = updateContentHelper
+            .firstOrNull { it.isSupport(content) }
+            ?: throw IllegalArgumentException("No one helper for upload fw to local")
+        helper.uploadFirmwareLocal(content, updaterFolder, stateListener)
+    }
+
     private suspend fun prepareToUpload(
-        updateFile: DistributionFile,
+        updaterFolder: File,
         requestApi: FlipperRequestApi
     ): String {
-        var updateName = updateFile.url.substringAfterLast("/").substringBefore(".")
-        if (updateName.isBlank()) {
-            updateName = updateFile.sha256
-        }
         flipperUpdateImageHelper.loadImageOnFlipper(requestApi)
+
+        val updateName: String = updaterFolder
+            .listFiles()
+            ?.first { it.isDirectory }
+            ?.name
+            ?: updaterFolder.name
+
         val flipperPath = "/ext/update/$updateName"
 
         FolderCreateHelper.mkdirFolderOnFlipper(requestApi, flipperPath)

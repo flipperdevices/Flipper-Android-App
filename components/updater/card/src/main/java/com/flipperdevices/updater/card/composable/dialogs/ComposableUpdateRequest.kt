@@ -1,39 +1,55 @@
 package com.flipperdevices.updater.card.composable.dialogs
 
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import com.flipperdevices.core.ui.dialog.composable.FlipperDialog
-import com.flipperdevices.core.ui.res.R as DesignSystem
-import com.flipperdevices.updater.card.R
+import com.flipperdevices.updater.card.model.SyncingState
+import com.flipperdevices.updater.card.model.UpdatePending
+import com.flipperdevices.updater.card.model.UpdatePendingState
 import com.flipperdevices.updater.card.viewmodel.UpdateRequestViewModel
-import com.flipperdevices.updater.model.UpdateCardState
 import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 fun ComposableUpdateRequest(
     updateRequestViewModel: UpdateRequestViewModel = tangleViewModel(),
-    pendingUpdateRequest: UpdateCardState.UpdateAvailable,
+    pendingUpdateRequest: UpdatePending,
     onDismiss: () -> Unit
 ) {
-    val batteryState by updateRequestViewModel.getBatteryState().collectAsState()
+    val updatePendingState by updateRequestViewModel.getUpdatePendingState().collectAsState()
+    val localUpdatePendingState = updatePendingState
 
-    if (batteryState.isAllowToUpdate()) {
-        updateRequestViewModel.openUpdate(pendingUpdateRequest)
-        onDismiss()
-        return
+    LaunchedEffect(key1 = pendingUpdateRequest) {
+        updateRequestViewModel.onUpdateRequest(pendingUpdateRequest)
     }
 
-    val imageId = if (MaterialTheme.colors.isLight) DesignSystem.drawable.pic_flipper_low_battery
-    else DesignSystem.drawable.pic_flipper_low_battery_dark
+    val localDismiss = {
+        onDismiss()
+        updateRequestViewModel.resetState()
+    }
 
-    FlipperDialog(
-        imageId = imageId,
-        titleId = R.string.update_card_dialog_battery_title,
-        textId = R.string.update_card_dialog_battery_desc,
-        buttonTextId = R.string.update_card_dialog_battery_btn,
-        onClickButton = onDismiss,
-        onDismissRequest = onDismiss
-    )
+    when (localUpdatePendingState) {
+        UpdatePendingState.FileExtension -> FlipperDialogFileExtension(localDismiss)
+        UpdatePendingState.FileBig -> FlipperDialogFileVeryBig(localDismiss)
+        UpdatePendingState.LowBattery -> FlipperDialogLowBattery(localDismiss)
+        is UpdatePendingState.Ready -> {
+            val version = localUpdatePendingState.request.updateTo
+            when (localUpdatePendingState.syncingState) {
+                SyncingState.InProgress -> FlipperDialogSynchronization(localDismiss) {
+                    updateRequestViewModel.stopSyncAndStartUpdate(localUpdatePendingState.request)
+                }
+                SyncingState.Complete -> FlipperDialogReadyUpdate(version, localDismiss) {
+                    updateRequestViewModel.openUpdate(localUpdatePendingState.request)
+                    localDismiss()
+                    return@FlipperDialogReadyUpdate
+                }
+                SyncingState.Stop -> {
+                    updateRequestViewModel.openUpdate(localUpdatePendingState.request)
+                    localDismiss()
+                    return
+                }
+            }
+        }
+        null -> {}
+    }
 }

@@ -17,6 +17,7 @@ dependencies {
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ui.theme)
+    implementation(projects.components.core.ui.navigation)
     implementation(projects.components.core.ui.res)
 
     implementation(libs.annotations)
@@ -28,6 +29,7 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
     implementation(libs.compose.constraint)
+    implementation(libs.compose.navigation)
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.lifecycle.runtime.ktx)

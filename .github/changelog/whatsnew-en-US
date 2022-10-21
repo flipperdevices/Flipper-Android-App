@@ -1,11 +1,13 @@
 Changes and new features:
-- Added Wear Os App
-- Updated Flipper illustrations with new logo
-- Redesigned Full Device Info
-- Added a warning when the storage space is running out
-- Handling an error with Flipper’s internal flash
-- Redesigned dialogs after the update
-- Removed Bottom Bar on the Key Screen
-- Added markdown to the Changelog
-- Updated Emulate & Send buttons with new design, logic and handling errors
-- Added support for NFC shadow files with editing and synchronization options
+- Editing UID & zero block in Dump Editor
+- Backup Keys button in Options
+- Supporting adaptive monochrome icon
+- Save as… button in Dump Editor
+- A confirmation dialog while exit from Dump Editor
+- Updater: installing firmware from Int. Storage and Web Updater, renamed updater folder
+- Text copying data from Device Info
+- Deleting in the File Manager
+- Storage space in KiB
+
+Bug fixes:
+- Supporting whitespace and upper first letter in key name

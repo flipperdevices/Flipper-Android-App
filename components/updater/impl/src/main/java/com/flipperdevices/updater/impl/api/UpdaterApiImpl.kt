@@ -11,8 +11,9 @@ import com.flipperdevices.metric.api.events.complex.UpdateFlipperStart
 import com.flipperdevices.metric.api.events.complex.UpdateStatus
 import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.impl.UpdaterTask
-import com.flipperdevices.updater.impl.tasks.FirmwareDownloaderHelper
+import com.flipperdevices.updater.impl.tasks.UpdateContentHelper
 import com.flipperdevices.updater.impl.tasks.UploadToFlipperHelper
+import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
 import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.model.UpdatingState
@@ -32,7 +33,7 @@ import kotlinx.coroutines.withContext
 @ContributesBinding(AppGraph::class, UpdaterApi::class)
 class UpdaterApiImpl @Inject constructor(
     private val serviceProvider: FlipperServiceProvider,
-    private val firmwareDownloaderHelper: FirmwareDownloaderHelper,
+    private val updateContentHelper: MutableSet<UpdateContentHelper>,
     private val subGhzProvisioningHelper: SubGhzProvisioningHelper,
     private val uploadToFlipperHelper: UploadToFlipperHelper,
     private val context: Context,
@@ -56,16 +57,16 @@ class UpdaterApiImpl @Inject constructor(
         val localActiveTask = UpdaterTask(
             serviceProvider,
             context,
-            firmwareDownloaderHelper,
             uploadToFlipperHelper,
-            subGhzProvisioningHelper
+            subGhzProvisioningHelper,
+            updateContentHelper
         )
         currentActiveTask = localActiveTask
 
         metricApi.reportComplexEvent(
             UpdateFlipperStart(
                 updateFromVersion = updateRequest.updateFrom.version,
-                updateToVersion = updateRequest.updateTo.version.version,
+                updateToVersion = updateRequest.updateTo.version,
                 updateId = updateRequest.requestId
             )
         )
@@ -85,7 +86,7 @@ class UpdaterApiImpl @Inject constructor(
                     metricApi.reportComplexEvent(
                         UpdateFlipperEnd(
                             updateFrom = updateRequest.updateFrom.version,
-                            updateTo = updateRequest.updateTo.version.version,
+                            updateTo = updateRequest.updateTo.version,
                             updateId = updateRequest.requestId,
                             updateStatus = endReason
                         )
@@ -107,7 +108,7 @@ class UpdaterApiImpl @Inject constructor(
             metricApi.reportComplexEvent(
                 UpdateFlipperEnd(
                     updateFrom = updateRequest.updateFrom.version,
-                    updateTo = updateRequest.updateTo.version.version,
+                    updateTo = updateRequest.updateTo.version,
                     updateId = updateRequest.requestId,
                     updateStatus = UpdateStatus.CANCELED
                 )
@@ -119,9 +120,11 @@ class UpdaterApiImpl @Inject constructor(
     override fun onDeviceConnected(versionName: FirmwareVersion) {
         updatingState.update {
             if (it.state == UpdatingState.Rebooting) {
-                if (it.request?.updateTo?.version?.version == versionName.version) {
+                if (it.request?.updateTo?.version == versionName.version) {
                     UpdatingStateWithRequest(UpdatingState.Complete, request = it.request)
-                } else UpdatingStateWithRequest(UpdatingState.Failed, request = it.request)
+                } else if (it.request?.updateTo?.channel != FirmwareChannel.CUSTOM) {
+                    UpdatingStateWithRequest(UpdatingState.Failed, request = it.request)
+                } else it
             } else it
         }
     }

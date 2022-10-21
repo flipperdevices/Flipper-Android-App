@@ -5,4 +5,5 @@ package com.flipperdevices.core.ktx.jre
  */
 object TimeHelper {
     fun getNow() = System.currentTimeMillis()
+    fun getNanoTime() = System.nanoTime()
 }

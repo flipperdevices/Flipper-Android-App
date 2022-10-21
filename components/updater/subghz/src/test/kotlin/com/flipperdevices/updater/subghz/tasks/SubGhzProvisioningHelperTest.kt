@@ -1,7 +1,6 @@
 package com.flipperdevices.updater.subghz.tasks
 
 import androidx.datastore.core.DataStore
-import androidx.test.platform.app.InstrumentationRegistry
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.manager.service.FlipperRpcInformationApi
 import com.flipperdevices.bridge.api.model.FlipperDeviceInfo
@@ -11,6 +10,7 @@ import com.flipperdevices.bridge.api.model.FlipperRpcInformation
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.core.ktx.jre.flatten
 import com.flipperdevices.core.preference.pb.Settings
+import com.flipperdevices.core.test.readTestAsset
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.main
@@ -47,11 +47,8 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.whenever
 import org.robolectric.ParameterizedRobolectricTestRunner
-import org.robolectric.annotation.Config
 
 @RunWith(ParameterizedRobolectricTestRunner::class)
-// https://github.com/robolectric/robolectric/discussions/7338
-@Config(sdk = [30])
 class SubGhzProvisioningHelperTest(
     private val countryName: String?
 ) {
@@ -78,7 +75,7 @@ class SubGhzProvisioningHelperTest(
         downloaderApi = DownloaderApiImpl(
             context = mock(),
             client = client,
-            downloadAndUnpackDelegate = mock()
+            downloadAndUnpackDelegateApi = mock()
         )
         regionProvisioningHelper = mock()
 
@@ -240,9 +237,4 @@ class SubGhzProvisioningHelperTest(
             "WW", null
         )
     }
-}
-
-private fun readTestAsset(path: String): ByteArray {
-    val context = InstrumentationRegistry.getInstrumentation().targetContext
-    return context.resources.assets.open(path).use { it.readBytes() }
 }

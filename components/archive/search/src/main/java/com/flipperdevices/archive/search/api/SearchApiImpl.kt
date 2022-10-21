@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class)
 class SearchApiImpl @Inject constructor() : SearchApi {
-    override fun getSearchScreen(): Screen {
-        return FragmentScreen { SearchFragment() }
+    override fun getSearchScreen(exitOnOpen: Boolean): Screen {
+        return FragmentScreen { SearchFragment.getInstance(exitOnOpen) }
     }
 }

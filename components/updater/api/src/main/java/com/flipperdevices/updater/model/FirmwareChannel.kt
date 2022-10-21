@@ -4,5 +4,6 @@ enum class FirmwareChannel {
     RELEASE,
     RELEASE_CANDIDATE,
     DEV,
+    CUSTOM,
     UNKNOWN
 }

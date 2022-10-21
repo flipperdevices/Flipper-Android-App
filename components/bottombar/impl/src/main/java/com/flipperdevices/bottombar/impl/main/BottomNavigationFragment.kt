@@ -156,7 +156,7 @@ class BottomNavigationFragment : Fragment(), OnBackPressListener, LogTagProvider
                 SelectedTab.UNRECOGNIZED,
                 SelectedTab.DEVICE -> FlipperBottomTab.DEVICE
                 SelectedTab.ARCHIVE -> FlipperBottomTab.ARCHIVE
-                SelectedTab.OPTIONS -> FlipperBottomTab.OPTIONS
+                SelectedTab.HUB -> FlipperBottomTab.HUB
             }
         }
     }

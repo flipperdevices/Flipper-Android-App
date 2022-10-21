@@ -5,6 +5,8 @@
     <string name="updater_card_updater_error_retry">Retry</string>
     <string name="updater_card_updater_button_no_updates">NO UPDATES</string>
     <string name="updater_card_updater_button_no_updates_desc">There are no updates in the selected channel</string>
+    <string name="updater_card_updater_button_choose_file">CHOOSE FILE</string>
+    <string name="updater_card_updater_button_choose_file_desc">Open file picker for choose update</string>
     <string name="updater_card_updater_button_install">INSTALL</string>
     <string name="updater_card_updater_button_install_desc">Firmware on Flipper doesn’t match the selected update channel. Selected version will be installed.</string>
     <string name="updater_card_updater_button_update">UPDATE</string>
@@ -23,6 +25,19 @@
 
     <string name="update_card_dialog_battery_title">Low Battery on Flipper</string>
     <string name="update_card_dialog_battery_desc">Charge Flipper to 10% before installing the update</string>
+    <string name="update_card_dialog_extension_title">Not supported updater file</string>
+    <string name="update_card_dialog_extension_desc">Try use updater file with tgz extension</string>
+    <string name="update_card_dialog_file_big_title">Biggest file</string>
+    <string name="update_card_dialog_file_big_desc">Are you sure for upload biggest file on Flipper?</string>
+    <string name="update_card_sync_title">Pause Synchronization?</string>
+    <string name="update_card_sync_desc">Firmware update is not possible during synchronization. Wait for sync to finish or pause it</string>
+    <string name="update_card_sync_cont">Continue</string>
+    <string name="update_card_sync_stop">Pause</string>
+    <string name="update_card_confirm_title">Update Firmware?</string>
+    <string name="update_card_confirm_desc">will be installed on your Flipper</string>
+    <string name="update_card_confirm_cont">Update</string>
+    <string name="update_card_confirm_stop">Cancel</string>
+    <string name="update_dialog_sync_title">Pause Synchronization?</string>
     <string name="update_card_dialog_battery_btn">Got It</string>
     <string name="update_card_dialog_successful_title">Update Successful</string>
     <string name="update_card_dialog_successful_desc">was installed on your Flipper</string>

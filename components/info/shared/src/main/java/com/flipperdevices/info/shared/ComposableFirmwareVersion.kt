@@ -14,6 +14,7 @@ fun getNameByChannel(channel: FirmwareChannel): Int {
         FirmwareChannel.DEV -> R.string.info_device_firmware_version_dev
         FirmwareChannel.RELEASE -> R.string.info_device_firmware_version_release
         FirmwareChannel.RELEASE_CANDIDATE -> R.string.info_device_firmware_version_rc
+        FirmwareChannel.CUSTOM -> R.string.info_device_firmware_version_custom
         FirmwareChannel.UNKNOWN -> R.string.info_device_firmware_version_unknown_empty
     }
 }
@@ -24,6 +25,7 @@ fun getFullNameByChannel(channel: FirmwareChannel): Int {
         FirmwareChannel.DEV -> R.string.info_device_firmware_version_dev_full
         FirmwareChannel.RELEASE -> R.string.info_device_firmware_version_release_full
         FirmwareChannel.RELEASE_CANDIDATE -> R.string.info_device_firmware_version_rc_full
+        FirmwareChannel.CUSTOM -> R.string.info_device_firmware_version_custom
         FirmwareChannel.UNKNOWN -> R.string.info_device_firmware_version_unknown_empty
     }
 }
@@ -34,6 +36,7 @@ fun getDescriptionByChannel(channel: FirmwareChannel): Int {
         FirmwareChannel.DEV -> R.string.info_device_firmware_version_dev_desc
         FirmwareChannel.RELEASE -> R.string.info_device_firmware_version_release_desc
         FirmwareChannel.RELEASE_CANDIDATE -> R.string.info_device_firmware_version_rc_desc
+        FirmwareChannel.CUSTOM -> R.string.info_device_firmware_version_custom_desc
         FirmwareChannel.UNKNOWN -> R.string.info_device_firmware_version_unknown_empty
     }
 }
@@ -50,5 +53,6 @@ fun getColorByChannel(channel: FirmwareChannel): Color {
         FirmwareChannel.RELEASE_CANDIDATE -> LocalPallet.current.channelFirmwareReleaseCandidate
         FirmwareChannel.RELEASE -> LocalPallet.current.channelFirmwareRelease
         FirmwareChannel.UNKNOWN -> LocalPallet.current.channelFirmwareUnknown
+        FirmwareChannel.CUSTOM -> LocalPallet.current.channelFirmwareUnknown
     }
 }

@@ -1,12 +1,8 @@
 plugins {
     id("flipper.lint")
-    id("flipper.android-compose")
+    id("flipper.android-lib")
 }
 
 dependencies {
-    // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.material)
+    implementation(projects.components.core.ui.navigation)
 }

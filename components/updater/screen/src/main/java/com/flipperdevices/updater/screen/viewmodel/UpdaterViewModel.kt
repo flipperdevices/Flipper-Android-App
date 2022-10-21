@@ -91,11 +91,7 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
             return
         }
 
-        updaterScreenStateFlow.emit(
-            UpdaterScreenState.CancelingSynchronization(
-                updateRequest.updateTo
-            )
-        )
+        updaterScreenStateFlow.emit(UpdaterScreenState.CancelingSynchronization(updateRequest))
         synchronizationApi.stop()
 
         info {
@@ -155,19 +151,18 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
 
     private fun subscribeOnUpdaterFlow(): Job = updaterApi.getState()
         .combine(connectionState).onEach { (updatingState, connectionState) ->
-            val firmwareData = updatingState.request?.updateTo
-            val state = updatingState.state
-            val updaterScreenState = when (state) {
+            val updateRequest = updatingState.request
+            val updaterScreenState = when (val state = updatingState.state) {
                 UpdatingState.NotStarted -> UpdaterScreenState.NotStarted
                 is UpdatingState.DownloadingFromNetwork ->
                     UpdaterScreenState.DownloadingFromNetwork(
                         percent = state.percent,
-                        firmwareData = firmwareData
+                        updateRequest = updateRequest
                     )
                 is UpdatingState.UploadOnFlipper ->
                     UpdaterScreenState.UploadOnFlipper(
                         percent = state.percent,
-                        firmwareData = firmwareData
+                        updateRequest = updateRequest
                     )
 
                 UpdatingState.FailedUpload,
@@ -194,8 +189,11 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
                 UpdatingState.FailedInternalStorage -> UpdaterScreenState.Failed(
                     FailedReason.FAILED_INT_STORAGE
                 )
+                UpdatingState.FailedCustomUpdate -> UpdaterScreenState.Failed(
+                    FailedReason.FAILED_INTERNAL_UPDATE
+                )
                 UpdatingState.SubGhzProvisioning -> UpdaterScreenState.SubGhzProvisioning(
-                    firmwareData
+                    updateRequest = updateRequest
                 )
             }
             verbose {

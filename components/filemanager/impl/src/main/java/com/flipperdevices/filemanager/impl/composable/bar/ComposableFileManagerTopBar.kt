@@ -23,7 +23,7 @@ fun ComposableFileManagerTopBar(
             )
         },
         actions = {
-            if (isAbleToSafe(path)) {
+            if (isAbleToSave(path)) {
                 Row {
                     IconButton(onClick = onClickAddButton) {
                         Icon(
@@ -51,4 +51,4 @@ fun ComposableFileManagerTopBar(
     )
 }
 
-private fun isAbleToSafe(path: String) = path.startsWith("/ext")
+private fun isAbleToSave(path: String) = path.startsWith("/ext")

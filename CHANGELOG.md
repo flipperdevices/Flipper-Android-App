@@ -1,12 +1,35 @@
 # Changelog
 
-# 1.2.2 - In progress
+# 1.2.3 - In progress
+
+- [REFACTOR] Migrate widgets to WorkManager
+- [Feature] Add mfkey32 attack in debug/options
+- [Feature] Add HUB tab
+
+# 1.2.2
 
 - [Feature] Add ability edit uid and zero block
 - [Feature] Add support adaptive monochrome icon
 - [Feature] Add save as on nfc editor
 - [Feature] Add dialog on exit from nfc editor
+- [Feature] Update from internal storage and web updater
+- [Feature][Suspended] Add widgets
+- [Feature] Add delete to FM
+- [Feature] Add selection in device info card
+- [Feature] Add export keys button
 - [REFACTOR] Migrate synchronization task graph to TaskSynchronizationComponent
+- [REFACTOR] Redesign card when we waiting update
+- [REFACTOR] Get last region from flipper
+- [REFACTOR] Storage Stats formatter by kibibyte
+- [REFACTOR] Add test for nfc load/save
+- [REFACTOR] Bump deps
+- [FIX] Rename updater folder
+- [FIX] Choose app theme from selected theme, not is light
+- [FIX] Check total bytes from server(less 0 mean error from server)
+- [FIX] Whitespace in key name and upper first letter in edit screen
+- [FIX] Formatter convert bytes to string
+- [FIX] Disconnect while connecting
+- [FIX] Synchronization status when flipper not connected
 
 # 1.2.1
 
@@ -33,7 +56,7 @@
 - [Feature] Bubble for sub-ghz emulate
 - [Feature] Add wearos application
 - [Feature] Warning color on storage info
-- [Feature] Full device info share with storage stats
+- [Feature] Full device info share with storage stats(nothing when storage not found)
 - [FIX] Now search for devices by Mac address and by flipper name
 - [FIX] Subghz provisioning while geoip is null
 - [FIX] Separate screen for edit key

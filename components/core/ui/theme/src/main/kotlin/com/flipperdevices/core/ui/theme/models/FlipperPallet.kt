@@ -1,7 +1,7 @@
 package com.flipperdevices.core.ui.theme.models
 
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material.Colors
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.Color
 
@@ -111,9 +111,14 @@ data class FlipperPallet(
     val hexKeyboardBackground: Color,
 
     val bubbleEmulateBackground: Color = Color(0xFFC1C1C1),
-    val bubbleEmulate: Color = Color(0xFFFFFFFF)
+    val bubbleEmulate: Color = Color(0xFFFFFFFF),
+
+    val textSelectionHandle: Color = accent,
+    val textSelectionBackground: Color = accent.copy(alpha = 0.3f),
+
+    val calculationMfKey32: Color = accent,
+    val calculationMfKey32Background: Color = accent.copy(alpha = 0.54f),
 ) {
-    @Composable
     internal fun toMaterialColors(isLight: Boolean) = Colors(
         primary = content,
         primaryVariant = accentSecond,
@@ -128,5 +133,10 @@ data class FlipperPallet(
         onSurface = onContent,
         onError = onError,
         isLight = isLight
+    )
+
+    internal fun toTextSelectionColors() = TextSelectionColors(
+        handleColor = textSelectionHandle,
+        backgroundColor = textSelectionBackground
     )
 }

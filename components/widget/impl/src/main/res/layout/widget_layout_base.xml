@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:background="@drawable/background"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        tools:theme="@style/Widget.Flipper.Send.InProgress">
+
+
+    <FrameLayout
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:paddingEnd="6dp"
+            android:paddingStart="6dp"
+            android:paddingTop="6dp">
+
+        <FrameLayout
+                android:id="@+id/progress_bar"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+            <ProgressBar
+                    style="@style/Widget.AppCompat.ProgressBar"
+                    android:id="@+id/progress_bar_indeterminate"
+                    android:indeterminateOnly="true"
+                    android:indeterminateTint="?colorAccent"
+                    android:layout_height="18dp"
+                    android:layout_width="18dp"
+                    android:progress="100" />
+
+            <ProgressBar
+                    style="@style/Widget.AppCompat.ProgressBar"
+                    android:background="@drawable/round_background"
+                    android:id="@+id/progress_bar_fixed"
+                    android:indeterminateOnly="false"
+                    android:indeterminateTint="?colorAccent"
+                    android:layout_height="18dp"
+                    android:layout_width="18dp"
+                    android:progress="50"
+                    android:progressDrawable="@drawable/send_spinner"
+                    android:rotation="-90"
+                    android:visibility="gone" />
+
+            <FrameLayout
+                    android:background="@drawable/stop_rectangle"
+                    android:id="@+id/progress_stop"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content" />
+        </FrameLayout>
+
+        <ImageView
+                android:id="@+id/error_btn"
+                android:layout_height="18dp"
+                android:layout_width="18dp"
+                android:src="@drawable/ic_warning"
+                android:visibility="gone" />
+    </FrameLayout>
+
+    <LinearLayout
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:orientation="vertical">
+
+        <LinearLayout
+                android:gravity="center"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="2dp">
+
+            <ImageView
+                    android:id="@+id/widget_key_icon"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="20dp"
+                    android:layout_width="20dp"
+                    android:paddingEnd="2dp"
+                    android:paddingStart="2dp"
+                    android:src="?defaultKeyLogoDrawable"
+                    android:tint="@color/text_color" />
+
+            <TextView
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:id="@+id/widget_key_name"
+                    android:includeFontPadding="false"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:maxLines="1"
+                    android:paddingEnd="6dp"
+                    android:paddingStart="6dp"
+                    android:text="@string/file_name_default"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_color"
+                    android:textSize="16sp" />
+        </LinearLayout>
+
+        <ImageView
+                android:contentDescription="@string/img_btn"
+                android:id="@+id/button"
+                android:layout_height="40dp"
+                android:layout_width="match_parent"
+                android:paddingBottom="6dp"
+                android:paddingEnd="6dp"
+                android:paddingStart="6dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/btn_background" />
+    </LinearLayout>
+</RelativeLayout>
