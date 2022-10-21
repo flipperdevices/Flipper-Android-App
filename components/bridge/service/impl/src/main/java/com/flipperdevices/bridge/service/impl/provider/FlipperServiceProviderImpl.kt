@@ -139,10 +139,12 @@ class FlipperServiceProviderImpl @Inject constructor(
         resetInternalWithoutInvalidate()
     }
 
+    @Synchronized
     private fun onServiceBind(binder: FlipperServiceBinder) {
         binder.subscribe(this)
         invalidate()
-        serviceConsumers.forEach { consumer ->
+        val list = ArrayList<FlipperBleServiceConsumer>(serviceConsumers)
+        list.forEach { consumer ->
             consumer.onServiceApiReady(binder.serviceApi)
         }
     }
@@ -161,7 +163,8 @@ class FlipperServiceProviderImpl @Inject constructor(
 
     override fun onError(error: FlipperBleServiceError) {
         error { "Service return error $error (${error.ordinal})" }
-        serviceConsumers.forEach { consumer ->
+        val list = ArrayList(serviceConsumers)
+        list.forEach { consumer ->
             consumer.onServiceBleError(error)
         }
     }

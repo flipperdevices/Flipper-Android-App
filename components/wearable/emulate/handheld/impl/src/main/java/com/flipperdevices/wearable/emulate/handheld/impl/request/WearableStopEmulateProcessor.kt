@@ -25,7 +25,7 @@ class WearableStopEmulateProcessor @Inject constructor(
 ) : WearableCommandProcessor {
     override fun init() {
         commandInputStream.getRequestsFlow().onEach {
-            if (it.hasStartEmulate()) {
+            if (it.hasStopEmulate()) {
                 stopEmulate(serviceProvider.getServiceApi().requestApi)
             }
         }.launchIn(scope)

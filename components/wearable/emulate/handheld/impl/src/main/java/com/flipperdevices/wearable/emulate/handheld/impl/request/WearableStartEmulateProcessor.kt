@@ -60,6 +60,9 @@ class WearableStartEmulateProcessor @Inject constructor(
                 keyType,
                 FlipperFilePath(keyFile.parent ?: "", keyFile.name)
             )
+            commandOutputStream.send(mainResponse {
+                emulateStatus = Emulate.EmulateStatus.EMULATING
+            })
         } catch (throwable: Throwable) {
             error(throwable) { "Failed start emulate $path" }
             commandOutputStream.send(mainResponse {

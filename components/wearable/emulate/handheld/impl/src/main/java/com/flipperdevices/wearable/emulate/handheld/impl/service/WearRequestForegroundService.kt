@@ -32,6 +32,16 @@ class WearRequestForegroundService : LifecycleService(), WearRequestChannelBinde
         wearServiceComponent.commandProcessors.forEach { it.init() }
     }
 
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        info { "Service receive command with action ${intent?.action}" }
+
+        if (intent?.action == CLOSE_CHANNEL_ACTION) {
+            stopForeground(STOP_FOREGROUND_REMOVE)
+        }
+
+        return super.onStartCommand(intent, flags, startId)
+    }
+
     override fun onBind(intent: Intent): IBinder {
         super.onBind(intent)
         info { "On bind $intent" }
@@ -48,6 +58,12 @@ class WearRequestForegroundService : LifecycleService(), WearRequestChannelBinde
         info { "#onChannelClose" }
         wearServiceComponent.commandInputStream.onCloseChannel(lifecycleScope)
         wearServiceComponent.commandOutputStream.onCloseChannel(lifecycleScope)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        info { "#onDestroy" }
+        onChannelClose()
     }
 
     companion object {
