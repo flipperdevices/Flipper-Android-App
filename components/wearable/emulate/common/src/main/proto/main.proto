@@ -1,7 +1,6 @@
 syntax = "proto3";
 
-import "requests/start_emulate.proto";
-import "requests/emulate_status.proto";
+import "requests/emulate.proto";
 import "requests/ping.proto";
 import "requests/connect_status.proto";
 
@@ -15,6 +14,8 @@ message MainRequest {
     requests.StartEmulateRequest start_emulate = 2;
     requests.PingRequest ping = 3;
     requests.SubscribeOnConnectStatusRequest subscribe_on_connect_status = 4;
+    requests.StopEmulateRequest stop_emulate = 5;
+    requests.SendRequest send_request = 6;
   }
 }
 
@@ -22,7 +23,6 @@ message MainResponse {
   uint32 command_id = 1;
 
   oneof content {
-    requests.StartEmulateResponse start_emulate = 2;
     requests.EmulateStatus emulate_status = 3;
     requests.PingResponse ping = 4;
     requests.ConnectStatus connect_status = 5;

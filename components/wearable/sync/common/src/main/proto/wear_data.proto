@@ -5,4 +5,5 @@ option java_multiple_files = true;
 
 message WearableSyncItemData {
   bool is_favorite = 1;
+  int64 timeout = 2;
 }

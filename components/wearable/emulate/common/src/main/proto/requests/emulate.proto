@@ -7,10 +7,16 @@ message StartEmulateRequest {
   string path = 1;
 }
 
-message StartEmulateResponse {
-  StartEmulateCommandStatus status = 1;
+message StopEmulateRequest {
+  // Empty
 }
 
-enum StartEmulateCommandStatus {
-  OK = 0;
+message SendRequest {
+  string path = 1;
+}
+
+enum EmulateStatus {
+  EMULATING = 0;
+  STOPPED = 1;
+  FAILED = 2;
 }

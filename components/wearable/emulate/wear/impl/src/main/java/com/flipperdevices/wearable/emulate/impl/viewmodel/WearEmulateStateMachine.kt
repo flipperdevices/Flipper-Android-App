@@ -4,10 +4,13 @@ import com.flipperdevices.core.di.SingleIn
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.keyscreen.api.EmulateProgress
 import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.ConnectStatusOuterClass.ConnectStatus
+import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.Emulate.EmulateStatus
 import com.flipperdevices.wearable.emulate.impl.di.WearGraph
 import com.flipperdevices.wearable.emulate.impl.model.ChannelState
 import com.flipperdevices.wearable.emulate.impl.model.ConnectionTesterState
+import com.flipperdevices.wearable.emulate.impl.model.KeyToEmulate
 import com.flipperdevices.wearable.emulate.impl.model.WearEmulateState
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
@@ -21,7 +24,8 @@ interface WearEmulateStateMachine {
     suspend fun onStatesUpdate(
         channelState: ChannelState,
         connectionTesterState: ConnectionTesterState,
-        flipperConnectState: ConnectStatus
+        flipperConnectState: ConnectStatus,
+        emulateStatus: EmulateStatus
     )
 }
 
@@ -30,7 +34,9 @@ interface WearEmulateStateMachine {
 class WearEmulateStateMachineImpl @Inject constructor(
     private val nodeFindingHelper: NodeFindingHelper,
     private val connectionChannelHelper: ConnectionChannelHelper,
-    private val connectionTester: ConnectionTester
+    private val connectionTester: ConnectionTester,
+    private val flipperStatusListener: FlipperStatusListener,
+    private val keyToEmulate: KeyToEmulate
 ) : WearEmulateStateMachine, LogTagProvider {
     override val TAG = "WearEmulateStateMachine"
 
@@ -43,7 +49,8 @@ class WearEmulateStateMachineImpl @Inject constructor(
     override suspend fun onStatesUpdate(
         channelState: ChannelState,
         connectionTesterState: ConnectionTesterState,
-        flipperConnectState: ConnectStatus
+        flipperConnectState: ConnectStatus,
+        emulateStatus: EmulateStatus
     ) {
         info { "Receive states update $channelState $connectionTesterState $flipperConnectState" }
         when (channelState) {
@@ -53,10 +60,34 @@ class WearEmulateStateMachineImpl @Inject constructor(
             }
             ChannelState.CONNECTED -> {} // Continue
         }
+        when (connectionTesterState) {
+            ConnectionTesterState.NOT_CONNECTED -> {
+                onStateUpdate(WearEmulateState.TestConnection)
+                return
+            }
+            ConnectionTesterState.CONNECTED -> {} // Continue
+        }
+
+        when (emulateStatus) {
+            EmulateStatus.EMULATING -> {
+                onStateUpdate(
+                    WearEmulateState.Emulating(
+                        keyToEmulate.keyType,
+                        EmulateProgress.Infinite
+                    )
+                )
+                return
+            }
+            EmulateStatus.STOPPED,
+            EmulateStatus.FAILED,
+            EmulateStatus.UNRECOGNIZED -> {
+            } // Go to ready for emulate
+        }
 
         when (flipperConnectState) {
             ConnectStatus.READY -> {
-
+                onStateUpdate(WearEmulateState.ReadyForEmulate(keyToEmulate.keyType))
+                return
             }
             ConnectStatus.UNSUPPORTED -> {
                 onStateUpdate(WearEmulateState.UnsupportedFlipper)
@@ -66,7 +97,7 @@ class WearEmulateStateMachineImpl @Inject constructor(
             ConnectStatus.CONNECTING,
             ConnectStatus.DISCONNECTING,
             ConnectStatus.UNRECOGNIZED -> {
-                invalidateConnectionTesterState(connectionTesterState)
+                onStateUpdate(WearEmulateState.ConnectingToFlipper)
                 return
             }
         }
@@ -111,7 +142,9 @@ class WearEmulateStateMachineImpl @Inject constructor(
                 connectionChannelHelper.establishConnection(state.nodeId)
             }
             WearEmulateState.TestConnection -> connectionTester.testConnection()
-            WearEmulateState.ConnectingToFlipper -> {}
+            WearEmulateState.ConnectingToFlipper -> {
+                flipperStatusListener.requestStatus()
+            }
             WearEmulateState.UnsupportedFlipper,
             WearEmulateState.NotInitialized,
             is WearEmulateState.Emulating,

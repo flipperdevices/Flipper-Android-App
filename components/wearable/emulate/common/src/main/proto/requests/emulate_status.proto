@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package ipcemulate.requests;
-option java_package = "com.flipperdevices.wearable.emulate.common.ipcemulate.requests";
-
-enum EmulateStatus {
-  STOP_EMULATE = 0;
-}

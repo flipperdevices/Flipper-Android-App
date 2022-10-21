@@ -10,7 +10,7 @@ import com.google.android.gms.wearable.ChannelClient
 class WearRequestListenerService :
     LifecycleWearableListenerService(),
     LogTagProvider {
-    override val TAG = "WearRequestListenerService"
+    override val TAG = "WearRequestListenerService-${hashCode()}"
 
     private val wearServiceComponent by lazy {
         DaggerWearServiceComponent.factory().create(
@@ -19,6 +19,7 @@ class WearRequestListenerService :
     }
 
     init {
+        info { "#init" }
         wearServiceComponent.commandProcessors.forEach { it.init() }
     }
 
