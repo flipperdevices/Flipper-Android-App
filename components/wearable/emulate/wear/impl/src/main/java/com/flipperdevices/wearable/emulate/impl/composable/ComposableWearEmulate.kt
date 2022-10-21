@@ -17,6 +17,7 @@ import com.google.android.horologist.compose.layout.fillMaxRectangle
 import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
+@Suppress("LongMethod")
 fun ComposableWearEmulate(
     keyEmulateUiApi: KeyEmulateUiApi,
     onNotFoundNode: () -> Unit,
@@ -85,14 +86,27 @@ fun ComposableWearEmulate(
         is WearEmulateState.ReadyForEmulate -> {
         } // Ignore
     }
+    EmulateButton(state, keyEmulateUiApi, modifier, emulateViewModel, onBack)
+}
 
-    Box(contentAlignment = Alignment.Center) {
+@Composable
+private fun EmulateButton(
+    state: WearEmulateState,
+    keyEmulateUiApi: KeyEmulateUiApi,
+    modifier: Modifier,
+    emulateViewModel: WearEmulateViewModel,
+    onBack: () -> Unit
+) {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center
+    ) {
         when (state.keyType) {
             null,
             FlipperKeyType.RFID,
             FlipperKeyType.NFC,
             FlipperKeyType.I_BUTTON -> ComposableWearSimpleEmulate(
-                modifier,
+                Modifier,
                 (state as? WearEmulateState.Emulating)?.progress,
                 keyEmulateUiApi,
                 emulateViewModel::onClickEmulate,
@@ -100,7 +114,7 @@ fun ComposableWearEmulate(
             )
             FlipperKeyType.INFRARED -> onBack()
             FlipperKeyType.SUB_GHZ -> ComposableWearSubGhzEmulate(
-                modifier,
+                Modifier,
                 (state as? WearEmulateState.Emulating)?.progress,
                 keyEmulateUiApi,
                 emulateViewModel::onClickEmulate,

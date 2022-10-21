@@ -103,20 +103,6 @@ class WearEmulateStateMachineImpl @Inject constructor(
         }
     }
 
-    private suspend fun invalidateConnectionTesterState(
-        connectionTesterState: ConnectionTesterState
-    ) {
-        info { "#invalidateConnectionTesterState" }
-        when (connectionTesterState) {
-            ConnectionTesterState.NOT_CONNECTED -> {
-                onStateUpdate(WearEmulateState.TestConnection)
-            }
-            ConnectionTesterState.CONNECTED -> {
-                onStateUpdate(WearEmulateState.ConnectingToFlipper)
-            }
-        }
-    }
-
     override suspend fun onStateUpdate(
         state: WearEmulateState
     ) = withLock(mutex, "state_update") {

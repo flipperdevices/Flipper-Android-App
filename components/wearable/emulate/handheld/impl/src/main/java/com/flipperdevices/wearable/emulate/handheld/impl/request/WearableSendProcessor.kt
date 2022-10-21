@@ -23,6 +23,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
+@Suppress("LongParameterList")
 @ContributesMultibinding(WearHandheldGraph::class, WearableCommandProcessor::class)
 class WearableSendProcessor @Inject constructor(
     private val commandInputStream: WearableCommandInputStream<Main.MainRequest>,
