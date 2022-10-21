@@ -32,7 +32,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tangle.viewmodel.VMInject
 
-const val PATH_NONCE_LOG = "/ext/.mfkey32.log"
+const val PATH_NONCE_LOG = "/ext/nfc/.mfkey32.log"
 private const val TOTAL_PERCENT = 1.0f
 
 class MfKey32ViewModel @VMInject constructor(
