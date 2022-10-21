@@ -26,7 +26,6 @@ class WearableCommandStreamModule {
         channelClient: ChannelClient
     ) = WearableCommandInputStream<MainRequest>(channelClient, MainRequest::parseDelimitedFrom)
 
-
     @Provides
     @SingleIn(WearHandheldGraph::class)
     fun provideCommandOutputStream(

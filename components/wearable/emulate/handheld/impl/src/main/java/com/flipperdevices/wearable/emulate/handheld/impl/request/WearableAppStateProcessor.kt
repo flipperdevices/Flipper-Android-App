@@ -20,16 +20,17 @@ class WearableAppStateProcessor @Inject constructor(
 ) : WearableCommandProcessor {
     override fun init() {
         scope.launch {
-            serviceProvider.getServiceApi().requestApi.notificationFlow()
-                .collect { unknownMessage ->
-                    if (unknownMessage.hasAppStateResponse()) {
-                        if (unknownMessage.appStateResponse.state == Application.AppState.APP_CLOSED) {
-                            commandOutputStream.send(mainResponse {
+            serviceProvider.getServiceApi().requestApi.notificationFlow().collect {
+                if (it.hasAppStateResponse()) {
+                    if (it.appStateResponse.state == Application.AppState.APP_CLOSED) {
+                        commandOutputStream.send(
+                            mainResponse {
                                 emulateStatus = Emulate.EmulateStatus.STOPPED
-                            })
-                        }
+                            }
+                        )
                     }
                 }
+            }
         }
     }
 }

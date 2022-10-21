@@ -47,9 +47,11 @@ class WearableStartEmulateProcessor @Inject constructor(
     private suspend fun startEmulate(requestApi: FlipperRequestApi, path: String) {
         info { "#startEmulate $path" }
         val keyType = FlipperKeyType.getByExtension(File(path).extension) ?: return
-        commandOutputStream.send(mainResponse {
-            emulateStatus = Emulate.EmulateStatus.EMULATING
-        })
+        commandOutputStream.send(
+            mainResponse {
+                emulateStatus = Emulate.EmulateStatus.EMULATING
+            }
+        )
         info { "Key type is $keyType" }
         val keyPath = path.replaceFirstChar { if (it == '/') "" else it.toString() }
         val keyFile = File(keyPath)
@@ -60,14 +62,18 @@ class WearableStartEmulateProcessor @Inject constructor(
                 keyType,
                 FlipperFilePath(keyFile.parent ?: "", keyFile.name)
             )
-            commandOutputStream.send(mainResponse {
-                emulateStatus = Emulate.EmulateStatus.EMULATING
-            })
+            commandOutputStream.send(
+                mainResponse {
+                    emulateStatus = Emulate.EmulateStatus.EMULATING
+                }
+            )
         } catch (throwable: Throwable) {
             error(throwable) { "Failed start emulate $path" }
-            commandOutputStream.send(mainResponse {
-                emulateStatus = Emulate.EmulateStatus.FAILED
-            })
+            commandOutputStream.send(
+                mainResponse {
+                    emulateStatus = Emulate.EmulateStatus.FAILED
+                }
+            )
         }
     }
 }

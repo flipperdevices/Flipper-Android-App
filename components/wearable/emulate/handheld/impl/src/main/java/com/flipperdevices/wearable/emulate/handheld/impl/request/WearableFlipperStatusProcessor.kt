@@ -52,14 +52,19 @@ class WearableFlipperStatusProcessor @Inject constructor(
             is ConnectionState.Disconnected -> ConnectStatusOuterClass.ConnectStatus.DISCONNECTED
             ConnectionState.Disconnecting -> ConnectStatusOuterClass.ConnectStatus.DISCONNECTING
             ConnectionState.Initializing -> ConnectStatusOuterClass.ConnectStatus.CONNECTING
-            ConnectionState.RetrievingInformation -> ConnectStatusOuterClass.ConnectStatus.CONNECTING
-            is ConnectionState.Ready -> if (connectionState.supportedState == FlipperSupportedState.READY) {
-                ConnectStatusOuterClass.ConnectStatus.READY
-            } else ConnectStatusOuterClass.ConnectStatus.UNSUPPORTED
+            ConnectionState.RetrievingInformation ->
+                ConnectStatusOuterClass.ConnectStatus.CONNECTING
+            is ConnectionState.Ready -> {
+                if (connectionState.supportedState == FlipperSupportedState.READY) {
+                    ConnectStatusOuterClass.ConnectStatus.READY
+                } else ConnectStatusOuterClass.ConnectStatus.UNSUPPORTED
+            }
         }
 
-        commandOutputStream.send(mainResponse {
-            connectStatus = connectStatusProto
-        })
+        commandOutputStream.send(
+            mainResponse {
+                connectStatus = connectStatusProto
+            }
+        )
     }
 }

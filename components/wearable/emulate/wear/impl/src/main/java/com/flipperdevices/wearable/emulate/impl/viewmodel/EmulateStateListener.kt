@@ -21,7 +21,7 @@ interface EmulateStateListener {
 @ContributesBinding(WearGraph::class, EmulateStateListener::class)
 class EmulateStateListenerImpl @Inject constructor(
     private val commandInputStream: WearableCommandInputStream<Main.MainResponse>,
-    private val lifecycleOwner: LifecycleOwner,
+    private val lifecycleOwner: LifecycleOwner
 ) : EmulateStateListener {
     override fun getState(): StateFlow<EmulateStatus> =
         commandInputStream.getRequestsFlow().filter { it.hasEmulateStatus() }

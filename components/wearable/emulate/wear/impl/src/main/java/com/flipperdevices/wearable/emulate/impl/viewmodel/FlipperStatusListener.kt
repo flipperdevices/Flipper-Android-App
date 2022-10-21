@@ -46,12 +46,13 @@ class FlipperStatusListenerImpl @Inject constructor(
     }
 
     override fun requestStatus() {
-        commandOutputStream.send(mainRequest {
-            subscribeOnConnectStatus = subscribeOnConnectStatusRequest { }
-        })
+        commandOutputStream.send(
+            mainRequest {
+                subscribeOnConnectStatus = subscribeOnConnectStatusRequest { }
+            }
+        )
     }
 
     override fun getState(): StateFlow<ConnectStatusOuterClass.ConnectStatus> =
         connectionStatusStateFlow
-
 }

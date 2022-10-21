@@ -19,9 +19,11 @@ class WearablePingProcessor @Inject constructor(
     private val scope: CoroutineScope
 ) : WearableCommandProcessor {
     override fun init() {
-        commandOutputStream.send(mainResponse {
-            ping = pingResponse { }
-        })
+        commandOutputStream.send(
+            mainResponse {
+                ping = pingResponse { }
+            }
+        )
         commandInputStream.getRequestsFlow().onEach {
             if (it.hasPing()) {
                 commandOutputStream.send(mainResponse { ping = pingResponse { } })

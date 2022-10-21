@@ -41,12 +41,13 @@ class WearableSendProcessor @Inject constructor(
         }.launchIn(scope)
     }
 
-
     private suspend fun startSend(requestApi: FlipperRequestApi, path: String) {
         val keyType = FlipperKeyType.getByExtension(File(path).extension) ?: return
-        commandOutputStream.send(mainResponse {
-            emulateStatus = Emulate.EmulateStatus.EMULATING
-        })
+        commandOutputStream.send(
+            mainResponse {
+                emulateStatus = Emulate.EmulateStatus.EMULATING
+            }
+        )
 
         val keyPath = path.replaceFirstChar { if (it == '/') "" else it.toString() }
         val keyFile = File(keyPath)
@@ -63,9 +64,11 @@ class WearableSendProcessor @Inject constructor(
             emulateHelper.stopEmulate(scope, requestApi)
         } catch (throwable: Throwable) {
             error(throwable) { "Failed start send $path" }
-            commandOutputStream.send(mainResponse {
-                emulateStatus = Emulate.EmulateStatus.FAILED
-            })
+            commandOutputStream.send(
+                mainResponse {
+                    emulateStatus = Emulate.EmulateStatus.FAILED
+                }
+            )
         }
     }
 

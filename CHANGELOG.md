@@ -5,6 +5,7 @@
 - [REFACTOR] Migrate widgets to WorkManager
 - [Feature] Add mfkey32 attack in debug/options
 - [Feature] Add HUB tab
+- [FIX] WearOS connection
 
 # 1.2.2
 

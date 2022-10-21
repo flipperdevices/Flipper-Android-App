@@ -78,5 +78,4 @@ class WearableCommandInputStream<T : GeneratedMessageLite<*, *>>(
             delay(READ_TIMEOUT_MS)
         }
     }
-
 }

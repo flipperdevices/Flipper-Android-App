@@ -37,6 +37,7 @@ class WearRequestForegroundService : LifecycleService(), WearRequestChannelBinde
 
         if (intent?.action == CLOSE_CHANNEL_ACTION) {
             stopForeground(STOP_FOREGROUND_REMOVE)
+            stopSelf()
         }
 
         return super.onStartCommand(intent, flags, startId)

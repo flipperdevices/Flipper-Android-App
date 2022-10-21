@@ -33,8 +33,10 @@ class WearableStopEmulateProcessor @Inject constructor(
 
     private suspend fun stopEmulate(requestApi: FlipperRequestApi) {
         emulateHelper.stopEmulate(scope, requestApi)
-        commandOutputStream.send(mainResponse {
-            emulateStatus = Emulate.EmulateStatus.STOPPED
-        })
+        commandOutputStream.send(
+            mainResponse {
+                emulateStatus = Emulate.EmulateStatus.STOPPED
+            }
+        )
     }
 }

@@ -30,7 +30,6 @@ class EmulateHelperImpl @Inject constructor(
         }
     )
 
-
     override fun onSend() = commandOutputStream.send(
         mainRequest {
             sendRequest = sendRequest {
@@ -44,5 +43,4 @@ class EmulateHelperImpl @Inject constructor(
             stopEmulate = stopEmulateRequest { }
         }
     )
-
 }

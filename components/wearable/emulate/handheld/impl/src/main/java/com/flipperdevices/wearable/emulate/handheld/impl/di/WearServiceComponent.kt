@@ -26,7 +26,6 @@ interface WearServiceComponentDependencies {
     val keyParser: KeyParser
 }
 
-
 @SingleIn(WearHandheldGraph::class)
 @MergeComponent(
     WearHandheldGraph::class,

@@ -59,6 +59,5 @@ class WearRequestListenerService :
     override fun onDestroy() {
         super.onDestroy()
         info { "#onDestroy" }
-        applicationContext.unbindService(this)
     }
 }
