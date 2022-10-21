@@ -14,6 +14,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.isActive
@@ -21,9 +22,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.tasks.await
 
+private const val READ_TIMEOUT_MS = 100L
+
 class WearableCommandInputStream<T : GeneratedMessageLite<*, *>>(
     private val channelClient: ChannelClient,
-    private val parser: (InputStream) -> T
+    private val parser: (InputStream) -> T?
 ) : LogTagProvider {
     override val TAG = "WearableCommandInputStream"
 
@@ -55,6 +58,10 @@ class WearableCommandInputStream<T : GeneratedMessageLite<*, *>>(
         while (scope.isActive) {
             try {
                 val main = parser(inputStream)
+                if (main == null) {
+                    delay(READ_TIMEOUT_MS)
+                    continue
+                }
                 info { "Receive $main response" }
                 scope.launch(Dispatchers.Default) {
                     requests.emit(main)

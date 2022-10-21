@@ -1,5 +1,6 @@
 package com.flipperdevices.wearable.emulate.impl.viewmodel
 
+import com.flipperdevices.core.di.SingleIn
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
@@ -16,6 +17,7 @@ interface NodeFindingHelper {
 
 private const val CAPABILITY_PHONE_APP = "emulate_proto_flipper_phone_app"
 
+@SingleIn(WearGraph::class)
 @ContributesBinding(WearGraph::class, NodeFindingHelper::class)
 class NodeFindingHelperImpl @Inject constructor(
     private val capabilityClient: CapabilityClient

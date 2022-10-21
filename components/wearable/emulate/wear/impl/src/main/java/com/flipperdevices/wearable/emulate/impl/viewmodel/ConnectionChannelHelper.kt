@@ -2,6 +2,7 @@ package com.flipperdevices.wearable.emulate.impl.viewmodel
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import com.flipperdevices.core.di.SingleIn
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.wearable.emulate.common.WearEmulateConstants
@@ -25,6 +26,7 @@ interface ConnectionChannelHelper {
     fun onClear()
 }
 
+@SingleIn(WearGraph::class)
 @ContributesBinding(WearGraph::class, ConnectionChannelHelper::class)
 class ConnectionChannelHelperImpl @Inject constructor(
     private val channelClient: ChannelClient,
@@ -39,17 +41,22 @@ class ConnectionChannelHelperImpl @Inject constructor(
     override fun getState() = channelStateFlow
 
     override suspend fun establishConnection(nodeId: String) {
+        info { "#establishConnection" }
         val channel = channelClient.openChannel(
             nodeId,
             WearEmulateConstants.OPEN_CHANNEL_EMULATE
         ).await()
+        info { "receive channel $channel" }
         channelClient.registerChannelCallback(channel, this)
+        onChannelOpened(channel)
     }
 
     override fun onChannelOpened(channel: ChannelClient.Channel) {
         super.onChannelOpened(channel)
+        info { "#onChannelOpened" }
         commandInputStream.onOpenChannel(lifecycleOwner.lifecycleScope, channel)
         commandOutputStream.onOpenChannel(lifecycleOwner.lifecycleScope, channel)
+        info { "Notify that channel state is connected" }
         channelStateFlow.update { ChannelState.CONNECTED }
     }
 

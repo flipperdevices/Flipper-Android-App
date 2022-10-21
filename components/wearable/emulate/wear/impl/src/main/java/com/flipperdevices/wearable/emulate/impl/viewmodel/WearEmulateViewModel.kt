@@ -1,14 +1,20 @@
 package com.flipperdevices.wearable.emulate.impl.viewmodel
 
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
+import androidx.lifecycle.viewModelScope
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.ktx.jre.then
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
+import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.ConnectStatusOuterClass
 import com.flipperdevices.wearable.emulate.impl.api.EMULATE_PATH_KEY
 import com.flipperdevices.wearable.emulate.impl.di.DaggerWearEmulateComponent
 import com.flipperdevices.wearable.emulate.impl.model.WearEmulateState
-import java.io.File
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import tangle.inject.TangleParam
 import tangle.viewmodel.VMInject
 
@@ -24,15 +30,21 @@ class WearEmulateViewModel @VMInject constructor(
             .create(ComponentHolder.component(), lifecycleOwner = this)
     }
 
-    private val keyType by lazy { FlipperKeyType.getByExtension(File(keyPath).extension) }
-
     init {
-        /*combine(
+        combine(
             wearableComponent.connectionChannelHelper.getState(),
-            flowOf("")
-        ) {
-
-        }*/
+            wearableComponent.connectionTester.getState(),
+            flowOf(ConnectStatusOuterClass.ConnectStatus.UNRECOGNIZED)
+        ) { channelState, connectionTester, flipperConnectStatus ->
+            info { "Receive $channelState, $connectionTester, $flipperConnectStatus" }
+            channelState then connectionTester then flipperConnectStatus
+        }.onEach { (channelState, connectionTester, flipperConnectStatus) ->
+            wearableComponent.wearEmulateStateMachine.onStatesUpdate(
+                channelState,
+                connectionTester,
+                flipperConnectStatus
+            )
+        }.launchIn(viewModelScope)
     }
 
     fun getWearEmulateState(): StateFlow<WearEmulateState> =

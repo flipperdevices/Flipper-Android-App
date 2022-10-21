@@ -29,6 +29,14 @@ fun ComposableWearEmulate(
         .padding(horizontal = 10.dp, vertical = 10.dp)
 
     when (state) {
+        WearEmulateState.NotInitialized -> {
+            ComposableActionLoading(
+                modifier,
+                keyEmulateUiApi,
+                WearLoadingState.INITIALIZING
+            )
+            return
+        }
         WearEmulateState.ConnectingToFlipper -> {
             ComposableActionLoading(
                 modifier,

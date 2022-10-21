@@ -8,6 +8,8 @@ import com.flipperdevices.keyscreen.api.EmulateProgress
 sealed class WearEmulateState {
     open val keyType: FlipperKeyType? = null
 
+    object NotInitialized : WearEmulateState()
+
     object NodeFinding : WearEmulateState()
 
     @Stable

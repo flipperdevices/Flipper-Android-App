@@ -7,6 +7,7 @@
     <string name="keyscreen_emulating_error">Error when sending a request for execution</string>
     <string name="keyscreen_not_supported">Your flipper does not support emulation - please update through the app</string>
     <string name="keyscreen_loading_btn">Loading…</string>
+    <string name="keyscreen_loading_initializing">Starting the connection process…</string>
     <string name="keyscreen_loading_find_phone">Searching for a phone with an app installed…</string>
     <string name="keyscreen_loading_connecting_phone">Setting up a connection with a connected phone…</string>
     <string name="keyscreen_loading_test_connection">Checking the connection…</string>

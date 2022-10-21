@@ -2,6 +2,7 @@ package com.flipperdevices.wearable.emulate.impl.viewmodel
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import com.flipperdevices.core.di.SingleIn
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.wearable.emulate.common.WearableCommandInputStream
@@ -26,6 +27,7 @@ interface ConnectionTester {
     fun testConnection()
 }
 
+@SingleIn(WearGraph::class)
 @ContributesBinding(WearGraph::class, ConnectionTester::class)
 class ConnectionTesterImpl @Inject constructor(
     commandInputStream: WearableCommandInputStream<Main.MainResponse>,

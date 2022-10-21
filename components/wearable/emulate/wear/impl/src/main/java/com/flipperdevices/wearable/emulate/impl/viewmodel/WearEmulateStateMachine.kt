@@ -1,5 +1,6 @@
 package com.flipperdevices.wearable.emulate.impl.viewmodel
 
+import com.flipperdevices.core.di.SingleIn
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
@@ -17,8 +18,14 @@ import kotlinx.coroutines.sync.Mutex
 interface WearEmulateStateMachine {
     fun getStateFlow(): StateFlow<WearEmulateState>
     suspend fun onStateUpdate(state: WearEmulateState)
+    suspend fun onStatesUpdate(
+        channelState: ChannelState,
+        connectionTesterState: ConnectionTesterState,
+        flipperConnectState: ConnectStatus
+    )
 }
 
+@SingleIn(WearGraph::class)
 @ContributesBinding(WearGraph::class, WearEmulateStateMachine::class)
 class WearEmulateStateMachineImpl @Inject constructor(
     private val nodeFindingHelper: NodeFindingHelper,
@@ -28,16 +35,17 @@ class WearEmulateStateMachineImpl @Inject constructor(
     override val TAG = "WearEmulateStateMachine"
 
     private val wearEmulateStateFlow =
-        MutableStateFlow<WearEmulateState>(WearEmulateState.NodeFinding)
+        MutableStateFlow<WearEmulateState>(WearEmulateState.NotInitialized)
     private val mutex = Mutex()
 
     override fun getStateFlow() = wearEmulateStateFlow
 
-    suspend fun onStatesUpdate(
+    override suspend fun onStatesUpdate(
         channelState: ChannelState,
         connectionTesterState: ConnectionTesterState,
         flipperConnectState: ConnectStatus
     ) {
+        info { "Receive states update $channelState $connectionTesterState $flipperConnectState" }
         when (channelState) {
             ChannelState.DISCONNECTED -> {
                 onStateUpdate(WearEmulateState.NodeFinding)
@@ -67,6 +75,7 @@ class WearEmulateStateMachineImpl @Inject constructor(
     private suspend fun invalidateConnectionTesterState(
         connectionTesterState: ConnectionTesterState
     ) {
+        info { "#invalidateConnectionTesterState" }
         when (connectionTesterState) {
             ConnectionTesterState.NOT_CONNECTED -> {
                 onStateUpdate(WearEmulateState.TestConnection)
@@ -104,6 +113,7 @@ class WearEmulateStateMachineImpl @Inject constructor(
             WearEmulateState.TestConnection -> connectionTester.testConnection()
             WearEmulateState.ConnectingToFlipper -> {}
             WearEmulateState.UnsupportedFlipper,
+            WearEmulateState.NotInitialized,
             is WearEmulateState.Emulating,
             is WearEmulateState.ReadyForEmulate,
             WearEmulateState.NotFoundNode -> return

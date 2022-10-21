@@ -6,6 +6,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.SingleIn
 import com.flipperdevices.wearable.emulate.impl.viewmodel.ConnectionChannelHelper
+import com.flipperdevices.wearable.emulate.impl.viewmodel.ConnectionTester
 import com.flipperdevices.wearable.emulate.impl.viewmodel.WearEmulateStateMachine
 import com.flipperdevices.wearable.setup.api.SetupApi
 import com.squareup.anvil.annotations.ContributesTo
@@ -27,6 +28,7 @@ interface WearEmulateComponentDependencies {
 )
 interface WearEmulateComponent : WearEmulateComponentDependencies {
     val wearEmulateStateMachine: WearEmulateStateMachine
+    val connectionTester: ConnectionTester
     val connectionChannelHelper: ConnectionChannelHelper
 
     @Component.Factory
