@@ -1,9 +1,5 @@
 package com.flipperdevices.wearable.emulate.handheld.impl.request
 
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
-import com.flipperdevices.bridge.service.api.FlipperServiceApi
-import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.protobuf.app.Application
 import com.flipperdevices.wearable.emulate.common.WearableCommandOutputStream
@@ -13,31 +9,27 @@ import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.Emulate
 import com.flipperdevices.wearable.emulate.handheld.impl.di.WearHandheldGraph
 import com.squareup.anvil.annotations.ContributesMultibinding
 import javax.inject.Inject
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.plus
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @ContributesMultibinding(WearHandheldGraph::class, WearableCommandProcessor::class)
 class WearableAppStateProcessor @Inject constructor(
     private val serviceProvider: FlipperServiceProvider,
     private val commandOutputStream: WearableCommandOutputStream<Main.MainResponse>,
-    private val lifecycleOwner: LifecycleOwner
-) : WearableCommandProcessor, FlipperBleServiceConsumer {
+    private val scope: CoroutineScope
+) : WearableCommandProcessor {
     override fun init() {
-        serviceProvider.provideServiceApi(this@WearableAppStateProcessor, lifecycleOwner)
-    }
-
-    override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
-        serviceApi.requestApi.notificationFlow().onEach { unknownMessage ->
-            if (unknownMessage.hasAppStateResponse()) {
-                if (unknownMessage.appStateResponse.state == Application.AppState.APP_CLOSED) {
-                    commandOutputStream.send(mainResponse {
-                        emulateStatus = Emulate.EmulateStatus.STOPPED
-                    })
+        scope.launch {
+            serviceProvider.getServiceApi().requestApi.notificationFlow()
+                .collect { unknownMessage ->
+                    if (unknownMessage.hasAppStateResponse()) {
+                        if (unknownMessage.appStateResponse.state == Application.AppState.APP_CLOSED) {
+                            commandOutputStream.send(mainResponse {
+                                emulateStatus = Emulate.EmulateStatus.STOPPED
+                            })
+                        }
+                    }
                 }
-            }
-        }.launchIn(lifecycleOwner.lifecycleScope + Dispatchers.Default)
+        }
     }
-
 }

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wearable_notification_title">Connected to Flipper WearOS companion</string>
+    <string name="wearable_notification_desc">Keeping the connection to the WearOS companion, with its WearOS application can control the flipper</string>
+    <string name="wearable_notification_btn">Disconnect</string>
+    <string name="wearable_notification_channel_title">WearOS operations</string>
+    <string name="wearable_notification_channel_desc">Service notification channel to notify the user of WearOS operations</string>
+</resources>

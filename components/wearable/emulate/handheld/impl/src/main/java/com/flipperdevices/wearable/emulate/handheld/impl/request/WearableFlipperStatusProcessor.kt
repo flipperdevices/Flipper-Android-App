@@ -1,7 +1,5 @@
 package com.flipperdevices.wearable.emulate.handheld.impl.request
 
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
@@ -13,18 +11,18 @@ import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.ConnectSta
 import com.flipperdevices.wearable.emulate.handheld.impl.di.WearHandheldGraph
 import com.squareup.anvil.annotations.ContributesMultibinding
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.plus
 
 @ContributesMultibinding(WearHandheldGraph::class, WearableCommandProcessor::class)
 class WearableFlipperStatusProcessor @Inject constructor(
     private val commandInputStream: WearableCommandInputStream<Main.MainRequest>,
     private val commandOutputStream: WearableCommandOutputStream<Main.MainResponse>,
-    private val lifecycleOwner: LifecycleOwner,
+    private val scope: CoroutineScope,
     private val flipperServiceProvider: FlipperServiceProvider
 ) : WearableCommandProcessor {
     override fun init() {
@@ -35,9 +33,9 @@ class WearableFlipperStatusProcessor @Inject constructor(
                     .getConnectionStateFlow().first()
                 reportConnectionState(connectionState)
             }
-        }.launchIn(lifecycleOwner.lifecycleScope + Dispatchers.Default)
+        }.launchIn(scope)
 
-        lifecycleOwner.lifecycleScope.launch(Dispatchers.Default) {
+        scope.launch(Dispatchers.Default) {
             flipperServiceProvider
                 .getServiceApi()
                 .connectionInformationApi

@@ -1,7 +1,5 @@
 package com.flipperdevices.wearable.emulate.handheld.impl.request
 
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
@@ -20,17 +18,16 @@ import com.flipperdevices.wearable.emulate.handheld.impl.di.WearHandheldGraph
 import com.squareup.anvil.annotations.ContributesMultibinding
 import java.io.File
 import javax.inject.Inject
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.plus
 
 @SingleIn(WearHandheldGraph::class)
 @ContributesMultibinding(WearHandheldGraph::class, WearableCommandProcessor::class)
 class WearableStartEmulateProcessor @Inject constructor(
     private val commandInputStream: WearableCommandInputStream<Main.MainRequest>,
     private val commandOutputStream: WearableCommandOutputStream<Main.MainResponse>,
-    private val lifecycleOwner: LifecycleOwner,
+    private val scope: CoroutineScope,
     private val serviceProvider: FlipperServiceProvider,
     private val emulateHelper: EmulateHelper
 ) : WearableCommandProcessor, LogTagProvider {
@@ -44,7 +41,7 @@ class WearableStartEmulateProcessor @Inject constructor(
                 info { "found start request $it" }
                 startEmulate(serviceProvider.getServiceApi().requestApi, it.startEmulate.path)
             }
-        }.launchIn(lifecycleOwner.lifecycleScope + Dispatchers.Default)
+        }.launchIn(scope)
     }
 
     private suspend fun startEmulate(requestApi: FlipperRequestApi, path: String) {
@@ -58,7 +55,7 @@ class WearableStartEmulateProcessor @Inject constructor(
         val keyFile = File(keyPath)
         try {
             emulateHelper.startEmulate(
-                lifecycleOwner.lifecycleScope,
+                scope,
                 requestApi,
                 keyType,
                 FlipperFilePath(keyFile.parent ?: "", keyFile.name)

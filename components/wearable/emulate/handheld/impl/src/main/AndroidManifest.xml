@@ -21,5 +21,10 @@
                         tools:ignore="WearableBindListener" />
             </intent-filter>
         </service>
+
+        <service
+                android:exported="false"
+                android:name=".service.WearRequestForegroundService"
+                android:stopWithTask="false" />
     </application>
 </manifest>

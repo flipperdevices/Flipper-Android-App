@@ -1,33 +1,40 @@
 package com.flipperdevices.wearable.emulate.handheld.impl.service
 
-import androidx.lifecycle.lifecycleScope
-import com.flipperdevices.core.di.ComponentHolder
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
+import android.os.IBinder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.flipperdevices.wearable.emulate.handheld.impl.di.DaggerWearServiceComponent
 import com.google.android.gms.wearable.ChannelClient
+import com.google.android.gms.wearable.WearableListenerService
 
 class WearRequestListenerService :
-    LifecycleWearableListenerService(),
-    LogTagProvider {
+    WearableListenerService(),
+    LogTagProvider,
+    ServiceConnection {
     override val TAG = "WearRequestListenerService-${hashCode()}"
 
-    private val wearServiceComponent by lazy {
-        DaggerWearServiceComponent.factory().create(
-            ComponentHolder.component(), this
-        )
-    }
-
-    init {
-        info { "#init" }
-        wearServiceComponent.commandProcessors.forEach { it.init() }
-    }
+    private var pendingChannel: ChannelClient.Channel? = null
+    private var serviceBinder: WearRequestBinder? = null
 
     override fun onChannelOpened(channel: ChannelClient.Channel) {
         super.onChannelOpened(channel)
         info { "#onChannelOpened $channel" }
-        wearServiceComponent.commandInputStream.onOpenChannel(lifecycleScope, channel)
-        wearServiceComponent.commandOutputStream.onOpenChannel(lifecycleScope, channel)
+        pendingChannel = channel
+        // Without it service destroy after unbind
+        applicationContext.startService(
+            Intent(
+                applicationContext,
+                WearRequestForegroundService::class.java
+            )
+        )
+        val bindSuccessful = applicationContext.bindService(
+            Intent(applicationContext, WearRequestForegroundService::class.java), this,
+            Context.BIND_AUTO_CREATE or Context.BIND_IMPORTANT
+        )
+        info { "Bind for service is $bindSuccessful" }
     }
 
     override fun onChannelClosed(
@@ -37,8 +44,21 @@ class WearRequestListenerService :
     ) {
         super.onChannelClosed(channel, closeReason, appSpecificErrorCode)
         info { "#onChannelClosed $channel Reason: $closeReason AppCode: $appSpecificErrorCode" }
-        wearServiceComponent.commandInputStream.onCloseChannel(lifecycleScope)
-        wearServiceComponent.commandOutputStream.onCloseChannel(lifecycleScope)
+        serviceBinder?.channelBinder?.onChannelClose()
     }
 
+    override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+        serviceBinder = service as? WearRequestBinder
+        pendingChannel?.let { channel ->
+            serviceBinder?.channelBinder?.onChannelOpen(channel)
+        }
+    }
+
+    override fun onServiceDisconnected(name: ComponentName?) = Unit
+
+    override fun onDestroy() {
+        super.onDestroy()
+        info { "#onDestroy" }
+        applicationContext.unbindService(this)
+    }
 }

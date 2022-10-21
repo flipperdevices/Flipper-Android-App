@@ -1,7 +1,6 @@
 package com.flipperdevices.wearable.emulate.handheld.impl.di
 
 import android.content.Context
-import androidx.lifecycle.LifecycleOwner
 import com.flipperdevices.bridge.dao.api.delegates.KeyParser
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
@@ -16,6 +15,7 @@ import com.squareup.anvil.annotations.ContributesTo
 import com.squareup.anvil.annotations.MergeComponent
 import dagger.BindsInstance
 import dagger.Component
+import kotlinx.coroutines.CoroutineScope
 
 @ContributesTo(AppGraph::class)
 interface WearServiceComponentDependencies {
@@ -41,7 +41,7 @@ interface WearServiceComponent : WearServiceComponentDependencies {
     interface Factory {
         fun create(
             deps: WearServiceComponentDependencies,
-            @BindsInstance lifecycleOwner: LifecycleOwner
+            @BindsInstance scope: CoroutineScope
         ): WearServiceComponent
     }
 }

@@ -1,7 +1,5 @@
 package com.flipperdevices.wearable.emulate.handheld.impl.request
 
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.keyscreen.api.EmulateHelper
@@ -13,16 +11,15 @@ import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.Emulate
 import com.flipperdevices.wearable.emulate.handheld.impl.di.WearHandheldGraph
 import com.squareup.anvil.annotations.ContributesMultibinding
 import javax.inject.Inject
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.plus
 
 @ContributesMultibinding(WearHandheldGraph::class, WearableCommandProcessor::class)
 class WearableStopEmulateProcessor @Inject constructor(
     private val commandInputStream: WearableCommandInputStream<Main.MainRequest>,
     private val commandOutputStream: WearableCommandOutputStream<Main.MainResponse>,
-    private val lifecycleOwner: LifecycleOwner,
+    private val scope: CoroutineScope,
     private val serviceProvider: FlipperServiceProvider,
     private val emulateHelper: EmulateHelper
 ) : WearableCommandProcessor {
@@ -31,11 +28,11 @@ class WearableStopEmulateProcessor @Inject constructor(
             if (it.hasStartEmulate()) {
                 stopEmulate(serviceProvider.getServiceApi().requestApi)
             }
-        }.launchIn(lifecycleOwner.lifecycleScope + Dispatchers.Default)
+        }.launchIn(scope)
     }
 
     private suspend fun stopEmulate(requestApi: FlipperRequestApi) {
-        emulateHelper.stopEmulate(lifecycleOwner.lifecycleScope, requestApi)
+        emulateHelper.stopEmulate(scope, requestApi)
         commandOutputStream.send(mainResponse {
             emulateStatus = Emulate.EmulateStatus.STOPPED
         })

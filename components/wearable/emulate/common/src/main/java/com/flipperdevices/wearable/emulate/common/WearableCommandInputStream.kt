@@ -75,6 +75,7 @@ class WearableCommandInputStream<T : GeneratedMessageLite<*, *>>(
             } catch (e: Exception) {
                 error(e) { "Failed parse stream" }
             }
+            delay(READ_TIMEOUT_MS)
         }
     }
 
