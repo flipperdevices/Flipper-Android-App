@@ -2,5 +2,5 @@
 <resources>
     <string name="hub_title">Hub</string>
     <string name="hub_hfc_title">NFC Tools</string>
-    <string name="hub_hfc_desc">Callculate MIFARE Classic card keys using Flipper Zero</string>
+    <string name="hub_hfc_desc">Calculate MIFARE Classic card keys using Flipper Zero</string>
 </resources>
