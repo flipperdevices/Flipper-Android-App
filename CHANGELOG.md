@@ -6,6 +6,7 @@
 - [Feature] Add mfkey32 attack in debug/options
 - [Feature] Add HUB tab
 - [FIX] WearOS connection
+- [FIX] Screen streaming broke
 
 # 1.2.2
 
