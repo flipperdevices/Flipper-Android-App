@@ -7,7 +7,7 @@ import androidx.navigation.navigation
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.screenstreaming.api.ScreenStreamingFeatureEntry
-import com.flipperdevices.screenstreaming.impl.composable.ComposableScreen
+import com.flipperdevices.screenstreaming.impl.composable.ComposableStreamingScreen
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
 import javax.inject.Inject
@@ -20,7 +20,7 @@ class ScreenStreamingFeatureEntryImpl @Inject constructor() : ScreenStreamingFea
     override fun NavGraphBuilder.navigation(navController: NavHostController) {
         navigation(startDestination = start(), route = ROUTE.name) {
             composable("@${ROUTE.name}") {
-                ComposableScreen()
+                ComposableStreamingScreen()
             }
         }
     }
