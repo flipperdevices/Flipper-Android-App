@@ -17,10 +17,11 @@
                 <data android:scheme="http" />
                 <data android:scheme="https" />
 
-                <!-- Please, also add host in FFFUrlConstants -->
+                <!-- Please, also add host in FFFUrlConstants or another Deeplink parser-->
                 <data android:host="dev.flpr.app" />
                 <data android:host="flpr.app" />
                 <data android:host="my.flipp.dev" />
+                <data android:host="lab.flipper.net" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

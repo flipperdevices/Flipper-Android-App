@@ -5,6 +5,7 @@
 - [REFACTOR] Migrate widgets to WorkManager
 - [Feature] Add mfkey32 attack in debug/options
 - [Feature] Add HUB tab
+- [Feature] Updater card display update from url
 - [FIX] WearOS connection
 - [FIX] Screen streaming broke
 

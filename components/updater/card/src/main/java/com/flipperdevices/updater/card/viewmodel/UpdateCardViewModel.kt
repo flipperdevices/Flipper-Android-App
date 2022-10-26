@@ -1,5 +1,6 @@
 package com.flipperdevices.updater.card.viewmodel
 
+import android.content.Intent
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.model.StorageStats
@@ -15,6 +16,8 @@ import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.preference.pb.SelectedChannel
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
+import com.flipperdevices.deeplink.model.Deeplink
+import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.api.FlipperVersionProviderApi
 import com.flipperdevices.updater.card.helpers.UpdateOfferProviderApi
@@ -26,6 +29,7 @@ import com.flipperdevices.updater.model.UpdateCardState
 import com.flipperdevices.updater.model.UpdateErrorType
 import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.model.VersionFiles
+import com.flipperdevices.updater.model.WebUpdaterFirmware
 import java.net.UnknownHostException
 import java.util.EnumMap
 import kotlinx.coroutines.Deferred
@@ -39,14 +43,16 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
+import tangle.inject.TangleParam
 import tangle.viewmodel.VMInject
-
 class UpdateCardViewModel @VMInject constructor(
     private val downloaderApi: DownloaderApi,
     private val flipperVersionProviderApi: FlipperVersionProviderApi,
     private val serviceProvider: FlipperServiceProvider,
     private val dataStoreSettings: DataStore<Settings>,
-    private val updateOfferHelper: UpdateOfferProviderApi
+    private val updateOfferHelper: UpdateOfferProviderApi,
+    @TangleParam(DeeplinkConstants.INTENT)
+    private val intent: Intent?
 ) :
     LifecycleViewModel(),
     FlipperBleServiceConsumer,
@@ -58,6 +64,8 @@ class UpdateCardViewModel @VMInject constructor(
     )
     private val updateChanelFlow = MutableStateFlow<FirmwareChannel?>(null)
 
+    private val deeplinkFlow = MutableStateFlow<Deeplink?>(null)
+
     private var cardStateJob: Job? = null
     private val mutex = Mutex()
 
@@ -67,6 +75,10 @@ class UpdateCardViewModel @VMInject constructor(
                 updateChanelFlow.emit(it.selectedChannel.toFirmwareChannel())
             }
         }
+        val deeplink = intent?.getParcelableExtra<Deeplink>("deeplink")
+        viewModelScope.launch {
+            deeplinkFlow.emit(deeplink)
+        }
         serviceProvider.provideServiceApi(this, this)
     }
 
@@ -75,6 +87,7 @@ class UpdateCardViewModel @VMInject constructor(
     fun onSelectChannel(channel: FirmwareChannel?) {
         viewModelScope.launch {
             updateChanelFlow.emit(channel)
+            deeplinkFlow.emit(null)
             when (channel) {
                 FirmwareChannel.RELEASE,
                 FirmwareChannel.RELEASE_CANDIDATE,
@@ -120,8 +133,9 @@ class UpdateCardViewModel @VMInject constructor(
                 flipperVersionProviderApi.getCurrentFlipperVersion(viewModelScope, serviceApi),
                 serviceApi.flipperRpcInformationApi.getRpcInformationFlow(),
                 updateOfferHelper.isUpdateRequire(serviceApi),
-                updateChanelFlow
-            ) { flipperFirmwareVersion, rpcInformation, isAlwaysUpdate, updateChannel ->
+                updateChanelFlow,
+                deeplinkFlow
+            ) { flipperFirmwareVersion, rpcInformation, isAlwaysUpdate, updateChannel, deeplink ->
                 val newUpdateChannel = if (
                     updateChannel == null && flipperFirmwareVersion != null
                 ) {
@@ -130,17 +144,24 @@ class UpdateCardViewModel @VMInject constructor(
                 val isFlashExist = if (rpcInformation.externalStorageStats != null) {
                     rpcInformation.externalStorageStats is StorageStats.Loaded
                 } else null
+                val deeplinkWebUpdater = if (deeplink is Deeplink.WebUpdate) deeplink else null
                 return@combine newUpdateChannel
                     .then(flipperFirmwareVersion)
                     .then(isFlashExist)
                     .then(isAlwaysUpdate)
-            }.collectLatest { (updateChannel, flipperFirmwareVersion, isFlashExist, alwaysUpdate) ->
+                    .then(deeplinkWebUpdater)
+            }.collectLatest {
+                    (
+                        updateChannel, flipperFirmwareVersion,
+                        isFlashExist, alwaysUpdate, deeplinkWebUpdater
+                    ) ->
                 updateCardState(
                     updateChannel,
                     flipperFirmwareVersion,
                     latestVersionAsync,
                     isFlashExist,
-                    alwaysUpdate
+                    alwaysUpdate,
+                    deeplinkWebUpdater
                 )
             }
         }
@@ -151,7 +172,8 @@ class UpdateCardViewModel @VMInject constructor(
         flipperFirmwareVersion: FirmwareVersion?,
         latestVersionAsync: Deferred<Result<EnumMap<FirmwareChannel, VersionFiles>>>,
         isFlashExist: Boolean?,
-        alwaysShowUpdate: Boolean
+        alwaysShowUpdate: Boolean,
+        deeplinkWebUpdater: Deeplink.WebUpdate?
     ) {
         info { "Receive version from flipper $flipperFirmwareVersion" }
         if (flipperFirmwareVersion == null) {
@@ -172,6 +194,27 @@ class UpdateCardViewModel @VMInject constructor(
         val exception = latestVersionFromNetworkResult.exceptionOrNull()
         if (exception != null) {
             processNetworkException(exception)
+            return
+        }
+
+        if (deeplinkWebUpdater != null) {
+            val nameSlice = deeplinkWebUpdater.name.split(" ")
+            val name: String = if (nameSlice.size > 1) nameSlice[0] else deeplinkWebUpdater.name
+            val updateRequest = UpdateRequest(
+                updateFrom = flipperFirmwareVersion,
+                updateTo = FirmwareVersion(
+                    channel = FirmwareChannel.CUSTOM,
+                    version = name
+                ),
+                changelog = null,
+                content = WebUpdaterFirmware(deeplinkWebUpdater.url)
+            )
+            updateCardState.emit(
+                UpdateCardState.UpdateAvailable(
+                    update = updateRequest,
+                    isOtherChannel = true
+                )
+            )
             return
         }
 

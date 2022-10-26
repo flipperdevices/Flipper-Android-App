@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import com.flipperdevices.bottombar.api.BottomNavigationApi
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.navigation.delegates.OnBackPressListener
 import com.flipperdevices.core.navigation.delegates.RouterProvider
@@ -22,7 +21,6 @@ import com.flipperdevices.updater.api.UpdaterUIApi
 import com.github.terrakok.cicerone.Navigator
 import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.AppNavigator
-import java.util.EmptyStackException
 import java.util.Stack
 import javax.inject.Inject
 
@@ -110,13 +108,19 @@ class SingleActivity :
             return
         }
 
-        cicerone.getRouter().newRootScreen(bottomBarApi.getBottomNavigationFragment())
-        try {
-            val deeplink = deeplinkStack.pop()
-            info { "Process deeplink $deeplink" }
+        if (deeplinkStack.empty()) {
+            cicerone.getRouter().newRootScreen(bottomBarApi.getBottomNavigationFragment())
+            return
+        }
+
+        val deeplink = deeplinkStack.pop()
+        info { "Process deeplink $deeplink" }
+        if (deeplink.isInternal) {
+            val screen = bottomBarApi.getBottomNavigationFragment(deeplink)
+            cicerone.getRouter().newRootScreen(screen)
+        } else {
+            cicerone.getRouter().newRootScreen(bottomBarApi.getBottomNavigationFragment())
             deepLinkDispatcher.process(router, deeplink)
-        } catch (ignored: EmptyStackException) {
-            error { "Error on pop from deeplink ${ignored.message}" }
         }
     }
 

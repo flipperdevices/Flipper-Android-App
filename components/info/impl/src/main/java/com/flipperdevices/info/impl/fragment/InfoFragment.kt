@@ -1,14 +1,19 @@
 package com.flipperdevices.info.impl.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.navigation.delegates.OnBackPressListener
 import com.flipperdevices.core.ui.fragment.ComposeFragment
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.deeplink.model.Deeplink
+import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.flipperdevices.info.impl.api.InfoFeatureEntry
 import com.flipperdevices.info.impl.compose.InfoNavigation
 import com.flipperdevices.info.impl.di.InfoComponent
@@ -23,6 +28,9 @@ class InfoFragment : ComposeFragment(), OnBackPressListener {
 
     private var navController: NavHostController? = null
 
+    private val deeplink: Deeplink?
+        get() = arguments?.get(DeeplinkConstants.KEY) as? Deeplink
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ComponentHolder.component<InfoComponent>().inject(this)
@@ -32,6 +40,15 @@ class InfoFragment : ComposeFragment(), OnBackPressListener {
     override fun RenderView() {
         navController = rememberNavController()
         navController?.let {
+            LaunchedEffect(key1 = Unit) {
+                if (deeplink == null) return@LaunchedEffect
+                val intent = Intent().apply {
+                    action = Intent.ACTION_VIEW
+                    data = deeplink?.intent?.data
+                    putExtra("deeplink", deeplink)
+                }
+                it.handleDeepLink(intent = intent)
+            }
             InfoNavigation(
                 navController = it,
                 featureEntries = featureEntries,
@@ -51,4 +68,12 @@ class InfoFragment : ComposeFragment(), OnBackPressListener {
     }
 
     override fun getStatusBarColor(): Int = DesignSystem.color.accent
+
+    companion object {
+        fun newInstance(deeplink: Deeplink?): InfoFragment {
+            return InfoFragment().withArgs {
+                putParcelable(DeeplinkConstants.KEY, deeplink)
+            }
+        }
+    }
 }
