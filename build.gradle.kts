@@ -8,5 +8,4 @@ plugins {
     alias(libs.plugins.protobuf) apply false
     alias(libs.plugins.detekt) apply false
     alias(libs.plugins.ktlint) apply false
-    id("flipper.git-submodule-fetch")
 }

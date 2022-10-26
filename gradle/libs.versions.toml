@@ -55,7 +55,7 @@ countly = "22.06.0"
 ktlint-runtime = "0.45.2"
 ktlint-gradle = "10.2.0"
 detekt-gradle = "1.21.0"
-grgit-gradle = "13957bfc21"
+grgit-gradle = "8d818b74b9"
 tangle = "0.15.1"
 work = "2.7.1"
 

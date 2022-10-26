@@ -3,6 +3,7 @@ plugins {
     id("flipper.android-lib")
     id("com.squareup.anvil")
     id("kotlin-kapt")
+    id("flipper.git-submodule-fetch")
 }
 
 android {

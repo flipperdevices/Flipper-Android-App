@@ -1,3 +1,4 @@
+import com.android.build.gradle.internal.tasks.factory.dependsOn
 import org.ajoberstar.grgit.gradle.GrgitService
 
 plugins {
@@ -15,6 +16,8 @@ abstract class SubmoduleUpdateTask : DefaultTask() {
     }
 }
 
-tasks.register<SubmoduleUpdateTask>("submoduleUpdate") {
+val registeredTask = tasks.register<SubmoduleUpdateTask>("submoduleUpdate") {
     service.set(grgitService.service)
 }
+
+tasks.named("preBuild").dependsOn(registeredTask)
