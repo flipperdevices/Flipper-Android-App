@@ -9,6 +9,7 @@ dependencies {
     implementation(libs.ktlint.gradle)
     implementation(libs.sentry.gradle)
     implementation(libs.protobuf.gradle)
+    implementation(libs.grgit.gradle)
 
     implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 }

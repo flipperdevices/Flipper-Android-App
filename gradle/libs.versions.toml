@@ -55,6 +55,7 @@ countly = "22.06.0"
 ktlint-runtime = "0.45.2"
 ktlint-gradle = "10.2.0"
 detekt-gradle = "1.21.0"
+grgit-gradle = "13957bfc21"
 tangle = "0.15.1"
 work = "2.7.1"
 
@@ -74,6 +75,8 @@ kotlin-compiler = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", 
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-general" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin-general" }
 kotlin-stdlib-jdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin-general" }
+
+grgit-gradle = { module = "com.github.LionZXY:grgit", version.ref = "grgit-gradle" }
 
 kotlin-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx" }
 kotlin-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinx" }
@@ -209,6 +212,8 @@ wear-interaction-remote = { module = "androidx.wear:wear-remote-interactions", v
 
 # Work manager
 work-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "work" }
+
+
 
 [plugins]
 android-app = { id = "com.android.application", version.ref = "android-gradle" }
