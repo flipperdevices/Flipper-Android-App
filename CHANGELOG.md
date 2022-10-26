@@ -5,6 +5,7 @@
 - [REFACTOR] Migrate widgets to WorkManager
 - [Feature] Add mfkey32 attack in debug/options
 - [Feature] Add HUB tab
+- [CI] Auto git submodule update via gradle task
 - [FIX] WearOS connection
 - [FIX] Screen streaming broke
 
