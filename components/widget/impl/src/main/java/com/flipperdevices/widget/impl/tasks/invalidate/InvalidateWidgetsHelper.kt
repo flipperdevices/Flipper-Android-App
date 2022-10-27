@@ -18,13 +18,13 @@ interface InvalidateWidgetsHelper {
 }
 
 @ContributesBinding(AppGraph::class, InvalidateWidgetsHelper::class)
-class InvalidateWidgetsTaskImpl @Inject constructor(
+class InvalidateWidgetHelperImpl @Inject constructor(
     private val widgetDataApi: WidgetDataApi,
     private val context: Context,
     private val rendererMap: MutableMap<WidgetState, WidgetStateRenderer>,
     private val widgetStateStorage: WidgetStateStorage
 ) : InvalidateWidgetsHelper, LogTagProvider {
-    override val TAG = "InvalidateWidgetsTask"
+    override val TAG = "InvalidateWidgetsHelper"
 
     private val appWidgetManager by lazy { AppWidgetManager.getInstance(context) }
 

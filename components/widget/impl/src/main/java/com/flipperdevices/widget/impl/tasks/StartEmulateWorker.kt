@@ -74,7 +74,11 @@ class StartEmulateWorker(
                 return@withCoroutineScope Result.failure()
             }
 
-            startEmulate(scope, serviceApi.requestApi, filePath)
+            if (!startEmulate(scope, serviceApi.requestApi, filePath)) {
+                widgetStateStorage.updateState(widgetId, WidgetState.ERROR_UNKNOWN)
+                invalidateWidgetsHelper.invoke()
+                return@withCoroutineScope Result.failure()
+            }
         } catch (flipperBusy: AlreadyOpenedAppException) {
             error(flipperBusy) { "Flipper busy $inputData" }
             widgetStateStorage.updateState(widgetId, WidgetState.ERROR_FLIPPER_BUSY)
@@ -96,10 +100,10 @@ class StartEmulateWorker(
         scope: CoroutineScope,
         requestApi: FlipperRequestApi,
         filePath: FlipperFilePath
-    ) {
+    ): Boolean {
         info { "Start emulate" }
         val keyType = filePath.keyType ?: error("Not found key type")
-        emulateHelper.startEmulate(scope, requestApi, keyType, filePath)
+        return emulateHelper.startEmulate(scope, requestApi, keyType, filePath)
     }
 
     private fun getFilePath(): FlipperFilePath {

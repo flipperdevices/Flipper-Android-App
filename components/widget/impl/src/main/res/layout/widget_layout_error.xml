@@ -1,57 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:background="@drawable/background"
+
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        tools:theme="@style/Widget.Flipper.Send.InProgress">
-
+        android:orientation="vertical">
 
     <ImageView
             android:id="@+id/error_btn"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
+            android:layout_gravity="end"
             android:layout_height="18dp"
-            android:layout_margin="6dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="6dp"
             android:layout_width="18dp"
             android:src="@drawable/ic_warning" />
 
-    <LinearLayout
-            android:layout_height="match_parent"
+    <TextView
+            android:gravity="center"
+            android:id="@+id/error_text"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:layout_width="match_parent"
-            android:orientation="vertical">
+            android:paddingBottom="2dp"
+            android:textAlignment="center"
+            android:textColor="@color/text_color"
+            android:textSize="10sp"
+            tools:ignore="SmallSp"
+            tools:text="@string/widget_err_cant_connect" />
+
+    <FrameLayout
+            android:background="@drawable/btn_flpr_background"
+            android:id="@+id/button"
+            android:layout_height="40dp"
+            android:layout_marginBottom="6dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginStart="6dp"
+            android:layout_width="match_parent">
 
         <TextView
-                android:gravity="center"
-                android:id="@+id/error_text"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:paddingBottom="2dp"
-                android:textAlignment="center"
-                android:textColor="@color/text_color"
-                android:textSize="10sp"
-                tools:ignore="SmallSp"
-                tools:text="@string/widget_err_cant_connect" />
-
-        <FrameLayout
-                android:background="@drawable/btn_flpr_background"
-                android:id="@+id/button"
-                android:layout_height="40dp"
-                android:layout_marginBottom="6dp"
-                android:layout_marginEnd="6dp"
-                android:layout_marginStart="6dp"
-                android:layout_width="match_parent">
-
-            <TextView
-                    android:id="@+id/button_txt"
-                    android:layout_gravity="center"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:textColor="@color/widget_btn_text_color"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    tools:text="@string/widget_err_retry_btn" />
-        </FrameLayout>
-    </LinearLayout>
-</RelativeLayout>
+                android:id="@+id/button_txt"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textColor="@color/widget_btn_text_color"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                tools:text="@string/widget_err_retry_btn" />
+    </FrameLayout>
+</LinearLayout>

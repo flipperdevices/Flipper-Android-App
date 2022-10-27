@@ -63,6 +63,7 @@ class WaitingForFlipperConnectWorker(
         val serviceApi = serviceProvider.getServiceApi()
 
         try {
+            serviceApi.connectIfNotForceDisconnect()
             withTimeout(WAIT_FLIPPER_TIMEOUT_MS) {
                 serviceApi.connectionInformationApi.getConnectionStateFlow().filter {
                     it is ConnectionState.Ready

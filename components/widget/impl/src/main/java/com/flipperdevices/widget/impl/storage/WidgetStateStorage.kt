@@ -47,7 +47,8 @@ class WidgetStateStorageImpl @Inject constructor(
     override suspend fun getState(
         widgetId: Int
     ): WidgetState = withLockResult(mutex, "get") {
-        info { "Get widget state for $widgetId" }
+        val state = stateMap[widgetId]
+        info { "Get widget state for $widgetId, state: $state" }
         val widgetData = widgetDataApi.getWidgetDataByWidgetId(widgetId)
         val widgetKeyPath = widgetData?.flipperKeyPath
         if (widgetKeyPath != null) {
@@ -61,6 +62,7 @@ class WidgetStateStorageImpl @Inject constructor(
             }
         }
 
-        return@withLockResult stateMap[widgetId] ?: WidgetState.PENDING
+
+        return@withLockResult state ?: WidgetState.PENDING
     }
 }
