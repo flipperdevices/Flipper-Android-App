@@ -32,5 +32,5 @@ enum class DuplicatedSource {
 data class FoundedKey(
     val sectorName: String,
     val keyName: String,
-    val key: String
+    val key: String?
 )

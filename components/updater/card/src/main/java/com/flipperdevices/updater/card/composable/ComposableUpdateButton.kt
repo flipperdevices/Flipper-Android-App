@@ -60,7 +60,7 @@ fun ComposableUpdateButton(
             descriptionId = R.string.updater_card_updater_button_no_updates_desc,
             color = LocalPallet.current.text20
         )
-        is UpdateCardState.CustomUpdate -> ComposableUpdateButtonContentChooseFile(
+        is UpdateCardState.UpdateFromFile -> ComposableUpdateButtonContentChooseFile(
             buttonModifier = buttonModifier,
             updateCardState = updateCardState,
             onChoose = { pendingUpdateRequest = it }

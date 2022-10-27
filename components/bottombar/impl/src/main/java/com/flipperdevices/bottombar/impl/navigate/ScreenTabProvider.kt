@@ -1,6 +1,7 @@
 package com.flipperdevices.bottombar.impl.navigate
 
 import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
+import com.flipperdevices.deeplink.model.Deeplink
 import com.github.terrakok.cicerone.Screen
 
 /**
@@ -10,5 +11,5 @@ interface ScreenTabProvider {
     /**
      * @return screen which associated with tab
      */
-    fun getScreen(tab: FlipperBottomTab): Screen
+    fun getScreen(tab: FlipperBottomTab, deeplink: Deeplink?): Screen
 }

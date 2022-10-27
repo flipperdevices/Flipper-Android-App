@@ -23,7 +23,7 @@ fun ComposableUpdateButtonContentChooseFile(
 ) {
     val context = LocalContext.current
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        if (uri != null && updateCardState is UpdateCardState.CustomUpdate) {
+        if (uri != null && updateCardState is UpdateCardState.UpdateFromFile) {
             onChoose(UpdatePending.URI(uri, context, updateCardState.flipperVersion))
         }
     }

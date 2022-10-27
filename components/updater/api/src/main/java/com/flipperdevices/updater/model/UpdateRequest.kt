@@ -17,7 +17,6 @@ data class UpdateRequest(
 sealed class UpdateContent : Parcelable {
     abstract fun folderName(): String
 }
-
 class OfficialFirmware(
     val distributionFile: DistributionFile
 ) : UpdateContent() {
