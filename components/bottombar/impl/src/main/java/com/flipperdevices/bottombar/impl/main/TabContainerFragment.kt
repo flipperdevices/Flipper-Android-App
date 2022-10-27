@@ -12,9 +12,12 @@ import com.flipperdevices.bottombar.impl.main.subnavigation.OnDoublePressOnTab
 import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
 import com.flipperdevices.bottombar.impl.navigate.ScreenTabProvider
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.navigation.delegates.OnBackPressListener
 import com.flipperdevices.core.navigation.delegates.RouterProvider
 import com.flipperdevices.core.ui.fragment.provider.StatusBarColorProvider
+import com.flipperdevices.deeplink.model.Deeplink
+import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.github.terrakok.cicerone.Cicerone
 import com.github.terrakok.cicerone.Navigator
 import com.github.terrakok.cicerone.Router
@@ -40,6 +43,8 @@ class TabContainerFragment :
 
     private val containerTab: FlipperBottomTab
         get() = requireArguments().getSerializable(EXTRA_NAME) as FlipperBottomTab
+    private val deeplink: Deeplink?
+        get() = arguments?.get(DeeplinkConstants.KEY) as? Deeplink
 
     private val cicerone: Cicerone<Router> by lazy { ciceroneHolder.getCicerone(containerTab) }
     override val router: Router by lazy { cicerone.router }
@@ -60,7 +65,7 @@ class TabContainerFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (childFragmentManager.findFragmentById(R.id.container) == null) {
-            router.replaceScreen(screenTabProvider.getScreen(containerTab))
+            router.replaceScreen(screenTabProvider.getScreen(containerTab, deeplink))
         }
     }
 
@@ -94,17 +99,16 @@ class TabContainerFragment :
     }
 
     override fun onDoublePress() {
-        router.newRootScreen(screenTabProvider.getScreen(containerTab))
+        router.newRootScreen(screenTabProvider.getScreen(containerTab, deeplink))
     }
 
     companion object {
         private const val EXTRA_NAME = "tab_extra_name"
 
-        fun getNewInstance(tab: FlipperBottomTab) =
-            TabContainerFragment().apply {
-                arguments = Bundle().apply {
-                    putSerializable(EXTRA_NAME, tab)
-                }
+        fun getNewInstance(tab: FlipperBottomTab, deeplink: Deeplink?) =
+            TabContainerFragment().withArgs {
+                putSerializable(EXTRA_NAME, tab)
+                putParcelable(DeeplinkConstants.KEY, deeplink)
             }
     }
 }

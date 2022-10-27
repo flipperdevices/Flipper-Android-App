@@ -22,6 +22,7 @@ import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
 import com.flipperdevices.connection.api.ConnectionApi
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.setStatusBarColor
+import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.ktx.jre.runBlockingWithLog
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.navigation.delegates.OnBackPressListener
@@ -29,6 +30,8 @@ import com.flipperdevices.core.preference.pb.SelectedTab
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.fragment.provider.StatusBarColorProvider
 import com.flipperdevices.core.ui.theme.FlipperTheme
+import com.flipperdevices.deeplink.model.Deeplink
+import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.flipperdevices.inappnotification.api.InAppNotificationRenderer
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first
@@ -49,6 +52,9 @@ class BottomNavigationFragment : Fragment(), OnBackPressListener, LogTagProvider
 
     @Inject
     lateinit var settingsDataStore: DataStore<Settings>
+
+    private val deeplink: Deeplink?
+        get() = arguments?.get(DeeplinkConstants.KEY) as? Deeplink
 
     init {
         ComponentHolder.component<BottomBarComponent>().inject(this)
@@ -126,7 +132,7 @@ class BottomNavigationFragment : Fragment(), OnBackPressListener, LogTagProvider
         if (newFragment == null) {
             transaction.add(
                 R.id.fragment_container,
-                TabContainerFragment.getNewInstance(tab),
+                TabContainerFragment.getNewInstance(tab, deeplink),
                 tabName
             )
         }
@@ -164,5 +170,13 @@ class BottomNavigationFragment : Fragment(), OnBackPressListener, LogTagProvider
     override fun onBackPressed(): Boolean {
         val currentFragment = childFragmentManager.fragments.find { it.isVisible } ?: return false
         return (currentFragment as? OnBackPressListener)?.onBackPressed() ?: false
+    }
+
+    companion object {
+        fun newInstance(deeplink: Deeplink?): BottomNavigationFragment {
+            return BottomNavigationFragment().withArgs {
+                putParcelable(DeeplinkConstants.KEY, deeplink)
+            }
+        }
     }
 }

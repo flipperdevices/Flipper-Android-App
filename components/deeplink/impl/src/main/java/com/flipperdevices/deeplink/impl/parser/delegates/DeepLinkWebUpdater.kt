@@ -7,10 +7,11 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.deeplink.api.DeepLinkParserDelegate
 import com.flipperdevices.deeplink.model.DeepLinkParserDelegatePriority
 import com.flipperdevices.deeplink.model.Deeplink
+import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.squareup.anvil.annotations.ContributesMultibinding
 import javax.inject.Inject
 
-private const val HOST = "my.flipp.dev"
+private val HOSTS = listOf(DeeplinkConstants.LAB_FLIPPER_NET, DeeplinkConstants.MY_FLIPPER_DEV)
 private const val QUERY_URL = "url"
 private const val QUERY_VERSION = "version"
 private const val QUERY_CHANNEL = "channel"
@@ -26,7 +27,7 @@ class DeepLinkWebUpdater @Inject constructor() : DeepLinkParserDelegate, LogTagP
         if (intent.data == null) {
             return DeepLinkParserDelegatePriority.LOW
         }
-        if (intent.data?.host == HOST) {
+        if (HOSTS.contains(intent.data?.host)) {
             return DeepLinkParserDelegatePriority.HIGH
         }
         return DeepLinkParserDelegatePriority.LAST_CHANCE
@@ -37,6 +38,6 @@ class DeepLinkWebUpdater @Inject constructor() : DeepLinkParserDelegate, LogTagP
         val link = uri.getQueryParameter(QUERY_URL) ?: return null
         val version = uri.getQueryParameter(QUERY_VERSION) ?: ""
         val channel = uri.getQueryParameter(QUERY_CHANNEL) ?: ""
-        return Deeplink.WebUpdate(link, "$channel $version")
+        return Deeplink.WebUpdate(link, "$channel $version", intent)
     }
 }
