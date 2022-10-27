@@ -58,7 +58,7 @@ fun ComposableMfKey32NotFound() = Column(
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 14.dp),
+                .padding(horizontal = 14.dp, vertical = 10.dp),
             text = annotatedStringFromMarkdown(resId),
             textAlign = TextAlign.Center,
             style = LocalTypography.current.bodyR14,

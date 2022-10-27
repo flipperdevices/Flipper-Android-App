@@ -1,5 +1,6 @@
 package com.flipperdevices.nfc.attack.impl.composable.elements
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,7 +26,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.nfc.attack.impl.R
@@ -129,7 +129,7 @@ private fun MifareClassicMfKey32(
 
     Icon(
         modifier = Modifier.padding(start = 8.dp, end = 8.dp),
-        painter = painterResource(id = DesignSystem.drawable.ic_navigate_icon),
+        painter = painterResource(id = DesignSystem.drawable.ic_navigate),
         contentDescription = stringResource(R.string.nfcattack_mifare_classic_mfkey32_title),
         tint = LocalPallet.current.iconTint30
     )

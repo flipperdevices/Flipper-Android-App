@@ -1,5 +1,6 @@
 package com.flipperdevices.settings.impl.composable.elements
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -14,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 
 @Composable
@@ -37,8 +37,10 @@ fun ClickableElement(
             descriptionId = descriptionId
         )
         Icon(
-            modifier = Modifier.size(size = 42.dp).padding(16.dp),
-            painter = painterResource(DesignSystem.drawable.ic_navigate_icon),
+            modifier = Modifier
+                .size(size = 42.dp)
+                .padding(16.dp),
+            painter = painterResource(DesignSystem.drawable.ic_navigate),
             tint = LocalPallet.current.iconTint30,
             contentDescription = null
         )
