@@ -11,7 +11,6 @@ import com.flipperdevices.widget.impl.tasks.invalidate.renderer.WidgetStateRende
 import com.squareup.anvil.annotations.ContributesMultibinding
 import javax.inject.Inject
 
-
 @WidgetRendererOf(WidgetState.ERROR_NOT_SYNCED)
 @ContributesMultibinding(AppGraph::class, WidgetStateRenderer::class)
 class NotSyncedWidgetStateRender @Inject constructor(

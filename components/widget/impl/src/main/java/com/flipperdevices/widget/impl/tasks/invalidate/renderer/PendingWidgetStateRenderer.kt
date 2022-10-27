@@ -1,6 +1,5 @@
 package com.flipperdevices.widget.impl.tasks.invalidate.renderer
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import android.content.Context
 import android.view.View
 import android.widget.RemoteViews
@@ -8,6 +7,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.widget.impl.R
 import com.flipperdevices.widget.impl.broadcast.WidgetBroadcastReceiver
 import com.flipperdevices.widget.impl.model.WidgetRendererOf

@@ -19,7 +19,7 @@ import javax.inject.Inject
 @ContributesMultibinding(AppGraph::class, WidgetStateRenderer::class)
 class NotInitializeWidgetStateRenderer @Inject constructor(
     private val context: Context,
-    private val applicationParams: ApplicationParams,
+    private val applicationParams: ApplicationParams
 ) : WidgetStateRenderer, LogTagProvider {
     override val TAG = "NotInitializeWidgetStateRenderer"
 

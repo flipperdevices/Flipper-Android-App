@@ -10,7 +10,6 @@ import com.flipperdevices.widget.impl.tasks.invalidate.renderer.WidgetStateRende
 import com.squareup.anvil.annotations.ContributesMultibinding
 import javax.inject.Inject
 
-
 @WidgetRendererOf(WidgetState.ERROR_BT_NOT_ENABLED)
 @ContributesMultibinding(AppGraph::class, WidgetStateRenderer::class)
 class BtTurnOffWidgetStateRenderer @Inject constructor(

@@ -31,7 +31,8 @@ abstract class RetryErrorWidgetStateRenderer(
             )
             setOnClickPendingIntent(R.id.button, startIntent)
             setOnClickPendingIntent(
-                R.id.error_btn, PendingIntent.getActivity(
+                R.id.error_btn,
+                PendingIntent.getActivity(
                     context,
                     widgetId,
                     deepLinkOpenKey.getIntentForOpenKey(flipperKeyPath),

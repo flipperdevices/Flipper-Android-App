@@ -62,7 +62,6 @@ class WidgetStateStorageImpl @Inject constructor(
             }
         }
 
-
         return@withLockResult state ?: WidgetState.PENDING
     }
 }
