@@ -129,7 +129,7 @@ private fun MifareClassicMfKey32(
 
     Icon(
         modifier = Modifier.padding(start = 8.dp, end = 8.dp),
-        painter = painterResource(id = DesignSystem.drawable.ic_navigate_icon),
+        painter = painterResource(id = DesignSystem.drawable.ic_navigate),
         contentDescription = stringResource(R.string.nfcattack_mifare_classic_mfkey32_title),
         tint = LocalPallet.current.iconTint30
     )

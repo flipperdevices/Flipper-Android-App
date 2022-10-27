@@ -5,8 +5,12 @@
 - [REFACTOR] Migrate widgets to WorkManager
 - [Feature] Add mfkey32 attack in debug/options
 - [Feature] Add HUB tab
+- [Feature] Add error screen on mfkey32
+- [Feature] Not found if key not found in mfkey32
+- [Feature] Fix format for user keys
 - [Feature] Updater card display update from url
 - [CI] Auto git submodule update via gradle task
+- [FIX] Options button in device screen
 - [FIX] WearOS connection
 - [FIX] Screen streaming broke
 

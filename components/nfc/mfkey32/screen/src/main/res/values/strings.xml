@@ -13,8 +13,18 @@
     <string name="mfkey32_complete_desc">Keys have been added to User Dict.</string>
 
     <string name="mfkey32_founded_all_title">Calculated Keys (%1$s)</string>
+    <string name="mfkey32_founded_all_not_found">Not found</string>
     <string name="mfkey32_founded_unique_title">Unique (%1$s)</string>
     <string name="mfkey32_founded_duplicated_title">Duplicated (%1$s)</string>
     <string name="mfkey32_founded_duplicated_flipper">Found in Flipper Dict.</string>
     <string name="mfkey32_founded_duplicated_user">Found in User Dict.</string>
+
+    <string name="mfkey32_not_found_title">Reader Data Not Found</string>
+    <string name="mfkey32_not_found_desc">To extract keys from the reader you first need to collect nonces with your Flipper Zero:</string>
+    <string name="mfkey32_not_found_md_1">1. On your Flipper Zero go to **NFC → Detect Reader**</string>
+    <string name="mfkey32_not_found_md_2">2. Hold Flipper Zero close to the reader</string>
+    <string name="mfkey32_not_found_md_3">3. Wait until you collect enough nonсes</string>
+    <string name="mfkey32_not_found_md_4">4. Сomplete nonce collection</string>
+    <string name="mfkey32_not_found_md_5">5. In Flipper Mobile App synchronize with your Flipper Zero and run the **Mfkey32 (Detect Reader)**</string>
+
 </resources>

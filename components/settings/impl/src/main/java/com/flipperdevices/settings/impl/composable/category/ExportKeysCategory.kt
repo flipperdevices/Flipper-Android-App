@@ -57,7 +57,7 @@ private fun ExportKeysElement(
                 modifier = Modifier
                     .size(size = 42.dp)
                     .padding(16.dp),
-                painter = painterResource(DesignSystem.drawable.ic_navigate_icon),
+                painter = painterResource(DesignSystem.drawable.ic_navigate),
                 tint = LocalPallet.current.iconTint30,
                 contentDescription = null
             )

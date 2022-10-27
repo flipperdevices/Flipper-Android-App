@@ -105,7 +105,7 @@ private fun NfcAttackDescription() = Row(
     }
     Icon(
         modifier = Modifier.padding(start = 8.dp, end = 8.dp),
-        painter = painterResource(id = DesignSystem.drawable.ic_navigate_icon),
+        painter = painterResource(id = DesignSystem.drawable.ic_navigate),
         contentDescription = stringResource(R.string.hub_hfc_title),
         tint = LocalPallet.current.iconTint30
     )
