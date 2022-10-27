@@ -38,7 +38,8 @@ fun ComposableMfKey32NotFound() = Column(
             if (MaterialTheme.colors.isLight) {
                 R.drawable.pic_flipper_nfc_detect_reader_white
             } else R.drawable.pic_flipper_nfc_detect_reader_black
-        ), contentDescription = stringResource(R.string.mfkey32_not_found_title)
+        ),
+        contentDescription = stringResource(R.string.mfkey32_not_found_title)
     )
     Text(
         modifier = Modifier.padding(top = 32.dp, bottom = 14.dp),
@@ -65,7 +66,6 @@ fun ComposableMfKey32NotFound() = Column(
             color = LocalPallet.current.text40
         )
     }
-
 }
 
 @Preview(
@@ -74,7 +74,7 @@ fun ComposableMfKey32NotFound() = Column(
 )
 @Composable
 private fun ComposableMfKey32NotFoundPreview() {
-    FlipperThemeInternal() {
+    FlipperThemeInternal {
         ComposableMfKey32NotFound()
     }
 }
