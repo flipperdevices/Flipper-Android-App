@@ -12,7 +12,7 @@ sealed class UpdateCardState {
         val isOtherChannel: Boolean
     ) : UpdateCardState()
 
-    data class CustomUpdate(
+    data class UpdateFromFile(
         val flipperVersion: FirmwareVersion,
         val updateVersion: FirmwareVersion
     ) : UpdateCardState()
