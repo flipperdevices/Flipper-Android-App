@@ -1,6 +1,7 @@
 package com.flipperdevices.nfc.mfkey32.screen.model
 
 import androidx.compose.runtime.Stable
+import com.flipperdevices.core.preference.pb.HardwareColor
 
 sealed class MfKey32State {
     data class DownloadingRawFile(
@@ -14,7 +15,7 @@ sealed class MfKey32State {
     object Uploading : MfKey32State()
     class Saved(val keys: List<String>) : MfKey32State()
 
-    object Error : MfKey32State()
+    data class Error(val color: HardwareColor) : MfKey32State()
 }
 
 @Stable

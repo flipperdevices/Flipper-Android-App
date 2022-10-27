@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,13 +15,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.markdown.annotatedStringFromMarkdown
+import com.flipperdevices.core.preference.pb.HardwareColor
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.nfc.mfkey32.screen.R
 
 @Composable
-fun ComposableMfKey32NotFound() = Column(
+fun ComposableMfKey32NotFound(color: HardwareColor) = Column(
     modifier = Modifier.fillMaxHeight(),
     horizontalAlignment = Alignment.CenterHorizontally
 ) {
@@ -35,9 +35,9 @@ fun ComposableMfKey32NotFound() = Column(
     )
     Image(
         painter = painterResource(
-            if (MaterialTheme.colors.isLight) {
-                R.drawable.pic_flipper_nfc_detect_reader_white
-            } else R.drawable.pic_flipper_nfc_detect_reader_black
+            if (color == HardwareColor.BLACK) {
+                R.drawable.pic_flipper_nfc_detect_reader_black
+            } else R.drawable.pic_flipper_nfc_detect_reader_white
         ),
         contentDescription = stringResource(R.string.mfkey32_not_found_title)
     )
@@ -75,6 +75,6 @@ fun ComposableMfKey32NotFound() = Column(
 @Composable
 private fun ComposableMfKey32NotFoundPreview() {
     FlipperThemeInternal {
-        ComposableMfKey32NotFound()
+        ComposableMfKey32NotFound(HardwareColor.BLACK)
     }
 }

@@ -27,4 +27,8 @@
     <string name="mfkey32_not_found_md_4">4. Сomplete nonce collection</string>
     <string name="mfkey32_not_found_md_5">5. In Flipper Mobile App synchronize with your Flipper Zero and run the **Mfkey32 (Detect Reader)**</string>
 
+    <string name="nfc_reader_tool_dialog_title">Abort Keys Calculation?</string>
+    <string name="nfc_reader_tool_dialog_desc">You can restart it later</string>
+    <string name="nfc_reader_tool_dialog_abort">Abort</string>
+    <string name="nfc_reader_tool_dialog_cont">Continue</string>
 </resources>

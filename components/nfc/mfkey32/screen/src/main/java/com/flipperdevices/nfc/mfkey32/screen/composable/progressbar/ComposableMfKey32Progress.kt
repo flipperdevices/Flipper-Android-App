@@ -1,5 +1,6 @@
 package com.flipperdevices.nfc.mfkey32.screen.composable.progressbar
 
+import androidx.activity.compose.BackHandler
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.core.LinearEasing
@@ -18,6 +19,9 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,6 +29,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialog
+import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialogModel
 import com.flipperdevices.core.ui.ktx.ComposableFlipperButton
 import com.flipperdevices.core.ui.ktx.FlipperProgressIndicator
 import com.flipperdevices.core.ui.res.R as DesignSystem
@@ -42,7 +48,7 @@ fun ComposableMfKey32Progress(navController: NavController, state: MfKey32State)
             iconId = DesignSystem.drawable.pic_key,
             percent = state.percent,
             accentColor = LocalPallet.current.calculationMfKey32,
-            secondColor = LocalPallet.current.calculationMfKey32Background
+            secondColor = LocalPallet.current.calculationMfKey32Background,
         )
         is MfKey32State.DownloadingRawFile -> ComposableMfKey32ProgressInternal(
             titleId = R.string.mfkey32_downloading_title,
@@ -50,7 +56,7 @@ fun ComposableMfKey32Progress(navController: NavController, state: MfKey32State)
             iconId = DesignSystem.drawable.pic_download,
             percent = state.percent,
             accentColor = LocalPallet.current.actionOnFlipperEnable,
-            secondColor = LocalPallet.current.actionOnFlipperProgress
+            secondColor = LocalPallet.current.actionOnFlipperProgress,
         )
         MfKey32State.Uploading -> ComposableMfKey32ProgressInternal(
             titleId = R.string.mfkey32_uploading_title,
@@ -58,10 +64,10 @@ fun ComposableMfKey32Progress(navController: NavController, state: MfKey32State)
             iconId = DesignSystem.drawable.pic_key,
             percent = null,
             accentColor = LocalPallet.current.calculationMfKey32,
-            secondColor = LocalPallet.current.calculationMfKey32Background
+            secondColor = LocalPallet.current.calculationMfKey32Background,
         )
-        MfKey32State.Error -> {
-            ComposableMfKey32NotFound()
+        is MfKey32State.Error -> {
+            ComposableMfKey32NotFound(state.color)
             return
         }
         is MfKey32State.Saved -> CompleteAttack(state.keys, navController::popBackStack)

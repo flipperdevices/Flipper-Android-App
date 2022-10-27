@@ -1,6 +1,7 @@
 package com.flipperdevices.nfc.mfkey32.screen.viewmodel
 
 import android.content.Context
+import androidx.datastore.core.DataStore
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.wrapToRequest
@@ -11,6 +12,8 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.FlipperStorageProvider
+import com.flipperdevices.core.preference.pb.HardwareColor
+import com.flipperdevices.core.preference.pb.PairSettings
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.nfc.mfkey32.api.MfKey32Api
 import com.flipperdevices.nfc.mfkey32.screen.model.FoundedInformation
@@ -28,6 +31,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tangle.viewmodel.VMInject
@@ -39,6 +43,7 @@ class MfKey32ViewModel @VMInject constructor(
     context: Context,
     private val nfcToolsApi: NfcToolsApi,
     private val mfKey32Api: MfKey32Api,
+    private val settings: DataStore<PairSettings>,
     flipperServiceProvider: FlipperServiceProvider
 ) : LifecycleViewModel(), LogTagProvider, FlipperBleServiceConsumer {
     override val TAG = "MfKey32ViewModel"
@@ -72,7 +77,8 @@ class MfKey32ViewModel @VMInject constructor(
                 }
             } catch (notFoundException: FileNotFoundException) {
                 error(notFoundException) { "Not found $PATH_NONCE_LOG" }
-                mfKey32StateFlow.emit(MfKey32State.Error)
+                val color = settings.data.first().hardwareColor
+                mfKey32StateFlow.emit(MfKey32State.Error(color))
                 return@launch
             }
             existedKeysStorage.load(serviceApi.requestApi)
