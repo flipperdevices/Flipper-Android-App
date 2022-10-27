@@ -7,10 +7,11 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.deeplink.api.DeepLinkParserDelegate
 import com.flipperdevices.deeplink.model.DeepLinkParserDelegatePriority
 import com.flipperdevices.deeplink.model.Deeplink
+import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.squareup.anvil.annotations.ContributesMultibinding
 import javax.inject.Inject
 
-private val HOSTS = listOf("my.flipp.dev", "lab.flipper.net")
+private val HOSTS = listOf(DeeplinkConstants.LAB_FLIPPER_NET, DeeplinkConstants.MY_FLIPPER_DEV)
 private const val QUERY_URL = "url"
 private const val QUERY_VERSION = "version"
 private const val QUERY_CHANNEL = "channel"
