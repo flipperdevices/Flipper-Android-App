@@ -2,7 +2,7 @@ package com.flipperdevices.widget.impl.di
 
 import com.flipperdevices.bridge.dao.api.delegates.WidgetDataApi
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.keyscreen.api.EmulateHelper
+import com.flipperdevices.keyscreen.api.emulate.EmulateHelper
 import com.flipperdevices.widget.impl.providers.BaseWidgetProvider
 import com.flipperdevices.widget.impl.storage.WidgetStateStorage
 import com.flipperdevices.widget.impl.tasks.StartEmulateWorker

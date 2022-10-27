@@ -52,13 +52,6 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content" />
         </FrameLayout>
-
-        <ImageView
-                android:id="@+id/error_btn"
-                android:layout_height="18dp"
-                android:layout_width="18dp"
-                android:src="@drawable/ic_warning"
-                android:visibility="gone" />
     </FrameLayout>
 
     <LinearLayout

@@ -7,6 +7,16 @@
     <string name="img_disable_btn">Disable button</string>
     <string name="img_add_btn">Add key</string>
     <string name="widget_description">Emulate Flipper’s keys, cards and signals remotely</string>
+    <string name="widget_err_cant_connect">Can’t Connect to Flipper</string>
+    <string name="widget_err_bt_turn_off">Bluetooth is Turned Off</string>
+    <string name="widget_err_busy">Flipper is Busy</string>
+    <string name="widget_err_not_synced">This Key is not Synced</string>
+    <string name="widget_err_deleted">This Key is Deleted</string>
+    <string name="widget_err_unknown">Error during key emulation</string>
+
+    <string name="widget_err_retry_btn">Retry</string>
+    <string name="widget_err_customize_btn">Customize</string>
+
 
     <string name="notification_widget_channel_name">Widget update</string>
     <string name="notification_widget_channel_desc">The notification channel, which is used for the internal mechanisms of the widget update</string>

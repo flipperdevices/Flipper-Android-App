@@ -1,6 +1,9 @@
 package com.flipperdevices.widget.impl.tasks
 
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothManager
 import android.content.Context
+import androidx.core.content.ContextCompat
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
@@ -19,7 +22,7 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withTimeout
 
-private const val WAIT_FLIPPER_TIMEOUT_MS = 60 * 1000L // 1 min
+private const val WAIT_FLIPPER_TIMEOUT_MS = 10 * 1000L // 10 sec
 private const val DEFAULT_WIDGET_APP_ID = -1
 
 class WaitingForFlipperConnectWorker(
@@ -48,10 +51,19 @@ class WaitingForFlipperConnectWorker(
         if (widgetId < 0) {
             error("Widget id less then zero")
         }
+
+        if (!isBluetoothEnabled()) {
+            error { "Failed emulate because bt not enabled" }
+            widgetStorage.updateState(widgetId, WidgetState.ERROR_BT_NOT_ENABLED)
+            invalidateWidgetsHelper.invoke()
+            return Result.failure()
+        }
+
         setForegroundAsync(widgetNotificationHelper.waitingFlipperForegroundInfo(id))
         val serviceApi = serviceProvider.getServiceApi()
 
         try {
+            serviceApi.connectIfNotForceDisconnect()
             withTimeout(WAIT_FLIPPER_TIMEOUT_MS) {
                 serviceApi.connectionInformationApi.getConnectionStateFlow().filter {
                     it is ConnectionState.Ready
@@ -59,10 +71,18 @@ class WaitingForFlipperConnectWorker(
             }
         } catch (timeout: TimeoutCancellationException) {
             error(timeout) { "Can't connect to flipper within $WAIT_FLIPPER_TIMEOUT_MS ms" }
-            widgetStorage.updateState(widgetId, WidgetState.ERROR)
+            widgetStorage.updateState(widgetId, WidgetState.ERROR_OUT_OF_RANGE)
             invalidateWidgetsHelper.invoke()
             return Result.failure()
         }
         return Result.success()
+    }
+
+    private fun isBluetoothEnabled(): Boolean {
+        val bluetoothManager = ContextCompat.getSystemService(
+            applicationContext, BluetoothManager::class.java
+        )
+        val adapter = bluetoothManager?.adapter ?: BluetoothAdapter.getDefaultAdapter()
+        return adapter?.isEnabled ?: false
     }
 }

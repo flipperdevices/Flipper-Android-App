@@ -6,7 +6,7 @@ import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.ktx.jre.withLockResult
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.flipperdevices.keyscreen.api.EmulateHelper
+import com.flipperdevices.keyscreen.api.emulate.EmulateHelper
 import com.flipperdevices.widget.impl.model.WidgetState
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
@@ -47,7 +47,8 @@ class WidgetStateStorageImpl @Inject constructor(
     override suspend fun getState(
         widgetId: Int
     ): WidgetState = withLockResult(mutex, "get") {
-        info { "Get widget state for $widgetId" }
+        val state = stateMap[widgetId]
+        info { "Get widget state for $widgetId, state: $state" }
         val widgetData = widgetDataApi.getWidgetDataByWidgetId(widgetId)
         val widgetKeyPath = widgetData?.flipperKeyPath
         if (widgetKeyPath != null) {
@@ -61,6 +62,6 @@ class WidgetStateStorageImpl @Inject constructor(
             }
         }
 
-        return@withLockResult stateMap[widgetId] ?: WidgetState.PENDING
+        return@withLockResult state ?: WidgetState.PENDING
     }
 }
