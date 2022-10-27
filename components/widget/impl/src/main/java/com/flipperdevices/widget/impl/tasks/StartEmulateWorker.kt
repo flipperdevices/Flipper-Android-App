@@ -59,7 +59,7 @@ class StartEmulateWorker(
             startEmulate(scope, serviceApi.requestApi)
         } catch (throwable: Throwable) {
             error(throwable) { "Failed emulate $inputData" }
-            widgetStateStorage.updateState(widgetId, WidgetState.ERROR)
+            widgetStateStorage.updateState(widgetId, WidgetState.ERROR_FLIPPER_BUSY)
             return@withCoroutineScope Result.failure()
         }
         widgetStateStorage.updateState(widgetId, WidgetState.IN_PROGRESS)

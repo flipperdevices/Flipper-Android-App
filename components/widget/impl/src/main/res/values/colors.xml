@@ -7,4 +7,5 @@
     <color name="disable">#E9E9E9</color>
     <color name="widget_background">#FFFFFF</color>
     <color name="text_color">#000000</color>
+    <color name="widget_btn_text_color">#FFFFFF</color>
 </resources>

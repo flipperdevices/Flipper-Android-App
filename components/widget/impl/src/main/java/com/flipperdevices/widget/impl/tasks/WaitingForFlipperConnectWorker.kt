@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withTimeout
 
-private const val WAIT_FLIPPER_TIMEOUT_MS = 60 * 1000L // 1 min
+private const val WAIT_FLIPPER_TIMEOUT_MS = 10 * 1000L // 10 sec
 private const val DEFAULT_WIDGET_APP_ID = -1
 
 class WaitingForFlipperConnectWorker(
@@ -59,7 +59,7 @@ class WaitingForFlipperConnectWorker(
             }
         } catch (timeout: TimeoutCancellationException) {
             error(timeout) { "Can't connect to flipper within $WAIT_FLIPPER_TIMEOUT_MS ms" }
-            widgetStorage.updateState(widgetId, WidgetState.ERROR)
+            widgetStorage.updateState(widgetId, WidgetState.ERROR_OUT_OF_RANGE)
             invalidateWidgetsHelper.invoke()
             return Result.failure()
         }
