@@ -18,13 +18,14 @@ fun ComposableMarkdown(
     modifier: Modifier = Modifier,
     content: String,
     typography: MarkdownTypography = markdownTypography(),
-    colors: MarkdownColors = markdownColors()
+    colors: MarkdownColors = markdownColors(),
+    paddings: MarkdownPadding = markdownPadding()
 ) {
     Markdown(
         content = content,
         colors = colors,
         typography = typography,
-        padding = markdownPadding(),
+        padding = paddings,
         modifier = modifier
     )
 }
@@ -75,13 +76,14 @@ fun markdownTypography(
 }
 
 @Composable
-fun markdownPadding(): MarkdownPadding {
+fun markdownPadding(
+    block: Dp = 2.dp,
+    indentList: Dp = 4.dp,
+    list: Dp = 1.dp
+): MarkdownPadding {
     return object : MarkdownPadding {
-        override val block: Dp
-            get() = 2.dp
-        override val indentList: Dp
-            get() = 4.dp
-        override val list: Dp
-            get() = 1.dp
+        override val block: Dp = block
+        override val indentList: Dp = indentList
+        override val list: Dp = list
     }
 }

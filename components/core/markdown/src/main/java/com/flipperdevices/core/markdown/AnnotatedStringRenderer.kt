@@ -16,6 +16,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.TextUnit
 import com.vladsch.flexmark.ast.Emphasis
 import com.vladsch.flexmark.ast.Link
+import com.vladsch.flexmark.ast.OrderedList
 import com.vladsch.flexmark.ast.StrongEmphasis
 import com.vladsch.flexmark.ast.Text
 import com.vladsch.flexmark.util.ast.Node
@@ -27,6 +28,7 @@ const val ANNOTATED_STRING_TAG_URL = "URL"
  * 1) Bold (** tag)
  * 2) Italic (* tag)
  * 3) Link ([]())
+ * 4) Ordered lists
  */
 class AnnotatedStringRenderer(
     private val linkColor: Color
@@ -43,6 +45,15 @@ class AnnotatedStringRenderer(
             is Emphasis -> builder.appendText(node.text, fontStyle = FontStyle.Italic)
             is StrongEmphasis -> builder.appendText(node.text, fontWeight = FontWeight.Bold)
             is Link -> builder.appendUrl(node.text, node.url)
+            is OrderedList -> {
+                var index = node.startNumber
+                var child = node.firstChild
+                while (child != null) {
+                    builder.append("${index++}. ")
+                    render(child, builder)
+                    child = child.next
+                }
+            }
             else -> renderChildren(node, builder)
         }
     }

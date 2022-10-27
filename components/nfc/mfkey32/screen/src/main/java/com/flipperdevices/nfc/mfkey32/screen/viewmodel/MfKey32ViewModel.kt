@@ -113,11 +113,8 @@ class MfKey32ViewModel @VMInject constructor(
                 it.copy(percent = it.percent + perNoncePercent)
             } else it
         }
-        if (key == null) {
-            return
-        }
         val foundedKey = FoundedKey(
-            nonce.sectorName, nonce.keyName, key.toString(radix = 16).uppercase()
+            nonce.sectorName, nonce.keyName, key?.toString(radix = 16)?.uppercase()
         )
         existedKeysStorage.onNewKey(foundedKey)
     }
