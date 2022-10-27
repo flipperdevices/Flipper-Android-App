@@ -6,6 +6,7 @@ import android.widget.RemoteViews
 import androidx.annotation.StringRes
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import com.flipperdevices.keyscreen.api.DeepLinkOpenKey
 import com.flipperdevices.widget.impl.R
 import com.flipperdevices.widget.impl.broadcast.WidgetBroadcastReceiver
@@ -17,11 +18,13 @@ abstract class RetryErrorWidgetStateRenderer(
     @StringRes private val errorTextId: Int
 ) : WidgetStateRenderer, LogTagProvider {
     override fun render(widgetId: Int, flipperKeyPath: FlipperKeyPath?): RemoteViews? {
+        val text = context.getString(errorTextId)
+        info { "#render $widgetId for $flipperKeyPath with text: $text" }
         val keyPath = flipperKeyPath ?: return null
 
         return RemoteViews(context.packageName, R.layout.widget_layout_error).apply {
             setTextViewText(R.id.button_txt, context.getString(R.string.widget_err_retry_btn))
-            setTextViewText(R.id.error_text, context.getString(errorTextId))
+            setTextViewText(R.id.error_text, text)
 
             val startIntent = WidgetBroadcastReceiver.buildStartIntent(
                 context, keyPath, widgetId

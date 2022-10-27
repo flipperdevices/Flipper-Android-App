@@ -9,6 +9,7 @@ import androidx.annotation.StringRes
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.di.ApplicationParams
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import com.flipperdevices.keyscreen.api.DeepLinkOpenKey
 import com.flipperdevices.widget.impl.R
 import com.flipperdevices.widget.impl.tasks.invalidate.renderer.WidgetStateRenderer
@@ -20,6 +21,8 @@ abstract class ConfigureErrorWidgetStateRenderer(
     @StringRes private val errorTextId: Int
 ) : WidgetStateRenderer, LogTagProvider {
     override fun render(widgetId: Int, flipperKeyPath: FlipperKeyPath?): RemoteViews? {
+        val text = context.getString(errorTextId)
+        info { "#render $widgetId for $flipperKeyPath with text: $text" }
         val keyPath = flipperKeyPath ?: return null
 
         val intent = Intent(context, applicationParams.startApplicationClass.java)

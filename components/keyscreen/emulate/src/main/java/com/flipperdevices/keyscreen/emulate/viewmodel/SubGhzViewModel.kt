@@ -11,11 +11,11 @@ import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.ktx.android.vibrateCompat
 import com.flipperdevices.core.log.info
-import com.flipperdevices.keyscreen.api.EmulateHelper
 import com.flipperdevices.keyscreen.api.EmulateProgress
-import com.flipperdevices.keyscreen.api.SUBGHZ_DEFAULT_TIMEOUT_MS
+import com.flipperdevices.keyscreen.api.emulate.AlreadyOpenedAppException
+import com.flipperdevices.keyscreen.api.emulate.EmulateHelper
+import com.flipperdevices.keyscreen.api.emulate.SUBGHZ_DEFAULT_TIMEOUT_MS
 import com.flipperdevices.keyscreen.emulate.model.EmulateButtonState
-import com.flipperdevices.keyscreen.emulate.viewmodel.helpers.AlreadyOpenedAppException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.update

@@ -1,4 +1,4 @@
-package com.flipperdevices.keyscreen.api
+package com.flipperdevices.keyscreen.api.emulate
 
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath

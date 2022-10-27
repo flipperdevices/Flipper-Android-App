@@ -14,7 +14,8 @@ import com.flipperdevices.core.ktx.jre.withLockResult
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.keyscreen.api.EmulateHelper
+import com.flipperdevices.keyscreen.api.emulate.AlreadyOpenedAppException
+import com.flipperdevices.keyscreen.api.emulate.EmulateHelper
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.app.Application
 import com.flipperdevices.protobuf.app.appButtonPressRequest

@@ -1,6 +1,9 @@
 package com.flipperdevices.widget.impl.tasks
 
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothManager
 import android.content.Context
+import androidx.core.content.ContextCompat
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
@@ -48,6 +51,14 @@ class WaitingForFlipperConnectWorker(
         if (widgetId < 0) {
             error("Widget id less then zero")
         }
+
+        if (!isBluetoothEnabled()) {
+            error { "Failed emulate because bt not enabled" }
+            widgetStorage.updateState(widgetId, WidgetState.ERROR_BT_NOT_ENABLED)
+            invalidateWidgetsHelper.invoke()
+            return Result.failure()
+        }
+
         setForegroundAsync(widgetNotificationHelper.waitingFlipperForegroundInfo(id))
         val serviceApi = serviceProvider.getServiceApi()
 
@@ -64,5 +75,13 @@ class WaitingForFlipperConnectWorker(
             return Result.failure()
         }
         return Result.success()
+    }
+
+    private fun isBluetoothEnabled(): Boolean {
+        val bluetoothManager = ContextCompat.getSystemService(
+            applicationContext, BluetoothManager::class.java
+        )
+        val adapter = bluetoothManager?.adapter ?: BluetoothAdapter.getDefaultAdapter()
+        return adapter?.isEnabled ?: false
     }
 }

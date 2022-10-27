@@ -2,13 +2,10 @@ package com.flipperdevices.keyscreen.emulate.viewmodel.helpers
 
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequest
-import com.flipperdevices.bridge.dao.api.model.FlipperFile
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
-import com.flipperdevices.bridge.dao.api.model.FlipperKey
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.test.TimberRule
-import com.flipperdevices.keyscreen.api.EmulateHelper
+import com.flipperdevices.keyscreen.api.emulate.EmulateHelper
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.app.Application
 import com.flipperdevices.protobuf.app.appStateResponse

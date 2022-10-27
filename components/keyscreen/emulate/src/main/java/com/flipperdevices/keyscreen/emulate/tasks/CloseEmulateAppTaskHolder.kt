@@ -1,7 +1,7 @@
 package com.flipperdevices.keyscreen.emulate.tasks
 
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
-import com.flipperdevices.keyscreen.api.EmulateHelper
+import com.flipperdevices.keyscreen.api.emulate.EmulateHelper
 
 object CloseEmulateAppTaskHolder {
     private var closeEmulateAppTask: CloseEmulateAppTask? = null

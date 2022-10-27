@@ -6,7 +6,7 @@ import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.ktx.jre.withLockResult
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.flipperdevices.keyscreen.api.EmulateHelper
+import com.flipperdevices.keyscreen.api.emulate.EmulateHelper
 import com.flipperdevices.widget.impl.model.WidgetState
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
