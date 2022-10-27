@@ -14,6 +14,7 @@
 - [FIX] Options button in device screen
 - [FIX] WearOS connection
 - [FIX] Screen streaming broke
+- [FIX] Flipper color on error screen
 
 # 1.2.2
 
