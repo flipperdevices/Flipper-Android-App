@@ -8,10 +8,7 @@ import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.ktx.jre.launchWithLock
-import com.flipperdevices.core.ktx.jre.then
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.core.log.error
-import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.preference.pb.SelectedChannel
 import com.flipperdevices.core.preference.pb.Settings
@@ -20,19 +17,10 @@ import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.api.FlipperVersionProviderApi
+import com.flipperdevices.updater.card.helpers.UpdateCardHelper
 import com.flipperdevices.updater.card.helpers.UpdateOfferProviderApi
-import com.flipperdevices.updater.card.utils.isGreaterThan
 import com.flipperdevices.updater.model.FirmwareChannel
-import com.flipperdevices.updater.model.FirmwareVersion
-import com.flipperdevices.updater.model.OfficialFirmware
 import com.flipperdevices.updater.model.UpdateCardState
-import com.flipperdevices.updater.model.UpdateErrorType
-import com.flipperdevices.updater.model.UpdateRequest
-import com.flipperdevices.updater.model.VersionFiles
-import com.flipperdevices.updater.model.WebUpdaterFirmware
-import java.net.UnknownHostException
-import java.util.EnumMap
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
@@ -144,129 +132,23 @@ class UpdateCardViewModel @VMInject constructor(
                 val isFlashExist = if (rpcInformation.externalStorageStats != null) {
                     rpcInformation.externalStorageStats is StorageStats.Loaded
                 } else null
-                val deeplinkWebUpdater = if (deeplink is Deeplink.WebUpdate) deeplink else null
-                return@combine newUpdateChannel
-                    .then(flipperFirmwareVersion)
-                    .then(isFlashExist)
-                    .then(isAlwaysUpdate)
-                    .then(deeplinkWebUpdater)
-            }.collectLatest {
-                    (
-                        updateChannel, flipperFirmwareVersion,
-                        isFlashExist, alwaysUpdate, deeplinkWebUpdater
-                    ) ->
-                updateCardState(
-                    updateChannel,
-                    flipperFirmwareVersion,
-                    latestVersionAsync,
+
+                val deeplinkWebUpdater = if (deeplink is Deeplink.WebUpdate) {
+                    deeplink
+                } else null
+
+                return@combine UpdateCardHelper(
+                    newUpdateChannel,
                     isFlashExist,
-                    alwaysUpdate,
-                    deeplinkWebUpdater
+                    flipperFirmwareVersion,
+                    isAlwaysUpdate,
+                    deeplinkWebUpdater,
+                    latestVersionAsync
                 )
+            }.collectLatest {
+                val state = it.processUpdateCardState()
+                updateCardState.emit(state)
             }
-        }
-    }
-
-    private suspend fun updateCardState(
-        updateChannel: FirmwareChannel?,
-        flipperFirmwareVersion: FirmwareVersion?,
-        latestVersionAsync: Deferred<Result<EnumMap<FirmwareChannel, VersionFiles>>>,
-        isFlashExist: Boolean?,
-        alwaysShowUpdate: Boolean,
-        deeplinkWebUpdater: Deeplink.WebUpdate?
-    ) {
-        info { "Receive version from flipper $flipperFirmwareVersion" }
-        if (flipperFirmwareVersion == null) {
-            updateCardState.emit(UpdateCardState.InProgress)
-            return
-        }
-        if (isFlashExist == null) {
-            updateCardState.emit(UpdateCardState.InProgress)
-            return
-        } else if (!isFlashExist) {
-            updateCardState.emit(
-                UpdateCardState.Error(UpdateErrorType.NO_SD_CARD)
-            )
-            return
-        }
-
-        val latestVersionFromNetworkResult = latestVersionAsync.await()
-        val exception = latestVersionFromNetworkResult.exceptionOrNull()
-        if (exception != null) {
-            processNetworkException(exception)
-            return
-        }
-
-        if (deeplinkWebUpdater != null) {
-            val nameSlice = deeplinkWebUpdater.name.split(" ")
-            val name: String = if (nameSlice.size > 1) nameSlice[0] else deeplinkWebUpdater.name
-            val updateRequest = UpdateRequest(
-                updateFrom = flipperFirmwareVersion,
-                updateTo = FirmwareVersion(
-                    channel = FirmwareChannel.CUSTOM,
-                    version = name
-                ),
-                changelog = null,
-                content = WebUpdaterFirmware(deeplinkWebUpdater.url)
-            )
-            updateCardState.emit(
-                UpdateCardState.UpdateAvailable(
-                    update = updateRequest,
-                    isOtherChannel = true
-                )
-            )
-            return
-        }
-
-        if (updateChannel == FirmwareChannel.CUSTOM) {
-            updateCardState.emit(
-                UpdateCardState.CustomUpdate(
-                    flipperVersion = flipperFirmwareVersion,
-                    updateVersion = FirmwareVersion(channel = FirmwareChannel.CUSTOM, version = "")
-                )
-            )
-            return
-        }
-
-        val latestVersionFromNetwork = latestVersionFromNetworkResult
-            .getOrNull()?.get(updateChannel)
-        info { "Latest version from network is ${latestVersionFromNetwork?.version}" }
-        if (latestVersionFromNetwork == null) {
-            updateCardState.emit(UpdateCardState.NoUpdate(flipperFirmwareVersion))
-            return
-        }
-        val isUpdateAvailable = alwaysShowUpdate ||
-            latestVersionFromNetwork.version.isGreaterThan(flipperFirmwareVersion) ?: true ||
-            updateChannel == FirmwareChannel.UNKNOWN
-
-        if (isUpdateAvailable) {
-            updateCardState.emit(
-                UpdateCardState.UpdateAvailable(
-                    update = UpdateRequest(
-                        updateFrom = flipperFirmwareVersion,
-                        updateTo = latestVersionFromNetwork.version,
-                        changelog = latestVersionFromNetwork.changelog,
-                        content = OfficialFirmware(latestVersionFromNetwork.updaterFile)
-                    ),
-                    isOtherChannel = latestVersionFromNetwork.version.channel
-                        != flipperFirmwareVersion.channel
-                )
-            )
-        } else updateCardState.emit(UpdateCardState.NoUpdate(flipperFirmwareVersion))
-    }
-
-    private suspend fun processNetworkException(exception: Throwable) {
-        if (exception is UnknownHostException) {
-            updateCardState.emit(
-                UpdateCardState.Error(UpdateErrorType.NO_INTERNET)
-            )
-            return
-        } else {
-            error(exception) { "Error while getting latest version from network" }
-            updateCardState.emit(
-                UpdateCardState.Error(UpdateErrorType.UNABLE_TO_SERVER)
-            )
-            return
         }
     }
 }
