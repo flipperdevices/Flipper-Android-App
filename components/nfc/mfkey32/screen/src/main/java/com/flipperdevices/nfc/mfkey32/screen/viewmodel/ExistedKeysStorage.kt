@@ -46,7 +46,7 @@ class ExistedKeysStorage(
     }
 
     suspend fun upload(requestApi: FlipperRequestApi): List<String> {
-        val bytesToWrite = userKeys.joinToString(postfix = "\n").toByteArray()
+        val bytesToWrite = userKeys.joinToString(separator = "\n", postfix = "\n").toByteArray()
         ByteArrayInputStream(bytesToWrite).use { stream ->
             val commandFlow = streamToCommandFlow(stream, bytesToWrite.size.toLong()) { chunkData ->
                 storageWriteRequest = writeRequest {
