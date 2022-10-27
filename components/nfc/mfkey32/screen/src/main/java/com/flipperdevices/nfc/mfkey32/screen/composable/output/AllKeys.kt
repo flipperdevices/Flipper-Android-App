@@ -55,6 +55,7 @@ private const val KEY_B = "B"
 
 @Composable
 private fun ComposableFoundedKey(modifier: Modifier, foundedKey: FoundedKey) {
+    val notFoundText = stringResource(R.string.mfkey32_founded_all_not_found)
     Text(
         modifier = modifier,
         text = buildAnnotatedString {
@@ -76,7 +77,9 @@ private fun ComposableFoundedKey(modifier: Modifier, foundedKey: FoundedKey) {
                 append(foundedKey.keyName.uppercase())
             }
             append(" — ")
-            append(foundedKey.key)
+            if (foundedKey.key != null) {
+                append(foundedKey.key)
+            } else append(notFoundText)
         }
     )
 }

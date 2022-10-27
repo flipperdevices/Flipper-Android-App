@@ -46,7 +46,7 @@ class ExistedKeysStorage(
     }
 
     suspend fun upload(requestApi: FlipperRequestApi): List<String> {
-        val bytesToWrite = userKeys.joinToString("\n").toByteArray()
+        val bytesToWrite = userKeys.joinToString(postfix = "\n").toByteArray()
         ByteArrayInputStream(bytesToWrite).use { stream ->
             val commandFlow = streamToCommandFlow(stream, bytesToWrite.size.toLong()) { chunkData ->
                 storageWriteRequest = writeRequest {
@@ -70,15 +70,15 @@ class ExistedKeysStorage(
         foundedInformationStateFlow.update { foundedInformation ->
             foundedInformation.copy(
                 keys = foundedInformation.keys.plus(foundedKey),
-                uniqueKeys = if (existed == null) {
+                uniqueKeys = if (existed == null && foundedKey.key != null) {
                     foundedInformation.uniqueKeys.plus(foundedKey.key)
                 } else foundedInformation.uniqueKeys,
-                duplicated = if (existed != null) {
+                duplicated = if (existed != null && foundedKey.key != null) {
                     foundedInformation.duplicated.plus(foundedKey.key to existed)
                 } else foundedInformation.duplicated
             )
         }
-        if (existed == null) {
+        if (existed == null && foundedKey.key != null) {
             userKeys.add(foundedKey.key)
         }
     }

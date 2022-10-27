@@ -13,6 +13,7 @@
     <string name="mfkey32_complete_desc">Keys have been added to User Dict.</string>
 
     <string name="mfkey32_founded_all_title">Calculated Keys (%1$s)</string>
+    <string name="mfkey32_founded_all_not_found">Not found</string>
     <string name="mfkey32_founded_unique_title">Unique (%1$s)</string>
     <string name="mfkey32_founded_duplicated_title">Duplicated (%1$s)</string>
     <string name="mfkey32_founded_duplicated_flipper">Found in Flipper Dict.</string>
