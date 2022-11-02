@@ -1,21 +1,29 @@
 package com.flipperdevices.screenstreaming.impl.viewmodel
 
+import android.content.Context
 import android.graphics.Bitmap
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.model.FlipperSerialSpeed
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.ktx.jre.createClearNewFileWithMkDirs
+import com.flipperdevices.core.share.SharableFile
+import com.flipperdevices.core.share.ShareHelper
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.screen.Gui
 import com.flipperdevices.protobuf.screen.startScreenStreamRequest
 import com.flipperdevices.protobuf.screen.stopScreenStreamRequest
+import com.flipperdevices.screenstreaming.impl.R
 import com.flipperdevices.screenstreaming.impl.composable.ButtonEnum
 import com.flipperdevices.screenstreaming.impl.di.ScreenStreamingComponent
 import com.flipperdevices.screenstreaming.impl.model.StreamingState
-import javax.inject.Inject
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,10 +31,16 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import tangle.viewmodel.VMInject
 
-class ScreenStreamingViewModel : LifecycleViewModel() {
-    @Inject
-    lateinit var serviceProvider: FlipperServiceProvider
+private const val SCREENSHOT_FILE_PREFIX = "flpr"
+private const val TIMEFORMAT = "yyyy-MM-dd-HH:mm:ss"
+private const val QUALITY = 100
+
+class ScreenStreamingViewModel @VMInject constructor(
+    serviceProvider: FlipperServiceProvider,
+    private val context: Context
+) : LifecycleViewModel() {
 
     private val flipperScreen = MutableStateFlow(ScreenStreamFrameDecoder.emptyBitmap())
     private var serviceApi: FlipperServiceApi? = null
@@ -57,15 +71,38 @@ class ScreenStreamingViewModel : LifecycleViewModel() {
     }
 
     fun getFlipperScreen(): StateFlow<Bitmap> = flipperScreen
-    fun getStreamingState() = streamingState
     fun getSpeed(): StateFlow<FlipperSerialSpeed> = speedState
 
     fun onPressButton(buttonEnum: ButtonEnum) {
-        serviceApi?.requestApi?.pressOnButton(viewModelScope, buttonEnum, Gui.InputType.SHORT)
+        if (buttonEnum == ButtonEnum.UNLOCK) {
+            serviceApi?.requestApi?.pressOnButton(
+                viewModelScope, Gui.InputKey.BACK, Gui.InputType.SHORT, times = 3
+            )
+            return
+        }
+        if (buttonEnum == ButtonEnum.SCREENSHOT) {
+            shareScreenshot()
+            return
+        }
+        val key = buttonEnum.key ?: return
+        serviceApi?.requestApi?.pressOnButton(viewModelScope, key, Gui.InputType.SHORT)
     }
 
     fun onLongPressButton(buttonEnum: ButtonEnum) {
-        serviceApi?.requestApi?.pressOnButton(viewModelScope, buttonEnum, Gui.InputType.LONG)
+        val key = buttonEnum.key ?: return
+        serviceApi?.requestApi?.pressOnButton(viewModelScope, key, Gui.InputType.LONG)
+    }
+
+    private fun shareScreenshot() = lifecycleScope.launch(Dispatchers.Default) {
+        val currentSnapshot = flipperScreen.value
+        val date = SimpleDateFormat(TIMEFORMAT, Locale.US).format(Date())
+        val filename = "$SCREENSHOT_FILE_PREFIX-$date.png"
+        val sharableFile = SharableFile(context, filename)
+        sharableFile.createClearNewFileWithMkDirs()
+        sharableFile.outputStream().use {
+            currentSnapshot.compress(Bitmap.CompressFormat.PNG, QUALITY, it)
+        }
+        ShareHelper.shareFile(context, sharableFile, R.string.screenshot_export_title)
     }
 
     private fun onStartStreaming(serviceApi: FlipperServiceApi) {
@@ -97,15 +134,13 @@ class ScreenStreamingViewModel : LifecycleViewModel() {
 
     fun enableStreaming() {
         streamingState.compareAndSet(
-            expect = StreamingState.DISABLED,
-            update = StreamingState.ENABLED
+            expect = StreamingState.DISABLED, update = StreamingState.ENABLED
         )
     }
 
     fun disableStreaming() {
         streamingState.compareAndSet(
-            expect = StreamingState.ENABLED,
-            update = StreamingState.DISABLED
+            expect = StreamingState.ENABLED, update = StreamingState.DISABLED
         )
     }
 }

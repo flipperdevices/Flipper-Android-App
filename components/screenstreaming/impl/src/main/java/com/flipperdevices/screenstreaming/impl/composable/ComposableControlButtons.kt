@@ -31,13 +31,13 @@ fun ComposableControlButtons(
     onLongPressButton: (ButtonEnum) -> Unit = {}
 ) {
     /**
-     * |----|  up  |-------|
-     * |left|  ok  | right |
-     * |----| down | back |
+     * | photo |  up  | unlock |
+     * | left |  ok  | right |
+     * |------| down  | back |
      */
     Column(modifier) {
         ControlRow(
-            start = null, center = ButtonEnum.UP, end = null,
+            start = ButtonEnum.SCREENSHOT, center = ButtonEnum.UP, end = ButtonEnum.UNLOCK,
             onPressButton, onLongPressButton
         )
         ControlRow(
