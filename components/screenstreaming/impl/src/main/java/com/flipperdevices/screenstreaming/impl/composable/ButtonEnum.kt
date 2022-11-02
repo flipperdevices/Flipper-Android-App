@@ -1,8 +1,8 @@
 package com.flipperdevices.screenstreaming.impl.composable
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.protobuf.screen.Gui
 import com.flipperdevices.screenstreaming.impl.R
 
