@@ -69,6 +69,7 @@ class StartEmulateWorker(
             val filePath = getFilePath()
 
             if (!isSynced(filePath)) {
+                info { "File not synced" }
                 widgetStateStorage.updateState(widgetId, WidgetState.ERROR_NOT_SYNCED)
                 invalidateWidgetsHelper.invoke()
                 return@withCoroutineScope Result.failure()
@@ -121,7 +122,11 @@ class StartEmulateWorker(
 
     private suspend fun isSynced(filePath: FlipperFilePath): Boolean {
         val keyPath = FlipperKeyPath(filePath, deleted = false)
-        val flipperKey = simpleKeyApi.getKey(keyPath) ?: return false
+        val flipperKey = simpleKeyApi.getKey(keyPath)
+        if (flipperKey == null) {
+            info { "$filePath not found" }
+            return false
+        }
         return flipperKey.synchronized
     }
 }

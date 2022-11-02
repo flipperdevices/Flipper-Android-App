@@ -89,6 +89,7 @@ class WidgetSelectViewModel @VMInject constructor(
         info { "#onSelectKey for $widgetId $keyPath" }
         viewModelScope.launch {
             widgetDataApi.updateKeyForWidget(widgetId, keyPath)
+            widgetApi.resetStateOfWidget(widgetId)
             widgetApi.invalidate()
             globalCicerone.getRouter().finishChain()
         }
