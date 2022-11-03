@@ -6,9 +6,10 @@
     <string name="control_right">Right</string>
     <string name="control_ok">OK</string>
     <string name="control_back">Back</string>
+    <string name="control_unlock">Unlock</string>
+    <string name="control_screenshot">Screenshot</string>
+    <string name="screenshot_export_title">Share screenshot of flipper…</string>
     <string name="flipper_display">Flipper display</string>
-    <string name="screen_streaming_enable">Start streaming</string>
-    <string name="screen_streaming_disable">Stop streaming</string>
     <string name="screen_streaming_speed_receive">Receive speed: %1$s per sec</string>
     <string name="screen_streaming_speed_send">Send speed: %1$s per sec</string>
 </resources>

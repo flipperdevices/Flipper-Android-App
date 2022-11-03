@@ -10,6 +10,7 @@
 - [Feature] Not found if key not found in mfkey32
 - [Feature] Fix format for user keys
 - [Feature] Updater card display update from url
+- [Feature] Add screenshot and unlock to screenstreaming
 - [CI] Auto git submodule update via gradle task
 - [FIX] Options button in device screen
 - [FIX] WearOS connection

@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -23,31 +22,22 @@ import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.screenstreaming.impl.R
-import com.flipperdevices.screenstreaming.impl.model.StreamingState
 import com.flipperdevices.screenstreaming.impl.viewmodel.FLIPPER_SCREEN_RATIO
 import com.flipperdevices.screenstreaming.impl.viewmodel.ScreenStreamingViewModel
 import kotlin.math.roundToInt
 
 @ExperimentalFoundationApi
 @ExperimentalComposeUiApi
-@Preview(
-    showBackground = true,
-    showSystemUi = true
-)
 @Composable
 fun ComposableScreen(
-    viewModel: ScreenStreamingViewModel = viewModel(),
+    viewModel: ScreenStreamingViewModel,
     onPressButton: (ButtonEnum) -> Unit = {},
-    onLongPressButton: (ButtonEnum) -> Unit = {},
-    onScreenStreamingSwitch: (StreamingState) -> Unit = {}
+    onLongPressButton: (ButtonEnum) -> Unit = {}
 ) {
     val flipperScreen by viewModel.getFlipperScreen().collectAsState()
-    val streamingState by viewModel.getStreamingState().collectAsState()
     val speedState by viewModel.getSpeed().collectAsState()
 
     Column {
@@ -60,26 +50,6 @@ fun ComposableScreen(
         ) {
             ComposableFlipperScreen(flipperScreen)
             ComposableControlButtons(Modifier.weight(1f), onPressButton, onLongPressButton)
-            Button(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = {
-                    onScreenStreamingSwitch(
-                        when (streamingState) {
-                            StreamingState.DISABLED -> StreamingState.ENABLED
-                            StreamingState.ENABLED -> StreamingState.DISABLED
-                        }
-                    )
-                }
-            ) {
-                Text(
-                    text = stringResource(
-                        id = when (streamingState) {
-                            StreamingState.DISABLED -> R.string.screen_streaming_enable
-                            StreamingState.ENABLED -> R.string.screen_streaming_disable
-                        }
-                    )
-                )
-            }
         }
         Column {
             val rx = Formatter.formatFileSize(LocalContext.current, speedState.receiveBytesInSec)

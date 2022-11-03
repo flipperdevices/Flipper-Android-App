@@ -6,29 +6,32 @@ import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.screen.Gui
 import com.flipperdevices.protobuf.screen.sendInputEventRequest
-import com.flipperdevices.screenstreaming.impl.composable.ButtonEnum
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+@Suppress("SpreadOperator")
 internal fun FlipperRequestApi.pressOnButton(
     viewModelScope: CoroutineScope,
-    buttonEnum: ButtonEnum,
-    type: Gui.InputType
+    key: Gui.InputKey,
+    type: Gui.InputType,
+    times: Int = 1
 ) = viewModelScope.launch {
-    requestWithoutAnswer(
-        getRequestFor(buttonEnum, Gui.InputType.PRESS),
-        getRequestFor(buttonEnum, type),
-        getRequestFor(buttonEnum, Gui.InputType.RELEASE)
-    )
+    val requests = mutableListOf<FlipperRequest>()
+    repeat(times) {
+        requests.add(getRequestFor(key, Gui.InputType.PRESS))
+        requests.add(getRequestFor(key, type))
+        requests.add(getRequestFor(key, Gui.InputType.RELEASE))
+    }
+    requestWithoutAnswer(*requests.toTypedArray())
 }
 
 private fun getRequestFor(
-    buttonEnum: ButtonEnum,
+    inputKey: Gui.InputKey,
     buttonType: Gui.InputType
 ): FlipperRequest {
     return main {
         guiSendInputEventRequest = sendInputEventRequest {
-            key = buttonEnum.key
+            key = inputKey
             type = buttonType
         }
     }.wrapToRequest()
