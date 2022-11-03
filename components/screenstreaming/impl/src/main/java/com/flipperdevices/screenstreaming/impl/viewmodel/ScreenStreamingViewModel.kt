@@ -73,20 +73,21 @@ class ScreenStreamingViewModel @VMInject constructor(
     fun getFlipperScreen(): StateFlow<Bitmap> = flipperScreen
     fun getSpeed(): StateFlow<FlipperSerialSpeed> = speedState
 
-    fun onPressButton(buttonEnum: ButtonEnum) {
-        if (buttonEnum == ButtonEnum.UNLOCK) {
-            serviceApi?.requestApi?.pressOnButton(
-                viewModelScope, Gui.InputKey.BACK, Gui.InputType.SHORT, times = 3
-            )
-            return
+    fun onPressButton(buttonEnum: ButtonEnum) = when (buttonEnum) {
+        ButtonEnum.UNLOCK -> serviceApi?.requestApi?.pressOnButton(
+            viewModelScope, Gui.InputKey.BACK, Gui.InputType.SHORT, times = 3
+        )
+        ButtonEnum.SCREENSHOT -> shareScreenshot()
+        ButtonEnum.LEFT,
+        ButtonEnum.RIGHT,
+        ButtonEnum.UP,
+        ButtonEnum.DOWN,
+        ButtonEnum.OK,
+        ButtonEnum.BACK -> buttonEnum.key?.let { key ->
+            serviceApi?.requestApi?.pressOnButton(viewModelScope, key, Gui.InputType.SHORT)
         }
-        if (buttonEnum == ButtonEnum.SCREENSHOT) {
-            shareScreenshot()
-            return
-        }
-        val key = buttonEnum.key ?: return
-        serviceApi?.requestApi?.pressOnButton(viewModelScope, key, Gui.InputType.SHORT)
     }
+
 
     fun onLongPressButton(buttonEnum: ButtonEnum) {
         val key = buttonEnum.key ?: return
