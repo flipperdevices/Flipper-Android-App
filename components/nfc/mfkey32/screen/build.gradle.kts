@@ -18,6 +18,7 @@ dependencies {
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.res)
+    implementation(projects.components.core.ui.dialog)
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.markdown)
 
@@ -38,7 +39,6 @@ dependencies {
 
     // Dagger deps
     implementation(libs.dagger)
-    implementation(project(mapOf("path" to ":components:core:ui:dialog")))
     kapt(libs.dagger.kapt)
     implementation(libs.tangle.viewmodel.compose)
     implementation(libs.tangle.viewmodel.api)
