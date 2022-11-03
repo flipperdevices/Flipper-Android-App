@@ -88,7 +88,6 @@ class ScreenStreamingViewModel @VMInject constructor(
         }
     }
 
-
     fun onLongPressButton(buttonEnum: ButtonEnum) {
         val key = buttonEnum.key ?: return
         serviceApi?.requestApi?.pressOnButton(viewModelScope, key, Gui.InputType.LONG)
