@@ -1,5 +1,8 @@
 package com.flipperdevices.widget.screen.viewmodel
 
+import android.app.Activity.RESULT_OK
+import android.appwidget.AppWidgetManager
+import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.archive.api.SearchApi
@@ -10,6 +13,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
+import com.flipperdevices.core.activityholder.CurrentActivityHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.navigation.global.CiceroneGlobal
@@ -89,10 +93,18 @@ class WidgetSelectViewModel @VMInject constructor(
         info { "#onSelectKey for $widgetId $keyPath" }
         viewModelScope.launch {
             widgetDataApi.updateKeyForWidget(widgetId, keyPath)
-            widgetApi.resetStateOfWidget(widgetId)
             widgetApi.invalidate()
+            notifyActivityAboutResult()
             globalCicerone.getRouter().finishChain()
         }
+    }
+
+    private fun notifyActivityAboutResult() {
+        val currentActivity = CurrentActivityHolder.getCurrentActivity()
+        info { "Notify about result for activity $currentActivity and widget $widgetId" }
+        currentActivity?.setResult(RESULT_OK, Intent().apply {
+            putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
+        })
     }
 
     override fun onCleared() {
