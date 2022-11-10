@@ -15,7 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 interface ExportKeysHelper {
-    suspend fun createBackupArchive(): SharableFile
+    suspend fun createBackupArchive(): SharableFile?
 }
 
 private const val KEYS_ARCHIVE_NAME = "keys.zip"
@@ -32,6 +32,10 @@ class ExportKeysHelperImpl @Inject constructor(
             createClearNewFileWithMkDirs()
         }
         val keys = simpleKeyApi.getAllKeys(includeDeleted = false)
+        if (keys.isEmpty()) {
+            return@withContext null
+        }
+
         keysZip.outputStream().use { fos ->
             ZipOutputStream(fos).use { out ->
                 keys.forEach { key ->

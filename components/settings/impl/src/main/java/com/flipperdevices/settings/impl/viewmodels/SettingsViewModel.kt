@@ -5,6 +5,8 @@ import androidx.datastore.core.DataStore
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.core.di.ApplicationParams
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.navigation.global.CiceroneGlobal
 import com.flipperdevices.core.preference.pb.SelectedTheme
 import com.flipperdevices.core.preference.pb.Settings
@@ -32,7 +34,9 @@ class SettingsViewModel @VMInject constructor(
     val stressTestFeatureEntry: StressTestFeatureEntry,
     private val applicationParams: ApplicationParams,
     private val exportKeysHelper: ExportKeysHelper
-) : ViewModel() {
+) : ViewModel(), LogTagProvider {
+    override val TAG = "SettingsViewModel"
+
     private val settingsState by lazy {
         dataStoreSettings.data.stateIn(
             viewModelScope,
@@ -78,7 +82,12 @@ class SettingsViewModel @VMInject constructor(
             return
         }
         viewModelScope.launch {
-            val file = exportKeysHelper.createBackupArchive()
+            val file = try {
+                exportKeysHelper.createBackupArchive()
+            } catch (zipException: Exception) {
+                error(zipException) { "Failed create backup" }
+                null
+            } ?: return@launch
             withContext(Dispatchers.Main) {
                 ShareHelper.shareFile(context, file, R.string.export_keys_picker_title)
                 exportStateFlow.compareAndSet(ExportState.IN_PROGRESS, ExportState.NOT_STARTED)

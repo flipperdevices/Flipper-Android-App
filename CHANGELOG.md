@@ -16,6 +16,7 @@
 - [FIX] WearOS connection
 - [FIX] Screen streaming broke
 - [FIX] Flipper color on error screen
+- [FIX] Fix fatal crash on empty backup
 
 # 1.2.2
 
