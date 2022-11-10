@@ -3,7 +3,7 @@
     <capability android:name="actions.intent.OPEN_APP_FEATURE">
         <intent
                 android:targetPackage="com.flipperdevices.app"
-            android:targetClass="com.flipperdevices.app.SplashScreen">
+            android:targetClass="com.flipperdevices.singleactivity.impl.SingleActivity">
         <parameter
             android:name="feature"
             android:key="featureParam"/>
