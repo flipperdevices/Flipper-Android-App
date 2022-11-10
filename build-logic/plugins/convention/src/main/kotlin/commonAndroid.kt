@@ -9,7 +9,7 @@ import org.gradle.kotlin.dsl.add
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-private const val SPLASH_SCREEN_ACTIVITY = "com.flipperdevices.app.SplashScreen"
+private const val SPLASH_SCREEN_ACTIVITY = "com.flipperdevices.singleactivity.impl.SingleActivity"
 private const val SPLASH_SCREEN_ACTIVITY_KEY = "splashScreenActivity"
 
 fun BaseExtension.commonAndroid(target: Project) {

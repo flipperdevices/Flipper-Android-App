@@ -22,7 +22,7 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withTimeout
 
-private const val WAIT_FLIPPER_TIMEOUT_MS = 10 * 1000L // 10 sec
+private const val WAIT_FLIPPER_TIMEOUT_MS = 3 * 1000L // 10 sec
 private const val DEFAULT_WIDGET_APP_ID = -1
 
 class WaitingForFlipperConnectWorker(
