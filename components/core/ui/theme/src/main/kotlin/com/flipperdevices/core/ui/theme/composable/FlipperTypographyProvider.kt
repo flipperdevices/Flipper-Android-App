@@ -79,6 +79,11 @@ private val typography = FlipperTypography(
         fontFamily = robotoFamily,
         fontWeight = FontWeight.W400
     ),
+    subtitleR10 = TextStyle(
+        fontSize = 10.sp,
+        fontFamily = robotoFamily,
+        fontWeight = FontWeight.W400
+    ),
     subtitleB10 = TextStyle(
         fontSize = 10.sp,
         fontFamily = robotoFamily,

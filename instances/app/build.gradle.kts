@@ -36,6 +36,8 @@ dependencies {
 
     implementation(projects.components.share.api)
     implementation(projects.components.share.receive)
+    implementation(projects.components.share.uploader)
+    implementation(projects.components.share.cryptostorage)
 
     implementation(projects.components.singleactivity.api)
     implementation(projects.components.singleactivity.impl)

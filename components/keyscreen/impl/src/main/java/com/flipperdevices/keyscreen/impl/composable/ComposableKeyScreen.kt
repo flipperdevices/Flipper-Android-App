@@ -6,6 +6,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -16,27 +19,39 @@ import com.flipperdevices.keyscreen.api.KeyEmulateApi
 import com.flipperdevices.keyscreen.impl.model.KeyScreenState
 import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModel
 import com.flipperdevices.nfceditor.api.NfcEditorApi
+import com.flipperdevices.share.api.ShareBottomSheetApi
+import kotlinx.coroutines.launch
 
 @Composable
 fun ComposableKeyScreen(
     viewModel: KeyScreenViewModel,
     synchronizationUiApi: SynchronizationUiApi,
-    keyScreenState: KeyScreenState = KeyScreenState.InProgress,
     nfcEditorApi: NfcEditorApi,
     keyEmulateApi: KeyEmulateApi,
+    shareBottomSheetApi: ShareBottomSheetApi,
     onBack: () -> Unit
 ) {
-    when (keyScreenState) {
+    val scope = rememberCoroutineScope()
+
+    val keyScreenState by viewModel.getKeyScreenState().collectAsState()
+
+    when (val localKeyScreenState = keyScreenState) {
         KeyScreenState.InProgress -> ComposableKeyInitial()
-        is KeyScreenState.Error -> ComposableKeyError(keyScreenState)
-        is KeyScreenState.Ready -> ComposableKeyParsed(
-            viewModel,
-            keyScreenState,
-            nfcEditorApi,
-            synchronizationUiApi,
-            keyEmulateApi,
-            onBack
-        )
+        is KeyScreenState.Error -> ComposableKeyError(localKeyScreenState)
+        is KeyScreenState.Ready -> shareBottomSheetApi.ComposableShareBottomSheet(
+            flipperKey = localKeyScreenState.flipperKey,
+            modifier = Modifier
+        ) {
+            ComposableKeyParsed(
+                viewModel,
+                localKeyScreenState,
+                nfcEditorApi,
+                synchronizationUiApi,
+                keyEmulateApi,
+                onBack,
+                onShare = { scope.launch { shareBottomSheetApi.showSheet() } }
+            )
+        }
     }
 }
 

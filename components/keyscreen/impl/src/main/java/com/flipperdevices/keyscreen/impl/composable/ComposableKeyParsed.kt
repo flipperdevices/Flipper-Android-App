@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
@@ -24,6 +25,7 @@ import com.flipperdevices.keyscreen.shared.bar.ComposableBarBackIcon
 import com.flipperdevices.keyscreen.shared.bar.ComposableBarTitleWithName
 import com.flipperdevices.keyscreen.shared.bar.ComposableKeyScreenAppBar
 import com.flipperdevices.nfceditor.api.NfcEditorApi
+import kotlinx.coroutines.launch
 
 @Composable
 @Suppress("LongParameterList")
@@ -33,7 +35,8 @@ fun ComposableKeyParsed(
     nfcEditorApi: NfcEditorApi,
     synchronizationUiApi: SynchronizationUiApi,
     keyEmulateApi: KeyEmulateApi,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onShare: () -> Unit
 ) {
     val scrollState = rememberScrollState()
     val router = LocalRouter.current
@@ -69,7 +72,7 @@ fun ComposableKeyParsed(
                     viewModel.onNfcEdit(keyScreenState.flipperKey)
                 }
             }
-            ComposableShare(keyScreenState.shareState, viewModel::onShare)
+            ComposableShare(keyScreenState.shareState, onShare = onShare)
         } else if (keyScreenState.deleteState == DeleteState.DELETED) {
             ComposableRestore {
                 viewModel.onRestore(router)

@@ -22,6 +22,10 @@ data class FlipperKey(
         get() = mainFile.content
 
     fun getKeyPath() = FlipperKeyPath(mainFile.path, deleted)
+
+    fun isBig(): Boolean {
+        return true
+    }
 }
 
 @Parcelize
