@@ -102,9 +102,12 @@ class WidgetSelectViewModel @VMInject constructor(
     private fun notifyActivityAboutResult() {
         val currentActivity = CurrentActivityHolder.getCurrentActivity()
         info { "Notify about result for activity $currentActivity and widget $widgetId" }
-        currentActivity?.setResult(RESULT_OK, Intent().apply {
-            putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
-        })
+        currentActivity?.setResult(
+            RESULT_OK,
+            Intent().apply {
+                putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
+            }
+        )
     }
 
     override fun onCleared() {
