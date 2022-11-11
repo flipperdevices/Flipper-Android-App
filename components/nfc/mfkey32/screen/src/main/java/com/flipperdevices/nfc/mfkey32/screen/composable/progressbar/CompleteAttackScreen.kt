@@ -53,7 +53,7 @@ fun CompleteAttack(
         Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
             FoundedKeyComposable(key = keysCollected.first())
         }
-    } else FoundedKeyComposableGrid(Modifier.padding(4.dp), keysCollected)
+    } else FoundedKeyComposableGrid(Modifier.padding(6.dp), keysCollected)
 
     ComposableFlipperButton(
         modifier = Modifier

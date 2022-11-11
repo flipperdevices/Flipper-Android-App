@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.Card
@@ -50,9 +51,11 @@ fun FoundedKeyComposable(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
-                modifier = Modifier.padding(
-                    start = 10.dp, top = 8.dp, bottom = 8.dp, end = 6.dp
-                ),
+                modifier = Modifier
+                    .padding(
+                        start = 10.dp, top = 8.dp, bottom = 8.dp, end = 6.dp
+                    )
+                    .size(24.dp),
                 painter = painterResource(R.drawable.pic_encrypted_key),
                 contentDescription = key
             )
@@ -62,7 +65,7 @@ fun FoundedKeyComposable(
                         end = 12.dp
                     ),
                     text = key,
-                    style = LocalTypography.current.monoSpaceM12,
+                    style = LocalTypography.current.monoSpaceM14,
                     color = LocalPallet.current.text100
                 )
             }
