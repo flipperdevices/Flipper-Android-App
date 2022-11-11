@@ -2,15 +2,11 @@ package com.flipperdevices.nfc.mfkey32.screen.composable.progressbar
 
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -26,6 +22,7 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.nfc.mfkey32.screen.R
 import com.flipperdevices.nfc.mfkey32.screen.composable.progressbar.keys.FoundedKeyComposable
+import com.flipperdevices.nfc.mfkey32.screen.composable.progressbar.keys.FoundedKeyComposableGrid
 
 @Composable
 fun CompleteAttack(
@@ -56,17 +53,7 @@ fun CompleteAttack(
         Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
             FoundedKeyComposable(key = keysCollected.first())
         }
-    } else LazyVerticalGrid(
-        columns = GridCells.Fixed(count = 2),
-        horizontalArrangement = Arrangement.Center,
-        verticalArrangement = Arrangement.Center
-    ) {
-        items(keysCollected) { key ->
-            Box(contentAlignment = Alignment.Center) {
-                FoundedKeyComposable(modifier = Modifier.padding(4.dp), key)
-            }
-        }
-    }
+    } else FoundedKeyComposableGrid(Modifier.padding(4.dp), keysCollected)
 
     ComposableFlipperButton(
         modifier = Modifier

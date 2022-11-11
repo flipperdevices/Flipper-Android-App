@@ -1,9 +1,11 @@
 package com.flipperdevices.nfc.mfkey32.screen.composable.progressbar.keys
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
@@ -18,6 +20,23 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
+import com.flipperdevices.nfc.mfkey32.screen.R
+
+private const val GRID_WIDTH = 2
+
+@Composable
+fun FoundedKeyComposableGrid(modifier: Modifier, keys: List<String>) = Column {
+    keys.windowed(GRID_WIDTH, GRID_WIDTH, partialWindows = true).forEach { rowKeys ->
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            rowKeys.forEach { key ->
+                FoundedKeyComposable(modifier, key)
+            }
+        }
+    }
+}
 
 @Composable
 fun FoundedKeyComposable(
@@ -27,15 +46,17 @@ fun FoundedKeyComposable(
         modifier = modifier,
         shape = RoundedCornerShape(30.dp)
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Image(
                 modifier = Modifier.padding(
                     start = 10.dp, top = 8.dp, bottom = 8.dp, end = 6.dp
                 ),
-                painter = painterResource(DesignSystem.drawable.pic_key),
+                painter = painterResource(R.drawable.pic_encrypted_key),
                 contentDescription = key
             )
-            SelectionContainer() {
+            SelectionContainer {
                 Text(
                     modifier = Modifier.padding(
                         end = 12.dp
@@ -48,6 +69,7 @@ fun FoundedKeyComposable(
         }
     }
 }
+
 
 @Preview(
     showBackground = true,
