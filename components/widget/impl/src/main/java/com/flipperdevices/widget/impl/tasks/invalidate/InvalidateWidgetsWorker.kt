@@ -24,8 +24,9 @@ class InvalidateWidgetsWorker(
     private val widgetNotificationHelper = WidgetNotificationHelper(context)
 
     override suspend fun doWork(): Result {
-        setForegroundAsync(widgetNotificationHelper.invalidateForegroundInfo(id))
         invalidateWidgetsHelper.invoke()
         return Result.success()
     }
+
+    override suspend fun getForegroundInfo() = widgetNotificationHelper.invalidateForegroundInfo(id)
 }

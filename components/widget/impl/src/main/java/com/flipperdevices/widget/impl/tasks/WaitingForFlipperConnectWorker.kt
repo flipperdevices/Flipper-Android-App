@@ -59,7 +59,6 @@ class WaitingForFlipperConnectWorker(
             return Result.failure()
         }
 
-        setForegroundAsync(widgetNotificationHelper.waitingFlipperForegroundInfo(id))
         val serviceApi = serviceProvider.getServiceApi()
 
         try {
@@ -77,6 +76,9 @@ class WaitingForFlipperConnectWorker(
         }
         return Result.success()
     }
+
+    override suspend fun getForegroundInfo() =
+        widgetNotificationHelper.waitingFlipperForegroundInfo(id)
 
     private fun isBluetoothEnabled(): Boolean {
         val bluetoothManager = ContextCompat.getSystemService(
