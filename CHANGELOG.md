@@ -11,6 +11,7 @@
 - [Feature] Fix format for user keys
 - [Feature] Updater card display update from url
 - [Feature] Add screenshot and unlock to screenstreaming
+- [Feature] Rework mfkey32 founded key screen
 - [CI] Auto git submodule update via gradle task
 - [FIX] Options button in device screen
 - [FIX] WearOS connection
