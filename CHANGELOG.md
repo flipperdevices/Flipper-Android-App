@@ -17,6 +17,7 @@
 - [FIX] Screen streaming broke
 - [FIX] Flipper color on error screen
 - [FIX] Widget options not working in some android devices
+- [FIX] Move resources from night qualifier
 
 # 1.2.2
 
