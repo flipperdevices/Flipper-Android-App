@@ -71,7 +71,7 @@ fun ComposableMfKey32NotFound() = Column(
             text = annotatedStringFromMarkdown(resId),
             textAlign = TextAlign.Start,
             style = LocalTypography.current.bodyR16,
-            color = LocalPallet.current.text40,
+            color = LocalPallet.current.text40
         )
     }
 }

@@ -41,7 +41,8 @@ fun FoundedKeyComposableGrid(modifier: Modifier, keys: List<String>) = Column {
 
 @Composable
 fun FoundedKeyComposable(
-    modifier: Modifier = Modifier, key: String
+    modifier: Modifier = Modifier,
+    key: String
 ) {
     Card(
         modifier = modifier,
@@ -73,14 +74,13 @@ fun FoundedKeyComposable(
     }
 }
 
-
 @Preview(
     showBackground = true,
     showSystemUi = true
 )
 @Composable
-private fun FoundedKeyComposablePreview() {
-    FlipperThemeInternal() {
+private fun ComposableFoundedKeyComposablePreview() {
+    FlipperThemeInternal {
         Box {
             FoundedKeyComposable(key = "A0B1C2D3A4A1")
         }

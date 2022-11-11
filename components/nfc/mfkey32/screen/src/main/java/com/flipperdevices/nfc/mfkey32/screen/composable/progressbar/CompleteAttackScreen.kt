@@ -1,6 +1,5 @@
 package com.flipperdevices.nfc.mfkey32.screen.composable.progressbar
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.ComposableFlipperButton
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
@@ -70,8 +70,8 @@ fun CompleteAttack(
     showBackground = true
 )
 @Composable
-private fun CompleteAttackPreviewSingle() {
-    FlipperThemeInternal() {
+private fun ComposableCompleteAttackPreviewSinglePreview() {
+    FlipperThemeInternal {
         Box {
             CompleteAttack(listOf("A0B1C2D3A4A1")) {}
         }
@@ -83,8 +83,8 @@ private fun CompleteAttackPreviewSingle() {
     showBackground = true
 )
 @Composable
-private fun CompleteAttackPreviewEven() {
-    FlipperThemeInternal() {
+private fun ComposableCompleteAttackPreviewEvenPreview() {
+    FlipperThemeInternal {
         Box {
             CompleteAttack(
                 listOf(
@@ -103,8 +103,8 @@ private fun CompleteAttackPreviewEven() {
     showBackground = true
 )
 @Composable
-private fun CompleteAttackPreviewOdd() {
-    FlipperThemeInternal() {
+private fun CompleteAttackPreviewOddPreview() {
+    FlipperThemeInternal {
         Box {
             CompleteAttack(
                 listOf(

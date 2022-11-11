@@ -1,6 +1,5 @@
 package com.flipperdevices.nfc.mfkey32.screen.composable.progressbar
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.core.LinearEasing
@@ -22,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.flipperdevices.core.ui.ktx.FlipperProgressIndicator
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.nfc.mfkey32.screen.R
@@ -67,7 +67,6 @@ fun ComposableMfKey32Progress(navController: NavController, state: MfKey32State)
 
     GrayDivider()
 }
-
 
 @Composable
 private fun GrayDivider() = Box(
