@@ -50,11 +50,11 @@ fun ComposableMfKey32NotFound() = Column(
         contentDescription = stringResource(R.string.mfkey32_not_found_title)
     )
     Text(
-        modifier = Modifier.padding(top = 32.dp, bottom = 14.dp),
+        modifier = Modifier.padding(top = 32.dp, bottom = 14.dp, start = 14.dp, end = 14.dp),
         text = stringResource(R.string.mfkey32_not_found_desc),
         style = LocalTypography.current.bodyR16,
         color = LocalPallet.current.text80,
-        textAlign = TextAlign.Center
+        textAlign = TextAlign.Start
     )
 
     listOf(
@@ -67,11 +67,11 @@ fun ComposableMfKey32NotFound() = Column(
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 14.dp, vertical = 10.dp),
+                .padding(horizontal = 14.dp, vertical = 8.dp),
             text = annotatedStringFromMarkdown(resId),
-            textAlign = TextAlign.Center,
-            style = LocalTypography.current.bodyR14,
-            color = LocalPallet.current.text40
+            textAlign = TextAlign.Start,
+            style = LocalTypography.current.bodyR16,
+            color = LocalPallet.current.text40,
         )
     }
 }
