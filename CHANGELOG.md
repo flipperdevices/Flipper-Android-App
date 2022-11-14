@@ -3,6 +3,7 @@
 # 1.2.3 - In progress
 
 - [REFACTOR] Migrate widgets to WorkManager
+- [Feature] New share flow
 - [Feature] Add mfkey32 attack in debug/options + button back
 - [Feature] Add HUB tab
 - [Feature] Wrap more errors with widget
