@@ -12,6 +12,7 @@ internal const val QUERY_KEY_PATH = "path"
 // Don't forget add host in components/deeplink/impl/src/main/AndroidManifest.xml
 internal val SUPPORTED_HOSTS = listOf("dev.flpr.app", "flpr.app")
 
-internal const val PREFFERED_SCHEME = "https"
-internal val PREFFERED_HOST = if (BuildConfig.INTERNAL) "dev.flpr.app" else "flpr.app"
+const val PREFFERED_SCHEME = "https"
+val PREFFERED_HOST = if (BuildConfig.INTERNAL) "dev.flpr.app" else "flpr.app"
+const val PATH_FOR_FFF_SECURE_LIHK = "/st"
 internal const val PATH_FOR_FFF_LIHK = "/s"
