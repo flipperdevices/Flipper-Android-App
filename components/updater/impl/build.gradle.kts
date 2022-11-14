@@ -1,6 +1,6 @@
 plugins {
     id("flipper.lint")
-    id("flipper.android-compose")
+    id("flipper.android-lib")
     id("com.squareup.anvil")
     id("kotlin-kapt")
 }
@@ -25,12 +25,6 @@ dependencies {
     implementation(projects.components.analytics.metric.api)
 
     implementation(libs.lifecycle.runtime.ktx)
-
-    // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.material)
 
     // Dagger deps
     implementation(libs.dagger)
