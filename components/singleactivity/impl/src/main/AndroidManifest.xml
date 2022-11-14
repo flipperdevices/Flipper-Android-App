@@ -3,11 +3,9 @@
 
     <application>
         <activity
-                android:exported="false"
                 android:launchMode="singleTask"
                 android:name=".SingleActivity"
                 android:screenOrientation="portrait"
-                android:theme="@style/FlipperTheme"
                 android:windowSoftInputMode="adjustResize" />
     </application>
 </manifest>

@@ -11,11 +11,15 @@
 - [Feature] Fix format for user keys
 - [Feature] Updater card display update from url
 - [Feature] Add screenshot and unlock to screenstreaming
+- [Feature] Rework mfkey32 founded key screen
 - [CI] Auto git submodule update via gradle task
 - [FIX] Options button in device screen
 - [FIX] WearOS connection
 - [FIX] Screen streaming broke
 - [FIX] Flipper color on error screen
+- [FIX] Fix fatal crash on empty backup
+- [FIX] Widget options not working in some android devices
+- [FIX] Move resources from night qualifier
 
 # 1.2.2
 

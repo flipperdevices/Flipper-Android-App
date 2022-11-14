@@ -7,6 +7,7 @@ import com.flipperdevices.core.activityholder.CurrentActivityHolder
 import com.flipperdevices.core.di.ApplicationParams
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.info
+import com.flipperdevices.singleactivity.impl.SingleActivity
 import tangle.inject.TangleGraph
 import timber.log.Timber
 
@@ -21,7 +22,7 @@ class FlipperApplication : Application() {
                 context = this,
                 application = this,
                 ApplicationParams(
-                    startApplicationClass = SplashScreen::class,
+                    startApplicationClass = SingleActivity::class,
                     version = BuildConfig.VERSION_NAME
                 )
             )
