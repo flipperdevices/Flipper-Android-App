@@ -1,6 +1,5 @@
-package com.flipperdevices.uploader.compose
+package com.flipperdevices.uploader.compose.content
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -17,12 +16,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
+import com.flipperdevices.share.uploader.R
 
 @Composable
-internal fun ComposableSheetPrepare(
-    @StringRes titleId: Int,
-    @StringRes descId: Int?
-) {
+internal fun ComposableSheetPrepare() {
     Column(
         modifier = Modifier.fillMaxWidth().padding(top = 54.dp, bottom = 64.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -35,15 +32,13 @@ internal fun ComposableSheetPrepare(
         )
         Spacer(modifier = Modifier.height(24.dp))
         Text(
-            text = stringResource(id = titleId),
+            text = stringResource(id = R.string.share_via_secure_link_title),
             style = LocalTypography.current.bodyM14
         )
         Spacer(modifier = Modifier.height(2.dp))
-        descId?.let {
-            Text(
-                text = stringResource(id = it),
-                style = LocalTypography.current.subtitleR10
-            )
-        }
+        Text(
+            text = stringResource(id = R.string.share_via_secure_link_desc),
+            style = LocalTypography.current.subtitleR10
+        )
     }
 }

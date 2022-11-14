@@ -1,4 +1,4 @@
-package com.flipperdevices.share.cryptostorage
+package com.flipperdevices.share.cryptostorage.model
 
 data class EncryptData(
     val data: ByteArray,

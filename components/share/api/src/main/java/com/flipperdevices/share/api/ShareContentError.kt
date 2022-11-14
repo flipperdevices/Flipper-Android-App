@@ -1,4 +1,4 @@
-package com.flipperdevices.uploader.models
+package com.flipperdevices.share.api
 
 enum class ShareContentError {
     NO_INTERNET,

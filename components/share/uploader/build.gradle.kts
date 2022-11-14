@@ -37,8 +37,14 @@ dependencies {
 
     // Dagger deps
     implementation(libs.dagger)
+    implementation(project(mapOf("path" to ":components:keyedit:api")))
     kapt(libs.dagger.kapt)
     implementation(libs.tangle.viewmodel.compose)
     implementation(libs.tangle.viewmodel.api)
     anvil(libs.tangle.viewmodel.compiler)
+
+    // Testing
+    testImplementation(projects.components.core.test)
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk)
 }

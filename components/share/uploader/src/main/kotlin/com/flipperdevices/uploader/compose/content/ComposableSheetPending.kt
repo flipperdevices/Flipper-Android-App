@@ -30,7 +30,7 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.share.uploader.R
 
 @Composable
-internal fun ComposableSheetChooser(
+internal fun ComposableSheetPending(
     onShareLink: () -> Unit,
     onShareFile: () -> Unit,
     isLongLink: Boolean
@@ -41,9 +41,7 @@ internal fun ComposableSheetChooser(
     ) {
         ComposableSheetAction(
             imageId = DesignSystem.drawable.ic_share_link,
-            titleId = if (isLongLink) {
-                R.string.share_via_secure_link_title
-            } else R.string.share_via_link_title,
+            titleId = R.string.share_via_secure_link_title,
             descId = if (isLongLink) R.string.share_via_secure_link_desc else null,
             onAction = onShareLink
         )

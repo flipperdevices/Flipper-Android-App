@@ -1,19 +1,16 @@
 package com.flipperdevices.keyscreen.impl.fragments
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.fragment.app.viewModels
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.withArgs
-import com.flipperdevices.core.navigation.requireRouter
 import com.flipperdevices.core.ui.fragment.ComposeFragment
-import com.flipperdevices.core.ui.res.R as DesignSystem
-import com.flipperdevices.keyedit.api.KeyEditApi
 import com.flipperdevices.keyscreen.api.KeyEmulateApi
 import com.flipperdevices.keyscreen.impl.composable.ComposableKeyScreen
+import com.flipperdevices.keyscreen.impl.composable.card.KeyScreenNavigation
 import com.flipperdevices.keyscreen.impl.di.KeyScreenComponent
 import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModel
 import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModelFactory
@@ -21,12 +18,9 @@ import com.flipperdevices.nfceditor.api.NfcEditorApi
 import com.flipperdevices.share.api.ShareBottomSheetApi
 import javax.inject.Inject
 
-private const val EXTRA_KEY_PATH = "flipper_key_path"
+internal const val EXTRA_KEY_PATH = "flipper_key_path"
 
 class KeyScreenFragment : ComposeFragment() {
-
-    @Inject
-    lateinit var keyEditApi: KeyEditApi
 
     @Inject
     lateinit var synchronizationUiApi: SynchronizationUiApi
@@ -44,23 +38,30 @@ class KeyScreenFragment : ComposeFragment() {
         ComponentHolder.component<KeyScreenComponent>().inject(this)
     }
 
+    private val flipperKeyPath: FlipperKeyPath?
+        get() = arguments?.getParcelable(EXTRA_KEY_PATH)
+
     private val viewModel by viewModels<KeyScreenViewModel> {
         KeyScreenViewModelFactory(
-            arguments?.getParcelable(EXTRA_KEY_PATH),
+            keyPath = flipperKeyPath,
             requireActivity().application
         )
     }
 
     @Composable
     override fun RenderView() {
-        ComposableKeyScreen(
-            viewModel,
-            synchronizationUiApi,
-            nfcEditor,
-            keyEmulateApi,
-            shareBottomSheetApi,
-            onBack = {
-                requireRouter().exit()
+        KeyScreenNavigation(
+            screenContent = { onShare ->
+                ComposableKeyScreen(
+                    viewModel,
+                    synchronizationUiApi,
+                    nfcEditor,
+                    keyEmulateApi,
+                    onShare = { onShare(flipperKeyPath) }
+                )
+            },
+            sheetContent = { onClose ->
+                shareBottomSheetApi.ComposableShareBottomSheet(onClose = onClose)
             }
         )
     }

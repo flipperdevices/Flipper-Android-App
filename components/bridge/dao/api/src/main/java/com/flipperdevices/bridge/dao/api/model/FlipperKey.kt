@@ -2,6 +2,8 @@ package com.flipperdevices.bridge.dao.api.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /**
  * The most complete description of the key
@@ -22,15 +24,15 @@ data class FlipperKey(
         get() = mainFile.content
 
     fun getKeyPath() = FlipperKeyPath(mainFile.path, deleted)
-
-    fun isBig(): Boolean {
-        return true
-    }
+    fun getKeyContent() = mainFile.content.openStream().use { it.readBytes() }
 }
 
 @Parcelize
+@Serializable
 data class FlipperKeyPath(
+    @SerialName("path")
     val path: FlipperFilePath,
+    @SerialName("deleted")
     val deleted: Boolean
 ) : Parcelable
 

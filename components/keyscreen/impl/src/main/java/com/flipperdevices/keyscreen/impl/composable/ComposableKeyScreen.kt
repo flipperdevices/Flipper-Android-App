@@ -8,19 +8,17 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
+import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.keyscreen.api.KeyEmulateApi
 import com.flipperdevices.keyscreen.impl.model.KeyScreenState
 import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModel
 import com.flipperdevices.nfceditor.api.NfcEditorApi
-import com.flipperdevices.share.api.ShareBottomSheetApi
-import kotlinx.coroutines.launch
 
 @Composable
 fun ComposableKeyScreen(
@@ -28,30 +26,23 @@ fun ComposableKeyScreen(
     synchronizationUiApi: SynchronizationUiApi,
     nfcEditorApi: NfcEditorApi,
     keyEmulateApi: KeyEmulateApi,
-    shareBottomSheetApi: ShareBottomSheetApi,
-    onBack: () -> Unit
+    onShare: () -> Unit
 ) {
-    val scope = rememberCoroutineScope()
-
+    val router = LocalRouter.current
     val keyScreenState by viewModel.getKeyScreenState().collectAsState()
 
     when (val localKeyScreenState = keyScreenState) {
         KeyScreenState.InProgress -> ComposableKeyInitial()
         is KeyScreenState.Error -> ComposableKeyError(localKeyScreenState)
-        is KeyScreenState.Ready -> shareBottomSheetApi.ComposableShareBottomSheet(
-            flipperKey = localKeyScreenState.flipperKey,
-            modifier = Modifier
-        ) {
-            ComposableKeyParsed(
-                viewModel,
-                localKeyScreenState,
-                nfcEditorApi,
-                synchronizationUiApi,
-                keyEmulateApi,
-                onBack,
-                onShare = { scope.launch { shareBottomSheetApi.showSheet() } }
-            )
-        }
+        is KeyScreenState.Ready -> ComposableKeyParsed(
+            viewModel,
+            localKeyScreenState,
+            nfcEditorApi,
+            synchronizationUiApi,
+            keyEmulateApi,
+            onBack = { router.exit() },
+            onShare = onShare
+        )
     }
 }
 

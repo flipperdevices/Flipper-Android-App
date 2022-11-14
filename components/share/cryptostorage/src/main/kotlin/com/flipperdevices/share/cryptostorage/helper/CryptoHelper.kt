@@ -1,6 +1,7 @@
-package com.flipperdevices.share.cryptostorage
+package com.flipperdevices.share.cryptostorage.helper
 
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.share.cryptostorage.model.EncryptData
 import com.squareup.anvil.annotations.ContributesBinding
 import java.util.Base64
 import javax.crypto.Cipher
@@ -12,12 +13,12 @@ import javax.inject.Inject
 private const val ALGORITHM = "AES"
 private const val ALGORITHM_HELPER = "AES/GCM/NoPadding"
 private const val KEY_SIZE = 128
-private const val GCM_SIZE = 8
+private const val GCM_SIZE = 128
 private const val GCM_VECTOR_SIZE = 12
 
 interface CryptoHelperApi {
     fun encrypt(data: ByteArray): EncryptData
-    fun decode(data: ByteArray, key: String): ByteArray
+    fun decrypt(data: ByteArray, key: String): ByteArray
 }
 
 @ContributesBinding(AppGraph::class)
@@ -36,7 +37,7 @@ class CryptoHelperApiImpl @Inject constructor() : CryptoHelperApi {
         return EncryptData(key = keyString, data = encryptedBytes)
     }
 
-    override fun decode(data: ByteArray, key: String): ByteArray {
+    override fun decrypt(data: ByteArray, key: String): ByteArray {
         val decodedKey: ByteArray = Base64.getDecoder().decode(key)
         val secretKey = SecretKeySpec(decodedKey, ALGORITHM)
         val decryptCipher = Cipher.getInstance(ALGORITHM_HELPER).apply {

@@ -1,6 +1,5 @@
 package com.flipperdevices.uploader.compose.content
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
@@ -20,13 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.painterResourceByKey
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
+import com.flipperdevices.share.api.ShareContentError
 import com.flipperdevices.share.uploader.R
-import com.flipperdevices.uploader.models.ShareContentError
-import com.flipperdevices.uploader.models.ShareContentError.NO_INTERNET
-import com.flipperdevices.uploader.models.ShareContentError.OTHER
-import com.flipperdevices.uploader.models.ShareContentError.SERVER_ERROR
 
 @Composable
 internal fun ComposableSheetError(
@@ -76,18 +73,18 @@ internal fun ComposableSheetError(
 @StringRes
 private fun getTitleByShareError(typeError: ShareContentError): Int {
     return when (typeError) {
-        NO_INTERNET -> R.string.share_error_no_internet_title
-        SERVER_ERROR -> R.string.share_error_server_title
-        OTHER -> R.string.share_error_other_title
+        ShareContentError.NO_INTERNET -> R.string.share_error_no_internet_title
+        ShareContentError.SERVER_ERROR -> R.string.share_error_server_title
+        ShareContentError.OTHER -> R.string.share_error_other_title
     }
 }
 
 @StringRes
 private fun getDescriptionByShareError(typeError: ShareContentError): Int {
     return when (typeError) {
-        NO_INTERNET -> R.string.share_error_no_internet_desc
-        SERVER_ERROR -> R.string.share_error_server_desc
-        OTHER -> R.string.share_error_other_desc
+        ShareContentError.NO_INTERNET -> R.string.share_error_no_internet_desc
+        ShareContentError.SERVER_ERROR -> R.string.share_error_server_desc
+        ShareContentError.OTHER -> R.string.share_error_other_desc
     }
 }
 
@@ -96,13 +93,13 @@ private fun getDescriptionByShareError(typeError: ShareContentError): Int {
 private fun getImageByShareError(typeError: ShareContentError): Int {
     return if (isSystemInDarkTheme()) {
         when (typeError) {
-            NO_INTERNET -> DesignSystem.drawable.ic_no_internet_dark
-            SERVER_ERROR -> DesignSystem.drawable.ic_server_error_dark
-            OTHER -> DesignSystem.drawable.ic_warning_triangle
+            ShareContentError.NO_INTERNET -> DesignSystem.drawable.ic_no_internet_dark
+            ShareContentError.SERVER_ERROR -> DesignSystem.drawable.ic_server_error_dark
+            ShareContentError.OTHER -> DesignSystem.drawable.ic_warning_triangle
         }
     } else when (typeError) {
-        NO_INTERNET -> DesignSystem.drawable.ic_no_internet
-        SERVER_ERROR -> DesignSystem.drawable.ic_server_error
-        OTHER -> DesignSystem.drawable.ic_warning_triangle
+        ShareContentError.NO_INTERNET -> DesignSystem.drawable.ic_no_internet
+        ShareContentError.SERVER_ERROR -> DesignSystem.drawable.ic_server_error
+        ShareContentError.OTHER -> DesignSystem.drawable.ic_warning_triangle
     }
 }

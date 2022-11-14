@@ -1,6 +1,13 @@
 package com.flipperdevices.bridge.dao.impl.api.parsers.url
 
 import android.net.Uri
+import com.flipperdevices.bridge.dao.api.QUERY_DELIMITED_CHAR
+import com.flipperdevices.bridge.dao.api.QUERY_KEY_PATH
+import com.flipperdevices.bridge.dao.api.QUERY_VALUE_CHARSET
+import com.flipperdevices.bridge.dao.api.QUERY_VALUE_DELIMITED_CHAR
+import com.flipperdevices.bridge.dao.api.SUPPORTED_HOSTS
+import com.flipperdevices.bridge.dao.api.SUPPORTED_PATHS
+import com.flipperdevices.bridge.dao.api.SUPPORTED_SCHEMES
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.warn

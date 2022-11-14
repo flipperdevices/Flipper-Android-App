@@ -6,7 +6,6 @@
     <string name="share_export_file_title">Export file</string>
     <string name="share_via_secure_link_title">via Secure Link</string>
     <string name="share_via_secure_link_desc">Expires in 30 days</string>
-    <string name="share_via_link_title">via Link</string>
 
     <string name="share_error_no_internet_title">No Internet Connection</string>
     <string name="share_error_no_internet_desc">Unable to Share This Link</string>

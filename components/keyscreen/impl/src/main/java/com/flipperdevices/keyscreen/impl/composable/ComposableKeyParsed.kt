@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
@@ -25,7 +24,6 @@ import com.flipperdevices.keyscreen.shared.bar.ComposableBarBackIcon
 import com.flipperdevices.keyscreen.shared.bar.ComposableBarTitleWithName
 import com.flipperdevices.keyscreen.shared.bar.ComposableKeyScreenAppBar
 import com.flipperdevices.nfceditor.api.NfcEditorApi
-import kotlinx.coroutines.launch
 
 @Composable
 @Suppress("LongParameterList")

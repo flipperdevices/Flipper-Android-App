@@ -26,6 +26,7 @@ class ArchiveKeyDeeplinkHandlerImpl @Inject constructor(
         }
         return when (link.content) {
             is DeeplinkContent.InternalStorageFile -> DispatcherPriority.DEFAULT
+            is DeeplinkContent.FFFSecureContent -> DispatcherPriority.DEFAULT
             is DeeplinkContent.FFFContent -> {
                 if (link.path == null) return null
                 return DispatcherPriority.DEFAULT

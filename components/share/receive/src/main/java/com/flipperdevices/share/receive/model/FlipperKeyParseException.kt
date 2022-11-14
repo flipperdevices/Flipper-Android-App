@@ -1,4 +1,3 @@
 package com.flipperdevices.share.receive.model
 
-class FlipperKeyParseException {
-}
+class FlipperKeyParseException : Exception()

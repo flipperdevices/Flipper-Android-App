@@ -4,19 +4,16 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.content.FileProvider
 import com.flipperdevices.core.ktx.jre.createNewFileWithMkDirs
-import java.io.InputStream
 
 object ShareHelper {
-    fun shareRawFile(context: Context, data: InputStream, resId: Int, name: String) {
+    fun shareRawFile(context: Context, data: ByteArray, resId: Int, name: String) {
         val file = SharableFile(
             nameFile = name,
             context = context
         ).apply { createNewFileWithMkDirs() }
 
         file.outputStream().use { fileStream ->
-            data.use { contentStream ->
-                contentStream.copyTo(fileStream)
-            }
+            fileStream.write(data)
         }
 
         shareFile(

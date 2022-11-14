@@ -14,12 +14,16 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
+import com.flipperdevices.share.api.ShareContentError
 import com.flipperdevices.share.receive.R
 import com.flipperdevices.share.receive.di.KeyReceiveComponent
+import com.flipperdevices.share.receive.model.FlipperKeyParseException
 import com.flipperdevices.share.receive.model.ReceiveState
+import java.net.UnknownHostException
+import java.net.UnknownServiceException
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -46,26 +50,55 @@ class KeyReceiveViewModel(
     @Inject
     lateinit var notificationStorage: InAppNotificationStorage
 
+    @Inject
+    lateinit var flipperKeyParserHelper: FlipperKeyParserHelper
+
     init {
         ComponentHolder.component<KeyReceiveComponent>().inject(this)
         internalDeeplinkFlow.onEach {
-            var flipperKey = FlipperKeyParserHelper.toFlipperKey(it)
-            if (flipperKey == null) {
-                state.emit(ReceiveState.Finished)
-                return@onEach
-            }
-            val newPath = utilsKeyApi.findAvailablePath(flipperKey.getKeyPath())
-            flipperKey = flipperKey.copy(
-                mainFile = flipperKey.mainFile.copy(
-                    path = newPath.path
-                ),
-                deleted = newPath.deleted
-            )
-            state.emit(ReceiveState.Pending(flipperKey, keyParser.parseKey(flipperKey)))
+            parseFlipperKey()
         }.launchIn(viewModelScope)
     }
 
-    fun getState(): StateFlow<ReceiveState> = state
+    private suspend fun parseFlipperKey() {
+        internalDeeplinkFlow.onEach {
+            val flipperKey = flipperKeyParserHelper.toFlipperKey(it)
+            flipperKey.onSuccess { localFlipperKey ->
+                val newPath = utilsKeyApi.findAvailablePath(localFlipperKey.getKeyPath())
+                val newFlipperKey = localFlipperKey.copy(
+                    mainFile = localFlipperKey.mainFile.copy(
+                        path = newPath.path
+                    ),
+                    deleted = newPath.deleted
+                )
+                state.emit(ReceiveState.Pending(newFlipperKey, keyParser.parseKey(newFlipperKey)))
+            }
+            flipperKey.onFailure { exception ->
+                error(exception) { "Error on parse flipperKey" }
+                when (exception) {
+                    is FlipperKeyParseException -> state.emit(ReceiveState.Finished)
+                    is UnknownHostException -> state.emit(
+                        ReceiveState.Error(ShareContentError.NO_INTERNET)
+                    )
+                    is UnknownServiceException -> state.emit(
+                        ReceiveState.Error(ShareContentError.SERVER_ERROR)
+                    )
+                    else -> state.emit(ReceiveState.Error(ShareContentError.OTHER))
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    fun getState() = state.asStateFlow()
+
+    fun onRetry() {
+        viewModelScope.launch {
+            state.emit(ReceiveState.NotStarted)
+            internalDeeplinkFlow.onEach {
+                parseFlipperKey()
+            }
+        }
+    }
 
     fun onSave() {
         val localState = state.value

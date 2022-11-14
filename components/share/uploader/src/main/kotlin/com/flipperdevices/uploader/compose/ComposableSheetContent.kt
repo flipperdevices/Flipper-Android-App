@@ -14,48 +14,40 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.share.uploader.R
-import com.flipperdevices.uploader.compose.content.ComposableSheetChooser
 import com.flipperdevices.uploader.compose.content.ComposableSheetError
-import com.flipperdevices.uploader.models.UploaderState
+import com.flipperdevices.uploader.compose.content.ComposableSheetInitial
+import com.flipperdevices.uploader.compose.content.ComposableSheetPending
+import com.flipperdevices.uploader.compose.content.ComposableSheetPrepare
+import com.flipperdevices.uploader.models.ShareContent
+import com.flipperdevices.uploader.models.ShareState
 
 @Composable
 internal fun ComposableSheetContent(
-    state: UploaderState,
-    flipperKey: FlipperKey,
-    onShareLink: () -> Unit = {},
-    onShareFile: () -> Unit = {},
-    onRetry: () -> Unit = {}
+    state: ShareState,
+    keyName: String,
+    onShareLink: (ShareContent) -> Unit,
+    onShareFile: (ShareContent) -> Unit,
+    onRetry: () -> Unit,
+    onClose: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxWidth().height(260.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        ComposableSheetFooter(keyName = flipperKey.path.nameWithExtension)
+        ComposableSheetFooter(keyName = keyName)
         when (state) {
-            UploaderState.Chooser -> ComposableSheetChooser(
-                onShareLink = onShareLink,
-                onShareFile = onShareFile,
-                isLongLink = flipperKey.isBig()
+            is ShareState.Error -> ComposableSheetError(state.typeError, onRetry)
+            ShareState.Completed -> { onClose() }
+            ShareState.Prepare -> ComposableSheetPrepare()
+            ShareState.Initial -> ComposableSheetInitial()
+            is ShareState.PendingShare -> ComposableSheetPending(
+                onShareLink = { onShareLink(state.content) },
+                onShareFile = { onShareFile(state.content) },
+                isLongLink = state.content.link == null
             )
-            is UploaderState.Prepare -> {
-                if (state.isLongKey) {
-                    ComposableSheetPrepare(
-                        titleId = R.string.share_via_secure_link_title,
-                        descId = R.string.share_via_secure_link_desc
-                    )
-                } else {
-                    ComposableSheetPrepare(
-                        titleId = R.string.share_via_link_title,
-                        descId = null
-                    )
-                }
-            }
-            is UploaderState.Error -> ComposableSheetError(state.typeError, onRetry)
-            else -> {}
         }
     }
 }

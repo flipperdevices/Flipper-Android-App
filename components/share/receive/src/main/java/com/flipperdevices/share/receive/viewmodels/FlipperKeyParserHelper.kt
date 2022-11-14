@@ -6,41 +6,46 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkContent
+import com.flipperdevices.share.api.CryptoStorageApi
+import com.flipperdevices.share.receive.model.FlipperKeyParseException
+import javax.inject.Inject
 
-object FlipperKeyParserHelper {
-    fun toFlipperKey(link: Deeplink?): FlipperKey? {
-        if (link == null) return null
-        if (link !is Deeplink.FlipperKey) return null
-        return when (link.content) {
-            is DeeplinkContent.FFFContent -> parseFFFContent(link)
-            is DeeplinkContent.InternalStorageFile -> parseInternalFile(link)
-            else -> null
+class FlipperKeyParserHelper @Inject constructor(
+    private val cryptoStorageApi: CryptoStorageApi
+) {
+    suspend fun toFlipperKey(link: Deeplink?): Result<FlipperKey> {
+        if (link == null) return Result.failure(FlipperKeyParseException())
+        if (link !is Deeplink.FlipperKey) return Result.failure(FlipperKeyParseException())
+
+        return when (val content = link.content) {
+            is DeeplinkContent.FFFContent -> parseFFFContent(content, link.path)
+            is DeeplinkContent.InternalStorageFile -> parseInternalFile(content)
+            is DeeplinkContent.FFFSecureContent -> parseSecureLink(content)
+            else -> Result.failure(FlipperKeyParseException())
         }
     }
 
-    private fun parseFFFContent(link: Deeplink): FlipperKey? {
-        if (link !is Deeplink.FlipperKey) {
-            return null
-        }
-        val path = link.path ?: return null
-        val deeplinkContent = link.content as? DeeplinkContent.FFFContent ?: return null
-        return FlipperKey(
+    private fun parseFFFContent(
+        deeplinkContent: DeeplinkContent.FFFContent,
+        path: FlipperFilePath?
+    ): Result<FlipperKey> {
+        val localPath = path ?: return Result.failure(FlipperKeyParseException())
+        val key = FlipperKey(
             mainFile = FlipperFile(
-                path,
-                deeplinkContent.content
+                localPath,
+                deeplinkContent.flipperFileFormat
             ),
             synchronized = false,
             deleted = false
         )
+        return Result.success(key)
     }
 
-    private fun parseInternalFile(link: Deeplink): FlipperKey? {
-        if (link !is Deeplink.FlipperKey) {
-            return null
-        }
-        val deeplinkContent = link.content as? DeeplinkContent.InternalStorageFile ?: return null
+    private fun parseInternalFile(
+        deeplinkContent: DeeplinkContent.InternalStorageFile
+    ): Result<FlipperKey> {
         val fileKey = deeplinkContent.file
-        return FlipperKey(
+        val flipperKey = FlipperKey(
             mainFile = FlipperFile(
                 FlipperFilePath(
                     folder = fileKey.extension,
@@ -51,5 +56,36 @@ object FlipperKeyParserHelper {
             synchronized = false,
             deleted = false
         )
+        return Result.success(flipperKey)
+    }
+
+    private suspend fun parseSecureLink(
+        deeplinkContent: DeeplinkContent.FFFSecureContent
+    ): Result<FlipperKey> {
+        val path = deeplinkContent.filePath
+        val name = path.substringAfterLast("/")
+        val data = cryptoStorageApi.download(
+            id = deeplinkContent.fileId,
+            key = deeplinkContent.key,
+            name = name
+        )
+        data.onSuccess {
+            val flipperKey = FlipperKey(
+                mainFile = FlipperFile(
+                    FlipperFilePath(
+                        folder = path.substringBeforeLast("/"),
+                        nameWithExtension = name
+                    ),
+                    FlipperKeyContent.RawData(it)
+                ),
+                synchronized = false,
+                deleted = false
+            )
+            return Result.success(flipperKey)
+        }
+        data.onFailure {
+            return Result.failure(it)
+        }
+        return Result.failure(FlipperKeyParseException())
     }
 }

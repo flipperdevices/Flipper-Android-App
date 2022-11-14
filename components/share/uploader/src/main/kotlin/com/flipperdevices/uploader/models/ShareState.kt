@@ -1,10 +1,12 @@
 package com.flipperdevices.uploader.models
 
-sealed class UploaderState {
-    object Initial : UploaderState()
-    object Completed : UploaderState()
-    object CreatingLink : UploaderState()
-    data class PendingShare(val content: ShareContent) : UploaderState()
+import com.flipperdevices.share.api.ShareContentError
 
-    data class Error(val typeError: ShareContentError) : UploaderState()
+sealed class ShareState {
+    object Initial : ShareState()
+    object Completed : ShareState()
+    object Prepare : ShareState()
+    data class PendingShare(val content: ShareContent) : ShareState()
+
+    data class Error(val typeError: ShareContentError) : ShareState()
 }

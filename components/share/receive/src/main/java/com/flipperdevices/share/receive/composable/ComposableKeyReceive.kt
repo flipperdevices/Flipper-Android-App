@@ -6,6 +6,7 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyscreen.api.KeyScreenApi
 import com.flipperdevices.share.receive.model.ReceiveState
 import com.flipperdevices.share.receive.viewmodels.KeyReceiveViewModel
@@ -33,6 +34,11 @@ fun ComposableKeyReceive(
             onSave = viewModel::onSave,
             onCancel = onCancel
         )
+        is ReceiveState.Error -> ComposableKeyErrorScreen(
+            typeError = state.type,
+            onCancel = onCancel,
+            onRetry = viewModel::onRetry
+        )
         ReceiveState.Finished -> return
     }
 }
@@ -43,6 +49,8 @@ fun ComposableProgress() {
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        CircularProgressIndicator()
+        CircularProgressIndicator(
+            color = LocalPallet.current.accentSecond
+        )
     }
 }
