@@ -16,6 +16,7 @@
 - [FIX] WearOS connection
 - [FIX] Screen streaming broke
 - [FIX] Flipper color on error screen
+- [FIX] Fix fatal crash on empty backup
 - [FIX] Widget options not working in some android devices
 
 # 1.2.2
