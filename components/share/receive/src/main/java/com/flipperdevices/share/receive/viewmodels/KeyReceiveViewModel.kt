@@ -92,12 +92,10 @@ class KeyReceiveViewModel(
     fun getState() = state.asStateFlow()
 
     fun onRetry() {
-        viewModelScope.launch {
+        internalDeeplinkFlow.onEach {
             state.emit(ReceiveState.NotStarted)
-            internalDeeplinkFlow.onEach {
-                parseFlipperKey()
-            }
-        }
+            parseFlipperKey()
+        }.launchIn(viewModelScope)
     }
 
     fun onSave() {
