@@ -1,6 +1,6 @@
 package com.flipperdevices.bridge.dao.impl.api.parsers.url
 
-import com.flipperdevices.bridge.dao.api.BuildConfig
+import com.flipperdevices.bridge.dao.impl.BuildConfig
 
 internal val SUPPORTED_SCHEMES = listOf("http", "https")
 internal val SUPPORTED_PATHS = listOf("/s", "/s/")

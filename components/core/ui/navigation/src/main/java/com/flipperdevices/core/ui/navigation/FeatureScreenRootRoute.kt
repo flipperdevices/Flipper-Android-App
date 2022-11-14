@@ -10,6 +10,5 @@ enum class FeatureScreenRootRoute {
     DEVICE_INFO,
     OPTIONS,
     SCREEN_STREAMING,
-    STRESS_TEST,
-    KEY_SCREEN
+    STRESS_TEST
 }

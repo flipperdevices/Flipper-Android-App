@@ -5,6 +5,6 @@ plugins {
 
 dependencies {
     implementation(projects.components.deeplink.api)
+    implementation(projects.components.bridge.dao.api)
     implementation(libs.compose.ui)
-    implementation(project(mapOf("path" to ":components:bridge:dao:api")))
 }
