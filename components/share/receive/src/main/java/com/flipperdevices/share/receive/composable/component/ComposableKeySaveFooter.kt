@@ -2,7 +2,6 @@ package com.flipperdevices.share.receive.composable
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -45,7 +44,6 @@ private fun SaveButton(savingInProgress: Boolean, onSave: () -> Unit) {
     }
 
     ComposableFlipperButton(
-        textPadding = PaddingValues(vertical = 12.dp, horizontal = 38.dp),
         text = stringResource(R.string.receive_save_btn),
         onClick = onSave
     )

@@ -42,7 +42,7 @@ sealed class DeeplinkContent : Parcelable {
 
     @Parcelize
     @Serializable
-    data class FFFSecureContent(
+    data class FFFCryptoContent(
         val filePath: String,
         val key: String,
         val fileId: String
@@ -53,7 +53,7 @@ sealed class DeeplinkContent : Parcelable {
             is ExternalUri -> size
             is InternalStorageFile -> file.length()
             is FFFContent -> flipperFileFormat.length()
-            is FFFSecureContent -> null
+            is FFFCryptoContent -> null
         }
     }
 
@@ -62,7 +62,7 @@ sealed class DeeplinkContent : Parcelable {
             is ExternalUri -> filename
             is InternalStorageFile -> file.name
             is FFFContent -> filename
-            is FFFSecureContent -> filePath
+            is FFFCryptoContent -> filePath
         }
     }
 
@@ -75,7 +75,7 @@ sealed class DeeplinkContent : Parcelable {
                 file.inputStream()
             }
             is FFFContent -> flipperFileFormat.openStream()
-            is FFFSecureContent -> null
+            is FFFCryptoContent -> null
         }
     }
 
@@ -91,7 +91,7 @@ sealed class DeeplinkContent : Parcelable {
                 file.delete()
             }
             is FFFContent -> {} // Noting
-            is FFFSecureContent -> {} // Noting
+            is FFFCryptoContent -> {} // Noting
         }
     }
 }

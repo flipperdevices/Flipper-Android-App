@@ -1,13 +1,8 @@
 package com.flipperdevices.share.receive.composable
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyscreen.api.KeyScreenApi
+import com.flipperdevices.share.receive.composable.screen.ComposableKeyScreenProgress
 import com.flipperdevices.share.receive.model.ReceiveState
 import com.flipperdevices.share.receive.viewmodels.KeyReceiveViewModel
 
@@ -19,7 +14,7 @@ fun ComposableKeyReceive(
     onCancel: () -> Unit = {}
 ) {
     when (state) {
-        ReceiveState.NotStarted -> ComposableProgress()
+        ReceiveState.NotStarted -> ComposableKeyScreenProgress()
         is ReceiveState.Pending -> ComposableKeySaveScreen(
             keyScreenApi = keyScreenApi,
             keyParsed = state.parsed,
@@ -40,17 +35,5 @@ fun ComposableKeyReceive(
             onRetry = viewModel::onRetry
         )
         ReceiveState.Finished -> return
-    }
-}
-
-@Composable
-fun ComposableProgress() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator(
-            color = LocalPallet.current.accentSecond
-        )
     }
 }

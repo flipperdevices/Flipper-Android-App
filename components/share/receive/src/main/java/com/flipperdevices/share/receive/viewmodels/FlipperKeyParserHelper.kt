@@ -20,7 +20,7 @@ class FlipperKeyParserHelper @Inject constructor(
         return when (val content = link.content) {
             is DeeplinkContent.FFFContent -> parseFFFContent(content, link.path)
             is DeeplinkContent.InternalStorageFile -> parseInternalFile(content)
-            is DeeplinkContent.FFFSecureContent -> parseSecureLink(content)
+            is DeeplinkContent.FFFCryptoContent -> parseCryptoContent(content)
             else -> Result.failure(FlipperKeyParseException())
         }
     }
@@ -59,8 +59,8 @@ class FlipperKeyParserHelper @Inject constructor(
         return Result.success(flipperKey)
     }
 
-    private suspend fun parseSecureLink(
-        deeplinkContent: DeeplinkContent.FFFSecureContent
+    private suspend fun parseCryptoContent(
+        deeplinkContent: DeeplinkContent.FFFCryptoContent
     ): Result<FlipperKey> {
         val path = deeplinkContent.filePath
         val name = path.substringAfterLast("/")

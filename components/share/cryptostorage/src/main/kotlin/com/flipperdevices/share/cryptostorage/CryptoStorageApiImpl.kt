@@ -1,25 +1,19 @@
 package com.flipperdevices.share.cryptostorage
 
-import com.flipperdevices.bridge.dao.api.PATH_FOR_FFF_SECURE_LIHK
-import com.flipperdevices.bridge.dao.api.PREFFERED_HOST
-import com.flipperdevices.bridge.dao.api.PREFFERED_SCHEME
-import com.flipperdevices.bridge.dao.api.QUERY_DELIMITED_CHAR
-import com.flipperdevices.bridge.dao.api.QUERY_KEY
-import com.flipperdevices.bridge.dao.api.QUERY_KEY_PATH
-import com.flipperdevices.bridge.dao.api.QUERY_VALUE_DELIMITED_CHAR
+import com.flipperdevices.bridge.dao.api.delegates.KeyParser
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyCrypto
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.share.api.CryptoStorageApi
 import com.flipperdevices.share.cryptostorage.helper.CryptoHelperApi
 import com.flipperdevices.share.cryptostorage.helper.StorageHelperApi
 import com.squareup.anvil.annotations.ContributesBinding
-import java.net.URL
-import java.net.URLEncoder
 import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class)
 class CryptoStorageApiImpl @Inject constructor(
     private val cryptoHelperApi: CryptoHelperApi,
-    private val storageHelperApi: StorageHelperApi
+    private val storageHelperApi: StorageHelperApi,
+    private val keyParser: KeyParser
 ) : CryptoStorageApi {
     override suspend fun upload(data: ByteArray, path: String, name: String): Result<String> {
         return runCatching {
@@ -30,13 +24,13 @@ class CryptoStorageApiImpl @Inject constructor(
                 name = name
             )
 
-            val url = generateUrl(
-                path = path,
-                key = encryptedData.key,
-                fileId = getFileId(storageLink)
+            return@runCatching keyParser.cryptoKeyDataToUri(
+                key = FlipperKeyCrypto(
+                    fileId = getFileId(storageLink),
+                    cryptoKey = encryptedData.key,
+                    pathToKey = path
+                )
             )
-
-            return@runCatching url.toString()
         }
     }
 
@@ -48,26 +42,6 @@ class CryptoStorageApiImpl @Inject constructor(
             )
             return@runCatching cryptoHelperApi.decrypt(downloadedData, key)
         }
-    }
-
-    private fun generateUrl(
-        path: String,
-        key: String,
-        fileId: String
-    ): URL {
-        val query = listOf(QUERY_KEY_PATH to path, QUERY_KEY to key)
-            .filterNot { it.first.isBlank() || it.second.isBlank() }
-            .joinToString(QUERY_DELIMITED_CHAR) {
-                val field = URLEncoder.encode(it.first.trim(), "UTF-8")
-                val value = URLEncoder.encode(it.second.trim(), "UTF-8")
-                    .replace("%2F", "/") // We want safe / for readability
-                "$field$QUERY_VALUE_DELIMITED_CHAR$value"
-            }
-        return URL(
-            PREFFERED_SCHEME,
-            PREFFERED_HOST,
-            "$PATH_FOR_FFF_SECURE_LIHK/$fileId#$query"
-        )
     }
 
     // https://transfer.flpr.app/c8llvE/hello.txt -> c8llvE

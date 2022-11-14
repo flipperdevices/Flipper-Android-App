@@ -11,7 +11,7 @@ import io.ktor.util.InternalAPI
 import java.net.UnknownServiceException
 import javax.inject.Inject
 
-private const val STORAGE_URL = "https://transfer.sh/"
+private const val STORAGE_URL = "https://transfer.flpr.app/"
 
 interface StorageHelperApi {
     suspend fun upload(data: ByteArray, name: String): String

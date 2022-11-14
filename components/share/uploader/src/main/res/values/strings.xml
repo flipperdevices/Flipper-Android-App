@@ -3,16 +3,16 @@
     <string name="share_sheet_share">Share</string>
     <string name="share_file">Share Key %1$s</string>
 
-    <string name="share_export_file_title">Export file</string>
+    <string name="share_export_file_title">Export File</string>
     <string name="share_via_secure_link_title">via Secure Link</string>
     <string name="share_via_secure_link_desc">Expires in 30 days</string>
 
     <string name="share_error_no_internet_title">No Internet Connection</string>
-    <string name="share_error_no_internet_desc">Unable to Share This Link</string>
+    <string name="share_error_no_internet_desc">Unable to share this link</string>
     <string name="share_error_server_title">Can\'t Connect to the Server</string>
-    <string name="share_error_server_desc">Unable to Share This Link</string>
+    <string name="share_error_server_desc">Unable to share this link</string>
     <string name="share_error_other_title">Unable to Share</string>
-    <string name="share_error_other_desc">An error occurred while sharing this file</string>
+    <string name="share_error_other_desc">An error occurred while sharing this key</string>
 
     <string name="share_error_retry_btn">Retry</string>
 </resources>

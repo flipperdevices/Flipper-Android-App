@@ -2,9 +2,8 @@ package com.flipperdevices.deeplink.impl.parser.delegates
 
 import android.content.Context
 import android.content.Intent
-import com.flipperdevices.bridge.dao.api.QUERY_DELIMITED_CHAR
-import com.flipperdevices.bridge.dao.api.QUERY_VALUE_DELIMITED_CHAR
-import com.flipperdevices.bridge.dao.api.SUPPORTED_HOSTS
+import com.flipperdevices.bridge.dao.api.delegates.KeyParser
+import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.deeplink.api.DeepLinkParserDelegate
@@ -12,14 +11,14 @@ import com.flipperdevices.deeplink.model.DeepLinkParserDelegatePriority
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.squareup.anvil.annotations.ContributesMultibinding
-import java.net.URLDecoder
 import javax.inject.Inject
 
-private const val QUERY_PATH = "path"
-private const val QUERY_KEY = "key"
+private val SUPPORTED_HOSTS = listOf("flpr.app", "dev.flpr.app")
 
 @ContributesMultibinding(AppGraph::class, DeepLinkParserDelegate::class)
-class DeepLinkFlipperFormatSecureSharing @Inject constructor() :
+class DeepLinkFlipperFormatCryproSharing @Inject constructor(
+    private val keyParser: KeyParser
+) :
     DeepLinkParserDelegate,
     LogTagProvider {
     override val TAG = "DeepLinkFlipperFormatSharing"
@@ -39,29 +38,19 @@ class DeepLinkFlipperFormatSecureSharing @Inject constructor() :
 
     override suspend fun fromIntent(context: Context, intent: Intent): Deeplink? {
         val uri = intent.data ?: return null
-        val fragment = uri.fragment ?: return null
-        val decodedFragment = URLDecoder.decode(fragment, "UTF-8")
-        val parsedContentPairs = decodedFragment.split(QUERY_DELIMITED_CHAR).map {
-            it.substringBefore(QUERY_VALUE_DELIMITED_CHAR) to it.substringAfter(
-                QUERY_VALUE_DELIMITED_CHAR
-            )
-        }
-        val path = parsedContentPairs
-            .firstOrNull { it.first == QUERY_PATH }
-            ?.second
-            ?: return null
+        val flipperKeyCrypto = keyParser.parseUriToCryptoKeyData(uri) ?: return null
 
-        val key = parsedContentPairs
-            .firstOrNull { it.first == QUERY_KEY }
-            ?.second
-            ?: return null
-        val fileId = uri.pathSegments.last() ?: return null
+        val path = flipperKeyCrypto.pathToKey
+        val flipperFilePath = FlipperFilePath(
+            folder = path.substringBeforeLast("/"),
+            nameWithExtension = path.substringAfterLast("/")
+        )
         return Deeplink.FlipperKey(
-            path = null,
-            content = DeeplinkContent.FFFSecureContent(
-                filePath = path,
-                key = key,
-                fileId = fileId
+            path = flipperFilePath,
+            content = DeeplinkContent.FFFCryptoContent(
+                filePath = flipperKeyCrypto.pathToKey,
+                key = flipperKeyCrypto.cryptoKey,
+                fileId = flipperKeyCrypto.fileId
             )
         )
     }
