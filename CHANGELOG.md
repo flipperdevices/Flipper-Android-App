@@ -19,6 +19,7 @@
 - [FIX] Flipper color on error screen
 - [FIX] Fix fatal crash on empty backup
 - [FIX] Widget options not working in some android devices
+- [FIX] Try to fix uncanceled notification
 - [FIX] Move resources from night qualifier
 
 # 1.2.2
