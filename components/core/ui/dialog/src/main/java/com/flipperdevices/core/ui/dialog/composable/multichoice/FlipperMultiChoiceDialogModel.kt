@@ -53,7 +53,7 @@ class FlipperMultiChoiceDialogModel private constructor(
         private fun ComposableDescription(text: AnnotatedString) {
             Text(
                 text = text,
-                style = LocalTypography.current.bodyM14,
+                style = LocalTypography.current.bodyR14,
                 textAlign = TextAlign.Center,
                 color = LocalPallet.current.text40
             )

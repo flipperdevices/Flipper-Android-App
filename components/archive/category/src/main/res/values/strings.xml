@@ -4,7 +4,14 @@
     <string name="category_empty">You have no keys of this type</string>
     <string name="category_item_delete_all">Delete All</string>
     <string name="category_item_restore_all">Restore All</string>
-    <string name="dialog_delete_all_text">All this keys will be deleted. This action cannot be undone.</string>
+    <string name="dialog_cancel">Cancel</string>
+
+    <string name="dialog_delete_all_title">Delete Keys?</string>
+    <string name="dialog_delete_all_desc">All this keys will be deleted. This action cannot be undone.</string>
     <string name="dialog_delete_all_confirm">Delete All</string>
-    <string name="dialog_delete_all_cancel">Cancel</string>
+
+    <string name="dialog_restore_all_title">Restore Keys?</string>
+    <string name="dialog_restore_all_desc">All deleted keys will be restored and synced with Flipper</string>
+    <string name="dialog_restore_all_confirm">Restore All</string>
+
 </resources>

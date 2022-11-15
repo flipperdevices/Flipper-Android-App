@@ -10,18 +10,15 @@ import com.flipperdevices.core.preference.pb.PairSettings
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.firstpair.api.FirstPairApi
 import com.flipperdevices.info.impl.di.InfoComponent
-import com.flipperdevices.info.impl.fragment.ForgetDialogApproveHelper
 import com.flipperdevices.info.impl.model.ConnectRequestState
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ConnectViewModel : LifecycleViewModel() {
-    private val connectRequestState = MutableStateFlow<ConnectRequestState>(
+    private val connectRequestState = MutableStateFlow(
         ConnectRequestState.NOT_REQUESTED
     )
     private val alreadyRequestConnect = AtomicBoolean(false)
@@ -44,8 +41,6 @@ class ConnectViewModel : LifecycleViewModel() {
     init {
         ComponentHolder.component<InfoComponent>().inject(this)
     }
-
-    fun getConnectRequestState(): StateFlow<ConnectRequestState> = connectRequestState
 
     fun goToConnectScreen() {
         ciceroneGlobal.getRouter().navigateTo(firstPairApi.getFirstPairScreen())
@@ -78,16 +73,7 @@ class ConnectViewModel : LifecycleViewModel() {
         synchronizationApi.startSynchronization(force = true)
     }
 
-    fun showDialogForgetFlipper() {
-        viewModelScope.launch {
-            val deviceName = dataStoreFirstPair.data.first().deviceName
-            ForgetDialogApproveHelper.showDialog(deviceName) {
-                forgetFlipper()
-            }
-        }
-    }
-
-    private fun forgetFlipper() {
+    fun forgetFlipper() {
         viewModelScope.launch {
             dataStoreFirstPair.updateData {
                 it.toBuilder()
