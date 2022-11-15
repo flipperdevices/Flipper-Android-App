@@ -153,5 +153,20 @@ private val typography = FlipperTypography(
         fontSize = 10.sp,
         fontFamily = FontFamily(Font(R.font.roboto_mono_medium)),
         fontWeight = FontWeight.W500
+    ),
+    monoSpaceM12 = TextStyle(
+        fontSize = 12.sp,
+        fontFamily = FontFamily(Font(R.font.roboto_mono_medium)),
+        fontWeight = FontWeight.W500
+    ),
+    monoSpaceM16 = TextStyle(
+        fontSize = 16.sp,
+        fontFamily = FontFamily(Font(R.font.roboto_mono_medium)),
+        fontWeight = FontWeight.W500
+    ),
+    monoSpaceR12 = TextStyle(
+        fontSize = 12.sp,
+        fontFamily = FontFamily(Font(R.font.roboto_mono_medium)),
+        fontWeight = FontWeight.W400
     )
 )

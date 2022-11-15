@@ -56,7 +56,7 @@ class ExistedKeysStorage(
             }
             requestApi.request(commandFlow.map { it.wrapToRequest() })
         }
-        return userKeys.minus(userDict)
+        return userKeys.minus(userDict).distinct()
     }
 
     suspend fun onNewKey(
