@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.DisableSelection
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -32,23 +33,26 @@ fun FlipperDialog(
     onDismissRequest: (() -> Unit)? = null,
     closeOnClickOutside: Boolean = true
 ) {
-    Dialog(onDismissRequest = {
-        if (closeOnClickOutside) {
-            onDismissRequest?.invoke()
-        }
-    }) {
-        Box(
-            modifier = modifier
-                .clip(RoundedCornerShape(18.dp))
-                .background(LocalPallet.current.backgroundDialog)
-        ) {
-            FlipperDialogContent(
-                image,
-                title,
-                text,
-                buttons,
-                onDismissRequest
-            )
+    // Disable selection on dialog, because on SelectionContainer crash
+    DisableSelection {
+        Dialog(onDismissRequest = {
+            if (closeOnClickOutside) {
+                onDismissRequest?.invoke()
+            }
+        }) {
+            Box(
+                modifier = modifier
+                    .clip(RoundedCornerShape(18.dp))
+                    .background(LocalPallet.current.backgroundDialog)
+            ) {
+                FlipperDialogContent(
+                    image,
+                    title,
+                    text,
+                    buttons,
+                    onDismissRequest
+                )
+            }
         }
     }
 }
