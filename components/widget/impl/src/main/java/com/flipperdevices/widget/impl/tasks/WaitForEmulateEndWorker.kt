@@ -35,7 +35,6 @@ class WaitForEmulateEndWorker(
     private val widgetNotificationHelper = WidgetNotificationHelper(context)
 
     override suspend fun doWork(): Result {
-        setForegroundAsync(widgetNotificationHelper.emulatingForegroundInfo(id))
         waitEmulateEnd(serviceProvider.getServiceApi().requestApi)
         return Result.success()
     }
@@ -55,4 +54,6 @@ class WaitForEmulateEndWorker(
             }
             return@filter false
         }.first()
+
+    override suspend fun getForegroundInfo() = widgetNotificationHelper.emulatingForegroundInfo(id)
 }

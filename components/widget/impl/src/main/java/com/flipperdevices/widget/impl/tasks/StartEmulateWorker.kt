@@ -63,7 +63,6 @@ class StartEmulateWorker(
             error("Widget id less then zero")
         }
         // Start emulate
-        setForegroundAsync(widgetNotificationHelper.startForegroundInfo(id))
         val serviceApi = serviceApiProvider.getServiceApi()
         try {
             val filePath = getFilePath()
@@ -119,6 +118,8 @@ class StartEmulateWorker(
             folder, filePath.name
         )
     }
+
+    override suspend fun getForegroundInfo() = widgetNotificationHelper.startForegroundInfo(id)
 
     private suspend fun isSynced(filePath: FlipperFilePath): Boolean {
         val keyPath = FlipperKeyPath(filePath, deleted = false)

@@ -44,7 +44,6 @@ class StopEmulateWorker(
         if (widgetId < 0) {
             error("Widget id less then zero")
         }
-        setForegroundAsync(widgetNotificationHelper.stopForegroundInfo(id))
 
         val serviceApi = serviceProvider.getServiceApi()
         emulateHelper.stopEmulate(scope, serviceApi.requestApi)
@@ -52,4 +51,6 @@ class StopEmulateWorker(
         widgetStateStorage.updateState(widgetId, WidgetState.PENDING)
         return@withCoroutineScope Result.success()
     }
+
+    override suspend fun getForegroundInfo() = widgetNotificationHelper.stopForegroundInfo(id)
 }
