@@ -26,14 +26,14 @@ fun LazyListScope.AllKeys(keys: List<FoundedKey>) {
         Text(
             modifier = Modifier.padding(top = 24.dp, start = 14.dp, end = 14.dp, bottom = 10.dp),
             text = stringResource(R.string.mfkey32_founded_all_title, keys.size),
-            style = LocalTypography.current.buttonM16,
+            style = LocalTypography.current.monoSpaceM16,
             color = LocalPallet.current.text100
         )
     }
 
     items(items = keys) {
         CompositionLocalProvider(
-            LocalTextStyle provides LocalTypography.current.subtitleM12.copy(
+            LocalTextStyle provides LocalTypography.current.monoSpaceM12.copy(
                 fontWeight = FontWeight.W500,
                 color = LocalPallet.current.text100
             )
@@ -43,7 +43,7 @@ fun LazyListScope.AllKeys(keys: List<FoundedKey>) {
                     Modifier.padding(
                         start = 14.dp, end = 14.dp, top = 4.dp, bottom = 4.dp
                     ),
-                    it
+                    foundedKey = it
                 )
             }
         }

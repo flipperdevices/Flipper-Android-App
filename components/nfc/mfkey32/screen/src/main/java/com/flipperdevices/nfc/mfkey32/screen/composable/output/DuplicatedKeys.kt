@@ -22,12 +22,12 @@ fun LazyListScope.DuplicatedKeys(keys: Map<String, DuplicatedSource>) {
         Text(
             modifier = Modifier.padding(top = 24.dp, start = 14.dp, end = 14.dp, bottom = 10.dp),
             text = stringResource(R.string.mfkey32_founded_duplicated_title, keys.size),
-            style = LocalTypography.current.buttonM16,
+            style = LocalTypography.current.monoSpaceM16,
             color = LocalPallet.current.text100
         )
     }
     items(keys.keys.toList()) { key ->
-        val textStyle = LocalTypography.current.subtitleR12
+        val textStyle = LocalTypography.current.monoSpaceR12
         val sourceTextId = when (keys[key]) {
             DuplicatedSource.FLIPPER -> R.string.mfkey32_founded_duplicated_flipper
             DuplicatedSource.USER -> R.string.mfkey32_founded_duplicated_user
