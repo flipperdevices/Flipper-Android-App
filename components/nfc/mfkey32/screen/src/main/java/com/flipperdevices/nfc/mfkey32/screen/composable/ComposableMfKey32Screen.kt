@@ -34,7 +34,7 @@ fun ComposableMfKey32Screen(navController: NavController) {
         is MfKey32State.Calculating,
         is MfKey32State.DownloadingRawFile,
         MfKey32State.Uploading -> { { isDisplayDialog = true } }
-        MfKey32State.Error,
+        is MfKey32State.Error,
         is MfKey32State.Saved -> { { navController.popBackStack() } }
     }
 

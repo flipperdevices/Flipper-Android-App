@@ -3,6 +3,8 @@ package com.flipperdevices.nfc.mfkey32.screen.viewmodel
 import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
+import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
+import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
@@ -13,6 +15,7 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.nfc.mfkey32.api.MfKey32Api
+import com.flipperdevices.nfc.mfkey32.screen.model.ErrorType
 import com.flipperdevices.nfc.mfkey32.screen.model.FoundedInformation
 import com.flipperdevices.nfc.mfkey32.screen.model.FoundedKey
 import com.flipperdevices.nfc.mfkey32.screen.model.MfKey32State
@@ -28,6 +31,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tangle.viewmodel.VMInject
@@ -64,19 +68,10 @@ class MfKey32ViewModel @VMInject constructor(
 
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
         viewModelScope.launch(Dispatchers.Default) {
-            try {
-                DownloadFileHelper.downloadFile(
-                    serviceApi.requestApi, PATH_NONCE_LOG, fileWithNonce
-                ) {
-                    info { "Download file progress $it" }
-                }
-            } catch (notFoundException: FileNotFoundException) {
-                error(notFoundException) { "Not found $PATH_NONCE_LOG" }
-                mfKey32StateFlow.emit(MfKey32State.Error)
+            if (!prepare(serviceApi)) {
                 return@launch
             }
-            existedKeysStorage.load(serviceApi.requestApi)
-            info { "File download sucs" }
+
             val nonces = KeyNonceParser.parse(fileWithNonce.readText())
             mfKey32StateFlow.emit(MfKey32State.Calculating(0f))
             nonces.map { nonce ->
@@ -89,10 +84,50 @@ class MfKey32ViewModel @VMInject constructor(
                 it.await()
             }
             mfKey32StateFlow.emit(MfKey32State.Uploading)
-            val addedKeys = existedKeysStorage.upload(serviceApi.requestApi)
+            val addedKeys = try {
+                existedKeysStorage.upload(serviceApi.requestApi)
+            } catch (exception: Throwable) {
+                error(exception) { "When save keys" }
+                mfKey32StateFlow.emit(MfKey32State.Error(ErrorType.READ_WRITE))
+                return@launch
+            }
             deleteBruteforceApp(serviceApi.requestApi)
             mfKey32StateFlow.emit(MfKey32State.Saved(addedKeys))
         }
+    }
+
+    private suspend fun prepare(serviceApi: FlipperServiceApi): Boolean {
+        val connectionState = serviceApi.connectionInformationApi.getConnectionStateFlow().first()
+
+        if (connectionState !is ConnectionState.Ready ||
+            connectionState.supportedState != FlipperSupportedState.READY
+        ) {
+            error { "Flipper not connected" }
+            mfKey32StateFlow.emit(MfKey32State.Error(ErrorType.FLIPPER_CONNECTION))
+            return false
+        }
+
+        try {
+            DownloadFileHelper.downloadFile(
+                serviceApi.requestApi, PATH_NONCE_LOG, fileWithNonce
+            ) {
+                info { "Download file progress $it" }
+            }
+        } catch (notFoundException: FileNotFoundException) {
+            error(notFoundException) { "Not found $PATH_NONCE_LOG" }
+            mfKey32StateFlow.emit(MfKey32State.Error(ErrorType.NOT_FOUND_FILE))
+            return false
+        }
+        try {
+            existedKeysStorage.load(serviceApi.requestApi)
+        } catch (exception: Throwable) {
+            error(exception) { "When load keys" }
+            mfKey32StateFlow.emit(MfKey32State.Error(ErrorType.READ_WRITE))
+            return false
+        }
+        info { "File download sucs" }
+
+        return true
     }
 
     private suspend fun deleteBruteforceApp(requestApi: FlipperRequestApi) {
