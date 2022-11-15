@@ -26,24 +26,16 @@
                 android:paddingEnd="4dp"
                 android:paddingStart="4dp"
                 android:text="@string/flipper_name_default"
-                android:textColor="@color/text_color"
+                android:textColor="@android:color/black"
                 android:textSize="12sp"
                 android:textStyle="normal" />
     </LinearLayout>
 
-
-    <FrameLayout
+    <TextView
             android:gravity="center"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:layout_width="match_parent"
-            android:orientation="vertical">
-
-        <ImageView
-                android:contentDescription="@string/img_add_btn"
-                android:layout_gravity="center"
-                android:layout_height="36dp"
-                android:layout_width="36dp"
-                android:src="@drawable/add_button" />
-    </FrameLayout>
+            android:text="@string/widget_loading"
+            android:textAlignment="center" />
 </LinearLayout>
