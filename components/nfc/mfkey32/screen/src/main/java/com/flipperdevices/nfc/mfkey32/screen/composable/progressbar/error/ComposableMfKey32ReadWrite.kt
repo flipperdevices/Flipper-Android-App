@@ -1,0 +1,41 @@
+package com.flipperdevices.nfc.mfkey32.screen.composable.progressbar.error
+
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.theme.FlipperThemeInternal
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
+import com.flipperdevices.nfc.mfkey32.screen.R
+
+@Composable
+fun ComposableMfKey32ReadWrite() = ComposableMfKey32ErrorContent(
+    titleId = R.string.mfkey32_error_readwrite_title,
+    picId = DesignSystem.drawable.pic_flipper_no_sd_error_white,
+    picIdBlack = DesignSystem.drawable.pic_flipper_no_sd_error_white
+) {
+    Text(
+        modifier = Modifier.fillMaxWidth(),
+        text = stringResource(R.string.mfkey32_error_readwrite_desc),
+        textAlign = TextAlign.Center,
+        style = LocalTypography.current.bodyR16,
+        color = LocalPallet.current.text40
+    )
+}
+
+@Preview(
+    showSystemUi = true,
+    showBackground = true
+)
+@Composable
+private fun ComposableMfKey32ReadWritePreview() {
+    FlipperThemeInternal {
+        ComposableMfKey32ReadWrite()
+    }
+}

@@ -103,7 +103,7 @@ private fun ComposableCompleteAttackPreviewEvenPreview() {
     showBackground = true
 )
 @Composable
-private fun CompleteAttackPreviewOddPreview() {
+private fun ComposableCompleteAttackPreviewOddPreview() {
     FlipperThemeInternal {
         Box {
             CompleteAttack(

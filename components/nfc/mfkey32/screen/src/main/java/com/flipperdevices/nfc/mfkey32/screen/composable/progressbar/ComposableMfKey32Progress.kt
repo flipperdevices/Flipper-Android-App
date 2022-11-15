@@ -25,6 +25,7 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.nfc.mfkey32.screen.R
+import com.flipperdevices.nfc.mfkey32.screen.composable.progressbar.error.ComposableMfKey32Error
 import com.flipperdevices.nfc.mfkey32.screen.model.MfKey32State
 
 @Composable
@@ -54,8 +55,8 @@ fun ComposableMfKey32Progress(navController: NavController, state: MfKey32State)
             accentColor = LocalPallet.current.calculationMfKey32,
             secondColor = LocalPallet.current.calculationMfKey32Background
         )
-        MfKey32State.Error -> {
-            ComposableMfKey32NotFound()
+        is MfKey32State.Error -> {
+            ComposableMfKey32Error(state.errorType)
             return
         }
         is MfKey32State.Saved -> if (state.keys.isEmpty()) {

@@ -12,9 +12,9 @@ sealed class MfKey32State {
     ) : MfKey32State()
 
     object Uploading : MfKey32State()
-    class Saved(val keys: List<String>) : MfKey32State()
+    data class Saved(val keys: List<String>) : MfKey32State()
 
-    object Error : MfKey32State()
+    data class Error(val errorType: ErrorType) : MfKey32State()
 }
 
 @Stable
@@ -27,6 +27,12 @@ data class FoundedInformation(
 enum class DuplicatedSource {
     FLIPPER,
     USER
+}
+
+enum class ErrorType {
+    NOT_FOUND_FILE,
+    READ_WRITE,
+    FLIPPER_CONNECTION
 }
 
 data class FoundedKey(
