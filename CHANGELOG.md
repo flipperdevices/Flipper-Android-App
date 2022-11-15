@@ -17,6 +17,7 @@
 - [FIX] Screen streaming broke
 - [FIX] Flipper color on error screen
 - [FIX] Widget options not working in some android devices
+- [FIX] Try to fix uncanceled notification
 
 # 1.2.2
 
