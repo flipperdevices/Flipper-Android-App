@@ -1,23 +1,19 @@
 package com.flipperdevices.nfceditor.impl.viewmodel
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.dao.api.delegates.KeyParser
 import com.flipperdevices.bridge.dao.api.delegates.key.UpdateKeyApi
-import com.flipperdevices.bridge.dao.api.model.FlipperFile
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.core.ui.hexkeyboard.HexKey
 import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
 import com.flipperdevices.keyedit.api.KeyEditApi
-import com.flipperdevices.keyedit.api.NotSavedFlipperFile
 import com.flipperdevices.keyedit.api.NotSavedFlipperKey
+import com.flipperdevices.keyedit.api.toNotSavedFlipperFile
 import com.flipperdevices.nfceditor.impl.R
 import com.flipperdevices.nfceditor.impl.di.NfcEditorComponent
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCellLocation
@@ -126,9 +122,7 @@ class NfcEditorViewModel(
             val notSavedKey = NotSavedFlipperKey(
                 mainFile = newFlipperKey.mainFile.toNotSavedFlipperFile(getApplication()),
                 additionalFiles = newFlipperKey.additionalFiles.map {
-                    it.toNotSavedFlipperFile(
-                        getApplication()
-                    )
+                    it.toNotSavedFlipperFile(getApplication())
                 },
                 notes = newFlipperKey.notes
             )
@@ -138,20 +132,4 @@ class NfcEditorViewModel(
             router.navigateTo(keyEditApi.getScreen(notSavedKey, saveAsTitle))
         }
     }
-}
-
-private suspend fun FlipperFile.toNotSavedFlipperFile(
-    context: Context
-): NotSavedFlipperFile = withContext(Dispatchers.Default) {
-    val localContent = content
-    if (localContent is FlipperKeyContent.InternalFile) {
-        return@withContext NotSavedFlipperFile(path, localContent)
-    }
-    val internalFile = FlipperStorageProvider.getTemporaryFile(context)
-    localContent.openStream().use { contentStream ->
-        internalFile.outputStream().use { fileStream ->
-            contentStream.copyTo(fileStream)
-        }
-    }
-    return@withContext NotSavedFlipperFile(path, FlipperKeyContent.InternalFile(internalFile))
 }

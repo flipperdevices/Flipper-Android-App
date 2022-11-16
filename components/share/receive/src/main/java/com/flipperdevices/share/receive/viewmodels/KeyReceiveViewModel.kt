@@ -14,11 +14,15 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
+import com.flipperdevices.keyedit.api.KeyEditApi
+import com.flipperdevices.keyedit.api.NotSavedFlipperKey
+import com.flipperdevices.keyedit.api.toNotSavedFlipperFile
 import com.flipperdevices.share.api.ShareContentError
 import com.flipperdevices.share.receive.R
 import com.flipperdevices.share.receive.di.KeyReceiveComponent
 import com.flipperdevices.share.receive.model.FlipperKeyParseException
 import com.flipperdevices.share.receive.model.ReceiveState
+import com.github.terrakok.cicerone.Router
 import java.net.UnknownHostException
 import java.net.UnknownServiceException
 import javax.inject.Inject
@@ -40,6 +44,9 @@ class KeyReceiveViewModel(
 
     @Inject
     lateinit var simpleKeyApi: SimpleKeyApi
+
+    @Inject
+    lateinit var keyEditApi: KeyEditApi
 
     @Inject
     lateinit var utilsKeyApi: UtilsKeyApi
@@ -131,6 +138,24 @@ class KeyReceiveViewModel(
                 )
             )
             state.emit(ReceiveState.Finished)
+        }
+    }
+
+    fun onEdit(router: Router) {
+        viewModelScope.launch {
+            when (val localState = state.value) {
+                is ReceiveState.Pending -> {
+                    val flipperKey = localState.flipperKey
+                    val notSavedKey = NotSavedFlipperKey(
+                        mainFile = flipperKey.mainFile.toNotSavedFlipperFile(getApplication()),
+                        additionalFiles = listOf(),
+                        notes = flipperKey.notes
+                    )
+                    val title = flipperKey.mainFile.path.nameWithoutExtension
+                    router.navigateTo(keyEditApi.getScreen(notSavedKey, title))
+                }
+                else -> {}
+            }
         }
     }
 }

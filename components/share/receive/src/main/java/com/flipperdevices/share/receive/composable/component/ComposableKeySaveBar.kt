@@ -1,4 +1,4 @@
-package com.flipperdevices.share.receive.composable
+package com.flipperdevices.share.receive.composable.component
 
 import androidx.compose.runtime.Composable
 import com.flipperdevices.keyscreen.shared.bar.ComposableBarCancelIcon

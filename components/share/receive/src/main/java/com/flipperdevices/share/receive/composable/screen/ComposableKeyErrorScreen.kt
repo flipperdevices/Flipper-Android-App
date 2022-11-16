@@ -25,6 +25,7 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.share.api.ShareContentError
 import com.flipperdevices.share.receive.R
+import com.flipperdevices.share.receive.composable.component.ComposableKeySaveBar
 
 @Composable
 fun ComposableKeyErrorScreen(
