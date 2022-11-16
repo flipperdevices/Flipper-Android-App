@@ -12,10 +12,11 @@ import java.net.UnknownServiceException
 import javax.inject.Inject
 
 private const val STORAGE_URL = "https://transfer.flpr.app/"
+private const val STORAGE_NAME = "keys"
 
 interface StorageHelperApi {
-    suspend fun upload(data: ByteArray, name: String): String
-    suspend fun download(id: String, name: String): ByteArray
+    suspend fun upload(data: ByteArray): String
+    suspend fun download(id: String): ByteArray
 }
 
 @ContributesBinding(AppGraph::class)
@@ -23,9 +24,9 @@ class StorageHelper @Inject constructor(
     private val client: HttpClient
 ) : StorageHelperApi {
     @OptIn(InternalAPI::class)
-    override suspend fun upload(data: ByteArray, name: String): String {
+    override suspend fun upload(data: ByteArray): String {
         val response = client.put(
-            urlString = "$STORAGE_URL$name"
+            urlString = "$STORAGE_URL$STORAGE_NAME"
         ) {
             body = data
         }
@@ -35,8 +36,8 @@ class StorageHelper @Inject constructor(
         return response.body()
     }
 
-    override suspend fun download(id: String, name: String): ByteArray {
-        val response = client.get(urlString = "$STORAGE_URL$id/$name")
+    override suspend fun download(id: String): ByteArray {
+        val response = client.get(urlString = "$STORAGE_URL$id/$STORAGE_NAME")
         if (response.status != HttpStatusCode.OK) throw UnknownServiceException("")
 
         return response.body()

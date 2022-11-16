@@ -19,10 +19,7 @@ class CryptoStorageApiImpl @Inject constructor(
         return runCatching {
             val encryptedData = cryptoHelperApi.encrypt(data)
 
-            val storageLink = storageHelperApi.upload(
-                data = encryptedData.data,
-                name = name
-            )
+            val storageLink = storageHelperApi.upload(data = encryptedData.data)
 
             return@runCatching keyParser.cryptoKeyDataToUri(
                 key = FlipperKeyCrypto(
@@ -36,10 +33,7 @@ class CryptoStorageApiImpl @Inject constructor(
 
     override suspend fun download(id: String, key: String, name: String): Result<ByteArray> {
         return runCatching {
-            val downloadedData = storageHelperApi.download(
-                id = id,
-                name = name
-            )
+            val downloadedData = storageHelperApi.download(id = id)
             return@runCatching cryptoHelperApi.decrypt(downloadedData, key)
         }
     }
