@@ -5,4 +5,5 @@
     <color name="background">#FBFBFB</color>
     <color name="navigationBar">#FFFFFF</color>
     <color name="iconTint100">#000000</color>
+    <color name="addButtonAction"></color>
 </resources>
