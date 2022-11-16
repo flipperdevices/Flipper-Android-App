@@ -46,9 +46,10 @@ private fun ComposableSheetActionLoading() {
         Spacer(modifier = Modifier.height(12.dp))
         Box(
             modifier = Modifier
-                .height(12.dp)
+                .height(16.dp)
                 .width(80.dp)
                 .placeholderConnecting()
         )
+        Box(modifier = Modifier.height(12.dp))
     }
 }

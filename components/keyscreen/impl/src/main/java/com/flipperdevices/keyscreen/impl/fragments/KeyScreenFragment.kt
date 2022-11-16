@@ -15,10 +15,10 @@ import com.flipperdevices.keyscreen.impl.di.KeyScreenComponent
 import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModel
 import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModelFactory
 import com.flipperdevices.nfceditor.api.NfcEditorApi
-import com.flipperdevices.share.api.ShareBottomSheetApi
+import com.flipperdevices.share.api.ShareBottomFeatureEntry
 import javax.inject.Inject
 
-internal const val EXTRA_KEY_PATH = "flipper_key_path"
+private const val EXTRA_KEY_PATH = "flipper_key_path"
 
 class KeyScreenFragment : ComposeFragment() {
 
@@ -32,7 +32,7 @@ class KeyScreenFragment : ComposeFragment() {
     lateinit var keyEmulateApi: KeyEmulateApi
 
     @Inject
-    lateinit var shareBottomSheetApi: ShareBottomSheetApi
+    lateinit var shareBottomSheetApi: ShareBottomFeatureEntry
 
     init {
         ComponentHolder.component<KeyScreenComponent>().inject(this)
@@ -51,6 +51,7 @@ class KeyScreenFragment : ComposeFragment() {
     @Composable
     override fun RenderView() {
         KeyScreenNavigation(
+            shareBottomSheetApi,
             screenContent = { onShare ->
                 ComposableKeyScreen(
                     viewModel,
@@ -59,9 +60,6 @@ class KeyScreenFragment : ComposeFragment() {
                     keyEmulateApi,
                     onShare = { onShare(flipperKeyPath) }
                 )
-            },
-            sheetContent = { onClose ->
-                shareBottomSheetApi.ComposableShareBottomSheet(onClose = onClose)
             }
         )
     }

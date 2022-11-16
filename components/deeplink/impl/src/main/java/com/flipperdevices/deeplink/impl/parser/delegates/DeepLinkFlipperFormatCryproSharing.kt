@@ -47,11 +47,7 @@ class DeepLinkFlipperFormatCryproSharing @Inject constructor(
         )
         return Deeplink.FlipperKey(
             path = flipperFilePath,
-            content = DeeplinkContent.FFFCryptoContent(
-                filePath = flipperKeyCrypto.pathToKey,
-                key = flipperKeyCrypto.cryptoKey,
-                fileId = flipperKeyCrypto.fileId
-            )
+            content = DeeplinkContent.FFFCryptoContent(key = flipperKeyCrypto)
         )
     }
 }

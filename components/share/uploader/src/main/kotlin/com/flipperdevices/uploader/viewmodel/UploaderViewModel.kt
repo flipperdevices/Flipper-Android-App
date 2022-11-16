@@ -13,6 +13,7 @@ import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.share.api.CryptoStorageApi
 import com.flipperdevices.share.api.ShareContentError
 import com.flipperdevices.share.uploader.R
+import com.flipperdevices.uploader.api.EXTRA_KEY_PATH
 import com.flipperdevices.uploader.models.ShareContent
 import com.flipperdevices.uploader.models.ShareState
 import java.net.UnknownHostException
@@ -24,7 +25,6 @@ import kotlinx.coroutines.launch
 import tangle.inject.TangleParam
 import tangle.viewmodel.VMInject
 
-private const val EXTRA_KEY_PATH = "flipper_key_path"
 private const val SHORT_LINK_SIZE = 200
 
 class UploaderViewModel @VMInject constructor(

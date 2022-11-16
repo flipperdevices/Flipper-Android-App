@@ -87,11 +87,9 @@ private fun ComposableSheetAction(
             style = LocalTypography.current.bodyM14
         )
         Spacer(modifier = Modifier.height(2.dp))
-        descId?.let {
-            Text(
-                text = stringResource(id = it),
-                style = LocalTypography.current.subtitleR10
-            )
-        }
+        Text(
+            text = descId?.let { stringResource(id = it) } ?: "",
+            style = LocalTypography.current.subtitleR10
+        )
     }
 }

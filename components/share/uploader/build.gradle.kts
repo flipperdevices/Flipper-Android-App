@@ -16,6 +16,7 @@ dependencies {
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.res)
+    implementation(projects.components.core.ui.navigation)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.share)
     implementation(projects.components.core.preference)
@@ -27,6 +28,8 @@ dependencies {
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.compose)
+
+    implementation(libs.kotlin.serialization.json)
 
     // Compose
     implementation(libs.compose.ui)

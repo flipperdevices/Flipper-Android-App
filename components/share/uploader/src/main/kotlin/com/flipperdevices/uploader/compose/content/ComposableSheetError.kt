@@ -7,7 +7,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
@@ -35,12 +34,11 @@ internal fun ComposableSheetError(
     val image = painterResourceByKey(id = getImageByShareError(typeError))
 
     Column(
-        modifier = Modifier.padding(bottom = 40.dp),
+        modifier = Modifier.padding(top = 40.dp, bottom = 52.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.weight(1f))
         Image(
-            modifier = Modifier.size(54.dp).padding(bottom = 8.dp),
+            modifier = Modifier.size(54.dp),
             painter = image,
             contentDescription = null
         )
@@ -56,7 +54,6 @@ internal fun ComposableSheetError(
         )
         Text(
             modifier = Modifier
-                .padding(top = 6.dp)
                 .clickable(
                     indication = rememberRipple(),
                     onClick = onRetry,

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Parcelable
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyCrypto
 import java.io.File
 import java.io.InputStream
 import kotlinx.parcelize.IgnoredOnParcel
@@ -43,9 +44,7 @@ sealed class DeeplinkContent : Parcelable {
     @Parcelize
     @Serializable
     data class FFFCryptoContent(
-        val filePath: String,
-        val key: String,
-        val fileId: String
+        val key: FlipperKeyCrypto
     ) : DeeplinkContent()
 
     fun length(): Long? {
@@ -62,7 +61,7 @@ sealed class DeeplinkContent : Parcelable {
             is ExternalUri -> filename
             is InternalStorageFile -> file.name
             is FFFContent -> filename
-            is FFFCryptoContent -> filePath
+            is FFFCryptoContent -> key.pathToKey
         }
     }
 

@@ -20,7 +20,7 @@ class FlipperKeyParserHelper @Inject constructor(
         return when (val content = link.content) {
             is DeeplinkContent.FFFContent -> parseFFFContent(content, link.path)
             is DeeplinkContent.InternalStorageFile -> parseInternalFile(content)
-            is DeeplinkContent.FFFCryptoContent -> parseCryptoContent(content)
+            is DeeplinkContent.FFFCryptoContent -> parseCryptoContent(link.path, content)
             else -> Result.failure(FlipperKeyParseException())
         }
     }
@@ -60,22 +60,19 @@ class FlipperKeyParserHelper @Inject constructor(
     }
 
     private suspend fun parseCryptoContent(
+        path: FlipperFilePath?,
         deeplinkContent: DeeplinkContent.FFFCryptoContent
     ): Result<FlipperKey> {
-        val path = deeplinkContent.filePath
-        val name = path.substringAfterLast("/")
+        val localPath = path ?: return Result.failure(FlipperKeyParseException())
         val data = cryptoStorageApi.download(
-            id = deeplinkContent.fileId,
-            key = deeplinkContent.key,
-            name = name
+            id = deeplinkContent.key.fileId,
+            key = deeplinkContent.key.cryptoKey,
+            name = localPath.nameWithExtension
         )
         data.onSuccess {
             val flipperKey = FlipperKey(
                 mainFile = FlipperFile(
-                    FlipperFilePath(
-                        folder = path.substringBeforeLast("/"),
-                        nameWithExtension = name
-                    ),
+                    localPath,
                     FlipperKeyContent.RawData(it)
                 ),
                 synchronized = false,
