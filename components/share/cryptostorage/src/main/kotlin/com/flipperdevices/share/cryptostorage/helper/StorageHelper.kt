@@ -12,7 +12,7 @@ import java.net.UnknownServiceException
 import javax.inject.Inject
 
 private const val STORAGE_URL = "https://transfer.flpr.app/"
-private const val STORAGE_NAME = "keys"
+private const val STORAGE_NAME = "hakuna-matata"
 
 interface StorageHelperApi {
     suspend fun upload(data: ByteArray): String
