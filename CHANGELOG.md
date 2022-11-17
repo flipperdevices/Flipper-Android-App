@@ -2,11 +2,12 @@
 
 # 1.3.1 - In progress
 
+- [Feature] Rework all system dialog to custom
+
 # 1.3.0
 
 - [REFACTOR] Migrate widgets to WorkManager
 - [Feature] Add mfkey32 attack in debug/options + button back
-- [Feature] Rework all system dialog to custom
 - [Feature] Add HUB tab
 - [Feature] Wrap more errors with widget
 - [Feature] Add error screen on mfkey32
