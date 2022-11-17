@@ -26,7 +26,7 @@
                 android:paddingEnd="4dp"
                 android:paddingStart="4dp"
                 android:text="@string/flipper_name_default"
-                android:textColor="@android:color/black"
+                android:textColor="@color/text_color"
                 android:textSize="12sp"
                 android:textStyle="normal" />
     </LinearLayout>
