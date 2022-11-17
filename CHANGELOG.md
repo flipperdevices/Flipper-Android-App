@@ -1,6 +1,8 @@
 # Changelog
 
-# 1.2.3 - In progress
+# 1.3.1 - In progress
+
+# 1.3.0
 
 - [REFACTOR] Migrate widgets to WorkManager
 - [Feature] New share flow
