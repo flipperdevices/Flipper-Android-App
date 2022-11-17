@@ -12,4 +12,10 @@ sealed class DeviceStatus {
         val batteryLevel: Float,
         val isCharging: Boolean
     ) : DeviceStatus()
+
+    fun getFlipperName(): String = when (this) {
+        is Connected -> deviceName
+        NoDevice -> ""
+        is NoDeviceInformation -> deviceName
+    }
 }

@@ -5,6 +5,9 @@ import android.view.WindowManager
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.fragment.app.viewModels
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.withArgs
@@ -13,6 +16,7 @@ import com.flipperdevices.core.ui.fragment.provider.StatusBarColorProvider
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.singleactivity.api.SingleActivityApi
 import com.flipperdevices.updater.model.UpdateRequest
+import com.flipperdevices.updater.screen.composable.ComposableCancelDialog
 import com.flipperdevices.updater.screen.composable.ComposableUpdaterScreen
 import com.flipperdevices.updater.screen.di.UpdaterComponent
 import com.flipperdevices.updater.screen.model.UpdaterScreenState
@@ -51,9 +55,22 @@ class UpdaterFragment : ComposeFragment(), StatusBarColorProvider {
             return
         }
 
-        ComposableUpdaterScreen(updaterScreenState, flipperColor, updaterViewModel::cancel) {
+        val onAbortUpdate = updaterViewModel::cancelUpdate
+        var isCancelDialogOpen by remember { mutableStateOf(false) }
+        ComposableUpdaterScreen(updaterScreenState, flipperColor, { isCancelDialogOpen = true }) {
             val updateRequest = arguments?.getParcelable<UpdateRequest>(EXTRA_UPDATE_REQUEST)
             updaterViewModel.retry(updateRequest)
+        }
+        if (isCancelDialogOpen) {
+            when (updaterScreenState) {
+                is UpdaterScreenState.Failed -> onAbortUpdate()
+                else -> {
+                    ComposableCancelDialog(
+                        onAbort = onAbortUpdate,
+                        onContinue = { isCancelDialogOpen = false }
+                    )
+                }
+            }
         }
     }
 

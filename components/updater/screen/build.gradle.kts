@@ -21,6 +21,7 @@ dependencies {
     implementation(projects.components.core.ui.fragment)
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ui.theme)
+    implementation(projects.components.core.ui.dialog)
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.service.api)

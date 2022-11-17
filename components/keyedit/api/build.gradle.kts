@@ -6,6 +6,7 @@ plugins {
 
 dependencies {
     implementation(projects.components.bridge.dao.api)
+    implementation(projects.components.core.preference)
 
     implementation(libs.cicerone)
 }

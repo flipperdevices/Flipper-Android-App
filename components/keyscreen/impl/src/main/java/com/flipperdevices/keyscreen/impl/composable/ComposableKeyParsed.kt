@@ -33,12 +33,14 @@ fun ComposableKeyParsed(
     nfcEditorApi: NfcEditorApi,
     synchronizationUiApi: SynchronizationUiApi,
     keyEmulateApi: KeyEmulateApi,
-    onBack: () -> Unit
+    onShare: () -> Unit
 ) {
     val scrollState = rememberScrollState()
     val router = LocalRouter.current
     Column(modifier = Modifier.verticalScroll(scrollState)) {
-        ComposableKeyScreenBar(keyScreenState.flipperKey.path.nameWithoutExtension, onBack)
+        ComposableKeyScreenBar(keyScreenState.flipperKey.path.nameWithoutExtension) {
+            router.exit()
+        }
         ComposableKeyCard(
             Modifier.padding(all = 24.dp),
             keyScreenState.parsedKey,
@@ -69,7 +71,7 @@ fun ComposableKeyParsed(
                     viewModel.onNfcEdit(keyScreenState.flipperKey)
                 }
             }
-            ComposableShare(keyScreenState.shareState, viewModel::onShare)
+            ComposableShare(keyScreenState.shareState, onShare = onShare)
         } else if (keyScreenState.deleteState == DeleteState.DELETED) {
             ComposableRestore {
                 viewModel.onRestore(router)

@@ -28,16 +28,32 @@ fun ComposableFullInfoDevice(
             .padding(vertical = 14.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
-        InfoElementCard(Modifier, titleId = R.string.full_info_flipper_device) {
+        InfoElementCard(
+            Modifier,
+            isSelectionArea = true,
+            titleId = R.string.full_info_flipper_device
+        ) {
             ComposableFlipperDevicesInfo(fullDeviceInfo.flipperDeviceInfo, inProgress)
         }
-        InfoElementCard(Modifier, titleId = R.string.full_info_firmware) {
+        InfoElementCard(
+            Modifier,
+            isSelectionArea = true,
+            titleId = R.string.full_info_firmware
+        ) {
             ComposableFirmwareInfo(fullDeviceInfo.firmware, inProgress) { getFirmwareChannel(it) }
         }
-        InfoElementCard(Modifier, titleId = R.string.full_info_radio_stack) {
+        InfoElementCard(
+            Modifier,
+            isSelectionArea = true,
+            titleId = R.string.full_info_radio_stack
+        ) {
             ComposableRadioStackInfo(fullDeviceInfo.radioStack, inProgress)
         }
-        InfoElementCard(Modifier, titleId = R.string.full_info_other) {
+        InfoElementCard(
+            Modifier,
+            isSelectionArea = true,
+            titleId = R.string.full_info_other
+        ) {
             ComposableOtherInfo(fullDeviceInfo.otherFields.entries, inProgress)
         }
     }

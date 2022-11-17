@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.selection.DisableSelection
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -48,7 +49,7 @@ fun ComposableInfoCard(
     val firmwareUpdateStatus by firmwareUpdateViewModel.getState().collectAsState()
     val isUnsupported = firmwareUpdateStatus != FlipperSupportedState.READY
 
-    InfoElementCard(modifier, R.string.info_device_info_title) {
+    InfoElementCard(modifier, isSelectionArea = true, titleId = R.string.info_device_info_title) {
         if (updateStatus is FlipperUpdateState.Updating) {
             ComposableWaitingFlipper()
             return@InfoElementCard
@@ -87,30 +88,33 @@ fun ComposableWaitingFlipper() {
 private fun ComposableFullInfoButton(
     onOpenFullDeviceInfo: () -> Unit = {}
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(
-                indication = rememberRipple(),
-                onClick = onOpenFullDeviceInfo,
-                interactionSource = remember { MutableInteractionSource() }
-            )
-            .padding(all = 12.dp),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = stringResource(R.string.info_device_info_more_information),
-            color = LocalPallet.current.text16,
-            style = LocalTypography.current.bodyM14
-        )
-        Icon(
+    // Disable selection because not copy FullInfo button
+    DisableSelection {
+        Row(
             modifier = Modifier
-                .padding(start = 1.dp)
-                .size(size = 12.dp),
-            painter = painterResource(DesignSystem.drawable.ic_forward),
-            contentDescription = stringResource(R.string.info_device_info_more_information),
-            tint = LocalPallet.current.iconTint16
-        )
+                .fillMaxWidth()
+                .clickable(
+                    indication = rememberRipple(),
+                    onClick = onOpenFullDeviceInfo,
+                    interactionSource = remember { MutableInteractionSource() }
+                )
+                .padding(all = 12.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(R.string.info_device_info_more_information),
+                color = LocalPallet.current.text16,
+                style = LocalTypography.current.bodyM14
+            )
+            Icon(
+                modifier = Modifier
+                    .padding(start = 1.dp)
+                    .size(size = 12.dp),
+                painter = painterResource(DesignSystem.drawable.ic_forward),
+                contentDescription = stringResource(R.string.info_device_info_more_information),
+                tint = LocalPallet.current.iconTint16
+            )
+        }
     }
 }

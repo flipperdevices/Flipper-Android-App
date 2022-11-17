@@ -118,6 +118,10 @@ data class FlipperPallet(
 
     val calculationMfKey32: Color = accent,
     val calculationMfKey32Background: Color = accent.copy(alpha = 0.54f),
+
+    val shareSheetBackground: Color,
+    val shareSheetBackgroundAction: Color = Color(0xFFFF8200)
+
 ) {
     internal fun toMaterialColors(isLight: Boolean) = Colors(
         primary = content,

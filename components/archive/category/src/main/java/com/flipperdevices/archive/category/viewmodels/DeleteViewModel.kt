@@ -3,7 +3,6 @@ package com.flipperdevices.archive.category.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.archive.category.di.CategoryComponent
-import com.flipperdevices.archive.category.fragments.DialogDeleteConfirmBuilder
 import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.jre.forEachIterable
@@ -20,12 +19,7 @@ class DeleteViewModel : ViewModel() {
         ComponentHolder.component<CategoryComponent>().inject(this)
     }
 
-    fun onDeleteAll(force: Boolean = false) {
-        if (!force) {
-            DialogDeleteConfirmBuilder.show(this)
-            return
-        }
-
+    fun onDeleteAll() {
         viewModelScope.launch(Dispatchers.IO) {
             val deletedKeys = deleteKeyApi.getDeletedKeyAsFlow().first()
             deletedKeys.forEachIterable {

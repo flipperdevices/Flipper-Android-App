@@ -11,17 +11,31 @@ import com.flipperdevices.updater.card.R
 import com.flipperdevices.updater.model.FirmwareVersion
 
 @Composable
-fun FlipperDialogReadyUpdate(version: FirmwareVersion, onDismiss: () -> Unit, onRun: () -> Unit) {
+fun FlipperDialogReadyUpdate(
+    isInstallUpdate: Boolean,
+    version: FirmwareVersion,
+    onDismiss: () -> Unit,
+    onRun: () -> Unit
+) {
+    val titleId = if (isInstallUpdate) {
+        R.string.update_card_confirm_install_title
+    } else R.string.update_card_confirm_update_title
+
+    val buttonId = if (isInstallUpdate) {
+        R.string.update_card_confirm_install
+    } else R.string.update_card_confirm_update
+
     val text = buildAnnotatedStringWithVersionColor(
         version,
         postfixId = R.string.update_card_confirm_desc
     )
+
     val dialogModel = remember(onDismiss, onRun) {
         FlipperMultiChoiceDialogModel.Builder()
-            .setTitle(R.string.update_card_confirm_title)
+            .setTitle(titleId)
             .setDescription(text)
             .setOnDismissRequest(onDismiss)
-            .addButton(R.string.update_card_confirm_cont, onRun, isActive = true)
+            .addButton(buttonId, onRun, isActive = true)
             .addButton(R.string.update_card_confirm_stop, onDismiss)
             .build()
     }
@@ -29,14 +43,18 @@ fun FlipperDialogReadyUpdate(version: FirmwareVersion, onDismiss: () -> Unit, on
 }
 
 @Composable
-fun FlipperDialogSynchronization(onContinue: () -> Unit, onPause: () -> Unit) {
-    val dialogModel = remember(onContinue, onPause) {
+fun FlipperDialogSynchronization(onCancel: () -> Unit, onPauseAndUpdate: () -> Unit) {
+    val dialogModel = remember(onPauseAndUpdate, onCancel) {
         FlipperMultiChoiceDialogModel.Builder()
-            .setTitle(R.string.update_card_sync_title)
-            .setDescription(R.string.update_card_sync_desc)
-            .setOnDismissRequest(onContinue)
-            .addButton(R.string.update_card_sync_cont, onContinue, isActive = true)
-            .addButton(R.string.update_card_sync_stop, onPause)
+            .setTitle(R.string.update_card_dialog_pause_sync_title)
+            .setDescription(R.string.update_card_dialog_pause_sync_desc)
+            .setOnDismissRequest(onCancel)
+            .addButton(
+                R.string.update_card_dialog_pause_sync_update,
+                onPauseAndUpdate,
+                isActive = true
+            )
+            .addButton(R.string.update_card_dialog_pause_sync_cancel, onCancel)
             .build()
     }
     FlipperMultiChoiceDialog(model = dialogModel)

@@ -13,7 +13,7 @@ android {
 }
 
 dependencies {
-
+    implementation(projects.components.core.ktx)
     implementation(libs.annotations)
     implementation(libs.appcompat)
 }

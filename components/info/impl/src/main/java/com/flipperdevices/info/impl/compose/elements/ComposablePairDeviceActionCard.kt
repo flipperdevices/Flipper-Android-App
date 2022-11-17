@@ -3,11 +3,15 @@ package com.flipperdevices.info.impl.compose.elements
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.info.impl.R
+import com.flipperdevices.info.impl.compose.dialogs.ComposableForgotDialog
 import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.viewmodel.ConnectViewModel
 import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
@@ -41,12 +45,20 @@ fun ComposablePairDeviceActionCard(
 
         ComposableInfoDivider()
 
+        var isForgotDialogOpen by remember { mutableStateOf(false) }
         ButtonElementRow(
             titleId = R.string.info_device_forget,
             iconId = DesignSystem.drawable.ic_disconnection,
             color = LocalPallet.current.forgetFlipper,
-            onClick = connectViewModel::showDialogForgetFlipper
+            onClick = { isForgotDialogOpen = true }
         )
+        if (isForgotDialogOpen) {
+            ComposableForgotDialog(
+                flipperName = deviceState.getFlipperName(),
+                onCancel = { isForgotDialogOpen = false },
+                onForget = connectViewModel::forgetFlipper
+            )
+        }
     }
 }
 
