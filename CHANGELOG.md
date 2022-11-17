@@ -2,6 +2,7 @@
 
 # 1.3.1 - In progress
 
+- [Feature] Add forbidden frequency dialog
 - [Feature] Rework all system dialog to custom
 - [Feature] New share flow
 

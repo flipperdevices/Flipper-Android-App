@@ -8,6 +8,9 @@
     <string name="already_open_dialog_title">Flipper is Busy</string>
     <string name="already_open_dialog_desc">Exit the current app on Flipper to use this feature</string>
     <string name="already_open_dialog_btn">Got It</string>
+    <string name="forbidden_dialog_title">Transmission is Blocked</string>
+    <string name="forbidden_dialog_desc">Transmission on this frequency is restricted in your region</string>
+    <string name="forbidden_dialog_btn">Got It</string>
     <string name="keyscreen_send">Send</string>
     <string name="keyscreen_sending">Sending…</string>
     <string name="keyscreen_sending_desc">Sending from Flipper</string>

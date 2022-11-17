@@ -16,6 +16,7 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.keyscreen.api.emulate.AlreadyOpenedAppException
 import com.flipperdevices.keyscreen.api.emulate.EmulateHelper
+import com.flipperdevices.keyscreen.api.emulate.ForbiddenFrequencyException
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.app.Application
 import com.flipperdevices.protobuf.app.appButtonPressRequest
@@ -135,6 +136,10 @@ class EmulateHelperImpl @Inject constructor() : EmulateHelper, LogTagProvider {
         stopEmulateInternal(requestApi)
     }
 
+    @Throws(
+        AlreadyOpenedAppException::class,
+        ForbiddenFrequencyException::class
+    )
     private suspend fun startEmulateInternal(
         scope: CoroutineScope,
         requestApi: FlipperRequestApi,
@@ -184,6 +189,10 @@ class EmulateHelperImpl @Inject constructor() : EmulateHelper, LogTagProvider {
                 }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
             )
         )
+        if (appButtonPressResponse.commandStatus == Flipper.CommandStatus.ERROR_APP_CMD_ERROR) {
+            error { "Handle generic error on press button" }
+            throw ForbiddenFrequencyException()
+        }
         if (appButtonPressResponse.commandStatus != Flipper.CommandStatus.OK) {
             error { "Failed press subghz key with error $appButtonPressResponse" }
             return false
@@ -192,7 +201,9 @@ class EmulateHelperImpl @Inject constructor() : EmulateHelper, LogTagProvider {
         return true
     }
 
-    @Throws(AlreadyOpenedAppException::class)
+    @Throws(
+        AlreadyOpenedAppException::class
+    )
     private suspend fun tryOpenApp(
         scope: CoroutineScope,
         requestApi: FlipperRequestApi,

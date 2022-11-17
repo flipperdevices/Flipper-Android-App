@@ -19,9 +19,9 @@ import com.flipperdevices.keyscreen.api.Picture
 import com.flipperdevices.keyscreen.emulate.R
 import com.flipperdevices.keyscreen.emulate.composable.common.ComposableActionDisable
 import com.flipperdevices.keyscreen.emulate.composable.common.ComposableActionLoading
-import com.flipperdevices.keyscreen.emulate.composable.common.ComposableAlreadyOpenedAppDialog
 import com.flipperdevices.keyscreen.emulate.composable.common.ComposableBubbleHoldToSend
 import com.flipperdevices.keyscreen.emulate.composable.common.ComposableEmulateButtonWithText
+import com.flipperdevices.keyscreen.emulate.composable.common.ComposableErrorDialogs
 import com.flipperdevices.keyscreen.emulate.model.DisableButtonReason
 import com.flipperdevices.keyscreen.emulate.model.EmulateButtonState
 import com.flipperdevices.keyscreen.emulate.viewmodel.SubGhzViewModel
@@ -42,23 +42,7 @@ fun ComposableSubGhzSendButton(modifier: Modifier = Modifier, flipperKey: Flippe
         return
     }
 
-    if (emulateButtonState == EmulateButtonState.AppAlreadyOpenDialog) {
-        ComposableAlreadyOpenedAppDialog(emulateViewModel::closeDialog)
-    }
-
-    if (!flipperKey.synchronized) {
-        ComposableActionDisable(
-            modifier = modifier,
-            textId = R.string.keyscreen_send,
-            iconId = DesignSystem.drawable.ic_send,
-            reason = DisableButtonReason.NOT_SYNCHRONIZED
-        )
-        return
-    }
-
-    if (emulateButtonState == EmulateButtonState.AppAlreadyOpenDialog) {
-        ComposableAlreadyOpenedAppDialog(emulateViewModel::closeDialog)
-    }
+    ComposableErrorDialogs(emulateButtonState, emulateViewModel::closeDialog)
 
     when (emulateButtonState) {
         is EmulateButtonState.Disabled -> ComposableActionDisable(
