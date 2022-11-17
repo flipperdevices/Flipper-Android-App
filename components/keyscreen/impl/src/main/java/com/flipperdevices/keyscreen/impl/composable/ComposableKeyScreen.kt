@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -21,21 +23,22 @@ import com.flipperdevices.nfceditor.api.NfcEditorApi
 fun ComposableKeyScreen(
     viewModel: KeyScreenViewModel,
     synchronizationUiApi: SynchronizationUiApi,
-    keyScreenState: KeyScreenState = KeyScreenState.InProgress,
     nfcEditorApi: NfcEditorApi,
     keyEmulateApi: KeyEmulateApi,
-    onBack: () -> Unit
+    onShare: () -> Unit
 ) {
-    when (keyScreenState) {
+    val keyScreenState by viewModel.getKeyScreenState().collectAsState()
+
+    when (val localKeyScreenState = keyScreenState) {
         KeyScreenState.InProgress -> ComposableKeyInitial()
-        is KeyScreenState.Error -> ComposableKeyError(keyScreenState)
+        is KeyScreenState.Error -> ComposableKeyError(localKeyScreenState)
         is KeyScreenState.Ready -> ComposableKeyParsed(
             viewModel,
-            keyScreenState,
+            localKeyScreenState,
             nfcEditorApi,
             synchronizationUiApi,
             keyEmulateApi,
-            onBack
+            onShare = onShare
         )
     }
 }

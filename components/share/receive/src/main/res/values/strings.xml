@@ -5,4 +5,12 @@
     <string name="receive_edit_btn">Edit</string>
     <string name="receive_notification_description">saved to Archive</string>
     <string name="receive_error_conflict">Error when saving. A key with this name already exists</string>
+
+    <string name="receive_retry_btn">Retry</string>
+    <string name="receive_no_internet_title">Not Internet Connection</string>
+    <string name="receive_no_internet_desc">Unable to download this key</string>
+    <string name="receive_error_server_title">Can\'t Connect to the Server</string>
+    <string name="receive_error_server_desc">Unable to download this key</string>
+    <string name="receive_error_other_title">Unable to import key</string>
+    <string name="receive_error_other_desc">An error occurred while import key</string>
 </resources>

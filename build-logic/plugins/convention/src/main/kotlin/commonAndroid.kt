@@ -124,7 +124,8 @@ private fun Project.suppressOptIn() {
                     "-Xopt-in=com.squareup.anvil.annotations.ExperimentalAnvilApi",
                     "-Xopt-in=kotlin.time.ExperimentalTime",
                     "-Xopt-in=kotlin.RequiresOptIn",
-                    "-Xopt-in=androidx.compose.animation.ExperimentalAnimationApi"
+                    "-Xopt-in=androidx.compose.animation.ExperimentalAnimationApi",
+                    "-Xopt-in=com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi" // ktlint-disable max-line-length
                 )
             }
         }
