@@ -3,10 +3,12 @@ plugins {
     id("flipper.android-compose")
     id("com.squareup.anvil")
     id("kotlin-kapt")
+    id("kotlinx-serialization")
 }
 
 dependencies {
     implementation(projects.components.keyscreen.api)
+    implementation(projects.components.share.api)
     implementation(projects.components.keyscreen.shared)
 
     implementation(projects.components.core.ui.theme)
@@ -17,6 +19,7 @@ dependencies {
     implementation(projects.components.core.preference)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.ktx)
+    implementation(projects.components.core.ui.navigation)
     implementation(projects.components.core.ui.fragment)
     implementation(projects.components.core.ui.lifecycle)
 
@@ -33,11 +36,15 @@ dependencies {
     implementation(projects.components.nfceditor.api)
     implementation(projects.components.deeplink.api)
 
+    implementation(libs.kotlin.serialization.json)
+
     // Compose
     implementation(libs.compose.ui)
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
+    implementation(libs.compose.navigation)
+    implementation(libs.compose.navigation.material)
     implementation(libs.image.lottie)
 
     // Dagger deps

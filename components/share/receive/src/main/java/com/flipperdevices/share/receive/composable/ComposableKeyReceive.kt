@@ -1,12 +1,9 @@
 package com.flipperdevices.share.receive.composable
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.keyscreen.api.KeyScreenApi
+import com.flipperdevices.share.receive.composable.screen.ComposableKeyScreenProgress
 import com.flipperdevices.share.receive.model.ReceiveState
 import com.flipperdevices.share.receive.viewmodels.KeyReceiveViewModel
 
@@ -17,32 +14,30 @@ fun ComposableKeyReceive(
     viewModel: KeyReceiveViewModel,
     onCancel: () -> Unit = {}
 ) {
+    val route = LocalRouter.current
     when (state) {
-        ReceiveState.NotStarted -> ComposableProgress()
+        ReceiveState.NotStarted -> ComposableKeyScreenProgress()
         is ReceiveState.Pending -> ComposableKeySaveScreen(
             keyScreenApi = keyScreenApi,
             keyParsed = state.parsed,
             savingInProgress = false,
             onSave = viewModel::onSave,
+            onEdit = { viewModel.onEdit(route) },
             onCancel = onCancel
         )
         is ReceiveState.Saving -> ComposableKeySaveScreen(
             keyScreenApi = keyScreenApi,
             keyParsed = state.parsed,
             savingInProgress = true,
-            onSave = viewModel::onSave,
-            onCancel = onCancel
+            onCancel = onCancel,
+            onSave = {},
+            onEdit = {}
+        )
+        is ReceiveState.Error -> ComposableKeyErrorScreen(
+            typeError = state.type,
+            onCancel = onCancel,
+            onRetry = viewModel::onRetry
         )
         ReceiveState.Finished -> return
-    }
-}
-
-@Composable
-fun ComposableProgress() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator()
     }
 }

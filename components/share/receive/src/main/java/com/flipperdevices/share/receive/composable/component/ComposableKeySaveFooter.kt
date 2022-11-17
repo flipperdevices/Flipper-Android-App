@@ -1,8 +1,7 @@
-package com.flipperdevices.share.receive.composable
+package com.flipperdevices.share.receive.composable.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -16,7 +15,7 @@ import com.flipperdevices.core.ui.ktx.ComposableFlipperButton
 import com.flipperdevices.share.receive.R
 
 @Composable
-fun ComposableKeySaveFooter(savingInProgress: Boolean, onSave: () -> Unit) {
+fun ComposableKeySaveFooter(savingInProgress: Boolean, onSave: () -> Unit, onEdit: () -> Unit) {
     Row(
         modifier = Modifier
             .padding(horizontal = 55.dp)
@@ -24,29 +23,34 @@ fun ComposableKeySaveFooter(savingInProgress: Boolean, onSave: () -> Unit) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        SaveButton(
-            savingInProgress = savingInProgress,
-            onSave = onSave
+        if (savingInProgress) {
+            LoadingView()
+        } else ActionButton(
+            onSave = onSave,
+            onEdit = onEdit
         )
     }
 }
 
 @Composable
-private fun SaveButton(savingInProgress: Boolean, onSave: () -> Unit) {
-    if (savingInProgress) {
-        Box(
-            modifier = Modifier
-                .padding(32.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator()
-        }
-        return
+private fun LoadingView() {
+    Box(
+        modifier = Modifier
+            .padding(32.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator()
     }
+}
 
+@Composable
+private fun ActionButton(onSave: () -> Unit, onEdit: () -> Unit) {
     ComposableFlipperButton(
-        textPadding = PaddingValues(vertical = 12.dp, horizontal = 38.dp),
         text = stringResource(R.string.receive_save_btn),
         onClick = onSave
+    )
+    ComposableFlipperButton(
+        text = stringResource(R.string.receive_edit_btn),
+        onClick = onEdit
     )
 }

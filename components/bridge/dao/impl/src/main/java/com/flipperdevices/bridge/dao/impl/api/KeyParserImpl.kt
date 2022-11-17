@@ -5,6 +5,7 @@ import com.flipperdevices.bridge.dao.api.delegates.KeyParser
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyCrypto
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.bridge.dao.impl.api.parsers.IButtonParser
@@ -16,11 +17,17 @@ import com.flipperdevices.bridge.dao.impl.api.parsers.SubGhzParser
 import com.flipperdevices.bridge.dao.impl.api.parsers.UnrecognizedParser
 import com.flipperdevices.bridge.dao.impl.api.parsers.url.FFFUrlDecoder
 import com.flipperdevices.bridge.dao.impl.api.parsers.url.FFFUrlEncoder
+import com.flipperdevices.bridge.dao.impl.api.parsers.url.PATH_FOR_FFF_CRYPTO_LIHK
+import com.flipperdevices.bridge.dao.impl.api.parsers.url.PREFFERED_HOST
+import com.flipperdevices.bridge.dao.impl.api.parsers.url.PREFFERED_SCHEME
+import com.flipperdevices.bridge.dao.impl.api.parsers.url.QUERY_KEY
+import com.flipperdevices.bridge.dao.impl.api.parsers.url.QUERY_KEY_PATH
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.warn
 import com.squareup.anvil.annotations.ContributesBinding
 import java.io.File
+import java.net.URL
 import java.nio.charset.Charset
 import java.util.EnumMap
 import javax.inject.Inject
@@ -79,5 +86,39 @@ class KeyParserImpl @Inject constructor() : KeyParser, LogTagProvider {
         val fff = FlipperFileFormat.fromFileContent(fileContent)
 
         return urlEncoder.keyToUri(flipperKey.path, fff).toString()
+    }
+
+    override fun cryptoKeyDataToUri(key: FlipperKeyCrypto): String {
+        val query = urlEncoder.encodeQuery(
+            listOf(QUERY_KEY_PATH to key.pathToKey, QUERY_KEY to key.cryptoKey)
+        )
+        return URL(
+            PREFFERED_SCHEME,
+            PREFFERED_HOST,
+            "$PATH_FOR_FFF_CRYPTO_LIHK/${key.fileId}#$query"
+        ).toString()
+    }
+
+    override fun parseUriToCryptoKeyData(uri: Uri): FlipperKeyCrypto? {
+        val fragment = uri.encodedFragment ?: return null
+        val parsedFragment = urlDecoder.decodeQuery(fragment)
+
+        val path = parsedFragment
+            .firstOrNull { it.first == QUERY_KEY_PATH }
+            ?.second
+            ?: return null
+
+        val key = parsedFragment
+            .firstOrNull { it.first == QUERY_KEY }
+            ?.second
+            ?: return null
+
+        val fileId = uri.pathSegments.last() ?: return null
+
+        return FlipperKeyCrypto(
+            fileId = fileId,
+            cryptoKey = key,
+            pathToKey = path
+        )
     }
 }

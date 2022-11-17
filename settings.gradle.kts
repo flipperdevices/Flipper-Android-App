@@ -80,6 +80,8 @@ include(
 
     ":components:share:api",
     ":components:share:receive",
+    ":components:share:uploader",
+    ":components:share:cryptostorage",
 
     ":components:singleactivity:api",
     ":components:singleactivity:impl",
@@ -159,5 +161,5 @@ include(
     ":components:nfc:attack:impl",
 
     ":components:hub:api",
-    ":components:hub:impl",
+    ":components:hub:impl"
 )
