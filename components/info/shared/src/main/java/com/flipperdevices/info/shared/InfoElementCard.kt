@@ -16,10 +16,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalTypography
 
+/**
+ * @param isSelectionArea disable/enable selection on card
+ */
 @Composable
 fun InfoElementCard(
     modifier: Modifier,
     @StringRes titleId: Int? = null,
+    isSelectionArea: Boolean = false,
     content: @Composable ColumnScope.() -> Unit
 ) {
     Card(
@@ -28,22 +32,34 @@ fun InfoElementCard(
             .padding(horizontal = 14.dp),
         shape = RoundedCornerShape(size = 10.dp)
     ) {
-        SelectionContainer {
-            Column(verticalArrangement = Arrangement.SpaceBetween) {
-                if (titleId != null) {
-                    Text(
-                        modifier = Modifier.padding(
-                            start = 12.dp,
-                            end = 12.dp,
-                            top = 12.dp,
-                            bottom = 6.dp
-                        ),
-                        text = stringResource(titleId),
-                        style = LocalTypography.current.buttonB16
-                    )
-                }
-                content()
+        if (isSelectionArea) {
+            SelectionContainer {
+                InfoElementCardInternal(titleId, content)
             }
+        } else {
+            InfoElementCardInternal(titleId, content)
         }
+    }
+}
+
+@Composable
+private fun InfoElementCardInternal(
+    @StringRes titleId: Int? = null,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    Column(verticalArrangement = Arrangement.SpaceBetween) {
+        if (titleId != null) {
+            Text(
+                modifier = Modifier.padding(
+                    start = 12.dp,
+                    end = 12.dp,
+                    top = 12.dp,
+                    bottom = 6.dp
+                ),
+                text = stringResource(titleId),
+                style = LocalTypography.current.buttonB16
+            )
+        }
+        content()
     }
 }

@@ -21,7 +21,6 @@ import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.model.UpdatingState
 import com.flipperdevices.updater.screen.di.UpdaterComponent
-import com.flipperdevices.updater.screen.fragments.CancelDialogBuilder
 import com.flipperdevices.updater.screen.model.FailedReason
 import com.flipperdevices.updater.screen.model.UpdaterScreenState
 import javax.inject.Inject
@@ -126,14 +125,7 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
         startUnsafe(updateRequest)
     }
 
-    fun cancel() {
-        val updateScreenState = updaterScreenStateFlow.value
-        if (updateScreenState is UpdaterScreenState.Failed) {
-            cancelInternal()
-        } else CancelDialogBuilder.showDialog { cancelInternal() }
-    }
-
-    private fun cancelInternal() = launchWithLock(mutex, viewModelScope, "cancel") {
+    fun cancelUpdate() = launchWithLock(mutex, viewModelScope, "cancel") {
         updaterJob?.cancelAndJoin()
         updaterJob = null
         updaterScreenStateFlow.emit(UpdaterScreenState.CancelingUpdate)

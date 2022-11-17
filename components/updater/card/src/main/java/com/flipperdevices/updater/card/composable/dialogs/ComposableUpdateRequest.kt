@@ -8,6 +8,7 @@ import com.flipperdevices.updater.card.model.SyncingState
 import com.flipperdevices.updater.card.model.UpdatePending
 import com.flipperdevices.updater.card.model.UpdatePendingState
 import com.flipperdevices.updater.card.viewmodel.UpdateRequestViewModel
+import com.flipperdevices.updater.model.UpdateRequest
 import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
@@ -38,10 +39,13 @@ fun ComposableUpdateRequest(
                 SyncingState.InProgress -> FlipperDialogSynchronization(localDismiss) {
                     updateRequestViewModel.stopSyncAndStartUpdate(localUpdatePendingState.request)
                 }
-                SyncingState.Complete -> FlipperDialogReadyUpdate(version, localDismiss) {
-                    updateRequestViewModel.openUpdate(localUpdatePendingState.request)
-                    localDismiss()
-                    return@FlipperDialogReadyUpdate
+                SyncingState.Complete -> {
+                    val isInstall = isInstallUpdate(localUpdatePendingState.request)
+                    FlipperDialogReadyUpdate(isInstall, version, localDismiss) {
+                        updateRequestViewModel.openUpdate(localUpdatePendingState.request)
+                        localDismiss()
+                        return@FlipperDialogReadyUpdate
+                    }
                 }
                 SyncingState.Stop -> {
                     updateRequestViewModel.openUpdate(localUpdatePendingState.request)
@@ -52,4 +56,8 @@ fun ComposableUpdateRequest(
         }
         null -> {}
     }
+}
+
+private fun isInstallUpdate(update: UpdateRequest): Boolean {
+    return update.updateFrom.channel != update.updateTo.channel
 }
