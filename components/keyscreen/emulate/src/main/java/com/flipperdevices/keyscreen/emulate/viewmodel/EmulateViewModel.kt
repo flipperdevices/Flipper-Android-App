@@ -17,11 +17,13 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.core.ktx.android.vibrateCompat
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.keyscreen.api.EmulateProgress
 import com.flipperdevices.keyscreen.api.emulate.AlreadyOpenedAppException
 import com.flipperdevices.keyscreen.api.emulate.EmulateHelper
+import com.flipperdevices.keyscreen.api.emulate.ForbiddenFrequencyException
 import com.flipperdevices.keyscreen.emulate.model.DisableButtonReason
 import com.flipperdevices.keyscreen.emulate.model.EmulateButtonState
 import com.flipperdevices.keyscreen.emulate.model.LoadingState
@@ -101,6 +103,15 @@ abstract class EmulateViewModel(
             emulateHelper.stopEmulateForce(requestApi)
             emulateButtonStateFlow.emit(EmulateButtonState.AppAlreadyOpenDialog)
             return
+        } catch (ignored: ForbiddenFrequencyException) {
+            emulateHelper.stopEmulateForce(requestApi)
+            emulateButtonStateFlow.emit(EmulateButtonState.ForbiddenFrequencyDialog)
+            return
+        } catch (fatal: Throwable) {
+            error(fatal) { "Unhandled exception on emulate" }
+            emulateHelper.stopEmulateForce(requestApi)
+            emulateButtonStateFlow.emit(EmulateButtonState.Inactive())
+            return
         }
         if (!emulateStarted) {
             emulateHelper.stopEmulateForce(requestApi)
@@ -121,7 +132,9 @@ abstract class EmulateViewModel(
 
     fun closeDialog() {
         emulateButtonStateFlow.update {
-            if (it == EmulateButtonState.AppAlreadyOpenDialog) {
+            if (it == EmulateButtonState.AppAlreadyOpenDialog ||
+                it == EmulateButtonState.ForbiddenFrequencyDialog
+            ) {
                 EmulateButtonState.Inactive()
             } else it
         }

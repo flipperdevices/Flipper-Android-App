@@ -2,6 +2,8 @@
 
 # 1.3.1 - In progress
 
+- [Feature] Add forbidden frequency dialog
+
 # 1.3.0
 
 - [REFACTOR] Migrate widgets to WorkManager

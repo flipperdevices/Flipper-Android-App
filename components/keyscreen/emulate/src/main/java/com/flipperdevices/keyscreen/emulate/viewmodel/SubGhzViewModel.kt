@@ -10,10 +10,12 @@ import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.ktx.android.vibrateCompat
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.keyscreen.api.EmulateProgress
 import com.flipperdevices.keyscreen.api.emulate.AlreadyOpenedAppException
 import com.flipperdevices.keyscreen.api.emulate.EmulateHelper
+import com.flipperdevices.keyscreen.api.emulate.ForbiddenFrequencyException
 import com.flipperdevices.keyscreen.api.emulate.SUBGHZ_DEFAULT_TIMEOUT_MS
 import com.flipperdevices.keyscreen.emulate.model.EmulateButtonState
 import kotlinx.coroutines.CoroutineScope
@@ -127,6 +129,15 @@ class SubGhzViewModel @VMInject constructor(
         } catch (ignored: AlreadyOpenedAppException) {
             emulateHelper.stopEmulateForce(requestApi)
             emulateButtonStateFlow.emit(EmulateButtonState.AppAlreadyOpenDialog)
+            return false
+        } catch (ignored: ForbiddenFrequencyException) {
+            emulateHelper.stopEmulateForce(requestApi)
+            emulateButtonStateFlow.emit(EmulateButtonState.ForbiddenFrequencyDialog)
+            return false
+        } catch (fatal: Throwable) {
+            error(fatal) { "Handle fatal exception on emulate subghz" }
+            emulateHelper.stopEmulateForce(requestApi)
+            emulateButtonStateFlow.emit(EmulateButtonState.Inactive())
             return false
         }
 

@@ -18,6 +18,9 @@ sealed class EmulateButtonState {
     object AppAlreadyOpenDialog : Inactive()
 
     @Stable
+    object ForbiddenFrequencyDialog : Inactive()
+
+    @Stable
     data class Active(val progress: EmulateProgress) : EmulateButtonState()
 }
 
