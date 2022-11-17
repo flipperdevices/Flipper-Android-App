@@ -29,10 +29,10 @@
     <string name="mfkey32_not_found_md_5">5. In Flipper Mobile App synchronize with your Flipper Zero and run the **Mfkey32 (Detect Reader)**</string>
 
     <string name="mfkey32_error_connect_title">Flipper is Not Connected</string>
-    <string name="mfkey32_error_connect_desc_1">Check Bluetooth connection with Flipper</string>
-    <string name="mfkey32_error_connect_desc_2">Make sure Flipper is Turned On</string>
-    <string name="mfkey32_error_connect_desc_3">If Flipper doesn’t respond, reboot it and connect to the app via Bluetooth</string>
-    <string name="mfkey32_error_connect_desc_4">Restart **Mfkey32 (Detect Reader)**</string>
+    <string name="mfkey32_error_connect_desc_1">1. Check Bluetooth connection with Flipper</string>
+    <string name="mfkey32_error_connect_desc_2">2. Make sure Flipper is Turned On</string>
+    <string name="mfkey32_error_connect_desc_3">3. If Flipper doesn’t respond, reboot it and connect to the app via Bluetooth</string>
+    <string name="mfkey32_error_connect_desc_4">4. Restart **Mfkey32 (Detect Reader)**</string>
     <string name="mfkey32_error_readwrite_title">SD Card is Full or Not Accessible</string>
     <string name="mfkey32_error_readwrite_desc">Unable to save keys. The SD Card is not accessible or there is not enough space</string>
 

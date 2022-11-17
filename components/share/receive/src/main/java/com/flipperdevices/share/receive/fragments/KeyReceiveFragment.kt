@@ -1,5 +1,6 @@
 package com.flipperdevices.share.receive.fragments
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import android.app.Application
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -63,6 +64,8 @@ class KeyReceiveFragment : ComposeFragment() {
         synchronizationApi.startSynchronization(force = true)
         requireRouter().exit()
     }
+
+    override fun getStatusBarColor(): Int = DesignSystem.color.background
 
     companion object {
         fun newInstance(deeplink: Deeplink): Fragment {

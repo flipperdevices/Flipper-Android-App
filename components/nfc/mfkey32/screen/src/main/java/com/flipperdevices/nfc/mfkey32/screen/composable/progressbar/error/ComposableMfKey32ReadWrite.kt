@@ -1,14 +1,15 @@
 package com.flipperdevices.nfc.mfkey32.screen.composable.progressbar.error
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
@@ -21,7 +22,9 @@ fun ComposableMfKey32ReadWrite() = ComposableMfKey32ErrorContent(
     picIdBlack = DesignSystem.drawable.pic_flipper_no_sd_error_white
 ) {
     Text(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp, vertical = 8.dp),
         text = stringResource(R.string.mfkey32_error_readwrite_desc),
         textAlign = TextAlign.Center,
         style = LocalTypography.current.bodyR16,
