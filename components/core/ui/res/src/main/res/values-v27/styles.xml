@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="FlipperTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/background</item>
@@ -9,5 +9,6 @@
         <item name="android:statusBarColor">@color/background</item>
         <item name="android:windowLightNavigationBar">true</item>
         <item name="android:navigationBarColor">@color/navigationBar</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 </resources>

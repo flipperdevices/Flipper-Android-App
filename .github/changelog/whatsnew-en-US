@@ -1,13 +1,10 @@
 Changes and new features:
-- Editing UID & zero block in Dump Editor
-- Backup Keys button in Options
-- Supporting adaptive monochrome icon
-- Save as… button in Dump Editor
-- A confirmation dialog while exit from Dump Editor
-- Updater: installing firmware from Int. Storage and Web Updater, renamed updater folder
-- Text copying data from Device Info
-- Deleting in the File Manager
-- Storage space in KiB
+- 🚀 Add Android Widgets for key emulating
+- 🚀 Added NFC Tools section with a new feature Mfkey32
+- Added Hub tab to the Bottom Bar
+- Options section has been moved to the Device Screen
+- Screen Streaming: added screenshots and unlock button
 
 Bug fixes:
-- Supporting whitespace and upper first letter in key name
+- Improved WearOS connection
+- Fixes with notifications and Flipper illustrations
