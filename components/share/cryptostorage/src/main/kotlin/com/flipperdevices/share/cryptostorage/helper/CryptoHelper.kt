@@ -30,7 +30,7 @@ class CryptoHelperApiImpl @Inject constructor() : CryptoHelperApi {
             .getInstance(KeyProperties.KEY_ALGORITHM_AES)
             .apply { init(KEY_SIZE) }
         val secretKey = generator.generateKey()
-        val keyString = Base64.getEncoder().encodeToString(secretKey.encoded)
+        val keyString = Base64.getUrlEncoder().encodeToString(secretKey.encoded)
 
         val encryptionCipher = Cipher.getInstance(ALGORITHM_HELPER).apply {
             init(
@@ -45,7 +45,7 @@ class CryptoHelperApiImpl @Inject constructor() : CryptoHelperApi {
     }
 
     override fun decrypt(data: ByteArray, key: String): ByteArray {
-        val decodedKey: ByteArray = Base64.getDecoder().decode(key)
+        val decodedKey: ByteArray = Base64.getUrlDecoder().decode(key)
         val secretKey = SecretKeySpec(decodedKey, KeyProperties.KEY_ALGORITHM_AES)
 
         val iv = data.copyOfRange(0, IV_LENGTH)
