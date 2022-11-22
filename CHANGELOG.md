@@ -4,7 +4,8 @@
 
 - [Feature] Add forbidden frequency dialog
 - [Feature] Rework all system dialog to custom
-- [Feature] New share flow
+- [Feature] New share flow(with `sf#path=()&id=()key=`)
+- [FIX] Uploading share errors
 - [FIX] Display by white color meta data on NFC card
 
 # 1.3.0

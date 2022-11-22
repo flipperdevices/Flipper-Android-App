@@ -15,7 +15,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.share.api.ShareContentError
 import com.flipperdevices.share.uploader.R
 import com.flipperdevices.uploader.compose.content.ComposableSheetError
 import com.flipperdevices.uploader.compose.content.ComposableSheetInitial
@@ -39,7 +38,7 @@ internal fun ComposableSheetContent(
     ) {
         ComposableSheetFooter(keyName = keyName)
         when (state) {
-            is ShareState.Error -> ComposableSheetError(ShareContentError.NO_INTERNET, onRetry)
+            is ShareState.Error -> ComposableSheetError(state.typeError, onRetry)
             ShareState.Completed -> { onClose() }
             ShareState.Prepare -> ComposableSheetPrepare()
             ShareState.Initial -> ComposableSheetInitial()

@@ -9,6 +9,7 @@ internal const val QUERY_VALUE_DELIMITED_CHAR = "="
 internal const val QUERY_VALUE_CHARSET = "UTF-8"
 internal const val QUERY_KEY_PATH = "path"
 internal const val QUERY_KEY = "key"
+internal const val QUERY_ID = "id"
 
 // Don't forget add host in components/deeplink/impl/src/main/AndroidManifest.xml
 internal val SUPPORTED_HOSTS = listOf("dev.flpr.app", "flpr.app")
