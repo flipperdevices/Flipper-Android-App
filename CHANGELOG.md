@@ -5,6 +5,7 @@
 - [Feature] Add forbidden frequency dialog
 - [Feature] Rework all system dialog to custom
 - [Feature] New share flow
+- [FIX] Display by white color meta data on NFC card
 
 # 1.3.0
 

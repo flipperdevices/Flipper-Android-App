@@ -44,6 +44,7 @@ fun ComposableNfcCell(
         NfcCellType.KEY_A -> LocalPallet.current.nfcCardKeyAColor
         NfcCellType.ACCESS_BITS -> LocalPallet.current.nfcCardAccessBitsColor
         NfcCellType.KEY_B -> LocalPallet.current.nfcCardKeyBColor
+        NfcCellType.ON_CARD -> LocalPallet.current.onNfcCard
     }
 
     val textStyle = key(cell.cellType, scaleFactor) {
