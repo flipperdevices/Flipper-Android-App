@@ -61,7 +61,10 @@ enum class NfcCellType {
     UID,
     KEY_A,
     ACCESS_BITS,
-    KEY_B
+    KEY_B,
+
+    // for display color on card
+    ON_CARD,
 }
 
 @Stable
