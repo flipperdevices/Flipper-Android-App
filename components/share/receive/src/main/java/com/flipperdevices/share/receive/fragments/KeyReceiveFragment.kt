@@ -1,6 +1,5 @@
 package com.flipperdevices.share.receive.fragments
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import android.app.Application
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -12,6 +11,7 @@ import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.navigation.requireRouter
 import com.flipperdevices.core.ui.fragment.ComposeFragment
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.keyscreen.api.KeyScreenApi
 import com.flipperdevices.share.receive.composable.ComposableKeyReceive
