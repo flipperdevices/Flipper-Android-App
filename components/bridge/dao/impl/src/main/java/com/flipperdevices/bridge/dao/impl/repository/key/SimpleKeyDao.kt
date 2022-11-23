@@ -15,6 +15,9 @@ interface SimpleKeyDao {
     @Query("SELECT * FROM keys WHERE uid = :id")
     suspend fun getById(id: Int): Key?
 
+    @Query("SELECT * FROM keys WHERE type = :fileType AND deleted = 0")
+    suspend fun getByType(fileType: FlipperKeyType): List<Key>
+
     @Query("SELECT * FROM keys")
     suspend fun getAllIncludeDeleted(): List<Key>
 

@@ -8,24 +8,20 @@ import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
-import com.flipperdevices.bridge.synchronization.impl.model.ResultWithProgress
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.debug
-import com.flipperdevices.core.log.info
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.Storage
 import com.flipperdevices.protobuf.storage.listRequest
 import com.squareup.anvil.annotations.ContributesBinding
 import java.io.File
 import javax.inject.Inject
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.toList
 
 const val SIZE_BYTES_LIMIT = 10 * 1024 * 1024 // 10MiB
 
 interface KeysListingRepository {
-    fun getAllKeys(): Flow<ResultWithProgress<List<FlipperFilePath>>>
+    suspend fun getKeysForFileType(fileType: FlipperKeyType): List<FlipperFilePath>
 }
 
 @ContributesBinding(TaskGraph::class, KeysListingRepository::class)
@@ -34,18 +30,7 @@ class KeysListingRepositoryImpl @Inject constructor(
 ) : KeysListingRepository, LogTagProvider {
     override val TAG = "KeysListingRepository"
 
-    override fun getAllKeys() = callbackFlow<ResultWithProgress<List<FlipperFilePath>>> {
-        info { "Start request keys listing" }
-        val allKeys = mutableListOf<FlipperFilePath>()
-        FlipperKeyType.values().forEachIndexed { index, fileType ->
-            send(ResultWithProgress.InProgress(index, FlipperKeyType.values().size))
-            allKeys.addAll(getKeysForFileType(fileType))
-        }
-        send(ResultWithProgress.Completed(allKeys))
-        close()
-    }
-
-    private suspend fun getKeysForFileType(
+    override suspend fun getKeysForFileType(
         fileType: FlipperKeyType
     ): List<FlipperFilePath> {
         val fileTypePath = File(Constants.KEYS_DEFAULT_STORAGE, fileType.flipperDir).path
@@ -75,7 +60,7 @@ class KeysListingRepositoryImpl @Inject constructor(
         if (file.size > SIZE_BYTES_LIMIT) {
             debug {
                 "File ${file.name} skip, because current size limit is $SIZE_BYTES_LIMIT, " +
-                    "but file size is ${file.size}"
+                        "but file size is ${file.size}"
             }
             return false
         }
@@ -102,7 +87,7 @@ class KeysListingRepositoryImpl @Inject constructor(
         if (fileTypeByExtension != requestedType) {
             debug {
                 "File ${file.name} skip, because folder type ($requestedType) " +
-                    "and extension type ($fileTypeByExtension) is not equals"
+                        "and extension type ($fileTypeByExtension) is not equals"
             }
             return false
         }

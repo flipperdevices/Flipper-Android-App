@@ -83,7 +83,7 @@ class SynchronizationTaskImpl(
         serviceApi.connectionInformationApi.getConnectionStateFlow()
             .filter {
                 it is ConnectionState.Ready &&
-                    it.supportedState == FlipperSupportedState.READY
+                        it.supportedState == FlipperSupportedState.READY
             }.first()
         startInternal(scope, serviceApi, stateListener)
     }
@@ -129,7 +129,8 @@ class SynchronizationTaskImpl(
         val taskComponent = DaggerTaskSynchronizationComponent.factory()
             .create(
                 ComponentHolder.component(),
-                serviceApi.requestApi
+                serviceApi.requestApi,
+                serviceApi.flipperVersionApi
             )
 
         val keysHashes = taskComponent.keysSynchronization.syncKeys(onStateUpdate)

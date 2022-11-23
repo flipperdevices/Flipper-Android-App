@@ -9,5 +9,7 @@ data class ManifestFile(
     @SerialName("keys")
     val keys: List<KeyWithHash>,
     @SerialName("favorites")
-    val favorites: List<FlipperFilePath> = emptyList()
+    val favorites: List<FlipperFilePath> = emptyList(),
+    @SerialName("folder_changes")
+    val folderChanges: FlipperFolderChanges = FlipperFolderChanges()
 )

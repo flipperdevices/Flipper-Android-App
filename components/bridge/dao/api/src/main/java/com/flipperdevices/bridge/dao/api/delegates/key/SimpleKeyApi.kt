@@ -15,6 +15,8 @@ interface SimpleKeyApi {
         fileType: FlipperKeyType? = null
     ): Flow<List<FlipperKey>>
 
+    suspend fun getExistKeys(fileType: FlipperKeyType? = null): List<FlipperKey>
+
     suspend fun insertKey(key: FlipperKey)
 
     suspend fun updateKeyContent(keyPath: FlipperKeyPath, content: FlipperKeyContent)

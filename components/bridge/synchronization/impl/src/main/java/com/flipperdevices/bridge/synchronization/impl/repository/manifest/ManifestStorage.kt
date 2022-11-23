@@ -1,9 +1,7 @@
-package com.flipperdevices.bridge.synchronization.impl.repository.storage
+package com.flipperdevices.bridge.synchronization.impl.repository.manifest
 
 import android.content.Context
-import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
-import com.flipperdevices.bridge.synchronization.impl.model.KeyWithHash
 import com.flipperdevices.bridge.synchronization.impl.model.ManifestFile
 import com.flipperdevices.core.di.SingleIn
 import com.squareup.anvil.annotations.ContributesBinding
@@ -16,10 +14,7 @@ import kotlinx.serialization.json.decodeFromStream
 import kotlinx.serialization.json.encodeToStream
 
 interface ManifestStorage {
-    suspend fun save(
-        keys: List<KeyWithHash>,
-        favorites: List<FlipperFilePath>
-    )
+    suspend fun save(manifest: ManifestFile)
 
     suspend fun load(): ManifestFile?
 }
@@ -30,14 +25,13 @@ class ManifestStorageImpl @Inject constructor(context: Context) : ManifestStorag
     private val file: File = File(context.filesDir, "LastSyncManifest_v4.json")
 
     override suspend fun save(
-        keys: List<KeyWithHash>,
-        favorites: List<FlipperFilePath>
+        manifest: ManifestFile
     ) = withContext(Dispatchers.IO) {
         if (file.exists()) {
             file.delete()
         }
         file.outputStream().use {
-            Json.encodeToStream(ManifestFile(keys, favorites), it)
+            Json.encodeToStream(manifest, it)
         }
     }
 

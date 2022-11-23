@@ -3,7 +3,6 @@ package com.flipperdevices.bridge.synchronization.impl.repository
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UpdateKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.impl.BuildConfig
 import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
@@ -11,24 +10,15 @@ import com.flipperdevices.bridge.synchronization.impl.executor.AbstractKeyStorag
 import com.flipperdevices.bridge.synchronization.impl.executor.DiffKeyExecutor
 import com.flipperdevices.bridge.synchronization.impl.executor.Platform
 import com.flipperdevices.bridge.synchronization.impl.executor.StorageType
-import com.flipperdevices.bridge.synchronization.impl.model.DiffSource
-import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
 import com.flipperdevices.bridge.synchronization.impl.model.KeyWithHash
-import com.flipperdevices.bridge.synchronization.impl.model.RestartSynchronizationException
-import com.flipperdevices.bridge.synchronization.impl.model.trackProgressAndReturn
 import com.flipperdevices.bridge.synchronization.impl.repository.android.AndroidHashRepository
 import com.flipperdevices.bridge.synchronization.impl.repository.android.SynchronizationStateRepository
 import com.flipperdevices.bridge.synchronization.impl.repository.flipper.FlipperHashRepository
 import com.flipperdevices.bridge.synchronization.impl.repository.flipper.KeysListingRepository
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestChangeExecutor
-import com.flipperdevices.bridge.synchronization.impl.repository.storage.ManifestRepository
-import com.flipperdevices.bridge.synchronization.impl.utils.KeyDiffCombiner
+import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestRepository
 import com.flipperdevices.bridge.synchronization.impl.utils.SynchronizationPercentProvider
-import com.flipperdevices.bridge.synchronization.impl.utils.UnresolvedConflictException
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.core.log.error
-import com.flipperdevices.core.log.info
-import com.flipperdevices.core.log.warn
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
@@ -61,60 +51,7 @@ class KeysSynchronizationImpl @Inject constructor(
     override suspend fun syncKeys(
         onStateUpdate: suspend (SynchronizationState) -> Unit
     ): List<KeyWithHash> {
-        val allKeysFromAndroid = simpleKeyApi.getAllKeys(includeDeleted = true)
-        val keysFromAndroid = allKeysFromAndroid.filterNot { it.deleted }
-        val hashesFromAndroid = androidHashRepository.calculateHash(keysFromAndroid)
-        val hashesFromFlipper = getManifestOnFlipper(onStateUpdate)
-        info { "Finish receive hashes from Flipper: $hashesFromFlipper" }
-        info { "Finish receive hashes from Android: $hashesFromAndroid" }
 
-        // Compare hashes with local snapshot
-        val diffWithAndroid = manifestRepository
-            .compareKeysWithManifest(hashesFromAndroid, DiffSource.ANDROID)
-        val diffWithFlipper = manifestRepository
-            .compareKeysWithManifest(hashesFromFlipper, DiffSource.FLIPPER)
-
-        info { "Receive diffs on Flipper: $diffWithFlipper" }
-        info { "Receive diffs on Android: $diffWithAndroid" }
-
-        val mergedDiff = mergeDiffs(diffWithFlipper, diffWithAndroid)
-        val diffForFlipper = mergedDiff.filter { it.source == DiffSource.ANDROID }
-        val diffForAndroid = mergedDiff.filter { it.source == DiffSource.FLIPPER }
-
-        info { "Changes for flipper $diffForFlipper" }
-        info { "Changes for android $diffForAndroid" }
-
-        // Apply changes for Flipper
-        val appliedKeysToFlipper = diffKeyExecutor.executeBatch(
-            source = androidStorage,
-            target = flipperStorage,
-            diffForFlipper
-        )
-
-        info {
-            "[Keys] Flipper, successful applied" +
-                " ${appliedKeysToFlipper.size} from ${diffForFlipper.size} changes"
-        }
-
-        // Apply changes for Android
-        val appliedKeysToAndroid = diffKeyExecutor.executeBatch(
-            source = flipperStorage,
-            target = androidStorage,
-            diffForAndroid
-        ) { processed, total ->
-            onStateUpdate(
-                SynchronizationState.InProgress(
-                    synchronizationPercentProvider.getDownloadProgress(processed, total)
-                )
-            )
-        }
-
-        info {
-            "[Keys] Android, successful applied " +
-                "${appliedKeysToAndroid.size} from ${diffForAndroid.size} changes"
-        }
-
-        synchronizationRepository.markAsSynchronized(allKeysFromAndroid)
 
         val manifestHashes = checkSynchronization(
             calculatedHashOnAndroid = ManifestChangeExecutor.applyChanges(
@@ -161,72 +98,5 @@ class KeysSynchronizationImpl @Inject constructor(
         }
 
         return calculatedHashOnFlipperSorted
-    }
-
-    private suspend fun getManifestOnFlipper(
-        onStateUpdate: (suspend (SynchronizationState) -> Unit)? = null
-    ): List<KeyWithHash> {
-        val keysFromFlipper = keysListingRepository.getAllKeys().trackProgressAndReturn {
-            onStateUpdate?.invoke(
-                SynchronizationState.InProgress(
-                    synchronizationPercentProvider.getListingProgress(
-                        it.currentPosition,
-                        it.maxPosition
-                    )
-                )
-            )
-            info { "[Hash] Progress is ${it.currentPosition}/${it.maxPosition}: ${it.text}" }
-        }
-        return flipperHashRepository.calculateHash(keysFromFlipper)
-            .trackProgressAndReturn {
-                onStateUpdate?.invoke(
-                    SynchronizationState.InProgress(
-                        synchronizationPercentProvider.getHashProgress(
-                            it.currentPosition,
-                            it.maxPosition
-                        )
-                    )
-                )
-                info { "[Hash] Progress is ${it.currentPosition}/${it.maxPosition}: ${it.text}" }
-            }
-    }
-
-    private suspend fun mergeDiffs(first: List<KeyDiff>, second: List<KeyDiff>): List<KeyDiff> {
-        return try {
-            KeyDiffCombiner.combineKeyDiffs(
-                first,
-                second
-            )
-        } catch (conflict: UnresolvedConflictException) {
-            try {
-                resolveConflict(FlipperKeyPath(conflict.path, deleted = false))
-            } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
-                error(e) { "Error during resolve conflict $conflict" }
-            }
-            throw RestartSynchronizationException()
-        }
-    }
-
-    /**
-     * If we see a conflict, we try to find the nearest name that has no conflict.
-     * Example:
-     * Conflict with path "nfc/My_card.nfc"
-     * Try "nfc/My_card_1.nfc"... Failed
-     * Try "nfc/My_card_2.nfc"... Success!
-     * Move My_card.nfc to My_card_2.nfc and restart synchronization
-     */
-    private suspend fun resolveConflict(keyPath: FlipperKeyPath) {
-        warn { "Try resolve conflict with $keyPath" }
-        val oldKey =
-            simpleKeyApi.getKey(keyPath) ?: error("Can't found key $keyPath on Android side")
-        val newPath = utilsKeyApi.findAvailablePath(keyPath)
-
-        updateKeyApi.updateKey(
-            oldKey,
-            oldKey.copy(
-                oldKey.mainFile.copy(path = newPath.path),
-                deleted = newPath.deleted
-            )
-        )
     }
 }
