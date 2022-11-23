@@ -111,10 +111,13 @@ class UploaderViewModel @VMInject constructor(
         val shadowFile = flipperKey
             .additionalFiles
             .firstOrNull { it.path.fileType == FlipperFileType.SHADOW_NFC }
-        val localFileKey = shadowFile ?: flipperKey.mainFile
+        val flipperKeyContent = (shadowFile ?: flipperKey.mainFile)
+            .content
+            .openStream()
+            .use { it.readBytes() }
 
         val uploadedLink = cryptoStorageApi.upload(
-            data = localFileKey.content.openStream().use { it.readBytes() },
+            data = flipperKeyContent,
             path = flipperKey.path.pathToKey,
             name = flipperKey.mainFile.path.nameWithExtension
         )
