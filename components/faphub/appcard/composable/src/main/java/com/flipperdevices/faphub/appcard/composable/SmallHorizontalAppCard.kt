@@ -40,7 +40,7 @@ fun SmallHorizontalAppCard(
 private fun SmallHorizontalAppCardText(
     modifier: Modifier,
     fapItem: com.flipperdevices.faphub.dao.api.model.FapItem
-) = Column(modifier, verticalArrangement = Arrangement.spacedBy(2.dp)) {
+) = Column(modifier, verticalArrangement = Arrangement.spacedBy(1.dp)) {
     Text(
         text = fapItem.name,
         style = LocalTypography.current.subtitleM12,

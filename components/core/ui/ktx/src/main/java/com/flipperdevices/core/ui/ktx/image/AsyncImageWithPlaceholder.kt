@@ -1,4 +1,4 @@
-package com.flipperdevices.core.ui.ktx
+package com.flipperdevices.core.ui.ktx.image
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -13,6 +13,7 @@ import androidx.compose.ui.platform.LocalContext
 import coil.compose.AsyncImage
 import coil.request.CachePolicy
 import coil.request.ImageRequest
+import com.flipperdevices.core.ui.ktx.placeholderConnecting
 
 @Composable
 fun FlipperAsyncImageWithPlaceholder(
@@ -55,30 +56,34 @@ fun FlipperAsyncImage(
     onLoading: (Boolean) -> Unit,
     colorFilter: ColorFilter? = null
 ) {
-    val request = ImageRequest.Builder(LocalContext.current)
-        .diskCachePolicy(
-            if (enableDiskCache) {
-                CachePolicy.ENABLED
-            } else CachePolicy.READ_ONLY
-        )
-        .diskCacheKey(url)
-        .memoryCachePolicy(
-            if (enableMemoryCache) {
-                CachePolicy.ENABLED
-            } else CachePolicy.READ_ONLY
-        )
-        .memoryCacheKey(url)
-        .build()
-
+    val context = LocalContext.current
+    val request = remember(url, enableDiskCache, enableMemoryCache) {
+        ImageRequest.Builder(context)
+            .data(url)
+            .diskCachePolicy(
+                if (enableDiskCache) {
+                    CachePolicy.ENABLED
+                } else CachePolicy.READ_ONLY
+            )
+            .diskCacheKey(url)
+            .memoryCachePolicy(
+                if (enableMemoryCache) {
+                    CachePolicy.ENABLED
+                } else CachePolicy.READ_ONLY
+            )
+            .memoryCacheKey(url)
+            .transformations(WhiteToAlphaTransformation())
+            .build()
+    }
     AsyncImage(
         modifier = modifier,
         model = request,
         contentDescription = contentDescription,
         filterQuality = filterQuality,
         contentScale = contentScale,
+        colorFilter = colorFilter,
         onLoading = { onLoading(true) },
         onSuccess = { onLoading(false) },
-        onError = { onLoading(false) },
-        colorFilter = colorFilter
+        onError = { onLoading(false) }
     )
 }

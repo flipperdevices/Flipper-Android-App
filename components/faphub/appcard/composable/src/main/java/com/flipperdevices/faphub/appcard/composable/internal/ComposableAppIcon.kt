@@ -13,8 +13,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.ktx.FlipperAsyncImage
+import com.flipperdevices.core.ui.ktx.image.FlipperAsyncImage
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.core.ui.theme.LocalPallet
 
@@ -44,7 +45,8 @@ internal fun ComposableAppIcon(
             contentDescription = description,
             onLoading = { isPlaceholderActive = it },
             enableDiskCache = false,
-            enableMemoryCache = false
+            enableMemoryCache = false,
+            filterQuality = FilterQuality.None
         )
     }
 }
