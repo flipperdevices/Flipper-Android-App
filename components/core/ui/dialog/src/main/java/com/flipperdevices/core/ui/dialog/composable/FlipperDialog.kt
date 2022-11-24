@@ -24,14 +24,15 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
-fun FlipperDialog(
+private fun FlipperDialog(
     modifier: Modifier = Modifier,
     image: (@Composable () -> Unit)? = null,
     title: (@Composable () -> Unit)? = null,
     text: (@Composable () -> Unit)? = null,
     buttons: @Composable () -> Unit,
     onDismissRequest: (() -> Unit)? = null,
-    closeOnClickOutside: Boolean = true
+    closeOnClickOutside: Boolean = true,
+    cancelButtonActive: Boolean = onDismissRequest != null
 ) {
     // Disable selection on dialog, because on SelectionContainer crash
     DisableSelection {
@@ -50,7 +51,7 @@ fun FlipperDialog(
                     title,
                     text,
                     buttons,
-                    onDismissRequest
+                    if (cancelButtonActive) onDismissRequest else null
                 )
             }
         }
@@ -96,7 +97,8 @@ fun FlipperDialog(
         )
     },
     onDismissRequest: (() -> Unit)? = null,
-    closeOnClickOutside: Boolean = true
+    closeOnClickOutside: Boolean = true,
+    cancelButtonActive: Boolean = onDismissRequest != null
 ) {
     FlipperDialog(
         modifier,
@@ -105,6 +107,7 @@ fun FlipperDialog(
         text = textComposable,
         buttons = buttonComposable,
         onDismissRequest,
-        closeOnClickOutside
+        closeOnClickOutside,
+        cancelButtonActive
     )
 }

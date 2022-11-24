@@ -1,11 +1,14 @@
 package com.flipperdevices.updater.downloader.api
 
 import android.content.Context
+import androidx.datastore.core.DataStore
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.preference.FlipperStorageProvider
+import com.flipperdevices.core.preference.PreferenceDefault
+import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.updater.api.DownloadAndUnpackDelegateApi
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.downloader.model.ArtifactType
@@ -27,15 +30,16 @@ import java.util.EnumMap
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.first
 
-private const val UPDATER_URL = "https://update.flipperzero.one/firmware/directory.json"
 private const val SUB_GHZ_URL = "https://update.flipperzero.one/regions/api/v0/bundle"
 
 @ContributesBinding(AppGraph::class, DownloaderApi::class)
 class DownloaderApiImpl @Inject constructor(
     private val context: Context,
     private val client: HttpClient,
-    private val downloadAndUnpackDelegateApi: DownloadAndUnpackDelegateApi
+    private val downloadAndUnpackDelegateApi: DownloadAndUnpackDelegateApi,
+    private val preference: DataStore<Settings>
 ) : DownloaderApi, LogTagProvider {
     override val TAG = "DownloaderApi"
 
@@ -43,14 +47,17 @@ class DownloaderApiImpl @Inject constructor(
         val versionMap: EnumMap<FirmwareChannel, VersionFiles> =
             EnumMap(FirmwareChannel::class.java)
 
+        val updateUrl = preference.data.first().customUpdateUrl
+            ?: PreferenceDefault.DEFAULT_UPDATE_URL
+
         val response = client.get(
-            urlString = UPDATER_URL
+            urlString = updateUrl
         ).body<FirmwareDirectoryListeningResponse>()
 
         verbose { "Receive response from server" }
 
-        response.channels.map { channel ->
-            channel.id to channel.versions.maxByOrNull { it.timestamp }
+        response.channels.filter { it.versions != null }.map { channel ->
+            channel.id to channel.versions!!.maxByOrNull { it.timestamp }
         }.filter { it.first != null && it.second != null }
             .map { it.first!! to it.second!! }
             .forEach { (channel, version) ->

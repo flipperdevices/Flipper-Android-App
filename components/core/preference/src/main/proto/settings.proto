@@ -39,4 +39,5 @@ message Settings {
   bool expert_mode = 14;
   bool ignore_subghz_provisioning_on_zero_region = 15;
   bool skip_auto_sync_in_debug = 17;
+  string custom_update_url = 18;
 }

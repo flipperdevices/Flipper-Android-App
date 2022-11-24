@@ -31,7 +31,7 @@ internal data class FirmwareVersionChannel(
     @SerialName("description")
     val description: String,
     @SerialName("versions")
-    val versions: List<FirmwareVersion>
+    val versions: List<FirmwareVersion>? = null
 )
 
 @Serializable

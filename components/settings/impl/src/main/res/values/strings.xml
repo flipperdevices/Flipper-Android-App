@@ -34,6 +34,12 @@
     <string name="experimental_file_manager_desc">Navigate through Flipper files</string>
     <string name="experimental_screen_streaming">Screen Streaming</string>
     <string name="experimental_screen_streaming_desc">Control Flipper via phone</string>
+    <string name="experimental_update_url_edit">Custom update index url</string>
+    <string name="experimental_update_url_edit_desc">Editing the link to get an alternate version of the update index</string>
+    <string name="experimental_update_url_edit_dialog_title">Update index url:</string>
+
+
+    <string name="element_edit_btn">Edit</string>
 
     <string name="debug_shake2report_open">Report a bug</string>
     <string name="export_keys">Backup keys</string>

@@ -3,10 +3,12 @@ package com.flipperdevices.settings.impl.composable.category
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
+import com.flipperdevices.core.preference.PreferenceDefault
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.composable.elements.CategoryElement
 import com.flipperdevices.settings.impl.composable.elements.ClickableElement
+import com.flipperdevices.settings.impl.composable.elements.EditElement
 import com.flipperdevices.settings.impl.composable.elements.GrayDivider
 import com.flipperdevices.settings.impl.viewmodels.ExperimentalViewModel
 import com.flipperdevices.settings.impl.viewmodels.SettingsViewModel
@@ -40,6 +42,16 @@ fun ExperimentalCategory(
                     onClick = {
                         experimentalViewModel.onOpenScreenStreaming(navController)
                     }
+                )
+                GrayDivider()
+                EditElement(
+                    titleId = R.string.experimental_update_url_edit,
+                    descriptionId = R.string.experimental_update_url_edit_desc,
+                    dialogTitle = R.string.experimental_update_url_edit_dialog_title,
+                    onEdit = experimentalViewModel::onEditUpdateUrl,
+                    default = if (settings.customUpdateUrl.isNullOrBlank()) {
+                        PreferenceDefault.DEFAULT_UPDATE_URL
+                    } else settings.customUpdateUrl
                 )
             }
         }
