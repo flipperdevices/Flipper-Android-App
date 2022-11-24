@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
+import com.flipperdevices.faphub.maincard.api.MainCardApi
 import com.flipperdevices.hub.impl.composable.ComposableHub
 import com.flipperdevices.nfc.attack.api.NFCAttackFeatureEntry
 import com.squareup.anvil.annotations.ContributesBinding
@@ -15,7 +16,8 @@ import javax.inject.Inject
 @ContributesBinding(AppGraph::class, HubFeatureEntry::class)
 @ContributesMultibinding(AppGraph::class, AggregateFeatureEntry::class)
 class HubFeatureEntryImpl @Inject constructor(
-    private val nfcAttackFeatureEntry: NFCAttackFeatureEntry
+    private val nfcAttackFeatureEntry: NFCAttackFeatureEntry,
+    private val mainCardApi: MainCardApi
 ) : HubFeatureEntry {
     override fun start() = "@${ROUTE.name}"
 
@@ -25,9 +27,14 @@ class HubFeatureEntryImpl @Inject constructor(
             route = ROUTE.name
         ) {
             composable(start()) {
-                ComposableHub(onOpenAttack = {
-                    navController.navigate(nfcAttackFeatureEntry.ROUTE.name)
-                })
+                ComposableHub(
+                    mainCardApi = mainCardApi,
+                    onOpenAttack = {
+                        navController.navigate(nfcAttackFeatureEntry.ROUTE.name)
+                    }, onOpenFapHub = {
+
+                    }
+                )
             }
         }
     }
