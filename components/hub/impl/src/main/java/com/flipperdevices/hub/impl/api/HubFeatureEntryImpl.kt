@@ -32,7 +32,6 @@ class HubFeatureEntryImpl @Inject constructor(
                     onOpenAttack = {
                         navController.navigate(nfcAttackFeatureEntry.ROUTE.name)
                     }, onOpenFapHub = {
-
                     }
                 )
             }

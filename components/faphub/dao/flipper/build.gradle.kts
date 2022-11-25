@@ -13,5 +13,4 @@ dependencies {
     // Dagger deps
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
-
 }

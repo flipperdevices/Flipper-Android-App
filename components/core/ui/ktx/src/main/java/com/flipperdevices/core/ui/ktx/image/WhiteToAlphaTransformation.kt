@@ -21,5 +21,4 @@ class WhiteToAlphaTransformation : Transformation {
         }
         return newBitmap
     }
-
 }

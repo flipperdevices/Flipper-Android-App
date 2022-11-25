@@ -16,5 +16,4 @@ dependencies {
     kapt(libs.dagger.kapt)
 
     implementation(libs.kotlin.coroutines)
-
 }

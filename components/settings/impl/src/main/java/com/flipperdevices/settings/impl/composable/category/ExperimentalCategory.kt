@@ -46,7 +46,7 @@ fun ExperimentalCategory(
                 SwitchableElement(
                     titleId = R.string.experimental_application_catalog,
                     state = settings.applicationCatalog,
-                    onSwitchState = experimentalViewModel::onSwitchApplicationCatalog,
+                    onSwitchState = experimentalViewModel::onSwitchApplicationCatalog
                 )
             }
         }

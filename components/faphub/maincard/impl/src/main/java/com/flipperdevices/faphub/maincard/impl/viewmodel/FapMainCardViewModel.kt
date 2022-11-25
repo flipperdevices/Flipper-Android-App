@@ -32,5 +32,4 @@ class FapMainCardViewModel @VMInject constructor(
     }
 
     fun getFapMainCardState(): StateFlow<FapMainCardState> = fapMainCardStateFlow
-
 }

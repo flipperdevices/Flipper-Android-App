@@ -24,7 +24,7 @@ fun FlipperAsyncImageWithPlaceholder(
     contentScale: ContentScale = ContentScale.FillBounds,
     enableDiskCache: Boolean = false,
     enableMemoryCache: Boolean = true,
-    colorFilter: ColorFilter? = null,
+    colorFilter: ColorFilter? = null
 ) {
     var isPlaceholderActive by remember { mutableStateOf(true) }
     val modifierWithPlaceholder = if (isPlaceholderActive) {
@@ -42,7 +42,6 @@ fun FlipperAsyncImageWithPlaceholder(
         colorFilter = colorFilter
     )
 }
-
 
 @Composable
 fun FlipperAsyncImage(

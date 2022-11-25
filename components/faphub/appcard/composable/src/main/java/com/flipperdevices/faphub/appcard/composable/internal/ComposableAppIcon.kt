@@ -35,7 +35,7 @@ internal fun ComposableAppIcon(
         modifierWithClip.placeholderConnecting()
     } else modifierWithClip
     Box(
-        modifier = modifierWithPlaceholder,
+        modifier = modifierWithPlaceholder
     ) {
         FlipperAsyncImage(
             modifier = Modifier

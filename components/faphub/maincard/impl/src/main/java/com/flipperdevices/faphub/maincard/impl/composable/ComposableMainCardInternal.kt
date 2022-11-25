@@ -1,6 +1,5 @@
 package com.flipperdevices.faphub.maincard.impl.composable
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,6 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.faphub.maincard.impl.R
@@ -49,7 +49,7 @@ private fun ComposableTitle() {
     val title = stringResource(R.string.maincard_title)
     Row(
         modifier = Modifier.padding(top = 12.dp, start = 12.dp, end = 12.dp),
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
             modifier = Modifier.size(30.dp),
