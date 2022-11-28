@@ -1,5 +1,8 @@
 package com.flipperdevices.hub.impl.api
 
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -28,10 +31,14 @@ class HubFeatureEntryImpl @Inject constructor(
         ) {
             composable(start()) {
                 ComposableHub(
-                    mainCardApi = mainCardApi,
                     onOpenAttack = {
                         navController.navigate(nfcAttackFeatureEntry.ROUTE.name)
-                    }, onOpenFapHub = {
+                    },
+                    mainCardComposable = {
+                        mainCardApi.ComposableMainCard(
+                            modifier = Modifier.padding(start = 14.dp, end = 14.dp, top = 14.dp),
+                            onClick = { }
+                        )
                     }
                 )
             }

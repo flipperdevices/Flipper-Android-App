@@ -1,5 +1,6 @@
 package com.flipperdevices.faphub.maincard.impl.composable
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,7 +17,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.faphub.maincard.impl.R
@@ -28,7 +28,8 @@ import com.flipperdevices.faphub.maincard.impl.composable.suggestion.ComposableS
 @Composable
 fun ComposableMainCardInternal(modifier: Modifier = Modifier) {
     Card(
-        modifier = modifier, shape = RoundedCornerShape(10.dp)
+        modifier = modifier,
+        shape = RoundedCornerShape(10.dp)
     ) {
         Column(
             modifier = Modifier.fillMaxWidth()
