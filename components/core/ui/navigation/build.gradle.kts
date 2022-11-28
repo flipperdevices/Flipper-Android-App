@@ -12,4 +12,5 @@ dependencies {
     implementation(libs.compose.material)
     implementation(libs.compose.navigation)
     implementation(libs.compose.navigation.material)
+    implementation(libs.compose.systemuicontroller)
 }

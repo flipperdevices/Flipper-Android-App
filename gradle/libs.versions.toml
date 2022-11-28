@@ -105,6 +105,7 @@ compose-wear-foundation = { module = "androidx.wear.compose:compose-foundation",
 horologist-layout = { module = "com.google.android.horologist:horologist-compose-layout", version.ref = "horologist" }
 
 # UI - Compose Extension
+compose-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "compose-accompanist" }
 compose-insets = { module = "com.google.accompanist:accompanist-insets", version.ref = "compose-accompanist" }
 compose-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "compose-accompanist" }
 compose-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "compose-accompanist" }

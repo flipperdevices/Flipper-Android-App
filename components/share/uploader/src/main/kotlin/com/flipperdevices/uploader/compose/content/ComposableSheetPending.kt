@@ -84,12 +84,16 @@ private fun ComposableSheetAction(
         Spacer(modifier = Modifier.height(12.dp))
         Text(
             text = stringResource(id = titleId),
-            style = LocalTypography.current.bodyM14
+            style = LocalTypography.current.bodyM14.copy(
+                color = LocalPallet.current.shareSheetBackgroundAction
+            )
         )
         Spacer(modifier = Modifier.height(2.dp))
         Text(
             text = descId?.let { stringResource(id = it) } ?: "",
-            style = LocalTypography.current.subtitleR10
+            style = LocalTypography.current.subtitleR10.copy(
+                color = LocalPallet.current.text30
+            )
         )
     }
 }

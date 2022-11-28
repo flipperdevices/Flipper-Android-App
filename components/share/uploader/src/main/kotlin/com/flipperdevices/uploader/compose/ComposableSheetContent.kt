@@ -64,11 +64,11 @@ private fun ComposableSheetFooter(keyName: String) {
     Text(
         text = stringResource(id = R.string.share_sheet_share),
         modifier = Modifier.padding(top = 12.dp),
-        style = LocalTypography.current.titleB18
+        style = LocalTypography.current.bodyR14
     )
     Text(
         text = keyName,
         modifier = Modifier.padding(top = 2.dp),
-        style = LocalTypography.current.bodyR14
+        style = LocalTypography.current.titleM18
     )
 }
