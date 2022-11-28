@@ -123,6 +123,16 @@ dependencies {
     implementation(projects.components.widget.impl)
     implementation(projects.components.widget.screen)
 
+    implementation(projects.components.faphub.appcard.api)
+    implementation(projects.components.faphub.appcard.composable)
+
+    implementation(projects.components.faphub.maincard.api)
+    implementation(projects.components.faphub.maincard.impl)
+
+    implementation(projects.components.faphub.dao.api)
+    implementation(projects.components.faphub.dao.network)
+    implementation(projects.components.faphub.dao.flipper)
+
     implementation(libs.ktor.client)
 
     implementation(libs.annotations)

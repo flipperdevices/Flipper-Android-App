@@ -161,5 +161,13 @@ include(
     ":components:nfc:attack:impl",
 
     ":components:hub:api",
-    ":components:hub:impl"
+    ":components:hub:impl",
+
+    ":components:faphub:maincard:api",
+    ":components:faphub:maincard:impl",
+    ":components:faphub:appcard:api",
+    ":components:faphub:appcard:composable",
+    ":components:faphub:dao:api",
+    ":components:faphub:dao:network",
+    ":components:faphub:dao:flipper"
 )
