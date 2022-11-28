@@ -1,8 +1,5 @@
 package com.flipperdevices.faphub.maincard.impl.api
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.flipperdevices.core.di.AppGraph
@@ -19,11 +16,7 @@ class MainCardApiImpl @Inject constructor() : MainCardApi {
         onClick: () -> Unit
     ) {
         ComposableMainCardInternal(
-            modifier.clickable(
-                interactionSource = MutableInteractionSource(),
-                indication = rememberRipple(),
-                onClick = onClick
-            )
+            modifier, onClick
         )
     }
 }
