@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.dao.api.delegates.KeyParser
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
+import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.log.LogTagProvider
@@ -74,7 +75,7 @@ class UploaderViewModel @VMInject constructor(
     fun shareByFile(content: ShareContent, context: Context) {
         viewModelScope.launch {
             runCatching {
-                val data = content.flipperKey.getKeyContent()
+                val data = content.flipperKey.keyContent.openStream().use { it.readBytes() }
                 ShareHelper.shareRawFile(
                     context = context,
                     data = data,
@@ -107,8 +108,16 @@ class UploaderViewModel @VMInject constructor(
     }
 
     private suspend fun shareLongLink(flipperKey: FlipperKey, context: Context) {
+        val shadowFile = flipperKey
+            .additionalFiles
+            .firstOrNull { it.path.fileType == FlipperFileType.SHADOW_NFC }
+        val flipperKeyContent = (shadowFile ?: flipperKey.mainFile)
+            .content
+            .openStream()
+            .use { it.readBytes() }
+
         val uploadedLink = cryptoStorageApi.upload(
-            data = flipperKey.getKeyContent(),
+            data = flipperKeyContent,
             path = flipperKey.path.pathToKey,
             name = flipperKey.mainFile.path.nameWithExtension
         )

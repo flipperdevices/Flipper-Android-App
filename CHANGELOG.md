@@ -5,6 +5,7 @@
 - [Feature] Add forbidden frequency dialog
 - [Feature] Rework all system dialog to custom
 - [Feature] New share flow(with `sf#path=()&id=()key=`)
+- [Feature] Share shadow file if that exist on NFC
 - [FIX] Uploading share errors
 - [FIX] Display by white color meta data on NFC card
 - [FIX] Scrim status bar and design changes on bottom sheet
