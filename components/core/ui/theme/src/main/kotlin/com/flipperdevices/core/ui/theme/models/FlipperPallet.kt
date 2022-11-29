@@ -121,8 +121,8 @@ data class FlipperPallet(
 
     val shareSheetBackground: Color,
     val shareSheetBackgroundAction: Color = Color(0xFFFF8200),
-
-    val scrimColor: Color = Color(0xFF000000).copy(alpha = 0.15f)
+    val shareSheetStatusBarColor: Color,
+    val shareSheetScrimColor: Color
 ) {
     internal fun toMaterialColors(isLight: Boolean) = Colors(
         primary = content,

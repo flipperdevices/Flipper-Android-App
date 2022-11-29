@@ -1,7 +1,6 @@
 package com.flipperdevices.core.ui.navigation
 
 import android.app.Activity
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.SideEffect
@@ -42,20 +41,16 @@ interface BottomSheetFeatureEntry : FeatureEntry {
         val statusBarColorInit = (view.context as Activity).window.statusBarColor
         val navBarColorInit = (view.context as Activity).window.navigationBarColor
 
-        val scrimColor = LocalPallet.current.scrimColor
         val bottomSheetColor = LocalPallet.current.shareSheetBackground
-
-        val isLightTheme = MaterialTheme.colors.isLight
+        val statusBarColor = LocalPallet.current.shareSheetStatusBarColor
 
         val systemUIController = rememberSystemUiController()
         SideEffect {
-            if (isLightTheme) {
-                systemUIController.setStatusBarColor(
-                    color = scrimColor,
-                    darkIcons = true,
-                    transformColorForLightContent = { scrimColor }
-                )
-            }
+            systemUIController.setStatusBarColor(
+                color = statusBarColor,
+                darkIcons = false,
+                transformColorForLightContent = { statusBarColor }
+            )
             systemUIController.setNavigationBarColor(
                 color = bottomSheetColor,
                 darkIcons = true,
@@ -64,9 +59,7 @@ interface BottomSheetFeatureEntry : FeatureEntry {
         }
         DisposableEffect(key1 = Unit) {
             onDispose {
-                if (isLightTheme) {
-                    systemUIController.setStatusBarColor(Color(statusBarColorInit))
-                }
+                systemUIController.setStatusBarColor(Color(statusBarColorInit))
                 systemUIController.setNavigationBarColor(Color(navBarColorInit))
             }
         }
