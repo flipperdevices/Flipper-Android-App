@@ -10,17 +10,22 @@ import com.flipperdevices.faphub.main.api.FapHubMainScreenApi
 import com.flipperdevices.main.impl.composable.ComposableFapHubMainScreen
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
+import javax.inject.Inject
 
 
 @ContributesBinding(AppGraph::class, FapHubMainScreenApi::class)
 @ContributesMultibinding(AppGraph::class, AggregateFeatureEntry::class)
-class FapHubMainScreenApiImpl : FapHubMainScreenApi {
+class FapHubMainScreenApiImpl @Inject constructor() : FapHubMainScreenApi {
     private fun start(): String = "@${ROUTE.name}"
 
     override fun NavGraphBuilder.navigation(navController: NavHostController) {
         navigation(startDestination = start(), route = ROUTE.name) {
             composable("@${ROUTE.name}") {
-                ComposableFapHubMainScreen()
+                ComposableFapHubMainScreen(
+                    onBack = {
+                        navController.popBackStack()
+                    }
+                )
             }
         }
     }

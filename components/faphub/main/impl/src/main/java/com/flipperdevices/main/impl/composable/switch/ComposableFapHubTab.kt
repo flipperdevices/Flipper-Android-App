@@ -36,7 +36,8 @@ import com.flipperdevices.main.impl.model.FapHubTabEnum
 fun ComposableFapHubTab(
     hubTabEnum: FapHubTabEnum,
     onSelectFapHubTabEnum: (FapHubTabEnum) -> Unit,
-    isSelected: Boolean
+    isSelected: Boolean,
+    notificationCount: Int
 ) {
     val iconId = when (hubTabEnum) {
         FapHubTabEnum.APPS -> R.drawable.ic_apps
@@ -61,7 +62,7 @@ fun ComposableFapHubTab(
                 ),
             iconId = iconId,
             titleId = textId,
-            notificationCount = 0
+            notificationCount = notificationCount
         )
     }
 }
@@ -112,7 +113,7 @@ private fun ComposableIndicationDot(
         modifier = Modifier
             .size(16.dp)
             .clip(CircleShape)
-            .background(LocalPallet.current.bottomBarBackground)
+            .background(LocalPallet.current.fapHubIndicationColor)
             .padding(1.dp)
             .clip(CircleShape)
             .background(LocalPallet.current.updateProgressGreen),
@@ -121,7 +122,7 @@ private fun ComposableIndicationDot(
         Text(
             textAlign = TextAlign.Center,
             text = notificationCount.toString(),
-            color = LocalPallet.current.bottomBarBackground,
+            color = LocalPallet.current.fapHubIndicationColor,
             style = LocalTypography.current.notificationB8
         )
     }

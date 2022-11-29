@@ -125,6 +125,7 @@ data class FlipperPallet(
     val fapHubSelectedBackgroundColor: Color,
     val fapHubActiveColor: Color = text100,
     val fapHubInactiveColor: Color = text40,
+    val fapHubIndicationColor: Color = Color(0xFFFFFFFF)
 ) {
     internal fun toMaterialColors(isLight: Boolean) = Colors(
         primary = content,
