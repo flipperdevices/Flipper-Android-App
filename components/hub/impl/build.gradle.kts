@@ -7,6 +7,7 @@ plugins {
 
 dependencies {
     implementation(projects.components.hub.api)
+    implementation(projects.components.faphub.maincard.api)
 
     implementation(projects.components.core.di)
     implementation(projects.components.core.preference)

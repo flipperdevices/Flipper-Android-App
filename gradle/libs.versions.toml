@@ -58,6 +58,7 @@ detekt-gradle = "1.21.0"
 grgit-gradle = "8d818b74b9"
 tangle = "0.15.1"
 work = "2.7.1"
+coil = "2.2.2"
 
 # Testing
 junit = "4.12"
@@ -112,6 +113,7 @@ compose-pager-indicators = { module = "com.google.accompanist:accompanist-pager-
 compose-placeholder = { module = "com.google.accompanist:accompanist-placeholder", version.ref = "compose-accompanist" }
 compose-swipetorefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "compose-accompanist" }
 compose-constraint = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "compose-constraint" }
+compose-coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 
 # Markdown
 flexmark-core = { module = "com.vladsch.flexmark:flexmark", version.ref = "flexmark" }
