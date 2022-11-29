@@ -1,7 +1,9 @@
 package com.flipperdevices.keyscreen.impl.composable.card
 
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -22,7 +24,9 @@ internal fun KeyScreenNavigation(
     bottomSheetFeatureEntry: ShareBottomFeatureEntry,
     screenContent: @Composable ((FlipperKeyPath?) -> Unit) -> Unit
 ) {
-    val scrimColor = LocalPallet.current.shareSheetScrimColor
+    val scrimColor = if (MaterialTheme.colors.isLight) {
+        LocalPallet.current.shareSheetScrimColor
+    } else Color.Transparent
 
     val navController = rememberNavController()
     val bottomSheetNavigator = rememberBottomSheetNavigator()

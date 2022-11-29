@@ -92,8 +92,7 @@ private val lightPallet = FlipperPallet(
     hexKeyboardBackground = Color(0xFF616161),
 
     shareSheetBackground = Color(0xFFFFFFFF),
-    shareSheetScrimColor = Color(0xFF000000).copy(alpha = 0.15f),
-    shareSheetStatusBarColor = Color(0xFF000000).copy(alpha = 0.15F)
+    shareSheetScrimColor = Color(0xFF000000).copy(alpha = 0.15f)
 )
 
 @Suppress("MagicNumber")
@@ -131,17 +130,5 @@ private val darkPallet = FlipperPallet(
     hexKeyboardBackground = Color(0xFF000000),
 
     shareSheetBackground = Color(0xFF303030),
-    shareSheetScrimColor = Color(0xFFFFFFFF).copy(alpha = 0.15f),
-    shareSheetStatusBarColor = Color(0xFF000000).copy(alpha = 0.85f)
+    shareSheetScrimColor = Color(0xFFFFFFFF).copy(alpha = 0.15f)
 )
-
-private fun scrimColor(): Color {
-    val blackColor = Color(0xFF000000)
-    val whiteColor = Color(0xFFFFFFFF).copy(alpha = 0.15f)
-
-    return Color(
-        red = (blackColor.red + whiteColor.red) / 2.0f,
-        blue = (blackColor.blue + whiteColor.blue) / 2.0f,
-        green = (blackColor.green + whiteColor.green) / 2.0f
-    )
-}

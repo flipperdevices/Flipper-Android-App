@@ -1,6 +1,7 @@
 package com.flipperdevices.core.ui.navigation
 
 import android.app.Activity
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.SideEffect
@@ -37,30 +38,36 @@ interface BottomSheetFeatureEntry : FeatureEntry {
 
     @Composable
     private fun ProcessSystemBar() {
+        val isLightTheme = MaterialTheme.colors.isLight
+
         val view = LocalView.current
-        val statusBarColorInit = (view.context as Activity).window.statusBarColor
-        val navBarColorInit = (view.context as Activity).window.navigationBarColor
+        val window = (view.context as Activity).window
+
+        val statusBarInit = Color(window.statusBarColor)
+        val navigationBarInit = Color(window.navigationBarColor)
 
         val bottomSheetColor = LocalPallet.current.shareSheetBackground
-        val statusBarColor = LocalPallet.current.shareSheetStatusBarColor
+        val statusBarColor = LocalPallet.current.shareSheetScrimColor
 
         val systemUIController = rememberSystemUiController()
         SideEffect {
-            systemUIController.setStatusBarColor(
-                color = statusBarColor,
-                darkIcons = false,
-                transformColorForLightContent = { statusBarColor }
-            )
+            if (isLightTheme) {
+                systemUIController.setStatusBarColor(
+                    color = statusBarColor,
+                    transformColorForLightContent = { statusBarColor }
+                )
+            }
             systemUIController.setNavigationBarColor(
                 color = bottomSheetColor,
-                darkIcons = true,
                 transformColorForLightContent = { bottomSheetColor }
             )
         }
         DisposableEffect(key1 = Unit) {
             onDispose {
-                systemUIController.setStatusBarColor(Color(statusBarColorInit))
-                systemUIController.setNavigationBarColor(Color(navBarColorInit))
+                if (isLightTheme) {
+                    systemUIController.setStatusBarColor(statusBarInit)
+                }
+                systemUIController.setNavigationBarColor(navigationBarInit)
             }
         }
     }
