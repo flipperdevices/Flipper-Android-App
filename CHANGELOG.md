@@ -9,6 +9,7 @@
 - [Feature] Add application catalog button
 - [FIX] Uploading share errors
 - [FIX] Display by white color meta data on NFC card
+- [FIX] Scrim status bar and design changes on bottom sheet
 
 # 1.3.0
 

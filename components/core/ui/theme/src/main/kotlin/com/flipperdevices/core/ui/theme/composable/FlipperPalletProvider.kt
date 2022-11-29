@@ -91,7 +91,8 @@ private val lightPallet = FlipperPallet(
     substrateActiveCellNfcEditor = Color(0xFFDFDFDF),
     hexKeyboardBackground = Color(0xFF616161),
 
-    shareSheetBackground = Color(0xFFFFFFFF)
+    shareSheetBackground = Color(0xFFFFFFFF),
+    shareSheetScrimColor = Color(0xFF000000).copy(alpha = 0.15f)
 )
 
 @Suppress("MagicNumber")
@@ -128,5 +129,6 @@ private val darkPallet = FlipperPallet(
     substrateActiveCellNfcEditor = Color(0xFF616161),
     hexKeyboardBackground = Color(0xFF000000),
 
-    shareSheetBackground = Color(0xFF303030)
+    shareSheetBackground = Color(0xFF303030),
+    shareSheetScrimColor = Color(0xFFFFFFFF).copy(alpha = 0.15f)
 )

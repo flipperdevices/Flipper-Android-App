@@ -4,6 +4,7 @@ plugins {
 }
 
 dependencies {
+    implementation(projects.components.core.ui.theme)
 
     // Compose
     implementation(libs.compose.ui)
@@ -12,4 +13,5 @@ dependencies {
     implementation(libs.compose.material)
     implementation(libs.compose.navigation)
     implementation(libs.compose.navigation.material)
+    implementation(libs.compose.systemuicontroller)
 }
