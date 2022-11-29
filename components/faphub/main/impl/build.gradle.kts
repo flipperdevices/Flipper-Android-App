@@ -1,0 +1,25 @@
+plugins {
+    id("flipper.lint")
+    id("flipper.android-compose")
+    id("com.squareup.anvil")
+    id("kotlin-kapt")
+}
+
+dependencies {
+    implementation(projects.components.faphub.main.api)
+
+    implementation(projects.components.core.di)
+    implementation(projects.components.core.ui.navigation)
+
+    // Compose
+    implementation(libs.compose.ui)
+    implementation(libs.compose.tooling)
+    implementation(libs.compose.foundation)
+    implementation(libs.compose.material)
+    implementation(libs.compose.navigation)
+
+    // Dagger deps
+    implementation(libs.dagger)
+    kapt(libs.dagger.kapt)
+
+}

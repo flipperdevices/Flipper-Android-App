@@ -133,6 +133,9 @@ dependencies {
     implementation(projects.components.faphub.dao.network)
     implementation(projects.components.faphub.dao.flipper)
 
+    implementation(projects.components.faphub.main.api)
+    implementation(projects.components.faphub.main.impl)
+
     implementation(libs.ktor.client)
 
     implementation(libs.annotations)

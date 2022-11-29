@@ -169,5 +169,7 @@ include(
     ":components:faphub:appcard:composable",
     ":components:faphub:dao:api",
     ":components:faphub:dao:network",
-    ":components:faphub:dao:flipper"
+    ":components:faphub:dao:flipper",
+    ":components:faphub:main:api",
+    ":components:faphub:main:impl"
 )
