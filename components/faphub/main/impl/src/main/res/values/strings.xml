@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="faphub_main_tab_apps">Apps</string>
+    <string name="faphub_main_tab_installed">Installed</string>
+</resources>

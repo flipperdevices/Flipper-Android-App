@@ -9,6 +9,9 @@ dependencies {
     implementation(projects.components.faphub.main.api)
 
     implementation(projects.components.core.di)
+    implementation(projects.components.core.preference)
+    implementation(projects.components.core.ui.ktx)
+    implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.navigation)
 
     // Compose

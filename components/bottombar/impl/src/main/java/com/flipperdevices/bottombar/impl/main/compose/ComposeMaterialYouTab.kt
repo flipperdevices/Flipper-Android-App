@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bottombar.model.TabState
+import com.flipperdevices.core.ui.ktx.tab.TabTransition
 import com.flipperdevices.core.ui.theme.LocalPallet
 
 @Composable

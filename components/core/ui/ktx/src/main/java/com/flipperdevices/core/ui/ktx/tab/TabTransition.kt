@@ -1,4 +1,4 @@
-package com.flipperdevices.bottombar.impl.main.compose
+package com.flipperdevices.core.ui.ktx.tab
 
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.LinearEasing

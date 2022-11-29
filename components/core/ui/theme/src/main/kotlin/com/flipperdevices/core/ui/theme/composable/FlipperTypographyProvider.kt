@@ -178,5 +178,10 @@ private val typography = FlipperTypography(
         fontSize = 12.sp,
         fontFamily = FontFamily(Font(R.font.roboto_mono_medium)),
         fontWeight = FontWeight.W400
+    ),
+    notificationB8 = TextStyle(
+        fontSize = 8.sp,
+        fontFamily = FontFamily(Font(R.font.roboto_mono_medium)),
+        fontWeight = FontWeight.W700
     )
 )
