@@ -21,12 +21,18 @@ import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.core.ui.theme.LocalPallet
 
 @Composable
-fun ComposableAppScreenshot(modifier: Modifier, url: String) {
+fun ComposableAppScreenshot(
+    modifier: Modifier,
+    url: String?
+) {
     var isPlaceholderActive by remember { mutableStateOf(true) }
-    val modifierWithClip = modifier
+    var modifierWithClip = modifier
         .clip(RoundedCornerShape(8.dp))
         .border(BorderStroke(1.dp, LocalPallet.current.fapScreenshotBorder))
-        .background(LocalPallet.current.accent)
+
+    if (url != null) {
+        modifierWithClip = modifierWithClip.background(LocalPallet.current.accent)
+    }
 
     val modifierWithPlaceholder = if (isPlaceholderActive) {
         modifierWithClip.placeholderConnecting()
@@ -34,16 +40,18 @@ fun ComposableAppScreenshot(modifier: Modifier, url: String) {
     Box(
         modifier = modifierWithPlaceholder
     ) {
-        FlipperAsyncImage(
-            modifier = Modifier
-                .padding(all = 4.dp)
-                .fillMaxSize(),
-            url = url,
-            contentDescription = null,
-            onLoading = { isPlaceholderActive = it },
-            enableDiskCache = false,
-            enableMemoryCache = false,
-            filterQuality = FilterQuality.None
-        )
+        if (url != null) {
+            FlipperAsyncImage(
+                modifier = Modifier
+                    .padding(all = 4.dp)
+                    .fillMaxSize(),
+                url = url,
+                contentDescription = null,
+                onLoading = { isPlaceholderActive = it },
+                enableDiskCache = false,
+                enableMemoryCache = false,
+                filterQuality = FilterQuality.None
+            )
+        }
     }
 }

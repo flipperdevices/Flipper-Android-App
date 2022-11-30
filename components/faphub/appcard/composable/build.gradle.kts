@@ -6,6 +6,7 @@ plugins {
 dependencies {
     implementation(projects.components.faphub.dao.api)
 
+    implementation(projects.components.core.preference)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.theme)
 

@@ -32,21 +32,17 @@ class FapNetworkApiImpl @Inject constructor() : FapNetworkApi, LogTagProvider {
 
     override suspend fun getAllItem(): List<FapItem> = withContext(Dispatchers.IO) {
         delay(MOCK_DELAY)
-        return@withContext MutableList(10) { MOCK_FAP_ITEM }
+        return@withContext MutableList(size = 10) { MOCK_FAP_ITEM }
     }
 
     override suspend fun getCategories(): List<FapCategory> = withContext(Dispatchers.IO) {
         debug { "Request categories" }
         delay(MOCK_DELAY)
-        val categories = mutableListOf<FapCategory>()
-        repeat(10) {
-            categories.add(
-                FapCategory(
-                    name = MOCK_CATEGORY_NAME,
-                    picUrl = MOCK_CATEGORY_LOGO_URL
-                )
+        return@withContext MutableList(size = 10) {
+            FapCategory(
+                name = MOCK_CATEGORY_NAME,
+                picUrl = MOCK_CATEGORY_LOGO_URL
             )
         }
-        return@withContext categories
     }
 }

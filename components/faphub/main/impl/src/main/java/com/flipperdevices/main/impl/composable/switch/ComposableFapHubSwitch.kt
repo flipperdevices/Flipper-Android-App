@@ -47,7 +47,6 @@ fun ComposableFapHubSwitch(
     }
 }
 
-
 @Composable
 private fun ComposableFapHubSwitchInternal(
     fapHubTabEnum: FapHubTabEnum,
@@ -116,7 +115,7 @@ private fun ComposeTabAnimatedBackground(
 )
 @Composable
 private fun ComposableFapHubSwitchPreview() {
-    FlipperThemeInternal() {
+    FlipperThemeInternal {
         var selectedTab by remember { mutableStateOf(FapHubTabEnum.APPS) }
         Box {
             ComposableFapHubSwitch(

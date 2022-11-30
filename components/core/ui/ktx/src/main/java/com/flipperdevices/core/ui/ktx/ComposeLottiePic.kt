@@ -51,7 +51,7 @@ fun ComposeLottiePic(
             LottieAnimation(
                 modifier = modifier,
                 composition = composition,
-                progress = progress
+                progress = { progress }
             )
         }
     }

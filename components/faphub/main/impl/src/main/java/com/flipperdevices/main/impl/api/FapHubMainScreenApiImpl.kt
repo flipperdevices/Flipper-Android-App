@@ -13,7 +13,6 @@ import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
 import javax.inject.Inject
 
-
 @ContributesBinding(AppGraph::class, FapHubMainScreenApi::class)
 @ContributesMultibinding(AppGraph::class, AggregateFeatureEntry::class)
 class FapHubMainScreenApiImpl @Inject constructor(

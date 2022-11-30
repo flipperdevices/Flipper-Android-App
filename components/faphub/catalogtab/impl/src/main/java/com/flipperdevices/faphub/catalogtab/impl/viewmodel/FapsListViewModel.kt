@@ -11,7 +11,6 @@ import com.flipperdevices.faphub.dao.api.model.FapItem
 import kotlinx.coroutines.flow.Flow
 import tangle.viewmodel.VMInject
 
-
 class FapsListViewModel @VMInject constructor(
     private val fapNetworkApi: FapNetworkApi
 ) : ViewModel() {

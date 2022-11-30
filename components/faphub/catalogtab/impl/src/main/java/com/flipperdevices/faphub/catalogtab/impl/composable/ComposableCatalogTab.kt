@@ -12,9 +12,7 @@ fun ComposableCatalogTabScreen() {
     val viewModel = tangleViewModel<FapsListViewModel>()
     val fapsList = viewModel.faps.collectAsLazyPagingItems()
 
-    LazyColumn(
-
-    ) {
+    LazyColumn {
         ComposableFapsList(fapsList)
     }
 }

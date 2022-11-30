@@ -131,8 +131,8 @@ private fun ComposableIndicationDot(
 @Preview
 @Composable
 private fun ComposableFapHubTabInternalPreview() {
-    FlipperThemeInternal() {
-        Row() {
+    FlipperThemeInternal {
+        Row {
             ComposableFapHubTabInternal(
                 Modifier,
                 R.drawable.ic_apps,

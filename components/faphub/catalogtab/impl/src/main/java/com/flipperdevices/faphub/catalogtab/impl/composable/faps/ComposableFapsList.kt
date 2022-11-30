@@ -1,9 +1,7 @@
 package com.flipperdevices.faphub.catalogtab.impl.composable.faps
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -17,11 +15,14 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.itemsIndexed
 import com.flipperdevices.core.ui.ktx.ComposeLottiePic
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.faphub.appcard.composable.AppCard
-import com.flipperdevices.faphub.appcard.composable.AppCardLoading
 import com.flipperdevices.faphub.dao.api.model.FapItem
 
+private const val DEFAULT_FAP_COUNT = 20
+
+@Suppress("FunctionNaming")
 fun LazyListScope.ComposableFapsList(faps: LazyPagingItems<FapItem>) {
     val lastIndex = faps.itemCount - 1
     itemsIndexed(faps) { index, item ->
@@ -37,16 +38,16 @@ fun LazyListScope.ComposableFapsList(faps: LazyPagingItems<FapItem>) {
     }
     faps.loadState.let { loadState ->
         when {
-            loadState.refresh is LoadState.Loading -> item {
-                //You can add modifier to manage load state when first time response page is loading
-                AppCardLoading(Modifier.fillMaxSize())
+            loadState.refresh is LoadState.Loading -> items(DEFAULT_FAP_COUNT) {
+                // You can add modifier to manage load state when first time response page is loading
+                AppCard(Modifier.padding(horizontal = 14.dp, vertical = 12.dp), null)
             }
             loadState.append is LoadState.Loading -> item {
-                //You can add modifier to manage load state when next response page is loading
+                // You can add modifier to manage load state when next response page is loading
                 ComposableLoadingItem()
             }
             loadState.append is LoadState.Error -> item {
-                //You can use modifier to show error message
+                // You can use modifier to show error message
                 Text("Error: ${(loadState.append as LoadState.Error).error}")
             }
         }
@@ -71,7 +72,8 @@ private fun ComposableLoadingItem() {
         ComposeLottiePic(
             modifier = Modifier.padding(24.dp),
             picResId = DesignSystem.raw.dots_loader,
-            rollBackPicResId = DesignSystem.drawable.pic_loader
+            rollBackPicResId = DesignSystem.drawable.pic_loader,
+            tint = LocalPallet.current.fapHubDividerColor
         )
     }
 }
