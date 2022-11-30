@@ -7,6 +7,7 @@
 - [Feature] New share flow(with `sf#path=()&id=()key=`)
 - [Feature] Share shadow file if that exist on NFC
 - [Feature] Add application catalog button
+- [Feature] Add application catalog list with sorted button
 - [FIX] Uploading share errors
 - [FIX] Display by white color meta data on NFC card
 
