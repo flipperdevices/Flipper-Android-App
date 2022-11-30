@@ -121,6 +121,7 @@ data class FlipperPallet(
 
     val shareSheetBackground: Color,
     val shareSheetBackgroundAction: Color = Color(0xFFFF8200),
+    val shareSheetScrimColor: Color,
     val fapHubSwitchBackground: Color,
     val fapHubSelectedBackgroundColor: Color,
     val fapHubActiveColor: Color = text100,

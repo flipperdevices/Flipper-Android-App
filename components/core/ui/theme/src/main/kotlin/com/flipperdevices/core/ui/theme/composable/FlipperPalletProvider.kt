@@ -92,6 +92,7 @@ private val lightPallet = FlipperPallet(
     hexKeyboardBackground = Color(0xFF616161),
 
     shareSheetBackground = Color(0xFFFFFFFF),
+    shareSheetScrimColor = Color(0xFF000000).copy(alpha = 0.15f),
     fapHubSwitchBackground = Color(0xFFF1F1F1),
     fapHubSelectedBackgroundColor = Color(0xFFFFFFFF),
     fapHubDividerColor = Color(0xFFE9E9E9),
@@ -133,6 +134,7 @@ private val darkPallet = FlipperPallet(
     hexKeyboardBackground = Color(0xFF000000),
 
     shareSheetBackground = Color(0xFF303030),
+    shareSheetScrimColor = Color(0xFFFFFFFF).copy(alpha = 0.15f),
     fapHubSwitchBackground = Color(0xFF101010),
     fapHubSelectedBackgroundColor = Color(0xFF1C1C1C),
     fapHubDividerColor = Color(0xFF303030),
