@@ -2,7 +2,6 @@ package com.flipperdevices.faphub.appcard.composable
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -86,11 +85,11 @@ private fun AppCardScreenshots(
     screenshots: List<String>?
 ) {
     val screenshotModifier = Modifier
+        .padding(end = 6.dp)
         .size(width = 170.dp, height = 84.dp)
 
     LazyRow(
-        modifier = modifier.fillMaxWidth(),
-        contentPadding = PaddingValues(end = 8.dp)
+        modifier = modifier.fillMaxWidth()
     ) {
         if (screenshots == null) {
             items(DEFAULT_SCREENSHOT_SIZE) {

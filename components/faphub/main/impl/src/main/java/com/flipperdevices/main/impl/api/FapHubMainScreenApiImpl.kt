@@ -30,6 +30,8 @@ class FapHubMainScreenApiImpl @Inject constructor(
                     catalogTabComposable = {
                         catalogTabApi.ComposableCatalogTab(
                             onOpenFapItem = {
+                            },
+                            onCategoryClick = {
                             }
                         )
                     }

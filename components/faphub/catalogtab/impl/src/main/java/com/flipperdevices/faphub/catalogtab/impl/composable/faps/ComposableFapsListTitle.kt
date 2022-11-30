@@ -1,5 +1,6 @@
 package com.flipperdevices.faphub.catalogtab.impl.composable.faps
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -26,7 +27,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.faphub.catalogtab.impl.R
@@ -37,12 +37,13 @@ import com.flipperdevices.faphub.dao.api.model.SortType
 fun ComposableFapsListTitle(
     fapsListViewModel: FapsListViewModel
 ) = Row(
-    modifier = Modifier.fillMaxWidth(),
+    modifier = Modifier
+        .fillMaxWidth()
+        .padding(start = 14.dp, end = 14.dp, top = 20.dp),
     verticalAlignment = Alignment.CenterVertically
 ) {
     Text(
         modifier = Modifier
-            .padding(start = 14.dp)
             .weight(1f),
         text = stringResource(R.string.faphub_catalog_title),
         style = LocalTypography.current.titleB18,
