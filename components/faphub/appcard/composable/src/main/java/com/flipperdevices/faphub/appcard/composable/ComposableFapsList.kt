@@ -1,5 +1,6 @@
-package com.flipperdevices.faphub.catalogtab.impl.composable.faps
+package com.flipperdevices.faphub.appcard.composable
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -16,10 +17,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.itemsIndexed
 import com.flipperdevices.core.ui.ktx.ComposeLottiePic
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
-import com.flipperdevices.faphub.appcard.composable.AppCard
-import com.flipperdevices.faphub.catalogtab.impl.viewmodel.FapsListViewModel
 import com.flipperdevices.faphub.dao.api.model.FapItem
 
 private const val DEFAULT_FAP_COUNT = 20
@@ -27,13 +25,8 @@ private const val DEFAULT_FAP_COUNT = 20
 @Suppress("FunctionNaming")
 fun LazyListScope.ComposableFapsList(
     faps: LazyPagingItems<FapItem>,
-    onOpenFapItem: (FapItem) -> Unit,
-    fapsListViewModel: FapsListViewModel
+    onOpenFapItem: (FapItem) -> Unit
 ) {
-    item {
-        ComposableFapsListTitle(fapsListViewModel)
-    }
-
     if (faps.loadState.refresh is LoadState.Loading) {
         items(DEFAULT_FAP_COUNT) {
             AppCard(Modifier.padding(horizontal = 14.dp, vertical = 12.dp), null)

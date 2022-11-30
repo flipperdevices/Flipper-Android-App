@@ -17,12 +17,13 @@ import com.flipperdevices.main.impl.model.FapHubTabEnum
 @Composable
 fun ComposableFapHubMainScreen(
     onBack: () -> Unit,
-    catalogTabComposable: @Composable () -> Unit
+    catalogTabComposable: @Composable () -> Unit,
+    onOpenSearch: () -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        ComposableFapHubBar(onBack)
+        ComposableFapHubBar(onBack, onOpenSearch)
 
         var selectedTab by remember { mutableStateOf(FapHubTabEnum.APPS) }
         ComposableFapHubSwitch(

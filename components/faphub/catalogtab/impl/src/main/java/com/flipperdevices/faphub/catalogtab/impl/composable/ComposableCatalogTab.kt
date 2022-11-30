@@ -5,8 +5,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.flipperdevices.faphub.appcard.composable.ComposableFapsList
 import com.flipperdevices.faphub.catalogtab.impl.composable.categories.ComposableCategories
-import com.flipperdevices.faphub.catalogtab.impl.composable.faps.ComposableFapsList
+import com.flipperdevices.faphub.catalogtab.impl.composable.faps.ComposableFapsListTitle
 import com.flipperdevices.faphub.catalogtab.impl.viewmodel.CategoriesViewModel
 import com.flipperdevices.faphub.catalogtab.impl.viewmodel.FapsListViewModel
 import com.flipperdevices.faphub.dao.api.model.FapCategory
@@ -26,6 +27,9 @@ fun ComposableCatalogTabScreen(
 
     LazyColumn {
         ComposableCategories(categoriesLoadState, onCategoryClick)
-        ComposableFapsList(fapsList, onOpenFapItem, fapsListViewModel)
+        item {
+            ComposableFapsListTitle(fapsListViewModel)
+        }
+        ComposableFapsList(fapsList, onOpenFapItem)
     }
 }

@@ -54,6 +54,7 @@ include(
     ":components:core:ui:lifecycle",
     ":components:core:ui:fragment",
     ":components:core:ui:theme",
+    ":components:core:ui:searchbar",
     ":components:core:ui:hexkeyboard",
     ":components:core:ui:navigation",
     ":components:core:test",
@@ -173,5 +174,7 @@ include(
     ":components:faphub:main:api",
     ":components:faphub:main:impl",
     ":components:faphub:catalogtab:api",
-    ":components:faphub:catalogtab:impl"
+    ":components:faphub:catalogtab:impl",
+    ":components:faphub:search:api",
+    ":components:faphub:search:impl",
 )
