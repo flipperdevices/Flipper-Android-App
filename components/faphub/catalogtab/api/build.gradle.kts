@@ -4,6 +4,8 @@ plugins {
 }
 
 dependencies {
+    implementation(projects.components.faphub.dao.api)
+
     // Compose
     implementation(libs.compose.ui)
     implementation(libs.compose.tooling)

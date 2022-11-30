@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class InstalledNotificationViewModel : ViewModel() {
-    private val notificationCountStateFlow = MutableStateFlow(4)
+    private val notificationCountStateFlow = MutableStateFlow(value = 4)
 
     fun getNotificationCountStateFlow(): StateFlow<Int> = notificationCountStateFlow
 }

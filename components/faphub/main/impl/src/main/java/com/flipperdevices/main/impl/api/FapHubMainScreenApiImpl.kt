@@ -28,7 +28,10 @@ class FapHubMainScreenApiImpl @Inject constructor(
                         navController.popBackStack()
                     },
                     catalogTabComposable = {
-                        catalogTabApi.ComposableCatalogTab()
+                        catalogTabApi.ComposableCatalogTab(
+                            onOpenFapItem = {
+                            }
+                        )
                     }
                 )
             }

@@ -6,6 +6,7 @@ import com.flipperdevices.core.log.debug
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.dao.api.model.FapItem
+import com.flipperdevices.faphub.dao.api.model.SortType
 import com.flipperdevices.faphub.dao.network.model.MockConstants.MOCK_CATEGORY_LOGO_URL
 import com.flipperdevices.faphub.dao.network.model.MockConstants.MOCK_CATEGORY_NAME
 import com.flipperdevices.faphub.dao.network.model.MockConstants.MOCK_DELAY
@@ -30,7 +31,9 @@ class FapNetworkApiImpl @Inject constructor() : FapNetworkApi, LogTagProvider {
         return@withContext item
     }
 
-    override suspend fun getAllItem(): List<FapItem> = withContext(Dispatchers.IO) {
+    override suspend fun getAllItem(
+        sortType: SortType
+    ): List<FapItem> = withContext(Dispatchers.IO) {
         delay(MOCK_DELAY)
         return@withContext MutableList(size = 10) { MOCK_FAP_ITEM }
     }

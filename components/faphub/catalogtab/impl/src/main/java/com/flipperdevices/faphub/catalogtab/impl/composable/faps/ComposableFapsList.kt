@@ -1,6 +1,7 @@
 package com.flipperdevices.faphub.catalogtab.impl.composable.faps
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,37 +19,62 @@ import com.flipperdevices.core.ui.ktx.ComposeLottiePic
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.faphub.appcard.composable.AppCard
+import com.flipperdevices.faphub.catalogtab.impl.viewmodel.FapsListViewModel
 import com.flipperdevices.faphub.dao.api.model.FapItem
 
 private const val DEFAULT_FAP_COUNT = 20
 
 @Suppress("FunctionNaming")
-fun LazyListScope.ComposableFapsList(faps: LazyPagingItems<FapItem>) {
+fun LazyListScope.ComposableFapsList(
+    faps: LazyPagingItems<FapItem>,
+    onOpenFapItem: (FapItem) -> Unit,
+    fapsListViewModel: FapsListViewModel
+) {
+    item {
+        ComposableFapsListTitle(fapsListViewModel)
+    }
+
+    if (faps.loadState.refresh is LoadState.Loading) {
+        items(DEFAULT_FAP_COUNT) {
+            AppCard(Modifier.padding(horizontal = 14.dp, vertical = 12.dp), null)
+        }
+        return
+    }
+
+    ComposableLoadedFapsList(
+        faps = faps,
+        onOpenFapItem = onOpenFapItem
+    )
+
+    when (faps.loadState.append) {
+        is LoadState.Loading -> item {
+            ComposableLoadingItem()
+        }
+        is LoadState.Error -> item {
+            Text("Error: ${(faps.loadState.append as LoadState.Error).error}")
+        }
+        else -> {}
+    }
+}
+
+@Suppress("FunctionNaming")
+private fun LazyListScope.ComposableLoadedFapsList(
+    faps: LazyPagingItems<FapItem>,
+    onOpenFapItem: (FapItem) -> Unit
+) {
     val lastIndex = faps.itemCount - 1
     itemsIndexed(faps) { index, item ->
         item?.let {
             AppCard(
-                modifier = Modifier.padding(horizontal = 14.dp, vertical = 12.dp),
+                modifier = Modifier
+                    .clickable(
+                        onClick = { onOpenFapItem(it) }
+                    )
+                    .padding(horizontal = 14.dp, vertical = 12.dp),
                 fapItem = it
             )
             if (index != lastIndex) {
                 ComposableLoadingItemDivider()
-            }
-        }
-    }
-    faps.loadState.let { loadState ->
-        when {
-            loadState.refresh is LoadState.Loading -> items(DEFAULT_FAP_COUNT) {
-                // You can add modifier to manage load state when first time response page is loading
-                AppCard(Modifier.padding(horizontal = 14.dp, vertical = 12.dp), null)
-            }
-            loadState.append is LoadState.Loading -> item {
-                // You can add modifier to manage load state when next response page is loading
-                ComposableLoadingItem()
-            }
-            loadState.append is LoadState.Error -> item {
-                // You can use modifier to show error message
-                Text("Error: ${(loadState.append as LoadState.Error).error}")
             }
         }
     }
