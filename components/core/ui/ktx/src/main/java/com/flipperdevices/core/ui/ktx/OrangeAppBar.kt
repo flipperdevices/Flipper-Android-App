@@ -1,5 +1,7 @@
 package com.flipperdevices.core.ui.ktx
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -9,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
@@ -17,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 
@@ -59,4 +61,32 @@ fun OrangeAppBar(
             endBlock()
         }
     }
+}
+
+@Composable
+fun OrangeAppBarWithIcon(
+    @StringRes titleId: Int,
+    onBack: (() -> Unit)? = null,
+    @DrawableRes endIconId: Int,
+    onEndClick: () -> Unit
+) {
+    OrangeAppBar(
+        titleId = titleId,
+        onBack = onBack,
+        endBlock = {
+            Icon(
+                modifier = Modifier
+                    .padding(end = 14.dp)
+                    .size(24.dp)
+                    .clickable(
+                        interactionSource = MutableInteractionSource(),
+                        indication = rememberRipple(),
+                        onClick = onEndClick
+                    ),
+                painter = painterResource(endIconId),
+                contentDescription = null,
+                tint = LocalPallet.current.onAppBar
+            )
+        }
+    )
 }
