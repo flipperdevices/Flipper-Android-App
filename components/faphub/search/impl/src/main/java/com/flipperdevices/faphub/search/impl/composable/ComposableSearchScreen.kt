@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.flipperdevices.core.ui.searchbar.ComposableSearchBar
-import com.flipperdevices.faphub.appcard.composable.ComposableFapsList
+import com.flipperdevices.faphub.appcard.composable.paging.ComposableFapsList
 import com.flipperdevices.faphub.dao.api.model.FapItem
 import com.flipperdevices.faphub.search.impl.R
 import com.flipperdevices.faphub.search.impl.viewmodel.FapHubSearchViewModel

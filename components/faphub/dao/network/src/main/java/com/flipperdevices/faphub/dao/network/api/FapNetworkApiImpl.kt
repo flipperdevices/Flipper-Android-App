@@ -32,14 +32,14 @@ class FapNetworkApiImpl @Inject constructor() : FapNetworkApi, LogTagProvider {
     }
 
     override suspend fun getAllItem(
+        category: FapCategory?,
         sortType: SortType
     ): List<FapItem> = withContext(Dispatchers.IO) {
         delay(MOCK_DELAY)
         return@withContext MutableList(size = 10) { MOCK_FAP_ITEM }
     }
 
-    override suspend fun search(query: String) = getAllItem(SortType.UPDATED)
-
+    override suspend fun search(query: String) = getAllItem(sortType = SortType.UPDATED)
 
     override suspend fun getCategories(): List<FapCategory> = withContext(Dispatchers.IO) {
         debug { "Request categories" }

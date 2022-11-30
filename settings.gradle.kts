@@ -177,4 +177,6 @@ include(
     ":components:faphub:catalogtab:impl",
     ":components:faphub:search:api",
     ":components:faphub:search:impl",
+    ":components:faphub:category:api",
+    ":components:faphub:category:impl",
 )

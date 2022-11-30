@@ -6,13 +6,14 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.components.faphub.catalogtab.api)
+    implementation(projects.components.faphub.category.api)
 
     implementation(projects.components.core.di)
-    implementation(projects.components.core.ui.theme)
-    implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.ktx)
+    implementation(projects.components.core.ui.res)
+    implementation(projects.components.core.ui.navigation)
 
+    implementation(projects.components.faphub.search.api)
     implementation(projects.components.faphub.dao.api)
     implementation(projects.components.faphub.appcard.composable)
 
@@ -21,9 +22,10 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
+    implementation(libs.compose.navigation)
     implementation(libs.compose.paging)
 
-    implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.kotlin.serialization.json)
 
     // Dagger deps
     implementation(libs.dagger)

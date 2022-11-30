@@ -29,6 +29,19 @@ fun OrangeAppBar(
     onBack: (() -> Unit)? = null,
     endBlock: (@Composable () -> Unit)? = null
 ) {
+    OrangeAppBar(
+        title = stringResource(titleId),
+        onBack = onBack,
+        endBlock = endBlock
+    )
+}
+
+@Composable
+fun OrangeAppBar(
+    title: String,
+    onBack: (() -> Unit)? = null,
+    endBlock: (@Composable () -> Unit)? = null
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -53,7 +66,7 @@ fun OrangeAppBar(
             modifier = Modifier
                 .padding(start = 14.dp, end = 14.dp, top = 8.dp, bottom = 11.dp)
                 .weight(1f),
-            text = stringResource(titleId),
+            text = title,
             style = LocalTypography.current.titleB20,
             color = LocalPallet.current.onAppBar
         )
@@ -63,6 +76,7 @@ fun OrangeAppBar(
     }
 }
 
+
 @Composable
 fun OrangeAppBarWithIcon(
     @StringRes titleId: Int,
@@ -70,8 +84,23 @@ fun OrangeAppBarWithIcon(
     @DrawableRes endIconId: Int,
     onEndClick: () -> Unit
 ) {
+    OrangeAppBarWithIcon(
+        title = stringResource(titleId),
+        onBack = onBack,
+        endIconId = endIconId,
+        onEndClick = onEndClick
+    )
+}
+
+@Composable
+fun OrangeAppBarWithIcon(
+    title: String,
+    onBack: (() -> Unit)? = null,
+    @DrawableRes endIconId: Int,
+    onEndClick: () -> Unit
+) {
     OrangeAppBar(
-        titleId = titleId,
+        title = title,
         onBack = onBack,
         endBlock = {
             Icon(

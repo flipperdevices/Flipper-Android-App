@@ -15,8 +15,10 @@ dependencies {
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.navigation)
 
+    implementation(projects.components.faphub.dao.api)
     implementation(projects.components.faphub.search.api)
     implementation(projects.components.faphub.catalogtab.api)
+    implementation(projects.components.faphub.category.api)
 
     // Compose
     implementation(libs.compose.ui)
