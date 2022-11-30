@@ -6,12 +6,10 @@ import com.flipperdevices.core.log.debug
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.dao.api.model.FapItem
-import com.flipperdevices.faphub.dao.network.model.MockConstants.MOCK_APP_LOGO_URL
 import com.flipperdevices.faphub.dao.network.model.MockConstants.MOCK_CATEGORY_LOGO_URL
 import com.flipperdevices.faphub.dao.network.model.MockConstants.MOCK_CATEGORY_NAME
 import com.flipperdevices.faphub.dao.network.model.MockConstants.MOCK_DELAY
-import com.flipperdevices.faphub.dao.network.model.MockConstants.MOCK_DESCRIPTION
-import com.flipperdevices.faphub.dao.network.model.MockConstants.MOCK_NAME
+import com.flipperdevices.faphub.dao.network.model.MockConstants.MOCK_FAP_ITEM
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -26,17 +24,29 @@ class FapNetworkApiImpl @Inject constructor() : FapNetworkApi, LogTagProvider {
 
         delay(MOCK_DELAY)
 
-        val item = FapItem(
-            picUrl = MOCK_APP_LOGO_URL,
-            description = MOCK_DESCRIPTION,
-            name = MOCK_NAME,
-            category = FapCategory(
-                name = MOCK_CATEGORY_NAME,
-                picUrl = MOCK_CATEGORY_LOGO_URL
-            )
-        )
+        val item = MOCK_FAP_ITEM
         debug { "Provider feature item: $item" }
 
         return@withContext item
+    }
+
+    override suspend fun getAllItem(): List<FapItem> = withContext(Dispatchers.IO) {
+        delay(MOCK_DELAY)
+        return@withContext MutableList(10) { MOCK_FAP_ITEM }
+    }
+
+    override suspend fun getCategories(): List<FapCategory> = withContext(Dispatchers.IO) {
+        debug { "Request categories" }
+        delay(MOCK_DELAY)
+        val categories = mutableListOf<FapCategory>()
+        repeat(10) {
+            categories.add(
+                FapCategory(
+                    name = MOCK_CATEGORY_NAME,
+                    picUrl = MOCK_CATEGORY_LOGO_URL
+                )
+            )
+        }
+        return@withContext categories
     }
 }

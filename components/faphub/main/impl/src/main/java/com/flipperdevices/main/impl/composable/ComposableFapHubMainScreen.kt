@@ -16,7 +16,8 @@ import com.flipperdevices.main.impl.model.FapHubTabEnum
 
 @Composable
 fun ComposableFapHubMainScreen(
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    catalogTabComposable: @Composable () -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
@@ -31,5 +32,7 @@ fun ComposableFapHubMainScreen(
                 selectedTab = it
             }
         )
+
+        catalogTabComposable()
     }
 }

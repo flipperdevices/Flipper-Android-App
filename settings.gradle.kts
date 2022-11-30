@@ -171,5 +171,7 @@ include(
     ":components:faphub:dao:network",
     ":components:faphub:dao:flipper",
     ":components:faphub:main:api",
-    ":components:faphub:main:impl"
+    ":components:faphub:main:impl",
+    ":components:faphub:catalogtab:api",
+    ":components:faphub:catalogtab:impl"
 )
