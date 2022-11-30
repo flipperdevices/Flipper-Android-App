@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.Text
@@ -56,7 +57,8 @@ fun LazyListScope.ComposableFapsList(faps: LazyPagingItems<FapItem>) {
 private fun ComposableLoadingItemDivider() = Box(
     modifier = Modifier
         .fillMaxWidth()
-        .padding(14.dp)
+        .height(1.dp)
+        .padding(horizontal = 14.dp)
         .background(LocalPallet.current.fapHubDividerColor)
 )
 
