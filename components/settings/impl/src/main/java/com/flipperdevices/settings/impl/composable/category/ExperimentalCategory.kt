@@ -48,6 +48,12 @@ fun ExperimentalCategory(
                     state = settings.applicationCatalog,
                     onSwitchState = experimentalViewModel::onSwitchApplicationCatalog
                 )
+                GrayDivider()
+                SwitchableElement(
+                    titleId = R.string.experimental_application_switch,
+                    state = settings.faphubNewSwitch,
+                    onSwitchState = experimentalViewModel::onSwitchAppsSwitch
+                )
             }
         }
     }

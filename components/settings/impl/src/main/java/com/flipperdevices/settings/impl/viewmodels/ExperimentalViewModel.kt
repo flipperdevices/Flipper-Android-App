@@ -42,4 +42,14 @@ class ExperimentalViewModel @VMInject constructor(
             }
         }
     }
+
+    fun onSwitchAppsSwitch(enabled: Boolean) {
+        viewModelScope.launch {
+            dataStore.updateData {
+                it.toBuilder()
+                    .setFaphubNewSwitch(enabled)
+                    .build()
+            }
+        }
+    }
 }

@@ -8,6 +8,7 @@ import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.faphub.dao.api.model.FapItem
 import com.flipperdevices.faphub.installation.api.FapInstallationUIApi
 import com.flipperdevices.faphub.installation.impl.composable.ComposableFapInstallationButton
+import com.flipperdevices.faphub.installation.impl.composable.ComposableFapUpdateButton
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
@@ -34,7 +35,7 @@ class FapInstallationUIApiImpl @Inject constructor() : FapInstallationUIApi {
         modifier: Modifier,
         textSize: TextUnit
     ) {
-        ComposableFapInstallationButton(
+        ComposableFapUpdateButton(
             if (fapItem == null) {
                 modifier.placeholderConnecting()
             } else modifier, textSize

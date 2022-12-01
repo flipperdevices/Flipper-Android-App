@@ -67,7 +67,7 @@ private fun ComposableFapScreenInternal(
         screenshots = fapItem?.screenshots
     )
     ComposableFapDescription(
-        modifier = Modifier.padding(start = 14.dp, end = 14.dp),
+        modifier = Modifier.padding(start = 14.dp, end = 14.dp, bottom = 36.dp),
         fapItem = fapItem
     )
 }

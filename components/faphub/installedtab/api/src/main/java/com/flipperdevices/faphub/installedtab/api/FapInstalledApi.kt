@@ -1,7 +1,11 @@
 package com.flipperdevices.faphub.installedtab.api
 
-import com.github.terrakok.cicerone.Screen
+import androidx.compose.runtime.Composable
+import com.flipperdevices.faphub.dao.api.model.FapItem
 
 interface FapInstalledApi {
-    fun getFapInstalledScreen(): Screen
+    @Composable
+    fun ComposableInstalledTab(
+        onOpenFapItem: (FapItem) -> Unit
+    )
 }

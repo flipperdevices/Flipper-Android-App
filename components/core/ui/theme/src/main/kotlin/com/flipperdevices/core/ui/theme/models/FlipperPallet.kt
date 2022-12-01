@@ -133,6 +133,8 @@ data class FlipperPallet(
     val fapHubSortedColor: Color,
     val fapHubCategoryText: Color,
     val onFapHubInstallButton: Color = Color(0xFFFFFFFF),
+    val onFapHubInstallButtonCounterBackground: Color = Color(0xFFE5FFE6),
+    val onFapHubInstallButtonCounterText: Color = Color(0xFF616161),
 ) {
     internal fun toMaterialColors(isLight: Boolean) = Colors(
         primary = content,
