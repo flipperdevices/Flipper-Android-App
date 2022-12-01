@@ -21,7 +21,6 @@ fun ComposableFlipperButton(
     fontSize: TextUnit,
     color: Color
 ) {
-
     Box(
         modifier = modifier
             .background(color),

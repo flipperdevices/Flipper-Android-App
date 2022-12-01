@@ -36,7 +36,7 @@ internal fun ComposableFapMetaInformation(
     modifier = modifier
         .fillMaxWidth()
         .height(IntrinsicSize.Min),
-    verticalAlignment = Alignment.CenterVertically,
+    verticalAlignment = Alignment.CenterVertically
 ) {
     val informationColumnModifier = Modifier.weight(1f)
 
@@ -73,13 +73,13 @@ private fun ComposableInformationColumn(
         modifier = Modifier.padding(bottom = 4.dp),
         text = name,
         style = LocalTypography.current.subtitleR10,
-        color = LocalPallet.current.text40,
+        color = LocalPallet.current.text40
     )
     Text(
         modifier = if (value == null) Modifier.placeholderConnecting() else Modifier,
         text = value ?: DEFAULT_INFORMATION_VALUE,
         style = LocalTypography.current.subtitleR12,
-        color = LocalPallet.current.text100,
+        color = LocalPallet.current.text100
     )
 }
 
@@ -96,7 +96,7 @@ private fun ComposableInformationDivider() = Divider(
 )
 @Composable
 private fun ComposableFapMetaInformationPreview() {
-    FlipperThemeInternal() {
+    FlipperThemeInternal {
         ComposableFapMetaInformation(
             modifier = Modifier,
             metaInformation = null

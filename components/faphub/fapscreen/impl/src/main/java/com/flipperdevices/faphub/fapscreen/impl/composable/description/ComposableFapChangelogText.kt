@@ -22,7 +22,6 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.faphub.fapscreen.impl.R
 
-
 private const val MAX_CHANGELOG_LINE = 4
 private val DEFAULT_CHANGELOG
     get() = String((Array(size = 4) { '\n' }).toCharArray())

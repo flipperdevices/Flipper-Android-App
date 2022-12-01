@@ -12,7 +12,6 @@ import com.flipperdevices.faphub.installation.impl.composable.ComposableFapUpdat
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
-
 @ContributesBinding(AppGraph::class, FapInstallationUIApi::class)
 class FapInstallationUIApiImpl @Inject constructor() : FapInstallationUIApi {
     @Composable
@@ -21,11 +20,11 @@ class FapInstallationUIApiImpl @Inject constructor() : FapInstallationUIApi {
         modifier: Modifier,
         textSize: TextUnit
     ) {
-
         ComposableFapInstallationButton(
             if (fapItem == null) {
                 modifier.placeholderConnecting()
-            } else modifier, textSize
+            } else modifier,
+            textSize
         )
     }
 
@@ -38,7 +37,8 @@ class FapInstallationUIApiImpl @Inject constructor() : FapInstallationUIApi {
         ComposableFapUpdateButton(
             if (fapItem == null) {
                 modifier.placeholderConnecting()
-            } else modifier, textSize
+            } else modifier,
+            textSize
         )
     }
 }

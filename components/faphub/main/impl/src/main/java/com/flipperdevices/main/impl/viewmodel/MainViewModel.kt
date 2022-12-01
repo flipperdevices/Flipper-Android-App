@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import tangle.viewmodel.VMInject
 
 class MainViewModel @VMInject constructor(
-    settings: DataStore<Settings>,
+    settings: DataStore<Settings>
 ) : ViewModel() {
     private val tabFlow = MutableStateFlow(FapHubTabEnum.APPS)
     private val experimentalSwitchFlow = MutableStateFlow(false)

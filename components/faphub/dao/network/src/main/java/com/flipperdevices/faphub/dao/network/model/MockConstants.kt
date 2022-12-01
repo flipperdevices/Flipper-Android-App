@@ -17,9 +17,9 @@ internal object MockConstants {
     private const val MOCK_NAME = "Snake Game"
     private const val MOCK_DESCRIPTION =
         "Press the control buttons to move the snake around the board. " +
-                "As the snake finds food, it eats the food, and thereby grows larger. " +
-                "The game ends when the snake either moves off the screen or moves into itself. " +
-                "The goal is to make the snake as large as possible before that happens."
+            "As the snake finds food, it eats the food, and thereby grows larger. " +
+            "The game ends when the snake either moves off the screen or moves into itself. " +
+            "The goal is to make the snake as large as possible before that happens."
     private const val MOCK_CHANGELOG = """
 - [Feature] Add forbidden frequency dialog
 - [Feature] Rework all system dialog to custom
@@ -42,7 +42,8 @@ internal object MockConstants {
     )
     private val MOCK_DEVELOPER_INFORMATION = FapDeveloperInformation(
         githubRepositoryLink = "https://github.com/flipperdevices/Flipper-Android-App",
-        manifestRepositoryLink = "https://github.com/flipperdevices/Flipper-Android-App/blob/dev/README.md"
+        manifestRepositoryLink = "https://github.com/flipperdevices/Flipper-Android-App/" +
+            "blob/dev/README.md"
     )
 
     fun getMockItem() = FapItem(

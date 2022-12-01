@@ -1,6 +1,5 @@
 package com.flipperdevices.main.impl.composable
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.ui.ktx.OrangeAppBarWithIcon
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.main.impl.R
 import com.flipperdevices.main.impl.composable.switch.ComposableFapHubNewSwitch
 import com.flipperdevices.main.impl.composable.switch.ComposableFapHubSwitch
@@ -48,9 +48,11 @@ fun ComposableFapHubMainScreen(
                 onBack = onBack,
                 onEndClick = onOpenSearch
             )
-            Spacer(modifier = Modifier
-                .height(18.dp)
-                .fillMaxWidth())
+            Spacer(
+                modifier = Modifier
+                    .height(18.dp)
+                    .fillMaxWidth()
+            )
         } else {
             OrangeAppBarWithIcon(
                 titleId = R.string.faphub_main_title,

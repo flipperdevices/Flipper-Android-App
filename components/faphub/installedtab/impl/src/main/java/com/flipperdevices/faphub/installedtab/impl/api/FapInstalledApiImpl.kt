@@ -9,7 +9,6 @@ import com.flipperdevices.faphub.installedtab.impl.composable.ComposableInstalle
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
-
 @ContributesBinding(AppGraph::class, FapInstalledApi::class)
 class FapInstalledApiImpl @Inject constructor(
     private val fapInstallationUIApi: FapInstallationUIApi

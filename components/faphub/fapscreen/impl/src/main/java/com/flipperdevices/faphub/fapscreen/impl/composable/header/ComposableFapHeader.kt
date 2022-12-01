@@ -39,7 +39,7 @@ fun ComposableFapHeader(
 )
 @Composable
 private fun ComposableFapHeaderPreview() {
-    FlipperThemeInternal() {
+    FlipperThemeInternal {
         ComposableFapHeader(
             Modifier.padding(horizontal = 24.dp),
             fapItem = null

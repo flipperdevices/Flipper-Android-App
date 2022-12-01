@@ -12,9 +12,9 @@ data class SemVer(
             return comparableNumber
         }
         comparableNumber = minorVersion.compareTo(other.minorVersion)
-        if (other.patchVersion == null
-            || patchVersion == null
-            || comparableNumber != 0
+        if (other.patchVersion == null ||
+            patchVersion == null ||
+            comparableNumber != 0
         ) {
             return comparableNumber
         }

@@ -18,7 +18,6 @@ import javax.inject.Inject
 
 internal const val FAP_ID_KEY = "fap_id"
 
-
 @ContributesBinding(AppGraph::class, FapScreenApi::class)
 @ContributesMultibinding(AppGraph::class, ComposableFeatureEntry::class)
 class FapScreenApiImpl @Inject constructor(

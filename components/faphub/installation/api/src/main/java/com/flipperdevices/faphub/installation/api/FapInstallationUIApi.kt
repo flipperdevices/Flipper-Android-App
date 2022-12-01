@@ -5,7 +5,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.TextUnit
 import com.flipperdevices.faphub.dao.api.model.FapItem
 
-
 interface FapInstallationUIApi {
     @Composable
     fun ComposableInstallButton(

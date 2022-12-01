@@ -79,6 +79,6 @@ private fun ComposableGithubLink(
         style = LocalTypography.current.bodyR14.copy(
             textDecoration = TextDecoration.Underline
         ),
-        color = LocalPallet.current.text100,
+        color = LocalPallet.current.text100
     )
 }

@@ -1,6 +1,5 @@
 package com.flipperdevices.main.impl.composable.switch
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -35,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.tab.tabIndicatorOffset
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.main.impl.model.FapHubTabEnum
@@ -47,7 +47,6 @@ fun ComposableFapHubNewSwitch(
     onEndClick: () -> Unit,
     onBack: (() -> Unit)? = null
 ) {
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -73,7 +72,7 @@ fun ComposableFapHubNewSwitch(
                 .weight(weight = 1f)
                 .padding(horizontal = 18.dp)
                 .clip(RoundedCornerShape(12.dp))
-                .background(Color.White.copy(alpha = 0.5f)),
+                .background(Color.White.copy(alpha = 0.5f))
         ) {
             CompositionLocalProvider(
                 LocalPallet provides LocalPallet.current.copy(
