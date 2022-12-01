@@ -15,5 +15,6 @@ enum class FeatureScreenRootRoute {
     STRESS_TEST,
     FAP_HUB_MAIN,
     FAP_HUB_SEARCH,
-    FAP_HUB_CATEGORY
+    FAP_HUB_CATEGORY,
+    FAP_HUB_APPSCREEN
 }

@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
@@ -68,7 +69,9 @@ fun OrangeAppBar(
                 .weight(1f),
             text = title,
             style = LocalTypography.current.titleB20,
-            color = LocalPallet.current.onAppBar
+            color = LocalPallet.current.onAppBar,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
         if (endBlock != null) {
             endBlock()

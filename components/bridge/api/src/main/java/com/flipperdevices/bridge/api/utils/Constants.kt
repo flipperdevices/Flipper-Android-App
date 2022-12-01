@@ -1,6 +1,6 @@
 package com.flipperdevices.bridge.api.utils
 
-import com.flipperdevices.bridge.api.model.SemVer
+import com.flipperdevices.core.data.SemVer
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 

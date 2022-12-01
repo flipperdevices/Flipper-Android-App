@@ -10,7 +10,7 @@ import com.flipperdevices.faphub.dao.api.model.SortType
 import com.flipperdevices.faphub.dao.network.model.MockConstants.MOCK_CATEGORY_LOGO_URL
 import com.flipperdevices.faphub.dao.network.model.MockConstants.MOCK_CATEGORY_NAME
 import com.flipperdevices.faphub.dao.network.model.MockConstants.MOCK_DELAY
-import com.flipperdevices.faphub.dao.network.model.MockConstants.MOCK_FAP_ITEM
+import com.flipperdevices.faphub.dao.network.model.MockConstants.getMockItem
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +25,7 @@ class FapNetworkApiImpl @Inject constructor() : FapNetworkApi, LogTagProvider {
 
         delay(MOCK_DELAY)
 
-        val item = MOCK_FAP_ITEM
+        val item = getMockItem()
         debug { "Provider feature item: $item" }
 
         return@withContext item
@@ -36,7 +36,7 @@ class FapNetworkApiImpl @Inject constructor() : FapNetworkApi, LogTagProvider {
         sortType: SortType
     ): List<FapItem> = withContext(Dispatchers.IO) {
         delay(MOCK_DELAY)
-        return@withContext MutableList(size = 10) { MOCK_FAP_ITEM }
+        return@withContext MutableList(size = 10) { getMockItem() }
     }
 
     override suspend fun search(query: String) = getAllItem(sortType = SortType.UPDATED)
@@ -50,5 +50,11 @@ class FapNetworkApiImpl @Inject constructor() : FapNetworkApi, LogTagProvider {
                 picUrl = MOCK_CATEGORY_LOGO_URL
             )
         }
+    }
+
+    override suspend fun getFapItemById(id: String): FapItem = withContext(Dispatchers.IO) {
+        debug { "Request fap item by id $id" }
+        delay(MOCK_DELAY)
+        return@withContext getMockItem().copy(id = id)
     }
 }

@@ -183,5 +183,10 @@ private val typography = FlipperTypography(
         fontSize = 8.sp,
         fontFamily = FontFamily(Font(R.font.roboto_mono_medium)),
         fontWeight = FontWeight.W700
+    ),
+    fapHubButtonText = TextStyle(
+        fontSize = 18.sp,
+        fontFamily = FontFamily(Font(R.font.flipper_action)),
+        fontWeight = FontWeight.W500
     )
 )

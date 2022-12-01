@@ -6,5 +6,7 @@ plugins {
 }
 
 dependencies {
+    implementation(projects.components.core.data)
+
     implementation(libs.kotlin.serialization.json)
 }

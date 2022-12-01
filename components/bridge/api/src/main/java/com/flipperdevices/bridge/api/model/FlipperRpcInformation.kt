@@ -1,5 +1,7 @@
 package com.flipperdevices.bridge.api.model
 
+import com.flipperdevices.core.data.SemVer
+
 data class FlipperRpcInformation(
     val internalStorageStats: StorageStats? = null,
     val externalStorageStats: StorageStats? = null,

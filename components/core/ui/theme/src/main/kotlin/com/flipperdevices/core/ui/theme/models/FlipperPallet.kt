@@ -122,6 +122,7 @@ data class FlipperPallet(
     val shareSheetBackground: Color,
     val shareSheetBackgroundAction: Color = Color(0xFFFF8200),
     val shareSheetScrimColor: Color,
+
     val fapHubSwitchBackground: Color,
     val fapHubSelectedBackgroundColor: Color,
     val fapHubActiveColor: Color = text100,
@@ -130,7 +131,10 @@ data class FlipperPallet(
     val fapScreenshotBorder: Color = Color(0xFF000000),
     val fapHubDividerColor: Color,
     val fapHubSortedColor: Color,
-    val fapHubCategoryText: Color
+    val fapHubCategoryText: Color,
+    val onFapHubInstallButton: Color = Color(0xFFFFFFFF),
+    val onFapHubInstallButtonCounterBackground: Color = Color(0xFFE5FFE6),
+    val onFapHubInstallButtonCounterText: Color = Color(0xFF616161),
 ) {
     internal fun toMaterialColors(isLight: Boolean) = Colors(
         primary = content,

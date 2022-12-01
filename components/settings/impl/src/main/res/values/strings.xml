@@ -34,7 +34,8 @@
     <string name="experimental_file_manager_desc">Navigate through Flipper files</string>
     <string name="experimental_screen_streaming">Screen Streaming</string>
     <string name="experimental_screen_streaming_desc">Control Flipper via phone</string>
-    <string name="experimental_application_catalog">Application Catalog</string>
+    <string name="experimental_application_catalog">Enable Apps in Hub</string>
+    <string name="experimental_application_switch">New switch in Apps</string>
 
     <string name="debug_shake2report_open">Report a bug</string>
     <string name="export_keys">Backup keys</string>

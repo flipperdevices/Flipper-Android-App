@@ -4,7 +4,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.TextUnit
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.flipperdevices.faphub.appcard.composable.paging.ComposableFapsList
 import com.flipperdevices.faphub.appcard.composable.paging.ComposableSortChoice
@@ -19,7 +21,8 @@ import tangle.viewmodel.compose.tangleViewModel
 @Composable
 fun ComposableCatalogTabScreen(
     onOpenFapItem: (FapItem) -> Unit,
-    onCategoryClick: (FapCategory) -> Unit
+    onCategoryClick: (FapCategory) -> Unit,
+    installationButton: @Composable (FapItem?, Modifier, TextUnit) -> Unit
 ) {
     val fapsListViewModel = tangleViewModel<FapsListViewModel>()
     val fapsList = fapsListViewModel.faps.collectAsLazyPagingItems()
@@ -37,6 +40,6 @@ fun ComposableCatalogTabScreen(
                 onSelectSortType = fapsListViewModel::onSelectSortType
             )
         }
-        ComposableFapsList(fapsList, onOpenFapItem)
+        ComposableFapsList(fapsList, onOpenFapItem, installationButton)
     }
 }

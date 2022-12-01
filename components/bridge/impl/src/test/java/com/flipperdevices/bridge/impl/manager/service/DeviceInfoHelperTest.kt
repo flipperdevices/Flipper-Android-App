@@ -5,9 +5,9 @@ import com.flipperdevices.bridge.api.model.FlipperDeviceInfo
 import com.flipperdevices.bridge.api.model.FlipperRpcInformation
 import com.flipperdevices.bridge.api.model.RadioStackInfo
 import com.flipperdevices.bridge.api.model.RadioStackType
-import com.flipperdevices.bridge.api.model.SemVer
 import com.flipperdevices.bridge.impl.manager.service.requestservice.DeviceInfoHelper
 import com.flipperdevices.bridge.impl.manager.service.requestservice.InternalFlipperRpcInformationRaw
+import com.flipperdevices.core.data.SemVer
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith

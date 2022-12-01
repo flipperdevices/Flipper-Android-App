@@ -13,4 +13,5 @@ interface FapNetworkApi {
 
     suspend fun search(query: String): List<FapItem>
     suspend fun getCategories(): List<FapCategory>
+    suspend fun getFapItemById(id: String): FapItem
 }

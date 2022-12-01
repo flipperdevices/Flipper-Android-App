@@ -2,6 +2,7 @@ package com.flipperdevices.info.impl.model
 
 import android.content.Context
 import com.flipperdevices.bridge.api.model.StorageStats
+import com.flipperdevices.core.ktx.jre.toFormattedSize
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.updater.model.FirmwareVersion
 import kotlin.math.max
@@ -33,11 +34,8 @@ fun StorageStats.toString(context: Context): String {
             context.getString(R.string.info_device_info_flash_not_found)
         }
         is StorageStats.Loaded -> {
-            val formatter = StorageStateFormatter()
-            val usedHumanReadable = formatter.formatFileSize(
-                max(0L, total - free)
-            )
-            val totalHumanReadable = formatter.formatFileSize(total)
+            val usedHumanReadable = max(0L, total - free).toFormattedSize()
+            val totalHumanReadable = total.toFormattedSize()
 
             "$usedHumanReadable / $totalHumanReadable"
         }

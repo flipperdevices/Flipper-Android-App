@@ -18,7 +18,9 @@ dependencies {
     implementation(projects.components.faphub.dao.api)
     implementation(projects.components.faphub.search.api)
     implementation(projects.components.faphub.catalogtab.api)
+    implementation(projects.components.faphub.installedtab.api)
     implementation(projects.components.faphub.category.api)
+    implementation(projects.components.faphub.fapscreen.api)
 
     // Compose
     implementation(libs.compose.ui)
@@ -30,4 +32,7 @@ dependencies {
     // Dagger deps
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
+    implementation(libs.tangle.viewmodel.compose)
+    implementation(libs.tangle.viewmodel.api)
+    anvil(libs.tangle.viewmodel.compiler)
 }
