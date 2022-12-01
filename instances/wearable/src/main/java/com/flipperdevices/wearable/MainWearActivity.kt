@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.wear.compose.navigation.SwipeDismissableNavHost
-import androidx.wear.compose.navigation.composable
 import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.di.provideDelegate
@@ -54,13 +53,8 @@ class MainWearActivity : ComponentActivity() {
                 }
             }
             composableFutureEntries.forEach { featureEntry ->
-                composable(featureEntry.featureRoute, featureEntry.arguments) { backStack ->
-                    with(featureEntry) {
-                        Composable(
-                            navController = navController,
-                            backStackEntry = backStack
-                        )
-                    }
+                with(featureEntry) {
+                    composable(navController)
                 }
             }
         }
