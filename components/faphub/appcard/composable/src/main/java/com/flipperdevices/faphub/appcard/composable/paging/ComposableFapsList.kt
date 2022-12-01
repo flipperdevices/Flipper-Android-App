@@ -1,13 +1,11 @@
 package com.flipperdevices.faphub.appcard.composable.paging
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -17,6 +15,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.itemsIndexed
 import com.flipperdevices.core.ui.ktx.ComposeLottiePic
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.faphub.appcard.composable.AppCard
 import com.flipperdevices.faphub.dao.api.model.FapItem
@@ -75,12 +74,12 @@ private fun LazyListScope.ComposableLoadedFapsList(
 }
 
 @Composable
-private fun ComposableLoadingItemDivider() = Box(
+private fun ComposableLoadingItemDivider() = Divider(
     modifier = Modifier
         .fillMaxWidth()
-        .height(1.dp)
-        .padding(horizontal = 14.dp)
-        .background(LocalPallet.current.fapHubDividerColor)
+        .padding(horizontal = 14.dp),
+    thickness = 1.dp,
+    color = LocalPallet.current.fapHubDividerColor
 )
 
 @Composable

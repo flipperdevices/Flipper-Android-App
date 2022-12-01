@@ -44,7 +44,6 @@ class FapHubCategoryApiImpl @Inject constructor(
                 onBack = navController::popBackStack,
                 onOpenSearch = { navController.navigate(searchEntryApi.start()) },
                 onOpenFapItem = {
-
                 }
             )
         }

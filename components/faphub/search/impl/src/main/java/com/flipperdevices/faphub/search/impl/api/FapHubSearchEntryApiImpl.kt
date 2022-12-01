@@ -12,12 +12,9 @@ import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
 import javax.inject.Inject
 
-
 @ContributesBinding(AppGraph::class, FapHubSearchEntryApi::class)
 @ContributesMultibinding(AppGraph::class, AggregateFeatureEntry::class)
-class FapHubSearchEntryApiImpl @Inject constructor(
-
-) : FapHubSearchEntryApi {
+class FapHubSearchEntryApiImpl @Inject constructor() : FapHubSearchEntryApi {
     override fun start() = "@${ROUTE.name}"
 
     override fun NavGraphBuilder.navigation(navController: NavHostController) {
@@ -26,7 +23,6 @@ class FapHubSearchEntryApiImpl @Inject constructor(
                 ComposableSearchScreen(
                     onBack = { navController.popBackStack() },
                     onFapItemClick = {
-
                     }
                 )
             }

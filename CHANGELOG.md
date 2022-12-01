@@ -8,6 +8,7 @@
 - [Feature] Share shadow file if that exist on NFC
 - [Feature] Add application catalog button
 - [Feature] Add application catalog list with sorted button
+- [Feature] Add categories, categories list and search
 - [FIX] Uploading share errors
 - [FIX] Display by white color meta data on NFC card
 - [FIX] Scrim status bar and design changes on bottom sheet

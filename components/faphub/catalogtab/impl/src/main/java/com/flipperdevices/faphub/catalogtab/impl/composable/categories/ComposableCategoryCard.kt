@@ -83,14 +83,16 @@ fun ComposableCategoryIcon(
         modifier = boxModifier
     ) {
         if (category != null) {
-            FlipperAsyncImage(modifier = Modifier.fillMaxSize(),
+            FlipperAsyncImage(
+                modifier = Modifier.fillMaxSize(),
                 url = category.picUrl,
                 contentDescription = category.name,
                 enableMemoryCache = true,
                 enableDiskCache = true,
                 colorFilter = ColorFilter.tint(LocalPallet.current.text100),
                 filterQuality = FilterQuality.None,
-                onLoading = { isPlaceholderActive = it })
+                onLoading = { isPlaceholderActive = it }
+            )
         }
     }
 }

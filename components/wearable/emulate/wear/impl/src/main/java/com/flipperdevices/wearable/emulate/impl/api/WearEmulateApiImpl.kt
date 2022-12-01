@@ -24,7 +24,7 @@ const val EMULATE_PATH_KEY = "path"
 class WearEmulateApiImpl @Inject constructor(
     private val keyEmulateUiApi: KeyEmulateUiApi
 ) : WearEmulateApi {
-    private val featureRoute = "@${ROUTE}?path={$EMULATE_PATH_KEY}"
+    private val featureRoute = "@$ROUTE?path={$EMULATE_PATH_KEY}"
 
     private val arguments = listOf(
         navArgument(EMULATE_PATH_KEY) {
@@ -33,7 +33,7 @@ class WearEmulateApiImpl @Inject constructor(
         }
     )
 
-    override fun open(path: String) = "@${ROUTE}?path=${Uri.encode(path)}"
+    override fun open(path: String) = "@$ROUTE?path=${Uri.encode(path)}"
 
     override fun NavGraphBuilder.composable(navController: NavHostController) {
         composable(featureRoute, arguments) {

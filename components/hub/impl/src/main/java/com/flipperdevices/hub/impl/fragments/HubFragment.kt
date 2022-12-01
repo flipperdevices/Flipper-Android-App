@@ -24,7 +24,6 @@ class HubFragment : ComposeFragment(), OnBackPressListener {
     @Inject
     lateinit var hubFeatureEntry: HubFeatureEntry
 
-
     init {
         ComponentHolder.component<HubComponent>().inject(this)
     }

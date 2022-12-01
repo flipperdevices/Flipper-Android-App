@@ -15,7 +15,7 @@ fun <T> LazyListScope.gridItems(
     columnCount: Int,
     modifier: Modifier,
     horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
-    itemContent: @Composable BoxScope.(T) -> Unit,
+    itemContent: @Composable BoxScope.(T) -> Unit
 ) {
     val size = data.count()
     val rows = if (size == 0) 0 else 1 + (size - 1) / columnCount

@@ -14,7 +14,6 @@ import com.flipperdevices.faphub.dao.api.model.FapCategory
 private const val DEFAULT_CATEGORIES_SIZE = 12
 private const val COLUMN_COUNT = 3
 
-
 @Suppress("FunctionNaming")
 fun LazyListScope.ComposableCategories(
     loadState: CategoriesLoadState,
