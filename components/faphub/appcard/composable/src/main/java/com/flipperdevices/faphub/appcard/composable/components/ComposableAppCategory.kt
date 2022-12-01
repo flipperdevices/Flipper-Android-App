@@ -28,20 +28,15 @@ private const val DEFAULT_CATEGORY_NAME = "Loading"
 @Composable
 fun ComposableAppCategory(
     modifier: Modifier = Modifier,
-    category: FapCategory?,
-    isLarge: Boolean
+    category: FapCategory?
 ) = Row(
     modifier = modifier,
     verticalAlignment = Alignment.CenterVertically
 ) {
-    ComposableAppCategoryIcon(category, isLarge)
+    ComposableAppCategoryIcon(category)
     var textModifier = Modifier
         .padding(start = 4.dp)
-        .height(12.dp)
-
-    textModifier = if (isLarge) {
-        textModifier.height(14.dp)
-    } else textModifier.height(12.dp)
+        .height(14.dp)
 
     if (category == null) {
         textModifier = textModifier.placeholderConnecting()
@@ -49,19 +44,16 @@ fun ComposableAppCategory(
     Text(
         modifier = textModifier,
         text = category?.name ?: DEFAULT_CATEGORY_NAME,
-        style = LocalTypography.current.subtitleR10,
+        style = LocalTypography.current.subtitleR12,
         color = LocalPallet.current.text60
     )
 }
 
 @Composable
 private fun ComposableAppCategoryIcon(
-    category: FapCategory?,
-    isLarge: Boolean
+    category: FapCategory?
 ) {
-    val modifierWithClip = if (isLarge) {
-        Modifier.size(12.dp)
-    } else Modifier.size(14.dp)
+    val modifierWithClip = Modifier.size(14.dp)
     var isPlaceholderActive by remember { mutableStateOf(true) }
     val modifierWithPlaceholder = if (isPlaceholderActive) {
         modifierWithClip.placeholderConnecting()

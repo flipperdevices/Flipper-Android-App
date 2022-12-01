@@ -57,7 +57,6 @@ internal fun ComposableFapMetaInformation(
         name = stringResource(R.string.fapscreen_information_api),
         value = metaInformation?.apiVersion?.toString()
     )
-    ComposableInformationDivider()
 }
 
 @Composable

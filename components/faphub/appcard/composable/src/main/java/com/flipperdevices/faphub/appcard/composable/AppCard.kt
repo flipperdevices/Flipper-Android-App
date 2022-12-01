@@ -2,17 +2,24 @@ package com.flipperdevices.faphub.appcard.composable
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
@@ -30,11 +37,13 @@ private val DEFAULT_DESCRIPTION
 @Composable
 fun AppCard(
     modifier: Modifier,
-    fapItem: FapItem?
+    fapItem: FapItem?,
+    installationButton: @Composable (Modifier, TextUnit) -> Unit
 ) {
     Column(modifier) {
         AppCardTop(
-            fapItem = fapItem
+            fapItem = fapItem,
+            installationButton = installationButton
         )
         AppCardScreenshots(
             modifier = Modifier.padding(vertical = 12.dp),
@@ -57,10 +66,13 @@ fun AppCard(
 @Composable
 private fun AppCardTop(
     modifier: Modifier = Modifier,
-    fapItem: FapItem?
+    fapItem: FapItem?,
+    installationButton: @Composable (modifier: Modifier, fontSize: TextUnit) -> Unit
 ) {
     Row(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .height(IntrinsicSize.Min),
         verticalAlignment = Alignment.CenterVertically
     ) {
         ComposableAppIcon(
@@ -69,7 +81,9 @@ private fun AppCardTop(
             description = fapItem?.name
         )
         Column(
-            Modifier.padding(horizontal = 8.dp),
+            Modifier
+                .padding(horizontal = 8.dp)
+                .weight(weight = 1f),
             verticalArrangement = Arrangement.spacedBy(1.dp)
         ) {
             Text(
@@ -78,8 +92,15 @@ private fun AppCardTop(
                 style = LocalTypography.current.bodyM14,
                 color = LocalPallet.current.text100
             )
-            ComposableAppCategory(category = fapItem?.category, isLarge = true)
+            ComposableAppCategory(category = fapItem?.category)
         }
+        installationButton(
+            modifier = Modifier
+                .fillMaxHeight()
+                .padding(vertical = 4.dp)
+                .clip(RoundedCornerShape(6.dp)),
+            fontSize = 18.sp
+        )
     }
 }
 
@@ -87,6 +108,6 @@ private fun AppCardTop(
 @Composable
 private fun ComposableAppCardLoadingPreview() {
     FlipperThemeInternal {
-        AppCard(Modifier, null)
+        AppCard(Modifier, null, { _, _ -> })
     }
 }

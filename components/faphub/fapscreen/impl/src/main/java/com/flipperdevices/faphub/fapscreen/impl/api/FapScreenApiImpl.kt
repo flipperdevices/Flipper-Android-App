@@ -10,6 +10,7 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.flipperdevices.faphub.fapscreen.api.FapScreenApi
 import com.flipperdevices.faphub.fapscreen.impl.composable.ComposableFapScreen
+import com.flipperdevices.faphub.installation.api.FapInstallationUIApi
 import com.flipperdevices.faphub.search.api.FapHubSearchEntryApi
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
@@ -21,7 +22,8 @@ internal const val FAP_ID_KEY = "fap_id"
 @ContributesBinding(AppGraph::class, FapScreenApi::class)
 @ContributesMultibinding(AppGraph::class, ComposableFeatureEntry::class)
 class FapScreenApiImpl @Inject constructor(
-    private val searchEntryApi: FapHubSearchEntryApi
+    private val searchEntryApi: FapHubSearchEntryApi,
+    private val installationUIApi: FapInstallationUIApi
 ) : FapScreenApi {
     private val fapArguments = listOf(
         navArgument(FAP_ID_KEY) {
@@ -41,7 +43,10 @@ class FapScreenApiImpl @Inject constructor(
         ) {
             ComposableFapScreen(
                 onBack = navController::popBackStack,
-                onSearch = { navController.navigate(searchEntryApi.start()) }
+                onSearch = { navController.navigate(searchEntryApi.start()) },
+                installationButton = { fapItem, modifier, fontSize ->
+                    installationUIApi.ComposableInstallButton(fapItem, modifier, fontSize)
+                }
             )
         }
     }

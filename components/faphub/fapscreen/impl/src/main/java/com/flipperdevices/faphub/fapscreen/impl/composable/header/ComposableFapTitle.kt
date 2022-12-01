@@ -51,7 +51,7 @@ internal fun ComposableFapTitle(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
-            ComposableAppCategory(category = fapCategory, isLarge = true)
+            ComposableAppCategory(category = fapCategory)
         }
     }
 }

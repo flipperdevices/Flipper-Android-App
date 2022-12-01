@@ -148,6 +148,9 @@ dependencies {
     implementation(projects.components.faphub.fapscreen.api)
     implementation(projects.components.faphub.fapscreen.impl)
 
+    implementation(projects.components.faphub.installation.api)
+    implementation(projects.components.faphub.installation.impl)
+
     implementation(libs.ktor.client)
 
     implementation(libs.annotations)

@@ -47,7 +47,9 @@ data class FlipperTypography(
     val monoSpaceM10: TextStyle,
     val monoSpaceR12: TextStyle,
     val flipperAction: TextStyle,
-    val notificationB8: TextStyle
+    val notificationB8: TextStyle,
+
+    val fapHubButtonText: TextStyle,
 )
 
 internal val robotoFamily = FontFamily(

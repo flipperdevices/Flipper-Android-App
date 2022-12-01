@@ -11,6 +11,7 @@ import com.flipperdevices.faphub.category.api.FapHubCategoryApi
 import com.flipperdevices.faphub.category.impl.composable.ComposableFapHubCategory
 import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.fapscreen.api.FapScreenApi
+import com.flipperdevices.faphub.installation.api.FapInstallationUIApi
 import com.flipperdevices.faphub.search.api.FapHubSearchEntryApi
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
@@ -24,7 +25,8 @@ internal const val CATEGORY_OPEN_PATH_KEY = "open"
 @ContributesMultibinding(AppGraph::class, ComposableFeatureEntry::class)
 class FapHubCategoryApiImpl @Inject constructor(
     private val searchEntryApi: FapHubSearchEntryApi,
-    private val fapScreenApi: FapScreenApi
+    private val fapScreenApi: FapScreenApi,
+    private val fapInstallationUIApi: FapInstallationUIApi
 ) : FapHubCategoryApi {
     private val categoryArguments = listOf(
         navArgument(CATEGORY_OPEN_PATH_KEY) {
@@ -47,6 +49,9 @@ class FapHubCategoryApiImpl @Inject constructor(
                 onOpenSearch = { navController.navigate(searchEntryApi.start()) },
                 onOpenFapItem = {
                     navController.navigate(fapScreenApi.getFapScreen(it.id))
+                },
+                installationButton = { fapItem, modifier, fontSize ->
+                    fapInstallationUIApi.ComposableInstallButton(fapItem, modifier, fontSize)
                 }
             )
         }
