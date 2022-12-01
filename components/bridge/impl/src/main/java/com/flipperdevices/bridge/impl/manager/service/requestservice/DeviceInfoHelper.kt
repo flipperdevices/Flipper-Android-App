@@ -5,8 +5,8 @@ import com.flipperdevices.bridge.api.model.FlipperDeviceInfo
 import com.flipperdevices.bridge.api.model.FlipperRpcInformation
 import com.flipperdevices.bridge.api.model.RadioStackInfo
 import com.flipperdevices.bridge.api.model.RadioStackType
-import com.flipperdevices.bridge.api.model.SemVer
 import com.flipperdevices.bridge.api.model.StorageStats
+import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.ktx.jre.isNotNull
 import com.flipperdevices.core.ktx.jre.titlecaseFirstCharIfItIsLowercase
 
