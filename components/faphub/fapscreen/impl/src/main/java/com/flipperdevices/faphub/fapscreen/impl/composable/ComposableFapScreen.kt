@@ -2,7 +2,11 @@ package com.flipperdevices.faphub.fapscreen.impl.composable
 
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -10,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.OrangeAppBarWithIcon
+import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.faphub.dao.api.model.FapItem
 import com.flipperdevices.faphub.fapscreen.impl.R
 import com.flipperdevices.faphub.fapscreen.impl.composable.header.ComposableFapHeader
@@ -34,15 +39,21 @@ private fun ComposableFapScreenInternal(
     fapItem: FapItem?,
     onBack: () -> Unit,
     onSearch: () -> Unit
-) {
-    Column() {
-        ComposableFapScreenBar(fapItem?.name, onBack, onSearch)
-        ComposableFapHeader(
-            modifier = Modifier.padding(start = 14.dp, end = 14.dp, top = 14.dp),
-            fapItem = fapItem
-        )
-    }
+) = Column(Modifier.verticalScroll(rememberScrollState())) {
+    ComposableFapScreenBar(fapItem?.name, onBack, onSearch)
+    ComposableFapHeader(
+        modifier = Modifier.padding(start = 14.dp, end = 14.dp, top = 14.dp),
+        fapItem = fapItem
+    )
+    Divider(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 14.dp),
+        thickness = 1.dp,
+        color = LocalPallet.current.fapHubDividerColor
+    )
 }
+
 
 @Composable
 private fun ComposableFapScreenBar(

@@ -22,7 +22,8 @@ class FapScreenViewModel @VMInject constructor(
 
     init {
         viewModelScope.launch {
-            fapNetworkApi.getFapItemById(fapId)
+            val fapItem = fapNetworkApi.getFapItemById(fapId)
+            fapScreenLoadingStateFlow.emit(FapScreenLoadingState.Loaded(fapItem))
         }
     }
 

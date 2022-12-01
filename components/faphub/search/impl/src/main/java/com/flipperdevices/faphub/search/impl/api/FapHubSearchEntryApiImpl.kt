@@ -5,16 +5,23 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
+import com.flipperdevices.faphub.fapscreen.api.FapScreenApi
 import com.flipperdevices.faphub.search.api.FapHubSearchEntryApi
 import com.flipperdevices.faphub.search.impl.composable.ComposableSearchScreen
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
 import javax.inject.Inject
+import javax.inject.Provider
 
 @ContributesBinding(AppGraph::class, FapHubSearchEntryApi::class)
 @ContributesMultibinding(AppGraph::class, AggregateFeatureEntry::class)
-class FapHubSearchEntryApiImpl @Inject constructor() : FapHubSearchEntryApi {
+class FapHubSearchEntryApiImpl @Inject constructor(
+    fapScreenApiProvider: Provider<FapScreenApi>
+) : FapHubSearchEntryApi {
+    private val fapScreenApi by fapScreenApiProvider
+
     override fun start() = "@${ROUTE.name}"
 
     override fun NavGraphBuilder.navigation(navController: NavHostController) {
@@ -23,6 +30,7 @@ class FapHubSearchEntryApiImpl @Inject constructor() : FapHubSearchEntryApi {
                 ComposableSearchScreen(
                     onBack = { navController.popBackStack() },
                     onFapItemClick = {
+                        navController.navigate(fapScreenApi.getFapScreen(it.id))
                     }
                 )
             }

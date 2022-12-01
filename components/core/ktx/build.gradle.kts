@@ -16,4 +16,7 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
+
+    testImplementation(projects.components.core.test)
+    testImplementation(libs.junit)
 }

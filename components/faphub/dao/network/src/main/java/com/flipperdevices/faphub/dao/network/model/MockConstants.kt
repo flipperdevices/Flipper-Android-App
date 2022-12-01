@@ -1,7 +1,9 @@
 package com.flipperdevices.faphub.dao.network.model
 
+import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.dao.api.model.FapItem
+import com.flipperdevices.faphub.dao.api.model.FapMetaInformation
 import java.util.UUID
 
 @Suppress("MagicNumber")
@@ -18,6 +20,12 @@ internal object MockConstants {
     private const val MOCK_SCREENSHOT_URL =
         "https://minecraft.glitchless.ru/tmp/flipper-screenshot.png"
     private val MOCK_SCREENSHOTS = MutableList(6) { MOCK_SCREENSHOT_URL }
+    private val MOCK_META_INFORMATION = FapMetaInformation(
+        version = SemVer(1, 0, 0),
+        sizeBytes = 1024 * 100,
+        apiVersion = SemVer(2, 2)
+    )
+
     fun getMockItem() = FapItem(
         id = UUID.randomUUID().toString(),
         picUrl = MOCK_APP_LOGO_URL,
@@ -27,6 +35,7 @@ internal object MockConstants {
             name = MOCK_CATEGORY_NAME,
             picUrl = MOCK_CATEGORY_LOGO_URL
         ),
-        screenshots = MOCK_SCREENSHOTS
+        screenshots = MOCK_SCREENSHOTS,
+        metaInformation = MOCK_META_INFORMATION
     )
 }

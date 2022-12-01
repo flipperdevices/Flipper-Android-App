@@ -1,26 +1,23 @@
-package com.flipperdevices.info.impl.helper
+package com.flipperdevices.core.ktx.jre
 
-import com.flipperdevices.info.impl.model.StorageStateFormatter
 import org.junit.Assert
 import org.junit.Test
 
 class StorageStateFormatterTest {
 
-    private val formatter = StorageStateFormatter()
-
     @Test
     fun `Bytes format`() {
         Assert.assertEquals(
-            formatter.formatFileSize(-1),
+            (-1).toFormattedSize(),
             "0 B"
         )
         Assert.assertEquals(
-            formatter.formatFileSize(1023),
+            1023.toFormattedSize(),
             "1023.0 B"
         )
 
         Assert.assertEquals(
-            formatter.formatFileSize(300),
+            300.toFormattedSize(),
             "300.0 B"
         )
     }
@@ -28,22 +25,22 @@ class StorageStateFormatterTest {
     @Test
     fun `Kibibytes format`() {
         Assert.assertEquals(
-            formatter.formatFileSize(1025),
+            1025.toFormattedSize(),
             "1.0 KiB"
         )
 
         Assert.assertEquals(
-            formatter.formatFileSize(1100),
+            1100.toFormattedSize(),
             "1.07 KiB"
         )
 
         Assert.assertEquals(
-            formatter.formatFileSize(2025),
+            2025.toFormattedSize(),
             "1.97 KiB"
         )
 
         Assert.assertEquals(
-            formatter.formatFileSize(1024 * 1024 - 1),
+            (1024 * 1024 - 1).toFormattedSize(),
             "1023.99 KiB"
         )
     }
@@ -51,17 +48,17 @@ class StorageStateFormatterTest {
     @Test
     fun `Megabytes format`() {
         Assert.assertEquals(
-            formatter.formatFileSize(1024 * 1024),
+            (1024 * 1024).toFormattedSize(),
             "1.0 MiB"
         )
 
         Assert.assertEquals(
-            formatter.formatFileSize(1024 * 1024 * 2),
+            (1024 * 1024 * 2).toFormattedSize(),
             "2.0 MiB"
         )
 
         Assert.assertEquals(
-            formatter.formatFileSize(1024 * 1024 * 1024 - 1),
+            (1024 * 1024 * 1024 - 1).toFormattedSize(),
             "1023.99 MiB"
         )
     }
@@ -69,17 +66,17 @@ class StorageStateFormatterTest {
     @Test
     fun `More megabytes format`() {
         Assert.assertEquals(
-            formatter.formatFileSize(1024 * 1024 * 1024),
+            (1024 * 1024 * 1024).toFormattedSize(),
             "1.0 GiB"
         )
 
         Assert.assertEquals(
-            formatter.formatFileSize(1024L * 1024 * 1024 * 2),
+            (1024L * 1024 * 1024 * 2).toFormattedSize(),
             "2.0 GiB"
         )
 
         Assert.assertEquals(
-            formatter.formatFileSize(1024L * 1024 * 1024 * 1024 - 1),
+            (1024L * 1024 * 1024 * 1024 - 1).toFormattedSize(),
             "1023.99 GiB"
         )
     }

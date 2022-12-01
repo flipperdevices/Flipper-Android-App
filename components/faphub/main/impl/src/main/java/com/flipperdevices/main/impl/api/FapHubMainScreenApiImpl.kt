@@ -8,6 +8,7 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.faphub.catalogtab.api.CatalogTabApi
 import com.flipperdevices.faphub.category.api.FapHubCategoryApi
+import com.flipperdevices.faphub.fapscreen.api.FapScreenApi
 import com.flipperdevices.faphub.main.api.FapHubMainScreenApi
 import com.flipperdevices.faphub.search.api.FapHubSearchEntryApi
 import com.flipperdevices.main.impl.composable.ComposableFapHubMainScreen
@@ -20,7 +21,8 @@ import javax.inject.Inject
 class FapHubMainScreenApiImpl @Inject constructor(
     private val catalogTabApi: CatalogTabApi,
     private val searchEntryApi: FapHubSearchEntryApi,
-    private val categoryEntryApi: FapHubCategoryApi
+    private val categoryEntryApi: FapHubCategoryApi,
+    private val fapScreenApi: FapScreenApi
 ) : FapHubMainScreenApi {
     private fun start(): String = "@${ROUTE.name}"
 
@@ -34,6 +36,7 @@ class FapHubMainScreenApiImpl @Inject constructor(
                     catalogTabComposable = {
                         catalogTabApi.ComposableCatalogTab(
                             onOpenFapItem = {
+                                navController.navigate(fapScreenApi.getFapScreen(it.id))
                             },
                             onCategoryClick = {
                                 navController.navigate(categoryEntryApi.open(it))
