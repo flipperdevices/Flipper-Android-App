@@ -48,6 +48,7 @@ include(
     ":components:core:log",
     ":components:core:navigation",
     ":components:core:preference",
+    ":components:core:data",
     ":components:core:ui:ktx",
     ":components:core:ui:res",
     ":components:core:ui:dialog",
@@ -179,4 +180,6 @@ include(
     ":components:faphub:search:impl",
     ":components:faphub:category:api",
     ":components:faphub:category:impl",
+    ":components:faphub:fapscreen:api",
+    ":components:faphub:fapscreen:impl",
 )

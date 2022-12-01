@@ -2,6 +2,7 @@ package com.flipperdevices.faphub.dao.network.model
 
 import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.dao.api.model.FapItem
+import java.util.UUID
 
 @Suppress("MagicNumber")
 internal object MockConstants {
@@ -11,13 +12,14 @@ internal object MockConstants {
     const val MOCK_CATEGORY_LOGO_URL = "https://minecraft.glitchless.ru/tmp/category_icon.png"
     const val MOCK_NAME = "Snake Game"
     const val MOCK_DESCRIPTION = "Press the control buttons to move the snake around the board. " +
-        "As the snake finds food, it eats the food, and thereby grows larger. " +
-        "The game ends when the snake either moves off the screen or moves into itself. " +
-        "The goal is to make the snake as large as possible before that happens."
+            "As the snake finds food, it eats the food, and thereby grows larger. " +
+            "The game ends when the snake either moves off the screen or moves into itself. " +
+            "The goal is to make the snake as large as possible before that happens."
     private const val MOCK_SCREENSHOT_URL =
         "https://minecraft.glitchless.ru/tmp/flipper-screenshot.png"
     private val MOCK_SCREENSHOTS = MutableList(6) { MOCK_SCREENSHOT_URL }
-    val MOCK_FAP_ITEM = FapItem(
+    fun getMockItem() = FapItem(
+        id = UUID.randomUUID().toString(),
         picUrl = MOCK_APP_LOGO_URL,
         description = MOCK_DESCRIPTION,
         name = MOCK_NAME,

@@ -1,10 +1,11 @@
-package com.flipperdevices.faphub.appcard.composable.internal
+package com.flipperdevices.faphub.appcard.composable.components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,18 +21,21 @@ import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.core.ui.theme.LocalPallet
 
 @Composable
-internal fun ComposableAppIcon(
-    modifier: Modifier = Modifier,
-    url: String?,
-    description: String?
+fun ComposableAppScreenshot(
+    modifier: Modifier,
+    url: String?
 ) {
     var isPlaceholderActive by remember { mutableStateOf(true) }
     var modifierWithClip = modifier
-        .clip(RoundedCornerShape(6.dp))
-        .size(42.dp)
+        .clip(RoundedCornerShape(8.dp))
 
     if (url != null) {
-        modifierWithClip = modifierWithClip.background(LocalPallet.current.accent)
+        modifierWithClip = modifierWithClip
+            .border(
+                BorderStroke(1.dp, LocalPallet.current.fapScreenshotBorder),
+                RoundedCornerShape(8.dp)
+            )
+            .background(LocalPallet.current.accent)
     }
 
     val modifierWithPlaceholder = if (isPlaceholderActive) {
@@ -46,7 +50,7 @@ internal fun ComposableAppIcon(
                     .padding(all = 4.dp)
                     .fillMaxSize(),
                 url = url,
-                contentDescription = description,
+                contentDescription = null,
                 onLoading = { isPlaceholderActive = it },
                 enableDiskCache = false,
                 enableMemoryCache = false,

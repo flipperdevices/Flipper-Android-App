@@ -1,8 +1,6 @@
-package com.flipperdevices.faphub.appcard.composable.internal
+package com.flipperdevices.faphub.appcard.composable.components
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -21,21 +19,17 @@ import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.core.ui.theme.LocalPallet
 
 @Composable
-fun ComposableAppScreenshot(
+fun ComposableAppIcon(
     modifier: Modifier,
-    url: String?
+    url: String?,
+    description: String?
 ) {
     var isPlaceholderActive by remember { mutableStateOf(true) }
     var modifierWithClip = modifier
-        .clip(RoundedCornerShape(8.dp))
+        .clip(RoundedCornerShape(6.dp))
 
     if (url != null) {
-        modifierWithClip = modifierWithClip
-            .border(
-                BorderStroke(1.dp, LocalPallet.current.fapScreenshotBorder),
-                RoundedCornerShape(8.dp)
-            )
-            .background(LocalPallet.current.accent)
+        modifierWithClip = modifierWithClip.background(LocalPallet.current.accent)
     }
 
     val modifierWithPlaceholder = if (isPlaceholderActive) {
@@ -50,7 +44,7 @@ fun ComposableAppScreenshot(
                     .padding(all = 4.dp)
                     .fillMaxSize(),
                 url = url,
-                contentDescription = null,
+                contentDescription = description,
                 onLoading = { isPlaceholderActive = it },
                 enableDiskCache = false,
                 enableMemoryCache = false,

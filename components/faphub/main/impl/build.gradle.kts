@@ -19,6 +19,7 @@ dependencies {
     implementation(projects.components.faphub.search.api)
     implementation(projects.components.faphub.catalogtab.api)
     implementation(projects.components.faphub.category.api)
+    implementation(projects.components.faphub.fapscreen.api)
 
     // Compose
     implementation(libs.compose.ui)

@@ -1,4 +1,4 @@
-package com.flipperdevices.faphub.appcard.composable.internal
+package com.flipperdevices.faphub.appcard.composable.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -26,7 +26,7 @@ import com.flipperdevices.faphub.dao.api.model.FapCategory
 private const val DEFAULT_CATEGORY_NAME = "Loading"
 
 @Composable
-internal fun ComposableAppCategory(
+fun ComposableAppCategory(
     modifier: Modifier = Modifier,
     category: FapCategory?,
     isLarge: Boolean

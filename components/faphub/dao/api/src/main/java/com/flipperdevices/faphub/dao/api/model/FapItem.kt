@@ -1,6 +1,7 @@
 package com.flipperdevices.faphub.dao.api.model
 
 data class FapItem(
+    val id: String,
     val picUrl: String,
     val description: String,
     val name: String,

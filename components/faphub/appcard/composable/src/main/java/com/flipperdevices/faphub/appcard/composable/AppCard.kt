@@ -18,9 +18,9 @@ import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.faphub.appcard.composable.internal.ComposableAppCategory
-import com.flipperdevices.faphub.appcard.composable.internal.ComposableAppIcon
-import com.flipperdevices.faphub.appcard.composable.internal.ComposableAppScreenshot
+import com.flipperdevices.faphub.appcard.composable.components.ComposableAppCategory
+import com.flipperdevices.faphub.appcard.composable.components.ComposableAppIcon
+import com.flipperdevices.faphub.appcard.composable.components.ComposableAppScreenshot
 import com.flipperdevices.faphub.dao.api.model.FapItem
 
 private const val DEFAULT_SCREENSHOT_SIZE = 6
@@ -61,6 +61,7 @@ private fun AppCardTop(
         verticalAlignment = Alignment.CenterVertically
     ) {
         ComposableAppIcon(
+            modifier = Modifier.size(42.dp),
             url = fapItem?.picUrl,
             description = fapItem?.name
         )
