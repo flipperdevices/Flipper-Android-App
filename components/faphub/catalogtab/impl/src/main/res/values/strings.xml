@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="faphub_catalog_title">All Apps</string>
-    <string name="faphub_catalog_choice_updated">Recently Updated</string>
-    <string name="faphub_catalog_choice_published">Recently Published</string>
 </resources>

@@ -139,6 +139,12 @@ dependencies {
     implementation(projects.components.faphub.catalogtab.api)
     implementation(projects.components.faphub.catalogtab.impl)
 
+    implementation(projects.components.faphub.search.api)
+    implementation(projects.components.faphub.search.impl)
+
+    implementation(projects.components.faphub.category.api)
+    implementation(projects.components.faphub.category.impl)
+
     implementation(libs.ktor.client)
 
     implementation(libs.annotations)

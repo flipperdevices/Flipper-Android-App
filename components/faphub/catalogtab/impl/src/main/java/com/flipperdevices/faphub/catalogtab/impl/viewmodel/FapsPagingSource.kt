@@ -17,7 +17,7 @@ class FapsPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, FapItem> {
         return try {
             val nextPage = params.key ?: 1
-            val faps = fapNetworkApi.getAllItem(sortType)
+            val faps = fapNetworkApi.getAllItem(sortType = sortType)
             LoadResult.Page(
                 data = faps,
                 prevKey = if (nextPage == 1) null else nextPage - 1,

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="faphub_search_hint">App name, category, description</string>
+</resources>

@@ -11,7 +11,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.TabPosition
 import androidx.compose.material.TabRow
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,18 +23,17 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.ui.ktx.tab.tabIndicatorOffset
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.main.impl.model.FapHubTabEnum
-import com.flipperdevices.main.impl.viewmodel.InstalledNotificationViewModel
 
 @Composable
 fun ComposableFapHubSwitch(
     modifier: Modifier,
     fapHubTabEnum: FapHubTabEnum,
-    onSelect: (FapHubTabEnum) -> Unit
+    onSelect: (FapHubTabEnum) -> Unit,
+    installedNotificationCount: Int
 ) {
     Box(
         modifier = modifier
@@ -43,14 +41,15 @@ fun ComposableFapHubSwitch(
             .clip(RoundedCornerShape(12.dp))
             .background(LocalPallet.current.fapHubSwitchBackground)
     ) {
-        ComposableFapHubSwitchInternal(fapHubTabEnum, onSelect)
+        ComposableFapHubSwitchInternal(fapHubTabEnum, onSelect, installedNotificationCount)
     }
 }
 
 @Composable
 private fun ComposableFapHubSwitchInternal(
     fapHubTabEnum: FapHubTabEnum,
-    onSelect: (FapHubTabEnum) -> Unit
+    onSelect: (FapHubTabEnum) -> Unit,
+    installedNotificationCount: Int
 ) {
     val tabs = FapHubTabEnum.values()
     var tabPositions by remember {
@@ -62,9 +61,6 @@ private fun ComposableFapHubSwitchInternal(
         val tabHeight = with(LocalDensity.current) { tabHeightPx.toDp() }
         ComposeTabAnimatedBackground(currentTabPosition, tabHeight)
     }
-    val installedNotificationViewModel = viewModel<InstalledNotificationViewModel>()
-    val installedNotificationCount by
-    installedNotificationViewModel.getNotificationCountStateFlow().collectAsState()
     TabRow(
         modifier = Modifier
             .onGloballyPositioned {
@@ -123,7 +119,8 @@ private fun ComposableFapHubSwitchPreview() {
                 fapHubTabEnum = selectedTab,
                 onSelect = {
                     selectedTab = it
-                }
+                },
+                installedNotificationCount = 4
             )
         }
     }
@@ -142,7 +139,8 @@ private fun ComposableFapHubSwitchDarkPreview() {
                 fapHubTabEnum = selectedTab,
                 onSelect = {
                     selectedTab = it
-                }
+                },
+                installedNotificationCount = 4
             )
         }
     }

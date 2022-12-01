@@ -28,10 +28,14 @@ fun ComposableAppScreenshot(
     var isPlaceholderActive by remember { mutableStateOf(true) }
     var modifierWithClip = modifier
         .clip(RoundedCornerShape(8.dp))
-        .border(BorderStroke(1.dp, LocalPallet.current.fapScreenshotBorder))
 
     if (url != null) {
-        modifierWithClip = modifierWithClip.background(LocalPallet.current.accent)
+        modifierWithClip = modifierWithClip
+            .border(
+                BorderStroke(1.dp, LocalPallet.current.fapScreenshotBorder),
+                RoundedCornerShape(8.dp)
+            )
+            .background(LocalPallet.current.accent)
     }
 
     val modifierWithPlaceholder = if (isPlaceholderActive) {

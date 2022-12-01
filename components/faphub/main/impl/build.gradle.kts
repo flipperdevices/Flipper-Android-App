@@ -7,7 +7,6 @@ plugins {
 
 dependencies {
     implementation(projects.components.faphub.main.api)
-    implementation(projects.components.faphub.catalogtab.api)
 
     implementation(projects.components.core.di)
     implementation(projects.components.core.preference)
@@ -15,6 +14,11 @@ dependencies {
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.navigation)
+
+    implementation(projects.components.faphub.dao.api)
+    implementation(projects.components.faphub.search.api)
+    implementation(projects.components.faphub.catalogtab.api)
+    implementation(projects.components.faphub.category.api)
 
     // Compose
     implementation(libs.compose.ui)

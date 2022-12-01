@@ -7,13 +7,14 @@ plugins {
 
 dependencies {
     implementation(projects.components.faphub.catalogtab.api)
-    implementation(projects.components.faphub.dao.api)
-    implementation(projects.components.faphub.appcard.composable)
 
     implementation(projects.components.core.di)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.ktx)
+
+    implementation(projects.components.faphub.dao.api)
+    implementation(projects.components.faphub.appcard.composable)
 
     // Compose
     implementation(libs.compose.ui)

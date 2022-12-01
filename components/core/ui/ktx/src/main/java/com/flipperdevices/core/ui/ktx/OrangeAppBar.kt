@@ -1,5 +1,6 @@
 package com.flipperdevices.core.ui.ktx
 
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
@@ -24,6 +26,19 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 @Composable
 fun OrangeAppBar(
     @StringRes titleId: Int,
+    onBack: (() -> Unit)? = null,
+    endBlock: (@Composable () -> Unit)? = null
+) {
+    OrangeAppBar(
+        title = stringResource(titleId),
+        onBack = onBack,
+        endBlock = endBlock
+    )
+}
+
+@Composable
+fun OrangeAppBar(
+    title: String,
     onBack: (() -> Unit)? = null,
     endBlock: (@Composable () -> Unit)? = null
 ) {
@@ -51,7 +66,7 @@ fun OrangeAppBar(
             modifier = Modifier
                 .padding(start = 14.dp, end = 14.dp, top = 8.dp, bottom = 11.dp)
                 .weight(1f),
-            text = stringResource(titleId),
+            text = title,
             style = LocalTypography.current.titleB20,
             color = LocalPallet.current.onAppBar
         )
@@ -59,4 +74,47 @@ fun OrangeAppBar(
             endBlock()
         }
     }
+}
+
+@Composable
+fun OrangeAppBarWithIcon(
+    @StringRes titleId: Int,
+    onBack: (() -> Unit)? = null,
+    @DrawableRes endIconId: Int,
+    onEndClick: () -> Unit
+) {
+    OrangeAppBarWithIcon(
+        title = stringResource(titleId),
+        onBack = onBack,
+        endIconId = endIconId,
+        onEndClick = onEndClick
+    )
+}
+
+@Composable
+fun OrangeAppBarWithIcon(
+    title: String,
+    onBack: (() -> Unit)? = null,
+    @DrawableRes endIconId: Int,
+    onEndClick: () -> Unit
+) {
+    OrangeAppBar(
+        title = title,
+        onBack = onBack,
+        endBlock = {
+            Icon(
+                modifier = Modifier
+                    .padding(end = 14.dp)
+                    .size(24.dp)
+                    .clickable(
+                        interactionSource = MutableInteractionSource(),
+                        indication = rememberRipple(),
+                        onClick = onEndClick
+                    ),
+                painter = painterResource(endIconId),
+                contentDescription = null,
+                tint = LocalPallet.current.onAppBar
+            )
+        }
+    )
 }
