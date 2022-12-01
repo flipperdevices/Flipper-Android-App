@@ -9,12 +9,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
+import com.airbnb.lottie.LottieProperty
+import com.airbnb.lottie.SimpleColorFilter
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.airbnb.lottie.compose.rememberLottieDynamicProperties
+import com.airbnb.lottie.compose.rememberLottieDynamicProperty
 
 @Composable
 fun ComposeLottiePic(
@@ -48,10 +53,21 @@ fun ComposeLottiePic(
                 )
             }
         } else {
+            val dynamicProperties = if (tint != null) {
+                rememberLottieDynamicProperties(
+                    rememberLottieDynamicProperty(
+                        property = LottieProperty.COLOR_FILTER,
+                        value = SimpleColorFilter(tint.toArgb()), // replace to color you want
+                        keyPath = arrayOf("**")
+                    )
+                )
+            } else null
+
             LottieAnimation(
                 modifier = modifier,
                 composition = composition,
-                progress = progress
+                progress = { progress },
+                dynamicProperties = dynamicProperties
             )
         }
     }

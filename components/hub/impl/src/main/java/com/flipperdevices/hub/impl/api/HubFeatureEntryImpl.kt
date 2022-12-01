@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
+import com.flipperdevices.faphub.main.api.FapHubMainScreenApi
 import com.flipperdevices.faphub.maincard.api.MainCardApi
 import com.flipperdevices.hub.impl.composable.ComposableHub
 import com.flipperdevices.nfc.attack.api.NFCAttackFeatureEntry
@@ -20,7 +21,8 @@ import javax.inject.Inject
 @ContributesMultibinding(AppGraph::class, AggregateFeatureEntry::class)
 class HubFeatureEntryImpl @Inject constructor(
     private val nfcAttackFeatureEntry: NFCAttackFeatureEntry,
-    private val mainCardApi: MainCardApi
+    private val mainCardApi: MainCardApi,
+    private val fapHubMainScreenApi: FapHubMainScreenApi
 ) : HubFeatureEntry {
     override fun start() = "@${ROUTE.name}"
 
@@ -37,7 +39,9 @@ class HubFeatureEntryImpl @Inject constructor(
                     mainCardComposable = {
                         mainCardApi.ComposableMainCard(
                             modifier = Modifier.padding(start = 14.dp, end = 14.dp, top = 14.dp),
-                            onClick = { }
+                            onClick = {
+                                navController.navigate(fapHubMainScreenApi.ROUTE.name)
+                            }
                         )
                     }
                 )

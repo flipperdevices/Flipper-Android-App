@@ -22,14 +22,17 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 @Composable
 internal fun ComposableAppIcon(
     modifier: Modifier = Modifier,
-    url: String,
+    url: String?,
     description: String?
 ) {
     var isPlaceholderActive by remember { mutableStateOf(true) }
-    val modifierWithClip = modifier
+    var modifierWithClip = modifier
         .clip(RoundedCornerShape(6.dp))
         .size(42.dp)
-        .background(LocalPallet.current.accent)
+
+    if (url != null) {
+        modifierWithClip = modifierWithClip.background(LocalPallet.current.accent)
+    }
 
     val modifierWithPlaceholder = if (isPlaceholderActive) {
         modifierWithClip.placeholderConnecting()
@@ -37,16 +40,18 @@ internal fun ComposableAppIcon(
     Box(
         modifier = modifierWithPlaceholder
     ) {
-        FlipperAsyncImage(
-            modifier = Modifier
-                .padding(all = 4.dp)
-                .fillMaxSize(),
-            url = url,
-            contentDescription = description,
-            onLoading = { isPlaceholderActive = it },
-            enableDiskCache = false,
-            enableMemoryCache = false,
-            filterQuality = FilterQuality.None
-        )
+        if (url != null) {
+            FlipperAsyncImage(
+                modifier = Modifier
+                    .padding(all = 4.dp)
+                    .fillMaxSize(),
+                url = url,
+                contentDescription = description,
+                onLoading = { isPlaceholderActive = it },
+                enableDiskCache = false,
+                enableMemoryCache = false,
+                filterQuality = FilterQuality.None
+            )
+        }
     }
 }

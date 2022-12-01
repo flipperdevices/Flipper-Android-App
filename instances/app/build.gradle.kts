@@ -133,6 +133,12 @@ dependencies {
     implementation(projects.components.faphub.dao.network)
     implementation(projects.components.faphub.dao.flipper)
 
+    implementation(projects.components.faphub.main.api)
+    implementation(projects.components.faphub.main.impl)
+
+    implementation(projects.components.faphub.catalogtab.api)
+    implementation(projects.components.faphub.catalogtab.impl)
+
     implementation(libs.ktor.client)
 
     implementation(libs.annotations)
@@ -140,6 +146,8 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.work.ktx)
+
+    implementation(libs.compose.pager)
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.ktx.activity)

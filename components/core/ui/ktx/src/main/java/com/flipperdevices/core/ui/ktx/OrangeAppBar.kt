@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -23,12 +24,14 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 @Composable
 fun OrangeAppBar(
     @StringRes titleId: Int,
-    onBack: (() -> Unit)? = null
+    onBack: (() -> Unit)? = null,
+    endBlock: (@Composable () -> Unit)? = null
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(LocalPallet.current.accent)
+            .background(LocalPallet.current.accent),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         if (onBack != null) {
             Image(
@@ -46,10 +49,14 @@ fun OrangeAppBar(
         }
         Text(
             modifier = Modifier
-                .padding(start = 14.dp, end = 14.dp, top = 8.dp, bottom = 11.dp),
+                .padding(start = 14.dp, end = 14.dp, top = 8.dp, bottom = 11.dp)
+                .weight(1f),
             text = stringResource(titleId),
             style = LocalTypography.current.titleB20,
             color = LocalPallet.current.onAppBar
         )
+        if (endBlock != null) {
+            endBlock()
+        }
     }
 }
