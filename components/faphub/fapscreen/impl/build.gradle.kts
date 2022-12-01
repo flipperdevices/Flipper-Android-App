@@ -12,6 +12,7 @@ dependencies {
     implementation(projects.components.core.preference)
     implementation(projects.components.core.data)
     implementation(projects.components.core.ktx)
+    implementation(projects.components.core.markdown)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.ktx)

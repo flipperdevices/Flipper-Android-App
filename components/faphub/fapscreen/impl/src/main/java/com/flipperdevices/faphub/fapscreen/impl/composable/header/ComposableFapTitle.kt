@@ -18,10 +18,11 @@ import com.flipperdevices.faphub.appcard.composable.components.ComposableAppCate
 import com.flipperdevices.faphub.appcard.composable.components.ComposableAppIcon
 import com.flipperdevices.faphub.dao.api.model.FapCategory
 
-private val DEFAULT_NAME = String((Array(size = 10) { 'L' }).toCharArray())
+private val DEFAULT_NAME
+    get() = String((Array(size = 10) { 'L' }).toCharArray())
 
 @Composable
-fun ComposableFapTitle(
+internal fun ComposableFapTitle(
     modifier: Modifier,
     name: String?,
     iconUrl: String?,

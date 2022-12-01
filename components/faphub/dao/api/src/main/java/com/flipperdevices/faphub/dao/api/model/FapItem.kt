@@ -4,8 +4,10 @@ data class FapItem(
     val id: String,
     val picUrl: String,
     val description: String,
+    val changelog: String,
     val name: String,
     val category: FapCategory,
     val screenshots: List<String>,
-    val metaInformation: FapMetaInformation
+    val metaInformation: FapMetaInformation,
+    val fapDeveloperInformation: FapDeveloperInformation
 )

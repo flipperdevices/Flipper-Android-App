@@ -25,10 +25,11 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.faphub.dao.api.model.FapMetaInformation
 import com.flipperdevices.faphub.fapscreen.impl.R
 
-private val DEFAULT_INFORMATION_VALUE = String((Array(size = 10) { 'L' }).toCharArray())
+private val DEFAULT_INFORMATION_VALUE
+    get() = String((Array(size = 10) { 'L' }).toCharArray())
 
 @Composable
-fun ComposableFapMetaInformation(
+internal fun ComposableFapMetaInformation(
     modifier: Modifier,
     metaInformation: FapMetaInformation?
 ) = Row(

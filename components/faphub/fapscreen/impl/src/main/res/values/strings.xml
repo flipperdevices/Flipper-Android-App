@@ -4,4 +4,10 @@
     <string name="fapscreen_information_version">Version:</string>
     <string name="fapscreen_information_size">Size:</string>
     <string name="fapscreen_information_api">Api:</string>
+    <string name="fapscreen_desc_title">Description</string>
+    <string name="fapscreen_changelog_title">Changelog</string>
+    <string name="fapscreen_changelog_more">More</string>
+    <string name="fapscreen_developer_title">Developer</string>
+    <string name="fapscreen_developer_github">View on GitHub</string>
+    <string name="fapscreen_developer_manifest">Manifest</string>
 </resources>

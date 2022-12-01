@@ -17,6 +17,7 @@ import com.flipperdevices.core.ui.ktx.OrangeAppBarWithIcon
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.faphub.dao.api.model.FapItem
 import com.flipperdevices.faphub.fapscreen.impl.R
+import com.flipperdevices.faphub.fapscreen.impl.composable.description.ComposableFapDescription
 import com.flipperdevices.faphub.fapscreen.impl.composable.header.ComposableFapHeader
 import com.flipperdevices.faphub.fapscreen.impl.model.FapScreenLoadingState
 import com.flipperdevices.faphub.fapscreen.impl.viewmodel.FapScreenViewModel
@@ -51,6 +52,10 @@ private fun ComposableFapScreenInternal(
             .padding(horizontal = 14.dp),
         thickness = 1.dp,
         color = LocalPallet.current.fapHubDividerColor
+    )
+    ComposableFapDescription(
+        modifier = Modifier.padding(start = 14.dp, end = 14.dp, top = 18.dp),
+        fapItem = fapItem
     )
 }
 
