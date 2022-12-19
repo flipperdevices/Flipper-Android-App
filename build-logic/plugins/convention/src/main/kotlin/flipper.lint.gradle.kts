@@ -1,4 +1,3 @@
-import org.gradle.kotlin.dsl.configure
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 
 plugins {
@@ -6,5 +5,11 @@ plugins {
 }
 
 configure<DetektExtension> {
+    //allRules = true
     config = rootProject.files("config/detekt/detekt.yml")
+}
+
+dependencies {
+    detektPlugins(libs.detekt.ruleset.compiler)
+    detektPlugins(libs.detekt.ruleset.ktlint)
 }

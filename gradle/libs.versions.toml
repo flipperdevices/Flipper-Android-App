@@ -64,7 +64,9 @@ roboelectric = "4.9"
 mockk = "1.13.2"
 
 # Linters
-detekt-gradle = "1.22.0" # https://detekt.dev/docs/gettingstarted/gradle/
+detekt = "1.22.0" # https://detekt.dev/docs/gettingstarted/gradle/
+detekt-ruleset-compiler = "0.0.2" # https://github.com/BraisGabin/detekt-compiler-rules/releases
+detekt-ruleset-ktlint = "0.48.0" # https://github.com/pinterest/ktlint/releases
 
 [libraries]
 # Gradle - Core
@@ -90,7 +92,9 @@ protobuf-gradle = { module = "com.google.protobuf:protobuf-gradle-plugin", versi
 datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
 
 # Linters
-detekt-gradle = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt-gradle" }
+detekt-gradle = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
+detekt-ruleset-compiler = { module = "com.braisgabin.detekt:kotlin-compiler-wrapper", version.ref = "detekt-ruleset-compiler" }
+detekt-ruleset-ktlint = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 
 # UI
 compose-activity = { module = "androidx.activity:activity-compose", version.ref = "ktx-activity" }
@@ -223,7 +227,7 @@ work-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "work" }
 [plugins]
 android-app = { id = "com.android.application", version.ref = "android-gradle" }
 android-lib = { id = "com.android.library", version.ref = "android-gradle" }
-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt-gradle" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-general" }
 kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-general" }
