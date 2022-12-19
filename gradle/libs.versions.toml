@@ -201,7 +201,6 @@ image-lottie = { module = "com.airbnb.android:lottie-compose", version.ref = "lo
 # Protobuf
 protobuf-kotlinlite = { module = "com.google.protobuf:protobuf-kotlin-lite", version.ref = "protobuf" }
 protobuf-protoc = { module = "com.google.protobuf:protoc", version.ref = "protobuf" }
-protobuf-jvm = { module = "com.github.flipperdevices:flipperzero-protobuf-jvm", version.ref = "protobuf-jvm" }
 protobuf-metric = { module = "com.github.flipperdevices.flipperzero-protobuf-jvm:protobuf-jvm-metric", version.ref = "protobuf-jvm" }
 
 # Testing
