@@ -7,5 +7,4 @@ plugins {
     alias(libs.plugins.square.anvil) apply false
     alias(libs.plugins.protobuf) apply false
     alias(libs.plugins.detekt) apply false
-    alias(libs.plugins.ktlint) apply false
 }

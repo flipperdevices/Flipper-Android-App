@@ -52,11 +52,6 @@ ktor = "2.2.1" # https://ktor.io/
 apache-compress = "1.22" # https://commons.apache.org/proper/commons-compress/
 apache-codec = "1.15" # https://mvnrepository.com/artifact/commons-codec/commons-codec
 countly = "22.06.2" # https://github.com/Countly/countly-sdk-android/releases
-# https://github.com/JLLeitschuh/ktlint-gradle/issues/589
-ktlint-runtime = "0.45.2"
-# https://github.com/JLLeitschuh/ktlint-gradle/issues/589
-ktlint-gradle = "10.2.0" # https://github.com/JLLeitschuh/ktlint-gradle/releases
-detekt-gradle = "1.22.0" # https://detekt.dev/docs/gettingstarted/gradle/
 grgit-gradle = "8d818b74b9"
 tangle = "0.15.1" # https://github.com/RBusarow/Tangle/releases
 work = "2.7.1" # https://developer.android.com/jetpack/androidx/releases/work
@@ -67,6 +62,9 @@ junit = "4.12"
 mockito = "4.0.0"
 roboelectric = "4.9"
 mockk = "1.13.2"
+
+# Linters
+detekt-gradle = "1.22.0" # https://detekt.dev/docs/gettingstarted/gradle/
 
 [libraries]
 # Gradle - Core
@@ -89,10 +87,10 @@ kotlin-serialization-gradle = { module = "org.jetbrains.kotlin:kotlin-serializat
 kotlin-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization-json" }
 
 protobuf-gradle = { module = "com.google.protobuf:protobuf-gradle-plugin", version.ref = "protobuf-gradle" }
-detekt-gradle = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt-gradle" }
-ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlint-gradle" }
-
 datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
+
+# Linters
+detekt-gradle = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt-gradle" }
 
 # UI
 compose-activity = { module = "androidx.activity:activity-compose", version.ref = "ktx-activity" }
@@ -229,6 +227,5 @@ detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt-gradle" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-general" }
 kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-general" }
-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint-gradle" }
 protobuf = { id = "com.google.protobuf", version.ref = "protobuf-gradle" }
 square-anvil = { id = "com.squareup.anvil", version.ref = "anvil" }
