@@ -6,7 +6,6 @@ plugins {
 }
 
 dependencies {
-    implementation("androidx.activity:activity-compose:1.6.0")
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.log)
     implementation(projects.components.core.preference)
@@ -26,7 +25,7 @@ dependencies {
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.service.api)
-    implementation(libs.protobuf.jvm)
+    implementation(projects.components.bridge.pbutils)
 
     implementation(projects.components.analytics.metric.api)
 
@@ -42,6 +41,7 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
+    implementation(libs.compose.activity)
 
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)

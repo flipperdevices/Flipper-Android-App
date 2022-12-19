@@ -1,3 +1,6 @@
 [submodule "components/nfc/tools/impl/src/main/cpp/nfc-tools"]
 	path = components/nfc/tools/impl/src/main/cpp/nfc-tools
 	url = https://github.com/flipperdevices/flipperzero-nfc-tools.git
+[submodule "components/bridge/pbutils/src/main/proto"]
+	path = components/bridge/pbutils/src/main/proto
+	url = https://github.com/flipperdevices/flipperzero-protobuf.git
