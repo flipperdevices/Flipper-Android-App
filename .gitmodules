@@ -4,3 +4,6 @@
 [submodule "components/bridge/pbutils/src/main/proto"]
 	path = components/bridge/pbutils/src/main/proto
 	url = https://github.com/flipperdevices/flipperzero-protobuf.git
+[submodule "components/analytics/metric/impl/src/main/proto"]
+	path = components/analytics/metric/impl/src/main/proto
+	url = https://github.com/flipperdevices/flipperzero-protobuf-metric.git
