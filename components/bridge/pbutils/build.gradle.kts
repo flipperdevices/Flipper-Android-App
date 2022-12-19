@@ -7,5 +7,4 @@ plugins {
 dependencies {
     implementation(projects.components.core.log)
     implementation(libs.kotlin.coroutines)
-    api(libs.protobuf.kotlinlite)
 }
