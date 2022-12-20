@@ -12,9 +12,9 @@ import com.flipperdevices.deeplink.model.DeepLinkParserDelegatePriority
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.squareup.anvil.annotations.ContributesMultibinding
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 @ContributesMultibinding(AppGraph::class, DeepLinkParserDelegate::class)
 class DeepLinkFileUriGrantPermission @Inject constructor() : DeepLinkParserDelegate {
@@ -24,7 +24,9 @@ class DeepLinkFileUriGrantPermission @Inject constructor() : DeepLinkParserDeleg
     ): DeepLinkParserDelegatePriority {
         return if (intent.data == null) {
             DeepLinkParserDelegatePriority.LOW
-        } else DeepLinkParserDelegatePriority.DEFAULT
+        } else {
+            DeepLinkParserDelegatePriority.DEFAULT
+        }
     }
 
     override suspend fun fromIntent(context: Context, intent: Intent): Deeplink? {

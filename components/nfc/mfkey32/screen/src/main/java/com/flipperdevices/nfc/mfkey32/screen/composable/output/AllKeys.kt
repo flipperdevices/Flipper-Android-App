@@ -41,7 +41,10 @@ fun LazyListScope.AllKeys(keys: List<FoundedKey>) {
             SelectionContainer {
                 ComposableFoundedKey(
                     Modifier.padding(
-                        start = 14.dp, end = 14.dp, top = 4.dp, bottom = 4.dp
+                        start = 14.dp,
+                        end = 14.dp,
+                        top = 4.dp,
+                        bottom = 4.dp
                     ),
                     foundedKey = it
                 )
@@ -66,7 +69,9 @@ private fun ComposableFoundedKey(modifier: Modifier, foundedKey: FoundedKey) {
                 LocalPallet.current.nfcCardKeyAColor
             } else if (foundedKey.keyName.trim().equals(KEY_B, true)) {
                 LocalPallet.current.nfcCardKeyBColor
-            } else LocalTextStyle.current.color
+            } else {
+                LocalTextStyle.current.color
+            }
 
             withStyle(
                 LocalTextStyle.current.toSpanStyle().copy(
@@ -79,7 +84,9 @@ private fun ComposableFoundedKey(modifier: Modifier, foundedKey: FoundedKey) {
             append(" — ")
             if (foundedKey.key != null) {
                 append(foundedKey.key)
-            } else append(notFoundText)
+            } else {
+                append(notFoundText)
+            }
         }
     )
 }

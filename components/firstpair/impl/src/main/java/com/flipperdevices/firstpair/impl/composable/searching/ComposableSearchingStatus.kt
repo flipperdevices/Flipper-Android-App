@@ -18,11 +18,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.firstpair.impl.R
 import com.flipperdevices.firstpair.impl.model.SearchingState
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableSearchingStatus(
@@ -55,7 +55,10 @@ fun ComposableSearchingStatus(
 private fun ComposableSearchingProgress() {
     Text(
         modifier = Modifier.padding(
-            end = 8.dp, top = 8.dp, bottom = 8.dp, start = 18.dp
+            end = 8.dp,
+            top = 8.dp,
+            bottom = 8.dp,
+            start = 18.dp
         ),
         text = stringResource(R.string.firstpair_search_title_status_text),
         style = LocalTypography.current.titleM18

@@ -9,10 +9,10 @@ import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
 import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
 import com.flipperdevices.core.log.LogTagProvider
 import com.squareup.anvil.annotations.ContributesBinding
-import java.nio.charset.Charset
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.nio.charset.Charset
+import javax.inject.Inject
 
 private val FAVORITES_PATH = FlipperFilePath("/", "favorites.txt")
 

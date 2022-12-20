@@ -34,10 +34,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.tab.tabIndicatorOffset
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.main.impl.model.FapHubTabEnum
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableFapHubNewSwitch(
@@ -118,7 +118,9 @@ fun ComposableFapHubSwitch(
             .background(LocalPallet.current.fapHubSwitchBackground)
     ) {
         ComposableFapHubSwitchInternal(
-            fapHubTabEnum, onSelect, installedNotificationCount,
+            fapHubTabEnum,
+            onSelect,
+            installedNotificationCount,
             LocalPallet.current.fapHubSelectedBackgroundColor
         )
     }
@@ -159,7 +161,9 @@ private fun ComposableFapHubSwitchInternal(
                 isSelected = fapHubTabEnum.ordinal == it.ordinal,
                 notificationCount = if (it == FapHubTabEnum.INSTALLED) {
                     installedNotificationCount
-                } else 0
+                } else {
+                    0
+                }
             )
         }
     }

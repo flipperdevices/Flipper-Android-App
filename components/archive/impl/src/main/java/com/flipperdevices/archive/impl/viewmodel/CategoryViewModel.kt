@@ -14,14 +14,14 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.jre.map
 import com.github.terrakok.cicerone.Router
-import java.util.TreeMap
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.TreeMap
+import javax.inject.Inject
 
 class CategoryViewModel(
     application: Application

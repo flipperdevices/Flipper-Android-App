@@ -27,9 +27,9 @@ import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.ui.ktx.LocalRouter
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableSearchContent(
@@ -44,13 +44,15 @@ fun ComposableSearchContent(
         SearchState.Loading -> CategoryLoadingProgress(modifier)
         is SearchState.Loaded -> if (localState.keys.isEmpty()) {
             CategoryEmpty(modifier)
-        } else CategoryList(
-            modifier,
-            searchViewModel,
-            synchronizationUiApi,
-            synchronizationState,
-            localState.keys
-        )
+        } else {
+            CategoryList(
+                modifier,
+                searchViewModel,
+                synchronizationUiApi,
+                synchronizationState,
+                localState.keys
+            )
+        }
     }
 }
 

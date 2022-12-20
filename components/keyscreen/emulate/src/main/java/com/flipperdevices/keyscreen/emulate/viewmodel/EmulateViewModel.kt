@@ -1,6 +1,5 @@
 package com.flipperdevices.keyscreen.emulate.viewmodel
 
-import android.app.Application as FlipperApp
 import android.os.Vibrator
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewModelScope
@@ -38,6 +37,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import android.app.Application as FlipperApp
 
 const val VIBRATOR_TIME = 100L
 
@@ -124,7 +124,9 @@ abstract class EmulateViewModel(
             viewModelScope.launch(Dispatchers.Default) {
                 if (force) {
                     emulateHelper.stopEmulateForce(it.requestApi)
-                } else emulateHelper.stopEmulate(viewModelScope, it.requestApi)
+                } else {
+                    emulateHelper.stopEmulate(viewModelScope, it.requestApi)
+                }
             }
         }
         vibrator?.vibrateCompat(VIBRATOR_TIME)
@@ -136,7 +138,9 @@ abstract class EmulateViewModel(
                 it == EmulateButtonState.ForbiddenFrequencyDialog
             ) {
                 EmulateButtonState.Inactive()
-            } else it
+            } else {
+                it
+            }
         }
     }
 
@@ -171,7 +175,9 @@ abstract class EmulateViewModel(
                     emulateButtonStateFlow.update {
                         if (it is EmulateButtonState.Active) {
                             EmulateButtonState.Inactive()
-                        } else it
+                        } else {
+                            it
+                        }
                     }
                 }
             }

@@ -12,10 +12,10 @@ import com.flipperdevices.faphub.dao.network.model.MockConstants.MOCK_CATEGORY_N
 import com.flipperdevices.faphub.dao.network.model.MockConstants.MOCK_DELAY
 import com.flipperdevices.faphub.dao.network.model.MockConstants.getMockItem
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, FapNetworkApi::class)
 class FapNetworkApiImpl @Inject constructor() : FapNetworkApi, LogTagProvider {

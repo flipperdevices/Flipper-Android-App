@@ -11,13 +11,13 @@ import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.navigation.delegates.OnBackPressListener
 import com.flipperdevices.core.ui.fragment.ComposeFragment
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.flipperdevices.info.impl.api.InfoFeatureEntry
 import com.flipperdevices.info.impl.compose.InfoNavigation
 import com.flipperdevices.info.impl.di.InfoComponent
 import javax.inject.Inject
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 class InfoFragment : ComposeFragment(), OnBackPressListener {
     @Inject

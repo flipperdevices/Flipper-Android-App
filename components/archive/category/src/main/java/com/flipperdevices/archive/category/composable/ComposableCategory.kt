@@ -66,14 +66,16 @@ fun ColumnScope.ComposableCategoryContent(
     when (localCategoryState) {
         is CategoryState.Loaded -> if (localCategoryState.keys.isEmpty()) {
             CategoryEmpty(contentModifier)
-        } else CategoryList(
-            contentModifier,
-            categoryType,
-            categoryViewModel,
-            synchronizationUiApi,
-            synchronizationState,
-            localCategoryState.keys
-        )
+        } else {
+            CategoryList(
+                contentModifier,
+                categoryType,
+                categoryViewModel,
+                synchronizationUiApi,
+                synchronizationState,
+                localCategoryState.keys
+            )
+        }
         CategoryState.Loading -> CategoryLoadingProgress(contentModifier)
     }
 }
@@ -94,13 +96,17 @@ private fun CategoryList(
         items(keys) { (flipperKeyParsed, flipperKey) ->
             ComposableKeyCard(
                 Modifier.padding(bottom = 14.dp),
-                synchronizationContent = if (synchronizationUiApi != null) { ->
-                    synchronizationUiApi.RenderSynchronizationState(
-                        synced = flipperKey.synchronized,
-                        synchronizationState = synchronizationState,
-                        withText = false
-                    )
-                } else null,
+                synchronizationContent = if (synchronizationUiApi != null) {
+                    { ->
+                        synchronizationUiApi.RenderSynchronizationState(
+                            synced = flipperKey.synchronized,
+                            synchronizationState = synchronizationState,
+                            withText = false
+                        )
+                    }
+                } else {
+                    null
+                },
                 flipperKeyParsed,
                 typeColor = when (categoryType) {
                     is CategoryType.ByFileType -> colorByFlipperKeyType(categoryType.fileType)

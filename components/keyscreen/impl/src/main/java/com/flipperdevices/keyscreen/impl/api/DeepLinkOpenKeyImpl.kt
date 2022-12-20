@@ -29,7 +29,9 @@ class DeepLinkOpenKeyImpl @Inject constructor(
     override fun getPriority(context: Context, intent: Intent): DeepLinkParserDelegatePriority {
         return if (intent.hasExtra(EXTRA_PATH_KEY)) {
             DeepLinkParserDelegatePriority.HIGH
-        } else DeepLinkParserDelegatePriority.LOW
+        } else {
+            DeepLinkParserDelegatePriority.LOW
+        }
     }
 
     override suspend fun fromIntent(context: Context, intent: Intent): Deeplink? {

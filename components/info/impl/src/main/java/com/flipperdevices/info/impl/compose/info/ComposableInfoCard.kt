@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.core.ui.ktx.animatedDots
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.info.impl.R
@@ -36,6 +35,7 @@ import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
 import com.flipperdevices.info.impl.viewmodel.FirmwareUpdateViewModel
 import com.flipperdevices.info.shared.InfoElementCard
 import com.flipperdevices.updater.model.FlipperUpdateState
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableInfoCard(

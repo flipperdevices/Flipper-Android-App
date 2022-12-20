@@ -1,11 +1,11 @@
 package com.flipperdevices.bridge.dao.api.model
 
 import android.os.Parcelable
-import java.io.File
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import java.io.File
 
 private const val FLIPPER_STORAGE_NAME = "/any/"
 

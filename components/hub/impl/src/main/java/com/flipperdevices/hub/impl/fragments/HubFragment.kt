@@ -35,7 +35,8 @@ class HubFragment : ComposeFragment(), OnBackPressListener {
         navController = rememberNavController()
         navController?.let {
             HubNavigation(
-                it, featureEntries,
+                it,
+                featureEntries,
                 composableEntries,
                 hubFeatureEntry
             )

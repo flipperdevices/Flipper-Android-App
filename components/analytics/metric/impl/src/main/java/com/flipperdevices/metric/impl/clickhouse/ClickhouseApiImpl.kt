@@ -39,14 +39,14 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.isSuccess
-import java.util.UUID
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.util.UUID
+import javax.inject.Inject
+import javax.inject.Singleton
 
 const val METRIC_API_URL = "https://metric.flipperdevices.com/report"
 
@@ -179,7 +179,9 @@ class ClickhouseApiImpl @Inject constructor(
             sessionUuid = sessionUUID.toString()
             platform = if (BuildConfig.DEBUG) {
                 Metric.MetricReportRequest.Platform.ANDROID_DEBUG
-            } else Metric.MetricReportRequest.Platform.ANDROID
+            } else {
+                Metric.MetricReportRequest.Platform.ANDROID
+            }
             events.add(event)
         }
         val httpResponse = client.post(METRIC_API_URL) {
@@ -191,7 +193,9 @@ class ClickhouseApiImpl @Inject constructor(
                 "Failed report event to $METRIC_API_URL" +
                     " $reportRequest with code ${httpResponse.status}"
             }
-        } else verbose { "Sucs send event $event with ${reportRequest.uuid}" }
+        } else {
+            verbose { "Sucs send event $event with ${reportRequest.uuid}" }
+        }
     } catch (e: Exception) {
         error(e) { "Failed report to server" }
     }
@@ -204,7 +208,9 @@ class ClickhouseApiImpl @Inject constructor(
                     it.toBuilder()
                         .setUuid(UUID.randomUUID().toString())
                         .build()
-                } else it
+                } else {
+                    it
+                }
             }.uuid
         }
         return uuid

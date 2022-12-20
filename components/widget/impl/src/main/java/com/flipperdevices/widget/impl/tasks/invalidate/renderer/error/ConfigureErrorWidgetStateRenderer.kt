@@ -30,7 +30,9 @@ abstract class ConfigureErrorWidgetStateRenderer(
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
 
         val configurePendingIntent = PendingIntent.getActivity(
-            context, widgetId, intent,
+            context,
+            widgetId,
+            intent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 

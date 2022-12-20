@@ -23,7 +23,6 @@ import com.flipperdevices.updater.model.UpdatingState
 import com.flipperdevices.updater.screen.di.UpdaterComponent
 import com.flipperdevices.updater.screen.model.FailedReason
 import com.flipperdevices.updater.screen.model.UpdaterScreenState
-import javax.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
@@ -34,6 +33,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.sync.Mutex
+import javax.inject.Inject
 
 private const val CHECK_CANCEL_DELAY = 100L
 
@@ -171,7 +171,9 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
                     if (connectionState !is ConnectionState.Ready) {
                         singleActivityApi.open()
                         UpdaterScreenState.Finish
-                    } else UpdaterScreenState.Rebooting
+                    } else {
+                        UpdaterScreenState.Rebooting
+                    }
                 UpdatingState.FailedOutdatedApp -> UpdaterScreenState.Failed(
                     FailedReason.OUTDATED_APP
                 )

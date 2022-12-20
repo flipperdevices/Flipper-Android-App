@@ -10,9 +10,9 @@ import com.flipperdevices.filemanager.api.navigation.FileManagerEntry
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.screenstreaming.api.ScreenStreamingFeatureEntry
-import javax.inject.Provider
 import kotlinx.coroutines.launch
 import tangle.viewmodel.VMInject
+import javax.inject.Provider
 
 class ExperimentalViewModel @VMInject constructor(
     fileManagerEntryProvider: Provider<FileManagerEntry>,

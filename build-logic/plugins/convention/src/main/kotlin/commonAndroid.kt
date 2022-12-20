@@ -13,9 +13,9 @@ private const val SPLASH_SCREEN_ACTIVITY = "com.flipperdevices.singleactivity.im
 private const val SPLASH_SCREEN_ACTIVITY_KEY = "splashScreenActivity"
 
 fun BaseExtension.commonAndroid(target: Project) {
+    configureBuildFeatures()
     configureDefaultConfig()
     configureBuildTypes()
-    configureBuildFeatures()
     configureCompileOptions()
 
     target.suppressOptIn()
@@ -88,10 +88,9 @@ private fun BaseExtension.configureBuildTypes() {
     }
 }
 
-@Suppress("UnstableApiUsage")
+@Suppress("UnstableApiUsage", "ForbiddenComment")
 private fun BaseExtension.configureBuildFeatures() {
-    // TODO: Disable by default
-    //  BuildConfig is java source code. Java and Kotlin at one time affect build speed.
+    // TODO: BuildConfig is java source code. Java and Kotlin at one time affect build speed.
     buildFeatures.buildConfig = true
     // Disable by default. ViewBinding needed only for few modules.
     // No need to enable this feature for all modules.
@@ -125,7 +124,7 @@ private fun Project.suppressOptIn() {
                     "-Xopt-in=kotlin.time.ExperimentalTime",
                     "-Xopt-in=kotlin.RequiresOptIn",
                     "-Xopt-in=androidx.compose.animation.ExperimentalAnimationApi",
-                    "-Xopt-in=com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi" // ktlint-disable max-line-length
+                    "-Xopt-in=com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi"
                 )
             }
         }

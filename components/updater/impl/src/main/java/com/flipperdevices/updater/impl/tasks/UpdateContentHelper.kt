@@ -76,13 +76,17 @@ class UpdateContentHelperInternalStorage @Inject constructor(
         val deeplink = deeplinkParser.fromUri(context, updateContent.uri)
         val deeplinkContent = if (deeplink is Deeplink.FlipperKey) {
             deeplink.content ?: throw UpdateContentException()
-        } else throw UpdateContentException()
+        } else {
+            throw UpdateContentException()
+        }
 
         if (deeplinkContent is DeeplinkContent.InternalStorageFile) {
             kotlin.runCatching {
                 downloadAndUnpackDelegateApi.unpack(deeplinkContent.file, updaterFolder)
             }.onFailure { throw UpdateContentException() }
-        } else throw UpdateContentException()
+        } else {
+            throw UpdateContentException()
+        }
 
         if (isManifestNotExist(updaterFolder)) throw UpdateContentException()
     }

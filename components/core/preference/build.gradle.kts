@@ -1,7 +1,6 @@
 import com.google.protobuf.gradle.id
 
 plugins {
-    id("flipper.lint")
     id("flipper.android-lib")
     id("com.squareup.anvil")
     id("com.google.protobuf")

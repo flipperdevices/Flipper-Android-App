@@ -20,12 +20,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.core.markdown.ClickableUrlText
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.viewmodel.FirmwareUpdateViewModel
 import com.flipperdevices.info.shared.InfoElementCard
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableFirmwareUpdate(
@@ -52,7 +52,9 @@ fun ComposableFirmwareUpdate(
             ComposableFirmwareUpdateUnsupported(
                 imageId = if (MaterialTheme.colors.isLight) {
                     DesignSystem.drawable.ic_firmware_application_deprecated
-                } else DesignSystem.drawable.ic_firmware_application_deprecated_dark,
+                } else {
+                    DesignSystem.drawable.ic_firmware_application_deprecated_dark
+                },
                 titleId = R.string.info_firmware_update_application_unsupported_title,
                 descriptionId = R.string.info_firmware_update_application_unsupported_desc,
                 linkId = R.string.info_firmware_update_application_unsupported_link

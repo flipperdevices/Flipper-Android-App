@@ -14,10 +14,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.ComposeLottiePic
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.firstpair.impl.R
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableSearchingProgress(modifier: Modifier) {

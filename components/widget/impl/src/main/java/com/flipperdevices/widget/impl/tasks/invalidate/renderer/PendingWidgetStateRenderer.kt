@@ -7,13 +7,13 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.widget.impl.R
 import com.flipperdevices.widget.impl.broadcast.WidgetBroadcastReceiver
 import com.flipperdevices.widget.impl.model.WidgetRendererOf
 import com.flipperdevices.widget.impl.model.WidgetState
 import com.squareup.anvil.annotations.ContributesMultibinding
 import javax.inject.Inject
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @WidgetRendererOf(WidgetState.PENDING)
 @ContributesMultibinding(AppGraph::class, WidgetStateRenderer::class)

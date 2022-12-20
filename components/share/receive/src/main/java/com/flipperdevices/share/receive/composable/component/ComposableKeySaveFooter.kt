@@ -25,10 +25,12 @@ fun ComposableKeySaveFooter(savingInProgress: Boolean, onSave: () -> Unit, onEdi
     ) {
         if (savingInProgress) {
             LoadingView()
-        } else ActionButton(
-            onSave = onSave,
-            onEdit = onEdit
-        )
+        } else {
+            ActionButton(
+                onSave = onSave,
+                onEdit = onEdit
+            )
+        }
     }
 }
 

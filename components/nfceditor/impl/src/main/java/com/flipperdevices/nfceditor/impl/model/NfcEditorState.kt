@@ -36,7 +36,9 @@ data class NfcEditorState(
                     location,
                     content
                 )
-            } else nfcEditorCardInfo
+            } else {
+                nfcEditorCardInfo
+            }
         )
     }
 
@@ -108,7 +110,9 @@ data class NfcEditorCellLocation(
                 lineIndex = 0,
                 columnIndex = 0
             )
-        } else null
+        } else {
+            null
+        }
     }
 
     fun decrement(sectors: List<NfcEditorSector>): NfcEditorCellLocation? {
@@ -140,7 +144,9 @@ data class NfcEditorCellLocation(
                 lineIndex = newSector.lines.lastIndex,
                 columnIndex = newSector.lines.last().cells.lastIndex
             )
-        } else return null
+        } else {
+            return null
+        }
     }
 
     fun isUid(nfcEditorCardInfo: NfcEditorCardInfo?): Boolean {

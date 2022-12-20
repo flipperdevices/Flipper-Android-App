@@ -14,11 +14,11 @@ import com.flipperdevices.wearable.emulate.impl.model.ChannelState
 import com.google.android.gms.wearable.ChannelClient
 import com.google.android.gms.wearable.ChannelClient.ChannelCallback
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
 
 interface ConnectionChannelHelper {
     fun getState(): StateFlow<ChannelState>

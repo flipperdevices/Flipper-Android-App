@@ -33,6 +33,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import tangle.inject.TangleParam
 import tangle.viewmodel.VMInject
+
 class UpdateCardViewModel @VMInject constructor(
     private val downloaderApi: DownloaderApi,
     private val flipperVersionProviderApi: FlipperVersionProviderApi,
@@ -128,14 +129,16 @@ class UpdateCardViewModel @VMInject constructor(
                     updateChannel == null && flipperFirmwareVersion != null
                 ) {
                     flipperFirmwareVersion.channel
-                } else updateChannel
+                } else {
+                    updateChannel
+                }
                 val isFlashExist = if (rpcInformation.externalStorageStats != null) {
                     rpcInformation.externalStorageStats is StorageStats.Loaded
-                } else null
+                } else {
+                    null
+                }
 
-                val deeplinkWebUpdater = if (deeplink is Deeplink.WebUpdate) {
-                    deeplink
-                } else null
+                val deeplinkWebUpdater = deeplink as? Deeplink.WebUpdate
 
                 return@combine UpdateCardHelper(
                     newUpdateChannel,

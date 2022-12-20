@@ -15,7 +15,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.OrangeAppBarWithIcon
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.faphub.appcard.composable.components.AppCardScreenshots
 import com.flipperdevices.faphub.dao.api.model.FapItem
@@ -25,6 +24,7 @@ import com.flipperdevices.faphub.fapscreen.impl.composable.header.ComposableFapH
 import com.flipperdevices.faphub.fapscreen.impl.model.FapScreenLoadingState
 import com.flipperdevices.faphub.fapscreen.impl.viewmodel.FapScreenViewModel
 import tangle.viewmodel.compose.tangleViewModel
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableFapScreen(

@@ -26,9 +26,6 @@ import com.flipperdevices.protobuf.app.appLoadFileRequest
 import com.flipperdevices.protobuf.app.startRequest
 import com.flipperdevices.protobuf.main
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
-import javax.inject.Singleton
-import kotlin.math.max
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -44,6 +41,9 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withTimeoutOrNull
+import javax.inject.Inject
+import javax.inject.Singleton
+import kotlin.math.max
 
 private const val APP_STARTED_TIMEOUT_MS = 3 * 1000L // 3 seconds
 private const val APP_RETRY_COUNT = 3

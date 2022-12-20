@@ -16,11 +16,11 @@ import com.flipperdevices.firstpair.api.FirstPairApi
 import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.api.UpdaterUIApi
 import com.squareup.anvil.annotations.ContributesBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.util.Stack
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 interface DeepLinkHelper {
     suspend fun onNewIntent(context: Context, intent: Intent)
@@ -56,7 +56,9 @@ class DeepLinkHelperImpl @Inject constructor(
         withContext(Dispatchers.Main) {
             if (deeplink != null) {
                 onNewDeeplink(deeplink)
-            } else invalidate()
+            } else {
+                invalidate()
+            }
         }
     }
 

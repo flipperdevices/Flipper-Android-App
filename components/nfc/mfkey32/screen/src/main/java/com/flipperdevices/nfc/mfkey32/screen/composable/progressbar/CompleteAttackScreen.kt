@@ -16,13 +16,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.ComposableFlipperButton
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.nfc.mfkey32.screen.R
 import com.flipperdevices.nfc.mfkey32.screen.composable.progressbar.keys.FoundedKeyComposable
 import com.flipperdevices.nfc.mfkey32.screen.composable.progressbar.keys.FoundedKeyComposableGrid
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun CompleteAttack(
@@ -34,7 +34,9 @@ fun CompleteAttack(
 ) {
     val text = if (keysCollected.size == 1) {
         stringResource(R.string.mfkey32_complete_title)
-    } else stringResource(R.string.mfkey32_complete_multiple_title, keysCollected.size)
+    } else {
+        stringResource(R.string.mfkey32_complete_multiple_title, keysCollected.size)
+    }
     Text(
         modifier = Modifier.padding(18.dp),
         text = text,
@@ -44,8 +46,11 @@ fun CompleteAttack(
     Image(
         modifier = Modifier.padding(start = 18.dp, end = 18.dp, top = 14.dp, bottom = 24.dp),
         painter = painterResource(
-            if (MaterialTheme.colors.isLight) DesignSystem.drawable.pic_update_successfull
-            else DesignSystem.drawable.pic_update_successfull_dark
+            if (MaterialTheme.colors.isLight) {
+                DesignSystem.drawable.pic_update_successfull
+            } else {
+                DesignSystem.drawable.pic_update_successfull_dark
+            }
         ),
         contentDescription = text
     )
@@ -53,7 +58,9 @@ fun CompleteAttack(
         Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
             FoundedKeyComposable(key = keysCollected.first())
         }
-    } else FoundedKeyComposableGrid(Modifier.padding(6.dp), keysCollected)
+    } else {
+        FoundedKeyComposableGrid(Modifier.padding(6.dp), keysCollected)
+    }
 
     ComposableFlipperButton(
         modifier = Modifier

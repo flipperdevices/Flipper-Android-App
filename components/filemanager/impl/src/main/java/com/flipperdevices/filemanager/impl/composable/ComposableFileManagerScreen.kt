@@ -42,14 +42,18 @@ fun ComposableFileManagerScreen(
     val localFileItem = pendingDialogItem
 
     if (localFileItem != null) {
-        val chooseOptions = if (isAbleToDelete(fileManagerState.currentPath)) intArrayOf(
-            R.string.filemanager_open_dialog_edit,
-            R.string.filemanager_open_dialog_download,
-            R.string.filemanager_open_dialog_delete
-        ) else intArrayOf(
-            R.string.filemanager_open_dialog_edit,
-            R.string.filemanager_open_dialog_download
-        )
+        val chooseOptions = if (isAbleToDelete(fileManagerState.currentPath)) {
+            intArrayOf(
+                R.string.filemanager_open_dialog_edit,
+                R.string.filemanager_open_dialog_download,
+                R.string.filemanager_open_dialog_delete
+            )
+        } else {
+            intArrayOf(
+                R.string.filemanager_open_dialog_edit,
+                R.string.filemanager_open_dialog_download
+            )
+        }
         ComposableSelectDialog(chooseOptions) {
             when (it) {
                 R.string.filemanager_open_dialog_edit -> {
@@ -81,7 +85,9 @@ fun ComposableFileManagerScreen(
         onOpenFolder = {
             if (it.isDirectory) {
                 onOpenFolder(it)
-            } else pendingDialogItem = it
+            } else {
+                pendingDialogItem = it
+            }
         },
         onUploadFile = {
             onUploadFile(fileManagerState.currentPath, it)

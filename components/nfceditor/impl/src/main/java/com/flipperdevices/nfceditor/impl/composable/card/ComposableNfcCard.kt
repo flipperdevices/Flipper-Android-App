@@ -23,7 +23,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.hexkeyboard.ImmutableEnumMap
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
@@ -33,6 +32,7 @@ import com.flipperdevices.nfceditor.impl.model.NfcEditorCardInfo
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCardType
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCell
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCellLocation
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableNfcCard(
@@ -60,7 +60,9 @@ fun ComposableNfcCard(
             ComposableNfcCardInternal(
                 modifier = if (isOpened) {
                     Modifier.matchParentSize()
-                } else Modifier,
+                } else {
+                    Modifier
+                },
                 scaleFactor = scaleFactor,
                 nfcEditorCardInfo = nfcEditorCardInfo,
                 isOpened = isOpened,

@@ -6,8 +6,6 @@ import com.flipperdevices.protobuf.storage.file
 import com.flipperdevices.protobuf.storage.writeRequest
 import com.flipperdevices.protobuf.system.pingRequest
 import com.google.protobuf.ByteString
-import java.io.ByteArrayOutputStream
-import java.nio.ByteBuffer
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
@@ -17,6 +15,8 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import java.io.ByteArrayOutputStream
+import java.nio.ByteBuffer
 
 class ByteEndlessInputStreamTest {
     lateinit var scope: TestScope

@@ -1,9 +1,9 @@
 package com.flipperdevices.keyscreen.impl.composable.actions
 
 import androidx.compose.runtime.Composable
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.keyscreen.impl.R
 import com.flipperdevices.keyscreen.impl.model.ShareState
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableShare(shareState: ShareState, onShare: () -> Unit) {

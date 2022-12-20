@@ -9,12 +9,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyscreen.api.Picture
 import com.flipperdevices.keyscreen.emulate.R
 import com.flipperdevices.keyscreen.emulate.model.DisableButtonReason
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableActionDisable(
@@ -38,7 +38,9 @@ fun ComposableActionDisable(
         textId = warningTextId,
         iconId = if (warningTextId != null) {
             DesignSystem.drawable.ic_warning
-        } else null
+        } else {
+            null
+        }
     )
 }
 

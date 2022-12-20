@@ -6,9 +6,9 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.filemanager.impl.R
 import com.flipperdevices.filemanager.impl.composable.bar.ComposableEllipsizeStartText
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableEditorTopBar(path: String, onClickSaveButton: () -> Unit) {

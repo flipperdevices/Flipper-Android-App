@@ -204,7 +204,9 @@ class FlipperBleManagerImpl(
                     runBlockingWithLog {
                         if (settingsStore.data.first().ignoreUnsupportedVersion) {
                             FlipperSupportedState.READY
-                        } else FlipperSupportedState.DEPRECATED_FLIPPER
+                        } else {
+                            FlipperSupportedState.DEPRECATED_FLIPPER
+                        }
                     }
                 )
                 serviceErrorListener.onError(FlipperBleServiceError.SERVICE_VERSION_NOT_FOUND)

@@ -142,7 +142,9 @@ object NfcEditorStateProducerHelper {
                 it.substring(0, BYTES_SYMBOL_COUNT)
             } else if (it.length < BYTES_SYMBOL_COUNT) {
                 EMPTY_BYTE.replaceRange(0, it.length, it)
-            } else it
+            } else {
+                it
+            }
         }
 
         if (bytes.size < LINE_BYTES_COUNT) {
@@ -169,7 +171,9 @@ object NfcEditorStateProducerHelper {
             processedList = processedList.mapIndexed { index, nfcEditorCell ->
                 if (index in cellRule.first) {
                     nfcEditorCell.copy(cellType = cellRule.second)
-                } else nfcEditorCell
+                } else {
+                    nfcEditorCell
+                }
             }
         }
         return processedList

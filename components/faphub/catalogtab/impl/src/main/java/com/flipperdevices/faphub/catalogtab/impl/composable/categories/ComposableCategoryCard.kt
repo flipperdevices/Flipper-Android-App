@@ -34,7 +34,9 @@ fun ComposableCategoryCard(
 ) {
     val cardModifier = if (fapCategory == null) {
         modifier.placeholderConnecting()
-    } else modifier
+    } else {
+        modifier
+    }
 
     Card(
         modifier = cardModifier,

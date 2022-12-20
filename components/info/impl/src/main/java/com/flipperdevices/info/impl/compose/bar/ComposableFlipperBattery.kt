@@ -17,8 +17,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 private const val EMPTY_BATTERY = 0f
 private const val FIRST_BATTERY_THRESHOLD = 0.15f

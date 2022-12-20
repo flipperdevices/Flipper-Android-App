@@ -6,7 +6,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.model.DeviceStatus
@@ -17,6 +16,7 @@ import com.flipperdevices.info.impl.viewmodel.FirmwareUpdateViewModel
 import com.flipperdevices.info.shared.ButtonElementRow
 import com.flipperdevices.info.shared.ComposableInfoDivider
 import com.flipperdevices.info.shared.InfoElementCard
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableConnectedDeviceActionCard(
@@ -48,7 +48,9 @@ private fun ComposableSynchronize(
 ) {
     val color = if (enabled) {
         LocalPallet.current.accentSecond
-    } else LocalPallet.current.text16
+    } else {
+        LocalPallet.current.text16
+    }
 
     ButtonElementRow(
         modifier = modifier,
@@ -57,7 +59,9 @@ private fun ComposableSynchronize(
         color = color,
         onClick = if (enabled) {
             connectViewModel::requestSynchronize
-        } else null
+        } else {
+            null
+        }
     )
 }
 
@@ -69,7 +73,9 @@ private fun ComposableAlarmElement(
 ) {
     val colorId = if (enabled) {
         LocalPallet.current.accentSecond
-    } else LocalPallet.current.text16
+    } else {
+        LocalPallet.current.text16
+    }
 
     ButtonElementRow(
         modifier = modifier,
@@ -78,6 +84,8 @@ private fun ComposableAlarmElement(
         color = colorId,
         onClick = if (enabled) {
             alarmViewModel::alarmOnFlipper
-        } else null
+        } else {
+            null
+        }
     )
 }

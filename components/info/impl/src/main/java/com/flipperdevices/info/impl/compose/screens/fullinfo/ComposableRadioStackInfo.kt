@@ -12,7 +12,9 @@ import com.flipperdevices.info.shared.ComposableDeviceInfoRowWithText
 fun ComposableRadioStackInfo(info: RadioStackInfo, inProgress: Boolean) {
     val text = if (isNotNull(info.type, info.radioFirmware)) {
         "${info.radioFirmware} (${getNameRadioStackType(info.type)})"
-    } else null
+    } else {
+        null
+    }
     ComposableDeviceInfoRowWithText(
         titleId = R.string.full_info_radio_stack,
         inProgress = inProgress,

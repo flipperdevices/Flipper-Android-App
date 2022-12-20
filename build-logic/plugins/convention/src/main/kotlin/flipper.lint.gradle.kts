@@ -5,16 +5,7 @@ plugins {
     id("io.gitlab.arturbosch.detekt")
 }
 
-configure<DetektExtension> {
-    //allRules = true
-    parallel = true
-
-    config = rootProject.files("config/detekt/detekt.yml")
-
-}
-
 tasks.register<Detekt>("detektFormat") {
-    autoCorrect = true
 }
 
 tasks.withType<Detekt> {
@@ -22,8 +13,8 @@ tasks.withType<Detekt> {
     outputs.upToDateWhen { false }
 
     reports {
-        xml.required.set(true)
         html.required.set(true)
+        xml.required.set(false)
         txt.required.set(false)
     }
 
@@ -37,6 +28,11 @@ tasks.withType<Detekt> {
 
     // Target version of the generated JVM bytecode. It is used for type resolution.
     this.jvmTarget = "1.8"
+}
+
+configure<DetektExtension> {
+    parallel = true
+    config = rootProject.files("config/detekt/detekt.yml")
 }
 
 dependencies {

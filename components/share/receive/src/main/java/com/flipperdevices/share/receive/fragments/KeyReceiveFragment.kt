@@ -11,7 +11,6 @@ import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.navigation.requireRouter
 import com.flipperdevices.core.ui.fragment.ComposeFragment
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.keyscreen.api.KeyScreenApi
 import com.flipperdevices.share.receive.composable.ComposableKeyReceive
@@ -20,6 +19,7 @@ import com.flipperdevices.share.receive.model.ReceiveState
 import com.flipperdevices.share.receive.viewmodels.KeyReceiveViewModel
 import com.flipperdevices.share.receive.viewmodels.KeyReceiveViewModelFactory
 import javax.inject.Inject
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 private const val EXTRA_KEY_DEEPLINK = "deeplink"
 

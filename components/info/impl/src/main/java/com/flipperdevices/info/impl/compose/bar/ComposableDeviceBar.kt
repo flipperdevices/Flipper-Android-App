@@ -20,7 +20,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.preference.pb.HardwareColor
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.info.impl.R
@@ -28,6 +27,7 @@ import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
 import com.flipperdevices.info.impl.viewmodel.FlipperColorViewModel
 import kotlin.math.roundToInt
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 const val FLOAT_TO_PERCENT_QUALIFIER = 100
 
@@ -84,8 +84,11 @@ private fun FlipperImage(
         DeviceStatus.NoDevice -> disabledFlipperId
         is DeviceStatus.Connected -> flipperId
         is DeviceStatus.NoDeviceInformation -> {
-            if (deviceStatus.connectInProgress) disabledFlipperId
-            else flipperId
+            if (deviceStatus.connectInProgress) {
+                disabledFlipperId
+            } else {
+                flipperId
+            }
         }
     }
 

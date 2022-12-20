@@ -12,7 +12,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.FlipperProgressIndicator
 import com.flipperdevices.core.ui.ktx.animatedDots
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.info.shared.getColorByChannel
@@ -21,6 +20,7 @@ import com.flipperdevices.updater.model.FirmwareVersion
 import com.flipperdevices.updater.screen.R
 import com.flipperdevices.updater.screen.model.FailedReason
 import com.flipperdevices.updater.screen.model.UpdaterScreenState
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 @Suppress("LongMethod", "ComplexMethod")

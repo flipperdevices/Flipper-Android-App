@@ -23,8 +23,6 @@ import com.flipperdevices.nfc.tools.api.MfKey32Nonce
 import com.flipperdevices.nfc.tools.api.NfcToolsApi
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.deleteRequest
-import java.io.FileNotFoundException
-import java.util.concurrent.Executors
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.async
@@ -35,6 +33,8 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tangle.viewmodel.VMInject
+import java.io.FileNotFoundException
+import java.util.concurrent.Executors
 
 const val PATH_NONCE_LOG = "/ext/nfc/.mfkey32.log"
 private const val TOTAL_PERCENT = 1.0f
@@ -109,7 +109,9 @@ class MfKey32ViewModel @VMInject constructor(
 
         try {
             DownloadFileHelper.downloadFile(
-                serviceApi.requestApi, PATH_NONCE_LOG, fileWithNonce
+                serviceApi.requestApi,
+                PATH_NONCE_LOG,
+                fileWithNonce
             ) {
                 info { "Download file progress $it" }
             }
@@ -146,10 +148,14 @@ class MfKey32ViewModel @VMInject constructor(
         mfKey32StateFlow.update {
             if (it is MfKey32State.Calculating) {
                 it.copy(percent = it.percent + perNoncePercent)
-            } else it
+            } else {
+                it
+            }
         }
         val foundedKey = FoundedKey(
-            nonce.sectorName, nonce.keyName, key?.toString(radix = 16)?.uppercase()
+            nonce.sectorName,
+            nonce.keyName,
+            key?.toString(radix = 16)?.uppercase()
         )
         existedKeysStorage.onNewKey(foundedKey)
     }

@@ -20,12 +20,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.painterResourceByKey
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.share.api.ShareContentError
 import com.flipperdevices.share.receive.R
 import com.flipperdevices.share.receive.composable.component.ComposableKeySaveBar
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableKeyErrorScreen(
@@ -104,9 +104,11 @@ private fun getImageByShareError(typeError: ShareContentError): Int {
             ShareContentError.SERVER_ERROR -> DesignSystem.drawable.ic_server_error_dark
             ShareContentError.OTHER -> DesignSystem.drawable.ic_warning_triangle
         }
-    } else when (typeError) {
-        ShareContentError.NO_INTERNET -> DesignSystem.drawable.ic_no_internet
-        ShareContentError.SERVER_ERROR -> DesignSystem.drawable.ic_server_error
-        ShareContentError.OTHER -> DesignSystem.drawable.ic_warning_triangle
+    } else {
+        when (typeError) {
+            ShareContentError.NO_INTERNET -> DesignSystem.drawable.ic_no_internet
+            ShareContentError.SERVER_ERROR -> DesignSystem.drawable.ic_server_error
+            ShareContentError.OTHER -> DesignSystem.drawable.ic_warning_triangle
+        }
     }
 }

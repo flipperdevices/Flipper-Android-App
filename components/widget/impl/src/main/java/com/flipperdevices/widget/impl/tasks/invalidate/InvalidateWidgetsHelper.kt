@@ -12,9 +12,9 @@ import com.flipperdevices.widget.impl.model.WidgetState
 import com.flipperdevices.widget.impl.storage.WidgetStateStorage
 import com.flipperdevices.widget.impl.tasks.invalidate.renderer.WidgetStateRenderer
 import com.squareup.anvil.annotations.ContributesBinding
+import kotlinx.coroutines.sync.Mutex
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlinx.coroutines.sync.Mutex
 
 interface InvalidateWidgetsHelper {
     suspend fun invoke()
@@ -42,7 +42,9 @@ class InvalidateWidgetHelperImpl @Inject constructor(
             val keyPath = it.flipperKeyPath
             val state = if (keyPath != null) {
                 widgetStateStorage.getState(it.widgetId)
-            } else WidgetState.NOT_INITIALIZE
+            } else {
+                WidgetState.NOT_INITIALIZE
+            }
             info { "Try render ${it.widgetId} for state: $state" }
             val view = rendererMap[state]?.render(it.widgetId, keyPath)
             if (view == null) {

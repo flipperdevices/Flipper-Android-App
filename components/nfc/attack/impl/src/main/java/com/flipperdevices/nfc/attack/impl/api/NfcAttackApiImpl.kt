@@ -4,9 +4,9 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.nfc.attack.api.NfcAttackApi
 import com.flipperdevices.nfc.mfkey32.api.MfKey32Api
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, NfcAttackApi::class)
 class NfcAttackApiImpl @Inject constructor(

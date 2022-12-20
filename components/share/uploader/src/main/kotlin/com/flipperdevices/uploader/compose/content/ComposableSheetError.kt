@@ -18,11 +18,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.painterResourceByKey
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.share.api.ShareContentError
 import com.flipperdevices.share.uploader.R
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 internal fun ComposableSheetError(
@@ -94,9 +94,11 @@ private fun getImageByShareError(typeError: ShareContentError): Int {
             ShareContentError.SERVER_ERROR -> DesignSystem.drawable.ic_server_error_dark
             ShareContentError.OTHER -> DesignSystem.drawable.ic_warning_triangle
         }
-    } else when (typeError) {
-        ShareContentError.NO_INTERNET -> DesignSystem.drawable.ic_no_internet
-        ShareContentError.SERVER_ERROR -> DesignSystem.drawable.ic_server_error
-        ShareContentError.OTHER -> DesignSystem.drawable.ic_warning_triangle
+    } else {
+        when (typeError) {
+            ShareContentError.NO_INTERNET -> DesignSystem.drawable.ic_no_internet
+            ShareContentError.SERVER_ERROR -> DesignSystem.drawable.ic_server_error
+            ShareContentError.OTHER -> DesignSystem.drawable.ic_warning_triangle
+        }
     }
 }

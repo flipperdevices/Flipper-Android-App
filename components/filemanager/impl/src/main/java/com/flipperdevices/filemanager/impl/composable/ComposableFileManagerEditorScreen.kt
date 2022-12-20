@@ -123,7 +123,9 @@ private fun ComposableFileManagerInProgress(
                 textId,
                 if (progress is DownloadProgress.Fixed) {
                     progress.toProgressFloat().roundPercentToString()
-                } else "~"
+                } else {
+                    "~"
+                }
             ),
             textAlign = TextAlign.Center
         )

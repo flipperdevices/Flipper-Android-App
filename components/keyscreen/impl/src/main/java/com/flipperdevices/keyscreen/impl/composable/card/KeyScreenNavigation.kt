@@ -26,7 +26,9 @@ internal fun KeyScreenNavigation(
 ) {
     val scrimColor = if (MaterialTheme.colors.isLight) {
         LocalPallet.current.shareSheetScrimColor
-    } else Color.Transparent
+    } else {
+        Color.Transparent
+    }
 
     val navController = rememberNavController()
     val bottomSheetNavigator = rememberBottomSheetNavigator()

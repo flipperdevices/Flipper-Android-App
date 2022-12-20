@@ -131,7 +131,9 @@ private fun FlipperTextBoxUnderline(
     val isFocused by interactionSource.collectIsFocusedAsState()
     val underlineColor = if (isFocused) {
         LocalPallet.current.accentSecond
-    } else LocalPallet.current.text30
+    } else {
+        LocalPallet.current.text30
+    }
     val underlineColorAnimated by animateColorAsState(
         underlineColor,
         tween(durationMillis = ANIMATION_DURATION_MS)

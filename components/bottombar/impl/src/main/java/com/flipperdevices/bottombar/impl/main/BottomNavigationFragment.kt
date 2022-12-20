@@ -33,8 +33,8 @@ import com.flipperdevices.core.ui.theme.FlipperTheme
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.flipperdevices.inappnotification.api.InAppNotificationRenderer
-import javax.inject.Inject
 import kotlinx.coroutines.flow.first
+import javax.inject.Inject
 
 class BottomNavigationFragment : Fragment(), OnBackPressListener, LogTagProvider {
     override val TAG = "BottomNavigationFragment"

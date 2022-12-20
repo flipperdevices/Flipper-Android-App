@@ -20,9 +20,9 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.archive.impl.model.CategoryItem
 import com.flipperdevices.archive.impl.viewmodel.CategoryViewModel
 import com.flipperdevices.core.ui.ktx.LocalRouter
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableCategoryItem(

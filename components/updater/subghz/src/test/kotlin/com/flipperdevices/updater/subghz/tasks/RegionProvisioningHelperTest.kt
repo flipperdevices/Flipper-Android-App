@@ -7,7 +7,6 @@ import android.os.LocaleList
 import android.telephony.TelephonyManager
 import com.flipperdevices.updater.subghz.helpers.RegionProvisioningHelperImpl
 import com.flipperdevices.updater.subghz.helpers.model.RegionProvisioningSource
-import java.util.Locale
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.newSingleThreadContext
@@ -24,6 +23,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.whenever
 import org.robolectric.util.ReflectionHelpers
+import java.util.Locale
 
 class RegionProvisioningHelperTest {
     @OptIn(DelicateCoroutinesApi::class)

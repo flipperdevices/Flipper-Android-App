@@ -8,8 +8,6 @@ import com.flipperdevices.protobuf.storage.file
 import com.flipperdevices.protobuf.storage.writeRequest
 import com.flipperdevices.protobuf.system.pingRequest
 import com.google.protobuf.ByteString
-import java.io.ByteArrayOutputStream
-import java.nio.ByteBuffer
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.test.TestScope
@@ -27,6 +25,8 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import org.mockito.stubbing.OngoingStubbing
+import java.io.ByteArrayOutputStream
+import java.nio.ByteBuffer
 
 @Ignore(
     """

@@ -5,8 +5,8 @@ import android.content.Context
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.wearable.emulate.handheld.impl.R
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 private const val WEARABLE_NOTIFICATION_CHANNEL = "wearable_notification_channel"
 

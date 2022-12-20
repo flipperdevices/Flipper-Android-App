@@ -18,10 +18,10 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.markdown.ClickableUrlText
 import com.flipperdevices.core.markdown.ComposableMarkdown
 import com.flipperdevices.core.markdown.markdownColors
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.updater.screen.R
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 private fun ComposableUpdateFailedContent(
@@ -97,7 +97,9 @@ fun ComposableOutdatedApp() {
     ComposableUpdateFailedContent(
         imageId = if (MaterialTheme.colors.isLight) {
             DesignSystem.drawable.ic_firmware_application_deprecated
-        } else DesignSystem.drawable.ic_firmware_application_deprecated_dark,
+        } else {
+            DesignSystem.drawable.ic_firmware_application_deprecated_dark
+        },
         titleId = R.string.update_screen_failed_outdated_app_title,
         descriptionId = R.string.update_screen_failed_outdated_app_desc
     ) {

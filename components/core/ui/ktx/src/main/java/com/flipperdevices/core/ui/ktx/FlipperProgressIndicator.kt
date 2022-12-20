@@ -85,7 +85,9 @@ private fun BoxScope.ComposableProgressRow(percent: Float, accentColor: Color) {
     ) {
         val wrapPercent = if (percent <= 0f) {
             PERCENT_MIN
-        } else percent
+        } else {
+            percent
+        }
 
         val remainingWeight = 1.0f - wrapPercent
 

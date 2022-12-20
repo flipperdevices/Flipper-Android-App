@@ -21,11 +21,11 @@ import com.flipperdevices.archive.shared.composable.ComposableAppBar
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.core.ktx.jre.roundPercentToString
 import com.flipperdevices.core.ui.ktx.LocalRouter
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.widget.screen.R
 import com.flipperdevices.widget.screen.viewmodel.WidgetSelectViewModel
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun WidgetOptionsComposable(
@@ -36,10 +36,12 @@ fun WidgetOptionsComposable(
     val localSynchronizationState = synchronizationState
     if (localSynchronizationState is SynchronizationState.InProgress) {
         ArchiveProgressScreen(localSynchronizationState)
-    } else ComposableArchiveReady(
-        archiveApi,
-        widgetSelectViewModel
-    )
+    } else {
+        ComposableArchiveReady(
+            archiveApi,
+            widgetSelectViewModel
+        )
+    }
 }
 
 @Composable

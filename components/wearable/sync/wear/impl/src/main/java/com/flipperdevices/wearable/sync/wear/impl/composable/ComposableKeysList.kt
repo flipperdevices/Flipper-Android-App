@@ -31,7 +31,6 @@ import androidx.wear.compose.material.ScalingLazyColumn
 import androidx.wear.compose.material.Text
 import androidx.wear.compose.material.items
 import androidx.wear.compose.material.rememberScalingLazyListState
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.wearable.sync.wear.impl.R
 import com.flipperdevices.wearable.sync.wear.impl.model.FlipperWearKey
@@ -39,6 +38,7 @@ import com.flipperdevices.wearable.sync.wear.impl.model.KeysListState
 import com.flipperdevices.wearable.sync.wear.impl.viewmodel.KeysListViewModel
 import com.google.android.horologist.compose.layout.fillMaxRectangle
 import kotlinx.coroutines.launch
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Preview(
     showSystemUi = true,
@@ -53,7 +53,9 @@ fun ComposableKeysList(onKeyOpen: (FlipperWearKey) -> Unit) {
     when (localState) {
         is KeysListState.Loaded -> if (localState.keys.isEmpty()) {
             ComposableKeysListEmpty()
-        } else ComposableKeysListInternal(localState.keys, onKeyOpen)
+        } else {
+            ComposableKeysListInternal(localState.keys, onKeyOpen)
+        }
         KeysListState.Loading -> ComposableKeysListLoading()
     }
 }

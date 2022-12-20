@@ -121,12 +121,16 @@ class PermissionStateBuilder(
                 Manifest.permission.BLUETOOTH_SCAN -> {
                     return if (shouldShowSettings) {
                         BLUETOOTH_PERMISSION
-                    } else BLUETOOTH_PERMISSION_GO_TO_SETTINGS
+                    } else {
+                        BLUETOOTH_PERMISSION_GO_TO_SETTINGS
+                    }
                 }
                 Manifest.permission.ACCESS_FINE_LOCATION -> {
                     return if (shouldShowSettings) {
                         LOCATION_PERMISSION
-                    } else LOCATION_PERMISSION_GO_TO_SETTINGS
+                    } else {
+                        LOCATION_PERMISSION_GO_TO_SETTINGS
+                    }
                 }
                 else -> {
                     error { "Unknown permission $permission, skip" }

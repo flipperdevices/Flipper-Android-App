@@ -37,7 +37,9 @@ fun ColumnScope.ComposableDeveloperFooter(
     ComposableGithubLink(
         modifier = if (developerInformation == null) {
             githubLinkModifier.placeholderConnecting()
-        } else githubLinkModifier,
+        } else {
+            githubLinkModifier
+        },
         textId = R.string.fapscreen_developer_github,
         url = developerInformation?.githubRepositoryLink
     )
@@ -45,7 +47,9 @@ fun ColumnScope.ComposableDeveloperFooter(
     ComposableGithubLink(
         modifier = if (developerInformation == null) {
             githubLinkModifier.placeholderConnecting()
-        } else githubLinkModifier,
+        } else {
+            githubLinkModifier
+        },
         textId = R.string.fapscreen_developer_manifest,
         url = developerInformation?.manifestRepositoryLink
     )

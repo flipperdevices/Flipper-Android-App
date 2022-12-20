@@ -1,10 +1,10 @@
 package com.flipperdevices.keyscreen.impl.composable.actions
 
 import androidx.compose.runtime.Composable
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyscreen.impl.R
 import com.flipperdevices.keyscreen.impl.model.DeleteState
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableDelete(deleteState: DeleteState, onClick: () -> Unit) {
@@ -18,7 +18,9 @@ fun ComposableDelete(deleteState: DeleteState, onClick: () -> Unit) {
 
     val descriptionId = if (deleteState == DeleteState.DELETED) {
         R.string.keyscreen_delete_permanently_text
-    } else R.string.keyscreen_delete_text
+    } else {
+        R.string.keyscreen_delete_text
+    }
 
     ComposableActionRow(
         iconId = DesignSystem.drawable.ic_trash_icon,

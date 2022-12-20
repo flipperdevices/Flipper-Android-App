@@ -8,7 +8,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.compose.dialogs.ComposableForgotDialog
@@ -18,6 +17,7 @@ import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
 import com.flipperdevices.info.shared.ButtonElementRow
 import com.flipperdevices.info.shared.ComposableInfoDivider
 import com.flipperdevices.info.shared.InfoElementCard
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposablePairDeviceActionCard(
@@ -36,7 +36,9 @@ fun ComposablePairDeviceActionCard(
                 ComposableFirstConnectElement(connectViewModel = connectViewModel)
             is DeviceStatus.NoDeviceInformation -> if (localDeviceState.connectInProgress) {
                 ComposableDisconnectElement(connectViewModel = connectViewModel)
-            } else ComposableConnectElement(connectViewModel = connectViewModel)
+            } else {
+                ComposableConnectElement(connectViewModel = connectViewModel)
+            }
         }
 
         if (localDeviceState is DeviceStatus.NoDevice) {

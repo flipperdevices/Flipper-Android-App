@@ -9,9 +9,9 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.updater.subghz.helpers.model.RegionProvisioning
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 interface RegionProvisioningHelper {
     suspend fun provideRegion(regionFromGeoIp: String?): RegionProvisioning

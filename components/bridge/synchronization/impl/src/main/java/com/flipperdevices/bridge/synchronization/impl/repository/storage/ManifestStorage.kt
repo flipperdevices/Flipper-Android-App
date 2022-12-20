@@ -7,13 +7,13 @@ import com.flipperdevices.bridge.synchronization.impl.model.KeyWithHash
 import com.flipperdevices.bridge.synchronization.impl.model.ManifestFile
 import com.flipperdevices.core.di.SingleIn
 import com.squareup.anvil.annotations.ContributesBinding
-import java.io.File
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
 import kotlinx.serialization.json.encodeToStream
+import java.io.File
+import javax.inject.Inject
 
 interface ManifestStorage {
     suspend fun save(

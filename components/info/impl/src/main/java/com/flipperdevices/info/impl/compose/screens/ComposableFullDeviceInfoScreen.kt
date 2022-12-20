@@ -23,7 +23,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.info.impl.R
@@ -32,6 +31,7 @@ import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
 import com.flipperdevices.info.impl.viewmodel.FullInfoViewModel
 import tangle.viewmodel.compose.tangleViewModel
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableFullDeviceInfoScreen(

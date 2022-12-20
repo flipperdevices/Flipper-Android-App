@@ -22,9 +22,9 @@ import com.flipperdevices.widget.impl.model.WidgetState
 import com.flipperdevices.widget.impl.storage.WidgetStateStorage
 import com.flipperdevices.widget.impl.tasks.invalidate.InvalidateWidgetsHelper
 import com.flipperdevices.widget.impl.tasks.invalidate.WidgetNotificationHelper
+import kotlinx.coroutines.CoroutineScope
 import java.io.File
 import javax.inject.Inject
-import kotlinx.coroutines.CoroutineScope
 
 const val EXTRA_KEY_FILE_PATH = "file_path"
 const val EXTRA_KEY_WIDGET_ID = AppWidgetManager.EXTRA_APPWIDGET_ID
@@ -115,7 +115,8 @@ class StartEmulateWorker(
         val folder =
             filePath.parent ?: FlipperKeyType.getByExtension(filePath.extension)?.flipperDir ?: ""
         return FlipperFilePath(
-            folder, filePath.name
+            folder,
+            filePath.name
         )
     }
 

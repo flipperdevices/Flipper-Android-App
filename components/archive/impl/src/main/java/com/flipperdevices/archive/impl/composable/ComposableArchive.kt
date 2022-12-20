@@ -38,12 +38,12 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import tangle.viewmodel.compose.tangleViewModel
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableArchive(
@@ -58,14 +58,16 @@ fun ComposableArchive(
 
     if (localSynchronizationState is SynchronizationState.InProgress) {
         ArchiveProgressScreen(localSynchronizationState, tabViewModel::cancelSynchronization)
-    } else ComposableArchiveReady(
-        synchronizationUiApi,
-        keys,
-        favoriteKeys,
-        tabViewModel,
-        synchronizationState,
-        isKeysPresented
-    )
+    } else {
+        ComposableArchiveReady(
+            synchronizationUiApi,
+            keys,
+            favoriteKeys,
+            tabViewModel,
+            synchronizationState,
+            isKeysPresented
+        )
+    }
 }
 
 @Composable
@@ -110,7 +112,9 @@ private fun ComposableArchiveReady(
         if (!isKeysPresented) {
             if (synchronizationState is SynchronizationState.InProgress) {
                 ComposableProgress()
-            } else ComposableNoKeys()
+            } else {
+                ComposableNoKeys()
+            }
         }
     }
 }

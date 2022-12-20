@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.ui.ktx.OrangeAppBarWithIcon
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.main.impl.R
 import com.flipperdevices.main.impl.composable.switch.ComposableFapHubNewSwitch
 import com.flipperdevices.main.impl.composable.switch.ComposableFapHubSwitch
@@ -21,6 +20,7 @@ import com.flipperdevices.main.impl.model.FapHubTabEnum
 import com.flipperdevices.main.impl.viewmodel.InstalledNotificationViewModel
 import com.flipperdevices.main.impl.viewmodel.MainViewModel
 import tangle.viewmodel.compose.tangleViewModel
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableFapHubMainScreen(

@@ -59,7 +59,9 @@ class BoundedInputStream(
             )
             bytesRemaining -= nRead.toLong()
             nRead
-        } else EOF
+        } else {
+            EOF
+        }
     }
 
     @Throws(IOException::class)
@@ -88,6 +90,8 @@ class BoundedInputStream(
                 bytesRemaining -= 1
             }
             readedBytes
-        } else EOF
+        } else {
+            EOF
+        }
     }
 }

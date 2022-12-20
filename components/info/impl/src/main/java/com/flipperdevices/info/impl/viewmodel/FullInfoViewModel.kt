@@ -21,15 +21,15 @@ import com.flipperdevices.info.impl.model.DeviceInfoRequestStatus
 import com.flipperdevices.updater.api.FirmwareVersionBuilderApi
 import com.flipperdevices.updater.api.FlipperVersionProviderApi
 import com.flipperdevices.updater.model.FirmwareChannel
-import java.io.File
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import tangle.viewmodel.VMInject
+import java.io.File
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class FullInfoViewModel @VMInject constructor(
     serviceProvider: FlipperServiceProvider,

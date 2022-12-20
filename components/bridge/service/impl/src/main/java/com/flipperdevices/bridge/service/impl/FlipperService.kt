@@ -15,9 +15,9 @@ import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.jre.runBlockingWithLog
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import java.util.concurrent.atomic.AtomicBoolean
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.util.concurrent.atomic.AtomicBoolean
 
 class FlipperService : LifecycleService(), LogTagProvider {
     override val TAG = "FlipperService-${hashCode()}"
