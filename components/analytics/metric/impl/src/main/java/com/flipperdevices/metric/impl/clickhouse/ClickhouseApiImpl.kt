@@ -20,7 +20,7 @@ import com.flipperdevices.metric.api.events.complex.UpdateStatus
 import com.flipperdevices.metric.impl.BuildConfig
 import com.flipperdevices.pbmetric.Metric
 import com.flipperdevices.pbmetric.events.OpenOuterClass
-import com.flipperdevices.pbmetric.events.SubGhzProvisioningOuterClass
+import com.flipperdevices.pbmetric.events.SubghzProvisioning
 import com.flipperdevices.pbmetric.events.UpdateFlipperEndOuterClass
 import com.flipperdevices.pbmetric.events.flipperGattInfo
 import com.flipperdevices.pbmetric.events.flipperRpcInfo
@@ -149,15 +149,15 @@ class ClickhouseApiImpl @Inject constructor(
                     isRoaming = complexEvent.isRoaming
                     regionSource = when (complexEvent.regionSource) {
                         RegionSource.SIM_NETWORK ->
-                            SubGhzProvisioningOuterClass.SubGhzProvisioning.RegionSource.SIM_NETWORK
+                            SubghzProvisioning.SubGhzProvisioning.RegionSource.SIM_NETWORK
                         RegionSource.SIM_COUNTRY ->
-                            SubGhzProvisioningOuterClass.SubGhzProvisioning.RegionSource.SIM_COUNTRY
+                            SubghzProvisioning.SubGhzProvisioning.RegionSource.SIM_COUNTRY
                         RegionSource.GEO_IP ->
-                            SubGhzProvisioningOuterClass.SubGhzProvisioning.RegionSource.GEO_IP
+                            SubghzProvisioning.SubGhzProvisioning.RegionSource.GEO_IP
                         RegionSource.SYSTEM ->
-                            SubGhzProvisioningOuterClass.SubGhzProvisioning.RegionSource.SYSTEM
+                            SubghzProvisioning.SubGhzProvisioning.RegionSource.SYSTEM
                         RegionSource.DEFAULT ->
-                            SubGhzProvisioningOuterClass.SubGhzProvisioning.RegionSource.DEFAULT
+                            SubghzProvisioning.SubGhzProvisioning.RegionSource.DEFAULT
                     }
                 }
             }
