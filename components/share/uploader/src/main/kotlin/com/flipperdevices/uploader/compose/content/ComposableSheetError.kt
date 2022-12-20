@@ -22,6 +22,11 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.share.api.ShareContentError
+import com.flipperdevices.share.api.ShareContentError.CANT_CANNOT_TO_SERVER
+import com.flipperdevices.share.api.ShareContentError.EXPIRED_LINK
+import com.flipperdevices.share.api.ShareContentError.INVALID_FILE_FORMAT
+import com.flipperdevices.share.api.ShareContentError.NO_INTERNET_CONNECTION
+import com.flipperdevices.share.api.ShareContentError.OTHER
 import com.flipperdevices.share.uploader.R
 
 @Composable
@@ -70,18 +75,20 @@ internal fun ComposableSheetError(
 @StringRes
 private fun getTitleByShareError(typeError: ShareContentError): Int {
     return when (typeError) {
-        ShareContentError.NO_INTERNET -> R.string.share_error_no_internet_title
-        ShareContentError.SERVER_ERROR -> R.string.share_error_server_title
-        ShareContentError.OTHER -> R.string.share_error_other_title
+        NO_INTERNET_CONNECTION -> R.string.share_error_no_internet_title
+        CANT_CANNOT_TO_SERVER -> R.string.share_error_server_title
+        OTHER -> R.string.share_error_other_title
+        INVALID_FILE_FORMAT, EXPIRED_LINK -> error("Invalid error type $typeError")
     }
 }
 
 @StringRes
 private fun getDescriptionByShareError(typeError: ShareContentError): Int {
     return when (typeError) {
-        ShareContentError.NO_INTERNET -> R.string.share_error_no_internet_desc
-        ShareContentError.SERVER_ERROR -> R.string.share_error_server_desc
-        ShareContentError.OTHER -> R.string.share_error_other_desc
+        NO_INTERNET_CONNECTION -> R.string.share_error_no_internet_desc
+        CANT_CANNOT_TO_SERVER -> R.string.share_error_server_desc
+        OTHER -> R.string.share_error_other_desc
+        INVALID_FILE_FORMAT, EXPIRED_LINK -> error("Invalid error type $typeError")
     }
 }
 
@@ -90,13 +97,15 @@ private fun getDescriptionByShareError(typeError: ShareContentError): Int {
 private fun getImageByShareError(typeError: ShareContentError): Int {
     return if (isSystemInDarkTheme()) {
         when (typeError) {
-            ShareContentError.NO_INTERNET -> DesignSystem.drawable.ic_no_internet_dark
-            ShareContentError.SERVER_ERROR -> DesignSystem.drawable.ic_server_error_dark
-            ShareContentError.OTHER -> DesignSystem.drawable.ic_warning_triangle
+            NO_INTERNET_CONNECTION -> DesignSystem.drawable.ic_no_internet_dark
+            CANT_CANNOT_TO_SERVER -> DesignSystem.drawable.ic_server_error_dark
+            OTHER -> DesignSystem.drawable.ic_warning_triangle
+            INVALID_FILE_FORMAT, EXPIRED_LINK -> error("Invalid error type $typeError")
         }
     } else when (typeError) {
-        ShareContentError.NO_INTERNET -> DesignSystem.drawable.ic_no_internet
-        ShareContentError.SERVER_ERROR -> DesignSystem.drawable.ic_server_error
-        ShareContentError.OTHER -> DesignSystem.drawable.ic_warning_triangle
+        NO_INTERNET_CONNECTION -> DesignSystem.drawable.ic_no_internet
+        CANT_CANNOT_TO_SERVER -> DesignSystem.drawable.ic_server_error
+        OTHER -> DesignSystem.drawable.ic_warning_triangle
+        INVALID_FILE_FORMAT, EXPIRED_LINK -> error("Invalid error type $typeError")
     }
 }

@@ -138,8 +138,8 @@ class UploaderViewModel @VMInject constructor(
         uploadedLink.onFailure { exception ->
             error(exception) { "Error on upload $flipperKey to server" }
             val error = when (exception) {
-                is UnknownHostException -> ShareContentError.NO_INTERNET
-                is UnknownServiceException -> ShareContentError.SERVER_ERROR
+                is UnknownHostException -> ShareContentError.NO_INTERNET_CONNECTION
+                is UnknownServiceException -> ShareContentError.CANT_CANNOT_TO_SERVER
                 else -> ShareContentError.OTHER
             }
             _state.emit(ShareState.Error(typeError = error))

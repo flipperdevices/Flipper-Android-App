@@ -33,7 +33,7 @@ private fun PreviewComposableSheetContentErrorOther() {
 private fun PreviewComposableSheetContentErrorInternet() {
     FlipperThemeInternal {
         ComposableSheetContent(
-            state = ShareState.Error(ShareContentError.NO_INTERNET),
+            state = ShareState.Error(ShareContentError.NO_INTERNET_CONNECTION),
             keyName = "keyName",
             onShareLink = {},
             onShareFile = {},
@@ -49,7 +49,7 @@ private fun PreviewComposableSheetContentErrorInternet() {
 private fun PreviewComposableSheetContentErrorServer() {
     FlipperThemeInternal {
         ComposableSheetContent(
-            state = ShareState.Error(ShareContentError.SERVER_ERROR),
+            state = ShareState.Error(ShareContentError.CANT_CANNOT_TO_SERVER),
             keyName = "keyName",
             onShareLink = {},
             onShareFile = {},
