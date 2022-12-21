@@ -5,6 +5,7 @@ import com.flipperdevices.bridge.synchronization.impl.model.DiffSource
 import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
 import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
 import com.flipperdevices.bridge.synchronization.impl.model.KeyWithHash
+import com.flipperdevices.bridge.synchronization.impl.model.ManifestFile
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -94,6 +95,117 @@ class ManifestRepositoryTest {
 
         Assert.assertEquals(
             expected.map { KeyDiff(KeyWithHash(it, ""), KeyAction.ADD, DiffSource.FLIPPER) },
+            actual
+        )
+    }
+
+    @Test
+    fun `compare keys add`() = runTest {
+        val existed = listOf(
+            KeyWithHash(FlipperFilePath("test", "test.ibtn"), "HASH"),
+            KeyWithHash(FlipperFilePath("test", "test2.nfc"), "HASH2")
+        )
+        val newList = listOf(
+            KeyWithHash(FlipperFilePath("test", "test.ibtn"), "HASH"),
+            KeyWithHash(FlipperFilePath("test", "test2.nfc"), "HASH2"),
+            KeyWithHash(FlipperFilePath("test2", "test3.rfid"), "HASH3")
+        )
+
+        coEvery { manifestStorage.load() } returns ManifestFile(keys = existed)
+        val actual = underTest.compareKeysWithManifest(newList, DiffSource.ANDROID)
+        Assert.assertEquals(
+            listOf(
+                KeyDiff(
+                    KeyWithHash(FlipperFilePath("test2", "test3.rfid"), "HASH3"),
+                    KeyAction.ADD,
+                    DiffSource.ANDROID
+                )
+            ),
+            actual
+        )
+    }
+
+    @Test
+    fun `compare keys delete`() = runTest {
+        val existed = listOf(
+            KeyWithHash(FlipperFilePath("test", "test.ibtn"), "HASH"),
+            KeyWithHash(FlipperFilePath("test", "test2.nfc"), "HASH2")
+        )
+        val newList = listOf(
+            KeyWithHash(FlipperFilePath("test", "test.ibtn"), "HASH"),
+        )
+
+        coEvery { manifestStorage.load() } returns ManifestFile(keys = existed)
+        val actual = underTest.compareKeysWithManifest(newList, DiffSource.ANDROID)
+        Assert.assertEquals(
+            listOf(
+                KeyDiff(
+                    KeyWithHash(FlipperFilePath("test", "test2.nfc"), "HASH2"),
+                    KeyAction.DELETED,
+                    DiffSource.ANDROID
+                )
+            ),
+            actual
+        )
+    }
+
+    @Test
+    fun `compare keys modified`() = runTest {
+        val existed = listOf(
+            KeyWithHash(FlipperFilePath("test", "test.ibtn"), "HASH"),
+            KeyWithHash(FlipperFilePath("test", "test2.nfc"), "HASH2")
+        )
+        val newList = listOf(
+            KeyWithHash(FlipperFilePath("test", "test.ibtn"), "HASH"),
+            KeyWithHash(FlipperFilePath("test", "test2.nfc"), "HASH3"),
+        )
+
+        coEvery { manifestStorage.load() } returns ManifestFile(keys = existed)
+        val actual = underTest.compareKeysWithManifest(newList, DiffSource.ANDROID)
+        Assert.assertEquals(
+            listOf(
+                KeyDiff(
+                    KeyWithHash(FlipperFilePath("test", "test2.nfc"), "HASH3"),
+                    KeyAction.MODIFIED,
+                    DiffSource.ANDROID
+                )
+            ),
+            actual
+        )
+    }
+
+
+    @Test
+    fun `compare keys combined`() = runTest {
+        val existed = listOf(
+            KeyWithHash(FlipperFilePath("test", "test.ibtn"), "HASH"),
+            KeyWithHash(FlipperFilePath("test", "test2.nfc"), "HASH2")
+        )
+        val newList = listOf(
+            KeyWithHash(FlipperFilePath("test", "test2.nfc"), "HASH4"),
+            KeyWithHash(FlipperFilePath("test2", "test3.rfid"), "HASH3")
+        )
+
+        coEvery { manifestStorage.load() } returns ManifestFile(keys = existed)
+        val actual = underTest.compareKeysWithManifest(newList, DiffSource.ANDROID)
+        Assert.assertEquals(
+            listOf(
+                KeyDiff(
+                    KeyWithHash(FlipperFilePath("test", "test2.nfc"), "HASH4"),
+                    KeyAction.MODIFIED,
+                    DiffSource.ANDROID
+                ),
+                KeyDiff(
+                    KeyWithHash(FlipperFilePath("test2", "test3.rfid"), "HASH3"),
+                    KeyAction.ADD,
+                    DiffSource.ANDROID
+                ),
+                KeyDiff(
+                    KeyWithHash(FlipperFilePath("test", "test.ibtn"), "HASH"),
+                    KeyAction.DELETED,
+                    DiffSource.ANDROID
+                )
+            ),
             actual
         )
     }

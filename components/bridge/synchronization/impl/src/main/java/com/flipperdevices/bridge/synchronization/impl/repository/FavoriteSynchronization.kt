@@ -67,6 +67,11 @@ class FavoriteSynchronizationImpl @Inject constructor(
                 FlipperKeyPath(path = it, deleted = false)
             }
         )
+
+        manifestRepository.updateManifest(
+            favorites = resultFavoritesList,
+            favoritesOnFlipper = favoritesFromFlipper
+        )
     }
 
     private suspend fun mergedWithManifestList(combinedDiff: List<KeyDiff>): List<FlipperFilePath> {
