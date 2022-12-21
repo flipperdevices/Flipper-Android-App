@@ -7,8 +7,8 @@ import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
-import com.flipperdevices.share.api.ShareContentError
 import com.flipperdevices.uploader.models.ShareContent
+import com.flipperdevices.uploader.models.ShareError
 import com.flipperdevices.uploader.models.ShareState
 
 @Preview
@@ -17,7 +17,7 @@ import com.flipperdevices.uploader.models.ShareState
 private fun PreviewComposableSheetContentErrorOther() {
     FlipperThemeInternal {
         ComposableSheetContent(
-            state = ShareState.Error(ShareContentError.OTHER),
+            state = ShareState.Error(ShareError.OTHER),
             keyName = "keyName",
             onShareLink = {},
             onShareFile = {},
@@ -33,7 +33,7 @@ private fun PreviewComposableSheetContentErrorOther() {
 private fun PreviewComposableSheetContentErrorInternet() {
     FlipperThemeInternal {
         ComposableSheetContent(
-            state = ShareState.Error(ShareContentError.NO_INTERNET_CONNECTION),
+            state = ShareState.Error(ShareError.NO_INTERNET_CONNECTION),
             keyName = "keyName",
             onShareLink = {},
             onShareFile = {},
@@ -49,7 +49,7 @@ private fun PreviewComposableSheetContentErrorInternet() {
 private fun PreviewComposableSheetContentErrorServer() {
     FlipperThemeInternal {
         ComposableSheetContent(
-            state = ShareState.Error(ShareContentError.CANT_CANNOT_TO_SERVER),
+            state = ShareState.Error(ShareError.CANT_CANNOT_TO_SERVER),
             keyName = "keyName",
             onShareLink = {},
             onShareFile = {},

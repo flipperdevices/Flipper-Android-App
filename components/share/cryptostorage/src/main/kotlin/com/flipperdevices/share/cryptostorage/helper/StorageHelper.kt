@@ -1,6 +1,7 @@
 package com.flipperdevices.share.cryptostorage.helper
 
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.share.model.FlipperKeyNotFoundException
 import com.squareup.anvil.annotations.ContributesBinding
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -31,14 +32,22 @@ class StorageHelper @Inject constructor(
             body = data
         }
 
-        if (response.status != HttpStatusCode.OK) throw UnknownServiceException("")
+        when (response.status) {
+            HttpStatusCode.OK -> {}
+            else -> throw UnknownServiceException("")
+        }
 
         return response.body()
     }
 
     override suspend fun download(id: String): ByteArray {
         val response = client.get(urlString = "$STORAGE_URL$id/$STORAGE_NAME")
-        if (response.status != HttpStatusCode.OK) throw UnknownServiceException("")
+
+        when (response.status) {
+            HttpStatusCode.OK -> {}
+            HttpStatusCode.NotFound -> throw FlipperKeyNotFoundException()
+            else -> throw UnknownServiceException("")
+        }
 
         return response.body()
     }

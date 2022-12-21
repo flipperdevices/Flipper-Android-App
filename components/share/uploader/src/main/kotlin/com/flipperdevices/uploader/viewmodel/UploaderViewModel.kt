@@ -14,10 +14,10 @@ import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.share.api.CryptoStorageApi
-import com.flipperdevices.share.api.ShareContentError
 import com.flipperdevices.share.uploader.R
 import com.flipperdevices.uploader.api.EXTRA_KEY_PATH
 import com.flipperdevices.uploader.models.ShareContent
+import com.flipperdevices.uploader.models.ShareError
 import com.flipperdevices.uploader.models.ShareState
 import java.net.UnknownHostException
 import java.net.UnknownServiceException
@@ -55,7 +55,7 @@ class UploaderViewModel @VMInject constructor(
         }
         simpleKeyApi.getKeyAsFlow(flipperKeyPath).collectLatest { flipperKey ->
             if (flipperKey == null) {
-                _state.emit(ShareState.Error(ShareContentError.OTHER))
+                _state.emit(ShareState.Error(ShareError.OTHER))
                 return@collectLatest
             }
             prepareParseKeyContent(flipperKey)
@@ -89,7 +89,7 @@ class UploaderViewModel @VMInject constructor(
                 _state.emit(ShareState.Completed)
             }.onFailure { exception ->
                 error(exception) { "Error on share $flipperKeyPath by file" }
-                _state.emit(ShareState.Error(ShareContentError.OTHER))
+                _state.emit(ShareState.Error(ShareError.OTHER))
             }
         }
     }
@@ -138,9 +138,9 @@ class UploaderViewModel @VMInject constructor(
         uploadedLink.onFailure { exception ->
             error(exception) { "Error on upload $flipperKey to server" }
             val error = when (exception) {
-                is UnknownHostException -> ShareContentError.NO_INTERNET_CONNECTION
-                is UnknownServiceException -> ShareContentError.CANT_CANNOT_TO_SERVER
-                else -> ShareContentError.OTHER
+                is UnknownHostException -> ShareError.NO_INTERNET_CONNECTION
+                is UnknownServiceException -> ShareError.CANT_CANNOT_TO_SERVER
+                else -> ShareError.OTHER
             }
             _state.emit(ShareState.Error(typeError = error))
         }

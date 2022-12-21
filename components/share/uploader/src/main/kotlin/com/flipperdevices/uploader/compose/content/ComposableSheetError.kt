@@ -21,17 +21,12 @@ import com.flipperdevices.core.ui.ktx.painterResourceByKey
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.share.api.ShareContentError
-import com.flipperdevices.share.api.ShareContentError.CANT_CANNOT_TO_SERVER
-import com.flipperdevices.share.api.ShareContentError.EXPIRED_LINK
-import com.flipperdevices.share.api.ShareContentError.INVALID_FILE_FORMAT
-import com.flipperdevices.share.api.ShareContentError.NO_INTERNET_CONNECTION
-import com.flipperdevices.share.api.ShareContentError.OTHER
 import com.flipperdevices.share.uploader.R
+import com.flipperdevices.uploader.models.ShareError
 
 @Composable
 internal fun ComposableSheetError(
-    typeError: ShareContentError,
+    typeError: ShareError,
     onRetry: () -> Unit
 ) {
     val title = stringResource(id = getTitleByShareError(typeError))
@@ -73,39 +68,35 @@ internal fun ComposableSheetError(
 }
 
 @StringRes
-private fun getTitleByShareError(typeError: ShareContentError): Int {
+private fun getTitleByShareError(typeError: ShareError): Int {
     return when (typeError) {
-        NO_INTERNET_CONNECTION -> R.string.share_error_no_internet_title
-        CANT_CANNOT_TO_SERVER -> R.string.share_error_server_title
-        OTHER -> R.string.share_error_other_title
-        INVALID_FILE_FORMAT, EXPIRED_LINK -> error("Invalid error type $typeError")
+        ShareError.NO_INTERNET_CONNECTION -> R.string.share_error_no_internet_title
+        ShareError.CANT_CANNOT_TO_SERVER -> R.string.share_error_server_title
+        ShareError.OTHER -> R.string.share_error_other_title
     }
 }
 
 @StringRes
-private fun getDescriptionByShareError(typeError: ShareContentError): Int {
+private fun getDescriptionByShareError(typeError: ShareError): Int {
     return when (typeError) {
-        NO_INTERNET_CONNECTION -> R.string.share_error_no_internet_desc
-        CANT_CANNOT_TO_SERVER -> R.string.share_error_server_desc
-        OTHER -> R.string.share_error_other_desc
-        INVALID_FILE_FORMAT, EXPIRED_LINK -> error("Invalid error type $typeError")
+        ShareError.NO_INTERNET_CONNECTION -> R.string.share_error_no_internet_desc
+        ShareError.CANT_CANNOT_TO_SERVER -> R.string.share_error_server_desc
+        ShareError.OTHER -> R.string.share_error_other_desc
     }
 }
 
 @DrawableRes
 @Composable
-private fun getImageByShareError(typeError: ShareContentError): Int {
+private fun getImageByShareError(typeError: ShareError): Int {
     return if (isSystemInDarkTheme()) {
         when (typeError) {
-            NO_INTERNET_CONNECTION -> DesignSystem.drawable.ic_no_internet_dark
-            CANT_CANNOT_TO_SERVER -> DesignSystem.drawable.ic_server_error_dark
-            OTHER -> DesignSystem.drawable.ic_warning_triangle
-            INVALID_FILE_FORMAT, EXPIRED_LINK -> error("Invalid error type $typeError")
+            ShareError.NO_INTERNET_CONNECTION -> DesignSystem.drawable.ic_no_internet_dark
+            ShareError.CANT_CANNOT_TO_SERVER -> DesignSystem.drawable.ic_server_error_dark
+            ShareError.OTHER -> DesignSystem.drawable.ic_warning_triangle
         }
     } else when (typeError) {
-        NO_INTERNET_CONNECTION -> DesignSystem.drawable.ic_no_internet
-        CANT_CANNOT_TO_SERVER -> DesignSystem.drawable.ic_server_error
-        OTHER -> DesignSystem.drawable.ic_warning_triangle
-        INVALID_FILE_FORMAT, EXPIRED_LINK -> error("Invalid error type $typeError")
+        ShareError.NO_INTERNET_CONNECTION -> DesignSystem.drawable.ic_no_internet
+        ShareError.CANT_CANNOT_TO_SERVER -> DesignSystem.drawable.ic_server_error
+        ShareError.OTHER -> DesignSystem.drawable.ic_warning_triangle
     }
 }
