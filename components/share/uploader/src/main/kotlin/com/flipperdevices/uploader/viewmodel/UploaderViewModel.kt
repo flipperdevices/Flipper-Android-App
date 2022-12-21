@@ -11,6 +11,8 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.share.ShareHelper
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
+import com.flipperdevices.metric.api.MetricApi
+import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.share.api.CryptoStorageApi
 import com.flipperdevices.share.api.ShareContentError
 import com.flipperdevices.share.uploader.R
@@ -32,6 +34,7 @@ class UploaderViewModel @VMInject constructor(
     private val keyParser: KeyParser,
     private val cryptoStorageApi: CryptoStorageApi,
     private val simpleKeyApi: SimpleKeyApi,
+    private val metricApi: MetricApi,
     @TangleParam(EXTRA_KEY_PATH)
     private val flipperKeyPath: FlipperKeyPath?
 ) : LifecycleViewModel(), LogTagProvider {
@@ -76,6 +79,7 @@ class UploaderViewModel @VMInject constructor(
         viewModelScope.launch {
             runCatching {
                 val data = content.flipperKey.keyContent.openStream().use { it.readBytes() }
+                metricApi.reportSimpleEvent(SimpleEvent.SHARE_FILE)
                 ShareHelper.shareRawFile(
                     context = context,
                     data = data,
@@ -94,6 +98,7 @@ class UploaderViewModel @VMInject constructor(
         viewModelScope.launch {
             val contentLink = content.link
             if (contentLink != null) {
+                metricApi.reportSimpleEvent(SimpleEvent.SHARE_SHORTLINK)
                 ShareHelper.shareText(
                     context = context,
                     title = getFlipperKeyName(),
@@ -122,6 +127,7 @@ class UploaderViewModel @VMInject constructor(
             name = flipperKey.mainFile.path.nameWithExtension
         )
         uploadedLink.onSuccess { link ->
+            metricApi.reportSimpleEvent(SimpleEvent.SHARE_LONGLINK)
             ShareHelper.shareText(
                 context = context,
                 title = getFlipperKeyName(),

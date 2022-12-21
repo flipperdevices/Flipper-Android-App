@@ -9,6 +9,7 @@ import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.metric.api.events.ComplexEvent
 import com.flipperdevices.metric.api.events.SimpleEvent
+import com.flipperdevices.metric.api.events.SimpleEvent.*
 import com.flipperdevices.metric.api.events.complex.FlipperGattInfoEvent
 import com.flipperdevices.metric.api.events.complex.FlipperRPCInfoEvent
 import com.flipperdevices.metric.api.events.complex.RegionSource
@@ -64,14 +65,17 @@ class ClickhouseApiImpl @Inject constructor(
 
     override fun reportSimpleEvent(simpleEvent: SimpleEvent) {
         val openTarget = when (simpleEvent) {
-            SimpleEvent.APP_OPEN -> OpenOuterClass.Open.OpenTarget.APP
-            SimpleEvent.OPEN_SAVE_KEY -> OpenOuterClass.Open.OpenTarget.SAVE_KEY
-            SimpleEvent.OPEN_EMULATE -> OpenOuterClass.Open.OpenTarget.EMULATE
-            SimpleEvent.OPEN_EDIT -> OpenOuterClass.Open.OpenTarget.EDIT
-            SimpleEvent.OPEN_SHARE -> OpenOuterClass.Open.OpenTarget.SHARE
-            SimpleEvent.EXPERIMENTAL_OPEN_FM -> OpenOuterClass.Open.OpenTarget.EXPERIMENTAL_FM
-            SimpleEvent.EXPERIMENTAL_OPEN_SCREENSTREAMING ->
+            APP_OPEN -> OpenOuterClass.Open.OpenTarget.APP
+            OPEN_SAVE_KEY -> OpenOuterClass.Open.OpenTarget.SAVE_KEY
+            OPEN_EMULATE -> OpenOuterClass.Open.OpenTarget.EMULATE
+            OPEN_EDIT -> OpenOuterClass.Open.OpenTarget.EDIT
+            OPEN_SHARE -> OpenOuterClass.Open.OpenTarget.SHARE
+            EXPERIMENTAL_OPEN_FM -> OpenOuterClass.Open.OpenTarget.EXPERIMENTAL_FM
+            EXPERIMENTAL_OPEN_SCREENSTREAMING ->
                 OpenOuterClass.Open.OpenTarget.EXPERIMENTAL_SCREENSTREAMING
+            SHARE_SHORTLINK -> OpenOuterClass.Open.OpenTarget.SHARE_SHORTLINK
+            SHARE_LONGLINK -> OpenOuterClass.Open.OpenTarget.SHARE_LONGLINK
+            SHARE_FILE -> OpenOuterClass.Open.OpenTarget.SHARE_FILE
         }
         scope.launch(Dispatchers.Default) {
             reportToServerSafe(
