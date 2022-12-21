@@ -98,7 +98,7 @@ class UploaderViewModel @VMInject constructor(
         viewModelScope.launch {
             val contentLink = content.link
             if (contentLink != null) {
-                metricApi.reportSimpleEvent(SimpleEvent.SHARE_SHORTLINK)
+                metricApi.reportSimpleEvent(SimpleEvent.SHARE_SHORT_LINK)
                 ShareHelper.shareText(
                     context = context,
                     title = getFlipperKeyName(),
@@ -127,7 +127,7 @@ class UploaderViewModel @VMInject constructor(
             name = flipperKey.mainFile.path.nameWithExtension
         )
         uploadedLink.onSuccess { link ->
-            metricApi.reportSimpleEvent(SimpleEvent.SHARE_LONGLINK)
+            metricApi.reportSimpleEvent(SimpleEvent.SHARE_LONG_LINK)
             ShareHelper.shareText(
                 context = context,
                 title = getFlipperKeyName(),

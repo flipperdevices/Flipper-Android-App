@@ -71,10 +71,10 @@ class ClickhouseApiImpl @Inject constructor(
             OPEN_EDIT -> OpenOuterClass.Open.OpenTarget.EDIT
             OPEN_SHARE -> OpenOuterClass.Open.OpenTarget.SHARE
             EXPERIMENTAL_OPEN_FM -> OpenOuterClass.Open.OpenTarget.EXPERIMENTAL_FM
-            EXPERIMENTAL_OPEN_SCREENSTREAMING ->
+            EXPERIMENTAL_OPEN_SCREEN_STREAMING ->
                 OpenOuterClass.Open.OpenTarget.EXPERIMENTAL_SCREENSTREAMING
-            SHARE_SHORTLINK -> OpenOuterClass.Open.OpenTarget.SHARE_SHORTLINK
-            SHARE_LONGLINK -> OpenOuterClass.Open.OpenTarget.SHARE_LONGLINK
+            SHARE_SHORT_LINK -> OpenOuterClass.Open.OpenTarget.SHARE_SHORTLINK
+            SHARE_LONG_LINK -> OpenOuterClass.Open.OpenTarget.SHARE_LONGLINK
             SHARE_FILE -> OpenOuterClass.Open.OpenTarget.SHARE_FILE
         }
         scope.launch(Dispatchers.Default) {
