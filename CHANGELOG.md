@@ -4,7 +4,7 @@
 
 - [Feature] Add forbidden frequency dialog
 - [Feature] Rework all system dialog to custom
-- [Feature] New share flow(with `sf#path=()&id=()key=`) + metric
+- [Feature] New share flow(with `sf#path=()&id=()key=`) + metric + error handling
 - [Feature] Share shadow file if that exist on NFC
 - [Feature] Add application catalog button
 - [Feature] Add application catalog list with sorted button
