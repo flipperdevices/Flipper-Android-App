@@ -70,8 +70,11 @@ class ClickhouseApiImpl @Inject constructor(
             SimpleEvent.OPEN_EDIT -> OpenOuterClass.Open.OpenTarget.EDIT
             SimpleEvent.OPEN_SHARE -> OpenOuterClass.Open.OpenTarget.SHARE
             SimpleEvent.EXPERIMENTAL_OPEN_FM -> OpenOuterClass.Open.OpenTarget.EXPERIMENTAL_FM
-            SimpleEvent.EXPERIMENTAL_OPEN_SCREENSTREAMING ->
+            SimpleEvent.EXPERIMENTAL_OPEN_SCREEN_STREAMING ->
                 OpenOuterClass.Open.OpenTarget.EXPERIMENTAL_SCREENSTREAMING
+            SimpleEvent.SHARE_SHORT_LINK -> OpenOuterClass.Open.OpenTarget.SHARE_SHORTLINK
+            SimpleEvent.SHARE_LONG_LINK -> OpenOuterClass.Open.OpenTarget.SHARE_LONGLINK
+            SimpleEvent.SHARE_FILE -> OpenOuterClass.Open.OpenTarget.SHARE_FILE
         }
         scope.launch(Dispatchers.Default) {
             reportToServerSafe(
