@@ -46,7 +46,13 @@ class FavoriteSynchronizationTest(
 
     @Before
     fun setUp() {
-        favoriteApi = mockk(relaxUnitFun = true)
+        favoriteApi = mockk {
+            coEvery { updateFavorites(any()) } coAnswers {
+                (args[0] as List<*>).map { it as FlipperKeyPath }.filterNot {
+                    it.path.nameWithoutExtension.startsWith("notExistedKey")
+                }
+            }
+        }
         flipperStorage = mockk()
         favoritesRepository = mockk {
             coEvery { applyDiff(any(), any(), any()) } coAnswers {
@@ -86,16 +92,8 @@ class FavoriteSynchronizationTest(
             favoritesOnFlipper = param.initialFlipperFavoriteManifest
         )
 
-        param.testRuns.forEach {
-            executeFavoritesMerge(it)
-        }
-    }
-
-    private suspend fun executeFavoritesMerge(
-        runParam: FavoriteSynchronizationTestRunParam
-    ) {
-        val favoritesFromFlipper = runParam.flipperFavorites
-        val favoritesFromAndroid = runParam.androidFavorites
+        val favoritesFromFlipper = param.flipperFavorites
+        val favoritesFromAndroid = param.androidFavorites
         coEvery { favoritesRepository.getFavorites(any()) } returns favoritesFromFlipper
         coEvery { favoriteApi.getFavorites() } returns favoritesFromAndroid.map { filePath ->
             FlipperKey(
@@ -111,20 +109,20 @@ class FavoriteSynchronizationTest(
             favoritesRepository.applyDiff(
                 flipperKeyStorage = eq(flipperStorage),
                 oldFavorites = eq(favoritesFromFlipper),
-                favoritesDiff = eq(runParam.expectedDiffOnFlipper)
+                favoritesDiff = eq(param.expectedDiffOnFlipper)
             )
         }
 
         coVerify {
-            favoriteApi.updateFavorites(eq(runParam.expectedFavoritesOnAndroid.map {
+            favoriteApi.updateFavorites(eq(param.expectedFavoritesOnAndroid.map {
                 FlipperKeyPath(it, false)
             }))
         }
 
         val manifestFile = manifestStorage.load()
         Assert.assertNotNull(manifestFile)
-        Assert.assertEquals(runParam.expectedFavoritesOnAndroid, manifestFile!!.favorites)
-        Assert.assertEquals(runParam.expectedFavoritesOnFlipper, manifestFile.favoritesFromFlipper)
+        Assert.assertEquals(param.expectedFavoritesOnAndroid, manifestFile!!.favorites)
+        Assert.assertEquals(param.expectedFavoritesOnFlipper, manifestFile.favoritesFromFlipper)
     }
 
     companion object {

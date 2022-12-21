@@ -63,14 +63,14 @@ class FavoriteSynchronizationImpl @Inject constructor(
             diffForFlipper
         ) // Update on Flipper
         val resultFavoritesList = mergedWithManifestList(combinedDiff)
-        favoriteApi.updateFavorites(
+        val favoritesOnAndroid = favoriteApi.updateFavorites(
             resultFavoritesList.map {
                 FlipperKeyPath(path = it, deleted = false)
             }
         )
 
         manifestRepository.updateManifest(
-            favorites = resultFavoritesList,
+            favorites = favoritesOnAndroid.map { it.path },
             favoritesOnFlipper = newFavoritesOnFlipper
         )
     }
