@@ -1,7 +1,6 @@
 package com.flipperdevices.share.cryptostorage.helper
 
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.share.model.FlipperKeyNotFoundException
 import com.squareup.anvil.annotations.ContributesBinding
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -9,6 +8,7 @@ import io.ktor.client.request.get
 import io.ktor.client.request.put
 import io.ktor.http.HttpStatusCode
 import io.ktor.util.InternalAPI
+import java.io.FileNotFoundException
 import java.net.UnknownServiceException
 import javax.inject.Inject
 
@@ -45,7 +45,7 @@ class StorageHelper @Inject constructor(
 
         when (response.status) {
             HttpStatusCode.OK -> {}
-            HttpStatusCode.NotFound -> throw FlipperKeyNotFoundException()
+            HttpStatusCode.NotFound -> throw FileNotFoundException()
             else -> throw UnknownServiceException("")
         }
 

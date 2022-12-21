@@ -18,12 +18,12 @@ import com.flipperdevices.inappnotification.api.model.InAppNotification
 import com.flipperdevices.keyedit.api.KeyEditApi
 import com.flipperdevices.keyedit.api.NotSavedFlipperKey
 import com.flipperdevices.keyedit.api.toNotSavedFlipperFile
-import com.flipperdevices.share.model.FlipperKeyNotFoundException
 import com.flipperdevices.share.receive.R
 import com.flipperdevices.share.receive.di.KeyReceiveComponent
 import com.flipperdevices.share.receive.model.ReceiveState
 import com.flipperdevices.share.receive.model.ReceiverError
 import com.github.terrakok.cicerone.Router
+import java.io.FileNotFoundException
 import java.net.UnknownHostException
 import java.net.UnknownServiceException
 import javax.inject.Inject
@@ -100,7 +100,7 @@ class KeyReceiveViewModel(
             is UnknownServiceException -> state.emit(
                 ReceiveState.Error(ReceiverError.CANT_CANNOT_TO_SERVER)
             )
-            is FlipperKeyNotFoundException -> state.emit(
+            is FileNotFoundException -> state.emit(
                 ReceiveState.Error(ReceiverError.EXPIRED_LINK)
             )
             else -> ReceiveState.Error(ReceiverError.INVALID_FILE_FORMAT)
