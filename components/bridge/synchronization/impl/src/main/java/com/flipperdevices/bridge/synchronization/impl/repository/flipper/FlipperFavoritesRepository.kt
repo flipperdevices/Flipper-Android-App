@@ -22,7 +22,7 @@ interface FlipperFavoritesRepository {
         flipperKeyStorage: FlipperKeyStorage,
         oldFavorites: List<FlipperFilePath>,
         favoritesDiff: List<KeyDiff>
-    )
+    ): List<FlipperFilePath>
 }
 
 @ContributesBinding(TaskGraph::class, FlipperFavoritesRepository::class)
@@ -62,7 +62,7 @@ class FlipperFavoritesRepositoryImpl @Inject constructor() :
         flipperKeyStorage: FlipperKeyStorage,
         oldFavorites: List<FlipperFilePath>,
         favoritesDiff: List<KeyDiff>
-    ) {
+    ): List<FlipperFilePath> {
         val resultFavoritesList = ArrayList(oldFavorites)
         for (diff in favoritesDiff) {
             when (diff.action) {
@@ -78,5 +78,6 @@ class FlipperFavoritesRepositoryImpl @Inject constructor() :
             FAVORITES_PATH,
             FlipperKeyContent.RawData(newFavoritesFile.toByteArray())
         )
+        return resultFavoritesList
     }
 }

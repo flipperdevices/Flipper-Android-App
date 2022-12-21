@@ -48,15 +48,16 @@ class FavoriteSynchronizationImpl @Inject constructor(
         val combinedDiff = KeyDiffCombiner.combineKeyDiffs(
             diffWithManifestAndFlipper,
             diffWithManifestAndAndroid
-        )
+        ).sortedBy { it.action }
         info { "Favorites diff is $combinedDiff" }
 
         if (combinedDiff.isEmpty()) {
             return
         }
 
-        val diffForFlipper = combinedDiff.filter { it.source == DiffSource.ANDROID }
-        favoritesRepository.applyDiff(
+        val diffForFlipper = combinedDiff
+            .filter { it.source == DiffSource.ANDROID }
+        val newFavoritesOnFlipper = favoritesRepository.applyDiff(
             flipperStorage,
             favoritesFromFlipper,
             diffForFlipper
@@ -70,7 +71,7 @@ class FavoriteSynchronizationImpl @Inject constructor(
 
         manifestRepository.updateManifest(
             favorites = resultFavoritesList,
-            favoritesOnFlipper = favoritesFromFlipper
+            favoritesOnFlipper = newFavoritesOnFlipper
         )
     }
 
