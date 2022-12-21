@@ -18,7 +18,6 @@ dependencies {
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.pbutils)
-    implementation(libs.protobuf.jvm)
     implementation(projects.components.bridge.service.api)
     implementation(libs.ble.common)
 
