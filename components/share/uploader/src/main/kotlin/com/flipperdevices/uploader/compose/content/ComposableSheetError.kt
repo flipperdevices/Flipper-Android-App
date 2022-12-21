@@ -18,11 +18,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.painterResourceByKey
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.share.uploader.R
 import com.flipperdevices.uploader.models.ShareError
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 internal fun ComposableSheetError(
@@ -71,7 +71,7 @@ internal fun ComposableSheetError(
 private fun getTitleByShareError(typeError: ShareError): Int {
     return when (typeError) {
         ShareError.NO_INTERNET_CONNECTION -> R.string.share_error_no_internet_title
-        ShareError.CANT_CANNOT_TO_SERVER -> R.string.share_error_server_title
+        ShareError.CANT_CONNECT_TO_SERVER -> R.string.share_error_server_title
         ShareError.OTHER -> R.string.share_error_other_title
     }
 }
@@ -80,7 +80,7 @@ private fun getTitleByShareError(typeError: ShareError): Int {
 private fun getDescriptionByShareError(typeError: ShareError): Int {
     return when (typeError) {
         ShareError.NO_INTERNET_CONNECTION -> R.string.share_error_no_internet_desc
-        ShareError.CANT_CANNOT_TO_SERVER -> R.string.share_error_server_desc
+        ShareError.CANT_CONNECT_TO_SERVER -> R.string.share_error_server_desc
         ShareError.OTHER -> R.string.share_error_other_desc
     }
 }
@@ -91,12 +91,12 @@ private fun getImageByShareError(typeError: ShareError): Int {
     return if (isSystemInDarkTheme()) {
         when (typeError) {
             ShareError.NO_INTERNET_CONNECTION -> DesignSystem.drawable.ic_no_internet_dark
-            ShareError.CANT_CANNOT_TO_SERVER -> DesignSystem.drawable.ic_server_error_dark
+            ShareError.CANT_CONNECT_TO_SERVER -> DesignSystem.drawable.ic_server_error_dark
             ShareError.OTHER -> DesignSystem.drawable.ic_warning_triangle
         }
     } else when (typeError) {
         ShareError.NO_INTERNET_CONNECTION -> DesignSystem.drawable.ic_no_internet
-        ShareError.CANT_CANNOT_TO_SERVER -> DesignSystem.drawable.ic_server_error
+        ShareError.CANT_CONNECT_TO_SERVER -> DesignSystem.drawable.ic_server_error
         ShareError.OTHER -> DesignSystem.drawable.ic_warning_triangle
     }
 }

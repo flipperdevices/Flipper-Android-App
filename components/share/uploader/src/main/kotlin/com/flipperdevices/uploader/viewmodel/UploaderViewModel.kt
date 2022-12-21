@@ -19,14 +19,14 @@ import com.flipperdevices.uploader.api.EXTRA_KEY_PATH
 import com.flipperdevices.uploader.models.ShareContent
 import com.flipperdevices.uploader.models.ShareError
 import com.flipperdevices.uploader.models.ShareState
-import java.net.UnknownHostException
-import java.net.UnknownServiceException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import tangle.inject.TangleParam
 import tangle.viewmodel.VMInject
+import java.net.UnknownHostException
+import java.net.UnknownServiceException
 
 private const val SHORT_LINK_SIZE = 200
 
@@ -139,7 +139,7 @@ class UploaderViewModel @VMInject constructor(
             error(exception) { "Error on upload $flipperKey to server" }
             val error = when (exception) {
                 is UnknownHostException -> ShareError.NO_INTERNET_CONNECTION
-                is UnknownServiceException -> ShareError.CANT_CANNOT_TO_SERVER
+                is UnknownServiceException -> ShareError.CANT_CONNECT_TO_SERVER
                 else -> ShareError.OTHER
             }
             _state.emit(ShareState.Error(typeError = error))

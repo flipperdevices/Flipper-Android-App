@@ -23,15 +23,15 @@ import com.flipperdevices.share.receive.di.KeyReceiveComponent
 import com.flipperdevices.share.receive.model.ReceiveState
 import com.flipperdevices.share.receive.model.ReceiverError
 import com.github.terrakok.cicerone.Router
-import java.io.FileNotFoundException
-import java.net.UnknownHostException
-import java.net.UnknownServiceException
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.io.FileNotFoundException
+import java.net.UnknownHostException
+import java.net.UnknownServiceException
+import javax.inject.Inject
 
 private const val NOTIFICATION_DURATION_MS = 3 * 1000L
 
@@ -98,7 +98,7 @@ class KeyReceiveViewModel(
                 ReceiveState.Error(ReceiverError.NO_INTERNET_CONNECTION)
             )
             is UnknownServiceException -> state.emit(
-                ReceiveState.Error(ReceiverError.CANT_CANNOT_TO_SERVER)
+                ReceiveState.Error(ReceiverError.CANT_CONNECT_TO_SERVER)
             )
             is FileNotFoundException -> state.emit(
                 ReceiveState.Error(ReceiverError.EXPIRED_LINK)
