@@ -133,10 +133,10 @@ class SynchronizationTaskImpl(
             )
 
         val keysHashes = taskComponent.keysSynchronization.syncKeys(onStateUpdate)
-        val favorites = taskComponent.favoriteSynchronization.syncFavorites()
+        taskComponent.favoriteSynchronization.syncFavorites()
 
         // End synchronization keys
-        taskComponent.manifestRepository.saveManifest(keysHashes, favorites)
+        taskComponent.manifestRepository.updateManifest(keysHashes)
         taskComponent.synchronizationProvider.markedAsFinish()
 
         try {

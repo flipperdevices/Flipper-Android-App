@@ -17,7 +17,7 @@ import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
 interface FavoriteSynchronization {
-    suspend fun syncFavorites(): List<FlipperFilePath>
+    suspend fun syncFavorites()
 }
 
 @ContributesBinding(TaskGraph::class, FavoriteSynchronization::class)
@@ -29,20 +29,20 @@ class FavoriteSynchronizationImpl @Inject constructor(
 ) : FavoriteSynchronization, LogTagProvider {
     override val TAG = "FavoriteSynchronization"
 
-    override suspend fun syncFavorites(): List<FlipperFilePath> {
+    override suspend fun syncFavorites() {
         val favoritesFromFlipper = favoritesRepository.getFavorites(flipperStorage)
         val favoritesFromAndroid = favoriteApi.getFavorites().map { it.path }
         val diffWithManifestAndFlipper = manifestRepository
-            .compareFavoritesWithManifest(favoritesFromFlipper, DiffSource.FLIPPER)
+            .compareFlipperFavoritesWithManifest(favoritesFromFlipper)
         val diffWithManifestAndAndroid = manifestRepository
-            .compareFavoritesWithManifest(favoritesFromAndroid, DiffSource.ANDROID)
+            .compareFavoritesWithManifest(favoritesFromAndroid)
 
         info {
             "Receive favorites data. " +
-                "Flipper: ${favoritesFromFlipper.size} " +
-                "(Diff - ${diffWithManifestAndFlipper.size}). " +
-                "Android: ${favoritesFromAndroid.size} " +
-                "(Diff - ${diffWithManifestAndAndroid.size})"
+                    "Flipper: ${favoritesFromFlipper.size} " +
+                    "(Diff - ${diffWithManifestAndFlipper.size}). " +
+                    "Android: ${favoritesFromAndroid.size} " +
+                    "(Diff - ${diffWithManifestAndAndroid.size})"
         }
 
         val combinedDiff = KeyDiffCombiner.combineKeyDiffs(
@@ -52,7 +52,7 @@ class FavoriteSynchronizationImpl @Inject constructor(
         info { "Favorites diff is $combinedDiff" }
 
         if (combinedDiff.isEmpty()) {
-            return favoritesFromFlipper
+            return
         }
 
         val diffForFlipper = combinedDiff.filter { it.source == DiffSource.ANDROID }
@@ -67,8 +67,6 @@ class FavoriteSynchronizationImpl @Inject constructor(
                 FlipperKeyPath(path = it, deleted = false)
             }
         )
-
-        return resultFavoritesList
     }
 
     private suspend fun mergedWithManifestList(combinedDiff: List<KeyDiff>): List<FlipperFilePath> {

@@ -1,0 +1,35 @@
+{
+  "keys": [
+    {
+      "key_path": {
+        "folder": "ibutton",
+        "name": "Cyfral.ibtn"
+      },
+      "hash": "bc49362f001c74332b4ac8a4efa8a897"
+    },
+    {
+      "key_path": {
+        "folder": "ibutton",
+        "name": "Dallas.ibtn"
+      },
+      "hash": "3db7a8948e546f4d5a44027b3f17e0c0"
+    },
+    {
+      "key_path": {
+        "folder": "infrared",
+        "name": "Ac_un.ir"
+      },
+      "hash": "f7a77047bbf8895ae2db6ce1b031cd34"
+    }
+  ],
+  "favorites": [
+    {
+      "folder": "lfrfid",
+      "name": "Pines.rfid"
+    },
+    {
+      "folder": "nfc",
+      "name": "Gudauri.nfc"
+    }
+  ]
+}
