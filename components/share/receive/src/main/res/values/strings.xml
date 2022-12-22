@@ -13,4 +13,8 @@
     <string name="receive_error_server_desc">Unable to download this key</string>
     <string name="receive_error_other_title">Unable to import key</string>
     <string name="receive_error_other_desc">An error occurred while import key</string>
+    <string name="receive_invalid_file_format">Invalid File Format</string>
+    <string name="receive_invalid_file_format_desc">Unable to import this file</string>
+    <string name="receive_invalid_expired_link">Expired Link</string>
+    <string name="receive_invalid_expired_link_desc">Unable to import file from this link</string>
 </resources>

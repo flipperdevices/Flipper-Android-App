@@ -23,13 +23,13 @@ import com.flipperdevices.core.ui.ktx.painterResourceByKey
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.share.api.ShareContentError
 import com.flipperdevices.share.receive.R
 import com.flipperdevices.share.receive.composable.component.ComposableKeySaveBar
+import com.flipperdevices.share.receive.model.ReceiverError
 
 @Composable
 fun ComposableKeyErrorScreen(
-    typeError: ShareContentError,
+    typeError: ReceiverError,
     onCancel: () -> Unit,
     onRetry: () -> Unit
 ) {
@@ -40,7 +40,7 @@ fun ComposableKeyErrorScreen(
 }
 
 @Composable
-private fun ComposableErrorContent(typeError: ShareContentError, onRetry: () -> Unit) {
+private fun ComposableErrorContent(typeError: ReceiverError, onRetry: () -> Unit) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -61,52 +61,67 @@ private fun ComposableErrorContent(typeError: ShareContentError, onRetry: () -> 
                 color = LocalPallet.current.text30
             )
         )
-        Text(
-            modifier = Modifier
-                .padding(top = 6.dp)
-                .clickable(
-                    indication = rememberRipple(),
-                    onClick = onRetry,
-                    interactionSource = remember { MutableInteractionSource() }
-                ),
-            text = stringResource(R.string.receive_retry_btn),
-            style = LocalTypography.current.buttonM16.copy(
-                color = LocalPallet.current.accentSecond
+
+        val isDisplayRetry = isCanUserRetryImportKey(typeError)
+        if (isDisplayRetry) {
+            Text(
+                modifier = Modifier
+                    .padding(top = 6.dp)
+                    .clickable(
+                        indication = rememberRipple(),
+                        onClick = onRetry,
+                        interactionSource = remember { MutableInteractionSource() }
+                    ),
+                text = stringResource(R.string.receive_retry_btn),
+                style = LocalTypography.current.buttonM16.copy(
+                    color = LocalPallet.current.accentSecond
+                )
             )
-        )
+        }
     }
 }
 
 @StringRes
-private fun getTitleByShareError(typeError: ShareContentError): Int {
+private fun getTitleByShareError(typeError: ReceiverError): Int {
     return when (typeError) {
-        ShareContentError.NO_INTERNET -> R.string.receive_no_internet_title
-        ShareContentError.SERVER_ERROR -> R.string.receive_error_server_title
-        ShareContentError.OTHER -> R.string.receive_error_other_title
+        ReceiverError.NO_INTERNET_CONNECTION -> R.string.receive_no_internet_title
+        ReceiverError.CANT_CONNECT_TO_SERVER -> R.string.receive_error_server_title
+        ReceiverError.INVALID_FILE_FORMAT -> R.string.receive_invalid_file_format
+        ReceiverError.EXPIRED_LINK -> R.string.receive_invalid_expired_link
     }
 }
 
 @StringRes
-private fun getDescriptionByShareError(typeError: ShareContentError): Int {
+private fun getDescriptionByShareError(typeError: ReceiverError): Int {
     return when (typeError) {
-        ShareContentError.NO_INTERNET -> R.string.receive_error_server_title
-        ShareContentError.SERVER_ERROR -> R.string.receive_error_server_desc
-        ShareContentError.OTHER -> R.string.receive_error_other_desc
+        ReceiverError.NO_INTERNET_CONNECTION -> R.string.receive_error_server_title
+        ReceiverError.CANT_CONNECT_TO_SERVER -> R.string.receive_error_server_desc
+        ReceiverError.INVALID_FILE_FORMAT -> R.string.receive_invalid_file_format_desc
+        ReceiverError.EXPIRED_LINK -> R.string.receive_invalid_expired_link_desc
     }
 }
 
 @DrawableRes
 @Composable
-private fun getImageByShareError(typeError: ShareContentError): Int {
+private fun getImageByShareError(typeError: ReceiverError): Int {
     return if (isSystemInDarkTheme()) {
         when (typeError) {
-            ShareContentError.NO_INTERNET -> DesignSystem.drawable.ic_no_internet_dark
-            ShareContentError.SERVER_ERROR -> DesignSystem.drawable.ic_server_error_dark
-            ShareContentError.OTHER -> DesignSystem.drawable.ic_warning_triangle
+            ReceiverError.NO_INTERNET_CONNECTION -> DesignSystem.drawable.ic_no_internet_dark
+            ReceiverError.CANT_CONNECT_TO_SERVER -> DesignSystem.drawable.ic_server_error_dark
+            ReceiverError.INVALID_FILE_FORMAT -> DesignSystem.drawable.ic_file_invalid_format
+            ReceiverError.EXPIRED_LINK -> DesignSystem.drawable.ic_expired_link
         }
     } else when (typeError) {
-        ShareContentError.NO_INTERNET -> DesignSystem.drawable.ic_no_internet
-        ShareContentError.SERVER_ERROR -> DesignSystem.drawable.ic_server_error
-        ShareContentError.OTHER -> DesignSystem.drawable.ic_warning_triangle
+        ReceiverError.NO_INTERNET_CONNECTION -> DesignSystem.drawable.ic_no_internet
+        ReceiverError.CANT_CONNECT_TO_SERVER -> DesignSystem.drawable.ic_server_error
+        ReceiverError.INVALID_FILE_FORMAT -> DesignSystem.drawable.ic_file_invalid_format
+        ReceiverError.EXPIRED_LINK -> DesignSystem.drawable.ic_expired_link
+    }
+}
+
+private fun isCanUserRetryImportKey(typeError: ReceiverError): Boolean {
+    return when (typeError) {
+        ReceiverError.NO_INTERNET_CONNECTION, ReceiverError.CANT_CONNECT_TO_SERVER -> true
+        ReceiverError.INVALID_FILE_FORMAT, ReceiverError.EXPIRED_LINK -> false
     }
 }
