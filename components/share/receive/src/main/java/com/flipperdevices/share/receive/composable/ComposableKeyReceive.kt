@@ -19,9 +19,9 @@ fun ComposableKeyReceive(keyScreenApi: KeyScreenApi) {
     val state by viewModel.getState().collectAsState()
 
     val route = LocalRouter.current
-    val onEdit = remember { { viewModel.onEdit(route) } }
-    val onFinish = remember { { viewModel.onFinish(route) } }
-    val onCancel = remember { { route.exit() } }
+    val onEdit = remember(viewModel) { { viewModel.onEdit(route) } }
+    val onFinish = remember(viewModel) { { viewModel.onFinish(route) } }
+    val onCancel = { route.exit() }
 
     when (val localState = state) {
         is ReceiveState.Pending -> ComposableKeySaveScreen(
