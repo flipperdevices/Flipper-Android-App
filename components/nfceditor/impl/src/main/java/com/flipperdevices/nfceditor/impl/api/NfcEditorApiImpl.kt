@@ -10,6 +10,7 @@ import com.github.terrakok.cicerone.androidx.FragmentScreen
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
+@Suppress("MagicNumber")
 private val SUPPORTED_NFC_FORMATS = arrayOf(2, 3)
 private const val SUPPORTED_NFC_TYPE = "Mifare Classic"
 
