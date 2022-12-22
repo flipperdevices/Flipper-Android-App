@@ -4,6 +4,7 @@ pluginManagement {
     repositories {
         google()
         gradlePluginPortal()
+        maven("https://minecraft.glitchless.ru/repo/")
         maven("https://jitpack.io")
     }
 }
@@ -12,6 +13,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         gradlePluginPortal()
+        maven("https://minecraft.glitchless.ru/repo/")
         maven("https://jitpack.io")
     }
 
