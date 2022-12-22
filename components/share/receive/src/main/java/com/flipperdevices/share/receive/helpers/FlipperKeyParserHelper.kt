@@ -1,4 +1,4 @@
-package com.flipperdevices.share.receive.viewmodels
+package com.flipperdevices.share.receive.helpers
 
 import com.flipperdevices.bridge.dao.api.model.FlipperFile
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
@@ -7,7 +7,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.share.api.CryptoStorageApi
-import com.flipperdevices.share.receive.model.FlipperKeyParseException
+import com.flipperdevices.share.receive.models.FlipperKeyParseException
 import javax.inject.Inject
 
 class FlipperKeyParserHelper @Inject constructor(

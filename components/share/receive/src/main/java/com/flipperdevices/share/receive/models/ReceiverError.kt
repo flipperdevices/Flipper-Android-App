@@ -1,4 +1,4 @@
-package com.flipperdevices.share.receive.model
+package com.flipperdevices.share.receive.models
 
 enum class ReceiverError {
     NO_INTERNET_CONNECTION,

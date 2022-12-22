@@ -1,4 +1,4 @@
-package com.flipperdevices.share.receive.model
+package com.flipperdevices.share.receive.models
 
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
@@ -8,12 +8,8 @@ sealed class ReceiveState {
 
     data class Pending(
         val flipperKey: FlipperKey,
-        val parsed: FlipperKeyParsed
-    ) : ReceiveState()
-
-    data class Saving(
-        val flipperKey: FlipperKey,
-        val parsed: FlipperKeyParsed
+        val parsed: FlipperKeyParsed,
+        val isSaving: Boolean = false
     ) : ReceiveState()
 
     object Finished : ReceiveState()
