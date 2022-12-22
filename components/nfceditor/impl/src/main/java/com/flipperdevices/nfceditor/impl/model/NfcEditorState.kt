@@ -37,7 +37,7 @@ data class NfcEditorState(
                     content
                 )
             } else nfcEditorCardInfo
-        )
+        ).let { if (location.isUid(nfcEditorCardInfo)) it.invalidateBcc() else it }
     }
 
     operator fun get(location: NfcEditorCellLocation): NfcEditorCell {
@@ -47,6 +47,25 @@ data class NfcEditorState(
         }
         val currentSector = selectableSector[location.sectorIndex]
         return currentSector.lines[location.lineIndex].cells[location.columnIndex]
+    }
+
+    private fun invalidateBcc(): NfcEditorState {
+        val uidSize = nfcEditorCardInfo?.fields?.get(CardFieldInfo.UID)?.size ?: return this
+        val uidCells = sectors.firstOrNull()?.lines?.firstOrNull()?.cells?.take(uidSize)
+            ?: return this
+        val bcc = uidCells.map { if (it.content.length == 1) "${it.content}0" else it.content }
+            .map { it.toInt(radix = 16) }.reduce { acc, i -> acc xor i }
+        var bccCellContent = bcc.toString(radix = 16).uppercase()
+        if (bccCellContent.length < 2) {
+            bccCellContent = "0$bccCellContent"
+        }
+        val location = NfcEditorCellLocation(
+            field = EditorField.DATA,
+            sectorIndex = 0,
+            lineIndex = 0,
+            columnIndex = uidSize
+        )
+        return copyWithChangedContent(location, bccCellContent)
     }
 }
 
