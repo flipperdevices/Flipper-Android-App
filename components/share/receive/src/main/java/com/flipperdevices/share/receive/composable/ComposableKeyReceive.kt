@@ -1,7 +1,6 @@
 package com.flipperdevices.share.receive.composable
 
 import androidx.compose.runtime.Composable
-import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.keyscreen.api.KeyScreenApi
 import com.flipperdevices.share.receive.composable.screen.ComposableKeyScreenProgress
 import com.flipperdevices.share.receive.model.ReceiveState
@@ -14,15 +13,16 @@ fun ComposableKeyReceive(
     viewModel: KeyReceiveViewModel,
     onCancel: () -> Unit = {}
 ) {
-    val route = LocalRouter.current
     when (state) {
-        ReceiveState.NotStarted -> ComposableKeyScreenProgress()
+        ReceiveState.NotStarted -> ComposableKeyScreenProgress(
+            keyScreenApi = keyScreenApi,
+            onCancel = onCancel
+        )
         is ReceiveState.Pending -> ComposableKeySaveScreen(
             keyScreenApi = keyScreenApi,
             keyParsed = state.parsed,
             savingInProgress = false,
             onSave = viewModel::onSave,
-            onEdit = { viewModel.onEdit(route) },
             onCancel = onCancel
         )
         is ReceiveState.Saving -> ComposableKeySaveScreen(
@@ -30,8 +30,7 @@ fun ComposableKeyReceive(
             keyParsed = state.parsed,
             savingInProgress = true,
             onCancel = onCancel,
-            onSave = {},
-            onEdit = {}
+            onSave = {}
         )
         is ReceiveState.Error -> ComposableKeyErrorScreen(
             typeError = state.type,

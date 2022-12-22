@@ -1,6 +1,7 @@
 package com.flipperdevices.core.ui.ktx
 
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.unit.dp
@@ -21,3 +22,19 @@ fun Modifier.placeholderConnecting(shape: Int = 4) = composed {
         )
     )
 }
+
+fun Modifier.placeholder(shape: Int = 4) = composed {
+    if (LocalPlaceholder.current) this.then(
+        placeholder(
+            visible = true,
+            shape = RoundedCornerShape(shape.dp),
+            color = LocalPallet.current.placeholder.copy(alpha = 0.2f),
+            highlight = PlaceholderHighlight.shimmer(
+                highlightColor = LocalPallet.current.placeholder
+            )
+        )
+    )
+    else this
+}
+
+val LocalPlaceholder = compositionLocalOf { false }

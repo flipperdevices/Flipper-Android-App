@@ -32,6 +32,7 @@ fun ComposableFlipperButton(
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(size = 30.dp))
+            .placeholder()
             .background(LocalPallet.current.accentSecond)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
