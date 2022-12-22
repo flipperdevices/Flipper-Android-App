@@ -20,12 +20,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.painterResourceByKey
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.share.receive.R
 import com.flipperdevices.share.receive.composable.component.ComposableKeySaveBar
 import com.flipperdevices.share.receive.model.ReceiverError
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableKeyErrorScreen(
