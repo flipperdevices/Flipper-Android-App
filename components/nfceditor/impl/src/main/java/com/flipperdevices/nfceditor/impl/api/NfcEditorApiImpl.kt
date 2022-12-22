@@ -22,7 +22,7 @@ class NfcEditorApiImpl @Inject constructor() : NfcEditorApi {
 
     override fun isSupportedByNfcEditor(parsedKey: FlipperKeyParsed): Boolean {
         return parsedKey is FlipperKeyParsed.NFC &&
-                SUPPORTED_NFC_FORMATS.contains(parsedKey.version) &&
-                parsedKey.deviceType == SUPPORTED_NFC_TYPE
+            SUPPORTED_NFC_FORMATS.contains(parsedKey.version) &&
+            parsedKey.deviceType == SUPPORTED_NFC_TYPE
     }
 }
