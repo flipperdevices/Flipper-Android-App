@@ -3,7 +3,6 @@ package com.flipperdevices.share.receive.composable
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.keyscreen.api.KeyScreenApi
 import com.flipperdevices.share.receive.composable.screens.ComposableKeyErrorScreen
@@ -19,8 +18,8 @@ fun ComposableKeyReceive(keyScreenApi: KeyScreenApi) {
     val state by viewModel.getState().collectAsState()
 
     val route = LocalRouter.current
-    val onEdit = remember(viewModel) { { viewModel.onEdit(route) } }
-    val onFinish = remember(viewModel) { { viewModel.onFinish(route) } }
+    val onEdit = { viewModel.onEdit(route) }
+    val onFinish = { viewModel.onFinish(route) }
     val onCancel = { route.exit() }
 
     when (val localState = state) {
