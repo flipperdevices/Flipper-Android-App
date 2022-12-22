@@ -2,9 +2,10 @@
 
 # 1.3.1 - In progress
 
+- [Feature] Placeholder view on receive key
 - [Feature] Add forbidden frequency dialog
 - [Feature] Rework all system dialog to custom
-- [Feature] New share flow(with `sf#path=()&id=()key=`) + metric
+- [Feature] New share flow(with `sf#path=()&id=()key=`) + metric + error handling
 - [Feature] Share shadow file if that exist on NFC
 - [Feature] Add application catalog button
 - [Feature] Add application catalog list with sorted button
@@ -15,7 +16,9 @@
 - [FIX] Uploading share errors
 - [FIX] Display by white color meta data on NFC card
 - [FIX] Scrim status bar and design changes on bottom sheet
+- [FIX] Fix crash when delete from trash key with favorites
 - [CI] Git submodule `Flipper Protobuf`
+- [CI] Fix local build of application
 
 # 1.3.0
 

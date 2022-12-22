@@ -11,6 +11,7 @@ import com.flipperdevices.bridge.dao.impl.AppDatabase
 import com.flipperdevices.bridge.dao.impl.api.delegates.KeyContentCleaner
 import com.flipperdevices.bridge.dao.impl.ktx.toFlipperKey
 import com.flipperdevices.bridge.dao.impl.repository.AdditionalFileDao
+import com.flipperdevices.bridge.dao.impl.repository.FavoriteDao
 import com.flipperdevices.bridge.dao.impl.repository.key.DeleteKeyDao
 import com.flipperdevices.bridge.dao.impl.repository.key.SimpleKeyDao
 import com.flipperdevices.core.di.AppGraph
@@ -32,7 +33,8 @@ class DeleteKeyApiImpl @Inject constructor(
     utilsKeyApiProvider: Provider<UtilsKeyApi>,
     cleanerProvider: Provider<KeyContentCleaner>,
     databaseProvider: Provider<AppDatabase>,
-    additionalFileDaoProvider: Provider<AdditionalFileDao>
+    additionalFileDaoProvider: Provider<AdditionalFileDao>,
+    favoriteDaoProvider: Provider<FavoriteDao>
 ) : DeleteKeyApi, LogTagProvider {
     override val TAG = "DeleteKeyApi"
 
@@ -42,6 +44,7 @@ class DeleteKeyApiImpl @Inject constructor(
     private val cleaner by cleanerProvider
     private val database by databaseProvider
     private val additionalFileDao by additionalFileDaoProvider
+    private val favoriteDao by favoriteDaoProvider
 
     override fun getDeletedKeyAsFlow(): Flow<List<FlipperKey>> {
         return deleteKeyDao.subscribeOnDeletedKeys().map { list ->
@@ -52,14 +55,23 @@ class DeleteKeyApiImpl @Inject constructor(
     override suspend fun deleteMarkedDeleted(
         keyPath: FlipperFilePath
     ) = withContext(Dispatchers.IO) {
-        deleteKeyDao.deleteMarkedDeleted(keyPath.pathToKey)
+        database.withTransaction {
+            val key = simpleKeyDao.getByPath(keyPath.pathToKey, deleted = true)
+            if (key != null) {
+                val favoriteKey = favoriteDao.getFavoriteByKeyId(key.uid)
+                if (favoriteKey != null) {
+                    favoriteDao.delete(favoriteKey)
+                }
+                deleteKeyDao.deleteMarkedDeleted(keyPath.pathToKey)
+            }
+        }
         cleaner.deleteUnusedFiles()
     }
 
     override suspend fun markDeleted(keyPath: FlipperFilePath) = withContext(Dispatchers.IO) {
         val existKey = simpleKeyDao.getByPath(keyPath.pathToKey, deleted = true)
         if (existKey != null) {
-            deleteKeyDao.deleteMarkedDeleted(keyPath.pathToKey)
+            deleteMarkedDeleted(keyPath)
         }
         deleteKeyDao.markDeleted(keyPath.pathToKey)
     }
