@@ -10,6 +10,7 @@
 - [Feature] Add application catalog list with sorted button
 - [Feature] Add categories, categories list and search
 - [Feature] Add installed, new switch, install button
+- [Feature] Add support for 3 version of NFC file
 - [CI] Bump deps
 - [FIX] Uploading share errors
 - [FIX] Display by white color meta data on NFC card
