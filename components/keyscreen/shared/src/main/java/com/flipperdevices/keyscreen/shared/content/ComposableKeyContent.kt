@@ -7,7 +7,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.ktx.placeholder
+import com.flipperdevices.core.ui.ktx.placeholderByLocalProvider
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 
@@ -18,13 +18,13 @@ private fun ComposableKeyItem(name: String, value: String) {
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Text(
-            modifier = Modifier.placeholder(),
+            modifier = Modifier.placeholderByLocalProvider(),
             text = name,
             color = LocalPallet.current.text30,
             style = LocalTypography.current.bodyR16
         )
         Text(
-            modifier = Modifier.placeholder(),
+            modifier = Modifier.placeholderByLocalProvider(),
             text = value,
             style = LocalTypography.current.bodyR16
         )

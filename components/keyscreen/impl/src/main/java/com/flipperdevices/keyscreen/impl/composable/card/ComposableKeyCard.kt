@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.core.ui.ktx.ComposableKeyType
-import com.flipperdevices.core.ui.ktx.placeholder
+import com.flipperdevices.core.ui.ktx.placeholderByLocalProvider
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.keyscreen.impl.R
@@ -78,7 +78,7 @@ fun ComposableKeyCard(
                     bottom = 12.dp,
                     start = 12.dp,
                     end = 12.dp
-                ).placeholder(),
+                ).placeholderByLocalProvider(),
                 deleteState = deleteState,
                 keyName = parsedKey.keyName,
                 onEditName = onEditName
@@ -90,7 +90,7 @@ fun ComposableKeyCard(
                         bottom = 18.dp,
                         start = 12.dp,
                         end = 12.dp
-                    ).placeholder(),
+                    ).placeholderByLocalProvider(),
                     text = notes ?: stringResource(R.string.keyscreen_card_note_empty),
                     color = LocalPallet.current.text30,
                     style = LocalTypography.current.bodyR14

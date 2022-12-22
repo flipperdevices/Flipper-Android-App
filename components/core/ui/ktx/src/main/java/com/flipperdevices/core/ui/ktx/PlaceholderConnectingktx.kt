@@ -23,17 +23,8 @@ fun Modifier.placeholderConnecting(shape: Int = 4) = composed {
     )
 }
 
-fun Modifier.placeholder(shape: Int = 4) = composed {
-    if (LocalPlaceholder.current) this.then(
-        placeholder(
-            visible = true,
-            shape = RoundedCornerShape(shape.dp),
-            color = LocalPallet.current.placeholder.copy(alpha = 0.2f),
-            highlight = PlaceholderHighlight.shimmer(
-                highlightColor = LocalPallet.current.placeholder
-            )
-        )
-    )
+fun Modifier.placeholderByLocalProvider(shape: Int = 4) = composed {
+    if (LocalPlaceholder.current) this.placeholderConnecting(shape)
     else this
 }
 
