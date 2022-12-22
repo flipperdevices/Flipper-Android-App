@@ -15,6 +15,7 @@
 - [FIX] Display by white color meta data on NFC card
 - [FIX] Scrim status bar and design changes on bottom sheet
 - [CI] Git submodule `Flipper Protobuf`
+- [CI] Fix local build of application
 
 # 1.3.0
 
