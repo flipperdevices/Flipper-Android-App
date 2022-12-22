@@ -13,7 +13,8 @@ data class FavoriteSynchronizationTestParam(
     val androidFavorites: List<FlipperFilePath> = emptyList(),
     val expectedDiffOnFlipper: List<KeyDiff>,
     val expectedFavoritesOnAndroid: List<FlipperFilePath>,
-    val expectedFavoritesOnFlipper: List<FlipperFilePath> = expectedFavoritesOnAndroid
+    val expectedFavoritesOnAndroidManifest: List<FlipperFilePath> = expectedFavoritesOnAndroid,
+    val expectedFavoritesOnFlipperManifest: List<FlipperFilePath> = expectedFavoritesOnAndroid
 )
 
 val testRuns = listOf(
@@ -127,6 +128,43 @@ val testRuns = listOf(
         expectedFavoritesOnAndroid = listOf(
             FlipperFilePath("test", "test.ibtn"),
             FlipperFilePath("test", "test2.nfc")
+        )
+    ),
+    FavoriteSynchronizationTestParam(
+        flipperFavorites = listOf(
+            FlipperFilePath("test", "test.ibtn"),
+            FlipperFilePath("test", "test2.nfc"),
+            FlipperFilePath("test", "test3.nfc"),
+            FlipperFilePath("test", "notExistedKey2.nfc"),
+            FlipperFilePath("test", "test4.nfc"),
+            FlipperFilePath("test", "notExistedKey3.nfc"),
+            FlipperFilePath("test", "test5.nfc")
+        ),
+        expectedDiffOnFlipper = emptyList(),
+        expectedFavoritesOnAndroid = listOf(
+            FlipperFilePath("test", "test.ibtn"),
+            FlipperFilePath("test", "test2.nfc"),
+            FlipperFilePath("test", "test3.nfc"),
+            FlipperFilePath("test", "notExistedKey2.nfc"),
+            FlipperFilePath("test", "test4.nfc"),
+            FlipperFilePath("test", "notExistedKey3.nfc"),
+            FlipperFilePath("test", "test5.nfc")
+        ),
+        expectedFavoritesOnAndroidManifest = listOf(
+            FlipperFilePath("test", "test.ibtn"),
+            FlipperFilePath("test", "test2.nfc"),
+            FlipperFilePath("test", "test3.nfc"),
+            FlipperFilePath("test", "test4.nfc"),
+            FlipperFilePath("test", "test5.nfc")
+        ),
+        expectedFavoritesOnFlipperManifest = listOf(
+            FlipperFilePath("test", "test.ibtn"),
+            FlipperFilePath("test", "test2.nfc"),
+            FlipperFilePath("test", "test3.nfc"),
+            FlipperFilePath("test", "notExistedKey2.nfc"),
+            FlipperFilePath("test", "test4.nfc"),
+            FlipperFilePath("test", "notExistedKey3.nfc"),
+            FlipperFilePath("test", "test5.nfc")
         )
     )
 )

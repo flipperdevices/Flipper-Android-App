@@ -6,10 +6,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperFile
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.impl.executor.FlipperKeyStorage
-import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
-import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
 import com.flipperdevices.bridge.synchronization.impl.repository.FavoriteSynchronization
 import com.flipperdevices.bridge.synchronization.impl.repository.FavoriteSynchronizationImpl
 import com.flipperdevices.bridge.synchronization.impl.repository.flipper.FlipperFavoritesRepository
@@ -27,13 +24,8 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
-import org.junit.runner.RunWith
-import org.robolectric.ParameterizedRobolectricTestRunner
 
-@RunWith(ParameterizedRobolectricTestRunner::class)
-class FavoriteSynchronizationTest(
-    val param: FavoriteSynchronizationTestParam
-) {
+class FavoriteSynchronizationTestSingle {
     @get:Rule
     val folder = TemporaryFolder()
 
@@ -46,29 +38,9 @@ class FavoriteSynchronizationTest(
 
     @Before
     fun setUp() {
-        favoriteApi = mockk {
-            coEvery { updateFavorites(any()) } coAnswers {
-                (args[0] as List<*>).map { it as FlipperKeyPath }.filterNot {
-                    it.path.nameWithoutExtension.startsWith("notExistedKey")
-                }
-            }
-        }
+        favoriteApi = mockk()
         flipperStorage = mockk()
-        favoritesRepository = mockk {
-            coEvery { applyDiff(any(), any(), any()) } coAnswers {
-                val oldFavorites = (args[1] as List<*>).map { it as FlipperFilePath }
-                val favoritesDiff = (args[2] as List<*>).map { it as KeyDiff }
-                val resultFavoritesList = ArrayList(oldFavorites)
-                for (diff in favoritesDiff) {
-                    when (diff.action) {
-                        KeyAction.ADD -> resultFavoritesList.add(diff.newHash.keyPath)
-                        KeyAction.MODIFIED -> resultFavoritesList.add(diff.newHash.keyPath)
-                        KeyAction.DELETED -> resultFavoritesList.remove(diff.newHash.keyPath)
-                    }
-                }
-                return@coAnswers resultFavoritesList
-            }
-        }
+        favoritesRepository = mockk()
 
         val testFolder = folder.newFolder("manifest")
         val context = mockk<Context> {
@@ -86,14 +58,44 @@ class FavoriteSynchronizationTest(
     }
 
     @Test
-    fun `universal manifest test`() = runTest {
+    fun `on similar manifest nothing happes`() = runTest {
+        val manifestFavorites = listOf(
+            FlipperFilePath("test", "test.ibtn"),
+            FlipperFilePath("test", "test2.nfc"),
+            FlipperFilePath("test", "test3.nfc"),
+            FlipperFilePath("test", "test4.nfc"),
+            FlipperFilePath("test", "test5.nfc")
+        )
+        val manifestFlipper = listOf(
+            FlipperFilePath("test", "test.ibtn"),
+            FlipperFilePath("test", "test2.nfc"),
+            FlipperFilePath("test", "test3.nfc"),
+            FlipperFilePath("test", "notExistedKey2.nfc"),
+            FlipperFilePath("test", "test4.nfc"),
+            FlipperFilePath("test", "notExistedKey3.nfc"),
+            FlipperFilePath("test", "test5.nfc")
+        )
         manifestStorage.update(
-            favorites = param.initialFavoriteManifest,
-            favoritesOnFlipper = param.initialFlipperFavoriteManifest
+            favorites = manifestFavorites,
+            favoritesOnFlipper = manifestFlipper
         )
 
-        val favoritesFromFlipper = param.flipperFavorites
-        val favoritesFromAndroid = param.androidFavorites
+        val favoritesFromFlipper = listOf(
+            FlipperFilePath("test", "test.ibtn"),
+            FlipperFilePath("test", "test2.nfc"),
+            FlipperFilePath("test", "test3.nfc"),
+            FlipperFilePath("test", "notExistedKey2.nfc"),
+            FlipperFilePath("test", "test4.nfc"),
+            FlipperFilePath("test", "notExistedKey3.nfc"),
+            FlipperFilePath("test", "test5.nfc")
+        )
+        val favoritesFromAndroid = listOf(
+            FlipperFilePath("test", "test.ibtn"),
+            FlipperFilePath("test", "test2.nfc"),
+            FlipperFilePath("test", "test3.nfc"),
+            FlipperFilePath("test", "test4.nfc"),
+            FlipperFilePath("test", "test5.nfc")
+        )
         coEvery { favoritesRepository.getFavorites(any()) } returns favoritesFromFlipper
         coEvery { favoriteApi.getFavorites() } returns favoritesFromAndroid.map { filePath ->
             FlipperKey(
@@ -105,32 +107,22 @@ class FavoriteSynchronizationTest(
 
         underTest.syncFavorites()
 
-        coVerify {
+        coVerify(exactly = 0) {
             favoritesRepository.applyDiff(
-                flipperKeyStorage = eq(flipperStorage),
-                oldFavorites = eq(favoritesFromFlipper),
-                favoritesDiff = eq(param.expectedDiffOnFlipper)
+                flipperKeyStorage = any(),
+                oldFavorites = any(),
+                favoritesDiff = any()
             )
         }
 
-        coVerify {
-            favoriteApi.updateFavorites(eq(param.expectedFavoritesOnAndroid.map {
-                FlipperKeyPath(it, false)
-            }))
+        coVerify(exactly = 0) {
+            favoriteApi.updateFavorites(any())
         }
 
         val manifestFile = manifestStorage.load()
         Assert.assertNotNull(manifestFile)
-        Assert.assertEquals(param.expectedFavoritesOnAndroidManifest, manifestFile!!.favorites)
-        Assert.assertEquals(
-            param.expectedFavoritesOnFlipperManifest,
-            manifestFile.favoritesFromFlipper
-        )
+        Assert.assertEquals(manifestFavorites, manifestFile!!.favorites)
+        Assert.assertEquals(manifestFlipper, manifestFile.favoritesFromFlipper)
     }
 
-    companion object {
-        @JvmStatic
-        @ParameterizedRobolectricTestRunner.Parameters
-        fun data() = testRuns
-    }
 }
