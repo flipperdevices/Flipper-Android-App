@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.dao.api.delegates.KeyParser
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
+import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.toast
 import com.flipperdevices.core.log.LogTagProvider
@@ -17,12 +18,12 @@ import com.flipperdevices.inappnotification.api.model.InAppNotification
 import com.flipperdevices.keyedit.api.KeyEditApi
 import com.flipperdevices.keyedit.api.NotSavedFlipperKey
 import com.flipperdevices.keyedit.api.toNotSavedFlipperFile
-import com.flipperdevices.share.api.ShareContentError
 import com.flipperdevices.share.receive.R
 import com.flipperdevices.share.receive.di.KeyReceiveComponent
-import com.flipperdevices.share.receive.model.FlipperKeyParseException
 import com.flipperdevices.share.receive.model.ReceiveState
+import com.flipperdevices.share.receive.model.ReceiverError
 import com.github.terrakok.cicerone.Router
+import java.io.FileNotFoundException
 import java.net.UnknownHostException
 import java.net.UnknownServiceException
 import javax.inject.Inject
@@ -71,29 +72,39 @@ class KeyReceiveViewModel(
         internalDeeplinkFlow.onEach {
             val flipperKey = flipperKeyParserHelper.toFlipperKey(it)
             flipperKey.onSuccess { localFlipperKey ->
-                val newPath = utilsKeyApi.findAvailablePath(localFlipperKey.getKeyPath())
-                val newFlipperKey = localFlipperKey.copy(
-                    mainFile = localFlipperKey.mainFile.copy(
-                        path = newPath.path
-                    ),
-                    deleted = newPath.deleted
-                )
-                state.emit(ReceiveState.Pending(newFlipperKey, keyParser.parseKey(newFlipperKey)))
+                processSuccessfullyParseKey(localFlipperKey)
             }
             flipperKey.onFailure { exception ->
-                error(exception) { "Error on parse flipperKey" }
-                when (exception) {
-                    is FlipperKeyParseException -> state.emit(ReceiveState.Finished)
-                    is UnknownHostException -> state.emit(
-                        ReceiveState.Error(ShareContentError.NO_INTERNET)
-                    )
-                    is UnknownServiceException -> state.emit(
-                        ReceiveState.Error(ShareContentError.SERVER_ERROR)
-                    )
-                    else -> state.emit(ReceiveState.Error(ShareContentError.OTHER))
-                }
+                processFailureParseKey(exception)
             }
         }.launchIn(viewModelScope)
+    }
+
+    private suspend fun processSuccessfullyParseKey(flipperKey: FlipperKey) {
+        val newPath = utilsKeyApi.findAvailablePath(flipperKey.getKeyPath())
+        val newFlipperKey = flipperKey.copy(
+            mainFile = flipperKey.mainFile.copy(
+                path = newPath.path
+            ),
+            deleted = newPath.deleted
+        )
+        state.emit(ReceiveState.Pending(newFlipperKey, keyParser.parseKey(newFlipperKey)))
+    }
+
+    private suspend fun processFailureParseKey(exception: Throwable) {
+        error(exception) { "Error on parse flipperKey" }
+        when (exception) {
+            is UnknownHostException -> state.emit(
+                ReceiveState.Error(ReceiverError.NO_INTERNET_CONNECTION)
+            )
+            is UnknownServiceException -> state.emit(
+                ReceiveState.Error(ReceiverError.CANT_CONNECT_TO_SERVER)
+            )
+            is FileNotFoundException -> state.emit(
+                ReceiveState.Error(ReceiverError.EXPIRED_LINK)
+            )
+            else -> ReceiveState.Error(ReceiverError.INVALID_FILE_FORMAT)
+        }
     }
 
     fun getState() = state.asStateFlow()
