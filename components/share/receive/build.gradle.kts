@@ -18,6 +18,7 @@ dependencies {
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.fragment)
     implementation(projects.components.core.ui.theme)
+    implementation(projects.components.core.ui.lifecycle)
 
     implementation(projects.components.analytics.metric.api)
 
@@ -48,6 +49,9 @@ dependencies {
     // Dagger deps
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
+    implementation(libs.tangle.viewmodel.compose)
+    implementation(libs.tangle.viewmodel.api)
+    anvil(libs.tangle.viewmodel.compiler)
 
     // Testing
     testImplementation(projects.components.core.test)
