@@ -44,7 +44,7 @@ dependencies {
     // Testing
     testImplementation(projects.components.core.test)
     testImplementation(libs.junit)
-    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.mockk)
     testImplementation(libs.ktx.testing)
     testImplementation(libs.roboelectric)
     testImplementation(libs.lifecycle.test)
