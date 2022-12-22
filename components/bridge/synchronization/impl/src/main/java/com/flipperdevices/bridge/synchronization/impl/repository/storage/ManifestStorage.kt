@@ -62,7 +62,6 @@ class ManifestStorageImpl @Inject constructor(
         return@withLockResult loadInternal()
     }
 
-
     private suspend fun saveInternal(manifestFile: ManifestFile) = withContext(Dispatchers.IO) {
         if (file.exists()) {
             file.delete()

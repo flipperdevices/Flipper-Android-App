@@ -26,6 +26,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
+@Suppress("LongParameterList")
 @ContributesBinding(AppGraph::class, DeleteKeyApi::class)
 class DeleteKeyApiImpl @Inject constructor(
     deleteKeysDaoProvider: Provider<DeleteKeyDao>,

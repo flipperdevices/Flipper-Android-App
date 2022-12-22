@@ -114,9 +114,13 @@ class FavoriteSynchronizationTest(
         }
 
         coVerify {
-            favoriteApi.updateFavorites(eq(param.expectedFavoritesOnAndroid.map {
-                FlipperKeyPath(it, false)
-            }))
+            favoriteApi.updateFavorites(
+                eq(
+                    param.expectedFavoritesOnAndroid.map {
+                        FlipperKeyPath(it, false)
+                    }
+                )
+            )
         }
 
         val manifestFile = manifestStorage.load()

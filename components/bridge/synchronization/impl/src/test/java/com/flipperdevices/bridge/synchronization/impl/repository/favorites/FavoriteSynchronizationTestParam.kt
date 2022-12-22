@@ -74,7 +74,7 @@ val testRuns = listOf(
             FlipperFilePath("test", "test1.nfc"),
             FlipperFilePath("test", "test2.nfc"),
             FlipperFilePath("test", "test3.nfc"),
-            FlipperFilePath("test", "test.ibtn"),
+            FlipperFilePath("test", "test.ibtn")
         )
 
     ),

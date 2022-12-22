@@ -132,7 +132,7 @@ class ManifestRepositoryTest {
             KeyWithHash(FlipperFilePath("test", "test2.nfc"), "HASH2")
         )
         val newList = listOf(
-            KeyWithHash(FlipperFilePath("test", "test.ibtn"), "HASH"),
+            KeyWithHash(FlipperFilePath("test", "test.ibtn"), "HASH")
         )
 
         coEvery { manifestStorage.load() } returns ManifestFile(keys = existed)
@@ -157,7 +157,7 @@ class ManifestRepositoryTest {
         )
         val newList = listOf(
             KeyWithHash(FlipperFilePath("test", "test.ibtn"), "HASH"),
-            KeyWithHash(FlipperFilePath("test", "test2.nfc"), "HASH3"),
+            KeyWithHash(FlipperFilePath("test", "test2.nfc"), "HASH3")
         )
 
         coEvery { manifestStorage.load() } returns ManifestFile(keys = existed)
@@ -173,7 +173,6 @@ class ManifestRepositoryTest {
             actual
         )
     }
-
 
     @Test
     fun `compare keys combined`() = runTest {

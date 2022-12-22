@@ -22,11 +22,11 @@ interface ManifestRepository {
     ): List<KeyDiff>
 
     suspend fun compareFavoritesWithManifest(
-        favorites: List<FlipperFilePath>,
+        favorites: List<FlipperFilePath>
     ): List<KeyDiff>
 
     suspend fun compareFlipperFavoritesWithManifest(
-        favoritesOnFlipper: List<FlipperFilePath>,
+        favoritesOnFlipper: List<FlipperFilePath>
     ): List<KeyDiff>
 
     suspend fun getFavorites(): List<FlipperFilePath>?
@@ -60,7 +60,7 @@ class ManifestRepositoryImpl @Inject constructor(
     }
 
     override suspend fun compareFavoritesWithManifest(
-        favorites: List<FlipperFilePath>,
+        favorites: List<FlipperFilePath>
     ): List<KeyDiff> {
         val manifestFile = manifestStorage.load()
             ?: return favorites.map {

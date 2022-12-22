@@ -29,7 +29,7 @@ class ManifestStorageTest {
     @Before
     fun setUp() {
         testFolder = folder.newFolder("manifest")
-        val context = mockk<Context>() {
+        val context = mockk<Context> {
             every { filesDir } returns testFolder
         }
         underTest = ManifestStorageImpl(context)
@@ -60,7 +60,6 @@ class ManifestStorageTest {
         Assert.assertTrue(actual.favorites.isEmpty())
         Assert.assertTrue(actual.favoritesFromFlipper.isEmpty())
     }
-
 
     @Test
     fun `favorites manifest write`() = runTest {
@@ -100,10 +99,12 @@ class ManifestStorageTest {
                 KeyWithHash(
                     FlipperFilePath("ibutton", "Cyfral.ibtn"),
                     "bc49362f001c74332b4ac8a4efa8a897"
-                ), KeyWithHash(
+                ),
+                KeyWithHash(
                     FlipperFilePath("ibutton", "Dallas.ibtn"),
                     "3db7a8948e546f4d5a44027b3f17e0c0"
-                ), KeyWithHash(
+                ),
+                KeyWithHash(
                     FlipperFilePath("infrared", "Ac_un.ir"),
                     "f7a77047bbf8895ae2db6ce1b031cd34"
                 )
@@ -119,6 +120,4 @@ class ManifestStorageTest {
         )
         Assert.assertTrue(actual.favoritesFromFlipper.isEmpty())
     }
-
 }
-

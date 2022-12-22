@@ -133,9 +133,7 @@ class UpdateCardViewModel @VMInject constructor(
                     rpcInformation.externalStorageStats is StorageStats.Loaded
                 } else null
 
-                val deeplinkWebUpdater = if (deeplink is Deeplink.WebUpdate) {
-                    deeplink
-                } else null
+                val deeplinkWebUpdater = deeplink as? Deeplink.WebUpdate
 
                 return@combine UpdateCardHelper(
                     newUpdateChannel,

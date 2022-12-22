@@ -58,6 +58,7 @@ class FavoriteSynchronizationTestSingle {
     }
 
     @Test
+    @Suppress("LongMethod")
     fun `on similar manifest nothing happes`() = runTest {
         val manifestFavorites = listOf(
             FlipperFilePath("test", "test.ibtn"),
@@ -124,5 +125,4 @@ class FavoriteSynchronizationTestSingle {
         Assert.assertEquals(manifestFavorites, manifestFile!!.favorites)
         Assert.assertEquals(manifestFlipper, manifestFile.favoritesFromFlipper)
     }
-
 }
