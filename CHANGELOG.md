@@ -2,6 +2,7 @@
 
 # 1.3.1 - In progress
 
+- [Feature] Placeholder view on receive key
 - [Feature] Add forbidden frequency dialog
 - [Feature] Rework all system dialog to custom
 - [Feature] New share flow(with `sf#path=()&id=()key=`) + metric + error handling
