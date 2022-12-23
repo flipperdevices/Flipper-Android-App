@@ -1,8 +1,6 @@
 package com.flipperdevices.updater.card.composable
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,7 +14,6 @@ import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,6 +32,8 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.flipperdevices.core.ui.ktx.clickableNullIndication
+import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
@@ -67,11 +66,7 @@ fun ComposableUpdaterFirmwareVersionWithChoice(
         contentAlignment = Alignment.CenterEnd
     ) {
         Row(
-            modifier = Modifier.clickable(
-                indication = rememberRipple(),
-                onClick = { showMenu = true },
-                interactionSource = remember { MutableInteractionSource() }
-            ),
+            modifier = Modifier.clickableRipple { showMenu = true },
             verticalAlignment = Alignment.CenterVertically
         ) {
             if (version == null) {
@@ -138,11 +133,7 @@ fun ComposableDropMenuFirmwareBuild(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null,
-                        onClick = onDismissMenu
-                    )
+                    .clickableNullIndication(onDismissMenu)
             ) {
                 Card(
                     modifier = Modifier
@@ -166,11 +157,7 @@ fun ComposableFirmwareColumn(
         channels.forEachIndexed { index, channel ->
             Column(
                 modifier = Modifier
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = rememberRipple(),
-                        onClick = { onClickMenuItem(channel) }
-                    )
+                    .clickableRipple { onClickMenuItem(channel) }
                     .fillMaxWidth()
                     .padding(12.dp)
             ) {
