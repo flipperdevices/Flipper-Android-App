@@ -18,7 +18,7 @@ import com.flipperdevices.share.receive.composable.components.ComposableKeySaveF
 
 @Composable
 internal fun ComposableKeyInProgressScreen(keyScreenApi: KeyScreenApi, onCancel: () -> Unit) {
-    val placeholderKey = FlipperKeyParsed.Unrecognized(
+    val keyParsed = FlipperKeyParsed.Unrecognized(
         keyName = "Placeholder",
         notes = "Placeholder",
         fileType = null,
@@ -29,9 +29,9 @@ internal fun ComposableKeyInProgressScreen(keyScreenApi: KeyScreenApi, onCancel:
         ComposableKeySaveBar(onCancel)
         CompositionLocalProvider(LocalPlaceholder provides true) {
             keyScreenApi.KeyCard(
-                key = placeholderKey,
-                deleted = false,
-                modifier = Modifier.padding(start = 24.dp, end = 24.dp, bottom = 24.dp)
+                modifier = Modifier.padding(start = 24.dp, end = 24.dp, bottom = 24.dp),
+                key = keyParsed,
+                deleted = false
             )
             ComposableKeySaveFooter {
                 ComposableFlipperButton(

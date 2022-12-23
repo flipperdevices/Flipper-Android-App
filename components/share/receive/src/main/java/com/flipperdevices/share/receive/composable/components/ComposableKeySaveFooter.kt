@@ -11,12 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-internal fun ComposableKeySaveFooter(
-    modifier: Modifier = Modifier,
-    content: @Composable RowScope.() -> Unit
-) {
+internal fun ComposableKeySaveFooter(content: @Composable RowScope.() -> Unit) {
     Row(
-        modifier = modifier
+        modifier = Modifier
             .padding(horizontal = 24.dp)
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
