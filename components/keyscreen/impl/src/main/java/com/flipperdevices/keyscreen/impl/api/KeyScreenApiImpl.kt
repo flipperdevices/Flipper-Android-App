@@ -7,7 +7,6 @@ import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.keyscreen.api.KeyScreenApi
 import com.flipperdevices.keyscreen.impl.composable.card.ComposableKeyCard
-import com.flipperdevices.keyscreen.impl.composable.card.ComposablePlaceholderKeyCard
 import com.flipperdevices.keyscreen.impl.fragments.KeyScreenFragment
 import com.flipperdevices.keyscreen.impl.model.DeleteState
 import com.github.terrakok.cicerone.Screen
@@ -29,10 +28,5 @@ class KeyScreenApiImpl @Inject constructor() : KeyScreenApi {
             synchronizationState = null,
             deleteState = if (deleted) DeleteState.DELETED else DeleteState.NOT_DELETED
         )
-    }
-
-    @Composable
-    override fun KeyCardLoading(modifier: Modifier) {
-        ComposablePlaceholderKeyCard(modifier)
     }
 }

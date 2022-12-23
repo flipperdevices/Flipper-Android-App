@@ -11,7 +11,4 @@ interface KeyScreenApi {
 
     @Composable
     fun KeyCard(key: FlipperKeyParsed, deleted: Boolean, modifier: Modifier)
-
-    @Composable
-    fun KeyCardLoading(modifier: Modifier)
 }
