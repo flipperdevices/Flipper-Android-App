@@ -78,6 +78,7 @@ class KeysSynchronizationImpl @Inject constructor(
         info { "Receive diffs on Android: $diffWithAndroid" }
 
         val mergedDiff = mergeDiffs(diffWithFlipper, diffWithAndroid)
+            .sortedBy { it.action }
         val diffForFlipper = mergedDiff.filter { it.source == DiffSource.ANDROID }
         val diffForAndroid = mergedDiff.filter { it.source == DiffSource.FLIPPER }
 
