@@ -104,32 +104,17 @@ class KeyReceiveViewModel @VMInject constructor(
         }
 
         viewModelScope.launch {
-            val saveResult = receiveKeyActionHelper.saveKey(newState.flipperKey)
+            val saveKeyResult = receiveKeyActionHelper.saveKey(newState.flipperKey)
 
-            saveResult.onFailure { exception ->
+            saveKeyResult.onFailure { exception ->
                 error(exception) { "While save key ${localState.flipperKey}" }
                 getApplication<Application>().toast(R.string.receive_error_conflict)
                 state.emit(ReceiveState.Pending(localState.flipperKey, localState.parsed))
                 return@launch
             }
 
-            saveResult.onSuccess {
+            saveKeyResult.onSuccess {
                 state.emit(ReceiveState.Finished)
-            }
-        }
-    }
-
-    fun onEdit(router: Router) {
-        viewModelScope.launch {
-            when (val localState = state.value) {
-                is ReceiveState.Pending -> {
-                    receiveKeyActionHelper.editKey(
-                        flipperKey = localState.flipperKey,
-                        router = router,
-                        context = getApplication()
-                    )
-                }
-                else -> {}
             }
         }
     }

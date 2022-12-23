@@ -2,6 +2,7 @@ package com.flipperdevices.share.receive.composable.screens
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
@@ -22,8 +23,7 @@ fun ComposableKeySaveScreen(
     keyParsed: FlipperKeyParsed,
     savingInProgress: Boolean,
     onSave: () -> Unit,
-    onCancel: () -> Unit,
-    onEdit: () -> Unit
+    onCancel: () -> Unit
 ) {
     Column {
         ComposableKeySaveBar(onCancel)
@@ -32,7 +32,7 @@ fun ComposableKeySaveScreen(
             key = keyParsed,
             deleted = false
         )
-        ComposableKeySaveFooter(Modifier.padding(horizontal = 55.dp)) {
+        ComposableKeySaveFooter {
             if (savingInProgress) {
                 Box(
                     modifier = Modifier
@@ -43,12 +43,9 @@ fun ComposableKeySaveScreen(
                 }
             } else {
                 ComposableFlipperButton(
+                    modifier = Modifier.fillMaxWidth(),
                     text = stringResource(R.string.receive_save_btn),
                     onClick = onSave
-                )
-                ComposableFlipperButton(
-                    text = stringResource(R.string.receive_edit_btn),
-                    onClick = onEdit
                 )
             }
         }

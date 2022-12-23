@@ -18,7 +18,6 @@ fun ComposableKeyReceive(keyScreenApi: KeyScreenApi) {
     val state by viewModel.getState().collectAsState()
 
     val route = LocalRouter.current
-    val onEdit = { viewModel.onEdit(route) }
     val onFinish = { viewModel.onFinish(route) }
     val onCancel = { route.exit() }
 
@@ -28,7 +27,6 @@ fun ComposableKeyReceive(keyScreenApi: KeyScreenApi) {
             keyParsed = localState.parsed,
             savingInProgress = localState.isSaving,
             onSave = viewModel::onSave,
-            onEdit = onEdit,
             onCancel = onCancel
         )
         is ReceiveState.Error -> ComposableKeyErrorScreen(
