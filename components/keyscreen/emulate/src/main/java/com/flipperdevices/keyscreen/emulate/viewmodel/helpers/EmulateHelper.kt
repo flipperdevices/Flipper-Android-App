@@ -23,6 +23,7 @@ import com.flipperdevices.protobuf.app.appButtonPressRequest
 import com.flipperdevices.protobuf.app.appButtonReleaseRequest
 import com.flipperdevices.protobuf.app.appExitRequest
 import com.flipperdevices.protobuf.app.appLoadFileRequest
+import com.flipperdevices.protobuf.app.getErrorRequest
 import com.flipperdevices.protobuf.app.startRequest
 import com.flipperdevices.protobuf.main
 import com.squareup.anvil.annotations.ContributesBinding
@@ -189,14 +190,26 @@ class EmulateHelperImpl @Inject constructor() : EmulateHelper, LogTagProvider {
                 }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
             )
         )
-        if (appButtonPressResponse.commandStatus == Flipper.CommandStatus.ERROR_APP_CMD_ERROR) {
-            error { "Handle generic error on press button" }
-            throw ForbiddenFrequencyException()
+        when (appButtonPressResponse.commandStatus) {
+            Flipper.CommandStatus.OK -> {}
+            else -> {
+                val flipperError = FlipperErrorHandler().requestError(
+                    priority = FlipperRequestPriority.FOREGROUND,
+                    requestApi = requestApi
+                )
+                when (flipperError) {
+                    FlipperError.ForbiddenFrequency -> {
+                        error { "Handle generic error on press button" }
+                        throw ForbiddenFrequencyException()
+                    }
+                    else -> {
+                        error { "Failed press key with error $appButtonPressResponse" }
+                        return false
+                    }
+                }
+            }
         }
-        if (appButtonPressResponse.commandStatus != Flipper.CommandStatus.OK) {
-            error { "Failed press subghz key with error $appButtonPressResponse" }
-            return false
-        }
+
         stopEmulateTimeAllowedMs = TimeHelper.getNow() + minEmulateTime
         return true
     }
