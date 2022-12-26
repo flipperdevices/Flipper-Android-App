@@ -51,7 +51,7 @@ internal fun ComposableSheetError(
         )
         Text(
             modifier = Modifier
-                .clickableRipple(onRetry),
+                .clickableRipple(onClick = onRetry),
             text = stringResource(R.string.share_error_retry_btn),
             style = LocalTypography.current.buttonM16.copy(
                 color = LocalPallet.current.accentSecond

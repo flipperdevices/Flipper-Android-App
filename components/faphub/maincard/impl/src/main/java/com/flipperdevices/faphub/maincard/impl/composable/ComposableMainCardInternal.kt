@@ -34,7 +34,7 @@ fun ComposableMainCardInternal(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickableRipple(onClick)
+                .clickableRipple(onClick = onClick)
         ) {
             ComposableTitle()
             ComposableSuggestion(

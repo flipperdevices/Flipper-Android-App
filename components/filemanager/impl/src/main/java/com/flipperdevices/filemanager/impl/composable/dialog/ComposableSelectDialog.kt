@@ -48,7 +48,7 @@ private fun ComposableDialogOption(
     onClick: () -> Unit
 ) {
     Text(
-        modifier = Modifier.clickableRipple(onClick).then(modifier),
+        modifier = Modifier.clickableRipple(onClick = onClick).then(modifier),
         text = stringResource(textId),
         style = LocalTypography.current.titleM18
     )

@@ -18,7 +18,7 @@ fun ComposableBarSimpleText(
     var textModifier = modifier
 
     if (onClick != null) {
-        textModifier = textModifier.clickableRipple(onClick)
+        textModifier = textModifier.clickableRipple(bounded = false, onClick = onClick)
     }
 
     Text(

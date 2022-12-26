@@ -36,7 +36,7 @@ fun ComposableAppBar(
     ComposableAppBar(title, onBack) {
         Icon(
             modifier = it
-                .clickableRipple(onIconClick)
+                .clickableRipple(bounded = false, onClick = onIconClick)
                 .size(size = 24.dp),
             painter = painterResource(iconId),
             contentDescription = null,
@@ -81,7 +81,7 @@ private fun AppBarBackArrow(onBack: () -> Unit) {
     Icon(
         modifier = Modifier
             .padding(start = 14.dp, top = 8.dp, bottom = 8.dp)
-            .clickableRipple(onBack)
+            .clickableRipple(bounded = false, onClick = onBack)
             .size(size = 24.dp),
         painter = painterResource(DesignSystem.drawable.ic_back),
         contentDescription = null,

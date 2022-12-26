@@ -34,7 +34,7 @@ fun ComposableSearchingAppBar(
             modifier = Modifier
                 .padding(vertical = 12.dp, horizontal = ICON_HORIZONTAL_PADDING_DP.dp)
                 .size(ICON_SIZE.dp)
-                .clickableRipple(onBack),
+                .clickableRipple(bounded = false, onClick = onBack),
             painter = painterResource(DesignSystem.drawable.ic_back),
             contentDescription = stringResource(R.string.firstpair_search_back)
         )

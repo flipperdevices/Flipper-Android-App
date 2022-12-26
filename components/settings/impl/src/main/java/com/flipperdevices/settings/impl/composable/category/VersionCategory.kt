@@ -1,5 +1,6 @@
 package com.flipperdevices.settings.impl.composable.category
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -15,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.ktx.clickableNullIndication
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.settings.impl.R
@@ -27,7 +27,7 @@ fun VersionCategory(version: String, onActivateExpertMode: () -> Unit) {
     var howMuchClick by remember { mutableStateOf(0) }
     val versionText = "${stringResource(id = R.string.version)}: $version"
     Column(
-        modifier = Modifier.fillMaxWidth().clickableNullIndication {
+        modifier = Modifier.fillMaxWidth().clickable {
             howMuchClick++
             if (howMuchClick > EXPERT_MODE_CLICK_COUNT) {
                 onActivateExpertMode()

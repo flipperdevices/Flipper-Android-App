@@ -26,7 +26,7 @@ fun ComposableKeySmall(
     Card(
         modifier = modifier
             .padding(horizontal = 7.dp, vertical = 6.dp)
-            .clickableRipple(onOpenKey)
+            .clickableRipple(onClick = onOpenKey)
     ) {
         Column {
             Row {

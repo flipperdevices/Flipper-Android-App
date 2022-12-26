@@ -19,7 +19,7 @@ fun ComposableSearchingFooter(
 ) {
     Text(
         modifier = Modifier
-            .clickableRipple(onClickSkipConnection)
+            .clickableRipple(onClick = onClickSkipConnection)
             .padding(all = 8.dp)
             .fillMaxWidth(),
         text = stringResource(R.string.firstpair_search_skip_connection),

@@ -34,7 +34,7 @@ internal fun FlipperDialogContent(
                 modifier = Modifier
                     .padding(top = 12.dp, end = 12.dp, start = 12.dp)
                     .size(size = 24.dp)
-                    .clickableRipple(onDismissRequest),
+                    .clickableRipple(bounded = false, onClick = onDismissRequest),
                 painter = painterResource(DesignSystem.drawable.ic_close),
                 tint = LocalPallet.current.iconTint100,
                 contentDescription = stringResource(R.string.core_ui_dialog_close)

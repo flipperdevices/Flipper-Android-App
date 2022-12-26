@@ -86,7 +86,7 @@ private fun ComposableNotFoundedPhone(onInstall: () -> Unit, onCheckAgain: () ->
     Text(
         modifier = Modifier
             .padding(all = 4.dp)
-            .clickableRipple(onCheckAgain),
+            .clickableRipple(onClick = onCheckAgain),
         text = stringResource(id = R.string.check_again),
         style = LocalTypography.current.subtitleM10
     )

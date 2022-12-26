@@ -51,7 +51,7 @@ fun ArchiveProgressScreen(
         Text(
             modifier = Modifier
                 .padding(top = 14.dp)
-                .clickableRipple(onCancel),
+                .clickableRipple(onClick = onCancel),
             text = stringResource(R.string.archive_sync_cancel),
             style = LocalTypography.current.bodyM14,
             color = LocalPallet.current.accentSecond

@@ -39,7 +39,7 @@ fun SimpleElement(
         .fillMaxWidth()
     if (onClick != null) {
         rowModifier = Modifier
-            .clickableRipple(onClick)
+            .clickableRipple(onClick = onClick)
             .then(rowModifier)
     }
     Row(

@@ -21,7 +21,7 @@ fun ClickableElement(
     onClick: () -> Unit
 ) {
     Row(
-        modifier = Modifier.clickableRipple(onClick),
+        modifier = Modifier.clickableRipple(onClick = onClick),
         verticalAlignment = Alignment.CenterVertically
     ) {
         SimpleElement(

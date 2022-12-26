@@ -64,7 +64,7 @@ private fun ComposableErrorContent(typeError: ReceiverError, onRetry: () -> Unit
             Text(
                 modifier = Modifier
                     .padding(top = 6.dp)
-                    .clickableRipple(onRetry),
+                    .clickableRipple(onClick = onRetry),
                 text = stringResource(R.string.receive_retry_btn),
                 style = LocalTypography.current.buttonM16.copy(
                     color = LocalPallet.current.accentSecond

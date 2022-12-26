@@ -1,6 +1,7 @@
 package com.flipperdevices.bottombar.impl.main.compose
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bottombar.model.TabState
-import com.flipperdevices.core.ui.ktx.clickableNullIndication
 import com.flipperdevices.core.ui.ktx.tab.TabTransition
 import com.flipperdevices.core.ui.theme.LocalPallet
 
@@ -24,7 +24,7 @@ fun ComposeMaterialYouTab(
     onClick: (() -> Unit)
 ) {
     Box(
-        Modifier.clickableNullIndication(onClick),
+        Modifier.clickable(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
         Column(

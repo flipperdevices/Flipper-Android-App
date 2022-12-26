@@ -112,7 +112,7 @@ private fun CancelButton(
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickableRipple(onCancel)
+                .clickableRipple(onClick = onCancel)
                 .padding(vertical = 8.dp),
             text = stringResource(R.string.update_screen_cancel),
             textAlign = TextAlign.Center,

@@ -90,7 +90,7 @@ private fun ComposableFullInfoButton(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickableRipple(onOpenFullDeviceInfo)
+                .clickableRipple(onClick = onOpenFullDeviceInfo)
                 .padding(all = 12.dp),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically

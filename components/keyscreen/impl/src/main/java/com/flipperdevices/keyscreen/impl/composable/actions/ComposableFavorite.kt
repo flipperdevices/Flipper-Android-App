@@ -31,7 +31,7 @@ fun ComposableFavorite(
 
     Icon(
         modifier = modifier
-            .clickableRipple {
+            .clickableRipple(bounded = false) {
                 // Inverse state
                 onSwitchFavorites(favoriteState != FavoriteState.FAVORITE)
             }

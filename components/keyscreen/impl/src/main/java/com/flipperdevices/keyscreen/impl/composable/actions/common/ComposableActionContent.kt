@@ -64,7 +64,7 @@ private fun ComposableActionRowInternal(
         .fillMaxWidth()
 
     if (!isProgress && onClick != null) {
-        modifierForRow = modifierForRow.clickableRipple(onClick)
+        modifierForRow = modifierForRow.clickableRipple(onClick = onClick)
     }
     modifierForRow = modifierForRow
         .padding(horizontal = 24.dp, vertical = 10.dp)

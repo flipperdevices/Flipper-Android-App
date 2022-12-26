@@ -30,7 +30,7 @@ fun ComposableFlipperButton(
             .clip(RoundedCornerShape(size = 30.dp))
             .placeholderByLocalProvider()
             .background(LocalPallet.current.accentSecond)
-            .clickableRipple(onClick),
+            .clickableRipple(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
         Text(

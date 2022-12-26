@@ -36,7 +36,7 @@ fun NfcAttack(onOpenAttack: () -> Unit) {
     ) {
         Column(
             modifier = Modifier
-                .clickableRipple(onOpenAttack)
+                .clickableRipple(onClick = onOpenAttack)
         ) {
             Icon(
                 modifier = Modifier

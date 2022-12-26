@@ -1,6 +1,5 @@
 package com.flipperdevices.core.ui.dialog.composable.multichoice
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,6 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.dialog.R
+import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 
@@ -31,7 +31,7 @@ internal fun FlipperMultiChoiceDialogContent(
                 modifier = Modifier
                     .padding(top = 12.dp, end = 12.dp, start = 12.dp)
                     .size(size = 24.dp)
-                    .clickable {
+                    .clickableRipple(bounded = false) {
                         model.onDismissRequest
                     },
                 painter = painterResource(DesignSystem.drawable.ic_close),

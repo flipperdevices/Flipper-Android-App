@@ -59,7 +59,7 @@ private fun ComposableSearchBarInternal(
         Icon(
             modifier = Modifier
                 .padding(end = 20.dp, top = 14.dp, bottom = 14.dp)
-                .clickableRipple { onChangeText("") },
+                .clickableRipple(bounded = false) { onChangeText("") },
             painter = painterResource(DesignSystem.drawable.ic_clear),
             contentDescription = null
         )
@@ -72,7 +72,7 @@ private fun ComposableSearchBarBack(onBack: () -> Unit) {
         modifier = Modifier
             .padding(start = 24.dp, top = 14.dp, bottom = 14.dp)
             .size(size = 24.dp)
-            .clickableRipple(onBack),
+            .clickableRipple(bounded = false, onClick = onBack),
         painter = painterResource(DesignSystem.drawable.ic_back_arrow),
         contentDescription = null
     )

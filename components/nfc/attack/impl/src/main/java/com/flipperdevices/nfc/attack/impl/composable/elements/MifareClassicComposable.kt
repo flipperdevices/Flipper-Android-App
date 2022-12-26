@@ -43,7 +43,7 @@ fun MifareClassicComposable(
             val hasMfKey32Notification by nfcAttackViewModel.hasMfKey32Notification()
                 .collectAsState()
             MifareClassicMfKey32(
-                modifier = Modifier.clickableRipple(onOpenMfKey32),
+                modifier = Modifier.clickableRipple(onClick = onOpenMfKey32),
                 hasNotification = hasMfKey32Notification
             )
         }

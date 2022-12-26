@@ -34,7 +34,7 @@ fun ComposableCardTitle(
         )
         if (deleteState != DeleteState.DELETED && onEditName != null) {
             Icon(
-                modifier = Modifier.clickableRipple(onEditName),
+                modifier = Modifier.clickableRipple(onClick = onEditName),
                 painter = painterResource(DesignSystem.drawable.ic_edit_icon),
                 contentDescription = stringResource(R.string.keyscreen_edit_text)
             )

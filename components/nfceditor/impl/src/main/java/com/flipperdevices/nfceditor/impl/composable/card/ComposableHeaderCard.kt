@@ -1,5 +1,6 @@
 package com.flipperdevices.nfceditor.impl.composable.card
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.ktx.clickableNullIndication
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
@@ -40,7 +40,7 @@ fun ComposableHeaderCard(
         } else DesignSystem.drawable.ic_more
 
         Icon(
-            modifier = Modifier.clickableNullIndication(onClick),
+            modifier = Modifier.clickable(onClick = onClick),
             painter = painterResource(id = imageId),
             contentDescription = "",
             tint = LocalPallet.current.onNfcCard

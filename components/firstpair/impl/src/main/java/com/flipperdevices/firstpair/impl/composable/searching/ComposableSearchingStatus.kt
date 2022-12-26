@@ -69,7 +69,7 @@ private fun ComposableHelpButton(onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .padding(end = 10.dp)
-            .clickableRipple(onClick),
+            .clickableRipple(onClick = onClick),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(

@@ -34,7 +34,7 @@ fun ComposableKeyCard(
         modifier = modifier
             .padding(horizontal = 14.dp)
             .fillMaxWidth()
-            .clickableRipple(onCardClicked)
+            .clickableRipple(onClick = onCardClicked)
     ) {
         Column(Modifier.padding(bottom = 8.dp)) {
             ComposableKeyCardContent(

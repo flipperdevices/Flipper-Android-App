@@ -56,7 +56,7 @@ fun ComposableFapHubNewSwitch(
                 modifier = Modifier
                     .padding(top = 11.dp, bottom = 11.dp, start = 16.dp, end = 2.dp)
                     .size(20.dp)
-                    .clickableRipple(onBack),
+                    .clickableRipple(onClick = onBack),
                 painter = painterResource(com.flipperdevices.core.ui.res.R.drawable.ic_back),
                 contentDescription = null
             )
@@ -86,7 +86,7 @@ fun ComposableFapHubNewSwitch(
             modifier = Modifier
                 .padding(end = 14.dp)
                 .size(24.dp)
-                .clickableRipple(onEndClick),
+                .clickableRipple(onClick = onEndClick),
             painter = painterResource(DesignSystem.drawable.ic_search),
             contentDescription = null,
             tint = LocalPallet.current.onAppBar

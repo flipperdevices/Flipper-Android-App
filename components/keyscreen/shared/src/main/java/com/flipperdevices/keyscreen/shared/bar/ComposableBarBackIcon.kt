@@ -15,7 +15,7 @@ import com.flipperdevices.keyscreen.shared.R
 fun ComposableBarBackIcon(modifier: Modifier, onClick: (() -> Unit)? = null) {
     var clickableModifier = modifier
     if (onClick != null) {
-        clickableModifier = clickableModifier.clickableRipple(onClick)
+        clickableModifier = clickableModifier.clickableRipple(bounded = false, onClick = onClick)
     }
 
     Icon(

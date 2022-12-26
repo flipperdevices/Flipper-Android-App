@@ -1,6 +1,7 @@
 package com.flipperdevices.updater.card.composable
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -32,7 +33,6 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.flipperdevices.core.ui.ktx.clickableNullIndication
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.core.ui.res.R as DesignSystem
@@ -133,7 +133,7 @@ fun ComposableDropMenuFirmwareBuild(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .clickableNullIndication(onDismissMenu)
+                    .clickable(onClick = onDismissMenu)
             ) {
                 Card(
                     modifier = Modifier

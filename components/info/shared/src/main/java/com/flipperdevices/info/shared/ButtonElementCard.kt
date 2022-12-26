@@ -55,7 +55,7 @@ fun ButtonElementRow(
         .fillMaxWidth()
 
     if (onClick != null) {
-        rowModifier = rowModifier.clickableRipple(onClick)
+        rowModifier = rowModifier.clickableRipple(onClick = onClick)
     }
 
     val text = stringResource(titleId)

@@ -58,7 +58,7 @@ fun ComposableFirmwareUpdaterError(
 
     Text(
         modifier = Modifier
-            .clickableRipple(retryUpdate)
+            .clickableRipple(onClick = retryUpdate)
             .fillMaxWidth()
             .padding(top = 4.dp, bottom = 8.dp),
         text = stringResource(R.string.updater_card_updater_error_retry),

@@ -87,7 +87,7 @@ private fun ComposableDeletedAppBarInternal(
         horizontalArrangement = Arrangement.End
     ) {
         Icon(
-            modifier = Modifier.clickableRipple { showMenu = true },
+            modifier = Modifier.clickableRipple(bounded = false) { showMenu = true },
             imageVector = Icons.Default.MoreVert,
             contentDescription = null,
             tint = LocalPallet.current.onAppBar

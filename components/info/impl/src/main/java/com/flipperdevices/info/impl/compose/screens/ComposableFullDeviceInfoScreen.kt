@@ -76,7 +76,7 @@ private fun ComposableFullDeviceInfoScreenBar(
         Icon(
             modifier = Modifier
                 .padding(start = 14.dp, top = 8.dp, bottom = 8.dp)
-                .clickableRipple(onBack)
+                .clickableRipple(bounded = false, onClick = onBack)
                 .size(size = 24.dp),
             painter = painterResource(DesignSystem.drawable.ic_back),
             tint = LocalPallet.current.onAppBar,
@@ -95,7 +95,7 @@ private fun ComposableFullDeviceInfoScreenBar(
             Icon(
                 modifier = Modifier
                     .padding(end = 14.dp)
-                    .clickableRipple(onShare)
+                    .clickableRipple(bounded = false, onClick = onShare)
                     .size(size = 24.dp),
                 painter = painterResource(DesignSystem.drawable.ic_upload),
                 contentDescription = null,

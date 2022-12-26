@@ -20,7 +20,7 @@ fun ComposableWearSimpleEmulate(
     if (emulateProgress == null) {
         keyEmulateUiApi.ComposableEmulateButtonRaw(
             modifier = modifier,
-            buttonContentModifier = Modifier.clickableRipple(onClickEmulate),
+            buttonContentModifier = Modifier.clickableRipple(onClick = onClickEmulate),
             picture = null,
             textId = R.string.keyscreen_emulate,
             color = LocalPallet.current.actionOnFlipperEnable,
@@ -29,7 +29,7 @@ fun ComposableWearSimpleEmulate(
         )
     } else keyEmulateUiApi.ComposableEmulateButtonRaw(
         modifier = modifier,
-        buttonContentModifier = Modifier.clickableRipple(onStopEmulate),
+        buttonContentModifier = Modifier.clickableRipple(onClick = onStopEmulate),
         emulateProgress = emulateProgress,
         picture = null,
         textId = R.string.keyscreen_emulating,

@@ -18,7 +18,7 @@ fun ComposableBarCancelIcon(
 ) {
     var clickableModifier = modifier
     if (onClick != null) {
-        clickableModifier = clickableModifier.clickableRipple(onClick)
+        clickableModifier = clickableModifier.clickableRipple(bounded = false, onClick = onClick)
     }
 
     Icon(
