@@ -38,6 +38,6 @@ fun ComposableKeyReceive(keyScreenApi: KeyScreenApi) {
             keyScreenApi = keyScreenApi,
             onCancel = onCancel
         )
-        ReceiveState.Finished -> onFinish()
+        ReceiveState.Finished -> { viewModel.onFinish(route) }
     }
 }

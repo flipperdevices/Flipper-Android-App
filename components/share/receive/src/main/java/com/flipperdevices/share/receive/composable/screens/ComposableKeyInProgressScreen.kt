@@ -10,7 +10,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.core.ui.ktx.ComposableFlipperButton
-import com.flipperdevices.core.ui.ktx.LocalPlaceholder
+import com.flipperdevices.core.ui.ktx.LocalPlaceholderEnable
 import com.flipperdevices.keyscreen.api.KeyScreenApi
 import com.flipperdevices.share.receive.R
 import com.flipperdevices.share.receive.composable.components.ComposableKeySaveBar
@@ -19,15 +19,13 @@ import com.flipperdevices.share.receive.composable.components.ComposableKeySaveF
 @Composable
 internal fun ComposableKeyInProgressScreen(keyScreenApi: KeyScreenApi, onCancel: () -> Unit) {
     val keyParsed = FlipperKeyParsed.Unrecognized(
-        keyName = "Placeholder",
-        notes = "Placeholder",
-        fileType = null,
-        orderedDict = listOf("Placeholder" to "Placeholder")
+        keyName = "", notes = "",
+        fileType = null, orderedDict = listOf("" to "")
     )
 
     Column {
         ComposableKeySaveBar(onCancel)
-        CompositionLocalProvider(LocalPlaceholder provides true) {
+        CompositionLocalProvider(LocalPlaceholderEnable provides true) {
             keyScreenApi.KeyCard(
                 modifier = Modifier.padding(start = 24.dp, end = 24.dp, bottom = 24.dp),
                 key = keyParsed,
