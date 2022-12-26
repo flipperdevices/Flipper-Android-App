@@ -6,6 +6,7 @@ import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
+import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.TimeHelper
 import com.flipperdevices.core.ktx.jre.launchWithLock
@@ -17,13 +18,13 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.keyscreen.api.emulate.AlreadyOpenedAppException
 import com.flipperdevices.keyscreen.api.emulate.EmulateHelper
 import com.flipperdevices.keyscreen.api.emulate.ForbiddenFrequencyException
+import com.flipperdevices.keyscreen.emulate.model.FlipperAppError
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.app.Application
 import com.flipperdevices.protobuf.app.appButtonPressRequest
 import com.flipperdevices.protobuf.app.appButtonReleaseRequest
 import com.flipperdevices.protobuf.app.appExitRequest
 import com.flipperdevices.protobuf.app.appLoadFileRequest
-import com.flipperdevices.protobuf.app.getErrorRequest
 import com.flipperdevices.protobuf.app.startRequest
 import com.flipperdevices.protobuf.main
 import com.squareup.anvil.annotations.ContributesBinding
@@ -56,7 +57,9 @@ private const val APP_RETRY_SLEEP_TIME_MS = 1 * 1000L // 1 second
  */
 @Singleton
 @ContributesBinding(AppGraph::class, EmulateHelper::class)
-class EmulateHelperImpl @Inject constructor() : EmulateHelper, LogTagProvider {
+class EmulateHelperImpl @Inject constructor(
+    private val flipperAppErrorHelper: FlipperAppErrorHelper
+) : EmulateHelper, LogTagProvider {
     override val TAG = "EmulateHelper"
 
     private var currentKeyEmulating = MutableStateFlow<FlipperFilePath?>(null)
@@ -70,11 +73,12 @@ class EmulateHelperImpl @Inject constructor() : EmulateHelper, LogTagProvider {
 
     override suspend fun startEmulate(
         scope: CoroutineScope,
-        requestApi: FlipperRequestApi,
+        serviceApi: FlipperServiceApi,
         keyType: FlipperKeyType,
         keyPath: FlipperFilePath,
         minEmulateTime: Long
     ) = withLockResult(mutex, "start") {
+        val requestApi = serviceApi.requestApi
         if (currentKeyEmulating.value != null) {
             info { "Emulate already running, start stop" }
             stopEmulateInternal(requestApi)
@@ -83,7 +87,7 @@ class EmulateHelperImpl @Inject constructor() : EmulateHelper, LogTagProvider {
         try {
             return@withLockResult startEmulateInternal(
                 scope,
-                requestApi,
+                serviceApi,
                 keyType,
                 keyPath,
                 minEmulateTime
@@ -141,13 +145,15 @@ class EmulateHelperImpl @Inject constructor() : EmulateHelper, LogTagProvider {
         AlreadyOpenedAppException::class,
         ForbiddenFrequencyException::class
     )
+    @Suppress("LongMethod")
     private suspend fun startEmulateInternal(
         scope: CoroutineScope,
-        requestApi: FlipperRequestApi,
+        serviceApi: FlipperServiceApi,
         keyType: FlipperKeyType,
         keyPath: FlipperFilePath,
         minEmulateTime: Long
     ): Boolean {
+        val requestApi = serviceApi.requestApi
         info { "startEmulateInternal" }
 
         var appOpen = tryOpenApp(scope, requestApi, keyType)
@@ -190,28 +196,36 @@ class EmulateHelperImpl @Inject constructor() : EmulateHelper, LogTagProvider {
                 }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
             )
         )
-        when (appButtonPressResponse.commandStatus) {
-            Flipper.CommandStatus.OK -> {}
+        val responseStatus = appButtonPressResponse.commandStatus
+        val flipperError = flipperAppErrorHelper.requestError(
+            serviceApi = serviceApi,
+            priority = FlipperRequestPriority.FOREGROUND
+        )
+        when {
+            responseStatus == Flipper.CommandStatus.OK -> {}
+            isForbiddenFrequencyError(flipperError, responseStatus) -> {
+                error { "Handle generic error on press button" }
+                throw ForbiddenFrequencyException()
+            }
             else -> {
-                val flipperError = FlipperErrorHandler().requestError(
-                    priority = FlipperRequestPriority.FOREGROUND,
-                    requestApi = requestApi
-                )
-                when (flipperError) {
-                    FlipperError.ForbiddenFrequency -> {
-                        error { "Handle generic error on press button" }
-                        throw ForbiddenFrequencyException()
-                    }
-                    else -> {
-                        error { "Failed press key with error $appButtonPressResponse" }
-                        return false
-                    }
-                }
+                error { "Failed press key $appButtonPressResponse error $flipperError" }
+                return false
             }
         }
 
         stopEmulateTimeAllowedMs = TimeHelper.getNow() + minEmulateTime
         return true
+    }
+
+    private fun isForbiddenFrequencyError(
+        error: FlipperAppError,
+        status: Flipper.CommandStatus
+    ): Boolean {
+        if (
+            error == FlipperAppError.NotSupportedApi &&
+            status == Flipper.CommandStatus.ERROR_APP_CMD_ERROR
+        ) return true
+        return error == FlipperAppError.ForbiddenFrequency
     }
 
     @Throws(

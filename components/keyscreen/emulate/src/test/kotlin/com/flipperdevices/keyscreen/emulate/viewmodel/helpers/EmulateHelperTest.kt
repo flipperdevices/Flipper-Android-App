@@ -2,10 +2,13 @@ package com.flipperdevices.keyscreen.emulate.viewmodel.helpers
 
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequest
+import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
+import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.core.test.TimberRule
 import com.flipperdevices.keyscreen.api.emulate.EmulateHelper
+import com.flipperdevices.keyscreen.emulate.model.FlipperAppError
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.app.Application
 import com.flipperdevices.protobuf.app.appStateResponse
@@ -39,13 +42,23 @@ private val appStateResponseOk = main {
 }
 
 class EmulateHelperTest {
-    private lateinit var requestApi: FlipperRequestApi
+    private lateinit var flipperAppErrorHandler: FlipperAppErrorHelper
+    private lateinit var serviceApi: FlipperServiceApi
+    private lateinit var requestTestApi: FlipperRequestApi
     private lateinit var underTest: EmulateHelper
 
     @Before
     fun setUp() {
-        underTest = EmulateHelperImpl()
-        requestApi = mockk() {
+        serviceApi = mockk() {
+            every { requestApi } answers { requestTestApi }
+        }
+        flipperAppErrorHandler = mockk() {
+            coEvery { requestError(serviceApi, FlipperRequestPriority.FOREGROUND) } answers {
+                FlipperAppError.NotSupportedApi
+            }
+        }
+        underTest = EmulateHelperImpl(flipperAppErrorHandler)
+        requestTestApi = mockk() {
             every { notificationFlow() } coAnswers {
                 flowOf(appStateResponseOk)
             }
@@ -69,7 +82,7 @@ class EmulateHelperTest {
         var startJob = launch(Dispatchers.Default) {
             underTest.startEmulate(
                 this,
-                requestApi,
+                serviceApi,
                 KEY_TYPE,
                 TEST_KEY_PATH
             )
@@ -78,27 +91,34 @@ class EmulateHelperTest {
         startJob = launch(Dispatchers.Default) {
             underTest.startEmulate(
                 this,
-                requestApi,
+                serviceApi,
                 KEY_TYPE,
                 TEST_KEY_PATH
             )
         }
         startJob.join()
         val stopJob = launch(UnconfinedTestDispatcher()) {
-            underTest.stopEmulate(this, requestApi)
+            underTest.stopEmulate(this, requestTestApi)
         }
         stopJob.join()
         startJob = launch(Dispatchers.Default) {
             underTest.startEmulate(
                 this,
-                requestApi,
+                serviceApi,
                 KEY_TYPE,
                 TEST_KEY_PATH
             )
         }
         startJob.join()
 
-        Assert.assertEquals("[AppLoad, ButtonRelease, AppLoad, ButtonRelease, AppLoad]", callOrder.toString())
+        val expectedAction = arrayOf(
+            "AppLoad",
+            "ButtonRelease",
+            "AppLoad",
+            "ButtonRelease",
+            "AppLoad"
+        )
+        Assert.assertArrayEquals(expectedAction, callOrder.toTypedArray())
     }
 
     private fun mockFlipperRequest(
@@ -107,7 +127,7 @@ class EmulateHelperTest {
         onAppButtonPressResponse: () -> Flipper.Main = { responseOk },
         onAppButtonReleaseResponse: () -> Flipper.Main = { responseOk }
     ) {
-        coEvery { requestApi.request(any(), any()) } coAnswers {
+        coEvery { requestTestApi.request(any(), any()) } coAnswers {
             val flipperRequestFlow = it.invocation.args.first() as Flow<*>
             val request = flipperRequestFlow.first() as FlipperRequest
             val data = request.data

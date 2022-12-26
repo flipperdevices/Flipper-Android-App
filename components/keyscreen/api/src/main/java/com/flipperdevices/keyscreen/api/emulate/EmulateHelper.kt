@@ -3,6 +3,7 @@ package com.flipperdevices.keyscreen.api.emulate
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
+import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 
@@ -12,7 +13,7 @@ interface EmulateHelper {
     fun getCurrentEmulatingKey(): StateFlow<FlipperFilePath?>
     suspend fun startEmulate(
         scope: CoroutineScope,
-        requestApi: FlipperRequestApi,
+        serviceApi: FlipperServiceApi,
         keyType: FlipperKeyType,
         keyPath: FlipperFilePath,
         minEmulateTime: Long = 0L
