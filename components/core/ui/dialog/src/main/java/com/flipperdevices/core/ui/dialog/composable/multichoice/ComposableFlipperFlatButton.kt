@@ -21,7 +21,7 @@ internal fun ComposableFlipperFlatButton(
     Text(
         modifier = Modifier
             .fillMaxWidth()
-            .clickableRipple(bounded = false, onClick = onClick)
+            .clickableRipple(onClick = onClick)
             .padding(vertical = 14.dp),
         text = text,
         textAlign = TextAlign.Center,
