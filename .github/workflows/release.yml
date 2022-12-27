@@ -264,7 +264,7 @@ jobs:
           echo "path=artifacts/" >> $GITHUB_OUTPUT
 
       - name: 'Upload to Play Store'
-        uses: r0adkll/upload-google-play@v1.0.19
+        uses: r0adkll/upload-google-play@v1.0.15
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_PUBLISHER_JSON }}
           packageName: com.flipperdevices.app
