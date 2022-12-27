@@ -7,63 +7,56 @@ on:
 
 jobs:
   build_number:
-    name: 'Generate build number'
+    name: Generate build number
     runs-on: ubuntu-latest
     outputs:
       number: ${{ steps.vars.outputs.number }}
       number_wearos: ${{ steps.vars.outputs.number_wearos }}
     steps:
-      - name: 'Generate build number'
+      - name: Generate build number
         id: buildnumber
         uses: einaregilsson/build-number@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: 'Generate build number'
+      - name: Generate build number
         id: buildnumber_wearos
         uses: einaregilsson/build-number@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: 'Set variables'
         id: vars
         run: |
-          echo "number=${{ steps.buildnumber.outputs.build_number }}" >> $GITHUB_OUTPUT
-          echo "number_wearos=${{ steps.buildnumber_wearos.outputs.build_number }}" >> $GITHUB_OUTPUT
-
+          echo "::set-output name=number::${{ steps.buildnumber.outputs.build_number }}"
+          echo "::set-output name=number_wearos::${{ steps.buildnumber_wearos.outputs.build_number }}"
   build_internal_release_nogms:
-    name: 'Build Internal AAB and APK (Without GMS)'
+    name: Build Internal AAB and APK (Without GMS)
     runs-on: ubuntu-latest
     needs: build_number
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
         with:
           submodules: 'recursive'
-
-      - name: 'Set up JDK 1.11'
-        uses: actions/setup-java@v3
+      - name: Set up JDK 1.11
+        uses: actions/setup-java@v2
         with:
           distribution: 'temurin'
           java-version: '11'
-
       - name: 'Set variables'
         id: vars
         run: |
           export $(cat .github/workflows/version.env | xargs)
-          echo "major_version=${MAJOR_VERSION}" >> $GITHUB_OUTPUT
-          echo "minor_version=${{ needs.build_number.outputs.number }}" >> $GITHUB_OUTPUT
-
-      - name: 'Build internal release'
+          echo "::set-output name=major_version::${MAJOR_VERSION}"
+          echo "::set-output name=minor_version::${{ needs.build_number.outputs.number }}"
+      - name: Build internal release
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
         run: |
           ./gradlew :instances:app:assembleInternal :instances:app:bundleInternal \
-            "-Dversion_code=${{ steps.vars.outputs.minor_version }}" \
-            "-Dversion_name=${{ steps.vars.outputs.major_version }}.${{ steps.vars.outputs.minor_version }}" \
+            -Dversion_code=${{ steps.vars.outputs.minor_version }} \
+            -Dversion_name="${{ steps.vars.outputs.major_version }}.${{ steps.vars.outputs.minor_version }}" \
             -Dis_sentry_publish=true \
             -Dis_google_feature=false
-
-      - name: 'Sign AAB'
+      - name: Sign AAB
         id: sign_aab
         uses: r0adkll/sign-android-release@v1
         with:
@@ -72,8 +65,7 @@ jobs:
           alias: ${{ secrets.KEY_ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD }}
-
-      - name: 'Sign APK'
+      - name: Sign APK
         id: sign_apk
         uses: r0adkll/sign-android-release@v1
         with:
@@ -82,55 +74,48 @@ jobs:
           alias: ${{ secrets.KEY_ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD }}
-
-      - name: 'Copy artifacts'
+      - name: Copy artifacts
         id: artifacts_copy
         run: |
           mkdir artifacts
           cp ${{ steps.sign_aab.outputs.signedReleaseFile }} artifacts/flipper-zero-nogms.aab
           cp ${{ steps.sign_apk.outputs.signedReleaseFile }} artifacts/flipper-zero-nogms.apk
           cp instances/app/build/outputs/mapping/internal/mapping.txt artifacts/mapping-nogms.txt
-          echo "path=artifacts/" >> $GITHUB_OUTPUT
-
-      - name: 'Upload Artifacts'
-        uses: actions/upload-artifact@v3
+          echo "::set-output name=path::artifacts/"
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
         with:
           name: artifacts-nogms
           path: ${{ steps.artifacts_copy.outputs.path }}
-
   build_internal_release_gms:
-    name: 'Build Internal AAB and APK (GMS)'
+    name: Build Internal AAB and APK (GMS)
     runs-on: ubuntu-latest
     needs: build_number
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
         with:
           submodules: 'recursive'
-
-      - name: 'Set up JDK 1.11'
-        uses: actions/setup-java@v3
+      - name: Set up JDK 1.11
+        uses: actions/setup-java@v2
         with:
           distribution: 'temurin'
           java-version: '11'
-
       - name: 'Set variables'
         id: vars
         run: |
           export $(cat .github/workflows/version.env | xargs)
-          echo "major_version=${MAJOR_VERSION}" >> $GITHUB_OUTPUT
-          echo "minor_version=${{ needs.build_number.outputs.number }}" >> $GITHUB_OUTPUT
-
-      - name: 'Build internal release'
+          echo "::set-output name=major_version::${MAJOR_VERSION}"
+          echo "::set-output name=minor_version::${{ needs.build_number.outputs.number }}"
+      - name: Build internal release
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
         run: |
           ./gradlew :instances:app:assembleInternal :instances:app:bundleInternal \
-            "-Dversion_code=${{ steps.vars.outputs.minor_version }}" \
-            "-Dversion_name=${{ steps.vars.outputs.major_version }}.${{ steps.vars.outputs.minor_version }}" \
+            -Dversion_code=${{ steps.vars.outputs.minor_version }} \
+            -Dversion_name="${{ steps.vars.outputs.major_version }}.${{ steps.vars.outputs.minor_version }}" \
             -Dis_sentry_publish=true \
             -Dis_google_feature=true
-
-      - name: 'Sign AAB'
+      - name: Sign AAB
         id: sign_aab
         uses: r0adkll/sign-android-release@v1
         with:
@@ -139,8 +124,7 @@ jobs:
           alias: ${{ secrets.KEY_ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD }}
-
-      - name: 'Sign APK'
+      - name: Sign APK
         id: sign_apk
         uses: r0adkll/sign-android-release@v1
         with:
@@ -149,55 +133,48 @@ jobs:
           alias: ${{ secrets.KEY_ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD }}
-
-      - name: 'Copy artifacts'
+      - name: Copy artifacts
         id: artifacts_copy
         run: |
           mkdir artifacts
           cp ${{ steps.sign_aab.outputs.signedReleaseFile }} artifacts/flipper-zero-gms.aab
           cp ${{ steps.sign_apk.outputs.signedReleaseFile }} artifacts/flipper-zero-gms.apk
           cp instances/app/build/outputs/mapping/internal/mapping.txt artifacts/mapping-gms.txt
-          echo "path=artifacts/" >> $GITHUB_OUTPUT
-
-      - name: 'Upload Artifacts'
-        uses: actions/upload-artifact@v3
+          echo "::set-output name=path::artifacts/"
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
         with:
           name: artifacts-gms
           path: ${{ steps.artifacts_copy.outputs.path }}
-
   build_internal_release_gms_wearos:
-    name: 'Build Internal AAB and APK WearOS'
+    name: Build Internal AAB and APK WearOS
     runs-on: ubuntu-latest
     needs: build_number
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
         with:
           submodules: 'recursive'
-
-      - name: 'Set up JDK 1.11'
-        uses: actions/setup-java@v3
+      - name: Set up JDK 1.11
+        uses: actions/setup-java@v2
         with:
           distribution: 'temurin'
           java-version: '11'
-
       - name: 'Set variables'
         id: vars
         run: |
           export $(cat .github/workflows/version.env | xargs)
-          echo "major_version=${MAJOR_VERSION}" >> $GITHUB_OUTPUT
-          echo "minor_version=${{ needs.build_number.outputs.number_wearos }}" >> $GITHUB_OUTPUT
-
-      - name: 'Build internal release'
+          echo "::set-output name=major_version::${MAJOR_VERSION}"
+          echo "::set-output name=minor_version::${{ needs.build_number.outputs.number_wearos }}"
+      - name: Build internal release
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
         run: |
           ./gradlew :instances:wearable:assembleInternal :instances:wearable:bundleInternal \
-            "-Dversion_code=${{ steps.vars.outputs.minor_version }}" \
-            "-Dversion_name=${{ steps.vars.outputs.major_version }}.${{ steps.vars.outputs.minor_version }}" \
+            -Dversion_code=${{ steps.vars.outputs.minor_version }} \
+            -Dversion_name="${{ steps.vars.outputs.major_version }}.${{ steps.vars.outputs.minor_version }}" \
             -Dis_sentry_publish=true \
             -Dis_google_feature=true
-
-      - name: 'Sign Wear AAB'
+      - name: Sign Wear AAB
         id: sign_wear_aab
         uses: r0adkll/sign-android-release@v1
         with:
@@ -206,8 +183,7 @@ jobs:
           alias: ${{ secrets.KEY_ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD }}
-
-      - name: 'Sign Wear APK'
+      - name: Sign Wear APK
         id: sign_wear_apk
         uses: r0adkll/sign-android-release@v1
         with:
@@ -216,58 +192,49 @@ jobs:
           alias: ${{ secrets.KEY_ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD }}
-
-      - name: 'Copy artifacts'
+      - name: Copy artifacts
         id: artifacts_copy
         run: |
           mkdir artifacts
           cp ${{ steps.sign_wear_aab.outputs.signedReleaseFile }} artifacts/flipper-zero-wear-gms.aab
           cp ${{ steps.sign_wear_apk.outputs.signedReleaseFile }} artifacts/flipper-zero-wear-gms.apk
           cp instances/wearable/build/outputs/mapping/internal/mapping.txt artifacts/mapping-wear-gms.txt
-          echo "path=artifacts/" >> $GITHUB_OUTPUT
-
-      - name: 'Upload Artifacts'
-        uses: actions/upload-artifact@v3
+          echo "::set-output name=path::artifacts/"
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
         with:
           name: artifacts-wearos
           path: ${{ steps.artifacts_copy.outputs.path }}
-
   upload_to_github:
-    name: 'Upload to Github Releases'
+    name: Upload to Github Releases
     runs-on: ubuntu-latest
     needs: [ build_internal_release_nogms, build_internal_release_gms, build_internal_release_gms_wearos, build_number ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
         with:
           submodules: 'recursive'
-
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v2
         id: download-gms
         with:
           name: artifacts-gms
-
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v2
         id: download-nogms
         with:
           name: artifacts-nogms
-
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v2
         id: download-wearos
         with:
           name: artifacts-wearos
-
       - name: 'Set variables'
         id: vars
         run: |
           export $(cat .github/workflows/version.env | xargs)
-          echo "major_version=${MAJOR_VERSION}" >> $GITHUB_OUTPUT
-          echo "minor_version=${{ needs.build_number.outputs.number }}" >> $GITHUB_OUTPUT
-          echo "minor_version_wearos=${{ needs.build_number.outputs.number_wearos }}" >> $GITHUB_OUTPUT
-
-      - name: 'Install zip'
+          echo "::set-output name=major_version::${MAJOR_VERSION}"
+          echo "::set-output name=minor_version::${{ needs.build_number.outputs.number }}"
+          echo "::set-output name=minor_version_wearos::${{ needs.build_number.outputs.number_wearos }}"
+      - name: Install zip
         uses: montudor/action-zip@v1
-
-      - name: 'Prepare mapping'
+      - name: Prepare mapping
         id: mappings
         run: |
           mkdir mappings
@@ -275,9 +242,8 @@ jobs:
           cp ${{steps.download-gms.outputs.download-path}}/mapping-gms.txt mappings/mapping-gms.txt
           cp ${{steps.download-wearos.outputs.download-path}}/mapping-wear-gms.txt mappings/mapping-wear-gms.txt
           zip -qq -r mappings.zip mappings
-          echo "archive=mappings.zip" >> $GITHUB_OUTPUT
-
-      - name: 'Copy artifacts'
+          echo "::set-output name=archive::mappings.zip"
+      - name: Copy artifacts
         id: artifacts_copy
         run: |
           mkdir artifacts
@@ -288,9 +254,8 @@ jobs:
           cp ${{steps.download-wearos.outputs.download-path}}/flipper-zero-wear-gms.apk artifacts/flipper-zero-wear-gms-${{ steps.vars.outputs.major_version }}.${{ steps.vars.outputs.minor_version_wearos }}.apk
           cp ${{steps.download-nogms.outputs.download-path}}/flipper-zero-nogms.aab artifacts/flipper-zero-nogms-${{ steps.vars.outputs.major_version }}.${{ steps.vars.outputs.minor_version }}.aab
           cp ${{steps.download-nogms.outputs.download-path}}/flipper-zero-nogms.apk artifacts/flipper-zero-nogms-${{ steps.vars.outputs.major_version }}.${{ steps.vars.outputs.minor_version }}.apk
-          echo "path=artifacts/" >> $GITHUB_OUTPUT
-
-      - name: 'Create internal Release'
+          echo "::set-output name=path::artifacts/"
+      - name: Create internal Release
         id: create_internal_release
         uses: softprops/action-gh-release@v1
         env:
@@ -308,31 +273,27 @@ jobs:
           name: Flipper App ${{ steps.vars.outputs.major_version }}.${{ steps.vars.outputs.minor_version }}
           draft: false
           prerelease: true
-
   upload_to_playstore:
-    name: 'Upload to Play Store'
+    name: Upload to Play Store
     runs-on: ubuntu-latest
     needs: [ build_internal_release_gms, build_internal_release_gms_wearos ]
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v2
         id: download-gms
         with:
           name: artifacts-gms
-
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v2
         id: download-wearos
         with:
           name: artifacts-wearos
-
-      - name: 'Copy artifacts'
+      - name: Copy artifacts
         id: artifacts_copy
         run: |
           mkdir artifacts
           cp ${{steps.download-gms.outputs.download-path}}/flipper-zero-gms.aab artifacts
           cp ${{steps.download-wearos.outputs.download-path}}/flipper-zero-wear-gms.aab artifacts
-          echo "path=artifacts/" >> $GITHUB_OUTPUT
-
-      - name: 'Upload to Play Store'
+          echo "::set-output name=path::artifacts"
+      - name: Upload to Play Store
         uses: r0adkll/upload-google-play@v1.0.15
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_PUBLISHER_JSON }}
