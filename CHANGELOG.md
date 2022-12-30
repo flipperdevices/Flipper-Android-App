@@ -2,6 +2,8 @@
 
 # 1.4.1 - In Progress
 
+- [GitHub] Update github repo picture
+
 # 1.4.0
 
 - [Feature] Placeholder view on receive key

@@ -2,8 +2,8 @@
 
 Mobile app to rule all Flipper's family
 
-![dolphin-dark](https://user-images.githubusercontent.com/5871715/163869541-33904d20-7684-4891-abf9-be0a0c1afe71.png#gh-dark-mode-only)
-![dolphin-light](https://user-images.githubusercontent.com/5871715/163869555-fe5b029d-c4bd-4a29-92b7-fc9c79505106.png#gh-light-mode-only)
+![dolphin-dark](.github/dark_theme_banner.png#gh-dark-mode-only)
+![dolphin-light](.github/light_theme_banner.png#gh-light-mode-only)
 
 ## Download
 
