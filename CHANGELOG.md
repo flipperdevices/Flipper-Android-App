@@ -1,6 +1,8 @@
 # Changelog
 
-# 1.3.1 - In progress
+# 1.4.1 - In Progress
+
+# 1.4.0
 
 - [Feature] Placeholder view on receive key
 - [Feature] Add forbidden frequency dialog
