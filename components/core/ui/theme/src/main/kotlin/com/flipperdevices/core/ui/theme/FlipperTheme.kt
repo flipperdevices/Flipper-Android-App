@@ -66,18 +66,24 @@ fun FlipperThemeInternal(
             LocalTypography provides getTypography(),
             LocalContentColor provides colors.contentColorFor(backgroundColor = pallet.background),
             LocalTextSelectionColors provides pallet.toTextSelectionColors(),
-            LocalIndication provides noIndication(),
+            LocalIndication provides NoIndication,
             content = content
         )
     }
 }
 
-private fun noIndication(): Indication = object : Indication {
-    @Composable
-    override fun rememberUpdatedInstance(interactionSource: InteractionSource) =
-        object : IndicationInstance {
-            override fun ContentDrawScope.drawIndication() {
-                return drawContent()
-            }
+/*
+    Standardization of the indication for all clickable modifiers
+ */
+private object NoIndication : Indication {
+    private object NoIndicationInstance : IndicationInstance {
+        override fun ContentDrawScope.drawIndication() {
+            drawContent()
         }
+    }
+
+    @Composable
+    override fun rememberUpdatedInstance(interactionSource: InteractionSource): IndicationInstance {
+        return NoIndicationInstance
+    }
 }
