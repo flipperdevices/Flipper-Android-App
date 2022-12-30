@@ -12,6 +12,7 @@ import com.flipperdevices.protobuf.app.getErrorRequest
 import com.flipperdevices.protobuf.main
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 
 interface FlipperAppErrorHelper {
@@ -54,7 +55,7 @@ class FlipperAppErrorHandlerImpl @Inject constructor() : FlipperAppErrorHelper {
         }
     }
 
-    private fun getCurrentFlipperVersion(serviceApi: FlipperServiceApi): SemVer? {
-        return serviceApi.flipperVersionApi.getVersionInformationFlow().value
+    private suspend fun getCurrentFlipperVersion(serviceApi: FlipperServiceApi): SemVer? {
+        return serviceApi.flipperVersionApi.getVersionInformationFlow().first()
     }
 }

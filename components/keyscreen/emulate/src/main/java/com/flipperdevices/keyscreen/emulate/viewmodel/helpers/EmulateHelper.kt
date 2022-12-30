@@ -197,24 +197,24 @@ class EmulateHelperImpl @Inject constructor(
             )
         )
         val responseStatus = appButtonPressResponse.commandStatus
+
+        if (responseStatus == Flipper.CommandStatus.OK) {
+            stopEmulateTimeAllowedMs = TimeHelper.getNow() + minEmulateTime
+            return true
+        }
+
         val flipperError = flipperAppErrorHelper.requestError(
             serviceApi = serviceApi,
             priority = FlipperRequestPriority.FOREGROUND
         )
-        when {
-            responseStatus == Flipper.CommandStatus.OK -> {}
-            isForbiddenFrequencyError(flipperError, responseStatus) -> {
-                error { "Handle generic error on press button" }
-                throw ForbiddenFrequencyException()
-            }
-            else -> {
-                error { "Failed press key $appButtonPressResponse error $flipperError" }
-                return false
-            }
+
+        if (isForbiddenFrequencyError(flipperError, responseStatus)) {
+            error { "Handle generic error on press button" }
+            throw ForbiddenFrequencyException()
         }
 
-        stopEmulateTimeAllowedMs = TimeHelper.getNow() + minEmulateTime
-        return true
+        error { "Failed press key $appButtonPressResponse error $flipperError" }
+        return false
     }
 
     private fun isForbiddenFrequencyError(
