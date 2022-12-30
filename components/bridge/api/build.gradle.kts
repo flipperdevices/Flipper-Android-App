@@ -6,7 +6,6 @@ plugins {
 
 dependencies {
     implementation(projects.components.bridge.pbutils)
-    implementation(libs.protobuf.jvm)
     implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.data)

@@ -20,13 +20,13 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.painterResourceByKey
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.share.api.ShareContentError
 import com.flipperdevices.share.uploader.R
+import com.flipperdevices.uploader.models.ShareError
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 internal fun ComposableSheetError(
-    typeError: ShareContentError,
+    typeError: ShareError,
     onRetry: () -> Unit
 ) {
     val title = stringResource(id = getTitleByShareError(typeError))
@@ -68,37 +68,35 @@ internal fun ComposableSheetError(
 }
 
 @StringRes
-private fun getTitleByShareError(typeError: ShareContentError): Int {
+private fun getTitleByShareError(typeError: ShareError): Int {
     return when (typeError) {
-        ShareContentError.NO_INTERNET -> R.string.share_error_no_internet_title
-        ShareContentError.SERVER_ERROR -> R.string.share_error_server_title
-        ShareContentError.OTHER -> R.string.share_error_other_title
+        ShareError.NO_INTERNET_CONNECTION -> R.string.share_error_no_internet_title
+        ShareError.CANT_CONNECT_TO_SERVER -> R.string.share_error_server_title
+        ShareError.OTHER -> R.string.share_error_other_title
     }
 }
 
 @StringRes
-private fun getDescriptionByShareError(typeError: ShareContentError): Int {
+private fun getDescriptionByShareError(typeError: ShareError): Int {
     return when (typeError) {
-        ShareContentError.NO_INTERNET -> R.string.share_error_no_internet_desc
-        ShareContentError.SERVER_ERROR -> R.string.share_error_server_desc
-        ShareContentError.OTHER -> R.string.share_error_other_desc
+        ShareError.NO_INTERNET_CONNECTION -> R.string.share_error_no_internet_desc
+        ShareError.CANT_CONNECT_TO_SERVER -> R.string.share_error_server_desc
+        ShareError.OTHER -> R.string.share_error_other_desc
     }
 }
 
 @DrawableRes
 @Composable
-private fun getImageByShareError(typeError: ShareContentError): Int {
+private fun getImageByShareError(typeError: ShareError): Int {
     return if (isSystemInDarkTheme()) {
         when (typeError) {
-            ShareContentError.NO_INTERNET -> DesignSystem.drawable.ic_no_internet_dark
-            ShareContentError.SERVER_ERROR -> DesignSystem.drawable.ic_server_error_dark
-            ShareContentError.OTHER -> DesignSystem.drawable.ic_warning_triangle
+            ShareError.NO_INTERNET_CONNECTION -> DesignSystem.drawable.ic_no_internet_dark
+            ShareError.CANT_CONNECT_TO_SERVER -> DesignSystem.drawable.ic_server_error_dark
+            ShareError.OTHER -> DesignSystem.drawable.ic_warning_triangle
         }
-    } else {
-        when (typeError) {
-            ShareContentError.NO_INTERNET -> DesignSystem.drawable.ic_no_internet
-            ShareContentError.SERVER_ERROR -> DesignSystem.drawable.ic_server_error
-            ShareContentError.OTHER -> DesignSystem.drawable.ic_warning_triangle
-        }
+    } else when (typeError) {
+        ShareError.NO_INTERNET_CONNECTION -> DesignSystem.drawable.ic_no_internet
+        ShareError.CANT_CONNECT_TO_SERVER -> DesignSystem.drawable.ic_server_error
+        ShareError.OTHER -> DesignSystem.drawable.ic_warning_triangle
     }
 }

@@ -19,7 +19,6 @@ dependencies {
     implementation(projects.components.bridge.dao.api)
 
     implementation(projects.components.bridge.pbutils)
-    implementation(libs.protobuf.jvm)
 
     implementation(libs.work.ktx)
     implementation(libs.ktx)

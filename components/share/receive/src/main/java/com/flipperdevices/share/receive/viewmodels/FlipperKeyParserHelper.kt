@@ -80,9 +80,7 @@ class FlipperKeyParserHelper @Inject constructor(
             )
             return Result.success(flipperKey)
         }
-        data.onFailure {
-            return Result.failure(it)
-        }
-        return Result.failure(FlipperKeyParseException())
+        val exception = data.exceptionOrNull() ?: FlipperKeyParseException()
+        return Result.failure(exception)
     }
 }

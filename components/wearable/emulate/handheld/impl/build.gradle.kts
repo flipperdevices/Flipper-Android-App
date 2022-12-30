@@ -17,7 +17,6 @@ dependencies {
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.pbutils)
-    implementation(libs.protobuf.jvm)
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.kotlin.coroutines.play.services)

@@ -28,7 +28,6 @@ dependencies {
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.pbutils)
     implementation(projects.components.bridge.synchronization.api)
-    implementation(libs.protobuf.jvm)
 
     // Compose
     implementation(libs.compose.ui)

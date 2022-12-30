@@ -37,7 +37,6 @@ dependencies {
     implementation(projects.components.bridge.synchronization.api)
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.pbutils)
-    implementation(libs.protobuf.jvm)
 
     // Core deps
     implementation(libs.ktx)

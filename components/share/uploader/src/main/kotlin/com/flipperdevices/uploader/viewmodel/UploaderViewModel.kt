@@ -11,11 +11,13 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.share.ShareHelper
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
+import com.flipperdevices.metric.api.MetricApi
+import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.share.api.CryptoStorageApi
-import com.flipperdevices.share.api.ShareContentError
 import com.flipperdevices.share.uploader.R
 import com.flipperdevices.uploader.api.EXTRA_KEY_PATH
 import com.flipperdevices.uploader.models.ShareContent
+import com.flipperdevices.uploader.models.ShareError
 import com.flipperdevices.uploader.models.ShareState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -32,6 +34,7 @@ class UploaderViewModel @VMInject constructor(
     private val keyParser: KeyParser,
     private val cryptoStorageApi: CryptoStorageApi,
     private val simpleKeyApi: SimpleKeyApi,
+    private val metricApi: MetricApi,
     @TangleParam(EXTRA_KEY_PATH)
     private val flipperKeyPath: FlipperKeyPath?
 ) : LifecycleViewModel(), LogTagProvider {
@@ -52,7 +55,7 @@ class UploaderViewModel @VMInject constructor(
         }
         simpleKeyApi.getKeyAsFlow(flipperKeyPath).collectLatest { flipperKey ->
             if (flipperKey == null) {
-                _state.emit(ShareState.Error(ShareContentError.OTHER))
+                _state.emit(ShareState.Error(ShareError.OTHER))
                 return@collectLatest
             }
             prepareParseKeyContent(flipperKey)
@@ -76,6 +79,7 @@ class UploaderViewModel @VMInject constructor(
         viewModelScope.launch {
             runCatching {
                 val data = content.flipperKey.keyContent.openStream().use { it.readBytes() }
+                metricApi.reportSimpleEvent(SimpleEvent.SHARE_FILE)
                 ShareHelper.shareRawFile(
                     context = context,
                     data = data,
@@ -85,7 +89,7 @@ class UploaderViewModel @VMInject constructor(
                 _state.emit(ShareState.Completed)
             }.onFailure { exception ->
                 error(exception) { "Error on share $flipperKeyPath by file" }
-                _state.emit(ShareState.Error(ShareContentError.OTHER))
+                _state.emit(ShareState.Error(ShareError.OTHER))
             }
         }
     }
@@ -94,6 +98,7 @@ class UploaderViewModel @VMInject constructor(
         viewModelScope.launch {
             val contentLink = content.link
             if (contentLink != null) {
+                metricApi.reportSimpleEvent(SimpleEvent.SHARE_SHORT_LINK)
                 ShareHelper.shareText(
                     context = context,
                     title = getFlipperKeyName(),
@@ -122,6 +127,7 @@ class UploaderViewModel @VMInject constructor(
             name = flipperKey.mainFile.path.nameWithExtension
         )
         uploadedLink.onSuccess { link ->
+            metricApi.reportSimpleEvent(SimpleEvent.SHARE_LONG_LINK)
             ShareHelper.shareText(
                 context = context,
                 title = getFlipperKeyName(),
@@ -132,9 +138,9 @@ class UploaderViewModel @VMInject constructor(
         uploadedLink.onFailure { exception ->
             error(exception) { "Error on upload $flipperKey to server" }
             val error = when (exception) {
-                is UnknownHostException -> ShareContentError.NO_INTERNET
-                is UnknownServiceException -> ShareContentError.SERVER_ERROR
-                else -> ShareContentError.OTHER
+                is UnknownHostException -> ShareError.NO_INTERNET_CONNECTION
+                is UnknownServiceException -> ShareError.CANT_CONNECT_TO_SERVER
+                else -> ShareError.OTHER
             }
             _state.emit(ShareState.Error(typeError = error))
         }

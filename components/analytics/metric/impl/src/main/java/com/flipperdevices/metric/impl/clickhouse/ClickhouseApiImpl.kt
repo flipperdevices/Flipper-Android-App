@@ -20,7 +20,7 @@ import com.flipperdevices.metric.api.events.complex.UpdateStatus
 import com.flipperdevices.metric.impl.BuildConfig
 import com.flipperdevices.pbmetric.Metric
 import com.flipperdevices.pbmetric.events.OpenOuterClass
-import com.flipperdevices.pbmetric.events.SubghzProvisioning
+import com.flipperdevices.pbmetric.events.SubGhzProvisioningOuterClass
 import com.flipperdevices.pbmetric.events.UpdateFlipperEndOuterClass
 import com.flipperdevices.pbmetric.events.flipperGattInfo
 import com.flipperdevices.pbmetric.events.flipperRpcInfo
@@ -70,8 +70,11 @@ class ClickhouseApiImpl @Inject constructor(
             SimpleEvent.OPEN_EDIT -> OpenOuterClass.Open.OpenTarget.EDIT
             SimpleEvent.OPEN_SHARE -> OpenOuterClass.Open.OpenTarget.SHARE
             SimpleEvent.EXPERIMENTAL_OPEN_FM -> OpenOuterClass.Open.OpenTarget.EXPERIMENTAL_FM
-            SimpleEvent.EXPERIMENTAL_OPEN_SCREENSTREAMING ->
+            SimpleEvent.EXPERIMENTAL_OPEN_SCREEN_STREAMING ->
                 OpenOuterClass.Open.OpenTarget.EXPERIMENTAL_SCREENSTREAMING
+            SimpleEvent.SHARE_SHORT_LINK -> OpenOuterClass.Open.OpenTarget.SHARE_SHORTLINK
+            SimpleEvent.SHARE_LONG_LINK -> OpenOuterClass.Open.OpenTarget.SHARE_LONGLINK
+            SimpleEvent.SHARE_FILE -> OpenOuterClass.Open.OpenTarget.SHARE_FILE
         }
         scope.launch(Dispatchers.Default) {
             reportToServerSafe(
@@ -149,15 +152,15 @@ class ClickhouseApiImpl @Inject constructor(
                     isRoaming = complexEvent.isRoaming
                     regionSource = when (complexEvent.regionSource) {
                         RegionSource.SIM_NETWORK ->
-                            SubghzProvisioning.SubGhzProvisioning.RegionSource.SIM_NETWORK
+                            SubGhzProvisioningOuterClass.SubGhzProvisioning.RegionSource.SIM_NETWORK
                         RegionSource.SIM_COUNTRY ->
-                            SubghzProvisioning.SubGhzProvisioning.RegionSource.SIM_COUNTRY
+                            SubGhzProvisioningOuterClass.SubGhzProvisioning.RegionSource.SIM_COUNTRY
                         RegionSource.GEO_IP ->
-                            SubghzProvisioning.SubGhzProvisioning.RegionSource.GEO_IP
+                            SubGhzProvisioningOuterClass.SubGhzProvisioning.RegionSource.GEO_IP
                         RegionSource.SYSTEM ->
-                            SubghzProvisioning.SubGhzProvisioning.RegionSource.SYSTEM
+                            SubGhzProvisioningOuterClass.SubGhzProvisioning.RegionSource.SYSTEM
                         RegionSource.DEFAULT ->
-                            SubghzProvisioning.SubGhzProvisioning.RegionSource.DEFAULT
+                            SubGhzProvisioningOuterClass.SubGhzProvisioning.RegionSource.DEFAULT
                     }
                 }
             }

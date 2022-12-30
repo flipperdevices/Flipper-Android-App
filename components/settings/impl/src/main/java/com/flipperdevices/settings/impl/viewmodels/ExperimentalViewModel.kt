@@ -29,7 +29,7 @@ class ExperimentalViewModel @VMInject constructor(
     }
 
     fun onOpenScreenStreaming(navController: NavController) {
-        metricApi.reportSimpleEvent(SimpleEvent.EXPERIMENTAL_OPEN_SCREENSTREAMING)
+        metricApi.reportSimpleEvent(SimpleEvent.EXPERIMENTAL_OPEN_SCREEN_STREAMING)
         navController.navigate(screenStreamingFeatureEntry.ROUTE.name)
     }
 

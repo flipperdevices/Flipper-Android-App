@@ -38,6 +38,7 @@ fun ComposableKeyType(
 
     var rowModifier = Modifier
         .clip(RoundedCornerShape(bottomEnd = 18.dp))
+        .placeholderByLocalProvider()
         .background(colorKey)
 
     if (minWidth != null) {

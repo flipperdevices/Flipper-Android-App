@@ -32,8 +32,6 @@ dependencies {
     implementation(libs.compose.material)
     implementation(libs.compose.navigation)
 
-    implementation(libs.protobuf.jvm)
-
     implementation(libs.lifecycle.viewmodel.ktx)
 
     // Dagger deps

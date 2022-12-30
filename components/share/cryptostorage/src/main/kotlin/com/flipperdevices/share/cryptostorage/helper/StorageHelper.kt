@@ -8,6 +8,7 @@ import io.ktor.client.request.get
 import io.ktor.client.request.put
 import io.ktor.http.HttpStatusCode
 import io.ktor.util.InternalAPI
+import java.io.FileNotFoundException
 import java.net.UnknownServiceException
 import javax.inject.Inject
 
@@ -31,14 +32,22 @@ class StorageHelper @Inject constructor(
             body = data
         }
 
-        if (response.status != HttpStatusCode.OK) throw UnknownServiceException("")
+        when (response.status) {
+            HttpStatusCode.OK -> {}
+            else -> throw UnknownServiceException("")
+        }
 
         return response.body()
     }
 
     override suspend fun download(id: String): ByteArray {
         val response = client.get(urlString = "$STORAGE_URL$id/$STORAGE_NAME")
-        if (response.status != HttpStatusCode.OK) throw UnknownServiceException("")
+
+        when (response.status) {
+            HttpStatusCode.OK -> {}
+            HttpStatusCode.NotFound -> throw FileNotFoundException()
+            else -> throw UnknownServiceException("")
+        }
 
         return response.body()
     }

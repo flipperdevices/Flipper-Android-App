@@ -17,7 +17,6 @@ dependencies {
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.pbutils)
-    implementation(libs.protobuf.jvm)
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.dao.api)
 
@@ -44,7 +43,7 @@ dependencies {
     // Testing
     testImplementation(projects.components.core.test)
     testImplementation(libs.junit)
-    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.mockk)
     testImplementation(libs.ktx.testing)
     testImplementation(libs.roboelectric)
     testImplementation(libs.lifecycle.test)
