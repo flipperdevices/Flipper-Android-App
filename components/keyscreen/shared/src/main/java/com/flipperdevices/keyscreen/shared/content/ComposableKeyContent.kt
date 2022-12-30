@@ -13,18 +13,21 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
 private fun ComposableKeyItem(name: String, value: String) {
+    val textModifier = Modifier
+        .placeholderByLocalProvider(defaultWidth = 64.dp, defaultHeight = 12.dp)
+
     Column(
         modifier = Modifier.padding(horizontal = 12.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Text(
-            modifier = Modifier.placeholderByLocalProvider(),
+            modifier = textModifier,
             text = name,
             color = LocalPallet.current.text30,
             style = LocalTypography.current.bodyR16
         )
         Text(
-            modifier = Modifier.placeholderByLocalProvider(),
+            modifier = textModifier,
             text = value,
             style = LocalTypography.current.bodyR16
         )

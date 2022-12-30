@@ -1,4 +1,4 @@
-package com.flipperdevices.share.receive.composable
+package com.flipperdevices.share.receive.composable.screens
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,8 +14,8 @@ import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.core.ui.ktx.ComposableFlipperButton
 import com.flipperdevices.keyscreen.api.KeyScreenApi
 import com.flipperdevices.share.receive.R
-import com.flipperdevices.share.receive.composable.component.ComposableKeySaveBar
-import com.flipperdevices.share.receive.composable.component.ComposableKeySaveFooter
+import com.flipperdevices.share.receive.composable.components.ComposableKeySaveBar
+import com.flipperdevices.share.receive.composable.components.ComposableKeySaveFooter
 
 @Composable
 fun ComposableKeySaveScreen(
@@ -41,11 +41,13 @@ fun ComposableKeySaveScreen(
                 ) {
                     CircularProgressIndicator()
                 }
-            } else ComposableFlipperButton(
-                modifier = Modifier.fillMaxWidth(),
-                text = stringResource(R.string.receive_save_btn),
-                onClick = onSave
-            )
+            } else {
+                ComposableFlipperButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(R.string.receive_save_btn),
+                    onClick = onSave
+                )
+            }
         }
     }
 }

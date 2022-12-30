@@ -1,4 +1,4 @@
-package com.flipperdevices.share.receive.composable.component
+package com.flipperdevices.share.receive.composable.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ComposableKeySaveFooter(content: @Composable RowScope.() -> Unit) {
+internal fun ComposableKeySaveFooter(content: @Composable RowScope.() -> Unit) {
     Row(
         modifier = Modifier
             .padding(horizontal = 24.dp)

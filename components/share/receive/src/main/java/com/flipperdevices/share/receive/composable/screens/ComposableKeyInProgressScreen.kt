@@ -1,4 +1,4 @@
-package com.flipperdevices.share.receive.composable.screen // ktlint-disable filename
+package com.flipperdevices.share.receive.composable.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,27 +10,22 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.core.ui.ktx.ComposableFlipperButton
-import com.flipperdevices.core.ui.ktx.LocalPlaceholder
+import com.flipperdevices.core.ui.ktx.LocalPlaceholderEnable
 import com.flipperdevices.keyscreen.api.KeyScreenApi
 import com.flipperdevices.share.receive.R
-import com.flipperdevices.share.receive.composable.component.ComposableKeySaveBar
-import com.flipperdevices.share.receive.composable.component.ComposableKeySaveFooter
+import com.flipperdevices.share.receive.composable.components.ComposableKeySaveBar
+import com.flipperdevices.share.receive.composable.components.ComposableKeySaveFooter
 
 @Composable
-fun ComposableKeyScreenProgress(
-    keyScreenApi: KeyScreenApi,
-    onCancel: () -> Unit
-) {
-    val keyParsed = FlipperKeyParsed.IButton(
-        keyName = "Placeholder",
-        notes = "Placeholder",
-        keyType = "Placeholder",
-        data = null
+internal fun ComposableKeyInProgressScreen(keyScreenApi: KeyScreenApi, onCancel: () -> Unit) {
+    val keyParsed = FlipperKeyParsed.Unrecognized(
+        keyName = "", notes = "",
+        fileType = null, orderedDict = listOf("" to "")
     )
 
     Column {
         ComposableKeySaveBar(onCancel)
-        CompositionLocalProvider(LocalPlaceholder provides true) {
+        CompositionLocalProvider(LocalPlaceholderEnable provides true) {
             keyScreenApi.KeyCard(
                 modifier = Modifier.padding(start = 24.dp, end = 24.dp, bottom = 24.dp),
                 key = keyParsed,
@@ -40,7 +35,7 @@ fun ComposableKeyScreenProgress(
                 ComposableFlipperButton(
                     modifier = Modifier.fillMaxWidth(),
                     text = stringResource(R.string.receive_save_btn),
-                    onClick = { }
+                    onClick = {}
                 )
             }
         }

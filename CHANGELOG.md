@@ -16,14 +16,15 @@
 - [Feature] Add categories, categories list and search
 - [Feature] Add installed, new switch, install button
 - [Feature] Add support for 3 version of NFC file
-- [CI] Bump deps
+- [FIX] Refactor `share:receive` module
 - [FIX] Uploading share errors
 - [FIX] Display by white color meta data on NFC card
 - [FIX] Scrim status bar and design changes on bottom sheet
 - [FIX] Fix crash when delete from trash key with favorites
-- [CI] Git submodule `Flipper Protobuf`
 - [FIX] Favorites synchronization
+- [CI] Bump deps
 - [CI] Fix local build of application
+- [CI] Git submodule `Flipper Protobuf`
 
 # 1.3.0
 
