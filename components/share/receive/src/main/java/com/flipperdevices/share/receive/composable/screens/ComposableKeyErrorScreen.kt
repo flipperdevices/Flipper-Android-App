@@ -1,4 +1,4 @@
-package com.flipperdevices.share.receive.composable
+package com.flipperdevices.share.receive.composable.screens
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -24,11 +24,11 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.share.receive.R
-import com.flipperdevices.share.receive.composable.component.ComposableKeySaveBar
-import com.flipperdevices.share.receive.model.ReceiverError
+import com.flipperdevices.share.receive.composable.components.ComposableKeySaveBar
+import com.flipperdevices.share.receive.models.ReceiverError
 
 @Composable
-fun ComposableKeyErrorScreen(
+internal fun ComposableKeyErrorScreen(
     typeError: ReceiverError,
     onCancel: () -> Unit,
     onRetry: () -> Unit
