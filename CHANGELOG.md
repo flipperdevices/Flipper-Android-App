@@ -6,6 +6,7 @@
 
 # 1.4.0
 
+- [Feature] Flipper app loader errors
 - [Feature] Placeholder view on receive key
 - [Feature] Add forbidden frequency dialog
 - [Feature] Rework all system dialog to custom

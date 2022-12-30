@@ -1,12 +1,12 @@
 package com.flipperdevices.wearable.emulate.handheld.impl.request
 
-import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.dao.api.delegates.KeyParser
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
+import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.keyscreen.api.emulate.EmulateHelper
@@ -37,12 +37,12 @@ class WearableSendProcessor @Inject constructor(
     override fun init() {
         commandInputStream.getRequestsFlow().onEach {
             if (it.hasSendRequest()) {
-                startSend(serviceProvider.getServiceApi().requestApi, it.startEmulate.path)
+                startSend(serviceProvider.getServiceApi(), it.startEmulate.path)
             }
         }.launchIn(scope)
     }
 
-    private suspend fun startSend(requestApi: FlipperRequestApi, path: String) {
+    private suspend fun startSend(serviceApi: FlipperServiceApi, path: String) {
         val keyType = FlipperKeyType.getByExtension(File(path).extension) ?: return
         commandOutputStream.send(
             mainResponse {
@@ -57,12 +57,12 @@ class WearableSendProcessor @Inject constructor(
         try {
             emulateHelper.startEmulate(
                 scope,
-                requestApi,
+                serviceApi,
                 keyType,
                 filePath,
                 timeout
             )
-            emulateHelper.stopEmulate(scope, requestApi)
+            emulateHelper.stopEmulate(scope, serviceApi.requestApi)
         } catch (throwable: Throwable) {
             error(throwable) { "Failed start send $path" }
             commandOutputStream.send(

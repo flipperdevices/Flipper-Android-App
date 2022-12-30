@@ -4,11 +4,11 @@ import android.appwidget.AppWidgetManager
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
+import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.jre.withCoroutineScope
@@ -74,7 +74,7 @@ class StartEmulateWorker(
                 return@withCoroutineScope Result.failure()
             }
 
-            if (!startEmulate(scope, serviceApi.requestApi, filePath)) {
+            if (!startEmulate(scope, serviceApi, filePath)) {
                 widgetStateStorage.updateState(widgetId, WidgetState.ERROR_UNKNOWN)
                 invalidateWidgetsHelper.invoke()
                 return@withCoroutineScope Result.failure()
@@ -98,12 +98,12 @@ class StartEmulateWorker(
 
     private suspend fun startEmulate(
         scope: CoroutineScope,
-        requestApi: FlipperRequestApi,
+        serviceApi: FlipperServiceApi,
         filePath: FlipperFilePath
     ): Boolean {
         info { "Start emulate" }
         val keyType = filePath.keyType ?: error("Not found key type")
-        return emulateHelper.startEmulate(scope, requestApi, keyType, filePath)
+        return emulateHelper.startEmulate(scope, serviceApi, keyType, filePath)
     }
 
     private fun getFilePath(): FlipperFilePath {
@@ -115,7 +115,8 @@ class StartEmulateWorker(
         val folder =
             filePath.parent ?: FlipperKeyType.getByExtension(filePath.extension)?.flipperDir ?: ""
         return FlipperFilePath(
-            folder, filePath.name
+            folder,
+            filePath.name
         )
     }
 
