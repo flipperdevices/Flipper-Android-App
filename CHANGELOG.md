@@ -4,6 +4,7 @@
 
 - [Feature] Flipper app loader errors
 - [GitHub] Update github repo picture
+- [CI] Migrate to Detekt
 - [FIX] Clickable modifier ktx
 - [FIX] Refactor `share:receive` module
 

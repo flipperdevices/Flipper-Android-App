@@ -1,25 +1,39 @@
-import org.gradle.kotlin.dsl.configure
-import org.jlleitschuh.gradle.ktlint.KtlintExtension
-import io.gitlab.arturbosch.detekt.extensions.DetektExtension
+import io.gitlab.arturbosch.detekt.Detekt
 
 plugins {
     id("io.gitlab.arturbosch.detekt")
-    id("org.jlleitschuh.gradle.ktlint")
 }
 
-configure<KtlintExtension> {
-    version.set(libs.versions.ktlint.runtime)
-    android.set(true)
-    verbose.set(true)
-    outputToConsole.set(true)
-    ignoreFailures.set(false)
-    enableExperimentalRules.set(true)
-    filter {
-        exclude("**/generated/**")
-        include("**/kotlin/**")
+tasks.register<Detekt>("detektFormat") {
+    autoCorrect = true
+}
+
+tasks.withType<Detekt> {
+    // Disable caching
+    outputs.upToDateWhen { false }
+
+    reports {
+        html.required.set(true)
+        xml.required.set(false)
+        txt.required.set(false)
     }
+
+    setSource(files(projectDir))
+    config.setFrom(files("$rootDir/config/detekt/detekt.yml"))
+
+    include("**/*.kt", "**/*.kts")
+    exclude(
+        "**/resources/**",
+        "**/build/**",
+    )
+
+    parallel = true
+
+    // Target version of the generated JVM bytecode. It is used for type resolution.
+    this.jvmTarget = "1.8"
 }
 
-configure<DetektExtension> {
-    config = rootProject.files("config/detekt/detekt.yml")
+dependencies {
+    detektPlugins(libs.detekt.ruleset.compiler)
+    detektPlugins(libs.detekt.ruleset.ktlint)
 }
