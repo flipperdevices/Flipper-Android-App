@@ -33,7 +33,6 @@ import com.flipperdevices.debug.stresstest.model.LogLine
 import com.flipperdevices.debug.stresstest.model.StressTestState
 import com.flipperdevices.debug.stresstest.viewmodel.StressTestViewModel
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun ComposableStressTestScreen(
@@ -50,7 +49,7 @@ fun ComposableStressTestScreen(
     ) {
         ComposableStatus(stressTestState)
         ComposableLog(
-            debugLog.toImmutableList(),
+            debugLog,
             Modifier.weight(weight = 1f)
         )
         ComposableButton(viewModel)
