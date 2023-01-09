@@ -135,6 +135,7 @@ complexity:
     ignoreDefaultParameters: false
     ignoreDataClasses: true
     ignoreAnnotatedParameter: [ ]
+    ignoreAnnotated: [ 'Composable' ]
   MethodOverloading:
     active: false
     threshold: 6
@@ -280,7 +281,7 @@ exceptions:
   ThrowingNewInstanceOfSameException:
     active: true
   TooGenericExceptionCaught:
-    active: true
+    active: false
     excludes: [ '**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**' ]
     exceptionNames:
       - 'ArrayIndexOutOfBoundsException'
@@ -657,7 +658,7 @@ style:
     acceptableLength: 4
     allowNonStandardGrouping: false
   UnnecessaryAbstractClass:
-    active: true
+    active: false
   UnnecessaryAnnotationUseSiteTarget:
     active: false
   UnnecessaryApply:
@@ -684,6 +685,7 @@ style:
   UnusedPrivateMember:
     active: true
     allowedNames: '(_|ignored|expected|serialVersionUID|Composable.*Preview)'
+    ignoreAnnotated: [ 'Composable' ]
   UseAnyOrNoneInsteadOfFind:
     active: true
   UseArrayLiteralsInAnnotations:

@@ -55,7 +55,6 @@ class PeripheralResponseReader(
 
     fun getResponses(): Flow<Flipper.Main> = responses
 
-    @Suppress("TooGenericExceptionCaught")
     private suspend fun CoroutineScope.parseLoopJob(byteInputStream: ByteEndlessInputStream) {
         while (this.isActive) {
             try {

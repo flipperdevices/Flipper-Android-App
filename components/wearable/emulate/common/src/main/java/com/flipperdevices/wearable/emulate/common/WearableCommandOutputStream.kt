@@ -55,7 +55,6 @@ class WearableCommandOutputStream<T : GeneratedMessageLite<*, *>>(
         queue.add(command)
     }
 
-    @Suppress("TooGenericExceptionCaught")
     private suspend fun sendLoopJob(scope: CoroutineScope, outputStream: OutputStream) {
         while (scope.isActive) {
             try {

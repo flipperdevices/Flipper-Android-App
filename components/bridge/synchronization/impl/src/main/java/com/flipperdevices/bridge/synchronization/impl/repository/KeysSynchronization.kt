@@ -201,7 +201,7 @@ class KeysSynchronizationImpl @Inject constructor(
         } catch (conflict: UnresolvedConflictException) {
             try {
                 resolveConflict(FlipperKeyPath(conflict.path, deleted = false))
-            } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+            } catch (e: Exception) {
                 error(e) { "Error during resolve conflict $conflict" }
             }
             throw RestartSynchronizationException()

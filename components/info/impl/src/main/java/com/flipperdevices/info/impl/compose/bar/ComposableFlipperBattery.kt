@@ -1,5 +1,6 @@
 package com.flipperdevices.info.impl.compose.bar
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.annotation.FloatRange
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -17,7 +18,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 
 private const val EMPTY_BATTERY = 0f
@@ -91,7 +91,6 @@ private fun BatteryContent(
     showBackground = true
 )
 @Composable
-@Suppress("UnusedPrivateMember")
 private fun ComposableFlipperBatteryPreview() {
     Box {
         ComposableFlipperBattery(

@@ -69,7 +69,6 @@ fun ComposableSearchingContent(
     showBackground = true
 )
 @Composable
-@Suppress("UnusedPrivateMember")
 private fun ComposableSearchingScreenPreview() {
     ComposableSearchingScreen(
         SearchingState(

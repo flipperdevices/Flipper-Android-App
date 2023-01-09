@@ -20,9 +20,9 @@ import com.flipperdevices.protobuf.region
 import com.flipperdevices.protobuf.storage.file
 import com.flipperdevices.protobuf.storage.writeRequest
 import com.flipperdevices.updater.api.DownloaderApi
-import com.flipperdevices.updater.subghz.helpers.model.RegionProvisioning
-import com.flipperdevices.updater.subghz.helpers.model.RegionProvisioningSource
 import com.flipperdevices.updater.subghz.model.FailedUploadSubGhzException
+import com.flipperdevices.updater.subghz.model.RegionProvisioning
+import com.flipperdevices.updater.subghz.model.RegionProvisioningSource
 import com.google.protobuf.ByteString
 import com.squareup.anvil.annotations.ContributesBinding
 import java.io.ByteArrayInputStream

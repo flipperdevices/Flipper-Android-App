@@ -147,8 +147,7 @@ private fun FlipperTextBoxUnderline(
     showSystemUi = true,
     showBackground = true
 )
-@Suppress("UnusedPrivateMember")
-private fun FlipperTextFieldPreview() {
+private fun ComposableFlipperTextFieldPreview() {
     FlipperTextField(
         title = "Name:",
         text = "",

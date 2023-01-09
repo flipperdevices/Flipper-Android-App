@@ -73,8 +73,7 @@ fun SimpleElement(
     showSystemUi = true
 )
 @Composable
-@Suppress("UnusedPrivateMember")
-private fun SimpleElementPreview() {
+private fun ComposableSimpleElementPreview() {
     SimpleElement(
         modifier = Modifier,
         titleId = R.string.experimental_screen_streaming,

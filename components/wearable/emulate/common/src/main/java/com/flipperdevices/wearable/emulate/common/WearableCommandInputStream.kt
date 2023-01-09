@@ -53,7 +53,6 @@ class WearableCommandInputStream<T : GeneratedMessageLite<*, *>>(
         }
     }
 
-    @Suppress("TooGenericExceptionCaught")
     private suspend fun parseLoopJob(scope: CoroutineScope, inputStream: InputStream) {
         while (scope.isActive) {
             try {

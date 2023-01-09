@@ -88,7 +88,7 @@ private fun BaseExtension.configureBuildTypes() {
     }
 }
 
-@Suppress("UnstableApiUsage")
+@Suppress("UnstableApiUsage", "ForbiddenComment")
 private fun BaseExtension.configureBuildFeatures() {
     // TODO: Disable by default
     //  BuildConfig is java source code. Java and Kotlin at one time affect build speed.
@@ -109,6 +109,7 @@ private fun BaseExtension.configureCompileOptions() {
     compileOptions.targetCompatibility = JavaVersion.VERSION_1_8
 }
 
+@Suppress("MaxLineLength")
 private fun Project.suppressOptIn() {
     tasks.withType<KotlinCompile>()
         .configureEach {

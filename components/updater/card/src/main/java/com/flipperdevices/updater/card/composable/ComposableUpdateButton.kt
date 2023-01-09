@@ -27,7 +27,6 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.updater.card.R
 import com.flipperdevices.updater.card.composable.dialogs.ComposableUpdateRequest
-import com.flipperdevices.updater.card.composable.pending.ComposableUpdateButtonContentChooseFile
 import com.flipperdevices.updater.card.model.UpdatePending
 import com.flipperdevices.updater.model.UpdateCardState
 

@@ -1,4 +1,4 @@
-package com.flipperdevices.updater.card.composable.pending
+package com.flipperdevices.updater.card.composable
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -8,7 +8,6 @@ import androidx.compose.ui.platform.LocalContext
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.updater.card.R
-import com.flipperdevices.updater.card.composable.ComposableUpdateButtonContent
 import com.flipperdevices.updater.card.model.UpdatePending
 import com.flipperdevices.updater.model.UpdateCardState
 
