@@ -58,7 +58,7 @@ fun ComposableUpdateButton(
             color = LocalPallet.current.text20
         )
         is UpdateCardState.UpdateFromFile -> ComposableUpdateButtonContentChooseFile(
-            buttonModifier = buttonModifier,
+            modifier = buttonModifier,
             updateCardState = updateCardState,
             onChoose = { pendingUpdateRequest = it }
         )

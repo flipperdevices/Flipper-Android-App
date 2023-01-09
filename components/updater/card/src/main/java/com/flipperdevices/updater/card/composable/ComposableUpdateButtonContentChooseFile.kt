@@ -13,9 +13,9 @@ import com.flipperdevices.updater.model.UpdateCardState
 
 @Composable
 fun ComposableUpdateButtonContentChooseFile(
-    buttonModifier: Modifier = Modifier,
     updateCardState: UpdateCardState,
-    onChoose: (UpdatePending) -> Unit
+    onChoose: (UpdatePending) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -24,7 +24,7 @@ fun ComposableUpdateButtonContentChooseFile(
         }
     }
     ComposableUpdateButtonContent(
-        buttonModifier.clickableRipple { launcher.launch("*/*") },
+        buttonModifier = modifier.clickableRipple { launcher.launch("*/*") },
         textId = R.string.updater_card_updater_button_choose_file,
         descriptionId = R.string.updater_card_updater_button_choose_file_desc,
         color = LocalPallet.current.accent
