@@ -18,7 +18,6 @@ fun ComposableKeyReceive(keyScreenApi: KeyScreenApi) {
     val state by viewModel.getState().collectAsState()
 
     val route = LocalRouter.current
-    val onFinish = { viewModel.onFinish(route) }
     val onCancel = { route.exit() }
 
     when (val localState = state) {

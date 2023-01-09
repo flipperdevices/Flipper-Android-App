@@ -1,5 +1,6 @@
 package com.flipperdevices.updater.card.composable
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -35,7 +36,6 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
@@ -50,7 +50,7 @@ import com.flipperdevices.updater.model.FirmwareVersion
 
 @Composable
 fun ComposableUpdaterFirmwareVersionWithChoice(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     version: FirmwareVersion?,
     onSelectFirmwareChannel: (FirmwareChannel) -> Unit = {}
 ) {

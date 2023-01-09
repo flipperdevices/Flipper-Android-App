@@ -66,21 +66,23 @@ fun ColumnScope.ComposableCategoryContent(
     when (localCategoryState) {
         is CategoryState.Loaded -> if (localCategoryState.keys.isEmpty()) {
             CategoryEmpty(contentModifier)
-        } else CategoryList(
-            contentModifier,
-            categoryType,
-            categoryViewModel,
-            synchronizationUiApi,
-            synchronizationState,
-            localCategoryState.keys
-        )
+        } else {
+            CategoryList(
+                contentModifier,
+                categoryType,
+                categoryViewModel,
+                synchronizationUiApi,
+                synchronizationState,
+                localCategoryState.keys
+            )
+        }
         CategoryState.Loading -> CategoryLoadingProgress(contentModifier)
     }
 }
 
 @Composable
 private fun CategoryList(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     categoryType: CategoryType,
     categoryViewModel: CategoryViewModel,
     synchronizationUiApi: SynchronizationUiApi?,
@@ -114,14 +116,14 @@ private fun CategoryList(
 }
 
 @Composable
-private fun CategoryLoadingProgress(modifier: Modifier) {
+private fun CategoryLoadingProgress(modifier: Modifier = Modifier) {
     Box(modifier, contentAlignment = Alignment.Center) {
         CircularProgressIndicator()
     }
 }
 
 @Composable
-private fun CategoryEmpty(modifier: Modifier) {
+private fun CategoryEmpty(modifier: Modifier = Modifier) {
     Box(modifier, contentAlignment = Alignment.Center) {
         Text(
             text = stringResource(R.string.category_empty),

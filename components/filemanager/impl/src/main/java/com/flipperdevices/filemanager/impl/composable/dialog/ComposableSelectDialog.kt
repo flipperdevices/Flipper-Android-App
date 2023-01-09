@@ -19,17 +19,21 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 @Composable
 fun ComposableSelectDialog(
     options: IntArray,
-    onSelected: (Int?) -> Unit
+    onSelected: (Int?) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Dialog(onDismissRequest = { onSelected(null) }) {
-        Column(modifier = Modifier.background(LocalPallet.current.backgroundDialog)) {
+        Column(modifier = modifier.background(LocalPallet.current.backgroundDialog)) {
             options.forEachIndexed { index, elementTextId ->
                 ComposableDialogOption(
-                    modifier = Modifier.padding(16.dp).fillMaxWidth(),
-                    textId = elementTextId
-                ) {
-                    onSelected(elementTextId)
-                }
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth(),
+                    textId = elementTextId,
+                    onClick = {
+                        onSelected(elementTextId)
+                    }
+                )
                 if (index != options.lastIndex) {
                     Divider(
                         modifier = Modifier.fillMaxWidth(),
@@ -43,12 +47,14 @@ fun ComposableSelectDialog(
 
 @Composable
 private fun ComposableDialogOption(
-    modifier: Modifier,
     @StringRes textId: Int,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Text(
-        modifier = Modifier.clickableRipple(onClick = onClick).then(modifier),
+        modifier = modifier
+            .clickableRipple(onClick = onClick)
+            .then(modifier),
         text = stringResource(textId),
         style = LocalTypography.current.titleM18
     )

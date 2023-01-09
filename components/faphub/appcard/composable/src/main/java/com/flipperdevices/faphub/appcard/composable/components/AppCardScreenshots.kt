@@ -9,8 +9,8 @@ private const val DEFAULT_SCREENSHOT_SIZE = 6
 
 @Composable
 fun AppCardScreenshots(
-    modifier: Modifier,
-    screenshotModifier: Modifier,
+    modifier: Modifier = Modifier,
+    screenshotModifier: Modifier = Modifier,
     screenshots: List<String>?
 ) {
     LazyRow(

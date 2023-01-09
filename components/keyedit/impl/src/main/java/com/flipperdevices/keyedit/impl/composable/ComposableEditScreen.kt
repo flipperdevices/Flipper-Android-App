@@ -56,7 +56,12 @@ private fun ComposableEditScreenEditing(
         SaveButtonState.ENABLED
     } else SaveButtonState.DISABLED
     Column {
-        ComposableEditAppBar(title, buttonState, onCancel, onSave)
+        ComposableEditAppBar(
+            title = title,
+            saveButtonState = buttonState,
+            onBack = onCancel,
+            onSave = onSave
+        )
         ComposableEditCard(
             viewModel,
             state.name,

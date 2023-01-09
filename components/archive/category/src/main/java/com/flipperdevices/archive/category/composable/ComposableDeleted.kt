@@ -77,7 +77,7 @@ private fun ComposableDeletedAppBar(
 
 @Composable
 private fun ComposableDeletedAppBarInternal(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     onDeleteAllDialogOpen: () -> Unit,
     onRestoreAllDialogOpen: () -> Unit
 ) {

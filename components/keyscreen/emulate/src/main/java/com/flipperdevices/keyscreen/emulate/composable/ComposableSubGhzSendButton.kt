@@ -1,5 +1,6 @@
 package com.flipperdevices.keyscreen.emulate.composable
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -12,7 +13,6 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.core.ui.ktx.onHoldPress
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyscreen.api.EmulateProgress
 import com.flipperdevices.keyscreen.api.Picture
@@ -69,7 +69,7 @@ fun ComposableSubGhzSendButton(modifier: Modifier = Modifier, flipperKey: Flippe
 
 @Composable
 private fun ComposableActiveStateEmulateInternal(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     emulateViewModel: SubGhzViewModel,
     flipperKey: FlipperKey,
     emulateButtonState: EmulateButtonState
@@ -112,8 +112,8 @@ private fun ComposableActiveStateEmulateInternal(
  */
 @Composable
 private fun ComposableActiveEmulateInternal(
-    modifier: Modifier,
-    buttonActiveModifier: Modifier,
+    modifier: Modifier = Modifier,
+    buttonActiveModifier: Modifier = Modifier,
     emulateProgress: EmulateProgress?,
     isActive: Boolean
 ) {

@@ -82,9 +82,9 @@ private fun ComposableFileManagerEditorContent(
     Column {
         var text by remember { mutableStateOf(loadedState.content) }
 
-        ComposableEditorTopBar(loadedState.path) {
+        ComposableEditorTopBar(loadedState.path, onClickSaveButton = {
             onClickSaveButton(text)
-        }
+        })
         if (loadedState.tooLarge) {
             Text(
                 modifier = Modifier

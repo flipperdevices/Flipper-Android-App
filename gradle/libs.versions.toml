@@ -1,6 +1,7 @@
 [versions]
 # You also need to bump the version of ksp, anvil, compose
 kotlin-general = "1.7.20" # https://kotlinlang.org/docs/releases.html#release-details
+kotlin-immutable-collections = "0.3.5" # https://github.com/Kotlin/kotlinx.collections.immutable/releases
 kotlinx = "1.6.4" # https://github.com/Kotlin/kotlinx.coroutines/releases
 ksp = "1.7.20-1.0.8" # https://github.com/google/ksp/releases
 anvil = "2.4.2" # https://github.com/square/anvil/releases/tag/v2.4.2
@@ -65,6 +66,7 @@ mockk = "1.13.2"
 detekt = "1.22.0" # https://detekt.dev/docs/gettingstarted/gradle/
 detekt-ruleset-compiler = "0.0.2" # https://github.com/BraisGabin/detekt-compiler-rules/releases
 detekt-ruleset-ktlint = "0.48.0" # https://github.com/pinterest/ktlint/releases
+detekt-ruleset-twitter-compose = "0.0.26" # https://github.com/twitter/compose-rules/releases
 
 [libraries]
 # Gradle - Core
@@ -86,6 +88,8 @@ kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-te
 kotlin-serialization-gradle = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin-general" }
 kotlin-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization-json" }
 
+kotlin-immutable-collections = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlin-immutable-collections" }
+
 protobuf-gradle = { module = "com.google.protobuf:protobuf-gradle-plugin", version.ref = "protobuf-gradle" }
 datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
 
@@ -93,6 +97,7 @@ datastore = { module = "androidx.datastore:datastore", version.ref = "datastore"
 detekt-gradle = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 detekt-ruleset-compiler = { module = "com.braisgabin.detekt:kotlin-compiler-wrapper", version.ref = "detekt-ruleset-compiler" }
 detekt-ruleset-ktlint = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+detekt-ruleset-twitter-compose = { module = "com.twitter.compose.rules:detekt", version.ref = "detekt-ruleset-twitter-compose" }
 
 # UI
 compose-activity = { module = "androidx.activity:activity-compose", version.ref = "ktx-activity" }
@@ -191,6 +196,7 @@ ktor-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
 # Apache commons
 apache-compress = { module = "org.apache.commons:commons-compress", version.ref = "apache-compress" }
 apache-codec = { module = "commons-codec:commons-codec", version.ref = "apache-codec" }
+
 # BLE
 ble = { module = "no.nordicsemi.android:ble", version.ref = "ble" }
 ble-common = { module = "no.nordicsemi.android:ble-common", version.ref = "ble" }

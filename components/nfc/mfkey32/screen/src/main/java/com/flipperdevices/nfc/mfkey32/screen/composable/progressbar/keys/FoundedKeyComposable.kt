@@ -26,7 +26,7 @@ import com.flipperdevices.nfc.mfkey32.screen.R
 private const val GRID_WIDTH = 2
 
 @Composable
-fun FoundedKeyComposableGrid(modifier: Modifier, keys: List<String>) = Column {
+fun FoundedKeyComposableGrid(modifier: Modifier = Modifier, keys: List<String>) = Column {
     keys.windowed(GRID_WIDTH, GRID_WIDTH, partialWindows = true).forEach { rowKeys ->
         Row(
             modifier = Modifier.fillMaxWidth(),

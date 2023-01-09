@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -20,34 +19,34 @@ import com.flipperdevices.nfc.mfkey32.screen.R
 fun ComposableMfKey32NotFound() = ComposableMfKey32ErrorContent(
     titleId = R.string.mfkey32_not_found_title,
     picId = R.drawable.pic_flipper_nfc_detect_reader_white,
-    picIdBlack = R.drawable.pic_flipper_nfc_detect_reader_black
-) {
-    Text(
-        modifier = Modifier.padding(bottom = 14.dp, start = 14.dp, end = 14.dp),
-        text = stringResource(R.string.mfkey32_not_found_desc),
-        style = LocalTypography.current.bodyR16,
-        color = LocalPallet.current.text80,
-        textAlign = TextAlign.Start
-    )
-
-    listOf(
-        R.string.mfkey32_not_found_md_1,
-        R.string.mfkey32_not_found_md_2,
-        R.string.mfkey32_not_found_md_3,
-        R.string.mfkey32_not_found_md_4,
-        R.string.mfkey32_not_found_md_5
-    ).forEach { resId ->
+    picIdBlack = R.drawable.pic_flipper_nfc_detect_reader_black, content = {
         Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 14.dp, vertical = 8.dp),
-            text = annotatedStringFromMarkdown(resId),
-            textAlign = TextAlign.Start,
+            modifier = Modifier.padding(bottom = 14.dp, start = 14.dp, end = 14.dp),
+            text = stringResource(R.string.mfkey32_not_found_desc),
             style = LocalTypography.current.bodyR16,
-            color = LocalPallet.current.text40
+            color = LocalPallet.current.text80,
+            textAlign = TextAlign.Start
         )
+
+        listOf(
+            R.string.mfkey32_not_found_md_1,
+            R.string.mfkey32_not_found_md_2,
+            R.string.mfkey32_not_found_md_3,
+            R.string.mfkey32_not_found_md_4,
+            R.string.mfkey32_not_found_md_5
+        ).forEach { resId ->
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 14.dp, vertical = 8.dp),
+                text = annotatedStringFromMarkdown(resId),
+                textAlign = TextAlign.Start,
+                style = LocalTypography.current.bodyR16,
+                color = LocalPallet.current.text40
+            )
+        }
     }
-}
+)
 
 @Preview(
     showSystemUi = true,

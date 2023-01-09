@@ -52,7 +52,7 @@ fun ComposableUpdateButton(
         is UpdateCardState.Error -> return
         UpdateCardState.InProgress -> return
         is UpdateCardState.NoUpdate -> ComposableUpdateButtonContent(
-            buttonModifier,
+            buttonModifier = buttonModifier,
             textId = R.string.updater_card_updater_button_no_updates,
             descriptionId = R.string.updater_card_updater_button_no_updates_desc,
             color = LocalPallet.current.text20
@@ -69,13 +69,13 @@ fun ComposableUpdateButton(
 
             if (updateCardState.isOtherChannel) {
                 ComposableUpdateButtonContent(
-                    buttonModifier,
+                    buttonModifier = buttonModifier,
                     textId = R.string.updater_card_updater_button_install,
                     descriptionId = R.string.updater_card_updater_button_install_desc,
                     color = LocalPallet.current.accent
                 )
             } else ComposableUpdateButtonContent(
-                buttonModifier,
+                buttonModifier = buttonModifier,
                 textId = R.string.updater_card_updater_button_update,
                 descriptionId = R.string.updater_card_updater_button_update_desc,
                 color = LocalPallet.current.updateProgressGreen
@@ -85,9 +85,11 @@ fun ComposableUpdateButton(
 }
 
 @Composable
-private fun ComposableUpdateButtonPlaceholder(buttonModifier: Modifier) {
+private fun ComposableUpdateButtonPlaceholder(
+    modifier: Modifier = Modifier
+) {
     Box(
-        modifier = buttonModifier
+        modifier = modifier
             .height(46.dp)
             .fillMaxWidth()
             .placeholderConnecting(shape = 9)
@@ -96,12 +98,16 @@ private fun ComposableUpdateButtonPlaceholder(buttonModifier: Modifier) {
 
 @Composable
 fun ComposableUpdateButtonContent(
-    buttonModifier: Modifier,
     @StringRes textId: Int,
     @StringRes descriptionId: Int,
-    color: Color
+    color: Color,
+    modifier: Modifier = Modifier,
+    buttonModifier: Modifier = Modifier
 ) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Box(
             modifier = buttonModifier
                 .fillMaxWidth()

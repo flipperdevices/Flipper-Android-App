@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 fun <T> LazyListScope.gridItems(
     data: List<T>,
     columnCount: Int,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
     itemContent: @Composable BoxScope.(T) -> Unit
 ) {

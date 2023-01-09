@@ -21,7 +21,7 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
 internal fun ComposableSearchTextField(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     text: String,
     hint: String,
     onTextChange: (String) -> Unit
@@ -37,7 +37,7 @@ internal fun ComposableSearchTextField(
 
 @Composable
 private fun SearchTextBox(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     text: String,
     label: @Composable () -> Unit,
     onTextChange: (String) -> Unit,

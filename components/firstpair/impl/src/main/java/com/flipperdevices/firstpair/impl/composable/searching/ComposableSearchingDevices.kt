@@ -15,7 +15,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 fun ComposableSearchingDevices(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     state: SearchingContent.FoundedDevices,
     onDeviceClick: (DiscoveredBluetoothDevice) -> Unit,
     onRefreshSearching: () -> Unit

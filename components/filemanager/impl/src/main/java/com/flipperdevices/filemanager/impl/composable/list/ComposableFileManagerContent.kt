@@ -19,9 +19,9 @@ import com.flipperdevices.filemanager.impl.model.FileManagerState
 
 @Composable
 fun ComposableFileManagerContent(
-    modifier: Modifier = Modifier,
     fileManagerState: FileManagerState,
-    onFileClick: (FileItem) -> Unit
+    onFileClick: (FileItem) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Box(
         modifier = modifier.fillMaxSize(),
@@ -62,6 +62,7 @@ fun ComposableFileManagerPreview() {
                 FileItem.DUMMY_FOLDER,
                 FileItem.DUMMY_FILE
             )
-        )
-    ) {}
+        ),
+        onFileClick = {}
+    )
 }

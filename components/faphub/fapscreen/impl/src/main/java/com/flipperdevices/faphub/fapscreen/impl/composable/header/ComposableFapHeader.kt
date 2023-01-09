@@ -12,7 +12,7 @@ import com.flipperdevices.faphub.dao.api.model.FapItem
 
 @Composable
 fun ComposableFapHeader(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     fapItem: FapItem?,
     installationButton: @Composable (FapItem?, Modifier, TextUnit) -> Unit
 ) = Column(modifier) {

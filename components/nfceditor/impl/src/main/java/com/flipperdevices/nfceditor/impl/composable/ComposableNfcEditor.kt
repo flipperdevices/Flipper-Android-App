@@ -33,7 +33,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun ComposableNfcEditor(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     nfcEditorViewModel: NfcEditorViewModel,
     nfcEditorState: NfcEditorState
 ) {

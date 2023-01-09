@@ -21,7 +21,10 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.firstpair.impl.model.SearchingContent
 
 @Composable
-fun ComposablePermissionRequest(modifier: Modifier, state: SearchingContent.PermissionRequest) {
+fun ComposablePermissionRequest(
+    modifier: Modifier = Modifier,
+    state: SearchingContent.PermissionRequest
+) {
     Column(
         modifier = modifier.padding(horizontal = 62.dp),
         horizontalAlignment = Alignment.CenterHorizontally,

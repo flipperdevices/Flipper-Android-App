@@ -9,7 +9,7 @@ import com.flipperdevices.faphub.installation.impl.R
 
 @Composable
 fun ComposableFapInstallationButton(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     textSize: TextUnit
 ) {
     ComposableFlipperButton(
@@ -22,7 +22,7 @@ fun ComposableFapInstallationButton(
 
 @Composable
 fun ComposableFapUpdateButton(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     textSize: TextUnit
 ) {
     ComposableFlipperButton(

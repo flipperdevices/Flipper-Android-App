@@ -33,11 +33,11 @@ private const val ANIMATION_DURATION_MS = 150
 
 @Composable
 fun FlipperTextField(
+    text: String,
+    onTextChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     title: String? = null,
     label: String? = null,
-    text: String,
-    onTextChange: (String) -> Unit,
     keyboardType: KeyboardType = KeyboardType.Text,
     enabled: Boolean = true
 ) {

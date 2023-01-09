@@ -56,6 +56,8 @@ dependencies {
     implementation(libs.compose.wear.navigation)
     implementation(libs.compose.wear.material)
 
+    implementation(libs.kotlin.immutable.collections)
+
     // Dagger deps
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)

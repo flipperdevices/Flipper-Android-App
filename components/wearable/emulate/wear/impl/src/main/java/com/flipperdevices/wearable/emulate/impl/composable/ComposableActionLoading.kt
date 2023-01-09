@@ -15,7 +15,7 @@ import com.google.accompanist.placeholder.shimmer
 
 @Composable
 fun ComposableActionLoading(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     keyEmulateApi: KeyEmulateUiApi,
     loadingState: WearLoadingState
 ) {

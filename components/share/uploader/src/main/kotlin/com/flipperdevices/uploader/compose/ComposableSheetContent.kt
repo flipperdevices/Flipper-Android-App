@@ -1,6 +1,7 @@
 package com.flipperdevices.uploader.compose
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -52,7 +53,7 @@ internal fun ComposableSheetContent(
 }
 
 @Composable
-private fun ComposableSheetFooter(keyName: String) {
+private fun ColumnScope.ComposableSheetFooter(keyName: String) {
     Divider(
         modifier = Modifier
             .padding(top = 8.dp)

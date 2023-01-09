@@ -29,7 +29,7 @@ import com.flipperdevices.faphub.dao.api.model.FapCategory
 
 @Composable
 fun ComposableCategoryCard(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     fapCategory: FapCategory?
 ) {
     val cardModifier = if (fapCategory == null) {
@@ -71,7 +71,7 @@ fun ComposableCategoryCard(
 
 @Composable
 fun ComposableCategoryIcon(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     category: FapCategory?
 ) {
     var boxModifier = modifier.size(18.dp)

@@ -36,7 +36,7 @@ private val DEFAULT_DESCRIPTION
 
 @Composable
 fun AppCard(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     fapItem: FapItem?,
     installationButton: @Composable (Modifier, TextUnit) -> Unit
 ) {

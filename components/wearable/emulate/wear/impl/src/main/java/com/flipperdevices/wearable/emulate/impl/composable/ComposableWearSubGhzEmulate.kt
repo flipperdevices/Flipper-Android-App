@@ -11,7 +11,7 @@ import com.flipperdevices.wearable.emulate.impl.R
 
 @Composable
 fun ComposableWearSubGhzEmulate(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     emulateProgress: EmulateProgress?,
     keyEmulateUiApi: KeyEmulateUiApi,
     onClickEmulate: () -> Unit,

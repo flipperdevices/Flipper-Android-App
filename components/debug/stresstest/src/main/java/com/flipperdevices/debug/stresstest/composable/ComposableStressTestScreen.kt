@@ -4,6 +4,7 @@ import android.text.format.Formatter
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,23 +32,26 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.debug.stresstest.model.LogLine
 import com.flipperdevices.debug.stresstest.model.StressTestState
 import com.flipperdevices.debug.stresstest.viewmodel.StressTestViewModel
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun ComposableStressTestScreen(
-    viewModel: StressTestViewModel = viewModel()
+    modifier: Modifier = Modifier,
+    viewModel: StressTestViewModel = viewModel(),
 ) {
     val debugLog by viewModel.getDebugLog().collectAsState()
     val stressTestState by viewModel.getStressTestState().collectAsState()
     val speedState by viewModel.getSpeed().collectAsState()
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         ComposableStatus(stressTestState)
         ComposableLog(
-            Modifier.weight(weight = 1f),
-            debugLog
+            debugLog.toImmutableList(),
+            Modifier.weight(weight = 1f)
         )
         ComposableButton(viewModel)
         ComposableSpeed(speedState)
@@ -61,15 +65,15 @@ private fun ComposableStatus(
     Text(
         modifier = Modifier.padding(all = 16.dp),
         text = "Success: ${stressTestState.successfulCount} " +
-            "Error: ${stressTestState.errorCount}",
+                "Error: ${stressTestState.errorCount}",
         style = LocalTypography.current.titleB24
     )
 }
 
 @Composable
 private fun ComposableLog(
+    debugLog: ImmutableList<LogLine>,
     modifier: Modifier = Modifier,
-    debugLog: List<LogLine>
 ) {
     Box(
         modifier = modifier,
@@ -128,7 +132,7 @@ private fun ComposableButton(viewModel: StressTestViewModel) {
 }
 
 @Composable
-private fun ComposableSpeed(speedState: FlipperSerialSpeed) {
+private fun ColumnScope.ComposableSpeed(speedState: FlipperSerialSpeed) {
     var maxReceiveSpeed by remember { mutableStateOf(0L) }
     var maxTransmitSpeed by remember { mutableStateOf(0L) }
 

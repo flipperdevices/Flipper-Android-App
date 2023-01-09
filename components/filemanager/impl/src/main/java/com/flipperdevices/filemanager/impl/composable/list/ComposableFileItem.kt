@@ -24,9 +24,13 @@ import com.flipperdevices.core.ui.res.R
 import com.flipperdevices.filemanager.impl.model.FileItem
 
 @Composable
-fun ComposableFileItem(fileItem: FileItem, onFileClick: (FileItem) -> Unit) {
+fun ComposableFileItem(
+    fileItem: FileItem,
+    onFileClick: (FileItem) -> Unit,
+    modifier: Modifier = Modifier
+) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clickableRipple { onFileClick(fileItem) },
         verticalAlignment = Alignment.CenterVertically
@@ -53,7 +57,10 @@ fun ComposableFileItem(fileItem: FileItem, onFileClick: (FileItem) -> Unit) {
 }
 
 @Composable
-fun ComposableFileImage(modifier: Modifier, fileItem: FileItem) {
+fun ComposableFileImage(
+    fileItem: FileItem,
+    modifier: Modifier = Modifier
+) {
     if (fileItem.isDirectory) {
         Image(
             modifier = modifier,

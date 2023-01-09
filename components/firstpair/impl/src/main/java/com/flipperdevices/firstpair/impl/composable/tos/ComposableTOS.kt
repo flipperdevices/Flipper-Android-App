@@ -30,7 +30,7 @@ fun ComposableTOS(onApplyPress: () -> Unit) {
 }
 
 @Composable
-private fun ComposableTutorial(modifier: Modifier) {
+private fun ComposableTutorial(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally

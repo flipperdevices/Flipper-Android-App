@@ -20,11 +20,12 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 @Composable
 fun ComposeMaterialYouTab(
     tabState: TabState,
+    onClick: (() -> Unit),
+    modifier: Modifier = Modifier,
     selected: Boolean = false,
-    onClick: (() -> Unit)
 ) {
     Box(
-        Modifier.clickable(onClick = onClick),
+        modifier.clickable(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
         Column(

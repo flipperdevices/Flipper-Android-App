@@ -54,7 +54,7 @@ private const val KEY_A = "A"
 private const val KEY_B = "B"
 
 @Composable
-private fun ComposableFoundedKey(modifier: Modifier, foundedKey: FoundedKey) {
+private fun ComposableFoundedKey(modifier: Modifier = Modifier, foundedKey: FoundedKey) {
     val notFoundText = stringResource(R.string.mfkey32_founded_all_not_found)
     Text(
         modifier = modifier,

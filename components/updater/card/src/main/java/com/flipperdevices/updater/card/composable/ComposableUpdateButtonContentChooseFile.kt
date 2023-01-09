@@ -13,7 +13,7 @@ import com.flipperdevices.updater.model.UpdateCardState
 
 @Composable
 fun ComposableUpdateButtonContentChooseFile(
-    buttonModifier: Modifier,
+    buttonModifier: Modifier = Modifier,
     updateCardState: UpdateCardState,
     onChoose: (UpdatePending) -> Unit
 ) {

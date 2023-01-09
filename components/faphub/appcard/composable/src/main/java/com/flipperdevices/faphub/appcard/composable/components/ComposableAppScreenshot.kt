@@ -22,7 +22,7 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 
 @Composable
 fun ComposableAppScreenshot(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     url: String?
 ) {
     var isPlaceholderActive by remember { mutableStateOf(true) }

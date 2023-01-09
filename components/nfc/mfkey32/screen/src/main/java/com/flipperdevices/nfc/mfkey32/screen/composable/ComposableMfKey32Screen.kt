@@ -24,7 +24,10 @@ import com.flipperdevices.nfc.mfkey32.screen.viewmodel.MfKey32ViewModel
 import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
-fun ComposableMfKey32Screen(navController: NavController) {
+fun ComposableMfKey32Screen(
+    navController: NavController,
+    modifier: Modifier = Modifier
+) {
     val viewModel = tangleViewModel<MfKey32ViewModel>()
     val state by viewModel.getMfKey32State().collectAsState()
     val foundedKeys by viewModel.getFoundedInformation().collectAsState()
@@ -33,9 +36,13 @@ fun ComposableMfKey32Screen(navController: NavController) {
     val onBack: () -> Unit = when (state) {
         is MfKey32State.Calculating,
         is MfKey32State.DownloadingRawFile,
-        MfKey32State.Uploading -> { { isDisplayDialog = true } }
+        MfKey32State.Uploading -> {
+            { isDisplayDialog = true }
+        }
         is MfKey32State.Error,
-        is MfKey32State.Saved -> { { navController.popBackStack() } }
+        is MfKey32State.Saved -> {
+            { navController.popBackStack() }
+        }
     }
 
     if (isDisplayDialog) {
@@ -48,7 +55,7 @@ fun ComposableMfKey32Screen(navController: NavController) {
         )
     }
 
-    Column {
+    Column(modifier) {
         OrangeAppBar(
             titleId = R.string.mfkey32_title,
             onBack = onBack

@@ -24,7 +24,7 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
 fun ComposableKeyCard(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     synchronizationContent: (@Composable () -> Unit)?,
     flipperKeyParsed: FlipperKeyParsed,
     typeColor: Color = colorByFlipperKeyType(flipperKeyParsed.fileType),

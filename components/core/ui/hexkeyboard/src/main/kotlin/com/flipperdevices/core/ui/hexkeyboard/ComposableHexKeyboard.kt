@@ -71,7 +71,7 @@ fun ComposableHexKeyboard(
 @Composable
 internal fun ComposableKey(
     key: HexKey,
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
     val onClick = LocalKeyAction.current
     Box(

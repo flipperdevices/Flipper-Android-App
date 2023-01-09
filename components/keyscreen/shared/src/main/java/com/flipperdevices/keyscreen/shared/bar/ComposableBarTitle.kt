@@ -9,7 +9,7 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
-fun ComposableBarTitle(modifier: Modifier, text: String) {
+fun ComposableBarTitle(modifier: Modifier = Modifier, text: String) {
     Text(
         modifier = modifier,
         text = text,
@@ -19,6 +19,6 @@ fun ComposableBarTitle(modifier: Modifier, text: String) {
 }
 
 @Composable
-fun ComposableBarTitle(modifier: Modifier, @StringRes textId: Int) {
+fun ComposableBarTitle(modifier: Modifier = Modifier, @StringRes textId: Int) {
     ComposableBarTitle(modifier = modifier, text = stringResource(textId))
 }

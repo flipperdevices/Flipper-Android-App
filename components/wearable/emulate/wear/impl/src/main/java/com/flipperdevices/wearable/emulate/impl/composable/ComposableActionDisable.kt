@@ -10,7 +10,7 @@ import com.flipperdevices.wearable.emulate.impl.R
 
 @Composable
 fun ComposableActionDisable(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     keyEmulateUiApi: KeyEmulateUiApi,
     keyType: FlipperKeyType?
 ) {
