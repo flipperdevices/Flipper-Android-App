@@ -6,6 +6,7 @@ import com.flipperdevices.faphub.dao.api.model.FapDeveloperInformation
 import com.flipperdevices.faphub.dao.api.model.FapItem
 import com.flipperdevices.faphub.dao.api.model.FapMetaInformation
 import java.util.UUID
+import kotlinx.collections.immutable.toImmutableList
 
 @Suppress("MagicNumber")
 internal object MockConstants {
@@ -55,7 +56,7 @@ internal object MockConstants {
             name = MOCK_CATEGORY_NAME,
             picUrl = MOCK_CATEGORY_LOGO_URL
         ),
-        screenshots = MOCK_SCREENSHOTS,
+        screenshots = MOCK_SCREENSHOTS.toImmutableList(),
         metaInformation = MOCK_META_INFORMATION,
         changelog = MOCK_CHANGELOG,
         fapDeveloperInformation = MOCK_DEVELOPER_INFORMATION

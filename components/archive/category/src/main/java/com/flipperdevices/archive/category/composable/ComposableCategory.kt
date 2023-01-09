@@ -32,6 +32,7 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun ComposableCategory(
@@ -87,7 +88,7 @@ private fun CategoryList(
     categoryViewModel: CategoryViewModel,
     synchronizationUiApi: SynchronizationUiApi?,
     synchronizationState: SynchronizationState,
-    keys: List<Pair<FlipperKeyParsed, FlipperKey>>
+    keys: ImmutableList<Pair<FlipperKeyParsed, FlipperKey>>
 ) {
     val router = LocalRouter.current
     LazyColumn(

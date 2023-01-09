@@ -9,6 +9,8 @@ dependencies {
 
     implementation(projects.components.bridge.dao.api)
 
+    implementation(libs.kotlin.immutable.collections)
+
     // Compose
     implementation(libs.compose.ui)
     implementation(libs.compose.tooling)

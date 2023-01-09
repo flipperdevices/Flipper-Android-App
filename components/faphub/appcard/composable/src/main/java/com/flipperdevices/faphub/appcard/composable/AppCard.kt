@@ -46,11 +46,11 @@ fun AppCard(
             installationButton = installationButton
         )
         AppCardScreenshots(
+            screenshots = fapItem?.screenshots,
             modifier = Modifier.padding(vertical = 12.dp),
             screenshotModifier = Modifier
                 .padding(end = 6.dp)
                 .size(width = 170.dp, height = 84.dp),
-            screenshots = fapItem?.screenshots
         )
         Text(
             modifier = if (fapItem == null) Modifier.placeholderConnecting() else Modifier,

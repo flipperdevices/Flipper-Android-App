@@ -29,6 +29,8 @@ dependencies {
     implementation(projects.components.faphub.appcard.composable)
     implementation(projects.components.faphub.installation.api)
 
+    implementation(libs.kotlin.immutable.collections)
+
     // Dagger deps
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)

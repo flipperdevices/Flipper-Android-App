@@ -1,12 +1,14 @@
 package com.flipperdevices.nfceditor.impl.model
 
 import androidx.compose.runtime.Stable
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 @Stable
 data class NfcEditorState(
     val nfcEditorCardInfo: NfcEditorCardInfo? = null,
     val cardName: String? = null,
-    val sectors: List<NfcEditorSector>
+    val sectors: ImmutableList<NfcEditorSector>
 ) {
     fun copyWithChangedContent(location: NfcEditorCellLocation, content: String): NfcEditorState {
         if (location.field == EditorField.CARD) {
@@ -26,11 +28,11 @@ data class NfcEditorState(
             content,
             columnsList[location.columnIndex].cellType
         )
-        updatedLine = updatedLine.copy(cells = columnsList)
+        updatedLine = updatedLine.copy(cells = columnsList.toImmutableList())
         newLines[location.lineIndex] = updatedLine
-        newSectors[location.sectorIndex] = NfcEditorSector(newLines)
+        newSectors[location.sectorIndex] = NfcEditorSector(newLines.toImmutableList())
         return copy(
-            sectors = newSectors,
+            sectors = newSectors.toImmutableList(),
             nfcEditorCardInfo = if (location.isUid(nfcEditorCardInfo)) {
                 nfcEditorCardInfo?.copyWithChangedContent(
                     location,
@@ -89,12 +91,12 @@ enum class NfcCellType {
 @Stable
 data class NfcEditorLine(
     val index: Int,
-    val cells: List<NfcEditorCell>
+    val cells: ImmutableList<NfcEditorCell>
 )
 
 @Stable
 data class NfcEditorSector(
-    val lines: List<NfcEditorLine>
+    val lines: ImmutableList<NfcEditorLine>
 )
 
 @Stable
@@ -104,7 +106,7 @@ data class NfcEditorCellLocation(
     val lineIndex: Int,
     val columnIndex: Int
 ) {
-    fun increment(sectors: List<NfcEditorSector>): NfcEditorCellLocation? {
+    fun increment(sectors: ImmutableList<NfcEditorSector>): NfcEditorCellLocation? {
         val currentSector = sectors[sectorIndex]
         return if (columnIndex < currentSector.lines[lineIndex].cells.lastIndex) {
             NfcEditorCellLocation(
@@ -130,7 +132,7 @@ data class NfcEditorCellLocation(
         } else null
     }
 
-    fun decrement(sectors: List<NfcEditorSector>): NfcEditorCellLocation? {
+    fun decrement(sectors: ImmutableList<NfcEditorSector>): NfcEditorCellLocation? {
         val currentSector = sectors[sectorIndex]
 
         if (columnIndex > 0) {

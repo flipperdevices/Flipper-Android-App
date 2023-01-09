@@ -1,6 +1,8 @@
 package com.flipperdevices.bridge.api.model
 
 import com.flipperdevices.core.data.SemVer
+import kotlinx.collections.immutable.ImmutableMap
+import kotlinx.collections.immutable.persistentMapOf
 
 data class FlipperRpcInformation(
     val internalStorageStats: StorageStats? = null,
@@ -8,8 +10,8 @@ data class FlipperRpcInformation(
     val flipperDeviceInfo: FlipperDeviceInfo = FlipperDeviceInfo(),
     val firmware: FirmwareInfo = FirmwareInfo(),
     val radioStack: RadioStackInfo = RadioStackInfo(),
-    val otherFields: Map<String, String> = emptyMap(),
-    val allFields: Map<String, String> = emptyMap()
+    val otherFields: ImmutableMap<String, String> = persistentMapOf(),
+    val allFields: ImmutableMap<String, String> = persistentMapOf()
 )
 
 sealed class StorageStats {

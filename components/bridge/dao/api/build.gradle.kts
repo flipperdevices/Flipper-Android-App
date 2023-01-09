@@ -13,6 +13,7 @@ dependencies {
     implementation(libs.cicerone)
 
     implementation(libs.kotlin.serialization.json)
+    implementation(libs.kotlin.immutable.collections)
 
     implementation(libs.compose.ui)
 }

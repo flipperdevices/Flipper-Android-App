@@ -2,7 +2,6 @@ package com.flipperdevices.archive.category.di
 
 import com.flipperdevices.archive.category.fragments.CategoryFragment
 import com.flipperdevices.archive.category.viewmodels.CategoryViewModel
-import com.flipperdevices.archive.category.viewmodels.DeleteViewModel
 import com.flipperdevices.core.di.AppGraph
 import com.squareup.anvil.annotations.ContributesTo
 
@@ -10,5 +9,4 @@ import com.squareup.anvil.annotations.ContributesTo
 interface CategoryComponent {
     fun inject(fragment: CategoryFragment)
     fun inject(viewModel: CategoryViewModel)
-    fun inject(viewModel: DeleteViewModel)
 }

@@ -33,6 +33,7 @@ import com.flipperdevices.nfceditor.impl.model.NfcEditorCardInfo
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCardType
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCell
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCellLocation
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun ComposableNfcCard(
@@ -122,6 +123,7 @@ private fun ComposableNfcCardPreview() {
                 ) {
                     "B6 69 03 36 8A 98 02".split(" ")
                         .map { NfcEditorCell(it, NfcCellType.SIMPLE) }
+                        .toImmutableList()
                 }
             ),
             scaleFactor = 1.0f,

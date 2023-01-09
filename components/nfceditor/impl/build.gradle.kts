@@ -36,6 +36,8 @@ dependencies {
     implementation(libs.compose.material)
     implementation(libs.compose.insets)
 
+    implementation(libs.kotlin.immutable.collections)
+
     implementation(libs.lifecycle.compose)
     implementation(libs.ktx.fragment)
 

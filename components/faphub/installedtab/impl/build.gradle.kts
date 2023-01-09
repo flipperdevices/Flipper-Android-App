@@ -25,6 +25,8 @@ dependencies {
 
     implementation(libs.lifecycle.viewmodel.ktx)
 
+    implementation(libs.kotlin.immutable.collections)
+
     // Dagger deps
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)

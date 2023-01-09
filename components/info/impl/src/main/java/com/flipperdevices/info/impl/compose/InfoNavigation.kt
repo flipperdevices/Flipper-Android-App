@@ -5,11 +5,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.info.impl.api.InfoFeatureEntry
+import kotlinx.collections.immutable.ImmutableSet
 
 @Composable
 fun InfoNavigation(
     navController: NavHostController,
-    featureEntries: Set<AggregateFeatureEntry>,
+    featureEntries: ImmutableSet<AggregateFeatureEntry>,
     infoFeatureEntry: InfoFeatureEntry
 ) {
     NavHost(

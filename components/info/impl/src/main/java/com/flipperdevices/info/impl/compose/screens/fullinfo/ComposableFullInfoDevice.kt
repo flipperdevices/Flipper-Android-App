@@ -15,6 +15,7 @@ import com.flipperdevices.info.shared.ComposableDeviceInfoRowWithText
 import com.flipperdevices.info.shared.ComposableInfoDivider
 import com.flipperdevices.info.shared.InfoElementCard
 import com.flipperdevices.updater.model.FirmwareChannel
+import kotlinx.collections.immutable.ImmutableSet
 
 @Composable
 fun ComposableFullInfoDevice(
@@ -61,7 +62,7 @@ fun ComposableFullInfoDevice(
 
 @Composable
 private fun ComposableOtherInfo(
-    fields: Set<Map.Entry<String, String>>,
+    fields: ImmutableSet<Map.Entry<String, String>>,
     inProgress: Boolean
 ) {
     fields.forEachIndexed { index, field ->

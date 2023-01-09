@@ -10,6 +10,8 @@ dependencies {
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.theme)
 
+    implementation(libs.kotlin.immutable.collections)
+
     // Compose
     implementation(libs.compose.ui)
     implementation(libs.compose.tooling)

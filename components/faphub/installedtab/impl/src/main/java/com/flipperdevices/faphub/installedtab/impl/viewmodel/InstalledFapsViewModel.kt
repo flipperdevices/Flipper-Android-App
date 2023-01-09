@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.dao.api.model.SortType
 import com.flipperdevices.faphub.installedtab.impl.model.FapInstalledScreenState
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -20,7 +21,11 @@ class InstalledFapsViewModel @VMInject constructor(
     init {
         viewModelScope.launch {
             val faps = fapNetworkApi.getAllItem(sortType = SortType.UPDATED).take(n = 4)
-            fapInstalledScreenStateFlow.emit(FapInstalledScreenState.Loaded(faps))
+            fapInstalledScreenStateFlow.emit(
+                FapInstalledScreenState.Loaded(
+                    faps.toImmutableList()
+                )
+            )
         }
     }
 

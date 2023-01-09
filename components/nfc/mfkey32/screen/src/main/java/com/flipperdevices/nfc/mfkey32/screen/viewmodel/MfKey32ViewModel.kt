@@ -25,6 +25,7 @@ import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.deleteRequest
 import java.io.FileNotFoundException
 import java.util.concurrent.Executors
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.async
@@ -92,7 +93,7 @@ class MfKey32ViewModel @VMInject constructor(
                 return@launch
             }
             deleteBruteforceApp(serviceApi.requestApi)
-            mfKey32StateFlow.emit(MfKey32State.Saved(addedKeys))
+            mfKey32StateFlow.emit(MfKey32State.Saved(addedKeys.toImmutableList()))
         }
     }
 
