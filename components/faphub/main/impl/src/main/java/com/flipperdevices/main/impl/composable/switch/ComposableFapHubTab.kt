@@ -3,8 +3,6 @@ package com.flipperdevices.main.impl.composable.switch
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -15,7 +13,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.Text
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.ktx.painterResourceByKey
 import com.flipperdevices.core.ui.ktx.tab.TabTransition
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
@@ -55,11 +53,7 @@ fun ComposableFapHubTab(
     ) {
         ComposableFapHubTabInternal(
             modifier = Modifier
-                .clickable(
-                    interactionSource = MutableInteractionSource(),
-                    indication = rememberRipple(),
-                    onClick = { onSelectFapHubTabEnum(hubTabEnum) }
-                ),
+                .clickableRipple { onSelectFapHubTabEnum(hubTabEnum) },
             iconId = iconId,
             titleId = textId,
             notificationCount = notificationCount

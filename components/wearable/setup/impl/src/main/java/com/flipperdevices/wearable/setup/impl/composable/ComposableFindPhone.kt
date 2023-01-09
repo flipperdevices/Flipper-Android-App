@@ -1,9 +1,7 @@
 package com.flipperdevices.wearable.setup.impl.composable
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.scrollBy
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -25,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.wear.compose.material.CircularProgressIndicator
 import androidx.wear.compose.material.Text
+import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.wearable.core.ui.components.ComposableFlipperButton
 import com.flipperdevices.wearable.setup.impl.R
@@ -32,7 +31,6 @@ import com.flipperdevices.wearable.setup.impl.model.FindPhoneState
 import com.flipperdevices.wearable.setup.impl.viewmodel.FindPhoneViewModel
 import com.google.android.horologist.compose.layout.fillMaxRectangle
 import kotlinx.coroutines.launch
-import rememberRipple
 
 @Composable
 fun ComposableFindPhone(onFoundPhone: () -> Unit) {
@@ -88,11 +86,7 @@ private fun ComposableNotFoundedPhone(onInstall: () -> Unit, onCheckAgain: () ->
     Text(
         modifier = Modifier
             .padding(all = 4.dp)
-            .clickable(
-                interactionSource = MutableInteractionSource(),
-                indication = rememberRipple(),
-                onClick = onCheckAgain
-            ),
+            .clickableRipple(onClick = onCheckAgain),
         text = stringResource(id = R.string.check_again),
         style = LocalTypography.current.subtitleM10
     )
