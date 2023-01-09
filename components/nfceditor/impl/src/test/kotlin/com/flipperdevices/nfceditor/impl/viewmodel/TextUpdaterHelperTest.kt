@@ -8,6 +8,7 @@ import com.flipperdevices.nfceditor.impl.model.NfcEditorCellLocation
 import com.flipperdevices.nfceditor.impl.model.NfcEditorLine
 import com.flipperdevices.nfceditor.impl.model.NfcEditorSector
 import com.flipperdevices.nfceditor.impl.model.NfcEditorState
+import kotlinx.collections.immutable.toImmutableList
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -31,10 +32,11 @@ class TextUpdaterHelperTest {
                                 sectorIndex * TEST_LINES + lineIndex,
                                 "04 77 70 2A 23 4F 80 08 44 00 12 01 11 00 27 16".split(" ")
                                     .map { NfcEditorCell(it, NfcCellType.SIMPLE) }
+                                    .toImmutableList()
                             )
-                        }
+                        }.toImmutableList()
                     )
-                }
+                }.toImmutableList()
             )
         )
     }
