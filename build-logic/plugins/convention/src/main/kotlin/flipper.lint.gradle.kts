@@ -1,12 +1,11 @@
 import io.gitlab.arturbosch.detekt.Detekt
-import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 
 plugins {
     id("io.gitlab.arturbosch.detekt")
 }
 
 tasks.register<Detekt>("detektFormat") {
-    //TODO: autoCorrect = true
+    autoCorrect = true
 }
 
 tasks.withType<Detekt> {
@@ -20,6 +19,7 @@ tasks.withType<Detekt> {
     }
 
     setSource(files(projectDir))
+    config.setFrom(files("$rootDir/config/detekt/detekt.yml"))
 
     include("**/*.kt", "**/*.kts")
     exclude(
@@ -27,13 +27,10 @@ tasks.withType<Detekt> {
         "**/build/**",
     )
 
+    parallel = true
+
     // Target version of the generated JVM bytecode. It is used for type resolution.
     this.jvmTarget = "1.8"
-}
-
-configure<DetektExtension> {
-    parallel = true
-    config = rootProject.files("config/detekt/detekt.yml")
 }
 
 dependencies {
