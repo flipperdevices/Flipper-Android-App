@@ -2,8 +2,6 @@ package com.flipperdevices.filemanager.impl.composable.list
 
 import android.text.format.Formatter
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -22,6 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
+import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.res.R
 import com.flipperdevices.filemanager.impl.model.FileItem
 
@@ -30,10 +28,7 @@ fun ComposableFileItem(fileItem: FileItem, onFileClick: (FileItem) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple()
-            ) { onFileClick(fileItem) },
+            .clickableRipple { onFileClick(fileItem) },
         verticalAlignment = Alignment.CenterVertically
     ) {
         ComposableFileImage(

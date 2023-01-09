@@ -24,6 +24,7 @@
 - [FIX] Scrim status bar and design changes on bottom sheet
 - [FIX] Fix crash when delete from trash key with favorites
 - [FIX] Favorites synchronization
+- [FIX] Clickable modifier ktx
 - [CI] Bump deps
 - [CI] Fix local build of application
 - [CI] Git submodule `Flipper Protobuf`

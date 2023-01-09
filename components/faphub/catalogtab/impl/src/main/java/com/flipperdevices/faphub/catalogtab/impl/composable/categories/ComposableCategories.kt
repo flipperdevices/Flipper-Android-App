@@ -1,13 +1,11 @@
 package com.flipperdevices.faphub.catalogtab.impl.composable.categories
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.faphub.catalogtab.impl.model.CategoriesLoadState
 import com.flipperdevices.faphub.dao.api.model.FapCategory
 
@@ -44,11 +42,8 @@ private fun LazyListScope.ComposableCategoriesGridItems(
     horizontalArrangement = Arrangement.spacedBy(10.dp)
 ) {
     ComposableCategoryCard(
-        modifier = if (it != null) Modifier.clickable(
-            interactionSource = MutableInteractionSource(),
-            indication = rememberRipple(),
-            onClick = { onClick(it) }
-        ) else Modifier,
+        modifier = if (it != null) Modifier.clickableRipple { onClick(it) }
+        else Modifier,
         fapCategory = it
     )
 }
