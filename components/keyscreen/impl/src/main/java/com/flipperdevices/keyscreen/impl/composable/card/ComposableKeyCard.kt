@@ -78,7 +78,7 @@ fun ComposableKeyCard(
                     bottom = 12.dp,
                     start = 12.dp,
                     end = 12.dp
-                ).placeholderByLocalProvider(),
+                ).placeholderByLocalProvider(defaultWidth = 128.dp),
                 deleteState = deleteState,
                 keyName = parsedKey.keyName,
                 onEditName = onEditName
@@ -90,7 +90,7 @@ fun ComposableKeyCard(
                         bottom = 18.dp,
                         start = 12.dp,
                         end = 12.dp
-                    ).placeholderByLocalProvider(),
+                    ).placeholderByLocalProvider(defaultWidth = 96.dp, defaultHeight = 12.dp),
                     text = notes ?: stringResource(R.string.keyscreen_card_note_empty),
                     color = LocalPallet.current.text30,
                     style = LocalTypography.current.bodyR14

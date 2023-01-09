@@ -4,7 +4,6 @@ import android.app.Application as FlipperApp
 import android.os.Vibrator
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewModelScope
-import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.api.utils.Constants.API_SUPPORTED_REMOTE_EMULATE
@@ -79,22 +78,23 @@ abstract class EmulateViewModel(
 
         serviceProvider.provideServiceApi(this) {
             viewModelScope.launch(Dispatchers.Default) {
-                onStartEmulateInternal(this, it.requestApi, fileType, flipperKey)
+                onStartEmulateInternal(this, it, fileType, flipperKey)
             }
         }
     }
 
     protected open suspend fun onStartEmulateInternal(
         scope: CoroutineScope,
-        requestApi: FlipperRequestApi,
+        serviceApi: FlipperServiceApi,
         keyType: FlipperKeyType,
         flipperKey: FlipperKey
     ) {
+        val requestApi = serviceApi.requestApi
         info { "#onStartEmulateInternal" }
         val emulateStarted = try {
             emulateHelper.startEmulate(
                 scope,
-                requestApi,
+                serviceApi,
                 keyType,
                 flipperKey.path,
                 minEmulateTime = 0L

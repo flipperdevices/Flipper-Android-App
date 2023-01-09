@@ -6,7 +6,8 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyCrypto
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.share.api.CryptoStorageApi
-import com.flipperdevices.share.receive.model.FlipperKeyParseException
+import com.flipperdevices.share.receive.helpers.FlipperKeyParserHelper
+import com.flipperdevices.share.receive.models.FlipperKeyParseException
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
