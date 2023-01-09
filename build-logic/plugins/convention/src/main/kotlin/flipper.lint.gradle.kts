@@ -6,6 +6,7 @@ plugins {
 }
 
 tasks.register<Detekt>("detektFormat") {
+    //TODO: autoCorrect = true
 }
 
 tasks.withType<Detekt> {

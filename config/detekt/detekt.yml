@@ -1,5 +1,5 @@
 build:
-  maxIssues: 1
+  maxIssues: 0
   excludeCorrectable: false
   weights:
   # complexity: 2
@@ -604,4 +604,4 @@ style:
   WildcardImport:
     active: true
     excludes: [ '**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**' ]
-    excludeImports: [ 'java.util.*', 'kotlinx.android.synthetic.*' ]
+    excludeImports: [ 'java.util.*' ]
