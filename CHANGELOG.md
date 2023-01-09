@@ -2,6 +2,7 @@
 
 # 1.4.1 - In Progress
 
+- [CI] Migrate to Detekt
 - [GitHub] Update github repo picture
 
 # 1.4.0
