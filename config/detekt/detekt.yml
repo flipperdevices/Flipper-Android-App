@@ -728,7 +728,7 @@ TwitterCompose:
   CompositionLocalAllowlist:
     active: true
     # You can optionally define a list of CompositionLocals that are allowed here
-    # allowedCompositionLocals: LocalSomething,LocalSomethingElse
+    allowedCompositionLocals: LocalRouter,LocalPlaceholderEnable,LocalPallet,LocalTypography
   CompositionLocalNaming:
     active: true
   ContentEmitterReturningValues:
