@@ -57,25 +57,42 @@ private fun ColumnScope.ControlRow(
     center: ButtonEnum?,
     end: ButtonEnum?,
     onPressButton: (ButtonEnum) -> Unit,
-    onLongPressButton: (ButtonEnum) -> Unit
+    onLongPressButton: (ButtonEnum) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Row(
-        Modifier
+        modifier
             .weight(BUTTON_WEIGHT)
             .fillMaxWidth()
     ) {
-        ControlButton(Modifier.weight(BUTTON_WEIGHT), start, onPressButton, onLongPressButton)
-        ControlButton(Modifier.weight(BUTTON_WEIGHT), center, onPressButton, onLongPressButton)
-        ControlButton(Modifier.weight(BUTTON_WEIGHT), end, onPressButton, onLongPressButton)
+        ControlButton(
+            modifier = Modifier.weight(BUTTON_WEIGHT),
+            button = start,
+            onPressButton = onPressButton,
+            onLongPressButton = onLongPressButton
+        )
+        ControlButton(
+            modifier = Modifier.weight(BUTTON_WEIGHT),
+            button = center,
+            onPressButton = onPressButton,
+            onLongPressButton = onLongPressButton
+        )
+        ControlButton(
+            modifier = Modifier.weight(BUTTON_WEIGHT),
+            button = end,
+            onPressButton = onPressButton,
+            onLongPressButton = onLongPressButton
+        )
     }
 }
 
 @Composable
+@Suppress("ModifierReused")
 private fun ControlButton(
-    modifier: Modifier = Modifier,
     button: ButtonEnum?,
     onPressButton: (ButtonEnum) -> Unit,
-    onLongPressButton: (ButtonEnum) -> Unit
+    onLongPressButton: (ButtonEnum) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     if (button == null) {
         Box(modifier)

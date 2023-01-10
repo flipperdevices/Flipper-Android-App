@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -24,31 +22,13 @@ import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
-fun ButtonElementCard(
-    modifier: Modifier = Modifier,
-    iconAngel: Float = 0f,
-    @StringRes titleId: Int,
-    @DrawableRes iconId: Int,
-    color: Color,
-    onClick: (() -> Unit)?
-) {
-    Card(
-        modifier = modifier
-            .padding(horizontal = 14.dp),
-        shape = RoundedCornerShape(size = 10.dp)
-    ) {
-        ButtonElementRow(modifier, iconAngel, titleId, iconId, color, onClick)
-    }
-}
-
-@Composable
 fun ButtonElementRow(
-    modifier: Modifier = Modifier,
-    iconAngel: Float = 0f,
     @StringRes titleId: Int,
     @DrawableRes iconId: Int,
     color: Color,
     onClick: (() -> Unit)?,
+    modifier: Modifier = Modifier,
+    iconAngel: Float = 0f,
     actionIconId: Int? = null
 ) {
     var rowModifier = modifier
