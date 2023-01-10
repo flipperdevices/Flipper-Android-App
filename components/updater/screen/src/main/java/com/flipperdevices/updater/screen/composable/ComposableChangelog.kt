@@ -30,6 +30,7 @@ import com.flipperdevices.core.markdown.ComposableMarkdown
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.updater.screen.R
+import com.flipperdevices.updater.screen.helper.ChangelogFormatter
 
 @Composable
 fun ComposableChangelog(
@@ -67,7 +68,7 @@ fun ComposableChangelog(
                 textAlign = TextAlign.Left
             )
             ComposableMarkdown(
-                content = removeLineBreakChangelog(changelog),
+                content = ChangelogFormatter.format(changelog),
                 modifier = Modifier.fillMaxSize()
             )
         }
@@ -108,10 +109,4 @@ fun Modifier.verticalScrollbar(
         size = Size(widthBar.toPx(), heightBar.toPx()),
         cornerRadius = CornerRadius(x = 100f, y = 100f)
     )
-}
-
-private fun removeLineBreakChangelog(changelog: String): String {
-    return changelog
-        .replace("\r\n\r\n", "\r\n")
-        .replace("\r", "")
 }
