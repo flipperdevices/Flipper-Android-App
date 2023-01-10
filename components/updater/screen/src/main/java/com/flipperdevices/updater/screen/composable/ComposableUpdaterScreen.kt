@@ -1,8 +1,10 @@
 package com.flipperdevices.updater.screen.composable
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.CircularProgressIndicator
@@ -17,7 +19,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.preference.pb.HardwareColor
 import com.flipperdevices.core.ui.ktx.clickableRipple
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.updater.screen.R
@@ -29,11 +30,14 @@ fun ComposableUpdaterScreen(
     updaterScreenState: UpdaterScreenState,
     flipperColor: HardwareColor,
     onCancel: () -> Unit,
-    onRetry: () -> Unit
+    onRetry: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    Column {
+    Column(modifier) {
         Column(
-            Modifier.weight(weight = 1f).padding(horizontal = 14.dp),
+            Modifier
+                .weight(weight = 1f)
+                .padding(horizontal = 14.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             UpdaterScreenHeader(
@@ -51,7 +55,7 @@ fun ComposableUpdaterScreen(
 }
 
 @Composable
-private fun UpdaterScreenHeader(
+private fun ColumnScope.UpdaterScreenHeader(
     updaterScreenState: UpdaterScreenState,
     flipperColor: HardwareColor
 ) {
@@ -86,7 +90,9 @@ private fun UpdaterScreenHeader(
     }
 
     Image(
-        modifier = Modifier.fillMaxWidth().padding(bottom = 14.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 14.dp),
         painter = painterResource(imageId),
         contentDescription = stringResource(titleId),
         contentScale = ContentScale.FillWidth

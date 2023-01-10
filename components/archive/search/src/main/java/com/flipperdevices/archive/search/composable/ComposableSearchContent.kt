@@ -34,9 +34,9 @@ import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun ComposableSearchContent(
-    modifier: Modifier = Modifier,
     synchronizationUiApi: SynchronizationUiApi,
-    searchViewModel: SearchViewModel
+    searchViewModel: SearchViewModel,
+    modifier: Modifier = Modifier,
 ) {
     val state by searchViewModel.getState().collectAsState()
     val synchronizationState by searchViewModel.getSynchronizationState().collectAsState()
@@ -47,11 +47,11 @@ fun ComposableSearchContent(
             CategoryEmpty(modifier)
         } else {
             CategoryList(
-                modifier,
-                searchViewModel,
-                synchronizationUiApi,
-                synchronizationState,
-                localState.keys
+                modifier = modifier,
+                searchViewModel = searchViewModel,
+                synchronizationUiApi = synchronizationUiApi,
+                synchronizationState = synchronizationState,
+                keys = localState.keys
             )
         }
     }
@@ -59,11 +59,11 @@ fun ComposableSearchContent(
 
 @Composable
 private fun CategoryList(
-    modifier: Modifier = Modifier,
     searchViewModel: SearchViewModel,
     synchronizationUiApi: SynchronizationUiApi,
     synchronizationState: SynchronizationState,
-    keys: ImmutableList<Pair<FlipperKeyParsed, FlipperKey>>
+    keys: ImmutableList<Pair<FlipperKeyParsed, FlipperKey>>,
+    modifier: Modifier = Modifier,
 ) {
     val router = LocalRouter.current
     LazyColumn(
@@ -71,7 +71,7 @@ private fun CategoryList(
     ) {
         items(keys) { (flipperKeyParsed, flipperKey) ->
             ComposableKeyCard(
-                Modifier.padding(bottom = 14.dp),
+                modifier = Modifier.padding(bottom = 14.dp),
                 synchronizationContent = {
                     synchronizationUiApi.RenderSynchronizationState(
                         flipperKey.synchronized,
@@ -79,10 +79,11 @@ private fun CategoryList(
                         withText = false
                     )
                 },
-                flipperKeyParsed
-            ) {
-                searchViewModel.openKeyScreen(router, flipperKey.getKeyPath())
-            }
+                flipperKeyParsed = flipperKeyParsed,
+                onCardClicked = {
+                    searchViewModel.openKeyScreen(router, flipperKey.getKeyPath())
+                }
+            )
         }
     }
 }

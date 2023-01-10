@@ -2,6 +2,7 @@ package com.flipperdevices.archive.shared.composable
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -24,11 +25,11 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
 fun ComposableKeyCard(
-    modifier: Modifier = Modifier,
     synchronizationContent: (@Composable () -> Unit)?,
     flipperKeyParsed: FlipperKeyParsed,
+    onCardClicked: () -> Unit,
+    modifier: Modifier = Modifier,
     typeColor: Color = colorByFlipperKeyType(flipperKeyParsed.fileType),
-    onCardClicked: () -> Unit
 ) {
     Card(
         modifier = modifier
@@ -47,7 +48,7 @@ fun ComposableKeyCard(
 }
 
 @Composable
-private fun ComposableKeyCardContent(
+private fun ColumnScope.ComposableKeyCardContent(
     flipperKeyParsed: FlipperKeyParsed,
     typeColor: Color,
     synchronizationContent: (@Composable () -> Unit)?

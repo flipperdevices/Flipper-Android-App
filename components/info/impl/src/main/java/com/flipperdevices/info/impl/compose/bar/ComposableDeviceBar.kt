@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -84,8 +85,11 @@ private fun FlipperImage(
         DeviceStatus.NoDevice -> disabledFlipperId
         is DeviceStatus.Connected -> flipperId
         is DeviceStatus.NoDeviceInformation -> {
-            if (deviceStatus.connectInProgress) disabledFlipperId
-            else flipperId
+            if (deviceStatus.connectInProgress) {
+                disabledFlipperId
+            } else {
+                flipperId
+            }
         }
     }
 
@@ -143,7 +147,7 @@ private fun ConnectedText(deviceStatus: DeviceStatus.Connected) {
 }
 
 @Composable
-private fun FlipperName(title: String) {
+private fun ColumnScope.FlipperName(title: String) {
     Text(
         modifier = Modifier.padding(bottom = 3.dp),
         text = title,

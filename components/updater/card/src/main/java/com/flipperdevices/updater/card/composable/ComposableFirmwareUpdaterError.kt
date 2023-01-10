@@ -1,10 +1,12 @@
 package com.flipperdevices.updater.card.composable
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
@@ -17,7 +19,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.ktx.painterResourceByKey
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
@@ -25,7 +26,7 @@ import com.flipperdevices.updater.card.R
 import com.flipperdevices.updater.model.UpdateErrorType
 
 @Composable
-fun ComposableFirmwareUpdaterError(
+fun ColumnScope.ComposableFirmwareUpdaterError(
     typeError: UpdateErrorType,
     retryUpdate: () -> Unit = {}
 ) {

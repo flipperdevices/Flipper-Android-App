@@ -4,6 +4,7 @@ import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -75,7 +76,7 @@ fun ComposableFindPhone(
 }
 
 @Composable
-private fun ComposableNotFoundedPhone(onInstall: () -> Unit, onCheckAgain: () -> Unit) {
+private fun ColumnScope.ComposableNotFoundedPhone(onInstall: () -> Unit, onCheckAgain: () -> Unit) {
     Text(
         text = stringResource(id = R.string.phone_missing),
         style = LocalTypography.current.bodyM14
