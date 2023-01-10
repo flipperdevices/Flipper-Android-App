@@ -83,7 +83,9 @@ fun ComposableInputDialog(
                             errorText = R.string.add_dialog_error_wrong_character
                         } else if (text.length > FILE_MAX_LENGTH) {
                             errorText = R.string.add_dialog_error_too_long
-                        } else onFinishEdit(text)
+                        } else {
+                            onFinishEdit(text)
+                        }
                     }
                 ) {
                     Text(text = stringResource(R.string.share_dialog_btn_ok))

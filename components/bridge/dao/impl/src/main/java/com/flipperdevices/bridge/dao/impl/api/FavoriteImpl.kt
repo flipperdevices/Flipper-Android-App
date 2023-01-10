@@ -14,13 +14,13 @@ import com.flipperdevices.bridge.dao.impl.repository.KeyDao
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.provideDelegate
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
-import javax.inject.Provider
-import javax.inject.Singleton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
+import javax.inject.Provider
+import javax.inject.Singleton
 
 @Singleton
 @ContributesBinding(AppGraph::class)
@@ -43,7 +43,9 @@ class FavoriteImpl @Inject constructor(
                 val fileType = it.path.keyType
                 return@mapNotNull if (fileType != null) {
                     keyDao.getByPath(it.path.pathToKey, it.deleted)
-                } else null
+                } else {
+                    null
+                }
             }
 
             val favoriteKeys = flipperKeys.map { it.uid }.mapIndexed { order, keyId ->

@@ -16,21 +16,21 @@ class FFFUrlDecoder : LogTagProvider {
         if (!SUPPORTED_SCHEMES.contains(uri.scheme)) {
             warn {
                 "Ignore $uri because ${uri.scheme} is unsupported scheme " +
-                        "(Supported $SUPPORTED_SCHEMES)"
+                    "(Supported $SUPPORTED_SCHEMES)"
             }
             return null
         }
         if (!SUPPORTED_HOSTS.contains(uri.host)) {
             warn {
                 "Ignore $uri because ${uri.host} is unsupported host " +
-                        "(Supported: $SUPPORTED_HOSTS)"
+                    "(Supported: $SUPPORTED_HOSTS)"
             }
             return null
         }
         if (!SUPPORTED_PATHS.contains(uri.path)) {
             warn {
                 "Ignore $uri because ${uri.path} is unsupported path " +
-                        "(Supported: $SUPPORTED_PATHS)"
+                    "(Supported: $SUPPORTED_PATHS)"
             }
             return null
         }
@@ -70,10 +70,10 @@ class FFFUrlDecoder : LogTagProvider {
     fun decodeQuery(query: String): List<Pair<String, String>> {
         return query.split(QUERY_DELIMITED_CHAR).map {
             it.substringBefore(QUERY_VALUE_DELIMITED_CHAR) to
-                    it.substringAfter(QUERY_VALUE_DELIMITED_CHAR)
+                it.substringAfter(QUERY_VALUE_DELIMITED_CHAR)
         }.map {
             URLDecoder.decode(it.first, QUERY_VALUE_CHARSET) to
-                    URLDecoder.decode(it.second, QUERY_VALUE_CHARSET)
+                URLDecoder.decode(it.second, QUERY_VALUE_CHARSET)
         }
     }
 }

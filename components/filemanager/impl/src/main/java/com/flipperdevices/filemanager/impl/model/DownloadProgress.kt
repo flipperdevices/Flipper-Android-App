@@ -12,7 +12,9 @@ sealed class DownloadProgress {
     ) : DownloadProgress() {
         fun toProgressFloat() = if (totalSize != 0L) {
             progress.toFloat() / totalSize.toFloat()
-        } else 0f
+        } else {
+            0f
+        }
     }
 
     @Stable

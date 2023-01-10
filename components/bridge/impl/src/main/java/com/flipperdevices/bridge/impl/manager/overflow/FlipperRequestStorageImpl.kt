@@ -32,7 +32,9 @@ class FlipperRequestStorageImpl : FlipperRequestStorage {
             val request = queue.poll() ?: continue
             if (!filter(request)) {
                 notDeletedRequests.add(request)
-            } else info { "Found request for deleted by filter and delete it" }
+            } else {
+                info { "Found request for deleted by filter and delete it" }
+            }
         }
         queue.addAll(notDeletedRequests)
         info {

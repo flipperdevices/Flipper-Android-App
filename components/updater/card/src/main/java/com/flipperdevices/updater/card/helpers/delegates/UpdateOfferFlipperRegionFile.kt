@@ -5,9 +5,9 @@ import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.updater.card.helpers.FileExistHelper
 import com.squareup.anvil.annotations.ContributesMultibinding
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
 @ContributesMultibinding(scope = AppGraph::class, boundType = UpdateOfferDelegate::class)
 class UpdateOfferFlipperRegionFile @Inject constructor(

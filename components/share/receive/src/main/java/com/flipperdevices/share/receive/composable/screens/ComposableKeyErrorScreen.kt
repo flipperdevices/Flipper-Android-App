@@ -17,12 +17,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.ktx.painterResourceByKey
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.share.receive.R
 import com.flipperdevices.share.receive.composable.components.ComposableKeySaveBar
 import com.flipperdevices.share.receive.models.ReceiverError
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 internal fun ComposableKeyErrorScreen(
@@ -104,11 +104,13 @@ private fun getImageByShareError(typeError: ReceiverError): Int {
             ReceiverError.INVALID_FILE_FORMAT -> DesignSystem.drawable.ic_file_invalid_format
             ReceiverError.EXPIRED_LINK -> DesignSystem.drawable.ic_expired_link
         }
-    } else when (typeError) {
-        ReceiverError.NO_INTERNET_CONNECTION -> DesignSystem.drawable.ic_no_internet
-        ReceiverError.CANT_CONNECT_TO_SERVER -> DesignSystem.drawable.ic_server_error
-        ReceiverError.INVALID_FILE_FORMAT -> DesignSystem.drawable.ic_file_invalid_format
-        ReceiverError.EXPIRED_LINK -> DesignSystem.drawable.ic_expired_link
+    } else {
+        when (typeError) {
+            ReceiverError.NO_INTERNET_CONNECTION -> DesignSystem.drawable.ic_no_internet
+            ReceiverError.CANT_CONNECT_TO_SERVER -> DesignSystem.drawable.ic_server_error
+            ReceiverError.INVALID_FILE_FORMAT -> DesignSystem.drawable.ic_file_invalid_format
+            ReceiverError.EXPIRED_LINK -> DesignSystem.drawable.ic_expired_link
+        }
     }
 }
 

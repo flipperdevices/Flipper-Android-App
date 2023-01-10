@@ -6,11 +6,11 @@ import android.net.Uri
 import android.os.Parcelable
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyCrypto
-import java.io.File
-import java.io.InputStream
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
+import java.io.File
+import java.io.InputStream
 
 @Serializable
 sealed class DeeplinkContent : Parcelable {

@@ -12,8 +12,8 @@ import com.flipperdevices.core.ui.res.R
 import com.flipperdevices.hub.impl.api.HubFeatureEntry
 import com.flipperdevices.hub.impl.composable.HubNavigation
 import com.flipperdevices.hub.impl.di.HubComponent
-import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableSet
+import javax.inject.Inject
 
 class HubFragment : ComposeFragment(), OnBackPressListener {
     @Inject

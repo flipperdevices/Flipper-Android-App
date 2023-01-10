@@ -102,7 +102,9 @@ class SubGhzViewModel @VMInject constructor(
             parsedKey.totalTimeMs != null
         ) {
             parsedKey.totalTimeMs
-        } else null
+        } else {
+            null
+        }
 
         var appStarted: Boolean? = null
 
@@ -121,11 +123,13 @@ class SubGhzViewModel @VMInject constructor(
                             progress = EmulateProgress.GrowingAndStop(timeout)
                         )
                     )
-                } else emulateButtonStateFlow.emit(
-                    EmulateButtonState.Active(
-                        progress = EmulateProgress.Growing(timeout)
+                } else {
+                    emulateButtonStateFlow.emit(
+                        EmulateButtonState.Active(
+                            progress = EmulateProgress.Growing(timeout)
+                        )
                     )
-                )
+                }
             }
         } catch (ignored: AlreadyOpenedAppException) {
             emulateHelper.stopEmulateForce(requestApi)

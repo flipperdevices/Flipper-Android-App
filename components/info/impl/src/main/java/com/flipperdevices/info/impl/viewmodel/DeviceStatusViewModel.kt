@@ -14,12 +14,12 @@ import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.updater.api.UpdateStateApi
 import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.model.FlipperUpdateState
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
 class DeviceStatusViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
     private val deviceStatus = MutableStateFlow<DeviceStatus>(DeviceStatus.NoDevice)
@@ -60,10 +60,12 @@ class DeviceStatusViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
                     pairSettings.deviceId.isBlank()
                 ) {
                     DeviceStatus.NoDevice
-                } else DeviceStatus.NoDeviceInformation(
-                    pairSettings.deviceName,
-                    connectInProgress = false
-                )
+                } else {
+                    DeviceStatus.NoDeviceInformation(
+                        pairSettings.deviceName,
+                        connectInProgress = false
+                    )
+                }
                 ConnectionState.Connecting,
                 ConnectionState.Disconnecting,
                 ConnectionState.Initializing,

@@ -53,7 +53,9 @@ private fun ComposableInfoCardContentInternal(
 ) {
     val firmwareVersionInProgress = if (deviceStatus is DeviceStatus.NoDeviceInformation) {
         deviceStatus.connectInProgress
-    } else deviceStatus is DeviceStatus.Connected
+    } else {
+        deviceStatus is DeviceStatus.Connected
+    }
 
     ComposableFirmwareVersion(
         deviceInfo.firmwareVersion,

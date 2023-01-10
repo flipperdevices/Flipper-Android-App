@@ -41,8 +41,11 @@ private fun ComposableTabIconStatic(
     Icon(
         modifier = modifier.fillMaxSize(),
         painter = painterResourceByKey(
-            if (selected) tabState.selectedIcon
-            else tabState.notSelectedIcon
+            if (selected) {
+                tabState.selectedIcon
+            } else {
+                tabState.notSelectedIcon
+            }
         ),
         contentDescription = tabState.text,
         tint = LocalContentColor.current.copy(alpha = LocalContentAlpha.current)

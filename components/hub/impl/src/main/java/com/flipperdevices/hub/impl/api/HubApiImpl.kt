@@ -7,8 +7,8 @@ import com.flipperdevices.nfc.attack.api.NfcAttackApi
 import com.github.terrakok.cicerone.Screen
 import com.github.terrakok.cicerone.androidx.FragmentScreen
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class)
 class HubApiImpl @Inject constructor(

@@ -11,9 +11,9 @@ import com.flipperdevices.updater.model.UpdateErrorType
 import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.model.VersionFiles
 import com.flipperdevices.updater.model.WebUpdaterFirmware
+import kotlinx.coroutines.Deferred
 import java.net.UnknownHostException
 import java.util.EnumMap
-import kotlinx.coroutines.Deferred
 
 class UpdateCardHelper(
     private val updateChannel: FirmwareChannel?,

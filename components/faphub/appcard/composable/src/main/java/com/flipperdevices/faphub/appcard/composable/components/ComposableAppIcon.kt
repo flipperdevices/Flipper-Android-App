@@ -34,7 +34,9 @@ fun ComposableAppIcon(
 
     val modifierWithPlaceholder = if (isPlaceholderActive) {
         modifierWithClip.placeholderConnecting()
-    } else modifierWithClip
+    } else {
+        modifierWithClip
+    }
     Box(
         modifier = modifierWithPlaceholder
     ) {

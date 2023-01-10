@@ -48,7 +48,8 @@ class ExistedKeyProcessor @Inject constructor(
             val newFlipperKey = oldKey.copy(
                 mainFile = oldKey.mainFile.copy(
                     path = FlipperFilePath(
-                        editableKey.flipperKeyPath.path.folder, "${editState.name}.$extension"
+                        editableKey.flipperKeyPath.path.folder,
+                        "${editState.name}.$extension"
                     )
                 ),
                 notes = editState.notes

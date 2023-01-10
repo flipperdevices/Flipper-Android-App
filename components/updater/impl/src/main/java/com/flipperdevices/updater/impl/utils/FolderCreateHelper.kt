@@ -5,8 +5,8 @@ import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.mkdirRequest
-import java.io.File
 import kotlinx.coroutines.flow.collect
+import java.io.File
 
 object FolderCreateHelper {
     suspend fun mkdirFolderOnFlipper(requestApi: FlipperRequestApi, flipperPath: String) {

@@ -15,8 +15,8 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.nfceditor.impl.model.EditorField
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCell
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCellLocation
-import kotlin.math.roundToInt
 import kotlinx.collections.immutable.ImmutableList
+import kotlin.math.roundToInt
 
 @Composable
 fun ComposableNfcLine(

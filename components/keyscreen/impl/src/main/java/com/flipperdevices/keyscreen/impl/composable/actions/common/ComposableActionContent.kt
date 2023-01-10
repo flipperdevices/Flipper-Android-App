@@ -91,12 +91,14 @@ private fun ComposableActionContent(
         CircularProgressIndicator(
             modifier = Modifier.size(size = 24.dp)
         )
-    } else Icon(
-        modifier = Modifier.size(size = 24.dp),
-        painter = painterResourceByKey(iconId!!),
-        contentDescription = descriptionText,
-        tint = tint
-    )
+    } else {
+        Icon(
+            modifier = Modifier.size(size = 24.dp),
+            painter = painterResourceByKey(iconId!!),
+            contentDescription = descriptionText,
+            tint = tint
+        )
+    }
 
     Text(
         modifier = Modifier.padding(start = 10.dp),

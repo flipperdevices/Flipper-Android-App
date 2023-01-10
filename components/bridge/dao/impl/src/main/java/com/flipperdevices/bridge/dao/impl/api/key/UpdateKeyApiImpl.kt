@@ -15,15 +15,15 @@ import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.ktx.jre.withFirstElement
 import com.flipperdevices.core.log.LogTagProvider
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
-import javax.inject.Provider
-import javax.inject.Singleton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
+import javax.inject.Provider
+import javax.inject.Singleton
 
 @Singleton
 @ContributesBinding(AppGraph::class, UpdateKeyApi::class)
@@ -66,7 +66,9 @@ class UpdateKeyApiImpl @Inject constructor(
                 uid = oldKeyInDatabase.uid,
                 synchronizedStatus = if (isShouldSynchronize) {
                     SynchronizedStatus.NOT_SYNCHRONIZED
-                } else SynchronizedStatus.SYNCHRONIZED
+                } else {
+                    SynchronizedStatus.SYNCHRONIZED
+                }
             )
             if (oldKey.additionalFiles != newKey.additionalFiles) {
                 additionalFileApi.updateAdditionalFiles(

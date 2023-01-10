@@ -61,7 +61,9 @@ fun ComposeLottiePic(
                         keyPath = arrayOf("**")
                     )
                 )
-            } else null
+            } else {
+                null
+            }
 
             LottieAnimation(
                 modifier = modifier,

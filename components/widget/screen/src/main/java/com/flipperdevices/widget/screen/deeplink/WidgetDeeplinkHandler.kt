@@ -16,7 +16,9 @@ class WidgetDeeplinkHandler @Inject constructor(
     override fun isSupportLink(link: Deeplink): DispatcherPriority? {
         return if (link is Deeplink.WidgetOptions) {
             DispatcherPriority.HIGH
-        } else null
+        } else {
+            null
+        }
     }
 
     override fun processLink(router: Router, link: Deeplink) {

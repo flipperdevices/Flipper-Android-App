@@ -1,6 +1,5 @@
 package com.flipperdevices.nfceditor.impl.composable.card
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -34,6 +33,7 @@ import com.flipperdevices.nfceditor.impl.model.NfcEditorCardType
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCell
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCellLocation
 import kotlinx.collections.immutable.toImmutableList
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableNfcCard(
@@ -61,7 +61,9 @@ fun ComposableNfcCard(
             ComposableNfcCardInternal(
                 modifier = if (isOpened) {
                     Modifier.matchParentSize()
-                } else Modifier,
+                } else {
+                    Modifier
+                },
                 scaleFactor = scaleFactor,
                 nfcEditorCardInfo = nfcEditorCardInfo,
                 isOpened = isOpened,

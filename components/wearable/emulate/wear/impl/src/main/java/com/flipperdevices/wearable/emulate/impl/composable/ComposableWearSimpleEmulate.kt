@@ -27,13 +27,15 @@ fun ComposableWearSimpleEmulate(
             progressColor = Color.Transparent,
             emulateProgress = null
         )
-    } else keyEmulateUiApi.ComposableEmulateButtonRaw(
-        modifier = modifier,
-        buttonContentModifier = Modifier.clickableRipple(onClick = onStopEmulate),
-        emulateProgress = emulateProgress,
-        picture = null,
-        textId = R.string.keyscreen_emulating,
-        color = LocalPallet.current.actionOnFlipperProgress,
-        progressColor = LocalPallet.current.actionOnFlipperEnable
-    )
+    } else {
+        keyEmulateUiApi.ComposableEmulateButtonRaw(
+            modifier = modifier,
+            buttonContentModifier = Modifier.clickableRipple(onClick = onStopEmulate),
+            emulateProgress = emulateProgress,
+            picture = null,
+            textId = R.string.keyscreen_emulating,
+            color = LocalPallet.current.actionOnFlipperProgress,
+            progressColor = LocalPallet.current.actionOnFlipperEnable
+        )
+    }
 }

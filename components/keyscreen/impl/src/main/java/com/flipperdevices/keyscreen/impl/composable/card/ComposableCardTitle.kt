@@ -1,6 +1,5 @@
 package com.flipperdevices.keyscreen.impl.composable.card
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.Icon
@@ -15,6 +14,7 @@ import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.keyscreen.impl.R
 import com.flipperdevices.keyscreen.impl.model.DeleteState
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableCardTitle(

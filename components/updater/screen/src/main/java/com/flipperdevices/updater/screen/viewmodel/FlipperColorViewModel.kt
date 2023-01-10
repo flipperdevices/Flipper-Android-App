@@ -7,11 +7,11 @@ import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.preference.pb.HardwareColor
 import com.flipperdevices.core.preference.pb.PairSettings
 import com.flipperdevices.updater.screen.di.UpdaterComponent
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
 class FlipperColorViewModel : ViewModel() {
     private val colorFlipperState = MutableStateFlow(HardwareColor.WHITE)

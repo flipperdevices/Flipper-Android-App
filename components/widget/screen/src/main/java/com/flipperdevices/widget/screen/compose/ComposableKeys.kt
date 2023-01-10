@@ -69,7 +69,9 @@ fun ColumnScope.ComposableKeys(
     if (!isKeysPresented) {
         if (synchronizationState is SynchronizationState.InProgress) {
             ComposableProgress()
-        } else ComposableNoKeys()
+        } else {
+            ComposableNoKeys()
+        }
     }
 }
 

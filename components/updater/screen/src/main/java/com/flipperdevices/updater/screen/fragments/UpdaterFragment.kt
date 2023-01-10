@@ -1,6 +1,5 @@
 package com.flipperdevices.updater.screen.fragments
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import android.content.Context
 import android.view.WindowManager
 import androidx.compose.runtime.Composable
@@ -23,6 +22,7 @@ import com.flipperdevices.updater.screen.model.UpdaterScreenState
 import com.flipperdevices.updater.screen.viewmodel.FlipperColorViewModel
 import com.flipperdevices.updater.screen.viewmodel.UpdaterViewModel
 import javax.inject.Inject
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 private const val EXTRA_UPDATE_REQUEST = "update_request"
 
@@ -64,7 +64,8 @@ class UpdaterFragment : ComposeFragment(), StatusBarColorProvider {
             onRetry = {
                 val updateRequest = arguments?.getParcelable<UpdateRequest>(EXTRA_UPDATE_REQUEST)
                 updaterViewModel.retry(updateRequest)
-            })
+            }
+        )
         if (isCancelDialogOpen) {
             when (updaterScreenState) {
                 is UpdaterScreenState.Failed -> onAbortUpdate()

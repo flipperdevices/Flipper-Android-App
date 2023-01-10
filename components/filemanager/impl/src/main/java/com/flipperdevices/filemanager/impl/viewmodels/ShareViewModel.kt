@@ -18,7 +18,6 @@ import com.flipperdevices.filemanager.impl.model.DownloadProgress
 import com.flipperdevices.filemanager.impl.model.ShareFile
 import com.flipperdevices.filemanager.impl.model.ShareState
 import com.flipperdevices.filemanager.impl.viewmodels.helpers.DownloadFileHelper
-import java.util.concurrent.atomic.AtomicBoolean
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -27,6 +26,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import tangle.inject.TangleParam
 import tangle.viewmodel.VMInject
+import java.util.concurrent.atomic.AtomicBoolean
 
 class ShareViewModel @VMInject constructor(
     flipperServiceProvider: FlipperServiceProvider,
@@ -103,7 +103,9 @@ class ShareViewModel @VMInject constructor(
                 )
             }
             error(exception) { "Can't download $shareFile" }
-        } else onCompleteDownload()
+        } else {
+            onCompleteDownload()
+        }
     }
 
     private suspend fun onCompleteDownload() = withContext(Dispatchers.Main) {

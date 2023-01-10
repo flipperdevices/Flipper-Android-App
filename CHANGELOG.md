@@ -8,6 +8,7 @@
 - [FIX] Clickable modifier ktx
 - [FIX] Refactor `share:receive` module
 - [REFACTOR] Fix detekt compose issues
+- [REFACTOR] Enable detekt formatting
 
 # 1.4.0
 

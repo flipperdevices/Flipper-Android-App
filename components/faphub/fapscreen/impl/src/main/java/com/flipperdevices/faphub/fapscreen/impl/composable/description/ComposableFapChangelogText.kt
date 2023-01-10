@@ -44,7 +44,9 @@ fun ColumnScope.ComposableFapChangelogText(
             Modifier
                 .fillMaxWidth()
                 .placeholderConnecting()
-        } else Modifier,
+        } else {
+            Modifier
+        },
         text = changelog?.let { annotatedStringFromMarkdown(it) }
             ?: AnnotatedString(DEFAULT_CHANGELOG),
         style = LocalTypography.current.bodyR14,
@@ -54,7 +56,9 @@ fun ColumnScope.ComposableFapChangelogText(
         onTextLayout = {
             if (it.hasVisualOverflow) {
                 showMoreButton = changelog != null
-            } else showMoreButton = false
+            } else {
+                showMoreButton = false
+            }
         }
     )
 

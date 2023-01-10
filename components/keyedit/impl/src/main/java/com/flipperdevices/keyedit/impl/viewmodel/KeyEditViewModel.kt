@@ -66,7 +66,9 @@ class KeyEditViewModel @VMInject constructor(
             keyEditState.update {
                 if (it is KeyEditState.Editing) {
                     it.copy(name = limitedName, savingKeyActive = limitedName.isNotBlank())
-                } else it
+                } else {
+                    it
+                }
             }
         }
     }
@@ -76,7 +78,9 @@ class KeyEditViewModel @VMInject constructor(
             keyEditState.update {
                 if (it is KeyEditState.Editing) {
                     it.copy(notes = filteredName)
-                } else it
+                } else {
+                    it
+                }
             }
         }
     }

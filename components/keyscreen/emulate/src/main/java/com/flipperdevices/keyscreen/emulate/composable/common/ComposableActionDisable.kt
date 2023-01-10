@@ -1,6 +1,5 @@
 package com.flipperdevices.keyscreen.emulate.composable.common
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
@@ -15,6 +14,7 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyscreen.api.Picture
 import com.flipperdevices.keyscreen.emulate.R
 import com.flipperdevices.keyscreen.emulate.model.DisableButtonReason
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableActionDisable(
@@ -38,7 +38,9 @@ fun ComposableActionDisable(
         textId = warningTextId,
         iconId = if (warningTextId != null) {
             DesignSystem.drawable.ic_warning
-        } else null
+        } else {
+            null
+        }
     )
 }
 

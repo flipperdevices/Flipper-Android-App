@@ -19,7 +19,8 @@ import com.flipperdevices.nfc.mfkey32.screen.R
 fun ComposableMfKey32NotFound() = ComposableMfKey32ErrorContent(
     titleId = R.string.mfkey32_not_found_title,
     picId = R.drawable.pic_flipper_nfc_detect_reader_white,
-    picIdBlack = R.drawable.pic_flipper_nfc_detect_reader_black, content = {
+    picIdBlack = R.drawable.pic_flipper_nfc_detect_reader_black,
+    content = {
         Text(
             modifier = Modifier.padding(bottom = 14.dp, start = 14.dp, end = 14.dp),
             text = stringResource(R.string.mfkey32_not_found_desc),

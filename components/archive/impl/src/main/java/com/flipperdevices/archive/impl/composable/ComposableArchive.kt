@@ -1,6 +1,5 @@
 package com.flipperdevices.archive.impl.composable
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -45,6 +44,7 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.collections.immutable.ImmutableList
 import tangle.viewmodel.compose.tangleViewModel
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableArchive(
@@ -117,7 +117,9 @@ private fun ComposableArchiveReady(
         if (!isKeysPresented) {
             if (synchronizationState is SynchronizationState.InProgress) {
                 ComposableProgress()
-            } else ComposableNoKeys()
+            } else {
+                ComposableNoKeys()
+            }
         }
     }
 }

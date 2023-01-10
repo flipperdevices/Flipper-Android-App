@@ -31,7 +31,9 @@ internal fun ColumnScope.ComposableFapDescriptionText(
             Modifier
                 .fillMaxWidth()
                 .placeholderConnecting()
-        } else Modifier.fillMaxWidth(),
+        } else {
+            Modifier.fillMaxWidth()
+        },
         text = description ?: DEFAULT_DESCRIPTION,
         style = LocalTypography.current.bodyR14,
         color = LocalPallet.current.text100

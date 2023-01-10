@@ -64,7 +64,7 @@ private fun ComposableStatus(
     Text(
         modifier = Modifier.padding(all = 16.dp),
         text = "Success: ${stressTestState.successfulCount} " +
-                "Error: ${stressTestState.errorCount}",
+            "Error: ${stressTestState.errorCount}",
         style = LocalTypography.current.titleB24
     )
 }

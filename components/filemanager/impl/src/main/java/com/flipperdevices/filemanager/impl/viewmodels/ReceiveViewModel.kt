@@ -15,9 +15,6 @@ import com.flipperdevices.filemanager.impl.api.PATH_KEY
 import com.flipperdevices.filemanager.impl.model.DownloadProgress
 import com.flipperdevices.filemanager.impl.model.ShareState
 import com.flipperdevices.filemanager.impl.viewmodels.helpers.UploadFileHelper
-import java.io.File
-import java.net.URLDecoder
-import java.util.concurrent.atomic.AtomicBoolean
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -29,6 +26,9 @@ import kotlinx.coroutines.plus
 import kotlinx.coroutines.withContext
 import tangle.inject.TangleParam
 import tangle.viewmodel.VMInject
+import java.io.File
+import java.net.URLDecoder
+import java.util.concurrent.atomic.AtomicBoolean
 
 class ReceiveViewModel @VMInject constructor(
     @TangleParam(PATH_KEY)
@@ -98,7 +98,9 @@ class ReceiveViewModel @VMInject constructor(
                             downloadProgress = it.downloadProgress.updateProgress(delta)
                         )
                     }
-                } else receiveStateFlow.update { it.copy(processCompleted = true) }
+                } else {
+                    receiveStateFlow.update { it.copy(processCompleted = true) }
+                }
             }
         }.exceptionOrNull()
         deeplinkContent.cleanUp(contentResolver)

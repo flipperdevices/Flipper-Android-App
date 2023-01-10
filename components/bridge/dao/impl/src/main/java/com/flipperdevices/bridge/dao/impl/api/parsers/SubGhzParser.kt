@@ -20,7 +20,9 @@ class SubGhzParser : KeyParserDelegate {
 
         val totalTimeMs = if (keyContentAsMap[KEY_PROTOCOL].equals(KEY_RAW, ignoreCase = true)) {
             calculateTotalTime(fff)
-        } else null
+        } else {
+            null
+        }
 
         return FlipperKeyParsed.SubGhz(
             keyName = flipperKey.path.nameWithoutExtension,

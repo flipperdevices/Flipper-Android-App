@@ -1,6 +1,5 @@
 package com.flipperdevices.info.impl.compose.elements
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -18,6 +17,7 @@ import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
 import com.flipperdevices.info.shared.ButtonElementRow
 import com.flipperdevices.info.shared.ComposableInfoDivider
 import com.flipperdevices.info.shared.InfoElementCard
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposablePairDeviceActionCard(
@@ -36,7 +36,9 @@ fun ComposablePairDeviceActionCard(
                 ComposableFirstConnectElement(connectViewModel = connectViewModel)
             is DeviceStatus.NoDeviceInformation -> if (localDeviceState.connectInProgress) {
                 ComposableDisconnectElement(connectViewModel = connectViewModel)
-            } else ComposableConnectElement(connectViewModel = connectViewModel)
+            } else {
+                ComposableConnectElement(connectViewModel = connectViewModel)
+            }
         }
 
         if (localDeviceState is DeviceStatus.NoDevice) {

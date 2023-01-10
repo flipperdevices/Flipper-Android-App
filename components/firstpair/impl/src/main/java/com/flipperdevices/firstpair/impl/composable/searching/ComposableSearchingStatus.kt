@@ -1,6 +1,5 @@
 package com.flipperdevices.firstpair.impl.composable.searching
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.defaultMinSize
@@ -21,6 +20,7 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.firstpair.impl.R
 import com.flipperdevices.firstpair.impl.model.SearchingState
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableSearchingStatus(
@@ -53,7 +53,10 @@ fun ComposableSearchingStatus(
 private fun RowScope.ComposableSearchingProgress() {
     Text(
         modifier = Modifier.padding(
-            end = 8.dp, top = 8.dp, bottom = 8.dp, start = 18.dp
+            end = 8.dp,
+            top = 8.dp,
+            bottom = 8.dp,
+            start = 18.dp
         ),
         text = stringResource(R.string.firstpair_search_title_status_text),
         style = LocalTypography.current.titleM18

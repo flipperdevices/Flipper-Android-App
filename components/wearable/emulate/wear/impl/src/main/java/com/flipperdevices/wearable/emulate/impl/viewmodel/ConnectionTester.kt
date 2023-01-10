@@ -13,13 +13,13 @@ import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.pingReques
 import com.flipperdevices.wearable.emulate.impl.di.WearGraph
 import com.flipperdevices.wearable.emulate.impl.model.ConnectionTesterState
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.plus
+import javax.inject.Inject
 
 interface ConnectionTester {
     fun getState(): StateFlow<ConnectionTesterState>

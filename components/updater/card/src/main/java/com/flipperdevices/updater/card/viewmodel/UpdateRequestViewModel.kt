@@ -17,13 +17,13 @@ import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
 import com.flipperdevices.updater.model.InternalStorageFirmware
 import com.flipperdevices.updater.model.UpdateRequest
-import java.io.File
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import tangle.viewmodel.VMInject
+import java.io.File
 
 private const val EXT_UPDATER_FILE = "tgz"
 private const val SIZE_FOLDER_UPDATE_MAX = 1024L * 1024L * 1024L * 10 // 10Mb

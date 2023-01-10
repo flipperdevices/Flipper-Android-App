@@ -24,11 +24,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.faphub.appcard.composable.R
 import com.flipperdevices.faphub.dao.api.model.SortType
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableSortChoice(
@@ -49,7 +49,9 @@ fun ComposableSortChoice(
             style = LocalTypography.current.titleB18,
             color = LocalPallet.current.text100
         )
-    } else Spacer(Modifier.weight(1f))
+    } else {
+        Spacer(Modifier.weight(1f))
+    }
 
     ComposableFapsChoice(sortType, onSelectSortType)
 }
