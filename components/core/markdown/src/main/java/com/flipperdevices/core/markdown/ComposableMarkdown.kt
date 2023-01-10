@@ -38,6 +38,8 @@ fun markdownColors(
     return object : MarkdownColors {
         override val backgroundCode = backgroundCode
         override val text = text
+        override val markdownLink: Color = text
+        override val autoLink: Color = text
     }
 }
 

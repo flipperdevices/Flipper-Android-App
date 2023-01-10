@@ -28,7 +28,7 @@ object ChangelogFormatter {
         return Regex(REGEX_GITHUB_PR).replace(this) { result ->
             val url = result.groupValues[NUMBER_MATCH_FIRST]
             val prNumber = result.groupValues[NUMBER_MATCH_SECOND]
-            " #[$prNumber]($url) "
+            " [#$prNumber]($url) "
         }
     }
 
@@ -44,7 +44,7 @@ object ChangelogFormatter {
         return Regex(REGEX_GITHUB_NICKNAME).replace(this) { result ->
             val nickname = result.groupValues[NUMBER_MATCH_FIRST]
             val url = "$GITHUB_LINK$nickname"
-            " @[$nickname]($url) "
+            " [@$nickname]($url) "
         }
     }
 }

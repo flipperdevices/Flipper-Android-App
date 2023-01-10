@@ -69,7 +69,7 @@ fun ComposableChangelog(
             )
             ComposableMarkdown(
                 content = ChangelogFormatter.format(changelog),
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize().padding(4.dp)
             )
         }
         Divider(
