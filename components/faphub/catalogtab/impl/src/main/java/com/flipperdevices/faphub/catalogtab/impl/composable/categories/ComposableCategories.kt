@@ -42,8 +42,11 @@ private fun LazyListScope.ComposableCategoriesGridItems(
     horizontalArrangement = Arrangement.spacedBy(10.dp)
 ) {
     ComposableCategoryCard(
-        modifier = if (it != null) Modifier.clickableRipple { onClick(it) }
-        else Modifier,
+        modifier = if (it != null) {
+            Modifier.clickableRipple { onClick(it) }
+        } else {
+            Modifier
+        },
         fapCategory = it
     )
 }

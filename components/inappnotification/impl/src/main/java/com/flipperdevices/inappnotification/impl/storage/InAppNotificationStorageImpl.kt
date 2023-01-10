@@ -7,12 +7,12 @@ import com.flipperdevices.inappnotification.api.InAppNotificationListener
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
 import com.squareup.anvil.annotations.ContributesBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 import java.util.Stack
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.time.Duration.Companion.seconds
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
 
 private val TIMER_DELAY = 1.seconds
 

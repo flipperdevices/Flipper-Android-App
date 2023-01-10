@@ -21,13 +21,13 @@ import io.sentry.Sentry
 import io.sentry.SentryLevel
 import io.sentry.android.core.SentryAndroid
 import io.sentry.android.timber.SentryTimberIntegration
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
+import timber.log.Timber
 import java.io.File
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
-import timber.log.Timber
 
 private const val FILE_LOG_DIR = "log"
 private const val FILE_LOG_SIZE = 1024 * 1024 // 1 MB

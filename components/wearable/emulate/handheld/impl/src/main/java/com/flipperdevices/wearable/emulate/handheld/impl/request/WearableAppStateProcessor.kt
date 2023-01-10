@@ -8,9 +8,9 @@ import com.flipperdevices.wearable.emulate.common.ipcemulate.mainResponse
 import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.Emulate
 import com.flipperdevices.wearable.emulate.handheld.impl.di.WearHandheldGraph
 import com.squareup.anvil.annotations.ContributesMultibinding
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @ContributesMultibinding(WearHandheldGraph::class, WearableCommandProcessor::class)
 class WearableAppStateProcessor @Inject constructor(

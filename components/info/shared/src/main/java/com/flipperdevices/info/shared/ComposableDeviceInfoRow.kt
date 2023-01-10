@@ -67,9 +67,11 @@ fun ComposableDeviceInfoRow(
             content(Modifier)
         } else if (inProgress) {
             DeviceInfoRowPlaceholder()
-        } else ComposableDeviceInfoRowText(
-            stringResource(R.string.info_device_unknown)
-        )
+        } else {
+            ComposableDeviceInfoRowText(
+                stringResource(R.string.info_device_unknown)
+            )
+        }
     }
 }
 

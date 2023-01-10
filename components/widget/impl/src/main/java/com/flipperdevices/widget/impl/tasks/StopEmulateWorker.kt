@@ -12,9 +12,9 @@ import com.flipperdevices.widget.impl.di.WidgetComponent
 import com.flipperdevices.widget.impl.model.WidgetState
 import com.flipperdevices.widget.impl.storage.WidgetStateStorage
 import com.flipperdevices.widget.impl.tasks.invalidate.WidgetNotificationHelper
-import javax.inject.Inject
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
+import javax.inject.Inject
 
 private const val DEFAULT_WIDGET_APP_ID = -1
 

@@ -8,10 +8,10 @@ import com.flipperdevices.core.ktx.jre.map
 import com.flipperdevices.core.preference.pb.SelectedTheme
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.theme.di.ThemeComponent
-import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
+import javax.inject.Inject
 
 class ThemeViewModel : ViewModel() {
     @Inject

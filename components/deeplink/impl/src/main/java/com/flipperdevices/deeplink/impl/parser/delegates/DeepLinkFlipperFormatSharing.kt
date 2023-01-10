@@ -29,7 +29,9 @@ class DeepLinkFlipperFormatSharing @Inject constructor(
         val uri = intent.data ?: return DeepLinkParserDelegatePriority.LOW
         return if (uri.scheme == SCHEME_FLIPPERKEY) {
             DeepLinkParserDelegatePriority.HIGH
-        } else DeepLinkParserDelegatePriority.LOW
+        } else {
+            DeepLinkParserDelegatePriority.LOW
+        }
     }
 
     override suspend fun fromIntent(context: Context, intent: Intent): Deeplink? {

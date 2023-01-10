@@ -15,7 +15,9 @@ class WhiteToAlphaTransformation : Transformation {
                 val color = input.getPixel(w, h)
                 val newColor = if (color == Color.WHITE) {
                     Color.TRANSPARENT
-                } else color
+                } else {
+                    color
+                }
                 newBitmap.setPixel(w, h, newColor)
             }
         }

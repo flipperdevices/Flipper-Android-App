@@ -11,9 +11,9 @@ import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.app.getErrorRequest
 import com.flipperdevices.protobuf.main
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
+import javax.inject.Inject
 
 interface FlipperAppErrorHelper {
     suspend fun requestError(

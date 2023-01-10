@@ -16,7 +16,8 @@ class MainCardApiImpl @Inject constructor() : MainCardApi {
         onClick: () -> Unit
     ) {
         ComposableMainCardInternal(
-            modifier, onClick
+            modifier,
+            onClick
         )
     }
 }

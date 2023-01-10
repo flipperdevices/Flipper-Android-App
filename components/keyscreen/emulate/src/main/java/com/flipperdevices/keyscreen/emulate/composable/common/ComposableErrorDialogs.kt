@@ -8,10 +8,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.dialog.composable.FlipperDialog
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyscreen.emulate.R
 import com.flipperdevices.keyscreen.emulate.model.EmulateButtonState
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableErrorDialogs(state: EmulateButtonState, onCloseDialog: () -> Unit) {

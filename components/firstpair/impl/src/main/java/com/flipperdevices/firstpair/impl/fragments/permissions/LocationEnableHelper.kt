@@ -53,7 +53,8 @@ class LocationEnableHelper(
 
     fun isLocationEnabled(): Boolean {
         val locationManager = ContextCompat.getSystemService(
-            context, LocationManager::class.java
+            context,
+            LocationManager::class.java
         )
 
         if (locationManager == null) {

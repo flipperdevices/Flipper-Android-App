@@ -21,9 +21,9 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.dao.api.R
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType.Companion.colorByFlipperKeyType
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 @Preview

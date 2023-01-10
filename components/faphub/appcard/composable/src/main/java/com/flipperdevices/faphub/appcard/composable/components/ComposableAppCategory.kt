@@ -57,7 +57,9 @@ private fun ComposableAppCategoryIcon(
     var isPlaceholderActive by remember { mutableStateOf(true) }
     val modifierWithPlaceholder = if (isPlaceholderActive) {
         modifierWithClip.placeholderConnecting()
-    } else modifierWithClip
+    } else {
+        modifierWithClip
+    }
     Box(
         modifier = modifierWithPlaceholder
     ) {

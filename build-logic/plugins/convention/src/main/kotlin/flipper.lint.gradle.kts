@@ -29,6 +29,8 @@ tasks.withType<Detekt> {
 
     parallel = true
 
+    buildUponDefaultConfig = true
+
     // Target version of the generated JVM bytecode. It is used for type resolution.
     this.jvmTarget = "1.8"
 }

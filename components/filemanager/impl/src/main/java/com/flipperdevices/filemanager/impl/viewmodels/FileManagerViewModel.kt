@@ -22,7 +22,6 @@ import com.flipperdevices.protobuf.storage.listRequest
 import com.flipperdevices.protobuf.storage.mkdirRequest
 import com.flipperdevices.protobuf.storage.writeRequest
 import com.google.protobuf.ByteString
-import java.io.File
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
@@ -31,6 +30,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.sync.Mutex
 import tangle.inject.TangleParam
 import tangle.viewmodel.VMInject
+import java.io.File
 
 class FileManagerViewModel @VMInject constructor(
     private val serviceProvider: FlipperServiceProvider,

@@ -10,9 +10,6 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.firstpair.impl.di.FirstPairComponent
 import com.flipperdevices.firstpair.impl.model.ScanState
-import java.util.concurrent.atomic.AtomicBoolean
-import javax.inject.Inject
-import javax.inject.Provider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -22,6 +19,9 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.concurrent.atomic.AtomicBoolean
+import javax.inject.Inject
+import javax.inject.Provider
 
 private const val TIMEOUT_MS = 30L * 1000
 
@@ -74,7 +74,9 @@ class BLEDeviceViewModel : ViewModel(), LogTagProvider {
                         devicesList.isNotEmpty()
                     ) {
                         ScanState.Founded(devicesList)
-                    } else it
+                    } else {
+                        it
+                    }
                 }
             }
     }

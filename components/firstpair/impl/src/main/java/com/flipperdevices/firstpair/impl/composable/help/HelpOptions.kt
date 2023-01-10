@@ -26,7 +26,8 @@ sealed class HelpOptions(
     }
 
     object DisconnectFlipper : HelpOptions(
-        R.string.firstpair_help_4_title, null
+        R.string.firstpair_help_4_title,
+        null
     )
 
     abstract class MarkdownHelpOptions(
@@ -35,19 +36,23 @@ sealed class HelpOptions(
     ) : HelpOptions(title, description)
 
     object CheckName : MarkdownHelpOptions(
-        R.string.firstpair_help_1_title, R.string.firstpair_help_1_description
+        R.string.firstpair_help_1_title,
+        R.string.firstpair_help_1_description
     )
 
     object BluetoothOnFlipper : MarkdownHelpOptions(
-        R.string.firstpair_help_2_title, R.string.firstpair_help_2_description
+        R.string.firstpair_help_2_title,
+        R.string.firstpair_help_2_description
     )
 
     object UpdateFlipper : MarkdownHelpOptions(
-        R.string.firstpair_help_5_title, R.string.firstpair_help_5_description
+        R.string.firstpair_help_5_title,
+        R.string.firstpair_help_5_description
     )
 
     object RebootFlipper : MarkdownHelpOptions(
-        R.string.firstpair_help_7_title, R.string.firstpair_help_7_description
+        R.string.firstpair_help_7_title,
+        R.string.firstpair_help_7_description
     )
 
     abstract class CustomOpenLinkHandler(
@@ -58,7 +63,8 @@ sealed class HelpOptions(
     }
 
     object BtConnection : CustomOpenLinkHandler(
-        R.string.firstpair_help_3_title, R.string.firstpair_help_3_description
+        R.string.firstpair_help_3_title,
+        R.string.firstpair_help_3_description
     ) {
         override fun onClick(context: Context) {
             context.startActivity(Intent(Settings.ACTION_BLUETOOTH_SETTINGS))
@@ -66,7 +72,8 @@ sealed class HelpOptions(
     }
 
     object UpdateApp : CustomOpenLinkHandler(
-        R.string.firstpair_help_6_title, R.string.firstpair_help_6_description
+        R.string.firstpair_help_6_title,
+        R.string.firstpair_help_6_description
     ) {
         override fun onClick(context: Context) {
             val packageName = context.packageName

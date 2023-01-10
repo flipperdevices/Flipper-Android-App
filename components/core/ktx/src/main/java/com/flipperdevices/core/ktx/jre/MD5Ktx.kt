@@ -1,10 +1,10 @@
 package com.flipperdevices.core.ktx.jre
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.InputStream
 import java.math.BigInteger
 import java.security.MessageDigest
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 private const val MD5_NAME = "MD5"
 private const val MD5_LENGTH = 32

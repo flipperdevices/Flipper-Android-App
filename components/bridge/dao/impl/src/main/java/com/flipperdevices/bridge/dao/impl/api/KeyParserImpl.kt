@@ -27,13 +27,13 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.warn
 import com.squareup.anvil.annotations.ContributesBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.net.URL
 import java.nio.charset.Charset
 import java.util.EnumMap
 import javax.inject.Inject
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 @ContributesBinding(AppGraph::class, KeyParser::class)
 class KeyParserImpl @Inject constructor() : KeyParser, LogTagProvider {
@@ -75,7 +75,9 @@ class KeyParserImpl @Inject constructor() : KeyParser, LogTagProvider {
         val keyPath = if (fileType == null) {
             warn { "Can't find file type with extension $fileType" }
             FlipperFilePath(pathAsFile.parent ?: "", pathAsFile.name)
-        } else FlipperFilePath(fileType.flipperDir, pathAsFile.name)
+        } else {
+            FlipperFilePath(fileType.flipperDir, pathAsFile.name)
+        }
 
         return keyPath to content
     }

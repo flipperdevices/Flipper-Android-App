@@ -1,6 +1,5 @@
 package com.flipperdevices.nfc.attack.impl.composable.elements
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -28,6 +27,7 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.nfc.attack.impl.R
 import com.flipperdevices.nfc.attack.impl.viewmodel.NfcAttackViewModel
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun MifareClassicComposable(
@@ -84,7 +84,9 @@ private fun MifareClassicMfKey32(
         painter = painterResource(
             if (MaterialTheme.colors.isLight) {
                 DesignSystem.drawable.pic_detect_reader
-            } else DesignSystem.drawable.pic_detect_reader_black
+            } else {
+                DesignSystem.drawable.pic_detect_reader_black
+            }
         ),
         contentDescription = stringResource(R.string.nfcattack_mifare_classic_mfkey32_title)
     )

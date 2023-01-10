@@ -23,8 +23,6 @@ import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.copy
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.shake2report.api.Shake2ReportApi
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.atomic.AtomicInteger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
@@ -41,6 +39,8 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.atomic.AtomicInteger
 
 private typealias OnReceiveResponse = suspend (Flipper.Main) -> Unit
 
@@ -170,7 +170,9 @@ class FlipperRequestApiImpl(
             counter = idCounter.updateAndGetSafe {
                 if (it == Int.MAX_VALUE) {
                     return@updateAndGetSafe 1
-                } else return@updateAndGetSafe it + 1
+                } else {
+                    return@updateAndGetSafe it + 1
+                }
             }
         } while (requestListeners[counter] != null)
         return counter

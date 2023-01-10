@@ -28,7 +28,10 @@ class ArchiveApiImpl @Inject constructor(
         onKeyOpen: (FlipperKeyPath) -> Unit
     ) {
         ComposableKeysGrid(
-            keys, synchronizationUiApi, synchronizationState, onKeyOpen
+            keys,
+            synchronizationUiApi,
+            synchronizationState,
+            onKeyOpen
         )
     }
 }

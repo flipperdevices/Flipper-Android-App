@@ -14,9 +14,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.firstpair.impl.R
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 private const val ICON_HORIZONTAL_PADDING_DP = 14
 private const val ICON_SIZE = 24

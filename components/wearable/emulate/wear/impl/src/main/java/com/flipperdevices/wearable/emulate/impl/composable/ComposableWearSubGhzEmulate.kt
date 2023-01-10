@@ -34,13 +34,15 @@ fun ComposableWearSubGhzEmulate(
             progressColor = Color.Transparent,
             emulateProgress = null
         )
-    } else keyEmulateUiApi.ComposableEmulateButtonRaw(
-        modifier = modifier,
-        buttonContentModifier = buttonActiveModifier,
-        emulateProgress = emulateProgress,
-        picture = null,
-        textId = R.string.keyscreen_sending,
-        color = LocalPallet.current.actionOnFlipperSubGhzProgress,
-        progressColor = LocalPallet.current.actionOnFlipperSubGhzEnable
-    )
+    } else {
+        keyEmulateUiApi.ComposableEmulateButtonRaw(
+            modifier = modifier,
+            buttonContentModifier = buttonActiveModifier,
+            emulateProgress = emulateProgress,
+            picture = null,
+            textId = R.string.keyscreen_sending,
+            color = LocalPallet.current.actionOnFlipperSubGhzProgress,
+            progressColor = LocalPallet.current.actionOnFlipperSubGhzEnable
+        )
+    }
 }

@@ -150,20 +150,23 @@ class SearchStateBuilder(
         when (scanState) {
             ScanState.Searching -> state.emit(
                 SearchingState(
-                    showSearching = true, showHelp = true,
+                    showSearching = true,
+                    showHelp = true,
                     content = SearchingContent.Searching
                 )
             )
             ScanState.Timeout -> state.emit(
                 SearchingState(
-                    showSearching = false, showHelp = true,
+                    showSearching = false,
+                    showHelp = true,
                     content = SearchingContent.FlipperNotFound(this)
                 )
             )
             is ScanState.Stopped -> viewModelSearch.startScanIfNotYet()
             is ScanState.Founded -> state.emit(
                 SearchingState(
-                    showSearching = true, showHelp = true,
+                    showSearching = true,
+                    showHelp = true,
                     content = SearchingContent.FoundedDevices(
                         devices = scanState.devices,
                         selectedAddress = when (pairState) {

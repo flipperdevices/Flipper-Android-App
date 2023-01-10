@@ -21,12 +21,12 @@ import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.model.UpdatingState
 import com.flipperdevices.updater.subghz.helpers.SubGhzProvisioningHelper
 import com.flipperdevices.updater.subghz.model.FailedUploadSubGhzException
-import java.io.File
-import java.net.UnknownHostException
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.withContext
+import java.io.File
+import java.net.UnknownHostException
 
 class UpdaterTask(
     serviceProvider: FlipperServiceProvider,

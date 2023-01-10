@@ -38,7 +38,8 @@ fun TabTransition(
                     easing = LinearEasing
                 )
             }
-        }, label = "colorChangeAnimation"
+        },
+        label = "colorChangeAnimation"
     ) {
         if (it) activeColor else inactiveColor
     }

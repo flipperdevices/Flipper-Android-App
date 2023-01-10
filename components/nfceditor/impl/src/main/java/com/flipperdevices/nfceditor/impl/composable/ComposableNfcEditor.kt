@@ -147,7 +147,9 @@ private fun ScrollToActiveCell(
             scope.launch {
                 val newPosition = if (cardInfoPresented) {
                     currentActiveCell.sectorIndex + 1
-                } else currentActiveCell.sectorIndex
+                } else {
+                    currentActiveCell.sectorIndex
+                }
                 lazyColumnState.animateScrollToItem(newPosition, offset)
             }
         }

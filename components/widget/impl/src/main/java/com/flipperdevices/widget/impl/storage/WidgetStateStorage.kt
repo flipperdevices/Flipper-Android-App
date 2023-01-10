@@ -9,9 +9,9 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.keyscreen.api.emulate.EmulateHelper
 import com.flipperdevices.widget.impl.model.WidgetState
 import com.squareup.anvil.annotations.ContributesBinding
+import kotlinx.coroutines.sync.Mutex
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlinx.coroutines.sync.Mutex
 
 interface WidgetStateStorage {
     suspend fun updateState(widgetId: Int, state: WidgetState)

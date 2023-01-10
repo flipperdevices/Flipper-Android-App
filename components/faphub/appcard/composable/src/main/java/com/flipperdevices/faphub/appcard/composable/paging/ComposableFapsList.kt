@@ -16,10 +16,10 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.itemsIndexed
 import com.flipperdevices.core.ui.ktx.ComposeLottiePic
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.faphub.appcard.composable.AppCard
 import com.flipperdevices.faphub.dao.api.model.FapItem
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 private const val DEFAULT_FAP_COUNT = 20
 

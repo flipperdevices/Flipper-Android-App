@@ -1,6 +1,5 @@
 package com.flipperdevices.keyscreen.emulate.composable
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -26,6 +25,7 @@ import com.flipperdevices.keyscreen.emulate.model.DisableButtonReason
 import com.flipperdevices.keyscreen.emulate.model.EmulateButtonState
 import com.flipperdevices.keyscreen.emulate.viewmodel.SubGhzViewModel
 import tangle.viewmodel.compose.tangleViewModel
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableSubGhzSendButton(modifier: Modifier = Modifier, flipperKey: FlipperKey) {
@@ -120,15 +120,23 @@ private fun ComposableActiveEmulateInternal(
     val textId = if (isActive) R.string.keyscreen_sending else R.string.keyscreen_send
     val color = if (isActive) {
         LocalPallet.current.actionOnFlipperSubGhzProgress
-    } else LocalPallet.current.actionOnFlipperSubGhzEnable
+    } else {
+        LocalPallet.current.actionOnFlipperSubGhzEnable
+    }
     val progressColor = if (isActive) {
         LocalPallet.current.actionOnFlipperSubGhzEnable
-    } else Color.Transparent
+    } else {
+        Color.Transparent
+    }
     val descriptionId = if (isActive) null else R.string.keyscreen_sending_desc
-    val picture = if (isActive) Picture.LottieRes(
-        DesignSystem.raw.ic_sending,
-        DesignSystem.drawable.ic_send
-    ) else Picture.StaticRes(DesignSystem.drawable.ic_send)
+    val picture = if (isActive) {
+        Picture.LottieRes(
+            DesignSystem.raw.ic_sending,
+            DesignSystem.drawable.ic_send
+        )
+    } else {
+        Picture.StaticRes(DesignSystem.drawable.ic_send)
+    }
 
     ComposableEmulateButtonWithText(
         modifier = modifier,

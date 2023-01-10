@@ -20,7 +20,6 @@ import com.flipperdevices.connection.impl.model.ConnectionStatusState
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.preference.pb.PairSettings
 import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -32,6 +31,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 private const val TIMEOUT_SYNCHRONIZED_STATUS_MS = 3000L
 
@@ -81,7 +81,9 @@ class ConnectionStatusViewModel(
                     statusState.update {
                         if (it is ConnectionStatusState.Synchronized) {
                             ConnectionStatusState.Connected
-                        } else it
+                        } else {
+                            it
+                        }
                     }
                     switchFromSynchronizedJob = null
                 }
@@ -129,12 +131,17 @@ class ConnectionStatusViewModel(
         ConnectionState.RetrievingInformation -> ConnectionStatusState.Connecting
         is ConnectionState.Ready -> if (supportedState == FlipperSupportedState.READY) {
             ConnectionStatusState.Connected
-        } else ConnectionStatusState.Unsupported
+        } else {
+            ConnectionStatusState.Unsupported
+        }
         ConnectionState.Disconnecting -> ConnectionStatusState.Connecting
         is ConnectionState.Disconnected -> if (
             pairSettingsStore.data.first().deviceId.isBlank()
-        ) ConnectionStatusState.NoDevice
-        else ConnectionStatusState.Disconnected
+        ) {
+            ConnectionStatusState.NoDevice
+        } else {
+            ConnectionStatusState.Disconnected
+        }
     }
 }
 

@@ -1,6 +1,5 @@
 package com.flipperdevices.updater.screen.composable
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,6 +23,7 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.updater.screen.R
 import com.flipperdevices.updater.screen.model.FailedReason
 import com.flipperdevices.updater.screen.model.UpdaterScreenState
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableUpdaterScreen(
@@ -61,7 +61,9 @@ private fun ColumnScope.UpdaterScreenHeader(
 ) {
     val titleId = if (updaterScreenState is UpdaterScreenState.Failed) {
         R.string.update_screen_title_failed
-    } else R.string.update_screen_title
+    } else {
+        R.string.update_screen_title
+    }
     Text(
         modifier = Modifier.padding(vertical = 18.dp),
         text = stringResource(titleId),
@@ -78,7 +80,9 @@ private fun ColumnScope.UpdaterScreenHeader(
                     DesignSystem.drawable.pic_flipper_update_int_failed
                 else -> DesignSystem.drawable.pic_flipper_update_failed
             }
-        } else DesignSystem.drawable.pic_flipper_update
+        } else {
+            DesignSystem.drawable.pic_flipper_update
+        }
         HardwareColor.BLACK -> if (updaterScreenState is UpdaterScreenState.Failed) {
             when (updaterScreenState.failedReason) {
                 FailedReason.FAILED_SUB_GHZ_PROVISIONING,
@@ -86,7 +90,9 @@ private fun ColumnScope.UpdaterScreenHeader(
                     DesignSystem.drawable.pic_black_flipper_update_int_failed
                 else -> DesignSystem.drawable.pic_black_flipper_update_failed
             }
-        } else DesignSystem.drawable.pic_black_flipper_update
+        } else {
+            DesignSystem.drawable.pic_black_flipper_update
+        }
     }
 
     Image(

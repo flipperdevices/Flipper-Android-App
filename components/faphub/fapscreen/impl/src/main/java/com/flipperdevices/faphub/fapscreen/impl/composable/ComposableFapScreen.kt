@@ -1,6 +1,5 @@
 package com.flipperdevices.faphub.fapscreen.impl.composable
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -25,6 +24,7 @@ import com.flipperdevices.faphub.fapscreen.impl.composable.header.ComposableFapH
 import com.flipperdevices.faphub.fapscreen.impl.model.FapScreenLoadingState
 import com.flipperdevices.faphub.fapscreen.impl.viewmodel.FapScreenViewModel
 import tangle.viewmodel.compose.tangleViewModel
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableFapScreen(

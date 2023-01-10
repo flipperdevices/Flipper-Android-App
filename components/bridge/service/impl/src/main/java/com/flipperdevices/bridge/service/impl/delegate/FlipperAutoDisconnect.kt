@@ -9,7 +9,6 @@ import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.core.ktx.jre.combine
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import java.util.concurrent.atomic.AtomicBoolean
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -17,6 +16,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.util.concurrent.atomic.AtomicBoolean
 
 class FlipperAutoDisconnect(
     private val scope: CoroutineScope,

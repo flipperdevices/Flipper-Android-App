@@ -1,5 +1,5 @@
 plugins {
-        id("flipper.android-compose")
+    id("flipper.android-compose")
     id("com.squareup.anvil")
     id("kotlin-kapt")
 }

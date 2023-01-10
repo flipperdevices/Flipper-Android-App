@@ -1,5 +1,5 @@
 plugins {
-        id("flipper.android-lib")
+    id("flipper.android-lib")
 }
 
 dependencies {

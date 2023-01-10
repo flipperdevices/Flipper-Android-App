@@ -1,3 +1,5 @@
+@file:Suppress("Filename")
+
 import com.android.build.gradle.BaseExtension
 import com.flipperdevices.buildlogic.ApkConfig
 import org.gradle.api.JavaVersion

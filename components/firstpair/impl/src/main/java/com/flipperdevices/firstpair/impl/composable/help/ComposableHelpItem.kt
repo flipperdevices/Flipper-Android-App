@@ -17,17 +17,22 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
 fun ComposableHelpItem(
-    index: Int, data: HelpOptions, modifier: Modifier = Modifier
+    index: Int,
+    data: HelpOptions,
+    modifier: Modifier = Modifier
 ) {
     Row(modifier) {
         val titleStyle = LocalTypography.current.bodyR16
 
         Text(
-            modifier = Modifier.padding(end = 2.dp), text = "${index + 1}.", style = titleStyle
+            modifier = Modifier.padding(end = 2.dp),
+            text = "${index + 1}.",
+            style = titleStyle
         )
         Column {
             Text(
-                text = stringResource(data.title), style = titleStyle
+                text = stringResource(data.title),
+                style = titleStyle
             )
             ComposableHelpOptionsDescription(
                 data = data
@@ -39,15 +44,19 @@ fun ComposableHelpItem(
 @Composable
 @Suppress("ModifierReused")
 fun ComposableHelpOptionsDescription(
-    data: HelpOptions, modifier: Modifier = Modifier,
+    data: HelpOptions,
+    modifier: Modifier = Modifier,
 ) {
     val descriptionStyle = LocalTypography.current.bodyR16.copy(
-        color = LocalPallet.current.accentSecond, textDecoration = TextDecoration.Underline
+        color = LocalPallet.current.accentSecond,
+        textDecoration = TextDecoration.Underline
     )
 
     if (data.description == null) {
         Text(
-            modifier = modifier, text = "", style = descriptionStyle
+            modifier = modifier,
+            text = "",
+            style = descriptionStyle
         )
         return
     }
@@ -58,12 +67,16 @@ fun ComposableHelpOptionsDescription(
         Text(
             modifier = modifier.clickable {
                 data.onClick(context)
-            }, text = stringResource(data.description), style = descriptionStyle
+            },
+            text = stringResource(data.description),
+            style = descriptionStyle
         )
         return
     }
 
     ClickableUrlText(
-        modifier = modifier, markdownResId = data.description, style = descriptionStyle
+        modifier = modifier,
+        markdownResId = data.description,
+        style = descriptionStyle
     )
 }

@@ -7,9 +7,9 @@ import com.flipperdevices.updater.api.FirmwareVersionBuilderApi
 import com.flipperdevices.updater.api.FlipperVersionProviderApi
 import com.flipperdevices.updater.model.FirmwareVersion
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
+import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class)
 class FlipperVersionProviderApiImpl @Inject constructor(
@@ -23,7 +23,9 @@ class FlipperVersionProviderApiImpl @Inject constructor(
             val softwareVersion = it.softwareVersion
             return@map if (softwareVersion != null) {
                 firmwareVersionBuilderApi.buildFirmwareVersionFromString(softwareVersion)
-            } else null
+            } else {
+                null
+            }
         }
     }
 }

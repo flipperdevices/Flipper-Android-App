@@ -21,7 +21,6 @@ import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 
-
 @RunWith(AndroidJUnit4::class)
 class NfcEditorStateProducerHelperTest {
     @Test
@@ -49,7 +48,8 @@ class NfcEditorStateProducerHelperTest {
                     NfcCellType.KEY_B,
                     NfcCellType.KEY_B,
                     NfcCellType.KEY_B
-                ), sector.lines.last().cells.map { it.cellType }.toTypedArray()
+                ),
+                sector.lines.last().cells.map { it.cellType }.toTypedArray()
             )
         }
     }
@@ -79,7 +79,8 @@ class NfcEditorStateProducerHelperTest {
                     NfcCellType.KEY_B,
                     NfcCellType.KEY_B,
                     NfcCellType.KEY_B
-                ), sector.lines.last().cells.map { it.cellType }.toTypedArray()
+                ),
+                sector.lines.last().cells.map { it.cellType }.toTypedArray()
             )
         }
     }
@@ -122,12 +123,14 @@ class NfcEditorStateProducerHelperTest {
             arrayOf(
                 NfcEditorCell("44", NfcCellType.SIMPLE),
                 NfcEditorCell("00", NfcCellType.SIMPLE)
-            ), cardInfo.fields[CardFieldInfo.ATQA].toTypedArray()
+            ),
+            cardInfo.fields[CardFieldInfo.ATQA].toTypedArray()
         )
         Assert.assertArrayEquals(
             arrayOf(
                 NfcEditorCell("08", NfcCellType.SIMPLE)
-            ), cardInfo.fields[CardFieldInfo.SAK].toTypedArray()
+            ),
+            cardInfo.fields[CardFieldInfo.SAK].toTypedArray()
         )
         Assert.assertArrayEquals(
             arrayOf(
@@ -138,7 +141,8 @@ class NfcEditorStateProducerHelperTest {
                 NfcEditorCell("23", NfcCellType.SIMPLE),
                 NfcEditorCell("4F", NfcCellType.SIMPLE),
                 NfcEditorCell("80", NfcCellType.SIMPLE)
-            ), cardInfo.fields[CardFieldInfo.UID].toTypedArray()
+            ),
+            cardInfo.fields[CardFieldInfo.UID].toTypedArray()
         )
     }
 
@@ -154,12 +158,14 @@ class NfcEditorStateProducerHelperTest {
             arrayOf(
                 NfcEditorCell("42", NfcCellType.SIMPLE),
                 NfcEditorCell("00", NfcCellType.SIMPLE)
-            ), cardInfo.fields[CardFieldInfo.ATQA].toTypedArray()
+            ),
+            cardInfo.fields[CardFieldInfo.ATQA].toTypedArray()
         )
         Assert.assertArrayEquals(
             arrayOf(
                 NfcEditorCell("18", NfcCellType.SIMPLE)
-            ), cardInfo.fields[CardFieldInfo.SAK].toTypedArray()
+            ),
+            cardInfo.fields[CardFieldInfo.SAK].toTypedArray()
         )
         Assert.assertArrayEquals(
             arrayOf(
@@ -170,7 +176,8 @@ class NfcEditorStateProducerHelperTest {
                 NfcEditorCell("99", NfcCellType.SIMPLE),
                 NfcEditorCell("66", NfcCellType.SIMPLE),
                 NfcEditorCell("80", NfcCellType.SIMPLE)
-            ), cardInfo.fields[CardFieldInfo.UID].toTypedArray()
+            ),
+            cardInfo.fields[CardFieldInfo.UID].toTypedArray()
         )
     }
 
@@ -343,7 +350,6 @@ class NfcEditorStateProducerHelperTest {
         )
         val actualKey = NfcEditorStateProducerHelper.produceFlipperKeyFromState(key, newEditorState)
 
-
         val actualMainContent = actualKey.keyContent.openStream().use { it.readBytes() }
         Assert.assertArrayEquals(readTestAsset("mf_4k_full.nfc"), actualMainContent)
         Assert.assertEquals(1, actualKey.additionalFiles.size)
@@ -380,7 +386,6 @@ class NfcEditorStateProducerHelperTest {
         )
         val actualKey = NfcEditorStateProducerHelper.produceFlipperKeyFromState(key, newEditorState)
 
-
         val actualMainContent = actualKey.keyContent.openStream().use { it.readBytes() }
         Assert.assertArrayEquals(readTestAsset("mf_4k_full.nfc"), actualMainContent)
         Assert.assertEquals(2, actualKey.additionalFiles.size)
@@ -401,23 +406,30 @@ class NfcEditorStateProducerHelperTest {
 }
 
 private fun getFlipperKey(
-    path: String, shadowPath: String? = null
+    path: String,
+    shadowPath: String? = null
 ) = FlipperKey(
     mainFile = FlipperFile(
         path = FlipperFilePath("test", "test_file.nfc"),
         content = FlipperKeyContent.RawData(readTestAsset(path))
-    ), additionalFiles = if (shadowPath != null) {
+    ),
+    additionalFiles = if (shadowPath != null) {
         listOf(
             FlipperFile(
                 path = FlipperFilePath("test", "test_file.shd"),
                 content = FlipperKeyContent.RawData(readTestAsset(shadowPath))
             )
         )
-    } else emptyList(), synchronized = false, deleted = false
+    } else {
+        emptyList()
+    },
+    synchronized = false,
+    deleted = false
 )
 
 private fun parseNfcKey(
-    path: String, shadowPath: String? = null
+    path: String,
+    shadowPath: String? = null
 ): FlipperKeyParsed.NFC = runBlocking {
     val keyParser = KeyParserImpl()
     val flipperKey = getFlipperKey(path, shadowPath)

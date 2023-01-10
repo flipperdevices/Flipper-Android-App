@@ -9,11 +9,11 @@ import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.connection.impl.di.ConnectionComponent
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
 class UnsupportedStateViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
     private val unsupportedStateFlow = MutableStateFlow(FlipperSupportedState.READY)

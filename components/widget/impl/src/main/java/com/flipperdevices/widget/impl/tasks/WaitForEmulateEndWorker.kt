@@ -12,9 +12,9 @@ import com.flipperdevices.keyscreen.api.emulate.EmulateHelper
 import com.flipperdevices.protobuf.app.Application
 import com.flipperdevices.widget.impl.di.WidgetComponent
 import com.flipperdevices.widget.impl.tasks.invalidate.WidgetNotificationHelper
-import javax.inject.Inject
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
+import javax.inject.Inject
 
 class WaitForEmulateEndWorker(
     context: Context,

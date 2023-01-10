@@ -21,13 +21,13 @@ import com.flipperdevices.protobuf.system.updateRequest
 import com.flipperdevices.updater.impl.model.IntFlashFullException
 import com.flipperdevices.updater.model.UpdatingState
 import com.squareup.anvil.annotations.ContributesBinding
-import java.io.File
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import java.io.File
+import javax.inject.Inject
 
 interface UploadToFlipperHelper {
     suspend fun uploadToFlipper(
@@ -101,7 +101,9 @@ class UploadToFlipperHelperImpl @Inject constructor() : UploadToFlipperHelper, L
             if (fileAlreadyUploaded(requestApi, it, File(pathOnFlipper, it.name).path)) {
                 info { "Skip $it because file already uploaded" }
                 return@filterNot true
-            } else return@filterNot false
+            } else {
+                return@filterNot false
+            }
         }
         var totalBytesSend: Long = 0
         var totalSize: Long = 0

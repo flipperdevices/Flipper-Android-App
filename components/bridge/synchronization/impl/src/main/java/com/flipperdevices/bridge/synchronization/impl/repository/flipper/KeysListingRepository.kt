@@ -16,11 +16,11 @@ import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.Storage
 import com.flipperdevices.protobuf.storage.listRequest
 import com.squareup.anvil.annotations.ContributesBinding
-import java.io.File
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.toList
+import java.io.File
+import javax.inject.Inject
 
 const val SIZE_BYTES_LIMIT = 10 * 1024 * 1024 // 10MiB
 

@@ -29,7 +29,9 @@ class NotInitializeWidgetStateRenderer @Inject constructor(
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
 
         val configurePendingIntent = PendingIntent.getActivity(
-            context, widgetId, intent,
+            context,
+            widgetId,
+            intent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
         return RemoteViews(context.packageName, R.layout.initial_layout).apply {

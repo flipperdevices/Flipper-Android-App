@@ -7,7 +7,6 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.ui.fragment.ComposeFragment
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.keyscreen.api.KeyEmulateApi
 import com.flipperdevices.keyscreen.impl.composable.ComposableKeyScreen
 import com.flipperdevices.keyscreen.impl.composable.card.KeyScreenNavigation
@@ -17,6 +16,7 @@ import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModelFactory
 import com.flipperdevices.nfceditor.api.NfcEditorApi
 import com.flipperdevices.share.api.ShareBottomFeatureEntry
 import javax.inject.Inject
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 private const val EXTRA_KEY_PATH = "flipper_key_path"
 

@@ -45,12 +45,16 @@ fun ComposableKeyParsed(
             Modifier.padding(all = 24.dp),
             keyScreenState.parsedKey,
             keyScreenState.deleteState,
-            synchronizationState = if (keyScreenState.deleteState == DeleteState.NOT_DELETED) { ->
-                synchronizationUiApi.RenderSynchronizationState(
-                    keyScreenState.flipperKey.getKeyPath(),
-                    withText = true
-                )
-            } else null,
+            synchronizationState = if (keyScreenState.deleteState == DeleteState.NOT_DELETED) {
+                { ->
+                    synchronizationUiApi.RenderSynchronizationState(
+                        keyScreenState.flipperKey.getKeyPath(),
+                        withText = true
+                    )
+                }
+            } else {
+                null
+            },
             keyScreenState.favoriteState,
             viewModel::setFavorite,
             onEditName = {

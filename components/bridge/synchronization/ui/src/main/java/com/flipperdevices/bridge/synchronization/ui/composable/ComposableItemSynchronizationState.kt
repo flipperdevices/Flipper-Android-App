@@ -18,9 +18,9 @@ import com.flipperdevices.bridge.synchronization.ui.R
 import com.flipperdevices.bridge.synchronization.ui.model.ItemSynchronizationState
 import com.flipperdevices.core.ui.ktx.animatedDots
 import com.flipperdevices.core.ui.ktx.painterResourceByKey
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 private const val ROTATE_DURATION_MS = 3000
 

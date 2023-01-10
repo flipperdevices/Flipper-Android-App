@@ -11,13 +11,13 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.Settings
 import com.squareup.anvil.annotations.ContributesBinding
-import java.util.concurrent.atomic.AtomicBoolean
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
+import java.util.concurrent.atomic.AtomicBoolean
+import javax.inject.Inject
+import javax.inject.Singleton
 
 @Singleton
 @ContributesBinding(AppGraph::class, SynchronizationApi::class)

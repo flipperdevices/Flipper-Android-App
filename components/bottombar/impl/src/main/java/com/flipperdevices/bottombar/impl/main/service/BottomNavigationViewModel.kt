@@ -8,10 +8,10 @@ import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.preference.pb.SelectedTab
 import com.flipperdevices.core.preference.pb.Settings
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class BottomNavigationViewModel : ViewModel() {
     private val selectedTabInternal = MutableStateFlow(FlipperBottomTab.DEVICE)

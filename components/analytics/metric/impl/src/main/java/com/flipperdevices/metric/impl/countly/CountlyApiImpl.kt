@@ -11,9 +11,6 @@ import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.metric.impl.BuildConfig
 import com.squareup.anvil.annotations.ContributesBinding
-import java.util.UUID
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -21,6 +18,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import ly.count.android.sdk.Countly
 import ly.count.android.sdk.CountlyConfig
+import java.util.UUID
+import javax.inject.Inject
+import javax.inject.Singleton
 
 @Singleton
 @ContributesBinding(AppGraph::class, CountlyApi::class)
@@ -54,7 +54,9 @@ class CountlyApiImpl @Inject constructor(
         verbose { "Report event $id with $params" }
         if (params == null) {
             countly.events().recordEvent(id)
-        } else countly.events().recordEvent(id, filterParams(params))
+        } else {
+            countly.events().recordEvent(id, filterParams(params))
+        }
     }
 
     private fun initCountly(): Countly {
@@ -71,7 +73,9 @@ class CountlyApiImpl @Inject constructor(
                     it.toBuilder()
                         .setUuid(UUID.randomUUID().toString())
                         .build()
-                } else it
+                } else {
+                    it
+                }
             }
         }
         info { "Init countly config with uuid ${settings.uuid} and ${BuildConfig.COUNTLY_URL}" }
