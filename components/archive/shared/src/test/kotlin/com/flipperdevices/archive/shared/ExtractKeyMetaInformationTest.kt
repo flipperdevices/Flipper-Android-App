@@ -21,6 +21,7 @@ class ExtractKeyMetaInformationTest(
 
     companion object {
         @JvmStatic
+        @Suppress("LongMethod")
         @Parameterized.Parameters
         fun data() = listOf(
             arrayOf(

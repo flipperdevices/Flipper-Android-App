@@ -85,7 +85,10 @@ class UpdateCardHelperTest {
     @Test
     fun updateCardStateServerException() = runTest {
         val latestVersionAsync = async {
-            return@async runCatching { @Suppress("TooGenericExceptionThrown") throw Exception("") }
+            return@async runCatching {
+                @Suppress("TooGenericExceptionThrown")
+                throw Exception("")
+            }
         }
         val helper = UpdateCardHelper(
             updateChannel = null,

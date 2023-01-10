@@ -1,3 +1,5 @@
+@file:Suppress("Filename")
+
 package com.flipperdevices.keyscreen.emulate.viewmodel.helpers
 
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
