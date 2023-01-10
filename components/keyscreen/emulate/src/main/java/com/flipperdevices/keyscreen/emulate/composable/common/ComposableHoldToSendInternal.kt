@@ -49,7 +49,9 @@ private const val PADDING_END_BUBBLE_FROM_DEVICE = 24
 private const val DELAY_ANIMATION = 2000
 
 @Composable
-fun ComposableBubbleHoldToSend(positionYEmulateButton: Int) {
+fun ComposableBubbleHoldToSend(
+    positionYEmulateButton: Int
+) {
     var positionBubble by remember { mutableStateOf(IntSize.Zero) }
     var visibleState by remember { mutableStateOf(false) }
     Popup(
@@ -63,7 +65,9 @@ fun ComposableBubbleHoldToSend(positionYEmulateButton: Int) {
             enter = fadeIn(animationSpec = tween(DELAY_ANIMATION)),
             exit = fadeOut(animationSpec = tween(DELAY_ANIMATION))
         ) {
-            positionBubble = ComposableHoldToSendInternal()
+            ComposableHoldToSendInternal(onBubbleSizeChanged = {
+                positionBubble = it
+            })
         }
     }
 }
@@ -80,11 +84,15 @@ private fun calculateBubblePosition(
 }
 
 @Composable
-fun ComposableHoldToSendInternal(): IntSize {
-    var bubbleSize by remember { mutableStateOf(IntSize.Zero) }
+fun ComposableHoldToSendInternal(
+    onBubbleSizeChanged: (IntSize) -> Unit,
+    modifier: Modifier = Modifier
+) {
     val bubbleColor = LocalPallet.current.bubbleEmulateBackground.copy(alpha = 0.8f)
     Column(
-        modifier = Modifier.onGloballyPositioned { bubbleSize = it.size },
+        modifier = modifier.onGloballyPositioned {
+            onBubbleSizeChanged(it.size)
+        },
         horizontalAlignment = Alignment.End
     ) {
         Box(
@@ -121,7 +129,6 @@ fun ComposableHoldToSendInternal(): IntSize {
             }
         }
     }
-    return bubbleSize
 }
 
 @Preview(
@@ -131,6 +138,6 @@ fun ComposableHoldToSendInternal(): IntSize {
 @Composable
 private fun ComposableHoldToSendPreview() {
     FlipperThemeInternal {
-        ComposableHoldToSendInternal()
+        ComposableHoldToSendInternal(onBubbleSizeChanged = {})
     }
 }

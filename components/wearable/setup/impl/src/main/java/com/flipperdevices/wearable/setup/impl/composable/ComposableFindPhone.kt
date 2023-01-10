@@ -4,6 +4,7 @@ import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -33,15 +34,17 @@ import com.google.android.horologist.compose.layout.fillMaxRectangle
 import kotlinx.coroutines.launch
 
 @Composable
-fun ComposableFindPhone(onFoundPhone: () -> Unit) {
-    val findPhoneViewModel = viewModel<FindPhoneViewModel>()
-
+fun ComposableFindPhone(
+    onFoundPhone: () -> Unit,
+    modifier: Modifier = Modifier,
+    findPhoneViewModel: FindPhoneViewModel = viewModel()
+) {
     val columnScrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
     val focusRequester = remember { FocusRequester() }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .verticalScroll(columnScrollState)
             .fillMaxRectangle()
             .onRotaryScrollEvent {
@@ -73,7 +76,7 @@ fun ComposableFindPhone(onFoundPhone: () -> Unit) {
 }
 
 @Composable
-private fun ComposableNotFoundedPhone(onInstall: () -> Unit, onCheckAgain: () -> Unit) {
+private fun ColumnScope.ComposableNotFoundedPhone(onInstall: () -> Unit, onCheckAgain: () -> Unit) {
     Text(
         text = stringResource(id = R.string.phone_missing),
         style = LocalTypography.current.bodyM14

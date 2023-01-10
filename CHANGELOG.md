@@ -7,6 +7,7 @@
 - [CI] Migrate to Detekt
 - [FIX] Clickable modifier ktx
 - [FIX] Refactor `share:receive` module
+- [REFACTOR] Fix detekt compose issues
 
 # 1.4.0
 

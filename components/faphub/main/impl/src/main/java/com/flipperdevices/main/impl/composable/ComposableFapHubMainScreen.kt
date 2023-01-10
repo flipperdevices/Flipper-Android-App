@@ -1,5 +1,6 @@
 package com.flipperdevices.main.impl.composable
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.ui.ktx.OrangeAppBarWithIcon
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.main.impl.R
 import com.flipperdevices.main.impl.composable.switch.ComposableFapHubNewSwitch
 import com.flipperdevices.main.impl.composable.switch.ComposableFapHubSwitch
@@ -27,23 +27,25 @@ fun ComposableFapHubMainScreen(
     onBack: () -> Unit,
     catalogTabComposable: @Composable () -> Unit,
     installedTabComposable: @Composable () -> Unit,
-    onOpenSearch: () -> Unit
+    onOpenSearch: () -> Unit,
+    modifier: Modifier = Modifier,
+    installedNotificationViewModel: InstalledNotificationViewModel = viewModel(),
+    mainViewModel: MainViewModel = tangleViewModel()
 ) {
-    val installedNotificationViewModel = viewModel<InstalledNotificationViewModel>()
     val installedNotificationCount by
     installedNotificationViewModel.getNotificationCountStateFlow().collectAsState()
 
-    val viewModel = tangleViewModel<MainViewModel>()
-    val selectedTab by viewModel.getTabFlow().collectAsState()
-    val isNewBar by viewModel.isExperimentalSwitch().collectAsState()
+    val selectedTab by mainViewModel.getTabFlow().collectAsState()
+    val isNewBar by mainViewModel.isExperimentalSwitch().collectAsState()
 
     Column(
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (isNewBar) {
             ComposableFapHubNewSwitch(
                 fapHubTabEnum = selectedTab,
-                onSelect = viewModel::onSelectTab,
+                onSelect = mainViewModel::onSelectTab,
                 installedNotificationCount = installedNotificationCount,
                 onBack = onBack,
                 onEndClick = onOpenSearch
@@ -64,7 +66,7 @@ fun ComposableFapHubMainScreen(
             ComposableFapHubSwitch(
                 modifier = Modifier.padding(top = 6.dp, bottom = 18.dp),
                 fapHubTabEnum = selectedTab,
-                onSelect = viewModel::onSelectTab,
+                onSelect = mainViewModel::onSelectTab,
                 installedNotificationCount = installedNotificationCount
             )
         }

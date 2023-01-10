@@ -14,21 +14,22 @@ import com.flipperdevices.core.ui.searchbar.ComposableSearchBar
 @Composable
 fun ComposableSearch(
     synchronizationUiApi: SynchronizationUiApi,
-    searchViewModel: SearchViewModel
+    searchViewModel: SearchViewModel,
+    modifier: Modifier = Modifier
 ) {
     val router = LocalRouter.current
-    Column {
+    Column(modifier) {
         ComposableSearchBar(
             hint = stringResource(R.string.search_field_hint),
             onChangeText = searchViewModel::onChangeText,
             onBack = router::exit
         )
         ComposableSearchContent(
-            Modifier
+            modifier = Modifier
                 .weight(weight = 1f)
                 .fillMaxWidth(),
-            synchronizationUiApi,
-            searchViewModel
+            synchronizationUiApi = synchronizationUiApi,
+            searchViewModel = searchViewModel
         )
     }
 }

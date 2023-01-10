@@ -33,8 +33,10 @@ val LocalPallet = compositionLocalOf<FlipperPallet> { error("No local pallet") }
 val LocalTypography = compositionLocalOf<FlipperTypography> { error("No local typography") }
 
 @Composable
-fun FlipperTheme(content: @Composable () -> Unit) {
-    val themeViewModel: ThemeViewModel = viewModel()
+fun FlipperTheme(
+    content: @Composable () -> Unit,
+    themeViewModel: ThemeViewModel = viewModel()
+) {
     val theme by themeViewModel.getAppTheme().collectAsState()
     val isLight = isLight(systemIsDark = isSystemInDarkTheme())
     FlipperThemeInternal(

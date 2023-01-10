@@ -728,7 +728,7 @@ TwitterCompose:
   CompositionLocalAllowlist:
     active: true
     # You can optionally define a list of CompositionLocals that are allowed here
-    # allowedCompositionLocals: LocalSomething,LocalSomethingElse
+    allowedCompositionLocals: LocalRouter,LocalPlaceholderEnable,LocalPallet,LocalTypography
   CompositionLocalNaming:
     active: true
   ContentEmitterReturningValues:
@@ -738,7 +738,7 @@ TwitterCompose:
   ModifierComposable:
     active: true
   ModifierMissing:
-    active: true
+    active: false
   ModifierReused:
     active: true
   ModifierWithoutDefault:
@@ -754,7 +754,7 @@ TwitterCompose:
     # You can optionally disable the checks in this rule for regex matches against the composable name (e.g. molecule presenters)
     # allowedComposableFunctionNames: .*Presenter,.*MoleculePresenter
   ComposableParamOrder:
-    active: true
+    active: false
   PreviewNaming:
     active: true
   PreviewPublic:

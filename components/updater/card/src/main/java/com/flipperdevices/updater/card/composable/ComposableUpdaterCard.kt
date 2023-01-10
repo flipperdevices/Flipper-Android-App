@@ -29,6 +29,7 @@ import com.flipperdevices.updater.model.UpdateRequest
 import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
+@Suppress("ModifierReused")
 internal fun ComposableUpdaterCardInternal(
     modifier: Modifier = Modifier,
     updateStateViewModel: UpdateStateViewModel = tangleViewModel(),

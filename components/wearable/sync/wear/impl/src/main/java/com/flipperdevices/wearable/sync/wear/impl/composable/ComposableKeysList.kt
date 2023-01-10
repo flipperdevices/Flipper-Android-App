@@ -41,14 +41,11 @@ import com.google.android.horologist.compose.layout.fillMaxRectangle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
 
-@Preview(
-    showSystemUi = true,
-    showBackground = true,
-    device = Devices.WEAR_OS_LARGE_ROUND
-)
 @Composable
-fun ComposableKeysList(onKeyOpen: (FlipperWearKey) -> Unit = {}) {
-    val keysListViewModel = viewModel<KeysListViewModel>()
+fun ComposableKeysList(
+    onKeyOpen: (FlipperWearKey) -> Unit = {},
+    keysListViewModel: KeysListViewModel = viewModel()
+) {
     val state by keysListViewModel.getKeysListFlow().collectAsState()
     val localState = state
     when (localState) {

@@ -96,7 +96,7 @@ private fun CategoryList(
     ) {
         items(keys) { (flipperKeyParsed, flipperKey) ->
             ComposableKeyCard(
-                Modifier.padding(bottom = 14.dp),
+                modifier = Modifier.padding(bottom = 14.dp),
                 synchronizationContent = if (synchronizationUiApi != null) { ->
                     synchronizationUiApi.RenderSynchronizationState(
                         synced = flipperKey.synchronized,
@@ -104,14 +104,15 @@ private fun CategoryList(
                         withText = false
                     )
                 } else null,
-                flipperKeyParsed,
+                flipperKeyParsed = flipperKeyParsed,
                 typeColor = when (categoryType) {
                     is CategoryType.ByFileType -> colorByFlipperKeyType(categoryType.fileType)
                     CategoryType.Deleted -> LocalPallet.current.keyDeleted
+                },
+                onCardClicked = {
+                    categoryViewModel.openKeyScreen(router, flipperKey.getKeyPath())
                 }
-            ) {
-                categoryViewModel.openKeyScreen(router, flipperKey.getKeyPath())
-            }
+            )
         }
     }
 }
