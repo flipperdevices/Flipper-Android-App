@@ -29,7 +29,9 @@ fun ComposableFapControlRow(
 ) = Row(
     modifier = if (fapItem == null) {
         modifier.placeholderConnecting()
-    } else modifier.height(IntrinsicSize.Min)
+    } else {
+        modifier.height(IntrinsicSize.Min)
+    }
 ) {
     Icon(
         modifier = Modifier

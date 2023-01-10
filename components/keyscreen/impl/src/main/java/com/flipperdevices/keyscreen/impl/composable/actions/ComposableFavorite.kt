@@ -1,6 +1,5 @@
 package com.flipperdevices.keyscreen.impl.composable.actions
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
@@ -11,6 +10,7 @@ import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.ktx.painterResourceByKey
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyscreen.impl.model.FavoriteState
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 private const val ICON_SIZE_DP = 24
 

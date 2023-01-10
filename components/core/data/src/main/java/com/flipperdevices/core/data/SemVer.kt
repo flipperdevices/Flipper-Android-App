@@ -24,6 +24,8 @@ data class SemVer(
     override fun toString(): String {
         return if (patchVersion == null) {
             "$majorVersion.$minorVersion"
-        } else "$majorVersion.$minorVersion.$patchVersion"
+        } else {
+            "$majorVersion.$minorVersion.$patchVersion"
+        }
     }
 }

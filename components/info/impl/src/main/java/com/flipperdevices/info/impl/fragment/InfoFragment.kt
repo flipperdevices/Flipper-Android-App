@@ -1,6 +1,5 @@
 package com.flipperdevices.info.impl.fragment
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import android.content.Intent
 import android.os.Bundle
 import androidx.compose.runtime.Composable
@@ -17,8 +16,9 @@ import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.flipperdevices.info.impl.api.InfoFeatureEntry
 import com.flipperdevices.info.impl.compose.InfoNavigation
 import com.flipperdevices.info.impl.di.InfoComponent
-import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableSet
+import javax.inject.Inject
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 class InfoFragment : ComposeFragment(), OnBackPressListener {
     @Inject

@@ -13,10 +13,10 @@ import com.flipperdevices.wearable.emulate.impl.model.ConnectionTesterState
 import com.flipperdevices.wearable.emulate.impl.model.KeyToEmulate
 import com.flipperdevices.wearable.emulate.impl.model.WearEmulateState
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.sync.Mutex
+import javax.inject.Inject
 
 interface WearEmulateStateMachine {
     fun getStateFlow(): StateFlow<WearEmulateState>
@@ -121,7 +121,9 @@ class WearEmulateStateMachineImpl @Inject constructor(
                 .also { nodeId ->
                     if (nodeId == null) {
                         onStateUpdateInternal(WearEmulateState.NotFoundNode)
-                    } else onStateUpdateInternal(WearEmulateState.EstablishConnection(nodeId))
+                    } else {
+                        onStateUpdateInternal(WearEmulateState.EstablishConnection(nodeId))
+                    }
                 }
             is WearEmulateState.EstablishConnection -> {
                 connectionTester.resetState()

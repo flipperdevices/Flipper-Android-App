@@ -19,10 +19,10 @@ import com.flipperdevices.filemanager.impl.composable.ComposableFileManagerUploa
 import com.flipperdevices.filemanager.impl.model.ShareFile
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
-import java.io.File
-import javax.inject.Inject
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import java.io.File
+import javax.inject.Inject
 
 internal const val PATH_KEY = "path"
 internal const val CONTENT_KEY = "content"

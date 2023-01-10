@@ -11,10 +11,10 @@ import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.readRequest
 import com.flipperdevices.updater.subghz.helpers.SubGhzProvisioningHelper
 import com.squareup.anvil.annotations.ContributesMultibinding
-import java.nio.charset.Charset
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import java.nio.charset.Charset
+import javax.inject.Inject
 
 @ContributesMultibinding(scope = AppGraph::class, boundType = UpdateOfferDelegate::class)
 class UpdateOfferRegionChange @Inject constructor(

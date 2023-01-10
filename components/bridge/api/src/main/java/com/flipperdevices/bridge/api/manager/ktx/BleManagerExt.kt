@@ -73,9 +73,14 @@ private fun getConnectionStateFrom(
         BluetoothProfile.STATE_CONNECTING -> ConnectionState.Connecting
         BluetoothProfile.STATE_CONNECTED -> if (connectionStateProvider.isReady()) {
             val supportedState = connectionStateProvider.supportState()
-            if (supportedState == null) ConnectionState.RetrievingInformation
-            else ConnectionState.Ready(supportedState)
-        } else ConnectionState.Initializing
+            if (supportedState == null) {
+                ConnectionState.RetrievingInformation
+            } else {
+                ConnectionState.Ready(supportedState)
+            }
+        } else {
+            ConnectionState.Initializing
+        }
         BluetoothProfile.STATE_DISCONNECTING -> ConnectionState.Disconnecting
         else -> ConnectionState.Disconnected(ConnectionState.Disconnected.Reason.UNKNOWN)
     }

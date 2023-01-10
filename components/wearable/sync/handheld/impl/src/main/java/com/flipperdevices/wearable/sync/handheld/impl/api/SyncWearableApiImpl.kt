@@ -14,11 +14,11 @@ import com.flipperdevices.wearable.sync.handheld.api.SyncWearableApi
 import com.google.android.gms.wearable.PutDataRequest
 import com.google.android.gms.wearable.Wearable
 import com.squareup.anvil.annotations.ContributesBinding
-import java.io.File
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import java.io.File
+import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, SyncWearableApi::class)
 class SyncWearableApiImpl @Inject constructor(

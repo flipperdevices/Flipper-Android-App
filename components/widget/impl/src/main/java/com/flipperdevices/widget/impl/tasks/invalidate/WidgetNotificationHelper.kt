@@ -9,10 +9,10 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.work.ForegroundInfo
 import androidx.work.WorkManager
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.widget.impl.R
 import com.flipperdevices.widget.impl.model.Constants.WIDGET_NOTIFICATION_CHANNEL
 import java.util.UUID
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @SuppressLint("ObsoleteSdkInt")
 class WidgetNotificationHelper(

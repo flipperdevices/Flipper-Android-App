@@ -1,6 +1,5 @@
 package com.flipperdevices.updater.card.composable
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -24,6 +23,7 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.updater.card.R
 import com.flipperdevices.updater.model.UpdateErrorType
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ColumnScope.ComposableFirmwareUpdaterError(

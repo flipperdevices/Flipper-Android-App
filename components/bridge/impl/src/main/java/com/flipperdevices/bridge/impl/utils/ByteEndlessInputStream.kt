@@ -3,14 +3,14 @@ package com.flipperdevices.bridge.impl.utils
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.verbose
 import it.unimi.dsi.fastutil.bytes.ByteArrayFIFOQueue
-import java.io.InputStream
-import kotlin.coroutines.cancellation.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.InputStream
+import kotlin.coroutines.cancellation.CancellationException
 
 class ByteEndlessInputStream(
     private val scope: CoroutineScope

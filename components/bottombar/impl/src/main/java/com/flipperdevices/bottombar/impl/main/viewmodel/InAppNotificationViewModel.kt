@@ -7,11 +7,11 @@ import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.inappnotification.api.InAppNotificationListener
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
-import javax.inject.Inject
-import javax.inject.Provider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import javax.inject.Inject
+import javax.inject.Provider
 
 class InAppNotificationViewModel : ViewModel(), InAppNotificationListener {
     @Inject
@@ -43,7 +43,9 @@ class InAppNotificationViewModel : ViewModel(), InAppNotificationListener {
                 it.notification == notification
             ) {
                 InAppNotificationState.NotPresent
-            } else it
+            } else {
+                it
+            }
         }
     }
 

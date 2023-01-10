@@ -9,12 +9,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.TextUnit
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.flipperdevices.core.ui.ktx.OrangeAppBarWithIcon
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.faphub.appcard.composable.paging.ComposableFapsList
 import com.flipperdevices.faphub.appcard.composable.paging.ComposableSortChoice
 import com.flipperdevices.faphub.category.impl.viewmodel.FapHubCategoryViewModel
 import com.flipperdevices.faphub.dao.api.model.FapItem
 import tangle.viewmodel.compose.tangleViewModel
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableFapHubCategory(

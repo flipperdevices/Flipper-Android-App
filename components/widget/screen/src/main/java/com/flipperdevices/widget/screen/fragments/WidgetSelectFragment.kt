@@ -6,12 +6,12 @@ import com.flipperdevices.archive.api.ArchiveApi
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.ui.fragment.ComposeFragment
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.widget.screen.compose.WidgetOptionsComposable
 import com.flipperdevices.widget.screen.di.WidgetComponent
 import com.flipperdevices.widget.screen.viewmodel.WidgetSelectViewModel
-import javax.inject.Inject
 import tangle.viewmodel.fragment.tangleViewModel
+import javax.inject.Inject
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 const val EXTRA_WIDGET_ID_KEY = "widget_id"
 

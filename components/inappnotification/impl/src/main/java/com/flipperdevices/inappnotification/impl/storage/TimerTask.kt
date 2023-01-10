@@ -2,10 +2,6 @@ package com.flipperdevices.inappnotification.impl.storage
 
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
-import java.util.concurrent.locks.ReentrantLock
-import kotlin.concurrent.withLock
-import kotlin.time.Duration
-import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
@@ -13,6 +9,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.util.concurrent.locks.ReentrantLock
+import kotlin.concurrent.withLock
+import kotlin.time.Duration
+import kotlin.time.ExperimentalTime
 
 class TimerTask(
     private val delayDuration: Duration,

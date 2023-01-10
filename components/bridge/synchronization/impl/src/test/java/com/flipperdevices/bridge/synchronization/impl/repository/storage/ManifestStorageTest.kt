@@ -7,7 +7,6 @@ import com.flipperdevices.bridge.synchronization.impl.model.KeyWithHash
 import com.flipperdevices.core.test.readTestAsset
 import io.mockk.every
 import io.mockk.mockk
-import java.io.File
 import junit.framework.Assert.assertNotNull
 import junit.framework.Assert.assertNull
 import kotlinx.coroutines.test.runTest
@@ -17,6 +16,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
 import org.junit.runner.RunWith
+import java.io.File
 
 @RunWith(AndroidJUnit4::class)
 class ManifestStorageTest {

@@ -57,7 +57,9 @@ class LimboKeyProcessor @Inject constructor(
     ) {
         val newPathUnfree = if (editState.name != null) {
             editableKey.notSavedFlipperKey.mainFile.path.copyWithChangedName(editState.name)
-        } else editableKey.notSavedFlipperKey.mainFile.path
+        } else {
+            editableKey.notSavedFlipperKey.mainFile.path
+        }
         val newPath = utilsKeyApi.findAvailablePath(
             FlipperKeyPath(newPathUnfree, deleted = false)
         ).path

@@ -17,9 +17,6 @@ import com.flipperdevices.share.receive.helpers.ReceiveKeyActionHelper
 import com.flipperdevices.share.receive.models.ReceiveState
 import com.flipperdevices.share.receive.models.ReceiverError
 import com.github.terrakok.cicerone.Router
-import java.io.FileNotFoundException
-import java.net.UnknownHostException
-import java.net.UnknownServiceException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -27,6 +24,9 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import tangle.inject.TangleParam
 import tangle.viewmodel.VMInject
+import java.io.FileNotFoundException
+import java.net.UnknownHostException
+import java.net.UnknownServiceException
 
 class KeyReceiveViewModel @VMInject constructor(
     @TangleParam(EXTRA_KEY_DEEPLINK)

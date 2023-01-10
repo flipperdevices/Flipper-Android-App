@@ -21,8 +21,8 @@ import com.flipperdevices.singleactivity.impl.di.SingleActivityComponent
 import com.github.terrakok.cicerone.Navigator
 import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.AppNavigator
-import javax.inject.Inject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 const val LAUNCH_PARAMS_INTENT = "launch_params_intent"
 

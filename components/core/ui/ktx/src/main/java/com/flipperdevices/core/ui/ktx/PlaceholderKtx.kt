@@ -40,7 +40,9 @@ fun Modifier.placeholderByLocalProvider(
             modifier = modifier.then(Modifier.height(defaultHeight))
         }
         modifier.placeholderConnecting(shape)
-    } else this
+    } else {
+        this
+    }
 }
 
 val LocalPlaceholderEnable = compositionLocalOf { false }

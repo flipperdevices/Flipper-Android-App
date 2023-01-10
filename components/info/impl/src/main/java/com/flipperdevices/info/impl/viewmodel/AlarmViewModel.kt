@@ -9,8 +9,8 @@ import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.info.impl.di.InfoComponent
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.system.playAudiovisualAlertRequest
-import javax.inject.Inject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class AlarmViewModel : LifecycleViewModel() {
     @Inject

@@ -58,7 +58,10 @@ fun FoundedKeyComposable(
             Image(
                 modifier = Modifier
                     .padding(
-                        start = 10.dp, top = 8.dp, bottom = 8.dp, end = 6.dp
+                        start = 10.dp,
+                        top = 8.dp,
+                        bottom = 8.dp,
+                        end = 6.dp
                     )
                     .size(24.dp),
                 painter = painterResource(R.drawable.pic_encrypted_key),

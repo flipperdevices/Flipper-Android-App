@@ -74,12 +74,14 @@ fun ComposableUpdateButton(
                     descriptionId = R.string.updater_card_updater_button_install_desc,
                     color = LocalPallet.current.accent
                 )
-            } else ComposableUpdateButtonContent(
-                buttonModifier = buttonModifier,
-                textId = R.string.updater_card_updater_button_update,
-                descriptionId = R.string.updater_card_updater_button_update_desc,
-                color = LocalPallet.current.updateProgressGreen
-            )
+            } else {
+                ComposableUpdateButtonContent(
+                    buttonModifier = buttonModifier,
+                    textId = R.string.updater_card_updater_button_update,
+                    descriptionId = R.string.updater_card_updater_button_update_desc,
+                    color = LocalPallet.current.updateProgressGreen
+                )
+            }
         }
     }
 }

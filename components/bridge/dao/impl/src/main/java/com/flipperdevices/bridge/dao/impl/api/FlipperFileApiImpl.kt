@@ -65,7 +65,9 @@ class FlipperFileApiImpl @Inject constructor(
             val existedFile = additionalFilesToRemove.remove(additionalFile.path)
             if (existedFile != null) {
                 additionalFileDao.update(additionalFile.copy(uid = existedFile.uid))
-            } else additionalFileDao.insert(additionalFile)
+            } else {
+                additionalFileDao.insert(additionalFile)
+            }
         }
         additionalFilesToRemove.values.forEach {
             additionalFileDao.delete(it)

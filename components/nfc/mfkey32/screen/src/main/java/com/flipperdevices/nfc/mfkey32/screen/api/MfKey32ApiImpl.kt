@@ -8,10 +8,10 @@ import com.flipperdevices.nfc.mfkey32.screen.viewmodel.PATH_NONCE_LOG
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.md5sumRequest
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
+import javax.inject.Inject
+import javax.inject.Singleton
 
 @Singleton
 @ContributesBinding(AppGraph::class, MfKey32Api::class)
@@ -31,6 +31,8 @@ class MfKey32ApiImpl @Inject constructor() : MfKey32Api {
         ).first()
         if (response.hasStorageMd5SumResponse()) {
             hasNotificationFlow.emit(true)
-        } else hasNotificationFlow.emit(false)
+        } else {
+            hasNotificationFlow.emit(false)
+        }
     }
 }

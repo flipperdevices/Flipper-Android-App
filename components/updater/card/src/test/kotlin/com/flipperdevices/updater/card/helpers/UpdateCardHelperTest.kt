@@ -10,13 +10,13 @@ import com.flipperdevices.updater.model.UpdateErrorType
 import com.flipperdevices.updater.model.VersionFiles
 import com.flipperdevices.updater.model.WebUpdaterFirmware
 import io.mockk.mockk
-import java.net.UnknownHostException
-import java.util.EnumMap
 import kotlinx.coroutines.async
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import java.net.UnknownHostException
+import java.util.EnumMap
 
 class UpdateCardHelperTest {
 

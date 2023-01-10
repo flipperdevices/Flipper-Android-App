@@ -18,7 +18,9 @@ data class RegionProvisioning(
             regionFromIp to RegionProvisioningSource.GEO_IP
         } else if (regionSystem.isOkayRegion()) {
             regionSystem to RegionProvisioningSource.SYSTEM
-        } else null to null
+        } else {
+            null to null
+        }
     }
 }
 

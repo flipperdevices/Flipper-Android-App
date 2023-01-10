@@ -52,7 +52,9 @@ fun ComposableUnsupportedDialog(
             FlipperDialog(
                 imageId = if (MaterialTheme.colors.isLight) {
                     DesignSystem.drawable.ic_firmware_application_deprecated
-                } else DesignSystem.drawable.ic_firmware_application_deprecated_dark,
+                } else {
+                    DesignSystem.drawable.ic_firmware_application_deprecated_dark
+                },
                 titleId = R.string.dialog_unsupported_application_title,
                 textId = R.string.dialog_unsupported_application_description,
                 buttonTextId = R.string.dialog_unsupported_application_btn,

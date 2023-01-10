@@ -97,13 +97,17 @@ private fun CategoryList(
         items(keys) { (flipperKeyParsed, flipperKey) ->
             ComposableKeyCard(
                 modifier = Modifier.padding(bottom = 14.dp),
-                synchronizationContent = if (synchronizationUiApi != null) { ->
-                    synchronizationUiApi.RenderSynchronizationState(
-                        synced = flipperKey.synchronized,
-                        synchronizationState = synchronizationState,
-                        withText = false
-                    )
-                } else null,
+                synchronizationContent = if (synchronizationUiApi != null) {
+                    { ->
+                        synchronizationUiApi.RenderSynchronizationState(
+                            synced = flipperKey.synchronized,
+                            synchronizationState = synchronizationState,
+                            withText = false
+                        )
+                    }
+                } else {
+                    null
+                },
                 flipperKeyParsed = flipperKeyParsed,
                 typeColor = when (categoryType) {
                     is CategoryType.ByFileType -> colorByFlipperKeyType(categoryType.fileType)

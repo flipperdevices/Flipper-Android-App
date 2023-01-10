@@ -16,11 +16,11 @@ import com.flipperdevices.widget.impl.model.WidgetState
 import com.flipperdevices.widget.impl.storage.WidgetStateStorage
 import com.flipperdevices.widget.impl.tasks.invalidate.InvalidateWidgetsHelper
 import com.flipperdevices.widget.impl.tasks.invalidate.WidgetNotificationHelper
-import javax.inject.Inject
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withTimeout
+import javax.inject.Inject
 
 private const val WAIT_FLIPPER_TIMEOUT_MS = 3 * 1000L // 10 sec
 private const val DEFAULT_WIDGET_APP_ID = -1
@@ -82,7 +82,8 @@ class WaitingForFlipperConnectWorker(
 
     private fun isBluetoothEnabled(): Boolean {
         val bluetoothManager = ContextCompat.getSystemService(
-            applicationContext, BluetoothManager::class.java
+            applicationContext,
+            BluetoothManager::class.java
         )
         val adapter = bluetoothManager?.adapter ?: BluetoothAdapter.getDefaultAdapter()
         return adapter?.isEnabled ?: false

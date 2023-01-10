@@ -22,11 +22,6 @@ import com.flipperdevices.protobuf.storage.file
 import com.flipperdevices.protobuf.storage.readRequest
 import com.flipperdevices.protobuf.storage.writeRequest
 import com.google.protobuf.ByteString
-import java.nio.ByteBuffer
-import java.util.Arrays
-import java.util.concurrent.atomic.AtomicBoolean
-import javax.inject.Inject
-import kotlin.random.Random
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
@@ -44,6 +39,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.nio.ByteBuffer
+import java.util.Arrays
+import java.util.concurrent.atomic.AtomicBoolean
+import javax.inject.Inject
+import kotlin.random.Random
 
 const val BUFFER_SIZE = 20 * 1024
 const val TEST_FILE = "/any/stresstest_mobile.tmp"

@@ -37,16 +37,25 @@ fun ComposableControlButtons(
      */
     Column(modifier) {
         ControlRow(
-            start = ButtonEnum.SCREENSHOT, center = ButtonEnum.UP, end = ButtonEnum.UNLOCK,
-            onPressButton, onLongPressButton
+            start = ButtonEnum.SCREENSHOT,
+            center = ButtonEnum.UP,
+            end = ButtonEnum.UNLOCK,
+            onPressButton,
+            onLongPressButton
         )
         ControlRow(
-            start = ButtonEnum.LEFT, center = ButtonEnum.OK, end = ButtonEnum.RIGHT,
-            onPressButton, onLongPressButton
+            start = ButtonEnum.LEFT,
+            center = ButtonEnum.OK,
+            end = ButtonEnum.RIGHT,
+            onPressButton,
+            onLongPressButton
         )
         ControlRow(
-            start = null, center = ButtonEnum.DOWN, end = ButtonEnum.BACK,
-            onPressButton, onLongPressButton
+            start = null,
+            center = ButtonEnum.DOWN,
+            end = ButtonEnum.BACK,
+            onPressButton,
+            onLongPressButton
         )
     }
 }

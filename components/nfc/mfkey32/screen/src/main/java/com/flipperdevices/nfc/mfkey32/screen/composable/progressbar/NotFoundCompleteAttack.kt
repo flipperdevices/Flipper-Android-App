@@ -16,11 +16,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.ComposableFlipperButton
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.nfc.mfkey32.screen.R
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun NotFoundCompleteAttack(onDone: () -> Unit) = Column(
@@ -36,8 +36,11 @@ fun NotFoundCompleteAttack(onDone: () -> Unit) = Column(
     Image(
         modifier = Modifier.padding(horizontal = 18.dp),
         painter = painterResource(
-            if (MaterialTheme.colors.isLight) DesignSystem.drawable.pic_shrug_white
-            else DesignSystem.drawable.pic_shrug_black
+            if (MaterialTheme.colors.isLight) {
+                DesignSystem.drawable.pic_shrug_white
+            } else {
+                DesignSystem.drawable.pic_shrug_black
+            }
         ),
         contentDescription = stringResource(R.string.mfkey32_complete_not_found_title)
     )

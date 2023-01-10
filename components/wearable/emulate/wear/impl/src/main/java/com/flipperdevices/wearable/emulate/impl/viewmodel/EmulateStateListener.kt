@@ -7,12 +7,12 @@ import com.flipperdevices.wearable.emulate.common.ipcemulate.Main
 import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.Emulate.EmulateStatus
 import com.flipperdevices.wearable.emulate.impl.di.WearGraph
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import javax.inject.Inject
 
 interface EmulateStateListener {
     fun getState(): StateFlow<EmulateStatus>

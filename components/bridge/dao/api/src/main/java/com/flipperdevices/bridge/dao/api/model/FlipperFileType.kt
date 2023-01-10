@@ -17,7 +17,9 @@ enum class FlipperFileType {
                 else -> {
                     if (FlipperKeyType.getByExtension(extension) != null) {
                         KEY
-                    } else OTHER
+                    } else {
+                        OTHER
+                    }
                 }
             }
         }

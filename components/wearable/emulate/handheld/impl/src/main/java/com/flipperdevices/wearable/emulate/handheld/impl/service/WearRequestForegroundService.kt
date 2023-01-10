@@ -18,7 +18,8 @@ private const val NOTIFICATION_ID = 100
 class WearRequestForegroundService : LifecycleService(), WearRequestChannelBinder, LogTagProvider {
     override val TAG = "WearRequestForegroundService"
     private val wearServiceComponent = DaggerWearServiceComponent.factory().create(
-        ComponentHolder.component(), lifecycleScope + Dispatchers.Default
+        ComponentHolder.component(),
+        lifecycleScope + Dispatchers.Default
     )
     private val binder = WearRequestBinder(this)
 

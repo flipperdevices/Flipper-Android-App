@@ -21,12 +21,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.flipperdevices.core.ui.ktx.FlipperProgressIndicator
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.nfc.mfkey32.screen.R
 import com.flipperdevices.nfc.mfkey32.screen.composable.progressbar.error.ComposableMfKey32Error
 import com.flipperdevices.nfc.mfkey32.screen.model.MfKey32State
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableMfKey32Progress(navController: NavController, state: MfKey32State) {
@@ -61,9 +61,12 @@ fun ComposableMfKey32Progress(navController: NavController, state: MfKey32State)
         }
         is MfKey32State.Saved -> if (state.keys.isEmpty()) {
             NotFoundCompleteAttack(navController::popBackStack)
-        } else CompleteAttack(
-            state.keys, navController::popBackStack
-        )
+        } else {
+            CompleteAttack(
+                state.keys,
+                navController::popBackStack
+            )
+        }
     }
 
     GrayDivider()
@@ -107,13 +110,15 @@ private fun ComposableMfKey32ProgressInternal(
                 iconId = iconId,
                 percent = animatedProgress
             )
-        } else FlipperProgressIndicator(
-            modifier = Modifier.padding(horizontal = 32.dp),
-            accentColor = accentColor,
-            secondColor = secondColor,
-            iconId = iconId,
-            percent = null
-        )
+        } else {
+            FlipperProgressIndicator(
+                modifier = Modifier.padding(horizontal = 32.dp),
+                accentColor = accentColor,
+                secondColor = secondColor,
+                iconId = iconId,
+                percent = null
+            )
+        }
         Text(
             modifier = Modifier.padding(top = 8.dp, start = 18.dp, end = 18.dp, bottom = 18.dp),
             text = stringResource(descriptionId),

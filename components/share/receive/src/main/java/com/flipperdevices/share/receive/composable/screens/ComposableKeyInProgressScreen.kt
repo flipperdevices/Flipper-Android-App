@@ -20,8 +20,10 @@ import kotlinx.collections.immutable.persistentListOf
 @Composable
 internal fun ComposableKeyInProgressScreen(keyScreenApi: KeyScreenApi, onCancel: () -> Unit) {
     val keyParsed = FlipperKeyParsed.Unrecognized(
-        keyName = "", notes = "",
-        fileType = null, orderedDict = persistentListOf("" to "")
+        keyName = "",
+        notes = "",
+        fileType = null,
+        orderedDict = persistentListOf("" to "")
     )
 
     Column {

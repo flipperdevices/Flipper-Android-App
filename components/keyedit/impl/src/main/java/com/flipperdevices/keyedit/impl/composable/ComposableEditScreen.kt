@@ -54,7 +54,9 @@ private fun ComposableEditScreenEditing(
 ) {
     val buttonState = if (state.savingKeyActive) {
         SaveButtonState.ENABLED
-    } else SaveButtonState.DISABLED
+    } else {
+        SaveButtonState.DISABLED
+    }
     Column {
         ComposableEditAppBar(
             title = title,

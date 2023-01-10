@@ -7,9 +7,9 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.wearable.emulate.impl.di.WearGraph
 import com.google.android.gms.wearable.CapabilityClient
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
 
 interface NodeFindingHelper {
     suspend fun findNode(): String?

@@ -21,9 +21,9 @@ import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.Text
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.wearable.sync.wear.impl.model.FlipperWearKey
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableKeysListCategory(
@@ -38,11 +38,13 @@ fun ComposableKeysListCategory(
             Box(
                 modifier = iconModifier
             )
-        } else Image(
-            modifier = iconModifier,
-            painter = painterResource(iconId),
-            contentDescription = null
-        )
+        } else {
+            Image(
+                modifier = iconModifier,
+                painter = painterResource(iconId),
+                contentDescription = null
+            )
+        }
         Text(
             text = stringResource(textId),
             style = LocalTypography.current.titleB18

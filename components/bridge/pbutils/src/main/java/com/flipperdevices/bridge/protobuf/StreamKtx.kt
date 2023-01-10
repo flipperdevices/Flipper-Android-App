@@ -5,8 +5,8 @@ import com.flipperdevices.core.log.warn
 import com.flipperdevices.protobuf.MainKt
 import com.flipperdevices.protobuf.main
 import com.google.protobuf.ByteString
-import java.io.InputStream
 import kotlinx.coroutines.flow.channelFlow
+import java.io.InputStream
 
 private const val EOF_CODE = -1
 

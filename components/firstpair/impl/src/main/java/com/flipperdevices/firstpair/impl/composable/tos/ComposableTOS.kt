@@ -1,6 +1,5 @@
 package com.flipperdevices.firstpair.impl.composable.tos
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,6 +19,7 @@ import com.flipperdevices.core.ui.ktx.ComposableFlipperButton
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.firstpair.impl.R
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableTOS(onApplyPress: () -> Unit) {

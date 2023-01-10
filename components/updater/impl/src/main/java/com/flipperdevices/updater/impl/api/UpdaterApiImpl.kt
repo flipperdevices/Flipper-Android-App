@@ -20,14 +20,14 @@ import com.flipperdevices.updater.model.UpdatingState
 import com.flipperdevices.updater.model.UpdatingStateWithRequest
 import com.flipperdevices.updater.subghz.helpers.SubGhzProvisioningHelper
 import com.squareup.anvil.annotations.ContributesBinding
-import java.util.concurrent.atomic.AtomicBoolean
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
+import java.util.concurrent.atomic.AtomicBoolean
+import javax.inject.Inject
+import javax.inject.Singleton
 
 @Singleton
 @ContributesBinding(AppGraph::class, UpdaterApi::class)
@@ -124,8 +124,12 @@ class UpdaterApiImpl @Inject constructor(
                     UpdatingStateWithRequest(UpdatingState.Complete, request = it.request)
                 } else if (it.request?.updateTo?.channel != FirmwareChannel.CUSTOM) {
                     UpdatingStateWithRequest(UpdatingState.Failed, request = it.request)
-                } else it
-            } else it
+                } else {
+                    it
+                }
+            } else {
+                it
+            }
         }
     }
 
@@ -135,7 +139,9 @@ class UpdaterApiImpl @Inject constructor(
         updatingState.update {
             if (it.state != UpdatingState.NotStarted && it.state.isFinalState) {
                 UpdatingStateWithRequest(UpdatingState.NotStarted, request = null)
-            } else it
+            } else {
+                it
+            }
         }
     }
 

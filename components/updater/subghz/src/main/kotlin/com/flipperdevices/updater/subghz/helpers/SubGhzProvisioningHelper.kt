@@ -25,15 +25,15 @@ import com.flipperdevices.updater.subghz.model.RegionProvisioning
 import com.flipperdevices.updater.subghz.model.RegionProvisioningSource
 import com.google.protobuf.ByteString
 import com.squareup.anvil.annotations.ContributesBinding
-import java.io.ByteArrayInputStream
-import java.nio.charset.Charset
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
+import java.io.ByteArrayInputStream
+import java.nio.charset.Charset
+import javax.inject.Inject
 
 private const val UNKNOWN_REGION = "WW"
 private const val RPC_INFORMATION_TIMEOUT_MS = 1_000L * 60 // 10 seconds
@@ -75,7 +75,9 @@ class SubGhzProvisioningHelperImpl @Inject constructor(
         val (providedRegion, source) = providedRegions.provideRegion()
         val providedBands = if (providedRegion != null) {
             response.countries[providedRegion.uppercase()] ?: response.defaults
-        } else response.defaults
+        } else {
+            response.defaults
+        }
 
         val finalCodeRegion = providedRegion?.uppercase() ?: UNKNOWN_REGION
 

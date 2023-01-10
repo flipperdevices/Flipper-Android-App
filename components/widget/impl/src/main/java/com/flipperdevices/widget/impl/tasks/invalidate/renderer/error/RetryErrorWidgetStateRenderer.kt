@@ -27,7 +27,9 @@ abstract class RetryErrorWidgetStateRenderer(
             setTextViewText(R.id.error_text, text)
 
             val startIntent = WidgetBroadcastReceiver.buildStartIntent(
-                context, keyPath, widgetId
+                context,
+                keyPath,
+                widgetId
             )
             setOnClickPendingIntent(R.id.button, startIntent)
             setOnClickPendingIntent(

@@ -13,13 +13,13 @@ import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
-import javax.inject.Inject
-import javax.inject.Provider
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withTimeout
 import no.nordicsemi.android.ble.exception.BluetoothDisabledException
+import javax.inject.Inject
+import javax.inject.Provider
 
 class FlipperServiceConnectDelegate(
     private val bleManager: FlipperBleManager,

@@ -1,6 +1,5 @@
 package com.flipperdevices.hub.impl.composable.elements
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,6 +26,7 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.hub.impl.R
 import com.flipperdevices.hub.impl.viewmodel.NfcAttackViewModel
 import tangle.viewmodel.compose.tangleViewModel
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun NfcAttack(

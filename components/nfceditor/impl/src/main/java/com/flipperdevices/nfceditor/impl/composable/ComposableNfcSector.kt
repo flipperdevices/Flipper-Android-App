@@ -53,7 +53,11 @@ fun ComposableNfcSector(
                 onCellFocus = nfcEditorViewModel::onCellFocus,
                 onPositionActiveLine = if (activeCell?.sectorIndex == sectorIndex &&
                     activeCell.lineIndex == lineIndex
-                ) onPositionActiveLine else null
+                ) {
+                    onPositionActiveLine
+                } else {
+                    null
+                }
             )
         }
     }

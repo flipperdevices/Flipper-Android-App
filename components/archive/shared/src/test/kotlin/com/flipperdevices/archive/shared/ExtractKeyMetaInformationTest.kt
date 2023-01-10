@@ -10,7 +10,8 @@ import org.junit.runners.Parameterized
 
 @RunWith(Parameterized::class)
 class ExtractKeyMetaInformationTest(
-    private val keyParsed: FlipperKeyParsed, private val metaInformation: String?
+    private val keyParsed: FlipperKeyParsed,
+    private val metaInformation: String?
 ) {
     @Test
     fun `Correct meta information`() {
@@ -24,13 +25,22 @@ class ExtractKeyMetaInformationTest(
         fun data() = listOf(
             arrayOf(
                 FlipperKeyParsed.IButton(
-                    keyName = "IButton", notes = null, keyType = "IButton", data = null
-                ), "IButton"
-            ), arrayOf(
+                    keyName = "IButton",
+                    notes = null,
+                    keyType = "IButton",
+                    data = null
+                ),
+                "IButton"
+            ),
+            arrayOf(
                 FlipperKeyParsed.Infrared(
-                    keyName = "Infrared", notes = null, protocol = "TV"
-                ), "TV"
-            ), arrayOf(
+                    keyName = "Infrared",
+                    notes = null,
+                    protocol = "TV"
+                ),
+                "TV"
+            ),
+            arrayOf(
                 FlipperKeyParsed.NFC(
                     keyName = "NFC",
                     notes = null,
@@ -42,22 +52,35 @@ class ExtractKeyMetaInformationTest(
                     mifareClassicType = null,
                     dataFormatVersion = 3,
                     lines = listOf()
-                ), "MiFare"
-            ), arrayOf(
+                ),
+                "MiFare"
+            ),
+            arrayOf(
                 FlipperKeyParsed.RFID(
-                    keyName = "RFID", notes = null, data = null, keyType = "125"
-                ), "125"
-            ), arrayOf(
+                    keyName = "RFID",
+                    notes = null,
+                    data = null,
+                    keyType = "125"
+                ),
+                "125"
+            ),
+            arrayOf(
                 FlipperKeyParsed.SubGhz(
-                    keyName = "SubGhz", notes = null, protocol = "432", key = null
-                ), "432"
-            ), arrayOf(
+                    keyName = "SubGhz",
+                    notes = null,
+                    protocol = "432",
+                    key = null
+                ),
+                "432"
+            ),
+            arrayOf(
                 FlipperKeyParsed.Unrecognized(
                     keyName = "Unrecognized",
                     notes = null,
                     fileType = null,
                     orderedDict = persistentListOf()
-                ), null
+                ),
+                null
             )
         )
     }

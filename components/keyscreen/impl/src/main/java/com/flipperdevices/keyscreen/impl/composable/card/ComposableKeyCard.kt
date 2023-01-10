@@ -45,10 +45,12 @@ fun ComposableKeyCard(
             Row {
                 if (deleteState == DeleteState.NOT_DELETED) {
                     ComposableKeyType(parsedKey.fileType)
-                } else ComposableKeyType(
-                    parsedKey.fileType,
-                    colorKey = LocalPallet.current.keyDeleted
-                )
+                } else {
+                    ComposableKeyType(
+                        parsedKey.fileType,
+                        colorKey = LocalPallet.current.keyDeleted
+                    )
+                }
                 Row(
                     modifier = Modifier
                         .weight(1f)

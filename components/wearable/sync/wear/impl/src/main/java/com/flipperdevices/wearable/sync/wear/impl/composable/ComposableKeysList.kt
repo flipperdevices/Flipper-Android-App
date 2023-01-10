@@ -1,6 +1,5 @@
 package com.flipperdevices.wearable.sync.wear.impl.composable
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.scrollBy
@@ -40,6 +39,7 @@ import com.flipperdevices.wearable.sync.wear.impl.viewmodel.KeysListViewModel
 import com.google.android.horologist.compose.layout.fillMaxRectangle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableKeysList(

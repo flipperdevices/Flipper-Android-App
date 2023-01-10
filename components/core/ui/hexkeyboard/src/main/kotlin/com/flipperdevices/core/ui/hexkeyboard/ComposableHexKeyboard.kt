@@ -1,4 +1,5 @@
 @file:Suppress("CompositionLocalAllowlist")
+
 package com.flipperdevices.core.ui.hexkeyboard
 
 import androidx.compose.foundation.background

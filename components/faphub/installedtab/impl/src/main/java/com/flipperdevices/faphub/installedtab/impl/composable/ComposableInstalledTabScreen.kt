@@ -57,7 +57,9 @@ private fun ComposableInstalledTabScreen(
                 ComposableUpdateAllButton(
                     if (faps == null) {
                         Modifier.placeholderConnecting()
-                    } else Modifier
+                    } else {
+                        Modifier
+                    }
                 )
             }
         }
@@ -71,21 +73,23 @@ private fun ComposableInstalledTabScreen(
                     }
                 )
             }
-        } else items(faps.size) { index ->
-            val item = faps[index]
-            AppCard(
-                modifier = Modifier
-                    .clickable(
-                        onClick = { onOpenFapItem(item) }
-                    )
-                    .padding(horizontal = 14.dp, vertical = 12.dp),
-                fapItem = item,
-                installationButton = { modifier, fontSize ->
-                    installationButton(item, modifier, fontSize)
+        } else {
+            items(faps.size) { index ->
+                val item = faps[index]
+                AppCard(
+                    modifier = Modifier
+                        .clickable(
+                            onClick = { onOpenFapItem(item) }
+                        )
+                        .padding(horizontal = 14.dp, vertical = 12.dp),
+                    fapItem = item,
+                    installationButton = { modifier, fontSize ->
+                        installationButton(item, modifier, fontSize)
+                    }
+                )
+                if (index != faps.lastIndex) {
+                    ComposableLoadingItemDivider()
                 }
-            )
-            if (index != faps.lastIndex) {
-                ComposableLoadingItemDivider()
             }
         }
     }

@@ -1,6 +1,5 @@
 package com.flipperdevices.main.impl.composable
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,6 +20,7 @@ import com.flipperdevices.main.impl.model.FapHubTabEnum
 import com.flipperdevices.main.impl.viewmodel.InstalledNotificationViewModel
 import com.flipperdevices.main.impl.viewmodel.MainViewModel
 import tangle.viewmodel.compose.tangleViewModel
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableFapHubMainScreen(
