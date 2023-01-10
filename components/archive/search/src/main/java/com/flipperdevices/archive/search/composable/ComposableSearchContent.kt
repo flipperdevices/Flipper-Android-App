@@ -1,5 +1,6 @@
 package com.flipperdevices.archive.search.composable
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,13 +28,13 @@ import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.ui.ktx.LocalRouter
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun ComposableSearchContent(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     synchronizationUiApi: SynchronizationUiApi,
     searchViewModel: SearchViewModel
 ) {
@@ -44,23 +45,25 @@ fun ComposableSearchContent(
         SearchState.Loading -> CategoryLoadingProgress(modifier)
         is SearchState.Loaded -> if (localState.keys.isEmpty()) {
             CategoryEmpty(modifier)
-        } else CategoryList(
-            modifier,
-            searchViewModel,
-            synchronizationUiApi,
-            synchronizationState,
-            localState.keys
-        )
+        } else {
+            CategoryList(
+                modifier,
+                searchViewModel,
+                synchronizationUiApi,
+                synchronizationState,
+                localState.keys
+            )
+        }
     }
 }
 
 @Composable
 private fun CategoryList(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     searchViewModel: SearchViewModel,
     synchronizationUiApi: SynchronizationUiApi,
     synchronizationState: SynchronizationState,
-    keys: List<Pair<FlipperKeyParsed, FlipperKey>>
+    keys: ImmutableList<Pair<FlipperKeyParsed, FlipperKey>>
 ) {
     val router = LocalRouter.current
     LazyColumn(
@@ -85,14 +88,14 @@ private fun CategoryList(
 }
 
 @Composable
-private fun CategoryLoadingProgress(modifier: Modifier) {
+private fun CategoryLoadingProgress(modifier: Modifier = Modifier) {
     Box(modifier, contentAlignment = Alignment.Center) {
         CircularProgressIndicator()
     }
 }
 
 @Composable
-private fun CategoryEmpty(modifier: Modifier) {
+private fun CategoryEmpty(modifier: Modifier = Modifier) {
     Column(
         modifier,
         verticalArrangement = Arrangement.Center,

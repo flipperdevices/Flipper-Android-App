@@ -2,17 +2,20 @@ package com.flipperdevices.nfceditor.impl.model
 
 import androidx.compose.runtime.Stable
 import com.flipperdevices.core.ui.hexkeyboard.ImmutableEnumMap
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 
 @Stable
 data class NfcEditorCardInfo(
     val cardType: NfcEditorCardType,
-    val fields: ImmutableEnumMap<CardFieldInfo, List<NfcEditorCell>>
+    val fields: ImmutableEnumMap<CardFieldInfo, ImmutableList<NfcEditorCell>>
 ) {
-    val fieldsAsSectors: List<NfcEditorSector> by lazy {
+    val fieldsAsSectors: ImmutableList<NfcEditorSector> by lazy {
         val lines = CardFieldInfo.values().sortedBy { it.index }.map {
             NfcEditorLine(it.index, fields[it])
         }
-        listOf(NfcEditorSector(lines))
+        persistentListOf(NfcEditorSector(lines.toImmutableList()))
     }
 
     fun copyWithChangedContent(
@@ -26,7 +29,7 @@ data class NfcEditorCardInfo(
         )
         return copy(
             fields = ImmutableEnumMap(CardFieldInfo::class.java, CardFieldInfo.values()) {
-                if (it == fieldInfo) newLine else fields[it]
+                if (it == fieldInfo) newLine.toImmutableList() else fields[it]
             }
         )
     }

@@ -1,5 +1,6 @@
 package com.flipperdevices.info.impl.compose.bar
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -20,7 +21,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.preference.pb.HardwareColor
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.info.impl.R
@@ -162,8 +162,7 @@ private fun FlipperName(title: String) {
     showBackground = true
 )
 @Composable
-@Suppress("UnusedPrivateMember")
-private fun FlipperDeviceBarInformationPreview() {
+private fun ComposableFlipperDeviceBarInformationPreview() {
     val deviceStatus = setOf(
         DeviceStatus.NoDevice,
         DeviceStatus.Connected(deviceName = "Flipper", batteryLevel = 0.3f, isCharging = false),

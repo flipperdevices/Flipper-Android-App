@@ -72,7 +72,7 @@ private fun ColumnScope.ControlRow(
 
 @Composable
 private fun ControlButton(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     button: ButtonEnum?,
     onPressButton: (ButtonEnum) -> Unit,
     onLongPressButton: (ButtonEnum) -> Unit

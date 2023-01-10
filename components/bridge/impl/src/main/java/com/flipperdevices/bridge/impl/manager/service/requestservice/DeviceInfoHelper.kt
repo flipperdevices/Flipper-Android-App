@@ -9,6 +9,7 @@ import com.flipperdevices.bridge.api.model.StorageStats
 import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.ktx.jre.isNotNull
 import com.flipperdevices.core.ktx.jre.titlecaseFirstCharIfItIsLowercase
+import kotlinx.collections.immutable.toImmutableMap
 
 private const val DEVICE_NAME = "hardware_name"
 private const val HARDWARE_MODEL = "hardware_model"
@@ -97,8 +98,8 @@ internal object DeviceInfoHelper {
             flipperDeviceInfo = flipperDeviceInfo,
             firmware = firmwareInfo,
             radioStack = radioStackInfo,
-            otherFields = fields.minus(usedFields),
-            allFields = fields
+            otherFields = fields.minus(usedFields).toImmutableMap(),
+            allFields = fields.toImmutableMap()
         )
     }
 

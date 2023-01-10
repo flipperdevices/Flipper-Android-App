@@ -19,7 +19,7 @@ import com.flipperdevices.updater.downloader.api.DownloaderApiImpl
 import com.flipperdevices.updater.subghz.helpers.RegionProvisioningHelper
 import com.flipperdevices.updater.subghz.helpers.SubGhzProvisioningHelper
 import com.flipperdevices.updater.subghz.helpers.SubGhzProvisioningHelperImpl
-import com.flipperdevices.updater.subghz.helpers.model.RegionProvisioning
+import com.flipperdevices.updater.subghz.model.RegionProvisioning
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respond

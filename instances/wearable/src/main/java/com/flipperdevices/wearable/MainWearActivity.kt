@@ -17,6 +17,8 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.wearable.di.WearableComponent
 import com.flipperdevices.wearable.setup.api.SetupApi
 import com.flipperdevices.wearable.theme.WearFlipperTheme
+import kotlinx.collections.immutable.ImmutableSet
+import kotlinx.collections.immutable.toImmutableSet
 
 class MainWearActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,15 +30,19 @@ class MainWearActivity : ComponentActivity() {
 
         setContent {
             WearFlipperTheme {
-                SetUpNavigation(futureEntries, composableFutureEntries, setupApi)
+                SetUpNavigation(
+                    futureEntries.toImmutableSet(),
+                    composableFutureEntries.toImmutableSet(),
+                    setupApi
+                )
             }
         }
     }
 
     @Composable
     private fun SetUpNavigation(
-        futureEntries: Set<AggregateFeatureEntry>,
-        composableFutureEntries: Set<ComposableFeatureEntry>,
+        futureEntries: ImmutableSet<AggregateFeatureEntry>,
+        composableFutureEntries: ImmutableSet<ComposableFeatureEntry>,
         setupApi: SetupApi
     ) {
         val navController = rememberSwipeDismissableNavController()

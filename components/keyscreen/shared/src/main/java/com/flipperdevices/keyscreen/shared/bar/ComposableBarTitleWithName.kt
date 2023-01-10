@@ -11,7 +11,7 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
-fun ComposableBarTitleWithName(modifier: Modifier, title: String, name: String) {
+fun ComposableBarTitleWithName(modifier: Modifier = Modifier, title: String, name: String) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -30,6 +30,10 @@ fun ComposableBarTitleWithName(modifier: Modifier, title: String, name: String) 
 }
 
 @Composable
-fun ComposableBarTitleWithName(modifier: Modifier, @StringRes titleId: Int, name: String) {
+fun ComposableBarTitleWithName(
+    modifier: Modifier = Modifier,
+    @StringRes titleId: Int,
+    name: String
+) {
     ComposableBarTitleWithName(modifier = modifier, title = stringResource(titleId), name = name)
 }

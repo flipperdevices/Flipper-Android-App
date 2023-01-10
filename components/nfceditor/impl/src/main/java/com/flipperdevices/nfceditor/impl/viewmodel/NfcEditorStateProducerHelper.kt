@@ -16,6 +16,8 @@ import com.flipperdevices.nfceditor.impl.model.NfcEditorCell
 import com.flipperdevices.nfceditor.impl.model.NfcEditorLine
 import com.flipperdevices.nfceditor.impl.model.NfcEditorSector
 import com.flipperdevices.nfceditor.impl.model.NfcEditorState
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 
 private const val EMPTY_BYTE = "$DELETE_SYMBOL$DELETE_SYMBOL"
 private const val LINE_BYTES_COUNT = 16
@@ -78,15 +80,16 @@ object NfcEditorStateProducerHelper {
                     CardFieldInfo.ATQA -> parsedKey.atqa
                     CardFieldInfo.SAK -> parsedKey.sak
                 }
-                cells?.split(" ")?.map { cell -> NfcEditorCell(cell, NfcCellType.SIMPLE) }
-                    ?: emptyList()
+                cells?.split(" ")?.map { cell ->
+                    NfcEditorCell(cell, NfcCellType.SIMPLE)
+                }?.toImmutableList() ?: persistentListOf()
             }
             cardInfo = NfcEditorCardInfo(
                 cardType = cardType,
                 fields = fieldsMap
             )
         }
-        return NfcEditorState(cardInfo, parsedKey.keyName, sectors)
+        return NfcEditorState(cardInfo, parsedKey.keyName, sectors.toImmutableList())
     }
 
     private fun parseMifare(
@@ -110,9 +113,9 @@ object NfcEditorStateProducerHelper {
                 } else if (it == littleSectorsSize - 1) {
                     cells = applyColorRules(cells, LINE_4_CELL_RULES)
                 }
-                sectorLines.add(NfcEditorLine(lineIndex, cells))
+                sectorLines.add(NfcEditorLine(lineIndex, cells.toImmutableList()))
             }
-            sectors.add(NfcEditorSector(sectorLines))
+            sectors.add(NfcEditorSector(sectorLines.toImmutableList()))
         }
         val startIndexForLargeLines = littleSectorsCount * littleSectorsSize
         repeat(largeSectorsCount) { sectorIndex ->
@@ -124,9 +127,9 @@ object NfcEditorStateProducerHelper {
                 if (it == largeSectorsSize - 1) {
                     cells = applyColorRules(cells, LINE_4_CELL_RULES)
                 }
-                sectorLines.add(NfcEditorLine(lineIndex, cells))
+                sectorLines.add(NfcEditorLine(lineIndex, cells.toImmutableList()))
             }
-            sectors.add(NfcEditorSector(sectorLines))
+            sectors.add(NfcEditorSector(sectorLines.toImmutableList()))
         }
 
         return sectors

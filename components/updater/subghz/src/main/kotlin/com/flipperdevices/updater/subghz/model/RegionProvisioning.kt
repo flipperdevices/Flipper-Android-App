@@ -1,4 +1,4 @@
-package com.flipperdevices.updater.subghz.helpers.model
+package com.flipperdevices.updater.subghz.model
 
 private const val COUNTRY_CODE_LENGTH = 2
 

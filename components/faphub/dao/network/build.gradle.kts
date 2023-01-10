@@ -16,4 +16,5 @@ dependencies {
     kapt(libs.dagger.kapt)
 
     implementation(libs.kotlin.coroutines)
+    implementation(libs.kotlin.immutable.collections)
 }

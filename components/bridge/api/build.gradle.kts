@@ -11,6 +11,7 @@ dependencies {
     implementation(projects.components.core.data)
 
     implementation(libs.kotlin.coroutines)
+    implementation(libs.kotlin.immutable.collections)
     implementation(libs.ble.common)
     implementation(libs.ble.scan)
 

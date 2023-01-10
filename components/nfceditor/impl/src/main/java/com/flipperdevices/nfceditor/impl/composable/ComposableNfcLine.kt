@@ -16,13 +16,14 @@ import com.flipperdevices.nfceditor.impl.model.EditorField
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCell
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCellLocation
 import kotlin.math.roundToInt
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun ComposableNfcLine(
     sectorIndex: Int,
     lineIndexInSector: Int,
     visibleIndex: Int,
-    line: List<NfcEditorCell>,
+    line: ImmutableList<NfcEditorCell>,
     maxIndexSymbolCount: Int,
     scaleFactor: Float,
     activeCell: NfcEditorCellLocation? = null,

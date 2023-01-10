@@ -53,7 +53,7 @@ fun ColumnScope.ComposableDeveloperFooter(
 
 @Composable
 private fun ComposableGithubLink(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     @StringRes textId: Int,
     url: String?
 ) = Row(

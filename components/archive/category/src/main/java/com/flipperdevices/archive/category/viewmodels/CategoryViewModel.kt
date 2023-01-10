@@ -14,6 +14,7 @@ import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.keyscreen.api.KeyScreenApi
 import com.github.terrakok.cicerone.Router
 import javax.inject.Inject
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -50,7 +51,7 @@ class CategoryViewModel(
                     parser.parseKey(it) to it
                 }
             }.collect {
-                categoryState.emit(CategoryState.Loaded(it))
+                categoryState.emit(CategoryState.Loaded(it.toImmutableList()))
             }
         }
     }

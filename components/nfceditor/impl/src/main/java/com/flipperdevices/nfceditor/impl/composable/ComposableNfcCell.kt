@@ -77,7 +77,7 @@ fun ComposableNfcCell(
 
 @Composable
 private fun ComposableNfcCellText(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     text: String,
     textStyle: TextStyle
 ) {

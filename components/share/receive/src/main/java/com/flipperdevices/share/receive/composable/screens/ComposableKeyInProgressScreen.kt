@@ -15,12 +15,13 @@ import com.flipperdevices.keyscreen.api.KeyScreenApi
 import com.flipperdevices.share.receive.R
 import com.flipperdevices.share.receive.composable.components.ComposableKeySaveBar
 import com.flipperdevices.share.receive.composable.components.ComposableKeySaveFooter
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 internal fun ComposableKeyInProgressScreen(keyScreenApi: KeyScreenApi, onCancel: () -> Unit) {
     val keyParsed = FlipperKeyParsed.Unrecognized(
         keyName = "", notes = "",
-        fileType = null, orderedDict = listOf("" to "")
+        fileType = null, orderedDict = persistentListOf("" to "")
     )
 
     Column {

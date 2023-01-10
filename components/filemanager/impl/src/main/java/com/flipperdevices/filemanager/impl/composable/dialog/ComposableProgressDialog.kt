@@ -60,7 +60,10 @@ fun ComposableProgressDialog(
 }
 
 @Composable
-fun ComposableFixedProgress(fixedProgress: DownloadProgress.Fixed) {
+fun ComposableFixedProgress(
+    fixedProgress: DownloadProgress.Fixed,
+    modifier: Modifier = Modifier
+) {
     val animatedProgress by animateFloatAsState(
         targetValue = fixedProgress.toProgressFloat(),
         animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
@@ -77,7 +80,7 @@ fun ComposableFixedProgress(fixedProgress: DownloadProgress.Fixed) {
         LocalContext.current,
         fixedProgress.speedBytesInSecond
     )
-    Column {
+    Column(modifier) {
         Text(
             modifier = Modifier.padding(bottom = 8.dp),
             text = stringResource(
@@ -96,7 +99,10 @@ fun ComposableFixedProgress(fixedProgress: DownloadProgress.Fixed) {
 }
 
 @Composable
-fun ComposableInfiniteProgress(infiniteProgress: DownloadProgress.Infinite) {
+fun ComposableInfiniteProgress(
+    infiniteProgress: DownloadProgress.Infinite,
+    modifier: Modifier = Modifier,
+) {
     val downloadedSize = Formatter.formatFileSize(
         LocalContext.current,
         infiniteProgress.progress
@@ -105,7 +111,7 @@ fun ComposableInfiniteProgress(infiniteProgress: DownloadProgress.Infinite) {
         LocalContext.current,
         infiniteProgress.speedBytesInSecond
     )
-    Column {
+    Column(modifier) {
         Text(
             modifier = Modifier.padding(bottom = 8.dp),
             text = stringResource(

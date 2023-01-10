@@ -30,7 +30,7 @@ private val DEFAULT_INFORMATION_VALUE
 
 @Composable
 internal fun ComposableFapMetaInformation(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     metaInformation: FapMetaInformation?
 ) = Row(
     modifier = modifier
@@ -61,7 +61,7 @@ internal fun ComposableFapMetaInformation(
 
 @Composable
 private fun ComposableInformationColumn(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     name: String,
     value: String?
 ) = Column(

@@ -21,7 +21,7 @@ import com.flipperdevices.core.ui.theme.LocalTypography
  */
 @Composable
 fun InfoElementCard(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     @StringRes titleId: Int? = null,
     isSelectionArea: Boolean = false,
     content: @Composable ColumnScope.() -> Unit

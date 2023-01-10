@@ -104,11 +104,12 @@ class UpdaterTask(
             error(e) { "Failed download subghz information" }
             stateListener(UpdatingState.FailedDownload)
             return@useTemporaryFolder
+        } catch (e: CancellationException) {
+            error(e) { "Cancel update" }
+            return@useTemporaryFolder
         } catch (e: Throwable) {
             error(e) { "Failed when provide subghz provisioning" }
-            if (e !is CancellationException) {
-                stateListener(UpdatingState.FailedPrepare)
-            }
+            stateListener(UpdatingState.FailedPrepare)
             return@useTemporaryFolder
         }
 
@@ -117,11 +118,12 @@ class UpdaterTask(
         )
         val flipperPath = try {
             prepareToUpload(updaterFolder, serviceApi.requestApi)
+        } catch (e: CancellationException) {
+            error(e) { "Cancel prepare to upload" }
+            return@useTemporaryFolder
         } catch (e: Throwable) {
             error(e) { "Failed when prepare upload to flipper" }
-            if (e !is CancellationException) {
-                stateListener(UpdatingState.FailedPrepare)
-            }
+            stateListener(UpdatingState.FailedPrepare)
             return@useTemporaryFolder
         }
 

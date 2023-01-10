@@ -77,9 +77,13 @@ class BottomNavigationFragment : Fragment(), OnBackPressListener, LogTagProvider
             setContent {
                 FlipperTheme {
                     val selectedItem by bottomNavigationViewModel.selectedTab.collectAsState()
-                    ComposeBottomBar(connectionApi, selectedItem) {
-                        selectTab(it)
-                    }
+                    ComposeBottomBar(
+                        connectionApi,
+                        selectedItem = selectedItem,
+                        onBottomBarClick = {
+                            selectTab(it)
+                        }
+                    )
                 }
             }
         }

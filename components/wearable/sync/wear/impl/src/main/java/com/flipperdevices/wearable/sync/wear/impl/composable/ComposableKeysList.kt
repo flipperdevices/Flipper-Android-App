@@ -1,5 +1,6 @@
 package com.flipperdevices.wearable.sync.wear.impl.composable
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.scrollBy
@@ -31,13 +32,13 @@ import androidx.wear.compose.material.ScalingLazyColumn
 import androidx.wear.compose.material.Text
 import androidx.wear.compose.material.items
 import androidx.wear.compose.material.rememberScalingLazyListState
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.wearable.sync.wear.impl.R
 import com.flipperdevices.wearable.sync.wear.impl.model.FlipperWearKey
 import com.flipperdevices.wearable.sync.wear.impl.model.KeysListState
 import com.flipperdevices.wearable.sync.wear.impl.viewmodel.KeysListViewModel
 import com.google.android.horologist.compose.layout.fillMaxRectangle
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
 
 @Preview(
@@ -46,14 +47,16 @@ import kotlinx.coroutines.launch
     device = Devices.WEAR_OS_LARGE_ROUND
 )
 @Composable
-fun ComposableKeysList(onKeyOpen: (FlipperWearKey) -> Unit) {
+fun ComposableKeysList(onKeyOpen: (FlipperWearKey) -> Unit = {}) {
     val keysListViewModel = viewModel<KeysListViewModel>()
     val state by keysListViewModel.getKeysListFlow().collectAsState()
     val localState = state
     when (localState) {
         is KeysListState.Loaded -> if (localState.keys.isEmpty()) {
             ComposableKeysListEmpty()
-        } else ComposableKeysListInternal(localState.keys, onKeyOpen)
+        } else {
+            ComposableKeysListInternal(localState.keys, onKeyOpen)
+        }
         KeysListState.Loading -> ComposableKeysListLoading()
     }
 }
@@ -95,7 +98,7 @@ private fun ComposableKeysListEmpty() {
 
 @Composable
 private fun ComposableKeysListInternal(
-    keys: List<FlipperWearKey>,
+    keys: ImmutableList<FlipperWearKey>,
     onKeyOpen: (FlipperWearKey) -> Unit
 ) {
     val columnScrollState = rememberScalingLazyListState()

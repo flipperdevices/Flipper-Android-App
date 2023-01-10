@@ -1,5 +1,6 @@
 package com.flipperdevices.archive.impl.composable
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -38,11 +39,11 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import kotlinx.collections.immutable.ImmutableList
 import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
@@ -58,21 +59,23 @@ fun ComposableArchive(
 
     if (localSynchronizationState is SynchronizationState.InProgress) {
         ArchiveProgressScreen(localSynchronizationState, tabViewModel::cancelSynchronization)
-    } else ComposableArchiveReady(
-        synchronizationUiApi,
-        keys,
-        favoriteKeys,
-        tabViewModel,
-        synchronizationState,
-        isKeysPresented
-    )
+    } else {
+        ComposableArchiveReady(
+            synchronizationUiApi,
+            keys,
+            favoriteKeys,
+            tabViewModel,
+            synchronizationState,
+            isKeysPresented
+        )
+    }
 }
 
 @Composable
 private fun ComposableArchiveReady(
     synchronizationUiApi: SynchronizationUiApi,
-    keys: List<FlipperKey>?,
-    favoriteKeys: List<FlipperKey>,
+    keys: ImmutableList<FlipperKey>?,
+    favoriteKeys: ImmutableList<FlipperKey>,
     tabViewModel: GeneralTabViewModel,
     synchronizationState: SynchronizationState,
     isKeysPresented: Boolean

@@ -32,6 +32,7 @@ import tangle.viewmodel.compose.tangleViewModel
 @Composable
 fun ComposeBottomBar(
     connectionApi: ConnectionApi,
+    modifier: Modifier = Modifier,
     selectedItem: FlipperBottomTab = FlipperBottomTab.ARCHIVE,
     onBottomBarClick: (FlipperBottomTab) -> Unit = {}
 ) {
@@ -46,7 +47,7 @@ fun ComposeBottomBar(
     val bottomBarViewModel: BottomBarViewModel = tangleViewModel()
     val hubHasNotification by bottomBarViewModel.hasNotificationHubState().collectAsState()
     Box(
-        modifier = Modifier.background(LocalPallet.current.bottomBarBackground)
+        modifier = modifier.background(LocalPallet.current.bottomBarBackground)
     ) {
         if (tabPositions.size > selectedIndex) {
             val currentTabPosition = tabPositions[selectedIndex]

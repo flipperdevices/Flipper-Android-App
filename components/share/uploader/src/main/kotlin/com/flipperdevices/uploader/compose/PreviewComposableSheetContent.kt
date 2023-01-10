@@ -13,8 +13,7 @@ import com.flipperdevices.uploader.models.ShareState
 
 @Preview
 @Composable
-@Suppress("UnusedPrivateMember")
-private fun PreviewComposableSheetContentErrorOther() {
+private fun ComposableSheetContentErrorOtherPreview() {
     FlipperThemeInternal {
         ComposableSheetContent(
             state = ShareState.Error(ShareError.OTHER),
@@ -29,8 +28,7 @@ private fun PreviewComposableSheetContentErrorOther() {
 
 @Preview
 @Composable
-@Suppress("UnusedPrivateMember")
-private fun PreviewComposableSheetContentErrorInternet() {
+private fun ComposableSheetContentErrorInternetPreview() {
     FlipperThemeInternal {
         ComposableSheetContent(
             state = ShareState.Error(ShareError.NO_INTERNET_CONNECTION),
@@ -45,8 +43,7 @@ private fun PreviewComposableSheetContentErrorInternet() {
 
 @Preview
 @Composable
-@Suppress("UnusedPrivateMember")
-private fun PreviewComposableSheetContentErrorServer() {
+private fun ComposableSheetContentErrorServerPreview() {
     FlipperThemeInternal {
         ComposableSheetContent(
             state = ShareState.Error(ShareError.CANT_CONNECT_TO_SERVER),
@@ -61,8 +58,7 @@ private fun PreviewComposableSheetContentErrorServer() {
 
 @Preview
 @Composable
-@Suppress("UnusedPrivateMember")
-private fun PreviewComposableSheetContentInit() {
+private fun ComposableSheetContentInitPreview() {
     FlipperThemeInternal {
         ComposableSheetContent(
             state = ShareState.Initial,
@@ -77,8 +73,7 @@ private fun PreviewComposableSheetContentInit() {
 
 @Preview
 @Composable
-@Suppress("UnusedPrivateMember")
-private fun PreviewComposableSheetContentPrepare() {
+private fun ComposableSheetContentPreparePreview() {
     FlipperThemeInternal {
         ComposableSheetContent(
             state = ShareState.Prepare,
@@ -93,8 +88,7 @@ private fun PreviewComposableSheetContentPrepare() {
 
 @Preview
 @Composable
-@Suppress("UnusedPrivateMember")
-private fun PreviewComposableSheetContentPending() {
+private fun ComposableSheetContentPendingPreview() {
     FlipperThemeInternal {
         ComposableSheetContent(
             state = ShareState.PendingShare(

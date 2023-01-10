@@ -25,10 +25,11 @@ fun ComposableEditCard(
     name: String?,
     notes: String?,
     keyParsed: FlipperKeyParsed,
-    enabled: Boolean
+    enabled: Boolean,
+    modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = Modifier.padding(horizontal = 24.dp, vertical = 14.dp)
+        modifier = modifier.padding(horizontal = 24.dp, vertical = 14.dp)
     ) {
         Column(
             modifier = Modifier.padding(bottom = 21.dp),

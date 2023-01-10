@@ -17,6 +17,7 @@ dependencies {
     implementation(projects.components.bridge.pbutils)
 
     implementation(libs.kotlin.coroutines)
+    implementation(libs.kotlin.immutable.collections)
     implementation(libs.annotations)
     implementation(libs.ktx)
     implementation(libs.appcompat)

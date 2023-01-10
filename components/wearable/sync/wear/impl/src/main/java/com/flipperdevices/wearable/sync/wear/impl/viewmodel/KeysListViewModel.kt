@@ -14,6 +14,7 @@ import com.google.android.gms.wearable.DataEvent.TYPE_CHANGED
 import com.google.android.gms.wearable.DataEvent.TYPE_DELETED
 import com.google.android.gms.wearable.DataEventBuffer
 import com.google.android.gms.wearable.Wearable
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -43,7 +44,7 @@ class KeysListViewModel(
             WearableSyncItem.fromDataItem(it)
         }.filterNotNull().map { FlipperWearKey(it) }
 
-        keysListStateFlow.emit(KeysListState.Loaded(dataItem))
+        keysListStateFlow.emit(KeysListState.Loaded(dataItem.toImmutableList()))
     }
 
     override fun onDataChanged(datas: DataEventBuffer) = keysListStateFlow.update { keyState ->
@@ -67,7 +68,7 @@ class KeysListViewModel(
                 else -> error { "Can't found action for event $it" }
             }
         }
-        return@update KeysListState.Loaded(mapByPath.values.toList())
+        return@update KeysListState.Loaded(mapByPath.values.toImmutableList())
     }
 
     override fun onCleared() {

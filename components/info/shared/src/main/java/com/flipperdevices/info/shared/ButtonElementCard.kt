@@ -25,7 +25,7 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
 fun ButtonElementCard(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     iconAngel: Float = 0f,
     @StringRes titleId: Int,
     @DrawableRes iconId: Int,

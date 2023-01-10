@@ -117,7 +117,6 @@ fun ComposableKeyCard(
     showBackground = true
 )
 @Composable
-@Suppress("UnusedPrivateMember")
 private fun ComposableKeyCardPreview() {
     val parsedKey = FlipperKeyParsed.RFID(
         keyName = "Test_key",

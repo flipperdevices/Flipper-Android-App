@@ -1,5 +1,6 @@
 package com.flipperdevices.nfceditor.impl.composable.card
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,7 +24,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.hexkeyboard.ImmutableEnumMap
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
@@ -33,6 +33,7 @@ import com.flipperdevices.nfceditor.impl.model.NfcEditorCardInfo
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCardType
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCell
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCellLocation
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun ComposableNfcCard(
@@ -75,7 +76,7 @@ fun ComposableNfcCard(
 @Composable
 @Suppress("MagicNumber")
 private fun ComposableNfcCardInternal(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     nfcEditorCardInfo: NfcEditorCardInfo,
     isOpened: Boolean,
     onClick: () -> Unit,
@@ -122,6 +123,7 @@ private fun ComposableNfcCardPreview() {
                 ) {
                     "B6 69 03 36 8A 98 02".split(" ")
                         .map { NfcEditorCell(it, NfcCellType.SIMPLE) }
+                        .toImmutableList()
                 }
             ),
             scaleFactor = 1.0f,

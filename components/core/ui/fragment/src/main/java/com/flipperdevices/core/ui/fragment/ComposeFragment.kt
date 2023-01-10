@@ -66,7 +66,7 @@ abstract class ComposeFragment : Fragment(), StatusBarColorProvider {
  * Fixes a problem when screen components go over the edge of the screen.
  */
 @Composable
-private fun SubComposeWrapper(modifier: Modifier, content: @Composable () -> Unit) {
+private fun SubComposeWrapper(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
     SubcomposeLayout(modifier) { constraints ->
         val layoutWidth = constraints.maxWidth
         val layoutHeight = constraints.maxHeight

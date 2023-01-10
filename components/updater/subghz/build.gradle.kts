@@ -46,4 +46,5 @@ dependencies {
     testImplementation(libs.ktor.serialization)
     testImplementation(libs.ktor.mock)
     testImplementation(libs.kotlin.serialization.json)
+    testImplementation(libs.kotlin.immutable.collections)
 }

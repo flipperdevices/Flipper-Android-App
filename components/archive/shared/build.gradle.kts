@@ -17,4 +17,5 @@ dependencies {
 
     // Testing
     testImplementation(libs.junit)
+    testImplementation(libs.kotlin.immutable.collections)
 }

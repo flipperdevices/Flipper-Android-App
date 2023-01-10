@@ -32,6 +32,7 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun ComposableCategory(
@@ -66,26 +67,28 @@ fun ColumnScope.ComposableCategoryContent(
     when (localCategoryState) {
         is CategoryState.Loaded -> if (localCategoryState.keys.isEmpty()) {
             CategoryEmpty(contentModifier)
-        } else CategoryList(
-            contentModifier,
-            categoryType,
-            categoryViewModel,
-            synchronizationUiApi,
-            synchronizationState,
-            localCategoryState.keys
-        )
+        } else {
+            CategoryList(
+                contentModifier,
+                categoryType,
+                categoryViewModel,
+                synchronizationUiApi,
+                synchronizationState,
+                localCategoryState.keys
+            )
+        }
         CategoryState.Loading -> CategoryLoadingProgress(contentModifier)
     }
 }
 
 @Composable
 private fun CategoryList(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     categoryType: CategoryType,
     categoryViewModel: CategoryViewModel,
     synchronizationUiApi: SynchronizationUiApi?,
     synchronizationState: SynchronizationState,
-    keys: List<Pair<FlipperKeyParsed, FlipperKey>>
+    keys: ImmutableList<Pair<FlipperKeyParsed, FlipperKey>>
 ) {
     val router = LocalRouter.current
     LazyColumn(
@@ -114,14 +117,14 @@ private fun CategoryList(
 }
 
 @Composable
-private fun CategoryLoadingProgress(modifier: Modifier) {
+private fun CategoryLoadingProgress(modifier: Modifier = Modifier) {
     Box(modifier, contentAlignment = Alignment.Center) {
         CircularProgressIndicator()
     }
 }
 
 @Composable
-private fun CategoryEmpty(modifier: Modifier) {
+private fun CategoryEmpty(modifier: Modifier = Modifier) {
     Box(modifier, contentAlignment = Alignment.Center) {
         Text(
             text = stringResource(R.string.category_empty),

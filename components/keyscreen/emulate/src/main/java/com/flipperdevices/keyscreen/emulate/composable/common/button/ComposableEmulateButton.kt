@@ -52,7 +52,7 @@ fun ComposableEmulateButton(
 
 @Composable
 private fun ComposableEmulateProgress(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     emulateProgress: EmulateProgress?,
     progressColor: Color,
     content: @Composable (Modifier) -> Unit
@@ -76,7 +76,7 @@ private fun ComposableEmulateProgress(
 
 @Composable
 private fun ComposableEmulateContent(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     text: String,
     picture: Picture?,
     color: Color

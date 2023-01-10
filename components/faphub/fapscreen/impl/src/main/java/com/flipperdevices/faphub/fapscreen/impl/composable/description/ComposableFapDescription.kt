@@ -7,7 +7,7 @@ import com.flipperdevices.faphub.dao.api.model.FapItem
 
 @Composable
 fun ComposableFapDescription(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     fapItem: FapItem?
 ) = Column(modifier) {
     ComposableFapDescriptionText(fapItem?.description)

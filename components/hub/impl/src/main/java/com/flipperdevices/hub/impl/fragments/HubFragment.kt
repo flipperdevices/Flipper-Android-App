@@ -13,6 +13,7 @@ import com.flipperdevices.hub.impl.api.HubFeatureEntry
 import com.flipperdevices.hub.impl.composable.HubNavigation
 import com.flipperdevices.hub.impl.di.HubComponent
 import javax.inject.Inject
+import kotlinx.collections.immutable.toImmutableSet
 
 class HubFragment : ComposeFragment(), OnBackPressListener {
     @Inject
@@ -35,9 +36,10 @@ class HubFragment : ComposeFragment(), OnBackPressListener {
         navController = rememberNavController()
         navController?.let {
             HubNavigation(
-                it, featureEntries,
-                composableEntries,
-                hubFeatureEntry
+                navController = it,
+                featureEntries = featureEntries.toImmutableSet(),
+                composableEntries = composableEntries.toImmutableSet(),
+                hubFeatureEntry = hubFeatureEntry
             )
         }
     }

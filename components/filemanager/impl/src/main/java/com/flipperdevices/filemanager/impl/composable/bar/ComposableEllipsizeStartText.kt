@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 @Composable
 fun ComposableEllipsizeStartText(
     text: String,
+    modifier: Modifier = Modifier,
     textStyle: TextStyle = LocalTextStyle.current
 ) {
     BoxWithConstraints(

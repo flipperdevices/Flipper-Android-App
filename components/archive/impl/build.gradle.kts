@@ -45,6 +45,8 @@ dependencies {
 
     implementation(libs.cicerone)
 
+    implementation(libs.kotlin.immutable.collections)
+
     // Lifecycle
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)

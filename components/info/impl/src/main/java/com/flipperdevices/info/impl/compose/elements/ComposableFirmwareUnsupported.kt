@@ -1,5 +1,6 @@
 package com.flipperdevices.info.impl.compose.elements
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
@@ -20,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.core.markdown.ClickableUrlText
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.info.impl.R
@@ -29,7 +29,7 @@ import com.flipperdevices.info.shared.InfoElementCard
 
 @Composable
 fun ComposableFirmwareUpdate(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     firmwareViewModel: FirmwareUpdateViewModel = viewModel()
 ) {
     val updateStatus by firmwareViewModel.getState().collectAsState()

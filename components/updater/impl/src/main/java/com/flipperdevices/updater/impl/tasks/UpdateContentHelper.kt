@@ -41,9 +41,7 @@ class UpdateContentHelperOfficial @Inject constructor(
         updaterFolder: File,
         stateListener: suspend (UpdatingState) -> Unit
     ) {
-        if (updateContent !is OfficialFirmware) {
-            throw IllegalArgumentException("Content not compare")
-        }
+        require(updateContent is OfficialFirmware) { "Content not compare" }
         stateListener(
             UpdatingState.DownloadingFromNetwork(0f)
         )
@@ -70,9 +68,7 @@ class UpdateContentHelperInternalStorage @Inject constructor(
         updaterFolder: File,
         stateListener: suspend (UpdatingState) -> Unit
     ) {
-        if (updateContent !is InternalStorageFirmware) {
-            throw IllegalArgumentException("Content not compare")
-        }
+        require(updateContent is InternalStorageFirmware) { "Content not compare" }
         val deeplink = deeplinkParser.fromUri(context, updateContent.uri)
         val deeplinkContent = if (deeplink is Deeplink.FlipperKey) {
             deeplink.content ?: throw UpdateContentException()
@@ -107,9 +103,7 @@ class UpdateContentHelperWepUpdater @Inject constructor(
         updaterFolder: File,
         stateListener: suspend (UpdatingState) -> Unit
     ) {
-        if (updateContent !is WebUpdaterFirmware) {
-            throw IllegalArgumentException("Content not compare")
-        }
+        require(updateContent is WebUpdaterFirmware) { "Content not compare" }
         stateListener(
             UpdatingState.DownloadingFromNetwork(0f)
         )

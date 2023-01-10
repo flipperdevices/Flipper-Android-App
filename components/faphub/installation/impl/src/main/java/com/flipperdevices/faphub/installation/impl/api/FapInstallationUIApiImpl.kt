@@ -37,7 +37,9 @@ class FapInstallationUIApiImpl @Inject constructor() : FapInstallationUIApi {
         ComposableFapUpdateButton(
             if (fapItem == null) {
                 modifier.placeholderConnecting()
-            } else modifier,
+            } else {
+                modifier
+            },
             textSize
         )
     }

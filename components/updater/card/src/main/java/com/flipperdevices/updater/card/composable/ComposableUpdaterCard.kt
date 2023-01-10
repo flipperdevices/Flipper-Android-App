@@ -30,7 +30,7 @@ import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 internal fun ComposableUpdaterCardInternal(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     updateStateViewModel: UpdateStateViewModel = tangleViewModel(),
     updateCardViewModel: UpdateCardViewModel = tangleViewModel()
 ) {

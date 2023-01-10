@@ -24,6 +24,8 @@ dependencies {
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
 
+    implementation(libs.kotlin.immutable.collections)
+
     testImplementation(projects.components.core.test)
     testImplementation(libs.junit)
     testImplementation(libs.mockito.kotlin)

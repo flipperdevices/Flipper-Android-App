@@ -1,5 +1,6 @@
 package com.flipperdevices.info.impl.compose.elements
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -8,7 +9,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.compose.dialogs.ComposableForgotDialog
@@ -21,7 +21,7 @@ import com.flipperdevices.info.shared.InfoElementCard
 
 @Composable
 fun ComposablePairDeviceActionCard(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     connectViewModel: ConnectViewModel = viewModel(),
     deviceStatusViewModel: DeviceStatusViewModel = viewModel()
 ) {

@@ -2,6 +2,7 @@ package com.flipperdevices.keyedit.impl.composable
 
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyedit.impl.R
@@ -14,10 +15,12 @@ import com.flipperdevices.keyscreen.shared.bar.ComposableKeyScreenAppBar
 fun ComposableEditAppBar(
     title: String?,
     saveButtonState: SaveButtonState,
+    modifier: Modifier = Modifier,
     onBack: () -> Unit = {},
     onSave: () -> Unit = {}
 ) {
     ComposableKeyScreenAppBar(
+        modifier = modifier,
         startBlock = {
             ComposableBarSimpleText(
                 modifier = it,

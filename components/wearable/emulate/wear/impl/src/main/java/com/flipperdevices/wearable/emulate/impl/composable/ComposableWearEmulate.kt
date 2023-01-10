@@ -93,7 +93,7 @@ fun ComposableWearEmulate(
 private fun EmulateButton(
     state: WearEmulateState,
     keyEmulateUiApi: KeyEmulateUiApi,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     emulateViewModel: WearEmulateViewModel,
     onBack: () -> Unit
 ) {

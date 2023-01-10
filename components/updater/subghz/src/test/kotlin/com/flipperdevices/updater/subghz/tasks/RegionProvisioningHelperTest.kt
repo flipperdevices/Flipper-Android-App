@@ -6,7 +6,7 @@ import android.os.Build
 import android.os.LocaleList
 import android.telephony.TelephonyManager
 import com.flipperdevices.updater.subghz.helpers.RegionProvisioningHelperImpl
-import com.flipperdevices.updater.subghz.helpers.model.RegionProvisioningSource
+import com.flipperdevices.updater.subghz.model.RegionProvisioningSource
 import java.util.Locale
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers

@@ -37,9 +37,10 @@ fun ComposableMfKey32ErrorContent(
     @StringRes titleId: Int,
     @DrawableRes picId: Int,
     @DrawableRes picIdBlack: Int,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
+    modifier: Modifier = Modifier
 ) = Column(
-    modifier = Modifier.fillMaxHeight(),
+    modifier = modifier.fillMaxHeight(),
     horizontalAlignment = Alignment.CenterHorizontally
 ) {
     Text(

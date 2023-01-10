@@ -23,9 +23,10 @@ fun ComposableKeySaveScreen(
     keyParsed: FlipperKeyParsed,
     savingInProgress: Boolean,
     onSave: () -> Unit,
-    onCancel: () -> Unit
+    onCancel: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    Column {
+    Column(modifier) {
         ComposableKeySaveBar(onCancel)
         keyScreenApi.KeyCard(
             modifier = Modifier.padding(start = 24.dp, end = 24.dp, bottom = 24.dp),

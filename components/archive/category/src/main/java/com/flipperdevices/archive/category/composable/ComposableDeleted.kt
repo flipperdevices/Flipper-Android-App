@@ -16,7 +16,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.archive.category.R
 import com.flipperdevices.archive.category.composable.dialogs.ComposableDeleteAllDialog
 import com.flipperdevices.archive.category.composable.dialogs.ComposableRestoreAllDialog
@@ -26,6 +25,7 @@ import com.flipperdevices.archive.shared.composable.ComposableAppBar
 import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
+import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 fun ComposableDeleted() {
@@ -37,7 +37,7 @@ fun ComposableDeleted() {
 
 @Composable
 private fun ComposableDeletedAppBar(
-    deleteViewModel: DeleteViewModel = viewModel()
+    deleteViewModel: DeleteViewModel = tangleViewModel()
 ) {
     val router = LocalRouter.current
     var isDeleteAllDialog by remember { mutableStateOf(false) }
@@ -77,7 +77,7 @@ private fun ComposableDeletedAppBar(
 
 @Composable
 private fun ComposableDeletedAppBarInternal(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     onDeleteAllDialogOpen: () -> Unit,
     onRestoreAllDialogOpen: () -> Unit
 ) {

@@ -22,11 +22,15 @@ import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.nfc.mfkey32.screen.R
+import kotlinx.collections.immutable.ImmutableList
 
 private const val GRID_WIDTH = 2
 
 @Composable
-fun FoundedKeyComposableGrid(modifier: Modifier, keys: List<String>) = Column {
+fun FoundedKeyComposableGrid(
+    keys: ImmutableList<String>,
+    modifier: Modifier = Modifier,
+) = Column {
     keys.windowed(GRID_WIDTH, GRID_WIDTH, partialWindows = true).forEach { rowKeys ->
         Row(
             modifier = Modifier.fillMaxWidth(),

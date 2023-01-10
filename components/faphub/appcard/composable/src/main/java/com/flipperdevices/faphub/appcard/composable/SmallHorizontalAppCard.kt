@@ -20,7 +20,7 @@ import com.flipperdevices.faphub.dao.api.model.FapItem
 
 @Composable
 fun SmallHorizontalAppCard(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     fapItem: FapItem
 ) {
     Row(
@@ -41,7 +41,7 @@ fun SmallHorizontalAppCard(
 
 @Composable
 private fun SmallHorizontalAppCardText(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     fapItem: FapItem
 ) = Column(modifier, verticalArrangement = Arrangement.spacedBy(1.dp)) {
     Text(

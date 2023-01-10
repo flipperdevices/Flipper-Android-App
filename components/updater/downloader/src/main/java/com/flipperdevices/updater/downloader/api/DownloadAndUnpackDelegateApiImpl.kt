@@ -70,10 +70,8 @@ class DownloadAndUnpackDelegateApiImpl @Inject constructor(
             String(Hex.encodeHex(DigestUtils.sha256(it)))
         }
 
-        if (hash != distributionFile.sha256 && distributionFile.sha256 != null) {
-            throw IllegalStateException(
-                "Hash mismatch. Expected: ${distributionFile.sha256}, actual: $hash"
-            )
+        check(hash == distributionFile.sha256 || distributionFile.sha256 == null) {
+            "Hash mismatch. Expected: ${distributionFile.sha256}, actual: $hash"
         }
     }
 

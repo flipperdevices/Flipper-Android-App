@@ -6,12 +6,13 @@ import androidx.navigation.compose.NavHost
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.flipperdevices.hub.impl.api.HubFeatureEntry
+import kotlinx.collections.immutable.ImmutableSet
 
 @Composable
 fun HubNavigation(
     navController: NavHostController,
-    featureEntries: Set<AggregateFeatureEntry>,
-    composableEntries: Set<ComposableFeatureEntry>,
+    featureEntries: ImmutableSet<AggregateFeatureEntry>,
+    composableEntries: ImmutableSet<ComposableFeatureEntry>,
     hubFeatureEntry: HubFeatureEntry
 ) {
     NavHost(

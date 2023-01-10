@@ -10,6 +10,7 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.placeholderByLocalProvider
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 private fun ComposableKeyItem(name: String, value: String) {
@@ -35,7 +36,7 @@ private fun ComposableKeyItem(name: String, value: String) {
 }
 
 @Composable
-internal fun ComposableKeyContent(lines: List<Pair<String, String?>>) {
+internal fun ComposableKeyContent(lines: ImmutableList<Pair<String, String?>>) {
     lines.filter { it.second != null }.map { it.first to it.second!! }.forEach {
         ComposableKeyItem(it.first, it.second)
     }
