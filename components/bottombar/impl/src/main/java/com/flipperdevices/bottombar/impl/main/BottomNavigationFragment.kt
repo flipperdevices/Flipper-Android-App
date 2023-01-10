@@ -75,7 +75,7 @@ class BottomNavigationFragment : Fragment(), OnBackPressListener, LogTagProvider
         binding.bottomBar.apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                FlipperTheme {
+                FlipperTheme(content = {
                     val selectedItem by bottomNavigationViewModel.selectedTab.collectAsState()
                     ComposeBottomBar(
                         connectionApi,
@@ -84,7 +84,7 @@ class BottomNavigationFragment : Fragment(), OnBackPressListener, LogTagProvider
                             selectTab(it)
                         }
                     )
-                }
+                })
             }
         }
         binding.inappNotification.apply {
@@ -95,13 +95,13 @@ class BottomNavigationFragment : Fragment(), OnBackPressListener, LogTagProvider
                 if (localNotificationState !is InAppNotificationState.ShownNotification) {
                     return@setContent
                 }
-                FlipperTheme {
+                FlipperTheme(content = {
                     notificationRenderer.InAppNotification(localNotificationState.notification) {
                         notificationViewModel.onNotificationHidden(
                             notification = localNotificationState.notification
                         )
                     }
-                }
+                })
             }
         }
 

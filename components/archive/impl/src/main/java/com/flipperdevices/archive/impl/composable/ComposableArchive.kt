@@ -78,10 +78,14 @@ private fun ComposableArchiveReady(
     favoriteKeys: ImmutableList<FlipperKey>,
     tabViewModel: GeneralTabViewModel,
     synchronizationState: SynchronizationState,
-    isKeysPresented: Boolean
+    isKeysPresented: Boolean,
+    modifier: Modifier = Modifier,
+    keyItemViewModel: KeyItemViewModel = viewModel(),
 ) {
-    val keyItemViewModel: KeyItemViewModel = viewModel()
-    Column(verticalArrangement = Arrangement.Top) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Top
+    ) {
         ComposableAppBar(
             title = stringResource(R.string.archive_title),
             iconId = DesignSystem.drawable.ic_search,

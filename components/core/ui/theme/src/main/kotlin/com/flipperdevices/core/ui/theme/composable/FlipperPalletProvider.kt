@@ -35,8 +35,10 @@ fun getThemedFlipperPallet(
 }
 
 @Composable
-fun isLight(systemIsDark: Boolean = isSystemInDarkTheme()): Boolean {
-    val themeViewModel: ThemeViewModel = viewModel()
+fun isLight(
+    systemIsDark: Boolean = isSystemInDarkTheme(),
+    themeViewModel: ThemeViewModel = viewModel()
+): Boolean {
     val theme by themeViewModel.getAppTheme().collectAsState()
 
     return when (theme) {

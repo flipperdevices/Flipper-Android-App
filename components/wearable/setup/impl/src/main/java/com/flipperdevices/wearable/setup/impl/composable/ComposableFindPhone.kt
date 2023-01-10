@@ -33,15 +33,17 @@ import com.google.android.horologist.compose.layout.fillMaxRectangle
 import kotlinx.coroutines.launch
 
 @Composable
-fun ComposableFindPhone(onFoundPhone: () -> Unit) {
-    val findPhoneViewModel = viewModel<FindPhoneViewModel>()
-
+fun ComposableFindPhone(
+    onFoundPhone: () -> Unit,
+    modifier: Modifier = Modifier,
+    findPhoneViewModel: FindPhoneViewModel = viewModel()
+) {
     val columnScrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
     val focusRequester = remember { FocusRequester() }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .verticalScroll(columnScrollState)
             .fillMaxRectangle()
             .onRotaryScrollEvent {

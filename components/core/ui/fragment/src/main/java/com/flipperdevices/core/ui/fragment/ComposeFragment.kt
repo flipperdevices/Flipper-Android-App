@@ -35,13 +35,13 @@ abstract class ComposeFragment : Fragment(), StatusBarColorProvider {
 
     @Composable
     fun ComposeViewRenderWithTheme() {
-        FlipperTheme {
+        FlipperTheme(content = {
             CompositionLocalProvider(LocalRouter provides requireRouter()) {
                 SubComposeWrapper(modifier = Modifier.fillMaxSize()) {
                     RenderView()
                 }
             }
-        }
+        })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
