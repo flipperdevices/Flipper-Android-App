@@ -1,4 +1,0 @@
-root = true
-
-[*.{kt, kts}]
-disabled_rules = experimental:argument-list-wrapping
