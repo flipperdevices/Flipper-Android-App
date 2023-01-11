@@ -5,6 +5,7 @@
 - [Feature] Flipper app loader errors
 - [GitHub] Update github repo picture
 - [CI] Migrate to Detekt
+- [CI] Android lint in CI
 - [FIX] Clickable modifier ktx
 - [FIX] Refactor `share:receive` module
 - [REFACTOR] Fix detekt compose issues
