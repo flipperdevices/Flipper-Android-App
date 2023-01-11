@@ -17,6 +17,7 @@ import com.flipperdevices.nfceditor.impl.viewmodel.NfcEditorViewModel
 @Composable
 @Suppress("MagicNumber")
 fun ComposableNfcSector(
+    modifier: Modifier = Modifier,
     nfcEditorViewModel: NfcEditorViewModel,
     nfcEditorState: NfcEditorState,
     sectorIndex: Int,
@@ -24,7 +25,7 @@ fun ComposableNfcSector(
     scaleFactor: Float,
     onPositionActiveLine: (Int) -> Unit
 ) {
-    Column {
+    Column(modifier = modifier) {
         Text(
             modifier = Modifier.padding(
                 top = (scaleFactor * 24).dp,

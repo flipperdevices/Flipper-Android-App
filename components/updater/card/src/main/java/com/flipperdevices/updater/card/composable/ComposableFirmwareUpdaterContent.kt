@@ -25,10 +25,11 @@ import com.flipperdevices.updater.model.UpdateRequest
 fun ComposableFirmwareUpdaterContent(
     version: FirmwareVersion?,
     updateCardState: UpdateCardState,
+    modifier: Modifier = Modifier,
     onSelectFirmwareChannel: (FirmwareChannel) -> Unit
 ) {
     val inProgress = version == null
-    ComposableDeviceInfoRow(titleId = R.string.updater_card_updater_channel, inProgress = false) {
+    ComposableDeviceInfoRow(modifier = modifier, titleId = R.string.updater_card_updater_channel, inProgress = false) {
         ComposableUpdaterFirmwareVersionWithChoice(
             modifier = it,
             onSelectFirmwareChannel = onSelectFirmwareChannel,

@@ -20,12 +20,14 @@ import com.flipperdevices.updater.model.FirmwareVersion
 @Composable
 fun ComposableFirmwareVersion(
     firmwareVersion: FirmwareVersion?,
-    firmwareVersionInProgress: Boolean
+    firmwareVersionInProgress: Boolean,
+    modifier: Modifier = Modifier,
 ) {
     if (firmwareVersion == null) {
         ComposableDeviceInfoRow(
             R.string.info_device_info_version,
             firmwareVersionInProgress,
+            modifier,
             null
         )
         return
@@ -45,12 +47,14 @@ fun ComposableFirmwareVersion(
 @Composable
 fun ComposableFirmwareBuildDate(
     firmwareVersion: FirmwareVersion?,
-    firmwareVersionInProgress: Boolean
+    firmwareVersionInProgress: Boolean,
+    modifier: Modifier = Modifier,
 ) {
     if (firmwareVersion == null) {
         ComposableDeviceInfoRow(
             R.string.info_device_info_build_date,
             firmwareVersionInProgress,
+            modifier,
             null
         )
         return

@@ -24,10 +24,11 @@ import com.flipperdevices.faphub.fapscreen.impl.R
 
 @Composable
 fun ColumnScope.ComposableDeveloperFooter(
-    developerInformation: FapDeveloperInformation?
+    developerInformation: FapDeveloperInformation?,
+    modifier: Modifier = Modifier
 ) {
     Text(
-        modifier = Modifier.padding(bottom = 8.dp, top = 24.dp),
+        modifier = modifier.padding(bottom = 8.dp, top = 24.dp),
         text = stringResource(R.string.fapscreen_developer_title),
         style = LocalTypography.current.buttonM16,
         color = LocalPallet.current.text100

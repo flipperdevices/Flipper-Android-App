@@ -26,12 +26,13 @@ import tangle.viewmodel.compose.tangleViewModel
 @Composable
 fun ComposableCommonSetting(
     navController: NavController,
+    modifier: Modifier = Modifier,
     settingsViewModel: SettingsViewModel = tangleViewModel()
 ) {
     val settings by settingsViewModel.getState().collectAsState()
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .verticalScroll(rememberScrollState())
             .background(LocalPallet.current.background),
         verticalArrangement = Arrangement.spacedBy(14.dp)

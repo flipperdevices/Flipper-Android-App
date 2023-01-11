@@ -35,7 +35,8 @@ fun ComposableFapHubTab(
     hubTabEnum: FapHubTabEnum,
     onSelectFapHubTabEnum: (FapHubTabEnum) -> Unit,
     isSelected: Boolean,
-    notificationCount: Int
+    notificationCount: Int,
+    modifier: Modifier = Modifier
 ) {
     val iconId = when (hubTabEnum) {
         FapHubTabEnum.APPS -> R.drawable.ic_apps
@@ -52,7 +53,7 @@ fun ComposableFapHubTab(
         selected = isSelected
     ) {
         ComposableFapHubTabInternal(
-            modifier = Modifier
+            modifier = modifier
                 .clickableRipple { onSelectFapHubTabEnum(hubTabEnum) },
             iconId = iconId,
             titleId = textId,

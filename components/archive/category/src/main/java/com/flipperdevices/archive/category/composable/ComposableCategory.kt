@@ -37,10 +37,11 @@ import kotlinx.collections.immutable.ImmutableList
 @Composable
 fun ComposableCategory(
     categoryType: CategoryType.ByFileType,
-    synchronizationUiApi: SynchronizationUiApi
+    synchronizationUiApi: SynchronizationUiApi,
+    modifier: Modifier = Modifier,
 ) {
     val router = LocalRouter.current
-    Column {
+    Column(modifier = modifier) {
         ComposableAppBar(
             title = categoryType.fileType.humanReadableName,
             onBack = { router.exit() }

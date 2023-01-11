@@ -16,7 +16,10 @@ import com.flipperdevices.nfc.mfkey32.screen.R
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
-fun ComposableMfKey32ConnectFailed() = ComposableMfKey32ErrorContent(
+fun ComposableMfKey32ConnectFailed(
+    modifier: Modifier = Modifier
+) = ComposableMfKey32ErrorContent(
+    modifier = modifier,
     titleId = R.string.mfkey32_error_connect_title,
     picId = DesignSystem.drawable.pic_flipper_update_failed,
     picIdBlack = DesignSystem.drawable.pic_black_flipper_update_failed,

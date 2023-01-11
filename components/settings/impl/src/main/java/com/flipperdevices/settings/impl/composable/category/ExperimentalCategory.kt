@@ -2,6 +2,7 @@ package com.flipperdevices.settings.impl.composable.category
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.settings.impl.R
@@ -18,9 +19,10 @@ fun ExperimentalCategory(
     settings: Settings,
     navController: NavController,
     settingsViewModel: SettingsViewModel,
+    modifier: Modifier = Modifier,
     experimentalViewModel: ExperimentalViewModel = tangleViewModel()
 ) {
-    CardCategory {
+    CardCategory(modifier = modifier) {
         Column {
             CategoryElement(
                 titleId = R.string.experimental_options,

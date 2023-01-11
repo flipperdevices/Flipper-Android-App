@@ -28,6 +28,7 @@ fun ComposableNfcCell(
     cell: NfcEditorCell,
     scaleFactor: Float,
     isActive: Boolean,
+    modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
     val paddingDp = remember(scaleFactor) {
@@ -68,11 +69,19 @@ fun ComposableNfcCell(
                 .clip(RoundedCornerShape(2.dp))
                 .background(LocalPallet.current.substrateActiveCellNfcEditor)
         ) {
-            ComposableNfcCellText(textFieldModifier, text, textStyle)
+            ComposableNfcCellText(
+                modifier = textFieldModifier,
+                text,
+                textStyle
+            )
         }
         return
     }
-    ComposableNfcCellText(textFieldModifier, text, textStyle)
+    ComposableNfcCellText(
+        modifier = textFieldModifier,
+        text = text,
+        textStyle = textStyle
+    )
 }
 
 @Composable

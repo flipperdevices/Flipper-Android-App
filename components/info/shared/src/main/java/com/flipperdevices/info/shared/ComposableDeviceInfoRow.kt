@@ -26,9 +26,10 @@ fun ComposableDeviceInfoRowWithText(
     @StringRes titleId: Int,
     inProgress: Boolean,
     value: String?,
-    color: Color? = null
+    modifier: Modifier = Modifier,
+    color: Color? = null,
 ) {
-    ComposableDeviceInfoRowWithText(stringResource(titleId), inProgress, value, color)
+    ComposableDeviceInfoRowWithText(stringResource(titleId), inProgress, value, modifier, color)
 }
 
 @Composable
@@ -36,10 +37,11 @@ fun ComposableDeviceInfoRowWithText(
     text: String,
     inProgress: Boolean,
     value: String?,
-    color: Color? = null
+    modifier: Modifier = Modifier,
+    color: Color? = null,
 ) {
     if (value == null) {
-        ComposableDeviceInfoRow(text, inProgress, null)
+        ComposableDeviceInfoRow(text, inProgress, content = null)
         return
     }
     ComposableDeviceInfoRow(text, inProgress) {
@@ -51,10 +53,11 @@ fun ComposableDeviceInfoRowWithText(
 fun ComposableDeviceInfoRow(
     text: String,
     inProgress: Boolean,
-    content: (@Composable (Modifier) -> Unit)?
+    modifier: Modifier = Modifier,
+    content: (@Composable (Modifier) -> Unit)?,
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth().padding(12.dp),
+        modifier = modifier.fillMaxWidth().padding(12.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -79,9 +82,10 @@ fun ComposableDeviceInfoRow(
 fun ComposableDeviceInfoRow(
     @StringRes titleId: Int,
     inProgress: Boolean,
+    modifier: Modifier = Modifier,
     content: (@Composable (Modifier) -> Unit)?
 ) {
-    ComposableDeviceInfoRow(stringResource(titleId), inProgress, content)
+    ComposableDeviceInfoRow(stringResource(titleId), inProgress, modifier, content)
 }
 
 @Composable

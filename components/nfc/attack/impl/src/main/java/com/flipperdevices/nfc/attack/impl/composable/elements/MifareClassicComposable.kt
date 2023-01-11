@@ -32,10 +32,11 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 @Composable
 fun MifareClassicComposable(
     nfcAttackViewModel: NfcAttackViewModel,
-    onOpenMfKey32: () -> Unit
+    onOpenMfKey32: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Card(
-        modifier = Modifier.padding(14.dp),
+        modifier = modifier.padding(14.dp),
         shape = RoundedCornerShape(10.dp)
     ) {
         Column {

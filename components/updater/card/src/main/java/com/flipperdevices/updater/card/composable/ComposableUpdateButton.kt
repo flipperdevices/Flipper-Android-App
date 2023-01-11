@@ -33,9 +33,10 @@ import com.flipperdevices.updater.model.UpdateCardState
 @Composable
 fun ComposableUpdateButton(
     updateCardState: UpdateCardState,
-    inProgress: Boolean
+    inProgress: Boolean,
+    modifier: Modifier = Modifier
 ) {
-    var buttonModifier = Modifier.padding(all = 12.dp)
+    var buttonModifier = modifier.padding(all = 12.dp)
     if (inProgress) {
         ComposableUpdateButtonPlaceholder(buttonModifier)
         return

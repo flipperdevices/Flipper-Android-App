@@ -23,10 +23,11 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 fun ComposableHeaderCard(
     cardType: NfcEditorCardType,
     isOpened: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 13.dp)
             .padding(horizontal = 12.dp),

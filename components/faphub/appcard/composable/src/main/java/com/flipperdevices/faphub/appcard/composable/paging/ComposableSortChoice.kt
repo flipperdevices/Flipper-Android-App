@@ -34,9 +34,10 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 fun ComposableSortChoice(
     title: String?,
     sortType: SortType,
-    onSelectSortType: (SortType) -> Unit
+    onSelectSortType: (SortType) -> Unit,
+    modifier: Modifier = Modifier
 ) = Row(
-    modifier = Modifier
+    modifier = modifier
         .fillMaxWidth()
         .padding(start = 14.dp, end = 14.dp, top = 20.dp),
     verticalAlignment = Alignment.CenterVertically

@@ -738,7 +738,7 @@ TwitterCompose:
   ModifierComposable:
     active: true
   ModifierMissing:
-    active: false
+    active: true
   ModifierReused:
     active: true
   ModifierWithoutDefault:

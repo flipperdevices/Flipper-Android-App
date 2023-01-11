@@ -28,10 +28,12 @@ fun ComposableHelp(
 }
 
 @Composable
-fun ComposableHelpList() {
+fun ComposableHelpList(
+    modifier: Modifier = Modifier
+) {
     val list = HelpOptions.values
     LazyColumn(
-        modifier = Modifier.padding(start = 14.dp, end = 14.dp, top = 32.dp),
+        modifier = modifier.padding(start = 14.dp, end = 14.dp, top = 32.dp),
         verticalArrangement = Arrangement.spacedBy(space = 24.dp)
     ) {
         itemsIndexed(list) { index, item ->

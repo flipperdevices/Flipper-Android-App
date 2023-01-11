@@ -10,13 +10,14 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
 fun CategoryElement(
+    modifier: Modifier = Modifier,
     @StringRes titleId: Int,
     @StringRes descriptionId: Int? = null,
     state: Boolean,
     onSwitchState: (Boolean) -> Unit
 ) {
     Row(
-        modifier = Modifier.clickableRipple { onSwitchState(!state) },
+        modifier = modifier.clickableRipple { onSwitchState(!state) },
         verticalAlignment = Alignment.CenterVertically
     ) {
         SimpleElement(

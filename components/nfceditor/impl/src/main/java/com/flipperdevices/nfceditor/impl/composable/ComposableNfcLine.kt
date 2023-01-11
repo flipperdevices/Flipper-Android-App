@@ -26,11 +26,12 @@ fun ComposableNfcLine(
     line: ImmutableList<NfcEditorCell>,
     maxIndexSymbolCount: Int,
     scaleFactor: Float,
+    modifier: Modifier = Modifier,
     activeCell: NfcEditorCellLocation? = null,
     onCellFocus: ((NfcEditorCellLocation) -> Unit),
     onPositionActiveLine: ((Int) -> Unit)? = null
 ) {
-    var rowModifier: Modifier = Modifier
+    var rowModifier: Modifier = modifier
     if (onPositionActiveLine != null) {
         rowModifier = rowModifier.onGloballyPositioned {
             onPositionActiveLine(it.positionInParent().y.roundToInt())

@@ -22,6 +22,7 @@ import tangle.viewmodel.compose.tangleViewModel
 fun ComposableCatalogTabScreen(
     onOpenFapItem: (FapItem) -> Unit,
     onCategoryClick: (FapCategory) -> Unit,
+    modifier: Modifier = Modifier,
     installationButton: @Composable (FapItem?, Modifier, TextUnit) -> Unit
 ) {
     val fapsListViewModel = tangleViewModel<FapsListViewModel>()
@@ -31,7 +32,9 @@ fun ComposableCatalogTabScreen(
     val categoriesViewModel = tangleViewModel<CategoriesViewModel>()
     val categoriesLoadState by categoriesViewModel.getCategoriesLoadState().collectAsState()
 
-    LazyColumn {
+    LazyColumn(
+        modifier = modifier
+    ) {
         ComposableCategories(categoriesLoadState, onCategoryClick)
         item {
             ComposableSortChoice(

@@ -23,13 +23,14 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableCategoryItem(
+    modifier: Modifier = Modifier,
     categoryItem: CategoryItem,
     categoryViewModel: CategoryViewModel
 ) {
     val router = LocalRouter.current
 
     Row(
-        modifier = Modifier
+        modifier = modifier
             .clickableRipple { categoryViewModel.onCategoryClick(router, categoryItem) }
             .padding(horizontal = 12.dp),
         verticalAlignment = Alignment.CenterVertically

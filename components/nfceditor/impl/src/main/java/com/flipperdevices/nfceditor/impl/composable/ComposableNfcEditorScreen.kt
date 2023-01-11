@@ -34,7 +34,10 @@ import com.flipperdevices.nfceditor.impl.viewmodel.NfcEditorViewModel
 private const val KEYBOARD_HEIGHT_DP = 256
 
 @Composable
-fun ComposableNfcEditorScreen(nfcEditorViewModel: NfcEditorViewModel) {
+fun ComposableNfcEditorScreen(
+    nfcEditorViewModel: NfcEditorViewModel,
+    modifier: Modifier = Modifier
+) {
     val nfcEditorState by nfcEditorViewModel.getNfcEditorState().collectAsState()
     val router = LocalRouter.current
     val localNfcEditorState = nfcEditorState
@@ -55,7 +58,7 @@ fun ComposableNfcEditorScreen(nfcEditorViewModel: NfcEditorViewModel) {
         )
     }
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = modifier.fillMaxSize()) {
         ComposableNfcEditorBar(localNfcEditorState.cardName, onBack = {
             nfcEditorViewModel.onBack(router)
         }, onSave = {

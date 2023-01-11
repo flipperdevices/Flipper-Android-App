@@ -29,14 +29,17 @@ import com.flipperdevices.settings.impl.viewmodels.SettingsViewModel
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
-fun ThemeCategory(settingsViewModel: SettingsViewModel) {
+fun ThemeCategory(
+    settingsViewModel: SettingsViewModel,
+    modifier: Modifier = Modifier,
+) {
     val themes = SelectedTheme.values().filter { it != SelectedTheme.UNRECOGNIZED }
     val theme = settingsViewModel.getSelectedTheme()
 
     val nameTheme = stringResource(id = getNameBySelectedTheme(theme))
     var showMenu by remember { mutableStateOf(false) }
 
-    CardCategory {
+    CardCategory(modifier = modifier) {
         Row(
             modifier = Modifier.clickableRipple { showMenu = true },
             verticalAlignment = Alignment.CenterVertically

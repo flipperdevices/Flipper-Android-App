@@ -103,9 +103,11 @@ fun ComposableUpdaterFirmwareVersionWithChoice(
 }
 
 @Composable
-fun ComposablePlaceholderFirmwareBuild() {
+fun ComposablePlaceholderFirmwareBuild(
+    modifier: Modifier = Modifier
+) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .height(16.dp)
             .width(80.dp)
             .placeholderConnecting()
@@ -116,6 +118,7 @@ fun ComposablePlaceholderFirmwareBuild() {
 fun ComposableDropMenuFirmwareBuild(
     showMenu: Boolean,
     coordinateMenuByY: Int,
+    modifier: Modifier = Modifier,
     onClickMenuItem: (FirmwareChannel) -> Unit = {},
     onDismissMenu: () -> Unit = {}
 ) {
@@ -131,7 +134,7 @@ fun ComposableDropMenuFirmwareBuild(
             properties = DialogProperties(usePlatformDefaultWidth = false)
         ) {
             Box(
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxSize()
                     .clickable(onClick = onDismissMenu)
             ) {
@@ -150,9 +153,10 @@ fun ComposableDropMenuFirmwareBuild(
 
 @Composable
 fun ComposableFirmwareColumn(
-    onClickMenuItem: (FirmwareChannel) -> Unit = {}
+    onClickMenuItem: (FirmwareChannel) -> Unit = {},
+    modifier: Modifier = Modifier
 ) {
-    Column {
+    Column(modifier = modifier) {
         val channels = FirmwareChannel.values().filter { it != FirmwareChannel.UNKNOWN }
         channels.forEachIndexed { index, channel ->
             Column(

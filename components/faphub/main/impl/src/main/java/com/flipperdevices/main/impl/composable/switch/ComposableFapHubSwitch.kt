@@ -43,10 +43,11 @@ fun ComposableFapHubNewSwitch(
     onSelect: (FapHubTabEnum) -> Unit,
     installedNotificationCount: Int,
     onEndClick: () -> Unit,
+    modifier: Modifier = Modifier,
     onBack: (() -> Unit)? = null
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .background(LocalPallet.current.accent),
         verticalAlignment = Alignment.CenterVertically

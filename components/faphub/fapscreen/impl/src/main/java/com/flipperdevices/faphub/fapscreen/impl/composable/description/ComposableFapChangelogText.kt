@@ -28,12 +28,13 @@ private val DEFAULT_CHANGELOG
 
 @Composable
 fun ColumnScope.ComposableFapChangelogText(
-    changelog: String?
+    changelog: String?,
+    modifier: Modifier = Modifier
 ) {
     var showMoreButton by remember { mutableStateOf(false) }
     var maxChangelogLines by remember { mutableStateOf(MAX_CHANGELOG_LINE) }
     Text(
-        modifier = Modifier.padding(bottom = 8.dp, top = 24.dp),
+        modifier = modifier.padding(bottom = 8.dp, top = 24.dp),
         text = stringResource(R.string.fapscreen_changelog_title),
         style = LocalTypography.current.buttonM16,
         color = LocalPallet.current.text100

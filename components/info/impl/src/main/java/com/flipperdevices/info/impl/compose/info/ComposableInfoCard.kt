@@ -59,11 +59,13 @@ fun ComposableInfoCard(
 }
 
 @Composable
-fun ComposableWaitingFlipper() {
+fun ComposableWaitingFlipper(
+    modifier: Modifier = Modifier
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(12.dp),
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 68.dp)
     ) {

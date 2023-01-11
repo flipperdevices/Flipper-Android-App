@@ -28,8 +28,10 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
-fun ComposableDeleted() {
-    Column {
+fun ComposableDeleted(
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier) {
         ComposableDeletedAppBar()
         ComposableCategoryContent(CategoryType.Deleted, synchronizationUiApi = null)
     }

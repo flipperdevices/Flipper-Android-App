@@ -33,6 +33,7 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 @Composable
 fun ComposableFullDeviceInfoScreen(
     navController: NavHostController,
+    modifier: Modifier = Modifier,
     fullInfoViewModel: FullInfoViewModel = tangleViewModel(),
     deviceStatusViewModel: DeviceStatusViewModel = viewModel()
 ) {
@@ -49,7 +50,7 @@ fun ComposableFullDeviceInfoScreen(
 
     val flipperRpcInformation by fullInfoViewModel.getFlipperRpcInformation().collectAsState()
 
-    Column {
+    Column(modifier = modifier) {
         ComposableFullDeviceInfoScreenBar(
             onBack = navController::popBackStack,
             onShare = fullInfoViewModel::shareDeviceInfo,
