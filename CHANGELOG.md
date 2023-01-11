@@ -10,6 +10,7 @@
 - [REFACTOR] Fix detekt compose issues
 - [REFACTOR] Format markdown changelog
 - [REFACTOR] Enable detekt formatting
+- [REFACTOR] Android lint
 
 # 1.4.0
 
