@@ -7,6 +7,9 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 sealed class EditableKey : Parcelable {
-    data class Existed(val flipperKeyPath: FlipperKeyPath) : EditableKey()
-    data class Limb(val notSavedFlipperKey: NotSavedFlipperKey) : EditableKey()
+    @Parcelize
+    data class Existed(val flipperKeyPath: FlipperKeyPath) : EditableKey(), Parcelable
+
+    @Parcelize
+    data class Limb(val notSavedFlipperKey: NotSavedFlipperKey) : EditableKey(), Parcelable
 }

@@ -24,7 +24,7 @@
     <string name="update_card_error_no_sd_desc">Install SD card in Flipper to update firmware</string>
 
     <string name="update_card_dialog_battery_title">Low Battery on Flipper</string>
-    <string name="update_card_dialog_battery_desc">Charge Flipper to 10% before installing the update</string>
+    <string name="update_card_dialog_battery_desc" formatted="false">Charge Flipper to 10% before installing the update</string>
 
     <string name="update_card_dialog_extension_title">Not supported updater file</string>
     <string name="update_card_dialog_extension_desc">Try use updater file with tgz extension</string>
