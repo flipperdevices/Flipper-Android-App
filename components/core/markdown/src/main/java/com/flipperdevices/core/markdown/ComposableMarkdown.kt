@@ -33,11 +33,14 @@ fun ComposableMarkdown(
 @Composable
 fun markdownColors(
     backgroundCode: Color = LocalPallet.current.text20,
-    text: Color = LocalPallet.current.text100
+    text: Color = LocalPallet.current.text100,
+    link: Color = LocalPallet.current.accentSecond
 ): MarkdownColors {
     return object : MarkdownColors {
         override val backgroundCode = backgroundCode
         override val text = text
+        override val markdownLink: Color = link
+        override val autoLink: Color = link
     }
 }
 
