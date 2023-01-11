@@ -10,7 +10,7 @@
 - [FIX] Refactor `share:receive` module
 - [REFACTOR] Fix detekt compose issues
 - [REFACTOR] Format markdown changelog
-- [REFACTOR] Enable detekt formatting
+- [REFACTOR] Enable detekt formatting(ModifierMissing)
 - [REFACTOR] Android lint
 
 # 1.4.0

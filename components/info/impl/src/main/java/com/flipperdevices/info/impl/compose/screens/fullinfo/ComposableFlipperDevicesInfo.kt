@@ -65,7 +65,7 @@ private fun ComposableCountryRow(
     inProgress: Boolean
 ) {
     if (value == null) {
-        ComposableDeviceInfoRow(titleId = titleId, inProgress = inProgress, null)
+        ComposableDeviceInfoRow(titleId = titleId, inProgress = inProgress, content = null)
     } else {
         ComposableDeviceInfoRow(titleId, inProgress) { modifier ->
             Row(verticalAlignment = Alignment.CenterVertically) {

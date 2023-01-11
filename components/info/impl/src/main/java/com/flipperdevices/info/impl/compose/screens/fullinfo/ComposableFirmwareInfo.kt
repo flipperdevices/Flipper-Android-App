@@ -58,7 +58,7 @@ private fun ComposableSoftwareRevision(
     color: Color
 ) {
     if (value == null) {
-        ComposableDeviceInfoRow(titleId = titleId, inProgress = inProgress, null)
+        ComposableDeviceInfoRow(titleId = titleId, inProgress = inProgress, content = null)
     } else {
         ComposableDeviceInfoRow(titleId, inProgress) { modifier ->
             ComposableLongDeviceInfoRowText(
