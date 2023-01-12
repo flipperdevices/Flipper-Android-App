@@ -108,6 +108,6 @@ private fun AppCardTop(
 @Composable
 private fun ComposableAppCardLoadingPreview() {
     FlipperThemeInternal {
-        AppCard(null)  { _, _ -> }
+        AppCard(null) { _, _ -> }
     }
 }
