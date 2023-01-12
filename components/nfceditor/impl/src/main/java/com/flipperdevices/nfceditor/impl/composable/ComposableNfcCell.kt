@@ -70,9 +70,9 @@ fun ComposableNfcCell(
                 .background(LocalPallet.current.substrateActiveCellNfcEditor)
         ) {
             ComposableNfcCellText(
-                modifier = textFieldModifier,
                 text,
-                textStyle
+                textStyle,
+                modifier = textFieldModifier
             )
         }
         return
@@ -86,9 +86,9 @@ fun ComposableNfcCell(
 
 @Composable
 private fun ComposableNfcCellText(
-    modifier: Modifier = Modifier,
     text: String,
-    textStyle: TextStyle
+    textStyle: TextStyle,
+    modifier: Modifier = Modifier
 ) {
     Text(
         modifier = modifier,

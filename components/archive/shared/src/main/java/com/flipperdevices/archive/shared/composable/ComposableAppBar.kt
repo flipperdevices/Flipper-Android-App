@@ -30,9 +30,9 @@ fun ComposableAppBar(
 @Composable
 fun ComposableAppBar(
     title: String,
+    @DrawableRes iconId: Int,
     modifier: Modifier = Modifier,
     onBack: (() -> Unit)? = null,
-    @DrawableRes iconId: Int,
     onIconClick: () -> Unit
 ) {
     ComposableAppBar(title, modifier, onBack) {

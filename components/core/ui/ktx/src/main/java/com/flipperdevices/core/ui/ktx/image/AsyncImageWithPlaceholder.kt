@@ -15,14 +15,14 @@ import coil.request.ImageRequest
 
 @Composable
 fun FlipperAsyncImage(
-    modifier: Modifier = Modifier,
     url: String,
     contentDescription: String?,
+    onLoading: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
     filterQuality: FilterQuality = FilterQuality.None,
     contentScale: ContentScale = ContentScale.FillBounds,
     enableDiskCache: Boolean = false,
     enableMemoryCache: Boolean = false,
-    onLoading: (Boolean) -> Unit,
     colorFilter: ColorFilter? = null
 ) {
     val context = LocalContext.current

@@ -26,9 +26,9 @@ fun ComposableNfcLine(
     line: ImmutableList<NfcEditorCell>,
     maxIndexSymbolCount: Int,
     scaleFactor: Float,
+    onCellFocus: ((NfcEditorCellLocation) -> Unit),
     modifier: Modifier = Modifier,
     activeCell: NfcEditorCellLocation? = null,
-    onCellFocus: ((NfcEditorCellLocation) -> Unit),
     onPositionActiveLine: ((Int) -> Unit)? = null
 ) {
     var rowModifier: Modifier = modifier

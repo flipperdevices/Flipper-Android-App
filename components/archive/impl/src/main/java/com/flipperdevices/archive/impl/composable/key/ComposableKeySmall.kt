@@ -18,9 +18,9 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
 fun ComposableKeySmall(
-    modifier: Modifier = Modifier,
     keyPath: FlipperKeyPath,
     synchronizationContent: @Composable () -> Unit,
+    modifier: Modifier = Modifier,
     onOpenKey: () -> Unit
 ) {
     Card(

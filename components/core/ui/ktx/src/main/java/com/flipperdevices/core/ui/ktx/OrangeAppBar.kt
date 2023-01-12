@@ -76,8 +76,8 @@ fun OrangeAppBar(
 @Composable
 fun OrangeAppBarWithIcon(
     @StringRes titleId: Int,
-    onBack: (() -> Unit)? = null,
     @DrawableRes endIconId: Int,
+    onBack: (() -> Unit)? = null,
     onEndClick: () -> Unit
 ) {
     OrangeAppBarWithIcon(
@@ -91,9 +91,9 @@ fun OrangeAppBarWithIcon(
 @Composable
 fun OrangeAppBarWithIcon(
     title: String,
+    @DrawableRes endIconId: Int,
     modifier: Modifier = Modifier,
     onBack: (() -> Unit)? = null,
-    @DrawableRes endIconId: Int,
     onEndClick: () -> Unit
 ) {
     OrangeAppBar(

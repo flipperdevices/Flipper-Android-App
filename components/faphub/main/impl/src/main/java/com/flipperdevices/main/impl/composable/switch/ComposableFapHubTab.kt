@@ -64,10 +64,10 @@ fun ComposableFapHubTab(
 
 @Composable
 private fun ComposableFapHubTabInternal(
-    modifier: Modifier = Modifier,
     @DrawableRes iconId: Int,
     @StringRes titleId: Int,
-    notificationCount: Int
+    notificationCount: Int,
+    modifier: Modifier = Modifier
 ) = Row(
     modifier = modifier,
     verticalAlignment = Alignment.CenterVertically,
@@ -129,13 +129,11 @@ private fun ComposableFapHubTabInternalPreview() {
     FlipperThemeInternal {
         Row {
             ComposableFapHubTabInternal(
-                Modifier,
                 R.drawable.ic_apps,
                 R.string.faphub_main_tab_apps,
                 notificationCount = 0
             )
             ComposableFapHubTabInternal(
-                Modifier,
                 R.drawable.ic_installed,
                 R.string.faphub_main_tab_installed,
                 notificationCount = 4

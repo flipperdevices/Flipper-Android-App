@@ -11,8 +11,8 @@ import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 fun ComposableNfcAttack(
-    modifier: Modifier = Modifier,
     onOpenMfKey32: () -> Unit,
+    modifier: Modifier = Modifier,
     onBack: () -> Unit
 ) {
     val viewModel: NfcAttackViewModel = tangleViewModel()

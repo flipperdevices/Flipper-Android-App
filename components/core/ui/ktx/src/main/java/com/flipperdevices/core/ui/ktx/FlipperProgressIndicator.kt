@@ -30,11 +30,11 @@ private const val PERCENT_MIN = 0.0001f
 
 @Composable
 fun FlipperProgressIndicator(
-    modifier: Modifier = Modifier,
     accentColor: Color,
     secondColor: Color,
     @DrawableRes iconId: Int?,
-    percent: Float?
+    percent: Float?,
+    modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier

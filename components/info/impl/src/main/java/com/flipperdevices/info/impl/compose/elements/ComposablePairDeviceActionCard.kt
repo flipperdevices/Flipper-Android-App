@@ -66,8 +66,8 @@ fun ComposablePairDeviceActionCard(
 
 @Composable
 private fun ComposableDisconnectElement(
-    modifier: Modifier = Modifier,
-    connectViewModel: ConnectViewModel
+    connectViewModel: ConnectViewModel,
+    modifier: Modifier = Modifier
 ) {
     ButtonElementRow(
         modifier = modifier,
@@ -80,8 +80,8 @@ private fun ComposableDisconnectElement(
 
 @Composable
 private fun ComposableConnectElement(
-    modifier: Modifier = Modifier,
-    connectViewModel: ConnectViewModel
+    connectViewModel: ConnectViewModel,
+    modifier: Modifier = Modifier
 ) {
     ButtonElementRow(
         modifier = modifier,
@@ -94,8 +94,8 @@ private fun ComposableConnectElement(
 
 @Composable
 private fun ComposableFirstConnectElement(
-    modifier: Modifier = Modifier,
-    connectViewModel: ConnectViewModel
+    connectViewModel: ConnectViewModel,
+    modifier: Modifier = Modifier
 ) {
     ButtonElementRow(
         modifier = modifier,

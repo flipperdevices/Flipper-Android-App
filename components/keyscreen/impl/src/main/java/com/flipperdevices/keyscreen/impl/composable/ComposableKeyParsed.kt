@@ -43,9 +43,9 @@ fun ComposableKeyParsed(
             router.exit()
         }
         ComposableKeyCard(
-            Modifier.padding(all = 24.dp),
             keyScreenState.parsedKey,
             keyScreenState.deleteState,
+            Modifier.padding(all = 24.dp),
             synchronizationState = if (keyScreenState.deleteState == DeleteState.NOT_DELETED) {
                 { ->
                     synchronizationUiApi.RenderSynchronizationState(

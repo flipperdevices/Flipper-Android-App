@@ -79,8 +79,8 @@ private fun ComposableDeletedAppBar(
 
 @Composable
 private fun ComposableDeletedAppBarInternal(
-    modifier: Modifier = Modifier,
     onDeleteAllDialogOpen: () -> Unit,
+    modifier: Modifier = Modifier,
     onRestoreAllDialogOpen: () -> Unit
 ) {
     var showMenu by remember { mutableStateOf(false) }

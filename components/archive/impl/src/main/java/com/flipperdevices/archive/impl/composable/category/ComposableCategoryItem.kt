@@ -23,9 +23,9 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableCategoryItem(
-    modifier: Modifier = Modifier,
     categoryItem: CategoryItem,
-    categoryViewModel: CategoryViewModel
+    categoryViewModel: CategoryViewModel,
+    modifier: Modifier = Modifier
 ) {
     val router = LocalRouter.current
 

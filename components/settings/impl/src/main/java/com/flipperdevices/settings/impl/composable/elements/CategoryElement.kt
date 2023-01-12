@@ -10,10 +10,10 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
 fun CategoryElement(
-    modifier: Modifier = Modifier,
     @StringRes titleId: Int,
-    @StringRes descriptionId: Int? = null,
     state: Boolean,
+    modifier: Modifier = Modifier,
+    @StringRes descriptionId: Int? = null,
     onSwitchState: (Boolean) -> Unit
 ) {
     Row(

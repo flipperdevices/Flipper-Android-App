@@ -29,13 +29,18 @@ fun ComposableFirmwareUpdaterContent(
     onSelectFirmwareChannel: (FirmwareChannel) -> Unit
 ) {
     val inProgress = version == null
-    ComposableDeviceInfoRow(modifier = modifier, titleId = R.string.updater_card_updater_channel, inProgress = false) {
-        ComposableUpdaterFirmwareVersionWithChoice(
-            modifier = it,
-            onSelectFirmwareChannel = onSelectFirmwareChannel,
-            version = version
-        )
-    }
+    ComposableDeviceInfoRow(
+        titleId = R.string.updater_card_updater_channel,
+        inProgress = false,
+        content = {
+            ComposableUpdaterFirmwareVersionWithChoice(
+                modifier = it,
+                onSelectFirmwareChannel = onSelectFirmwareChannel,
+                version = version
+            )
+        },
+        modifier = modifier
+    )
     ComposableInfoDivider()
     ComposableUpdateButton(updateCardState, inProgress)
 }

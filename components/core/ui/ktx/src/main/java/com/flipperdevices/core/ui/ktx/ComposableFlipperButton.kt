@@ -19,8 +19,8 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
 fun ComposableFlipperButton(
-    modifier: Modifier = Modifier,
     text: String,
+    modifier: Modifier = Modifier,
     textPadding: PaddingValues = PaddingValues(vertical = 16.dp, horizontal = 38.dp),
     onClick: () -> Unit = {},
     textStyle: TextStyle = TextStyle()

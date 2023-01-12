@@ -9,8 +9,8 @@ import com.flipperdevices.faphub.installation.impl.R
 
 @Composable
 fun ComposableFapInstallationButton(
-    modifier: Modifier = Modifier,
-    textSize: TextUnit
+    textSize: TextUnit,
+    modifier: Modifier = Modifier
 ) {
     ComposableFlipperButton(
         modifier = modifier,
@@ -22,8 +22,8 @@ fun ComposableFapInstallationButton(
 
 @Composable
 fun ComposableFapUpdateButton(
-    modifier: Modifier = Modifier,
-    textSize: TextUnit
+    textSize: TextUnit,
+    modifier: Modifier = Modifier
 ) {
     ComposableFlipperButton(
         modifier = modifier,

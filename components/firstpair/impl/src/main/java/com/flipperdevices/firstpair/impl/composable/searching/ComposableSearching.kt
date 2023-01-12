@@ -40,9 +40,9 @@ fun ComposableSearchingScreen(
 
 @Composable
 fun ComposableSearchingContent(
-    modifier: Modifier = Modifier,
     content: SearchingContent,
     onDeviceClick: (DiscoveredBluetoothDevice) -> Unit,
+    modifier: Modifier = Modifier,
     onRefreshSearching: () -> Unit
 ) {
     when (content) {

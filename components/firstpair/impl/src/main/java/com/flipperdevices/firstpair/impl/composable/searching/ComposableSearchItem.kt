@@ -34,9 +34,9 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 @Composable
 @Suppress("LongMethod")
 fun ComposableSearchItem(
-    modifier: Modifier = Modifier,
     text: String,
     isConnecting: Boolean,
+    modifier: Modifier = Modifier,
     onConnectionClick: () -> Unit
 ) {
     Card(

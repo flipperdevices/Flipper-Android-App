@@ -131,9 +131,9 @@ private fun ConnectedText(deviceStatus: DeviceStatus.Connected) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 ComposableFlipperBattery(
-                    Modifier.size(width = 30.dp, height = 14.dp),
                     percent = batteryValue,
-                    isCharging = isCharging
+                    isCharging = isCharging,
+                    Modifier.size(width = 30.dp, height = 14.dp),
                 )
                 Text(
                     modifier = Modifier.padding(start = 5.dp),

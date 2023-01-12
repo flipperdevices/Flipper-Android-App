@@ -10,9 +10,9 @@ import com.flipperdevices.wearable.emulate.impl.R
 
 @Composable
 fun ComposableActionDisable(
-    modifier: Modifier = Modifier,
     keyEmulateUiApi: KeyEmulateUiApi,
-    keyType: FlipperKeyType?
+    keyType: FlipperKeyType?,
+    modifier: Modifier = Modifier
 ) {
     val textId = when (keyType) {
         FlipperKeyType.SUB_GHZ,

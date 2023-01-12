@@ -12,8 +12,8 @@ import com.flipperdevices.faphub.dao.api.model.FapItem
 
 @Composable
 fun ComposableFapHeader(
-    modifier: Modifier = Modifier,
     fapItem: FapItem?,
+    modifier: Modifier = Modifier,
     installationButton: @Composable (FapItem?, Modifier, TextUnit) -> Unit
 ) = Column(modifier) {
     ComposableFapTitle(
@@ -41,8 +41,8 @@ fun ComposableFapHeader(
 private fun ComposableFapHeaderPreview() {
     FlipperThemeInternal {
         ComposableFapHeader(
+            fapItem = null,
             Modifier.padding(horizontal = 24.dp),
-            fapItem = null
         ) { _, _, _ -> }
     }
 }

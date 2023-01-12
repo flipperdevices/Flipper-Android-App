@@ -60,13 +60,17 @@ private fun ComposableSoftwareRevision(
     if (value == null) {
         ComposableDeviceInfoRow(titleId = titleId, inProgress = inProgress, content = null)
     } else {
-        ComposableDeviceInfoRow(titleId, inProgress) { modifier ->
-            ComposableLongDeviceInfoRowText(
-                modifier = modifier,
-                text = value,
-                lines = 2,
-                color = color
-            )
-        }
+        ComposableDeviceInfoRow(
+            titleId,
+            inProgress,
+            content = { modifier ->
+                ComposableLongDeviceInfoRowText(
+                    modifier = modifier,
+                    text = value,
+                    lines = 2,
+                    color = color
+                )
+            }
+        )
     }
 }

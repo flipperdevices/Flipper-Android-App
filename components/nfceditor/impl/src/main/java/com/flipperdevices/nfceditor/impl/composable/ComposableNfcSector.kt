@@ -17,12 +17,12 @@ import com.flipperdevices.nfceditor.impl.viewmodel.NfcEditorViewModel
 @Composable
 @Suppress("MagicNumber")
 fun ComposableNfcSector(
-    modifier: Modifier = Modifier,
     nfcEditorViewModel: NfcEditorViewModel,
     nfcEditorState: NfcEditorState,
     sectorIndex: Int,
     maxIndexSymbolCount: Int,
     scaleFactor: Float,
+    modifier: Modifier = Modifier,
     onPositionActiveLine: (Int) -> Unit
 ) {
     Column(modifier = modifier) {

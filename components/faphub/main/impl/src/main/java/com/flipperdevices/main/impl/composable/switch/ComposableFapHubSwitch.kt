@@ -97,10 +97,10 @@ fun ComposableFapHubNewSwitch(
 
 @Composable
 fun ComposableFapHubSwitch(
-    modifier: Modifier = Modifier,
     fapHubTabEnum: FapHubTabEnum,
     onSelect: (FapHubTabEnum) -> Unit,
-    installedNotificationCount: Int
+    installedNotificationCount: Int,
+    modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier

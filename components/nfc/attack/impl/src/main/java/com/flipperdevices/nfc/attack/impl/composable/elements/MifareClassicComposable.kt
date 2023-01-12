@@ -72,8 +72,8 @@ private fun MifareClassicTitle() = Row(
 
 @Composable
 private fun MifareClassicMfKey32(
-    modifier: Modifier = Modifier,
-    hasNotification: Boolean
+    hasNotification: Boolean,
+    modifier: Modifier = Modifier
 ) = Row(
     modifier = modifier,
     verticalAlignment = Alignment.CenterVertically

@@ -58,9 +58,9 @@ fun ColumnScope.ComposableDeveloperFooter(
 
 @Composable
 private fun ComposableGithubLink(
-    modifier: Modifier = Modifier,
     @StringRes textId: Int,
-    url: String?
+    url: String?,
+    modifier: Modifier = Modifier
 ) = Row(
     modifier = modifier,
     verticalAlignment = Alignment.CenterVertically

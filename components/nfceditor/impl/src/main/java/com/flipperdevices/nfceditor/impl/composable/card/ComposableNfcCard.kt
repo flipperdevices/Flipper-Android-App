@@ -79,12 +79,12 @@ fun ComposableNfcCard(
 @Composable
 @Suppress("MagicNumber")
 private fun ComposableNfcCardInternal(
-    modifier: Modifier = Modifier,
     nfcEditorCardInfo: NfcEditorCardInfo,
     isOpened: Boolean,
     onClick: () -> Unit,
     scaleFactor: Float,
     currentCell: NfcEditorCellLocation?,
+    modifier: Modifier = Modifier,
     onCellClick: (NfcEditorCellLocation) -> Unit
 ) {
     Column(

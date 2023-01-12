@@ -50,8 +50,8 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableUpdaterFirmwareVersionWithChoice(
-    modifier: Modifier = Modifier,
     version: FirmwareVersion?,
+    modifier: Modifier = Modifier,
     onSelectFirmwareChannel: (FirmwareChannel) -> Unit = {}
 ) {
     var showMenu by remember { mutableStateOf(false) }
@@ -144,7 +144,7 @@ fun ComposableDropMenuFirmwareBuild(
                         .offset { IntOffset(coordinateMenuByX, coordinateMenuByY) }
                         .padding(end = 14.dp)
                 ) {
-                    ComposableFirmwareColumn(onClickMenuItem)
+                    ComposableFirmwareColumn(onClickMenuItem = onClickMenuItem)
                 }
             }
         }
@@ -153,8 +153,8 @@ fun ComposableDropMenuFirmwareBuild(
 
 @Composable
 fun ComposableFirmwareColumn(
-    onClickMenuItem: (FirmwareChannel) -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClickMenuItem: (FirmwareChannel) -> Unit
 ) {
     Column(modifier = modifier) {
         val channels = FirmwareChannel.values().filter { it != FirmwareChannel.UNKNOWN }

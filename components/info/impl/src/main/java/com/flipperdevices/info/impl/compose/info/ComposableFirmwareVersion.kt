@@ -27,21 +27,22 @@ fun ComposableFirmwareVersion(
         ComposableDeviceInfoRow(
             R.string.info_device_info_version,
             firmwareVersionInProgress,
-            modifier,
-            null
+            null,
+            modifier
         )
         return
     }
     ComposableDeviceInfoRow(
         R.string.info_device_info_version,
-        firmwareVersionInProgress
-    ) {
-        ComposableLongDeviceInfoRowText(
-            modifier = it,
-            text = getTextByVersion(firmwareVersion),
-            color = getColorByChannel(firmwareVersion.channel)
-        )
-    }
+        firmwareVersionInProgress,
+        content = {
+            ComposableLongDeviceInfoRowText(
+                modifier = it,
+                text = getTextByVersion(firmwareVersion),
+                color = getColorByChannel(firmwareVersion.channel)
+            )
+        }
+    )
 }
 
 @Composable
@@ -54,8 +55,8 @@ fun ComposableFirmwareBuildDate(
         ComposableDeviceInfoRow(
             R.string.info_device_info_build_date,
             firmwareVersionInProgress,
-            modifier,
-            null
+            null,
+            modifier
         )
         return
     }

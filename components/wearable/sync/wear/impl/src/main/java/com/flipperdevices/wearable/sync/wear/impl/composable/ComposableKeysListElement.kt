@@ -27,9 +27,9 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableKeysListCategory(
+    @StringRes textId: Int,
     modifier: Modifier = Modifier,
-    @DrawableRes iconId: Int? = null,
-    @StringRes textId: Int
+    @DrawableRes iconId: Int? = null
 ) {
     Row(
         modifier = modifier,

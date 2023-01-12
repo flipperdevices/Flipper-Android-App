@@ -36,8 +36,8 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableInfoCard(
-    modifier: Modifier = Modifier,
     onOpenFullDeviceInfo: () -> Unit,
+    modifier: Modifier = Modifier,
     deviceStatusViewModel: DeviceStatusViewModel = viewModel(),
     firmwareUpdateViewModel: FirmwareUpdateViewModel = viewModel()
 ) {
