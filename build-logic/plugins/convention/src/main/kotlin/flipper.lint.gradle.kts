@@ -33,8 +33,6 @@ tasks.withType<Detekt> {
 
     // Target version of the generated JVM bytecode. It is used for type resolution.
     this.jvmTarget = "1.8"
-
-    autoCorrect = true
 }
 
 dependencies {
