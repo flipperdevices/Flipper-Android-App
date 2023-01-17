@@ -21,6 +21,7 @@ import com.flipperdevices.bottombar.impl.main.viewmodel.InAppNotificationViewMod
 import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
 import com.flipperdevices.connection.api.ConnectionApi
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.ktx.android.parcelable
 import com.flipperdevices.core.ktx.android.setStatusBarColor
 import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.ktx.jre.runBlockingWithLog
@@ -54,7 +55,7 @@ class BottomNavigationFragment : Fragment(), OnBackPressListener, LogTagProvider
     lateinit var settingsDataStore: DataStore<Settings>
 
     private val deeplink: Deeplink?
-        get() = arguments?.get(DeeplinkConstants.KEY) as? Deeplink
+        get() = arguments?.parcelable(DeeplinkConstants.KEY)
 
     init {
         ComponentHolder.component<BottomBarComponent>().inject(this)

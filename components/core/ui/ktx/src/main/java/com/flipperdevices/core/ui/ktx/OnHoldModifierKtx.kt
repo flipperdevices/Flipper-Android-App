@@ -10,7 +10,6 @@ import androidx.compose.ui.input.pointer.PointerInputScope
 import androidx.compose.ui.input.pointer.changedToUpIgnoreConsumed
 import androidx.compose.ui.input.pointer.isOutOfBounds
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.input.pointer.positionChangeConsumed
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.withTimeout
 
@@ -56,7 +55,7 @@ suspend fun PointerInputScope.awaitLongPressOrCancellation(
 
                     if (
                         event.changes.any {
-                            it.consumed.downChange || it.isOutOfBounds(size, extendedTouchPadding)
+                            it.isConsumed || it.isOutOfBounds(size, extendedTouchPadding)
                         }
                     ) {
                         finished = true // Canceled
@@ -66,7 +65,7 @@ suspend fun PointerInputScope.awaitLongPressOrCancellation(
                     // the existing pointer event because it comes after the Main pass we checked
                     // above.
                     val consumeCheck = awaitPointerEvent(PointerEventPass.Final)
-                    if (consumeCheck.changes.any { it.positionChangeConsumed() }) {
+                    if (consumeCheck.changes.any { it.isConsumed }) {
                         finished = true
                     }
                     if (event.changes.firstOrNull { it.id == currentDown.id }?.pressed == true) {

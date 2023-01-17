@@ -3,12 +3,13 @@ package com.flipperdevices.uploader.api
 import android.os.Bundle
 import androidx.navigation.NavType
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
+import com.flipperdevices.core.ktx.android.parcelable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
 class FlipperKeyPathType : NavType<FlipperKeyPath>(isNullableAllowed = true) {
     override fun get(bundle: Bundle, key: String): FlipperKeyPath? {
-        return bundle.getParcelable(key)
+        return bundle.parcelable(key)
     }
 
     override fun parseValue(value: String): FlipperKeyPath {

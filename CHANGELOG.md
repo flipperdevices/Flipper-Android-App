@@ -12,6 +12,7 @@
 - [REFACTOR] Format markdown changelog
 - [REFACTOR] Enable detekt formatting
 - [REFACTOR] Android lint
+- [REFACTOR] Fix gradle warnings
 
 # 1.4.0
 

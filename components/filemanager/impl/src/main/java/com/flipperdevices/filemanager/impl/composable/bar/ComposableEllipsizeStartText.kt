@@ -25,7 +25,7 @@ fun ComposableEllipsizeStartText(
     textStyle: TextStyle = LocalTextStyle.current
 ) {
     BoxWithConstraints(
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
         var fittableText = text
         var alreadyReplacedCount = 2

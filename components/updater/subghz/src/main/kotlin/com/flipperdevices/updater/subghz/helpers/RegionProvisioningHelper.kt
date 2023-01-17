@@ -41,6 +41,7 @@ class RegionProvisioningHelperImpl @Inject constructor(
         val locale: String = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             context.resources.configuration.locales[0].country
         } else {
+            @Suppress("DEPRECATION")
             context.resources.configuration.locale.country
         }
         return locale.uppercase()

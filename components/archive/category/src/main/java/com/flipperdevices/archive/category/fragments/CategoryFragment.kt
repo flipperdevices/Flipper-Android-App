@@ -8,6 +8,7 @@ import com.flipperdevices.archive.category.di.CategoryComponent
 import com.flipperdevices.archive.model.CategoryType
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.ktx.android.parcelable
 import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.ui.fragment.ComposeFragment
 import javax.inject.Inject
@@ -26,7 +27,7 @@ class CategoryFragment : ComposeFragment() {
 
     @Composable
     override fun RenderView() {
-        val categoryType = arguments?.getParcelable<CategoryType>(EXTRA_CATEGORY_TYPE)
+        val categoryType = arguments?.parcelable<CategoryType>(EXTRA_CATEGORY_TYPE)
         if (categoryType != null) {
             when (categoryType) {
                 is CategoryType.ByFileType -> ComposableCategory(categoryType, synchronizationUiApi)

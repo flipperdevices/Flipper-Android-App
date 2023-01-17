@@ -12,6 +12,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperFile
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
+import com.flipperdevices.core.ktx.android.parcelable
 import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.navigation.delegates.OnBackPressListener
 import com.flipperdevices.core.navigation.requireRouter
@@ -26,7 +27,7 @@ class NfcEditorFragment : ComposeFragment(), OnBackPressListener {
     private val viewModel by viewModels<NfcEditorViewModel> {
         NfcEditorViewModelFactory(
             requireContext().applicationContext as Application,
-            arguments?.getParcelable(EXTRA_FLIPPER_KEY)
+            arguments?.parcelable(EXTRA_FLIPPER_KEY)
                 ?: FlipperKey(
                     mainFile = FlipperFile(
                         FlipperFilePath.DUMMY,
