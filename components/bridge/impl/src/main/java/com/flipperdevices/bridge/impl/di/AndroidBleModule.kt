@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothManager
 import android.content.Context
 import androidx.core.content.ContextCompat
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ktx.android.getBluetoothAdapter
 import com.squareup.anvil.annotations.ContributesTo
 import dagger.Module
 import dagger.Provides
@@ -16,7 +17,7 @@ class AndroidBleModule {
     @Provides
     @Singleton
     fun provideBluetoothAdapter(bluetoothManager: BluetoothManager?): BluetoothAdapter {
-        return bluetoothManager?.adapter ?: BluetoothAdapter.getDefaultAdapter()
+        return bluetoothManager.getBluetoothAdapter()
     }
 
     @Provides

@@ -1,6 +1,5 @@
 package com.flipperdevices.widget.impl.tasks
 
-import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothManager
 import android.content.Context
 import androidx.core.content.ContextCompat
@@ -9,6 +8,7 @@ import androidx.work.WorkerParameters
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.ktx.android.getBluetoothAdapter
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.widget.impl.di.WidgetComponent
@@ -85,7 +85,7 @@ class WaitingForFlipperConnectWorker(
             applicationContext,
             BluetoothManager::class.java
         )
-        val adapter = bluetoothManager?.adapter ?: BluetoothAdapter.getDefaultAdapter()
+        val adapter = bluetoothManager?.getBluetoothAdapter()
         return adapter?.isEnabled ?: false
     }
 }
