@@ -9,9 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.api.scanner.DiscoveredBluetoothDevice
 import com.flipperdevices.bridge.api.utils.Constants
+import com.flipperdevices.core.ui.ktx.SwipeRefresh
 import com.flipperdevices.firstpair.impl.model.SearchingContent
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 fun ComposableSearchingDevices(
@@ -22,13 +21,9 @@ fun ComposableSearchingDevices(
 ) {
     val devices = state.devices
 
-    SwipeRefresh(
-        modifier = modifier,
-        state = rememberSwipeRefreshState(false),
-        onRefresh = onRefreshSearching
-    ) {
+    SwipeRefresh(onRefreshSearching) {
         LazyColumn(
-            modifier = Modifier.padding(vertical = 18.dp),
+            modifier = modifier.padding(vertical = 18.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             items(

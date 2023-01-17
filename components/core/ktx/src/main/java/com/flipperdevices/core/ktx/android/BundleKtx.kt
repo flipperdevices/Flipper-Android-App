@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.os.Parcelable
 import java.io.Serializable
 
-
 inline fun <reified T : Parcelable> Bundle.parcelable(key: String): T? {
     return when {
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> {
