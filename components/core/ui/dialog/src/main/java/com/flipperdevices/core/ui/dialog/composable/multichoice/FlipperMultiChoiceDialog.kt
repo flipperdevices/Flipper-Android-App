@@ -13,8 +13,8 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 
 @Composable
 fun FlipperMultiChoiceDialog(
-    modifier: Modifier = Modifier,
-    model: FlipperMultiChoiceDialogModel
+    model: FlipperMultiChoiceDialogModel,
+    modifier: Modifier = Modifier
 ) {
     // Disable selection on dialog, because on SelectionContainer crash
     DisableSelection {

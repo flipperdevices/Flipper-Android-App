@@ -23,8 +23,11 @@ import com.flipperdevices.nfc.mfkey32.screen.R
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
-fun NotFoundCompleteAttack(onDone: () -> Unit) = Column(
-    Modifier.fillMaxWidth(),
+fun NotFoundCompleteAttack(
+    onDone: () -> Unit,
+    modifier: Modifier = Modifier,
+) = Column(
+    modifier.fillMaxWidth(),
     horizontalAlignment = Alignment.CenterHorizontally
 ) {
     Text(
@@ -62,7 +65,7 @@ fun NotFoundCompleteAttack(onDone: () -> Unit) = Column(
 private fun ComposableNotFoundCompleteAttackPreview() {
     FlipperThemeInternal {
         Box {
-            NotFoundCompleteAttack {}
+            NotFoundCompleteAttack({})
         }
     }
 }

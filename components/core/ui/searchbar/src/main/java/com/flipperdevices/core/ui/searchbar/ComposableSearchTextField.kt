@@ -21,27 +21,27 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
 internal fun ComposableSearchTextField(
-    modifier: Modifier = Modifier,
     text: String,
     hint: String,
+    modifier: Modifier = Modifier,
     onTextChange: (String) -> Unit
 ) {
     SearchTextBox(
-        modifier,
         text,
         label = { SearchTextLabel(hint) },
         onTextChange,
-        LocalTypography.current.bodyR16
+        LocalTypography.current.bodyR16,
+        modifier
     )
 }
 
 @Composable
 private fun SearchTextBox(
-    modifier: Modifier = Modifier,
     text: String,
     label: @Composable () -> Unit,
     onTextChange: (String) -> Unit,
-    textStyle: TextStyle
+    textStyle: TextStyle,
+    modifier: Modifier = Modifier
 ) {
     val focusManager = LocalFocusManager.current
     val decorationBox = @Composable { innerTextField: @Composable () -> Unit ->

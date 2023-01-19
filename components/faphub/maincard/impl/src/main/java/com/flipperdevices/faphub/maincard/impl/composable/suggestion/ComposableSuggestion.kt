@@ -24,13 +24,13 @@ import tangle.viewmodel.compose.tangleViewModel
 fun ComposableSuggestion(modifier: Modifier = Modifier) {
     val viewModel = tangleViewModel<FapMainCardViewModel>()
     val state by viewModel.getFapMainCardState().collectAsState()
-    ComposableSuggestionContent(modifier, state)
+    ComposableSuggestionContent(state, modifier)
 }
 
 @Composable
 private fun ComposableSuggestionContent(
-    modifier: Modifier = Modifier,
-    state: FapMainCardState
+    state: FapMainCardState,
+    modifier: Modifier = Modifier
 ) {
     when (state) {
         FapMainCardState.FailedLoad -> Text(

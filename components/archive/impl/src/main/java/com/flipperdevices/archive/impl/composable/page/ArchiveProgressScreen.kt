@@ -26,10 +26,11 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 @Composable
 fun ArchiveProgressScreen(
     inProgressState: SynchronizationState.InProgress,
-    onCancel: () -> Unit
+    onCancel: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -66,6 +67,6 @@ fun ArchiveProgressScreen(
 @Composable
 private fun ComposableArchiveProgressScreenPreview() {
     FlipperThemeInternal {
-        ArchiveProgressScreen(SynchronizationState.InProgress(0f)) { }
+        ArchiveProgressScreen(SynchronizationState.InProgress(0f), {})
     }
 }

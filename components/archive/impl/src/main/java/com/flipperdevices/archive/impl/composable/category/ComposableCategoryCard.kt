@@ -15,9 +15,11 @@ import com.flipperdevices.archive.impl.viewmodel.CategoryViewModel
 import com.flipperdevices.core.ui.theme.LocalPallet
 
 @Composable
-fun ComposableCategoryCard() {
+fun ComposableCategoryCard(
+    modifier: Modifier = Modifier
+) {
     Card(
-        modifier = Modifier.padding(top = 14.dp, start = 14.dp, end = 14.dp, bottom = 2.dp)
+        modifier = modifier.padding(top = 14.dp, start = 14.dp, end = 14.dp, bottom = 2.dp)
     ) {
         ComposableCategoryList()
     }

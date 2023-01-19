@@ -19,12 +19,13 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 internal fun FlipperDialogContent(
+    buttons: @Composable () -> Unit,
+    modifier: Modifier = Modifier,
     image: (@Composable () -> Unit)? = null,
     title: (@Composable () -> Unit)? = null,
     text: (@Composable () -> Unit)? = null,
-    buttons: @Composable () -> Unit,
     onDismissRequest: (() -> Unit)? = null
-) = Column(Modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+) = Column(modifier, horizontalAlignment = Alignment.CenterHorizontally) {
     if (onDismissRequest != null) {
         Box(
             Modifier.fillMaxWidth(),

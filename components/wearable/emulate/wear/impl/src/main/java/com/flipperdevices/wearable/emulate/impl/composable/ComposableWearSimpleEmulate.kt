@@ -11,10 +11,10 @@ import com.flipperdevices.wearable.emulate.impl.R
 
 @Composable
 fun ComposableWearSimpleEmulate(
-    modifier: Modifier = Modifier,
     emulateProgress: EmulateProgress?,
     keyEmulateUiApi: KeyEmulateUiApi,
     onClickEmulate: () -> Unit,
+    modifier: Modifier = Modifier,
     onStopEmulate: () -> Unit
 ) {
     if (emulateProgress == null) {

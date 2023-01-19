@@ -34,13 +34,14 @@ import kotlin.math.roundToInt
 @Composable
 fun ComposableScreen(
     viewModel: ScreenStreamingViewModel,
+    modifier: Modifier = Modifier,
     onPressButton: (ButtonEnum) -> Unit = {},
     onLongPressButton: (ButtonEnum) -> Unit = {}
 ) {
     val flipperScreen by viewModel.getFlipperScreen().collectAsState()
     val speedState by viewModel.getSpeed().collectAsState()
 
-    Column {
+    Column(modifier = modifier) {
         Column(
             modifier = Modifier
                 .fillMaxSize()

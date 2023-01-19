@@ -15,10 +15,11 @@ import com.flipperdevices.firstpair.impl.R
 
 @Composable
 fun ComposableSearchingFooter(
-    onClickSkipConnection: () -> Unit
+    onClickSkipConnection: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Text(
-        modifier = Modifier
+        modifier = modifier
             .clickableRipple(onClick = onClickSkipConnection)
             .padding(all = 8.dp)
             .fillMaxWidth(),

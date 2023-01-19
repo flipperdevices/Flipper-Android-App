@@ -29,9 +29,10 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 @Composable
 fun CompleteAttack(
     keysCollected: ImmutableList<String>,
-    onDone: () -> Unit
+    onDone: () -> Unit,
+    modifier: Modifier = Modifier,
 ) = Column(
-    Modifier.fillMaxWidth(),
+    modifier.fillMaxWidth(),
     horizontalAlignment = Alignment.CenterHorizontally
 ) {
     val text = if (keysCollected.size == 1) {
@@ -85,7 +86,7 @@ fun CompleteAttack(
 private fun ComposableCompleteAttackPreviewSinglePreview() {
     FlipperThemeInternal {
         Box {
-            CompleteAttack(persistentListOf("A0B1C2D3A4A1")) {}
+            CompleteAttack(persistentListOf("A0B1C2D3A4A1"), {})
         }
     }
 }
@@ -104,8 +105,9 @@ private fun ComposableCompleteAttackPreviewEvenPreview() {
                     "A0B1C2D3A4A1",
                     "A0B1C2D3A4A1",
                     "A0B1C2D3A4A1"
-                )
-            ) {}
+                ),
+                {}
+            )
         }
     }
 }
@@ -125,8 +127,9 @@ private fun ComposableCompleteAttackPreviewOddPreview() {
                     "A0B1C2D3A4A1",
                     "A0B1C2D3A4A1",
                     "A0B1C2D3A4A1"
-                )
-            ) {}
+                ),
+                {}
+            )
         }
     }
 }

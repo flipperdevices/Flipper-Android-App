@@ -24,12 +24,12 @@ class KeyEmulateUiApiImpl @Inject constructor() : KeyEmulateUiApi {
         progressColor: Color
     ) {
         ComposableEmulateButton(
-            modifier,
-            buttonContentModifier,
-            emulateProgress,
             textId,
             picture,
             color,
+            modifier,
+            buttonContentModifier,
+            emulateProgress,
             progressColor
         )
     }

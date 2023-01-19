@@ -32,10 +32,11 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 @Composable
 fun MifareClassicComposable(
     nfcAttackViewModel: NfcAttackViewModel,
-    onOpenMfKey32: () -> Unit
+    onOpenMfKey32: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Card(
-        modifier = Modifier.padding(14.dp),
+        modifier = modifier.padding(14.dp),
         shape = RoundedCornerShape(10.dp)
     ) {
         Column {
@@ -71,8 +72,8 @@ private fun MifareClassicTitle() = Row(
 
 @Composable
 private fun MifareClassicMfKey32(
-    modifier: Modifier = Modifier,
-    hasNotification: Boolean
+    hasNotification: Boolean,
+    modifier: Modifier = Modifier
 ) = Row(
     modifier = modifier,
     verticalAlignment = Alignment.CenterVertically

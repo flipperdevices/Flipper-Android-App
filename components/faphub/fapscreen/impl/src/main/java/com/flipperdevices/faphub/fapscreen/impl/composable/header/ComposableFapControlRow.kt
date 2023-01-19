@@ -23,8 +23,8 @@ import com.flipperdevices.faphub.fapscreen.impl.R
 
 @Composable
 fun ComposableFapControlRow(
-    modifier: Modifier = Modifier,
     fapItem: FapItem?,
+    modifier: Modifier = Modifier,
     installationButton: @Composable (FapItem?, Modifier, TextUnit) -> Unit
 ) = Row(
     modifier = if (fapItem == null) {

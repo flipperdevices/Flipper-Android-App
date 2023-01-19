@@ -18,10 +18,10 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableActionDisable(
-    modifier: Modifier = Modifier,
     @DrawableRes iconId: Int,
     @StringRes textId: Int,
-    reason: DisableButtonReason
+    reason: DisableButtonReason,
+    modifier: Modifier = Modifier
 ) {
     val warningTextId = when (reason) {
         DisableButtonReason.UNKNOWN -> null

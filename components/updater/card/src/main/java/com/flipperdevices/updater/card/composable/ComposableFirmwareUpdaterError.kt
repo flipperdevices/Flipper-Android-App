@@ -28,6 +28,7 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 @Composable
 fun ColumnScope.ComposableFirmwareUpdaterError(
     typeError: UpdateErrorType,
+    modifier: Modifier = Modifier,
     retryUpdate: () -> Unit = {}
 ) {
     val title = stringResource(id = getTitleByUpdateError(typeError))
@@ -35,7 +36,7 @@ fun ColumnScope.ComposableFirmwareUpdaterError(
     val image = painterResourceByKey(id = getImageByUpdateError(typeError))
 
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(

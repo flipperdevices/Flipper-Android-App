@@ -20,7 +20,10 @@ import tangle.viewmodel.compose.tangleViewModel
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
-fun ComposableSimpleEmulateButton(modifier: Modifier = Modifier, flipperKey: FlipperKey) {
+fun ComposableSimpleEmulateButton(
+    flipperKey: FlipperKey,
+    modifier: Modifier = Modifier
+) {
     val emulateViewModel = tangleViewModel<SimpleEmulateViewModel>()
     val emulateButtonState by emulateViewModel.getEmulateButtonStateFlow().collectAsState()
 

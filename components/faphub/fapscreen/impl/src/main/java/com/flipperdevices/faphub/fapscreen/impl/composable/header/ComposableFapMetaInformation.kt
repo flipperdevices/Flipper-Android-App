@@ -30,8 +30,8 @@ private val DEFAULT_INFORMATION_VALUE
 
 @Composable
 internal fun ComposableFapMetaInformation(
-    modifier: Modifier = Modifier,
-    metaInformation: FapMetaInformation?
+    metaInformation: FapMetaInformation?,
+    modifier: Modifier = Modifier
 ) = Row(
     modifier = modifier
         .fillMaxWidth()
@@ -61,9 +61,9 @@ internal fun ComposableFapMetaInformation(
 
 @Composable
 private fun ComposableInformationColumn(
-    modifier: Modifier = Modifier,
     name: String,
-    value: String?
+    value: String?,
+    modifier: Modifier = Modifier
 ) = Column(
     modifier = modifier,
     horizontalAlignment = Alignment.CenterHorizontally,

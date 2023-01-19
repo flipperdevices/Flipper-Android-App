@@ -23,9 +23,9 @@ import com.airbnb.lottie.compose.rememberLottieDynamicProperty
 
 @Composable
 fun ComposeLottiePic(
-    modifier: Modifier = Modifier,
     @RawRes picResId: Int,
     @DrawableRes rollBackPicResId: Int,
+    modifier: Modifier = Modifier,
     tint: Color? = null
 ) {
     val compositionResult = rememberLottieComposition(LottieCompositionSpec.RawRes(picResId))

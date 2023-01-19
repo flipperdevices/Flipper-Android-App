@@ -22,8 +22,8 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 
 @Composable
 fun ComposableAppScreenshot(
-    modifier: Modifier = Modifier,
-    url: String?
+    url: String?,
+    modifier: Modifier = Modifier
 ) {
     var isPlaceholderActive by remember { mutableStateOf(true) }
     var modifierWithClip = modifier

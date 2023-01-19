@@ -25,9 +25,12 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 @Suppress("MagicNumber")
-fun ComposableSchemeCard(scaleFactor: Float) {
+fun ComposableSchemeCard(
+    scaleFactor: Float,
+    modifier: Modifier = Modifier,
+) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding((scaleFactor * 10).dp),
         horizontalArrangement = Arrangement.spacedBy(2.dp),

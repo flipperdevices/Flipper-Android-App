@@ -25,11 +25,11 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
 fun FlipperDialog(
+    buttons: @Composable () -> Unit,
     modifier: Modifier = Modifier,
     image: (@Composable () -> Unit)? = null,
     title: (@Composable () -> Unit)? = null,
     text: (@Composable () -> Unit)? = null,
-    buttons: @Composable () -> Unit,
     onDismissRequest: (() -> Unit)? = null,
     closeOnClickOutside: Boolean = true
 ) {
@@ -46,11 +46,11 @@ fun FlipperDialog(
                     .background(LocalPallet.current.backgroundDialog)
             ) {
                 FlipperDialogContent(
-                    image,
-                    title,
-                    text,
                     buttons,
-                    onDismissRequest
+                    image = image,
+                    title = title,
+                    text = text,
+                    onDismissRequest = onDismissRequest
                 )
             }
         }
@@ -59,6 +59,8 @@ fun FlipperDialog(
 
 @Composable
 fun FlipperDialog(
+    @StringRes buttonTextId: Int,
+    onClickButton: () -> Unit,
     modifier: Modifier = Modifier,
     @DrawableRes imageId: Int? = null,
     @StringRes titleId: Int? = null,
@@ -85,8 +87,6 @@ fun FlipperDialog(
             textAlign = TextAlign.Center
         )
     },
-    @StringRes buttonTextId: Int,
-    onClickButton: () -> Unit,
     buttonComposable: @Composable () -> Unit = {
         ComposableFlipperButton(
             modifier = Modifier.fillMaxWidth(),
@@ -99,11 +99,11 @@ fun FlipperDialog(
     closeOnClickOutside: Boolean = true
 ) {
     FlipperDialog(
+        buttonComposable,
         modifier,
         image = imageComposable,
         title = titleComposable,
         text = textComposable,
-        buttons = buttonComposable,
         onDismissRequest,
         closeOnClickOutside
     )

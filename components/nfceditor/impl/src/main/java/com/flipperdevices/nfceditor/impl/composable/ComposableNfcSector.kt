@@ -22,9 +22,10 @@ fun ComposableNfcSector(
     sectorIndex: Int,
     maxIndexSymbolCount: Int,
     scaleFactor: Float,
+    modifier: Modifier = Modifier,
     onPositionActiveLine: (Int) -> Unit
 ) {
-    Column {
+    Column(modifier = modifier) {
         Text(
             modifier = Modifier.padding(
                 top = (scaleFactor * 24).dp,

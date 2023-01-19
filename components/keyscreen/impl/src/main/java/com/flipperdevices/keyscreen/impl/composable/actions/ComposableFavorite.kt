@@ -16,8 +16,8 @@ private const val ICON_SIZE_DP = 24
 
 @Composable
 fun ComposableFavorite(
-    modifier: Modifier = Modifier,
     favoriteState: FavoriteState,
+    modifier: Modifier = Modifier,
     onSwitchFavorites: (Boolean) -> Unit
 ) {
     val iconId = when (favoriteState) {

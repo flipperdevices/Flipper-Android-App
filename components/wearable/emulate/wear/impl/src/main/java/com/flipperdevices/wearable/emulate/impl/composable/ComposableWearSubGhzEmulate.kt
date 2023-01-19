@@ -11,11 +11,11 @@ import com.flipperdevices.wearable.emulate.impl.R
 
 @Composable
 fun ComposableWearSubGhzEmulate(
-    modifier: Modifier = Modifier,
     emulateProgress: EmulateProgress?,
     keyEmulateUiApi: KeyEmulateUiApi,
     onClickEmulate: () -> Unit,
     onSinglePress: () -> Unit,
+    modifier: Modifier = Modifier,
     onStopEmulate: () -> Unit
 ) {
     val buttonActiveModifier = Modifier.onHoldPress(

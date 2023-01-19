@@ -20,9 +20,9 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 
 @Composable
 fun ComposableAppIcon(
-    modifier: Modifier = Modifier,
     url: String?,
-    description: String?
+    description: String?,
+    modifier: Modifier = Modifier
 ) {
     var isPlaceholderActive by remember { mutableStateOf(true) }
     var modifierWithClip = modifier

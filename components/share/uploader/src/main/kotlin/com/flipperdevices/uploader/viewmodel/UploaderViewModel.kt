@@ -28,7 +28,7 @@ import tangle.viewmodel.VMInject
 import java.net.UnknownHostException
 import java.net.UnknownServiceException
 
-private const val SHORT_LINK_SIZE = 200
+private const val SHORT_LINK_SIZE = 256
 
 class UploaderViewModel @VMInject constructor(
     private val keyParser: KeyParser,

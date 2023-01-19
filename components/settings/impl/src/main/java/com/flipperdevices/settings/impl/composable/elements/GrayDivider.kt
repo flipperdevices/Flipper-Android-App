@@ -8,9 +8,11 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPallet
 
 @Composable
-fun GrayDivider() {
+fun GrayDivider(
+    modifier: Modifier = Modifier
+) {
     Divider(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         thickness = 1.dp,
         color = LocalPallet.current.divider12
     )
