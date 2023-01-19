@@ -11,7 +11,7 @@
 - [FIX] Bump length for server-side share link
 - [FIX] Key encryption without paddings
 - [REFACTOR] Fix detekt compose issues
-- [REFACTOR] Format markdown changelog
+- [REFACTOR] Format markdown changelog with clickable link and bold nickname
 - [REFACTOR] Enable detekt formatting with rules
 - [REFACTOR] Fix gradle warnings
 
