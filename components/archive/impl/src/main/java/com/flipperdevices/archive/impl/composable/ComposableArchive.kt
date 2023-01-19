@@ -38,10 +38,9 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
+import com.flipperdevices.core.ui.ktx.SwipeRefresh
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.collections.immutable.ImmutableList
 import tangle.viewmodel.compose.tangleViewModel
 import com.flipperdevices.core.ui.res.R as DesignSystem
@@ -91,10 +90,7 @@ private fun ComposableArchiveReady(
             iconId = DesignSystem.drawable.ic_search,
             onIconClick = { tabViewModel.onOpenSearch() }
         )
-        SwipeRefresh(
-            state = rememberSwipeRefreshState(false),
-            onRefresh = tabViewModel::refresh
-        ) {
+        SwipeRefresh(onRefresh = tabViewModel::refresh) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -113,7 +109,6 @@ private fun ComposableArchiveReady(
                 }
             }
         }
-
         if (!isKeysPresented) {
             if (synchronizationState is SynchronizationState.InProgress) {
                 ComposableProgress()

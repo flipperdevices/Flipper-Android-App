@@ -7,6 +7,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.ktx.android.parcelable
 import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.navigation.delegates.OnBackPressListener
 import com.flipperdevices.core.ui.fragment.ComposeFragment
@@ -30,7 +31,7 @@ class InfoFragment : ComposeFragment(), OnBackPressListener {
     private var navController: NavHostController? = null
 
     private val deeplink: Deeplink?
-        get() = arguments?.get(DeeplinkConstants.KEY) as? Deeplink
+        get() = arguments?.parcelable(DeeplinkConstants.KEY)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

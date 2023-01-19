@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.ktx.android.parcelableExtra
 import com.flipperdevices.core.ktx.android.toFullString
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
@@ -80,7 +81,7 @@ class SingleActivity :
         if (intent == null) {
             return
         }
-        val deeplink = intent.getParcelableExtra<Deeplink>(LAUNCH_PARAMS_INTENT)
+        val deeplink = intent.parcelableExtra<Deeplink>(LAUNCH_PARAMS_INTENT)
         if (deeplink != null) {
             deepLinkHelper.onNewDeeplink(deeplink)
             return

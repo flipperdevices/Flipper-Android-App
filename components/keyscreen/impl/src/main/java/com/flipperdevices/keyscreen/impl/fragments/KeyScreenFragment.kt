@@ -5,6 +5,7 @@ import androidx.fragment.app.viewModels
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.ktx.android.parcelable
 import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.ui.fragment.ComposeFragment
 import com.flipperdevices.keyscreen.api.KeyEmulateApi
@@ -39,7 +40,7 @@ class KeyScreenFragment : ComposeFragment() {
     }
 
     private val flipperKeyPath: FlipperKeyPath?
-        get() = arguments?.getParcelable(EXTRA_KEY_PATH)
+        get() = arguments?.parcelable(EXTRA_KEY_PATH)
 
     private val viewModel by viewModels<KeyScreenViewModel> {
         KeyScreenViewModelFactory(

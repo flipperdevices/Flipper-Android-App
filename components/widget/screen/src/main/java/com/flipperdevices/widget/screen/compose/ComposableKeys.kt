@@ -30,12 +30,11 @@ import com.flipperdevices.archive.api.ArchiveApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
+import com.flipperdevices.core.ui.ktx.SwipeRefresh
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.widget.screen.R
 import com.flipperdevices.widget.screen.viewmodel.WidgetSelectViewModel
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 fun ColumnScope.ComposableKeys(
@@ -48,10 +47,7 @@ fun ColumnScope.ComposableKeys(
     val synchronizationState by widgetSelectViewModel.getSynchronizationFlow().collectAsState()
     val isKeysPresented = favoriteKeys.isNotEmpty() || keys.isNotEmpty()
 
-    SwipeRefresh(
-        state = rememberSwipeRefreshState(false),
-        onRefresh = widgetSelectViewModel::refresh
-    ) {
+    SwipeRefresh(onRefresh = widgetSelectViewModel::refresh) {
         LazyColumn(
             modifier = modifier
                 .fillMaxWidth()

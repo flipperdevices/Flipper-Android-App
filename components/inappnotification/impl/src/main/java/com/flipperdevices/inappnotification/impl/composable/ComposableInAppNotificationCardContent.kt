@@ -58,6 +58,6 @@ private fun ComposableSaveIcon() {
             .padding(all = 8.dp)
             .size(size = 32.dp),
         composition = composition,
-        progress = progress
+        progress = { progress }
     )
 }

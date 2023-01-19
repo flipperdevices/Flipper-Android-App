@@ -106,7 +106,7 @@ class SubGhzViewModel @VMInject constructor(
             null
         }
 
-        var appStarted: Boolean? = null
+        val appStarted: Boolean?
 
         try {
             appStarted = emulateHelper.startEmulate(

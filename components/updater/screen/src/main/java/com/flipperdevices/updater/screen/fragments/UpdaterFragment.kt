@@ -10,6 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.fragment.app.viewModels
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.ktx.android.parcelable
 import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.ui.fragment.ComposeFragment
 import com.flipperdevices.core.ui.fragment.provider.StatusBarColorProvider
@@ -37,7 +38,7 @@ class UpdaterFragment : ComposeFragment(), StatusBarColorProvider {
         super.onAttach(context)
         ComponentHolder.component<UpdaterComponent>().inject(this)
 
-        val updateRequest = arguments?.getParcelable<UpdateRequest>(EXTRA_UPDATE_REQUEST)
+        val updateRequest = arguments?.parcelable<UpdateRequest>(EXTRA_UPDATE_REQUEST)
         updaterViewModel.start(updateRequest)
     }
 
@@ -62,7 +63,7 @@ class UpdaterFragment : ComposeFragment(), StatusBarColorProvider {
             flipperColor = flipperColor,
             onCancel = { isCancelDialogOpen = true },
             onRetry = {
-                val updateRequest = arguments?.getParcelable<UpdateRequest>(EXTRA_UPDATE_REQUEST)
+                val updateRequest = arguments?.parcelable<UpdateRequest>(EXTRA_UPDATE_REQUEST)
                 updaterViewModel.retry(updateRequest)
             }
         )

@@ -7,6 +7,7 @@ import com.flipperdevices.bridge.api.model.StorageStats
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.core.ktx.android.parcelableExtra
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.verbose
@@ -33,6 +34,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import tangle.inject.TangleParam
 import tangle.viewmodel.VMInject
+
 class UpdateCardViewModel @VMInject constructor(
     private val downloaderApi: DownloaderApi,
     private val flipperVersionProviderApi: FlipperVersionProviderApi,
@@ -63,7 +65,7 @@ class UpdateCardViewModel @VMInject constructor(
                 updateChanelFlow.emit(it.selectedChannel.toFirmwareChannel())
             }
         }
-        val deeplink = intent?.getParcelableExtra<Deeplink>("deeplink")
+        val deeplink = intent?.parcelableExtra<Deeplink>("deeplink")
         viewModelScope.launch {
             deeplinkFlow.emit(deeplink)
         }
