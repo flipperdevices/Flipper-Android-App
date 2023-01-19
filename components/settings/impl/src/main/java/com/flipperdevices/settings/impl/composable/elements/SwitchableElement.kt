@@ -9,13 +9,14 @@ import com.flipperdevices.core.ui.ktx.clickableRipple
 
 @Composable
 fun SwitchableElement(
+    state: Boolean,
+    modifier: Modifier = Modifier,
     @StringRes titleId: Int? = null,
     @StringRes descriptionId: Int? = null,
-    state: Boolean,
     onSwitchState: (Boolean) -> Unit
 ) {
     Row(
-        modifier = Modifier.clickableRipple { onSwitchState(!state) },
+        modifier = modifier.clickableRipple { onSwitchState(!state) },
         verticalAlignment = Alignment.CenterVertically
     ) {
         SimpleElement(

@@ -21,19 +21,21 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 @Composable
 fun ComposableAppBar(
     title: String,
+    modifier: Modifier = Modifier,
     onBack: (() -> Unit)? = null
 ) {
-    ComposableAppBar(title = title, onBack = onBack, endContent = null)
+    ComposableAppBar(modifier = modifier, title = title, onBack = onBack, endContent = null)
 }
 
 @Composable
 fun ComposableAppBar(
     title: String,
-    onBack: (() -> Unit)? = null,
     @DrawableRes iconId: Int,
+    modifier: Modifier = Modifier,
+    onBack: (() -> Unit)? = null,
     onIconClick: () -> Unit
 ) {
-    ComposableAppBar(title, onBack) {
+    ComposableAppBar(title, modifier, onBack) {
         Icon(
             modifier = it
                 .clickableRipple(bounded = false, onClick = onIconClick)
@@ -48,11 +50,12 @@ fun ComposableAppBar(
 @Composable
 fun ComposableAppBar(
     title: String,
+    modifier: Modifier = Modifier,
     onBack: (() -> Unit)? = null,
     endContent: (@Composable (Modifier) -> Unit)? = null
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .background(LocalPallet.current.accent),
         verticalAlignment = Alignment.CenterVertically
@@ -77,9 +80,12 @@ fun ComposableAppBar(
 }
 
 @Composable
-private fun AppBarBackArrow(onBack: () -> Unit) {
+private fun AppBarBackArrow(
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Icon(
-        modifier = Modifier
+        modifier = modifier
             .padding(start = 14.dp, top = 8.dp, bottom = 8.dp)
             .clickableRipple(bounded = false, onClick = onBack)
             .size(size = 24.dp),

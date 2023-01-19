@@ -40,7 +40,8 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 @Composable
 fun ColumnScope.ComposableKeys(
     archiveApi: ArchiveApi,
-    widgetSelectViewModel: WidgetSelectViewModel
+    widgetSelectViewModel: WidgetSelectViewModel,
+    modifier: Modifier = Modifier
 ) {
     val keys by widgetSelectViewModel.getKeysFlow().collectAsState()
     val favoriteKeys by widgetSelectViewModel.getFavoriteKeysFlow().collectAsState()
@@ -52,7 +53,7 @@ fun ColumnScope.ComposableKeys(
         onRefresh = widgetSelectViewModel::refresh
     ) {
         LazyColumn(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
         ) {
             if (isKeysPresented) {
@@ -159,9 +160,11 @@ private fun ColumnScope.ComposableProgress() {
 }
 
 @Composable
-fun ComposableFavoriteKeysTitle() {
+fun ComposableFavoriteKeysTitle(
+    modifier: Modifier = Modifier
+) {
     Row(
-        modifier = Modifier.padding(top = 24.dp, start = 14.dp),
+        modifier = modifier.padding(top = 24.dp, start = 14.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
@@ -180,9 +183,11 @@ fun ComposableFavoriteKeysTitle() {
 }
 
 @Composable
-fun ComposableAllKeysTitle() {
+fun ComposableAllKeysTitle(
+    modifier: Modifier = Modifier
+) {
     Text(
-        modifier = Modifier.padding(top = 24.dp, start = 14.dp),
+        modifier = modifier.padding(top = 24.dp, start = 14.dp),
         text = stringResource(R.string.widget_options_all_title),
         style = LocalTypography.current.buttonB16
     )

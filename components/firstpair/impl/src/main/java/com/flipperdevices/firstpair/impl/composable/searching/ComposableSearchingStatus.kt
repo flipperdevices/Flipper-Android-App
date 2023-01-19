@@ -25,10 +25,11 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 @Composable
 fun ComposableSearchingStatus(
     state: SearchingState,
-    onHelpClicking: () -> Unit
+    onHelpClicking: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .padding(top = 50.dp)
             .defaultMinSize(minHeight = 42.dp)
             .fillMaxWidth(),

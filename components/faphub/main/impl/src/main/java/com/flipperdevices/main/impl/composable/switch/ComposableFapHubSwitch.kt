@@ -43,10 +43,11 @@ fun ComposableFapHubNewSwitch(
     onSelect: (FapHubTabEnum) -> Unit,
     installedNotificationCount: Int,
     onEndClick: () -> Unit,
+    modifier: Modifier = Modifier,
     onBack: (() -> Unit)? = null
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .background(LocalPallet.current.accent),
         verticalAlignment = Alignment.CenterVertically
@@ -96,10 +97,10 @@ fun ComposableFapHubNewSwitch(
 
 @Composable
 fun ComposableFapHubSwitch(
-    modifier: Modifier = Modifier,
     fapHubTabEnum: FapHubTabEnum,
     onSelect: (FapHubTabEnum) -> Unit,
-    installedNotificationCount: Int
+    installedNotificationCount: Int,
+    modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier

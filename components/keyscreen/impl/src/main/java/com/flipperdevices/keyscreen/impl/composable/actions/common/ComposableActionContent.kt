@@ -23,8 +23,8 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 @Composable
 fun ComposableActionRow(
     @DrawableRes iconId: Int,
-    tint: Color = LocalPallet.current.iconTint100,
     @StringRes descriptionId: Int,
+    tint: Color = LocalPallet.current.iconTint100,
     descriptionColor: Color = LocalPallet.current.text100,
     onClick: () -> Unit
 ) {
@@ -53,12 +53,12 @@ fun ComposableActionRowInProgress(
 
 @Composable
 private fun ComposableActionRowInternal(
+    @StringRes descriptionId: Int,
+    onClick: (() -> Unit)?,
     @DrawableRes iconId: Int? = null,
     tint: Color = LocalPallet.current.iconTint100,
-    @StringRes descriptionId: Int,
     descriptionColor: Color = LocalPallet.current.text100,
-    isProgress: Boolean = false,
-    onClick: (() -> Unit)?
+    isProgress: Boolean = false
 ) {
     var modifierForRow = Modifier
         .fillMaxWidth()
@@ -73,15 +73,15 @@ private fun ComposableActionRowInternal(
         modifier = modifierForRow,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        ComposableActionContent(iconId, tint, descriptionId, descriptionColor, isProgress)
+        ComposableActionContent(descriptionId, iconId, tint, descriptionColor, isProgress)
     }
 }
 
 @Composable
 private fun ComposableActionContent(
+    @StringRes descriptionId: Int,
     @DrawableRes iconId: Int? = null,
     tint: Color = LocalPallet.current.iconTint100,
-    @StringRes descriptionId: Int,
     descriptionColor: Color = LocalPallet.current.text100,
     isProgress: Boolean = false
 ) {

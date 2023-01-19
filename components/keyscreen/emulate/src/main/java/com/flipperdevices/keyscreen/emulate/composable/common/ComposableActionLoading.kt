@@ -16,8 +16,8 @@ import com.google.accompanist.placeholder.shimmer
 
 @Composable
 fun ComposableActionLoading(
-    modifier: Modifier = Modifier,
-    loadingState: LoadingState
+    loadingState: LoadingState,
+    modifier: Modifier = Modifier
 ) {
     val placeholderColor = LocalPallet.current.text8.copy(alpha = 0.2f)
     ComposableEmulateButtonWithText(
@@ -48,7 +48,7 @@ private fun ComposableLoadingPreview() {
     FlipperThemeInternal {
         Column {
             LoadingState.values().forEach {
-                ComposableActionLoading(Modifier, it)
+                ComposableActionLoading(it)
             }
         }
     }

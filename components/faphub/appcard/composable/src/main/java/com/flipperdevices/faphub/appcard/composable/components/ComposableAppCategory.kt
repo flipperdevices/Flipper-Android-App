@@ -27,8 +27,8 @@ private const val DEFAULT_CATEGORY_NAME = "Loading"
 
 @Composable
 fun ComposableAppCategory(
-    modifier: Modifier = Modifier,
-    category: FapCategory?
+    category: FapCategory?,
+    modifier: Modifier = Modifier
 ) = Row(
     modifier = modifier,
     verticalAlignment = Alignment.CenterVertically

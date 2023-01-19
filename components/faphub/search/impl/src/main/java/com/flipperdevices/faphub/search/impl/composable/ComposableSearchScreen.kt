@@ -18,12 +18,13 @@ import tangle.viewmodel.compose.tangleViewModel
 fun ComposableSearchScreen(
     onBack: () -> Unit,
     onFapItemClick: (FapItem) -> Unit,
+    modifier: Modifier = Modifier,
     installationButton: @Composable (FapItem?, Modifier, TextUnit) -> Unit
 ) {
     val viewModel = tangleViewModel<FapHubSearchViewModel>()
     val fapsList = viewModel.faps.collectAsLazyPagingItems()
 
-    Column {
+    Column(modifier = modifier) {
         ComposableSearchBar(
             hint = stringResource(R.string.faphub_search_hint),
             onChangeText = viewModel::onChangeSearchText,

@@ -28,7 +28,10 @@ import tangle.viewmodel.compose.tangleViewModel
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
-fun ComposableSubGhzSendButton(modifier: Modifier = Modifier, flipperKey: FlipperKey) {
+fun ComposableSubGhzSendButton(
+    flipperKey: FlipperKey,
+    modifier: Modifier = Modifier
+) {
     val emulateViewModel = tangleViewModel<SubGhzViewModel>()
     val emulateButtonState by emulateViewModel.getEmulateButtonStateFlow().collectAsState()
 
@@ -69,10 +72,10 @@ fun ComposableSubGhzSendButton(modifier: Modifier = Modifier, flipperKey: Flippe
 
 @Composable
 private fun ComposableActiveStateEmulateInternal(
-    modifier: Modifier = Modifier,
     emulateViewModel: SubGhzViewModel,
     flipperKey: FlipperKey,
-    emulateButtonState: EmulateButtonState
+    emulateButtonState: EmulateButtonState,
+    modifier: Modifier = Modifier
 ) {
     var isBubbleOpen by remember { mutableStateOf(false) }
     val buttonActiveModifier = Modifier.onHoldPress(
@@ -112,10 +115,10 @@ private fun ComposableActiveStateEmulateInternal(
  */
 @Composable
 private fun ComposableActiveEmulateInternal(
-    modifier: Modifier = Modifier,
-    buttonActiveModifier: Modifier = Modifier,
     emulateProgress: EmulateProgress?,
-    isActive: Boolean
+    isActive: Boolean,
+    modifier: Modifier = Modifier,
+    buttonActiveModifier: Modifier = Modifier
 ) {
     val textId = if (isActive) R.string.keyscreen_sending else R.string.keyscreen_send
     val color = if (isActive) {

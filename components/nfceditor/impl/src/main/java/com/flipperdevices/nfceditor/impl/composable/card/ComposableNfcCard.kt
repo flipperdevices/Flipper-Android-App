@@ -40,10 +40,11 @@ fun ComposableNfcCard(
     nfcEditorCardInfo: NfcEditorCardInfo,
     scaleFactor: Float,
     currentCell: NfcEditorCellLocation?,
-    onCellClick: (NfcEditorCellLocation) -> Unit
+    onCellClick: (NfcEditorCellLocation) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = Modifier.padding(top = 14.dp, bottom = 14.dp, start = 14.dp),
+        modifier = modifier.padding(top = 14.dp, bottom = 14.dp, start = 14.dp),
         shape = RoundedCornerShape(12.dp),
         backgroundColor = LocalPallet.current.nfcCardBackground
     ) {
@@ -78,12 +79,12 @@ fun ComposableNfcCard(
 @Composable
 @Suppress("MagicNumber")
 private fun ComposableNfcCardInternal(
-    modifier: Modifier = Modifier,
     nfcEditorCardInfo: NfcEditorCardInfo,
     isOpened: Boolean,
     onClick: () -> Unit,
     scaleFactor: Float,
     currentCell: NfcEditorCellLocation?,
+    modifier: Modifier = Modifier,
     onCellClick: (NfcEditorCellLocation) -> Unit
 ) {
     Column(
@@ -117,7 +118,7 @@ private fun ComposableNfcCardInternal(
 private fun ComposableNfcCardPreview() {
     FlipperThemeInternal {
         ComposableNfcCard(
-            NfcEditorCardInfo(
+            nfcEditorCardInfo = NfcEditorCardInfo(
                 cardType = NfcEditorCardType.MF_4K,
                 ImmutableEnumMap(
                     CardFieldInfo::class.java,

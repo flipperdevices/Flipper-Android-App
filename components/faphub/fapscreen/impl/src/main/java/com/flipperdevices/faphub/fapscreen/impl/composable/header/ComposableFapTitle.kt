@@ -23,10 +23,10 @@ private val DEFAULT_NAME
 
 @Composable
 internal fun ComposableFapTitle(
-    modifier: Modifier = Modifier,
     name: String?,
     iconUrl: String?,
-    fapCategory: FapCategory?
+    fapCategory: FapCategory?,
+    modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier,

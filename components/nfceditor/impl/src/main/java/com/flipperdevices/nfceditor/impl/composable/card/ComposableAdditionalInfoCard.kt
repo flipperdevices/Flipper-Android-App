@@ -27,9 +27,10 @@ fun ComposableAdditionalInfoCard(
     nfcEditorCardInfo: NfcEditorCardInfo,
     currentActiveCell: NfcEditorCellLocation?,
     scaleFactor: Float,
-    onClick: (NfcEditorCellLocation) -> Unit
+    onClick: (NfcEditorCellLocation) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    Column(modifier = Modifier.padding(12.dp)) {
+    Column(modifier = modifier.padding(12.dp)) {
         ComposableCardFieldInfo(
             nfcEditorCardInfo,
             CardFieldInfo.UID,

@@ -33,9 +33,9 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun ComposableNfcEditor(
-    modifier: Modifier = Modifier,
     nfcEditorViewModel: NfcEditorViewModel,
-    nfcEditorState: NfcEditorState
+    nfcEditorState: NfcEditorState,
+    modifier: Modifier = Modifier
 ) {
     BoxWithConstraints(
         modifier

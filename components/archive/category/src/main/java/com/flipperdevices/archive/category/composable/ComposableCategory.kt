@@ -37,10 +37,11 @@ import kotlinx.collections.immutable.ImmutableList
 @Composable
 fun ComposableCategory(
     categoryType: CategoryType.ByFileType,
-    synchronizationUiApi: SynchronizationUiApi
+    synchronizationUiApi: SynchronizationUiApi,
+    modifier: Modifier = Modifier,
 ) {
     val router = LocalRouter.current
-    Column {
+    Column(modifier = modifier) {
         ComposableAppBar(
             title = categoryType.fileType.humanReadableName,
             onBack = { router.exit() }
@@ -69,12 +70,12 @@ fun ColumnScope.ComposableCategoryContent(
             CategoryEmpty(contentModifier)
         } else {
             CategoryList(
-                contentModifier,
                 categoryType,
                 categoryViewModel,
                 synchronizationUiApi,
                 synchronizationState,
-                localCategoryState.keys
+                localCategoryState.keys,
+                contentModifier
             )
         }
         CategoryState.Loading -> CategoryLoadingProgress(contentModifier)
@@ -83,12 +84,12 @@ fun ColumnScope.ComposableCategoryContent(
 
 @Composable
 private fun CategoryList(
-    modifier: Modifier = Modifier,
     categoryType: CategoryType,
     categoryViewModel: CategoryViewModel,
     synchronizationUiApi: SynchronizationUiApi?,
     synchronizationState: SynchronizationState,
-    keys: ImmutableList<Pair<FlipperKeyParsed, FlipperKey>>
+    keys: ImmutableList<Pair<FlipperKeyParsed, FlipperKey>>,
+    modifier: Modifier = Modifier
 ) {
     val router = LocalRouter.current
     LazyColumn(

@@ -28,11 +28,12 @@ private fun ComposableUpdateFailedContent(
     @DrawableRes imageId: Int?,
     @StringRes titleId: Int?,
     @StringRes descriptionId: Int?,
+    modifier: Modifier = Modifier,
     button: @Composable () -> Unit = {}
 ) {
     if (imageId != null) {
         Image(
-            modifier = Modifier.padding(start = 24.dp, end = 24.dp, bottom = 6.dp),
+            modifier = modifier.padding(start = 24.dp, end = 24.dp, bottom = 6.dp),
             painter = painterResource(imageId),
             contentDescription = titleId?.let { stringResource(it) }
         )
@@ -76,8 +77,12 @@ fun ComposableFailedUploadContent() {
 }
 
 @Composable
-fun ComposableFailedDownloadContent(onRetry: () -> Unit) {
+fun ComposableFailedDownloadContent(
+    onRetry: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     ComposableUpdateFailedContent(
+        modifier = modifier,
         imageId = DesignSystem.drawable.pic_server_error,
         titleId = R.string.update_screen_failed_network_title,
         descriptionId = R.string.update_screen_failed_network_desc

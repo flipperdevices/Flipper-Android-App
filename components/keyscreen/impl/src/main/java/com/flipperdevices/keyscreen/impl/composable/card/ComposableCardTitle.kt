@@ -18,10 +18,10 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableCardTitle(
-    modifier: Modifier = Modifier,
     keyName: String,
     deleteState: DeleteState,
-    onEditName: (() -> Unit)?
+    onEditName: (() -> Unit)?,
+    modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier,

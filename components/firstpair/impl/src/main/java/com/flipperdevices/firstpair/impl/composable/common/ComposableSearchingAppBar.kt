@@ -24,10 +24,11 @@ private const val ICON_SIZE = 24
 @Composable
 fun ComposableSearchingAppBar(
     title: String,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(

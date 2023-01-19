@@ -27,10 +27,14 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableKeysListCategory(
-    @DrawableRes iconId: Int? = null,
-    @StringRes textId: Int
+    @StringRes textId: Int,
+    modifier: Modifier = Modifier,
+    @DrawableRes iconId: Int? = null
 ) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         val iconModifier = Modifier
             .padding(14.dp)
             .size(24.dp)
@@ -53,11 +57,15 @@ fun ComposableKeysListCategory(
 }
 
 @Composable
-fun ComposableKeysListElement(flipperWearKey: FlipperWearKey, onClick: () -> Unit) {
+fun ComposableKeysListElement(
+    flipperWearKey: FlipperWearKey,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
     val type = flipperWearKey.path.path.keyType
     val icon = type?.icon ?: DesignSystem.drawable.ic_fileformat_unknown
     Row(
-        modifier = Modifier.clickable(
+        modifier = modifier.clickable(
             onClick = onClick
         ),
         verticalAlignment = Alignment.CenterVertically

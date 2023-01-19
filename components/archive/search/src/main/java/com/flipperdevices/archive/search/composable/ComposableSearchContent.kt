@@ -36,7 +36,7 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 fun ComposableSearchContent(
     synchronizationUiApi: SynchronizationUiApi,
     searchViewModel: SearchViewModel,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val state by searchViewModel.getState().collectAsState()
     val synchronizationState by searchViewModel.getSynchronizationState().collectAsState()

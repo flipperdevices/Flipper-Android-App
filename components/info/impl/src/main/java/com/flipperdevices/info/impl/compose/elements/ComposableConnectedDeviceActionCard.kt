@@ -42,9 +42,9 @@ fun ComposableConnectedDeviceActionCard(
 
 @Composable
 private fun ComposableSynchronize(
+    enabled: Boolean,
     modifier: Modifier = Modifier,
-    connectViewModel: ConnectViewModel = viewModel(),
-    enabled: Boolean
+    connectViewModel: ConnectViewModel = viewModel()
 ) {
     val color = if (enabled) {
         LocalPallet.current.accentSecond
@@ -67,9 +67,9 @@ private fun ComposableSynchronize(
 
 @Composable
 private fun ComposableAlarmElement(
+    enabled: Boolean,
     modifier: Modifier = Modifier,
-    alarmViewModel: AlarmViewModel = viewModel(),
-    enabled: Boolean
+    alarmViewModel: AlarmViewModel = viewModel()
 ) {
     val colorId = if (enabled) {
         LocalPallet.current.accentSecond

@@ -10,8 +10,8 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
 fun ComposableBarSimpleText(
-    modifier: Modifier = Modifier,
     text: String,
+    modifier: Modifier = Modifier,
     color: Color = LocalPallet.current.text40,
     onClick: (() -> Unit)? = null
 ) {

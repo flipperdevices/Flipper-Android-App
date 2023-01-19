@@ -37,11 +37,12 @@ fun OrangeAppBar(
 @Composable
 fun OrangeAppBar(
     title: String,
+    modifier: Modifier = Modifier,
     onBack: (() -> Unit)? = null,
     endBlock: (@Composable () -> Unit)? = null
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .background(LocalPallet.current.accent),
         verticalAlignment = Alignment.CenterVertically
@@ -75,8 +76,8 @@ fun OrangeAppBar(
 @Composable
 fun OrangeAppBarWithIcon(
     @StringRes titleId: Int,
-    onBack: (() -> Unit)? = null,
     @DrawableRes endIconId: Int,
+    onBack: (() -> Unit)? = null,
     onEndClick: () -> Unit
 ) {
     OrangeAppBarWithIcon(
@@ -90,11 +91,13 @@ fun OrangeAppBarWithIcon(
 @Composable
 fun OrangeAppBarWithIcon(
     title: String,
-    onBack: (() -> Unit)? = null,
     @DrawableRes endIconId: Int,
+    modifier: Modifier = Modifier,
+    onBack: (() -> Unit)? = null,
     onEndClick: () -> Unit
 ) {
     OrangeAppBar(
+        modifier = modifier,
         title = title,
         onBack = onBack,
         endBlock = {

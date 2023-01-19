@@ -21,13 +21,14 @@ fun ComposableFapHubCategory(
     onBack: () -> Unit,
     onOpenSearch: () -> Unit,
     onOpenFapItem: (FapItem) -> Unit,
+    modifier: Modifier = Modifier,
     installationButton: @Composable (FapItem?, Modifier, TextUnit) -> Unit
 ) {
     val categoryViewModel = tangleViewModel<FapHubCategoryViewModel>()
     val fapsList = categoryViewModel.faps.collectAsLazyPagingItems()
     val sortType by categoryViewModel.getSortTypeFlow().collectAsState()
 
-    Column {
+    Column(modifier = modifier) {
         OrangeAppBarWithIcon(
             title = categoryViewModel.getCategoryName(),
             onBack = onBack,

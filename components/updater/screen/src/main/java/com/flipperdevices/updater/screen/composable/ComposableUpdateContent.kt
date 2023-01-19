@@ -26,7 +26,8 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 @Suppress("LongMethod", "ComplexMethod")
 fun ComposableUpdateContent(
     updaterScreenState: UpdaterScreenState,
-    onRetry: () -> Unit
+    onRetry: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val version = updaterScreenState.updateRequest?.updateTo
     if (version != null) {
@@ -34,53 +35,53 @@ fun ComposableUpdateContent(
     } else {
         Spacer(modifier = Modifier.height(29.dp)) // 21 + 8
     }
-    val modifier = Modifier
+    val localModifier = modifier
         .padding(vertical = 8.dp, horizontal = 24.dp)
     when (updaterScreenState) {
         UpdaterScreenState.NotStarted -> FlipperProgressIndicator(
-            modifier = modifier,
+            modifier = localModifier,
             accentColor = LocalPallet.current.updateProgressGreen,
             secondColor = LocalPallet.current.updateProgressBackgroundGreen,
             iconId = null,
             percent = null
         )
         is UpdaterScreenState.CancelingSynchronization -> FlipperProgressIndicator(
-            modifier = modifier,
+            modifier = localModifier,
             accentColor = LocalPallet.current.accentSecond,
             secondColor = LocalPallet.current.updateProgressBackgroundBlue,
             iconId = null,
             percent = null
         )
         is UpdaterScreenState.DownloadingFromNetwork -> FlipperProgressIndicator(
-            modifier = modifier,
+            modifier = localModifier,
             accentColor = LocalPallet.current.updateProgressGreen,
             secondColor = LocalPallet.current.updateProgressBackgroundGreen,
             iconId = DesignSystem.drawable.ic_globe,
             percent = updaterScreenState.percent
         )
         is UpdaterScreenState.SubGhzProvisioning -> FlipperProgressIndicator(
-            modifier = modifier,
+            modifier = localModifier,
             accentColor = LocalPallet.current.updateProgressGreen,
             secondColor = LocalPallet.current.updateProgressBackgroundGreen,
             iconId = DesignSystem.drawable.ic_globe,
             percent = null
         )
         is UpdaterScreenState.UploadOnFlipper -> FlipperProgressIndicator(
-            modifier = modifier,
+            modifier = localModifier,
             accentColor = LocalPallet.current.accentSecond,
             secondColor = LocalPallet.current.updateProgressBackgroundBlue,
             iconId = DesignSystem.drawable.ic_bluetooth,
             percent = updaterScreenState.percent
         )
         UpdaterScreenState.CancelingUpdate -> FlipperProgressIndicator(
-            modifier = modifier,
+            modifier = localModifier,
             accentColor = LocalPallet.current.accentSecond,
             secondColor = LocalPallet.current.updateProgressBackgroundBlue,
             iconId = null,
             percent = null
         )
         UpdaterScreenState.Rebooting -> FlipperProgressIndicator(
-            modifier = modifier,
+            modifier = localModifier,
             accentColor = LocalPallet.current.accentSecond,
             secondColor = LocalPallet.current.updateProgressBackgroundBlue,
             iconId = null,

@@ -15,8 +15,8 @@ import com.mikepenz.markdown.model.MarkdownTypography
 
 @Composable
 fun ComposableMarkdown(
-    modifier: Modifier = Modifier,
     content: String,
+    modifier: Modifier = Modifier,
     typography: MarkdownTypography = markdownTypography(),
     colors: MarkdownColors = markdownColors(),
     paddings: MarkdownPadding = markdownPadding()

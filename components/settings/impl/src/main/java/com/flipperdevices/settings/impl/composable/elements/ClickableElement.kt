@@ -16,12 +16,13 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ClickableElement(
+    modifier: Modifier = Modifier,
     @StringRes titleId: Int? = null,
     @StringRes descriptionId: Int? = null,
     onClick: () -> Unit
 ) {
     Row(
-        modifier = Modifier.clickableRipple(onClick = onClick),
+        modifier = modifier.clickableRipple(onClick = onClick),
         verticalAlignment = Alignment.CenterVertically
     ) {
         SimpleElement(

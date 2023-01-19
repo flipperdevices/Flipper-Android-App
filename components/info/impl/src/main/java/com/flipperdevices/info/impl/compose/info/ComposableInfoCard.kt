@@ -36,8 +36,8 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableInfoCard(
-    modifier: Modifier = Modifier,
     onOpenFullDeviceInfo: () -> Unit,
+    modifier: Modifier = Modifier,
     deviceStatusViewModel: DeviceStatusViewModel = viewModel(),
     firmwareUpdateViewModel: FirmwareUpdateViewModel = viewModel()
 ) {
@@ -59,11 +59,13 @@ fun ComposableInfoCard(
 }
 
 @Composable
-fun ComposableWaitingFlipper() {
+fun ComposableWaitingFlipper(
+    modifier: Modifier = Modifier
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(12.dp),
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 68.dp)
     ) {

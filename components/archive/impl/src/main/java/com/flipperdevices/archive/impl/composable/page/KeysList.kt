@@ -63,9 +63,11 @@ fun LazyListScope.ComposableKeysGrid(
 }
 
 @Composable
-fun ComposableFavoriteKeysTitle() {
+fun ComposableFavoriteKeysTitle(
+    modifier: Modifier = Modifier
+) {
     Row(
-        modifier = Modifier.padding(top = 24.dp, start = 14.dp),
+        modifier = modifier.padding(top = 24.dp, start = 14.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
@@ -84,9 +86,11 @@ fun ComposableFavoriteKeysTitle() {
 }
 
 @Composable
-fun ComposableAllKeysTitle() {
+fun ComposableAllKeysTitle(
+    modifier: Modifier = Modifier
+) {
     Text(
-        modifier = Modifier.padding(top = 24.dp, start = 14.dp),
+        modifier = modifier.padding(top = 24.dp, start = 14.dp),
         text = stringResource(R.string.archive_tab_general_all_title),
         style = LocalTypography.current.buttonB16
     )

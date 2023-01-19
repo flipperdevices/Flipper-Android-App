@@ -22,8 +22,8 @@ import com.flipperdevices.firstpair.impl.model.SearchingContent
 
 @Composable
 fun ComposablePermissionRequest(
-    modifier: Modifier = Modifier,
-    state: SearchingContent.PermissionRequest
+    state: SearchingContent.PermissionRequest,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier.padding(horizontal = 62.dp),

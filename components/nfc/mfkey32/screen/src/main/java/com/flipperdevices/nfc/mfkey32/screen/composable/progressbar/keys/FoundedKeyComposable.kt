@@ -30,14 +30,14 @@ private const val GRID_WIDTH = 2
 fun FoundedKeyComposableGrid(
     keys: ImmutableList<String>,
     modifier: Modifier = Modifier,
-) = Column {
+) = Column(modifier = modifier) {
     keys.windowed(GRID_WIDTH, GRID_WIDTH, partialWindows = true).forEach { rowKeys ->
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             rowKeys.forEach { key ->
-                FoundedKeyComposable(modifier, key)
+                FoundedKeyComposable(key)
             }
         }
     }
@@ -45,8 +45,8 @@ fun FoundedKeyComposableGrid(
 
 @Composable
 fun FoundedKeyComposable(
-    modifier: Modifier = Modifier,
-    key: String
+    key: String,
+    modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier,

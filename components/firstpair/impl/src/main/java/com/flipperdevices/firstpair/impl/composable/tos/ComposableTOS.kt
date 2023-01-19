@@ -22,8 +22,8 @@ import com.flipperdevices.firstpair.impl.R
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
-fun ComposableTOS(onApplyPress: () -> Unit) {
-    Column {
+fun ComposableTOS(onApplyPress: () -> Unit, modifier: Modifier = Modifier) {
+    Column(modifier = modifier) {
         ComposableTutorial(modifier = Modifier.weight(weight = 1f))
         ComposableFooter(onApplyPress)
     }
@@ -71,8 +71,8 @@ private fun ComposableTutorial(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun ComposableFooter(onApplyPress: () -> Unit) {
-    Column {
+fun ComposableFooter(onApplyPress: () -> Unit, modifier: Modifier = Modifier) {
+    Column(modifier = modifier) {
         ComposableFlipperButton(
             modifier = Modifier
                 .padding(

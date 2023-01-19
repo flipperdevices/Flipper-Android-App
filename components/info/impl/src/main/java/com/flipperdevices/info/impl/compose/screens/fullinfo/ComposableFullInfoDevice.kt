@@ -21,10 +21,11 @@ import kotlinx.collections.immutable.ImmutableSet
 fun ComposableFullInfoDevice(
     fullDeviceInfo: FlipperRpcInformation,
     inProgress: Boolean,
-    getFirmwareChannel: (String?) -> FirmwareChannel?
+    modifier: Modifier = Modifier,
+    getFirmwareChannel: (String?) -> FirmwareChannel?,
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .verticalScroll(rememberScrollState())
             .padding(vertical = 14.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp)

@@ -40,13 +40,13 @@ fun LazyListScope.AllKeys(keys: List<FoundedKey>) {
         ) {
             SelectionContainer {
                 ComposableFoundedKey(
+                    foundedKey = it,
                     Modifier.padding(
                         start = 14.dp,
                         end = 14.dp,
                         top = 4.dp,
                         bottom = 4.dp
-                    ),
-                    foundedKey = it
+                    )
                 )
             }
         }
@@ -57,7 +57,10 @@ private const val KEY_A = "A"
 private const val KEY_B = "B"
 
 @Composable
-private fun ComposableFoundedKey(modifier: Modifier = Modifier, foundedKey: FoundedKey) {
+private fun ComposableFoundedKey(
+    foundedKey: FoundedKey,
+    modifier: Modifier = Modifier,
+) {
     val notFoundText = stringResource(R.string.mfkey32_founded_all_not_found)
     Text(
         modifier = modifier,

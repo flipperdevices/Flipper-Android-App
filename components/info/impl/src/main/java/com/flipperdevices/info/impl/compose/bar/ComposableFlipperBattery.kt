@@ -27,13 +27,16 @@ private const val FULL_BATTERY = 1.0f
 
 @Composable
 fun ComposableFlipperBattery(
-    modifier: Modifier = Modifier,
     @FloatRange(from = 0.0, to = 1.0) percent: Float,
-    isCharging: Boolean
+    isCharging: Boolean,
+    modifier: Modifier = Modifier
 ) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         Box(contentAlignment = Alignment.Center) {
-            BatteryContent(modifier, percent)
+            BatteryContent(percent)
             if (isCharging) {
                 Icon(
                     painter = painterResource(DesignSystem.drawable.ic_charging),
@@ -53,8 +56,8 @@ fun ComposableFlipperBattery(
 
 @Composable
 private fun BatteryContent(
-    modifier: Modifier = Modifier,
-    @FloatRange(from = 0.0, to = 1.0) percent: Float
+    @FloatRange(from = 0.0, to = 1.0) percent: Float,
+    modifier: Modifier = Modifier
 ) {
     val batteryColor = when (percent) {
         in EMPTY_BATTERY..FIRST_BATTERY_THRESHOLD -> LocalPallet.current.batteryRed
@@ -94,9 +97,9 @@ private fun BatteryContent(
 private fun ComposableFlipperBatteryPreview() {
     Box {
         ComposableFlipperBattery(
-            Modifier.size(width = 30.dp, height = 14.dp),
             percent = 1.0f,
-            isCharging = true
+            isCharging = true,
+            Modifier.size(width = 30.dp, height = 14.dp),
         )
     }
 }
