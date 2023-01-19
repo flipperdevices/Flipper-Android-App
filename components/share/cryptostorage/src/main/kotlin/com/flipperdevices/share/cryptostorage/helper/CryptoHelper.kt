@@ -30,7 +30,11 @@ class CryptoHelperApiImpl @Inject constructor() : CryptoHelperApi {
             .getInstance(KeyProperties.KEY_ALGORITHM_AES)
             .apply { init(KEY_SIZE) }
         val secretKey = generator.generateKey()
-        val keyString = Base64.getUrlEncoder().encodeToString(secretKey.encoded)
+
+        val keyString = Base64
+            .getUrlEncoder()
+            .withoutPadding()
+            .encodeToString(secretKey.encoded)
 
         val encryptionCipher = Cipher.getInstance(ALGORITHM_HELPER).apply {
             init(
