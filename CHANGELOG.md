@@ -10,7 +10,7 @@
 - [FIX] Refactor `share:receive` module
 - [FIX] Bump length for server-side share link
 - [REFACTOR] Fix detekt compose issues
-- [REFACTOR] Format markdown changelog
+- [REFACTOR] Format markdown changelog with clickable link and bold nickname
 - [REFACTOR] Enable detekt formatting with rules
 - [REFACTOR] Android lint
 - [REFACTOR] Fix gradle warnings

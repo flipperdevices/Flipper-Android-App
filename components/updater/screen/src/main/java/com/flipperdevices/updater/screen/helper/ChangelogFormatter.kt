@@ -3,7 +3,6 @@ package com.flipperdevices.updater.screen.helper
 private const val REGEX_GITHUB_PR = "(^| )(https://github.com/\\S+/pull/([0-9]+))"
 private const val REGEX_GITHUB_COMPARE = "(^| )(https://github.com/\\S+/compare/(\\S+))"
 private const val REGEX_GITHUB_NICKNAME = "(^| )@(\\S+)"
-private const val GITHUB_LINK = "https://github.com/"
 
 private const val NUMBER_MATCH_FIRST = 2
 private const val NUMBER_MATCH_SECOND = 3
@@ -43,8 +42,7 @@ object ChangelogFormatter {
     private fun String.replaceGithubNickname(): String {
         return Regex(REGEX_GITHUB_NICKNAME).replace(this) { result ->
             val nickname = result.groupValues[NUMBER_MATCH_FIRST]
-            val url = "$GITHUB_LINK$nickname"
-            " [@$nickname]($url) "
+            " **@$nickname** "
         }
     }
 }
