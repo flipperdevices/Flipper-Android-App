@@ -13,7 +13,7 @@
 - [REFACTOR] Format markdown changelog with clickable link and bold nickname
 - [REFACTOR] Enable detekt formatting with rules
 - [REFACTOR] Android lint
-- [REFACTOR] Fix gradle warnings (wait immutable enum map)
+- [REFACTOR] Fix gradle warnings (Deprecated API, PredefinedEnumMap)
 
 # 1.4.0
 
