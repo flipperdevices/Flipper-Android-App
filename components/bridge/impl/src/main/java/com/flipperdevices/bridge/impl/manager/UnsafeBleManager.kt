@@ -2,7 +2,7 @@ package com.flipperdevices.bridge.impl.manager
 
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothGattCharacteristic
-import android.bluetooth.BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE
+import android.bluetooth.BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT
 import android.content.Context
 import com.flipperdevices.bridge.api.manager.ktx.providers.BondStateProvider
 import com.flipperdevices.bridge.api.manager.ktx.providers.ConnectionStateProvider
@@ -47,7 +47,7 @@ abstract class UnsafeBleManager(
         readCharacteristic(characteristic)
 
     fun writeCharacteristicUnsafe(characteristic: BluetoothGattCharacteristic?, data: ByteArray) =
-        writeCharacteristic(characteristic, data, WRITE_TYPE_NO_RESPONSE)
+        writeCharacteristic(characteristic, data, WRITE_TYPE_DEFAULT)
 
     fun setNotificationCallbackUnsafe(characteristic: BluetoothGattCharacteristic?) =
         setNotificationCallback(characteristic)

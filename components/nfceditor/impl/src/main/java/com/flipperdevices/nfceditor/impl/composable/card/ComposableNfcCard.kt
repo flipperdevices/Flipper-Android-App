@@ -120,7 +120,7 @@ private fun ComposableNfcCardPreview() {
         ComposableNfcCard(
             nfcEditorCardInfo = NfcEditorCardInfo(
                 cardType = NfcEditorCardType.MF_4K,
-                PredefinedEnumMap(CardFieldInfo.values()) {
+                PredefinedEnumMap(CardFieldInfo::class.java) {
                     "B6 69 03 36 8A 98 02".split(" ")
                         .map { NfcEditorCell(it, NfcCellType.SIMPLE) }
                         .toImmutableList()

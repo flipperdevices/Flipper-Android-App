@@ -72,7 +72,7 @@ object NfcEditorStateProducerHelper {
         var cardInfo: NfcEditorCardInfo? = null
         if (cardType != null) {
             val fieldsMap = PredefinedEnumMap(
-                CardFieldInfo.values()
+                CardFieldInfo::class.java
             ) {
                 val cells = when (it) {
                     CardFieldInfo.UID -> parsedKey.uid
