@@ -28,7 +28,7 @@ data class NfcEditorCardInfo(
             content = content
         )
         return copy(
-            fields = ImmutableEnumMap(CardFieldInfo::class.java, CardFieldInfo.values()) {
+            fields = ImmutableEnumMap(CardFieldInfo.values()) {
                 if (it == fieldInfo) newLine.toImmutableList() else fields[it]
             }
         )

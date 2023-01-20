@@ -59,7 +59,7 @@ fun ComposableHexKeyboard(
                 .height(keyboardHeight)
         ) {
             val refs: ImmutableEnumMap<HexKey, ConstrainedLayoutReference> =
-                ImmutableEnumMap(HexKey::class.java, HexKey.values()) { createRef() }
+                ImmutableEnumMap(HexKey.values()) { createRef() }
             ComposableKeys123(refs)
             ComposableKeysABC(refs)
             ComposableKeys456(refs)

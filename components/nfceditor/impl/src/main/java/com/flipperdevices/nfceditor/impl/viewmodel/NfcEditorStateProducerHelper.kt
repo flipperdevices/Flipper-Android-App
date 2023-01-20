@@ -72,7 +72,6 @@ object NfcEditorStateProducerHelper {
         var cardInfo: NfcEditorCardInfo? = null
         if (cardType != null) {
             val fieldsMap = ImmutableEnumMap(
-                CardFieldInfo::class.java,
                 CardFieldInfo.values()
             ) {
                 val cells = when (it) {

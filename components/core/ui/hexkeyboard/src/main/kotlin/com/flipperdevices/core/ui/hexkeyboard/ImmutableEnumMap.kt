@@ -1,17 +1,17 @@
 package com.flipperdevices.core.ui.hexkeyboard
 
-import java.util.EnumMap
+import androidx.compose.runtime.Stable
+import kotlinx.collections.immutable.ImmutableMap
+import kotlinx.collections.immutable.toImmutableMap
 
-class ImmutableEnumMap<K, V>(keyType: Class<K>) : EnumMap<K, V>(keyType) where K : Enum<K> {
-    override operator fun get(key: K): V {
-        return requireNotNull(super.get(key)) { "We cant get null value" }
-    }
+@Stable
+class ImmutableEnumMap<Key, Value>(
+    items: Array<Key>,
+    action: (Key) -> Value
+) where Key : Enum<Key> {
 
-    operator fun set(key: K, value: V) {
-        throw IllegalAccessError("We cant set value in immutable enum map")
-    }
-
-    constructor(keyType: Class<K>, items: Array<K>, action: (K) -> V) : this(keyType) {
-        items.forEach { put(it, action(it)) }
+    private val map: ImmutableMap<Key, Value> = items.associateWith(action).toImmutableMap()
+    operator fun get(key: Key): Value {
+        return requireNotNull(map[key]) { "Key $key not found" }
     }
 }
