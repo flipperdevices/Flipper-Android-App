@@ -5,7 +5,7 @@ import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
 
 @Stable
-class ImmutableEnumMap<Key, Value>(
+class PredefinedEnumMap<Key, Value>(
     items: Array<Key>,
     action: (Key) -> Value
 ) where Key : Enum<Key> {

@@ -22,7 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.flipperdevices.core.ui.hexkeyboard.ImmutableEnumMap
+import com.flipperdevices.core.ui.hexkeyboard.PredefinedEnumMap
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
@@ -120,7 +120,7 @@ private fun ComposableNfcCardPreview() {
         ComposableNfcCard(
             nfcEditorCardInfo = NfcEditorCardInfo(
                 cardType = NfcEditorCardType.MF_4K,
-                ImmutableEnumMap(CardFieldInfo.values()) {
+                PredefinedEnumMap(CardFieldInfo.values()) {
                     "B6 69 03 36 8A 98 02".split(" ")
                         .map { NfcEditorCell(it, NfcCellType.SIMPLE) }
                         .toImmutableList()
