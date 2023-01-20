@@ -7,7 +7,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.SHADOW_FILE_EXTENSION
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
-import com.flipperdevices.core.ui.hexkeyboard.ImmutableEnumMap
+import com.flipperdevices.core.ui.hexkeyboard.PredefinedEnumMap
 import com.flipperdevices.nfceditor.impl.model.CardFieldInfo
 import com.flipperdevices.nfceditor.impl.model.NfcCellType
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCardInfo
@@ -71,9 +71,8 @@ object NfcEditorStateProducerHelper {
         }
         var cardInfo: NfcEditorCardInfo? = null
         if (cardType != null) {
-            val fieldsMap = ImmutableEnumMap(
-                CardFieldInfo::class.java,
-                CardFieldInfo.values()
+            val fieldsMap = PredefinedEnumMap(
+                CardFieldInfo::class.java
             ) {
                 val cells = when (it) {
                     CardFieldInfo.UID -> parsedKey.uid

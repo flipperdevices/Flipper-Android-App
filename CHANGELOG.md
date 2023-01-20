@@ -13,7 +13,7 @@
 - [REFACTOR] Fix detekt compose issues
 - [REFACTOR] Format markdown changelog with clickable link and bold nickname
 - [REFACTOR] Enable detekt formatting with rules
-- [REFACTOR] Fix gradle warnings
+- [REFACTOR] Fix gradle warnings (Deprecated API, PredefinedEnumMap)
 
 # 1.4.0
 
