@@ -1,5 +1,4 @@
 plugins {
-    id("flipper.lint")
     id("flipper.android-lib")
     id("com.squareup.anvil")
     id("kotlin-kapt")
@@ -24,6 +23,8 @@ dependencies {
 
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
+
+    implementation(libs.kotlin.immutable.collections)
 
     testImplementation(projects.components.core.test)
     testImplementation(libs.junit)

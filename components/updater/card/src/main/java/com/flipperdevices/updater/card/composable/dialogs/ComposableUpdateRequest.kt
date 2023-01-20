@@ -13,8 +13,8 @@ import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 fun ComposableUpdateRequest(
-    updateRequestViewModel: UpdateRequestViewModel = tangleViewModel(),
     pendingUpdateRequest: UpdatePending,
+    updateRequestViewModel: UpdateRequestViewModel = tangleViewModel(),
     onDismiss: () -> Unit
 ) {
     val updatePendingState by updateRequestViewModel.getUpdatePendingState().collectAsState()

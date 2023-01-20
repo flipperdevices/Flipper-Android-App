@@ -5,7 +5,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import kotlinx.coroutines.flow.Flow
 
 interface FavoriteApi {
-    suspend fun updateFavorites(keys: List<FlipperKeyPath>)
+    suspend fun updateFavorites(keys: List<FlipperKeyPath>): List<FlipperKeyPath>
 
     suspend fun isFavorite(keyPath: FlipperKeyPath): Boolean
 

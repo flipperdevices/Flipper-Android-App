@@ -32,14 +32,16 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun ComposableCategory(
     categoryType: CategoryType.ByFileType,
-    synchronizationUiApi: SynchronizationUiApi
+    synchronizationUiApi: SynchronizationUiApi,
+    modifier: Modifier = Modifier,
 ) {
     val router = LocalRouter.current
-    Column {
+    Column(modifier = modifier) {
         ComposableAppBar(
             title = categoryType.fileType.humanReadableName,
             onBack = { router.exit() }
@@ -66,26 +68,28 @@ fun ColumnScope.ComposableCategoryContent(
     when (localCategoryState) {
         is CategoryState.Loaded -> if (localCategoryState.keys.isEmpty()) {
             CategoryEmpty(contentModifier)
-        } else CategoryList(
-            contentModifier,
-            categoryType,
-            categoryViewModel,
-            synchronizationUiApi,
-            synchronizationState,
-            localCategoryState.keys
-        )
+        } else {
+            CategoryList(
+                categoryType,
+                categoryViewModel,
+                synchronizationUiApi,
+                synchronizationState,
+                localCategoryState.keys,
+                contentModifier
+            )
+        }
         CategoryState.Loading -> CategoryLoadingProgress(contentModifier)
     }
 }
 
 @Composable
 private fun CategoryList(
-    modifier: Modifier,
     categoryType: CategoryType,
     categoryViewModel: CategoryViewModel,
     synchronizationUiApi: SynchronizationUiApi?,
     synchronizationState: SynchronizationState,
-    keys: List<Pair<FlipperKeyParsed, FlipperKey>>
+    keys: ImmutableList<Pair<FlipperKeyParsed, FlipperKey>>,
+    modifier: Modifier = Modifier
 ) {
     val router = LocalRouter.current
     LazyColumn(
@@ -93,35 +97,40 @@ private fun CategoryList(
     ) {
         items(keys) { (flipperKeyParsed, flipperKey) ->
             ComposableKeyCard(
-                Modifier.padding(bottom = 14.dp),
-                synchronizationContent = if (synchronizationUiApi != null) { ->
-                    synchronizationUiApi.RenderSynchronizationState(
-                        synced = flipperKey.synchronized,
-                        synchronizationState = synchronizationState,
-                        withText = false
-                    )
-                } else null,
-                flipperKeyParsed,
+                modifier = Modifier.padding(bottom = 14.dp),
+                synchronizationContent = if (synchronizationUiApi != null) {
+                    { ->
+                        synchronizationUiApi.RenderSynchronizationState(
+                            synced = flipperKey.synchronized,
+                            synchronizationState = synchronizationState,
+                            withText = false
+                        )
+                    }
+                } else {
+                    null
+                },
+                flipperKeyParsed = flipperKeyParsed,
                 typeColor = when (categoryType) {
                     is CategoryType.ByFileType -> colorByFlipperKeyType(categoryType.fileType)
                     CategoryType.Deleted -> LocalPallet.current.keyDeleted
+                },
+                onCardClicked = {
+                    categoryViewModel.openKeyScreen(router, flipperKey.getKeyPath())
                 }
-            ) {
-                categoryViewModel.openKeyScreen(router, flipperKey.getKeyPath())
-            }
+            )
         }
     }
 }
 
 @Composable
-private fun CategoryLoadingProgress(modifier: Modifier) {
+private fun CategoryLoadingProgress(modifier: Modifier = Modifier) {
     Box(modifier, contentAlignment = Alignment.Center) {
         CircularProgressIndicator()
     }
 }
 
 @Composable
-private fun CategoryEmpty(modifier: Modifier) {
+private fun CategoryEmpty(modifier: Modifier = Modifier) {
     Box(modifier, contentAlignment = Alignment.Center) {
         Text(
             text = stringResource(R.string.category_empty),

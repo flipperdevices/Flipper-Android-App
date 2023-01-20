@@ -14,10 +14,10 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.log.LogTagProvider
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
-import javax.inject.Provider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
+import javax.inject.Provider
 
 @ContributesBinding(AppGraph::class, WidgetDataApi::class)
 class WidgetDataApiImpl @Inject constructor(
@@ -35,7 +35,9 @@ class WidgetDataApiImpl @Inject constructor(
         return@withContext widgetDataDao.getAll().map { element ->
             val keyPath = if (element.keyId != null) {
                 simpleKeyDao.getById(element.keyId)?.getFlipperKeyPath()
-            } else null
+            } else {
+                null
+            }
             return@map WidgetData(element.id, keyPath, element.widgetType)
         }
     }
@@ -47,7 +49,9 @@ class WidgetDataApiImpl @Inject constructor(
             ?: return@withContext null
         val keyPath = if (widgetDataElement.keyId != null) {
             simpleKeyDao.getById(widgetDataElement.keyId)?.getFlipperKeyPath()
-        } else null
+        } else {
+            null
+        }
         return@withContext WidgetData(widgetDataElement.id, keyPath, widgetDataElement.widgetType)
     }
 
@@ -60,7 +64,9 @@ class WidgetDataApiImpl @Inject constructor(
 
             if (widgetData == null) {
                 widgetDataDao.insert(WidgetDataElement(id = widgetId, widgetType = type))
-            } else widgetDataDao.insert(widgetData.copy(widgetType = type))
+            } else {
+                widgetDataDao.insert(widgetData.copy(widgetType = type))
+            }
         }
     }
 
@@ -74,13 +80,16 @@ class WidgetDataApiImpl @Inject constructor(
     ) = withContext(Dispatchers.IO) {
         appDatabase.withTransaction {
             val key = simpleKeyDao.getByPath(
-                flipperKeyPath.path.pathToKey, flipperKeyPath.deleted
+                flipperKeyPath.path.pathToKey,
+                flipperKeyPath.deleted
             ) ?: error("not found key for $flipperKeyPath")
 
             val widgetData = widgetDataDao.getWidgetDataById(widgetId)
             if (widgetData == null) {
                 widgetDataDao.insert(WidgetDataElement(widgetId, key.uid))
-            } else widgetDataDao.insert(widgetData.copy(keyId = key.uid))
+            } else {
+                widgetDataDao.insert(widgetData.copy(keyId = key.uid))
+            }
         }
     }
 }

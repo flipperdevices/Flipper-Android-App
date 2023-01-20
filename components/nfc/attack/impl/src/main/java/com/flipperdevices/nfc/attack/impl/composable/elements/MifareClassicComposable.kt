@@ -2,8 +2,6 @@ package com.flipperdevices.nfc.attack.impl.composable.elements
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,7 +13,6 @@ import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -25,19 +22,21 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.nfc.attack.impl.R
 import com.flipperdevices.nfc.attack.impl.viewmodel.NfcAttackViewModel
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun MifareClassicComposable(
     nfcAttackViewModel: NfcAttackViewModel,
-    onOpenMfKey32: () -> Unit
+    onOpenMfKey32: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Card(
-        modifier = Modifier.padding(14.dp),
+        modifier = modifier.padding(14.dp),
         shape = RoundedCornerShape(10.dp)
     ) {
         Column {
@@ -45,11 +44,7 @@ fun MifareClassicComposable(
             val hasMfKey32Notification by nfcAttackViewModel.hasMfKey32Notification()
                 .collectAsState()
             MifareClassicMfKey32(
-                modifier = Modifier.clickable(
-                    interactionSource = MutableInteractionSource(),
-                    indication = rememberRipple(),
-                    onClick = onOpenMfKey32
-                ),
+                modifier = Modifier.clickableRipple(onClick = onOpenMfKey32),
                 hasNotification = hasMfKey32Notification
             )
         }
@@ -77,8 +72,8 @@ private fun MifareClassicTitle() = Row(
 
 @Composable
 private fun MifareClassicMfKey32(
-    modifier: Modifier,
-    hasNotification: Boolean
+    hasNotification: Boolean,
+    modifier: Modifier = Modifier
 ) = Row(
     modifier = modifier,
     verticalAlignment = Alignment.CenterVertically
@@ -90,7 +85,9 @@ private fun MifareClassicMfKey32(
         painter = painterResource(
             if (MaterialTheme.colors.isLight) {
                 DesignSystem.drawable.pic_detect_reader
-            } else DesignSystem.drawable.pic_detect_reader_black
+            } else {
+                DesignSystem.drawable.pic_detect_reader_black
+            }
         ),
         contentDescription = stringResource(R.string.nfcattack_mifare_classic_mfkey32_title)
     )

@@ -1,19 +1,24 @@
 package com.flipperdevices.settings.impl.viewmodels
 
+import androidx.datastore.core.DataStore
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.flipperdevices.core.di.provideDelegate
+import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.filemanager.api.navigation.FileManagerEntry
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.screenstreaming.api.ScreenStreamingFeatureEntry
-import javax.inject.Provider
+import kotlinx.coroutines.launch
 import tangle.viewmodel.VMInject
+import javax.inject.Provider
 
 class ExperimentalViewModel @VMInject constructor(
     fileManagerEntryProvider: Provider<FileManagerEntry>,
     metricApiProvider: Provider<MetricApi>,
-    private val screenStreamingFeatureEntry: ScreenStreamingFeatureEntry
+    private val screenStreamingFeatureEntry: ScreenStreamingFeatureEntry,
+    private val dataStore: DataStore<Settings>
 ) : LifecycleViewModel() {
     private val fileManagerEntry by fileManagerEntryProvider
     private val metricApi by metricApiProvider
@@ -24,7 +29,27 @@ class ExperimentalViewModel @VMInject constructor(
     }
 
     fun onOpenScreenStreaming(navController: NavController) {
-        metricApi.reportSimpleEvent(SimpleEvent.EXPERIMENTAL_OPEN_SCREENSTREAMING)
+        metricApi.reportSimpleEvent(SimpleEvent.EXPERIMENTAL_OPEN_SCREEN_STREAMING)
         navController.navigate(screenStreamingFeatureEntry.ROUTE.name)
+    }
+
+    fun onSwitchApplicationCatalog(enabled: Boolean) {
+        viewModelScope.launch {
+            dataStore.updateData {
+                it.toBuilder()
+                    .setApplicationCatalog(enabled)
+                    .build()
+            }
+        }
+    }
+
+    fun onSwitchAppsSwitch(enabled: Boolean) {
+        viewModelScope.launch {
+            dataStore.updateData {
+                it.toBuilder()
+                    .setFaphubNewSwitch(enabled)
+                    .build()
+            }
+        }
     }
 }

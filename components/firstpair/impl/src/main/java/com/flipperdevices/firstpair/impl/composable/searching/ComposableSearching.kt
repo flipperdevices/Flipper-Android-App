@@ -22,7 +22,8 @@ fun ComposableSearchingScreen(
     onHelpClicking: () -> Unit,
     onSkipConnection: () -> Unit,
     onDeviceClick: (DiscoveredBluetoothDevice) -> Unit,
-    onRefreshSearching: () -> Unit
+    onRefreshSearching: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         ComposableSearchingAppBar(stringResource(R.string.firstpair_search_title), onBack)
@@ -39,9 +40,9 @@ fun ComposableSearchingScreen(
 
 @Composable
 fun ComposableSearchingContent(
-    modifier: Modifier,
     content: SearchingContent,
     onDeviceClick: (DiscoveredBluetoothDevice) -> Unit,
+    modifier: Modifier = Modifier,
     onRefreshSearching: () -> Unit
 ) {
     when (content) {
@@ -69,7 +70,6 @@ fun ComposableSearchingContent(
     showBackground = true
 )
 @Composable
-@Suppress("UnusedPrivateMember")
 private fun ComposableSearchingScreenPreview() {
     ComposableSearchingScreen(
         SearchingState(

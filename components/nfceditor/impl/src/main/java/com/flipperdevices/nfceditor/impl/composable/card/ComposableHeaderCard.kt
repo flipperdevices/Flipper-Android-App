@@ -1,7 +1,6 @@
 package com.flipperdevices.nfceditor.impl.composable.card
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,26 +8,26 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.nfceditor.impl.R
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCardType
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableHeaderCard(
     cardType: NfcEditorCardType,
     isOpened: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 13.dp)
             .padding(horizontal = 12.dp),
@@ -39,14 +38,12 @@ fun ComposableHeaderCard(
 
         val imageId = if (isOpened) {
             DesignSystem.drawable.ic_more_revert
-        } else DesignSystem.drawable.ic_more
+        } else {
+            DesignSystem.drawable.ic_more
+        }
 
         Icon(
-            modifier = Modifier.clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = null,
-                onClick = onClick
-            ),
+            modifier = Modifier.clickable(onClick = onClick),
             painter = painterResource(id = imageId),
             contentDescription = "",
             tint = LocalPallet.current.onNfcCard

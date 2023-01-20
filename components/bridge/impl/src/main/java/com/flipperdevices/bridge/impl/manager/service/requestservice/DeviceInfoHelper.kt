@@ -5,10 +5,11 @@ import com.flipperdevices.bridge.api.model.FlipperDeviceInfo
 import com.flipperdevices.bridge.api.model.FlipperRpcInformation
 import com.flipperdevices.bridge.api.model.RadioStackInfo
 import com.flipperdevices.bridge.api.model.RadioStackType
-import com.flipperdevices.bridge.api.model.SemVer
 import com.flipperdevices.bridge.api.model.StorageStats
+import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.ktx.jre.isNotNull
 import com.flipperdevices.core.ktx.jre.titlecaseFirstCharIfItIsLowercase
+import kotlinx.collections.immutable.toImmutableMap
 
 private const val DEVICE_NAME = "hardware_name"
 private const val HARDWARE_MODEL = "hardware_model"
@@ -97,8 +98,8 @@ internal object DeviceInfoHelper {
             flipperDeviceInfo = flipperDeviceInfo,
             firmware = firmwareInfo,
             radioStack = radioStackInfo,
-            otherFields = fields.minus(usedFields),
-            allFields = fields
+            otherFields = fields.minus(usedFields).toImmutableMap(),
+            allFields = fields.toImmutableMap()
         )
     }
 
@@ -107,25 +108,33 @@ internal object DeviceInfoHelper {
         return if (isNotNull(firmwareCommit, firmwareBranch)) {
             val firmwareBranchCapitalize = firmwareBranch?.titlecaseFirstCharIfItIsLowercase()
             "$firmwareBranchCapitalize $firmwareCommit"
-        } else null
+        } else {
+            null
+        }
     }
 
     // protobuf Major.Minor
     private fun protobufVersion(protobufMajor: String?, protobufMinor: String?): SemVer? {
-        return if (isNotNull(protobufMajor, protobufMinor)) SemVer(
-            protobufMajor?.toIntOrNull() ?: 0,
-            protobufMinor?.toIntOrNull() ?: 0
-        )
-        else null
+        return if (isNotNull(protobufMajor, protobufMinor)) {
+            SemVer(
+                protobufMajor?.toIntOrNull() ?: 0,
+                protobufMinor?.toIntOrNull() ?: 0
+            )
+        } else {
+            null
+        }
     }
 
     // deviceInfo Major.Minor
     private fun deviceInfoVersion(deviceInfoMajor: String?, deviceInfoMinor: String?): SemVer? {
-        return if (isNotNull(deviceInfoMajor, deviceInfoMinor)) SemVer(
-            deviceInfoMajor?.toIntOrNull() ?: 0,
-            deviceInfoMinor?.toIntOrNull() ?: 0
-        )
-        else null
+        return if (isNotNull(deviceInfoMajor, deviceInfoMinor)) {
+            SemVer(
+                deviceInfoMajor?.toIntOrNull() ?: 0,
+                deviceInfoMinor?.toIntOrNull() ?: 0
+            )
+        } else {
+            null
+        }
     }
 
     // radio Major.Minor.Type
@@ -136,7 +145,9 @@ internal object DeviceInfoHelper {
     ): String? {
         return if (isNotNull(radioMajor, radioMinor, radioType)) {
             "$radioMajor.$radioMinor.$radioType"
-        } else null
+        } else {
+            null
+        }
     }
 
     private fun radioType(radioType: String?): RadioStackType? {

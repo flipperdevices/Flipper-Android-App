@@ -1,5 +1,4 @@
 plugins {
-    id("flipper.lint")
     id("flipper.android-app")
     id("com.squareup.anvil")
     id("kotlin-kapt")
@@ -123,6 +122,37 @@ dependencies {
     implementation(projects.components.widget.impl)
     implementation(projects.components.widget.screen)
 
+    implementation(projects.components.faphub.appcard.api)
+    implementation(projects.components.faphub.appcard.composable)
+
+    implementation(projects.components.faphub.maincard.api)
+    implementation(projects.components.faphub.maincard.impl)
+
+    implementation(projects.components.faphub.dao.api)
+    implementation(projects.components.faphub.dao.network)
+    implementation(projects.components.faphub.dao.flipper)
+
+    implementation(projects.components.faphub.main.api)
+    implementation(projects.components.faphub.main.impl)
+
+    implementation(projects.components.faphub.catalogtab.api)
+    implementation(projects.components.faphub.catalogtab.impl)
+
+    implementation(projects.components.faphub.search.api)
+    implementation(projects.components.faphub.search.impl)
+
+    implementation(projects.components.faphub.category.api)
+    implementation(projects.components.faphub.category.impl)
+
+    implementation(projects.components.faphub.fapscreen.api)
+    implementation(projects.components.faphub.fapscreen.impl)
+
+    implementation(projects.components.faphub.installation.api)
+    implementation(projects.components.faphub.installation.impl)
+
+    implementation(projects.components.faphub.installedtab.api)
+    implementation(projects.components.faphub.installedtab.impl)
+
     implementation(libs.ktor.client)
 
     implementation(libs.annotations)
@@ -130,6 +160,8 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.work.ktx)
+
+    implementation(libs.compose.pager)
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.ktx.activity)

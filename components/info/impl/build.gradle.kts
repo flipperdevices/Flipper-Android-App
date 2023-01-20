@@ -1,5 +1,4 @@
 plugins {
-    id("flipper.lint")
     id("flipper.android-compose")
     id("com.squareup.anvil")
     id("kotlin-kapt")
@@ -15,6 +14,7 @@ dependencies {
     implementation(projects.components.core.navigation)
     implementation(projects.components.core.preference)
     implementation(projects.components.core.activityholder)
+    implementation(projects.components.core.data)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.fragment)
@@ -37,7 +37,6 @@ dependencies {
     implementation(projects.components.bridge.synchronization.api)
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.pbutils)
-    implementation(libs.protobuf.jvm)
 
     // Core deps
     implementation(libs.ktx)
@@ -58,6 +57,7 @@ dependencies {
 
     implementation(libs.kotlin.serialization.json)
     implementation(libs.kotlin.coroutines)
+    implementation(libs.kotlin.immutable.collections)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.compose)

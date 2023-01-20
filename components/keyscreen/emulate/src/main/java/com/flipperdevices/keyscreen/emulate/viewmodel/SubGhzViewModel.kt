@@ -2,11 +2,11 @@ package com.flipperdevices.keyscreen.emulate.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.viewModelScope
-import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.dao.api.delegates.KeyParser
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
+import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.ktx.android.vibrateCompat
@@ -35,19 +35,19 @@ class SubGhzViewModel @VMInject constructor(
 
     override suspend fun onStartEmulateInternal(
         scope: CoroutineScope,
-        requestApi: FlipperRequestApi,
+        serviceApi: FlipperServiceApi,
         keyType: FlipperKeyType,
         flipperKey: FlipperKey
     ) {
         val appStarted = calculateTimeoutAndStartEmulate(
             scope = scope,
-            requestApi = requestApi,
+            serviceApi = serviceApi,
             flipperKey = flipperKey,
             oneTimePress = false
         )
 
         if (!appStarted) {
-            emulateHelper.stopEmulateForce(requestApi)
+            emulateHelper.stopEmulateForce(serviceApi.requestApi)
         }
     }
 
@@ -75,40 +75,43 @@ class SubGhzViewModel @VMInject constructor(
 
         serviceProvider.provideServiceApi(this) {
             viewModelScope.launch(Dispatchers.Default) {
-                startEmulateInternal(this, it.requestApi, flipperKey)
+                startEmulateInternal(this, it, flipperKey)
             }
         }
     }
 
     private suspend fun startEmulateInternal(
         scope: CoroutineScope,
-        requestApi: FlipperRequestApi,
+        serviceApi: FlipperServiceApi,
         flipperKey: FlipperKey
     ) {
-        calculateTimeoutAndStartEmulate(scope, requestApi, flipperKey, oneTimePress = true)
-        emulateHelper.stopEmulate(viewModelScope, requestApi)
+        calculateTimeoutAndStartEmulate(scope, serviceApi, flipperKey, oneTimePress = true)
+        emulateHelper.stopEmulate(viewModelScope, serviceApi.requestApi)
     }
 
     private suspend fun calculateTimeoutAndStartEmulate(
         scope: CoroutineScope,
-        requestApi: FlipperRequestApi,
+        serviceApi: FlipperServiceApi,
         flipperKey: FlipperKey,
         oneTimePress: Boolean
     ): Boolean {
+        val requestApi = serviceApi.requestApi
         val parsedKey = keyParser.parseKey(flipperKey)
 
         val timeout = if (parsedKey is FlipperKeyParsed.SubGhz &&
             parsedKey.totalTimeMs != null
         ) {
             parsedKey.totalTimeMs
-        } else null
+        } else {
+            null
+        }
 
-        var appStarted: Boolean? = null
+        val appStarted: Boolean?
 
         try {
             appStarted = emulateHelper.startEmulate(
                 scope,
-                requestApi,
+                serviceApi,
                 FlipperKeyType.SUB_GHZ,
                 flipperKey.path,
                 timeout ?: SUBGHZ_DEFAULT_TIMEOUT_MS
@@ -120,11 +123,13 @@ class SubGhzViewModel @VMInject constructor(
                             progress = EmulateProgress.GrowingAndStop(timeout)
                         )
                     )
-                } else emulateButtonStateFlow.emit(
-                    EmulateButtonState.Active(
-                        progress = EmulateProgress.Growing(timeout)
+                } else {
+                    emulateButtonStateFlow.emit(
+                        EmulateButtonState.Active(
+                            progress = EmulateProgress.Growing(timeout)
+                        )
                     )
-                )
+                }
             }
         } catch (ignored: AlreadyOpenedAppException) {
             emulateHelper.stopEmulateForce(requestApi)

@@ -35,7 +35,8 @@ internal class FirstPairBleManager(
     override val TAG = "FirstPairBleManager"
 
     private val connectionObservers = ConnectionObserverComposite(
-        scope, ConnectionObserverLogger(TAG)
+        scope,
+        ConnectionObserverLogger(TAG)
     )
     private val bleMutex = Mutex()
 

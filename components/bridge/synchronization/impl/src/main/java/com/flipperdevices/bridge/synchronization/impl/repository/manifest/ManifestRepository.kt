@@ -8,15 +8,18 @@ import com.flipperdevices.bridge.synchronization.impl.model.FlipperFolderChanges
 import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
 import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
 import com.flipperdevices.bridge.synchronization.impl.model.KeyWithHash
-import com.flipperdevices.bridge.synchronization.impl.model.ManifestFile
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
 interface ManifestRepository {
-    suspend fun saveManifest(
+    suspend fun updateManifest(
         keys: List<KeyWithHash>,
+        flipperFolderChanges: FlipperFolderChanges
+    )
+
+    suspend fun updateManifest(
         favorites: List<FlipperFilePath>,
-        flipperFolderChanges: FlipperFolderChanges = FlipperFolderChanges()
+        favoritesOnFlipper: List<FlipperFilePath>
     )
 
     suspend fun compareFolderKeysWithManifest(
@@ -26,8 +29,11 @@ interface ManifestRepository {
     ): List<KeyDiff>
 
     suspend fun compareFavoritesWithManifest(
-        favorites: List<FlipperFilePath>,
-        diffSource: DiffSource
+        favorites: List<FlipperFilePath>
+    ): List<KeyDiff>
+
+    suspend fun compareFlipperFavoritesWithManifest(
+        favoritesOnFlipper: List<FlipperFilePath>
     ): List<KeyDiff>
 
     suspend fun getFavorites(): List<FlipperFilePath>?
@@ -37,13 +43,23 @@ interface ManifestRepository {
 class ManifestRepositoryImpl @Inject constructor(
     private val manifestStorage: ManifestStorage
 ) : ManifestRepository {
-    override suspend fun saveManifest(
+    override suspend fun updateManifest(
         keys: List<KeyWithHash>,
-        favorites: List<FlipperFilePath>,
         flipperFolderChanges: FlipperFolderChanges
     ) {
-        manifestStorage.save(
-            ManifestFile(keys, favorites, flipperFolderChanges)
+        manifestStorage.update(
+            keys = keys,
+            flipperFolderChanges = flipperFolderChanges
+        )
+    }
+
+    override suspend fun updateManifest(
+        favorites: List<FlipperFilePath>,
+        favoritesOnFlipper: List<FlipperFilePath>
+    ) {
+        manifestStorage.update(
+            favorites = favorites,
+            favoritesOnFlipper = favoritesOnFlipper
         )
     }
 
@@ -59,16 +75,48 @@ class ManifestRepositoryImpl @Inject constructor(
     }
 
     override suspend fun compareFavoritesWithManifest(
-        favorites: List<FlipperFilePath>,
-        diffSource: DiffSource
+        favorites: List<FlipperFilePath>
     ): List<KeyDiff> {
         val manifestFile = manifestStorage.load()
-            ?: return favorites.map { KeyDiff(KeyWithHash(it, ""), KeyAction.ADD, diffSource) }
+            ?: return favorites.map {
+                KeyDiff(
+                    KeyWithHash(it, ""),
+                    KeyAction.ADD,
+                    DiffSource.ANDROID
+                )
+            }
 
         val manifestFavoritesWithEmptyHash = manifestFile.favorites.map { KeyWithHash(it, "") }
         val favoritesWithEmptyHash = favorites.map { KeyWithHash(it, "") }
 
-        return compare(manifestFavoritesWithEmptyHash, favoritesWithEmptyHash, diffSource)
+        return compare(
+            manifestFavoritesWithEmptyHash,
+            favoritesWithEmptyHash,
+            DiffSource.ANDROID
+        )
+    }
+
+    override suspend fun compareFlipperFavoritesWithManifest(
+        favoritesOnFlipper: List<FlipperFilePath>
+    ): List<KeyDiff> {
+        val manifestFile = manifestStorage.load()
+            ?: return favoritesOnFlipper.map {
+                KeyDiff(
+                    KeyWithHash(it, ""),
+                    KeyAction.ADD,
+                    DiffSource.FLIPPER
+                )
+            }
+
+        val manifestFavoritesWithEmptyHash =
+            manifestFile.favoritesFromFlipper.map { KeyWithHash(it, "") }
+        val favoritesWithEmptyHash = favoritesOnFlipper.map { KeyWithHash(it, "") }
+
+        return compare(
+            manifestFavoritesWithEmptyHash,
+            favoritesWithEmptyHash,
+            DiffSource.FLIPPER
+        )
     }
 
     override suspend fun getFavorites() = manifestStorage.load()?.favorites

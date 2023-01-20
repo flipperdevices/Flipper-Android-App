@@ -5,10 +5,10 @@ import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
 import com.flipperdevices.core.di.SingleIn
 import com.flipperdevices.core.preference.pb.Settings
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
-import kotlin.math.max
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import javax.inject.Inject
+import kotlin.math.max
 
 private const val FIRST_LISTING_PERCENT = 0.1f
 private const val FIRST_HASH_PERCENT = 0.2f
@@ -50,11 +50,14 @@ class SynchronizationPercentProviderImpl @Inject constructor(
         total: Int
     ): Float {
         return getProgressUpdate(
-            processed, total,
+            processed,
+            total,
             previousStagePercent = 0f,
             stagePercent = if (isFirstTime) {
                 FIRST_LISTING_PERCENT
-            } else LISTING_PERCENT
+            } else {
+                LISTING_PERCENT
+            }
         )
     }
 
@@ -63,13 +66,18 @@ class SynchronizationPercentProviderImpl @Inject constructor(
         total: Int
     ): Float {
         return getProgressUpdate(
-            processed, total,
+            processed,
+            total,
             previousStagePercent = if (isFirstTime) {
                 FIRST_LISTING_PERCENT
-            } else LISTING_PERCENT,
+            } else {
+                LISTING_PERCENT
+            },
             stagePercent = if (isFirstTime) {
                 FIRST_HASH_PERCENT
-            } else HASH_PERCENT
+            } else {
+                HASH_PERCENT
+            }
         )
     }
 
@@ -78,13 +86,18 @@ class SynchronizationPercentProviderImpl @Inject constructor(
         total: Int
     ): Float {
         return getProgressUpdate(
-            processed, total,
+            processed,
+            total,
             previousStagePercent = if (isFirstTime) {
                 FIRST_HASH_PERCENT
-            } else HASH_PERCENT,
+            } else {
+                HASH_PERCENT
+            },
             stagePercent = if (isFirstTime) {
                 FIRST_DOWNLOAD_PERCENT
-            } else DOWNLOAD_PERCENT
+            } else {
+                DOWNLOAD_PERCENT
+            }
         )
     }
 

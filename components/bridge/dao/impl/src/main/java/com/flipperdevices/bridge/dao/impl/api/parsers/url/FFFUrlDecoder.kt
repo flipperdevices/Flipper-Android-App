@@ -37,9 +37,7 @@ class FFFUrlDecoder : LogTagProvider {
 
         val fffContent = uri.fragment
 
-        if (fffContent.isNullOrEmpty()) {
-            throw IllegalArgumentException("Sharing file content can't be empty")
-        }
+        require(!fffContent.isNullOrEmpty()) { "Sharing file content can't be empty" }
 
         val (path, pairs) = parseFragment(fffContent)
 
@@ -64,9 +62,7 @@ class FFFUrlDecoder : LogTagProvider {
             }
         }
 
-        if (path == null) {
-            throw IllegalArgumentException("Url fragment doesn't contains path")
-        }
+        requireNotNull(path) { "Url fragment doesn't contains path" }
 
         return path to fileContent
     }

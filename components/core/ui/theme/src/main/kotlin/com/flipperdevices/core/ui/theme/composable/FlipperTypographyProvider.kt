@@ -34,6 +34,11 @@ private val typography = FlipperTypography(
         fontFamily = robotoFamily,
         fontWeight = FontWeight.W600
     ),
+    titleSB16 = TextStyle(
+        fontSize = 18.sp,
+        fontFamily = robotoFamily,
+        fontWeight = FontWeight.W600
+    ),
     titleEB20 = TextStyle(
         fontSize = 20.sp,
         fontFamily = robotoFamily,
@@ -173,5 +178,15 @@ private val typography = FlipperTypography(
         fontSize = 12.sp,
         fontFamily = FontFamily(Font(R.font.roboto_mono_medium)),
         fontWeight = FontWeight.W400
+    ),
+    notificationB8 = TextStyle(
+        fontSize = 8.sp,
+        fontFamily = FontFamily(Font(R.font.roboto_mono_medium)),
+        fontWeight = FontWeight.W700
+    ),
+    fapHubButtonText = TextStyle(
+        fontSize = 18.sp,
+        fontFamily = FontFamily(Font(R.font.flipper_action)),
+        fontWeight = FontWeight.W500
     )
 )

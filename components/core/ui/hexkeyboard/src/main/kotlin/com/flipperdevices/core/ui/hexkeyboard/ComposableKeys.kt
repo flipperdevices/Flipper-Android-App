@@ -8,7 +8,7 @@ import androidx.constraintlayout.compose.Dimension
 
 @Composable
 internal fun ConstraintLayoutScope.ComposableKeys123(
-    refs: ImmutableEnumMap<HexKey, ConstrainedLayoutReference>
+    refs: PredefinedEnumMap<HexKey, ConstrainedLayoutReference>
 ) {
     ComposableKey(
         key = HexKey.One,
@@ -50,7 +50,7 @@ internal fun ConstraintLayoutScope.ComposableKeys123(
 
 @Composable
 internal fun ConstraintLayoutScope.ComposableKeysABC(
-    refs: ImmutableEnumMap<HexKey, ConstrainedLayoutReference>
+    refs: PredefinedEnumMap<HexKey, ConstrainedLayoutReference>
 ) {
     ComposableKey(
         key = HexKey.A,
@@ -92,7 +92,7 @@ internal fun ConstraintLayoutScope.ComposableKeysABC(
 
 @Composable
 internal fun ConstraintLayoutScope.ComposableKeys456(
-    refs: ImmutableEnumMap<HexKey, ConstrainedLayoutReference>
+    refs: PredefinedEnumMap<HexKey, ConstrainedLayoutReference>
 ) {
     ComposableKey(
         key = HexKey.Four,
@@ -134,7 +134,7 @@ internal fun ConstraintLayoutScope.ComposableKeys456(
 
 @Composable
 internal fun ConstraintLayoutScope.ComposableKeysDEF(
-    refs: ImmutableEnumMap<HexKey, ConstrainedLayoutReference>
+    refs: PredefinedEnumMap<HexKey, ConstrainedLayoutReference>
 ) {
     ComposableKey(
         key = HexKey.D,
@@ -176,7 +176,7 @@ internal fun ConstraintLayoutScope.ComposableKeysDEF(
 
 @Composable
 internal fun ConstraintLayoutScope.ComposableKeys7890(
-    refs: ImmutableEnumMap<HexKey, ConstrainedLayoutReference>
+    refs: PredefinedEnumMap<HexKey, ConstrainedLayoutReference>
 ) {
     ComposableKey(
         key = HexKey.Seven,
@@ -230,7 +230,7 @@ internal fun ConstraintLayoutScope.ComposableKeys7890(
 
 @Composable
 internal fun ConstraintLayoutScope.ComposableKeysClearOk(
-    refs: ImmutableEnumMap<HexKey, ConstrainedLayoutReference>
+    refs: PredefinedEnumMap<HexKey, ConstrainedLayoutReference>
 ) {
     ComposableKey(
         key = HexKey.Clear,

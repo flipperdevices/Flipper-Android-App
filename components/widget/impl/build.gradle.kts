@@ -1,5 +1,4 @@
 plugins {
-    id("flipper.lint")
     id("flipper.android-lib")
     id("com.squareup.anvil")
     id("kotlin-kapt")
@@ -20,7 +19,6 @@ dependencies {
     implementation(projects.components.bridge.dao.api)
 
     implementation(projects.components.bridge.pbutils)
-    implementation(libs.protobuf.jvm)
 
     implementation(libs.work.ktx)
     implementation(libs.ktx)

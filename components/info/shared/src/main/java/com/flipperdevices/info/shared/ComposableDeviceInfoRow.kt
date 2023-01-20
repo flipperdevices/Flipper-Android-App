@@ -26,9 +26,10 @@ fun ComposableDeviceInfoRowWithText(
     @StringRes titleId: Int,
     inProgress: Boolean,
     value: String?,
-    color: Color? = null
+    modifier: Modifier = Modifier,
+    color: Color? = null,
 ) {
-    ComposableDeviceInfoRowWithText(stringResource(titleId), inProgress, value, color)
+    ComposableDeviceInfoRowWithText(stringResource(titleId), inProgress, value, modifier, color)
 }
 
 @Composable
@@ -36,25 +37,31 @@ fun ComposableDeviceInfoRowWithText(
     text: String,
     inProgress: Boolean,
     value: String?,
-    color: Color? = null
+    modifier: Modifier = Modifier,
+    color: Color? = null,
 ) {
     if (value == null) {
-        ComposableDeviceInfoRow(text, inProgress, null)
+        ComposableDeviceInfoRow(text, inProgress, content = null)
         return
     }
-    ComposableDeviceInfoRow(text, inProgress) {
-        ComposableDeviceInfoRowText(modifier = it, text = value, color = color)
-    }
+    ComposableDeviceInfoRow(
+        text,
+        inProgress,
+        content = {
+            ComposableDeviceInfoRowText(modifier = it, text = value, color = color)
+        }
+    )
 }
 
 @Composable
 fun ComposableDeviceInfoRow(
     text: String,
     inProgress: Boolean,
-    content: (@Composable (Modifier) -> Unit)?
+    content: (@Composable (Modifier) -> Unit)?,
+    modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth().padding(12.dp),
+        modifier = modifier.fillMaxWidth().padding(12.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -67,9 +74,11 @@ fun ComposableDeviceInfoRow(
             content(Modifier)
         } else if (inProgress) {
             DeviceInfoRowPlaceholder()
-        } else ComposableDeviceInfoRowText(
-            stringResource(R.string.info_device_unknown)
-        )
+        } else {
+            ComposableDeviceInfoRowText(
+                stringResource(R.string.info_device_unknown)
+            )
+        }
     }
 }
 
@@ -77,9 +86,10 @@ fun ComposableDeviceInfoRow(
 fun ComposableDeviceInfoRow(
     @StringRes titleId: Int,
     inProgress: Boolean,
-    content: (@Composable (Modifier) -> Unit)?
+    content: (@Composable (Modifier) -> Unit)?,
+    modifier: Modifier = Modifier
 ) {
-    ComposableDeviceInfoRow(stringResource(titleId), inProgress, content)
+    ComposableDeviceInfoRow(stringResource(titleId), inProgress, content, modifier)
 }
 
 @Composable
@@ -98,8 +108,8 @@ fun ComposableDeviceInfoRowText(
 
 @Composable
 fun ComposableLongDeviceInfoRowText(
-    modifier: Modifier = Modifier,
     text: String,
+    modifier: Modifier = Modifier,
     lines: Int = 1,
     color: Color = LocalPallet.current.text100
 ) {

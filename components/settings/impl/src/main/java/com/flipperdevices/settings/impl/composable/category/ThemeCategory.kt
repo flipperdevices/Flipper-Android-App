@@ -1,8 +1,6 @@
 package com.flipperdevices.settings.impl.composable.category
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -11,7 +9,6 @@ import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,28 +20,28 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.preference.pb.SelectedTheme
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.composable.elements.SimpleElement
 import com.flipperdevices.settings.impl.viewmodels.SettingsViewModel
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
-fun ThemeCategory(settingsViewModel: SettingsViewModel) {
+fun ThemeCategory(
+    settingsViewModel: SettingsViewModel,
+    modifier: Modifier = Modifier,
+) {
     val themes = SelectedTheme.values().filter { it != SelectedTheme.UNRECOGNIZED }
     val theme = settingsViewModel.getSelectedTheme()
 
     val nameTheme = stringResource(id = getNameBySelectedTheme(theme))
     var showMenu by remember { mutableStateOf(false) }
 
-    CardCategory {
+    CardCategory(modifier = modifier) {
         Row(
-            modifier = Modifier.clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple(),
-                onClick = { showMenu = true }
-            ),
+            modifier = Modifier.clickableRipple { showMenu = true },
             verticalAlignment = Alignment.CenterVertically
         ) {
             SimpleElement(

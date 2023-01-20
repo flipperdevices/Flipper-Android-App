@@ -33,11 +33,11 @@ private const val ANIMATION_DURATION_MS = 150
 
 @Composable
 fun FlipperTextField(
+    text: String,
+    onTextChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     title: String? = null,
     label: String? = null,
-    text: String,
-    onTextChange: (String) -> Unit,
     keyboardType: KeyboardType = KeyboardType.Text,
     enabled: Boolean = true
 ) {
@@ -131,7 +131,9 @@ private fun FlipperTextBoxUnderline(
     val isFocused by interactionSource.collectIsFocusedAsState()
     val underlineColor = if (isFocused) {
         LocalPallet.current.accentSecond
-    } else LocalPallet.current.text30
+    } else {
+        LocalPallet.current.text30
+    }
     val underlineColorAnimated by animateColorAsState(
         underlineColor,
         tween(durationMillis = ANIMATION_DURATION_MS)
@@ -147,8 +149,7 @@ private fun FlipperTextBoxUnderline(
     showSystemUi = true,
     showBackground = true
 )
-@Suppress("UnusedPrivateMember")
-private fun FlipperTextFieldPreview() {
+private fun ComposableFlipperTextFieldPreview() {
     FlipperTextField(
         title = "Name:",
         text = "",

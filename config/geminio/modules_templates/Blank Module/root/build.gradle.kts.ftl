@@ -1,5 +1,4 @@
 plugins {
-    id("flipper.lint")
 <#if needCompose>
     id("flipper.android-compose")
 <#else>

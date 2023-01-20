@@ -8,10 +8,11 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun CardCategory(
+    modifier: Modifier = Modifier,
     category: @Composable () -> Unit
 ) {
     Card(
-        modifier = Modifier.padding(horizontal = 14.dp),
+        modifier = modifier.padding(horizontal = 14.dp),
         content = category
     )
 }

@@ -1,7 +1,5 @@
 package com.flipperdevices.info.impl.compose.info
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,11 +10,9 @@ import androidx.compose.foundation.text.selection.DisableSelection
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -26,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.core.ui.ktx.animatedDots
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.info.impl.R
@@ -36,11 +32,12 @@ import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
 import com.flipperdevices.info.impl.viewmodel.FirmwareUpdateViewModel
 import com.flipperdevices.info.shared.InfoElementCard
 import com.flipperdevices.updater.model.FlipperUpdateState
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableInfoCard(
-    modifier: Modifier,
     onOpenFullDeviceInfo: () -> Unit,
+    modifier: Modifier = Modifier,
     deviceStatusViewModel: DeviceStatusViewModel = viewModel(),
     firmwareUpdateViewModel: FirmwareUpdateViewModel = viewModel()
 ) {
@@ -62,11 +59,13 @@ fun ComposableInfoCard(
 }
 
 @Composable
-fun ComposableWaitingFlipper() {
+fun ComposableWaitingFlipper(
+    modifier: Modifier = Modifier
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(12.dp),
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 68.dp)
     ) {
@@ -93,11 +92,7 @@ private fun ComposableFullInfoButton(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable(
-                    indication = rememberRipple(),
-                    onClick = onOpenFullDeviceInfo,
-                    interactionSource = remember { MutableInteractionSource() }
-                )
+                .clickableRipple(onClick = onOpenFullDeviceInfo)
                 .padding(all = 12.dp),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically

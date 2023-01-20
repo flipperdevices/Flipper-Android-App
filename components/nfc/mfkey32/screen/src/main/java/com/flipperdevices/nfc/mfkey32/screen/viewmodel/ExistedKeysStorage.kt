@@ -14,13 +14,13 @@ import com.flipperdevices.nfc.mfkey32.screen.model.FoundedKey
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.storage.file
 import com.flipperdevices.protobuf.storage.writeRequest
-import java.io.ByteArrayInputStream
-import java.io.FileNotFoundException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.sync.Mutex
+import java.io.ByteArrayInputStream
+import java.io.FileNotFoundException
 
 private const val FLIPPER_DICT_USER_PATH = "/ext/nfc/assets/mf_classic_dict_user.nfc"
 private const val FLIPPER_DICT_PATH = "/ext/nfc/assets/mf_classic_dict.nfc"
@@ -70,16 +70,22 @@ class ExistedKeysStorage(
             DuplicatedSource.FLIPPER
         } else if (userDict.contains(foundedKey.key)) {
             DuplicatedSource.USER
-        } else null
+        } else {
+            null
+        }
         foundedInformationStateFlow.update { foundedInformation ->
             foundedInformation.copy(
                 keys = foundedInformation.keys.plus(foundedKey),
                 uniqueKeys = if (existed == null && foundedKey.key != null) {
                     foundedInformation.uniqueKeys.plus(foundedKey.key)
-                } else foundedInformation.uniqueKeys,
+                } else {
+                    foundedInformation.uniqueKeys
+                },
                 duplicated = if (existed != null && foundedKey.key != null) {
                     foundedInformation.duplicated.plus(foundedKey.key to existed)
-                } else foundedInformation.duplicated
+                } else {
+                    foundedInformation.duplicated
+                }
             )
         }
         if (existed == null && foundedKey.key != null) {

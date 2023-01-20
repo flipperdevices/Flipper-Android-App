@@ -48,11 +48,16 @@ fun LazyListScope.DuplicatedKeys(keys: Map<String, DuplicatedSource>) {
                     append(")")
                 }
             }
-        } else AnnotatedString(key)
+        } else {
+            AnnotatedString(key)
+        }
         SelectionContainer {
             Text(
                 modifier = Modifier.padding(
-                    start = 14.dp, end = 14.dp, top = 4.dp, bottom = 4.dp
+                    start = 14.dp,
+                    end = 14.dp,
+                    top = 4.dp,
+                    bottom = 4.dp
                 ),
                 text = text,
                 style = textStyle

@@ -12,8 +12,6 @@ import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsChannel
 import io.ktor.util.cio.writeChannel
 import io.ktor.utils.io.copyAndClose
-import java.io.File
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.apache.commons.codec.binary.Hex
@@ -21,6 +19,8 @@ import org.apache.commons.codec.digest.DigestUtils
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream
+import java.io.File
+import javax.inject.Inject
 
 private const val TRY_MAX_COUNT = 3
 
@@ -70,10 +70,8 @@ class DownloadAndUnpackDelegateApiImpl @Inject constructor(
             String(Hex.encodeHex(DigestUtils.sha256(it)))
         }
 
-        if (hash != distributionFile.sha256 && distributionFile.sha256 != null) {
-            throw IllegalStateException(
-                "Hash mismatch. Expected: ${distributionFile.sha256}, actual: $hash"
-            )
+        check(hash == distributionFile.sha256 || distributionFile.sha256 == null) {
+            "Hash mismatch. Expected: ${distributionFile.sha256}, actual: $hash"
         }
     }
 

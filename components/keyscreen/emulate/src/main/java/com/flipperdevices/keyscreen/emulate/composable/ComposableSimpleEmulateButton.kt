@@ -1,14 +1,11 @@
 package com.flipperdevices.keyscreen.emulate.composable
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyscreen.api.Picture
 import com.flipperdevices.keyscreen.emulate.R
@@ -20,23 +17,23 @@ import com.flipperdevices.keyscreen.emulate.model.DisableButtonReason
 import com.flipperdevices.keyscreen.emulate.model.EmulateButtonState
 import com.flipperdevices.keyscreen.emulate.viewmodel.SimpleEmulateViewModel
 import tangle.viewmodel.compose.tangleViewModel
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
-fun ComposableSimpleEmulateButton(modifier: Modifier = Modifier, flipperKey: FlipperKey) {
+fun ComposableSimpleEmulateButton(
+    flipperKey: FlipperKey,
+    modifier: Modifier = Modifier
+) {
     val emulateViewModel = tangleViewModel<SimpleEmulateViewModel>()
     val emulateButtonState by emulateViewModel.getEmulateButtonStateFlow().collectAsState()
 
-    val buttonActiveModifier = Modifier.clickable(
-        interactionSource = MutableInteractionSource(),
-        indication = rememberRipple(),
-        onClick = {
-            if (emulateButtonState is EmulateButtonState.Inactive) {
-                emulateViewModel.onStartEmulate(flipperKey)
-            } else if (emulateButtonState is EmulateButtonState.Active) {
-                emulateViewModel.onStopEmulate()
-            }
+    val buttonActiveModifier = Modifier.clickableRipple {
+        if (emulateButtonState is EmulateButtonState.Inactive) {
+            emulateViewModel.onStartEmulate(flipperKey)
+        } else if (emulateButtonState is EmulateButtonState.Active) {
+            emulateViewModel.onStopEmulate()
         }
-    )
+    }
 
     if (!flipperKey.synchronized) {
         ComposableActionDisable(

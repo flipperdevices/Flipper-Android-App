@@ -13,8 +13,8 @@ import com.flipperdevices.bridge.service.impl.R
 import com.flipperdevices.bridge.service.impl.di.FlipperServiceComponent
 import com.flipperdevices.core.di.ApplicationParams
 import com.flipperdevices.core.di.ComponentHolder
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import javax.inject.Inject
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 private const val FLIPPER_NOTIFICATION_CHANNEL = "flipper_service"
 const val FLIPPER_NOTIFICATION_ID = 1

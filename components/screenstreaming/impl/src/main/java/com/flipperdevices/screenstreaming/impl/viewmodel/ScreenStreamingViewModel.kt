@@ -21,9 +21,6 @@ import com.flipperdevices.screenstreaming.impl.R
 import com.flipperdevices.screenstreaming.impl.composable.ButtonEnum
 import com.flipperdevices.screenstreaming.impl.di.ScreenStreamingComponent
 import com.flipperdevices.screenstreaming.impl.model.StreamingState
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -32,6 +29,9 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import tangle.viewmodel.VMInject
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 private const val SCREENSHOT_FILE_PREFIX = "flpr"
 private const val TIMEFORMAT = "yyyy-MM-dd-HH:mm:ss"
@@ -75,7 +75,10 @@ class ScreenStreamingViewModel @VMInject constructor(
 
     fun onPressButton(buttonEnum: ButtonEnum) = when (buttonEnum) {
         ButtonEnum.UNLOCK -> serviceApi?.requestApi?.pressOnButton(
-            viewModelScope, Gui.InputKey.BACK, Gui.InputType.SHORT, times = 3
+            viewModelScope,
+            Gui.InputKey.BACK,
+            Gui.InputType.SHORT,
+            times = 3
         )
         ButtonEnum.SCREENSHOT -> shareScreenshot()
         ButtonEnum.LEFT,
@@ -134,13 +137,15 @@ class ScreenStreamingViewModel @VMInject constructor(
 
     fun enableStreaming() {
         streamingState.compareAndSet(
-            expect = StreamingState.DISABLED, update = StreamingState.ENABLED
+            expect = StreamingState.DISABLED,
+            update = StreamingState.ENABLED
         )
     }
 
     fun disableStreaming() {
         streamingState.compareAndSet(
-            expect = StreamingState.ENABLED, update = StreamingState.DISABLED
+            expect = StreamingState.ENABLED,
+            update = StreamingState.DISABLED
         )
     }
 }

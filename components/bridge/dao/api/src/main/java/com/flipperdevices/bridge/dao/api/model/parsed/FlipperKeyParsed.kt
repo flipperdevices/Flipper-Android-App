@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.dao.api.model.parsed
 
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
+import kotlinx.collections.immutable.ImmutableList
 
 sealed class FlipperKeyParsed(
     val keyName: String,
@@ -53,6 +54,6 @@ sealed class FlipperKeyParsed(
         keyName: String,
         notes: String?,
         fileType: FlipperKeyType?,
-        val orderedDict: List<Pair<String, String>>
+        val orderedDict: ImmutableList<Pair<String, String>>
     ) : FlipperKeyParsed(keyName, notes, fileType)
 }

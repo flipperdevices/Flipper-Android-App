@@ -38,12 +38,12 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.ktx.SwipeRefresh
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import kotlinx.collections.immutable.ImmutableList
 import tangle.viewmodel.compose.tangleViewModel
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableArchive(
@@ -58,36 +58,39 @@ fun ComposableArchive(
 
     if (localSynchronizationState is SynchronizationState.InProgress) {
         ArchiveProgressScreen(localSynchronizationState, tabViewModel::cancelSynchronization)
-    } else ComposableArchiveReady(
-        synchronizationUiApi,
-        keys,
-        favoriteKeys,
-        tabViewModel,
-        synchronizationState,
-        isKeysPresented
-    )
+    } else {
+        ComposableArchiveReady(
+            synchronizationUiApi,
+            keys,
+            favoriteKeys,
+            tabViewModel,
+            synchronizationState,
+            isKeysPresented
+        )
+    }
 }
 
 @Composable
 private fun ComposableArchiveReady(
     synchronizationUiApi: SynchronizationUiApi,
-    keys: List<FlipperKey>?,
-    favoriteKeys: List<FlipperKey>,
+    keys: ImmutableList<FlipperKey>?,
+    favoriteKeys: ImmutableList<FlipperKey>,
     tabViewModel: GeneralTabViewModel,
     synchronizationState: SynchronizationState,
-    isKeysPresented: Boolean
+    isKeysPresented: Boolean,
+    modifier: Modifier = Modifier,
+    keyItemViewModel: KeyItemViewModel = viewModel(),
 ) {
-    val keyItemViewModel: KeyItemViewModel = viewModel()
-    Column(verticalArrangement = Arrangement.Top) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Top
+    ) {
         ComposableAppBar(
             title = stringResource(R.string.archive_title),
             iconId = DesignSystem.drawable.ic_search,
             onIconClick = { tabViewModel.onOpenSearch() }
         )
-        SwipeRefresh(
-            state = rememberSwipeRefreshState(false),
-            onRefresh = tabViewModel::refresh
-        ) {
+        SwipeRefresh(onRefresh = tabViewModel::refresh) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -106,11 +109,12 @@ private fun ComposableArchiveReady(
                 }
             }
         }
-
         if (!isKeysPresented) {
             if (synchronizationState is SynchronizationState.InProgress) {
                 ComposableProgress()
-            } else ComposableNoKeys()
+            } else {
+                ComposableNoKeys()
+            }
         }
     }
 }

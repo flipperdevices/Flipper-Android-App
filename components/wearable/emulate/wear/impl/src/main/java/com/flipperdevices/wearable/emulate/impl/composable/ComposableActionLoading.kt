@@ -15,9 +15,9 @@ import com.google.accompanist.placeholder.shimmer
 
 @Composable
 fun ComposableActionLoading(
-    modifier: Modifier,
     keyEmulateApi: KeyEmulateUiApi,
-    loadingState: WearLoadingState
+    loadingState: WearLoadingState,
+    modifier: Modifier = Modifier
 ) {
     val placeholderColor = LocalPallet.current.text8.copy(alpha = 0.2f)
     keyEmulateApi.ComposableEmulateButtonWithText(

@@ -15,6 +15,9 @@ import com.flipperdevices.core.navigation.global.CiceroneGlobal
 import com.flipperdevices.keyscreen.api.KeyScreenApi
 import com.github.terrakok.cicerone.ResultListener
 import com.github.terrakok.cicerone.ResultListenerHandler
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -31,8 +34,8 @@ class GeneralTabViewModel @VMInject constructor(
     private val keyScreenApi: KeyScreenApi,
     private val ciceroneGlobal: CiceroneGlobal
 ) : ViewModel(), ResultListener {
-    private val keys = MutableStateFlow<List<FlipperKey>>(emptyList())
-    private val favoriteKeys = MutableStateFlow<List<FlipperKey>>(emptyList())
+    private val keys = MutableStateFlow<ImmutableList<FlipperKey>>(persistentListOf())
+    private val favoriteKeys = MutableStateFlow<ImmutableList<FlipperKey>>(persistentListOf())
     private val synchronizationState =
         MutableStateFlow<SynchronizationState>(SynchronizationState.NotStarted)
     private var resultListenerDispatcher: ResultListenerHandler? = null
@@ -45,8 +48,8 @@ class GeneralTabViewModel @VMInject constructor(
                     val favoriteKeyPaths = favoriteKeysList.map { it.path }.toSet()
                     val keysExceptFavorite =
                         keyList.filterNot { favoriteKeyPaths.contains(it.path) }
-                    keys.emit(keysExceptFavorite)
-                    favoriteKeys.emit(favoriteKeysList)
+                    keys.emit(keysExceptFavorite.toImmutableList())
+                    favoriteKeys.emit(favoriteKeysList.toImmutableList())
                 }.launchIn(viewModelScope)
             synchronizationApi.getSynchronizationState().onEach {
                 synchronizationState.emit(it)
@@ -54,8 +57,8 @@ class GeneralTabViewModel @VMInject constructor(
         }
     }
 
-    fun getKeys(): StateFlow<List<FlipperKey>?> = keys
-    fun getFavoriteKeys(): StateFlow<List<FlipperKey>> = favoriteKeys
+    fun getKeys(): StateFlow<ImmutableList<FlipperKey>?> = keys
+    fun getFavoriteKeys(): StateFlow<ImmutableList<FlipperKey>> = favoriteKeys
     fun getSynchronizationState(): StateFlow<SynchronizationState> = synchronizationState
 
     fun onOpenSearch() {

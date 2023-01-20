@@ -13,7 +13,7 @@ import javax.crypto.spec.SecretKeySpec
 import javax.inject.Inject
 
 private const val ALGORITHM_HELPER = "AES/GCM/NoPadding"
-private const val KEY_SIZE = 192
+private const val KEY_SIZE = 128
 private const val TAG_LENGTH = 16
 private const val BIT_SIZE = 8
 private const val IV_LENGTH = 12
@@ -30,7 +30,11 @@ class CryptoHelperApiImpl @Inject constructor() : CryptoHelperApi {
             .getInstance(KeyProperties.KEY_ALGORITHM_AES)
             .apply { init(KEY_SIZE) }
         val secretKey = generator.generateKey()
-        val keyString = Base64.getUrlEncoder().encodeToString(secretKey.encoded)
+
+        val keyString = Base64
+            .getUrlEncoder()
+            .withoutPadding()
+            .encodeToString(secretKey.encoded)
 
         val encryptionCipher = Cipher.getInstance(ALGORITHM_HELPER).apply {
             init(

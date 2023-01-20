@@ -6,9 +6,9 @@ import androidx.compose.runtime.remember
 import com.flipperdevices.core.ui.dialog.composable.FlipperDialog
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialog
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialogModel
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.updater.card.R
 import com.flipperdevices.updater.model.FirmwareVersion
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun FlipperDialogReadyUpdate(
@@ -19,11 +19,15 @@ fun FlipperDialogReadyUpdate(
 ) {
     val titleId = if (isInstallUpdate) {
         R.string.update_card_confirm_install_title
-    } else R.string.update_card_confirm_update_title
+    } else {
+        R.string.update_card_confirm_update_title
+    }
 
     val buttonId = if (isInstallUpdate) {
         R.string.update_card_confirm_install
-    } else R.string.update_card_confirm_update
+    } else {
+        R.string.update_card_confirm_update
+    }
 
     val text = buildAnnotatedStringWithVersionColor(
         version,
@@ -64,7 +68,9 @@ fun FlipperDialogSynchronization(onCancel: () -> Unit, onPauseAndUpdate: () -> U
 fun FlipperDialogFileVeryBig(onDismiss: () -> Unit) {
     val imageId = if (MaterialTheme.colors.isLight) {
         DesignSystem.drawable.ic_firmware_application_deprecated
-    } else DesignSystem.drawable.ic_firmware_application_deprecated_dark
+    } else {
+        DesignSystem.drawable.ic_firmware_application_deprecated_dark
+    }
 
     FlipperDialog(
         imageId = imageId,
@@ -80,7 +86,9 @@ fun FlipperDialogFileVeryBig(onDismiss: () -> Unit) {
 fun FlipperDialogFileExtension(onDismiss: () -> Unit) {
     val imageId = if (MaterialTheme.colors.isLight) {
         DesignSystem.drawable.ic_firmware_application_deprecated
-    } else DesignSystem.drawable.ic_firmware_application_deprecated_dark
+    } else {
+        DesignSystem.drawable.ic_firmware_application_deprecated_dark
+    }
 
     FlipperDialog(
         imageId = imageId,
@@ -94,8 +102,11 @@ fun FlipperDialogFileExtension(onDismiss: () -> Unit) {
 
 @Composable
 fun FlipperDialogLowBattery(onDismiss: () -> Unit) {
-    val imageId = if (MaterialTheme.colors.isLight) DesignSystem.drawable.pic_flipper_low_battery
-    else DesignSystem.drawable.pic_flipper_low_battery_dark
+    val imageId = if (MaterialTheme.colors.isLight) {
+        DesignSystem.drawable.pic_flipper_low_battery
+    } else {
+        DesignSystem.drawable.pic_flipper_low_battery_dark
+    }
 
     FlipperDialog(
         imageId = imageId,

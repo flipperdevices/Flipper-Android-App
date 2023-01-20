@@ -1,5 +1,9 @@
 package com.flipperdevices.core.ui.theme
 
+import androidx.compose.foundation.Indication
+import androidx.compose.foundation.IndicationInstance
+import androidx.compose.foundation.LocalIndication
+import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
@@ -13,6 +17,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.drawscope.ContentDrawScope
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.preference.pb.SelectedTheme
@@ -28,8 +33,10 @@ val LocalPallet = compositionLocalOf<FlipperPallet> { error("No local pallet") }
 val LocalTypography = compositionLocalOf<FlipperTypography> { error("No local typography") }
 
 @Composable
-fun FlipperTheme(content: @Composable () -> Unit) {
-    val themeViewModel: ThemeViewModel = viewModel()
+fun FlipperTheme(
+    content: @Composable () -> Unit,
+    themeViewModel: ThemeViewModel = viewModel()
+) {
     val theme by themeViewModel.getAppTheme().collectAsState()
     val isLight = isLight(systemIsDark = isSystemInDarkTheme())
     FlipperThemeInternal(
@@ -61,7 +68,24 @@ fun FlipperThemeInternal(
             LocalTypography provides getTypography(),
             LocalContentColor provides colors.contentColorFor(backgroundColor = pallet.background),
             LocalTextSelectionColors provides pallet.toTextSelectionColors(),
+            LocalIndication provides NoIndication,
             content = content
         )
+    }
+}
+
+/*
+    Standardization of the indication for all clickable modifiers
+ */
+private object NoIndication : Indication {
+    private object NoIndicationInstance : IndicationInstance {
+        override fun ContentDrawScope.drawIndication() {
+            drawContent()
+        }
+    }
+
+    @Composable
+    override fun rememberUpdatedInstance(interactionSource: InteractionSource): IndicationInstance {
+        return NoIndicationInstance
     }
 }

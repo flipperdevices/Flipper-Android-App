@@ -5,9 +5,9 @@ import android.bluetooth.BluetoothGattCharacteristic
 import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.api.manager.service.FlipperVersionApi
-import com.flipperdevices.bridge.api.model.SemVer
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.impl.manager.UnsafeBleManager
+import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
@@ -22,13 +22,11 @@ class FlipperVersionApiImpl(
 ) : BluetoothGattServiceWrapper, FlipperVersionApi, LogTagProvider {
     override val TAG = "FlipperVersionApi"
 
-    private val semVerStateFlow =
-        MutableStateFlow<SemVer?>(null)
+    private val semVerStateFlow = MutableStateFlow<SemVer?>(null)
 
     private var apiVersionCharacteristics: BluetoothGattCharacteristic? = null
 
-    override fun getVersionInformationFlow(): StateFlow<SemVer?> =
-        semVerStateFlow
+    override fun getVersionInformationFlow(): StateFlow<SemVer?> = semVerStateFlow
 
     override fun onServiceReceived(gatt: BluetoothGatt): Boolean {
         getServiceOrLog(gatt, Constants.BLEInformationService.SERVICE_UUID)?.let { service ->

@@ -9,11 +9,11 @@ import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.keyscreen.impl.di.KeyScreenComponent
 import com.flipperdevices.keyscreen.impl.model.FlipperDeviceState
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
 class FlipperDeviceViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
     private val flipperDeviceState = MutableStateFlow(FlipperDeviceState.NOT_CONNECTED)
@@ -32,7 +32,9 @@ class FlipperDeviceViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
         serviceApi.connectionInformationApi.getConnectionStateFlow().onEach {
             val state = if (it is ConnectionState.Ready) {
                 FlipperDeviceState.CONNECTED
-            } else FlipperDeviceState.NOT_CONNECTED
+            } else {
+                FlipperDeviceState.NOT_CONNECTED
+            }
             flipperDeviceState.emit(state)
         }.launchIn(viewModelScope)
     }

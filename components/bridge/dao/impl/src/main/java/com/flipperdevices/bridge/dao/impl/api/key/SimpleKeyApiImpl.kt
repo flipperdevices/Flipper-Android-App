@@ -14,12 +14,12 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.log.LogTagProvider
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
-import javax.inject.Provider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
+import javax.inject.Provider
 
 @ContributesBinding(AppGraph::class, SimpleKeyApi::class)
 class SimpleKeyApiImpl @Inject constructor(
@@ -62,7 +62,9 @@ class SimpleKeyApiImpl @Inject constructor(
     ): Flow<List<FlipperKey>> {
         val flowWithFilter = if (fileType == null) {
             simpleKeyDao.subscribe()
-        } else simpleKeyDao.subscribeByType(fileType)
+        } else {
+            simpleKeyDao.subscribeByType(fileType)
+        }
         return flowWithFilter.map { keys ->
             keys.map { it.toFlipperKey(additionalFileDao) }
         }

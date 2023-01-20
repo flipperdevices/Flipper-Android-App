@@ -21,6 +21,7 @@ import com.flipperdevices.bottombar.impl.main.viewmodel.InAppNotificationViewMod
 import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
 import com.flipperdevices.connection.api.ConnectionApi
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.ktx.android.parcelable
 import com.flipperdevices.core.ktx.android.setStatusBarColor
 import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.ktx.jre.runBlockingWithLog
@@ -33,8 +34,8 @@ import com.flipperdevices.core.ui.theme.FlipperTheme
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.flipperdevices.inappnotification.api.InAppNotificationRenderer
-import javax.inject.Inject
 import kotlinx.coroutines.flow.first
+import javax.inject.Inject
 
 class BottomNavigationFragment : Fragment(), OnBackPressListener, LogTagProvider {
     override val TAG = "BottomNavigationFragment"
@@ -54,7 +55,7 @@ class BottomNavigationFragment : Fragment(), OnBackPressListener, LogTagProvider
     lateinit var settingsDataStore: DataStore<Settings>
 
     private val deeplink: Deeplink?
-        get() = arguments?.get(DeeplinkConstants.KEY) as? Deeplink
+        get() = arguments?.parcelable(DeeplinkConstants.KEY)
 
     init {
         ComponentHolder.component<BottomBarComponent>().inject(this)
@@ -75,12 +76,16 @@ class BottomNavigationFragment : Fragment(), OnBackPressListener, LogTagProvider
         binding.bottomBar.apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                FlipperTheme {
+                FlipperTheme(content = {
                     val selectedItem by bottomNavigationViewModel.selectedTab.collectAsState()
-                    ComposeBottomBar(connectionApi, selectedItem) {
-                        selectTab(it)
-                    }
-                }
+                    ComposeBottomBar(
+                        connectionApi,
+                        selectedItem = selectedItem,
+                        onBottomBarClick = {
+                            selectTab(it)
+                        }
+                    )
+                })
             }
         }
         binding.inappNotification.apply {
@@ -91,13 +96,13 @@ class BottomNavigationFragment : Fragment(), OnBackPressListener, LogTagProvider
                 if (localNotificationState !is InAppNotificationState.ShownNotification) {
                     return@setContent
                 }
-                FlipperTheme {
+                FlipperTheme(content = {
                     notificationRenderer.InAppNotification(localNotificationState.notification) {
                         notificationViewModel.onNotificationHidden(
                             notification = localNotificationState.notification
                         )
                     }
-                }
+                })
             }
         }
 

@@ -19,9 +19,10 @@ import com.flipperdevices.updater.api.UpdaterCardApi
 fun ComposableDeviceInfoScreen(
     updaterCardApi: UpdaterCardApi,
     onOpenFullDeviceInfo: () -> Unit,
-    onOpenOptions: () -> Unit
+    onOpenOptions: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+    Column(modifier = modifier.verticalScroll(rememberScrollState())) {
         ComposableDeviceBar()
         updaterCardApi.ComposableUpdaterCard(
             modifier = Modifier.padding(top = 14.dp)

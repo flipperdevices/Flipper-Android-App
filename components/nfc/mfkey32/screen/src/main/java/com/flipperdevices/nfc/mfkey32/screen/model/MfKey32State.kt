@@ -1,6 +1,7 @@
 package com.flipperdevices.nfc.mfkey32.screen.model
 
 import androidx.compose.runtime.Stable
+import kotlinx.collections.immutable.ImmutableList
 
 sealed class MfKey32State {
     data class DownloadingRawFile(
@@ -12,7 +13,7 @@ sealed class MfKey32State {
     ) : MfKey32State()
 
     object Uploading : MfKey32State()
-    data class Saved(val keys: List<String>) : MfKey32State()
+    data class Saved(val keys: ImmutableList<String>) : MfKey32State()
 
     data class Error(val errorType: ErrorType) : MfKey32State()
 }

@@ -1,5 +1,4 @@
 plugins {
-    id("flipper.lint")
     id("flipper.android-compose")
     id("kotlin-parcelize")
     id("com.squareup.anvil")
@@ -45,6 +44,8 @@ dependencies {
     anvil(libs.tangle.viewmodel.compiler)
 
     implementation(libs.cicerone)
+
+    implementation(libs.kotlin.immutable.collections)
 
     // Lifecycle
     implementation(libs.lifecycle.runtime.ktx)

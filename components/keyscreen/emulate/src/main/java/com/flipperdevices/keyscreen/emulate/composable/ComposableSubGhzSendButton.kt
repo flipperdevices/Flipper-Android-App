@@ -12,7 +12,6 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.core.ui.ktx.onHoldPress
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyscreen.api.EmulateProgress
 import com.flipperdevices.keyscreen.api.Picture
@@ -26,9 +25,13 @@ import com.flipperdevices.keyscreen.emulate.model.DisableButtonReason
 import com.flipperdevices.keyscreen.emulate.model.EmulateButtonState
 import com.flipperdevices.keyscreen.emulate.viewmodel.SubGhzViewModel
 import tangle.viewmodel.compose.tangleViewModel
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
-fun ComposableSubGhzSendButton(modifier: Modifier = Modifier, flipperKey: FlipperKey) {
+fun ComposableSubGhzSendButton(
+    flipperKey: FlipperKey,
+    modifier: Modifier = Modifier
+) {
     val emulateViewModel = tangleViewModel<SubGhzViewModel>()
     val emulateButtonState by emulateViewModel.getEmulateButtonStateFlow().collectAsState()
 
@@ -69,10 +72,10 @@ fun ComposableSubGhzSendButton(modifier: Modifier = Modifier, flipperKey: Flippe
 
 @Composable
 private fun ComposableActiveStateEmulateInternal(
-    modifier: Modifier,
     emulateViewModel: SubGhzViewModel,
     flipperKey: FlipperKey,
-    emulateButtonState: EmulateButtonState
+    emulateButtonState: EmulateButtonState,
+    modifier: Modifier = Modifier
 ) {
     var isBubbleOpen by remember { mutableStateOf(false) }
     val buttonActiveModifier = Modifier.onHoldPress(
@@ -112,23 +115,31 @@ private fun ComposableActiveStateEmulateInternal(
  */
 @Composable
 private fun ComposableActiveEmulateInternal(
-    modifier: Modifier,
-    buttonActiveModifier: Modifier,
     emulateProgress: EmulateProgress?,
-    isActive: Boolean
+    isActive: Boolean,
+    modifier: Modifier = Modifier,
+    buttonActiveModifier: Modifier = Modifier
 ) {
     val textId = if (isActive) R.string.keyscreen_sending else R.string.keyscreen_send
     val color = if (isActive) {
         LocalPallet.current.actionOnFlipperSubGhzProgress
-    } else LocalPallet.current.actionOnFlipperSubGhzEnable
+    } else {
+        LocalPallet.current.actionOnFlipperSubGhzEnable
+    }
     val progressColor = if (isActive) {
         LocalPallet.current.actionOnFlipperSubGhzEnable
-    } else Color.Transparent
+    } else {
+        Color.Transparent
+    }
     val descriptionId = if (isActive) null else R.string.keyscreen_sending_desc
-    val picture = if (isActive) Picture.LottieRes(
-        DesignSystem.raw.ic_sending,
-        DesignSystem.drawable.ic_send
-    ) else Picture.StaticRes(DesignSystem.drawable.ic_send)
+    val picture = if (isActive) {
+        Picture.LottieRes(
+            DesignSystem.raw.ic_sending,
+            DesignSystem.drawable.ic_send
+        )
+    } else {
+        Picture.StaticRes(DesignSystem.drawable.ic_send)
+    }
 
     ComposableEmulateButtonWithText(
         modifier = modifier,

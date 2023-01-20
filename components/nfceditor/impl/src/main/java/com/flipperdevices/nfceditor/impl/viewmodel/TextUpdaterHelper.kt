@@ -7,6 +7,7 @@ import com.flipperdevices.core.ui.hexkeyboard.HexKey
 import com.flipperdevices.nfceditor.impl.model.EditorField
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCellLocation
 import com.flipperdevices.nfceditor.impl.model.NfcEditorState
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -19,7 +20,7 @@ const val BYTES_SYMBOL_COUNT = 2
 class TextUpdaterHelper {
     private var nfcEditorStateFlow = MutableStateFlow<NfcEditorState?>(
         NfcEditorState(
-            sectors = emptyList()
+            sectors = persistentListOf()
         )
     )
 

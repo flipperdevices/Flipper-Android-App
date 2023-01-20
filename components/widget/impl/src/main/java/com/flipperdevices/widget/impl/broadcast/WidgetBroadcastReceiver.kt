@@ -71,7 +71,9 @@ class WidgetBroadcastReceiver : BroadcastReceiver(), LogTagProvider {
 
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 PendingIntent.getBroadcast(
-                    context, widgetAppId, intent,
+                    context,
+                    widgetAppId,
+                    intent,
                     PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
                 )
             } else {
@@ -97,7 +99,9 @@ class WidgetBroadcastReceiver : BroadcastReceiver(), LogTagProvider {
 
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 PendingIntent.getBroadcast(
-                    context, widgetAppId, intent,
+                    context,
+                    widgetAppId,
+                    intent,
                     PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
                 )
             } else {

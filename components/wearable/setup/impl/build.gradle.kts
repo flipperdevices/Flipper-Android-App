@@ -1,5 +1,4 @@
 plugins {
-    id("flipper.lint")
     id("flipper.android-compose")
     id("com.squareup.anvil")
     id("kotlin-kapt")
@@ -14,6 +13,7 @@ dependencies {
     implementation(projects.components.core.activityholder)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.navigation)
+    implementation(projects.components.core.ui.ktx)
     implementation(projects.components.wearable.core.ui.components)
     implementation(projects.components.wearable.core.ui.ktx)
 

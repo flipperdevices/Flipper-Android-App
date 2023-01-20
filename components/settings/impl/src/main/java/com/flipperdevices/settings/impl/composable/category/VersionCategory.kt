@@ -1,7 +1,6 @@
 package com.flipperdevices.settings.impl.composable.category
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -24,20 +23,20 @@ import com.flipperdevices.settings.impl.R
 private const val EXPERT_MODE_CLICK_COUNT = 10
 
 @Composable
-fun VersionCategory(version: String, onActivateExpertMode: () -> Unit) {
+fun VersionCategory(
+    version: String,
+    modifier: Modifier = Modifier,
+    onActivateExpertMode: () -> Unit
+) {
     var howMuchClick by remember { mutableStateOf(0) }
     val versionText = "${stringResource(id = R.string.version)}: $version"
     Column(
-        modifier = Modifier.fillMaxWidth().clickable(
-            interactionSource = MutableInteractionSource(),
-            indication = null,
-            onClick = {
-                howMuchClick++
-                if (howMuchClick > EXPERT_MODE_CLICK_COUNT) {
-                    onActivateExpertMode()
-                }
+        modifier = modifier.fillMaxWidth().clickable {
+            howMuchClick++
+            if (howMuchClick > EXPERT_MODE_CLICK_COUNT) {
+                onActivateExpertMode()
             }
-        ),
+        },
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

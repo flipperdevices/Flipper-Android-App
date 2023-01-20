@@ -1,5 +1,4 @@
 plugins {
-    id("flipper.lint")
     id("flipper.android-compose")
     id("kotlinx-serialization")
     id("kotlin-parcelize")
@@ -14,6 +13,7 @@ dependencies {
     implementation(libs.cicerone)
 
     implementation(libs.kotlin.serialization.json)
+    implementation(libs.kotlin.immutable.collections)
 
     implementation(libs.compose.ui)
 }

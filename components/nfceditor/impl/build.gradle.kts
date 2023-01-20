@@ -1,5 +1,4 @@
 plugins {
-    id("flipper.lint")
     id("flipper.android-compose")
     id("com.squareup.anvil")
     id("kotlin-kapt")
@@ -36,6 +35,8 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
     implementation(libs.compose.insets)
+
+    implementation(libs.kotlin.immutable.collections)
 
     implementation(libs.lifecycle.compose)
     implementation(libs.ktx.fragment)

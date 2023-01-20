@@ -1,5 +1,4 @@
 plugins {
-    id("flipper.lint")
     id("flipper.android-compose")
     id("com.squareup.anvil")
     id("kotlin-kapt")
@@ -13,6 +12,7 @@ dependencies {
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.navigation)
     implementation(projects.components.core.preference)
+    implementation(projects.components.core.data)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.theme)
@@ -28,7 +28,6 @@ dependencies {
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.pbutils)
     implementation(projects.components.bridge.synchronization.api)
-    implementation(libs.protobuf.jvm)
 
     // Compose
     implementation(libs.compose.ui)

@@ -5,10 +5,10 @@ import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.readRequest
-import java.io.File
-import java.io.FileNotFoundException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.io.File
+import java.io.FileNotFoundException
 
 object DownloadFileHelper {
     suspend fun downloadFile(

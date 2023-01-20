@@ -1,8 +1,8 @@
+@file:Suppress("CompositionLocalAllowlist")
+
 package com.flipperdevices.core.ui.hexkeyboard
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,7 +15,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
@@ -29,6 +28,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstrainedLayoutReference
 import androidx.constraintlayout.compose.ConstraintLayout
+import com.flipperdevices.core.ui.ktx.clickableRipple
 
 /**
  * Fields for composition local
@@ -58,8 +58,8 @@ fun ComposableHexKeyboard(
                 .fillMaxWidth()
                 .height(keyboardHeight)
         ) {
-            val refs: ImmutableEnumMap<HexKey, ConstrainedLayoutReference> =
-                ImmutableEnumMap(HexKey::class.java, HexKey.values()) { createRef() }
+            val refs: PredefinedEnumMap<HexKey, ConstrainedLayoutReference> =
+                PredefinedEnumMap(HexKey::class.java) { createRef() }
             ComposableKeys123(refs)
             ComposableKeysABC(refs)
             ComposableKeys456(refs)
@@ -73,16 +73,12 @@ fun ComposableHexKeyboard(
 @Composable
 internal fun ComposableKey(
     key: HexKey,
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
     val onClick = LocalKeyAction.current
     Box(
         modifier = modifier
-            .clickable(
-                interactionSource = MutableInteractionSource(),
-                indication = rememberRipple(),
-                onClick = { onClick(key) }
-            )
+            .clickableRipple { onClick(key) }
             .padding(4.dp)
             .clip(RoundedCornerShape(4.dp))
             .background(LocalButtonColor.current),

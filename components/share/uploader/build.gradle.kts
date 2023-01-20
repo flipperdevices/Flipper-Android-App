@@ -1,11 +1,11 @@
 plugins {
-    id("flipper.lint")
     id("flipper.android-compose")
     id("com.squareup.anvil")
     id("kotlin-kapt")
 }
 
 dependencies {
+    implementation(projects.components.analytics.metric.api)
     implementation(projects.components.share.api)
     implementation(projects.components.bridge.dao.api)
 

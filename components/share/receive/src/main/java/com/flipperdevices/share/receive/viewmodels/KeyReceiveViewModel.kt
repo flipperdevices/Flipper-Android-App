@@ -1,67 +1,48 @@
 package com.flipperdevices.share.receive.viewmodels
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.flipperdevices.bridge.dao.api.delegates.KeyParser
-import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
-import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
-import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.bridge.dao.api.model.FlipperKey
+import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.ktx.android.toast
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
 import com.flipperdevices.deeplink.model.Deeplink
-import com.flipperdevices.inappnotification.api.InAppNotificationStorage
-import com.flipperdevices.inappnotification.api.model.InAppNotification
-import com.flipperdevices.keyedit.api.KeyEditApi
-import com.flipperdevices.keyedit.api.NotSavedFlipperKey
-import com.flipperdevices.keyedit.api.toNotSavedFlipperFile
-import com.flipperdevices.share.api.ShareContentError
 import com.flipperdevices.share.receive.R
-import com.flipperdevices.share.receive.di.KeyReceiveComponent
-import com.flipperdevices.share.receive.model.FlipperKeyParseException
-import com.flipperdevices.share.receive.model.ReceiveState
+import com.flipperdevices.share.receive.fragments.EXTRA_KEY_DEEPLINK
+import com.flipperdevices.share.receive.helpers.FlipperKeyParserHelper
+import com.flipperdevices.share.receive.helpers.ReceiveKeyActionHelper
+import com.flipperdevices.share.receive.models.ReceiveState
+import com.flipperdevices.share.receive.models.ReceiverError
 import com.github.terrakok.cicerone.Router
-import java.net.UnknownHostException
-import java.net.UnknownServiceException
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import tangle.inject.TangleParam
+import tangle.viewmodel.VMInject
+import java.io.FileNotFoundException
+import java.net.UnknownHostException
+import java.net.UnknownServiceException
 
-private const val NOTIFICATION_DURATION_MS = 3 * 1000L
-
-class KeyReceiveViewModel(
+class KeyReceiveViewModel @VMInject constructor(
+    @TangleParam(EXTRA_KEY_DEEPLINK)
     initialDeeplink: Deeplink?,
-    application: Application
-) : AndroidViewModel(application), LogTagProvider {
+    application: Application,
+    private val synchronizationApi: SynchronizationApi,
+    private val flipperKeyParserHelper: FlipperKeyParserHelper,
+    private val receiveKeyActionHelper: ReceiveKeyActionHelper
+) : AndroidLifecycleViewModel(application), LogTagProvider {
     override val TAG = "KeyReceiveViewModel"
     private val internalDeeplinkFlow = MutableStateFlow(initialDeeplink)
+
     private val state = MutableStateFlow<ReceiveState>(ReceiveState.NotStarted)
-
-    @Inject
-    lateinit var simpleKeyApi: SimpleKeyApi
-
-    @Inject
-    lateinit var keyEditApi: KeyEditApi
-
-    @Inject
-    lateinit var utilsKeyApi: UtilsKeyApi
-
-    @Inject
-    lateinit var keyParser: KeyParser
-
-    @Inject
-    lateinit var notificationStorage: InAppNotificationStorage
-
-    @Inject
-    lateinit var flipperKeyParserHelper: FlipperKeyParserHelper
+    fun getState() = state.asStateFlow()
 
     init {
-        ComponentHolder.component<KeyReceiveComponent>().inject(this)
         internalDeeplinkFlow.onEach {
             parseFlipperKey()
         }.launchIn(viewModelScope)
@@ -71,32 +52,35 @@ class KeyReceiveViewModel(
         internalDeeplinkFlow.onEach {
             val flipperKey = flipperKeyParserHelper.toFlipperKey(it)
             flipperKey.onSuccess { localFlipperKey ->
-                val newPath = utilsKeyApi.findAvailablePath(localFlipperKey.getKeyPath())
-                val newFlipperKey = localFlipperKey.copy(
-                    mainFile = localFlipperKey.mainFile.copy(
-                        path = newPath.path
-                    ),
-                    deleted = newPath.deleted
-                )
-                state.emit(ReceiveState.Pending(newFlipperKey, keyParser.parseKey(newFlipperKey)))
+                processSuccessfullyParseKey(localFlipperKey)
             }
             flipperKey.onFailure { exception ->
-                error(exception) { "Error on parse flipperKey" }
-                when (exception) {
-                    is FlipperKeyParseException -> state.emit(ReceiveState.Finished)
-                    is UnknownHostException -> state.emit(
-                        ReceiveState.Error(ShareContentError.NO_INTERNET)
-                    )
-                    is UnknownServiceException -> state.emit(
-                        ReceiveState.Error(ShareContentError.SERVER_ERROR)
-                    )
-                    else -> state.emit(ReceiveState.Error(ShareContentError.OTHER))
-                }
+                processFailureParseKey(exception)
             }
         }.launchIn(viewModelScope)
     }
 
-    fun getState() = state.asStateFlow()
+    private suspend fun processSuccessfullyParseKey(flipperKey: FlipperKey) {
+        val newKey = receiveKeyActionHelper.findNewPathAndCloneKey(flipperKey)
+        val keyParsed = receiveKeyActionHelper.parseKey(newKey)
+        state.emit(ReceiveState.Pending(newKey, keyParsed))
+    }
+
+    private suspend fun processFailureParseKey(exception: Throwable) {
+        error(exception) { "Error on parse flipperKey" }
+        when (exception) {
+            is UnknownHostException -> state.emit(
+                ReceiveState.Error(ReceiverError.NO_INTERNET_CONNECTION)
+            )
+            is UnknownServiceException -> state.emit(
+                ReceiveState.Error(ReceiverError.CANT_CONNECT_TO_SERVER)
+            )
+            is FileNotFoundException -> state.emit(
+                ReceiveState.Error(ReceiverError.EXPIRED_LINK)
+            )
+            else -> ReceiveState.Error(ReceiverError.INVALID_FILE_FORMAT)
+        }
+    }
 
     fun onRetry() {
         internalDeeplinkFlow.onEach {
@@ -111,51 +95,32 @@ class KeyReceiveViewModel(
             info { "You can save key only from pending state, now is $state" }
             return
         }
-        val isStateSaved = state.compareAndSet(
-            localState,
-            ReceiveState.Saving(localState.flipperKey, localState.parsed)
-        )
+        val newState = localState.copy(isSaving = true)
+
+        val isStateSaved = state.compareAndSet(localState, newState)
         if (!isStateSaved) {
             onSave()
             return
         }
 
         viewModelScope.launch {
-            try {
-                simpleKeyApi.insertKey(localState.flipperKey)
-            } catch (e: Exception) {
-                error(e) { "While save key ${localState.flipperKey}" }
+            val saveKeyResult = receiveKeyActionHelper.saveKey(newState.flipperKey)
+
+            saveKeyResult.onFailure { exception ->
+                error(exception) { "While save key ${localState.flipperKey}" }
                 getApplication<Application>().toast(R.string.receive_error_conflict)
                 state.emit(ReceiveState.Pending(localState.flipperKey, localState.parsed))
                 return@launch
             }
 
-            notificationStorage.addNotification(
-                InAppNotification(
-                    title = localState.flipperKey.path.nameWithoutExtension,
-                    descriptionId = R.string.receive_notification_description,
-                    durationMs = NOTIFICATION_DURATION_MS
-                )
-            )
-            state.emit(ReceiveState.Finished)
+            saveKeyResult.onSuccess {
+                state.emit(ReceiveState.Finished)
+            }
         }
     }
 
-    fun onEdit(router: Router) {
-        viewModelScope.launch {
-            when (val localState = state.value) {
-                is ReceiveState.Pending -> {
-                    val flipperKey = localState.flipperKey
-                    val notSavedKey = NotSavedFlipperKey(
-                        mainFile = flipperKey.mainFile.toNotSavedFlipperFile(getApplication()),
-                        additionalFiles = listOf(),
-                        notes = flipperKey.notes
-                    )
-                    val title = flipperKey.mainFile.path.nameWithoutExtension
-                    router.navigateTo(keyEditApi.getScreen(notSavedKey, title))
-                }
-                else -> {}
-            }
-        }
+    fun onFinish(router: Router) {
+        synchronizationApi.startSynchronization(force = true)
+        router.exit()
     }
 }

@@ -20,7 +20,7 @@ import com.flipperdevices.metric.api.events.complex.UpdateStatus
 import com.flipperdevices.metric.impl.BuildConfig
 import com.flipperdevices.pbmetric.Metric
 import com.flipperdevices.pbmetric.events.OpenOuterClass
-import com.flipperdevices.pbmetric.events.SubghzProvisioning
+import com.flipperdevices.pbmetric.events.SubGhzProvisioningOuterClass
 import com.flipperdevices.pbmetric.events.UpdateFlipperEndOuterClass
 import com.flipperdevices.pbmetric.events.flipperGattInfo
 import com.flipperdevices.pbmetric.events.flipperRpcInfo
@@ -39,14 +39,14 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.isSuccess
-import java.util.UUID
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.util.UUID
+import javax.inject.Inject
+import javax.inject.Singleton
 
 const val METRIC_API_URL = "https://metric.flipperdevices.com/report"
 
@@ -70,8 +70,11 @@ class ClickhouseApiImpl @Inject constructor(
             SimpleEvent.OPEN_EDIT -> OpenOuterClass.Open.OpenTarget.EDIT
             SimpleEvent.OPEN_SHARE -> OpenOuterClass.Open.OpenTarget.SHARE
             SimpleEvent.EXPERIMENTAL_OPEN_FM -> OpenOuterClass.Open.OpenTarget.EXPERIMENTAL_FM
-            SimpleEvent.EXPERIMENTAL_OPEN_SCREENSTREAMING ->
+            SimpleEvent.EXPERIMENTAL_OPEN_SCREEN_STREAMING ->
                 OpenOuterClass.Open.OpenTarget.EXPERIMENTAL_SCREENSTREAMING
+            SimpleEvent.SHARE_SHORT_LINK -> OpenOuterClass.Open.OpenTarget.SHARE_SHORTLINK
+            SimpleEvent.SHARE_LONG_LINK -> OpenOuterClass.Open.OpenTarget.SHARE_LONGLINK
+            SimpleEvent.SHARE_FILE -> OpenOuterClass.Open.OpenTarget.SHARE_FILE
         }
         scope.launch(Dispatchers.Default) {
             reportToServerSafe(
@@ -149,15 +152,15 @@ class ClickhouseApiImpl @Inject constructor(
                     isRoaming = complexEvent.isRoaming
                     regionSource = when (complexEvent.regionSource) {
                         RegionSource.SIM_NETWORK ->
-                            SubghzProvisioning.SubGhzProvisioning.RegionSource.SIM_NETWORK
+                            SubGhzProvisioningOuterClass.SubGhzProvisioning.RegionSource.SIM_NETWORK
                         RegionSource.SIM_COUNTRY ->
-                            SubghzProvisioning.SubGhzProvisioning.RegionSource.SIM_COUNTRY
+                            SubGhzProvisioningOuterClass.SubGhzProvisioning.RegionSource.SIM_COUNTRY
                         RegionSource.GEO_IP ->
-                            SubghzProvisioning.SubGhzProvisioning.RegionSource.GEO_IP
+                            SubGhzProvisioningOuterClass.SubGhzProvisioning.RegionSource.GEO_IP
                         RegionSource.SYSTEM ->
-                            SubghzProvisioning.SubGhzProvisioning.RegionSource.SYSTEM
+                            SubGhzProvisioningOuterClass.SubGhzProvisioning.RegionSource.SYSTEM
                         RegionSource.DEFAULT ->
-                            SubghzProvisioning.SubGhzProvisioning.RegionSource.DEFAULT
+                            SubGhzProvisioningOuterClass.SubGhzProvisioning.RegionSource.DEFAULT
                     }
                 }
             }
@@ -179,7 +182,9 @@ class ClickhouseApiImpl @Inject constructor(
             sessionUuid = sessionUUID.toString()
             platform = if (BuildConfig.DEBUG) {
                 Metric.MetricReportRequest.Platform.ANDROID_DEBUG
-            } else Metric.MetricReportRequest.Platform.ANDROID
+            } else {
+                Metric.MetricReportRequest.Platform.ANDROID
+            }
             events.add(event)
         }
         val httpResponse = client.post(METRIC_API_URL) {
@@ -191,7 +196,9 @@ class ClickhouseApiImpl @Inject constructor(
                 "Failed report event to $METRIC_API_URL" +
                     " $reportRequest with code ${httpResponse.status}"
             }
-        } else verbose { "Sucs send event $event with ${reportRequest.uuid}" }
+        } else {
+            verbose { "Sucs send event $event with ${reportRequest.uuid}" }
+        }
     } catch (e: Exception) {
         error(e) { "Failed report to server" }
     }
@@ -204,7 +211,9 @@ class ClickhouseApiImpl @Inject constructor(
                     it.toBuilder()
                         .setUuid(UUID.randomUUID().toString())
                         .build()
-                } else it
+                } else {
+                    it
+                }
             }.uuid
         }
         return uuid

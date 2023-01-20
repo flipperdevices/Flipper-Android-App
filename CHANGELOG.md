@@ -1,10 +1,40 @@
 # Changelog
 
-# 1.3.1 - In progress
+# 1.4.1 - In Progress
 
+- [Feature] Flipper app loader errors
+- [GitHub] Update github repo picture
+- [CI] Migrate to Detekt
+- [CI] Android lint in CI
+- [FIX] Clickable modifier ktx
+- [FIX] Refactor `share:receive` module
+- [FIX] Bump length for server-side share link
+- [FIX] Key encryption without paddings
+- [REFACTOR] Fix detekt compose issues
+- [REFACTOR] Format markdown changelog with clickable link and bold nickname
+- [REFACTOR] Enable detekt formatting with rules
+- [REFACTOR] Fix gradle warnings (Deprecated API, PredefinedEnumMap)
+
+# 1.4.0
+
+- [Feature] Placeholder view on receive key
 - [Feature] Add forbidden frequency dialog
 - [Feature] Rework all system dialog to custom
-- [Feature] New share flow
+- [Feature] New share flow(with `sf#path=()&id=()key=`) + metric + error handling
+- [Feature] Share shadow file if that exist on NFC
+- [Feature] Add application catalog button
+- [Feature] Add application catalog list with sorted button
+- [Feature] Add categories, categories list and search
+- [Feature] Add installed, new switch, install button
+- [Feature] Add support for 3 version of NFC file
+- [FIX] Uploading share errors
+- [FIX] Display by white color meta data on NFC card
+- [FIX] Scrim status bar and design changes on bottom sheet
+- [FIX] Fix crash when delete from trash key with favorites
+- [FIX] Favorites synchronization
+- [CI] Bump deps
+- [CI] Fix local build of application
+- [CI] Git submodule `Flipper Protobuf`
 
 # 1.3.0
 

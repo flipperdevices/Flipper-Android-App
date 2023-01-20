@@ -33,12 +33,16 @@ internal fun ComposableSheetPrepare() {
         Spacer(modifier = Modifier.height(24.dp))
         Text(
             text = stringResource(id = R.string.share_via_secure_link_title),
-            style = LocalTypography.current.bodyM14
+            style = LocalTypography.current.bodyM14.copy(
+                color = LocalPallet.current.shareSheetBackgroundAction
+            )
         )
         Spacer(modifier = Modifier.height(2.dp))
         Text(
             text = stringResource(id = R.string.share_via_secure_link_desc),
-            style = LocalTypography.current.subtitleR10
+            style = LocalTypography.current.subtitleR10.copy(
+                color = LocalPallet.current.text30
+            )
         )
     }
 }

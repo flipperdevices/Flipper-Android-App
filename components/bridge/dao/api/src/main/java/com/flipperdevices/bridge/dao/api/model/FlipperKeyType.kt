@@ -3,8 +3,8 @@ package com.flipperdevices.bridge.dao.api.model
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 enum class FlipperKeyType(
     val humanReadableName: String,

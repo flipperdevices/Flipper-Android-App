@@ -1,4 +1,4 @@
-package com.flipperdevices.updater.subghz.helpers.model
+package com.flipperdevices.updater.subghz.model
 
 private const val COUNTRY_CODE_LENGTH = 2
 
@@ -18,7 +18,9 @@ data class RegionProvisioning(
             regionFromIp to RegionProvisioningSource.GEO_IP
         } else if (regionSystem.isOkayRegion()) {
             regionSystem to RegionProvisioningSource.SYSTEM
-        } else null to null
+        } else {
+            null to null
+        }
     }
 }
 

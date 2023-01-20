@@ -29,7 +29,7 @@ import com.flipperdevices.core.ktx.jre.roundPercentToString
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.filemanager.impl.R
-import com.flipperdevices.filemanager.impl.composable.editor.ComposableEditorTopBar
+import com.flipperdevices.filemanager.impl.composable.bar.ComposableEditorTopBar
 import com.flipperdevices.filemanager.impl.model.DownloadProgress
 import com.flipperdevices.filemanager.impl.model.EditorState
 import com.flipperdevices.filemanager.impl.viewmodels.EditorViewModel
@@ -82,12 +82,13 @@ private fun ComposableFileManagerEditorContent(
     Column {
         var text by remember { mutableStateOf(loadedState.content) }
 
-        ComposableEditorTopBar(loadedState.path) {
+        ComposableEditorTopBar(loadedState.path, onClickSaveButton = {
             onClickSaveButton(text)
-        }
+        })
         if (loadedState.tooLarge) {
             Text(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .background(LocalPallet.current.warningColor),
                 text = stringResource(R.string.filemanager_editor_warning),
                 color = LocalPallet.current.textOnWarningBackground
@@ -123,7 +124,9 @@ private fun ComposableFileManagerInProgress(
                 textId,
                 if (progress is DownloadProgress.Fixed) {
                     progress.toProgressFloat().roundPercentToString()
-                } else "~"
+                } else {
+                    "~"
+                }
             ),
             textAlign = TextAlign.Center
         )

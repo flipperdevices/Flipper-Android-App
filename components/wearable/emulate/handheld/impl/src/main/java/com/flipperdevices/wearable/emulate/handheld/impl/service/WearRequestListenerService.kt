@@ -31,7 +31,8 @@ class WearRequestListenerService :
             )
         )
         val bindSuccessful = applicationContext.bindService(
-            Intent(applicationContext, WearRequestForegroundService::class.java), this,
+            Intent(applicationContext, WearRequestForegroundService::class.java),
+            this,
             Context.BIND_AUTO_CREATE or Context.BIND_IMPORTANT
         )
         info { "Bind for service is $bindSuccessful" }

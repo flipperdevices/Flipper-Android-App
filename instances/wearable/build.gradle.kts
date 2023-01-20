@@ -1,5 +1,4 @@
 plugins {
-    id("flipper.lint")
     id("flipper.android-app")
     id("com.squareup.anvil")
     id("kotlin-kapt")
@@ -56,6 +55,8 @@ dependencies {
     implementation(libs.compose.wear.foundation)
     implementation(libs.compose.wear.navigation)
     implementation(libs.compose.wear.material)
+
+    implementation(libs.kotlin.immutable.collections)
 
     // Dagger deps
     implementation(libs.dagger)

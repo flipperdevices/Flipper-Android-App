@@ -7,7 +7,6 @@ import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.screen.screenFrame
 import com.flipperdevices.protobuf.screen.startVirtualDisplayRequest
@@ -17,6 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 private const val STOP_IMAGE_TIMEOUT_MS = 5 * 1000L
 

@@ -1,7 +1,5 @@
 package com.flipperdevices.archive.category.composable
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,7 +9,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,7 +16,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.archive.category.R
 import com.flipperdevices.archive.category.composable.dialogs.ComposableDeleteAllDialog
 import com.flipperdevices.archive.category.composable.dialogs.ComposableRestoreAllDialog
@@ -27,11 +23,15 @@ import com.flipperdevices.archive.category.viewmodels.DeleteViewModel
 import com.flipperdevices.archive.model.CategoryType
 import com.flipperdevices.archive.shared.composable.ComposableAppBar
 import com.flipperdevices.core.ui.ktx.LocalRouter
+import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
+import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
-fun ComposableDeleted() {
-    Column {
+fun ComposableDeleted(
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier) {
         ComposableDeletedAppBar()
         ComposableCategoryContent(CategoryType.Deleted, synchronizationUiApi = null)
     }
@@ -39,7 +39,7 @@ fun ComposableDeleted() {
 
 @Composable
 private fun ComposableDeletedAppBar(
-    deleteViewModel: DeleteViewModel = viewModel()
+    deleteViewModel: DeleteViewModel = tangleViewModel()
 ) {
     val router = LocalRouter.current
     var isDeleteAllDialog by remember { mutableStateOf(false) }
@@ -79,8 +79,8 @@ private fun ComposableDeletedAppBar(
 
 @Composable
 private fun ComposableDeletedAppBarInternal(
-    modifier: Modifier,
     onDeleteAllDialogOpen: () -> Unit,
+    modifier: Modifier = Modifier,
     onRestoreAllDialogOpen: () -> Unit
 ) {
     var showMenu by remember { mutableStateOf(false) }
@@ -89,11 +89,7 @@ private fun ComposableDeletedAppBarInternal(
         horizontalArrangement = Arrangement.End
     ) {
         Icon(
-            modifier = Modifier.clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple(bounded = false),
-                onClick = { showMenu = true }
-            ),
+            modifier = Modifier.clickableRipple(bounded = false) { showMenu = true },
             imageVector = Icons.Default.MoreVert,
             contentDescription = null,
             tint = LocalPallet.current.onAppBar

@@ -11,11 +11,11 @@ import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.firstpair.api.FirstPairApi
 import com.flipperdevices.info.impl.di.InfoComponent
 import com.flipperdevices.info.impl.model.ConnectRequestState
-import java.util.concurrent.atomic.AtomicBoolean
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.concurrent.atomic.AtomicBoolean
+import javax.inject.Inject
 
 class ConnectViewModel : LifecycleViewModel() {
     private val connectRequestState = MutableStateFlow(

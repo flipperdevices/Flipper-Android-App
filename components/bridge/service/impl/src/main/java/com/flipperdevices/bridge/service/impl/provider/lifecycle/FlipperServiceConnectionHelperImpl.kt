@@ -84,7 +84,8 @@ class FlipperServiceConnectionHelperImpl(
             applicationContext.startService(Intent(applicationContext, FlipperService::class.java))
         }
         val bindSuccessful = applicationContext.bindService(
-            Intent(applicationContext, FlipperService::class.java), this,
+            Intent(applicationContext, FlipperService::class.java),
+            this,
             Context.BIND_AUTO_CREATE or Context.BIND_IMPORTANT
         )
         isRequestedForBind = true

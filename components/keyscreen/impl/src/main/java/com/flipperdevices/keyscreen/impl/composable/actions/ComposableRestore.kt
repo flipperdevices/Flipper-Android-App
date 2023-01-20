@@ -1,8 +1,9 @@
 package com.flipperdevices.keyscreen.impl.composable.actions
 
 import androidx.compose.runtime.Composable
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.keyscreen.impl.R
+import com.flipperdevices.keyscreen.impl.composable.actions.common.ComposableActionRow
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableRestore(onClick: () -> Unit) {

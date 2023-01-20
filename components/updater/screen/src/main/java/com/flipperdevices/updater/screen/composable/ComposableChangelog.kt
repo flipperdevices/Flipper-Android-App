@@ -30,15 +30,21 @@ import com.flipperdevices.core.markdown.ComposableMarkdown
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.updater.screen.R
+import com.flipperdevices.updater.screen.helper.ChangelogFormatter
 
 @Composable
 fun ComposableChangelog(
-    changelog: String
+    changelog: String,
+    modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
     var heightColumn by remember { mutableStateOf(0) }
-    Column(Modifier.fillMaxSize()) {
-        Divider(Modifier.height(1.dp).background(LocalPallet.current.divider12))
+    Column(modifier.fillMaxSize()) {
+        Divider(
+            Modifier
+                .height(1.dp)
+                .background(LocalPallet.current.divider12)
+        )
         Column(
             modifier = Modifier
                 .weight(1f)
@@ -62,15 +68,19 @@ fun ComposableChangelog(
                 textAlign = TextAlign.Left
             )
             ComposableMarkdown(
-                content = removeLineBreakChangelog(changelog),
-                modifier = Modifier.fillMaxSize()
+                content = ChangelogFormatter.format(changelog),
+                modifier = Modifier.fillMaxSize().padding(4.dp)
             )
         }
-        Divider(Modifier.height(1.dp).background(LocalPallet.current.divider12))
+        Divider(
+            Modifier
+                .height(1.dp)
+                .background(LocalPallet.current.divider12)
+        )
     }
 }
 
-@Composable
+@Suppress("LongParameterList")
 fun Modifier.verticalScrollbar(
     color: Color,
     state: ScrollState,
@@ -79,32 +89,24 @@ fun Modifier.verticalScrollbar(
     heightColumn: Int,
     paddingTop: Dp = 0.dp,
     paddingBottom: Dp = 0.dp
-): Modifier {
-    return drawWithContent {
-        // Calculate what part of the scroll is passed
-        val partByScrollBar = state.value / (state.maxValue.toFloat())
+) = drawWithContent {
+    // Calculate what part of the scroll is passed
+    val partByScrollBar = state.value / (state.maxValue.toFloat())
 
-        // padding top/bottom and height bar
-        val heightDifference = (heightBar + paddingTop + paddingBottom).toPx()
-        val scrollBoxHeight = (heightColumn - heightDifference)
-        // Calculate coordinate y for scrollbar in column box(not scroll box)
-        val offsetYScrollBar = paddingTop.toPx() + partByScrollBar * scrollBoxHeight
+    // padding top/bottom and height bar
+    val heightDifference = (heightBar + paddingTop + paddingBottom).toPx()
+    val scrollBoxHeight = (heightColumn - heightDifference)
+    // Calculate coordinate y for scrollbar in column box(not scroll box)
+    val offsetYScrollBar = paddingTop.toPx() + partByScrollBar * scrollBoxHeight
 
-        // Calculate coordinate x for scrollbar
-        val offsetXScrollBar = this.size.width - widthBar.toPx()
+    // Calculate coordinate x for scrollbar
+    val offsetXScrollBar = this.size.width - widthBar.toPx()
 
-        drawContent()
-        drawRoundRect(
-            color = color,
-            topLeft = Offset(offsetXScrollBar, offsetYScrollBar),
-            size = Size(widthBar.toPx(), heightBar.toPx()),
-            cornerRadius = CornerRadius(x = 100f, y = 100f)
-        )
-    }
-}
-
-private fun removeLineBreakChangelog(changelog: String): String {
-    return changelog
-        .replace("\r\n\r\n", "\r\n")
-        .replace("\r", "")
+    drawContent()
+    drawRoundRect(
+        color = color,
+        topLeft = Offset(offsetXScrollBar, offsetYScrollBar),
+        size = Size(widthBar.toPx(), heightBar.toPx()),
+        cornerRadius = CornerRadius(x = 100f, y = 100f)
+    )
 }

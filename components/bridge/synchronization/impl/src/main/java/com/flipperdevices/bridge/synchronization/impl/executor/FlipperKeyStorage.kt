@@ -16,11 +16,11 @@ import com.flipperdevices.protobuf.storage.file
 import com.flipperdevices.protobuf.storage.readRequest
 import com.flipperdevices.protobuf.storage.writeRequest
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.flow.toList
+import javax.inject.Inject
 
 @StorageType(Platform.FLIPPER)
 @ContributesBinding(TaskGraph::class, AbstractKeyStorage::class)

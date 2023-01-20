@@ -14,6 +14,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextGeometricTransform
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.TextUnit
+import com.vladsch.flexmark.ast.BulletList
 import com.vladsch.flexmark.ast.Emphasis
 import com.vladsch.flexmark.ast.Link
 import com.vladsch.flexmark.ast.OrderedList
@@ -29,6 +30,7 @@ const val ANNOTATED_STRING_TAG_URL = "URL"
  * 2) Italic (* tag)
  * 3) Link ([]())
  * 4) Ordered lists
+ * 5) Unordered lists
  */
 class AnnotatedStringRenderer(
     private val linkColor: Color
@@ -51,6 +53,15 @@ class AnnotatedStringRenderer(
                 while (child != null) {
                     builder.append("${index++}. ")
                     render(child, builder)
+                    child = child.next
+                }
+            }
+            is BulletList -> {
+                var child = node.firstChild
+                while (child != null) {
+                    builder.append(" • ")
+                    render(child, builder)
+                    builder.append('\n')
                     child = child.next
                 }
             }

@@ -35,8 +35,10 @@ fun getThemedFlipperPallet(
 }
 
 @Composable
-fun isLight(systemIsDark: Boolean = isSystemInDarkTheme()): Boolean {
-    val themeViewModel: ThemeViewModel = viewModel()
+fun isLight(
+    systemIsDark: Boolean = isSystemInDarkTheme(),
+    themeViewModel: ThemeViewModel = viewModel()
+): Boolean {
     val theme by themeViewModel.getAppTheme().collectAsState()
 
     return when (theme) {
@@ -91,7 +93,13 @@ private val lightPallet = FlipperPallet(
     substrateActiveCellNfcEditor = Color(0xFFDFDFDF),
     hexKeyboardBackground = Color(0xFF616161),
 
-    shareSheetBackground = Color(0xFFFFFFFF)
+    shareSheetBackground = Color(0xFFFFFFFF),
+    shareSheetScrimColor = Color(0xFF000000).copy(alpha = 0.15f),
+    fapHubSwitchBackground = Color(0xFFF1F1F1),
+    fapHubSelectedBackgroundColor = Color(0xFFFFFFFF),
+    fapHubDividerColor = Color(0xFFE9E9E9),
+    fapHubSortedColor = Color(0xFFAAAAAA),
+    fapHubCategoryText = Color(0xFF616161)
 )
 
 @Suppress("MagicNumber")
@@ -128,5 +136,11 @@ private val darkPallet = FlipperPallet(
     substrateActiveCellNfcEditor = Color(0xFF616161),
     hexKeyboardBackground = Color(0xFF000000),
 
-    shareSheetBackground = Color(0xFF303030)
+    shareSheetBackground = Color(0xFF303030),
+    shareSheetScrimColor = Color(0xFFFFFFFF).copy(alpha = 0.15f),
+    fapHubSwitchBackground = Color(0xFF101010),
+    fapHubSelectedBackgroundColor = Color(0xFF1C1C1C),
+    fapHubDividerColor = Color(0xFF303030),
+    fapHubSortedColor = Color(0xFFC1C1C1),
+    fapHubCategoryText = Color(0xFFCCCCCC)
 )

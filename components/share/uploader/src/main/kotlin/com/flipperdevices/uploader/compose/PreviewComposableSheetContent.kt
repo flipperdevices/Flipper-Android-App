@@ -7,17 +7,16 @@ import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
-import com.flipperdevices.share.api.ShareContentError
 import com.flipperdevices.uploader.models.ShareContent
+import com.flipperdevices.uploader.models.ShareError
 import com.flipperdevices.uploader.models.ShareState
 
 @Preview
 @Composable
-@Suppress("UnusedPrivateMember")
-private fun PreviewComposableSheetContentErrorOther() {
+private fun ComposableSheetContentErrorOtherPreview() {
     FlipperThemeInternal {
         ComposableSheetContent(
-            state = ShareState.Error(ShareContentError.OTHER),
+            state = ShareState.Error(ShareError.OTHER),
             keyName = "keyName",
             onShareLink = {},
             onShareFile = {},
@@ -29,11 +28,10 @@ private fun PreviewComposableSheetContentErrorOther() {
 
 @Preview
 @Composable
-@Suppress("UnusedPrivateMember")
-private fun PreviewComposableSheetContentErrorInternet() {
+private fun ComposableSheetContentErrorInternetPreview() {
     FlipperThemeInternal {
         ComposableSheetContent(
-            state = ShareState.Error(ShareContentError.NO_INTERNET),
+            state = ShareState.Error(ShareError.NO_INTERNET_CONNECTION),
             keyName = "keyName",
             onShareLink = {},
             onShareFile = {},
@@ -45,11 +43,10 @@ private fun PreviewComposableSheetContentErrorInternet() {
 
 @Preview
 @Composable
-@Suppress("UnusedPrivateMember")
-private fun PreviewComposableSheetContentErrorServer() {
+private fun ComposableSheetContentErrorServerPreview() {
     FlipperThemeInternal {
         ComposableSheetContent(
-            state = ShareState.Error(ShareContentError.SERVER_ERROR),
+            state = ShareState.Error(ShareError.CANT_CONNECT_TO_SERVER),
             keyName = "keyName",
             onShareLink = {},
             onShareFile = {},
@@ -61,8 +58,7 @@ private fun PreviewComposableSheetContentErrorServer() {
 
 @Preview
 @Composable
-@Suppress("UnusedPrivateMember")
-private fun PreviewComposableSheetContentInit() {
+private fun ComposableSheetContentInitPreview() {
     FlipperThemeInternal {
         ComposableSheetContent(
             state = ShareState.Initial,
@@ -77,8 +73,7 @@ private fun PreviewComposableSheetContentInit() {
 
 @Preview
 @Composable
-@Suppress("UnusedPrivateMember")
-private fun PreviewComposableSheetContentPrepare() {
+private fun ComposableSheetContentPreparePreview() {
     FlipperThemeInternal {
         ComposableSheetContent(
             state = ShareState.Prepare,
@@ -93,8 +88,7 @@ private fun PreviewComposableSheetContentPrepare() {
 
 @Preview
 @Composable
-@Suppress("UnusedPrivateMember")
-private fun PreviewComposableSheetContentPending() {
+private fun ComposableSheetContentPendingPreview() {
     FlipperThemeInternal {
         ComposableSheetContent(
             state = ShareState.PendingShare(

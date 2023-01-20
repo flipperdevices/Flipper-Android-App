@@ -1,5 +1,4 @@
 plugins {
-    id("flipper.lint")
     id("flipper.android-lib")
     id("kotlin-android")
     id("kotlin-parcelize")
@@ -7,11 +6,12 @@ plugins {
 
 dependencies {
     implementation(projects.components.bridge.pbutils)
-    implementation(libs.protobuf.jvm)
     implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)
+    implementation(projects.components.core.data)
 
     implementation(libs.kotlin.coroutines)
+    implementation(libs.kotlin.immutable.collections)
     implementation(libs.ble.common)
     implementation(libs.ble.scan)
 

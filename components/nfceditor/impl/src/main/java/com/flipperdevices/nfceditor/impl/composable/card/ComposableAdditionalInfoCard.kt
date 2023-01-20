@@ -18,6 +18,7 @@ import com.flipperdevices.nfceditor.impl.composable.FONT_SIZE_SP
 import com.flipperdevices.nfceditor.impl.composable.PADDING_CELL_DP
 import com.flipperdevices.nfceditor.impl.model.CardFieldInfo
 import com.flipperdevices.nfceditor.impl.model.EditorField
+import com.flipperdevices.nfceditor.impl.model.NfcCellType
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCardInfo
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCellLocation
 
@@ -26,9 +27,10 @@ fun ComposableAdditionalInfoCard(
     nfcEditorCardInfo: NfcEditorCardInfo,
     currentActiveCell: NfcEditorCellLocation?,
     scaleFactor: Float,
-    onClick: (NfcEditorCellLocation) -> Unit
+    onClick: (NfcEditorCellLocation) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    Column(modifier = Modifier.padding(12.dp)) {
+    Column(modifier = modifier.padding(12.dp)) {
         ComposableCardFieldInfo(
             nfcEditorCardInfo,
             CardFieldInfo.UID,
@@ -90,7 +92,7 @@ private fun ComposableCardFieldInfo(
             )
         }
         ComposableNfcCell(
-            cell = item,
+            cell = item.copy(cellType = NfcCellType.ON_CARD),
             scaleFactor = scaleFactor,
             isActive = currentActiveCell == cellLocation,
             onClick = { onClick(cellLocation) }

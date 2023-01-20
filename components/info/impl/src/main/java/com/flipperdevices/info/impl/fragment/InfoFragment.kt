@@ -7,17 +7,19 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.ktx.android.parcelable
 import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.navigation.delegates.OnBackPressListener
 import com.flipperdevices.core.ui.fragment.ComposeFragment
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.flipperdevices.info.impl.api.InfoFeatureEntry
 import com.flipperdevices.info.impl.compose.InfoNavigation
 import com.flipperdevices.info.impl.di.InfoComponent
+import kotlinx.collections.immutable.toImmutableSet
 import javax.inject.Inject
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 class InfoFragment : ComposeFragment(), OnBackPressListener {
     @Inject
@@ -29,7 +31,7 @@ class InfoFragment : ComposeFragment(), OnBackPressListener {
     private var navController: NavHostController? = null
 
     private val deeplink: Deeplink?
-        get() = arguments?.get(DeeplinkConstants.KEY) as? Deeplink
+        get() = arguments?.parcelable(DeeplinkConstants.KEY)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +53,7 @@ class InfoFragment : ComposeFragment(), OnBackPressListener {
             }
             InfoNavigation(
                 navController = it,
-                featureEntries = featureEntries,
+                featureEntries = featureEntries.toImmutableSet(),
                 infoFeatureEntry = infoFeatureEntry
             )
         }

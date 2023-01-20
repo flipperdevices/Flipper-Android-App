@@ -16,7 +16,6 @@ import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.filter
@@ -27,6 +26,7 @@ import kotlinx.coroutines.sync.Mutex
 import no.nordicsemi.android.support.v18.scanner.BluetoothLeScannerCompat
 import no.nordicsemi.android.support.v18.scanner.ScanFilter
 import no.nordicsemi.android.support.v18.scanner.ScanSettings
+import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, FlipperScanner::class)
 class FlipperScannerImpl @Inject constructor(

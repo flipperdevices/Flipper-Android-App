@@ -1,5 +1,4 @@
 plugins {
-    id("flipper.lint")
     id("flipper.android-compose")
 }
 
@@ -17,5 +16,6 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
     implementation(libs.compose.placeholder)
+    implementation(libs.compose.coil)
     implementation(libs.image.lottie)
 }

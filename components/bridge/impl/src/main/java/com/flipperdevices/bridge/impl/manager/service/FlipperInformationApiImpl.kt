@@ -15,10 +15,6 @@ import com.flipperdevices.core.preference.pb.PairSettings
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.complex.FlipperGattInfoEvent
 import com.flipperdevices.shake2report.api.Shake2ReportApi
-import java.util.UUID
-import javax.inject.Inject
-import javax.inject.Provider
-import kotlin.experimental.and
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,6 +25,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import no.nordicsemi.android.ble.data.Data
+import java.util.UUID
+import javax.inject.Inject
+import javax.inject.Provider
+import kotlin.experimental.and
 
 private const val MAX_BATTERY_LEVEL = 100
 
@@ -166,8 +166,10 @@ class FlipperInformationApiImpl(
             informationState.update {
                 it.copy(isCharging = true)
             }
-        } else informationState.update {
-            it.copy(isCharging = false)
+        } else {
+            informationState.update {
+                it.copy(isCharging = false)
+            }
         }
     }
 

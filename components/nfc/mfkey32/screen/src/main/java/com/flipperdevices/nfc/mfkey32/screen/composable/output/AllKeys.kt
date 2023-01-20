@@ -40,10 +40,13 @@ fun LazyListScope.AllKeys(keys: List<FoundedKey>) {
         ) {
             SelectionContainer {
                 ComposableFoundedKey(
+                    foundedKey = it,
                     Modifier.padding(
-                        start = 14.dp, end = 14.dp, top = 4.dp, bottom = 4.dp
-                    ),
-                    foundedKey = it
+                        start = 14.dp,
+                        end = 14.dp,
+                        top = 4.dp,
+                        bottom = 4.dp
+                    )
                 )
             }
         }
@@ -54,7 +57,10 @@ private const val KEY_A = "A"
 private const val KEY_B = "B"
 
 @Composable
-private fun ComposableFoundedKey(modifier: Modifier, foundedKey: FoundedKey) {
+private fun ComposableFoundedKey(
+    foundedKey: FoundedKey,
+    modifier: Modifier = Modifier,
+) {
     val notFoundText = stringResource(R.string.mfkey32_founded_all_not_found)
     Text(
         modifier = modifier,
@@ -66,7 +72,9 @@ private fun ComposableFoundedKey(modifier: Modifier, foundedKey: FoundedKey) {
                 LocalPallet.current.nfcCardKeyAColor
             } else if (foundedKey.keyName.trim().equals(KEY_B, true)) {
                 LocalPallet.current.nfcCardKeyBColor
-            } else LocalTextStyle.current.color
+            } else {
+                LocalTextStyle.current.color
+            }
 
             withStyle(
                 LocalTextStyle.current.toSpanStyle().copy(
@@ -79,7 +87,9 @@ private fun ComposableFoundedKey(modifier: Modifier, foundedKey: FoundedKey) {
             append(" — ")
             if (foundedKey.key != null) {
                 append(foundedKey.key)
-            } else append(notFoundText)
+            } else {
+                append(notFoundText)
+            }
         }
     )
 }

@@ -33,9 +33,9 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun ComposableNfcEditor(
-    modifier: Modifier,
     nfcEditorViewModel: NfcEditorViewModel,
-    nfcEditorState: NfcEditorState
+    nfcEditorState: NfcEditorState,
+    modifier: Modifier = Modifier
 ) {
     BoxWithConstraints(
         modifier
@@ -147,7 +147,9 @@ private fun ScrollToActiveCell(
             scope.launch {
                 val newPosition = if (cardInfoPresented) {
                     currentActiveCell.sectorIndex + 1
-                } else currentActiveCell.sectorIndex
+                } else {
+                    currentActiveCell.sectorIndex
+                }
                 lazyColumnState.animateScrollToItem(newPosition, offset)
             }
         }

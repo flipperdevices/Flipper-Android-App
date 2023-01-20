@@ -1,6 +1,7 @@
 package com.flipperdevices.uploader.compose
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -15,7 +16,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.share.api.ShareContentError
 import com.flipperdevices.share.uploader.R
 import com.flipperdevices.uploader.compose.content.ComposableSheetError
 import com.flipperdevices.uploader.compose.content.ComposableSheetInitial
@@ -39,7 +39,7 @@ internal fun ComposableSheetContent(
     ) {
         ComposableSheetFooter(keyName = keyName)
         when (state) {
-            is ShareState.Error -> ComposableSheetError(ShareContentError.NO_INTERNET, onRetry)
+            is ShareState.Error -> ComposableSheetError(state.typeError, onRetry)
             ShareState.Completed -> { onClose() }
             ShareState.Prepare -> ComposableSheetPrepare()
             ShareState.Initial -> ComposableSheetInitial()
@@ -53,7 +53,7 @@ internal fun ComposableSheetContent(
 }
 
 @Composable
-private fun ComposableSheetFooter(keyName: String) {
+private fun ColumnScope.ComposableSheetFooter(keyName: String) {
     Divider(
         modifier = Modifier
             .padding(top = 8.dp)
@@ -65,11 +65,11 @@ private fun ComposableSheetFooter(keyName: String) {
     Text(
         text = stringResource(id = R.string.share_sheet_share),
         modifier = Modifier.padding(top = 12.dp),
-        style = LocalTypography.current.titleB18
+        style = LocalTypography.current.bodyM14
     )
     Text(
         text = keyName,
         modifier = Modifier.padding(top = 2.dp),
-        style = LocalTypography.current.bodyR14
+        style = LocalTypography.current.titleM18
     )
 }

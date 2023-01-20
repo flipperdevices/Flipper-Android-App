@@ -12,6 +12,8 @@ import com.flipperdevices.bottombar.impl.main.subnavigation.OnDoublePressOnTab
 import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
 import com.flipperdevices.bottombar.impl.navigate.ScreenTabProvider
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.ktx.android.parcelable
+import com.flipperdevices.core.ktx.android.serializable
 import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.navigation.delegates.OnBackPressListener
 import com.flipperdevices.core.navigation.delegates.RouterProvider
@@ -42,9 +44,9 @@ class TabContainerFragment :
     lateinit var ciceroneHolder: LocalCiceroneHolder
 
     private val containerTab: FlipperBottomTab
-        get() = requireArguments().getSerializable(EXTRA_NAME) as FlipperBottomTab
+        get() = requireArguments().serializable(EXTRA_NAME) as FlipperBottomTab
     private val deeplink: Deeplink?
-        get() = arguments?.get(DeeplinkConstants.KEY) as? Deeplink
+        get() = arguments?.parcelable(DeeplinkConstants.KEY)
 
     private val cicerone: Cicerone<Router> by lazy { ciceroneHolder.getCicerone(containerTab) }
     override val router: Router by lazy { cicerone.router }

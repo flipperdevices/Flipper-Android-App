@@ -7,15 +7,20 @@ import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.navigation.delegates.OnBackPressListener
 import com.flipperdevices.core.ui.fragment.ComposeFragment
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
+import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.flipperdevices.core.ui.res.R
 import com.flipperdevices.hub.impl.api.HubFeatureEntry
 import com.flipperdevices.hub.impl.composable.HubNavigation
 import com.flipperdevices.hub.impl.di.HubComponent
+import kotlinx.collections.immutable.toImmutableSet
 import javax.inject.Inject
 
 class HubFragment : ComposeFragment(), OnBackPressListener {
     @Inject
     lateinit var featureEntries: MutableSet<AggregateFeatureEntry>
+
+    @Inject
+    lateinit var composableEntries: MutableSet<ComposableFeatureEntry>
 
     @Inject
     lateinit var hubFeatureEntry: HubFeatureEntry
@@ -30,7 +35,12 @@ class HubFragment : ComposeFragment(), OnBackPressListener {
     override fun RenderView() {
         navController = rememberNavController()
         navController?.let {
-            HubNavigation(it, featureEntries, hubFeatureEntry)
+            HubNavigation(
+                navController = it,
+                featureEntries = featureEntries.toImmutableSet(),
+                composableEntries = composableEntries.toImmutableSet(),
+                hubFeatureEntry = hubFeatureEntry
+            )
         }
     }
 

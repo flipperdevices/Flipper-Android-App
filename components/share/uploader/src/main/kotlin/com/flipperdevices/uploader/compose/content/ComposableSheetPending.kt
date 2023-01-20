@@ -5,7 +5,6 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,10 +23,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.share.uploader.R
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 internal fun ComposableSheetPending(
@@ -69,11 +68,7 @@ private fun ComposableSheetAction(
                 .size(48.dp)
                 .clip(CircleShape)
                 .background(LocalPallet.current.shareSheetBackgroundAction.copy(alpha = 0.1f))
-                .clickable(
-                    interactionSource = MutableInteractionSource(),
-                    indication = null,
-                    onClick = onAction
-                ),
+                .clickable(onClick = onAction),
             contentAlignment = Alignment.Center
         ) {
             Image(
@@ -84,12 +79,16 @@ private fun ComposableSheetAction(
         Spacer(modifier = Modifier.height(12.dp))
         Text(
             text = stringResource(id = titleId),
-            style = LocalTypography.current.bodyM14
+            style = LocalTypography.current.bodyM14.copy(
+                color = LocalPallet.current.shareSheetBackgroundAction
+            )
         )
         Spacer(modifier = Modifier.height(2.dp))
         Text(
             text = descId?.let { stringResource(id = it) } ?: "",
-            style = LocalTypography.current.subtitleR10
+            style = LocalTypography.current.subtitleR10.copy(
+                color = LocalPallet.current.text30
+            )
         )
     }
 }

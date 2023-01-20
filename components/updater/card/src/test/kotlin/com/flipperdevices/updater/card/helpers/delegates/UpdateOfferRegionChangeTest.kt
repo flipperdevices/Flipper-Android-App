@@ -20,12 +20,12 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
-import java.nio.charset.Charset
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import java.nio.charset.Charset
 
 class UpdateOfferRegionChangeTest {
     private lateinit var request: FlipperRequest

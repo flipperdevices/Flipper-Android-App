@@ -5,9 +5,10 @@ import com.flipperdevices.bridge.api.model.FlipperDeviceInfo
 import com.flipperdevices.bridge.api.model.FlipperRpcInformation
 import com.flipperdevices.bridge.api.model.RadioStackInfo
 import com.flipperdevices.bridge.api.model.RadioStackType
-import com.flipperdevices.bridge.api.model.SemVer
 import com.flipperdevices.bridge.impl.manager.service.requestservice.DeviceInfoHelper
 import com.flipperdevices.bridge.impl.manager.service.requestservice.InternalFlipperRpcInformationRaw
+import com.flipperdevices.core.data.SemVer
+import kotlinx.collections.immutable.persistentMapOf
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -77,7 +78,7 @@ class DeviceInfoHelperTest(
                         type = RadioStackType.HCIExtAdv,
                         radioFirmware = "3.5.7"
                     ),
-                    otherFields = mapOf(
+                    otherFields = persistentMapOf(
                         "other_fields_1" to "1",
                         "other_fields_2" to "2"
                     )
@@ -121,7 +122,7 @@ class DeviceInfoHelperTest(
                         type = RadioStackType.Beacon,
                         radioFirmware = "3.5.4"
                     ),
-                    otherFields = mapOf(
+                    otherFields = persistentMapOf(
                         "other_fields_1" to "1"
                     )
                 )

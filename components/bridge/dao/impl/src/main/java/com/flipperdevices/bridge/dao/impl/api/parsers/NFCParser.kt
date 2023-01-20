@@ -28,7 +28,9 @@ class NFCParser : KeyParserDelegate {
                 it.readBytes().toString(Charset.defaultCharset())
             }
             FlipperFileFormat.fromFileContent(fileContent)
-        } else fff
+        } else {
+            fff
+        }
         val keyContentAsMap = actualNfcFFF.orderedDict.toMap()
 
         val lines = keyContentAsMap.filter { it.key.startsWith(KEY_BLOCK) }.map {

@@ -1,5 +1,4 @@
 plugins {
-    id("flipper.lint")
     id("flipper.android-compose")
     id("com.squareup.anvil")
     id("kotlin-kapt")
@@ -7,6 +6,8 @@ plugins {
 
 dependencies {
     implementation(projects.components.hub.api)
+    implementation(projects.components.faphub.maincard.api)
+    implementation(projects.components.faphub.main.api)
 
     implementation(projects.components.core.di)
     implementation(projects.components.core.preference)
@@ -28,6 +29,7 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
     implementation(libs.compose.navigation)
+    implementation(libs.kotlin.immutable.collections)
 
     // Dagger deps
     implementation(libs.dagger)

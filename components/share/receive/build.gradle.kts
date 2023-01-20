@@ -1,5 +1,4 @@
 plugins {
-    id("flipper.lint")
     id("flipper.android-compose")
     id("com.squareup.anvil")
     id("kotlin-kapt")
@@ -18,6 +17,7 @@ dependencies {
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.fragment)
     implementation(projects.components.core.ui.theme)
+    implementation(projects.components.core.ui.lifecycle)
 
     implementation(projects.components.analytics.metric.api)
 
@@ -34,6 +34,7 @@ dependencies {
     implementation(libs.appcompat)
 
     implementation(libs.kotlin.coroutines)
+    implementation(libs.kotlin.immutable.collections)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.compose)
@@ -48,4 +49,17 @@ dependencies {
     // Dagger deps
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
+    implementation(libs.tangle.viewmodel.compose)
+    implementation(libs.tangle.viewmodel.api)
+    anvil(libs.tangle.viewmodel.compiler)
+
+    // Testing
+    testImplementation(projects.components.core.test)
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.ktx.testing)
+    testImplementation(libs.roboelectric)
+    testImplementation(libs.lifecycle.test)
+    testImplementation(libs.kotlin.coroutines.test)
 }

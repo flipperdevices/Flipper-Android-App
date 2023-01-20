@@ -1,10 +1,8 @@
 package com.flipperdevices.keyscreen.emulate.viewmodel
 
-import android.app.Application as FlipperApp
 import android.os.Vibrator
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewModelScope
-import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.api.utils.Constants.API_SUPPORTED_REMOTE_EMULATE
@@ -38,6 +36,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import android.app.Application as FlipperApp
 
 const val VIBRATOR_TIME = 100L
 
@@ -79,22 +78,23 @@ abstract class EmulateViewModel(
 
         serviceProvider.provideServiceApi(this) {
             viewModelScope.launch(Dispatchers.Default) {
-                onStartEmulateInternal(this, it.requestApi, fileType, flipperKey)
+                onStartEmulateInternal(this, it, fileType, flipperKey)
             }
         }
     }
 
     protected open suspend fun onStartEmulateInternal(
         scope: CoroutineScope,
-        requestApi: FlipperRequestApi,
+        serviceApi: FlipperServiceApi,
         keyType: FlipperKeyType,
         flipperKey: FlipperKey
     ) {
+        val requestApi = serviceApi.requestApi
         info { "#onStartEmulateInternal" }
         val emulateStarted = try {
             emulateHelper.startEmulate(
                 scope,
-                requestApi,
+                serviceApi,
                 keyType,
                 flipperKey.path,
                 minEmulateTime = 0L
@@ -124,7 +124,9 @@ abstract class EmulateViewModel(
             viewModelScope.launch(Dispatchers.Default) {
                 if (force) {
                     emulateHelper.stopEmulateForce(it.requestApi)
-                } else emulateHelper.stopEmulate(viewModelScope, it.requestApi)
+                } else {
+                    emulateHelper.stopEmulate(viewModelScope, it.requestApi)
+                }
             }
         }
         vibrator?.vibrateCompat(VIBRATOR_TIME)
@@ -136,7 +138,9 @@ abstract class EmulateViewModel(
                 it == EmulateButtonState.ForbiddenFrequencyDialog
             ) {
                 EmulateButtonState.Inactive()
-            } else it
+            } else {
+                it
+            }
         }
     }
 
@@ -171,7 +175,9 @@ abstract class EmulateViewModel(
                     emulateButtonStateFlow.update {
                         if (it is EmulateButtonState.Active) {
                             EmulateButtonState.Inactive()
-                        } else it
+                        } else {
+                            it
+                        }
                     }
                 }
             }

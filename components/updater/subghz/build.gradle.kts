@@ -1,5 +1,4 @@
 plugins {
-    id("flipper.lint")
     id("flipper.android-compose")
     id("com.squareup.anvil")
     id("kotlin-kapt")
@@ -10,7 +9,6 @@ dependencies {
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.pbutils)
-    implementation(libs.protobuf.jvm)
     implementation(projects.components.bridge.service.api)
 
     implementation(projects.components.core.di)
@@ -48,4 +46,5 @@ dependencies {
     testImplementation(libs.ktor.serialization)
     testImplementation(libs.ktor.mock)
     testImplementation(libs.kotlin.serialization.json)
+    testImplementation(libs.kotlin.immutable.collections)
 }

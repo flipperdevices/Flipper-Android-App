@@ -6,9 +6,9 @@ import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.SubGhzProvisioningException
 import com.flipperdevices.updater.model.SubGhzProvisioningModel
 import com.flipperdevices.updater.model.VersionFiles
+import kotlinx.coroutines.flow.Flow
 import java.io.File
 import java.util.EnumMap
-import kotlinx.coroutines.flow.Flow
 
 interface DownloaderApi {
     suspend fun getLatestVersion(): EnumMap<FirmwareChannel, VersionFiles>

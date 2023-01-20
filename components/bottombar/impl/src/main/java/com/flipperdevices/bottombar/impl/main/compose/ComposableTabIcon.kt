@@ -27,22 +27,25 @@ private const val TIME_ANIM = 1000
 @Composable
 fun ComposableTabIcon(tabState: TabState, selected: Boolean) {
     when (tabState) {
-        is TabState.Static -> ComposableTabIconStatic(Modifier, tabState, selected)
-        is TabState.Animated -> ComposableTabIconAnimated(Modifier, tabState, selected)
+        is TabState.Static -> ComposableTabIconStatic(tabState, selected)
+        is TabState.Animated -> ComposableTabIconAnimated(tabState, selected)
     }
 }
 
 @Composable
 private fun ComposableTabIconStatic(
-    modifier: Modifier,
     tabState: TabState.Static,
-    selected: Boolean
+    selected: Boolean,
+    modifier: Modifier = Modifier
 ) {
     Icon(
         modifier = modifier.fillMaxSize(),
         painter = painterResourceByKey(
-            if (selected) tabState.selectedIcon
-            else tabState.notSelectedIcon
+            if (selected) {
+                tabState.selectedIcon
+            } else {
+                tabState.notSelectedIcon
+            }
         ),
         contentDescription = tabState.text,
         tint = LocalContentColor.current.copy(alpha = LocalContentAlpha.current)
@@ -51,9 +54,9 @@ private fun ComposableTabIconStatic(
 
 @Composable
 private fun ComposableTabIconAnimated(
-    modifier: Modifier,
     tabState: TabState.Animated,
-    selected: Boolean
+    selected: Boolean,
+    modifier: Modifier = Modifier,
 ) {
     val iconId = if (selected) tabState.selectedIcon else tabState.notSelectedIcon
     val backgroundId = if (selected) tabState.selectedBackground else tabState.notSelectedBackground

@@ -7,9 +7,9 @@ import android.provider.Settings
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.flipperdevices.bridge.api.scanner.DiscoveredBluetoothDevice
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.firstpair.impl.R
 import com.flipperdevices.firstpair.impl.viewmodels.SearchStateBuilder
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 data class SearchingState(
     val showSearching: Boolean = false,
@@ -96,7 +96,9 @@ sealed class SearchingContent {
         description = R.string.firstpair_permission_bluetooth_desc,
         buttonText = if (requestedFirstTime) {
             R.string.firstpair_permission_continue
-        } else R.string.firstpair_permission_settings,
+        } else {
+            R.string.firstpair_permission_settings
+        },
         searchStateHolder = searchStateHolder,
         context = context,
         shouldInvalidateInsteadCallSettings = requestedFirstTime
@@ -124,7 +126,9 @@ sealed class SearchingContent {
         description = R.string.firstpair_permission_location_desc,
         buttonText = if (requestedFirstTime) {
             R.string.firstpair_permission_continue
-        } else R.string.firstpair_permission_settings,
+        } else {
+            R.string.firstpair_permission_settings
+        },
         searchStateHolder = searchStateHolder,
         context = context,
         shouldInvalidateInsteadCallSettings = requestedFirstTime

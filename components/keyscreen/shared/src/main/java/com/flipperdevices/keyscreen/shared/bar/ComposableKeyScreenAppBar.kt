@@ -9,12 +9,13 @@ import androidx.constraintlayout.compose.ConstraintLayout
 
 @Composable
 fun ComposableKeyScreenAppBar(
+    modifier: Modifier = Modifier,
     startBlock: @Composable (Modifier) -> Unit = {},
     centerBlock: @Composable (Modifier) -> Unit = {},
     endBlock: @Composable (Modifier) -> Unit = {}
 ) {
     ConstraintLayout(
-        modifier = Modifier
+        modifier = modifier
             .padding(horizontal = 14.dp, vertical = 16.dp)
             .fillMaxWidth()
     ) {

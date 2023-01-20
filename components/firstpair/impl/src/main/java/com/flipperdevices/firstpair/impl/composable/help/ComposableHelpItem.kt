@@ -16,8 +16,12 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
-fun ComposableHelpItem(index: Int, data: HelpOptions) {
-    Row {
+fun ComposableHelpItem(
+    index: Int,
+    data: HelpOptions,
+    modifier: Modifier = Modifier
+) {
+    Row(modifier) {
         val titleStyle = LocalTypography.current.bodyR16
 
         Text(
@@ -38,9 +42,10 @@ fun ComposableHelpItem(index: Int, data: HelpOptions) {
 }
 
 @Composable
+@Suppress("ModifierReused")
 fun ComposableHelpOptionsDescription(
+    data: HelpOptions,
     modifier: Modifier = Modifier,
-    data: HelpOptions
 ) {
     val descriptionStyle = LocalTypography.current.bodyR16.copy(
         color = LocalPallet.current.accentSecond,

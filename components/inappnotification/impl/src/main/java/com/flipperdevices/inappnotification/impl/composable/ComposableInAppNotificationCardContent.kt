@@ -14,9 +14,9 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.inappnotification.api.model.InAppNotification
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 internal fun ComposableInAppNotificationCardContent(notification: InAppNotification) {
@@ -45,7 +45,9 @@ private fun ComposableSaveIcon() {
     val localComposition = composition
     val speed = if (localComposition != null) {
         (localComposition.duration / ICON_ANIMATION_DURATION_MS)
-    } else 1.0f
+    } else {
+        1.0f
+    }
     val progress by animateLottieCompositionAsState(
         speed = speed,
         composition = composition
@@ -56,6 +58,6 @@ private fun ComposableSaveIcon() {
             .padding(all = 8.dp)
             .size(size = 32.dp),
         composition = composition,
-        progress = progress
+        progress = { progress }
     )
 }

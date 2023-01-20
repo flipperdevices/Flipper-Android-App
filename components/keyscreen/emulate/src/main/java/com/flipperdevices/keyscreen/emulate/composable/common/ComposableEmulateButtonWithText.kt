@@ -24,14 +24,14 @@ import com.flipperdevices.keyscreen.emulate.composable.common.button.ComposableE
 
 @Composable
 fun ComposableEmulateButtonWithText(
+    @StringRes buttonTextId: Int,
+    color: Color,
     modifier: Modifier = Modifier,
     buttonModifier: Modifier = Modifier,
     progress: EmulateProgress? = null,
-    @StringRes buttonTextId: Int,
     @StringRes textId: Int? = null,
     @DrawableRes iconId: Int? = null,
     picture: Picture? = null,
-    color: Color,
     progressColor: Color = Color.Transparent
 ) {
     Column(

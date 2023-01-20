@@ -46,20 +46,7 @@ suspend fun LogTagProvider.withLock(
     mutex: Mutex,
     tag: String? = null,
     action: suspend () -> Unit
-) {
-    if (mutex.isLocked) {
-        info { "I can't execute right now job $tag because $mutex is locked" }
-    }
-    mutex.withLock {
-        var startTime: Long = 0
-        verbose {
-            startTime = System.currentTimeMillis()
-            "Launch $tag job in mutex mode..."
-        }
-        action()
-        verbose { "Complete $tag job in ${System.currentTimeMillis() - startTime}ms" }
-    }
-}
+): Unit = withLockResult(mutex, tag, action)
 
 suspend fun <T> LogTagProvider.withLockResult(
     mutex: Mutex,

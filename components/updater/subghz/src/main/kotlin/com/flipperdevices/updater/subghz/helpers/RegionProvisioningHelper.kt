@@ -7,11 +7,11 @@ import android.telephony.TelephonyManager
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.flipperdevices.updater.subghz.helpers.model.RegionProvisioning
+import com.flipperdevices.updater.subghz.model.RegionProvisioning
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 interface RegionProvisioningHelper {
     suspend fun provideRegion(regionFromGeoIp: String?): RegionProvisioning
@@ -41,6 +41,7 @@ class RegionProvisioningHelperImpl @Inject constructor(
         val locale: String = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             context.resources.configuration.locales[0].country
         } else {
+            @Suppress("DEPRECATION")
             context.resources.configuration.locale.country
         }
         return locale.uppercase()

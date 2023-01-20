@@ -10,10 +10,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.fragment.app.viewModels
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.ktx.android.parcelable
 import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.ui.fragment.ComposeFragment
 import com.flipperdevices.core.ui.fragment.provider.StatusBarColorProvider
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.singleactivity.api.SingleActivityApi
 import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.screen.composable.ComposableCancelDialog
@@ -23,6 +23,7 @@ import com.flipperdevices.updater.screen.model.UpdaterScreenState
 import com.flipperdevices.updater.screen.viewmodel.FlipperColorViewModel
 import com.flipperdevices.updater.screen.viewmodel.UpdaterViewModel
 import javax.inject.Inject
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 private const val EXTRA_UPDATE_REQUEST = "update_request"
 
@@ -37,7 +38,7 @@ class UpdaterFragment : ComposeFragment(), StatusBarColorProvider {
         super.onAttach(context)
         ComponentHolder.component<UpdaterComponent>().inject(this)
 
-        val updateRequest = arguments?.getParcelable<UpdateRequest>(EXTRA_UPDATE_REQUEST)
+        val updateRequest = arguments?.parcelable<UpdateRequest>(EXTRA_UPDATE_REQUEST)
         updaterViewModel.start(updateRequest)
     }
 
@@ -57,10 +58,15 @@ class UpdaterFragment : ComposeFragment(), StatusBarColorProvider {
 
         val onAbortUpdate = updaterViewModel::cancelUpdate
         var isCancelDialogOpen by remember { mutableStateOf(false) }
-        ComposableUpdaterScreen(updaterScreenState, flipperColor, { isCancelDialogOpen = true }) {
-            val updateRequest = arguments?.getParcelable<UpdateRequest>(EXTRA_UPDATE_REQUEST)
-            updaterViewModel.retry(updateRequest)
-        }
+        ComposableUpdaterScreen(
+            updaterScreenState = updaterScreenState,
+            flipperColor = flipperColor,
+            onCancel = { isCancelDialogOpen = true },
+            onRetry = {
+                val updateRequest = arguments?.parcelable<UpdateRequest>(EXTRA_UPDATE_REQUEST)
+                updaterViewModel.retry(updateRequest)
+            }
+        )
         if (isCancelDialogOpen) {
             when (updaterScreenState) {
                 is UpdaterScreenState.Failed -> onAbortUpdate()

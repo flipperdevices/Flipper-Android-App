@@ -21,9 +21,9 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 private const val GRID_WIDTH = 2
 private const val GRID_ROW_WEIGHT = 1f / GRID_WIDTH
@@ -63,9 +63,11 @@ fun LazyListScope.ComposableKeysGrid(
 }
 
 @Composable
-fun ComposableFavoriteKeysTitle() {
+fun ComposableFavoriteKeysTitle(
+    modifier: Modifier = Modifier
+) {
     Row(
-        modifier = Modifier.padding(top = 24.dp, start = 14.dp),
+        modifier = modifier.padding(top = 24.dp, start = 14.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
@@ -84,9 +86,11 @@ fun ComposableFavoriteKeysTitle() {
 }
 
 @Composable
-fun ComposableAllKeysTitle() {
+fun ComposableAllKeysTitle(
+    modifier: Modifier = Modifier
+) {
     Text(
-        modifier = Modifier.padding(top = 24.dp, start = 14.dp),
+        modifier = modifier.padding(top = 24.dp, start = 14.dp),
         text = stringResource(R.string.archive_tab_general_all_title),
         style = LocalTypography.current.buttonB16
     )

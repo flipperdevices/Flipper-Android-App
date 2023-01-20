@@ -1,5 +1,4 @@
 plugins {
-    id("flipper.lint")
     id("flipper.android-compose")
     id("com.squareup.anvil")
     id("kotlin-kapt")
@@ -16,6 +15,7 @@ dependencies {
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.res)
+    implementation(projects.components.core.ui.searchbar)
     implementation(projects.components.core.ui.fragment)
     implementation(projects.components.core.ui.theme)
 
@@ -32,7 +32,12 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.ktx.fragment)
 
+    implementation(libs.kotlin.immutable.collections)
+
     // Dagger deps
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
+    implementation(libs.tangle.viewmodel.compose)
+    implementation(libs.tangle.viewmodel.api)
+    anvil(libs.tangle.viewmodel.compiler)
 }

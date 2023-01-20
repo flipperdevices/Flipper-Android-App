@@ -30,29 +30,26 @@ import com.flipperdevices.archive.api.ArchiveApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
+import com.flipperdevices.core.ui.ktx.SwipeRefresh
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.widget.screen.R
 import com.flipperdevices.widget.screen.viewmodel.WidgetSelectViewModel
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 fun ColumnScope.ComposableKeys(
     archiveApi: ArchiveApi,
-    widgetSelectViewModel: WidgetSelectViewModel
+    widgetSelectViewModel: WidgetSelectViewModel,
+    modifier: Modifier = Modifier
 ) {
     val keys by widgetSelectViewModel.getKeysFlow().collectAsState()
     val favoriteKeys by widgetSelectViewModel.getFavoriteKeysFlow().collectAsState()
     val synchronizationState by widgetSelectViewModel.getSynchronizationFlow().collectAsState()
     val isKeysPresented = favoriteKeys.isNotEmpty() || keys.isNotEmpty()
 
-    SwipeRefresh(
-        state = rememberSwipeRefreshState(false),
-        onRefresh = widgetSelectViewModel::refresh
-    ) {
+    SwipeRefresh(onRefresh = widgetSelectViewModel::refresh) {
         LazyColumn(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
         ) {
             if (isKeysPresented) {
@@ -69,7 +66,9 @@ fun ColumnScope.ComposableKeys(
     if (!isKeysPresented) {
         if (synchronizationState is SynchronizationState.InProgress) {
             ComposableProgress()
-        } else ComposableNoKeys()
+        } else {
+            ComposableNoKeys()
+        }
     }
 }
 
@@ -157,9 +156,11 @@ private fun ColumnScope.ComposableProgress() {
 }
 
 @Composable
-fun ComposableFavoriteKeysTitle() {
+fun ComposableFavoriteKeysTitle(
+    modifier: Modifier = Modifier
+) {
     Row(
-        modifier = Modifier.padding(top = 24.dp, start = 14.dp),
+        modifier = modifier.padding(top = 24.dp, start = 14.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
@@ -178,9 +179,11 @@ fun ComposableFavoriteKeysTitle() {
 }
 
 @Composable
-fun ComposableAllKeysTitle() {
+fun ComposableAllKeysTitle(
+    modifier: Modifier = Modifier
+) {
     Text(
-        modifier = Modifier.padding(top = 24.dp, start = 14.dp),
+        modifier = modifier.padding(top = 24.dp, start = 14.dp),
         text = stringResource(R.string.widget_options_all_title),
         style = LocalTypography.current.buttonB16
     )

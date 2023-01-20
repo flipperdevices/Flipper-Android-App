@@ -22,18 +22,22 @@ import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.nfc.mfkey32.screen.R
+import kotlinx.collections.immutable.ImmutableList
 
 private const val GRID_WIDTH = 2
 
 @Composable
-fun FoundedKeyComposableGrid(modifier: Modifier, keys: List<String>) = Column {
+fun FoundedKeyComposableGrid(
+    keys: ImmutableList<String>,
+    modifier: Modifier = Modifier,
+) = Column(modifier = modifier) {
     keys.windowed(GRID_WIDTH, GRID_WIDTH, partialWindows = true).forEach { rowKeys ->
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             rowKeys.forEach { key ->
-                FoundedKeyComposable(modifier, key)
+                FoundedKeyComposable(key)
             }
         }
     }
@@ -41,8 +45,8 @@ fun FoundedKeyComposableGrid(modifier: Modifier, keys: List<String>) = Column {
 
 @Composable
 fun FoundedKeyComposable(
-    modifier: Modifier = Modifier,
-    key: String
+    key: String,
+    modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier,
@@ -54,7 +58,10 @@ fun FoundedKeyComposable(
             Image(
                 modifier = Modifier
                     .padding(
-                        start = 10.dp, top = 8.dp, bottom = 8.dp, end = 6.dp
+                        start = 10.dp,
+                        top = 8.dp,
+                        bottom = 8.dp,
+                        end = 6.dp
                     )
                     .size(24.dp),
                 painter = painterResource(R.drawable.pic_encrypted_key),

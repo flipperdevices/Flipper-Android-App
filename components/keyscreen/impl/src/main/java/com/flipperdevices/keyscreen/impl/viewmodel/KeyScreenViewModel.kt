@@ -26,8 +26,6 @@ import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.nfceditor.api.NfcEditorApi
 import com.github.terrakok.cicerone.Router
-import java.util.concurrent.atomic.AtomicBoolean
-import javax.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -35,6 +33,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.concurrent.atomic.AtomicBoolean
+import javax.inject.Inject
 
 class KeyScreenViewModel(
     keyPath: FlipperKeyPath?,
@@ -86,7 +86,9 @@ class KeyScreenViewModel(
             val keyPathNotNull = if (keyPath == null) {
                 keyScreenState.update { KeyScreenState.Error(R.string.keyscreen_error_keypath) }
                 return@launch
-            } else keyPath
+            } else {
+                keyPath
+            }
             loadFileAsFlow(keyPathNotNull)
         }
     }
@@ -107,11 +109,17 @@ class KeyScreenViewModel(
         viewModelScope.launch {
             favoriteApi.setFavorite(state.flipperKey.getKeyPath(), isFavorite)
             keyScreenState.update {
-                if (it is KeyScreenState.Ready) it.copy(
-                    favoriteState = if (isFavorite) {
-                        FavoriteState.FAVORITE
-                    } else FavoriteState.NOT_FAVORITE
-                ) else it
+                if (it is KeyScreenState.Ready) {
+                    it.copy(
+                        favoriteState = if (isFavorite) {
+                            FavoriteState.FAVORITE
+                        } else {
+                            FavoriteState.NOT_FAVORITE
+                        }
+                    )
+                } else {
+                    it
+                }
             }
         }
     }
@@ -164,7 +172,9 @@ class KeyScreenViewModel(
         viewModelScope.launch {
             if (state.flipperKey.deleted) {
                 deleteKeyApi.deleteMarkedDeleted(state.flipperKey.path)
-            } else deleteKeyApi.markDeleted(state.flipperKey.path)
+            } else {
+                deleteKeyApi.markDeleted(state.flipperKey.path)
+            }
             router.exit()
         }
     }

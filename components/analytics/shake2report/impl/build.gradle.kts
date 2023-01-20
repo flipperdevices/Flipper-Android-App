@@ -1,5 +1,4 @@
 plugins {
-    id("flipper.lint")
     id("flipper.android-lib")
     id("com.squareup.anvil")
     id("kotlin-kapt")
@@ -20,6 +19,7 @@ dependencies {
     implementation(libs.appcompat)
 
     implementation(libs.kotlin.coroutines)
+    implementation(libs.kotlin.immutable.collections)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
 

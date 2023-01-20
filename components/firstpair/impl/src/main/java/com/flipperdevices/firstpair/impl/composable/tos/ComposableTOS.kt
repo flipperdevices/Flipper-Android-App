@@ -16,21 +16,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.markdown.ClickableUrlText
 import com.flipperdevices.core.ui.ktx.ComposableFlipperButton
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.firstpair.impl.R
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
-fun ComposableTOS(onApplyPress: () -> Unit) {
-    Column {
+fun ComposableTOS(onApplyPress: () -> Unit, modifier: Modifier = Modifier) {
+    Column(modifier = modifier) {
         ComposableTutorial(modifier = Modifier.weight(weight = 1f))
         ComposableFooter(onApplyPress)
     }
 }
 
 @Composable
-private fun ComposableTutorial(modifier: Modifier) {
+private fun ComposableTutorial(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -71,8 +71,8 @@ private fun ComposableTutorial(modifier: Modifier) {
 }
 
 @Composable
-fun ComposableFooter(onApplyPress: () -> Unit) {
-    Column {
+fun ComposableFooter(onApplyPress: () -> Unit, modifier: Modifier = Modifier) {
+    Column(modifier = modifier) {
         ComposableFlipperButton(
             modifier = Modifier
                 .padding(
@@ -104,7 +104,6 @@ fun ComposableFooter(onApplyPress: () -> Unit) {
     showSystemUi = true
 )
 @Composable
-@Suppress("UnusedPrivateMember")
 private fun ComposableTOSPreview() {
     ComposableTOS(onApplyPress = {})
 }

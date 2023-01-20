@@ -10,13 +10,13 @@ import com.flipperdevices.wearable.emulate.common.ipcemulate.mainResponse
 import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.ConnectStatusOuterClass
 import com.flipperdevices.wearable.emulate.handheld.impl.di.WearHandheldGraph
 import com.squareup.anvil.annotations.ContributesMultibinding
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @ContributesMultibinding(WearHandheldGraph::class, WearableCommandProcessor::class)
 class WearableFlipperStatusProcessor @Inject constructor(
@@ -57,7 +57,9 @@ class WearableFlipperStatusProcessor @Inject constructor(
             is ConnectionState.Ready -> {
                 if (connectionState.supportedState == FlipperSupportedState.READY) {
                     ConnectStatusOuterClass.ConnectStatus.READY
-                } else ConnectStatusOuterClass.ConnectStatus.UNSUPPORTED
+                } else {
+                    ConnectStatusOuterClass.ConnectStatus.UNSUPPORTED
+                }
             }
         }
 

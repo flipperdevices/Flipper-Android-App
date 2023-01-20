@@ -22,11 +22,9 @@ import com.flipperdevices.protobuf.storage.file
 import com.flipperdevices.protobuf.storage.readRequest
 import com.flipperdevices.protobuf.storage.writeRequest
 import com.google.protobuf.ByteString
-import java.nio.ByteBuffer
-import java.util.Arrays
-import java.util.concurrent.atomic.AtomicBoolean
-import javax.inject.Inject
-import kotlin.random.Random
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
@@ -41,6 +39,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.nio.ByteBuffer
+import java.util.Arrays
+import java.util.concurrent.atomic.AtomicBoolean
+import javax.inject.Inject
+import kotlin.random.Random
 
 const val BUFFER_SIZE = 20 * 1024
 const val TEST_FILE = "/any/stresstest_mobile.tmp"
@@ -51,7 +54,7 @@ class StressTestViewModel : LifecycleViewModel() {
     lateinit var serviceProvider: FlipperServiceProvider
 
     private val isStressTestRunning = AtomicBoolean(false)
-    private val debugLog = MutableStateFlow(emptyList<LogLine>())
+    private val debugLog = MutableStateFlow(persistentListOf<LogLine>())
     private val stressTestState = MutableStateFlow(StressTestState())
     private val speedState = MutableStateFlow(FlipperSerialSpeed())
     private var byteBuffer = ByteArray(size = BUFFER_SIZE)
@@ -85,7 +88,7 @@ class StressTestViewModel : LifecycleViewModel() {
         }
     }
 
-    fun getDebugLog(): StateFlow<List<LogLine>> = debugLog
+    fun getDebugLog(): StateFlow<ImmutableList<LogLine>> = debugLog
 
     fun getStressTestState(): StateFlow<StressTestState> = stressTestState
 
@@ -100,7 +103,7 @@ class StressTestViewModel : LifecycleViewModel() {
 
     private fun writeToLog(log: String, color: Color? = null) {
         debugLog.update {
-            return@update it.plus(LogLine(log, color))
+            return@update it.plus(LogLine(log, color)).toPersistentList()
         }
     }
 

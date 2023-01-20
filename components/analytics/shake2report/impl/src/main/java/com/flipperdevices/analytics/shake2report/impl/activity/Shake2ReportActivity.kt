@@ -22,9 +22,6 @@ import io.sentry.SentryEvent
 import io.sentry.SentryLevel
 import io.sentry.protocol.Message
 import io.sentry.protocol.SentryId
-import java.io.File
-import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -32,6 +29,9 @@ import net.lingala.zip4j.ZipFile
 import net.lingala.zip4j.model.ZipParameters
 import net.lingala.zip4j.model.enums.CompressionLevel
 import net.lingala.zip4j.model.enums.CompressionMethod
+import java.io.File
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 private const val FILE_SCREENSHOT = "screenshot.png"
 private const val QUALITY_SCREENSHOT = 95
@@ -114,7 +114,9 @@ class Shake2ReportActivity : AppCompatActivity() {
         event.message = Message().apply {
             message = if (userInput.isBlank()) {
                 "Error via shake2report ${System.currentTimeMillis()}"
-            } else userInput
+            } else {
+                userInput
+            }
         }
 
         lateinit var sentryId: SentryId

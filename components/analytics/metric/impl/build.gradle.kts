@@ -1,10 +1,10 @@
 import com.flipperdevices.buildlogic.ApkConfig
 
 plugins {
-    id("flipper.lint")
     id("flipper.android-lib")
     id("com.squareup.anvil")
     id("kotlin-kapt")
+    id("flipper.protobuf")
 }
 android {
     buildTypes {
@@ -31,7 +31,6 @@ dependencies {
     implementation(projects.components.core.preference)
 
     implementation(libs.countly)
-    implementation(libs.protobuf.metric)
     implementation(libs.ktor.client)
     implementation(libs.ktor.logging)
 

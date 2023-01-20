@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -20,7 +21,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.preference.pb.HardwareColor
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.info.impl.R
@@ -28,6 +28,7 @@ import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
 import com.flipperdevices.info.impl.viewmodel.FlipperColorViewModel
 import kotlin.math.roundToInt
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 const val FLOAT_TO_PERCENT_QUALIFIER = 100
 
@@ -84,8 +85,11 @@ private fun FlipperImage(
         DeviceStatus.NoDevice -> disabledFlipperId
         is DeviceStatus.Connected -> flipperId
         is DeviceStatus.NoDeviceInformation -> {
-            if (deviceStatus.connectInProgress) disabledFlipperId
-            else flipperId
+            if (deviceStatus.connectInProgress) {
+                disabledFlipperId
+            } else {
+                flipperId
+            }
         }
     }
 
@@ -127,9 +131,9 @@ private fun ConnectedText(deviceStatus: DeviceStatus.Connected) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 ComposableFlipperBattery(
-                    Modifier.size(width = 30.dp, height = 14.dp),
                     percent = batteryValue,
-                    isCharging = isCharging
+                    isCharging = isCharging,
+                    Modifier.size(width = 30.dp, height = 14.dp),
                 )
                 Text(
                     modifier = Modifier.padding(start = 5.dp),
@@ -143,7 +147,7 @@ private fun ConnectedText(deviceStatus: DeviceStatus.Connected) {
 }
 
 @Composable
-private fun FlipperName(title: String) {
+private fun ColumnScope.FlipperName(title: String) {
     Text(
         modifier = Modifier.padding(bottom = 3.dp),
         text = title,
@@ -162,8 +166,7 @@ private fun FlipperName(title: String) {
     showBackground = true
 )
 @Composable
-@Suppress("UnusedPrivateMember")
-private fun FlipperDeviceBarInformationPreview() {
+private fun ComposableFlipperDeviceBarInformationPreview() {
     val deviceStatus = setOf(
         DeviceStatus.NoDevice,
         DeviceStatus.Connected(deviceName = "Flipper", batteryLevel = 0.3f, isCharging = false),

@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.ktx.android.parcelableExtra
 import com.flipperdevices.core.ktx.android.toFullString
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
@@ -21,8 +22,8 @@ import com.flipperdevices.singleactivity.impl.di.SingleActivityComponent
 import com.github.terrakok.cicerone.Navigator
 import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.AppNavigator
-import javax.inject.Inject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 const val LAUNCH_PARAMS_INTENT = "launch_params_intent"
 
@@ -80,7 +81,7 @@ class SingleActivity :
         if (intent == null) {
             return
         }
-        val deeplink = intent.getParcelableExtra<Deeplink>(LAUNCH_PARAMS_INTENT)
+        val deeplink = intent.parcelableExtra<Deeplink>(LAUNCH_PARAMS_INTENT)
         if (deeplink != null) {
             deepLinkHelper.onNewDeeplink(deeplink)
             return

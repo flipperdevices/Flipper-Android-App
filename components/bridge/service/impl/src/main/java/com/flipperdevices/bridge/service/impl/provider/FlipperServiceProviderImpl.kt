@@ -21,9 +21,9 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.Settings
 import com.squareup.anvil.annotations.ContributesBinding
+import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlinx.coroutines.suspendCancellableCoroutine
 
 @Singleton
 @ContributesBinding(AppGraph::class, FlipperServiceProvider::class)

@@ -1,6 +1,6 @@
 package com.flipperdevices.bridge.api.utils
 
-import com.flipperdevices.bridge.api.model.SemVer
+import com.flipperdevices.core.data.SemVer
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 
@@ -10,6 +10,10 @@ object Constants {
     const val KEYS_DEFAULT_STORAGE = "/any/"
     const val RPC_START_REQUEST_ARG = "RPC"
     val API_MAX_SUPPORTED_VERSION = SemVer(majorVersion = 1, minorVersion = 0)
+    val API_SUPPORTED_FLIPPER_ERROR = SemVer(
+        majorVersion = 0,
+        minorVersion = 14
+    )
     val API_SUPPORTED_REMOTE_EMULATE = SemVer(
         majorVersion = 0,
         minorVersion = 11

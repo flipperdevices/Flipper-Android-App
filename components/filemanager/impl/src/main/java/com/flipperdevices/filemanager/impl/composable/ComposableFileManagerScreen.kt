@@ -42,15 +42,19 @@ fun ComposableFileManagerScreen(
     val localFileItem = pendingDialogItem
 
     if (localFileItem != null) {
-        val chooseOptions = if (isAbleToDelete(fileManagerState.currentPath)) intArrayOf(
-            R.string.filemanager_open_dialog_edit,
-            R.string.filemanager_open_dialog_download,
-            R.string.filemanager_open_dialog_delete
-        ) else intArrayOf(
-            R.string.filemanager_open_dialog_edit,
-            R.string.filemanager_open_dialog_download
-        )
-        ComposableSelectDialog(chooseOptions) {
+        val chooseOptions = if (isAbleToDelete(fileManagerState.currentPath)) {
+            intArrayOf(
+                R.string.filemanager_open_dialog_edit,
+                R.string.filemanager_open_dialog_download,
+                R.string.filemanager_open_dialog_delete
+            )
+        } else {
+            intArrayOf(
+                R.string.filemanager_open_dialog_edit,
+                R.string.filemanager_open_dialog_download
+            )
+        }
+        ComposableSelectDialog(chooseOptions, onSelected = {
             when (it) {
                 R.string.filemanager_open_dialog_edit -> {
                     onOpenEditor(localFileItem)
@@ -64,7 +68,7 @@ fun ComposableFileManagerScreen(
                 }
                 else -> pendingDialogItem = null
             }
-        }
+        })
     }
 
     var showAddDialog by remember { mutableStateOf(false) }
@@ -81,7 +85,9 @@ fun ComposableFileManagerScreen(
         onOpenFolder = {
             if (it.isDirectory) {
                 onOpenFolder(it)
-            } else pendingDialogItem = it
+            } else {
+                pendingDialogItem = it
+            }
         },
         onUploadFile = {
             onUploadFile(fileManagerState.currentPath, it)
@@ -119,18 +125,19 @@ private fun ComposableCreateActionDialog(
         intArrayOf(
             R.string.filemanager_add_dialog_file,
             R.string.filemanager_add_dialog_folder
-        )
-    ) {
-        when (it) {
-            R.string.filemanager_add_dialog_file -> {
-                createFileManagerAction = CreateFileManagerAction.FILE
+        ),
+        onSelected = {
+            when (it) {
+                R.string.filemanager_add_dialog_file -> {
+                    createFileManagerAction = CreateFileManagerAction.FILE
+                }
+                R.string.filemanager_add_dialog_folder -> {
+                    createFileManagerAction = CreateFileManagerAction.FOLDER
+                }
+                else -> onDismiss()
             }
-            R.string.filemanager_add_dialog_folder -> {
-                createFileManagerAction = CreateFileManagerAction.FOLDER
-            }
-            else -> onDismiss()
         }
-    }
+    )
 }
 
 @Composable
@@ -172,9 +179,9 @@ private fun ComposableFileManagerScreenInternal(
         }
     ) { scaffoldPaddings ->
         ComposableFileManagerContent(
-            Modifier.padding(scaffoldPaddings),
-            fileManagerState,
-            onOpenFolder
+            modifier = Modifier.padding(scaffoldPaddings),
+            fileManagerState = fileManagerState,
+            onFileClick = onOpenFolder
         )
     }
 }

@@ -27,15 +27,16 @@ import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.ui.ktx.LocalRouter
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
+import kotlinx.collections.immutable.ImmutableList
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableSearchContent(
-    modifier: Modifier,
     synchronizationUiApi: SynchronizationUiApi,
-    searchViewModel: SearchViewModel
+    searchViewModel: SearchViewModel,
+    modifier: Modifier = Modifier
 ) {
     val state by searchViewModel.getState().collectAsState()
     val synchronizationState by searchViewModel.getSynchronizationState().collectAsState()
@@ -44,23 +45,25 @@ fun ComposableSearchContent(
         SearchState.Loading -> CategoryLoadingProgress(modifier)
         is SearchState.Loaded -> if (localState.keys.isEmpty()) {
             CategoryEmpty(modifier)
-        } else CategoryList(
-            modifier,
-            searchViewModel,
-            synchronizationUiApi,
-            synchronizationState,
-            localState.keys
-        )
+        } else {
+            CategoryList(
+                modifier = modifier,
+                searchViewModel = searchViewModel,
+                synchronizationUiApi = synchronizationUiApi,
+                synchronizationState = synchronizationState,
+                keys = localState.keys
+            )
+        }
     }
 }
 
 @Composable
 private fun CategoryList(
-    modifier: Modifier,
     searchViewModel: SearchViewModel,
     synchronizationUiApi: SynchronizationUiApi,
     synchronizationState: SynchronizationState,
-    keys: List<Pair<FlipperKeyParsed, FlipperKey>>
+    keys: ImmutableList<Pair<FlipperKeyParsed, FlipperKey>>,
+    modifier: Modifier = Modifier,
 ) {
     val router = LocalRouter.current
     LazyColumn(
@@ -68,7 +71,7 @@ private fun CategoryList(
     ) {
         items(keys) { (flipperKeyParsed, flipperKey) ->
             ComposableKeyCard(
-                Modifier.padding(bottom = 14.dp),
+                modifier = Modifier.padding(bottom = 14.dp),
                 synchronizationContent = {
                     synchronizationUiApi.RenderSynchronizationState(
                         flipperKey.synchronized,
@@ -76,23 +79,24 @@ private fun CategoryList(
                         withText = false
                     )
                 },
-                flipperKeyParsed
-            ) {
-                searchViewModel.openKeyScreen(router, flipperKey.getKeyPath())
-            }
+                flipperKeyParsed = flipperKeyParsed,
+                onCardClicked = {
+                    searchViewModel.openKeyScreen(router, flipperKey.getKeyPath())
+                }
+            )
         }
     }
 }
 
 @Composable
-private fun CategoryLoadingProgress(modifier: Modifier) {
+private fun CategoryLoadingProgress(modifier: Modifier = Modifier) {
     Box(modifier, contentAlignment = Alignment.Center) {
         CircularProgressIndicator()
     }
 }
 
 @Composable
-private fun CategoryEmpty(modifier: Modifier) {
+private fun CategoryEmpty(modifier: Modifier = Modifier) {
     Column(
         modifier,
         verticalArrangement = Arrangement.Center,

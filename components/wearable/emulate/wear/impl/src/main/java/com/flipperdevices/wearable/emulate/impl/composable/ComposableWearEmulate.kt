@@ -32,49 +32,49 @@ fun ComposableWearEmulate(
     when (state) {
         WearEmulateState.NotInitialized -> {
             ComposableActionLoading(
-                modifier,
                 keyEmulateUiApi,
-                WearLoadingState.INITIALIZING
+                WearLoadingState.INITIALIZING,
+                modifier
             )
             return
         }
         WearEmulateState.ConnectingToFlipper -> {
             ComposableActionLoading(
-                modifier,
                 keyEmulateUiApi,
-                WearLoadingState.CONNECTING_FLIPPER
+                WearLoadingState.CONNECTING_FLIPPER,
+                modifier
             )
             return
         }
         is WearEmulateState.EstablishConnection -> {
             ComposableActionLoading(
-                modifier,
                 keyEmulateUiApi,
-                WearLoadingState.CONNECTING_PHONE
+                WearLoadingState.CONNECTING_PHONE,
+                modifier
             )
             return
         }
         WearEmulateState.NodeFinding -> {
             ComposableActionLoading(
-                modifier,
                 keyEmulateUiApi,
-                WearLoadingState.FINDING_PHONE
+                WearLoadingState.FINDING_PHONE,
+                modifier
             )
             return
         }
         WearEmulateState.TestConnection -> {
             ComposableActionLoading(
-                modifier,
                 keyEmulateUiApi,
-                WearLoadingState.TEST_CONNECTION
+                WearLoadingState.TEST_CONNECTION,
+                modifier
             )
             return
         }
         WearEmulateState.UnsupportedFlipper -> {
             ComposableActionDisable(
-                modifier,
                 keyEmulateUiApi,
-                state.keyType
+                state.keyType,
+                modifier
             )
             return
         }
@@ -86,15 +86,15 @@ fun ComposableWearEmulate(
         is WearEmulateState.ReadyForEmulate -> {
         } // Ignore
     }
-    EmulateButton(state, keyEmulateUiApi, modifier, emulateViewModel, onBack)
+    EmulateButton(state, keyEmulateUiApi, emulateViewModel, modifier, onBack)
 }
 
 @Composable
 private fun EmulateButton(
     state: WearEmulateState,
     keyEmulateUiApi: KeyEmulateUiApi,
-    modifier: Modifier,
     emulateViewModel: WearEmulateViewModel,
+    modifier: Modifier = Modifier,
     onBack: () -> Unit
 ) {
     Box(
@@ -106,20 +106,18 @@ private fun EmulateButton(
             FlipperKeyType.RFID,
             FlipperKeyType.NFC,
             FlipperKeyType.I_BUTTON -> ComposableWearSimpleEmulate(
-                Modifier,
                 (state as? WearEmulateState.Emulating)?.progress,
                 keyEmulateUiApi,
                 emulateViewModel::onClickEmulate,
-                emulateViewModel::onStopEmulate
+                onStopEmulate = emulateViewModel::onStopEmulate
             )
             FlipperKeyType.INFRARED -> onBack()
             FlipperKeyType.SUB_GHZ -> ComposableWearSubGhzEmulate(
-                Modifier,
                 (state as? WearEmulateState.Emulating)?.progress,
                 keyEmulateUiApi,
                 emulateViewModel::onClickEmulate,
                 emulateViewModel::onShortEmulate,
-                emulateViewModel::onStopEmulate
+                onStopEmulate = emulateViewModel::onStopEmulate
             )
         }
     }

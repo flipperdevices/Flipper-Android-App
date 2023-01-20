@@ -1,5 +1,4 @@
 plugins {
-    id("flipper.lint")
     id("flipper.android-compose")
     id("com.squareup.anvil")
     id("kotlin-kapt")
@@ -10,7 +9,6 @@ dependencies {
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.screenstreaming.api)
     implementation(projects.components.bridge.pbutils)
-    implementation(libs.protobuf.jvm)
 
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)

@@ -15,15 +15,17 @@ import com.flipperdevices.info.shared.ComposableDeviceInfoRowWithText
 import com.flipperdevices.info.shared.ComposableInfoDivider
 import com.flipperdevices.info.shared.InfoElementCard
 import com.flipperdevices.updater.model.FirmwareChannel
+import kotlinx.collections.immutable.ImmutableSet
 
 @Composable
 fun ComposableFullInfoDevice(
     fullDeviceInfo: FlipperRpcInformation,
     inProgress: Boolean,
-    getFirmwareChannel: (String?) -> FirmwareChannel?
+    modifier: Modifier = Modifier,
+    getFirmwareChannel: (String?) -> FirmwareChannel?,
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .verticalScroll(rememberScrollState())
             .padding(vertical = 14.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp)
@@ -61,7 +63,7 @@ fun ComposableFullInfoDevice(
 
 @Composable
 private fun ComposableOtherInfo(
-    fields: Set<Map.Entry<String, String>>,
+    fields: ImmutableSet<Map.Entry<String, String>>,
     inProgress: Boolean
 ) {
     fields.forEachIndexed { index, field ->

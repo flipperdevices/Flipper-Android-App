@@ -1,13 +1,13 @@
 package com.flipperdevices.bridge.dao.api.model
 
 import android.os.Parcelable
+import kotlinx.parcelize.IgnoredOnParcel
+import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.io.FileInputStream
 import java.io.InputStream
-import kotlinx.parcelize.IgnoredOnParcel
-import kotlinx.parcelize.Parcelize
-import kotlinx.serialization.Serializable
 
 /**
  * Describes the contents of the key.
@@ -41,7 +41,9 @@ sealed class FlipperKeyContent : Parcelable {
         override fun openStream(): InputStream {
             return if (file.exists()) {
                 FileInputStream(file)
-            } else ByteArray(0).inputStream()
+            } else {
+                ByteArray(0).inputStream()
+            }
         }
 
         override fun length() = file.length()

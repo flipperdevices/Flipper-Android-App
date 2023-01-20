@@ -19,15 +19,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.nfceditor.impl.R
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 @Suppress("MagicNumber")
-fun ComposableSchemeCard(scaleFactor: Float) {
+fun ComposableSchemeCard(
+    scaleFactor: Float,
+    modifier: Modifier = Modifier,
+) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding((scaleFactor * 10).dp),
         horizontalArrangement = Arrangement.spacedBy(2.dp),

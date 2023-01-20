@@ -1,9 +1,12 @@
 package com.flipperdevices.bridge.dao.impl.api
 
+import androidx.room.withTransaction
 import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.model.FlipperFile
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
+import com.flipperdevices.bridge.dao.impl.AppDatabase
+import com.flipperdevices.bridge.dao.impl.ktx.getFlipperKeyPath
 import com.flipperdevices.bridge.dao.impl.model.FavoriteKey
 import com.flipperdevices.bridge.dao.impl.model.SynchronizedStatus
 import com.flipperdevices.bridge.dao.impl.repository.FavoriteDao
@@ -11,38 +14,47 @@ import com.flipperdevices.bridge.dao.impl.repository.KeyDao
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.provideDelegate
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
-import javax.inject.Provider
-import javax.inject.Singleton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
+import javax.inject.Provider
+import javax.inject.Singleton
 
 @Singleton
 @ContributesBinding(AppGraph::class)
 class FavoriteImpl @Inject constructor(
     favoriteDaoProvider: Provider<FavoriteDao>,
-    keyDaoProvider: Provider<KeyDao>
+    keyDaoProvider: Provider<KeyDao>,
+    databaseProvider: Provider<AppDatabase>
 ) : FavoriteApi {
     private val favoriteDao by favoriteDaoProvider
     private val keyDao by keyDaoProvider
+    private val database by databaseProvider
 
     override suspend fun updateFavorites(
         keys: List<FlipperKeyPath>
-    ) = withContext(Dispatchers.IO) {
-        favoriteDao.deleteAll()
+    ): List<FlipperKeyPath> = withContext(Dispatchers.IO) {
+        database.withTransaction {
+            favoriteDao.deleteAll()
 
-        val favoriteKeys = keys.mapNotNull {
-            val fileType = it.path.keyType
-            return@mapNotNull if (fileType != null) {
-                keyDao.getByPath(it.path.pathToKey, it.deleted)?.uid
-            } else null
-        }.mapIndexed { order, keyId ->
-            FavoriteKey(keyId = keyId, order = order)
-        }
+            val flipperKeys = keys.mapNotNull {
+                val fileType = it.path.keyType
+                return@mapNotNull if (fileType != null) {
+                    keyDao.getByPath(it.path.pathToKey, it.deleted)
+                } else {
+                    null
+                }
+            }
 
-        favoriteDao.insert(favoriteKeys)
+            val favoriteKeys = flipperKeys.map { it.uid }.mapIndexed { order, keyId ->
+                FavoriteKey(keyId = keyId, order = order)
+            }
+
+            favoriteDao.insert(favoriteKeys)
+            return@withTransaction flipperKeys
+        }.map { it.getFlipperKeyPath() }
     }
 
     override suspend fun isFavorite(keyPath: FlipperKeyPath) = withContext(Dispatchers.IO) {

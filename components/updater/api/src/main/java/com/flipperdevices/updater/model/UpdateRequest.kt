@@ -17,13 +17,16 @@ data class UpdateRequest(
 sealed class UpdateContent : Parcelable {
     abstract fun folderName(): String
 }
+
+@Parcelize
 class OfficialFirmware(
     val distributionFile: DistributionFile
-) : UpdateContent() {
+) : UpdateContent(), Parcelable {
     override fun folderName(): String = distributionFile.sha256 ?: distributionFile.url
 }
 
-class InternalStorageFirmware(val uri: Uri) : UpdateContent() {
+@Parcelize
+class InternalStorageFirmware(val uri: Uri) : UpdateContent(), Parcelable {
     override fun folderName(): String {
         return uri
             .path
@@ -32,6 +35,7 @@ class InternalStorageFirmware(val uri: Uri) : UpdateContent() {
     }
 }
 
-class WebUpdaterFirmware(val url: String) : UpdateContent() {
+@Parcelize
+class WebUpdaterFirmware(val url: String) : UpdateContent(), Parcelable {
     override fun folderName(): String = url.substringBeforeLast("/")
 }

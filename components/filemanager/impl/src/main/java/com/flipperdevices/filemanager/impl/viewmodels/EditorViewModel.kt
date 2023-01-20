@@ -20,13 +20,13 @@ import com.flipperdevices.filemanager.impl.model.EditorState
 import com.flipperdevices.filemanager.impl.model.ShareFile
 import com.flipperdevices.filemanager.impl.viewmodels.helpers.DownloadFileHelper
 import com.flipperdevices.filemanager.impl.viewmodels.helpers.UploadFileHelper
-import java.util.concurrent.atomic.AtomicBoolean
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.sync.Mutex
 import tangle.inject.TangleParam
 import tangle.viewmodel.VMInject
+import java.util.concurrent.atomic.AtomicBoolean
 
 private const val LIMITED_SIZE_BYTES = 1024L * 1024L // 1MB
 
@@ -101,9 +101,13 @@ class EditorViewModel @VMInject constructor(
                     editorStateFlow.update {
                         if (it is EditorState.Saving) {
                             it.copy(progress = it.progress.updateProgress(delta))
-                        } else it
+                        } else {
+                            it
+                        }
                     }
-                } else editorStateFlow.update { EditorState.Saved }
+                } else {
+                    editorStateFlow.update { EditorState.Saved }
+                }
             }
         }.exceptionOrNull()
 
@@ -127,7 +131,9 @@ class EditorViewModel @VMInject constructor(
                         it.copy(
                             progress = it.progress.updateProgress(delta)
                         )
-                    } else it
+                    } else {
+                        it
+                    }
                 }
             }
         }.exceptionOrNull()

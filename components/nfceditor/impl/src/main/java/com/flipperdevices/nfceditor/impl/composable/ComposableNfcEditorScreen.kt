@@ -34,7 +34,10 @@ import com.flipperdevices.nfceditor.impl.viewmodel.NfcEditorViewModel
 private const val KEYBOARD_HEIGHT_DP = 256
 
 @Composable
-fun ComposableNfcEditorScreen(nfcEditorViewModel: NfcEditorViewModel) {
+fun ComposableNfcEditorScreen(
+    nfcEditorViewModel: NfcEditorViewModel,
+    modifier: Modifier = Modifier
+) {
     val nfcEditorState by nfcEditorViewModel.getNfcEditorState().collectAsState()
     val router = LocalRouter.current
     val localNfcEditorState = nfcEditorState
@@ -55,7 +58,7 @@ fun ComposableNfcEditorScreen(nfcEditorViewModel: NfcEditorViewModel) {
         )
     }
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = modifier.fillMaxSize()) {
         ComposableNfcEditorBar(localNfcEditorState.cardName, onBack = {
             nfcEditorViewModel.onBack(router)
         }, onSave = {
@@ -80,7 +83,9 @@ fun ComposableNfcEditorScreen(nfcEditorViewModel: NfcEditorViewModel) {
                 keyboardHeight = KEYBOARD_HEIGHT_DP.dp,
                 onClick = nfcEditorViewModel::onKeyInput
             )
-        } else offsetForKeyboard = KEYBOARD_HEIGHT_DP.dp
+        } else {
+            offsetForKeyboard = KEYBOARD_HEIGHT_DP.dp
+        }
     }
 }
 
@@ -124,11 +129,13 @@ private fun ComposableNfcEditorBar(
                     modifier = it,
                     textId = R.string.nfceditor_title
                 )
-            } else ComposableBarTitleWithName(
-                modifier = it,
-                titleId = R.string.nfceditor_title,
-                name = keyName
-            )
+            } else {
+                ComposableBarTitleWithName(
+                    modifier = it,
+                    titleId = R.string.nfceditor_title,
+                    name = keyName
+                )
+            }
         },
         endBlock = {
             var dropDownVisible by remember {

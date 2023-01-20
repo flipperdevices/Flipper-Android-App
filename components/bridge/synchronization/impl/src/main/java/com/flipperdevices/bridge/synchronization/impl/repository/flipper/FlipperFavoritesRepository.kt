@@ -9,10 +9,10 @@ import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
 import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
 import com.flipperdevices.core.log.LogTagProvider
 import com.squareup.anvil.annotations.ContributesBinding
-import java.nio.charset.Charset
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.nio.charset.Charset
+import javax.inject.Inject
 
 private val FAVORITES_PATH = FlipperFilePath("/", "favorites.txt")
 
@@ -22,7 +22,7 @@ interface FlipperFavoritesRepository {
         flipperKeyStorage: FlipperKeyStorage,
         oldFavorites: List<FlipperFilePath>,
         favoritesDiff: List<KeyDiff>
-    )
+    ): List<FlipperFilePath>
 }
 
 @ContributesBinding(TaskGraph::class, FlipperFavoritesRepository::class)
@@ -62,7 +62,7 @@ class FlipperFavoritesRepositoryImpl @Inject constructor() :
         flipperKeyStorage: FlipperKeyStorage,
         oldFavorites: List<FlipperFilePath>,
         favoritesDiff: List<KeyDiff>
-    ) {
+    ): List<FlipperFilePath> {
         val resultFavoritesList = ArrayList(oldFavorites)
         for (diff in favoritesDiff) {
             when (diff.action) {
@@ -78,5 +78,6 @@ class FlipperFavoritesRepositoryImpl @Inject constructor() :
             FAVORITES_PATH,
             FlipperKeyContent.RawData(newFavoritesFile.toByteArray())
         )
+        return resultFavoritesList
     }
 }

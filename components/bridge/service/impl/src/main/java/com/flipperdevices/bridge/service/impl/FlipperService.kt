@@ -15,9 +15,9 @@ import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.jre.runBlockingWithLog
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import java.util.concurrent.atomic.AtomicBoolean
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.util.concurrent.atomic.AtomicBoolean
 
 class FlipperService : LifecycleService(), LogTagProvider {
     override val TAG = "FlipperService-${hashCode()}"
@@ -75,7 +75,7 @@ class FlipperService : LifecycleService(), LogTagProvider {
         info { "Foreground stopped, try close service api" }
         serviceApi.close()
         info { "Service stop internal" }
-        stopForeground(true)
+        stopForeground(STOP_FOREGROUND_REMOVE)
         info { "Service api closed" }
         stopSelf()
         info { "Called stopSelf" }

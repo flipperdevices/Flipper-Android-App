@@ -25,7 +25,6 @@ import com.flipperdevices.protobuf.storage.infoRequest
 import com.flipperdevices.protobuf.system.deviceInfoRequest
 import com.flipperdevices.protobuf.system.powerInfoRequest
 import com.flipperdevices.shake2report.api.Shake2ReportApi
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -39,6 +38,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 private const val FLIPPER_PATH_INTERNAL_STORAGE = "/int/"
 private const val FLIPPER_PATH_EXTERNAL_STORAGE = "/ext/"
@@ -92,7 +92,9 @@ class FlipperRpcInformationApiImpl(
             requestStatusFlow.update {
                 if (it is FlipperRequestRpcInformationStatus.InProgress) {
                     it.copy(externalStorageRequestFinished = true)
-                } else it
+                } else {
+                    it
+                }
             }
         }
         requestJobs += scope.launch(Dispatchers.Default) {
@@ -109,7 +111,9 @@ class FlipperRpcInformationApiImpl(
             requestStatusFlow.updateAndGet {
                 if (it is FlipperRequestRpcInformationStatus.InProgress) {
                     it.copy(internalStorageRequestFinished = true)
-                } else it
+                } else {
+                    it
+                }
             }
         }
         requestJobs += scope.launch(Dispatchers.Default) {
@@ -142,7 +146,9 @@ class FlipperRpcInformationApiImpl(
             requestStatusFlow.update {
                 if (it is FlipperRequestRpcInformationStatus.InProgress) {
                     it.copy(rpcDeviceInfoRequestFinished = true)
-                } else it
+                } else {
+                    it
+                }
             }
         }
     }

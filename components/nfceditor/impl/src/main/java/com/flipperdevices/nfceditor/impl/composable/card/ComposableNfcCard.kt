@@ -22,8 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.flipperdevices.core.ui.hexkeyboard.ImmutableEnumMap
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.hexkeyboard.PredefinedEnumMap
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
@@ -33,16 +32,19 @@ import com.flipperdevices.nfceditor.impl.model.NfcEditorCardInfo
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCardType
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCell
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCellLocation
+import kotlinx.collections.immutable.toImmutableList
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableNfcCard(
     nfcEditorCardInfo: NfcEditorCardInfo,
     scaleFactor: Float,
     currentCell: NfcEditorCellLocation?,
-    onCellClick: (NfcEditorCellLocation) -> Unit
+    onCellClick: (NfcEditorCellLocation) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = Modifier.padding(top = 14.dp, bottom = 14.dp, start = 14.dp),
+        modifier = modifier.padding(top = 14.dp, bottom = 14.dp, start = 14.dp),
         shape = RoundedCornerShape(12.dp),
         backgroundColor = LocalPallet.current.nfcCardBackground
     ) {
@@ -60,7 +62,9 @@ fun ComposableNfcCard(
             ComposableNfcCardInternal(
                 modifier = if (isOpened) {
                     Modifier.matchParentSize()
-                } else Modifier,
+                } else {
+                    Modifier
+                },
                 scaleFactor = scaleFactor,
                 nfcEditorCardInfo = nfcEditorCardInfo,
                 isOpened = isOpened,
@@ -75,12 +79,12 @@ fun ComposableNfcCard(
 @Composable
 @Suppress("MagicNumber")
 private fun ComposableNfcCardInternal(
-    modifier: Modifier,
     nfcEditorCardInfo: NfcEditorCardInfo,
     isOpened: Boolean,
     onClick: () -> Unit,
     scaleFactor: Float,
     currentCell: NfcEditorCellLocation?,
+    modifier: Modifier = Modifier,
     onCellClick: (NfcEditorCellLocation) -> Unit
 ) {
     Column(
@@ -114,14 +118,12 @@ private fun ComposableNfcCardInternal(
 private fun ComposableNfcCardPreview() {
     FlipperThemeInternal {
         ComposableNfcCard(
-            NfcEditorCardInfo(
+            nfcEditorCardInfo = NfcEditorCardInfo(
                 cardType = NfcEditorCardType.MF_4K,
-                ImmutableEnumMap(
-                    CardFieldInfo::class.java,
-                    CardFieldInfo.values()
-                ) {
+                PredefinedEnumMap(CardFieldInfo::class.java) {
                     "B6 69 03 36 8A 98 02".split(" ")
                         .map { NfcEditorCell(it, NfcCellType.SIMPLE) }
+                        .toImmutableList()
                 }
             ),
             scaleFactor = 1.0f,

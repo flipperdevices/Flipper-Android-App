@@ -6,7 +6,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.model.DeviceStatus
@@ -17,10 +16,11 @@ import com.flipperdevices.info.impl.viewmodel.FirmwareUpdateViewModel
 import com.flipperdevices.info.shared.ButtonElementRow
 import com.flipperdevices.info.shared.ComposableInfoDivider
 import com.flipperdevices.info.shared.InfoElementCard
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableConnectedDeviceActionCard(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     deviceStatusViewModel: DeviceStatusViewModel = viewModel(),
     firmwareUpdateViewModel: FirmwareUpdateViewModel = viewModel()
 ) {
@@ -42,13 +42,15 @@ fun ComposableConnectedDeviceActionCard(
 
 @Composable
 private fun ComposableSynchronize(
+    enabled: Boolean,
     modifier: Modifier = Modifier,
-    connectViewModel: ConnectViewModel = viewModel(),
-    enabled: Boolean
+    connectViewModel: ConnectViewModel = viewModel()
 ) {
     val color = if (enabled) {
         LocalPallet.current.accentSecond
-    } else LocalPallet.current.text16
+    } else {
+        LocalPallet.current.text16
+    }
 
     ButtonElementRow(
         modifier = modifier,
@@ -57,19 +59,23 @@ private fun ComposableSynchronize(
         color = color,
         onClick = if (enabled) {
             connectViewModel::requestSynchronize
-        } else null
+        } else {
+            null
+        }
     )
 }
 
 @Composable
 private fun ComposableAlarmElement(
+    enabled: Boolean,
     modifier: Modifier = Modifier,
-    alarmViewModel: AlarmViewModel = viewModel(),
-    enabled: Boolean
+    alarmViewModel: AlarmViewModel = viewModel()
 ) {
     val colorId = if (enabled) {
         LocalPallet.current.accentSecond
-    } else LocalPallet.current.text16
+    } else {
+        LocalPallet.current.text16
+    }
 
     ButtonElementRow(
         modifier = modifier,
@@ -78,6 +84,8 @@ private fun ComposableAlarmElement(
         color = colorId,
         onClick = if (enabled) {
             alarmViewModel::alarmOnFlipper
-        } else null
+        } else {
+            null
+        }
     )
 }

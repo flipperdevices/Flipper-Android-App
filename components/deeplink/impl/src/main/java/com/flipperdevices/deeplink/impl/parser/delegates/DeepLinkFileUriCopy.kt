@@ -13,10 +13,10 @@ import com.flipperdevices.deeplink.model.DeepLinkParserDelegatePriority
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.squareup.anvil.annotations.ContributesMultibinding
-import java.io.File
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.io.File
+import javax.inject.Inject
 
 @ContributesMultibinding(AppGraph::class, DeepLinkParserDelegate::class)
 class DeepLinkFileUriCopy @Inject constructor() : DeepLinkParserDelegate, LogTagProvider {

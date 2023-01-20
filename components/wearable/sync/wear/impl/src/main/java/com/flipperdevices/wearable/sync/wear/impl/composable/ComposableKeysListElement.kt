@@ -21,16 +21,20 @@ import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.Text
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.wearable.sync.wear.impl.model.FlipperWearKey
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableKeysListCategory(
-    @DrawableRes iconId: Int? = null,
-    @StringRes textId: Int
+    @StringRes textId: Int,
+    modifier: Modifier = Modifier,
+    @DrawableRes iconId: Int? = null
 ) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         val iconModifier = Modifier
             .padding(14.dp)
             .size(24.dp)
@@ -38,11 +42,13 @@ fun ComposableKeysListCategory(
             Box(
                 modifier = iconModifier
             )
-        } else Image(
-            modifier = iconModifier,
-            painter = painterResource(iconId),
-            contentDescription = null
-        )
+        } else {
+            Image(
+                modifier = iconModifier,
+                painter = painterResource(iconId),
+                contentDescription = null
+            )
+        }
         Text(
             text = stringResource(textId),
             style = LocalTypography.current.titleB18
@@ -51,11 +57,15 @@ fun ComposableKeysListCategory(
 }
 
 @Composable
-fun ComposableKeysListElement(flipperWearKey: FlipperWearKey, onClick: () -> Unit) {
+fun ComposableKeysListElement(
+    flipperWearKey: FlipperWearKey,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
     val type = flipperWearKey.path.path.keyType
     val icon = type?.icon ?: DesignSystem.drawable.ic_fileformat_unknown
     Row(
-        modifier = Modifier.clickable(
+        modifier = modifier.clickable(
             onClick = onClick
         ),
         verticalAlignment = Alignment.CenterVertically

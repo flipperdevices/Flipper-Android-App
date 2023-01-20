@@ -4,6 +4,7 @@ import androidx.annotation.StringRes
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -15,7 +16,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import com.flipperdevices.core.ui.dialog.composable.FlipperDialog
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
@@ -24,16 +24,22 @@ import com.flipperdevices.info.shared.getTextByVersion
 import com.flipperdevices.updater.card.R
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableSuccessfulUpdate(
     version: FirmwareVersion?,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    val imageId = if (MaterialTheme.colors.isLight) DesignSystem.drawable.pic_update_successfull
-    else DesignSystem.drawable.pic_update_successfull_dark
+    val imageId = if (MaterialTheme.colors.isLight) {
+        DesignSystem.drawable.pic_update_successfull
+    } else {
+        DesignSystem.drawable.pic_update_successfull_dark
+    }
 
     FlipperDialog(
+        modifier = modifier,
         imageId = imageId,
         titleComposable = {
             Text(
@@ -62,9 +68,11 @@ fun ComposableSuccessfulUpdate(
 @Composable
 fun ComposableFailedUpdate(
     version: FirmwareVersion?,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     FlipperDialog(
+        modifier = modifier,
         imageId = DesignSystem.drawable.pic_update_failed,
         titleComposable = {
             Text(
@@ -105,8 +113,9 @@ fun buildAnnotatedStringWithVersionColor(
     version: FirmwareVersion?,
     @StringRes postfixId: Int
 ): AnnotatedString {
-    val color = if (version == null) LocalPallet.current.channelFirmwareUnknown
-    else {
+    val color = if (version == null) {
+        LocalPallet.current.channelFirmwareUnknown
+    } else {
         when (version.channel) {
             FirmwareChannel.RELEASE,
             FirmwareChannel.RELEASE_CANDIDATE,
@@ -145,7 +154,7 @@ private fun buildAnnotatedStringWithVersionInternal(
 @Composable
 private fun ComposableSuccessfulUpdateWithoutVersionPreview() {
     FlipperThemeInternal {
-        ComposableSuccessfulUpdate(version = null) {}
+        ComposableSuccessfulUpdate(version = null, {})
     }
 }
 
@@ -160,7 +169,7 @@ private fun ComposableSuccessfulUpdatePreview() {
             channel = FirmwareChannel.DEV,
             version = "1.7.8"
         )
-        ComposableSuccessfulUpdate(version = version) {}
+        ComposableSuccessfulUpdate(version = version, {})
     }
 }
 
@@ -171,7 +180,7 @@ private fun ComposableSuccessfulUpdatePreview() {
 @Composable
 private fun ComposableFailedUpdateWithoutVersionPreview() {
     FlipperThemeInternal {
-        ComposableFailedUpdate(version = null) {}
+        ComposableFailedUpdate(version = null, {})
     }
 }
 
@@ -186,6 +195,6 @@ private fun ComposableFailedUpdateUpdatePreview() {
             channel = FirmwareChannel.DEV,
             version = "1.7.8"
         )
-        ComposableFailedUpdate(version = version) {}
+        ComposableFailedUpdate(version = version, {})
     }
 }

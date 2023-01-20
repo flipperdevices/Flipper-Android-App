@@ -6,8 +6,8 @@ import com.flipperdevices.bottombar.model.TabState
 import com.flipperdevices.connection.impl.R
 import com.flipperdevices.connection.impl.model.ConnectionStatusState
 import com.flipperdevices.core.ktx.jre.roundPercentToString
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 object ConnectionTabStateMapper {
     @Composable

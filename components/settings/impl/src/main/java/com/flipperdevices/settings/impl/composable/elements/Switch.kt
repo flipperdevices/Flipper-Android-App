@@ -10,10 +10,11 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 @Composable
 fun Switch(
     state: Boolean,
+    modifier: Modifier = Modifier,
     onSwitchState: (Boolean) -> Unit
 ) {
     androidx.compose.material.Switch(
-        modifier = Modifier.padding(horizontal = 12.dp),
+        modifier = modifier.padding(horizontal = 12.dp),
         checked = state,
         onCheckedChange = onSwitchState,
         colors = SwitchDefaults.colors(

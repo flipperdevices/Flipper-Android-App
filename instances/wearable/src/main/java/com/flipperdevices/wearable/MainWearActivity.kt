@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.wear.compose.navigation.SwipeDismissableNavHost
-import androidx.wear.compose.navigation.composable
 import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.di.provideDelegate
@@ -18,6 +17,8 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.wearable.di.WearableComponent
 import com.flipperdevices.wearable.setup.api.SetupApi
 import com.flipperdevices.wearable.theme.WearFlipperTheme
+import kotlinx.collections.immutable.ImmutableSet
+import kotlinx.collections.immutable.toImmutableSet
 
 class MainWearActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,15 +30,19 @@ class MainWearActivity : ComponentActivity() {
 
         setContent {
             WearFlipperTheme {
-                SetUpNavigation(futureEntries, composableFutureEntries, setupApi)
+                SetUpNavigation(
+                    futureEntries.toImmutableSet(),
+                    composableFutureEntries.toImmutableSet(),
+                    setupApi
+                )
             }
         }
     }
 
     @Composable
     private fun SetUpNavigation(
-        futureEntries: Set<AggregateFeatureEntry>,
-        composableFutureEntries: Set<ComposableFeatureEntry>,
+        futureEntries: ImmutableSet<AggregateFeatureEntry>,
+        composableFutureEntries: ImmutableSet<ComposableFeatureEntry>,
         setupApi: SetupApi
     ) {
         val navController = rememberSwipeDismissableNavController()
@@ -54,13 +59,8 @@ class MainWearActivity : ComponentActivity() {
                 }
             }
             composableFutureEntries.forEach { featureEntry ->
-                composable(featureEntry.featureRoute, featureEntry.arguments) { backStack ->
-                    with(featureEntry) {
-                        Composable(
-                            navController = navController,
-                            backStackEntry = backStack
-                        )
-                    }
+                with(featureEntry) {
+                    composable(navController)
                 }
             }
         }

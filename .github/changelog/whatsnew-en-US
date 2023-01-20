@@ -1,10 +1,10 @@
-Changes and new features:
-- 🚀 Add Android Widgets for key emulating
-- 🚀 Added NFC Tools section with a new feature Mfkey32
-- Added Hub tab to the Bottom Bar
-- Options section has been moved to the Device Screen
-- Screen Streaming: added screenshots and unlock button
+New features:
+- NFC-shadow file sharing
+- Updated sharing: added encrypted long links, file format sharing and error handling (for import and export)
+- Reworked all system dialogs to our custom UI
+- Added support for the NFC version 3 and checksum calculation
 
-Bug fixes:
-- Improved WearOS connection
-- Fixes with notifications and Flipper illustrations
+Fixes:
+- Fixed synchronization with keys in “Favorites”
+- Fixed crashes with favorites keys in “Deleted”
+- Fixed colors for scrim navigation bar, bottom sheet and NFC-card in Dump Editor

@@ -2,8 +2,6 @@ package com.flipperdevices.updater.card.composable
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,21 +21,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.updater.card.R
 import com.flipperdevices.updater.card.composable.dialogs.ComposableUpdateRequest
-import com.flipperdevices.updater.card.composable.pending.ComposableUpdateButtonContentChooseFile
 import com.flipperdevices.updater.card.model.UpdatePending
 import com.flipperdevices.updater.model.UpdateCardState
 
 @Composable
 fun ComposableUpdateButton(
     updateCardState: UpdateCardState,
-    inProgress: Boolean
+    inProgress: Boolean,
+    modifier: Modifier = Modifier
 ) {
-    var buttonModifier = Modifier.padding(all = 12.dp)
+    var buttonModifier = modifier.padding(all = 12.dp)
     if (inProgress) {
         ComposableUpdateButtonPlaceholder(buttonModifier)
         return
@@ -55,46 +53,46 @@ fun ComposableUpdateButton(
         is UpdateCardState.Error -> return
         UpdateCardState.InProgress -> return
         is UpdateCardState.NoUpdate -> ComposableUpdateButtonContent(
-            buttonModifier,
+            buttonModifier = buttonModifier,
             textId = R.string.updater_card_updater_button_no_updates,
             descriptionId = R.string.updater_card_updater_button_no_updates_desc,
             color = LocalPallet.current.text20
         )
         is UpdateCardState.UpdateFromFile -> ComposableUpdateButtonContentChooseFile(
-            buttonModifier = buttonModifier,
+            modifier = buttonModifier,
             updateCardState = updateCardState,
             onChoose = { pendingUpdateRequest = it }
         )
         is UpdateCardState.UpdateAvailable -> {
-            buttonModifier = buttonModifier.clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple(),
-                onClick = {
-                    pendingUpdateRequest = UpdatePending.Request(updateCardState.update)
-                }
-            )
+            buttonModifier = buttonModifier.clickableRipple {
+                pendingUpdateRequest = UpdatePending.Request(updateCardState.update)
+            }
 
             if (updateCardState.isOtherChannel) {
                 ComposableUpdateButtonContent(
-                    buttonModifier,
+                    buttonModifier = buttonModifier,
                     textId = R.string.updater_card_updater_button_install,
                     descriptionId = R.string.updater_card_updater_button_install_desc,
                     color = LocalPallet.current.accent
                 )
-            } else ComposableUpdateButtonContent(
-                buttonModifier,
-                textId = R.string.updater_card_updater_button_update,
-                descriptionId = R.string.updater_card_updater_button_update_desc,
-                color = LocalPallet.current.updateProgressGreen
-            )
+            } else {
+                ComposableUpdateButtonContent(
+                    buttonModifier = buttonModifier,
+                    textId = R.string.updater_card_updater_button_update,
+                    descriptionId = R.string.updater_card_updater_button_update_desc,
+                    color = LocalPallet.current.updateProgressGreen
+                )
+            }
         }
     }
 }
 
 @Composable
-private fun ComposableUpdateButtonPlaceholder(buttonModifier: Modifier) {
+private fun ComposableUpdateButtonPlaceholder(
+    modifier: Modifier = Modifier
+) {
     Box(
-        modifier = buttonModifier
+        modifier = modifier
             .height(46.dp)
             .fillMaxWidth()
             .placeholderConnecting(shape = 9)
@@ -103,12 +101,16 @@ private fun ComposableUpdateButtonPlaceholder(buttonModifier: Modifier) {
 
 @Composable
 fun ComposableUpdateButtonContent(
-    buttonModifier: Modifier,
     @StringRes textId: Int,
     @StringRes descriptionId: Int,
-    color: Color
+    color: Color,
+    modifier: Modifier = Modifier,
+    buttonModifier: Modifier = Modifier
 ) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Box(
             modifier = buttonModifier
                 .fillMaxWidth()

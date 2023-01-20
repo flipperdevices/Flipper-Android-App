@@ -9,9 +9,6 @@ import com.google.android.gms.wearable.ChannelClient
 import com.google.android.gms.wearable.ChannelClient.Channel
 import com.google.protobuf.GeneratedMessageLite
 import com.google.protobuf.InvalidProtocolBufferException
-import java.io.OutputStream
-import java.util.concurrent.LinkedTransferQueue
-import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -22,6 +19,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import java.io.OutputStream
+import java.util.concurrent.LinkedTransferQueue
+import java.util.concurrent.TimeUnit
 
 private const val TIMEOUT_MS = 100L
 
@@ -55,7 +55,6 @@ class WearableCommandOutputStream<T : GeneratedMessageLite<*, *>>(
         queue.add(command)
     }
 
-    @Suppress("TooGenericExceptionCaught")
     private suspend fun sendLoopJob(scope: CoroutineScope, outputStream: OutputStream) {
         while (scope.isActive) {
             try {

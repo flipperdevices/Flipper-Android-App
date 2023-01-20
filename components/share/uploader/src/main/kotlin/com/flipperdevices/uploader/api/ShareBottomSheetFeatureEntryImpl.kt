@@ -16,18 +16,16 @@ import com.flipperdevices.share.api.ShareBottomFeatureEntry
 import com.flipperdevices.uploader.compose.ComposableSheetContent
 import com.flipperdevices.uploader.viewmodel.UploaderViewModel
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import tangle.viewmodel.compose.tangleViewModel
+import javax.inject.Inject
 
-private const val SHEET_SCREEN = "sheet_screen"
 internal const val EXTRA_KEY_PATH = "flipper_key_path"
-private const val SHEET_ROUTE = "@$SHEET_SCREEN?keyPath={$EXTRA_KEY_PATH}"
 
 @ContributesBinding(AppGraph::class, ShareBottomFeatureEntry::class)
 class ShareBottomSheetFeatureEntryImpl @Inject constructor() : ShareBottomFeatureEntry {
-    override val featureRoute = SHEET_ROUTE
+    override val featureRoute = "@$ROUTE?keyPath={$EXTRA_KEY_PATH}"
 
     override val arguments: List<NamedNavArgument>
         get() = listOf(
@@ -39,7 +37,7 @@ class ShareBottomSheetFeatureEntryImpl @Inject constructor() : ShareBottomFeatur
 
     override fun shareDestination(
         path: FlipperKeyPath?
-    ) = "@$SHEET_SCREEN?keyPath=${Uri.encode(Json.encodeToString(path))}"
+    ) = "@$ROUTE?keyPath=${Uri.encode(Json.encodeToString(path))}"
 
     @Composable
     override fun NavGraphBuilder.Composable(

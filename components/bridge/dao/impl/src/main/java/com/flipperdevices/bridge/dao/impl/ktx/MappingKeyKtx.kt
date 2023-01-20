@@ -14,8 +14,11 @@ internal fun FlipperKey.toDatabaseKey(): Key {
         type = path.keyType,
         content = DatabaseKeyContent(keyContent),
         notes = notes,
-        synchronizedStatus = if (synchronized) SynchronizedStatus.SYNCHRONIZED
-        else SynchronizedStatus.NOT_SYNCHRONIZED,
+        synchronizedStatus = if (synchronized) {
+            SynchronizedStatus.SYNCHRONIZED
+        } else {
+            SynchronizedStatus.NOT_SYNCHRONIZED
+        },
         deleted = deleted
     )
 }

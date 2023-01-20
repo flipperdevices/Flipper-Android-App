@@ -1,17 +1,14 @@
 package com.flipperdevices.updater.screen.composable
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -20,23 +17,27 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.preference.pb.HardwareColor
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.updater.screen.R
 import com.flipperdevices.updater.screen.model.FailedReason
 import com.flipperdevices.updater.screen.model.UpdaterScreenState
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableUpdaterScreen(
     updaterScreenState: UpdaterScreenState,
     flipperColor: HardwareColor,
     onCancel: () -> Unit,
-    onRetry: () -> Unit
+    onRetry: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    Column {
+    Column(modifier) {
         Column(
-            Modifier.weight(weight = 1f).padding(horizontal = 14.dp),
+            Modifier
+                .weight(weight = 1f)
+                .padding(horizontal = 14.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             UpdaterScreenHeader(
@@ -54,13 +55,15 @@ fun ComposableUpdaterScreen(
 }
 
 @Composable
-private fun UpdaterScreenHeader(
+private fun ColumnScope.UpdaterScreenHeader(
     updaterScreenState: UpdaterScreenState,
     flipperColor: HardwareColor
 ) {
     val titleId = if (updaterScreenState is UpdaterScreenState.Failed) {
         R.string.update_screen_title_failed
-    } else R.string.update_screen_title
+    } else {
+        R.string.update_screen_title
+    }
     Text(
         modifier = Modifier.padding(vertical = 18.dp),
         text = stringResource(titleId),
@@ -77,7 +80,9 @@ private fun UpdaterScreenHeader(
                     DesignSystem.drawable.pic_flipper_update_int_failed
                 else -> DesignSystem.drawable.pic_flipper_update_failed
             }
-        } else DesignSystem.drawable.pic_flipper_update
+        } else {
+            DesignSystem.drawable.pic_flipper_update
+        }
         HardwareColor.BLACK -> if (updaterScreenState is UpdaterScreenState.Failed) {
             when (updaterScreenState.failedReason) {
                 FailedReason.FAILED_SUB_GHZ_PROVISIONING,
@@ -85,11 +90,15 @@ private fun UpdaterScreenHeader(
                     DesignSystem.drawable.pic_black_flipper_update_int_failed
                 else -> DesignSystem.drawable.pic_black_flipper_update_failed
             }
-        } else DesignSystem.drawable.pic_black_flipper_update
+        } else {
+            DesignSystem.drawable.pic_black_flipper_update
+        }
     }
 
     Image(
-        modifier = Modifier.fillMaxWidth().padding(bottom = 14.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 14.dp),
         painter = painterResource(imageId),
         contentDescription = stringResource(titleId),
         contentScale = ContentScale.FillWidth
@@ -115,11 +124,7 @@ private fun CancelButton(
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = rememberRipple(),
-                    onClick = onCancel
-                )
+                .clickableRipple(onClick = onCancel)
                 .padding(vertical = 8.dp),
             text = stringResource(R.string.update_screen_cancel),
             textAlign = TextAlign.Center,

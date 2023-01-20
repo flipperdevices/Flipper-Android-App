@@ -28,12 +28,12 @@ private const val BUTTON_HEIGHT_DP = 56
 @Composable
 @Suppress("LongParameterList")
 fun ComposableEmulateButton(
-    modifier: Modifier = Modifier,
-    buttonContentModifier: Modifier = Modifier,
-    emulateProgress: EmulateProgress? = null,
     @StringRes textId: Int,
     picture: Picture?,
     color: Color,
+    modifier: Modifier = Modifier,
+    buttonContentModifier: Modifier = Modifier,
+    emulateProgress: EmulateProgress? = null,
     progressColor: Color = Color.Transparent
 ) {
     ComposableEmulateProgress(
@@ -52,9 +52,9 @@ fun ComposableEmulateButton(
 
 @Composable
 private fun ComposableEmulateProgress(
-    modifier: Modifier,
     emulateProgress: EmulateProgress?,
     progressColor: Color,
+    modifier: Modifier = Modifier,
     content: @Composable (Modifier) -> Unit
 ) {
     Box(
@@ -76,10 +76,10 @@ private fun ComposableEmulateProgress(
 
 @Composable
 private fun ComposableEmulateContent(
-    modifier: Modifier,
     text: String,
     picture: Picture?,
-    color: Color
+    color: Color,
+    modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier

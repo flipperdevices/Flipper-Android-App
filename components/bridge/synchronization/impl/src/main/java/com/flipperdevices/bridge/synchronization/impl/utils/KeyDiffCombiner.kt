@@ -51,14 +51,20 @@ object KeyDiffCombiner {
         return when (first.action) {
             KeyAction.ADD -> when (second.action) {
                 KeyAction.ADD, KeyAction.MODIFIED ->
-                    if (first.newHash.hash == second.newHash.hash) null
-                    else throw UnresolvedConflictException(first.newHash.keyPath)
+                    if (first.newHash.hash == second.newHash.hash) {
+                        null
+                    } else {
+                        throw UnresolvedConflictException(first.newHash.keyPath)
+                    }
                 KeyAction.DELETED -> first // Impossible situation
             }
             KeyAction.MODIFIED -> when (second.action) {
                 KeyAction.ADD, KeyAction.MODIFIED ->
-                    if (first.newHash.hash == second.newHash.hash) null
-                    else throw UnresolvedConflictException(first.newHash.keyPath)
+                    if (first.newHash.hash == second.newHash.hash) {
+                        null
+                    } else {
+                        throw UnresolvedConflictException(first.newHash.keyPath)
+                    }
                 KeyAction.DELETED -> KeyDiff(first.newHash, KeyAction.ADD, first.source)
             }
             KeyAction.DELETED -> when (second.action) {

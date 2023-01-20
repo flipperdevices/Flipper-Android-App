@@ -7,9 +7,9 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.md5sumRequest
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
 class FileExistHelper @Inject constructor() {
     fun isFileExist(pathToFile: String, requestApi: FlipperRequestApi): Flow<Boolean> {

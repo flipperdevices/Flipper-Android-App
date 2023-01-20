@@ -1,18 +1,15 @@
 package com.flipperdevices.archive.shared.composable
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.Card
 import androidx.compose.material.Text
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,26 +19,23 @@ import com.flipperdevices.archive.shared.utils.ExtractKeyMetaInformation
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType.Companion.colorByFlipperKeyType
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.core.ui.ktx.ComposableKeyType
+import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
 fun ComposableKeyCard(
-    modifier: Modifier,
     synchronizationContent: (@Composable () -> Unit)?,
     flipperKeyParsed: FlipperKeyParsed,
+    onCardClicked: () -> Unit,
+    modifier: Modifier = Modifier,
     typeColor: Color = colorByFlipperKeyType(flipperKeyParsed.fileType),
-    onCardClicked: () -> Unit
 ) {
     Card(
         modifier = modifier
             .padding(horizontal = 14.dp)
             .fillMaxWidth()
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple(),
-                onClick = onCardClicked
-            )
+            .clickableRipple(onClick = onCardClicked)
     ) {
         Column(Modifier.padding(bottom = 8.dp)) {
             ComposableKeyCardContent(
@@ -54,7 +48,7 @@ fun ComposableKeyCard(
 }
 
 @Composable
-private fun ComposableKeyCardContent(
+private fun ColumnScope.ComposableKeyCardContent(
     flipperKeyParsed: FlipperKeyParsed,
     typeColor: Color,
     synchronizationContent: (@Composable () -> Unit)?

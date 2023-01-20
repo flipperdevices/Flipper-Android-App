@@ -30,11 +30,11 @@ private const val PERCENT_MIN = 0.0001f
 
 @Composable
 fun FlipperProgressIndicator(
-    modifier: Modifier = Modifier,
     accentColor: Color,
     secondColor: Color,
     @DrawableRes iconId: Int?,
-    percent: Float?
+    percent: Float?,
+    modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier
@@ -85,7 +85,9 @@ private fun BoxScope.ComposableProgressRow(percent: Float, accentColor: Color) {
     ) {
         val wrapPercent = if (percent <= 0f) {
             PERCENT_MIN
-        } else percent
+        } else {
+            percent
+        }
 
         val remainingWeight = 1.0f - wrapPercent
 
