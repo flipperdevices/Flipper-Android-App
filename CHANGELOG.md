@@ -9,10 +9,10 @@
 - [FIX] Clickable modifier ktx
 - [FIX] Refactor `share:receive` module
 - [FIX] Bump length for server-side share link
+- [FIX] Key encryption without paddings
 - [REFACTOR] Fix detekt compose issues
 - [REFACTOR] Format markdown changelog with clickable link and bold nickname
 - [REFACTOR] Enable detekt formatting with rules
-- [REFACTOR] Android lint
 - [REFACTOR] Fix gradle warnings
 
 # 1.4.0
