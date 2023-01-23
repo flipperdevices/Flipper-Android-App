@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -13,9 +14,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.ui.ktx.ComposableKeyType
-import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalTypography
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ComposableKeySmall(
     keyPath: FlipperKeyPath,
@@ -24,9 +25,8 @@ fun ComposableKeySmall(
     onOpenKey: () -> Unit
 ) {
     Card(
-        modifier = modifier
-            .padding(horizontal = 7.dp, vertical = 6.dp)
-            .clickableRipple(onClick = onOpenKey)
+        onClick = onOpenKey,
+        modifier = modifier.padding(horizontal = 7.dp, vertical = 6.dp)
     ) {
         Column {
             Row {
