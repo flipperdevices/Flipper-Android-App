@@ -10,6 +10,7 @@
 - [FIX] Refactor `share:receive` module
 - [FIX] Bump length for server-side share link
 - [FIX] Key encryption without paddings
+- [FIX] On `save dump as` save only editable key
 - [REFACTOR] Fix detekt compose issues
 - [REFACTOR] Format markdown changelog with clickable link and bold nickname
 - [REFACTOR] Enable detekt formatting with rules
