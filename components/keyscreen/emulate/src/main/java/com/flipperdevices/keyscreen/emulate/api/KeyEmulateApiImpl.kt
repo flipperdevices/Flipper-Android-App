@@ -17,20 +17,20 @@ class KeyEmulateApiImpl @Inject constructor() : KeyEmulateApi {
     override fun ComposableEmulateButton(modifier: Modifier, flipperKey: FlipperKey) {
         val fileType = flipperKey.flipperKeyType
 
-        if (fileType != null) {
-            when (fileType) {
-                FlipperKeyType.SUB_GHZ -> ComposableSubGhzSendButton(
-                    modifier = modifier,
-                    flipperKey = flipperKey
-                )
-                FlipperKeyType.I_BUTTON,
-                FlipperKeyType.RFID,
-                FlipperKeyType.NFC -> ComposableSimpleEmulateButton(
-                    modifier = modifier,
-                    flipperKey = flipperKey
-                )
-                FlipperKeyType.INFRARED -> {}
-            }
+        if (flipperKey.deleted) return
+
+        when (fileType) {
+            FlipperKeyType.SUB_GHZ -> ComposableSubGhzSendButton(
+                modifier = modifier,
+                flipperKey = flipperKey
+            )
+            FlipperKeyType.I_BUTTON,
+            FlipperKeyType.RFID,
+            FlipperKeyType.NFC -> ComposableSimpleEmulateButton(
+                modifier = modifier,
+                flipperKey = flipperKey
+            )
+            FlipperKeyType.INFRARED, null -> {}
         }
     }
 }
