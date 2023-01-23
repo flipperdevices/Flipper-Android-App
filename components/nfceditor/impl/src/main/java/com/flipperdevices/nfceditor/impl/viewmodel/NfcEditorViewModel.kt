@@ -19,13 +19,13 @@ import com.flipperdevices.nfceditor.impl.di.NfcEditorComponent
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCellLocation
 import com.flipperdevices.nfceditor.impl.model.NfcEditorState
 import com.github.terrakok.cicerone.Router
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 class NfcEditorViewModel(
     application: Application,
