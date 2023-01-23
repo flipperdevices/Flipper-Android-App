@@ -2,6 +2,7 @@ package com.flipperdevices.core.ui.ktx
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -47,13 +48,12 @@ fun OrangeAppBar(
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (onBack != null) {
-            Icon(
+            Image(
                 modifier = Modifier
-                    .padding(start = 14.dp, top = 8.dp, bottom = 8.dp)
-                    .clickableRipple(bounded = false, onClick = onBack)
-                    .size(size = 24.dp),
+                    .padding(top = 11.dp, bottom = 11.dp, start = 16.dp, end = 2.dp)
+                    .size(20.dp)
+                    .clickableRipple(onClick = onBack),
                 painter = painterResource(DesignSystem.drawable.ic_back),
-                tint = LocalPallet.current.onAppBar,
                 contentDescription = null
             )
         }
