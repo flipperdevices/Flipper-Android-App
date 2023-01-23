@@ -2,8 +2,8 @@ package com.flipperdevices.bridge.synchronization.impl.repository.flipper
 
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.manager.service.FlipperVersionApi
-import com.flipperdevices.bridge.api.model.SemVer
 import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
+import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.squareup.anvil.annotations.ContributesBinding

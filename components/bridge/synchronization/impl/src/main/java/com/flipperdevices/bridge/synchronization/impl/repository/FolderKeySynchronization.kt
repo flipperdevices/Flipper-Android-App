@@ -23,7 +23,7 @@ interface FolderKeySynchronization {
     suspend fun syncFolder(flipperKeyType: FlipperKeyType)
 }
 
-@ContributesBinding(TaskGraph::class, KeysSynchronization::class)
+@ContributesBinding(TaskGraph::class, FolderKeySynchronization::class)
 class FolderKeySynchronizationImpl @Inject constructor(
     private val androidHashRepository: AndroidHashRepository,
     private val flipperHashRepository: FlipperHashRepository,

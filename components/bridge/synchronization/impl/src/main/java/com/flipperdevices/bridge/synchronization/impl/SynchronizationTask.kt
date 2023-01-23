@@ -21,6 +21,7 @@ import com.flipperdevices.metric.api.events.complex.SynchronizationEnd
 import com.flipperdevices.nfc.mfkey32.api.MfKey32Api
 import com.flipperdevices.wearable.sync.handheld.api.SyncWearableApi
 import com.squareup.anvil.annotations.ContributesBinding
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -28,7 +29,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
 interface SynchronizationTask {
     fun start(
@@ -133,11 +133,10 @@ class SynchronizationTaskImpl(
                 serviceApi.flipperVersionApi
             )
 
-        val keysHashes = taskComponent.keysSynchronization.syncKeys(onStateUpdate)
+        taskComponent.keysSynchronization.syncKeys(onStateUpdate)
         taskComponent.favoriteSynchronization.syncFavorites()
 
         // End synchronization keys
-        taskComponent.manifestRepository.updateManifest(keysHashes)
         taskComponent.synchronizationProvider.markedAsFinish()
 
         try {

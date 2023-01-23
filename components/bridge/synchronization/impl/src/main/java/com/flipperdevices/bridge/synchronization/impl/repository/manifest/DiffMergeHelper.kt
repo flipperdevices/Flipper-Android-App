@@ -4,6 +4,7 @@ import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UpdateKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
+import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
 import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
 import com.flipperdevices.bridge.synchronization.impl.model.RestartSynchronizationException
 import com.flipperdevices.bridge.synchronization.impl.utils.KeyDiffCombiner
@@ -11,6 +12,7 @@ import com.flipperdevices.bridge.synchronization.impl.utils.UnresolvedConflictEx
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.warn
+import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
 interface DiffMergeHelper {
@@ -19,6 +21,7 @@ interface DiffMergeHelper {
     ): List<KeyDiff>
 }
 
+@ContributesBinding(TaskGraph::class, DiffMergeHelper::class)
 class DiffMergeHelperImpl @Inject constructor(
     private val simpleKeyApi: SimpleKeyApi,
     private val utilsKeyApi: UtilsKeyApi,
