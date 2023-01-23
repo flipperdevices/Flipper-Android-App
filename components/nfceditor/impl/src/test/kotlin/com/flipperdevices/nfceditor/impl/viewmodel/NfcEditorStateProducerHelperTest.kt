@@ -279,7 +279,7 @@ class NfcEditorStateProducerHelperTest {
         val key = getFlipperKey("mf_4k_full.nfc", "mf_4k_full.shd")
 
         val editorState = NfcEditorStateProducerHelper.mapParsedKeyToNfcEditorState(parsedKey)!!
-        val actualKey = NfcEditorStateProducerHelper.produceFlipperKeyFromState(key, editorState)
+        val actualKey = NfcEditorStateProducerHelper.produceShadowFlipperKeyFromState(key, editorState)
 
         val actualMainContent = actualKey.keyContent.openStream().use { it.readBytes() }
         Assert.assertArrayEquals(readTestAsset("mf_4k_full.nfc"), actualMainContent)
@@ -297,7 +297,7 @@ class NfcEditorStateProducerHelperTest {
         val editorState = NfcEditorStateProducerHelper.mapParsedKeyToNfcEditorState(
             parseNfcKey("mf_4k_full.nfc")
         )!!
-        val actualKey = NfcEditorStateProducerHelper.produceFlipperKeyFromState(key, editorState)
+        val actualKey = NfcEditorStateProducerHelper.produceShadowFlipperKeyFromState(key, editorState)
 
         val actualMainContent = actualKey.keyContent.openStream().use { it.readBytes() }
         Assert.assertArrayEquals(readTestAsset("mf_4k_full.nfc"), actualMainContent)
@@ -319,7 +319,7 @@ class NfcEditorStateProducerHelperTest {
             NfcEditorCellLocation(EditorField.DATA, 0, 1, 3),
             "AA"
         )
-        val actualKey = NfcEditorStateProducerHelper.produceFlipperKeyFromState(key, newEditorState)
+        val actualKey = NfcEditorStateProducerHelper.produceShadowFlipperKeyFromState(key, newEditorState)
 
         val actualMainContent = actualKey.keyContent.openStream().use { it.readBytes() }
         Assert.assertArrayEquals(readTestAsset("mf_4k_full.nfc"), actualMainContent)
@@ -348,7 +348,7 @@ class NfcEditorStateProducerHelperTest {
             NfcEditorCellLocation(EditorField.DATA, 0, 1, 3),
             "AA"
         )
-        val actualKey = NfcEditorStateProducerHelper.produceFlipperKeyFromState(key, newEditorState)
+        val actualKey = NfcEditorStateProducerHelper.produceShadowFlipperKeyFromState(key, newEditorState)
 
         val actualMainContent = actualKey.keyContent.openStream().use { it.readBytes() }
         Assert.assertArrayEquals(readTestAsset("mf_4k_full.nfc"), actualMainContent)
@@ -384,7 +384,7 @@ class NfcEditorStateProducerHelperTest {
             NfcEditorCellLocation(EditorField.DATA, 0, 1, 3),
             "AA"
         )
-        val actualKey = NfcEditorStateProducerHelper.produceFlipperKeyFromState(key, newEditorState)
+        val actualKey = NfcEditorStateProducerHelper.produceShadowFlipperKeyFromState(key, newEditorState)
 
         val actualMainContent = actualKey.keyContent.openStream().use { it.readBytes() }
         Assert.assertArrayEquals(readTestAsset("mf_4k_full.nfc"), actualMainContent)

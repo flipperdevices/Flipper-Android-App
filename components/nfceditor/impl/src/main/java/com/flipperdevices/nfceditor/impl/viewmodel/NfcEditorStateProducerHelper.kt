@@ -5,6 +5,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.api.model.SHADOW_FILE_EXTENSION
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.core.ui.hexkeyboard.PredefinedEnumMap
@@ -181,10 +182,10 @@ object NfcEditorStateProducerHelper {
         return processedList
     }
 
-    fun produceFlipperKeyFromState(
+    private fun newContent(
         oldKey: FlipperKey,
         nfcEditorState: NfcEditorState
-    ): FlipperKey {
+    ): FlipperKeyContent {
         val fff = FlipperFileFormat.fromFlipperContent(oldKey.keyContent)
         val pendingFields = nfcEditorState.sectors.map { it.lines }.flatten()
             .map { line -> line.index to line.cells.joinToString(" ") { it.content } }
@@ -201,6 +202,14 @@ object NfcEditorStateProducerHelper {
             orderedMap[KEY_SAK] = nfcEditorState.nfcEditorCardInfo.fields[CardFieldInfo.SAK]
                 .joinToString(" ") { it.content }
         }
+        return FlipperFileFormat(orderedMap.toList())
+    }
+
+    fun produceShadowFlipperKeyFromState(
+        oldKey: FlipperKey,
+        nfcEditorState: NfcEditorState
+    ): FlipperKey {
+        val newContent = newContent(oldKey, nfcEditorState)
 
         val shadowFile = oldKey.additionalFiles
             .find { it.path.fileType == FlipperFileType.SHADOW_NFC }
@@ -211,12 +220,31 @@ object NfcEditorStateProducerHelper {
                         oldKey.mainFile.path.folder,
                         "${oldKey.mainFile.path.nameWithoutExtension}.$SHADOW_FILE_EXTENSION"
                     ),
-                    content = FlipperFileFormat(orderedMap.toList())
+                    content = newContent
                 )
             ).filterNotNull()
 
         return oldKey.copy(
             additionalFiles = newAdditionalFiles
+        )
+    }
+
+    fun produceClearFlipperKeyFromState(
+        oldKey: FlipperKey,
+        nfcEditorState: NfcEditorState
+    ): FlipperKey {
+        val newContent = newContent(oldKey, nfcEditorState)
+        val newFlipperFile = FlipperFile(
+            path = oldKey.mainFile.path,
+            content = newContent
+        )
+
+        return FlipperKey(
+            mainFile = newFlipperFile,
+            additionalFiles = listOf(),
+            notes = oldKey.notes,
+            synchronized = false,
+            deleted = false
         )
     }
 }
