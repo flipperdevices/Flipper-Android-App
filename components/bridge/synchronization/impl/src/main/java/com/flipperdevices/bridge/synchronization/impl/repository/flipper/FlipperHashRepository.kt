@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.single
 
 interface FlipperHashRepository {
-    suspend fun getHashesForFolder(
+    suspend fun getHashesForType(
         flipperKeyType: FlipperKeyType
     ): List<KeyWithHash>
 }
@@ -33,10 +33,10 @@ class FlipperHashRepositoryImpl @Inject constructor(
 ) : FlipperHashRepository, LogTagProvider {
     override val TAG = "HashRepository"
 
-    override suspend fun getHashesForFolder(
+    override suspend fun getHashesForType(
         flipperKeyType: FlipperKeyType
     ): List<KeyWithHash> {
-        val flipperKeys = keysListingRepository.getKeysForFileType(flipperKeyType)
+        val flipperKeys = keysListingRepository.getKeysForType(flipperKeyType)
 
         return calculateHash(flipperKeys).trackProgressAndReturn {
             // Progress

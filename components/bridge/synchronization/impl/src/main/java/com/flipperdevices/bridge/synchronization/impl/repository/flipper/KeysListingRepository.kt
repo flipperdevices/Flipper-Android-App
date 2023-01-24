@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.toList
 const val SIZE_BYTES_LIMIT = 10 * 1024 * 1024 // 10MiB
 
 interface KeysListingRepository {
-    suspend fun getKeysForFileType(fileType: FlipperKeyType): List<FlipperFilePath>
+    suspend fun getKeysForType(keyType: FlipperKeyType): List<FlipperFilePath>
 }
 
 @ContributesBinding(TaskGraph::class, KeysListingRepository::class)
@@ -30,10 +30,10 @@ class KeysListingRepositoryImpl @Inject constructor(
 ) : KeysListingRepository, LogTagProvider {
     override val TAG = "KeysListingRepository"
 
-    override suspend fun getKeysForFileType(
-        fileType: FlipperKeyType
+    override suspend fun getKeysForType(
+        keyType: FlipperKeyType
     ): List<FlipperFilePath> {
-        val fileTypePath = File(Constants.KEYS_DEFAULT_STORAGE, fileType.flipperDir).path
+        val fileTypePath = File(Constants.KEYS_DEFAULT_STORAGE, keyType.flipperDir).path
         return requestApi.request(
             main {
                 storageListRequest = listRequest {
@@ -41,10 +41,10 @@ class KeysListingRepositoryImpl @Inject constructor(
                 }
             }.wrapToRequest(FlipperRequestPriority.BACKGROUND)
         ).toList().map { it.storageListResponse.fileList }.flatten()
-            .filter { isValidFile(it, fileType) }
+            .filter { isValidFile(it, keyType) }
             .map {
                 FlipperFilePath(
-                    folder = fileType.flipperDir,
+                    folder = keyType.flipperDir,
                     nameWithExtension = it.name
                 )
             }
