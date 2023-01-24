@@ -101,7 +101,7 @@ class NfcEditorViewModel(
         val localNfcEditorState = getNfcEditorState().value ?: return
 
         viewModelScope.launch {
-            val newFlipperKey = NfcEditorStateProducerHelper.produceFlipperKeyFromState(
+            val newFlipperKey = NfcEditorStateProducerHelper.produceShadowFlipperKeyFromState(
                 flipperKey,
                 localNfcEditorState
             )
@@ -115,15 +115,13 @@ class NfcEditorViewModel(
         val localNfcEditorState = getNfcEditorState().value ?: return
 
         viewModelScope.launch {
-            val newFlipperKey = NfcEditorStateProducerHelper.produceFlipperKeyFromState(
+            val newFlipperKey = NfcEditorStateProducerHelper.produceClearFlipperKeyFromState(
                 flipperKey,
                 localNfcEditorState
             )
             val notSavedKey = NotSavedFlipperKey(
                 mainFile = newFlipperKey.mainFile.toNotSavedFlipperFile(getApplication()),
-                additionalFiles = newFlipperKey.additionalFiles.map {
-                    it.toNotSavedFlipperFile(getApplication())
-                },
+                additionalFiles = listOf(),
                 notes = newFlipperKey.notes
             )
             val saveAsTitle = withContext(Dispatchers.Main) {
