@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,10 +19,10 @@ import com.flipperdevices.archive.shared.utils.ExtractKeyMetaInformation
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType.Companion.colorByFlipperKeyType
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.core.ui.ktx.ComposableKeyType
+import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ComposableKeyCard(
     synchronizationContent: (@Composable () -> Unit)?,
@@ -33,12 +32,11 @@ fun ComposableKeyCard(
     typeColor: Color = colorByFlipperKeyType(flipperKeyParsed.fileType),
 ) {
     Card(
-        onClick = onCardClicked,
         modifier = modifier
             .padding(horizontal = 14.dp)
             .fillMaxWidth()
     ) {
-        Column(Modifier.padding(bottom = 8.dp)) {
+        Column(Modifier.clickableRipple(onClick = onCardClicked).padding(bottom = 8.dp)) {
             ComposableKeyCardContent(
                 flipperKeyParsed,
                 typeColor,
