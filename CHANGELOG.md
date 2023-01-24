@@ -10,10 +10,12 @@
 - [FIX] Refactor `share:receive` module
 - [FIX] Bump length for server-side share link
 - [FIX] Key encryption without paddings
+- [FIX] Remove emulate button on deleted screen
 - [REFACTOR] Fix detekt compose issues
 - [REFACTOR] Format markdown changelog with clickable link and bold nickname
 - [REFACTOR] Enable detekt formatting with rules
 - [REFACTOR] Fix gradle warnings (Deprecated API, PredefinedEnumMap)
+- [REFACTOR] Replace some clickable to card function + reuse orange app bar
 
 # 1.4.0
 
