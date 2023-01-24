@@ -10,6 +10,7 @@ import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.impl.di.DaggerTaskSynchronizationComponent
 import com.flipperdevices.bridge.synchronization.impl.model.RestartSynchronizationException
+import com.flipperdevices.bridge.synchronization.impl.utils.ProgressWrapperTracker
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
@@ -62,6 +63,8 @@ class SynchronizationTaskBuilder @Inject constructor(
     }
 }
 
+private const val START_SYNCHRONIZATION_PERCENT = 0.01f
+
 class SynchronizationTaskImpl(
     serviceProvider: FlipperServiceProvider,
     private val simpleKeyApi: SimpleKeyApi,
@@ -85,7 +88,14 @@ class SynchronizationTaskImpl(
                 it is ConnectionState.Ready &&
                         it.supportedState == FlipperSupportedState.READY
             }.first()
-        startInternal(scope, serviceApi, stateListener)
+        startInternal(
+            scope,
+            serviceApi,
+            ProgressWrapperTracker(min = 0f, max = 1f, progressListener = {
+                stateListener(SynchronizationState.InProgress(it))
+            })
+        )
+        stateListener(SynchronizationState.Finished)
     }
 
     override suspend fun onStopAsync(stateListener: suspend (SynchronizationState) -> Unit) {
@@ -95,24 +105,31 @@ class SynchronizationTaskImpl(
     private suspend fun startInternal(
         scope: CoroutineScope,
         serviceApi: FlipperServiceApi,
-        onStateUpdate: suspend (SynchronizationState) -> Unit
+        progressTracker: ProgressWrapperTracker
     ) {
         info { "#startInternal" }
         val mfKey32check = scope.async { checkMfKey32Safe(serviceApi.requestApi) }
         try {
-            onStateUpdate(SynchronizationState.InProgress(0f))
+            progressTracker.onProgress(START_SYNCHRONIZATION_PERCENT)
             val startSynchronizationTime = System.currentTimeMillis()
-            launch(serviceApi, onStateUpdate)
+            launch(
+                serviceApi,
+                ProgressWrapperTracker(
+                    min = START_SYNCHRONIZATION_PERCENT,
+                    max = 1.0f,
+                    progressListener = progressTracker
+                )
+            )
             val endSynchronizationTime = System.currentTimeMillis() - startSynchronizationTime
             reportSynchronizationEnd(endSynchronizationTime)
-            onStateUpdate(SynchronizationState.Finished)
+            progressTracker.onProgress(1.0f)
             mfKey32check.await()
         } catch (
             @Suppress("SwallowedException")
             restartException: RestartSynchronizationException
         ) {
             info { "Synchronization request restart" }
-            startInternal(scope, serviceApi, onStateUpdate)
+            startInternal(scope, serviceApi, progressTracker)
         }
     }
 
@@ -124,7 +141,7 @@ class SynchronizationTaskImpl(
 
     private suspend fun launch(
         serviceApi: FlipperServiceApi,
-        onStateUpdate: suspend (SynchronizationState) -> Unit
+        progressTracker: ProgressWrapperTracker
     ) = withContext(Dispatchers.Default) {
         val taskComponent = DaggerTaskSynchronizationComponent.factory()
             .create(
@@ -133,17 +150,27 @@ class SynchronizationTaskImpl(
                 serviceApi.flipperVersionApi
             )
 
-        taskComponent.keysSynchronization.syncKeys(onStateUpdate)
-        taskComponent.favoriteSynchronization.syncFavorites()
-
-        // End synchronization keys
-        taskComponent.synchronizationProvider.markedAsFinish()
+        taskComponent.keysSynchronization.syncKeys(
+            ProgressWrapperTracker(
+                min = 0f,
+                max = 0.90f,
+                progressListener = progressTracker
+            )
+        )
+        taskComponent.favoriteSynchronization.syncFavorites(
+            ProgressWrapperTracker(
+                min = 0.90f,
+                max = 0.95f,
+                progressListener = progressTracker
+            )
+        )
 
         try {
             syncWearableApi.updateWearableIndex()
         } catch (throwable: Exception) {
             error(throwable) { "Error while try update wearable index" }
         }
+        progressTracker.onProgress(1.0f)
     }
 
     private suspend fun reportSynchronizationEnd(totalTime: Long) {

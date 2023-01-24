@@ -23,6 +23,7 @@ enum SelectedTheme {
 
 message Settings {
   reserved 7; // Already unused tags
+  reserved 12; // Already unused  first_synchronization_passed
   reserved 16; // Already unused last_provided_region
   reserved 18; // https://github.com/flipperdevices/Flipper-Android-App/pull/452
 
@@ -35,7 +36,6 @@ message Settings {
   bool shake_to_report = 9;
   SelectedChannel selected_channel = 10;
   string uuid = 11;
-  bool first_synchronization_passed = 12;
   SelectedTheme selected_theme = 13;
   bool expert_mode = 14;
   bool ignore_subghz_provisioning_on_zero_region = 15;

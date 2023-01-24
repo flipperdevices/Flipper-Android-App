@@ -1,20 +1,21 @@
 package com.flipperdevices.bridge.synchronization.impl.repository
 
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
-import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
 import com.flipperdevices.bridge.synchronization.impl.repository.flipper.TimestampSynchronizationChecker
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestTimestampRepository
+import com.flipperdevices.bridge.synchronization.impl.utils.ProgressWrapperTracker
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.core.log.info
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
 interface KeysSynchronization {
     suspend fun syncKeys(
-        onStateUpdate: suspend (SynchronizationState) -> Unit
+        progressTracker: ProgressWrapperTracker
     )
 }
+
+private const val PERCENT_FETCH_TIMESTAMP = 0.1f
 
 @ContributesBinding(TaskGraph::class, KeysSynchronization::class)
 class KeysSynchronizationImpl @Inject constructor(
@@ -25,19 +26,35 @@ class KeysSynchronizationImpl @Inject constructor(
     override val TAG = "KeysSynchronization"
 
     override suspend fun syncKeys(
-        onStateUpdate: suspend (SynchronizationState) -> Unit
+        progressTracker: ProgressWrapperTracker
     ) {
-        timestampSynchronizationChecker.fetchFoldersTimestamp(
-            FlipperKeyType.values()
-        ) { type, timestamp ->
-            if (timestamp == null ||
-                manifestTimestampRepository.isUpdateRequired(type, timestamp)
-            ) {
-                folderKeySynchronization.syncFolder(type)
-                if (timestamp != null) {
-                    manifestTimestampRepository.setTimestampForType(type, timestamp)
-                }
-            } else info { "Skip update $type" }
+        val typesUpdateTimestamps = timestampSynchronizationChecker.fetchFoldersTimestamp(
+            FlipperKeyType.values(),
+            ProgressWrapperTracker(
+                min = 0f,
+                max = PERCENT_FETCH_TIMESTAMP,
+                progressListener = progressTracker
+            )
+        )
+
+        val typesToUpdates = typesUpdateTimestamps.filter { (type, timestamp) ->
+            timestamp == null || manifestTimestampRepository.isUpdateRequired(type, timestamp)
+        }
+        val percentForOneType = (1.0f - PERCENT_FETCH_TIMESTAMP) / typesToUpdates.size
+        var currentMinPercent = PERCENT_FETCH_TIMESTAMP
+        typesToUpdates.forEach { (type, timestamp) ->
+            folderKeySynchronization.syncFolder(
+                type,
+                ProgressWrapperTracker(
+                    min = currentMinPercent,
+                    max = currentMinPercent + percentForOneType,
+                    progressListener = progressTracker
+                )
+            )
+            currentMinPercent += percentForOneType
+            if (timestamp != null) {
+                manifestTimestampRepository.setTimestampForType(type, timestamp)
+            }
         }
     }
 }

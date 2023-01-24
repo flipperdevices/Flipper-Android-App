@@ -13,7 +13,6 @@ import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
 import com.flipperdevices.bridge.synchronization.impl.repository.FavoriteSynchronization
 import com.flipperdevices.bridge.synchronization.impl.repository.KeysSynchronization
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestRepository
-import com.flipperdevices.bridge.synchronization.impl.utils.SynchronizationPercentProvider
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.SingleIn
 import com.flipperdevices.core.preference.pb.Settings
@@ -40,7 +39,6 @@ interface TaskSynchronizationComponent {
     val keysSynchronization: KeysSynchronization
     val favoriteSynchronization: FavoriteSynchronization
     val manifestRepository: ManifestRepository
-    val synchronizationProvider: SynchronizationPercentProvider
 
     @Component.Factory
     interface Factory {

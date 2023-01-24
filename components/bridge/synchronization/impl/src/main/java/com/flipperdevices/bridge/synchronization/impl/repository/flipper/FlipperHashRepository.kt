@@ -9,6 +9,7 @@ import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
 import com.flipperdevices.bridge.synchronization.impl.model.KeyWithHash
 import com.flipperdevices.bridge.synchronization.impl.model.ResultWithProgress
 import com.flipperdevices.bridge.synchronization.impl.model.trackProgressAndReturn
+import com.flipperdevices.bridge.synchronization.impl.utils.ProgressWrapperTracker
 import com.flipperdevices.core.ktx.jre.pmap
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
@@ -22,7 +23,8 @@ import kotlinx.coroutines.flow.single
 
 interface FlipperHashRepository {
     suspend fun getHashesForType(
-        flipperKeyType: FlipperKeyType
+        flipperKeyType: FlipperKeyType,
+        tracker: ProgressWrapperTracker
     ): List<KeyWithHash>
 }
 
@@ -34,12 +36,20 @@ class FlipperHashRepositoryImpl @Inject constructor(
     override val TAG = "HashRepository"
 
     override suspend fun getHashesForType(
-        flipperKeyType: FlipperKeyType
+        flipperKeyType: FlipperKeyType,
+        tracker: ProgressWrapperTracker
     ): List<KeyWithHash> {
         val flipperKeys = keysListingRepository.getKeysForType(flipperKeyType)
+        tracker.onProgress(current = 0.3f)
+        val hashProgressTracker = ProgressWrapperTracker(
+            min = 0.3f,
+            max = 1f,
+            progressListener = tracker
+        )
 
         return calculateHash(flipperKeys).trackProgressAndReturn {
             // Progress
+            hashProgressTracker.report(it.currentPosition, it.maxPosition)
         }
     }
 

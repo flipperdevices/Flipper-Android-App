@@ -8,13 +8,17 @@ import com.flipperdevices.bridge.synchronization.impl.repository.android.Android
 import com.flipperdevices.bridge.synchronization.impl.repository.android.SynchronizationStateRepository
 import com.flipperdevices.bridge.synchronization.impl.repository.flipper.FlipperHashRepository
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestRepository
+import com.flipperdevices.bridge.synchronization.impl.utils.ProgressWrapperTracker
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
 interface FolderKeySynchronization {
-    suspend fun syncFolder(flipperKeyType: FlipperKeyType)
+    suspend fun syncFolder(
+        flipperKeyType: FlipperKeyType,
+        tracker: ProgressWrapperTracker
+    )
 }
 
 @ContributesBinding(TaskGraph::class, FolderKeySynchronization::class)
@@ -28,12 +32,22 @@ class FolderKeySynchronizationImpl @Inject constructor(
 ) : FolderKeySynchronization, LogTagProvider {
     override val TAG = "FolderKeySynchronization"
 
-    override suspend fun syncFolder(flipperKeyType: FlipperKeyType) {
+    override suspend fun syncFolder(
+        flipperKeyType: FlipperKeyType,
+        tracker: ProgressWrapperTracker
+    ) {
         info { "Start synchronize $flipperKeyType" }
         val androidKeys = simpleKeyApi.getExistKeys(flipperKeyType)
         val androidHashes = androidHashRepository.getHashes(androidKeys)
         info { "Finish receive hashes from Android for $flipperKeyType: $androidHashes" }
-        val flipperHashes = flipperHashRepository.getHashesForType(flipperKeyType)
+        val flipperHashes = flipperHashRepository.getHashesForType(
+            flipperKeyType,
+            ProgressWrapperTracker(
+                min = 0f,
+                max = 0.5f,
+                progressListener = tracker
+            )
+        )
         info { "Finish receive hashes from Flipper for $flipperKeyType: $flipperHashes" }
 
         val diffWithAndroid = manifestRepository.compareFolderKeysWithManifest(
@@ -49,7 +63,15 @@ class FolderKeySynchronizationImpl @Inject constructor(
         )
         info { "Diff with manifest for flipper $flipperKeyType: $diffWithFlipper" }
 
-        keyDiffApplier.applyDiffs(diffWithFlipper, diffWithAndroid)
+        keyDiffApplier.applyDiffs(
+            diffWithFlipper = diffWithFlipper,
+            diffWithAndroid = diffWithAndroid,
+            tracker = ProgressWrapperTracker(
+                min = 0.5f,
+                max = 1f,
+                progressListener = tracker
+            )
+        )
 
         synchronizationRepository.markAsSynchronized(androidKeys)
     }
