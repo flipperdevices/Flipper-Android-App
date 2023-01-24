@@ -16,10 +16,10 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.md5sumRequest
 import com.squareup.anvil.annotations.ContributesBinding
-import java.util.concurrent.atomic.AtomicInteger
-import javax.inject.Inject
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.single
+import java.util.concurrent.atomic.AtomicInteger
+import javax.inject.Inject
 
 interface FlipperHashRepository {
     suspend fun getHashesForType(

@@ -24,7 +24,9 @@ class ProgressWrapperTrackerTest {
             percent = it
         })
         val tracker = ProgressWrapperTracker(
-            min = 0.25f, max = 0.75f, progressListener = originalTracker
+            min = 0.25f,
+            max = 0.75f,
+            progressListener = originalTracker
         )
 
         tracker.report(2, 10)

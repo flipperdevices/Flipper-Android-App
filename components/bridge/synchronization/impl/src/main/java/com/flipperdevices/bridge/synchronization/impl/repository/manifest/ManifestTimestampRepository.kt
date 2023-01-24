@@ -47,7 +47,7 @@ class ManifestTimestampRepositoryImpl @Inject constructor(
         val updateRequired = lastChangesTimestamp != currentLastUpdateMs
         info {
             "Update required for $keyType is $updateRequired." +
-                    " Current timestamp: $currentLastUpdateMs. Last saved is $lastChangesTimestamp"
+                " Current timestamp: $currentLastUpdateMs. Last saved is $lastChangesTimestamp"
         }
         return updateRequired
     }

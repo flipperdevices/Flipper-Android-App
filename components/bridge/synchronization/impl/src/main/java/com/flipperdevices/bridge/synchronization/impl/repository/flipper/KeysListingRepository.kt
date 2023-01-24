@@ -14,9 +14,9 @@ import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.Storage
 import com.flipperdevices.protobuf.storage.listRequest
 import com.squareup.anvil.annotations.ContributesBinding
+import kotlinx.coroutines.flow.toList
 import java.io.File
 import javax.inject.Inject
-import kotlinx.coroutines.flow.toList
 
 const val SIZE_BYTES_LIMIT = 10 * 1024 * 1024 // 10MiB
 
@@ -60,7 +60,7 @@ class KeysListingRepositoryImpl @Inject constructor(
         if (file.size > SIZE_BYTES_LIMIT) {
             debug {
                 "File ${file.name} skip, because current size limit is $SIZE_BYTES_LIMIT, " +
-                        "but file size is ${file.size}"
+                    "but file size is ${file.size}"
             }
             return false
         }
@@ -87,7 +87,7 @@ class KeysListingRepositoryImpl @Inject constructor(
         if (fileTypeByExtension != requestedType) {
             debug {
                 "File ${file.name} skip, because folder type ($requestedType) " +
-                        "and extension type ($fileTypeByExtension) is not equals"
+                    "and extension type ($fileTypeByExtension) is not equals"
             }
             return false
         }

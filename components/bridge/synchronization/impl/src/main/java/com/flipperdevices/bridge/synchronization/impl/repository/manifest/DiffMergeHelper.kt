@@ -17,7 +17,8 @@ import javax.inject.Inject
 
 interface DiffMergeHelper {
     suspend fun mergeDiffs(
-        first: List<KeyDiff>, second: List<KeyDiff>
+        first: List<KeyDiff>,
+        second: List<KeyDiff>
     ): List<KeyDiff>
 }
 
@@ -30,7 +31,8 @@ class DiffMergeHelperImpl @Inject constructor(
     override val TAG = "DiffMergeHelper"
 
     override suspend fun mergeDiffs(
-        first: List<KeyDiff>, second: List<KeyDiff>
+        first: List<KeyDiff>,
+        second: List<KeyDiff>
     ): List<KeyDiff> {
         return try {
             KeyDiffCombiner.combineKeyDiffs(
@@ -69,5 +71,4 @@ class DiffMergeHelperImpl @Inject constructor(
             )
         )
     }
-
 }

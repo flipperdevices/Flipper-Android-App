@@ -15,13 +15,13 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.timestampRequest
 import com.squareup.anvil.annotations.ContributesBinding
-import java.io.File
-import java.util.concurrent.atomic.AtomicInteger
-import javax.inject.Inject
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.withTimeout
+import java.io.File
+import java.util.concurrent.atomic.AtomicInteger
+import javax.inject.Inject
 
 interface TimestampSynchronizationChecker {
     suspend fun fetchFoldersTimestamp(

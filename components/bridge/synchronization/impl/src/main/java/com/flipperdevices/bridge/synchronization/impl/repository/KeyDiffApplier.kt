@@ -53,7 +53,7 @@ class KeyDiffApplierImpl @Inject constructor(
 
         info {
             "[Keys] Android, successful applied " +
-                    "${appliedKeysToAndroid.size} from ${diffForAndroid.size} changes"
+                "${appliedKeysToAndroid.size} from ${diffForAndroid.size} changes"
         }
 
         // Apply changes for Flipper
@@ -68,8 +68,7 @@ class KeyDiffApplierImpl @Inject constructor(
 
         info {
             "[Keys] Flipper, successful applied" +
-                    " ${appliedKeysToFlipper.size} from ${diffForFlipper.size} changes"
+                " ${appliedKeysToFlipper.size} from ${diffForFlipper.size} changes"
         }
     }
-
 }

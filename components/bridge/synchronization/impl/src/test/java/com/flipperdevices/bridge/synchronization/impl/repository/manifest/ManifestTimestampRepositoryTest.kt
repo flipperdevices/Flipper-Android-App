@@ -25,7 +25,6 @@ class ManifestTimestampRepositoryTest {
         underTest = ManifestTimestampRepositoryImpl(manifestStorage)
     }
 
-
     @Test
     fun `update required when timestamp is larger`() = runTest {
         val testTimestampOlder = 1600000000000L

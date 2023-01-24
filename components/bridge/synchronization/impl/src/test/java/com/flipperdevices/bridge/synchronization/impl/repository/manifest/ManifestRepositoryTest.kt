@@ -69,7 +69,6 @@ class ManifestRepositoryTest {
             ),
             result
         )
-
     }
 
     @Test
@@ -135,7 +134,9 @@ class ManifestRepositoryTest {
 
         coEvery { manifestStorage.load() } returns ManifestFile(keys = existed)
         val actual = underTest.compareFolderKeysWithManifest(
-            FlipperKeyType.NFC, newList, DiffSource.ANDROID
+            FlipperKeyType.NFC,
+            newList,
+            DiffSource.ANDROID
         )
         Assert.assertEquals(
             listOf(
@@ -161,7 +162,9 @@ class ManifestRepositoryTest {
 
         coEvery { manifestStorage.load() } returns ManifestFile(keys = existed)
         val actual = underTest.compareFolderKeysWithManifest(
-            FlipperKeyType.NFC, newList, DiffSource.ANDROID
+            FlipperKeyType.NFC,
+            newList,
+            DiffSource.ANDROID
         )
         Assert.assertEquals(
             listOf(
@@ -188,7 +191,9 @@ class ManifestRepositoryTest {
 
         coEvery { manifestStorage.load() } returns ManifestFile(keys = existed)
         val actual = underTest.compareFolderKeysWithManifest(
-            FlipperKeyType.NFC, newList, DiffSource.ANDROID
+            FlipperKeyType.NFC,
+            newList,
+            DiffSource.ANDROID
         )
         Assert.assertEquals(
             listOf(
@@ -215,7 +220,9 @@ class ManifestRepositoryTest {
 
         coEvery { manifestStorage.load() } returns ManifestFile(keys = existed)
         val actual = underTest.compareFolderKeysWithManifest(
-            FlipperKeyType.NFC, newList, DiffSource.ANDROID
+            FlipperKeyType.NFC,
+            newList,
+            DiffSource.ANDROID
         )
         Assert.assertEquals(
             listOf(
@@ -252,7 +259,9 @@ class ManifestRepositoryTest {
 
         coEvery { manifestStorage.load() } returns ManifestFile(keys = existed)
         val actual = underTest.compareFolderKeysWithManifest(
-            FlipperKeyType.NFC, newList, DiffSource.ANDROID
+            FlipperKeyType.NFC,
+            newList,
+            DiffSource.ANDROID
         )
         Assert.assertEquals(
             listOf(
