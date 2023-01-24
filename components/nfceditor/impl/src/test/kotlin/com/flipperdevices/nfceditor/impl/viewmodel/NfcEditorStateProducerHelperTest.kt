@@ -291,6 +291,19 @@ class NfcEditorStateProducerHelperTest {
     }
 
     @Test
+    fun `parsed and save dump file equal`() {
+        val parsedKey = parseNfcKey("mf_4k_full.nfc", "mf_4k_full.shd")
+        val key = getFlipperKey("mf_4k_full.nfc", "mf_4k_full.shd")
+
+        val editorState = NfcEditorStateProducerHelper.mapParsedKeyToNfcEditorState(parsedKey)!!
+        val actualKey = NfcEditorStateProducerHelper.produceClearFlipperKeyFromState(key, editorState)
+
+        val actualMainContent = actualKey.keyContent.openStream().use { it.readBytes() }
+        Assert.assertArrayEquals(readTestAsset("mf_4k_full.shd"), actualMainContent)
+        Assert.assertEquals(0, actualKey.additionalFiles.size)
+    }
+
+    @Test
     fun `always save shadow file - not edited`() {
         val key = getFlipperKey("mf_4k_full.nfc")
 
@@ -306,6 +319,20 @@ class NfcEditorStateProducerHelperTest {
         val actualShadowContent =
             actualKey.additionalFiles.first().content.openStream().use { it.readBytes() }
         Assert.assertArrayEquals(readTestAsset("mf_4k_full.nfc"), actualShadowContent)
+    }
+
+    @Test
+    fun `always save original file by dump - not edited`() {
+        val key = getFlipperKey("mf_4k_full.nfc")
+
+        val editorState = NfcEditorStateProducerHelper.mapParsedKeyToNfcEditorState(
+            parseNfcKey("mf_4k_full.nfc")
+        )!!
+        val actualKey = NfcEditorStateProducerHelper.produceClearFlipperKeyFromState(key, editorState)
+
+        val actualMainContent = actualKey.keyContent.openStream().use { it.readBytes() }
+        Assert.assertArrayEquals(readTestAsset("mf_4k_full.nfc"), actualMainContent)
+        Assert.assertEquals(0, actualKey.additionalFiles.size)
     }
 
     @Test
@@ -335,6 +362,24 @@ class NfcEditorStateProducerHelperTest {
             readTestAsset("mf_4k_full_edited.shd"),
             actualShadowContent
         )
+    }
+
+    @Test
+    fun `always save original file by dump - edited`() {
+        val key = getFlipperKey("mf_4k_full.nfc")
+
+        val editorState = NfcEditorStateProducerHelper.mapParsedKeyToNfcEditorState(
+            parseNfcKey("mf_4k_full.nfc")
+        )!!
+        val newEditorState = editorState.copyWithChangedContent(
+            NfcEditorCellLocation(EditorField.DATA, 0, 1, 3),
+            "AA"
+        )
+        val actualKey = NfcEditorStateProducerHelper.produceClearFlipperKeyFromState(key, newEditorState)
+
+        val actualMainContent = actualKey.keyContent.openStream().use { it.readBytes() }
+        Assert.assertArrayEquals(readTestAsset("mf_4k_full.nfc"), actualMainContent)
+        Assert.assertEquals(0, actualKey.additionalFiles.size)
     }
 
     @Test
@@ -402,6 +447,32 @@ class NfcEditorStateProducerHelperTest {
             readTestAsset("mf_4k_full_edited.shd"),
             actualShadowContent
         )
+    }
+
+    @Test
+    fun `always save origianl file by dump - many files`() {
+        var key = getFlipperKey("mf_4k_full.nfc", "mf_4k_full.nfc")
+        key = key.copy(
+            additionalFiles = key.additionalFiles.plus(
+                FlipperFile(
+                    FlipperFilePath("test", "some_trash.txt"),
+                    content = FlipperKeyContent.RawData(byteArrayOf())
+                )
+            )
+        )
+
+        val editorState = NfcEditorStateProducerHelper.mapParsedKeyToNfcEditorState(
+            parseNfcKey("mf_4k_full.nfc", "mf_4k_full.nfc")
+        )!!
+        val newEditorState = editorState.copyWithChangedContent(
+            NfcEditorCellLocation(EditorField.DATA, 0, 1, 3),
+            "AA"
+        )
+        val actualKey = NfcEditorStateProducerHelper.produceClearFlipperKeyFromState(key, newEditorState)
+
+        val actualMainContent = actualKey.keyContent.openStream().use { it.readBytes() }
+        Assert.assertArrayEquals(readTestAsset("mf_4k_full_edited.shd"), actualMainContent)
+        Assert.assertEquals(0, actualKey.additionalFiles.size)
     }
 }
 
