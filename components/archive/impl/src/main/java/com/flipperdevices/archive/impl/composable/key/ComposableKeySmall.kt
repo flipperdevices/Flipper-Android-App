@@ -24,11 +24,9 @@ fun ComposableKeySmall(
     onOpenKey: () -> Unit
 ) {
     Card(
-        modifier = modifier
-            .padding(horizontal = 7.dp, vertical = 6.dp)
-            .clickableRipple(onClick = onOpenKey)
+        modifier = modifier.padding(horizontal = 7.dp, vertical = 6.dp)
     ) {
-        Column {
+        Column(modifier = Modifier.clickableRipple(onClick = onOpenKey)) {
             Row {
                 ComposableKeyType(keyPath.path.keyType)
                 Box(
