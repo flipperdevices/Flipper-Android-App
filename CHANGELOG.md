@@ -3,6 +3,7 @@
 # 1.4.1 - In Progress
 
 - [Feature] Flipper app loader errors
+- [Feature] Skip synchronization if file system on flipper not changed
 - [GitHub] Update github repo picture
 - [CI] Migrate to Detekt
 - [CI] Android lint in CI

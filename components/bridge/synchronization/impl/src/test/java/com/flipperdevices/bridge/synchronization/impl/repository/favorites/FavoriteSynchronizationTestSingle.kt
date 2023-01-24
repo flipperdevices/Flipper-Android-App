@@ -14,6 +14,7 @@ import com.flipperdevices.bridge.synchronization.impl.repository.manifest.Manife
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestRepositoryImpl
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestStorage
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestStorageImpl
+import com.flipperdevices.bridge.synchronization.impl.utils.progressWrapperTrackerStub
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -108,7 +109,7 @@ class FavoriteSynchronizationTestSingle {
             )
         }
 
-        underTest.syncFavorites()
+        underTest.syncFavorites(progressWrapperTrackerStub())
 
         coVerify(exactly = 0) {
             favoritesRepository.applyDiff(
