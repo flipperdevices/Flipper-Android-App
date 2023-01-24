@@ -373,12 +373,12 @@ class NfcEditorStateProducerHelperTest {
         )!!
         val newEditorState = editorState.copyWithChangedContent(
             NfcEditorCellLocation(EditorField.DATA, 0, 1, 3),
-            "AA"
+            "CC"
         )
         val actualKey = NfcEditorStateProducerHelper.produceClearFlipperKeyFromState(key, newEditorState)
 
         val actualMainContent = actualKey.keyContent.openStream().use { it.readBytes() }
-        Assert.assertArrayEquals(readTestAsset("mf_4k_full.nfc"), actualMainContent)
+        Assert.assertArrayEquals(readTestAsset("mf_4k_full_edited.nfc"), actualMainContent)
         Assert.assertEquals(0, actualKey.additionalFiles.size)
     }
 
@@ -466,12 +466,12 @@ class NfcEditorStateProducerHelperTest {
         )!!
         val newEditorState = editorState.copyWithChangedContent(
             NfcEditorCellLocation(EditorField.DATA, 0, 1, 3),
-            "AA"
+            "CC"
         )
         val actualKey = NfcEditorStateProducerHelper.produceClearFlipperKeyFromState(key, newEditorState)
 
         val actualMainContent = actualKey.keyContent.openStream().use { it.readBytes() }
-        Assert.assertArrayEquals(readTestAsset("mf_4k_full_edited.shd"), actualMainContent)
+        Assert.assertArrayEquals(readTestAsset("mf_4k_full_edited.nfc"), actualMainContent)
         Assert.assertEquals(0, actualKey.additionalFiles.size)
     }
 }
