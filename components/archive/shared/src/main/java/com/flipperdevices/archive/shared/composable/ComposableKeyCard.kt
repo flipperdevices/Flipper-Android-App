@@ -35,9 +35,8 @@ fun ComposableKeyCard(
         modifier = modifier
             .padding(horizontal = 14.dp)
             .fillMaxWidth()
-            .clickableRipple(onClick = onCardClicked)
     ) {
-        Column(Modifier.padding(bottom = 8.dp)) {
+        Column(Modifier.clickableRipple(onClick = onCardClicked).padding(bottom = 8.dp)) {
             ComposableKeyCardContent(
                 flipperKeyParsed,
                 typeColor,
