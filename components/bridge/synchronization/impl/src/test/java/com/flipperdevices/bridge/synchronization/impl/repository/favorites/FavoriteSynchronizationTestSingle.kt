@@ -10,10 +10,10 @@ import com.flipperdevices.bridge.synchronization.impl.executor.FlipperKeyStorage
 import com.flipperdevices.bridge.synchronization.impl.repository.FavoriteSynchronization
 import com.flipperdevices.bridge.synchronization.impl.repository.FavoriteSynchronizationImpl
 import com.flipperdevices.bridge.synchronization.impl.repository.flipper.FlipperFavoritesRepository
-import com.flipperdevices.bridge.synchronization.impl.repository.storage.ManifestRepository
-import com.flipperdevices.bridge.synchronization.impl.repository.storage.ManifestRepositoryImpl
-import com.flipperdevices.bridge.synchronization.impl.repository.storage.ManifestStorage
-import com.flipperdevices.bridge.synchronization.impl.repository.storage.ManifestStorageImpl
+import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestRepository
+import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestRepositoryImpl
+import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestStorage
+import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestStorageImpl
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -76,10 +76,12 @@ class FavoriteSynchronizationTestSingle {
             FlipperFilePath("test", "notExistedKey3.nfc"),
             FlipperFilePath("test", "test5.nfc")
         )
-        manifestStorage.update(
-            favorites = manifestFavorites,
-            favoritesOnFlipper = manifestFlipper
-        )
+        manifestStorage.update {
+            it.copy(
+                favorites = manifestFavorites,
+                favoritesFromFlipper = manifestFlipper
+            )
+        }
 
         val favoritesFromFlipper = listOf(
             FlipperFilePath("test", "test.ibtn"),

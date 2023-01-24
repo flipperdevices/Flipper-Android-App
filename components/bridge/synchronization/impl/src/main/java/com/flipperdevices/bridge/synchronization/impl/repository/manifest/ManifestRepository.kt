@@ -15,7 +15,6 @@ interface ManifestRepository {
         keys: List<KeyWithHash>,
     )
 
-
     suspend fun updateManifest(
         favorites: List<FlipperFilePath>,
         favoritesOnFlipper: List<FlipperFilePath>
