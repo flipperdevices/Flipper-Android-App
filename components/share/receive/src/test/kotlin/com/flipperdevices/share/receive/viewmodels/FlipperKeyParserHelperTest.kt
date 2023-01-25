@@ -2,6 +2,7 @@ package com.flipperdevices.share.receive.viewmodels
 
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyCrypto
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkContent
@@ -256,10 +257,9 @@ class FlipperKeyParserHelperTest {
         coEvery {
             cryptoStorageApi.download(
                 id = cryptoKey.fileId,
-                key = cryptoKey.cryptoKey,
-                name = "test.test"
+                key = cryptoKey.cryptoKey
             )
-        } returns Result.success(rawData)
+        } returns Result.success(FlipperKeyContent.RawData(rawData))
 
         // Actions
         val resultParse = flipperKeyParserHelper.toFlipperKey(deeplink)
@@ -301,8 +301,7 @@ class FlipperKeyParserHelperTest {
         coEvery {
             cryptoStorageApi.download(
                 id = cryptoKey.fileId,
-                key = cryptoKey.cryptoKey,
-                name = "test.test"
+                key = cryptoKey.cryptoKey
             )
         } returns Result.failure(Exception())
 
