@@ -8,12 +8,16 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.dao.impl.model.Key
 import kotlinx.coroutines.flow.Flow
 
+@Suppress("TooManyFunctions")
 interface SimpleKeyDao {
     @Query("SELECT * FROM keys WHERE deleted = 0")
     suspend fun getAll(): List<Key>
 
     @Query("SELECT * FROM keys WHERE uid = :id")
     suspend fun getById(id: Int): Key?
+
+    @Query("SELECT * FROM keys WHERE type = :fileType AND deleted = 0")
+    suspend fun getByType(fileType: FlipperKeyType): List<Key>
 
     @Query("SELECT * FROM keys")
     suspend fun getAllIncludeDeleted(): List<Key>

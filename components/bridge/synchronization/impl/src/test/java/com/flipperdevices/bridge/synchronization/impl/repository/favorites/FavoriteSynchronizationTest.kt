@@ -13,10 +13,11 @@ import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
 import com.flipperdevices.bridge.synchronization.impl.repository.FavoriteSynchronization
 import com.flipperdevices.bridge.synchronization.impl.repository.FavoriteSynchronizationImpl
 import com.flipperdevices.bridge.synchronization.impl.repository.flipper.FlipperFavoritesRepository
-import com.flipperdevices.bridge.synchronization.impl.repository.storage.ManifestRepository
-import com.flipperdevices.bridge.synchronization.impl.repository.storage.ManifestRepositoryImpl
-import com.flipperdevices.bridge.synchronization.impl.repository.storage.ManifestStorage
-import com.flipperdevices.bridge.synchronization.impl.repository.storage.ManifestStorageImpl
+import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestRepository
+import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestRepositoryImpl
+import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestStorage
+import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestStorageImpl
+import com.flipperdevices.bridge.synchronization.impl.utils.progressWrapperTrackerStub
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -87,10 +88,12 @@ class FavoriteSynchronizationTest(
 
     @Test
     fun `universal manifest test`() = runTest {
-        manifestStorage.update(
-            favorites = param.initialFavoriteManifest,
-            favoritesOnFlipper = param.initialFlipperFavoriteManifest
-        )
+        manifestStorage.update {
+            it.copy(
+                favorites = param.initialFavoriteManifest,
+                favoritesFromFlipper = param.initialFlipperFavoriteManifest
+            )
+        }
 
         val favoritesFromFlipper = param.flipperFavorites
         val favoritesFromAndroid = param.androidFavorites
@@ -103,7 +106,7 @@ class FavoriteSynchronizationTest(
             )
         }
 
-        underTest.syncFavorites()
+        underTest.syncFavorites(progressWrapperTrackerStub())
 
         coVerify {
             favoritesRepository.applyDiff(

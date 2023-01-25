@@ -9,12 +9,12 @@ import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
 interface AndroidHashRepository {
-    suspend fun calculateHash(keys: List<FlipperKey>): List<KeyWithHash>
+    suspend fun getHashes(keys: List<FlipperKey>): List<KeyWithHash>
 }
 
 @ContributesBinding(TaskGraph::class, AndroidHashRepository::class)
 class AndroidHashRepositoryImpl @Inject constructor() : AndroidHashRepository {
-    override suspend fun calculateHash(keys: List<FlipperKey>): List<KeyWithHash> {
+    override suspend fun getHashes(keys: List<FlipperKey>): List<KeyWithHash> {
         return keys.pmap { flipperKey ->
             flipperKey.additionalFiles.plus(flipperKey.mainFile).map {
                 KeyWithHash(

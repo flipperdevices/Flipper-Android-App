@@ -11,5 +11,7 @@ data class ManifestFile(
     @SerialName("favorites")
     val favorites: List<FlipperFilePath> = emptyList(),
     @SerialName("favorites_from_flipper")
-    val favoritesFromFlipper: List<FlipperFilePath> = emptyList()
+    val favoritesFromFlipper: List<FlipperFilePath> = emptyList(),
+    @SerialName("folder_changes")
+    val folderChanges: FlipperFolderChanges = FlipperFolderChanges()
 )

@@ -9,15 +9,16 @@ import com.flipperdevices.bridge.synchronization.impl.model.DiffSource
 import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
 import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
 import com.flipperdevices.bridge.synchronization.impl.repository.flipper.FlipperFavoritesRepository
-import com.flipperdevices.bridge.synchronization.impl.repository.storage.ManifestRepository
+import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestRepository
 import com.flipperdevices.bridge.synchronization.impl.utils.KeyDiffCombiner
+import com.flipperdevices.bridge.synchronization.impl.utils.ProgressWrapperTracker
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
 interface FavoriteSynchronization {
-    suspend fun syncFavorites()
+    suspend fun syncFavorites(progressTracker: ProgressWrapperTracker)
 }
 
 @ContributesBinding(TaskGraph::class, FavoriteSynchronization::class)
@@ -29,8 +30,9 @@ class FavoriteSynchronizationImpl @Inject constructor(
 ) : FavoriteSynchronization, LogTagProvider {
     override val TAG = "FavoriteSynchronization"
 
-    override suspend fun syncFavorites() {
+    override suspend fun syncFavorites(progressTracker: ProgressWrapperTracker) {
         val favoritesFromFlipper = favoritesRepository.getFavorites(flipperStorage)
+        progressTracker.onProgress(current = 0.5f)
         val favoritesFromAndroid = favoriteApi.getFavorites().map { it.path }
         val diffWithManifestAndFlipper = manifestRepository
             .compareFlipperFavoritesWithManifest(favoritesFromFlipper)
@@ -73,6 +75,7 @@ class FavoriteSynchronizationImpl @Inject constructor(
             favorites = favoritesOnAndroid.map { it.path },
             favoritesOnFlipper = newFavoritesOnFlipper
         )
+        progressTracker.onProgress(current = 1f)
     }
 
     private suspend fun mergedWithManifestList(combinedDiff: List<KeyDiff>): List<FlipperFilePath> {

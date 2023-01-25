@@ -1,6 +1,7 @@
-package com.flipperdevices.bridge.synchronization.impl.repository.storage
+package com.flipperdevices.bridge.synchronization.impl.repository.manifest
 
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
 import com.flipperdevices.bridge.synchronization.impl.model.DiffSource
 import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
@@ -10,13 +11,17 @@ import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
 interface ManifestRepository {
-    suspend fun updateManifest(keys: List<KeyWithHash>)
+    suspend fun updateManifest(
+        keys: List<KeyWithHash>,
+    )
+
     suspend fun updateManifest(
         favorites: List<FlipperFilePath>,
         favoritesOnFlipper: List<FlipperFilePath>
     )
 
-    suspend fun compareKeysWithManifest(
+    suspend fun compareFolderKeysWithManifest(
+        flipperKeyType: FlipperKeyType,
         keys: List<KeyWithHash>,
         diffSource: DiffSource
     ): List<KeyDiff>
@@ -36,27 +41,35 @@ interface ManifestRepository {
 class ManifestRepositoryImpl @Inject constructor(
     private val manifestStorage: ManifestStorage
 ) : ManifestRepository {
-    override suspend fun updateManifest(keys: List<KeyWithHash>) {
-        manifestStorage.update(keys = keys)
+    override suspend fun updateManifest(
+        keys: List<KeyWithHash>
+    ) {
+        manifestStorage.update { it.copy(keys = keys) }
     }
 
     override suspend fun updateManifest(
         favorites: List<FlipperFilePath>,
         favoritesOnFlipper: List<FlipperFilePath>
     ) {
-        manifestStorage.update(
-            favorites = favorites,
-            favoritesOnFlipper = favoritesOnFlipper
-        )
+        manifestStorage.update {
+            it.copy(
+                favorites = favorites,
+                favoritesFromFlipper = favoritesOnFlipper
+            )
+        }
     }
 
-    override suspend fun compareKeysWithManifest(
+    override suspend fun compareFolderKeysWithManifest(
+        flipperKeyType: FlipperKeyType,
         keys: List<KeyWithHash>,
         diffSource: DiffSource
     ): List<KeyDiff> {
         val manifestFile = manifestStorage.load()
             ?: return keys.map { KeyDiff(it, KeyAction.ADD, diffSource) }
-        return compare(manifestFile.keys, keys, diffSource)
+        val keysFromManifest = manifestFile.keys.filter {
+            it.keyPath.keyType == flipperKeyType
+        }
+        return compare(keysFromManifest, keys, diffSource)
     }
 
     override suspend fun compareFavoritesWithManifest(
@@ -74,7 +87,11 @@ class ManifestRepositoryImpl @Inject constructor(
         val manifestFavoritesWithEmptyHash = manifestFile.favorites.map { KeyWithHash(it, "") }
         val favoritesWithEmptyHash = favorites.map { KeyWithHash(it, "") }
 
-        return compare(manifestFavoritesWithEmptyHash, favoritesWithEmptyHash, DiffSource.ANDROID)
+        return compare(
+            manifestFavoritesWithEmptyHash,
+            favoritesWithEmptyHash,
+            DiffSource.ANDROID
+        )
     }
 
     override suspend fun compareFlipperFavoritesWithManifest(
@@ -93,7 +110,11 @@ class ManifestRepositoryImpl @Inject constructor(
             manifestFile.favoritesFromFlipper.map { KeyWithHash(it, "") }
         val favoritesWithEmptyHash = favoritesOnFlipper.map { KeyWithHash(it, "") }
 
-        return compare(manifestFavoritesWithEmptyHash, favoritesWithEmptyHash, DiffSource.FLIPPER)
+        return compare(
+            manifestFavoritesWithEmptyHash,
+            favoritesWithEmptyHash,
+            DiffSource.FLIPPER
+        )
     }
 
     override suspend fun getFavorites() = manifestStorage.load()?.favorites

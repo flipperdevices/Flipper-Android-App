@@ -1,4 +1,4 @@
-package com.flipperdevices.bridge.synchronization.impl.repository.storage
+package com.flipperdevices.bridge.synchronization.impl.repository.manifest
 
 import android.content.Context
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -43,14 +43,16 @@ class ManifestStorageTest {
 
     @Test
     fun `empty manifest write`() = runTest {
-        underTest.update()
+        underTest.update { it }
         val actual = underTest.load()
         assertNotNull(actual)
     }
 
     @Test
     fun `keys manifest write`() = runTest {
-        underTest.update(keys = listOf(KeyWithHash(FlipperFilePath.DUMMY, "HASH")))
+        underTest.update {
+            it.copy(keys = listOf(KeyWithHash(FlipperFilePath.DUMMY, "HASH")))
+        }
 
         val actual = underTest.load()
 
@@ -63,7 +65,9 @@ class ManifestStorageTest {
 
     @Test
     fun `favorites manifest write`() = runTest {
-        underTest.update(favorites = listOf(FlipperFilePath.DUMMY))
+        underTest.update {
+            it.copy(favorites = listOf(FlipperFilePath.DUMMY))
+        }
 
         val actual = underTest.load()
 
@@ -76,7 +80,9 @@ class ManifestStorageTest {
 
     @Test
     fun `favorites on flipper manifest write`() = runTest {
-        underTest.update(favoritesOnFlipper = listOf(FlipperFilePath.DUMMY))
+        underTest.update {
+            it.copy(favoritesFromFlipper = listOf(FlipperFilePath.DUMMY))
+        }
 
         val actual = underTest.load()
 
