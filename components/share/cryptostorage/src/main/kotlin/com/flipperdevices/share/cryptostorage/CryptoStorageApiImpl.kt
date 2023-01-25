@@ -1,6 +1,8 @@
 package com.flipperdevices.share.cryptostorage
 
 import com.flipperdevices.bridge.dao.api.delegates.KeyParser
+import com.flipperdevices.bridge.dao.api.model.FlipperKey
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyCrypto
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.share.api.CryptoStorageApi
@@ -15,23 +17,23 @@ class CryptoStorageApiImpl @Inject constructor(
     private val storageHelperApi: StorageHelperApi,
     private val keyParser: KeyParser
 ) : CryptoStorageApi {
-    override suspend fun upload(data: ByteArray, path: String, name: String): Result<String> {
+    override suspend fun upload(flipperKey: FlipperKey): Result<String> {
         return runCatching {
-            val encryptedData = cryptoHelperApi.encrypt(data)
+            val flipperFile = flipperKey.getShadowFile() ?: flipperKey.mainFile
+            val encryptedData = cryptoHelperApi.encrypt(flipperFile)
 
             val storageLink = storageHelperApi.upload(data = encryptedData.data)
-
-            return@runCatching keyParser.cryptoKeyDataToUri(
-                key = FlipperKeyCrypto(
-                    fileId = getFileId(storageLink),
-                    cryptoKey = encryptedData.key,
-                    pathToKey = path
-                )
+            val flipperKeyCrypto = FlipperKeyCrypto(
+                fileId = getFileId(storageLink),
+                cryptoKey = encryptedData.key,
+                pathToKey = flipperKey.path.pathToKey
             )
+
+            return@runCatching keyParser.cryptoKeyDataToUri(key = flipperKeyCrypto)
         }
     }
 
-    override suspend fun download(id: String, key: String, name: String): Result<ByteArray> {
+    override suspend fun download(id: String, key: String): Result<FlipperKeyContent> {
         return runCatching {
             val downloadedData = storageHelperApi.download(id = id)
             return@runCatching cryptoHelperApi.decrypt(downloadedData, key)

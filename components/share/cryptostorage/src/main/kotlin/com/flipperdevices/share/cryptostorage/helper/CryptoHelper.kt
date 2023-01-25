@@ -1,12 +1,18 @@
 package com.flipperdevices.share.cryptostorage.helper
 
 import android.security.keystore.KeyProperties
+import com.flipperdevices.bridge.dao.api.model.FlipperFile
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.share.cryptostorage.model.EncryptData
 import com.squareup.anvil.annotations.ContributesBinding
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 import java.security.SecureRandom
 import java.util.Base64
 import javax.crypto.Cipher
+import javax.crypto.CipherInputStream
+import javax.crypto.CipherOutputStream
 import javax.crypto.KeyGenerator
 import javax.crypto.spec.GCMParameterSpec
 import javax.crypto.spec.SecretKeySpec
@@ -19,13 +25,13 @@ private const val BIT_SIZE = 8
 private const val IV_LENGTH = 12
 
 interface CryptoHelperApi {
-    fun encrypt(data: ByteArray): EncryptData
-    fun decrypt(data: ByteArray, key: String): ByteArray
+    fun encrypt(flipperFile: FlipperFile): EncryptData
+    fun decrypt(data: ByteArray, key: String): FlipperKeyContent
 }
 
 @ContributesBinding(AppGraph::class)
 class CryptoHelperApiImpl @Inject constructor() : CryptoHelperApi {
-    override fun encrypt(data: ByteArray): EncryptData {
+    override fun encrypt(flipperFile: FlipperFile): EncryptData {
         val generator = KeyGenerator
             .getInstance(KeyProperties.KEY_ALGORITHM_AES)
             .apply { init(KEY_SIZE) }
@@ -43,12 +49,23 @@ class CryptoHelperApiImpl @Inject constructor() : CryptoHelperApi {
                 GCMParameterSpec(TAG_LENGTH * BIT_SIZE, generateIV())
             )
         }
+
+        val inputStream = flipperFile.content.openStream()
+        val outputStream = ByteArrayOutputStream(inputStream.available())
+        val cipherStream = CipherOutputStream(outputStream, encryptionCipher)
+
+        inputStream.use { input ->
+            cipherStream.use { output ->
+                input.copyTo(output)
+            }
+        }
+
         val iv = encryptionCipher.iv
-        val encryptedBytes = encryptionCipher.doFinal(data)
+        val encryptedBytes = outputStream.toByteArray()
         return EncryptData(key = keyString, data = iv + encryptedBytes)
     }
 
-    override fun decrypt(data: ByteArray, key: String): ByteArray {
+    override fun decrypt(data: ByteArray, key: String): FlipperKeyContent {
         val decodedKey: ByteArray = Base64.getUrlDecoder().decode(key)
         val secretKey = SecretKeySpec(decodedKey, KeyProperties.KEY_ALGORITHM_AES)
 
@@ -58,7 +75,19 @@ class CryptoHelperApiImpl @Inject constructor() : CryptoHelperApi {
         val decryptCipher = Cipher.getInstance(ALGORITHM_HELPER).apply {
             init(Cipher.DECRYPT_MODE, secretKey, GCMParameterSpec(TAG_LENGTH * BIT_SIZE, iv))
         }
-        return decryptCipher.doFinal(cipherText)
+
+        val inputStream = ByteArrayInputStream(cipherText)
+        val cipherStream = CipherInputStream(inputStream, decryptCipher)
+        val outputStream = ByteArrayOutputStream(cipherText.size)
+
+        cipherStream.use { input ->
+            outputStream.use { output ->
+                input.copyTo(output)
+            }
+        }
+
+        val decryptedData = outputStream.toByteArray()
+        return FlipperKeyContent.RawData(decryptedData)
     }
 
     private fun generateIV(): ByteArray {

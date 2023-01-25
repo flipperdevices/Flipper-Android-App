@@ -19,14 +19,14 @@ import com.flipperdevices.uploader.api.EXTRA_KEY_PATH
 import com.flipperdevices.uploader.models.ShareContent
 import com.flipperdevices.uploader.models.ShareError
 import com.flipperdevices.uploader.models.ShareState
+import java.net.UnknownHostException
+import java.net.UnknownServiceException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import tangle.inject.TangleParam
 import tangle.viewmodel.VMInject
-import java.net.UnknownHostException
-import java.net.UnknownServiceException
 
 private const val SHORT_LINK_SIZE = 256
 
@@ -121,11 +121,11 @@ class UploaderViewModel @VMInject constructor(
             .openStream()
             .use { it.readBytes() }
 
-        val uploadedLink = cryptoStorageApi.upload(
-            data = flipperKeyContent,
-            path = flipperKey.path.pathToKey,
-            name = flipperKey.mainFile.path.nameWithExtension
-        )
+        val uploadedLink = cryptoStorageApi.upload(flipperKey)
+//            data = flipperKeyContent,
+//            path = flipperKey.path.pathToKey,
+//            name = flipperKey.mainFile.path.nameWithExtension
+//        )
         uploadedLink.onSuccess { link ->
             metricApi.reportSimpleEvent(SimpleEvent.SHARE_LONG_LINK)
             ShareHelper.shareText(

@@ -24,6 +24,10 @@ data class FlipperKey(
         get() = mainFile.content
 
     fun getKeyPath() = FlipperKeyPath(mainFile.path, deleted)
+
+    fun getShadowFile(): FlipperFile? {
+        return additionalFiles.firstOrNull { it.path.fileType == FlipperFileType.SHADOW_NFC }
+    }
 }
 
 @Parcelize
