@@ -26,6 +26,7 @@ or get the app from the [Releases Section](https://github.com/flipperdevices/Fli
 │   ├── bridge
 │   ├── feature1
 │   ├── feature2
+
 ```
 
 - `app` - Main application module with UI
