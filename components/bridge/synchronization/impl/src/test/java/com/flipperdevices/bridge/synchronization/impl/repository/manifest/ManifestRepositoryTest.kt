@@ -1,7 +1,6 @@
 package com.flipperdevices.bridge.synchronization.impl.repository.manifest
 
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.synchronization.impl.model.DiffSource
 import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
 import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
@@ -79,7 +78,7 @@ class ManifestRepositoryTest {
         )
 
         val actual = underTest.compareFolderKeysWithManifest(
-            FlipperKeyType.NFC,
+            "test",
             expected,
             DiffSource.ANDROID
         )
@@ -134,7 +133,7 @@ class ManifestRepositoryTest {
 
         coEvery { manifestStorage.load() } returns ManifestFile(keys = existed)
         val actual = underTest.compareFolderKeysWithManifest(
-            FlipperKeyType.NFC,
+            "test",
             newList,
             DiffSource.ANDROID
         )
@@ -162,7 +161,7 @@ class ManifestRepositoryTest {
 
         coEvery { manifestStorage.load() } returns ManifestFile(keys = existed)
         val actual = underTest.compareFolderKeysWithManifest(
-            FlipperKeyType.NFC,
+            "test",
             newList,
             DiffSource.ANDROID
         )
@@ -191,7 +190,7 @@ class ManifestRepositoryTest {
 
         coEvery { manifestStorage.load() } returns ManifestFile(keys = existed)
         val actual = underTest.compareFolderKeysWithManifest(
-            FlipperKeyType.NFC,
+            "test",
             newList,
             DiffSource.ANDROID
         )
@@ -220,7 +219,7 @@ class ManifestRepositoryTest {
 
         coEvery { manifestStorage.load() } returns ManifestFile(keys = existed)
         val actual = underTest.compareFolderKeysWithManifest(
-            FlipperKeyType.NFC,
+            "test",
             newList,
             DiffSource.ANDROID
         )
@@ -249,17 +248,17 @@ class ManifestRepositoryTest {
     @Test
     fun `return keys only with selected type`() = runTest {
         val existed = listOf(
-            KeyWithHash(FlipperFilePath("test", "test.rfid"), "HASH"),
+            KeyWithHash(FlipperFilePath("rfid", "test.rfid"), "HASH"),
             KeyWithHash(FlipperFilePath("test", "test2.nfc"), "HASH2")
         )
         val newList = listOf(
             KeyWithHash(FlipperFilePath("test", "test2.nfc"), "HASH4"),
-            KeyWithHash(FlipperFilePath("test2", "test3.nfc"), "HASH3")
+            KeyWithHash(FlipperFilePath("test", "test3.nfc"), "HASH3")
         )
 
         coEvery { manifestStorage.load() } returns ManifestFile(keys = existed)
         val actual = underTest.compareFolderKeysWithManifest(
-            FlipperKeyType.NFC,
+            "test",
             newList,
             DiffSource.ANDROID
         )
@@ -271,7 +270,7 @@ class ManifestRepositoryTest {
                     DiffSource.ANDROID
                 ),
                 KeyDiff(
-                    KeyWithHash(FlipperFilePath("test2", "test3.nfc"), "HASH3"),
+                    KeyWithHash(FlipperFilePath("test", "test3.nfc"), "HASH3"),
                     KeyAction.ADD,
                     DiffSource.ANDROID
                 )

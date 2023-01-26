@@ -1,7 +1,6 @@
 package com.flipperdevices.bridge.synchronization.impl.repository.manifest
 
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
 import com.flipperdevices.bridge.synchronization.impl.model.DiffSource
 import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
@@ -21,7 +20,7 @@ interface ManifestRepository {
     )
 
     suspend fun compareFolderKeysWithManifest(
-        flipperKeyType: FlipperKeyType,
+        folder: String,
         keys: List<KeyWithHash>,
         diffSource: DiffSource
     ): List<KeyDiff>
@@ -60,14 +59,14 @@ class ManifestRepositoryImpl @Inject constructor(
     }
 
     override suspend fun compareFolderKeysWithManifest(
-        flipperKeyType: FlipperKeyType,
+        folder: String,
         keys: List<KeyWithHash>,
         diffSource: DiffSource
     ): List<KeyDiff> {
         val manifestFile = manifestStorage.load()
             ?: return keys.map { KeyDiff(it, KeyAction.ADD, diffSource) }
         val keysFromManifest = manifestFile.keys.filter {
-            it.keyPath.folder == flipperKeyType.flipperDir
+            it.keyPath.folder == folder
         }
         return compare(keysFromManifest, keys, diffSource)
     }
