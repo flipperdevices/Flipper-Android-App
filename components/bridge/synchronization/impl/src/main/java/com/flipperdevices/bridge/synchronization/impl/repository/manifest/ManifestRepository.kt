@@ -67,7 +67,7 @@ class ManifestRepositoryImpl @Inject constructor(
         val manifestFile = manifestStorage.load()
             ?: return keys.map { KeyDiff(it, KeyAction.ADD, diffSource) }
         val keysFromManifest = manifestFile.keys.filter {
-            it.keyPath.keyType == flipperKeyType
+            it.keyPath.folder == flipperKeyType.flipperDir
         }
         return compare(keysFromManifest, keys, diffSource)
     }
