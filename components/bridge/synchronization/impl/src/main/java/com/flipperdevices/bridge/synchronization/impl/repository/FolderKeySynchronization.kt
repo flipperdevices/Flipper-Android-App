@@ -51,13 +51,13 @@ class FolderKeySynchronizationImpl @Inject constructor(
         info { "Finish receive hashes from Flipper for $flipperKeyType: $flipperHashes" }
 
         val diffWithAndroid = manifestRepository.compareFolderKeysWithManifest(
-            flipperKeyType = flipperKeyType,
+            folder = flipperKeyType.flipperDir,
             keys = androidHashes,
             diffSource = DiffSource.ANDROID
         )
         info { "Diff with manifest for android $flipperKeyType: $diffWithAndroid" }
         val diffWithFlipper = manifestRepository.compareFolderKeysWithManifest(
-            flipperKeyType = flipperKeyType,
+            folder = flipperKeyType.flipperDir,
             keys = androidHashes,
             diffSource = DiffSource.FLIPPER
         )
