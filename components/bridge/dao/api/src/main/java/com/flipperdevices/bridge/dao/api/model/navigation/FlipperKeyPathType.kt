@@ -7,7 +7,7 @@ import com.flipperdevices.core.ktx.android.parcelable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
-class FlipperKeyPathType : NavType<FlipperKeyPath>(isNullableAllowed = true) {
+class FlipperKeyPathType : NavType<FlipperKeyPath>(isNullableAllowed = false) {
     override fun get(bundle: Bundle, key: String): FlipperKeyPath? {
         return bundle.parcelable(key)
     }

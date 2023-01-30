@@ -22,7 +22,7 @@ private const val START_SCREEN = "key_screen"
 @Composable
 internal fun KeyScreenNavigation(
     bottomSheetFeatureEntry: ShareBottomFeatureEntry,
-    screenContent: @Composable ((FlipperKeyPath?) -> Unit) -> Unit
+    screenContent: @Composable ((FlipperKeyPath) -> Unit) -> Unit
 ) {
     val scrimColor = if (MaterialTheme.colors.isLight) {
         LocalPallet.current.shareSheetScrimColor

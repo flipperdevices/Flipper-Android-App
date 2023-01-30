@@ -17,10 +17,10 @@ import com.flipperdevices.share.api.ShareBottomFeatureEntry
 import com.flipperdevices.uploader.compose.ComposableSheetContent
 import com.flipperdevices.uploader.viewmodel.UploaderViewModel
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import tangle.viewmodel.compose.tangleViewModel
+import javax.inject.Inject
 
 internal const val EXTRA_KEY_PATH = "flipper_key_path"
 
@@ -32,12 +32,12 @@ class ShareBottomSheetFeatureEntryImpl @Inject constructor() : ShareBottomFeatur
         get() = listOf(
             navArgument(EXTRA_KEY_PATH) {
                 type = FlipperKeyPathType()
-                nullable = true
+                nullable = false
             }
         )
 
     override fun shareDestination(
-        path: FlipperKeyPath?
+        path: FlipperKeyPath
     ) = "@$ROUTE?keyPath=${Uri.encode(Json.encodeToString(path))}"
 
     @Composable

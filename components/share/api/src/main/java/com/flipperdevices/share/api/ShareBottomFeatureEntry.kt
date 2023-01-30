@@ -8,5 +8,5 @@ interface ShareBottomFeatureEntry : BottomSheetFeatureEntry {
     override val ROUTE: FeatureScreenRootRoute
         get() = FeatureScreenRootRoute.ARCHIVE_SHARE_BOTTOMSHEET
 
-    fun shareDestination(path: FlipperKeyPath?): String
+    fun shareDestination(path: FlipperKeyPath): String
 }
