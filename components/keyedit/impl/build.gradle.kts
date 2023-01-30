@@ -14,6 +14,7 @@ dependencies {
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.fragment)
+    implementation(projects.components.core.ui.navigation)
 
     implementation(projects.components.keyedit.api)
 
@@ -29,12 +30,15 @@ dependencies {
     implementation(libs.cicerone)
     implementation(libs.appcompat)
 
+    implementation(libs.kotlin.serialization.json)
+
     // Compose
     implementation(libs.compose.ui)
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
     implementation(libs.compose.constraint)
+    implementation(libs.compose.navigation)
     implementation(libs.lifecycle.compose)
 
     // Dagger deps
@@ -43,6 +47,7 @@ dependencies {
     implementation(libs.tangle.viewmodel.fragment)
     implementation(libs.tangle.viewmodel.api)
     anvil(libs.tangle.viewmodel.compiler)
+    implementation(libs.tangle.viewmodel.compose)
 
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.runtime.ktx)

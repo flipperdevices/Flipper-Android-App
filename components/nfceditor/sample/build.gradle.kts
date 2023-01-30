@@ -4,7 +4,12 @@ plugins {
     id("kotlin-kapt")
 }
 
-android.buildFeatures.viewBinding = true
+android {
+    buildFeatures.compose = true
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
+    }
+}
 
 android {
     defaultConfig {
@@ -16,6 +21,7 @@ dependencies {
     implementation(projects.components.core.ui.fragment)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.lifecycle)
+    implementation(projects.components.core.ui.navigation)
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)
     implementation(projects.components.core.navigation)
@@ -41,7 +47,19 @@ dependencies {
 
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
+    implementation(libs.tangle.viewmodel.api)
+    anvil(libs.tangle.viewmodel.compiler)
+    implementation(libs.tangle.fragment.api)
+    anvil(libs.tangle.fragment.compiler)
 
     implementation(libs.cicerone)
     implementation(libs.timber)
+
+    // Compose
+    implementation(libs.compose.activity)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.tooling)
+    implementation(libs.compose.navigation)
+    implementation(libs.compose.foundation)
+    implementation(libs.compose.material)
 }

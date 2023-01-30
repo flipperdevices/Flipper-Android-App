@@ -5,9 +5,8 @@ import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UpdateKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
-import com.flipperdevices.keyedit.impl.model.EditableKey
+import com.flipperdevices.keyedit.api.EditableKey
 import com.flipperdevices.keyedit.impl.model.KeyEditState
-import com.github.terrakok.cicerone.Router
 import javax.inject.Inject
 
 class ExistedKeyProcessor @Inject constructor(
@@ -39,7 +38,7 @@ class ExistedKeyProcessor @Inject constructor(
     override suspend fun onSave(
         editableKey: EditableKey.Existed,
         editState: KeyEditState.Editing,
-        router: Router
+        onEndAction: () -> Unit
     ) {
         try {
             val oldKey = simpleKeyApi.getKey(editableKey.flipperKeyPath) ?: return
@@ -57,7 +56,7 @@ class ExistedKeyProcessor @Inject constructor(
             updateKeyApi.updateKey(oldKey, newFlipperKey)
             synchronizationApi.startSynchronization(force = true)
         } finally {
-            router.exit()
+            onEndAction()
         }
     }
 }

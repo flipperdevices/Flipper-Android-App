@@ -1,41 +1,41 @@
 package com.flipperdevices.nfceditor.sample
 
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.material.Button
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Text
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperFile
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.core.di.ComponentHolder
-import com.flipperdevices.core.navigation.delegates.RouterProvider
-import com.flipperdevices.core.navigation.global.CiceroneGlobal
-import com.flipperdevices.nfceditor.api.NfcEditorApi
-import com.flipperdevices.nfceditor.sample.databinding.NfcEditorActivityBinding
+import com.flipperdevices.core.ui.theme.FlipperThemeInternal
+import com.flipperdevices.nfceditor.api.NfcEditorFeatureEntry
 import com.flipperdevices.nfceditor.sample.di.NfcEditorComponent
-import com.github.terrakok.cicerone.Navigator
-import com.github.terrakok.cicerone.Router
-import com.github.terrakok.cicerone.androidx.AppNavigator
 import javax.inject.Inject
 
-class NfcEditorActivity : AppCompatActivity(), RouterProvider {
+class NfcEditorActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var cicerone: CiceroneGlobal
+    lateinit var featureEntry: NfcEditorFeatureEntry
 
     @Inject
-    lateinit var nfcEditorApi: NfcEditorApi
-
-    override val router: Router
-        get() = cicerone.getRouter()
-
-    private val navigator: Navigator = AppNavigator(this, R.id.content)
+    lateinit var simpleKeyApi: SimpleKeyApi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ComponentHolder.component<NfcEditorComponent>().inject(this)
-
-        val binding = NfcEditorActivityBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
         val flipperKey = resources.openRawResource(R.raw.mf_4k_full).use {
             FlipperKey(
@@ -48,16 +48,42 @@ class NfcEditorActivity : AppCompatActivity(), RouterProvider {
             )
         }
 
-        router.newRootScreen(nfcEditorApi.getNfcEditorScreen(flipperKey))
-    }
+        setContent {
+            var applicationIsReady by remember { mutableStateOf(false) }
+            val nfcEditorScreen = featureEntry.getNfcEditorScreen(flipperKey.getKeyPath())
+            val navController = rememberNavController()
 
-    override fun onResume() {
-        super.onResume()
-        cicerone.getNavigationHolder().setNavigator(navigator)
-    }
+            LaunchedEffect(key1 = Unit) {
+                val isExistKey = simpleKeyApi.getKey(flipperKey.getKeyPath()) == null
+                if (isExistKey) {
+                    simpleKeyApi.insertKey(flipperKey)
+                }
+                applicationIsReady = true
+            }
 
-    override fun onPause() {
-        cicerone.getNavigationHolder().removeNavigator()
-        super.onPause()
+            FlipperThemeInternal {
+                if (!applicationIsReady) {
+                    CircularProgressIndicator()
+                } else {
+                    NavHost(
+                        navController = navController,
+                        startDestination = nfcEditorScreen
+                    ) {
+                        with(featureEntry) {
+                            composable(navController)
+                        }
+                        composable(
+                            route = featureEntry.ROUTE.name
+                        ) {
+                            Button(onClick = {
+                                navController.navigate(nfcEditorScreen)
+                            }) {
+                                Text("Open nfc editor")
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

@@ -16,15 +16,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.archive.category.R
 import com.flipperdevices.archive.category.model.CategoryState
 import com.flipperdevices.archive.category.viewmodels.CategoryViewModel
-import com.flipperdevices.archive.category.viewmodels.CategoryViewModelFactory
 import com.flipperdevices.archive.model.CategoryType
 import com.flipperdevices.archive.shared.composable.ComposableAppBar
 import com.flipperdevices.archive.shared.composable.ComposableKeyCard
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType.Companion.colorByFlipperKeyType
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
@@ -33,20 +32,27 @@ import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import kotlinx.collections.immutable.ImmutableList
+import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 fun ComposableCategory(
     categoryType: CategoryType.ByFileType,
     synchronizationUiApi: SynchronizationUiApi,
+    onBack: () -> Unit,
     modifier: Modifier = Modifier,
+    onOpenKeyScreen: (FlipperKeyPath) -> Unit
 ) {
     val router = LocalRouter.current
     Column(modifier = modifier) {
         ComposableAppBar(
             title = categoryType.fileType.humanReadableName,
-            onBack = { router.exit() }
+            onBack = onBack
         )
-        ComposableCategoryContent(categoryType, synchronizationUiApi)
+        ComposableCategoryContent(
+            categoryType = categoryType,
+            synchronizationUiApi = synchronizationUiApi,
+            onOpenKeyScreen = onOpenKeyScreen
+        )
     }
 }
 
@@ -54,9 +60,8 @@ fun ComposableCategory(
 fun ColumnScope.ComposableCategoryContent(
     categoryType: CategoryType,
     synchronizationUiApi: SynchronizationUiApi?,
-    categoryViewModel: CategoryViewModel = viewModel(
-        factory = CategoryViewModelFactory(categoryType)
-    )
+    categoryViewModel: CategoryViewModel = tangleViewModel(),
+    onOpenKeyScreen: (FlipperKeyPath) -> Unit
 ) {
     val categoryState by categoryViewModel.getState().collectAsState()
     val synchronizationState by categoryViewModel.getSynchronizationState().collectAsState()
@@ -71,11 +76,11 @@ fun ColumnScope.ComposableCategoryContent(
         } else {
             CategoryList(
                 categoryType,
-                categoryViewModel,
                 synchronizationUiApi,
                 synchronizationState,
                 localCategoryState.keys,
-                contentModifier
+                contentModifier,
+                onOpenKeyScreen
             )
         }
         CategoryState.Loading -> CategoryLoadingProgress(contentModifier)
@@ -85,13 +90,12 @@ fun ColumnScope.ComposableCategoryContent(
 @Composable
 private fun CategoryList(
     categoryType: CategoryType,
-    categoryViewModel: CategoryViewModel,
     synchronizationUiApi: SynchronizationUiApi?,
     synchronizationState: SynchronizationState,
     keys: ImmutableList<Pair<FlipperKeyParsed, FlipperKey>>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onOpenKeyScreen: (FlipperKeyPath) -> Unit
 ) {
-    val router = LocalRouter.current
     LazyColumn(
         modifier.padding(top = 14.dp)
     ) {
@@ -115,7 +119,7 @@ private fun CategoryList(
                     CategoryType.Deleted -> LocalPallet.current.keyDeleted
                 },
                 onCardClicked = {
-                    categoryViewModel.openKeyScreen(router, flipperKey.getKeyPath())
+                    onOpenKeyScreen(flipperKey.getKeyPath())
                 }
             )
         }

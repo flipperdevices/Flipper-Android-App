@@ -4,8 +4,10 @@ import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import com.flipperdevices.core.ui.theme.LocalPallet
+import kotlinx.serialization.Serializable
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
+@Serializable
 enum class FlipperKeyType(
     val humanReadableName: String,
     val extension: String,

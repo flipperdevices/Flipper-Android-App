@@ -1,8 +1,7 @@
-package com.flipperdevices.keyedit.impl.model
+package com.flipperdevices.keyedit.api
 
 import android.os.Parcelable
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
-import com.flipperdevices.keyedit.api.NotSavedFlipperKey
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

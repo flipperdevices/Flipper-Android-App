@@ -7,6 +7,7 @@ plugins {
 dependencies {
     implementation(projects.components.archive.api)
     implementation(projects.components.archive.shared)
+    implementation(projects.components.keyscreen.api)
 
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.synchronization.api)
@@ -18,6 +19,7 @@ dependencies {
     implementation(projects.components.core.ui.searchbar)
     implementation(projects.components.core.ui.fragment)
     implementation(projects.components.core.ui.theme)
+    implementation(projects.components.core.ui.navigation)
 
     implementation(libs.cicerone)
     implementation(libs.appcompat)
@@ -27,6 +29,7 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
+    implementation(libs.compose.navigation)
 
     implementation(libs.lifecycle.compose)
     implementation(libs.lifecycle.viewmodel.ktx)
@@ -36,6 +39,7 @@ dependencies {
 
     // Dagger deps
     implementation(libs.dagger)
+    implementation(project(mapOf("path" to ":components:keyscreen:api")))
     kapt(libs.dagger.kapt)
     implementation(libs.tangle.viewmodel.compose)
     implementation(libs.tangle.viewmodel.api)

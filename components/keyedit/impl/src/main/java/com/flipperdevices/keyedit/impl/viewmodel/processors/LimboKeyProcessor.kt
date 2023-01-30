@@ -10,12 +10,11 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
+import com.flipperdevices.keyedit.api.EditableKey
 import com.flipperdevices.keyedit.api.NotSavedFlipperKey
 import com.flipperdevices.keyedit.impl.R
-import com.flipperdevices.keyedit.impl.model.EditableKey
 import com.flipperdevices.keyedit.impl.model.KeyEditState
 import com.flipperdevices.singleactivity.api.SingleActivityApi
-import com.github.terrakok.cicerone.Router
 import javax.inject.Inject
 
 private const val NOTIFICATION_DURATION_MS = 3 * 1000L
@@ -53,7 +52,7 @@ class LimboKeyProcessor @Inject constructor(
     override suspend fun onSave(
         editableKey: EditableKey.Limb,
         editState: KeyEditState.Editing,
-        router: Router
+        onEndAction: () -> Unit
     ) {
         val newPathUnfree = if (editState.name != null) {
             editableKey.notSavedFlipperKey.mainFile.path.copyWithChangedName(editState.name)

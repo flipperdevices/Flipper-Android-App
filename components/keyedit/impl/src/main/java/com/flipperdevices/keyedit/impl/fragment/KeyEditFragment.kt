@@ -7,8 +7,8 @@ import androidx.compose.runtime.remember
 import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.ui.fragment.ComposeFragment
 import com.flipperdevices.core.ui.ktx.LocalRouter
+import com.flipperdevices.keyedit.api.EditableKey
 import com.flipperdevices.keyedit.impl.composable.ComposableEditScreen
-import com.flipperdevices.keyedit.impl.model.EditableKey
 import com.flipperdevices.keyedit.impl.viewmodel.KeyEditViewModel
 import tangle.viewmodel.fragment.tangleViewModel
 
@@ -30,7 +30,7 @@ class KeyEditFragment : ComposeFragment() {
             title = title,
             state = state,
             onCancel = router::exit,
-            onSave = { viewModel.onSave(router) }
+            onSave = { viewModel.onSave { router.exit() } }
         )
     }
 

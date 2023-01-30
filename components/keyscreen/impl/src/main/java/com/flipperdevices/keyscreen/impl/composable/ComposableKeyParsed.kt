@@ -8,8 +8,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
-import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.keyscreen.api.KeyEmulateApi
 import com.flipperdevices.keyscreen.impl.R
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableDelete
@@ -33,15 +33,15 @@ fun ComposableKeyParsed(
     nfcEditorApi: NfcEditorApi,
     synchronizationUiApi: SynchronizationUiApi,
     keyEmulateApi: KeyEmulateApi,
-    onShare: () -> Unit,
+    onBack: () -> Unit,
+    onShare: (FlipperKeyPath) -> Unit,
+    onOpenNfcEditor: (FlipperKeyPath) -> Unit,
+    onOpenEditScreen: (FlipperKeyPath) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
-    val router = LocalRouter.current
     Column(modifier = modifier.verticalScroll(scrollState)) {
-        ComposableKeyScreenBar(keyScreenState.flipperKey.path.nameWithoutExtension) {
-            router.exit()
-        }
+        ComposableKeyScreenBar(keyScreenState.flipperKey.path.nameWithoutExtension, onBack = onBack)
         ComposableKeyCard(
             keyScreenState.parsedKey,
             keyScreenState.deleteState,
@@ -59,7 +59,7 @@ fun ComposableKeyParsed(
             keyScreenState.favoriteState,
             viewModel::setFavorite,
             onEditName = {
-                viewModel.onOpenEdit(router)
+                viewModel.onOpenEdit(onOpenEditScreen)
             }
         )
 
@@ -73,18 +73,20 @@ fun ComposableKeyParsed(
         if (keyScreenState.deleteState == DeleteState.NOT_DELETED) {
             if (nfcEditorApi.isSupportedByNfcEditor(keyScreenState.parsedKey)) {
                 ComposableNfcEdit {
-                    viewModel.onNfcEdit(keyScreenState.flipperKey)
+                    onOpenNfcEditor(keyScreenState.flipperKey.getKeyPath())
                 }
             }
-            ComposableShare(keyScreenState.shareState, onShare = onShare)
+            ComposableShare(keyScreenState.shareState) {
+                onShare(keyScreenState.flipperKey.getKeyPath())
+            }
         } else if (keyScreenState.deleteState == DeleteState.DELETED) {
             ComposableRestore {
-                viewModel.onRestore(router)
+                viewModel.onRestore(onBack)
             }
         }
 
         ComposableDelete(keyScreenState.deleteState) {
-            viewModel.onDelete(router)
+            viewModel.onDelete(onBack)
         }
     }
 }

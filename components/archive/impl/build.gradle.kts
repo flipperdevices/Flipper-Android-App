@@ -17,9 +17,11 @@ dependencies {
     implementation(projects.components.core.ui.fragment)
     implementation(projects.components.core.preference)
     implementation(projects.components.core.ui.theme)
+    implementation(projects.components.core.ui.navigation)
 
     implementation(projects.components.connection.api)
     implementation(projects.components.keyscreen.api)
+    implementation(projects.components.keyedit.api)
 
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.synchronization.api)
@@ -35,6 +37,7 @@ dependencies {
     implementation(libs.compose.pager)
     implementation(libs.compose.pager.indicators)
     implementation(libs.compose.swipetorefresh)
+    implementation(libs.compose.navigation)
 
     // Dagger deps
     implementation(libs.dagger)

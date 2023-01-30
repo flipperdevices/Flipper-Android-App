@@ -23,10 +23,10 @@ import com.flipperdevices.archive.search.model.SearchState
 import com.flipperdevices.archive.search.viewmodel.SearchViewModel
 import com.flipperdevices.archive.shared.composable.ComposableKeyCard
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
-import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import kotlinx.collections.immutable.ImmutableList
@@ -36,7 +36,8 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 fun ComposableSearchContent(
     synchronizationUiApi: SynchronizationUiApi,
     searchViewModel: SearchViewModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onOpenKeyScreen: (FlipperKeyPath) -> Unit
 ) {
     val state by searchViewModel.getState().collectAsState()
     val synchronizationState by searchViewModel.getSynchronizationState().collectAsState()
@@ -48,7 +49,7 @@ fun ComposableSearchContent(
         } else {
             CategoryList(
                 modifier = modifier,
-                searchViewModel = searchViewModel,
+                onOpenKeyScreen = onOpenKeyScreen,
                 synchronizationUiApi = synchronizationUiApi,
                 synchronizationState = synchronizationState,
                 keys = localState.keys
@@ -59,13 +60,12 @@ fun ComposableSearchContent(
 
 @Composable
 private fun CategoryList(
-    searchViewModel: SearchViewModel,
     synchronizationUiApi: SynchronizationUiApi,
     synchronizationState: SynchronizationState,
     keys: ImmutableList<Pair<FlipperKeyParsed, FlipperKey>>,
     modifier: Modifier = Modifier,
+    onOpenKeyScreen: (FlipperKeyPath) -> Unit
 ) {
-    val router = LocalRouter.current
     LazyColumn(
         modifier.padding(top = 14.dp)
     ) {
@@ -81,7 +81,7 @@ private fun CategoryList(
                 },
                 flipperKeyParsed = flipperKeyParsed,
                 onCardClicked = {
-                    searchViewModel.openKeyScreen(router, flipperKey.getKeyPath())
+                    onOpenKeyScreen(flipperKey.getKeyPath())
                 }
             )
         }
