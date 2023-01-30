@@ -8,7 +8,7 @@ import com.flipperdevices.keyedit.api.KeyEditFeatureEntry
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
-@ContributesBinding(AppGraph::class, KeyEditFeatureEntry::class)
+@ContributesBinding(AppGraph::class)
 class KeyEditFeatureEntryNoop @Inject constructor() : KeyEditFeatureEntry {
 
     override fun getKeyEditScreen(flipperKeyPath: FlipperKeyPath, title: String?) = ""

@@ -7,19 +7,19 @@ import com.flipperdevices.keyedit.api.EditableKey
 import com.flipperdevices.keyedit.api.KeyEditTempStorage
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-@ContributesBinding(AppGraph::class, KeyEditTempStorage::class)
+@ContributesBinding(AppGraph::class)
 class KeyEditTempStorageNoop @Inject constructor() : KeyEditTempStorage {
     override fun getEditableKey(flipperKeyPath: FlipperKeyPath): EditableKey {
-        return EditableKey.Existed(flipperKeyPath = FlipperKeyPath(
-            path = FlipperFilePath(
-                folder = "any",
-                nameWithExtension = "test.nfc"
-            ),
-            deleted = false
-        ))
+        return EditableKey.Existed(
+            flipperKeyPath = FlipperKeyPath(
+                path = FlipperFilePath(
+                    folder = "any",
+                    nameWithExtension = "test.nfc"
+                ),
+                deleted = false
+            )
+        )
     }
 
     override fun putEditableKey(flipperKeyPath: FlipperKeyPath, key: EditableKey) = Unit
