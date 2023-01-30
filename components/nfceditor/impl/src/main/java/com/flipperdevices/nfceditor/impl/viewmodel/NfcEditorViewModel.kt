@@ -12,8 +12,6 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.ui.hexkeyboard.HexKey
 import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
-import com.flipperdevices.keyedit.api.EditableKey
-import com.flipperdevices.keyedit.api.KeyEditTempStorage
 import com.flipperdevices.keyedit.api.NotSavedFlipperKey
 import com.flipperdevices.keyedit.api.toNotSavedFlipperFile
 import com.flipperdevices.nfceditor.impl.api.EXTRA_KEY_PATH
@@ -36,7 +34,6 @@ class NfcEditorViewModel @VMInject constructor(
     private val keyParser: KeyParser,
     private val updateKeyApi: UpdateKeyApi,
     private val synchronizationApi: SynchronizationApi,
-    private val keyEditTempStorage: KeyEditTempStorage,
     private val simpleKeyApi: SimpleKeyApi
 ) : AndroidLifecycleViewModel(application), LogTagProvider {
     override val TAG = "NfcEditorViewModel"
@@ -113,7 +110,7 @@ class NfcEditorViewModel @VMInject constructor(
         }
     }
 
-    fun onSaveAs(onEndAction: (FlipperKeyPath) -> Unit) {
+    fun onSaveAs(onEndAction: (NotSavedFlipperKey) -> Unit) {
         val localNfcEditorState = getNfcEditorState().value ?: return
 
         viewModelScope.launch {
@@ -128,9 +125,7 @@ class NfcEditorViewModel @VMInject constructor(
                 additionalFiles = listOf(),
                 notes = newFlipperKey.notes
             )
-            val flipperKeyPath = newFlipperKey.getKeyPath()
-            keyEditTempStorage.putEditableKey(flipperKeyPath, EditableKey.Limb(notSavedKey))
-            onEndAction(flipperKeyPath)
+            onEndAction(notSavedKey)
         }
     }
 }

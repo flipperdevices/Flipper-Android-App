@@ -9,8 +9,10 @@ import com.flipperdevices.core.preference.FlipperStorageProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
 @Parcelize
+@Serializable
 data class NotSavedFlipperKey(
     val mainFile: NotSavedFlipperFile,
     val additionalFiles: List<NotSavedFlipperFile>,
@@ -18,6 +20,7 @@ data class NotSavedFlipperKey(
 ) : Parcelable
 
 @Parcelize
+@Serializable
 data class NotSavedFlipperFile(
     val path: FlipperFilePath,
     val content: FlipperKeyContent.InternalFile
@@ -36,5 +39,5 @@ suspend fun FlipperFile.toNotSavedFlipperFile(
             contentStream.copyTo(fileStream)
         }
     }
-    return@withContext NotSavedFlipperFile(path, FlipperKeyContent.InternalFile(internalFile))
+    return@withContext NotSavedFlipperFile(path, FlipperKeyContent.InternalFile(internalFile.absolutePath))
 }

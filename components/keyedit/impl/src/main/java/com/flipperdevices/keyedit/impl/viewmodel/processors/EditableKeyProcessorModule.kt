@@ -1,7 +1,7 @@
 package com.flipperdevices.keyedit.impl.viewmodel.processors
 
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.keyedit.api.EditableKey
+import com.flipperdevices.keyedit.impl.model.EditableKey
 import com.squareup.anvil.annotations.ContributesTo
 import dagger.Binds
 import dagger.Module

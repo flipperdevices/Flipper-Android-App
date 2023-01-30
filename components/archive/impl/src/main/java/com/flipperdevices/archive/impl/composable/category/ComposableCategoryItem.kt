@@ -15,7 +15,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.archive.impl.model.CategoryItem
 import com.flipperdevices.archive.model.CategoryType
-import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
@@ -27,8 +26,6 @@ fun ComposableCategoryItem(
     modifier: Modifier = Modifier,
     onOpenCategory: (CategoryType) -> Unit,
 ) {
-    val router = LocalRouter.current
-
     Row(
         modifier = modifier
             .clickableRipple { onOpenCategory(categoryItem.categoryType) }

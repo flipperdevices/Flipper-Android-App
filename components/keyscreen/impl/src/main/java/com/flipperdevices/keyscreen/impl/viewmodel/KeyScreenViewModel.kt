@@ -11,8 +11,6 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.warn
 import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
-import com.flipperdevices.keyedit.api.EditableKey
-import com.flipperdevices.keyedit.api.KeyEditTempStorage
 import com.flipperdevices.keyscreen.impl.R
 import com.flipperdevices.keyscreen.impl.api.EXTRA_KEY_PATH
 import com.flipperdevices.keyscreen.impl.model.DeleteState
@@ -42,8 +40,7 @@ class KeyScreenViewModel @VMInject constructor(
     private val favoriteApi: FavoriteApi,
     private val keyParser: KeyParser,
     private val metricApi: MetricApi,
-    private val updaterKeyApi: UpdateKeyApi,
-    private val keyEditTempStorage: KeyEditTempStorage
+    private val updaterKeyApi: UpdateKeyApi
 ) : AndroidLifecycleViewModel(application), LogTagProvider {
     override val TAG = "KeyScreenViewModel"
 
@@ -94,8 +91,6 @@ class KeyScreenViewModel @VMInject constructor(
         val currentState = keyScreenState.value
         if (currentState is KeyScreenState.Ready) {
             val flipperKeyPath = currentState.flipperKey.getKeyPath()
-            val key = EditableKey.Existed(flipperKeyPath)
-            keyEditTempStorage.putEditableKey(flipperKeyPath, key)
             onEndAction(flipperKeyPath)
         }
     }

@@ -3,6 +3,7 @@ plugins {
     id("com.squareup.anvil")
     id("kotlin-kapt")
     id("kotlin-parcelize")
+    id("kotlinx-serialization")
 }
 
 dependencies {

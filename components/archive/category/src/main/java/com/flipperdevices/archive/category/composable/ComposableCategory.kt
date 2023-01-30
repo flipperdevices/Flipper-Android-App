@@ -28,7 +28,6 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyType.Companion.colorByF
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
-import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import kotlinx.collections.immutable.ImmutableList
@@ -42,7 +41,6 @@ fun ComposableCategory(
     modifier: Modifier = Modifier,
     onOpenKeyScreen: (FlipperKeyPath) -> Unit
 ) {
-    val router = LocalRouter.current
     Column(modifier = modifier) {
         ComposableAppBar(
             title = categoryType.fileType.humanReadableName,

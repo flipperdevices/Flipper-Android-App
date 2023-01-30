@@ -1,4 +1,4 @@
-package com.flipperdevices.uploader.api
+package com.flipperdevices.bridge.dao.api.model.navigation
 
 import android.os.Bundle
 import androidx.navigation.NavType

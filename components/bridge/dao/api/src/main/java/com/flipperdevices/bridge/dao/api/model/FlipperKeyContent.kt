@@ -37,8 +37,10 @@ sealed class FlipperKeyContent : Parcelable {
     }
 
     @Parcelize
-    data class InternalFile(val file: File) : FlipperKeyContent() {
+    @Serializable
+    data class InternalFile(val path: String) : FlipperKeyContent() {
         override fun openStream(): InputStream {
+            val file = File(path)
             return if (file.exists()) {
                 FileInputStream(file)
             } else {
@@ -46,7 +48,7 @@ sealed class FlipperKeyContent : Parcelable {
             }
         }
 
-        override fun length() = file.length()
+        override fun length() = File(path).length()
     }
 
     abstract fun openStream(): InputStream

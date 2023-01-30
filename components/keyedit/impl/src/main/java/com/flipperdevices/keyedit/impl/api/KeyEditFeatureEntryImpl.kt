@@ -14,7 +14,9 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.android.parcelable
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.flipperdevices.keyedit.api.KeyEditFeatureEntry
+import com.flipperdevices.keyedit.api.NotSavedFlipperKey
 import com.flipperdevices.keyedit.impl.composable.ComposableEditScreen
+import com.flipperdevices.keyedit.impl.model.EditableKey
 import com.flipperdevices.keyedit.impl.viewmodel.KeyEditViewModel
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
@@ -24,7 +26,7 @@ import kotlinx.serialization.json.Json
 import tangle.viewmodel.compose.tangleViewModel
 import javax.inject.Inject
 
-internal const val EXTRA_KEY_PATH = "flipper_key_path"
+internal const val EXTRA_EDITABLE_KEY = "editable_key"
 internal const val EXTRA_KEY_TITLE = "title"
 
 @ContributesBinding(AppGraph::class, KeyEditFeatureEntry::class)
@@ -32,9 +34,9 @@ internal const val EXTRA_KEY_TITLE = "title"
 class KeyEditFeatureEntryImpl @Inject constructor() : KeyEditFeatureEntry {
 
     private val keyEditArguments = listOf(
-        navArgument(EXTRA_KEY_PATH) {
+        navArgument(EXTRA_EDITABLE_KEY) {
             nullable = false
-            type = FlipperKeyPathType()
+            type = EditableKeyType()
         },
         navArgument(EXTRA_KEY_TITLE) {
             nullable = true
@@ -43,14 +45,30 @@ class KeyEditFeatureEntryImpl @Inject constructor() : KeyEditFeatureEntry {
     )
 
     override fun getKeyEditScreen(flipperKeyPath: FlipperKeyPath, title: String?): String {
-        val pathByKey = "@${ROUTE.name}?key_path=${Uri.encode(Json.encodeToString(flipperKeyPath))}"
+        val editableKey = EditableKey.Existed(flipperKeyPath)
+        return createKeyEditScreen(editableKey, title)
+    }
+
+    override fun getKeyEditScreen(
+        notSavedFlipperKey: NotSavedFlipperKey,
+        title: String?
+    ): String {
+        val editableKey = EditableKey.Limb(notSavedFlipperKey)
+        return createKeyEditScreen(editableKey, title)
+    }
+
+    private fun createKeyEditScreen(
+        editableKey: EditableKey,
+        title: String?
+    ): String {
+        val pathByKey = "@${ROUTE.name}?key_path=${Uri.encode(Json.encodeToString(editableKey))}"
         if (title == null) return pathByKey
         return pathByKey + "&title=${Uri.encode(title)}"
     }
 
     override fun NavGraphBuilder.composable(navController: NavHostController) {
         composable(
-            route = "@${ROUTE.name}?key_path={$EXTRA_KEY_PATH}&title={$EXTRA_KEY_TITLE}",
+            route = "@${ROUTE.name}?key_path={$EXTRA_EDITABLE_KEY}&title={$EXTRA_KEY_TITLE}",
             arguments = keyEditArguments
         ) {
             val title: String? = it.arguments?.getString(EXTRA_KEY_TITLE)
@@ -60,7 +78,7 @@ class KeyEditFeatureEntryImpl @Inject constructor() : KeyEditFeatureEntry {
                 viewModel,
                 title = title,
                 state = state,
-                onCancel = {
+                onBack = {
                     navController.popBackStack()
                 },
                 onSave = {
@@ -71,16 +89,16 @@ class KeyEditFeatureEntryImpl @Inject constructor() : KeyEditFeatureEntry {
     }
 }
 
-class FlipperKeyPathType : NavType<FlipperKeyPath>(isNullableAllowed = false) {
-    override fun get(bundle: Bundle, key: String): FlipperKeyPath? {
+class EditableKeyType : NavType<EditableKey>(isNullableAllowed = false) {
+    override fun get(bundle: Bundle, key: String): EditableKey? {
         return bundle.parcelable(key)
     }
 
-    override fun parseValue(value: String): FlipperKeyPath {
+    override fun parseValue(value: String): EditableKey {
         return Json.decodeFromString(value)
     }
 
-    override fun put(bundle: Bundle, key: String, value: FlipperKeyPath) {
+    override fun put(bundle: Bundle, key: String, value: EditableKey) {
         bundle.putParcelable(key, value)
     }
 }

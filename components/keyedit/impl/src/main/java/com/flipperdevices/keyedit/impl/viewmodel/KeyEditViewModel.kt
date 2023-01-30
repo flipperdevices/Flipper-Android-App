@@ -6,14 +6,12 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.utils.FlipperSymbolFilter
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.ktx.android.vibrateCompat
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.wtf
-import com.flipperdevices.keyedit.api.EditableKey
-import com.flipperdevices.keyedit.api.KeyEditTempStorage
-import com.flipperdevices.keyedit.impl.api.EXTRA_KEY_PATH
+import com.flipperdevices.keyedit.impl.api.EXTRA_EDITABLE_KEY
+import com.flipperdevices.keyedit.impl.model.EditableKey
 import com.flipperdevices.keyedit.impl.model.KeyEditState
 import com.flipperdevices.keyedit.impl.viewmodel.processors.EditableKeyProcessor
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,9 +26,8 @@ private const val VIBRATOR_TIME_MS = 500L
 
 class KeyEditViewModel @VMInject constructor(
     context: Context,
-    keyEditTempStorage: KeyEditTempStorage,
-    @TangleParam(EXTRA_KEY_PATH)
-    private val flipperKeyPath: FlipperKeyPath,
+    @TangleParam(EXTRA_EDITABLE_KEY)
+    private val editableKey: EditableKey,
     private val existedKeyProcessor: EditableKeyProcessor<EditableKey.Existed>,
     private val limbKeyProcessor: EditableKeyProcessor<EditableKey.Limb>
 ) : ViewModel(), LogTagProvider {
@@ -40,7 +37,6 @@ class KeyEditViewModel @VMInject constructor(
     private val lengthFilter = LengthFilter(context)
 
     private val keyEditState = MutableStateFlow<KeyEditState>(KeyEditState.Loading)
-    private val editableKey: EditableKey = keyEditTempStorage.getEditableKey(flipperKeyPath)
 
     init {
         viewModelScope.launch {

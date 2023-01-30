@@ -9,4 +9,5 @@ interface KeyEditFeatureEntry : ComposableFeatureEntry {
         get() = FeatureScreenRootRoute.KEY_EDIT_SCREEN
 
     fun getKeyEditScreen(flipperKeyPath: FlipperKeyPath, title: String?): String
+    fun getKeyEditScreen(notSavedFlipperKey: NotSavedFlipperKey, title: String?): String
 }

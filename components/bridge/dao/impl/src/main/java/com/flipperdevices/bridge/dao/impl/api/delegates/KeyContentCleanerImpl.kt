@@ -28,7 +28,7 @@ class KeyContentCleanerImpl @Inject constructor(
         deleteKeyDao.getAllWithDeleted().forEach {
             val path = (it.content.flipperContent as? FlipperKeyContent.InternalFile)
                 ?: return@forEach
-            remainingHashes.remove(path.file.absolutePath)
+            remainingHashes.remove(path.path)
         }
         info { "Found ${remainingHashes.size} file to deleted" }
         remainingHashes.forEach {

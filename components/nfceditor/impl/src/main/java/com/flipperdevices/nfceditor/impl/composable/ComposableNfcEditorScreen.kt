@@ -20,9 +20,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.ui.hexkeyboard.ComposableHexKeyboard
 import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.keyedit.api.NotSavedFlipperKey
 import com.flipperdevices.keyscreen.shared.bar.ComposableBarBackIcon
 import com.flipperdevices.keyscreen.shared.bar.ComposableBarSimpleText
 import com.flipperdevices.keyscreen.shared.bar.ComposableBarTitle
@@ -38,10 +38,10 @@ private const val KEYBOARD_HEIGHT_DP = 256
 @Composable
 fun ComposableNfcEditorScreen(
     onBack: () -> Unit,
-    onSave: () -> Unit,
+    onSaveEndAction: () -> Unit,
     modifier: Modifier = Modifier,
     nfcEditorViewModel: NfcEditorViewModel = tangleViewModel(),
-    onSaveAs: (FlipperKeyPath) -> Unit
+    onSaveAsEndAction: (NotSavedFlipperKey) -> Unit
 ) {
     BackHandler {
         nfcEditorViewModel.onProcessBack(onBack)
@@ -61,8 +61,8 @@ fun ComposableNfcEditorScreen(
         ComposableNfcEditExitDialog(
             onDismiss = nfcEditorViewModel::dismissDialog,
             onNotSave = onBack,
-            onSave = { nfcEditorViewModel.onSaveProcess(onSave) },
-            onSaveAs = { nfcEditorViewModel.onSaveAs(onSaveAs) }
+            onSave = { nfcEditorViewModel.onSaveProcess(onSaveEndAction) },
+            onSaveAs = { nfcEditorViewModel.onSaveAs(onSaveAsEndAction) }
         )
     }
 
@@ -70,9 +70,9 @@ fun ComposableNfcEditorScreen(
         ComposableNfcEditorBar(localNfcEditorState.cardName, onBack = {
             nfcEditorViewModel.onProcessBack(onBack)
         }, onSave = {
-                nfcEditorViewModel.onSaveProcess(onSave)
+                nfcEditorViewModel.onSaveProcess(onSaveEndAction)
             }, onSaveAs = {
-                nfcEditorViewModel.onSaveAs(onSaveAs)
+                nfcEditorViewModel.onSaveAs(onSaveAsEndAction)
             })
         ComposableNfcEditor(
             modifier = Modifier.weight(1f),
