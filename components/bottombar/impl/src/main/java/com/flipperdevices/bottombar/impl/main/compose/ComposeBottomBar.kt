@@ -37,7 +37,7 @@ fun ComposeBottomBar(
     onBottomBarClick: (FlipperBottomTab) -> Unit = {}
 ) {
     val tabs = remember { FlipperBottomTab.values() }
-    var selectedIndex by remember {
+    var selectedIndex by remember(selectedItem) {
         mutableStateOf(tabs.indexOf(selectedItem))
     }
     var tabPositions by remember {

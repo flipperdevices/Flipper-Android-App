@@ -122,7 +122,6 @@ class BottomNavigationFragment : Fragment(), OnBackPressListener, LogTagProvider
     }
 
     private fun selectTab(tab: FlipperBottomTab) {
-        bottomNavigationViewModel.onSelectTab(tab)
         val fm = childFragmentManager
         val tabName = tab.name
         val currentFragment: Fragment? = fm.fragments.find { it.isVisible }

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import com.flipperdevices.bottombar.api.BottomNavigationFeatureEntry
@@ -15,6 +16,7 @@ import com.flipperdevices.core.navigation.delegates.RouterProvider
 import com.flipperdevices.core.navigation.global.CiceroneGlobal
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
+import com.flipperdevices.core.ui.navigation.LocalGlobalNavigationNavStack
 import com.flipperdevices.core.ui.theme.FlipperTheme
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.metric.api.MetricApi
@@ -63,12 +65,16 @@ class SingleActivity :
         setContent {
             val globalNavController = rememberNavController()
             FlipperTheme(content = {
-                ComposableSingleActivityNavHost(
-                    navController = globalNavController,
-                    bottomNavigationFeatureEntry = bottomNavigationFeatureEntry,
-                    featureEntries = featureEntriesMutable.toPersistentSet(),
-                    composableEntries = composableEntriesMutable.toPersistentSet()
-                )
+                CompositionLocalProvider(
+                    LocalGlobalNavigationNavStack provides globalNavController
+                ) {
+                    ComposableSingleActivityNavHost(
+                        navController = globalNavController,
+                        bottomNavigationFeatureEntry = bottomNavigationFeatureEntry,
+                        featureEntries = featureEntriesMutable.toPersistentSet(),
+                        composableEntries = composableEntriesMutable.toPersistentSet()
+                    )
+                }
             })
         }
 
