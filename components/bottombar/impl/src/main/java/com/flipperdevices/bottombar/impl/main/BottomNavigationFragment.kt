@@ -14,8 +14,8 @@ import com.flipperdevices.bottombar.impl.R
 import com.flipperdevices.bottombar.impl.databinding.FragmentBottombarBinding
 import com.flipperdevices.bottombar.impl.di.BottomBarComponent
 import com.flipperdevices.bottombar.impl.main.compose.ComposeBottomBar
-import com.flipperdevices.bottombar.impl.main.service.BottomNavigationViewModel
 import com.flipperdevices.bottombar.impl.main.subnavigation.OnDoublePressOnTab
+import com.flipperdevices.bottombar.impl.main.viewmodel.BottomNavigationViewModel
 import com.flipperdevices.bottombar.impl.main.viewmodel.InAppNotificationState
 import com.flipperdevices.bottombar.impl.main.viewmodel.InAppNotificationViewModel
 import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
@@ -34,8 +34,8 @@ import com.flipperdevices.core.ui.theme.FlipperTheme
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.flipperdevices.inappnotification.api.InAppNotificationRenderer
-import kotlinx.coroutines.flow.first
 import javax.inject.Inject
+import kotlinx.coroutines.flow.first
 
 class BottomNavigationFragment : Fragment(), OnBackPressListener, LogTagProvider {
     override val TAG = "BottomNavigationFragment"

@@ -18,6 +18,7 @@ dependencies {
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.fragment)
     implementation(projects.components.core.ui.theme)
+    implementation(projects.components.core.ui.navigation)
 
     implementation(projects.components.info.api)
     implementation(projects.components.connection.api)
@@ -38,9 +39,11 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.pager)
+    implementation(libs.compose.navigation)
     implementation(libs.image.lottie)
 
     implementation(libs.kotlin.coroutines)
+    implementation(libs.kotlin.immutable.collections)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.ktx.fragment)

@@ -1,27 +1,20 @@
-package com.flipperdevices.bottombar.impl.main.service
+package com.flipperdevices.bottombar.impl.main.viewmodel
 
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.flipperdevices.bottombar.impl.di.BottomBarComponent
 import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
-import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.preference.pb.SelectedTab
 import com.flipperdevices.core.preference.pb.Settings
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import tangle.viewmodel.VMInject
 
-class BottomNavigationViewModel : ViewModel() {
+class BottomNavigationViewModel @VMInject constructor(
+    private val settingsDataStore: DataStore<Settings>
+) : ViewModel() {
     private val selectedTabInternal = MutableStateFlow(FlipperBottomTab.DEVICE)
-
-    @Inject
-    lateinit var settingsDataStore: DataStore<Settings>
-
-    init {
-        ComponentHolder.component<BottomBarComponent>().inject(this)
-    }
 
     val selectedTab: StateFlow<FlipperBottomTab>
         get() = selectedTabInternal
