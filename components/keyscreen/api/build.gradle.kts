@@ -7,6 +7,7 @@ plugins {
 dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.ui.ktx)
+    implementation(projects.components.core.ui.navigation)
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.service.api)

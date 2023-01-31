@@ -1,21 +1,21 @@
 package com.flipperdevices.keyscreen.impl.fragments
 
 import androidx.compose.runtime.Composable
-import androidx.fragment.app.viewModels
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.di.ComponentHolder
-import com.flipperdevices.core.ktx.android.parcelable
 import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.ui.fragment.ComposeFragment
+import com.flipperdevices.core.ui.ktx.LocalRouter
+import com.flipperdevices.keyedit.api.KeyEditApi
 import com.flipperdevices.keyscreen.api.KeyEmulateApi
 import com.flipperdevices.keyscreen.impl.composable.ComposableKeyScreen
 import com.flipperdevices.keyscreen.impl.composable.card.KeyScreenNavigation
 import com.flipperdevices.keyscreen.impl.di.KeyScreenComponent
 import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModel
-import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModelFactory
 import com.flipperdevices.nfceditor.api.NfcEditorApi
 import com.flipperdevices.share.api.ShareBottomFeatureEntry
+import tangle.viewmodel.compose.tangleViewModel
 import javax.inject.Inject
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
@@ -33,24 +33,19 @@ class KeyScreenFragment : ComposeFragment() {
     lateinit var keyEmulateApi: KeyEmulateApi
 
     @Inject
+    lateinit var keyEditApi: KeyEditApi
+
+    @Inject
     lateinit var shareBottomSheetApi: ShareBottomFeatureEntry
 
     init {
         ComponentHolder.component<KeyScreenComponent>().inject(this)
     }
 
-    private val flipperKeyPath: FlipperKeyPath?
-        get() = arguments?.parcelable(EXTRA_KEY_PATH)
-
-    private val viewModel by viewModels<KeyScreenViewModel> {
-        KeyScreenViewModelFactory(
-            keyPath = flipperKeyPath,
-            requireActivity().application
-        )
-    }
-
     @Composable
     override fun RenderView() {
+        val viewModel: KeyScreenViewModel = tangleViewModel()
+        val router = LocalRouter.current
         KeyScreenNavigation(
             shareBottomSheetApi,
             screenContent = { onShare ->
@@ -59,7 +54,12 @@ class KeyScreenFragment : ComposeFragment() {
                     synchronizationUiApi,
                     nfcEditor,
                     keyEmulateApi,
-                    onShare = { onShare(flipperKeyPath) }
+                    onShare = { onShare(it) },
+                    onBack = router::exit,
+                    onOpenNfcEditor = {},
+                    onOpenEditScreen = {
+                        router.navigateTo(keyEditApi.getScreen(it))
+                    }
                 )
             }
         )

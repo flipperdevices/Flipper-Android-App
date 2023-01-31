@@ -2,32 +2,23 @@ package com.flipperdevices.archive.search.fragments
 
 import android.os.Bundle
 import androidx.compose.runtime.Composable
-import androidx.fragment.app.viewModels
+import com.flipperdevices.archive.search.api.IS_EXIT_ON_OPEN_KEY
 import com.flipperdevices.archive.search.composable.ComposableSearch
 import com.flipperdevices.archive.search.di.SearchComponent
 import com.flipperdevices.archive.search.viewmodel.SearchViewModel
-import com.flipperdevices.archive.search.viewmodel.SearchViewModelFactory
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.ui.fragment.ComposeFragment
+import com.flipperdevices.core.ui.ktx.LocalRouter
+import tangle.viewmodel.compose.tangleViewModel
 import javax.inject.Inject
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
-private const val IS_EXIT_ON_OPEN_KEY = "exist_on_open"
-
 class SearchFragment : ComposeFragment() {
-    private val exitOnOpen by lazy {
-        arguments?.getBoolean(IS_EXIT_ON_OPEN_KEY, false) ?: false
-    }
 
     @Inject
     lateinit var synchronizationUiApi: SynchronizationUiApi
-
-    private val viewModel by viewModels<SearchViewModel> {
-        SearchViewModelFactory(exitOnOpen)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ComponentHolder.component<SearchComponent>().inject(this)
@@ -35,7 +26,16 @@ class SearchFragment : ComposeFragment() {
 
     @Composable
     override fun RenderView() {
-        ComposableSearch(synchronizationUiApi, viewModel)
+        val searchViewModel: SearchViewModel = tangleViewModel()
+        val router = LocalRouter.current
+        ComposableSearch(
+            searchViewModel = searchViewModel,
+            synchronizationUiApi = synchronizationUiApi,
+            onBack = router::exit,
+            onOpenKeyScreen = {
+                searchViewModel.openKeyScreen(router, it)
+            }
+        )
     }
 
     override fun getStatusBarColor(): Int = DesignSystem.color.background

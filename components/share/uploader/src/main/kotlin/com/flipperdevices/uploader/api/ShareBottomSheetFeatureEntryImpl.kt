@@ -11,6 +11,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.navArgument
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
+import com.flipperdevices.bridge.dao.api.model.navigation.FlipperKeyPathType
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.share.api.ShareBottomFeatureEntry
 import com.flipperdevices.uploader.compose.ComposableSheetContent
@@ -31,12 +32,12 @@ class ShareBottomSheetFeatureEntryImpl @Inject constructor() : ShareBottomFeatur
         get() = listOf(
             navArgument(EXTRA_KEY_PATH) {
                 type = FlipperKeyPathType()
-                nullable = true
+                nullable = false
             }
         )
 
     override fun shareDestination(
-        path: FlipperKeyPath?
+        path: FlipperKeyPath
     ) = "@$ROUTE?keyPath=${Uri.encode(Json.encodeToString(path))}"
 
     @Composable

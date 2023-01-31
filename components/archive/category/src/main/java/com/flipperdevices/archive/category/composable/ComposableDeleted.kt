@@ -22,26 +22,32 @@ import com.flipperdevices.archive.category.composable.dialogs.ComposableRestoreA
 import com.flipperdevices.archive.category.viewmodels.DeleteViewModel
 import com.flipperdevices.archive.model.CategoryType
 import com.flipperdevices.archive.shared.composable.ComposableAppBar
-import com.flipperdevices.core.ui.ktx.LocalRouter
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
 import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 fun ComposableDeleted(
-    modifier: Modifier = Modifier
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier,
+    onOpenKeyScreen: (FlipperKeyPath) -> Unit
 ) {
     Column(modifier = modifier) {
-        ComposableDeletedAppBar()
-        ComposableCategoryContent(CategoryType.Deleted, synchronizationUiApi = null)
+        ComposableDeletedAppBar(onBack = onBack)
+        ComposableCategoryContent(
+            categoryType = CategoryType.Deleted,
+            synchronizationUiApi = null,
+            onOpenKeyScreen = onOpenKeyScreen
+        )
     }
 }
 
 @Composable
 private fun ComposableDeletedAppBar(
-    deleteViewModel: DeleteViewModel = tangleViewModel()
+    deleteViewModel: DeleteViewModel = tangleViewModel(),
+    onBack: () -> Unit
 ) {
-    val router = LocalRouter.current
     var isDeleteAllDialog by remember { mutableStateOf(false) }
     if (isDeleteAllDialog) {
         ComposableDeleteAllDialog(
@@ -66,7 +72,7 @@ private fun ComposableDeletedAppBar(
 
     ComposableAppBar(
         title = stringResource(R.string.category_deleted_title),
-        onBack = { router.exit() },
+        onBack = onBack,
         endContent = {
             ComposableDeletedAppBarInternal(
                 modifier = it,

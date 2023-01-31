@@ -51,7 +51,7 @@ class FlipperKeyParserHelper @Inject constructor(
                     folder = fileKey.extension,
                     nameWithExtension = fileKey.name
                 ),
-                FlipperKeyContent.InternalFile(fileKey)
+                FlipperKeyContent.InternalFile(fileKey.absolutePath)
             ),
             synchronized = false,
             deleted = false

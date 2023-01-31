@@ -24,7 +24,7 @@ class DatabaseKeyContentConverter(context: Context) : LogTagProvider {
     @TypeConverter
     fun pathToKeyContent(path: String?): DatabaseKeyContent? {
         val pathNotNull = path ?: return null
-        return DatabaseKeyContent(FlipperKeyContent.InternalFile(File(pathNotNull)))
+        return DatabaseKeyContent(FlipperKeyContent.InternalFile(pathNotNull))
     }
 
     @TypeConverter

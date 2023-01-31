@@ -2,6 +2,7 @@ plugins {
     id("flipper.android-compose")
     id("com.squareup.anvil")
     id("kotlin-kapt")
+    id("kotlinx-serialization")
 }
 
 dependencies {
@@ -16,6 +17,7 @@ dependencies {
     implementation(projects.components.core.ui.fragment)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.dialog)
+    implementation(projects.components.core.ui.navigation)
 
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.synchronization.api)
@@ -29,12 +31,14 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
+    implementation(libs.compose.navigation)
 
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.compose)
     implementation(libs.ktx.fragment)
 
     implementation(libs.kotlin.immutable.collections)
+    implementation(libs.kotlin.serialization.json)
 
     // Dagger deps
     implementation(libs.dagger)

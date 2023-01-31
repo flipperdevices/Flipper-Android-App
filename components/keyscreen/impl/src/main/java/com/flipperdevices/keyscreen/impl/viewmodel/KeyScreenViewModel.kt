@@ -7,25 +7,18 @@ import com.flipperdevices.bridge.dao.api.delegates.KeyParser
 import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UpdateKeyApi
-import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
-import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.warn
-import com.flipperdevices.core.navigation.global.CiceroneGlobal
 import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
-import com.flipperdevices.keyedit.api.KeyEditApi
 import com.flipperdevices.keyscreen.impl.R
-import com.flipperdevices.keyscreen.impl.di.KeyScreenComponent
+import com.flipperdevices.keyscreen.impl.api.EXTRA_KEY_PATH
 import com.flipperdevices.keyscreen.impl.model.DeleteState
 import com.flipperdevices.keyscreen.impl.model.FavoriteState
 import com.flipperdevices.keyscreen.impl.model.KeyScreenState
 import com.flipperdevices.keyscreen.impl.model.ShareState
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
-import com.flipperdevices.nfceditor.api.NfcEditorApi
-import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -33,48 +26,23 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import tangle.inject.TangleParam
+import tangle.viewmodel.VMInject
 import java.util.concurrent.atomic.AtomicBoolean
-import javax.inject.Inject
 
-class KeyScreenViewModel(
-    keyPath: FlipperKeyPath?,
-    application: Application
+@Suppress("LongParameterList")
+class KeyScreenViewModel @VMInject constructor(
+    @TangleParam(EXTRA_KEY_PATH)
+    keyPath: FlipperKeyPath,
+    application: Application,
+    private val simpleKeyApi: SimpleKeyApi,
+    private val deleteKeyApi: DeleteKeyApi,
+    private val favoriteApi: FavoriteApi,
+    private val keyParser: KeyParser,
+    private val metricApi: MetricApi,
+    private val updaterKeyApi: UpdateKeyApi
 ) : AndroidLifecycleViewModel(application), LogTagProvider {
     override val TAG = "KeyScreenViewModel"
-
-    @Inject
-    lateinit var simpleKeyApi: SimpleKeyApi
-
-    @Inject
-    lateinit var deleteKeyApi: DeleteKeyApi
-
-    @Inject
-    lateinit var favoriteApi: FavoriteApi
-
-    @Inject
-    lateinit var keyParser: KeyParser
-
-    @Inject
-    lateinit var serviceProvider: FlipperServiceProvider
-
-    @Inject
-    lateinit var metricApi: MetricApi
-
-    @Inject
-    lateinit var globalCicerone: CiceroneGlobal
-
-    @Inject
-    lateinit var nfcEditorApi: NfcEditorApi
-
-    @Inject
-    lateinit var updaterKeyApi: UpdateKeyApi
-
-    @Inject
-    lateinit var keyEditApi: KeyEditApi
-
-    init {
-        ComponentHolder.component<KeyScreenComponent>().inject(this)
-    }
 
     private val keyScreenState = MutableStateFlow<KeyScreenState>(KeyScreenState.InProgress)
     private val shareDelegate = ShareDelegate(application, keyParser)
@@ -83,13 +51,7 @@ class KeyScreenViewModel(
 
     init {
         loadKeyJob = viewModelScope.launch {
-            val keyPathNotNull = if (keyPath == null) {
-                keyScreenState.update { KeyScreenState.Error(R.string.keyscreen_error_keypath) }
-                return@launch
-            } else {
-                keyPath
-            }
-            loadFileAsFlow(keyPathNotNull)
+            loadFileAsFlow(keyPath)
         }
     }
 
@@ -124,16 +86,13 @@ class KeyScreenViewModel(
         }
     }
 
-    fun onOpenEdit(router: Router) {
+    fun onOpenEdit(onEndAction: (FlipperKeyPath) -> Unit) {
         metricApi.reportSimpleEvent(SimpleEvent.OPEN_EDIT)
         val currentState = keyScreenState.value
         if (currentState is KeyScreenState.Ready) {
-            router.navigateTo(keyEditApi.getScreen(currentState.flipperKey.getKeyPath()))
+            val flipperKeyPath = currentState.flipperKey.getKeyPath()
+            onEndAction(flipperKeyPath)
         }
-    }
-
-    fun onNfcEdit(flipperKey: FlipperKey) {
-        globalCicerone.getRouter().navigateTo(nfcEditorApi.getNfcEditorScreen(flipperKey))
     }
 
     fun onShare() {
@@ -156,7 +115,7 @@ class KeyScreenViewModel(
         }
     }
 
-    fun onDelete(router: Router) {
+    fun onDelete(onEndAction: () -> Unit) {
         val state = keyScreenState.value
         if (state !is KeyScreenState.Ready || state.deleteState == DeleteState.PROGRESS) {
             warn { "We skip onDelete, because state is $state" }
@@ -165,7 +124,7 @@ class KeyScreenViewModel(
         val newState = state.copy(deleteState = DeleteState.PROGRESS)
         val isStateSaved = keyScreenState.compareAndSet(state, newState)
         if (!isStateSaved) {
-            onDelete(router)
+            onDelete(onEndAction)
             return
         }
 
@@ -175,11 +134,11 @@ class KeyScreenViewModel(
             } else {
                 deleteKeyApi.markDeleted(state.flipperKey.path)
             }
-            router.exit()
+            onEndAction()
         }
     }
 
-    fun onRestore(router: Router) {
+    fun onRestore(onEndAction: () -> Unit) {
         val state = keyScreenState.value
         if (state !is KeyScreenState.Ready) {
             warn { "We skip onRestore, because state is $state" }
@@ -192,7 +151,18 @@ class KeyScreenViewModel(
 
         viewModelScope.launch {
             deleteKeyApi.restore(state.flipperKey.path)
-            router.exit()
+            onEndAction()
+        }
+    }
+
+    fun openNfcEditor(onEndAction: (FlipperKeyPath) -> Unit) {
+        when (val state = keyScreenState.value) {
+            is KeyScreenState.Ready -> {
+                val flipperKey = state.flipperKey
+                val flipperKeyPath = flipperKey.getKeyPath()
+                onEndAction(flipperKeyPath)
+            }
+            else -> {}
         }
     }
 

@@ -3,14 +3,12 @@ package com.flipperdevices.archive.impl.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.archive.api.SearchApi
-import com.flipperdevices.archive.impl.di.ArchiveComponent
 import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
-import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.navigation.global.CiceroneGlobal
 import com.flipperdevices.keyscreen.api.KeyScreenApi
 import com.github.terrakok.cicerone.ResultListener
@@ -41,7 +39,6 @@ class GeneralTabViewModel @VMInject constructor(
     private var resultListenerDispatcher: ResultListenerHandler? = null
 
     init {
-        ComponentHolder.component<ArchiveComponent>().inject(this)
         viewModelScope.launch {
             simpleKeyApi.getExistKeysAsFlow(null)
                 .combine(favoriteApi.getFavoritesFlow()) { keyList, favoriteKeysList ->
