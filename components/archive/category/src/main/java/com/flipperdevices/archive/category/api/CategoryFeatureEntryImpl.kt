@@ -46,7 +46,6 @@ class CategoryFeatureEntryImpl @Inject constructor(
             route = "@${ROUTE.name}?type={$EXTRA_CATEGORY_TYPE}",
             arguments = categoryArguments
         ) {
-            val onBack: () -> Unit = { navController.popBackStack() }
             val onOpenKeyScreen: (FlipperKeyPath) -> Unit = { flipperKeyPath ->
                 val keyScreen = keyScreenFeatureEntry.getKeyScreen(flipperKeyPath)
                 navController.navigate(keyScreen)
@@ -57,11 +56,11 @@ class CategoryFeatureEntryImpl @Inject constructor(
                 is CategoryType.ByFileType -> ComposableCategory(
                     categoryType = categoryType,
                     synchronizationUiApi = synchronizationUiApi,
-                    onBack = onBack,
+                    onBack = navController::popBackStack,
                     onOpenKeyScreen = onOpenKeyScreen,
                 )
                 CategoryType.Deleted -> ComposableDeleted(
-                    onBack = onBack,
+                    onBack = navController::popBackStack,
                     onOpenKeyScreen = onOpenKeyScreen,
                 )
             }

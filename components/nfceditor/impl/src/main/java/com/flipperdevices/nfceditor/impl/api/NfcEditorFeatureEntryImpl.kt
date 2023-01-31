@@ -55,14 +55,11 @@ class NfcEditorFeatureEntryImpl @Inject constructor(
             ) {
                 val saveAsTitle = LocalContext.current.getString(R.string.nfc_dialog_save_as_title)
                 ComposableNfcEditorScreen(
-                    onBack = {
-                        navController.popBackStack()
-                    },
-                    onSaveEndAction = {
-                        navController.popBackStack()
-                    },
+                    onBack = navController::popBackStack,
+                    onSaveEndAction = navController::popBackStack,
                     onSaveAsEndAction = { notSavedFlipperKey ->
-                        val keyEditScreen = keyEditFeatureEntry.getKeyEditScreen(notSavedFlipperKey, saveAsTitle)
+                        val keyEditScreen =
+                            keyEditFeatureEntry.getKeyEditScreen(notSavedFlipperKey, saveAsTitle)
                         navController.navigate(keyEditScreen)
                     }
                 )

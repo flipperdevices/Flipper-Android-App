@@ -40,7 +40,8 @@ import com.flipperdevices.widget.screen.viewmodel.WidgetSelectViewModel
 fun ColumnScope.ComposableKeys(
     archiveApi: ArchiveApi,
     widgetSelectViewModel: WidgetSelectViewModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onSelectKey: (FlipperKeyPath) -> Unit
 ) {
     val keys by widgetSelectViewModel.getKeysFlow().collectAsState()
     val favoriteKeys by widgetSelectViewModel.getFavoriteKeysFlow().collectAsState()
@@ -58,7 +59,7 @@ fun ColumnScope.ComposableKeys(
                     favoriteKeys = favoriteKeys,
                     otherKeys = keys,
                     synchronizationState = synchronizationState,
-                    onKeyOpen = widgetSelectViewModel::onSelectKey
+                    onKeyOpen = onSelectKey
                 )
             }
         }

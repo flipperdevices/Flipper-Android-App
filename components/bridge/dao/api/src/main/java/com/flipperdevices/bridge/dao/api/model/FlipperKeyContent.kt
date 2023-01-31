@@ -4,6 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.io.FileInputStream
@@ -39,8 +40,12 @@ sealed class FlipperKeyContent : Parcelable {
     @Parcelize
     @Serializable
     data class InternalFile(val path: String) : FlipperKeyContent() {
+
+        @IgnoredOnParcel
+        @Transient
+        private val file = File(path)
+
         override fun openStream(): InputStream {
-            val file = File(path)
             return if (file.exists()) {
                 FileInputStream(file)
             } else {
@@ -48,7 +53,7 @@ sealed class FlipperKeyContent : Parcelable {
             }
         }
 
-        override fun length() = File(path).length()
+        override fun length() = file.length()
     }
 
     abstract fun openStream(): InputStream

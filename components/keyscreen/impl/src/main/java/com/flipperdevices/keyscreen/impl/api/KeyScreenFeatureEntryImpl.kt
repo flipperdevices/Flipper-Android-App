@@ -62,15 +62,17 @@ class KeyScreenFeatureEntryImpl @Inject constructor(
                     nfcEditorApi = nfcEditor,
                     keyEmulateApi = keyEmulateApi,
                     onShare = onShare,
-                    onBack = { navController.popBackStack() },
+                    onBack = navController::popBackStack,
                     onOpenNfcEditor = {
                         viewModel.openNfcEditor { flipperKeyPath ->
-                            val nfcEditorScreen = nfcEditorFeatureEntry.getNfcEditorScreen(flipperKeyPath)
+                            val nfcEditorScreen =
+                                nfcEditorFeatureEntry.getNfcEditorScreen(flipperKeyPath)
                             navController.navigate(nfcEditorScreen)
                         }
                     },
                     onOpenEditScreen = { flipperKeyPath ->
-                        val keyEditScreen = keyEditFeatureEntry.getKeyEditScreen(flipperKeyPath, null)
+                        val keyEditScreen =
+                            keyEditFeatureEntry.getKeyEditScreen(flipperKeyPath, null)
                         navController.navigate(keyEditScreen)
                     },
                 )
