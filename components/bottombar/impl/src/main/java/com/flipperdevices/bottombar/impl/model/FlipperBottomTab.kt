@@ -7,6 +7,6 @@ import com.flipperdevices.core.ui.navigation.FeatureScreenRootRoute
  */
 enum class FlipperBottomTab(val startRoute: FeatureScreenRootRoute) {
     DEVICE(FeatureScreenRootRoute.DEVICE_INFO),
-    ARCHIVE(FeatureScreenRootRoute.DEVICE_INFO),
+    ARCHIVE(FeatureScreenRootRoute.ARCHIVE),
     HUB(FeatureScreenRootRoute.HUB)
 }
