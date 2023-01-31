@@ -1,5 +1,6 @@
 package com.flipperdevices.nfceditor.impl.composable
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -20,8 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.hexkeyboard.ComposableHexKeyboard
-import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.keyedit.api.NotSavedFlipperKey
 import com.flipperdevices.keyscreen.shared.bar.ComposableBarBackIcon
 import com.flipperdevices.keyscreen.shared.bar.ComposableBarSimpleText
 import com.flipperdevices.keyscreen.shared.bar.ComposableBarTitle
@@ -30,21 +31,28 @@ import com.flipperdevices.keyscreen.shared.bar.ComposableKeyScreenAppBar
 import com.flipperdevices.nfceditor.impl.R
 import com.flipperdevices.nfceditor.impl.composable.dialog.ComposableNfcEditExitDialog
 import com.flipperdevices.nfceditor.impl.viewmodel.NfcEditorViewModel
+import tangle.viewmodel.compose.tangleViewModel
 
 private const val KEYBOARD_HEIGHT_DP = 256
 
 @Composable
 fun ComposableNfcEditorScreen(
-    nfcEditorViewModel: NfcEditorViewModel,
-    modifier: Modifier = Modifier
+    onBack: () -> Unit,
+    onSaveEndAction: () -> Unit,
+    modifier: Modifier = Modifier,
+    nfcEditorViewModel: NfcEditorViewModel = tangleViewModel(),
+    onSaveAsEndAction: (NotSavedFlipperKey) -> Unit
 ) {
+    BackHandler {
+        nfcEditorViewModel.onProcessBack(onBack)
+    }
+
     val nfcEditorState by nfcEditorViewModel.getNfcEditorState().collectAsState()
-    val router = LocalRouter.current
     val localNfcEditorState = nfcEditorState
 
     if (localNfcEditorState == null) {
         LaunchedEffect(key1 = localNfcEditorState) {
-            router.exit()
+            onBack()
         }
         return
     }
@@ -52,19 +60,19 @@ fun ComposableNfcEditorScreen(
     if (showOnSaveDialog) {
         ComposableNfcEditExitDialog(
             onDismiss = nfcEditorViewModel::dismissDialog,
-            onNotSave = { router.exit() },
-            onSave = { nfcEditorViewModel.onSave(router) },
-            onSaveAs = { nfcEditorViewModel.onSaveAs(router) }
+            onNotSave = onBack,
+            onSave = { nfcEditorViewModel.onSaveProcess(onSaveEndAction) },
+            onSaveAs = { nfcEditorViewModel.onSaveAs(onSaveAsEndAction) }
         )
     }
 
     Column(modifier = modifier.fillMaxSize()) {
         ComposableNfcEditorBar(localNfcEditorState.cardName, onBack = {
-            nfcEditorViewModel.onBack(router)
+            nfcEditorViewModel.onProcessBack(onBack)
         }, onSave = {
-                nfcEditorViewModel.onSave(router)
+                nfcEditorViewModel.onSaveProcess(onSaveEndAction)
             }, onSaveAs = {
-                nfcEditorViewModel.onSaveAs(router)
+                nfcEditorViewModel.onSaveAs(onSaveAsEndAction)
             })
         ComposableNfcEditor(
             modifier = Modifier.weight(1f),

@@ -29,8 +29,8 @@ class KeyEditFragment : ComposeFragment() {
             viewModel,
             title = title,
             state = state,
-            onCancel = router::exit,
-            onSave = { viewModel.onSave(router) }
+            onBack = router::exit,
+            onSave = { viewModel.onSave { router.exit() } }
         )
     }
 

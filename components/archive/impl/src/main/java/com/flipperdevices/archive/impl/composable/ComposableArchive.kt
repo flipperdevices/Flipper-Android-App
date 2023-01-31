@@ -24,7 +24,6 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.archive.impl.R
 import com.flipperdevices.archive.impl.composable.category.ComposableCategoryCard
 import com.flipperdevices.archive.impl.composable.page.ArchiveProgressScreen
@@ -32,7 +31,7 @@ import com.flipperdevices.archive.impl.composable.page.ComposableAllKeysTitle
 import com.flipperdevices.archive.impl.composable.page.ComposableFavoriteKeysTitle
 import com.flipperdevices.archive.impl.composable.page.ComposableKeysGrid
 import com.flipperdevices.archive.impl.viewmodel.GeneralTabViewModel
-import com.flipperdevices.archive.impl.viewmodel.KeyItemViewModel
+import com.flipperdevices.archive.model.CategoryType
 import com.flipperdevices.archive.shared.composable.ComposableAppBar
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
@@ -48,7 +47,10 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 @Composable
 fun ComposableArchive(
     synchronizationUiApi: SynchronizationUiApi,
-    tabViewModel: GeneralTabViewModel = tangleViewModel()
+    onOpenSearchScreen: () -> Unit,
+    onOpenKeyScreen: (FlipperKeyPath) -> Unit,
+    tabViewModel: GeneralTabViewModel = tangleViewModel(),
+    onOpenCategory: (CategoryType) -> Unit
 ) {
     val keys by tabViewModel.getKeys().collectAsState()
     val favoriteKeys by tabViewModel.getFavoriteKeys().collectAsState()
@@ -65,7 +67,10 @@ fun ComposableArchive(
             favoriteKeys,
             tabViewModel,
             synchronizationState,
-            isKeysPresented
+            isKeysPresented,
+            onOpenKeyScreen,
+            onOpenSearchScreen,
+            onOpenCategory
         )
     }
 }
@@ -78,8 +83,10 @@ private fun ComposableArchiveReady(
     tabViewModel: GeneralTabViewModel,
     synchronizationState: SynchronizationState,
     isKeysPresented: Boolean,
-    modifier: Modifier = Modifier,
-    keyItemViewModel: KeyItemViewModel = viewModel(),
+    onOpenKeyScreen: (FlipperKeyPath) -> Unit,
+    onOpenSearchScreen: () -> Unit,
+    onOpenCategory: (CategoryType) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier,
@@ -88,7 +95,7 @@ private fun ComposableArchiveReady(
         ComposableAppBar(
             title = stringResource(R.string.archive_title),
             iconId = DesignSystem.drawable.ic_search,
-            onIconClick = { tabViewModel.onOpenSearch() }
+            onIconClick = onOpenSearchScreen
         )
         SwipeRefresh(onRefresh = tabViewModel::refresh) {
             LazyColumn(
@@ -96,7 +103,7 @@ private fun ComposableArchiveReady(
                     .fillMaxWidth()
             ) {
                 item {
-                    ComposableCategoryCard()
+                    ComposableCategoryCard(onOpenCategory = onOpenCategory)
                 }
                 if (isKeysPresented) {
                     KeyCatalog(
@@ -104,7 +111,7 @@ private fun ComposableArchiveReady(
                         otherKeys = keys,
                         synchronizationUiApi = synchronizationUiApi,
                         synchronizationState = synchronizationState,
-                        onKeyOpen = keyItemViewModel::open
+                        onKeyOpen = onOpenKeyScreen
                     )
                 }
             }

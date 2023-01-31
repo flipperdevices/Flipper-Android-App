@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.keyscreen.api.KeyEmulateApi
 import com.flipperdevices.keyscreen.impl.model.KeyScreenState
@@ -25,7 +26,10 @@ fun ComposableKeyScreen(
     synchronizationUiApi: SynchronizationUiApi,
     nfcEditorApi: NfcEditorApi,
     keyEmulateApi: KeyEmulateApi,
-    onShare: () -> Unit
+    onBack: () -> Unit,
+    onShare: (FlipperKeyPath) -> Unit,
+    onOpenNfcEditor: (FlipperKeyPath) -> Unit,
+    onOpenEditScreen: (FlipperKeyPath) -> Unit
 ) {
     val keyScreenState by viewModel.getKeyScreenState().collectAsState()
 
@@ -38,7 +42,10 @@ fun ComposableKeyScreen(
             nfcEditorApi,
             synchronizationUiApi,
             keyEmulateApi,
-            onShare = onShare
+            onShare = onShare,
+            onBack = onBack,
+            onOpenNfcEditor = onOpenNfcEditor,
+            onOpenEditScreen = onOpenEditScreen
         )
     }
 }

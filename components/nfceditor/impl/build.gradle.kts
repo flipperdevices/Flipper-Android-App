@@ -2,6 +2,7 @@ plugins {
     id("flipper.android-compose")
     id("com.squareup.anvil")
     id("kotlin-kapt")
+    id("kotlinx-serialization")
 }
 
 dependencies {
@@ -14,6 +15,7 @@ dependencies {
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.hexkeyboard)
+    implementation(projects.components.core.ui.navigation)
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.navigation)
     implementation(projects.components.core.log)
@@ -35,8 +37,10 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
     implementation(libs.compose.insets)
+    implementation(libs.compose.navigation)
 
     implementation(libs.kotlin.immutable.collections)
+    implementation(libs.kotlin.serialization.json)
 
     implementation(libs.lifecycle.compose)
     implementation(libs.ktx.fragment)
@@ -44,6 +48,9 @@ dependencies {
     // Dagger deps
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
+    implementation(libs.tangle.viewmodel.compose)
+    implementation(libs.tangle.viewmodel.api)
+    anvil(libs.tangle.viewmodel.compiler)
 
     // Testing
     testImplementation(projects.components.core.test)

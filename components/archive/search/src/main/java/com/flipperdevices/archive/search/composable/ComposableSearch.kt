@@ -7,29 +7,31 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.flipperdevices.archive.search.R
 import com.flipperdevices.archive.search.viewmodel.SearchViewModel
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
-import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.core.ui.searchbar.ComposableSearchBar
 
 @Composable
 fun ComposableSearch(
     synchronizationUiApi: SynchronizationUiApi,
     searchViewModel: SearchViewModel,
-    modifier: Modifier = Modifier
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier,
+    onOpenKeyScreen: (FlipperKeyPath) -> Unit
 ) {
-    val router = LocalRouter.current
     Column(modifier) {
         ComposableSearchBar(
             hint = stringResource(R.string.search_field_hint),
             onChangeText = searchViewModel::onChangeText,
-            onBack = router::exit
+            onBack = onBack
         )
         ComposableSearchContent(
             modifier = Modifier
                 .weight(weight = 1f)
                 .fillMaxWidth(),
             synchronizationUiApi = synchronizationUiApi,
-            searchViewModel = searchViewModel
+            searchViewModel = searchViewModel,
+            onOpenKeyScreen = onOpenKeyScreen,
         )
     }
 }

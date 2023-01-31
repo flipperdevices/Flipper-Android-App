@@ -3,47 +3,40 @@ package com.flipperdevices.nfceditor.impl.viewmodel
 import android.app.Application
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.dao.api.delegates.KeyParser
+import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UpdateKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
-import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.ui.hexkeyboard.HexKey
 import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
-import com.flipperdevices.keyedit.api.KeyEditApi
 import com.flipperdevices.keyedit.api.NotSavedFlipperKey
 import com.flipperdevices.keyedit.api.toNotSavedFlipperFile
-import com.flipperdevices.nfceditor.impl.R
-import com.flipperdevices.nfceditor.impl.di.NfcEditorComponent
+import com.flipperdevices.nfceditor.impl.api.EXTRA_KEY_PATH
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCellLocation
 import com.flipperdevices.nfceditor.impl.model.NfcEditorState
-import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import javax.inject.Inject
+import tangle.inject.TangleParam
+import tangle.viewmodel.VMInject
 
-class NfcEditorViewModel(
+@Suppress("LongParameterList")
+class NfcEditorViewModel @VMInject constructor(
+    @TangleParam(EXTRA_KEY_PATH)
+    private val flipperKeyPath: FlipperKeyPath,
     application: Application,
-    private val flipperKey: FlipperKey
+    private val keyParser: KeyParser,
+    private val updateKeyApi: UpdateKeyApi,
+    private val synchronizationApi: SynchronizationApi,
+    private val simpleKeyApi: SimpleKeyApi
 ) : AndroidLifecycleViewModel(application), LogTagProvider {
     override val TAG = "NfcEditorViewModel"
-
-    @Inject
-    lateinit var keyParser: KeyParser
-
-    @Inject
-    lateinit var updateKeyApi: UpdateKeyApi
-
-    @Inject
-    lateinit var synchronizationApi: SynchronizationApi
-
-    @Inject
-    lateinit var keyEditApi: KeyEditApi
 
     private val textUpdaterHelper = TextUpdaterHelper()
 
@@ -51,12 +44,16 @@ class NfcEditorViewModel(
 
     private var isDirty = false
 
+    private val flipperKeyFlow = MutableStateFlow<FlipperKey?>(null)
+
     val currentActiveCell: NfcEditorCellLocation?
         get() = textUpdaterHelper.currentActiveCell
 
     init {
-        ComponentHolder.component<NfcEditorComponent>().inject(this)
         viewModelScope.launch(Dispatchers.Default) {
+            val flipperKey = requireNotNull(simpleKeyApi.getKey(flipperKeyPath)) { "Not find key by $flipperKeyPath" }
+            flipperKeyFlow.emit(flipperKey)
+
             val parsedKey = keyParser.parseKey(flipperKey)
             if (parsedKey !is FlipperKeyParsed.NFC) {
                 textUpdaterHelper.onFileLoad(null)
@@ -85,7 +82,7 @@ class NfcEditorViewModel(
         textUpdaterHelper.onKeyboardPress(hexKey)
     }
 
-    fun onBack(router: Router) {
+    fun onProcessBack(onEndAction: () -> Unit) {
         if (currentActiveCell != null) {
             onCellFocus(null)
             return
@@ -94,27 +91,31 @@ class NfcEditorViewModel(
             showOnSaveDialogState.update { true }
             return
         }
-        router.exit()
+        onEndAction()
     }
 
-    fun onSave(router: Router) {
+    fun onSaveProcess(onEndAction: () -> Unit) {
         val localNfcEditorState = getNfcEditorState().value ?: return
 
         viewModelScope.launch {
+            val flipperKey = requireNotNull(flipperKeyFlow.first())
+
             val newFlipperKey = NfcEditorStateProducerHelper.produceShadowFlipperKeyFromState(
                 flipperKey,
                 localNfcEditorState
             )
             updateKeyApi.updateKey(flipperKey, newFlipperKey)
             synchronizationApi.startSynchronization(force = true)
-            router.exit()
+            onEndAction()
         }
     }
 
-    fun onSaveAs(router: Router) {
+    fun onSaveAs(onEndAction: (NotSavedFlipperKey) -> Unit) {
         val localNfcEditorState = getNfcEditorState().value ?: return
 
         viewModelScope.launch {
+            val flipperKey = requireNotNull(flipperKeyFlow.first())
+
             val newFlipperKey = NfcEditorStateProducerHelper.produceClearFlipperKeyFromState(
                 flipperKey,
                 localNfcEditorState
@@ -124,10 +125,7 @@ class NfcEditorViewModel(
                 additionalFiles = listOf(),
                 notes = newFlipperKey.notes
             )
-            val saveAsTitle = withContext(Dispatchers.Main) {
-                getApplication<Application>().getString(R.string.nfc_dialog_save_as_title)
-            }
-            router.navigateTo(keyEditApi.getScreen(notSavedKey, saveAsTitle))
+            onEndAction(notSavedKey)
         }
     }
 }

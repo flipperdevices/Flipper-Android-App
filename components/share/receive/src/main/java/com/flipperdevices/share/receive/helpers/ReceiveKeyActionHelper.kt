@@ -1,6 +1,5 @@
 package com.flipperdevices.share.receive.helpers
 
-import android.content.Context
 import com.flipperdevices.bridge.dao.api.delegates.KeyParser
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
@@ -9,11 +8,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
-import com.flipperdevices.keyedit.api.KeyEditApi
-import com.flipperdevices.keyedit.api.NotSavedFlipperKey
-import com.flipperdevices.keyedit.api.toNotSavedFlipperFile
 import com.flipperdevices.share.receive.R
-import com.github.terrakok.cicerone.Router
 import javax.inject.Inject
 
 private const val NOTIFICATION_DURATION_MS = 3 * 1000L
@@ -22,8 +17,7 @@ class ReceiveKeyActionHelper @Inject constructor(
     private val notificationStorage: InAppNotificationStorage,
     private val simpleKeyApi: SimpleKeyApi,
     private val keyParser: KeyParser,
-    private val utilsKeyApi: UtilsKeyApi,
-    private val keyEditApi: KeyEditApi
+    private val utilsKeyApi: UtilsKeyApi
 ) {
     suspend fun saveKey(key: FlipperKey): Result<Unit> = runCatching {
         simpleKeyApi.insertKey(key)
@@ -34,16 +28,6 @@ class ReceiveKeyActionHelper @Inject constructor(
                 durationMs = NOTIFICATION_DURATION_MS
             )
         )
-    }
-
-    suspend fun editKey(flipperKey: FlipperKey, router: Router, context: Context) {
-        val notSavedKey = NotSavedFlipperKey(
-            mainFile = flipperKey.mainFile.toNotSavedFlipperFile(context),
-            additionalFiles = listOf(),
-            notes = flipperKey.notes
-        )
-        val title = flipperKey.mainFile.path.nameWithoutExtension
-        router.navigateTo(keyEditApi.getScreen(notSavedKey, title))
     }
 
     private suspend fun findNewPathForKey(flipperKey: FlipperKey): FlipperKeyPath {

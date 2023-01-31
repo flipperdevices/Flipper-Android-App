@@ -10,11 +10,10 @@ import com.flipperdevices.core.ktx.android.vibrateCompat
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.wtf
-import com.flipperdevices.keyedit.impl.fragment.EXTRA_EDITABLE_KEY
+import com.flipperdevices.keyedit.impl.api.EXTRA_EDITABLE_KEY
 import com.flipperdevices.keyedit.impl.model.EditableKey
 import com.flipperdevices.keyedit.impl.model.KeyEditState
 import com.flipperdevices.keyedit.impl.viewmodel.processors.EditableKeyProcessor
-import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -85,7 +84,7 @@ class KeyEditViewModel @VMInject constructor(
         }
     }
 
-    fun onSave(router: Router) {
+    fun onSave(onEndAction: () -> Unit) {
         val savingState = keyEditState.updateAndGet {
             if (it is KeyEditState.Editing) {
                 KeyEditState.Saving(it)
@@ -108,12 +107,12 @@ class KeyEditViewModel @VMInject constructor(
                     is EditableKey.Existed -> existedKeyProcessor.onSave(
                         editableKey,
                         savingState.editState,
-                        router
+                        onEndAction
                     )
                     is EditableKey.Limb -> limbKeyProcessor.onSave(
                         editableKey,
                         savingState.editState,
-                        router
+                        onEndAction
                     )
                 }
             } catch (throwable: Throwable) {

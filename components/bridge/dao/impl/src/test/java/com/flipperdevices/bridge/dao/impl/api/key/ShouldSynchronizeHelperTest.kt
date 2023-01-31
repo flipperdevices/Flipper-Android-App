@@ -118,7 +118,7 @@ class ShouldSynchronizeHelperTest {
                             folder = "test",
                             nameWithExtension = "key.nfc"
                         ),
-                        content = FlipperKeyContent.InternalFile(tmpFile)
+                        content = FlipperKeyContent.InternalFile(tmpFile.absolutePath)
                     )
                 )
 
@@ -266,7 +266,7 @@ class ShouldSynchronizeHelperTest {
                                 folder = "test",
                                 nameWithExtension = "additional_file.nfc"
                             ),
-                            content = FlipperKeyContent.InternalFile(tmpFile)
+                            content = FlipperKeyContent.InternalFile(tmpFile.absolutePath)
                         )
                     )
                 )

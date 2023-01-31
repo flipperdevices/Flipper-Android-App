@@ -9,6 +9,9 @@ dependencies {
 
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.core.di)
+    implementation(projects.components.core.ui.navigation)
+
+    implementation(libs.compose.navigation)
 
     implementation(libs.appcompat)
 
