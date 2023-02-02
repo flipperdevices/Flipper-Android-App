@@ -19,7 +19,7 @@
 - [REFACTOR] Enable detekt formatting with rules
 - [REFACTOR] Fix gradle warnings (Deprecated API, PredefinedEnumMap)
 - [REFACTOR] Replace some clickable to card function + reuse orange app bar
-- [REFACTOR] Google Compose Navigation (archive)
+- [REFACTOR] Google Compose Navigation (archive, firstpair)
 
 # 1.4.0
 

@@ -2,10 +2,7 @@ package com.flipperdevices.firstpair.impl.fragments.permissions
 
 import android.app.Activity
 import android.bluetooth.BluetoothAdapter
-import android.content.Intent
 import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.Fragment
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.log.LogTagProvider
@@ -13,11 +10,13 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.log.warn
 import com.flipperdevices.firstpair.impl.di.FirstPairComponent
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 import javax.inject.Provider
 
 class BluetoothEnableHelper(
-    fragment: Fragment,
     private val listener: Listener
 ) : LogTagProvider {
     override val TAG = "BluetoothEnableHelper"
@@ -29,16 +28,18 @@ class BluetoothEnableHelper(
         ComponentHolder.component<FirstPairComponent>().inject(this)
     }
 
+    private val _state = MutableStateFlow(false)
+    fun state() = _state.asStateFlow()
+
     private val bluetoothAdapter by bluetoothAdapterProvider
 
-    // Result listener for bluetooth toggle
-    private val bluetoothEnableWithResult = fragment.registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result: ActivityResult ->
+    fun processBluetoothActivityResult(
+        result: ActivityResult
+    ) {
         if (result.resultCode != Activity.RESULT_OK) {
             warn { "Bluetooth enable request failed, code is ${result.resultCode}" }
             listener.onBluetoothUserDenied()
-            return@registerForActivityResult
+            return
         }
         info { "Successful grant bluetooth permission" }
         listener.onBluetoothEnabled()
@@ -52,7 +53,7 @@ class BluetoothEnableHelper(
             return
         }
         verbose { "Request bluetooth enable" }
-        bluetoothEnableWithResult.launch(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE))
+        _state.update { true }
     }
 
     fun isBluetoothEnabled(): Boolean {
