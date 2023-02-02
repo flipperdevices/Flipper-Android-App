@@ -50,6 +50,7 @@ class PermissionStateBuilder(
 
     fun permissionEnableState() = permissionEnableHelper.state()
     fun bluetoothEnableState() = bluetoothEnableHelper.state()
+    fun locationEnableState() = locationEnableHelper.locationDialogState()
 
     fun processPermissionActivityResult(
         permissionsGrantedMap: Map<String, @JvmSuppressWildcards Boolean>,
@@ -58,6 +59,9 @@ class PermissionStateBuilder(
     fun processBluetoothActivityResult(
         activityResult: ActivityResult
     ) = bluetoothEnableHelper.processBluetoothActivityResult(activityResult)
+
+    fun processLocationCancel() = locationEnableHelper.processLocationDecline()
+    fun processLocationSettings() = locationEnableHelper.processLocationAccept()
 
     // If a user has refused one permissive more than three times, we offer him to open the settings
     private var permissionDeniedByUserCount = mutableMapOf<String, Int>()

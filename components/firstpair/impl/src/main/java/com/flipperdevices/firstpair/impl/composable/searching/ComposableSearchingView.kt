@@ -1,3 +1,4 @@
+
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import android.content.IntentFilter
@@ -16,6 +17,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import com.flipperdevices.core.ktx.android.observeAsState
+import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialog
+import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialogModel
+import com.flipperdevices.firstpair.impl.R
 import com.flipperdevices.firstpair.impl.composable.searching.ComposableSearchingScreen
 import com.flipperdevices.firstpair.impl.model.SearchingContent
 import com.flipperdevices.firstpair.impl.viewmodels.SearchStateBuilder
@@ -41,6 +45,14 @@ internal fun ComposableSearchingView(
 
     val permissionRequestState by permissionStateBuilder.permissionEnableState().collectAsState()
     val bluetoothRequestState by permissionStateBuilder.bluetoothEnableState().collectAsState()
+    val locationRequestState by permissionStateBuilder.locationEnableState().collectAsState()
+
+    if (locationRequestState) {
+        ComposableLocationEnableDialog(
+            onCancel = permissionStateBuilder::processLocationCancel,
+            onAccept = permissionStateBuilder::processLocationSettings
+        )
+    }
 
     val searchStateBuilder = remember(
         context,
@@ -83,6 +95,27 @@ internal fun ComposableSearchingView(
         onDeviceClick = pairViewModel::startConnectToDevice,
         onRefreshSearching = searchStateBuilder::resetByUser
     )
+}
+
+@Composable
+private fun ComposableLocationEnableDialog(
+    onCancel: () -> Unit,
+    onAccept: () -> Unit
+) {
+    val dialogModel = remember(onCancel, onAccept) {
+        FlipperMultiChoiceDialogModel.Builder()
+            .setTitle(R.string.firstpair_permission_enable_location_title)
+            .setDescription(R.string.firstpair_permission_location_dialog)
+            .setOnDismissRequest(onCancel)
+            .addButton(
+                R.string.firstpair_permission_settings,
+                onAccept,
+                isActive = true
+            )
+            .addButton(R.string.firstpair_permission_cancel_btn, onCancel)
+            .build()
+    }
+    FlipperMultiChoiceDialog(model = dialogModel)
 }
 
 @Composable
