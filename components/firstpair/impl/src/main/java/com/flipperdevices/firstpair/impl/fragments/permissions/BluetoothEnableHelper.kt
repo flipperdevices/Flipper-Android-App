@@ -36,6 +36,7 @@ class BluetoothEnableHelper(
     fun processBluetoothActivityResult(
         result: ActivityResult
     ) {
+        _state.update { false }
         if (result.resultCode != Activity.RESULT_OK) {
             warn { "Bluetooth enable request failed, code is ${result.resultCode}" }
             listener.onBluetoothUserDenied()

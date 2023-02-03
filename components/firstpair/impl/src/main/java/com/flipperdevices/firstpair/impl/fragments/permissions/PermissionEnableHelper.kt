@@ -21,6 +21,7 @@ class PermissionEnableHelper(
     fun processPermissionActivityResult(
         permissionsGrantedMap: Map<String, @JvmSuppressWildcards Boolean>,
     ) {
+        _state.update { arrayOf() }
         val notGrantedPermissions = permissionsGrantedMap.filterNot { it.value }.map { it.key }
         if (notGrantedPermissions.isEmpty()) {
             verbose { "User grant all permission (${permissions.contentToString()})" }

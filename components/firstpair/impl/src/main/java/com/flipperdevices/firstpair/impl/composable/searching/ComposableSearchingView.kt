@@ -1,8 +1,6 @@
 
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
-import android.content.IntentFilter
-import android.location.LocationManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -56,6 +54,7 @@ internal fun ComposableSearchingView(
 
     val searchStateBuilder = remember(
         context,
+        scope,
         bleDeviceViewModel,
         pairViewModel,
         permissionStateBuilder
@@ -135,7 +134,9 @@ private fun ComposableSearchingInternal(
     )
 
     LaunchedEffect(key1 = permissionRequestState) {
-        permissionActivityResult.launch(permissionRequestState)
+        if (permissionRequestState.isNotEmpty()) {
+            permissionActivityResult.launch(permissionRequestState)
+        }
     }
 
     val bluetoothActivityResult = rememberLauncherForActivityResult(
@@ -150,16 +151,14 @@ private fun ComposableSearchingInternal(
     }
 
     val lifecycleState by LocalLifecycleOwner.current.lifecycle.observeAsState()
-    when (lifecycleState) {
-        Lifecycle.Event.ON_RESUME -> invalidate()
-        else -> {}
+    LaunchedEffect(key1 = lifecycleState) {
+        when (lifecycleState) {
+            Lifecycle.Event.ON_RESUME -> invalidate()
+            else -> {}
+        }
     }
 
     DisposableEffect(context) {
-        val filter = IntentFilter()
-        filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED)
-        filter.addAction(LocationManager.PROVIDERS_CHANGED_ACTION)
-
         broadcast.register(context)
 
         onDispose {
