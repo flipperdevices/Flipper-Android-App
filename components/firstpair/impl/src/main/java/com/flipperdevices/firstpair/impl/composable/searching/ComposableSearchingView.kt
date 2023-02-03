@@ -41,6 +41,12 @@ internal fun ComposableSearchingView(
 
     val permissionStateBuilder = remember(context) { PermissionStateBuilder(context = context) }
 
+    DisposableEffect(key1 = Unit) {
+        onDispose {
+            permissionStateBuilder.clear()
+        }
+    }
+
     val permissionRequestState by permissionStateBuilder.permissionEnableState().collectAsState()
     val bluetoothRequestState by permissionStateBuilder.bluetoothEnableState().collectAsState()
     val locationRequestState by permissionStateBuilder.locationEnableState().collectAsState()

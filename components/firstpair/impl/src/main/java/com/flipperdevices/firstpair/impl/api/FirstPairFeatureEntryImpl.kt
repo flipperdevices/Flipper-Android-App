@@ -56,9 +56,7 @@ class FirstPairFeatureEntryImpl @Inject constructor(
                     onHelpClicking = {
                         navController.navigate(route = getHelpScreen())
                     },
-                    onFinishConnection = {
-                        singleActivityApi.open()
-                    },
+                    onFinishConnection = singleActivityApi::open,
                     onBack = navController::popBackStack
                 )
             }
