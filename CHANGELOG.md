@@ -14,6 +14,7 @@
 - [FIX] On `save dump as` save only editable key
 - [FIX] Remove emulate button on deleted screen
 - [FIX] Fix shadow file synchronization
+- [REFACTOR] Bump Android Gradle Plugin
 - [REFACTOR] Fix detekt compose issues
 - [REFACTOR] Format markdown changelog with clickable link and bold nickname
 - [REFACTOR] Enable detekt formatting with rules
