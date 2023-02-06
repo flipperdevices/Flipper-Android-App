@@ -63,12 +63,6 @@ class PermissionStateBuilder(
     fun processLocationCancel() = locationEnableHelper.processLocationDecline()
     fun processLocationSettings() = locationEnableHelper.processLocationAccept()
 
-    fun clear() {
-        permissionEnableHelper.clearState()
-        bluetoothEnableHelper.clearState()
-        locationEnableHelper.clearState()
-    }
-
     // If a user has refused one permissive more than three times, we offer him to open the settings
     private var permissionDeniedByUserCount = mutableMapOf<String, Int>()
 

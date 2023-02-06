@@ -25,13 +25,13 @@ class LocationEnableHelper(
     fun processLocationDecline() {
         verbose { "User click cancel on location enable dialog" }
         listener.onLocationUserDenied()
-        clearState()
+        _state.update { false }
     }
 
     fun processLocationAccept() {
         verbose { "User click on open setting" }
         context.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
-        clearState()
+        _state.update { false }
     }
 
     fun requestLocationEnabled() {
@@ -59,14 +59,10 @@ class LocationEnableHelper(
         val isLocationEnabled = LocationManagerCompat.isLocationEnabled(locationManager)
 
         if (isLocationEnabled) { // Close dialog if it open
-            clearState()
+            _state.update { false }
         }
 
         return isLocationEnabled
-    }
-
-    fun clearState() {
-        _state.update { false }
     }
 
     interface Listener {

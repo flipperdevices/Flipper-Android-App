@@ -1,6 +1,8 @@
 package com.flipperdevices.firstpair.impl.api
 
 import ComposableSearchingView
+import android.app.Activity
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -52,12 +54,17 @@ class FirstPairFeatureEntryImpl @Inject constructor(
                 )
             }
             composable(route = getDeviceScreen()) {
+                val context = LocalContext.current
                 ComposableSearchingView(
                     onHelpClicking = {
                         navController.navigate(route = getHelpScreen())
                     },
                     onFinishConnection = singleActivityApi::open,
-                    onBack = navController::popBackStack
+                    onBack = {
+                        if (navController.popBackStack().not()) {
+                            (context as? Activity)?.finish()
+                        }
+                    }
                 )
             }
             composable(route = getHelpScreen()) {
