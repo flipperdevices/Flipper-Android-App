@@ -4,20 +4,35 @@ import android.content.Context
 import android.content.Intent
 import android.location.LocationManager
 import android.provider.Settings
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.location.LocationManagerCompat
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.log.warn
-import com.flipperdevices.firstpair.impl.R
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
 class LocationEnableHelper(
     private val context: Context,
     private val listener: Listener
 ) : LogTagProvider {
-    private var dialog: AlertDialog? = null
+    private val _state = MutableStateFlow(false)
+    fun locationDialogState() = _state.asStateFlow()
+
     override val TAG = "LocationEnableHelper"
+
+    fun processLocationDecline() {
+        verbose { "User click cancel on location enable dialog" }
+        listener.onLocationUserDenied()
+        _state.update { false }
+    }
+
+    fun processLocationAccept() {
+        verbose { "User click on open setting" }
+        context.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+        _state.update { false }
+    }
 
     fun requestLocationEnabled() {
         if (isLocationEnabled()) {
@@ -27,28 +42,7 @@ class LocationEnableHelper(
             return
         }
 
-        if (dialog != null) {
-            return
-        }
-
-        dialog = AlertDialog.Builder(context)
-            .setTitle(R.string.firstpair_permission_enable_location_title)
-            .setMessage(R.string.firstpair_permission_location_dialog)
-            .setCancelable(false)
-            .setNegativeButton(R.string.firstpair_permission_cancel_btn) { _, _ ->
-                verbose { "User click cancel on location enable dialog" }
-                listener.onLocationUserDenied()
-                dialog?.cancel()
-                dialog = null
-            }
-            .setPositiveButton(R.string.firstpair_permission_settings) { _, _ ->
-                verbose { "User click on open setting" }
-                context.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
-                dialog?.cancel()
-                dialog = null
-            }.create()
-
-        dialog?.show()
+        _state.update { true }
     }
 
     fun isLocationEnabled(): Boolean {
@@ -65,8 +59,7 @@ class LocationEnableHelper(
         val isLocationEnabled = LocationManagerCompat.isLocationEnabled(locationManager)
 
         if (isLocationEnabled) { // Close dialog if it open
-            dialog?.cancel()
-            dialog = null
+            _state.update { false }
         }
 
         return isLocationEnabled

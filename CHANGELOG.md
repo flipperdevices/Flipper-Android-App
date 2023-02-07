@@ -14,12 +14,13 @@
 - [FIX] On `save dump as` save only editable key
 - [FIX] Remove emulate button on deleted screen
 - [FIX] Fix shadow file synchronization
+- [REFACTOR] Bump Android Gradle Plugin
 - [REFACTOR] Fix detekt compose issues
 - [REFACTOR] Format markdown changelog with clickable link and bold nickname
 - [REFACTOR] Enable detekt formatting with rules
 - [REFACTOR] Fix gradle warnings (Deprecated API, PredefinedEnumMap)
 - [REFACTOR] Replace some clickable to card function + reuse orange app bar
-- [REFACTOR] Google Compose Navigation (archive)
+- [REFACTOR] Google Compose Navigation (archive, firstpair)
 
 # 1.4.0
 

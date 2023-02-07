@@ -16,6 +16,8 @@ dependencies {
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.fragment)
     implementation(projects.components.core.ui.theme)
+    implementation(projects.components.core.ui.navigation)
+    implementation(projects.components.core.ui.dialog)
 
     implementation(projects.components.deeplink.api)
     implementation(projects.components.singleactivity.api)
@@ -29,17 +31,23 @@ dependencies {
     implementation(libs.cicerone)
     implementation(libs.appcompat)
 
+    implementation(libs.kotlin.immutable.collections)
+
     // Compose
     implementation(libs.compose.ui)
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
     implementation(libs.compose.swipetorefresh)
+    implementation(libs.compose.navigation)
     implementation(libs.lifecycle.compose)
 
     // Dagger deps
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
+    implementation(libs.tangle.viewmodel.compose)
+    implementation(libs.tangle.viewmodel.api)
+    anvil(libs.tangle.viewmodel.compiler)
 
     implementation(libs.ktx)
     implementation(libs.ktx.fragment)
