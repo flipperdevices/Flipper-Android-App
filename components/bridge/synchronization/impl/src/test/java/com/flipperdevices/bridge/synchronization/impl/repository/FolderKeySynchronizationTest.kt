@@ -121,15 +121,6 @@ class FolderKeySynchronizationTest {
 
         coVerify {
             keyDiffApplier.applyDiffs(
-                diffWithFlipper = any(),
-                diffWithAndroid = any(),
-                tracker = any()
-            )
-        }
-
-        /*
-        coVerify {
-            keyDiffApplier.applyDiffs(
                 diffWithAndroid = eq(
                     listOf(
                         KeyDiff(
@@ -150,6 +141,6 @@ class FolderKeySynchronizationTest {
                 ),
                 tracker = any()
             )
-        }*/
+        }
     }
 }
