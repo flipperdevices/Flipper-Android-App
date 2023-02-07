@@ -11,6 +11,7 @@ import javax.inject.Inject
 
 interface ManifestRepository {
     suspend fun updateManifest(
+        folder: String,
         keys: List<KeyWithHash>,
     )
 
@@ -41,9 +42,15 @@ class ManifestRepositoryImpl @Inject constructor(
     private val manifestStorage: ManifestStorage
 ) : ManifestRepository {
     override suspend fun updateManifest(
+        folder: String,
         keys: List<KeyWithHash>
     ) {
-        manifestStorage.update { it.copy(keys = keys) }
+        manifestStorage.update { originalFile ->
+            val keysWithoutFolder = originalFile.keys.filterNot {
+                it.keyPath.folder == folder
+            }
+            originalFile.copy(keys = keysWithoutFolder.plus(keys))
+        }
     }
 
     override suspend fun updateManifest(
