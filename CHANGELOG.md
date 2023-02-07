@@ -15,6 +15,7 @@
 - [FIX] Remove emulate button on deleted screen
 - [FIX] Fix shadow file synchronization
 - [FIX] Fix broken synchronization with changes from android
+- [REFACTOR] Bump Android Gradle Plugin
 - [REFACTOR] Fix detekt compose issues
 - [REFACTOR] Format markdown changelog with clickable link and bold nickname
 - [REFACTOR] Enable detekt formatting with rules

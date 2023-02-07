@@ -15,6 +15,9 @@ import com.flipperdevices.core.di.ApplicationParams
 import com.flipperdevices.core.di.ComponentHolder
 import javax.inject.Inject
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.core.app.ActivityCompat
 
 private const val FLIPPER_NOTIFICATION_CHANNEL = "flipper_service"
 const val FLIPPER_NOTIFICATION_ID = 1
@@ -59,7 +62,13 @@ class FlipperNotificationHelper(private val context: Context) {
         createChannelIfNotYet(context)
 
         val notification = notificationBuilder.build()
-        notificationManager.notify(FLIPPER_NOTIFICATION_ID, notification)
+        if (ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            notificationManager.notify(FLIPPER_NOTIFICATION_ID, notification)
+        }
         return notification
     }
 
@@ -80,8 +89,8 @@ class FlipperNotificationHelper(private val context: Context) {
     private fun getIntentForOpenApplication(): PendingIntent {
         val intent = Intent(context, applicationParams.startApplicationClass.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or
-                Intent.FLAG_ACTIVITY_CLEAR_TOP or
-                Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                    Intent.FLAG_ACTIVITY_SINGLE_TOP
         }
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
