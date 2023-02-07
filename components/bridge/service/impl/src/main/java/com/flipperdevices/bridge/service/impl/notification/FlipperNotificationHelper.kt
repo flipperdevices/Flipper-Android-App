@@ -1,11 +1,14 @@
 package com.flipperdevices.bridge.service.impl.notification
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -46,11 +49,6 @@ class FlipperNotificationHelper(private val context: Context) {
         buildAndNotify()
     }
 
-    fun showInfiniteProgressBar() {
-        notificationBuilder.setProgress(0, 0, true)
-        buildAndNotify()
-    }
-
     fun show(): Notification {
         return buildAndNotify()
     }
@@ -59,7 +57,13 @@ class FlipperNotificationHelper(private val context: Context) {
         createChannelIfNotYet(context)
 
         val notification = notificationBuilder.build()
-        notificationManager.notify(FLIPPER_NOTIFICATION_ID, notification)
+        if (ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            notificationManager.notify(FLIPPER_NOTIFICATION_ID, notification)
+        }
         return notification
     }
 

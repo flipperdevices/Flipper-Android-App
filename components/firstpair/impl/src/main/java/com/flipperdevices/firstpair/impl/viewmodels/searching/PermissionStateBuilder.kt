@@ -2,7 +2,7 @@ package com.flipperdevices.firstpair.impl.viewmodels.searching
 
 import android.Manifest
 import android.content.Context
-import androidx.fragment.app.Fragment
+import androidx.activity.result.ActivityResult
 import com.flipperdevices.bridge.api.utils.PermissionHelper
 import com.flipperdevices.core.ktx.jre.getMaxOf
 import com.flipperdevices.core.log.BuildConfig
@@ -29,7 +29,6 @@ private const val DENIED_POSSIBLE_COUNT = 3
 
 @Suppress("TooManyFunctions")
 class PermissionStateBuilder(
-    fragment: Fragment,
     context: Context
 ) : LogTagProvider,
     BluetoothEnableHelper.Listener,
@@ -37,7 +36,6 @@ class PermissionStateBuilder(
     PermissionEnableHelper.Listener {
     override val TAG = "PermissionStateBuilder"
     private var bluetoothEnableHelper: BluetoothEnableHelper = BluetoothEnableHelper(
-        fragment = fragment,
         listener = this
     )
     private var locationEnableHelper: LocationEnableHelper = LocationEnableHelper(
@@ -45,11 +43,25 @@ class PermissionStateBuilder(
         listener = this
     )
     private var permissionEnableHelper: PermissionEnableHelper = PermissionEnableHelper(
-        fragment = fragment,
         context = context,
         listener = this,
         permissions = PermissionHelper.getRequiredPermissions()
     )
+
+    fun permissionEnableState() = permissionEnableHelper.state()
+    fun bluetoothEnableState() = bluetoothEnableHelper.state()
+    fun locationEnableState() = locationEnableHelper.locationDialogState()
+
+    fun processPermissionActivityResult(
+        permissionsGrantedMap: Map<String, @JvmSuppressWildcards Boolean>,
+    ) = permissionEnableHelper.processPermissionActivityResult(permissionsGrantedMap)
+
+    fun processBluetoothActivityResult(
+        activityResult: ActivityResult
+    ) = bluetoothEnableHelper.processBluetoothActivityResult(activityResult)
+
+    fun processLocationCancel() = locationEnableHelper.processLocationDecline()
+    fun processLocationSettings() = locationEnableHelper.processLocationAccept()
 
     // If a user has refused one permissive more than three times, we offer him to open the settings
     private var permissionDeniedByUserCount = mutableMapOf<String, Int>()

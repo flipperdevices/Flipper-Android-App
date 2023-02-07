@@ -25,7 +25,7 @@ fun ComposableSearchingScreen(
     onRefreshSearching: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         ComposableSearchingAppBar(stringResource(R.string.firstpair_search_title), onBack)
         ComposableSearchingStatus(state, onHelpClicking)
         ComposableSearchingContent(

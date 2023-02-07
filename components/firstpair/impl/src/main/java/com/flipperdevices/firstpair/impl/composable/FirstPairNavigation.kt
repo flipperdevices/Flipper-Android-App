@@ -1,17 +1,17 @@
-package com.flipperdevices.archive.impl.composable
+package com.flipperdevices.firstpair.impl.composable
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.flipperdevices.archive.api.ArchiveFeatureEntry
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
+import com.flipperdevices.firstpair.api.FirstPairFeatureEntry
 import kotlinx.collections.immutable.ImmutableSet
 
 @Composable
-internal fun ArchiveNavigation(
+internal fun FirstPairNavigation(
     navController: NavHostController,
-    featureEntry: ArchiveFeatureEntry,
+    featureEntry: FirstPairFeatureEntry,
     composeEntries: ImmutableSet<ComposableFeatureEntry>,
     aggregatesEntries: ImmutableSet<AggregateFeatureEntry>,
 ) {

@@ -1,6 +1,5 @@
 package com.flipperdevices.firstpair.impl.viewmodels.searching
 
-import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -17,15 +16,15 @@ class PermissionChangeDetectBroadcastReceiver(
         searchStateBuilder.invalidate()
     }
 
-    fun register(activity: Activity) {
+    fun register(context: Context) {
         val filter = IntentFilter()
         filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED)
         filter.addAction(LocationManager.PROVIDERS_CHANGED_ACTION)
 
-        activity.registerReceiver(this, filter)
+        context.registerReceiver(this@PermissionChangeDetectBroadcastReceiver, filter)
     }
 
-    fun unregister(activity: Activity) {
-        activity.unregisterReceiver(this)
+    fun unregister(context: Context) {
+        context.unregisterReceiver(this)
     }
 }
