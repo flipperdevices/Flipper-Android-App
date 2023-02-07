@@ -35,7 +35,7 @@ class FolderKeySynchronizationTest {
     fun setUp() {
         androidHashRepository = mockk()
         flipperHashRepository = mockk()
-        manifestRepository = mockk()
+        manifestRepository = mockk(relaxUnitFun = true)
         synchronizationRepository = mockk(relaxUnitFun = true)
         simpleKeyApi = mockk()
         keyDiffApplier = mockk(relaxUnitFun = true)
@@ -140,6 +140,18 @@ class FolderKeySynchronizationTest {
                     )
                 ),
                 tracker = any()
+            )
+        }
+
+        coVerify {
+            manifestRepository.updateManifest(
+                folder = eq(FlipperKeyType.NFC.flipperDir),
+                keys = eq(
+                    listOf(
+                        KeyWithHash(FlipperFilePath("nfc", "from_android.nfc"), "ANDROIDHASH"),
+                        KeyWithHash(FlipperFilePath("nfc", "from_flipper.nfc"), "FLIPPERHASH"),
+                    )
+                )
             )
         }
     }

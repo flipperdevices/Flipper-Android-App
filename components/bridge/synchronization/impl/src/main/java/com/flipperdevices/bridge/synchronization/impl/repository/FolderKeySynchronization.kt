@@ -7,6 +7,7 @@ import com.flipperdevices.bridge.synchronization.impl.model.DiffSource
 import com.flipperdevices.bridge.synchronization.impl.repository.android.AndroidHashRepository
 import com.flipperdevices.bridge.synchronization.impl.repository.android.SynchronizationStateRepository
 import com.flipperdevices.bridge.synchronization.impl.repository.flipper.FlipperHashRepository
+import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestChangeExecutor
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestRepository
 import com.flipperdevices.bridge.synchronization.impl.utils.ProgressWrapperTracker
 import com.flipperdevices.core.log.LogTagProvider
@@ -71,6 +72,16 @@ class FolderKeySynchronizationImpl @Inject constructor(
                 max = 1f,
                 progressListener = tracker
             )
+        )
+
+        val totalKeys = ManifestChangeExecutor.applyChanges(
+            source = androidHashes,
+            diffs = diffWithFlipper
+        )
+
+        manifestRepository.updateManifest(
+            folder = flipperKeyType.flipperDir,
+            keys = totalKeys
         )
 
         synchronizationRepository.markAsSynchronized(androidKeys)
