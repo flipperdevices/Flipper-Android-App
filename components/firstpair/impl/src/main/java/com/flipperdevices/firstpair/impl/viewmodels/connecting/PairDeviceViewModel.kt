@@ -11,6 +11,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.firstpair.impl.model.DevicePairState
+import com.flipperdevices.firstpair.impl.storage.FirstPairStorage
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,11 +21,13 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeout
+import tangle.viewmodel.VMInject
 
 private const val TIMEOUT_MS = 30L * 1000
 
-class PairDeviceViewModel(
-    application: Application
+class PairDeviceViewModel @VMInject constructor(
+    application: Application,
+    private val firstPairStorage: FirstPairStorage
 ) : AndroidViewModel(application),
     LogTagProvider {
     override val TAG = "PairDeviceViewModel"
@@ -71,6 +74,16 @@ class PairDeviceViewModel(
     override fun onCleared() {
         super.onCleared()
         close()
+    }
+
+    fun finishConnection(
+        deviceId: String? = null,
+        deviceName: String? = null,
+        onEndAction: () -> Unit,
+    ) {
+        close()
+        firstPairStorage.markDeviceSelected(deviceId, deviceName)
+        onEndAction()
     }
 
     @SuppressLint("MissingPermission")
