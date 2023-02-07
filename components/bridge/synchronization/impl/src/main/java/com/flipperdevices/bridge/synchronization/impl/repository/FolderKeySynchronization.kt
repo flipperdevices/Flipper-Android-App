@@ -74,14 +74,12 @@ class FolderKeySynchronizationImpl @Inject constructor(
             )
         )
 
-        val totalKeys = ManifestChangeExecutor.applyChanges(
-            source = androidHashes,
-            diffs = diffWithFlipper
-        )
-
         manifestRepository.updateManifest(
             folder = flipperKeyType.flipperDir,
-            keys = totalKeys
+            keys = ManifestChangeExecutor.applyChanges(
+                source = androidHashes,
+                diffs = diffWithFlipper
+            )
         )
 
         synchronizationRepository.markAsSynchronized(androidKeys)
