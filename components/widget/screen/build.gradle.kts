@@ -16,6 +16,7 @@ dependencies {
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.res)
+    implementation(projects.components.core.ui.navigation)
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.synchronization.api)
@@ -34,8 +35,11 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
     implementation(libs.compose.swipetorefresh)
+    implementation(libs.compose.navigation)
 
     implementation(libs.lifecycle.viewmodel.ktx)
+
+    implementation(libs.kotlin.immutable.collections)
 
     // Dagger deps
     implementation(libs.dagger)
@@ -43,5 +47,6 @@ dependencies {
 
     implementation(libs.tangle.viewmodel.fragment)
     implementation(libs.tangle.viewmodel.api)
+    implementation(libs.tangle.viewmodel.compose)
     anvil(libs.tangle.viewmodel.compiler)
 }
