@@ -10,7 +10,6 @@ import com.flipperdevices.core.ktx.android.toFullString
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.deeplink.api.DeepLinkDispatcher
 import com.flipperdevices.deeplink.api.DeepLinkParser
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.firstpair.api.FirstPairApi
@@ -18,11 +17,11 @@ import com.flipperdevices.firstpair.api.FirstPairFeatureEntry
 import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.api.UpdaterFeatureEntry
 import com.squareup.anvil.annotations.ContributesBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.util.Stack
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 interface DeepLinkHelper {
     suspend fun onNewIntent(context: Context, navController: NavController, intent: Intent)
@@ -39,7 +38,6 @@ class DeepLinkHelperImpl @Inject constructor(
     private val updaterApi: UpdaterApi,
     private val updaterFeatureEntry: UpdaterFeatureEntry,
     private val bottomBarFeatureEntry: BottomNavigationFeatureEntry,
-    private val deepLinkDispatcher: DeepLinkDispatcher,
     private val deepLinkParser: DeepLinkParser
 ) : DeepLinkHelper, LogTagProvider {
     override val TAG = "DeepLinkHelper"

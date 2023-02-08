@@ -13,9 +13,9 @@ import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.flipperdevices.inappnotification.api.InAppNotificationRenderer
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
+import kotlinx.collections.immutable.toPersistentSet
 import javax.inject.Inject
 import javax.inject.Provider
-import kotlinx.collections.immutable.toPersistentSet
 
 @ContributesBinding(AppGraph::class, BottomNavigationFeatureEntry::class)
 @ContributesMultibinding(AppGraph::class, ComposableFeatureEntry::class)

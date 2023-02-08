@@ -5,11 +5,11 @@ import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.inappnotification.api.InAppNotificationListener
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
-import javax.inject.Provider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import tangle.viewmodel.VMInject
+import javax.inject.Provider
 
 class InAppNotificationViewModel @VMInject constructor(
     notificationStorageProvider: Provider<InAppNotificationStorage>

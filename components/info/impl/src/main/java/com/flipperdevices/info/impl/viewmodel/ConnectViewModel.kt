@@ -9,11 +9,11 @@ import com.flipperdevices.core.preference.pb.PairSettings
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.firstpair.api.FirstPairFeatureEntry
 import com.flipperdevices.info.impl.model.ConnectRequestState
-import java.util.concurrent.atomic.AtomicBoolean
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tangle.viewmodel.VMInject
+import java.util.concurrent.atomic.AtomicBoolean
 
 class ConnectViewModel @VMInject constructor(
     private val serviceProvider: FlipperServiceProvider,

@@ -1,6 +1,5 @@
 package com.flipperdevices.bottombar.impl.composable.bottombar
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.flipperdevices.bottombar.impl.R
@@ -8,6 +7,7 @@ import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
 import com.flipperdevices.bottombar.model.TabState
 import com.flipperdevices.connection.api.ConnectionApi
 import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun getTabStateFromFlipperBottomTab(
