@@ -1,6 +1,6 @@
 # Changelog
 
-# 1.4.1 - In Progress
+# 1.4.2 - In Progress
 
 - [Feature] Flipper app loader errors
 - [Feature] Skip synchronization if file system on flipper not changed
@@ -14,13 +14,19 @@
 - [FIX] On `save dump as` save only editable key
 - [FIX] Remove emulate button on deleted screen
 - [FIX] Fix shadow file synchronization
+- [FIX] Fix broken synchronization with changes from android
+- [FIX] Fix shadow file sharing as file
 - [REFACTOR] Bump Android Gradle Plugin
 - [REFACTOR] Fix detekt compose issues
 - [REFACTOR] Format markdown changelog with clickable link and bold nickname
 - [REFACTOR] Enable detekt formatting with rules
 - [REFACTOR] Fix gradle warnings (Deprecated API, PredefinedEnumMap)
 - [REFACTOR] Replace some clickable to card function + reuse orange app bar
-- [REFACTOR] Google Compose Navigation (archive, firstpair)
+- [REFACTOR] Google Compose Navigation (archive, firstpair, widgets)
+
+# 1.4.1
+
+- [FIX] Updater now respect f7 target
 
 # 1.4.0
 

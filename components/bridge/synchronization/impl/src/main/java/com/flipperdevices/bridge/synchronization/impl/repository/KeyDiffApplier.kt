@@ -37,7 +37,9 @@ class KeyDiffApplierImpl @Inject constructor(
     ) {
         val mergedDiff = diffMergeHelper.mergeDiffs(diffWithFlipper, diffWithAndroid)
         val diffForFlipper = mergedDiff.filter { it.source == DiffSource.ANDROID }
+            .sortedBy { it.action }
         val diffForAndroid = mergedDiff.filter { it.source == DiffSource.FLIPPER }
+            .sortedBy { it.action }
 
         info { "Changes for flipper $diffForFlipper" }
         info { "Changes for android $diffForAndroid" }

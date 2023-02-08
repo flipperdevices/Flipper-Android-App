@@ -6,12 +6,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.flipperdevices.archive.api.SearchApi
 import com.flipperdevices.archive.api.SearchFeatureEntry
 import com.flipperdevices.archive.search.composable.ComposableSearch
 import com.flipperdevices.archive.search.viewmodel.SearchViewModel
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
+import com.flipperdevices.core.ui.navigation.setOnResult
 import com.flipperdevices.keyscreen.api.KeyScreenFeatureEntry
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
@@ -46,6 +48,7 @@ class SearchFeatureEntryImpl @Inject constructor(
             val keyboard = LocalSoftwareKeyboardController.current
             val isExitOnOpenKey = it.arguments?.getBoolean(IS_EXIT_ON_OPEN_KEY) ?: false
             val searchViewModel: SearchViewModel = tangleViewModel()
+
             ComposableSearch(
                 searchViewModel = searchViewModel,
                 synchronizationUiApi = synchronizationUiApi,
@@ -55,11 +58,13 @@ class SearchFeatureEntryImpl @Inject constructor(
                 },
                 onOpenKeyScreen = { flipperKeyPath ->
                     keyboard?.hide()
+                    val keyScreen = keyScreenFeatureEntry.getKeyScreen(flipperKeyPath)
                     if (isExitOnOpenKey) {
-                        // TODO
-                        // Choose key for widget
+                        navController.setOnResult(
+                            key = SearchApi.SEARCH_RESULT_KEY,
+                            value = flipperKeyPath
+                        )
                     } else {
-                        val keyScreen = keyScreenFeatureEntry.getKeyScreen(flipperKeyPath)
                         navController.navigate(keyScreen)
                     }
                 }

@@ -6,7 +6,9 @@ import com.flipperdevices.bridge.dao.api.delegates.KeyParser
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.share.ShareHelper
@@ -78,7 +80,8 @@ class UploaderViewModel @VMInject constructor(
     fun shareByFile(content: ShareContent, context: Context) {
         viewModelScope.launch {
             runCatching {
-                val data = content.flipperKey.keyContent.openStream().use { it.readBytes() }
+                val data = extractKeyContentForShare(content.flipperKey).openStream()
+                    .use { it.readBytes() }
                 metricApi.reportSimpleEvent(SimpleEvent.SHARE_FILE)
                 ShareHelper.shareRawFile(
                     context = context,
@@ -113,16 +116,11 @@ class UploaderViewModel @VMInject constructor(
     }
 
     private suspend fun shareLongLink(flipperKey: FlipperKey, context: Context) {
-        val shadowFile = flipperKey
-            .additionalFiles
-            .firstOrNull { it.path.fileType == FlipperFileType.SHADOW_NFC }
-        val flipperKeyContent = (shadowFile ?: flipperKey.mainFile)
-            .content
-            .openStream()
+        val data = extractKeyContentForShare(flipperKey).openStream()
             .use { it.readBytes() }
 
         val uploadedLink = cryptoStorageApi.upload(
-            data = flipperKeyContent,
+            data = data,
             path = flipperKey.path.pathToKey,
             name = flipperKey.mainFile.path.nameWithExtension
         )
@@ -151,5 +149,16 @@ class UploaderViewModel @VMInject constructor(
             _state.emit(ShareState.Initial)
             parseFlipperKeyPath()
         }
+    }
+
+    private fun extractKeyContentForShare(flipperKey: FlipperKey): FlipperKeyContent {
+        val shadowFile = flipperKey
+            .additionalFiles
+            .firstOrNull { it.path.fileType == FlipperFileType.SHADOW_NFC }
+        if (flipperKey.flipperKeyType == FlipperKeyType.NFC && shadowFile != null) {
+            return shadowFile.content
+        }
+
+        return flipperKey.mainFile.content
     }
 }

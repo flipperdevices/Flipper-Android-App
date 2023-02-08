@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.synchronization.impl.repository.manifest
 
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.synchronization.impl.model.DiffSource
 import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
 import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
@@ -35,7 +36,10 @@ class ManifestRepositoryTest {
 
         val expected = listOf(KeyWithHash(FlipperFilePath.DUMMY, "HASH"))
 
-        underTest.updateManifest(keys = expected)
+        underTest.updateManifest(
+            folder = FlipperKeyType.NFC.flipperDir,
+            keys = expected
+        )
 
         val result = updateFunctionSlot.captured(ManifestFile(keys = emptyList()))
 
