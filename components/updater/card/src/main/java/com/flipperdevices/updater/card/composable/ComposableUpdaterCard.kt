@@ -33,7 +33,8 @@ import tangle.viewmodel.compose.tangleViewModel
 internal fun ComposableUpdaterCardInternal(
     modifier: Modifier = Modifier,
     updateStateViewModel: UpdateStateViewModel = tangleViewModel(),
-    updateCardViewModel: UpdateCardViewModel = tangleViewModel()
+    updateCardViewModel: UpdateCardViewModel = tangleViewModel(),
+    onStartUpdateRequest: (UpdateRequest) -> Unit = {},
 ) {
     val updateState by updateStateViewModel.getUpdateState().collectAsState()
     val localDeviceStatus = updateState
@@ -65,7 +66,8 @@ internal fun ComposableUpdaterCardInternal(
         modifier = modifier,
         cardStateLocal = cardState,
         onSelectChannel = updateCardViewModel::onSelectChannel,
-        retryUpdate = updateCardViewModel::retry
+        retryUpdate = updateCardViewModel::retry,
+        onStartUpdateRequest = onStartUpdateRequest,
     )
 }
 
@@ -74,6 +76,7 @@ private fun ComposableUpdaterCard(
     cardStateLocal: UpdateCardState,
     modifier: Modifier = Modifier,
     onSelectChannel: (FirmwareChannel) -> Unit = {},
+    onStartUpdateRequest: (UpdateRequest) -> Unit = {},
     retryUpdate: () -> Unit = {}
 ) {
     InfoElementCard(
@@ -90,22 +93,26 @@ private fun ComposableUpdaterCard(
             UpdateCardState.InProgress -> ComposableFirmwareUpdaterContent(
                 version = null,
                 updateCardState = cardStateLocal,
-                onSelectFirmwareChannel = onSelectChannel
+                onSelectFirmwareChannel = onSelectChannel,
+                onStartUpdateRequest = onStartUpdateRequest
             )
             is UpdateCardState.NoUpdate -> ComposableFirmwareUpdaterContent(
                 version = cardStateLocal.flipperVersion,
                 updateCardState = cardStateLocal,
-                onSelectFirmwareChannel = onSelectChannel
+                onSelectFirmwareChannel = onSelectChannel,
+                onStartUpdateRequest = onStartUpdateRequest
             )
             is UpdateCardState.UpdateAvailable -> ComposableFirmwareUpdaterContent(
                 version = cardStateLocal.update.updateTo,
                 updateCardState = cardStateLocal,
-                onSelectFirmwareChannel = onSelectChannel
+                onSelectFirmwareChannel = onSelectChannel,
+                onStartUpdateRequest = onStartUpdateRequest
             )
             is UpdateCardState.UpdateFromFile -> ComposableFirmwareUpdaterContent(
                 version = cardStateLocal.updateVersion,
                 updateCardState = cardStateLocal,
-                onSelectFirmwareChannel = onSelectChannel
+                onSelectFirmwareChannel = onSelectChannel,
+                onStartUpdateRequest = onStartUpdateRequest
             )
         }
     }

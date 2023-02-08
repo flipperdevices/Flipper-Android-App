@@ -29,12 +29,14 @@ import com.flipperdevices.updater.card.R
 import com.flipperdevices.updater.card.composable.dialogs.ComposableUpdateRequest
 import com.flipperdevices.updater.card.model.UpdatePending
 import com.flipperdevices.updater.model.UpdateCardState
+import com.flipperdevices.updater.model.UpdateRequest
 
 @Composable
 fun ComposableUpdateButton(
     updateCardState: UpdateCardState,
     inProgress: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onStartUpdateRequest: (UpdateRequest) -> Unit
 ) {
     var buttonModifier = modifier.padding(all = 12.dp)
     if (inProgress) {
@@ -44,7 +46,7 @@ fun ComposableUpdateButton(
     var pendingUpdateRequest by remember { mutableStateOf<UpdatePending?>(null) }
     val localUpdaterRequest = pendingUpdateRequest
     if (localUpdaterRequest != null) {
-        ComposableUpdateRequest(pendingUpdateRequest = localUpdaterRequest) {
+        ComposableUpdateRequest(pendingUpdateRequest = localUpdaterRequest, onStartUpdateRequest) {
             pendingUpdateRequest = null
         }
     }

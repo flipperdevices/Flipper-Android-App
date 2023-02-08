@@ -10,7 +10,6 @@ import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.ktx.jre.filename
 import com.flipperdevices.core.ktx.jre.length
-import com.flipperdevices.updater.api.UpdaterUIApi
 import com.flipperdevices.updater.card.model.BatteryState
 import com.flipperdevices.updater.card.model.SyncingState
 import com.flipperdevices.updater.card.model.UpdatePending
@@ -35,11 +34,9 @@ import org.junit.runner.RunWith
 class UpdateRequestViewModelTest {
     private val serviceProvider: FlipperServiceProvider = mockk(relaxUnitFun = true)
     private val serviceApi: FlipperServiceApi = mockk(relaxUnitFun = true)
-    private val updaterUIApi: UpdaterUIApi = mockk(relaxUnitFun = true)
     private val synchronizationApi: SynchronizationApi = mockk()
     private val viewModel = UpdateRequestViewModel(
         serviceProvider = serviceProvider,
-        updaterUIApi = updaterUIApi,
         synchronizationApi = synchronizationApi
     )
 
