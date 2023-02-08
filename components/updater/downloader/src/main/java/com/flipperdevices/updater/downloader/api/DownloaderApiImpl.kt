@@ -11,6 +11,7 @@ import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.downloader.model.ArtifactType
 import com.flipperdevices.updater.downloader.model.FirmwareDirectoryListeningResponse
 import com.flipperdevices.updater.downloader.model.SubGhzProvisioningResponse
+import com.flipperdevices.updater.downloader.model.Target
 import com.flipperdevices.updater.model.DistributionFile
 import com.flipperdevices.updater.model.DownloadProgress
 import com.flipperdevices.updater.model.FirmwareChannel
@@ -22,11 +23,11 @@ import com.squareup.anvil.annotations.ContributesBinding
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.channelFlow
 import java.io.File
 import java.util.EnumMap
 import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
 
 private const val UPDATER_URL = "https://update.flipperzero.one/firmware/directory.json"
 private const val SUB_GHZ_URL = "https://update.flipperzero.one/regions/api/v0/bundle"
@@ -54,7 +55,10 @@ class DownloaderApiImpl @Inject constructor(
         }.filter { it.first != null && it.second != null }
             .map { it.first!! to it.second!! }
             .forEach { (channel, version) ->
-                val updaterFile = version.files.find { it.type == ArtifactType.UPDATE_TGZ }
+                val updaterFile = version
+                    .files
+                    .filter { it.type == ArtifactType.UPDATE_TGZ }
+                    .find { it.target == Target.F7 }
                     ?: return@forEach
 
                 versionMap[channel.original] = VersionFiles(
