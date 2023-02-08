@@ -25,8 +25,9 @@ fun ComposableInAppNotification(
     LaunchedEffect(key1 = lifecycleState) {
         when (lifecycleState) {
             Lifecycle.Event.ON_RESUME -> notificationViewModel.onResume()
-            Lifecycle.Event.ON_PAUSE -> notificationViewModel.onPause()
-            else -> {}
+            else -> {
+                notificationViewModel.onPause()
+            }
         }
     }
 

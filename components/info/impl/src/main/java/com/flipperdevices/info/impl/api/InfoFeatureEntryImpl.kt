@@ -8,6 +8,7 @@ import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
+import com.flipperdevices.core.ui.navigation.LocalGlobalNavigationNavStack
 import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.flipperdevices.info.api.screen.InfoFeatureEntry
 import com.flipperdevices.info.impl.compose.screens.ComposableDeviceInfoScreen
@@ -36,13 +37,13 @@ class InfoFeatureEntryImpl @Inject constructor(
     override fun NavGraphBuilder.navigation(navController: NavHostController) {
         navigation(startDestination = start(), route = ROUTE.name) {
             composable("@${ROUTE.name}") {
+                val globalNavController = LocalGlobalNavigationNavStack.current
                 ComposableDeviceInfoScreen(
                     updaterCardApi,
                     onOpenFullDeviceInfo = { navController.navigate(fullInfo()) },
                     onOpenOptions = { navController.navigate(settingFeatureEntry.ROUTE.name) },
                     onStartUpdateRequest = {
-                        val updaterScreen = updaterFeatureEntry.getUpdaterScreen(it)
-                        navController.navigate(updaterScreen)
+                        globalNavController.navigate(updaterFeatureEntry.getUpdaterScreen(it))
                     }
                 )
             }
@@ -62,11 +63,14 @@ class InfoFeatureEntryImpl @Inject constructor(
                     }
                 )
             ) {
+                val globalNavController = LocalGlobalNavigationNavStack.current
                 ComposableDeviceInfoScreen(
                     updaterCardApi,
                     onOpenFullDeviceInfo = { navController.navigate(fullInfo()) },
                     onOpenOptions = { navController.navigate(settingFeatureEntry.ROUTE.name) },
-                    onStartUpdateRequest = updaterFeatureEntry::getUpdaterScreen
+                    onStartUpdateRequest = {
+                        globalNavController.navigate(updaterFeatureEntry.getUpdaterScreen(it))
+                    }
                 )
             }
         }
