@@ -20,7 +20,6 @@ import com.flipperdevices.archive.api.ArchiveApi
 import com.flipperdevices.archive.shared.composable.ComposableAppBar
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.core.ktx.jre.roundPercentToString
-import com.flipperdevices.core.ui.ktx.LocalRouter
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.widget.screen.R
@@ -30,7 +29,8 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 @Composable
 fun WidgetOptionsComposable(
     archiveApi: ArchiveApi,
-    widgetSelectViewModel: WidgetSelectViewModel
+    widgetSelectViewModel: WidgetSelectViewModel,
+    onOpenSearchScreen: () -> Unit,
 ) {
     val synchronizationState by widgetSelectViewModel.getSynchronizationFlow().collectAsState()
     val localSynchronizationState = synchronizationState
@@ -39,7 +39,8 @@ fun WidgetOptionsComposable(
     } else {
         ComposableArchiveReady(
             archiveApi,
-            widgetSelectViewModel
+            widgetSelectViewModel,
+            onOpenSearchScreen
         )
     }
 }
@@ -47,14 +48,14 @@ fun WidgetOptionsComposable(
 @Composable
 private fun ComposableArchiveReady(
     archiveApi: ArchiveApi,
-    widgetSelectViewModel: WidgetSelectViewModel
+    widgetSelectViewModel: WidgetSelectViewModel,
+    onOpenSearchScreen: () -> Unit,
 ) {
-    val router = LocalRouter.current
     Column(verticalArrangement = Arrangement.Top) {
         ComposableAppBar(
             title = stringResource(R.string.widget_options_title),
             iconId = DesignSystem.drawable.ic_search,
-            onIconClick = { widgetSelectViewModel.onOpenSearch(router) }
+            onIconClick = onOpenSearchScreen
         )
         ComposableKeys(archiveApi, widgetSelectViewModel)
     }
