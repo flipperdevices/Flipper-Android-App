@@ -3,6 +3,8 @@ plugins {
 }
 
 dependencies {
+    implementation(projects.components.core.ui.navigation)
+
     implementation(libs.cicerone)
     implementation(libs.kotlin.coroutines)
 }

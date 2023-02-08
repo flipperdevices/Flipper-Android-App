@@ -8,6 +8,7 @@ dependencies {
     implementation(projects.components.bridge.dao.api)
 
     implementation(libs.kotlin.serialization.json)
+    implementation(libs.compose.navigation)
 
     implementation(libs.annotations)
     implementation(libs.appcompat)

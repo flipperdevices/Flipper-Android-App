@@ -1,8 +1,6 @@
-package com.flipperdevices.bottombar.impl.main.viewmodel
+package com.flipperdevices.bottombar.impl.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.flipperdevices.bottombar.impl.di.BottomBarComponent
-import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.inappnotification.api.InAppNotificationListener
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
@@ -10,17 +8,12 @@ import com.flipperdevices.inappnotification.api.model.InAppNotification
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-import javax.inject.Inject
+import tangle.viewmodel.VMInject
 import javax.inject.Provider
 
-class InAppNotificationViewModel : ViewModel(), InAppNotificationListener {
-    @Inject
-    lateinit var notificationStorageProvider: Provider<InAppNotificationStorage>
-
-    init {
-        ComponentHolder.component<BottomBarComponent>().inject(this)
-    }
-
+class InAppNotificationViewModel @VMInject constructor(
+    notificationStorageProvider: Provider<InAppNotificationStorage>
+) : ViewModel(), InAppNotificationListener {
     private val notificationStorage by notificationStorageProvider
 
     private val notificationState = MutableStateFlow<InAppNotificationState>(

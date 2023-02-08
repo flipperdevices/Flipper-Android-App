@@ -2,48 +2,32 @@ package com.flipperdevices.info.impl.viewmodel
 
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
-import com.flipperdevices.core.di.ComponentHolder
-import com.flipperdevices.core.navigation.global.CiceroneGlobal
 import com.flipperdevices.core.preference.pb.PairSettings
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
-import com.flipperdevices.firstpair.api.FirstPairApi
-import com.flipperdevices.info.impl.di.InfoComponent
+import com.flipperdevices.firstpair.api.FirstPairFeatureEntry
 import com.flipperdevices.info.impl.model.ConnectRequestState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import tangle.viewmodel.VMInject
 import java.util.concurrent.atomic.AtomicBoolean
-import javax.inject.Inject
 
-class ConnectViewModel : LifecycleViewModel() {
+class ConnectViewModel @VMInject constructor(
+    private val serviceProvider: FlipperServiceProvider,
+    private val synchronizationApi: SynchronizationApi,
+    private val dataStoreFirstPair: DataStore<PairSettings>,
+    private val firstPairFeatureEntry: FirstPairFeatureEntry
+) : LifecycleViewModel() {
     private val connectRequestState = MutableStateFlow(
         ConnectRequestState.NOT_REQUESTED
     )
     private val alreadyRequestConnect = AtomicBoolean(false)
 
-    @Inject
-    lateinit var firstPairApi: FirstPairApi
-
-    @Inject
-    lateinit var serviceProvider: FlipperServiceProvider
-
-    @Inject
-    lateinit var synchronizationApi: SynchronizationApi
-
-    @Inject
-    lateinit var dataStoreFirstPair: DataStore<PairSettings>
-
-    @Inject
-    lateinit var ciceroneGlobal: CiceroneGlobal
-
-    init {
-        ComponentHolder.component<InfoComponent>().inject(this)
-    }
-
-    fun goToConnectScreen() {
-        ciceroneGlobal.getRouter().navigateTo(firstPairApi.getFirstPairScreen())
+    fun goToConnectScreen(navController: NavController) {
+        navController.navigate(firstPairFeatureEntry.getFirstPairScreen())
     }
 
     fun connectAndSynchronize() {

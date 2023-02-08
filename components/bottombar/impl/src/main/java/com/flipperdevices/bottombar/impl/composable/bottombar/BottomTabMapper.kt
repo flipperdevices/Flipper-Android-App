@@ -1,4 +1,4 @@
-package com.flipperdevices.bottombar.impl.main.compose
+package com.flipperdevices.bottombar.impl.composable.bottombar
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource

@@ -1,11 +1,11 @@
-package com.flipperdevices.info.impl.api
+package com.flipperdevices.hub.api
 
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.core.ui.navigation.FeatureScreenRootRoute
 
-interface InfoFeatureEntry : AggregateFeatureEntry {
+interface HubFeatureEntry : AggregateFeatureEntry {
     override val ROUTE: FeatureScreenRootRoute
-        get() = FeatureScreenRootRoute.DEVICE_INFO
+        get() = FeatureScreenRootRoute.HUB
 
-    fun fullInfo(): String
+    fun start(): String
 }

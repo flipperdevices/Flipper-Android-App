@@ -20,6 +20,7 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.kotlin.coroutines)
     implementation(libs.cicerone)
+    implementation(libs.compose.navigation)
 
     // Dagger deps
     implementation(libs.dagger)

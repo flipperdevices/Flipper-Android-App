@@ -6,7 +6,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.bridge.api.model.StorageStats
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
@@ -30,7 +29,7 @@ import tangle.viewmodel.compose.tangleViewModel
 fun ComposableInfoCardContent(
     isUnsupported: Boolean,
     deviceInfoViewModel: DeviceInfoViewModel = tangleViewModel(),
-    deviceStatusViewModel: DeviceStatusViewModel = viewModel()
+    deviceStatusViewModel: DeviceStatusViewModel = tangleViewModel()
 ) {
     val deviceInfo by deviceInfoViewModel.getDeviceInfo().collectAsState()
     val deviceInfoRequestStatus by deviceInfoViewModel.getDeviceInfoRequestStatus().collectAsState()

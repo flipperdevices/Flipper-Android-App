@@ -6,39 +6,27 @@ import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
-import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.preference.pb.PairSettings
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
-import com.flipperdevices.info.impl.di.InfoComponent
 import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.updater.api.UpdateStateApi
-import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.model.FlipperUpdateState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import javax.inject.Inject
+import tangle.viewmodel.VMInject
 
-class DeviceStatusViewModel : LifecycleViewModel(), FlipperBleServiceConsumer {
+class DeviceStatusViewModel @VMInject constructor(
+    serviceProvider: FlipperServiceProvider,
+    private val dataStorePair: DataStore<PairSettings>,
+    private val updateStateApi: UpdateStateApi
+) : LifecycleViewModel(), FlipperBleServiceConsumer {
     private val deviceStatus = MutableStateFlow<DeviceStatus>(DeviceStatus.NoDevice)
     private val updateStatus = MutableStateFlow<FlipperUpdateState>(FlipperUpdateState.NotConnected)
 
-    @Inject
-    lateinit var serviceProvider: FlipperServiceProvider
-
-    @Inject
-    lateinit var dataStorePair: DataStore<PairSettings>
-
-    @Inject
-    lateinit var updaterApi: UpdaterApi
-
-    @Inject
-    lateinit var updateStateApi: UpdateStateApi
-
     init {
-        ComponentHolder.component<InfoComponent>().inject(this)
         serviceProvider.provideServiceApi(consumer = this, lifecycleOwner = this)
     }
 

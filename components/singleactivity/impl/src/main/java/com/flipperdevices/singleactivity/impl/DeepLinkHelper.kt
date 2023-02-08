@@ -2,18 +2,20 @@ package com.flipperdevices.singleactivity.impl
 
 import android.content.Context
 import android.content.Intent
-import com.flipperdevices.bottombar.api.BottomNavigationApi
+import androidx.navigation.NavController
+import androidx.navigation.navOptions
+import com.flipperdevices.bottombar.api.BottomNavigationFeatureEntry
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.android.toFullString
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.navigation.global.CiceroneGlobal
-import com.flipperdevices.deeplink.api.DeepLinkDispatcher
 import com.flipperdevices.deeplink.api.DeepLinkParser
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.firstpair.api.FirstPairApi
+import com.flipperdevices.firstpair.api.FirstPairFeatureEntry
 import com.flipperdevices.updater.api.UpdaterApi
+import com.flipperdevices.updater.api.UpdaterFeatureEntry
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -22,9 +24,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 interface DeepLinkHelper {
-    suspend fun onNewIntent(context: Context, intent: Intent)
-    fun onNewDeeplink(deeplink: Deeplink)
-    fun invalidate()
+    suspend fun onNewIntent(context: Context, navController: NavController, intent: Intent)
+    suspend fun onNewDeeplink(navController: NavController, deeplink: Deeplink)
+    suspend fun invalidate(navController: NavController)
 }
 
 @Singleton
@@ -32,17 +34,21 @@ interface DeepLinkHelper {
 @ContributesBinding(AppGraph::class, DeepLinkHelper::class)
 class DeepLinkHelperImpl @Inject constructor(
     private val firstPairApi: FirstPairApi,
+    private val firstPairFeatureEntry: FirstPairFeatureEntry,
     private val updaterApi: UpdaterApi,
-    private val cicerone: CiceroneGlobal,
-    private val bottomBarApi: BottomNavigationApi,
-    private val deepLinkDispatcher: DeepLinkDispatcher,
+    private val updaterFeatureEntry: UpdaterFeatureEntry,
+    private val bottomBarFeatureEntry: BottomNavigationFeatureEntry,
     private val deepLinkParser: DeepLinkParser
 ) : DeepLinkHelper, LogTagProvider {
     override val TAG = "DeepLinkHelper"
 
     private val deeplinkStack = Stack<Deeplink>()
 
-    override suspend fun onNewIntent(context: Context, intent: Intent) {
+    override suspend fun onNewIntent(
+        context: Context,
+        navController: NavController,
+        intent: Intent
+    ) {
         info { "On new intent: ${intent.toFullString()}" }
         val deeplink = try {
             deepLinkParser.fromIntent(context, intent)
@@ -53,45 +59,52 @@ class DeepLinkHelperImpl @Inject constructor(
 
         withContext(Dispatchers.Main) {
             if (deeplink != null) {
-                onNewDeeplink(deeplink)
+                onNewDeeplink(navController, deeplink)
             } else {
-                invalidate()
+                invalidate(navController)
             }
         }
     }
 
-    override fun onNewDeeplink(deeplink: Deeplink) {
+    override suspend fun onNewDeeplink(navController: NavController, deeplink: Deeplink) {
         info { "On new deeplink: $deeplink" }
         deeplinkStack.push(deeplink)
-        invalidate()
+        invalidate(navController)
     }
 
-    override fun invalidate() {
+    override suspend fun invalidate(navController: NavController) = withContext(Dispatchers.Main) {
         info { "Pending deeplinks size is ${deeplinkStack.size}" }
 
+        val topScreenOptions = navOptions {
+            popUpTo(0) {
+                inclusive = true
+            }
+        }
+
         if (firstPairApi.shouldWeOpenPairScreen()) {
-            cicerone.getRouter().newRootScreen(firstPairApi.getFirstPairScreen())
-            return
+            navController.navigate(firstPairFeatureEntry.getFirstPairScreen(), topScreenOptions)
+            return@withContext
         }
 
         if (updaterApi.isUpdateInProcess()) {
-            // TODO replace with UpdaterFeatureEntry
-            return
+            navController.navigate(updaterFeatureEntry.getUpdaterScreen())
+            return@withContext
         }
 
         if (deeplinkStack.empty()) {
-            cicerone.getRouter().newRootScreen(bottomBarApi.getBottomNavigationFragment())
-            return
+            navController.navigate(bottomBarFeatureEntry.start(), topScreenOptions)
+            return@withContext
         }
 
         val deeplink = deeplinkStack.pop()
         info { "Process deeplink $deeplink" }
+        @Suppress("ForbiddenComment")
         if (deeplink.isInternal) {
-            val screen = bottomBarApi.getBottomNavigationFragment(deeplink)
-            cicerone.getRouter().newRootScreen(screen)
+            // TODO: Handle deeplink
+            navController.navigate(bottomBarFeatureEntry.start(), topScreenOptions)
         } else {
-            cicerone.getRouter().newRootScreen(bottomBarApi.getBottomNavigationFragment())
-            deepLinkDispatcher.process(cicerone.getRouter(), deeplink)
+            navController.navigate(bottomBarFeatureEntry.start(), topScreenOptions)
+            // TODO: deepLinkDispatcher.process()
         }
     }
 }

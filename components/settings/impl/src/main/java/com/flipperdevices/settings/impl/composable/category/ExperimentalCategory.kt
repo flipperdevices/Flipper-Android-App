@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.flipperdevices.core.preference.pb.Settings
+import com.flipperdevices.core.ui.navigation.LocalGlobalNavigationNavStack
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.composable.elements.CategoryElement
 import com.flipperdevices.settings.impl.composable.elements.ClickableElement
@@ -22,6 +23,7 @@ fun ExperimentalCategory(
     modifier: Modifier = Modifier,
     experimentalViewModel: ExperimentalViewModel = tangleViewModel()
 ) {
+    val globalNavController = LocalGlobalNavigationNavStack.current
     CardCategory(modifier = modifier) {
         Column {
             CategoryElement(
@@ -41,7 +43,7 @@ fun ExperimentalCategory(
                     titleId = R.string.experimental_screen_streaming,
                     descriptionId = R.string.experimental_screen_streaming_desc,
                     onClick = {
-                        experimentalViewModel.onOpenScreenStreaming(navController)
+                        experimentalViewModel.onOpenScreenStreaming(globalNavController)
                     }
                 )
                 GrayDivider()

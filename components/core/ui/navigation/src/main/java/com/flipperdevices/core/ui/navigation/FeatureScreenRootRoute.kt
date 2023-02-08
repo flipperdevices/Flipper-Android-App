@@ -1,6 +1,7 @@
 package com.flipperdevices.core.ui.navigation
 
 enum class FeatureScreenRootRoute {
+    MAIN_BOTTOM_NAVIGATION,
     FILE_MANAGER,
     ARCHIVE_SHARE_BOTTOMSHEET,
     WEAR_KEYS_LIST,
@@ -25,5 +26,6 @@ enum class FeatureScreenRootRoute {
     KEY_EDIT_SCREEN,
     FIRST_PAIR,
     WIDGET,
-    UPDATER
+    UPDATER,
+    KEY_RECEIVE
 }

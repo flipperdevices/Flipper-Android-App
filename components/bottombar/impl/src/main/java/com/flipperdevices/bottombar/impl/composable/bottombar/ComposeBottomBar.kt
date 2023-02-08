@@ -1,4 +1,4 @@
-package com.flipperdevices.bottombar.impl.main.compose
+package com.flipperdevices.bottombar.impl.composable.bottombar
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -22,8 +22,8 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.bottombar.impl.main.viewmodel.BottomBarViewModel
 import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
+import com.flipperdevices.bottombar.impl.viewmodel.BottomBarViewModel
 import com.flipperdevices.connection.api.ConnectionApi
 import com.flipperdevices.core.ui.ktx.tab.tabIndicatorOffset
 import com.flipperdevices.core.ui.theme.LocalPallet
@@ -37,7 +37,7 @@ fun ComposeBottomBar(
     onBottomBarClick: (FlipperBottomTab) -> Unit = {}
 ) {
     val tabs = remember { FlipperBottomTab.values() }
-    var selectedIndex by remember {
+    var selectedIndex by remember(selectedItem) {
         mutableStateOf(tabs.indexOf(selectedItem))
     }
     var tabPositions by remember {

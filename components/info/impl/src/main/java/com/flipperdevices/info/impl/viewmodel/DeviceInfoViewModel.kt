@@ -6,11 +6,9 @@ import com.flipperdevices.bridge.api.model.FlipperRpcInformation
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
-import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
-import com.flipperdevices.info.impl.di.InfoComponent
 import com.flipperdevices.info.impl.model.DeviceInfo
 import com.flipperdevices.info.impl.model.DeviceInfoRequestStatus
 import com.flipperdevices.updater.api.FlipperVersionProviderApi
@@ -33,7 +31,6 @@ class DeviceInfoViewModel @VMInject constructor(
     private val deviceInfoRequestStatus = MutableStateFlow(DeviceInfoRequestStatus())
 
     init {
-        ComponentHolder.component<InfoComponent>().inject(this)
         serviceProvider.provideServiceApi(this, this)
     }
 

@@ -1,4 +1,4 @@
-package com.flipperdevices.bottombar.impl.main.viewmodel
+package com.flipperdevices.bottombar.impl.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

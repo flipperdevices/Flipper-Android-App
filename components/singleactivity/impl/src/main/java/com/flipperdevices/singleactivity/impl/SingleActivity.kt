@@ -2,26 +2,33 @@ package com.flipperdevices.singleactivity.impl
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.flipperdevices.bottombar.api.BottomNavigationFeatureEntry
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.parcelableExtra
 import com.flipperdevices.core.ktx.android.toFullString
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.navigation.delegates.OnBackPressListener
 import com.flipperdevices.core.navigation.delegates.RouterProvider
 import com.flipperdevices.core.navigation.global.CiceroneGlobal
+import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
+import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
+import com.flipperdevices.core.ui.navigation.LocalGlobalNavigationNavStack
+import com.flipperdevices.core.ui.theme.FlipperTheme
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
-import com.flipperdevices.singleactivity.impl.databinding.SingleActivityBinding
+import com.flipperdevices.singleactivity.impl.composable.ComposableSingleActivityNavHost
 import com.flipperdevices.singleactivity.impl.di.SingleActivityComponent
-import com.github.terrakok.cicerone.Navigator
 import com.github.terrakok.cicerone.Router
-import com.github.terrakok.cicerone.androidx.AppNavigator
+import kotlinx.collections.immutable.toPersistentSet
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -45,18 +52,23 @@ class SingleActivity :
     @Inject
     lateinit var synchronizationApi: SynchronizationApi
 
-    lateinit var binding: SingleActivityBinding
+    @Inject
+    lateinit var bottomNavigationFeatureEntry: BottomNavigationFeatureEntry
+
+    @Inject
+    lateinit var featureEntriesMutable: MutableSet<AggregateFeatureEntry>
+
+    @Inject
+    lateinit var composableEntriesMutable: MutableSet<ComposableFeatureEntry>
+
+    private var globalNavController: NavHostController? = null
 
     override val router: Router
         get() = cicerone.getRouter()
 
-    private val navigator: Navigator = AppNavigator(this, R.id.fragment_container)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ComponentHolder.component<SingleActivityComponent>().inject(this)
-        binding = SingleActivityBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
         info {
             "Create new activity with hashcode: ${this.hashCode()} " +
@@ -67,13 +79,30 @@ class SingleActivity :
             return
         }
 
-        metricApi.reportSimpleEvent(SimpleEvent.APP_OPEN)
-        synchronizationApi.startSynchronization()
-
-        // Open deeplink
-        lifecycleScope.launch {
-            deepLinkHelper.onNewIntent(this@SingleActivity, intent)
+        setContent {
+            val navControllerLocal = rememberNavController().also {
+                globalNavController = it
+            }
+            LaunchedEffect(Unit) {
+                // Open deeplink
+                deepLinkHelper.onNewIntent(this@SingleActivity, navControllerLocal, intent)
+            }
+            FlipperTheme(content = {
+                CompositionLocalProvider(
+                    LocalGlobalNavigationNavStack provides navControllerLocal
+                ) {
+                    ComposableSingleActivityNavHost(
+                        navController = navControllerLocal,
+                        bottomNavigationFeatureEntry = bottomNavigationFeatureEntry,
+                        featureEntries = featureEntriesMutable.toPersistentSet(),
+                        composableEntries = composableEntriesMutable.toPersistentSet()
+                    )
+                }
+            })
         }
+        metricApi.reportSimpleEvent(SimpleEvent.APP_OPEN)
+
+        synchronizationApi.startSynchronization()
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -83,30 +112,17 @@ class SingleActivity :
         }
         val deeplink = intent.parcelableExtra<Deeplink>(LAUNCH_PARAMS_INTENT)
         if (deeplink != null) {
-            deepLinkHelper.onNewDeeplink(deeplink)
+            lifecycleScope.launch {
+                globalNavController?.let { navController ->
+                    deepLinkHelper.onNewDeeplink(navController, deeplink)
+                }
+            }
             return
         }
         lifecycleScope.launch {
-            deepLinkHelper.onNewIntent(this@SingleActivity, intent)
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        cicerone.getNavigationHolder().setNavigator(navigator)
-    }
-
-    override fun onPause() {
-        cicerone.getNavigationHolder().removeNavigator()
-        super.onPause()
-    }
-
-    override fun onBackPressed() {
-        val currentFragment: Fragment? = supportFragmentManager.fragments.find { it.isVisible }
-        if ((currentFragment as? OnBackPressListener)?.onBackPressed() == true) {
-            return
-        } else {
-            cicerone.getRouter().exit()
+            globalNavController?.let { navController ->
+                deepLinkHelper.onNewIntent(this@SingleActivity, navController, intent)
+            }
         }
     }
 }
