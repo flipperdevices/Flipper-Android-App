@@ -1,4 +1,4 @@
-package com.flipperdevices.bottombar.impl.main.viewmodel
+package com.flipperdevices.bottombar.impl.viewmodel
 
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.ViewModel
@@ -67,6 +67,7 @@ class BottomNavigationViewModel @VMInject constructor(
         }
     }
 }
+
 
 /**
  * Copy from https://github.com/android/nowinandroid/blob/e63394248b23f2a138f6ed333e5711b898d24a40/app/src/main/java/com/google/samples/apps/nowinandroid/ui/NiaApp.kt#L270

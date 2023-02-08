@@ -26,5 +26,6 @@ enum class FeatureScreenRootRoute {
     KEY_EDIT_SCREEN,
     FIRST_PAIR,
     WIDGET,
-    UPDATER
+    UPDATER,
+    KEY_RECEIVE
 }

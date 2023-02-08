@@ -1,10 +1,10 @@
 package com.flipperdevices.info.impl.compose.elements
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.info.impl.R
@@ -16,13 +16,13 @@ import com.flipperdevices.info.impl.viewmodel.FirmwareUpdateViewModel
 import com.flipperdevices.info.shared.ButtonElementRow
 import com.flipperdevices.info.shared.ComposableInfoDivider
 import com.flipperdevices.info.shared.InfoElementCard
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 fun ComposableConnectedDeviceActionCard(
     modifier: Modifier = Modifier,
-    deviceStatusViewModel: DeviceStatusViewModel = viewModel(),
-    firmwareUpdateViewModel: FirmwareUpdateViewModel = viewModel()
+    deviceStatusViewModel: DeviceStatusViewModel = tangleViewModel(),
+    firmwareUpdateViewModel: FirmwareUpdateViewModel = tangleViewModel()
 ) {
     val deviceState by deviceStatusViewModel.getState().collectAsState()
     val firmwareUpdateStatus by firmwareUpdateViewModel.getState().collectAsState()
@@ -44,7 +44,7 @@ fun ComposableConnectedDeviceActionCard(
 private fun ComposableSynchronize(
     enabled: Boolean,
     modifier: Modifier = Modifier,
-    connectViewModel: ConnectViewModel = viewModel()
+    connectViewModel: ConnectViewModel = tangleViewModel()
 ) {
     val color = if (enabled) {
         LocalPallet.current.accentSecond
@@ -69,7 +69,7 @@ private fun ComposableSynchronize(
 private fun ComposableAlarmElement(
     enabled: Boolean,
     modifier: Modifier = Modifier,
-    alarmViewModel: AlarmViewModel = viewModel()
+    alarmViewModel: AlarmViewModel = tangleViewModel()
 ) {
     val colorId = if (enabled) {
         LocalPallet.current.accentSecond

@@ -1,6 +1,7 @@
 package com.flipperdevices.inappnotification.impl.api
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.inappnotification.api.InAppNotificationRenderer
 import com.flipperdevices.inappnotification.api.model.InAppNotification
@@ -13,8 +14,9 @@ class InAppNotificationRendererImpl @Inject constructor() : InAppNotificationRen
     @Composable
     override fun InAppNotification(
         notification: InAppNotification,
-        onNotificationHidden: () -> Unit
+        modifier: Modifier,
+        onNotificationHidden: () -> Unit,
     ) {
-        ComposableInAppNotification(notification, onNotificationHidden)
+        ComposableInAppNotification(notification, onNotificationHidden, modifier)
     }
 }

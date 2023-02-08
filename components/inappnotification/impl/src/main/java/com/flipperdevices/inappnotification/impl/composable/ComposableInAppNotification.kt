@@ -29,23 +29,26 @@ const val VISIBLE_ANIMATION_MS = 1000
 @Composable
 fun ComposableInAppNotification(
     notification: InAppNotification,
-    onNotificationHidden: () -> Unit
+    onNotificationHidden: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    key(notification) {
-        ComposableInAppNotificationCard(notification, onNotificationHidden)
+    key(notification, onNotificationHidden, modifier) {
+        ComposableInAppNotificationCard(notification, onNotificationHidden, modifier)
     }
 }
 
 @Composable
 private fun ComposableInAppNotificationCard(
     notification: InAppNotification,
-    onNotificationHidden: () -> Unit
+    onNotificationHidden: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     var visibleState by remember { mutableStateOf(false) }
     LaunchedEffect(notification) {
         visibleState = true
     }
     AnimatedVisibility(
+        modifier = modifier,
         visible = visibleState,
         enter = fadeIn(animationSpec = tween(VISIBLE_ANIMATION_MS)),
         exit = fadeOut(animationSpec = tween(VISIBLE_ANIMATION_MS))

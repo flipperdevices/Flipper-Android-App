@@ -10,6 +10,7 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
+import com.flipperdevices.inappnotification.api.InAppNotificationRenderer
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
 import javax.inject.Inject
@@ -21,7 +22,8 @@ import kotlinx.collections.immutable.toPersistentSet
 class BottomNavigationFeatureEntryImpl @Inject constructor(
     featureEntriesProvider: Provider<MutableSet<AggregateFeatureEntry>>,
     composableEntriesProvider: Provider<MutableSet<ComposableFeatureEntry>>,
-    private val connectionApi: ConnectionApi
+    private val connectionApi: ConnectionApi,
+    private val notificationRenderer: InAppNotificationRenderer
 ) : BottomNavigationFeatureEntry {
     private val featureEntriesMutable by featureEntriesProvider
     private val composableEntriesMutable by composableEntriesProvider
@@ -33,7 +35,8 @@ class BottomNavigationFeatureEntryImpl @Inject constructor(
             ComposableMainScreen(
                 connectionApi = connectionApi,
                 featureEntries = featureEntriesMutable.toPersistentSet(),
-                composableEntries = composableEntriesMutable.toPersistentSet()
+                composableEntries = composableEntriesMutable.toPersistentSet(),
+                notificationRenderer = notificationRenderer
             )
         }
     }

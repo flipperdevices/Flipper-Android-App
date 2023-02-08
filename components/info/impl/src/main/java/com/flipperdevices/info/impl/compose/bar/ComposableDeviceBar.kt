@@ -1,5 +1,6 @@
 package com.flipperdevices.info.impl.compose.bar
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -19,7 +20,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.preference.pb.HardwareColor
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
@@ -28,12 +28,12 @@ import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
 import com.flipperdevices.info.impl.viewmodel.FlipperColorViewModel
 import kotlin.math.roundToInt
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import tangle.viewmodel.compose.tangleViewModel
 
 const val FLOAT_TO_PERCENT_QUALIFIER = 100
 
 @Composable
-fun ComposableDeviceBar(deviceStatusViewModel: DeviceStatusViewModel = viewModel()) {
+fun ComposableDeviceBar(deviceStatusViewModel: DeviceStatusViewModel = tangleViewModel()) {
     val deviceStatus by deviceStatusViewModel.getState().collectAsState()
     DeviceBar(deviceStatus)
 }
@@ -68,7 +68,7 @@ private fun FlipperInformation(deviceStatus: DeviceStatus) {
 @Composable
 private fun FlipperImage(
     deviceStatus: DeviceStatus,
-    flipperColorViewModel: FlipperColorViewModel = viewModel()
+    flipperColorViewModel: FlipperColorViewModel = tangleViewModel()
 ) {
     val flipperColor by flipperColorViewModel.getFlipperColor().collectAsState()
     val disabledFlipperId = when (flipperColor) {

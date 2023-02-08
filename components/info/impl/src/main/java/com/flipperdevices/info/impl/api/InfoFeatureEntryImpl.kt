@@ -9,6 +9,7 @@ import androidx.navigation.navigation
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.deeplink.model.DeeplinkConstants
+import com.flipperdevices.info.api.screen.InfoFeatureEntry
 import com.flipperdevices.info.impl.compose.screens.ComposableDeviceInfoScreen
 import com.flipperdevices.info.impl.compose.screens.ComposableFullDeviceInfoScreen
 import com.flipperdevices.settings.api.SettingsFeatureEntry
