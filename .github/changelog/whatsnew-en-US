@@ -1,10 +1,1 @@
-New features:
-- NFC-shadow file sharing
-- Updated sharing: added encrypted long links, file format sharing and error handling (for import and export)
-- Reworked all system dialogs to our custom UI
-- Added support for the NFC version 3 and checksum calculation
-
-Fixes:
-- Fixed synchronization with keys in “Favorites”
-- Fixed crashes with favorites keys in “Deleted”
-- Fixed colors for scrim navigation bar, bottom sheet and NFC-card in Dump Editor
+HOTFIX: Fix updater crush with multi-target

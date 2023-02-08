@@ -1,6 +1,6 @@
 # Changelog
 
-# 1.4.1 - In Progress
+# 1.4.2 - In Progress
 
 - [Feature] Flipper app loader errors
 - [Feature] Skip synchronization if file system on flipper not changed
@@ -23,6 +23,10 @@
 - [REFACTOR] Fix gradle warnings (Deprecated API, PredefinedEnumMap)
 - [REFACTOR] Replace some clickable to card function + reuse orange app bar
 - [REFACTOR] Google Compose Navigation (archive, firstpair)
+
+# 1.4.1
+
+- [FIX] Updater now respect f7 target
 
 # 1.4.0
 
