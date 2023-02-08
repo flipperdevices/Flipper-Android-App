@@ -47,8 +47,8 @@ fun ComposableUpdateButtonPreview() {
                 .background(LocalPallet.current.background)
         ) {
             updateCardState.forEach {
-                ComposableUpdateButton(it, false)
-                ComposableUpdateButton(it, true)
+                ComposableUpdateButton(it, false, onStartUpdateRequest = {})
+                ComposableUpdateButton(it, true, onStartUpdateRequest = {})
             }
         }
     }

@@ -14,6 +14,7 @@ import tangle.viewmodel.compose.tangleViewModel
 @Composable
 fun ComposableUpdateRequest(
     pendingUpdateRequest: UpdatePending,
+    onStartUpdateRequest: (UpdateRequest) -> Unit,
     updateRequestViewModel: UpdateRequestViewModel = tangleViewModel(),
     onDismiss: () -> Unit
 ) {
@@ -42,13 +43,13 @@ fun ComposableUpdateRequest(
                 SyncingState.Complete -> {
                     val isInstall = isInstallUpdate(localUpdatePendingState.request)
                     FlipperDialogReadyUpdate(isInstall, version, localDismiss) {
-                        updateRequestViewModel.openUpdate(localUpdatePendingState.request)
+                        onStartUpdateRequest(localUpdatePendingState.request)
                         localDismiss()
                         return@FlipperDialogReadyUpdate
                     }
                 }
                 SyncingState.Stop -> {
-                    updateRequestViewModel.openUpdate(localUpdatePendingState.request)
+                    onStartUpdateRequest(localUpdatePendingState.request)
                     localDismiss()
                     return
                 }

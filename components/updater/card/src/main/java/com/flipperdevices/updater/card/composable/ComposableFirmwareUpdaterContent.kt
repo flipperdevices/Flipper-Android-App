@@ -25,8 +25,9 @@ import com.flipperdevices.updater.model.UpdateRequest
 fun ComposableFirmwareUpdaterContent(
     version: FirmwareVersion?,
     updateCardState: UpdateCardState,
+    onSelectFirmwareChannel: (FirmwareChannel) -> Unit,
     modifier: Modifier = Modifier,
-    onSelectFirmwareChannel: (FirmwareChannel) -> Unit
+    onStartUpdateRequest: (UpdateRequest) -> Unit
 ) {
     val inProgress = version == null
     ComposableDeviceInfoRow(
@@ -42,7 +43,7 @@ fun ComposableFirmwareUpdaterContent(
         modifier = modifier
     )
     ComposableInfoDivider()
-    ComposableUpdateButton(updateCardState, inProgress)
+    ComposableUpdateButton(updateCardState, inProgress, onStartUpdateRequest = onStartUpdateRequest)
 }
 
 @Preview(
@@ -83,7 +84,11 @@ fun ComposableFirmwareUpdaterContentPreview() {
         )
         Column(Modifier.verticalScroll(rememberScrollState())) {
             cardStates.forEach {
-                ComposableFirmwareUpdaterContent(lastVersion, it) {}
+                ComposableFirmwareUpdaterContent(
+                    lastVersion,
+                    updateCardState = it,
+                    onSelectFirmwareChannel = {}
+                ) {}
                 Spacer(modifier = Modifier.height(2.dp))
             }
         }

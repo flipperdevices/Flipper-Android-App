@@ -12,6 +12,7 @@ import com.flipperdevices.core.ktx.android.withArgs
 import com.flipperdevices.core.navigation.delegates.OnBackPressListener
 import com.flipperdevices.core.ui.fragment.ComposeFragment
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
+import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.flipperdevices.info.impl.api.InfoFeatureEntry
@@ -24,6 +25,9 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 class InfoFragment : ComposeFragment(), OnBackPressListener {
     @Inject
     lateinit var featureEntries: MutableSet<AggregateFeatureEntry>
+
+    @Inject
+    lateinit var composeEntries: MutableSet<ComposableFeatureEntry>
 
     @Inject
     lateinit var infoFeatureEntry: InfoFeatureEntry
@@ -54,6 +58,7 @@ class InfoFragment : ComposeFragment(), OnBackPressListener {
             InfoNavigation(
                 navController = it,
                 featureEntries = featureEntries.toImmutableSet(),
+                composeEntries = composeEntries.toImmutableSet(),
                 infoFeatureEntry = infoFeatureEntry
             )
         }

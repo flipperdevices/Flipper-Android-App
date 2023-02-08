@@ -8,7 +8,6 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.ktx.jre.filename
 import com.flipperdevices.core.ktx.jre.length
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
-import com.flipperdevices.updater.api.UpdaterUIApi
 import com.flipperdevices.updater.card.model.BatteryState
 import com.flipperdevices.updater.card.model.SyncingState
 import com.flipperdevices.updater.card.model.UpdatePending
@@ -30,7 +29,6 @@ private const val SIZE_FOLDER_UPDATE_MAX = 1024L * 1024L * 1024L * 10 // 10Mb
 
 class UpdateRequestViewModel @VMInject constructor(
     serviceProvider: FlipperServiceProvider,
-    private val updaterUIApi: UpdaterUIApi,
     private val synchronizationApi: SynchronizationApi
 ) : LifecycleViewModel(), FlipperBleServiceConsumer {
 
@@ -65,12 +63,6 @@ class UpdateRequestViewModel @VMInject constructor(
                 is UpdatePending.Request -> startUpdateFromServer(updatePending)
                 is UpdatePending.URI -> startUpdateFromFile(updatePending)
             }
-        }
-    }
-
-    fun openUpdate(update: UpdateRequest) {
-        viewModelScope.launch {
-            updaterUIApi.openUpdateScreen(updateRequest = update)
         }
     }
 
@@ -115,7 +107,7 @@ class UpdateRequestViewModel @VMInject constructor(
                     version = file.nameWithoutExtension
                 ),
                 changelog = null,
-                content = InternalStorageFirmware(updatePending.uri)
+                content = InternalStorageFirmware(updatePending.uri.toString())
             )
 
             val isSyncing = synchronizationApi.isSynchronizationRunning()
