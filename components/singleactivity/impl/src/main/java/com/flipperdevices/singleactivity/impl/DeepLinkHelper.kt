@@ -14,7 +14,6 @@ import com.flipperdevices.deeplink.api.DeepLinkParser
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.firstpair.api.FirstPairApi
 import com.flipperdevices.updater.api.UpdaterApi
-import com.flipperdevices.updater.api.UpdaterUIApi
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -35,7 +34,6 @@ class DeepLinkHelperImpl @Inject constructor(
     private val firstPairApi: FirstPairApi,
     private val updaterApi: UpdaterApi,
     private val cicerone: CiceroneGlobal,
-    private val updaterUIApi: UpdaterUIApi,
     private val bottomBarApi: BottomNavigationApi,
     private val deepLinkDispatcher: DeepLinkDispatcher,
     private val deepLinkParser: DeepLinkParser
@@ -77,7 +75,7 @@ class DeepLinkHelperImpl @Inject constructor(
         }
 
         if (updaterApi.isUpdateInProcess()) {
-            updaterUIApi.openUpdateScreen()
+            // TODO replace with UpdaterFeatureEntry
             return
         }
 

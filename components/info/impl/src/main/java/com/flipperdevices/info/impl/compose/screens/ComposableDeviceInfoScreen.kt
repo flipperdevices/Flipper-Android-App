@@ -14,18 +14,21 @@ import com.flipperdevices.info.impl.compose.elements.ComposableOptionsCard
 import com.flipperdevices.info.impl.compose.elements.ComposablePairDeviceActionCard
 import com.flipperdevices.info.impl.compose.info.ComposableInfoCard
 import com.flipperdevices.updater.api.UpdaterCardApi
+import com.flipperdevices.updater.model.UpdateRequest
 
 @Composable
 fun ComposableDeviceInfoScreen(
     updaterCardApi: UpdaterCardApi,
     onOpenFullDeviceInfo: () -> Unit,
     onOpenOptions: () -> Unit,
+    onStartUpdateRequest: (UpdateRequest) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.verticalScroll(rememberScrollState())) {
         ComposableDeviceBar()
         updaterCardApi.ComposableUpdaterCard(
-            modifier = Modifier.padding(top = 14.dp)
+            modifier = Modifier.padding(top = 14.dp),
+            onStartUpdateRequest = onStartUpdateRequest
         )
         ComposableFirmwareUpdate(modifier = Modifier.padding(top = 14.dp))
         ComposableInfoCard(

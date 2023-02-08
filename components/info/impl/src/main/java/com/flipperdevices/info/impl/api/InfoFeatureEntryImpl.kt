@@ -13,6 +13,7 @@ import com.flipperdevices.info.impl.compose.screens.ComposableDeviceInfoScreen
 import com.flipperdevices.info.impl.compose.screens.ComposableFullDeviceInfoScreen
 import com.flipperdevices.settings.api.SettingsFeatureEntry
 import com.flipperdevices.updater.api.UpdaterCardApi
+import com.flipperdevices.updater.api.UpdaterFeatureEntry
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
 import javax.inject.Inject
@@ -21,7 +22,8 @@ import javax.inject.Inject
 @ContributesMultibinding(AppGraph::class, AggregateFeatureEntry::class)
 class InfoFeatureEntryImpl @Inject constructor(
     private val updaterCardApi: UpdaterCardApi,
-    private val settingFeatureEntry: SettingsFeatureEntry
+    private val settingFeatureEntry: SettingsFeatureEntry,
+    private val updaterFeatureEntry: UpdaterFeatureEntry
 ) : InfoFeatureEntry {
 
     private val deeplinkKey = "{${DeeplinkConstants.KEY}}"
@@ -36,7 +38,11 @@ class InfoFeatureEntryImpl @Inject constructor(
                 ComposableDeviceInfoScreen(
                     updaterCardApi,
                     onOpenFullDeviceInfo = { navController.navigate(fullInfo()) },
-                    onOpenOptions = { navController.navigate(settingFeatureEntry.ROUTE.name) }
+                    onOpenOptions = { navController.navigate(settingFeatureEntry.ROUTE.name) },
+                    onStartUpdateRequest = {
+                        val updaterScreen = updaterFeatureEntry.getUpdaterScreen(it)
+                        navController.navigate(updaterScreen)
+                    }
                 )
             }
             composable("@${ROUTE.name}full") {
@@ -58,7 +64,8 @@ class InfoFeatureEntryImpl @Inject constructor(
                 ComposableDeviceInfoScreen(
                     updaterCardApi,
                     onOpenFullDeviceInfo = { navController.navigate(fullInfo()) },
-                    onOpenOptions = { navController.navigate(settingFeatureEntry.ROUTE.name) }
+                    onOpenOptions = { navController.navigate(settingFeatureEntry.ROUTE.name) },
+                    onStartUpdateRequest = updaterFeatureEntry::getUpdaterScreen
                 )
             }
         }

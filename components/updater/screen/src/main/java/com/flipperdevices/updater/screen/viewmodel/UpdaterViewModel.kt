@@ -7,20 +7,15 @@ import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
-import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.jre.combine
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.verbose
-import com.flipperdevices.core.navigation.global.CiceroneGlobal
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
-import com.flipperdevices.metric.api.MetricApi
-import com.flipperdevices.singleactivity.api.SingleActivityApi
 import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.model.UpdatingState
-import com.flipperdevices.updater.screen.di.UpdaterComponent
 import com.flipperdevices.updater.screen.model.FailedReason
 import com.flipperdevices.updater.screen.model.UpdaterScreenState
 import kotlinx.coroutines.Job
@@ -33,11 +28,15 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.sync.Mutex
-import javax.inject.Inject
+import tangle.viewmodel.VMInject
 
 private const val CHECK_CANCEL_DELAY = 100L
 
-class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleServiceConsumer {
+class UpdaterViewModel @VMInject constructor(
+    private val updaterApi: UpdaterApi,
+    private val synchronizationApi: SynchronizationApi,
+    serviceProvider: FlipperServiceProvider,
+) : LifecycleViewModel(), LogTagProvider, FlipperBleServiceConsumer {
     override val TAG = "UpdaterViewModel"
 
     private val updaterScreenStateFlow = MutableStateFlow<UpdaterScreenState>(
@@ -47,26 +46,7 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
     private val mutex = Mutex()
     private var updaterJob: Job? = null
 
-    @Inject
-    lateinit var updaterApi: UpdaterApi
-
-    @Inject
-    lateinit var synchronizationApi: SynchronizationApi
-
-    @Inject
-    lateinit var serviceProvider: FlipperServiceProvider
-
-    @Inject
-    lateinit var metricApi: MetricApi
-
-    @Inject
-    lateinit var ciceroneGlobal: CiceroneGlobal
-
-    @Inject
-    lateinit var singleActivityApi: SingleActivityApi
-
     init {
-        ComponentHolder.component<UpdaterComponent>().inject(this)
         serviceProvider.provideServiceApi(this, this)
         updaterJob = subscribeOnUpdaterFlow()
     }
@@ -84,7 +64,6 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
     ) {
         if (updateRequest == null) {
             if (!updaterApi.isUpdateInProcess()) {
-                singleActivityApi.open()
                 updaterScreenStateFlow.emit(UpdaterScreenState.Finish)
             }
             return
@@ -137,7 +116,6 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
         updaterApi.getState()
             .filter { it.state.isFinalState }
             .first()
-        singleActivityApi.open()
         updaterScreenStateFlow.emit(UpdaterScreenState.Finish)
     }
 
@@ -164,12 +142,10 @@ class UpdaterViewModel : LifecycleViewModel(), LogTagProvider, FlipperBleService
                     UpdaterScreenState.Failed(FailedReason.DOWNLOAD_FROM_NETWORK)
                 UpdatingState.Complete,
                 UpdatingState.Failed -> {
-                    singleActivityApi.open()
                     UpdaterScreenState.Finish
                 }
                 UpdatingState.Rebooting ->
                     if (connectionState !is ConnectionState.Ready) {
-                        singleActivityApi.open()
                         UpdaterScreenState.Finish
                     } else {
                         UpdaterScreenState.Rebooting

@@ -2,9 +2,13 @@ package com.flipperdevices.updater.model
 
 import android.net.Uri
 import android.os.Parcelable
+import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 @Parcelize
+@Serializable
 data class UpdateRequest(
     val updateFrom: FirmwareVersion,
     val updateTo: FirmwareVersion,
@@ -14,11 +18,13 @@ data class UpdateRequest(
 ) : Parcelable
 
 @Parcelize
+@Serializable
 sealed class UpdateContent : Parcelable {
     abstract fun folderName(): String
 }
 
 @Parcelize
+@Serializable
 class OfficialFirmware(
     val distributionFile: DistributionFile
 ) : UpdateContent(), Parcelable {
@@ -26,7 +32,13 @@ class OfficialFirmware(
 }
 
 @Parcelize
-class InternalStorageFirmware(val uri: Uri) : UpdateContent(), Parcelable {
+@Serializable
+class InternalStorageFirmware(private val uriString: String) : UpdateContent(), Parcelable {
+
+    @IgnoredOnParcel
+    @Transient
+    val uri: Uri = Uri.parse(uriString)
+
     override fun folderName(): String {
         return uri
             .path
@@ -36,6 +48,7 @@ class InternalStorageFirmware(val uri: Uri) : UpdateContent(), Parcelable {
 }
 
 @Parcelize
+@Serializable
 class WebUpdaterFirmware(val url: String) : UpdateContent(), Parcelable {
     override fun folderName(): String = url.substringBeforeLast("/")
 }

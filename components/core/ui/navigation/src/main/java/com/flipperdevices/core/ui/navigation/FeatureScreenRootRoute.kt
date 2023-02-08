@@ -25,5 +25,6 @@ enum class FeatureScreenRootRoute {
     NFC_EDITOR,
     KEY_EDIT_SCREEN,
     FIRST_PAIR,
-    WIDGET
+    WIDGET,
+    UPDATER
 }
