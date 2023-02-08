@@ -5,7 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
-import com.flipperdevices.hub.impl.api.HubFeatureEntry
+import com.flipperdevices.hub.api.HubFeatureEntry
 import kotlinx.collections.immutable.ImmutableSet
 
 @Composable

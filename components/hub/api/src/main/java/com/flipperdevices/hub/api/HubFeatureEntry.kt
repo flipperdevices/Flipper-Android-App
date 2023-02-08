@@ -1,4 +1,4 @@
-package com.flipperdevices.hub.impl.api
+package com.flipperdevices.hub.api
 
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.core.ui.navigation.FeatureScreenRootRoute

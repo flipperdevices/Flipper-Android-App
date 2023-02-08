@@ -11,6 +11,7 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.faphub.main.api.FapHubMainScreenApi
 import com.flipperdevices.faphub.maincard.api.MainCardApi
+import com.flipperdevices.hub.api.HubFeatureEntry
 import com.flipperdevices.hub.impl.composable.ComposableHub
 import com.flipperdevices.nfc.attack.api.NFCAttackFeatureEntry
 import com.squareup.anvil.annotations.ContributesBinding
