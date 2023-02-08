@@ -95,7 +95,10 @@ class UpdaterFeatureEntryImpl @Inject constructor() : UpdaterFeatureEntry {
                     is UpdaterScreenState.Failed -> onAbortUpdate()
                     else -> {
                         ComposableCancelDialog(
-                            onAbort = onAbortUpdate,
+                            onAbort = {
+                                isCancelDialogOpen = false
+                                updaterViewModel.cancelUpdate()
+                            },
                             onContinue = { isCancelDialogOpen = false }
                         )
                     }
