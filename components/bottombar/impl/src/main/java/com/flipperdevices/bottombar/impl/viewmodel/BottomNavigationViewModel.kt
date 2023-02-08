@@ -29,10 +29,8 @@ class BottomNavigationViewModel @VMInject constructor(
 
     fun getStartDestination(): FlipperBottomTab {
         return runBlockingWithLog("selected_tab") {
-            val selectedTab = settingsDataStore.data.first().selectedTab
-                ?: return@runBlockingWithLog FlipperBottomTab.DEVICE
-
-            return@runBlockingWithLog when (selectedTab) {
+            return@runBlockingWithLog when (settingsDataStore.data.first().selectedTab) {
+                null,
                 SelectedTab.UNRECOGNIZED,
                 SelectedTab.DEVICE -> FlipperBottomTab.DEVICE
                 SelectedTab.ARCHIVE -> FlipperBottomTab.ARCHIVE
