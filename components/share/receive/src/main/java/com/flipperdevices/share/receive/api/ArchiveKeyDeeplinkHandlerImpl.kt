@@ -8,9 +8,7 @@ import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.share.api.ArchiveKeyDeeplinkHandler
-import com.flipperdevices.share.receive.fragments.KeyReceiveFragment
 import com.github.terrakok.cicerone.Router
-import com.github.terrakok.cicerone.androidx.FragmentScreen
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
 import javax.inject.Inject
@@ -36,8 +34,7 @@ class ArchiveKeyDeeplinkHandlerImpl @Inject constructor(
     }
 
     override fun processLink(router: Router, link: Deeplink) {
-        val fragmentScreen = FragmentScreen { KeyReceiveFragment.newInstance(link) }
+        // TODO
         metricApi.reportSimpleEvent(SimpleEvent.OPEN_SAVE_KEY)
-        router.navigateTo(fragmentScreen)
     }
 }

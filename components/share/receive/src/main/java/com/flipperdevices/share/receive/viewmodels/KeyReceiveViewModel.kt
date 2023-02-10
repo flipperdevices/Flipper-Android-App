@@ -10,13 +10,12 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
 import com.flipperdevices.deeplink.model.Deeplink
+import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.flipperdevices.share.receive.R
-import com.flipperdevices.share.receive.fragments.EXTRA_KEY_DEEPLINK
 import com.flipperdevices.share.receive.helpers.FlipperKeyParserHelper
 import com.flipperdevices.share.receive.helpers.ReceiveKeyActionHelper
 import com.flipperdevices.share.receive.models.ReceiveState
 import com.flipperdevices.share.receive.models.ReceiverError
-import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -29,7 +28,7 @@ import java.net.UnknownHostException
 import java.net.UnknownServiceException
 
 class KeyReceiveViewModel @VMInject constructor(
-    @TangleParam(EXTRA_KEY_DEEPLINK)
+    @TangleParam(DeeplinkConstants.KEY)
     initialDeeplink: Deeplink?,
     application: Application,
     private val synchronizationApi: SynchronizationApi,
@@ -119,8 +118,7 @@ class KeyReceiveViewModel @VMInject constructor(
         }
     }
 
-    fun onFinish(router: Router) {
+    fun onFinish() {
         synchronizationApi.startSynchronization(force = true)
-        router.exit()
     }
 }
