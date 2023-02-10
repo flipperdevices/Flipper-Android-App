@@ -7,7 +7,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.flipperdevices.archive.api.ArchiveApi
-import com.flipperdevices.archive.api.SearchApi
 import com.flipperdevices.archive.api.SearchFeatureEntry
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.di.AppGraph
@@ -53,7 +52,7 @@ class WidgetFeatureEntryImpl @Inject constructor(
                 arguments = widgetArguments
             ) {
                 val widgetSelectViewModel: WidgetSelectViewModel = tangleViewModel()
-                navController.GetOnceResult<FlipperKeyPath>(SearchApi.SEARCH_RESULT_KEY) {
+                navController.GetOnceResult<FlipperKeyPath>(SearchFeatureEntry.SEARCH_RESULT_KEY) {
                     widgetSelectViewModel.onSelectKey(it)
                 }
                 WidgetOptionsComposable(

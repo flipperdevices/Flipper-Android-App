@@ -2,7 +2,6 @@ package com.flipperdevices.archive.impl.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.flipperdevices.archive.api.SearchApi
 import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
@@ -28,7 +27,6 @@ class GeneralTabViewModel @VMInject constructor(
     private val simpleKeyApi: SimpleKeyApi,
     private val favoriteApi: FavoriteApi,
     private val synchronizationApi: SynchronizationApi,
-    private val searchApi: SearchApi,
     private val keyScreenApi: KeyScreenApi,
     private val ciceroneGlobal: CiceroneGlobal
 ) : ViewModel(), ResultListener {
@@ -57,14 +55,6 @@ class GeneralTabViewModel @VMInject constructor(
     fun getKeys(): StateFlow<ImmutableList<FlipperKey>?> = keys
     fun getFavoriteKeys(): StateFlow<ImmutableList<FlipperKey>> = favoriteKeys
     fun getSynchronizationState(): StateFlow<SynchronizationState> = synchronizationState
-
-    fun onOpenSearch() {
-        val router = ciceroneGlobal.getRouter()
-        router.navigateTo(searchApi.getSearchScreen())
-        resultListenerDispatcher?.dispose()
-        resultListenerDispatcher =
-            router.setResultListener(SearchApi.SEARCH_RESULT_KEY, this)
-    }
 
     fun refresh() {
         synchronizationApi.startSynchronization(force = true)
