@@ -82,7 +82,7 @@ class DeepLinkHelperImpl @Inject constructor(
         }
 
         if (firstPairApi.shouldWeOpenPairScreen()) {
-            navController.navigate(firstPairFeatureEntry.getFirstPairScreen(), topScreenOptions)
+            navController.navigate(firstPairFeatureEntry.start(), topScreenOptions)
             return@withContext
         }
 
