@@ -16,6 +16,7 @@
 - [FIX] Fix shadow file synchronization
 - [FIX] Fix broken synchronization with changes from android
 - [FIX] Fix shadow file sharing as file
+- [FIX] Firstpair flow open by navigation graph route
 - [REFACTOR] Migrate bottom bar to compose navigation
 - [REFACTOR] Bump Android Gradle Plugin
 - [REFACTOR] Fix detekt compose issues
@@ -23,8 +24,7 @@
 - [REFACTOR] Enable detekt formatting with rules
 - [REFACTOR] Fix gradle warnings (Deprecated API, PredefinedEnumMap)
 - [REFACTOR] Replace some clickable to card function + reuse orange app bar
-- [REFACTOR] Google Compose Navigation (archive, firstpair, widgets, updater, import)
-- [REFACTOR] Firstpair flow open by navigation graph route
+- [REFACTOR] Google Compose Navigation (archive, firstpair, widgets(composable entry), updater, import)
 
 # 1.4.1
 
