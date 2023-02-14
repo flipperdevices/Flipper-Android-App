@@ -12,11 +12,11 @@ import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.property.getRequest
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.withTimeoutOrNull
+import javax.inject.Inject
 
 interface SkipProvisioningHelper {
     suspend fun shouldSkipProvisioning(
@@ -70,11 +70,15 @@ class SkipProvisioningHelperImpl @Inject constructor(
     }
 
     private suspend fun getHardwareRegion(requestApi: FlipperRequestApi): Int? {
-        val response = requestApi.request(flowOf(main {
-            propertyGetRequest = getRequest {
-                key = RPC_KEY_HARDWARE_REGION
-            }
-        }.wrapToRequest()))
+        val response = requestApi.request(
+            flowOf(
+                main {
+                    propertyGetRequest = getRequest {
+                        key = RPC_KEY_HARDWARE_REGION
+                    }
+                }.wrapToRequest()
+            )
+        )
 
         if (response.hasPropertyGetResponse().not()) {
             return null

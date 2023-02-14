@@ -25,14 +25,14 @@ import com.flipperdevices.core.preference.pb.PairSettings
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.shake2report.api.Shake2ReportApi
-import java.util.concurrent.atomic.AtomicBoolean
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import kotlinx.coroutines.sync.Mutex
+import java.util.concurrent.atomic.AtomicBoolean
+import javax.inject.Inject
 
 class FlipperServiceApiImpl(
     context: Context,
@@ -78,7 +78,6 @@ class FlipperServiceApiImpl(
     private val bleManager: FlipperBleManager = FlipperBleManagerImpl(
         context,
         settingsStore,
-        pairSettingsStore,
         scope,
         serviceErrorListener,
         lagsDetector,

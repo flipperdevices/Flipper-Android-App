@@ -7,13 +7,12 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.infoRequest
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 private const val FLIPPER_PATH_EXTERNAL_STORAGE = "/ext/"
 
-class StorageExistHelper @Inject constructor() {
+class StorageExistHelper constructor() {
     fun isExternalStorageExist(requestApi: FlipperRequestApi): Flow<Boolean> {
         return requestApi.request(
             main {

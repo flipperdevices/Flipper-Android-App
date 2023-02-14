@@ -40,7 +40,6 @@ dependencies {
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.pbutils)
 
-
     // Core deps
     implementation(libs.ktx)
     implementation(libs.annotations)

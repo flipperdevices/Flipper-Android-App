@@ -59,7 +59,7 @@ private fun ComposableInfoCardContentInternal(
         deviceStatus.connectInProgress
     } else {
         deviceStatus is DeviceStatus.Connected &&
-                flipperBasicInfo.firmwareVersion !is FlipperInformationStatus.Ready
+            flipperBasicInfo.firmwareVersion !is FlipperInformationStatus.Ready
     }
 
     ComposableFirmwareVersion(

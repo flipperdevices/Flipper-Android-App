@@ -34,7 +34,6 @@ class FullInfoViewModel @VMInject constructor(
     fun getFlipperRpcInformation() = flipperRpcInformationState.asStateFlow()
 
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
-
     }
 
     fun getFirmwareChannel(commit: String?): FirmwareChannel? {

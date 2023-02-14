@@ -4,7 +4,6 @@ import com.flipperdevices.core.data.SemVer
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.persistentMapOf
 
-
 data class FlipperRpcInformation(
     val flipperDeviceInfo: FlipperDeviceInfo = FlipperDeviceInfo(),
     val firmware: FirmwareInfo = FirmwareInfo(),
@@ -18,7 +17,6 @@ sealed class StorageStats {
 
     data class Loaded(val total: Long, val free: Long) : StorageStats()
 }
-
 
 data class FlipperDeviceInfo(
     val deviceName: String? = null,

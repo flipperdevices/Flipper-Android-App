@@ -30,7 +30,6 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.debug
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.preference.pb.PairSettings
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.shake2report.api.Shake2ReportApi
@@ -45,7 +44,6 @@ import no.nordicsemi.android.ble.ConnectionPriorityRequest
 class FlipperBleManagerImpl(
     context: Context,
     private val settingsStore: DataStore<Settings>,
-    dataStore: DataStore<PairSettings>,
     private val scope: CoroutineScope,
     private val serviceErrorListener: FlipperServiceErrorListener,
     flipperLagsDetector: FlipperLagsDetector,

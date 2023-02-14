@@ -1,4 +1,4 @@
-package com.flipperdevices.info.impl.viewmodel.deviceinfo
+package com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers
 
 import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
@@ -14,15 +14,12 @@ import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.preference.pb.HardwareColor
 import com.flipperdevices.core.preference.pb.PairSettings
 import com.flipperdevices.info.api.model.FlipperRpcInformation
-import com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.DeviceInfoHelper
-import com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.InternalFlipperRpcInformationRaw
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.system.deviceInfoRequest
 import com.flipperdevices.protobuf.system.powerInfoRequest
 import com.flipperdevices.shake2report.api.Shake2ReportApi
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -36,7 +33,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
-
+import javax.inject.Inject
 
 interface FlipperRpcInformationApi {
     fun getRequestRpcInformationStatus(): StateFlow<FlipperRequestRpcInformationStatus>
@@ -66,7 +63,7 @@ class FlipperRpcInformationApiImpl @Inject constructor(
 
     init {
         rpcInformationFlow.onEach {
-            //TODO shake2ReportApi.updateRpcInformation(DeviceInfoHelper.mapRawRpcInformation(it))
+            shake2ReportApi.updateRpcInformation(DeviceInfoHelper.mapRawRpcInformation(it))
         }.launchIn(scope + Dispatchers.Default)
     }
 

@@ -21,12 +21,12 @@ import com.flipperdevices.updater.subghz.model.RegionProvisioning
 import com.flipperdevices.updater.subghz.model.RegionProvisioningSource
 import com.google.protobuf.ByteString
 import com.squareup.anvil.annotations.ContributesBinding
-import java.io.ByteArrayInputStream
-import java.nio.charset.Charset
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import java.io.ByteArrayInputStream
+import java.nio.charset.Charset
+import javax.inject.Inject
 
 private const val UNKNOWN_REGION = "WW"
 
@@ -106,7 +106,6 @@ class SubGhzProvisioningHelperImpl @Inject constructor(
         }
         reportMetric(providedRegions, providedRegion, source ?: RegionProvisioningSource.DEFAULT)
     }
-
 
     private fun reportMetric(
         regionProvisioning: RegionProvisioning,

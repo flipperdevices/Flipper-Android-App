@@ -41,7 +41,6 @@ class UpdateCardViewModel @VMInject constructor(
     private val serviceProvider: FlipperServiceProvider,
     private val dataStoreSettings: DataStore<Settings>,
     private val updateOfferHelper: UpdateOfferProviderApi,
-    private val storageExistHelper: StorageExistHelper,
     @TangleParam(DeeplinkConstants.INTENT)
     private val intent: Intent?
 ) :
@@ -49,6 +48,8 @@ class UpdateCardViewModel @VMInject constructor(
     FlipperBleServiceConsumer,
     LogTagProvider {
     override val TAG = "UpdateCardViewModel"
+
+    private val storageExistHelper = StorageExistHelper()
 
     private val updateCardState = MutableStateFlow<UpdateCardState>(
         UpdateCardState.InProgress

@@ -1,8 +1,8 @@
 package com.flipperdevices.core.test
 
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlin.coroutines.AbstractCoroutineContextElement
 import kotlin.coroutines.CoroutineContext
-import kotlinx.coroutines.CoroutineExceptionHandler
 
 class PendingCoroutineExceptionHandler :
     AbstractCoroutineContextElement(CoroutineExceptionHandler),

@@ -176,7 +176,6 @@ class FlipperStorageInformationTest {
         )
     }
 
-
     @After
     fun cleanUp() {
         exceptionHandler.throwAll()
