@@ -24,17 +24,18 @@ class FirstPairFeatureEntryImpl @Inject constructor(
     private val firstPairStorage: FirstPairStorage,
     private val singleActivityApi: SingleActivityApi
 ) : FirstPairFeatureEntry {
-    override fun getFirstPairScreen(): String {
+    override fun start(): String = ROUTE.name
+    private fun getDeviceScreen() = "@${ROUTE.name}device"
+    private fun getTOSScreen() = "@${ROUTE.name}tos"
+    private fun getHelpScreen() = "@${ROUTE.name}help"
+
+    private fun getFirstPairScreen(): String {
         return if (firstPairStorage.isTosPassed()) {
             getDeviceScreen()
         } else {
             getTOSScreen()
         }
     }
-
-    private fun getDeviceScreen() = "@${ROUTE.name}device"
-    private fun getTOSScreen() = "@${ROUTE.name}tos"
-    private fun getHelpScreen() = "@${ROUTE.name}help"
 
     override fun NavGraphBuilder.navigation(navController: NavHostController) {
         navigation(
