@@ -1,12 +1,13 @@
-package com.flipperdevices.info.impl.viewmodel.deviceinfo
+package com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers
 
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
-import com.flipperdevices.bridge.api.model.StorageStats
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.info.impl.model.deviceinfo.FlipperStorageInformation
+import com.flipperdevices.info.impl.model.deviceinfo.StorageStats
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.complex.FlipperRPCInfoEvent
 import com.flipperdevices.protobuf.Flipper
@@ -46,10 +47,9 @@ class FlipperStorageInformationApiImpl(
     private val mutex = Mutex()
     private var alreadyRequested = false
     private var job: Job? = null
-    private val requestStatusFlow = MutableStateFlow(FlipperStorageInformation())
+    private val storageInformationFlow = MutableStateFlow(FlipperStorageInformation())
 
-    override fun getStorageInformationFlow() = requestStatusFlow.asStateFlow()
-
+    override fun getStorageInformationFlow() = storageInformationFlow.asStateFlow()
     override suspend fun invalidate(
         scope: CoroutineScope,
         requestApi: FlipperRequestApi,
@@ -69,26 +69,26 @@ class FlipperStorageInformationApiImpl(
     private suspend fun invalidateInternal(
         requestApi: FlipperRequestApi
     ) {
-        requestStatusFlow.emit(
+        storageInformationFlow.emit(
             FlipperStorageInformation(
-                internalStorageStats = FlipperInformationStatus.InProgress(null),
-                externalStorageStats = FlipperInformationStatus.InProgress(null),
+                internalStorageStatus = FlipperInformationStatus.InProgress(null),
+                externalStorageStatus = FlipperInformationStatus.InProgress(null),
             )
         )
 
         receiveStorageInfo(requestApi, FLIPPER_PATH_INTERNAL_STORAGE) { storageStats ->
             info { "Received internal storage info: $storageStats" }
-            val information = requestStatusFlow.updateAndGet {
+            val information = storageInformationFlow.updateAndGet {
                 it.copy(
-                    internalStorageStats = FlipperInformationStatus.Ready(storageStats)
+                    internalStorageStatus = FlipperInformationStatus.Ready(storageStats)
                 )
             }
             reportMetric(information)
         }
 
-        requestStatusFlow.update {
-            if (it.internalStorageStats !is FlipperInformationStatus.Ready) {
-                it.copy(internalStorageStats = FlipperInformationStatus.Ready(null))
+        storageInformationFlow.update {
+            if (it.internalStorageStatus !is FlipperInformationStatus.Ready) {
+                it.copy(internalStorageStatus = FlipperInformationStatus.Ready(null))
             } else {
                 it
             }
@@ -96,17 +96,17 @@ class FlipperStorageInformationApiImpl(
 
         receiveStorageInfo(requestApi, FLIPPER_PATH_EXTERNAL_STORAGE) { storageStats ->
             info { "Received external storage info: $storageStats" }
-            val information = requestStatusFlow.updateAndGet {
+            val information = storageInformationFlow.updateAndGet {
                 it.copy(
-                    externalStorageStats = FlipperInformationStatus.Ready(storageStats)
+                    externalStorageStatus = FlipperInformationStatus.Ready(storageStats)
                 )
             }
             reportMetric(information)
         }
 
-        requestStatusFlow.update {
-            if (it.externalStorageStats !is FlipperInformationStatus.Ready) {
-                it.copy(externalStorageStats = FlipperInformationStatus.Ready(null))
+        storageInformationFlow.update {
+            if (it.externalStorageStatus !is FlipperInformationStatus.Ready) {
+                it.copy(externalStorageStatus = FlipperInformationStatus.Ready(null))
             } else {
                 it
             }
@@ -144,9 +144,9 @@ class FlipperStorageInformationApiImpl(
 
 
     private fun reportMetric(information: FlipperStorageInformation) {
-        val externalStatsStatus = information.externalStorageStats
+        val externalStatsStatus = information.externalStorageStatus
                 as? FlipperInformationStatus.Ready
-        val internalStatsStatus = information.internalStorageStats
+        val internalStatsStatus = information.internalStorageStatus
                 as? FlipperInformationStatus.Ready
         val externalStats = externalStatsStatus?.data as? StorageStats.Loaded
         val internalStats = internalStatsStatus?.data as? StorageStats.Loaded

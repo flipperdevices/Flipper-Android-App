@@ -4,8 +4,8 @@ import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.FlipperRequestRpcInformationStatus
-import com.flipperdevices.bridge.api.model.FlipperRpcInformation
 import com.flipperdevices.bridge.api.model.wrapToRequest
+import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.forEachIterable
 import com.flipperdevices.core.ktx.jre.map
 import com.flipperdevices.core.ktx.jre.withLock
@@ -13,11 +13,14 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.preference.pb.HardwareColor
 import com.flipperdevices.core.preference.pb.PairSettings
+import com.flipperdevices.info.impl.model.deviceinfo.FlipperRpcInformation
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.system.deviceInfoRequest
 import com.flipperdevices.protobuf.system.powerInfoRequest
 import com.flipperdevices.shake2report.api.Shake2ReportApi
+import com.squareup.anvil.annotations.ContributesBinding
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -41,7 +44,8 @@ interface FlipperRpcInformationApi {
 
 private const val FLIPPER_KEY_HARDWARE_COLOR = "hardware_color"
 
-class FlipperRpcInformationApiImpl constructor(
+@ContributesBinding(AppGraph::class, FlipperRpcInformationApi::class)
+class FlipperRpcInformationApiImpl @Inject constructor(
     private val metricApi: MetricApi,
     private val shake2ReportApi: Shake2ReportApi,
     private val dataStore: DataStore<PairSettings>
@@ -60,7 +64,7 @@ class FlipperRpcInformationApiImpl constructor(
 
     init {
         rpcInformationFlow.onEach {
-            shake2ReportApi.updateRpcInformation(DeviceInfoHelper.mapRawRpcInformation(it))
+            //TODO shake2ReportApi.updateRpcInformation(DeviceInfoHelper.mapRawRpcInformation(it))
         }.launchIn(scope + Dispatchers.Default)
     }
 

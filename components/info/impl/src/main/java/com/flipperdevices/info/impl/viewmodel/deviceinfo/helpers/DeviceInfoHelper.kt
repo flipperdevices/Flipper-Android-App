@@ -1,14 +1,13 @@
 package com.flipperdevices.info.impl.viewmodel.deviceinfo
 
-import com.flipperdevices.bridge.api.model.FirmwareInfo
-import com.flipperdevices.bridge.api.model.FlipperDeviceInfo
-import com.flipperdevices.bridge.api.model.FlipperRpcInformation
-import com.flipperdevices.bridge.api.model.RadioStackInfo
-import com.flipperdevices.bridge.api.model.RadioStackType
-import com.flipperdevices.bridge.api.model.StorageStats
 import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.ktx.jre.isNotNull
 import com.flipperdevices.core.ktx.jre.titlecaseFirstCharIfItIsLowercase
+import com.flipperdevices.info.impl.model.deviceinfo.FirmwareInfo
+import com.flipperdevices.info.impl.model.deviceinfo.FlipperDeviceInfo
+import com.flipperdevices.info.impl.model.deviceinfo.FlipperRpcInformation
+import com.flipperdevices.info.impl.model.deviceinfo.RadioStackInfo
+import com.flipperdevices.info.impl.model.deviceinfo.RadioStackType
 import kotlinx.collections.immutable.toImmutableMap
 
 private const val DEVICE_NAME = "hardware_name"
@@ -43,8 +42,6 @@ private val usedFields = setOf(
 )
 
 internal data class InternalFlipperRpcInformationRaw(
-    val internalStorageStats: StorageStats? = null,
-    val externalStorageStats: StorageStats? = null,
     val otherFields: Map<String, String> = emptyMap()
 )
 
@@ -93,8 +90,6 @@ internal object DeviceInfoHelper {
         )
 
         return FlipperRpcInformation(
-            internalStorageStats = rawInformation.internalStorageStats,
-            externalStorageStats = rawInformation.externalStorageStats,
             flipperDeviceInfo = flipperDeviceInfo,
             firmware = firmwareInfo,
             radioStack = radioStackInfo,

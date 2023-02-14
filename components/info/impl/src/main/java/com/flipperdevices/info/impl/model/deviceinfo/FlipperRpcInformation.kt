@@ -1,12 +1,14 @@
-package com.flipperdevices.bridge.api.model
+package com.flipperdevices.info.impl.model.deviceinfo
 
+import android.content.Context
 import com.flipperdevices.core.data.SemVer
+import com.flipperdevices.core.ktx.jre.toFormattedSize
+import com.flipperdevices.info.impl.R
+import kotlin.math.max
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.persistentMapOf
 
 data class FlipperRpcInformation(
-    val internalStorageStats: StorageStats? = null,
-    val externalStorageStats: StorageStats? = null,
     val flipperDeviceInfo: FlipperDeviceInfo = FlipperDeviceInfo(),
     val firmware: FirmwareInfo = FirmwareInfo(),
     val radioStack: RadioStackInfo = RadioStackInfo(),
@@ -19,6 +21,21 @@ sealed class StorageStats {
 
     data class Loaded(val total: Long, val free: Long) : StorageStats()
 }
+
+fun StorageStats.toString(context: Context): String {
+    return when (this) {
+        StorageStats.Error -> {
+            context.getString(R.string.info_device_info_flash_not_found)
+        }
+        is StorageStats.Loaded -> {
+            val usedHumanReadable = max(0L, total - free).toFormattedSize()
+            val totalHumanReadable = total.toFormattedSize()
+
+            "$usedHumanReadable / $totalHumanReadable"
+        }
+    }
+}
+
 
 data class FlipperDeviceInfo(
     val deviceName: String? = null,

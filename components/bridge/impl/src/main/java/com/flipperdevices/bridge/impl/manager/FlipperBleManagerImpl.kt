@@ -32,7 +32,6 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.PairSettings
 import com.flipperdevices.core.preference.pb.Settings
-import com.flipperdevices.info.impl.viewmodel.helper.FlipperRpcInformationApiImpl
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.shake2report.api.Shake2ReportApi
 import kotlinx.coroutines.CoroutineScope
@@ -73,12 +72,6 @@ class FlipperBleManagerImpl(
     override val flipperVersionApi = FlipperVersionApiImpl(settingsStore)
 
     // RPC services
-    override val flipperRpcInformationApi =
-        com.flipperdevices.info.impl.viewmodel.helper.FlipperRpcInformationApiImpl(
-            scope,
-            metricApi,
-            dataStore
-        )
     private val flipperRtcUpdateService = FlipperRtcUpdateService()
 
     // Manager delegates
@@ -169,11 +162,6 @@ class FlipperBleManagerImpl(
                 )
             }
             runCatching {
-                flipperRpcInformationApi.initialize(flipperRequestApi)
-            }.onFailure {
-                error(it) { "Error while initialize rpc information api" }
-            }
-            runCatching {
                 flipperRtcUpdateService.initialize(flipperRequestApi)
             }.onFailure {
                 error(it) { "Error while initialize RTC" }
@@ -226,8 +214,6 @@ class FlipperBleManagerImpl(
             info { "FlipperVersionApi reset done" }
             flipperRequestApi.reset(this@FlipperBleManagerImpl)
             info { "FlipperRequestApi reset done" }
-            flipperRpcInformationApi.reset()
-            info { "FlipperRpcInformationApi reset done" }
             restartRPCApi.reset(this@FlipperBleManagerImpl)
             info { "RestartRPCApi reset done" }
         }
