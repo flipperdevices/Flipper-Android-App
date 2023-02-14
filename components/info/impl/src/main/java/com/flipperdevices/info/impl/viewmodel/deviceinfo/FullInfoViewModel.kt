@@ -6,12 +6,10 @@ import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
-import com.flipperdevices.info.impl.model.deviceinfo.FlipperRpcInformation
-import com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.FlipperInformationStatus
-import com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.FlipperStorageInformationApi
+import com.flipperdevices.info.api.model.FlipperInformationStatus
+import com.flipperdevices.info.api.model.FlipperRpcInformation
 import com.flipperdevices.updater.api.FirmwareVersionBuilderApi
 import com.flipperdevices.updater.model.FirmwareChannel
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import tangle.viewmodel.VMInject
@@ -19,7 +17,6 @@ import tangle.viewmodel.VMInject
 class FullInfoViewModel @VMInject constructor(
     serviceProvider: FlipperServiceProvider,
     private val firmwareVersionBuilderApi: FirmwareVersionBuilderApi,
-    private val flipperStorageInformationApi: FlipperStorageInformationApi,
     application: Application
 ) : AndroidLifecycleViewModel(application),
     FlipperBleServiceConsumer,
@@ -29,7 +26,6 @@ class FullInfoViewModel @VMInject constructor(
         MutableStateFlow<FlipperInformationStatus<FlipperRpcInformation>>(
             FlipperInformationStatus.NotStarted()
         )
-    private var jobs = mutableListOf<Job>()
 
     init {
         serviceProvider.provideServiceApi(this, this)

@@ -3,16 +3,21 @@ package com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
+import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.flipperdevices.info.impl.model.deviceinfo.FlipperStorageInformation
-import com.flipperdevices.info.impl.model.deviceinfo.StorageStats
+import com.flipperdevices.info.api.model.FlipperInformationStatus
+import com.flipperdevices.info.api.model.FlipperStorageInformation
+import com.flipperdevices.info.api.model.StorageStats
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.complex.FlipperRPCInfoEvent
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.infoRequest
+import com.flipperdevices.shake2report.api.Shake2ReportApi
+import com.squareup.anvil.annotations.ContributesBinding
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
@@ -37,8 +42,10 @@ interface FlipperStorageInformationApi {
 private const val FLIPPER_PATH_INTERNAL_STORAGE = "/int/"
 private const val FLIPPER_PATH_EXTERNAL_STORAGE = "/ext/"
 
-class FlipperStorageInformationApiImpl(
-    private val metricApi: MetricApi
+@ContributesBinding(AppGraph::class, FlipperStorageInformationApi::class)
+class FlipperStorageInformationApiImpl @Inject constructor(
+    private val metricApi: MetricApi,
+    private val shake2ReportApi: Shake2ReportApi
 ) : FlipperStorageInformationApi, LogTagProvider {
     override val TAG = "FlipperStorageInformationApi"
 
@@ -158,5 +165,6 @@ class FlipperStorageInformationApiImpl(
                 externalTotalBytes = externalStats?.total ?: 0
             )
         )
+        shake2ReportApi.updateStorageInformation(information)
     }
 }

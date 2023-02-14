@@ -9,8 +9,8 @@ import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.ktx.jre.cancelAndClear
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
+import com.flipperdevices.info.api.model.FlipperInformationStatus
 import com.flipperdevices.info.impl.model.FlipperBasicInfo
-import com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.FlipperInformationStatus
 import com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.FlipperStorageInformationApi
 import com.flipperdevices.updater.api.FlipperVersionProviderApi
 import kotlinx.coroutines.Dispatchers
@@ -38,7 +38,6 @@ class DeviceInfoViewModel @VMInject constructor(
     }
 
     fun getDeviceInfo() = flipperBasicInfoState.asStateFlow()
-
 
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
         jobs.cancelAndClear()

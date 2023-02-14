@@ -6,8 +6,9 @@ import com.flipperdevices.analytics.shake2report.impl.InternalShake2Report
 import com.flipperdevices.analytics.shake2report.impl.activity.Shake2ReportActivity
 import com.flipperdevices.analytics.shake2report.impl.helper.FlipperInformationMapping
 import com.flipperdevices.bridge.api.model.FlipperGATTInformation
-import com.flipperdevices.bridge.api.model.FlipperRpcInformation
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.info.api.model.FlipperRpcInformation
+import com.flipperdevices.info.api.model.FlipperStorageInformation
 import com.flipperdevices.shake2report.api.Shake2ReportApi
 import com.github.terrakok.cicerone.Screen
 import com.github.terrakok.cicerone.androidx.ActivityScreen
@@ -34,6 +35,10 @@ class Shake2ReportApiImpl @Inject constructor(
 
     override fun updateRpcInformation(rpcInformation: FlipperRpcInformation) {
         internalShake2Report.setExtra(FlipperInformationMapping.convert(rpcInformation))
+    }
+
+    override fun updateStorageInformation(storageInfo: FlipperStorageInformation) {
+        internalShake2Report.setExtra(FlipperInformationMapping.convert(storageInfo))
     }
 
     override fun reportException(throwable: Throwable, tag: String?, extras: Map<String, String>?) {

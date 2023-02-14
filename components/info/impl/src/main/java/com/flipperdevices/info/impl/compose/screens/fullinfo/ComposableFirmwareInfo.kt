@@ -2,8 +2,8 @@ package com.flipperdevices.info.impl.compose.screens.fullinfo
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import com.flipperdevices.info.api.model.FirmwareInfo
 import com.flipperdevices.info.impl.R
-import com.flipperdevices.info.impl.model.deviceinfo.FirmwareInfo
 import com.flipperdevices.info.shared.ComposableDeviceInfoRow
 import com.flipperdevices.info.shared.ComposableDeviceInfoRowWithText
 import com.flipperdevices.info.shared.ComposableInfoDivider

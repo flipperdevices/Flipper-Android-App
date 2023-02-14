@@ -1,17 +1,14 @@
 package com.flipperdevices.info.impl.model.deviceinfo
 
-import androidx.compose.runtime.Stable
-import com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.FlipperInformationStatus
+import android.content.Context
+import com.flipperdevices.core.ktx.jre.toFormattedSize
+import com.flipperdevices.info.api.model.FlipperInformationStatus
+import com.flipperdevices.info.api.model.FlipperStorageInformation
+import com.flipperdevices.info.api.model.StorageStats
+import com.flipperdevices.info.impl.R
+import kotlin.math.max
 
 private const val ENDING = 20 * 1024 // 20 Kb
-
-@Stable
-data class FlipperStorageInformation(
-    val internalStorageStatus: FlipperInformationStatus<StorageStats?> =
-        FlipperInformationStatus.NotStarted(),
-    val externalStorageStatus: FlipperInformationStatus<StorageStats?> =
-        FlipperInformationStatus.NotStarted()
-)
 
 val FlipperStorageInformation.internalStorageRequestInProgress: Boolean
     get() = internalStorageStatus is FlipperInformationStatus.InProgress
@@ -32,5 +29,19 @@ private fun isStorageEnding(flash: StorageStats?): Boolean {
             flash.free <= ENDING
         }
         null -> false
+    }
+}
+
+fun StorageStats.toString(context: Context): String {
+    return when (this) {
+        StorageStats.Error -> {
+            context.getString(R.string.info_device_info_flash_not_found)
+        }
+        is StorageStats.Loaded -> {
+            val usedHumanReadable = max(0L, total - free).toFormattedSize()
+            val totalHumanReadable = total.toFormattedSize()
+
+            "$usedHumanReadable / $totalHumanReadable"
+        }
     }
 }

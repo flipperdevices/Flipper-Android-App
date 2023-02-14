@@ -8,13 +8,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.info.api.model.FlipperInformationStatus
+import com.flipperdevices.info.api.model.FlipperStorageInformation
+import com.flipperdevices.info.api.model.StorageStats
+import com.flipperdevices.info.api.model.dataOrNull
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.compose.info.ComposableFirmwareBuildDate
 import com.flipperdevices.info.impl.compose.info.ComposableFirmwareVersion
 import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.model.FlipperBasicInfo
-import com.flipperdevices.info.impl.model.deviceinfo.FlipperStorageInformation
-import com.flipperdevices.info.impl.model.deviceinfo.StorageStats
 import com.flipperdevices.info.impl.model.deviceinfo.externalStorageRequestInProgress
 import com.flipperdevices.info.impl.model.deviceinfo.flashIntStats
 import com.flipperdevices.info.impl.model.deviceinfo.flashSdStats
@@ -24,8 +26,6 @@ import com.flipperdevices.info.impl.model.deviceinfo.isIntStorageEnding
 import com.flipperdevices.info.impl.model.deviceinfo.toString
 import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
 import com.flipperdevices.info.impl.viewmodel.deviceinfo.DeviceInfoViewModel
-import com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.FlipperInformationStatus
-import com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.dataOrNull
 import com.flipperdevices.info.shared.ComposableDeviceInfoRowWithText
 import com.flipperdevices.info.shared.ComposableInfoDivider
 import com.flipperdevices.info.shared.InfoElementCard

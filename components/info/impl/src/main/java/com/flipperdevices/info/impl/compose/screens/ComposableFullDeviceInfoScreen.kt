@@ -23,16 +23,16 @@ import androidx.navigation.NavHostController
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
+import com.flipperdevices.info.api.model.FlipperInformationStatus
+import com.flipperdevices.info.api.model.FlipperRpcInformation
+import com.flipperdevices.info.api.model.dataOrNull
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.compose.screens.fullinfo.ComposableFullInfoDevice
 import com.flipperdevices.info.impl.model.DeviceStatus
-import com.flipperdevices.info.impl.model.deviceinfo.FlipperRpcInformation
 import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
 import com.flipperdevices.info.impl.viewmodel.deviceinfo.DeviceInfoViewModel
 import com.flipperdevices.info.impl.viewmodel.deviceinfo.FullInfoViewModel
 import com.flipperdevices.info.impl.viewmodel.deviceinfo.ShareFullInfoFileViewModel
-import com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.FlipperInformationStatus
-import com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.dataOrNull
 import tangle.viewmodel.compose.tangleViewModel
 
 @Composable

@@ -13,7 +13,9 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.preference.pb.HardwareColor
 import com.flipperdevices.core.preference.pb.PairSettings
-import com.flipperdevices.info.impl.model.deviceinfo.FlipperRpcInformation
+import com.flipperdevices.info.api.model.FlipperRpcInformation
+import com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.DeviceInfoHelper
+import com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.InternalFlipperRpcInformationRaw
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.system.deviceInfoRequest

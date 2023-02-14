@@ -1,12 +1,9 @@
-package com.flipperdevices.info.impl.model.deviceinfo
+package com.flipperdevices.info.api.model
 
-import android.content.Context
 import com.flipperdevices.core.data.SemVer
-import com.flipperdevices.core.ktx.jre.toFormattedSize
-import com.flipperdevices.info.impl.R
-import kotlin.math.max
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.persistentMapOf
+
 
 data class FlipperRpcInformation(
     val flipperDeviceInfo: FlipperDeviceInfo = FlipperDeviceInfo(),
@@ -20,20 +17,6 @@ sealed class StorageStats {
     object Error : StorageStats()
 
     data class Loaded(val total: Long, val free: Long) : StorageStats()
-}
-
-fun StorageStats.toString(context: Context): String {
-    return when (this) {
-        StorageStats.Error -> {
-            context.getString(R.string.info_device_info_flash_not_found)
-        }
-        is StorageStats.Loaded -> {
-            val usedHumanReadable = max(0L, total - free).toFormattedSize()
-            val totalHumanReadable = total.toFormattedSize()
-
-            "$usedHumanReadable / $totalHumanReadable"
-        }
-    }
 }
 
 

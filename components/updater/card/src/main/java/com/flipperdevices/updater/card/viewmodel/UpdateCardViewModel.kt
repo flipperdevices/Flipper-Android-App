@@ -3,7 +3,6 @@ package com.flipperdevices.updater.card.viewmodel
 import android.content.Intent
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.viewModelScope
-import com.flipperdevices.bridge.api.model.StorageStats
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
@@ -18,6 +17,7 @@ import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.api.FlipperVersionProviderApi
+import com.flipperdevices.updater.card.helpers.StorageExistHelper
 import com.flipperdevices.updater.card.helpers.UpdateCardHelper
 import com.flipperdevices.updater.card.helpers.UpdateOfferProviderApi
 import com.flipperdevices.updater.model.FirmwareChannel
@@ -41,6 +41,7 @@ class UpdateCardViewModel @VMInject constructor(
     private val serviceProvider: FlipperServiceProvider,
     private val dataStoreSettings: DataStore<Settings>,
     private val updateOfferHelper: UpdateOfferProviderApi,
+    private val storageExistHelper: StorageExistHelper,
     @TangleParam(DeeplinkConstants.INTENT)
     private val intent: Intent?
 ) :
@@ -98,7 +99,6 @@ class UpdateCardViewModel @VMInject constructor(
                 // that's why we set state in progress
                 updateCardState.emit(UpdateCardState.InProgress)
                 cardStateJob?.cancelAndJoin()
-                it.flipperRpcInformationApi.invalidate(it.requestApi)
                 invalidateUnsafe(it)
             }
         }
@@ -121,22 +121,17 @@ class UpdateCardViewModel @VMInject constructor(
             }
             combine(
                 flipperVersionProviderApi.getCurrentFlipperVersion(viewModelScope, serviceApi),
-                serviceApi.flipperRpcInformationApi.getRpcInformationFlow(),
+                storageExistHelper.isExternalStorageExist(serviceApi.requestApi),
                 updateOfferHelper.isUpdateRequire(serviceApi),
                 updateChanelFlow,
                 deeplinkFlow
-            ) { flipperFirmwareVersion, rpcInformation, isAlwaysUpdate, updateChannel, deeplink ->
+            ) { flipperFirmwareVersion, isFlashExist, isAlwaysUpdate, updateChannel, deeplink ->
                 val newUpdateChannel = if (
                     updateChannel == null && flipperFirmwareVersion != null
                 ) {
                     flipperFirmwareVersion.channel
                 } else {
                     updateChannel
-                }
-                val isFlashExist = if (rpcInformation.externalStorageStats != null) {
-                    rpcInformation.externalStorageStats is StorageStats.Loaded
-                } else {
-                    null
                 }
 
                 val deeplinkWebUpdater = deeplink as? Deeplink.WebUpdate

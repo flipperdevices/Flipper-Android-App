@@ -2,6 +2,8 @@ package com.flipperdevices.shake2report.api
 
 import android.content.Context
 import com.flipperdevices.bridge.api.model.FlipperGATTInformation
+import com.flipperdevices.info.api.model.FlipperRpcInformation
+import com.flipperdevices.info.api.model.FlipperStorageInformation
 import com.github.terrakok.cicerone.Screen
 
 interface Shake2ReportApi {
@@ -14,7 +16,8 @@ interface Shake2ReportApi {
     fun reportBugScreen(context: Context): Screen?
 
     fun updateGattInformation(gattInformation: FlipperGATTInformation)
-    // TODO fun updateRpcInformation(rpcInformation: FlipperRpcInformation)
+    fun updateRpcInformation(rpcInformation: FlipperRpcInformation)
+    fun updateStorageInformation(storageInfo: FlipperStorageInformation)
 
     fun reportException(
         throwable: Throwable,

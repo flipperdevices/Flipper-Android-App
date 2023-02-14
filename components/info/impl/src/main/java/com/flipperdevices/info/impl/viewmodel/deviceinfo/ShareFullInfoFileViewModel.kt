@@ -7,10 +7,10 @@ import com.flipperdevices.core.ktx.jre.createClearNewFileWithMkDirs
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.share.SharableFile
 import com.flipperdevices.core.share.ShareHelper
+import com.flipperdevices.info.api.model.FlipperRpcInformation
+import com.flipperdevices.info.api.model.StorageStats
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.model.FlipperBasicInfo
-import com.flipperdevices.info.impl.model.deviceinfo.FlipperRpcInformation
-import com.flipperdevices.info.impl.model.deviceinfo.StorageStats
 import com.flipperdevices.info.impl.model.deviceinfo.flashIntStats
 import com.flipperdevices.info.impl.model.deviceinfo.flashSdStats
 import java.io.File

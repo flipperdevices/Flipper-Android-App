@@ -3,9 +3,9 @@ package com.flipperdevices.info.impl.compose.screens.fullinfo
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.flipperdevices.core.ktx.jre.isNotNull
+import com.flipperdevices.info.api.model.RadioStackInfo
+import com.flipperdevices.info.api.model.RadioStackType
 import com.flipperdevices.info.impl.R
-import com.flipperdevices.info.impl.model.deviceinfo.RadioStackInfo
-import com.flipperdevices.info.impl.model.deviceinfo.RadioStackType
 import com.flipperdevices.info.shared.ComposableDeviceInfoRowWithText
 
 @Composable

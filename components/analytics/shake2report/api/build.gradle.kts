@@ -6,4 +6,5 @@ dependencies {
     implementation(libs.cicerone)
 
     implementation(projects.components.bridge.api)
+    implementation(projects.components.info.api)
 }

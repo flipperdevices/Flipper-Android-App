@@ -1,13 +1,13 @@
-package com.flipperdevices.info.impl.viewmodel.deviceinfo
+package com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers
 
 import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.ktx.jre.isNotNull
 import com.flipperdevices.core.ktx.jre.titlecaseFirstCharIfItIsLowercase
-import com.flipperdevices.info.impl.model.deviceinfo.FirmwareInfo
-import com.flipperdevices.info.impl.model.deviceinfo.FlipperDeviceInfo
-import com.flipperdevices.info.impl.model.deviceinfo.FlipperRpcInformation
-import com.flipperdevices.info.impl.model.deviceinfo.RadioStackInfo
-import com.flipperdevices.info.impl.model.deviceinfo.RadioStackType
+import com.flipperdevices.info.api.model.FirmwareInfo
+import com.flipperdevices.info.api.model.FlipperDeviceInfo
+import com.flipperdevices.info.api.model.FlipperRpcInformation
+import com.flipperdevices.info.api.model.RadioStackInfo
+import com.flipperdevices.info.api.model.RadioStackType
 import kotlinx.collections.immutable.toImmutableMap
 
 private const val DEVICE_NAME = "hardware_name"

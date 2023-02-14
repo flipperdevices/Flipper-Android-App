@@ -1,8 +1,10 @@
 package com.flipperdevices.analytics.shake2report.impl.helper
 
 import com.flipperdevices.bridge.api.model.FlipperGATTInformation
-import com.flipperdevices.bridge.api.model.FlipperRpcInformation
-import com.flipperdevices.bridge.api.model.StorageStats
+import com.flipperdevices.info.api.model.FlipperRpcInformation
+import com.flipperdevices.info.api.model.FlipperStorageInformation
+import com.flipperdevices.info.api.model.StorageStats
+import com.flipperdevices.info.api.model.dataOrNull
 
 private const val FLIPPER_DEVICE_NAME = "flipper_device_name"
 private const val FLIPPER_MANUFACTURER_NAME = "flipper_manufacturer_name"
@@ -39,20 +41,25 @@ object FlipperInformationMapping {
 
     fun convert(gattInformation: FlipperRpcInformation): List<Pair<String, String>> {
         val tagsList = mutableListOf<Pair<String, String>>()
-        gattInformation.externalStorageStats?.let { stats ->
+        gattInformation.allFields.forEach { (key, value) ->
+            tagsList.add("${FLIPPER_RPC_INFO_PREFIX}_$key" to value)
+        }
+        return tagsList
+    }
+
+    fun convert(storageInfo: FlipperStorageInformation): List<Pair<String, String>> {
+        val tagsList = mutableListOf<Pair<String, String>>()
+        storageInfo.externalStorageStatus.dataOrNull()?.let { stats ->
             if (stats is StorageStats.Loaded) {
                 tagsList.add(FLIPPER_RPC_INFO_EXT_TOTAL to stats.total.toString())
                 tagsList.add(FLIPPER_RPC_INFO_EXT_FREE to stats.free.toString())
             }
         }
-        gattInformation.internalStorageStats?.let { stats ->
+        storageInfo.internalStorageStatus.dataOrNull()?.let { stats ->
             if (stats is StorageStats.Loaded) {
                 tagsList.add(FLIPPER_RPC_INFO_INT_TOTAL to stats.total.toString())
                 tagsList.add(FLIPPER_RPC_INFO_INT_FREE to stats.free.toString())
             }
-        }
-        gattInformation.allFields.forEach { (key, value) ->
-            tagsList.add("${FLIPPER_RPC_INFO_PREFIX}_$key" to value)
         }
         return tagsList
     }
