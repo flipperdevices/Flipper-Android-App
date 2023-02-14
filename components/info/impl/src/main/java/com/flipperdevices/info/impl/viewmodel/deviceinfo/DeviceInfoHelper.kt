@@ -1,4 +1,4 @@
-package com.flipperdevices.bridge.impl.manager.service.requestservice
+package com.flipperdevices.info.impl.viewmodel.deviceinfo
 
 import com.flipperdevices.bridge.api.model.FirmwareInfo
 import com.flipperdevices.bridge.api.model.FlipperDeviceInfo

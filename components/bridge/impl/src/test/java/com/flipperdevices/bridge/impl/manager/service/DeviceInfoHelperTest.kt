@@ -5,9 +5,9 @@ import com.flipperdevices.bridge.api.model.FlipperDeviceInfo
 import com.flipperdevices.bridge.api.model.FlipperRpcInformation
 import com.flipperdevices.bridge.api.model.RadioStackInfo
 import com.flipperdevices.bridge.api.model.RadioStackType
-import com.flipperdevices.bridge.impl.manager.service.requestservice.DeviceInfoHelper
-import com.flipperdevices.bridge.impl.manager.service.requestservice.InternalFlipperRpcInformationRaw
 import com.flipperdevices.core.data.SemVer
+import com.flipperdevices.info.impl.viewmodel.helper.DeviceInfoHelper
+import com.flipperdevices.info.impl.viewmodel.helper.InternalFlipperRpcInformationRaw
 import kotlinx.collections.immutable.persistentMapOf
 import org.junit.Assert
 import org.junit.Test
@@ -21,11 +21,12 @@ class DeviceInfoHelperTest(
 ) {
     @Test
     fun `Parse fields`() {
-        val deviceInfo = DeviceInfoHelper.mapRawRpcInformation(
-            InternalFlipperRpcInformationRaw(
-                otherFields = fields
+        val deviceInfo =
+            com.flipperdevices.info.impl.viewmodel.helper.DeviceInfoHelper.mapRawRpcInformation(
+                com.flipperdevices.info.impl.viewmodel.helper.InternalFlipperRpcInformationRaw(
+                    otherFields = fields
+                )
             )
-        )
         Assert.assertEquals(infoExpected.flipperDeviceInfo, deviceInfo.flipperDeviceInfo)
         Assert.assertEquals(infoExpected.firmware, deviceInfo.firmware)
         Assert.assertEquals(infoExpected.radioStack, deviceInfo.radioStack)

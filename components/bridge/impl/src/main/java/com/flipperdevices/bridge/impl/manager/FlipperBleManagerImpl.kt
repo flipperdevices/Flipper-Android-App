@@ -20,7 +20,6 @@ import com.flipperdevices.bridge.impl.manager.service.FlipperInformationApiImpl
 import com.flipperdevices.bridge.impl.manager.service.FlipperVersionApiImpl
 import com.flipperdevices.bridge.impl.manager.service.RestartRPCApiImpl
 import com.flipperdevices.bridge.impl.manager.service.request.FlipperRequestApiImpl
-import com.flipperdevices.bridge.impl.manager.service.requestservice.FlipperRpcInformationApiImpl
 import com.flipperdevices.bridge.impl.manager.service.requestservice.FlipperRtcUpdateService
 import com.flipperdevices.bridge.impl.utils.initializeSafe
 import com.flipperdevices.bridge.impl.utils.onServiceReceivedSafe
@@ -33,6 +32,7 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.PairSettings
 import com.flipperdevices.core.preference.pb.Settings
+import com.flipperdevices.info.impl.viewmodel.helper.FlipperRpcInformationApiImpl
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.shake2report.api.Shake2ReportApi
 import kotlinx.coroutines.CoroutineScope
@@ -73,11 +73,12 @@ class FlipperBleManagerImpl(
     override val flipperVersionApi = FlipperVersionApiImpl(settingsStore)
 
     // RPC services
-    override val flipperRpcInformationApi = FlipperRpcInformationApiImpl(
-        scope,
-        metricApi,
-        dataStore
-    )
+    override val flipperRpcInformationApi =
+        com.flipperdevices.info.impl.viewmodel.helper.FlipperRpcInformationApiImpl(
+            scope,
+            metricApi,
+            dataStore
+        )
     private val flipperRtcUpdateService = FlipperRtcUpdateService()
 
     // Manager delegates
