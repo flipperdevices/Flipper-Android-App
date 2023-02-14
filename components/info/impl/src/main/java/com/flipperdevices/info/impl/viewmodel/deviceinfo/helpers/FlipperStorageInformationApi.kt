@@ -37,6 +37,8 @@ interface FlipperStorageInformationApi {
         requestApi: FlipperRequestApi,
         force: Boolean = false
     )
+
+    suspend fun reset()
 }
 
 private const val FLIPPER_PATH_INTERNAL_STORAGE = "/int/"
@@ -69,6 +71,12 @@ class FlipperStorageInformationApiImpl @Inject constructor(
         job = scope.launch {
             invalidateInternal(requestApi)
         }
+    }
+
+    override suspend fun reset() = withLock(mutex, "reset") {
+        alreadyRequested = false
+        job?.cancelAndJoin()
+        storageInformationFlow.emit(FlipperStorageInformation())
     }
 
     private suspend fun invalidateInternal(

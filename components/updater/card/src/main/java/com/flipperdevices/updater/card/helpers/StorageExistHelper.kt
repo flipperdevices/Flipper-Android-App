@@ -6,7 +6,7 @@ import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.core.log.info
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.main
-import com.flipperdevices.protobuf.storage.statRequest
+import com.flipperdevices.protobuf.storage.infoRequest
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -17,10 +17,10 @@ class StorageExistHelper @Inject constructor() {
     fun isExternalStorageExist(requestApi: FlipperRequestApi): Flow<Boolean> {
         return requestApi.request(
             main {
-                storageStatRequest = statRequest {
+                storageInfoRequest = infoRequest {
                     path = FLIPPER_PATH_EXTERNAL_STORAGE
                 }
-            }.wrapToRequest(FlipperRequestPriority.BACKGROUND)
+            }.wrapToRequest(FlipperRequestPriority.DEFAULT)
         ).map { response ->
             // if statRequest return not ok, we suppose storage not exist
             val exist = (response.commandStatus == Flipper.CommandStatus.OK)
