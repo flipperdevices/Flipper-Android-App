@@ -13,6 +13,7 @@ import com.flipperdevices.info.impl.model.FlipperBasicInfo
 import com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.FlipperInformationStatus
 import com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.FlipperStorageInformationApi
 import com.flipperdevices.updater.api.FlipperVersionProviderApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,6 +21,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 import tangle.viewmodel.VMInject
 
 class DeviceInfoViewModel @VMInject constructor(
@@ -55,7 +57,7 @@ class DeviceInfoViewModel @VMInject constructor(
             when (it) {
                 is ConnectionState.Ready -> if (it.supportedState == FlipperSupportedState.READY) {
                     flipperStorageInformationApi.invalidate(
-                        viewModelScope,
+                        viewModelScope + Dispatchers.Default,
                         serviceApi.requestApi,
                         force = true
                     )
@@ -70,7 +72,7 @@ class DeviceInfoViewModel @VMInject constructor(
 
         jobs += viewModelScope.launch {
             flipperStorageInformationApi.invalidate(
-                viewModelScope,
+                viewModelScope + Dispatchers.Default,
                 serviceApi.requestApi
             )
         }

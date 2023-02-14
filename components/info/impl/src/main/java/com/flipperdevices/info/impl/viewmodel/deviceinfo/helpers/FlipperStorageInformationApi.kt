@@ -14,7 +14,6 @@ import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.infoRequest
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,7 +23,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.withContext
 
 
 interface FlipperStorageInformationApi {
@@ -61,7 +59,7 @@ class FlipperStorageInformationApiImpl(
         alreadyRequested = true
 
         job?.cancelAndJoin()
-        job = scope.launch(Dispatchers.Default) {
+        job = scope.launch {
             invalidateInternal(requestApi)
         }
     }
@@ -118,7 +116,7 @@ class FlipperStorageInformationApiImpl(
         requestApi: FlipperRequestApi,
         storagePath: String,
         spaceInfoReceiver: suspend (StorageStats) -> Unit
-    ) = withContext(Dispatchers.Default) {
+    ) {
         requestApi.request(
             main {
                 storageInfoRequest = infoRequest {
