@@ -61,7 +61,9 @@ class DeviceInfoViewModel @VMInject constructor(
                         force = true
                     )
                 }
-                else -> {}
+                else -> {
+                    flipperStorageInformationApi.reset()
+                }
             }
         }.launchIn(viewModelScope)
 
