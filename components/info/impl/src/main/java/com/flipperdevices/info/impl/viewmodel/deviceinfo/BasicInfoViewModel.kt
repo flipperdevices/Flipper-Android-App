@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import tangle.viewmodel.VMInject
 
-class DeviceInfoViewModel @VMInject constructor(
+class BasicInfoViewModel @VMInject constructor(
     serviceProvider: FlipperServiceProvider,
     private val flipperVersionProviderApi: FlipperVersionProviderApi,
     private val flipperStorageInformationApi: FlipperStorageInformationApi

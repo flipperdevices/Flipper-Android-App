@@ -67,7 +67,7 @@ private fun ComposableOtherInfo(
     inProgress: Boolean
 ) {
     fields.forEachIndexed { index, field ->
-        val name = field.key.split(' ', '_')
+        val name = field.key.split(' ', '_', '.')
             .map { it.titlecaseFirstCharIfItIsLowercase() }
             .joinToString(" ")
         val value = field.value

@@ -1,13 +1,14 @@
-package com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers
+package com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.mapper
 
-import com.flipperdevices.core.data.SemVer
-import com.flipperdevices.core.ktx.jre.isNotNull
-import com.flipperdevices.core.ktx.jre.titlecaseFirstCharIfItIsLowercase
 import com.flipperdevices.info.api.model.FirmwareInfo
 import com.flipperdevices.info.api.model.FlipperDeviceInfo
 import com.flipperdevices.info.api.model.FlipperRpcInformation
 import com.flipperdevices.info.api.model.RadioStackInfo
-import com.flipperdevices.info.api.model.RadioStackType
+import com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.mapper.RpcInformationInfoHelper.deviceInfoVersion
+import com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.mapper.RpcInformationInfoHelper.protobufVersion
+import com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.mapper.RpcInformationInfoHelper.radioFirmware
+import com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.mapper.RpcInformationInfoHelper.radioType
+import com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.mapper.RpcInformationInfoHelper.softwareRevision
 import kotlinx.collections.immutable.toImmutableMap
 
 private const val DEVICE_NAME = "hardware_name"
@@ -41,15 +42,11 @@ private val usedFields = setOf(
     DEVICE_INFO_MAJOR, DEVICE_INFO_MINOR
 )
 
-internal data class InternalFlipperRpcInformationRaw(
-    val otherFields: Map<String, String> = emptyMap()
-)
-
-internal object DeviceInfoHelper {
-    fun mapRawRpcInformation(
-        rawInformation: InternalFlipperRpcInformationRaw
+internal class DeprecatedFlipperRpcInfoMapper : FlipperRpcInfoMapper {
+    override fun map(
+        raw: InternalFlipperRpcInformationRaw
     ): FlipperRpcInformation {
-        val fields = rawInformation.otherFields
+        val fields = raw.otherFields
         val flipperDeviceInfo = FlipperDeviceInfo(
             deviceName = fields[DEVICE_NAME],
             hardwareModel = fields[HARDWARE_MODEL],
@@ -96,56 +93,5 @@ internal object DeviceInfoHelper {
             otherFields = fields.minus(usedFields).toImmutableMap(),
             allFields = fields.toImmutableMap()
         )
-    }
-
-    // softwareRevision Branch.Commit
-    private fun softwareRevision(firmwareCommit: String?, firmwareBranch: String?): String? {
-        return if (isNotNull(firmwareCommit, firmwareBranch)) {
-            val firmwareBranchCapitalize = firmwareBranch?.titlecaseFirstCharIfItIsLowercase()
-            "$firmwareBranchCapitalize $firmwareCommit"
-        } else {
-            null
-        }
-    }
-
-    // protobuf Major.Minor
-    private fun protobufVersion(protobufMajor: String?, protobufMinor: String?): SemVer? {
-        return if (isNotNull(protobufMajor, protobufMinor)) {
-            SemVer(
-                protobufMajor?.toIntOrNull() ?: 0,
-                protobufMinor?.toIntOrNull() ?: 0
-            )
-        } else {
-            null
-        }
-    }
-
-    // deviceInfo Major.Minor
-    private fun deviceInfoVersion(deviceInfoMajor: String?, deviceInfoMinor: String?): SemVer? {
-        return if (isNotNull(deviceInfoMajor, deviceInfoMinor)) {
-            SemVer(
-                deviceInfoMajor?.toIntOrNull() ?: 0,
-                deviceInfoMinor?.toIntOrNull() ?: 0
-            )
-        } else {
-            null
-        }
-    }
-
-    // radio Major.Minor.Type
-    private fun radioFirmware(
-        radioMajor: String?,
-        radioMinor: String?,
-        radioType: String?
-    ): String? {
-        return if (isNotNull(radioMajor, radioMinor, radioType)) {
-            "$radioMajor.$radioMinor.$radioType"
-        } else {
-            null
-        }
-    }
-
-    private fun radioType(radioType: String?): RadioStackType? {
-        return RadioStackType.find(radioType)
     }
 }

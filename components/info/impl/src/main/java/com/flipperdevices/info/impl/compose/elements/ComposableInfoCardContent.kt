@@ -25,7 +25,7 @@ import com.flipperdevices.info.impl.model.deviceinfo.isExtStorageEnding
 import com.flipperdevices.info.impl.model.deviceinfo.isIntStorageEnding
 import com.flipperdevices.info.impl.model.deviceinfo.toString
 import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
-import com.flipperdevices.info.impl.viewmodel.deviceinfo.DeviceInfoViewModel
+import com.flipperdevices.info.impl.viewmodel.deviceinfo.BasicInfoViewModel
 import com.flipperdevices.info.shared.ComposableDeviceInfoRowWithText
 import com.flipperdevices.info.shared.ComposableInfoDivider
 import com.flipperdevices.info.shared.InfoElementCard
@@ -36,10 +36,10 @@ import tangle.viewmodel.compose.tangleViewModel
 @Composable
 fun ComposableInfoCardContent(
     isUnsupported: Boolean,
-    deviceInfoViewModel: DeviceInfoViewModel = tangleViewModel(),
+    basicInfoViewModel: BasicInfoViewModel = tangleViewModel(),
     deviceStatusViewModel: DeviceStatusViewModel = tangleViewModel()
 ) {
-    val deviceInfo by deviceInfoViewModel.getDeviceInfo().collectAsState()
+    val deviceInfo by basicInfoViewModel.getDeviceInfo().collectAsState()
     val deviceStatus by deviceStatusViewModel.getState().collectAsState()
 
     ComposableInfoCardContentInternal(

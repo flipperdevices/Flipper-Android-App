@@ -1,5 +1,6 @@
 package com.flipperdevices.info.impl.compose.screens
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,25 +30,24 @@ import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.compose.screens.fullinfo.ComposableFullInfoDevice
 import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
-import com.flipperdevices.info.impl.viewmodel.deviceinfo.DeviceInfoViewModel
+import com.flipperdevices.info.impl.viewmodel.deviceinfo.BasicInfoViewModel
 import com.flipperdevices.info.impl.viewmodel.deviceinfo.FullInfoViewModel
 import com.flipperdevices.info.impl.viewmodel.deviceinfo.ShareFullInfoFileViewModel
 import tangle.viewmodel.compose.tangleViewModel
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableFullDeviceInfoScreen(
     navController: NavHostController,
     modifier: Modifier = Modifier,
     shareViewModel: ShareFullInfoFileViewModel = viewModel(),
-    deviceInfoViewModel: DeviceInfoViewModel = tangleViewModel(),
+    basicInfoViewModel: BasicInfoViewModel = tangleViewModel(),
     fullInfoViewModel: FullInfoViewModel = tangleViewModel(),
     deviceStatusViewModel: DeviceStatusViewModel = tangleViewModel()
 ) {
     val deviceStatus by deviceStatusViewModel.getState().collectAsState()
     val localDeviceStatus = deviceStatus
     val flipperRpcInformation by fullInfoViewModel.getFlipperRpcInformation().collectAsState()
-    val basicInfo by deviceInfoViewModel.getDeviceInfo().collectAsState()
+    val basicInfo by basicInfoViewModel.getDeviceInfo().collectAsState()
 
     val inProgress = when (localDeviceStatus) {
         is DeviceStatus.NoDeviceInformation -> {
