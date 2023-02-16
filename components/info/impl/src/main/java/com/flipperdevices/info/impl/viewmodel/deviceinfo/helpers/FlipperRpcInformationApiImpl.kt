@@ -11,7 +11,6 @@ import com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.fullinforpc.Dep
 import com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.fullinforpc.NewFlipperFullInfoRpcApi
 import com.flipperdevices.shake2report.api.Shake2ReportApi
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
@@ -23,6 +22,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
+import javax.inject.Inject
 
 interface FlipperRpcInformationApi {
     fun getRpcInformationFlow(): StateFlow<FlipperInformationStatus<FlipperRpcInformation>>
@@ -91,7 +91,9 @@ class FlipperRpcInformationApiImpl @Inject constructor(
                 rpcInformationFlow.update {
                     if (it is FlipperInformationStatus.InProgress) {
                         FlipperInformationStatus.InProgress(rpcInformation)
-                    } else it
+                    } else {
+                        it
+                    }
                 }
                 shake2ReportApi.updateRpcInformation(rpcInformation)
             }
@@ -99,7 +101,9 @@ class FlipperRpcInformationApiImpl @Inject constructor(
         rpcInformationFlow.update {
             if (it is FlipperInformationStatus.InProgress) {
                 FlipperInformationStatus.Ready(it.data)
-            } else it
+            } else {
+                it
+            }
         }
     }
 }

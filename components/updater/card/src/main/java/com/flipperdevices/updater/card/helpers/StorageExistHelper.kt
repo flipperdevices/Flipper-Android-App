@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.map
 
 private const val FLIPPER_PATH_EXTERNAL_STORAGE = "/ext/"
 
-class StorageExistHelper constructor() {
+class StorageExistHelper {
     fun isExternalStorageExist(requestApi: FlipperRequestApi): Flow<Boolean> {
         return requestApi.request(
             main {
