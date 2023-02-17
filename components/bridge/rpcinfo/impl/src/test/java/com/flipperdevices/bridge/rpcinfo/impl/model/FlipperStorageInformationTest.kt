@@ -1,13 +1,13 @@
-package com.flipperdevices.info.impl.model
+package com.flipperdevices.bridge.rpcinfo.impl.model
 
+import com.flipperdevices.bridge.rpcinfo.api.R as RpcInfoR
 import android.content.Context
-import com.flipperdevices.info.impl.R
-import com.flipperdevices.info.impl.model.deviceinfo.FlipperStorageInformation
-import com.flipperdevices.info.impl.model.deviceinfo.StorageStats
-import com.flipperdevices.info.impl.model.deviceinfo.isExtStorageEnding
-import com.flipperdevices.info.impl.model.deviceinfo.isIntStorageEnding
-import com.flipperdevices.info.impl.model.deviceinfo.toString
-import com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.FlipperInformationStatus
+import com.flipperdevices.bridge.rpcinfo.model.FlipperInformationStatus
+import com.flipperdevices.bridge.rpcinfo.model.FlipperStorageInformation
+import com.flipperdevices.bridge.rpcinfo.model.StorageStats
+import com.flipperdevices.bridge.rpcinfo.model.isExtStorageEnding
+import com.flipperdevices.bridge.rpcinfo.model.isIntStorageEnding
+import com.flipperdevices.bridge.rpcinfo.model.toString
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Assert
@@ -15,7 +15,6 @@ import org.junit.Before
 import org.junit.Test
 
 class FlipperStorageInformationTest {
-
     private lateinit var context: Context
 
     @Before
@@ -97,7 +96,7 @@ class FlipperStorageInformationTest {
 
     @Test
     fun `Humanized storage stat not found`() {
-        every { context.getString(R.string.info_device_info_flash_not_found) } returns "Not found"
+        every { context.getString(RpcInfoR.string.info_device_info_flash_not_found) } returns "Not found"
         val storage = StorageStats.Error
         val text = storage.toString(context)
 

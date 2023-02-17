@@ -7,6 +7,8 @@ import android.os.LocaleList
 import android.telephony.TelephonyManager
 import com.flipperdevices.updater.subghz.helpers.RegionProvisioningHelperImpl
 import com.flipperdevices.updater.subghz.model.RegionProvisioningSource
+import io.mockk.mockk
+import java.util.Locale
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.newSingleThreadContext
@@ -17,20 +19,14 @@ import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.eq
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.reset
-import org.mockito.kotlin.whenever
 import org.robolectric.util.ReflectionHelpers
-import java.util.Locale
 
 class RegionProvisioningHelperTest {
     @OptIn(DelicateCoroutinesApi::class)
     private val mainThreadSurrogate = newSingleThreadContext("UI thread")
 
-    private val context: Context = mock()
-    private val telephonyManager: TelephonyManager = mock()
+    private val context: Context = mockk()
+    private val telephonyManager: TelephonyManager = mockk()
     private val underTest = RegionProvisioningHelperImpl(context)
 
     @Before

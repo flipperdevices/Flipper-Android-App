@@ -1,15 +1,14 @@
-package com.flipperdevices.info.impl.viewmodel.deviceinfo
+package com.flipperdevices.bridge.rpcinfo.impl
 
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
+import com.flipperdevices.bridge.rpcinfo.api.FlipperStorageInformationApi
 import com.flipperdevices.bridge.rpcinfo.model.FlipperInformationStatus
 import com.flipperdevices.bridge.rpcinfo.model.FlipperStorageInformation
 import com.flipperdevices.bridge.rpcinfo.model.StorageStats
 import com.flipperdevices.core.ktx.jre.TimeHelper
 import com.flipperdevices.core.test.PendingCoroutineExceptionHandler
-import com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.FlipperStorageInformationApi
-import com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.FlipperStorageInformationApiImpl
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.complex.FlipperRPCInfoEvent
 import com.flipperdevices.protobuf.Flipper
@@ -48,7 +47,7 @@ class FlipperStorageInformationTest {
         requestApi = mockk()
 
         metricApi = mockk(relaxUnitFun = true)
-        underTest = FlipperStorageInformationApiImpl(metricApi)
+        underTest = FlipperStorageInformationApiImpl(metricApi, mockk(relaxUnitFun = true))
     }
 
     @Test

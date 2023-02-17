@@ -2,10 +2,7 @@ package com.flipperdevices.updater.subghz.tasks
 
 import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
-import com.flipperdevices.bridge.api.manager.service.FlipperRpcInformationApi
-import com.flipperdevices.bridge.api.model.FlipperDeviceInfo
 import com.flipperdevices.bridge.api.model.FlipperRequest
-import com.flipperdevices.bridge.api.model.FlipperRpcInformation
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.core.ktx.jre.flatten
 import com.flipperdevices.core.preference.pb.Settings
@@ -16,6 +13,7 @@ import com.flipperdevices.protobuf.main
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.downloader.api.DownloaderApiImpl
 import com.flipperdevices.updater.subghz.helpers.RegionProvisioningHelper
+import com.flipperdevices.updater.subghz.helpers.SkipProvisioningHelper
 import com.flipperdevices.updater.subghz.helpers.SubGhzProvisioningHelper
 import com.flipperdevices.updater.subghz.helpers.SubGhzProvisioningHelperImpl
 import com.flipperdevices.updater.subghz.model.RegionProvisioning
@@ -27,8 +25,8 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.headersOf
 import io.ktor.serialization.kotlinx.json.json
+import io.mockk.mockk
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
@@ -43,7 +41,6 @@ import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
-import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.whenever
 import org.robolectric.ParameterizedRobolectricTestRunner
 
@@ -55,6 +52,7 @@ class SubGhzProvisioningHelperTest(
     private lateinit var regionProvisioningHelper: RegionProvisioningHelper
     private lateinit var metricApi: MetricApi
     private lateinit var settings: DataStore<Settings>
+    private lateinit var skipProvisioningHelper: SkipProvisioningHelper
     private lateinit var underTest: SubGhzProvisioningHelper
 
     @Before
@@ -72,11 +70,11 @@ class SubGhzProvisioningHelperTest(
             }
         }
         downloaderApi = DownloaderApiImpl(
-            context = mock(),
+            context = mockk(),
             client = client,
-            downloadAndUnpackDelegateApi = mock()
+            downloadAndUnpackDelegateApi = mockk()
         )
-        regionProvisioningHelper = mock()
+        regionProvisioningHelper = mockk()
 
         whenever(regionProvisioningHelper.provideRegion(eq("TT"))).doReturn(
             RegionProvisioning(
@@ -88,13 +86,14 @@ class SubGhzProvisioningHelperTest(
             )
         )
 
-        metricApi = mock()
-        settings = mock()
+        metricApi = mockk()
+        settings = mockk()
+        skipProvisioningHelper = mockk()
         underTest = SubGhzProvisioningHelperImpl(
             downloaderApi,
             regionProvisioningHelper,
             metricApi,
-            settings
+            skipProvisioningHelper
         )
     }
 
@@ -105,93 +104,6 @@ class SubGhzProvisioningHelperTest(
         var flipperRequests: List<FlipperRequest>? = null
         val requestApi: FlipperRequestApi = mock()
         val serviceApi: FlipperServiceApi = mock()
-        whenever(serviceApi.requestApi).doReturn(requestApi)
-        whenever(requestApi.request(any(), any())).doAnswer {
-            flipperRequests = runBlocking {
-                (it.arguments.first() as Flow<*>)
-                    .filterIsInstance<FlipperRequest>()
-                    .toList()
-            }
-            return@doAnswer main {
-                commandStatus = Flipper.CommandStatus.OK
-            }
-        }
-
-        underTest.provideAndUploadSubGhz(serviceApi)
-
-        Assert.assertNotNull(flipperRequests)
-        Assert.assertTrue(flipperRequests!!.isNotEmpty())
-        val notNullableFlipperRequest = flipperRequests!!
-        notNullableFlipperRequest.forEach {
-            Assert.assertEquals("/int/.region_data", it.data.storageWriteRequest.path)
-        }
-        val expectedBytes = readTestAsset("regions/region_data_${countryName ?: "WW"}")
-        val sendBytes = notNullableFlipperRequest.map {
-            it.data.storageWriteRequest.file.data.toByteArray()
-        }.flatten()
-        Assert.assertTrue(expectedBytes.contentEquals(sendBytes))
-    }
-
-    @Test
-    fun `check region skip`() = runTest {
-        whenever(settings.data).doReturn(
-            flowOf(
-                Settings.getDefaultInstance().toBuilder()
-                    .setIgnoreSubghzProvisioningOnZeroRegion(true)
-                    .build()
-            )
-        )
-
-        val requestApi: FlipperRequestApi = mock()
-        val flipperRpcInformationApi: FlipperRpcInformationApi = mock()
-        val serviceApi: FlipperServiceApi = mock()
-        whenever(serviceApi.flipperRpcInformationApi).doReturn(flipperRpcInformationApi)
-        whenever(flipperRpcInformationApi.getRequestRpcInformationStatus()).doReturn(
-            MutableStateFlow(
-                FlipperRequestRpcInformationStatus.InProgress(
-                    rpcDeviceInfoRequestFinished = true
-                )
-            )
-        )
-        whenever(flipperRpcInformationApi.getRpcInformationFlow()).doReturn(
-            MutableStateFlow(
-                FlipperRpcInformation(flipperDeviceInfo = FlipperDeviceInfo(hardwareRegion = "0"))
-            )
-        )
-        whenever(serviceApi.requestApi).doReturn(requestApi)
-
-        underTest.provideAndUploadSubGhz(serviceApi)
-
-        verifyNoInteractions(requestApi)
-    }
-
-    @Test
-    fun `not skip provisioning when hardware region is not zero`() = runTest {
-        whenever(settings.data).doReturn(
-            flowOf(
-                Settings.getDefaultInstance().toBuilder()
-                    .setIgnoreSubghzProvisioningOnZeroRegion(true)
-                    .build()
-            )
-        )
-
-        var flipperRequests: List<FlipperRequest>? = null
-        val requestApi: FlipperRequestApi = mock()
-        val flipperRpcInformationApi: FlipperRpcInformationApi = mock()
-        val serviceApi: FlipperServiceApi = mock()
-        whenever(serviceApi.flipperRpcInformationApi).doReturn(flipperRpcInformationApi)
-        whenever(flipperRpcInformationApi.getRequestRpcInformationStatus()).doReturn(
-            MutableStateFlow(
-                FlipperRequestRpcInformationStatus.InProgress(
-                    rpcDeviceInfoRequestFinished = true
-                )
-            )
-        )
-        whenever(flipperRpcInformationApi.getRpcInformationFlow()).doReturn(
-            MutableStateFlow(
-                FlipperRpcInformation(flipperDeviceInfo = FlipperDeviceInfo(hardwareRegion = "4"))
-            )
-        )
         whenever(serviceApi.requestApi).doReturn(requestApi)
         whenever(requestApi.request(any(), any())).doAnswer {
             flipperRequests = runBlocking {
