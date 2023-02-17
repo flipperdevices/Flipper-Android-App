@@ -1,6 +1,5 @@
 package com.flipperdevices.bridge.rpcinfo.impl.model
 
-import com.flipperdevices.bridge.rpcinfo.api.R as RpcInfoR
 import android.content.Context
 import com.flipperdevices.bridge.rpcinfo.model.FlipperInformationStatus
 import com.flipperdevices.bridge.rpcinfo.model.FlipperStorageInformation
@@ -13,6 +12,7 @@ import io.mockk.mockk
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import com.flipperdevices.bridge.rpcinfo.api.R as RpcInfoR
 
 class FlipperStorageInformationTest {
     private lateinit var context: Context

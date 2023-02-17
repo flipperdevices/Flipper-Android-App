@@ -19,7 +19,6 @@ import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.infoRequest
 import com.flipperdevices.shake2report.api.Shake2ReportApi
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
@@ -29,7 +28,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
-
+import javax.inject.Inject
 
 private const val FLIPPER_PATH_INTERNAL_STORAGE = "/int/"
 private const val FLIPPER_PATH_EXTERNAL_STORAGE = "/ext/"
@@ -146,9 +145,9 @@ class FlipperStorageInformationApiImpl @Inject constructor(
 
     private fun reportMetric(information: FlipperStorageInformation) {
         val externalStatsStatus = information.externalStorageStatus
-                as? FlipperInformationStatus.Ready
+            as? FlipperInformationStatus.Ready
         val internalStatsStatus = information.internalStorageStatus
-                as? FlipperInformationStatus.Ready
+            as? FlipperInformationStatus.Ready
         val externalStats = externalStatsStatus?.data as? StorageStats.Loaded
         val internalStats = internalStatsStatus?.data as? StorageStats.Loaded
 

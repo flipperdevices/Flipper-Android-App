@@ -13,7 +13,6 @@ import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.shake2report.api.Shake2ReportApi
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
@@ -24,6 +23,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
+import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, FlipperRpcInformationApi::class)
 class FlipperRpcInformationApiImpl @Inject constructor(

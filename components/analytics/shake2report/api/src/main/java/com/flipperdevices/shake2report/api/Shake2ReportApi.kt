@@ -13,7 +13,6 @@ interface Shake2ReportApi {
 
     fun reportBugScreen(context: Context): Screen?
 
-
     fun updateGattInformation(gattInformation: FlipperGATTInformation)
     fun setExtra(tags: List<Pair<String, String>>)
 

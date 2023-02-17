@@ -61,9 +61,11 @@ class SkipProvisioningHelperTest {
             } returns MutableStateFlow(null)
         }
 
-        val shouldProvide = underTest.shouldSkipProvisioning(mockk() {
-            every { flipperVersionApi } returns versionApi
-        })
+        val shouldProvide = underTest.shouldSkipProvisioning(
+            mockk() {
+                every { flipperVersionApi } returns versionApi
+            }
+        )
 
         Assert.assertFalse(shouldProvide)
     }
@@ -82,9 +84,11 @@ class SkipProvisioningHelperTest {
             } returns MutableStateFlow(SemVer(0, 0))
         }
 
-        val shouldProvide = underTest.shouldSkipProvisioning(mockk() {
-            every { flipperVersionApi } returns versionApi
-        })
+        val shouldProvide = underTest.shouldSkipProvisioning(
+            mockk() {
+                every { flipperVersionApi } returns versionApi
+            }
+        )
 
         Assert.assertFalse(shouldProvide)
     }
@@ -106,10 +110,12 @@ class SkipProvisioningHelperTest {
             coEvery { request(any(), any()) } returns main {}
         }
 
-        val shouldProvide = underTest.shouldSkipProvisioning(mockk() {
-            every { flipperVersionApi } returns versionApi
-            every { requestApi } returns mockRequestApi
-        })
+        val shouldProvide = underTest.shouldSkipProvisioning(
+            mockk() {
+                every { flipperVersionApi } returns versionApi
+                every { requestApi } returns mockRequestApi
+            }
+        )
 
         Assert.assertFalse(shouldProvide)
     }
@@ -135,10 +141,12 @@ class SkipProvisioningHelperTest {
             }
         }
 
-        val shouldProvide = underTest.shouldSkipProvisioning(mockk() {
-            every { flipperVersionApi } returns versionApi
-            every { requestApi } returns mockRequestApi
-        })
+        val shouldProvide = underTest.shouldSkipProvisioning(
+            mockk() {
+                every { flipperVersionApi } returns versionApi
+                every { requestApi } returns mockRequestApi
+            }
+        )
 
         Assert.assertFalse(shouldProvide)
     }

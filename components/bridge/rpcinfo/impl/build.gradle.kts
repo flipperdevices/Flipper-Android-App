@@ -26,7 +26,6 @@ dependencies {
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
 
-
     // Testing
     testImplementation(projects.components.core.test)
     testImplementation(libs.junit)

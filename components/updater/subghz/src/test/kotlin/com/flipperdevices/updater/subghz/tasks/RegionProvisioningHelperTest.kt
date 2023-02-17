@@ -10,7 +10,6 @@ import com.flipperdevices.updater.subghz.helpers.RegionProvisioningHelperImpl
 import com.flipperdevices.updater.subghz.model.RegionProvisioningSource
 import io.mockk.every
 import io.mockk.mockk
-import java.util.Locale
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.newSingleThreadContext
@@ -22,6 +21,7 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.robolectric.util.ReflectionHelpers
+import java.util.Locale
 
 class RegionProvisioningHelperTest {
     @OptIn(DelicateCoroutinesApi::class)
