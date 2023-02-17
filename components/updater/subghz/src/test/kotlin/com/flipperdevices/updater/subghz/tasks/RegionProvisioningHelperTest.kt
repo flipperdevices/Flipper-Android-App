@@ -5,8 +5,10 @@ import android.content.res.Configuration
 import android.os.Build
 import android.os.LocaleList
 import android.telephony.TelephonyManager
+import com.flipperdevices.updater.subghz.helpers.RegionProvisioningHelper
 import com.flipperdevices.updater.subghz.helpers.RegionProvisioningHelperImpl
 import com.flipperdevices.updater.subghz.model.RegionProvisioningSource
+import io.mockk.every
 import io.mockk.mockk
 import java.util.Locale
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -25,24 +27,27 @@ class RegionProvisioningHelperTest {
     @OptIn(DelicateCoroutinesApi::class)
     private val mainThreadSurrogate = newSingleThreadContext("UI thread")
 
-    private val context: Context = mockk()
-    private val telephonyManager: TelephonyManager = mockk()
-    private val underTest = RegionProvisioningHelperImpl(context)
+    private lateinit var context: Context
+    private lateinit var telephonyManager: TelephonyManager
+    private lateinit var underTest: RegionProvisioningHelper
 
     @Before
     fun setUp() {
         Dispatchers.setMain(mainThreadSurrogate)
-        reset(context)
-        reset(telephonyManager)
-        whenever(
-            context.getSystemService(eq(TelephonyManager::class.java))
-        ).doReturn(telephonyManager)
+        telephonyManager = mockk()
+        context = mockk {
+            every {
+                context.getSystemService(eq(TelephonyManager::class.java))
+            } returns telephonyManager
+        }
+        underTest = RegionProvisioningHelperImpl(context)
+
         mockLocale(context, Locale.ROOT)
     }
 
     @Test
     fun `provide region from sim network`() = runTest {
-        whenever(telephonyManager.networkCountryIso).doReturn("WW")
+        every { telephonyManager.networkCountryIso } returns "WW"
 
         val actualRegion = underTest.provideRegion(null)
 
@@ -59,7 +64,7 @@ class RegionProvisioningHelperTest {
 
     @Test
     fun `provide region from sim country`() = runTest {
-        whenever(telephonyManager.simCountryIso).doReturn("WW")
+        every { telephonyManager.simCountryIso } returns "WW"
 
         val actualRegion = underTest.provideRegion(null)
 
@@ -76,8 +81,8 @@ class RegionProvisioningHelperTest {
 
     @Test
     fun `provide region from sim network when roaming`() = runTest {
-        whenever(telephonyManager.networkCountryIso).doReturn("WW")
-        whenever(telephonyManager.isNetworkRoaming).doReturn(true)
+        every { telephonyManager.networkCountryIso } returns "WW"
+        every { telephonyManager.isNetworkRoaming } returns true
 
         val actualRegion = underTest.provideRegion(null)
 
@@ -99,11 +104,11 @@ class RegionProvisioningHelperTest {
             "SDK_INT",
             Build.VERSION_CODES.M
         )
-        whenever(context.resources).doReturn(mock())
-        val configuration: Configuration = mock()
-        whenever(context.resources.configuration).doReturn(configuration)
+        every { context.resources } returns mockk()
+        val configuration: Configuration = mockk()
+        every { context.resources.configuration } returns configuration
         configuration.locale = Locale.CANADA
-        whenever(configuration.locales).doReturn(LocaleList(Locale.CHINA))
+        every { configuration.locales } returns LocaleList(Locale.CHINA)
 
         val actualRegion = underTest.provideRegion(null)
 
@@ -125,13 +130,14 @@ class RegionProvisioningHelperTest {
             "SDK_INT",
             Build.VERSION_CODES.N
         )
-        whenever(context.resources).doReturn(mock())
-        val configuration: Configuration = mock()
-        whenever(context.resources.configuration).doReturn(configuration)
+
+        every { context.resources } returns mockk()
+        val configuration: Configuration = mockk()
+        every { context.resources.configuration } returns configuration
         configuration.locale = Locale.CANADA
-        val locales: LocaleList = mock()
-        whenever(locales.get(eq(0))).doReturn(Locale.CHINA)
-        whenever(configuration.locales).doReturn(locales)
+        val locales: LocaleList = mockk()
+        every { locales.get(eq(0)) } returns Locale.CHINA
+        every { configuration.locales } returns locales
 
         val actualRegion = underTest.provideRegion(null)
 
@@ -169,9 +175,9 @@ class RegionProvisioningHelperTest {
 }
 
 private fun mockLocale(context: Context, locale: Locale) {
-    whenever(context.resources).doReturn(mock())
-    val configuration: Configuration = mock()
-    whenever(context.resources.configuration).doReturn(configuration)
+    every { context.resources } returns mockk()
+    val configuration: Configuration = mockk()
+    every { context.resources.configuration } returns configuration
     configuration.locale = locale
-    whenever(configuration.locales).doReturn(LocaleList(locale))
+    every { configuration.locales } returns LocaleList(locale)
 }

@@ -25,9 +25,10 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.headersOf
 import io.ktor.serialization.kotlinx.json.json
+import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
@@ -36,12 +37,6 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.kotlin.any
-import org.mockito.kotlin.doAnswer
-import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.eq
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.whenever
 import org.robolectric.ParameterizedRobolectricTestRunner
 
 @RunWith(ParameterizedRobolectricTestRunner::class)
@@ -76,14 +71,12 @@ class SubGhzProvisioningHelperTest(
         )
         regionProvisioningHelper = mockk()
 
-        whenever(regionProvisioningHelper.provideRegion(eq("TT"))).doReturn(
-            RegionProvisioning(
-                regionFromNetwork = countryName,
-                regionFromSim = null,
-                regionFromIp = null,
-                regionSystem = null,
-                isRoaming = false
-            )
+        coEvery { regionProvisioningHelper.provideRegion(eq("TT")) } returns RegionProvisioning(
+            regionFromNetwork = countryName,
+            regionFromSim = null,
+            regionFromIp = null,
+            regionSystem = null,
+            isRoaming = false
         )
 
         metricApi = mockk()
@@ -99,19 +92,18 @@ class SubGhzProvisioningHelperTest(
 
     @Test
     fun `check region protobuf`() = runTest {
-        whenever(settings.data).doReturn(flowOf(Settings.getDefaultInstance()))
+        every { settings.data } returns flowOf(Settings.getDefaultInstance())
 
         var flipperRequests: List<FlipperRequest>? = null
-        val requestApi: FlipperRequestApi = mock()
-        val serviceApi: FlipperServiceApi = mock()
-        whenever(serviceApi.requestApi).doReturn(requestApi)
-        whenever(requestApi.request(any(), any())).doAnswer {
+        val requestApi: FlipperRequestApi = mockk()
+        val serviceApi: FlipperServiceApi = mockk()
+        every { serviceApi.requestApi } returns requestApi
+        coEvery { requestApi.request(any(), any()) } coAnswers {
             flipperRequests = runBlocking {
-                (it.arguments.first() as Flow<*>)
-                    .filterIsInstance<FlipperRequest>()
+                arg<Flow<FlipperRequest>>(0)
                     .toList()
             }
-            return@doAnswer main {
+            return@coAnswers main {
                 commandStatus = Flipper.CommandStatus.OK
             }
         }

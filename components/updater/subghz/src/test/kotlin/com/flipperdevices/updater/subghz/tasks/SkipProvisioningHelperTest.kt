@@ -2,32 +2,24 @@ package com.flipperdevices.updater.subghz.tasks
 
 import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
-import com.flipperdevices.bridge.api.model.FlipperRequest
-import com.flipperdevices.bridge.service.api.FlipperServiceApi
-import com.flipperdevices.core.ktx.jre.flatten
+import com.flipperdevices.bridge.api.manager.service.FlipperVersionApi
+import com.flipperdevices.core.data.SemVer
+import com.flipperdevices.core.ktx.jre.TimeHelper
 import com.flipperdevices.core.preference.pb.Settings
-import com.flipperdevices.core.test.readTestAsset
-import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.main
+import com.flipperdevices.protobuf.property.getResponse
 import com.flipperdevices.updater.subghz.helpers.SkipProvisioningHelper
 import com.flipperdevices.updater.subghz.helpers.SkipProvisioningHelperImpl
+import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.flow.Flow
+import io.mockk.mockkObject
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import org.mockito.kotlin.any
-import org.mockito.kotlin.doAnswer
-import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.verifyNoInteractions
-import org.mockito.kotlin.whenever
 
 class SkipProvisioningHelperTest {
     private lateinit var settings: DataStore<Settings>
@@ -37,80 +29,148 @@ class SkipProvisioningHelperTest {
     fun setUp() {
         settings = mockk()
         underTest = SkipProvisioningHelperImpl(settings)
-    }
 
-
-    @Test
-    fun `check region skip`() = runTest {
-        whenever(settings.data).doReturn(
-            flowOf(
-                Settings.getDefaultInstance().toBuilder()
-                    .setIgnoreSubghzProvisioningOnZeroRegion(true)
-                    .build()
-            )
-        )
-
-        val mockRequestApi: FlipperRequestApi = mock()
-        val serviceApi: FlipperServiceApi = mock() {
-            on { requestApi } doReturn mockRequestApi
-        }
-
-        val shouldProvide = underTest.shouldSkipProvisioning(serviceApi)
-
-        verifyNoInteractions(requestApi)
+        mockkObject(TimeHelper)
+        every { TimeHelper.getNanoTime() } returns 0L
     }
 
     @Test
-    fun `not skip provisioning when hardware region is not zero`() = runTest {
-        whenever(settings.data).doReturn(
-            flowOf(
-                Settings.getDefaultInstance().toBuilder()
-                    .setIgnoreSubghzProvisioningOnZeroRegion(true)
-                    .build()
-            )
+    fun `not skip provisioning if settings disable`() = runTest {
+        every { settings.data } returns flowOf(
+            Settings.getDefaultInstance().toBuilder()
+                .setIgnoreSubghzProvisioningOnZeroRegion(false)
+                .build()
         )
 
-        var flipperRequests: List<FlipperRequest>? = null
-        val requestApi: FlipperRequestApi = mock()
-        val flipperRpcInformationApi: FlipperRpcInformationApi = mock()
-        val serviceApi: FlipperServiceApi = mock()
-        whenever(serviceApi.flipperRpcInformationApi).doReturn(flipperRpcInformationApi)
-        whenever(flipperRpcInformationApi.getRequestRpcInformationStatus()).doReturn(
-            MutableStateFlow(
-                FlipperRequestRpcInformationStatus.InProgress(
-                    rpcDeviceInfoRequestFinished = true
-                )
-            )
+        val shouldProvide = underTest.shouldSkipProvisioning(mockk())
+
+        Assert.assertFalse(shouldProvide)
+    }
+
+    @Test
+    fun `not skip provisioning if version null`() = runTest {
+        every { settings.data } returns flowOf(
+            Settings.getDefaultInstance().toBuilder()
+                .setIgnoreSubghzProvisioningOnZeroRegion(true)
+                .build()
         )
-        whenever(flipperRpcInformationApi.getRpcInformationFlow()).doReturn(
-            MutableStateFlow(
-                FlipperRpcInformation(flipperDeviceInfo = FlipperDeviceInfo(hardwareRegion = "4"))
-            )
+
+        val versionApi = mockk<FlipperVersionApi> {
+            every {
+                getVersionInformationFlow()
+            } returns MutableStateFlow(null)
+        }
+
+        val shouldProvide = underTest.shouldSkipProvisioning(mockk() {
+            every { flipperVersionApi } returns versionApi
+        })
+
+        Assert.assertFalse(shouldProvide)
+    }
+
+    @Test
+    fun `not skip provisioning if version deprecated`() = runTest {
+        every { settings.data } returns flowOf(
+            Settings.getDefaultInstance().toBuilder()
+                .setIgnoreSubghzProvisioningOnZeroRegion(true)
+                .build()
         )
-        whenever(serviceApi.requestApi).doReturn(requestApi)
-        whenever(requestApi.request(any(), any())).doAnswer {
-            flipperRequests = runBlocking {
-                (it.arguments.first() as Flow<*>)
-                    .filterIsInstance<FlipperRequest>()
-                    .toList()
-            }
-            return@doAnswer main {
-                commandStatus = Flipper.CommandStatus.OK
+
+        val versionApi = mockk<FlipperVersionApi> {
+            every {
+                getVersionInformationFlow()
+            } returns MutableStateFlow(SemVer(0, 0))
+        }
+
+        val shouldProvide = underTest.shouldSkipProvisioning(mockk() {
+            every { flipperVersionApi } returns versionApi
+        })
+
+        Assert.assertFalse(shouldProvide)
+    }
+
+    @Test
+    fun `not skip provisioning if hardware region null`() = runTest {
+        every { settings.data } returns flowOf(
+            Settings.getDefaultInstance().toBuilder()
+                .setIgnoreSubghzProvisioningOnZeroRegion(true)
+                .build()
+        )
+
+        val versionApi = mockk<FlipperVersionApi> {
+            every {
+                getVersionInformationFlow()
+            } returns MutableStateFlow(SemVer(0, 14))
+        }
+        val mockRequestApi = mockk<FlipperRequestApi> {
+            coEvery { request(any(), any()) } returns main {}
+        }
+
+        val shouldProvide = underTest.shouldSkipProvisioning(mockk() {
+            every { flipperVersionApi } returns versionApi
+            every { requestApi } returns mockRequestApi
+        })
+
+        Assert.assertFalse(shouldProvide)
+    }
+
+    @Test
+    fun `not skip provisioning if hardware region not zero`() = runTest {
+        every { settings.data } returns flowOf(
+            Settings.getDefaultInstance().toBuilder()
+                .setIgnoreSubghzProvisioningOnZeroRegion(true)
+                .build()
+        )
+
+        val versionApi = mockk<FlipperVersionApi> {
+            every {
+                getVersionInformationFlow()
+            } returns MutableStateFlow(SemVer(0, 14))
+        }
+        val mockRequestApi = mockk<FlipperRequestApi> {
+            coEvery { request(any(), any()) } returns main {
+                propertyGetResponse = getResponse {
+                    value = "1"
+                }
             }
         }
 
-        underTest.provideAndUploadSubGhz(serviceApi)
+        val shouldProvide = underTest.shouldSkipProvisioning(mockk() {
+            every { flipperVersionApi } returns versionApi
+            every { requestApi } returns mockRequestApi
+        })
 
-        Assert.assertNotNull(flipperRequests)
-        Assert.assertTrue(flipperRequests!!.isNotEmpty())
-        val notNullableFlipperRequest = flipperRequests!!
-        notNullableFlipperRequest.forEach {
-            Assert.assertEquals("/int/.region_data", it.data.storageWriteRequest.path)
+        Assert.assertFalse(shouldProvide)
+    }
+
+    @Test
+    fun `skip provisioning`() = runTest {
+        every { settings.data } returns flowOf(
+            Settings.getDefaultInstance().toBuilder()
+                .setIgnoreSubghzProvisioningOnZeroRegion(true)
+                .build()
+        )
+
+        val versionApi = mockk<FlipperVersionApi> {
+            every {
+                getVersionInformationFlow()
+            } returns MutableStateFlow(SemVer(0, 14))
         }
-        val expectedBytes = readTestAsset("regions/region_data_${countryName ?: "WW"}")
-        val sendBytes = notNullableFlipperRequest.map {
-            it.data.storageWriteRequest.file.data.toByteArray()
-        }.flatten()
-        Assert.assertTrue(expectedBytes.contentEquals(sendBytes))
+        val mockRequestApi = mockk<FlipperRequestApi> {
+            coEvery { request(any(), any()) } returns main {
+                propertyGetResponse = getResponse {
+                    value = "0"
+                }
+            }
+        }
+
+        val shouldProvide = underTest.shouldSkipProvisioning(
+            mockk {
+                every { flipperVersionApi } returns versionApi
+                every { requestApi } returns mockRequestApi
+            }
+        )
+
+        Assert.assertTrue(shouldProvide)
     }
 }
