@@ -6,6 +6,5 @@ import com.flipperdevices.core.ui.navigation.FeatureScreenRootRoute
 interface FirstPairFeatureEntry : AggregateFeatureEntry {
     override val ROUTE: FeatureScreenRootRoute
         get() = FeatureScreenRootRoute.FIRST_PAIR
-
-    fun getFirstPairScreen(): String
+    fun start(): String
 }
