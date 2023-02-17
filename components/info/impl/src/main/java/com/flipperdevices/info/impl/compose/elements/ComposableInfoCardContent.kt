@@ -10,6 +10,13 @@ import com.flipperdevices.bridge.rpcinfo.model.FlipperInformationStatus
 import com.flipperdevices.bridge.rpcinfo.model.FlipperStorageInformation
 import com.flipperdevices.bridge.rpcinfo.model.StorageStats
 import com.flipperdevices.bridge.rpcinfo.model.dataOrNull
+import com.flipperdevices.bridge.rpcinfo.model.externalStorageRequestInProgress
+import com.flipperdevices.bridge.rpcinfo.model.flashIntStats
+import com.flipperdevices.bridge.rpcinfo.model.flashSdStats
+import com.flipperdevices.bridge.rpcinfo.model.internalStorageRequestInProgress
+import com.flipperdevices.bridge.rpcinfo.model.isExtStorageEnding
+import com.flipperdevices.bridge.rpcinfo.model.isIntStorageEnding
+import com.flipperdevices.bridge.rpcinfo.model.toString
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.info.impl.R
@@ -17,13 +24,6 @@ import com.flipperdevices.info.impl.compose.info.ComposableFirmwareBuildDate
 import com.flipperdevices.info.impl.compose.info.ComposableFirmwareVersion
 import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.model.FlipperBasicInfo
-import com.flipperdevices.info.impl.model.deviceinfo.externalStorageRequestInProgress
-import com.flipperdevices.info.impl.model.deviceinfo.flashIntStats
-import com.flipperdevices.info.impl.model.deviceinfo.flashSdStats
-import com.flipperdevices.info.impl.model.deviceinfo.internalStorageRequestInProgress
-import com.flipperdevices.info.impl.model.deviceinfo.isExtStorageEnding
-import com.flipperdevices.info.impl.model.deviceinfo.isIntStorageEnding
-import com.flipperdevices.info.impl.model.deviceinfo.toString
 import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
 import com.flipperdevices.info.impl.viewmodel.deviceinfo.BasicInfoViewModel
 import com.flipperdevices.info.shared.ComposableDeviceInfoRowWithText
@@ -59,7 +59,7 @@ private fun ComposableInfoCardContentInternal(
         deviceStatus.connectInProgress
     } else {
         deviceStatus is DeviceStatus.Connected &&
-            flipperBasicInfo.firmwareVersion !is FlipperInformationStatus.Ready
+                flipperBasicInfo.firmwareVersion !is FlipperInformationStatus.Ready
     }
 
     ComposableFirmwareVersion(

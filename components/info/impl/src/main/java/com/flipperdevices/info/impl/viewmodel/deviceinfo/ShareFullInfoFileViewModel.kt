@@ -5,14 +5,14 @@ import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import com.flipperdevices.bridge.rpcinfo.model.FlipperRpcInformation
 import com.flipperdevices.bridge.rpcinfo.model.StorageStats
+import com.flipperdevices.bridge.rpcinfo.model.flashIntStats
+import com.flipperdevices.bridge.rpcinfo.model.flashSdStats
 import com.flipperdevices.core.ktx.jre.createClearNewFileWithMkDirs
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.share.SharableFile
 import com.flipperdevices.core.share.ShareHelper
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.model.FlipperBasicInfo
-import com.flipperdevices.info.impl.model.deviceinfo.flashIntStats
-import com.flipperdevices.info.impl.model.deviceinfo.flashSdStats
 import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
