@@ -6,12 +6,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import com.flipperdevices.bridge.rpcinfo.model.FlipperInformationStatus
+import com.flipperdevices.bridge.rpcinfo.model.FlipperStorageInformation
+import com.flipperdevices.bridge.rpcinfo.model.StorageStats
+import com.flipperdevices.bridge.rpcinfo.model.dataOrNull
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
-import com.flipperdevices.info.api.model.FlipperInformationStatus
-import com.flipperdevices.info.api.model.FlipperStorageInformation
-import com.flipperdevices.info.api.model.StorageStats
-import com.flipperdevices.info.api.model.dataOrNull
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.compose.info.ComposableFirmwareBuildDate
 import com.flipperdevices.info.impl.compose.info.ComposableFirmwareVersion

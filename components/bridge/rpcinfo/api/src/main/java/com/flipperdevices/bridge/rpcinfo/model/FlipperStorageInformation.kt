@@ -1,4 +1,4 @@
-package com.flipperdevices.info.api.model
+package com.flipperdevices.bridge.rpcinfo.model
 
 data class FlipperStorageInformation(
     val internalStorageStatus: FlipperInformationStatus<StorageStats?> =

@@ -14,7 +14,6 @@ dependencies {
     implementation(projects.components.core.preference)
 
     implementation(projects.components.bridge.api)
-    implementation(projects.components.info.api)
 
     implementation(libs.cicerone)
     implementation(libs.annotations)

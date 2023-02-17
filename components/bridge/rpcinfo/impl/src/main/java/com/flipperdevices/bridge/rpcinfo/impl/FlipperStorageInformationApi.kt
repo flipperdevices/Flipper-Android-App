@@ -1,15 +1,17 @@
-package com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers
+package com.flipperdevices.bridge.rpcinfo.impl
 
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
+import com.flipperdevices.bridge.rpcinfo.api.FlipperStorageInformationApi
+import com.flipperdevices.bridge.rpcinfo.impl.shaketoreport.FlipperInformationMapping
+import com.flipperdevices.bridge.rpcinfo.model.FlipperInformationStatus
+import com.flipperdevices.bridge.rpcinfo.model.FlipperStorageInformation
+import com.flipperdevices.bridge.rpcinfo.model.StorageStats
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.flipperdevices.info.api.model.FlipperInformationStatus
-import com.flipperdevices.info.api.model.FlipperStorageInformation
-import com.flipperdevices.info.api.model.StorageStats
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.complex.FlipperRPCInfoEvent
 import com.flipperdevices.protobuf.Flipper
@@ -17,28 +19,17 @@ import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.infoRequest
 import com.flipperdevices.shake2report.api.Shake2ReportApi
 import com.squareup.anvil.annotations.ContributesBinding
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
-import javax.inject.Inject
 
-interface FlipperStorageInformationApi {
-    fun getStorageInformationFlow(): StateFlow<FlipperStorageInformation>
-    suspend fun invalidate(
-        scope: CoroutineScope,
-        requestApi: FlipperRequestApi,
-        force: Boolean = false
-    )
-
-    suspend fun reset()
-}
 
 private const val FLIPPER_PATH_INTERNAL_STORAGE = "/int/"
 private const val FLIPPER_PATH_EXTERNAL_STORAGE = "/ext/"
@@ -155,9 +146,9 @@ class FlipperStorageInformationApiImpl @Inject constructor(
 
     private fun reportMetric(information: FlipperStorageInformation) {
         val externalStatsStatus = information.externalStorageStatus
-            as? FlipperInformationStatus.Ready
+                as? FlipperInformationStatus.Ready
         val internalStatsStatus = information.internalStorageStatus
-            as? FlipperInformationStatus.Ready
+                as? FlipperInformationStatus.Ready
         val externalStats = externalStatsStatus?.data as? StorageStats.Loaded
         val internalStats = internalStatsStatus?.data as? StorageStats.Loaded
 
@@ -170,6 +161,6 @@ class FlipperStorageInformationApiImpl @Inject constructor(
                 externalTotalBytes = externalStats?.total ?: 0
             )
         )
-        shake2ReportApi.updateStorageInformation(information)
+        shake2ReportApi.setExtra(FlipperInformationMapping.convert(information))
     }
 }

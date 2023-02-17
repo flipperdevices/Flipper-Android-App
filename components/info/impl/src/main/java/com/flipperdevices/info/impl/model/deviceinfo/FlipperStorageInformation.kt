@@ -1,10 +1,10 @@
 package com.flipperdevices.info.impl.model.deviceinfo
 
 import android.content.Context
+import com.flipperdevices.bridge.rpcinfo.model.FlipperInformationStatus
+import com.flipperdevices.bridge.rpcinfo.model.FlipperStorageInformation
+import com.flipperdevices.bridge.rpcinfo.model.StorageStats
 import com.flipperdevices.core.ktx.jre.toFormattedSize
-import com.flipperdevices.info.api.model.FlipperInformationStatus
-import com.flipperdevices.info.api.model.FlipperStorageInformation
-import com.flipperdevices.info.api.model.StorageStats
 import com.flipperdevices.info.impl.R
 import kotlin.math.max
 

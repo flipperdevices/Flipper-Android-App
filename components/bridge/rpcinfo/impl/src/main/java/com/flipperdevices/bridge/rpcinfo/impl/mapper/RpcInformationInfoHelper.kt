@@ -1,9 +1,9 @@
-package com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.mapper
+package com.flipperdevices.bridge.rpcinfo.impl.mapper
 
+import com.flipperdevices.bridge.rpcinfo.model.RadioStackType
 import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.ktx.jre.isNotNull
 import com.flipperdevices.core.ktx.jre.titlecaseFirstCharIfItIsLowercase
-import com.flipperdevices.info.api.model.RadioStackType
 
 object RpcInformationInfoHelper {
     // softwareRevision Branch.Commit

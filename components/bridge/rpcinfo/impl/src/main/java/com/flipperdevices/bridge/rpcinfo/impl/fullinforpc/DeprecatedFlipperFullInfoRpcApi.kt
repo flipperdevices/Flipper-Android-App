@@ -1,8 +1,8 @@
-package com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.fullinforpc
+package com.flipperdevices.bridge.rpcinfo.impl.fullinforpc
 
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.wrapToRequest
-import com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.mapper.DeprecatedFlipperRpcInfoMapper
+import com.flipperdevices.bridge.rpcinfo.impl.mapper.DeprecatedFlipperRpcInfoMapper
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.system.deviceInfoRequest
 import com.flipperdevices.protobuf.system.powerInfoRequest

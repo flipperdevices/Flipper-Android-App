@@ -32,13 +32,12 @@ dependencies {
     implementation(projects.components.updater.api)
     implementation(projects.components.settings.api)
     implementation(projects.components.deeplink.api)
-    implementation(projects.components.analytics.shake2report.api)
-    implementation(projects.components.analytics.metric.api)
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.synchronization.api)
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.pbutils)
+    implementation(projects.components.bridge.rpcinfo.api)
 
     // Core deps
     implementation(libs.ktx)

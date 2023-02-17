@@ -1,5 +1,6 @@
 package com.flipperdevices.info.impl.compose.screens
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,12 +20,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.flipperdevices.bridge.rpcinfo.model.FlipperInformationStatus
+import com.flipperdevices.bridge.rpcinfo.model.FlipperRpcInformation
+import com.flipperdevices.bridge.rpcinfo.model.dataOrNull
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.info.api.model.FlipperInformationStatus
-import com.flipperdevices.info.api.model.FlipperRpcInformation
-import com.flipperdevices.info.api.model.dataOrNull
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.compose.screens.fullinfo.ComposableFullInfoDevice
 import com.flipperdevices.info.impl.model.DeviceStatus
@@ -33,7 +34,6 @@ import com.flipperdevices.info.impl.viewmodel.deviceinfo.BasicInfoViewModel
 import com.flipperdevices.info.impl.viewmodel.deviceinfo.FullInfoViewModel
 import com.flipperdevices.info.impl.viewmodel.deviceinfo.ShareFullInfoFileViewModel
 import tangle.viewmodel.compose.tangleViewModel
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableFullDeviceInfoScreen(

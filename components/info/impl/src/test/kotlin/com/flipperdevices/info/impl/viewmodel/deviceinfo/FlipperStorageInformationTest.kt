@@ -3,11 +3,11 @@ package com.flipperdevices.info.impl.viewmodel.deviceinfo
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
+import com.flipperdevices.bridge.rpcinfo.model.FlipperInformationStatus
+import com.flipperdevices.bridge.rpcinfo.model.FlipperStorageInformation
+import com.flipperdevices.bridge.rpcinfo.model.StorageStats
 import com.flipperdevices.core.ktx.jre.TimeHelper
 import com.flipperdevices.core.test.PendingCoroutineExceptionHandler
-import com.flipperdevices.info.api.model.FlipperInformationStatus
-import com.flipperdevices.info.api.model.FlipperStorageInformation
-import com.flipperdevices.info.api.model.StorageStats
 import com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.FlipperStorageInformationApi
 import com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.FlipperStorageInformationApiImpl
 import com.flipperdevices.metric.api.MetricApi

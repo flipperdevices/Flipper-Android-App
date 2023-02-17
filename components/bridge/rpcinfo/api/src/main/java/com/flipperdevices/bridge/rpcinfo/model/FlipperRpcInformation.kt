@@ -1,4 +1,4 @@
-package com.flipperdevices.info.api.model
+package com.flipperdevices.bridge.rpcinfo.model
 
 import com.flipperdevices.core.data.SemVer
 import kotlinx.collections.immutable.ImmutableMap

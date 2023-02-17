@@ -1,4 +1,4 @@
-package com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.mapper
+package com.flipperdevices.bridge.rpcinfo.impl.mapper
 
 internal data class InternalFlipperRpcInformationRaw(
     val otherFields: Map<String, String> = emptyMap()

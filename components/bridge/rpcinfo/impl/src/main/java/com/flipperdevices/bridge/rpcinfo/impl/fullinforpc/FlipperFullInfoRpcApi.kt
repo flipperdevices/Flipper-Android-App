@@ -1,9 +1,9 @@
-package com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.fullinforpc
+package com.flipperdevices.bridge.rpcinfo.impl.fullinforpc
 
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
-import com.flipperdevices.info.api.model.FlipperRpcInformation
-import com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.mapper.FlipperRpcInfoMapper
-import com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.mapper.InternalFlipperRpcInformationRaw
+import com.flipperdevices.bridge.rpcinfo.impl.mapper.FlipperRpcInfoMapper
+import com.flipperdevices.bridge.rpcinfo.impl.mapper.InternalFlipperRpcInformationRaw
+import com.flipperdevices.bridge.rpcinfo.model.FlipperRpcInformation
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.sync.Mutex

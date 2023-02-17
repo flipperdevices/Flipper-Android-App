@@ -1,14 +1,14 @@
-package com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.mapper
+package com.flipperdevices.bridge.rpcinfo.impl.mapper
 
-import com.flipperdevices.info.api.model.FirmwareInfo
-import com.flipperdevices.info.api.model.FlipperDeviceInfo
-import com.flipperdevices.info.api.model.FlipperRpcInformation
-import com.flipperdevices.info.api.model.RadioStackInfo
-import com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.mapper.RpcInformationInfoHelper.deviceInfoVersion
-import com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.mapper.RpcInformationInfoHelper.protobufVersion
-import com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.mapper.RpcInformationInfoHelper.radioFirmware
-import com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.mapper.RpcInformationInfoHelper.radioType
-import com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.mapper.RpcInformationInfoHelper.softwareRevision
+import com.flipperdevices.bridge.rpcinfo.impl.mapper.RpcInformationInfoHelper.deviceInfoVersion
+import com.flipperdevices.bridge.rpcinfo.impl.mapper.RpcInformationInfoHelper.protobufVersion
+import com.flipperdevices.bridge.rpcinfo.impl.mapper.RpcInformationInfoHelper.radioFirmware
+import com.flipperdevices.bridge.rpcinfo.impl.mapper.RpcInformationInfoHelper.radioType
+import com.flipperdevices.bridge.rpcinfo.impl.mapper.RpcInformationInfoHelper.softwareRevision
+import com.flipperdevices.bridge.rpcinfo.model.FirmwareInfo
+import com.flipperdevices.bridge.rpcinfo.model.FlipperDeviceInfo
+import com.flipperdevices.bridge.rpcinfo.model.FlipperRpcInformation
+import com.flipperdevices.bridge.rpcinfo.model.RadioStackInfo
 import kotlinx.collections.immutable.toImmutableMap
 
 private const val DEVICE_NAME = "hardware_name"

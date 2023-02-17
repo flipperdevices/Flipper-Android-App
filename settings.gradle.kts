@@ -31,6 +31,8 @@ include(
     ":components:bridge:service:noop",
     ":components:bridge:service:impl",
     ":components:bridge:service:api",
+    ":components:bridge:rpcinfo:api",
+    ":components:bridge:rpcinfo:impl",
     ":components:bridge:pbutils",
     ":components:bridge:synchronization:api",
     ":components:bridge:synchronization:impl",

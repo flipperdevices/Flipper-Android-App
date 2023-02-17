@@ -3,15 +3,15 @@ package com.flipperdevices.info.impl.viewmodel.deviceinfo
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
+import com.flipperdevices.bridge.rpcinfo.api.FlipperStorageInformationApi
+import com.flipperdevices.bridge.rpcinfo.model.FlipperInformationStatus
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.ktx.jre.cancelAndClear
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
-import com.flipperdevices.info.api.model.FlipperInformationStatus
 import com.flipperdevices.info.impl.model.FlipperBasicInfo
-import com.flipperdevices.info.impl.viewmodel.deviceinfo.helpers.FlipperStorageInformationApi
 import com.flipperdevices.updater.api.FlipperVersionProviderApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

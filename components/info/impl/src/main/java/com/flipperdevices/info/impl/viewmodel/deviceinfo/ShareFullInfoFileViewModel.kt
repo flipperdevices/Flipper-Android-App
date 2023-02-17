@@ -3,12 +3,12 @@ package com.flipperdevices.info.impl.viewmodel.deviceinfo
 import android.app.Application
 import android.content.Context
 import androidx.lifecycle.AndroidViewModel
+import com.flipperdevices.bridge.rpcinfo.model.FlipperRpcInformation
+import com.flipperdevices.bridge.rpcinfo.model.StorageStats
 import com.flipperdevices.core.ktx.jre.createClearNewFileWithMkDirs
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.share.SharableFile
 import com.flipperdevices.core.share.ShareHelper
-import com.flipperdevices.info.api.model.FlipperRpcInformation
-import com.flipperdevices.info.api.model.StorageStats
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.model.FlipperBasicInfo
 import com.flipperdevices.info.impl.model.deviceinfo.flashIntStats
