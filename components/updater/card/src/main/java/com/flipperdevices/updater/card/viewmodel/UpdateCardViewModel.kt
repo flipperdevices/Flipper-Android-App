@@ -35,12 +35,14 @@ import kotlinx.coroutines.sync.Mutex
 import tangle.inject.TangleParam
 import tangle.viewmodel.VMInject
 
+@Suppress("LongParameterList")
 class UpdateCardViewModel @VMInject constructor(
     private val downloaderApi: DownloaderApi,
     private val flipperVersionProviderApi: FlipperVersionProviderApi,
     private val serviceProvider: FlipperServiceProvider,
     private val dataStoreSettings: DataStore<Settings>,
     private val updateOfferHelper: UpdateOfferProviderApi,
+    private val storageExistHelper: StorageExistHelper,
     @TangleParam(DeeplinkConstants.INTENT)
     private val intent: Intent?
 ) :
@@ -48,8 +50,6 @@ class UpdateCardViewModel @VMInject constructor(
     FlipperBleServiceConsumer,
     LogTagProvider {
     override val TAG = "UpdateCardViewModel"
-
-    private val storageExistHelper = StorageExistHelper()
 
     private val updateCardState = MutableStateFlow<UpdateCardState>(
         UpdateCardState.InProgress
@@ -100,6 +100,7 @@ class UpdateCardViewModel @VMInject constructor(
                 // that's why we set state in progress
                 updateCardState.emit(UpdateCardState.InProgress)
                 cardStateJob?.cancelAndJoin()
+                storageExistHelper.invalidate(viewModelScope, it.requestApi, force = true)
                 invalidateUnsafe(it)
             }
         }
@@ -115,6 +116,7 @@ class UpdateCardViewModel @VMInject constructor(
         cardStateJob?.cancelAndJoin()
         cardStateJob = null
         cardStateJob = viewModelScope.launch(Dispatchers.Default) {
+            storageExistHelper.invalidate(this, serviceApi.requestApi, force = false)
             val latestVersionAsync = async {
                 val result = runCatching { downloaderApi.getLatestVersion() }
                 verbose { "latestVersionAsyncResult: $result" }
@@ -122,7 +124,7 @@ class UpdateCardViewModel @VMInject constructor(
             }
             combine(
                 flipperVersionProviderApi.getCurrentFlipperVersion(viewModelScope, serviceApi),
-                storageExistHelper.isExternalStorageExist(serviceApi.requestApi),
+                storageExistHelper.isExternalStorageExist(),
                 updateOfferHelper.isUpdateRequire(serviceApi),
                 updateChanelFlow,
                 deeplinkFlow

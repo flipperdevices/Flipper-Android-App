@@ -79,24 +79,6 @@ class FlipperStorageInformationApiImpl @Inject constructor(
             )
         )
 
-        receiveStorageInfo(requestApi, FLIPPER_PATH_INTERNAL_STORAGE) { storageStats ->
-            info { "Received internal storage info: $storageStats" }
-            val information = storageInformationFlow.updateAndGet {
-                it.copy(
-                    internalStorageStatus = FlipperInformationStatus.Ready(storageStats)
-                )
-            }
-            reportMetric(information)
-        }
-
-        storageInformationFlow.update {
-            if (it.internalStorageStatus !is FlipperInformationStatus.Ready) {
-                it.copy(internalStorageStatus = FlipperInformationStatus.Ready(null))
-            } else {
-                it
-            }
-        }
-
         receiveStorageInfo(requestApi, FLIPPER_PATH_EXTERNAL_STORAGE) { storageStats ->
             info { "Received external storage info: $storageStats" }
             val information = storageInformationFlow.updateAndGet {
@@ -110,6 +92,24 @@ class FlipperStorageInformationApiImpl @Inject constructor(
         storageInformationFlow.update {
             if (it.externalStorageStatus !is FlipperInformationStatus.Ready) {
                 it.copy(externalStorageStatus = FlipperInformationStatus.Ready(null))
+            } else {
+                it
+            }
+        }
+
+        receiveStorageInfo(requestApi, FLIPPER_PATH_INTERNAL_STORAGE) { storageStats ->
+            info { "Received internal storage info: $storageStats" }
+            val information = storageInformationFlow.updateAndGet {
+                it.copy(
+                    internalStorageStatus = FlipperInformationStatus.Ready(storageStats)
+                )
+            }
+            reportMetric(information)
+        }
+
+        storageInformationFlow.update {
+            if (it.internalStorageStatus !is FlipperInformationStatus.Ready) {
+                it.copy(internalStorageStatus = FlipperInformationStatus.Ready(null))
             } else {
                 it
             }
