@@ -1,11 +1,9 @@
 package com.flipperdevices.updater.subghz.tasks
 
-import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequest
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.core.ktx.jre.flatten
-import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.test.readTestAsset
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.protobuf.Flipper
@@ -29,7 +27,6 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
@@ -46,13 +43,12 @@ class SubGhzProvisioningHelperTest(
     private lateinit var downloaderApi: DownloaderApi
     private lateinit var regionProvisioningHelper: RegionProvisioningHelper
     private lateinit var metricApi: MetricApi
-    private lateinit var settings: DataStore<Settings>
     private lateinit var skipProvisioningHelper: SkipProvisioningHelper
     private lateinit var underTest: SubGhzProvisioningHelper
 
     @Before
     fun setUp() = runTest {
-        val mockEngine = MockEngine { request ->
+        val mockEngine = MockEngine { _ ->
             respond(
                 content = readTestAsset("regions.json"),
                 status = HttpStatusCode.OK,
@@ -79,9 +75,10 @@ class SubGhzProvisioningHelperTest(
             isRoaming = false
         )
 
-        metricApi = mockk()
-        settings = mockk()
-        skipProvisioningHelper = mockk()
+        metricApi = mockk(relaxUnitFun = true)
+        skipProvisioningHelper = mockk() {
+            coEvery { shouldSkipProvisioning(any()) } returns false
+        }
         underTest = SubGhzProvisioningHelperImpl(
             downloaderApi,
             regionProvisioningHelper,
@@ -92,8 +89,6 @@ class SubGhzProvisioningHelperTest(
 
     @Test
     fun `check region protobuf`() = runTest {
-        every { settings.data } returns flowOf(Settings.getDefaultInstance())
-
         var flipperRequests: List<FlipperRequest>? = null
         val requestApi: FlipperRequestApi = mockk()
         val serviceApi: FlipperServiceApi = mockk()

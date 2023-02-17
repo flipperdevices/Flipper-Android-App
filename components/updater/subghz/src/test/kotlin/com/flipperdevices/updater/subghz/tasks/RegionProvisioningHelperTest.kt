@@ -34,10 +34,14 @@ class RegionProvisioningHelperTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(mainThreadSurrogate)
-        telephonyManager = mockk()
+        telephonyManager = mockk() {
+            every { simCountryIso } returns null
+            every { networkCountryIso } returns null
+            every { isNetworkRoaming } returns false
+        }
         context = mockk {
             every {
-                context.getSystemService(eq(TelephonyManager::class.java))
+                getSystemService(eq(TelephonyManager::class.java))
             } returns telephonyManager
         }
         underTest = RegionProvisioningHelperImpl(context)
