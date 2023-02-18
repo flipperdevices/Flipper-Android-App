@@ -38,6 +38,6 @@ class DeepLinkWebUpdater @Inject constructor() : DeepLinkParserDelegate, LogTagP
         val link = uri.getQueryParameter(QUERY_URL) ?: return null
         val version = uri.getQueryParameter(QUERY_VERSION) ?: ""
         val channel = uri.getQueryParameter(QUERY_CHANNEL) ?: ""
-        return Deeplink.WebUpdate(link, "$channel $version", intent)
+        return Deeplink.WebUpdate(link, "$channel $version")
     }
 }
