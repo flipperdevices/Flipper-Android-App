@@ -1,10 +1,14 @@
 package com.flipperdevices.deeplink.model
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Parcelable
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 @Serializable
 sealed class Deeplink(
@@ -35,4 +39,28 @@ sealed class Deeplink(
         val url: String,
         val name: String,
     ) : Deeplink(isInternal = true)
+
+    fun buildIntent(): Intent {
+        val deeplinkSerialized = Uri.encode(Json.encodeToString(this))
+        val deeplinkPath = "${buildDeeplinkKey(this)}=$deeplinkSerialized"
+
+        return Intent().apply {
+            data = Uri.parse(DeeplinkConstants.SCHEMA + deeplinkPath)
+        }
+    }
+
+    companion object {
+        fun buildDeeplinkKey(deeplink: Deeplink): String {
+            return when (deeplink) {
+                is FlipperKey -> DeeplinkConstants.FLIPPER_KEY
+                is WidgetOptions -> DeeplinkConstants.WIDGET_OPTIONS
+                is OpenKey -> DeeplinkConstants.OPEN_KEY
+                is WebUpdate -> DeeplinkConstants.WEB_UPDATE
+            }
+        }
+
+        fun buildDeeplinkPath(deeplinkKey: String): String {
+            return "${DeeplinkConstants.SCHEMA}$deeplinkKey={${DeeplinkConstants.KEY}}"
+        }
+    }
 }
