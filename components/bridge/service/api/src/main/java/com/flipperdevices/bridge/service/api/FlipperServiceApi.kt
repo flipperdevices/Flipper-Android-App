@@ -3,7 +3,6 @@ package com.flipperdevices.bridge.service.api
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.manager.delegates.FlipperConnectionInformationApi
 import com.flipperdevices.bridge.api.manager.service.FlipperInformationApi
-import com.flipperdevices.bridge.api.manager.service.FlipperRpcInformationApi
 import com.flipperdevices.bridge.api.manager.service.FlipperVersionApi
 
 /**
@@ -28,11 +27,6 @@ interface FlipperServiceApi {
      * Returns an API for communicating with Flipper via a request-response structure.
      */
     val requestApi: FlipperRequestApi
-
-    /**
-     * Returns wrapper of request api which provide device info from flipper
-     */
-    val flipperRpcInformationApi: FlipperRpcInformationApi
 
     /**
      * Provides information about the version of the API on Flipper. Null if not received.

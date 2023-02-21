@@ -13,6 +13,7 @@ dependencies {
 
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)
+    implementation(projects.components.core.data)
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.preference)
     implementation(projects.components.core.ui.lifecycle)
@@ -35,7 +36,7 @@ dependencies {
     // Testing
     testImplementation(projects.components.core.test)
     testImplementation(libs.junit)
-    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.mockk)
     testImplementation(libs.ktx.testing)
     testImplementation(libs.roboelectric)
     testImplementation(libs.lifecycle.test)

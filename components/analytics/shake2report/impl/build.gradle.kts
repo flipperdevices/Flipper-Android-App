@@ -12,6 +12,7 @@ dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.activityholder)
     implementation(projects.components.core.preference)
+
     implementation(projects.components.bridge.api)
 
     implementation(libs.cicerone)

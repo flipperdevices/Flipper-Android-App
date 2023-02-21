@@ -3,7 +3,7 @@ package com.flipperdevices.info.impl.compose.screens.fullinfo
 import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import com.flipperdevices.bridge.api.model.FlipperDeviceInfo
+import com.flipperdevices.bridge.rpcinfo.model.FlipperDeviceInfo
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.shared.ComposableDeviceInfoRow
 import com.flipperdevices.info.shared.ComposableDeviceInfoRowText

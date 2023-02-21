@@ -78,7 +78,6 @@ class FlipperServiceApiImpl(
     private val bleManager: FlipperBleManager = FlipperBleManagerImpl(
         context,
         settingsStore,
-        pairSettingsStore,
         scope,
         serviceErrorListener,
         lagsDetector,
@@ -98,7 +97,6 @@ class FlipperServiceApiImpl(
     override val connectionInformationApi = bleManager.connectionInformationApi
     override val requestApi = bleManager.flipperRequestApi
     override val flipperInformationApi = bleManager.informationApi
-    override val flipperRpcInformationApi = bleManager.flipperRpcInformationApi
     override val flipperVersionApi = bleManager.flipperVersionApi
 
     fun internalInit() {

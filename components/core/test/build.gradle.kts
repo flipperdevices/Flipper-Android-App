@@ -6,4 +6,5 @@ dependencies {
     implementation(libs.junit)
     implementation(libs.timber)
     implementation(libs.roboelectric)
+    implementation(libs.kotlin.coroutines)
 }
