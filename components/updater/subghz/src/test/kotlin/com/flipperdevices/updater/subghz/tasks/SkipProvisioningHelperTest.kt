@@ -3,7 +3,7 @@ package com.flipperdevices.updater.subghz.tasks
 import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.manager.service.FlipperVersionApi
-import com.flipperdevices.core.data.SemVer
+import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.core.ktx.jre.TimeHelper
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.protobuf.main
@@ -14,7 +14,6 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
@@ -56,9 +55,9 @@ class SkipProvisioningHelperTest {
         )
 
         val versionApi = mockk<FlipperVersionApi> {
-            every {
-                getVersionInformationFlow()
-            } returns MutableStateFlow(null)
+            coEvery {
+                isSupported(eq(Constants.API_SUPPORTED_GET_REQUEST), any())
+            } returns false
         }
 
         val shouldProvide = underTest.shouldSkipProvisioning(
@@ -79,9 +78,9 @@ class SkipProvisioningHelperTest {
         )
 
         val versionApi = mockk<FlipperVersionApi> {
-            every {
-                getVersionInformationFlow()
-            } returns MutableStateFlow(SemVer(0, 0))
+            coEvery {
+                isSupported(eq(Constants.API_SUPPORTED_GET_REQUEST), any())
+            } returns false
         }
 
         val shouldProvide = underTest.shouldSkipProvisioning(
@@ -102,9 +101,9 @@ class SkipProvisioningHelperTest {
         )
 
         val versionApi = mockk<FlipperVersionApi> {
-            every {
-                getVersionInformationFlow()
-            } returns MutableStateFlow(SemVer(0, 14))
+            coEvery {
+                isSupported(eq(Constants.API_SUPPORTED_GET_REQUEST), any())
+            } returns true
         }
         val mockRequestApi = mockk<FlipperRequestApi> {
             coEvery { request(any(), any()) } returns main {}
@@ -129,9 +128,9 @@ class SkipProvisioningHelperTest {
         )
 
         val versionApi = mockk<FlipperVersionApi> {
-            every {
-                getVersionInformationFlow()
-            } returns MutableStateFlow(SemVer(0, 14))
+            coEvery {
+                isSupported(eq(Constants.API_SUPPORTED_GET_REQUEST), any())
+            } returns true
         }
         val mockRequestApi = mockk<FlipperRequestApi> {
             coEvery { request(any(), any()) } returns main {
@@ -160,9 +159,9 @@ class SkipProvisioningHelperTest {
         )
 
         val versionApi = mockk<FlipperVersionApi> {
-            every {
-                getVersionInformationFlow()
-            } returns MutableStateFlow(SemVer(0, 14))
+            coEvery {
+                isSupported(eq(Constants.API_SUPPORTED_GET_REQUEST), any())
+            } returns true
         }
         val mockRequestApi = mockk<FlipperRequestApi> {
             coEvery { request(any(), any()) } returns main {

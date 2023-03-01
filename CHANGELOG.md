@@ -26,6 +26,7 @@
 - [REFACTOR] Replace some clickable to card function + reuse orange app bar
 - [REFACTOR] Google Compose Navigation (archive, firstpair, widgets(composable entry), updater, import)
 - [REFACTOR] Migrate to new device info api
+- [REFACTOR] Migrate to isSupported in version api
 
 # 1.4.1
 
