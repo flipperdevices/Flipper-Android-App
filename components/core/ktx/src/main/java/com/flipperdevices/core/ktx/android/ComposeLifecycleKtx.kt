@@ -2,23 +2,34 @@ package com.flipperdevices.core.ktx.android
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 
 @Composable
-fun Lifecycle.observeAsState(): State<Lifecycle.Event> {
-    val state = remember { mutableStateOf(Lifecycle.Event.ON_ANY) }
-    DisposableEffect(this) {
+fun OnLifecycleEvent(onEvent: (event: Lifecycle.Event) -> Unit) {
+    val eventHandler = rememberUpdatedState(onEvent)
+    val lifecycleOwner = rememberUpdatedState(LocalLifecycleOwner.current)
+    var currentEvent by remember { mutableStateOf<Lifecycle.Event?>(null) }
+
+    DisposableEffect(lifecycleOwner.value) {
+        val lifecycle = lifecycleOwner.value.lifecycle
         val observer = LifecycleEventObserver { _, event ->
-            state.value = event
+            if (currentEvent != event) {
+                eventHandler.value(event)
+                currentEvent = event
+            }
         }
-        this@observeAsState.addObserver(observer)
+
+        lifecycle.addObserver(observer)
         onDispose {
-            this@observeAsState.removeObserver(observer)
+            onEvent(Lifecycle.Event.ON_DESTROY)
+            lifecycle.removeObserver(observer)
         }
     }
-    return state
 }

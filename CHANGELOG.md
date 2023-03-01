@@ -3,6 +3,7 @@
 # 1.4.2 - In Progress
 
 - [Feature] Flipper app loader errors
+- [Feature] More smoothly synchronization percent 
 - [Feature] Skip synchronization if file system on flipper not changed
 - [Feature] Pass flipper color from searching screen
 - [Feature] New report bug screen
@@ -19,6 +20,7 @@
 - [FIX] Fix broken synchronization with changes from android
 - [FIX] Fix shadow file sharing as file
 - [FIX] Firstpair flow open by navigation graph route
+- [FIX] Fix crush with inapp storage on startup
 - [REFACTOR] Migrate bottom bar to compose navigation
 - [REFACTOR] Bump Android Gradle Plugin
 - [REFACTOR] Fix detekt compose issues

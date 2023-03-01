@@ -22,11 +22,11 @@ class InAppNotificationViewModel @VMInject constructor(
 
     fun state(): StateFlow<InAppNotificationState> = notificationState
 
-    fun onResume() {
+    fun onCreate() {
         notificationStorage.subscribe(this)
     }
 
-    fun onPause() {
+    fun onDestroy() {
         notificationStorage.unsubscribe()
     }
 
