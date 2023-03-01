@@ -10,15 +10,11 @@ import com.flipperdevices.bridge.synchronization.impl.utils.ProgressWrapperTrack
 import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.ktx.jre.pmap
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.timestampRequest
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.withTimeout
 import java.io.File
 import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
@@ -30,7 +26,6 @@ interface TimestampSynchronizationChecker {
     ): Map<FlipperKeyType, Long?>
 }
 
-private const val VERSION_WAITING_TIMEOUT_MS = 10 * 1000L // 10 sec
 private val SUPPORTED_VERSION = SemVer(majorVersion = 0, minorVersion = 13)
 
 @ContributesBinding(TaskGraph::class, TimestampSynchronizationChecker::class)
@@ -44,18 +39,7 @@ class TimestampSynchronizationCheckerImpl @Inject constructor(
         types: Array<FlipperKeyType>,
         progressTracker: ProgressWrapperTracker
     ): Map<FlipperKeyType, Long?> {
-        val flipperVersion = try {
-            withTimeout(VERSION_WAITING_TIMEOUT_MS) {
-                flipperVersionApi.getVersionInformationFlow()
-                    .filterNotNull()
-                    .first()
-            }
-        } catch (exception: Throwable) {
-            error(exception) { "Failed receive flipper version" }
-            return types.associateWith { null }
-        }
-
-        if (flipperVersion < SUPPORTED_VERSION) {
+        if (flipperVersionApi.isSupported(SUPPORTED_VERSION)) {
             return types.associateWith { null }
         }
 

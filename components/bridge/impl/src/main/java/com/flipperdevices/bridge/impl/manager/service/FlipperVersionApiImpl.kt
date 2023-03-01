@@ -11,11 +11,14 @@ import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.log.warn
 import com.flipperdevices.core.preference.pb.Settings
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.withTimeoutOrNull
 
 class FlipperVersionApiImpl(
     private val settingsStore: DataStore<Settings>
@@ -27,6 +30,25 @@ class FlipperVersionApiImpl(
     private var apiVersionCharacteristics: BluetoothGattCharacteristic? = null
 
     override fun getVersionInformationFlow(): StateFlow<SemVer?> = semVerStateFlow
+
+    override suspend fun isSupported(version: SemVer, timeout: Long): Boolean {
+        info { "Check for support version $version with timeout $timeout" }
+        val currentVersion = try {
+            withTimeoutOrNull(timeout) {
+                semVerStateFlow
+                    .filterNotNull()
+                    .first()
+            }
+        } catch (exception: Throwable) {
+            error(exception) { "Failed receive flipper version" }
+            return false
+        }
+        if (currentVersion == null) {
+            warn { "Return false because currentVersion is null" }
+            return false
+        }
+        return currentVersion >= version
+    }
 
     override fun onServiceReceived(gatt: BluetoothGatt): Boolean {
         getServiceOrLog(gatt, Constants.BLEInformationService.SERVICE_UUID)?.let { service ->
