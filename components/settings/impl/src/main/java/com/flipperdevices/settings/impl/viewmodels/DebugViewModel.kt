@@ -56,17 +56,6 @@ class DebugViewModel @VMInject constructor(
         }
     }
 
-    fun onSwitchShakeToReport(shakeToReport: Boolean) {
-        viewModelScope.launch(Dispatchers.Default) {
-            settingsDataStore.updateData {
-                it.toBuilder()
-                    .setShakeToReport(shakeToReport)
-                    .build()
-            }
-            askRestartApp()
-        }
-    }
-
     fun onSwitchIgnoreSubGhzProvisioning(ignoreSubGhzProvisioningOnZeroRegion: Boolean) {
         viewModelScope.launch(Dispatchers.Default) {
             settingsDataStore.updateData {

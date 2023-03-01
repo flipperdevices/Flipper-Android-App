@@ -44,7 +44,7 @@ fun ComposableCommonSetting(
         }
         ExperimentalCategory(settings, navController, settingsViewModel)
         ExportKeysCategory(settingsViewModel)
-        OtherSettingsCategory(settingsViewModel)
+        OtherSettingsCategory(settingsViewModel, navController)
         VersionCategory(
             version = settingsViewModel.versionApp(),
             onActivateExpertMode = settingsViewModel::onExpertModeActivate

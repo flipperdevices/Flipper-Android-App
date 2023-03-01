@@ -5,6 +5,7 @@
 - [Feature] Flipper app loader errors
 - [Feature] Skip synchronization if file system on flipper not changed
 - [Feature] Pass flipper color from searching screen
+- [Feature] New report bug screen
 - [GitHub] Update github repo picture
 - [CI] Migrate to Detekt
 - [CI] Android lint in CI
