@@ -3,6 +3,7 @@ package com.flipperdevices.info.impl.viewmodel
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
@@ -13,7 +14,6 @@ import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.property.getRequest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -37,10 +37,6 @@ class FlipperColorViewModel @VMInject constructor(
 
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
         viewModelScope.launch {
-            val currentColor = settings.data.first().hardwareColor
-            if (currentColor != HardwareColor.UNRECOGNIZED) {
-                return@launch
-            }
             if (!serviceApi.flipperVersionApi.isSupported(Constants.API_SUPPORTED_GET_REQUEST)) {
                 return@launch
             }
@@ -50,7 +46,7 @@ class FlipperColorViewModel @VMInject constructor(
                         propertyGetRequest = getRequest {
                             key = RPC_KEY_HARDWARE_COLOR
                         }
-                    }.wrapToRequest()
+                    }.wrapToRequest(FlipperRequestPriority.BACKGROUND)
                 )
             )
             if (response.hasPropertyGetResponse().not()) {
