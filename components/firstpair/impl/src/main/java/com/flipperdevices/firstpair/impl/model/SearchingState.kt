@@ -25,8 +25,10 @@ sealed class SearchingContent {
         val selectedAddress: String? = null
     ) : SearchingContent()
 
-    class Finished constructor(val deviceId: String?, val deviceName: String?) :
-        SearchingContent() // All work finished, exit from screen
+    class Finished(
+        val deviceId: String?,
+        val deviceName: String?
+    ) : SearchingContent() // All work finished, exit from screen
 
     abstract class PermissionRequest(
         @DrawableRes val image: Int,
