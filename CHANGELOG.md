@@ -17,6 +17,7 @@
 - [FIX] Fix broken synchronization with changes from android
 - [FIX] Fix shadow file sharing as file
 - [FIX] Firstpair flow open by navigation graph route
+- [FIX] Fix crush with inapp storage on startup
 - [REFACTOR] Migrate bottom bar to compose navigation
 - [REFACTOR] Bump Android Gradle Plugin
 - [REFACTOR] Fix detekt compose issues
