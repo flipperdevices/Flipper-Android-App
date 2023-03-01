@@ -1,4 +1,3 @@
-
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -12,9 +11,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
-import com.flipperdevices.core.ktx.android.observeAsState
+import com.flipperdevices.core.ktx.android.OnLifecycleEvent
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialog
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialogModel
 import com.flipperdevices.firstpair.impl.R
@@ -150,8 +148,7 @@ private fun ComposableSearchingInternal(
         }
     }
 
-    val lifecycleState by LocalLifecycleOwner.current.lifecycle.observeAsState()
-    LaunchedEffect(key1 = lifecycleState) {
+    OnLifecycleEvent { lifecycleState ->
         when (lifecycleState) {
             Lifecycle.Event.ON_RESUME -> invalidate()
             else -> {}
