@@ -98,13 +98,13 @@ class DeepLinkHelperImpl @Inject constructor(
 
         val deeplink = deeplinkStack.pop()
         info { "Process deeplink $deeplink" }
-        @Suppress("ForbiddenComment")
+
         if (deeplink.isInternal) {
-            // TODO: Handle deeplink
-            navController.navigate(bottomBarFeatureEntry.start(), topScreenOptions)
-        } else {
-            navController.navigate(bottomBarFeatureEntry.start(), topScreenOptions)
-            // TODO: deepLinkDispatcher.process()
+            navController.navigate(bottomBarFeatureEntry.start(deeplink), topScreenOptions)
+            return@withContext
         }
+
+        val intent = deeplink.buildIntent()
+        navController.handleDeepLink(intent)
     }
 }

@@ -42,10 +42,8 @@ sealed class Deeplink(
 
     fun buildIntent(): Intent {
         val deeplinkSerialized = Uri.encode(Json.encodeToString(this))
-        val deeplinkPath = "${buildDeeplinkKey(this)}=$deeplinkSerialized"
-
         return Intent().apply {
-            data = Uri.parse(DeeplinkConstants.SCHEMA + deeplinkPath)
+            data = Uri.parse("${DeeplinkConstants.SCHEMA}${buildDeeplinkKey(this@Deeplink)}/$deeplinkSerialized")
         }
     }
 
@@ -59,8 +57,8 @@ sealed class Deeplink(
             }
         }
 
-        fun buildDeeplinkPath(deeplinkKey: String): String {
-            return "${DeeplinkConstants.SCHEMA}$deeplinkKey={${DeeplinkConstants.KEY}}"
+        fun buildDeeplinkPattern(deeplinkKey: String): String {
+            return "${DeeplinkConstants.SCHEMA}$deeplinkKey/{${DeeplinkConstants.KEY}}"
         }
     }
 }

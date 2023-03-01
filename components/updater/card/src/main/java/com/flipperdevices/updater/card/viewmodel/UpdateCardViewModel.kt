@@ -1,13 +1,11 @@
 package com.flipperdevices.updater.card.viewmodel
 
-import android.content.Intent
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.model.StorageStats
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
-import com.flipperdevices.core.ktx.android.parcelableExtra
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.verbose
@@ -41,8 +39,8 @@ class UpdateCardViewModel @VMInject constructor(
     private val serviceProvider: FlipperServiceProvider,
     private val dataStoreSettings: DataStore<Settings>,
     private val updateOfferHelper: UpdateOfferProviderApi,
-    @TangleParam(DeeplinkConstants.INTENT)
-    private val intent: Intent?
+    @TangleParam(DeeplinkConstants.KEY)
+    private val deeplink: Deeplink?
 ) :
     LifecycleViewModel(),
     FlipperBleServiceConsumer,
@@ -54,7 +52,7 @@ class UpdateCardViewModel @VMInject constructor(
     )
     private val updateChanelFlow = MutableStateFlow<FirmwareChannel?>(null)
 
-    private val deeplinkFlow = MutableStateFlow<Deeplink?>(null)
+    private val deeplinkFlow = MutableStateFlow(deeplink)
 
     private var cardStateJob: Job? = null
     private val mutex = Mutex()
@@ -64,10 +62,6 @@ class UpdateCardViewModel @VMInject constructor(
             dataStoreSettings.data.collectLatest {
                 updateChanelFlow.emit(it.selectedChannel.toFirmwareChannel())
             }
-        }
-        val deeplink = intent?.parcelableExtra<Deeplink>("deeplink")
-        viewModelScope.launch {
-            deeplinkFlow.emit(deeplink)
         }
         serviceProvider.provideServiceApi(this, this)
     }

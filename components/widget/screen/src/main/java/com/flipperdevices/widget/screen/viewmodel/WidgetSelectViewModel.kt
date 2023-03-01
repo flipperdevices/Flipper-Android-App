@@ -16,8 +16,9 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.core.activityholder.CurrentActivityHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.deeplink.model.Deeplink
+import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.flipperdevices.widget.api.WidgetApi
-import com.flipperdevices.widget.screen.api.EXTRA_WIDGET_ID_KEY
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -36,8 +37,8 @@ class WidgetSelectViewModel @VMInject constructor(
     private val synchronizationApi: SynchronizationApi,
     private val widgetDataApi: WidgetDataApi,
     private val widgetApi: WidgetApi,
-    @TangleParam(EXTRA_WIDGET_ID_KEY)
-    private val widgetId: Int
+    @TangleParam(DeeplinkConstants.KEY)
+    private val deeplink: Deeplink
 ) : ViewModel(), LogTagProvider {
     override val TAG = "WidgetSelectViewModel"
 
@@ -45,6 +46,8 @@ class WidgetSelectViewModel @VMInject constructor(
     private val favoriteKeys = MutableStateFlow<List<FlipperKey>>(emptyList())
     private val synchronizationState =
         MutableStateFlow<SynchronizationState>(SynchronizationState.NotStarted)
+
+    private val widgetId = (deeplink as Deeplink.WidgetOptions).appWidgetId
 
     init {
         viewModelScope.launch(Dispatchers.Default) {

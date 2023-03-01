@@ -2,9 +2,9 @@ package com.flipperdevices.widget.screen.api
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
 import com.flipperdevices.archive.api.ArchiveApi
 import com.flipperdevices.archive.api.SearchApi
 import com.flipperdevices.archive.api.SearchFeatureEntry
@@ -12,6 +12,9 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.flipperdevices.core.ui.navigation.GetOnceResult
+import com.flipperdevices.deeplink.model.Deeplink
+import com.flipperdevices.deeplink.model.DeeplinkConstants
+import com.flipperdevices.deeplink.model.DeeplinkNavType
 import com.flipperdevices.widget.api.WidgetFeatureEntry
 import com.flipperdevices.widget.screen.compose.WidgetOptionsComposable
 import com.flipperdevices.widget.screen.viewmodel.WidgetSelectViewModel
@@ -32,17 +35,25 @@ class WidgetFeatureEntryImpl @Inject constructor(
         return "@${ROUTE.name}?id=$widgetId"
     }
 
+    private val deeplinkKey = DeeplinkConstants.KEY
+
     private val widgetArguments = listOf(
-        navArgument(EXTRA_WIDGET_ID_KEY) {
-            type = NavType.IntType
-            nullable = false
+        navArgument(deeplinkKey) {
+            type = DeeplinkNavType()
+            nullable = true
         }
     )
 
+    private val deeplinkArguments = listOf(
+        navDeepLink { uriPattern = Deeplink.buildDeeplinkPattern(DeeplinkConstants.WIDGET_OPTIONS) }
+    )
+
+
     override fun NavGraphBuilder.composable(navController: NavHostController) {
         composable(
-            route = "@${ROUTE.name}?id={$EXTRA_WIDGET_ID_KEY}",
-            arguments = widgetArguments
+            route = "@${ROUTE.name}/$deeplinkKey={$deeplinkKey}",
+            arguments = widgetArguments,
+            deepLinks = deeplinkArguments
         ) {
             val widgetSelectViewModel: WidgetSelectViewModel = tangleViewModel()
             navController.GetOnceResult<FlipperKeyPath>(SearchApi.SEARCH_RESULT_KEY) {

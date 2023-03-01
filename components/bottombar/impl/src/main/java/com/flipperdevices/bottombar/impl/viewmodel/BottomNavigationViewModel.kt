@@ -40,10 +40,7 @@ class BottomNavigationViewModel @VMInject constructor(
     }
 
     fun invalidateSelectedTab(currentDestination: NavDestination?) {
-        val currentTab = FlipperBottomTab.values()
-            .find { tab ->
-                currentDestination.isTopLevelDestinationInHierarchy(tab)
-            }
+        val currentTab = FlipperBottomTab.DEVICE
         if (currentTab == null) {
             info { "Can't find current tab for $currentDestination" }
             return
@@ -70,5 +67,5 @@ class BottomNavigationViewModel @VMInject constructor(
  */
 private fun NavDestination?.isTopLevelDestinationInHierarchy(destination: FlipperBottomTab) =
     this?.hierarchy?.any {
-        it.route?.contains(destination.name, true) ?: false
+        it.route?.startsWith(destination.name, true) ?: false
     } ?: false
