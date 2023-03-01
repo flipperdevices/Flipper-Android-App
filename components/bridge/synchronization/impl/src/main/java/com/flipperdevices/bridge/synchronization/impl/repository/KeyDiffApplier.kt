@@ -9,6 +9,7 @@ import com.flipperdevices.bridge.synchronization.impl.model.DiffSource
 import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.DiffMergeHelper
 import com.flipperdevices.bridge.synchronization.impl.utils.ProgressWrapperTracker
+import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
@@ -29,7 +30,9 @@ class KeyDiffApplierImpl @Inject constructor(
     private val androidStorage: AbstractKeyStorage,
     @StorageType(Platform.FLIPPER)
     private val flipperStorage: AbstractKeyStorage,
-) : KeyDiffApplier {
+) : KeyDiffApplier, LogTagProvider {
+    override val TAG = "KeyDiffApplier"
+
     override suspend fun applyDiffs(
         diffWithFlipper: List<KeyDiff>,
         diffWithAndroid: List<KeyDiff>,
@@ -37,22 +40,30 @@ class KeyDiffApplierImpl @Inject constructor(
     ) {
         val mergedDiff = diffMergeHelper.mergeDiffs(diffWithFlipper, diffWithAndroid)
         val diffForFlipper = mergedDiff.filter { it.source == DiffSource.ANDROID }
-            .sortedBy { it.action }
         val diffForAndroid = mergedDiff.filter { it.source == DiffSource.FLIPPER }
-            .sortedBy { it.action }
 
         info { "Changes for flipper $diffForFlipper" }
         info { "Changes for android $diffForAndroid" }
+
+        val totalDiffsSize = diffForFlipper.size + diffForAndroid.size
+        if (totalDiffsSize <= 0) {
+            info { "Skip apply diffs because totalDiffsSize is $totalDiffsSize" }
+            return
+        }
+        val diffForAndroidPercent = diffForAndroid.size.toFloat() / totalDiffsSize.toFloat()
+        info { "diffForAndroidPercent is $diffForAndroidPercent" }
 
         // Apply changes for Android
         val appliedKeysToAndroid = diffKeyExecutor.executeBatch(
             source = flipperStorage,
             target = androidStorage,
-            diffForAndroid
-        ) { processed, total ->
-            // Progress
-        }
-
+            diffs = diffForAndroid,
+            tracker = ProgressWrapperTracker(
+                tracker,
+                min = 0f,
+                max = diffForAndroidPercent
+            )
+        )
         info {
             "[Keys] Android, successful applied " +
                 "${appliedKeysToAndroid.size} from ${diffForAndroid.size} changes"
@@ -62,11 +73,13 @@ class KeyDiffApplierImpl @Inject constructor(
         val appliedKeysToFlipper = diffKeyExecutor.executeBatch(
             source = androidStorage,
             target = flipperStorage,
-            diffForFlipper
-        ) { processed, total ->
-            // Progress
-            tracker.report(processed, total)
-        }
+            diffs = diffForFlipper,
+            tracker = ProgressWrapperTracker(
+                tracker,
+                min = diffForAndroidPercent,
+                max = 1f
+            )
+        )
 
         info {
             "[Keys] Flipper, successful applied" +

@@ -15,9 +15,6 @@ class ProgressWrapperTracker(
     override suspend fun onProgress(current: Float) {
         val diff = max - min
         if (diff <= 0) { // This means that our min and max are originally incorrect
-            if (BuildConfig.DEBUG) {
-                error("Incorrect min and max size (min: $min, max: $max)")
-            }
             return
         }
 
