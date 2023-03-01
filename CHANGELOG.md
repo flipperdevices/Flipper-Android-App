@@ -3,6 +3,7 @@
 # 1.4.2 - In Progress
 
 - [Feature] Flipper app loader errors
+- [Feature] More smoothly synchronization percent 
 - [Feature] Skip synchronization if file system on flipper not changed
 - [Feature] Pass flipper color from searching screen
 - [GitHub] Update github repo picture
