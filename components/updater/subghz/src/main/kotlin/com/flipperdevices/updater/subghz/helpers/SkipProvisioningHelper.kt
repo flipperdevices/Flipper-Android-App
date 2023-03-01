@@ -12,10 +12,8 @@ import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.property.getRequest
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.withTimeoutOrNull
 import javax.inject.Inject
 
 interface SkipProvisioningHelper {
@@ -25,7 +23,6 @@ interface SkipProvisioningHelper {
 }
 
 private const val RPC_KEY_HARDWARE_REGION = "hardware.region.builtin"
-private const val RPC_INFORMATION_TIMEOUT_MS = 1_000L * 60 // 10 seconds
 
 @ContributesBinding(AppGraph::class, SkipProvisioningHelper::class)
 class SkipProvisioningHelperImpl @Inject constructor(
@@ -43,13 +40,7 @@ class SkipProvisioningHelperImpl @Inject constructor(
             return false
         }
         info { "Try receive version" }
-        val semVer = withTimeoutOrNull(RPC_INFORMATION_TIMEOUT_MS) {
-            serviceApi.flipperVersionApi.getVersionInformationFlow().filter {
-                it != null
-            }.first()
-        }
-        info { "Receive version: $semVer" }
-        if (semVer == null || semVer < Constants.API_SUPPORTED_GET_REQUEST) {
+        if (!serviceApi.flipperVersionApi.isSupported(Constants.API_SUPPORTED_GET_REQUEST)) {
             info { "Version less then ${Constants.API_SUPPORTED_GET_REQUEST}, so return false" }
             return false
         }

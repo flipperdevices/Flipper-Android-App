@@ -4,14 +4,12 @@ import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
-import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.keyscreen.emulate.model.FlipperAppError
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.app.getErrorRequest
 import com.flipperdevices.protobuf.main
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
 
@@ -30,11 +28,7 @@ class FlipperAppErrorHandlerImpl @Inject constructor() : FlipperAppErrorHelper {
     ): FlipperAppError {
         val requestApi = serviceApi.requestApi
 
-        val currentFlipperVersion = getCurrentFlipperVersion(serviceApi)
-        if (
-            currentFlipperVersion == null ||
-            currentFlipperVersion < Constants.API_SUPPORTED_FLIPPER_ERROR
-        ) {
+        if (!serviceApi.flipperVersionApi.isSupported(Constants.API_SUPPORTED_FLIPPER_ERROR)) {
             return FlipperAppError.NotSupportedApi
         }
 
@@ -53,9 +47,5 @@ class FlipperAppErrorHandlerImpl @Inject constructor() : FlipperAppErrorHelper {
             }
             else -> FlipperAppError.BadResponse
         }
-    }
-
-    private suspend fun getCurrentFlipperVersion(serviceApi: FlipperServiceApi): SemVer? {
-        return serviceApi.flipperVersionApi.getVersionInformationFlow().first()
     }
 }

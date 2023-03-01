@@ -18,8 +18,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
@@ -66,10 +64,9 @@ class FlipperRpcInformationApiImpl @Inject constructor(
         serviceApi: FlipperServiceApi
     ) {
         rpcInformationFlow.emit(FlipperInformationStatus.InProgress(FlipperRpcInformation()))
-        val version = serviceApi.flipperVersionApi.getVersionInformationFlow()
-            .filterNotNull()
-            .first()
-        val flipperFullInfoRpcApi = if (version >= Constants.API_SUPPORTED_GET_REQUEST) {
+        val flipperFullInfoRpcApi = if (
+            serviceApi.flipperVersionApi.isSupported(Constants.API_SUPPORTED_GET_REQUEST)
+        ) {
             NewFlipperFullInfoRpcApi()
         } else {
             DeprecatedFlipperFullInfoRpcApi()
