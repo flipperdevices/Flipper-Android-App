@@ -7,6 +7,7 @@
 - [Feature] Skip synchronization if file system on flipper not changed
 - [Feature] Pass flipper color from searching screen
 - [Feature] Animation on theme changing
+- [Feature] Reset tab on double tap
 - [GitHub] Update github repo picture
 - [CI] Migrate to Detekt
 - [CI] Android lint in CI
