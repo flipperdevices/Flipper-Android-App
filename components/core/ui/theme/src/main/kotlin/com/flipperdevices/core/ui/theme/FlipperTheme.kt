@@ -20,11 +20,11 @@ import androidx.compose.ui.graphics.drawscope.ContentDrawScope
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.preference.pb.SelectedTheme
+import com.flipperdevices.core.ui.theme.composable.FlipperPallet
+import com.flipperdevices.core.ui.theme.composable.FlipperTypography
 import com.flipperdevices.core.ui.theme.composable.getThemedFlipperPallet
 import com.flipperdevices.core.ui.theme.composable.getTypography
 import com.flipperdevices.core.ui.theme.composable.isLight
-import com.flipperdevices.core.ui.theme.models.FlipperPallet
-import com.flipperdevices.core.ui.theme.models.FlipperTypography
 import com.flipperdevices.core.ui.theme.viewmodel.ThemeViewModel
 
 val LocalPallet = compositionLocalOf<FlipperPallet> { error("No local pallet") }

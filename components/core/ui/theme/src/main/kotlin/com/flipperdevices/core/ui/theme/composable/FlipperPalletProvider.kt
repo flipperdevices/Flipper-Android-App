@@ -1,5 +1,8 @@
 package com.flipperdevices.core.ui.theme.composable
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.AnimationSpec
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -7,7 +10,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.preference.pb.SelectedTheme
-import com.flipperdevices.core.ui.theme.models.FlipperPallet
 import com.flipperdevices.core.ui.theme.viewmodel.ThemeViewModel
 
 /**
@@ -30,7 +32,7 @@ fun getThemedFlipperPallet(
         SelectedTheme.DARK -> darkPallet
         SelectedTheme.UNRECOGNIZED,
         SelectedTheme.SYSTEM -> getThemedFlipperPallet(isLight)
-    }
+    }.toAnimatePallet()
 }
 
 @Composable
@@ -133,3 +135,55 @@ private val darkPallet = FlipperPallet(
     fapHubSortedColor = Color(0xFFC1C1C1),
     fapHubCategoryText = Color(0xFFCCCCCC)
 )
+
+private val animationSpec: AnimationSpec<Color> = tween(durationMillis = 1500)
+
+@Composable
+private fun animateColor(
+    targetValue: Color
+) = animateColorAsState(targetValue = targetValue, animationSpec = animationSpec).value
+
+@Composable
+private fun FlipperPallet.toAnimatePallet() = FlipperPallet(
+    background = animateColor(background),
+    error = animateColor(error),
+    content = animateColor(content),
+    onContent = animateColor(onContent),
+
+    text100 = animateColor(text100),
+    text88 = animateColor(text88),
+    text80 = animateColor(text80),
+    text60 = animateColor(text60),
+    text40 = animateColor(text40),
+    text30 = animateColor(text30),
+    text20 = animateColor(text20),
+    text16 = animateColor(text16),
+    text12 = animateColor(text12),
+    text8 = animateColor(text8),
+    text4 = animateColor(text4),
+
+    iconTint100 = animateColor(iconTint100),
+    iconTint80 = animateColor(iconTint80),
+    iconTint30 = animateColor(iconTint30),
+    iconTint16 = animateColor(iconTint16),
+
+    divider12 = animateColor(divider12),
+    channelFirmwareReleaseCandidate = animateColor(channelFirmwareReleaseCandidate),
+    bottomBarBackground = animateColor(bottomBarBackground),
+    disableSwitch = animateColor(disableSwitch),
+    backgroundDialog = animateColor(backgroundDialog),
+    notificationCard = animateColor(notificationCard),
+
+    substrateActiveCellNfcEditor = animateColor(substrateActiveCellNfcEditor),
+    hexKeyboardBackground = animateColor(hexKeyboardBackground),
+
+    shareSheetBackground = animateColor(shareSheetBackground),
+    shareSheetScrimColor = animateColor(shareSheetScrimColor).copy(alpha = 0.15f),
+    fapHubSwitchBackground = animateColor(fapHubSwitchBackground),
+    fapHubSelectedBackgroundColor = animateColor(fapHubSelectedBackgroundColor),
+    fapHubDividerColor = animateColor(fapHubDividerColor),
+    fapHubSortedColor = animateColor(fapHubSortedColor),
+    fapHubCategoryText = animateColor(fapHubCategoryText)
+)
+
+

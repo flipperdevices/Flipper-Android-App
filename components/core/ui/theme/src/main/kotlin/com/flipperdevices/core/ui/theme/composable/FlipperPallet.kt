@@ -1,5 +1,4 @@
-package com.flipperdevices.core.ui.theme.models
-
+package com.flipperdevices.core.ui.theme.composable
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material.Colors
 import androidx.compose.runtime.Stable
