@@ -28,9 +28,9 @@ import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.singleactivity.impl.composable.ComposableSingleActivityNavHost
 import com.flipperdevices.singleactivity.impl.di.SingleActivityComponent
 import com.github.terrakok.cicerone.Router
-import javax.inject.Inject
 import kotlinx.collections.immutable.toPersistentSet
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 const val LAUNCH_PARAMS_INTENT = "launch_params_intent"
 
@@ -66,7 +66,7 @@ class SingleActivity :
 
         info {
             "Create new activity with hashcode: ${this.hashCode()} " +
-                    "and intent ${intent.toFullString()}"
+                "and intent ${intent.toFullString()}"
         }
 
         WindowCompat.setDecorFitsSystemWindows(window, false)

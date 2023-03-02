@@ -41,7 +41,6 @@ fun ComposeBottomBar(
     selectedItem: FlipperBottomTab = FlipperBottomTab.ARCHIVE,
     onBottomBarClick: (FlipperBottomTab) -> Unit = {}
 ) {
-
     AnimatedVisibility(
         visible = !WindowInsets.isImeVisible,
         enter = fadeIn(),
