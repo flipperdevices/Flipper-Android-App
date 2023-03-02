@@ -12,10 +12,10 @@ import androidx.wear.compose.material.Shapes
 import androidx.wear.compose.material.contentColorFor
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
+import com.flipperdevices.core.ui.theme.composable.FlipperPallet
 import com.flipperdevices.core.ui.theme.composable.getThemedFlipperPallet
 import com.flipperdevices.core.ui.theme.composable.getTypography
 import com.flipperdevices.core.ui.theme.composable.isLight
-import com.flipperdevices.core.ui.theme.models.FlipperPallet
 
 @Composable
 fun WearFlipperTheme(

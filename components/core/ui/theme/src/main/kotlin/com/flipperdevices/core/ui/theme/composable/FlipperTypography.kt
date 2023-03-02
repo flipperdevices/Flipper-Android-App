@@ -188,7 +188,7 @@ data class FlipperTypography(
     )
 )
 
-internal fun getTypography(): FlipperTypography {
+fun getTypography(): FlipperTypography {
     return FlipperTypography()
 }
 
