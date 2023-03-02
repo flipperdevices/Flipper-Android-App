@@ -8,6 +8,7 @@
 - [Feature] Pass flipper color from searching screen
 - [Feature] Animation on theme changing
 - [Feature] Reset tab on double tap
+- [Feature] Add back button in options screen
 - [GitHub] Update github repo picture
 - [CI] Migrate to Detekt
 - [CI] Android lint in CI
