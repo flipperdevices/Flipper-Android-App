@@ -13,7 +13,6 @@ import androidx.compose.material.Shapes
 import androidx.compose.material.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
@@ -24,7 +23,6 @@ import com.flipperdevices.core.preference.pb.SelectedTheme
 import com.flipperdevices.core.ui.theme.composable.getThemedFlipperPallet
 import com.flipperdevices.core.ui.theme.composable.getTypography
 import com.flipperdevices.core.ui.theme.composable.isLight
-import com.flipperdevices.core.ui.theme.composable.setAppCompatDelegateTheme
 import com.flipperdevices.core.ui.theme.models.FlipperPallet
 import com.flipperdevices.core.ui.theme.models.FlipperTypography
 import com.flipperdevices.core.ui.theme.viewmodel.ThemeViewModel
@@ -57,8 +55,6 @@ fun FlipperThemeInternal(
     val colors = pallet.toMaterialColors(isLight)
     val shapes = Shapes(medium = RoundedCornerShape(size = 10.dp))
 
-    LaunchedEffect(key1 = theme) { setAppCompatDelegateTheme(theme) }
-
     MaterialTheme(
         shapes = shapes,
         colors = colors
@@ -74,9 +70,9 @@ fun FlipperThemeInternal(
     }
 }
 
-/*
-    Standardization of the indication for all clickable modifiers
- */
+/**
+ * Standardization of the indication for all clickable modifiers
+ **/
 private object NoIndication : Indication {
     private object NoIndicationInstance : IndicationInstance {
         override fun ContentDrawScope.drawIndication() {

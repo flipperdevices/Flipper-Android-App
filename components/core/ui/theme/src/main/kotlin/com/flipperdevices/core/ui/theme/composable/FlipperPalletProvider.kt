@@ -1,6 +1,5 @@
 package com.flipperdevices.core.ui.theme.composable
 
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -47,16 +46,6 @@ fun isLight(
         SelectedTheme.UNRECOGNIZED,
         SelectedTheme.SYSTEM -> !systemIsDark
     }
-}
-
-fun setAppCompatDelegateTheme(theme: SelectedTheme) {
-    val systemThemeId = when (theme) {
-        SelectedTheme.LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
-        SelectedTheme.DARK -> AppCompatDelegate.MODE_NIGHT_YES
-        SelectedTheme.UNRECOGNIZED,
-        SelectedTheme.SYSTEM -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-    }
-    AppCompatDelegate.setDefaultNightMode(systemThemeId)
 }
 
 @Suppress("MagicNumber")
