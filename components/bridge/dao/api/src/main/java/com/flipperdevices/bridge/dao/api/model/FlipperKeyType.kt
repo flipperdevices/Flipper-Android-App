@@ -64,7 +64,7 @@ enum class FlipperKeyType(
                 SUB_GHZ -> LocalPallet.current.keySubGHz
                 RFID -> LocalPallet.current.keyRFID
                 NFC -> LocalPallet.current.keyNFC
-                INFRARED -> LocalPallet.current.keyInfrarred
+                INFRARED -> LocalPallet.current.keyInfrared
                 I_BUTTON -> LocalPallet.current.keyIButton
                 else -> LocalPallet.current.keyUnknown
             }
