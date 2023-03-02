@@ -23,6 +23,7 @@ dependencies {
     implementation(projects.components.info.shared)
 
     implementation(projects.components.bridge.api)
+    implementation(projects.components.bridge.rpcinfo.api)
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.pbutils)
 

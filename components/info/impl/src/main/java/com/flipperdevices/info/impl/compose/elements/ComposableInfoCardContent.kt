@@ -6,18 +6,26 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import com.flipperdevices.bridge.api.model.StorageStats
+import com.flipperdevices.bridge.rpcinfo.model.FlipperInformationStatus
+import com.flipperdevices.bridge.rpcinfo.model.FlipperStorageInformation
+import com.flipperdevices.bridge.rpcinfo.model.StorageStats
+import com.flipperdevices.bridge.rpcinfo.model.dataOrNull
+import com.flipperdevices.bridge.rpcinfo.model.externalStorageRequestInProgress
+import com.flipperdevices.bridge.rpcinfo.model.flashIntStats
+import com.flipperdevices.bridge.rpcinfo.model.flashSdStats
+import com.flipperdevices.bridge.rpcinfo.model.internalStorageRequestInProgress
+import com.flipperdevices.bridge.rpcinfo.model.isExtStorageEnding
+import com.flipperdevices.bridge.rpcinfo.model.isIntStorageEnding
+import com.flipperdevices.bridge.rpcinfo.model.toString
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.compose.info.ComposableFirmwareBuildDate
 import com.flipperdevices.info.impl.compose.info.ComposableFirmwareVersion
-import com.flipperdevices.info.impl.model.DeviceInfo
-import com.flipperdevices.info.impl.model.DeviceInfoRequestStatus
 import com.flipperdevices.info.impl.model.DeviceStatus
-import com.flipperdevices.info.impl.model.toString
-import com.flipperdevices.info.impl.viewmodel.DeviceInfoViewModel
+import com.flipperdevices.info.impl.model.FlipperBasicInfo
 import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
+import com.flipperdevices.info.impl.viewmodel.deviceinfo.BasicInfoViewModel
 import com.flipperdevices.info.shared.ComposableDeviceInfoRowWithText
 import com.flipperdevices.info.shared.ComposableInfoDivider
 import com.flipperdevices.info.shared.InfoElementCard
@@ -28,59 +36,58 @@ import tangle.viewmodel.compose.tangleViewModel
 @Composable
 fun ComposableInfoCardContent(
     isUnsupported: Boolean,
-    deviceInfoViewModel: DeviceInfoViewModel = tangleViewModel(),
+    basicInfoViewModel: BasicInfoViewModel = tangleViewModel(),
     deviceStatusViewModel: DeviceStatusViewModel = tangleViewModel()
 ) {
-    val deviceInfo by deviceInfoViewModel.getDeviceInfo().collectAsState()
-    val deviceInfoRequestStatus by deviceInfoViewModel.getDeviceInfoRequestStatus().collectAsState()
+    val deviceInfo by basicInfoViewModel.getDeviceInfo().collectAsState()
     val deviceStatus by deviceStatusViewModel.getState().collectAsState()
 
     ComposableInfoCardContentInternal(
         isUnsupported = isUnsupported,
-        deviceInfo = deviceInfo,
+        flipperBasicInfo = deviceInfo,
         deviceStatus = deviceStatus,
-        deviceInfoRequestStatus = deviceInfoRequestStatus
     )
 }
 
 @Composable
 private fun ComposableInfoCardContentInternal(
     isUnsupported: Boolean,
-    deviceInfo: DeviceInfo,
-    deviceStatus: DeviceStatus,
-    deviceInfoRequestStatus: DeviceInfoRequestStatus
+    flipperBasicInfo: FlipperBasicInfo,
+    deviceStatus: DeviceStatus
 ) {
     val firmwareVersionInProgress = if (deviceStatus is DeviceStatus.NoDeviceInformation) {
         deviceStatus.connectInProgress
     } else {
-        deviceStatus is DeviceStatus.Connected
+        deviceStatus is DeviceStatus.Connected &&
+            flipperBasicInfo.firmwareVersion !is FlipperInformationStatus.Ready
     }
 
     ComposableFirmwareVersion(
-        deviceInfo.firmwareVersion,
+        flipperBasicInfo.firmwareVersion.dataOrNull(),
         firmwareVersionInProgress
     )
     ComposableInfoDivider()
     ComposableFirmwareBuildDate(
-        deviceInfo.firmwareVersion,
+        flipperBasicInfo.firmwareVersion.dataOrNull(),
         firmwareVersionInProgress
     )
     if (isUnsupported) {
         return
     }
     ComposableInfoDivider()
+    val storageInfo = flipperBasicInfo.storageInfo
     ComposableDeviceInfoRowWithText(
         R.string.info_device_info_int_flash,
-        firmwareVersionInProgress || deviceInfoRequestStatus.internalStorageRequestInProgress,
-        deviceInfo.flashInt?.toString(LocalContext.current),
-        color = if (deviceInfo.isIntStorageEnding()) LocalPallet.current.warningColor else null
+        firmwareVersionInProgress || storageInfo.internalStorageRequestInProgress,
+        storageInfo.flashIntStats?.toString(LocalContext.current),
+        color = if (storageInfo.isIntStorageEnding()) LocalPallet.current.warningColor else null
     )
     ComposableInfoDivider()
     ComposableDeviceInfoRowWithText(
         R.string.info_device_info_ext_flash,
-        firmwareVersionInProgress || deviceInfoRequestStatus.externalStorageRequestInProgress,
-        deviceInfo.flashSd?.toString(LocalContext.current),
-        color = if (deviceInfo.isExtStorageEnding()) LocalPallet.current.warningColor else null
+        firmwareVersionInProgress || storageInfo.externalStorageRequestInProgress,
+        storageInfo.flashSdStats?.toString(LocalContext.current),
+        color = if (storageInfo.isExtStorageEnding()) LocalPallet.current.warningColor else null
     )
 }
 
@@ -90,30 +97,34 @@ private fun ComposableInfoCardContentInternal(
 )
 @Composable
 private fun ComposableInfoCardContentInternalPreview() {
-    val deviceInfo = DeviceInfo(
-        firmwareVersion = FirmwareVersion(
-            channel = FirmwareChannel.UNKNOWN,
-            version = "fsfsfmfmmflmsmflslmfmlsfmlsmlfsmfmlsmlfslmfmlslfmlsmflsmlflslfmlsflmslmfslf"
+    val flipperBasicInfo = FlipperBasicInfo(
+        firmwareVersion = FlipperInformationStatus.Ready(
+            FirmwareVersion(
+                channel = FirmwareChannel.UNKNOWN,
+                version = "fsfsfmfmmflmsmflslmfmlsfmlsmlfsmfmlsmlfslmfmlslfmlsmflsmlflslfmlsflmslmfslf"
+            )
         ),
-        flashInt = StorageStats.Loaded(
-            total = 1000,
-            free = 300
-        ),
-        flashSd = StorageStats.Error
+        storageInfo = FlipperStorageInformation(
+            internalStorageStatus = FlipperInformationStatus.Ready(
+                StorageStats.Loaded(
+                    total = 1000,
+                    free = 300
+                )
+            ),
+            externalStorageStatus = FlipperInformationStatus.Ready(StorageStats.Error)
+        )
     )
     val deviceStatus = DeviceStatus.Connected(
         deviceName = "Flipper",
         batteryLevel = 0.4f,
         isCharging = true
     )
-    val deviceInfoRequestStatus = DeviceInfoRequestStatus()
     FlipperThemeInternal {
         InfoElementCard(Modifier, R.string.info_device_info_title) {
             ComposableInfoCardContentInternal(
                 isUnsupported = false,
-                deviceInfo = deviceInfo,
-                deviceStatus = deviceStatus,
-                deviceInfoRequestStatus = deviceInfoRequestStatus
+                flipperBasicInfo = flipperBasicInfo,
+                deviceStatus = deviceStatus
             )
         }
     }

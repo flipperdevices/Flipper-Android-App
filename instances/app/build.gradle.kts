@@ -83,6 +83,8 @@ dependencies {
     implementation(projects.components.bridge.synchronization.ui)
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.service.impl)
+    implementation(projects.components.bridge.rpcinfo.api)
+    implementation(projects.components.bridge.rpcinfo.impl)
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.impl)
     implementation(libs.ble.common)

@@ -6,6 +6,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
 import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
 import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
+import com.flipperdevices.bridge.synchronization.impl.utils.ProgressWrapperTracker
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
@@ -17,7 +18,7 @@ interface DiffKeyExecutor {
         source: AbstractKeyStorage,
         target: AbstractKeyStorage,
         diffs: List<KeyDiff>,
-        onProgressUpdate: (suspend (Int, Int) -> Unit)? = null
+        tracker: ProgressWrapperTracker
     ): List<KeyDiff>
 }
 
@@ -35,21 +36,24 @@ class DiffKeyExecutorImpl @Inject constructor() : DiffKeyExecutor, LogTagProvide
         source: AbstractKeyStorage,
         target: AbstractKeyStorage,
         diffs: List<KeyDiff>,
-        onProgressUpdate: (suspend (Int, Int) -> Unit)?
+        tracker: ProgressWrapperTracker
     ): List<KeyDiff> {
-        val sortedDiffs = diffs.sortedBy { it.newHash.keyPath.fileType.ordinal }
-        return sortedDiffs
-            .mapIndexedNotNull { index, diff ->
-                try {
-                    info { "Execute $diff for $source to $target" }
-                    execute(source, target, diff)
-                    onProgressUpdate?.invoke(index, diffs.size)
-                    return@mapIndexedNotNull diff
-                } catch (executeError: Exception) {
-                    error(executeError) { "While apply diff $diff we have error" }
-                }
-                return@mapIndexedNotNull null
+        return diffs.sortedWith(
+            compareBy(
+                { it.newHash.keyPath.fileType },
+                { it.action }
+            )
+        ).mapIndexedNotNull { index, diff ->
+            try {
+                info { "Execute $diff for $source to $target" }
+                execute(source, target, diff)
+                tracker.report(index, diffs.size)
+                return@mapIndexedNotNull diff
+            } catch (executeError: Exception) {
+                error(executeError) { "While apply diff $diff we have error" }
             }
+            return@mapIndexedNotNull null
+        }
     }
 
     private suspend fun execute(

@@ -6,7 +6,9 @@ import com.flipperdevices.app.di.MainComponent
 import com.flipperdevices.core.activityholder.CurrentActivityHolder
 import com.flipperdevices.core.di.ApplicationParams
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.log.info
+import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.singleactivity.impl.SingleActivity
 import tangle.inject.TangleGraph
 import timber.log.Timber
@@ -35,7 +37,16 @@ class FlipperApplication : Application() {
             val shake2report = ComponentHolder.component<MainComponent>().shake2report.get()
             shake2report.init()
         }
+        setUp()
 
         info { "Start Flipper Application with version ${BuildConfig.VERSION_NAME}" }
+    }
+
+    private fun setUp() {
+        val component = ComponentHolder.component<MainComponent>()
+        val metricApi by component.metricApi
+        metricApi.reportSimpleEvent(SimpleEvent.APP_OPEN)
+        val synchronizationApi by component.synchronizationApi
+        synchronizationApi.startSynchronization()
     }
 }

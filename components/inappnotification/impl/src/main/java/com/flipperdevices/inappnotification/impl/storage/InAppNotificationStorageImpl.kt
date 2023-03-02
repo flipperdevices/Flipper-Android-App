@@ -34,12 +34,12 @@ class InAppNotificationStorageImpl @Inject constructor() :
     private var nextNotificationTime = 0L
 
     override fun subscribe(listener: InAppNotificationListener) {
-//        if (this.listener != null) {
-//            error("For now this storage support only one listener in one time")
-//        }
-//        this.listener = listener
-//        timerTask.start()
-//        invalidate()
+        if (this.listener != null) {
+            unsubscribe()
+        }
+        this.listener = listener
+        timerTask.start()
+        invalidate()
     }
 
     override fun unsubscribe() {

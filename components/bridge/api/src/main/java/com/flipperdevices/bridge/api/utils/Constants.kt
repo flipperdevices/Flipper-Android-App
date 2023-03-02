@@ -18,6 +18,7 @@ object Constants {
         majorVersion = 0,
         minorVersion = 11
     )
+    val API_SUPPORTED_GET_REQUEST = API_SUPPORTED_FLIPPER_ERROR
     val API_SUPPORTED_VERSION = SemVer(majorVersion = 0, minorVersion = 3)
     const val LAGS_FLIPPER_DETECT_TIMEOUT_MS = 30 * 1000L // 30 seconds
     const val FLIPPER_AUTODISCONNECT_TIMEOUT_MS = 5 * 60 * 1000L // 5 minutes

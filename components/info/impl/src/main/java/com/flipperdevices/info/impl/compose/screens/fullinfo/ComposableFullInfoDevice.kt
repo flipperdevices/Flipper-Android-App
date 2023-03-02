@@ -8,7 +8,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.bridge.api.model.FlipperRpcInformation
+import com.flipperdevices.bridge.rpcinfo.model.FlipperRpcInformation
 import com.flipperdevices.core.ktx.jre.titlecaseFirstCharIfItIsLowercase
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.shared.ComposableDeviceInfoRowWithText
@@ -67,7 +67,7 @@ private fun ComposableOtherInfo(
     inProgress: Boolean
 ) {
     fields.forEachIndexed { index, field ->
-        val name = field.key.split(' ', '_')
+        val name = field.key.split(' ', '_', '.')
             .map { it.titlecaseFirstCharIfItIsLowercase() }
             .joinToString(" ")
         val value = field.value
