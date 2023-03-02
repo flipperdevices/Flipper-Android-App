@@ -6,6 +6,7 @@
 - [Feature] More smoothly synchronization percent 
 - [Feature] Skip synchronization if file system on flipper not changed
 - [Feature] Pass flipper color from searching screen
+- [Feature] Reset tab on double tap
 - [GitHub] Update github repo picture
 - [CI] Migrate to Detekt
 - [CI] Android lint in CI
