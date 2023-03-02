@@ -25,6 +25,8 @@ import com.flipperdevices.core.ui.theme.composable.FlipperTypography
 import com.flipperdevices.core.ui.theme.composable.getThemedFlipperPallet
 import com.flipperdevices.core.ui.theme.composable.getTypography
 import com.flipperdevices.core.ui.theme.composable.isLight
+import com.flipperdevices.core.ui.theme.composable.toMaterialColors
+import com.flipperdevices.core.ui.theme.composable.toTextSelectionColors
 import com.flipperdevices.core.ui.theme.viewmodel.ThemeViewModel
 
 val LocalPallet = compositionLocalOf<FlipperPallet> { error("No local pallet") }

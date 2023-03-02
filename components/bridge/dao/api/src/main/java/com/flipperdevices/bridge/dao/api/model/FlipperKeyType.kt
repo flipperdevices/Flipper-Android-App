@@ -1,10 +1,10 @@
 package com.flipperdevices.bridge.dao.api.model
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import com.flipperdevices.core.ui.theme.LocalPallet
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 enum class FlipperKeyType(
     val humanReadableName: String,
@@ -64,7 +64,7 @@ enum class FlipperKeyType(
                 SUB_GHZ -> LocalPallet.current.keySubGHz
                 RFID -> LocalPallet.current.keyRFID
                 NFC -> LocalPallet.current.keyNFC
-                INFRARED -> LocalPallet.current.keyInfrarred
+                INFRARED -> LocalPallet.current.keyInfrared
                 I_BUTTON -> LocalPallet.current.keyIButton
                 else -> LocalPallet.current.keyUnknown
             }
