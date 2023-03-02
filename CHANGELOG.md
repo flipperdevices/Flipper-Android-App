@@ -6,6 +6,7 @@
 - [Feature] More smoothly synchronization percent 
 - [Feature] Skip synchronization if file system on flipper not changed
 - [Feature] Pass flipper color from searching screen
+- [Feature] Animation on theme changing
 - [GitHub] Update github repo picture
 - [CI] Migrate to Detekt
 - [CI] Android lint in CI
@@ -20,6 +21,7 @@
 - [FIX] Fix shadow file sharing as file
 - [FIX] Firstpair flow open by navigation graph route
 - [FIX] Fix crush with inapp storage on startup
+- [FIX] Fix change color scheme bug
 - [REFACTOR] Migrate bottom bar to compose navigation
 - [REFACTOR] Bump Android Gradle Plugin
 - [REFACTOR] Fix detekt compose issues

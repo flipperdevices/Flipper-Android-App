@@ -77,7 +77,6 @@ data class FlipperPallet(
 
     val updateProgressGreen: Color = Color(0xFF2ED832)
     val updateProgressBackgroundGreen: Color = Color(0xFFA3E899)
-    val updateProgressBlue: Color = Color(0xFF589DFF)
     val updateProgressBackgroundBlue: Color = Color(0xFFACC9FA)
 
     val onFlipperButton: Color = Color(0xFFFFFFFF)
@@ -89,7 +88,6 @@ data class FlipperPallet(
     val keyNFC: Color = Color(0xFF98CEFF)
     val keySubGHz: Color = Color(0xFFA5F4BF)
     val keyInfrared: Color = Color(0xFFFF928B)
-    val keyBadUSB: Color = Color(0xFFFFBEE9)
     val keyUnknown: Color = Color(0xFF999999)
     val keyDeleted: Color = Color(0xFFE9E9E9)
     val keyFavorite: Color = Color(0xFFFECF5D)
@@ -103,13 +101,10 @@ data class FlipperPallet(
     val batteryBackground: Color = Color(0xFF8D8E92)
     val batteryCharging: Color = Color(0xFF303030)
 
-    val actionOnFlipperDisable: Color = Color(0xFF919191)
     val actionOnFlipperEnable: Color = Color(0xFF589DFF)
     val actionOnFlipperProgress: Color = Color(0xFF89B9FE)
     val actionOnFlipperSubGhzEnable: Color = Color(0xFFFF8200)
     val actionOnFlipperSubGhzProgress: Color = Color(0xFFFEA64B)
-    val actionOnFlipperText: Color = Color(0xFFFFFFFF)
-    val actionOnFlipperIcon: Color = Color(0xFFFFFFFF)
 
     val forgetFlipper: Color = Color(0xFFF63F3F)
     val progressBarGray: Color = Color(0xFFAAAAAA)
@@ -123,7 +118,6 @@ data class FlipperPallet(
     val nfcCardKeyBColor: Color = Color(0xFF589DFF)
 
     val nfcCardBackground: Color = Color(0xFF4A4A4A)
-    val nfcCardBackgroundSecond: Color = Color(0xFF303030)
     val onNfcCard: Color = Color(0xFFFFFFFF)
 
     val warningColor: Color = Color(0xFFF63F3F)
@@ -142,7 +136,6 @@ data class FlipperPallet(
     val onFapHubInstallButtonCounterBackground: Color = Color(0xFFE5FFE6)
     val onFapHubInstallButtonCounterText: Color = Color(0xFF616161)
 }
-
 
 internal fun FlipperPallet.toMaterialColors(isLight: Boolean) = Colors(
     primary = content,

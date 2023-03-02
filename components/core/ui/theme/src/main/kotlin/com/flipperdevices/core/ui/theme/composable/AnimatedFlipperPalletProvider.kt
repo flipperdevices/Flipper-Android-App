@@ -6,7 +6,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-
 private const val ANIMATION_DURATION_MS = 750
 private val animationSpec: AnimationSpec<Color> = tween(ANIMATION_DURATION_MS)
 
