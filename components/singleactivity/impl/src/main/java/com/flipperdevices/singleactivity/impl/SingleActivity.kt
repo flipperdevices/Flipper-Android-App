@@ -4,8 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Modifier
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -28,9 +31,9 @@ import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.singleactivity.impl.composable.ComposableSingleActivityNavHost
 import com.flipperdevices.singleactivity.impl.di.SingleActivityComponent
 import com.github.terrakok.cicerone.Router
+import javax.inject.Inject
 import kotlinx.collections.immutable.toPersistentSet
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 const val LAUNCH_PARAMS_INTENT = "launch_params_intent"
 
@@ -72,8 +75,10 @@ class SingleActivity :
 
         info {
             "Create new activity with hashcode: ${this.hashCode()} " +
-                "and intent ${intent.toFullString()}"
+                    "and intent ${intent.toFullString()}"
         }
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         if (savedInstanceState != null) {
             return
@@ -95,7 +100,9 @@ class SingleActivity :
                         navController = navControllerLocal,
                         bottomNavigationFeatureEntry = bottomNavigationFeatureEntry,
                         featureEntries = featureEntriesMutable.toPersistentSet(),
-                        composableEntries = composableEntriesMutable.toPersistentSet()
+                        composableEntries = composableEntriesMutable.toPersistentSet(),
+                        modifier = Modifier
+                            .safeDrawingPadding()
                     )
                 }
             })
