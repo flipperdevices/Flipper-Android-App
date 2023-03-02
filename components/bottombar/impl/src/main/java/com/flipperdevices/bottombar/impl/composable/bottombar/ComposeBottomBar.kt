@@ -1,10 +1,8 @@
 package com.flipperdevices.bottombar.impl.composable.bottombar
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
@@ -46,8 +44,8 @@ fun ComposeBottomBar(
 
     AnimatedVisibility(
         visible = !WindowInsets.isImeVisible,
-        enter = fadeIn() + expandVertically(),
-        exit = shrinkVertically() + fadeOut()
+        enter = fadeIn(),
+        exit = fadeOut()
     ) {
         ComposeBottomBarInternal(
             connectionApi = connectionApi,
