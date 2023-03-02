@@ -82,10 +82,12 @@ fun ComposableMainScreen(
                     }
                 }
             }
+
             ComposableInAppNotification(
                 modifier = Modifier.align(Alignment.BottomCenter),
                 notificationRenderer = notificationRenderer
             )
+            connectionApi.CheckAndShowUnsupportedDialog()
         }
     }
 }

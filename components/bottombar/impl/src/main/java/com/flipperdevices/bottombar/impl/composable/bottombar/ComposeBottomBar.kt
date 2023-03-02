@@ -53,7 +53,6 @@ fun ComposeBottomBar(
             onBottomBarClick = onBottomBarClick
         )
     }
-    connectionApi.CheckAndShowUnsupportedDialog()
 }
 
 @Composable
