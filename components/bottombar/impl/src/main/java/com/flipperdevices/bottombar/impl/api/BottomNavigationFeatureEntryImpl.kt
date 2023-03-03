@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
+import androidx.navigation.navigation
 import com.flipperdevices.bottombar.api.BottomNavigationFeatureEntry
 import com.flipperdevices.bottombar.impl.composable.ComposableMainScreen
 import com.flipperdevices.connection.api.ConnectionApi
@@ -20,14 +21,18 @@ import com.flipperdevices.deeplink.model.DeeplinkNavType
 import com.flipperdevices.inappnotification.api.InAppNotificationRenderer
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
+import javax.inject.Inject
+import javax.inject.Provider
 import kotlinx.collections.immutable.toPersistentSet
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import javax.inject.Inject
-import javax.inject.Provider
+
+private const val DEEPLINK_KEY = DeeplinkConstants.KEY
+private const val DEEPLINK_SCHEME = DeeplinkConstants.SCHEMA
+private const val DEEPLINK_BOTTOM_BAR_URL = "${DEEPLINK_SCHEME}bottom_bar{$DEEPLINK_KEY}"
 
 @ContributesBinding(AppGraph::class, BottomNavigationFeatureEntry::class)
-@ContributesMultibinding(AppGraph::class, ComposableFeatureEntry::class)
+@ContributesMultibinding(AppGraph::class, AggregateFeatureEntry::class)
 class BottomNavigationFeatureEntryImpl @Inject constructor(
     featureEntriesProvider: Provider<MutableSet<AggregateFeatureEntry>>,
     composableEntriesProvider: Provider<MutableSet<ComposableFeatureEntry>>,
@@ -37,52 +42,43 @@ class BottomNavigationFeatureEntryImpl @Inject constructor(
     private val featureEntriesMutable by featureEntriesProvider
     private val composableEntriesMutable by composableEntriesProvider
 
-    private val deeplinkKey = DeeplinkConstants.KEY
-    private val bottomNavigationRoute = "@${ROUTE.name}?$deeplinkKey={$deeplinkKey}"
+    private val bottomNavigationRoute = "@${ROUTE.name}?$DEEPLINK_KEY={$DEEPLINK_KEY}"
 
     override fun start(deeplink: Deeplink?): String {
-        return if (deeplink == null) {
-            "@${ROUTE.name}"
-        } else {
-            val deeplinkStr = Uri.encode(Json.encodeToString(deeplink))
-            "@${ROUTE.name}?$deeplinkKey=$deeplinkStr"
-        }
+        val deeplinkStr = Uri.encode(Json.encodeToString(deeplink))
+        return "@${ROUTE.name}?$DEEPLINK_KEY=$deeplinkStr"
     }
 
+    override fun getDeeplinkPattern() = DEEPLINK_BOTTOM_BAR_URL
+
     private val bottomNavigationArguments = listOf(
-        navArgument(deeplinkKey) {
+        navArgument(DEEPLINK_KEY) {
             type = DeeplinkNavType()
             nullable = true
         }
     )
 
     private val deeplinkArguments = listOf(
-        navDeepLink { uriPattern = Deeplink.buildDeeplinkPattern(DeeplinkConstants.WEB_UPDATE) }
+        navDeepLink {
+            uriPattern = DEEPLINK_BOTTOM_BAR_URL
+        }
     )
 
-    override fun NavGraphBuilder.composable(navController: NavHostController) {
-        composable(
-            route = bottomNavigationRoute,
-            arguments = bottomNavigationArguments,
-            deepLinks = deeplinkArguments
-        ) {
-            ComposableMainScreen(
-                connectionApi = connectionApi,
-                featureEntries = featureEntriesMutable.toPersistentSet(),
-                composableEntries = composableEntriesMutable.toPersistentSet(),
-                notificationRenderer = notificationRenderer,
-                deeplink = it.arguments?.parcelable(deeplinkKey)
-            )
-        }
-        composable(
-            route = "@${ROUTE.name}"
-        ) {
-            ComposableMainScreen(
-                connectionApi = connectionApi,
-                featureEntries = featureEntriesMutable.toPersistentSet(),
-                composableEntries = composableEntriesMutable.toPersistentSet(),
-                notificationRenderer = notificationRenderer
-            )
+    override fun NavGraphBuilder.navigation(navController: NavHostController) {
+        navigation(route = ROUTE.name, startDestination = bottomNavigationRoute) {
+            composable(
+                route = bottomNavigationRoute,
+                arguments = bottomNavigationArguments,
+                deepLinks = deeplinkArguments
+            ) { navBackStackEntry ->
+                ComposableMainScreen(
+                    connectionApi = connectionApi,
+                    featureEntries = featureEntriesMutable.toPersistentSet(),
+                    composableEntries = composableEntriesMutable.toPersistentSet(),
+                    notificationRenderer = notificationRenderer,
+                    deeplink = navBackStackEntry.arguments?.parcelable(DeeplinkConstants.KEY)
+                )
+            }
         }
     }
 }

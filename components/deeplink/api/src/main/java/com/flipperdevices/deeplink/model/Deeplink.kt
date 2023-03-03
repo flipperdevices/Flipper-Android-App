@@ -1,11 +1,12 @@
 package com.flipperdevices.deeplink.model
 
-import android.content.Intent
 import android.net.Uri
 import android.os.Parcelable
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
+import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -40,25 +41,13 @@ sealed class Deeplink(
         val name: String,
     ) : Deeplink(isInternal = true)
 
-    fun buildIntent(): Intent {
-        val deeplinkSerialized = Uri.encode(Json.encodeToString(this))
-        return Intent().apply {
-            data = Uri.parse("${DeeplinkConstants.SCHEMA}${buildDeeplinkKey(this@Deeplink)}/$deeplinkSerialized")
-        }
-    }
+    @Parcelize
+    @Serializable
+    object OpenArchive: Deeplink(isInternal = true)
 
-    companion object {
-        fun buildDeeplinkKey(deeplink: Deeplink): String {
-            return when (deeplink) {
-                is FlipperKey -> DeeplinkConstants.FLIPPER_KEY
-                is WidgetOptions -> DeeplinkConstants.WIDGET_OPTIONS
-                is OpenKey -> DeeplinkConstants.OPEN_KEY
-                is WebUpdate -> DeeplinkConstants.WEB_UPDATE
-            }
-        }
-
-        fun buildDeeplinkPattern(deeplinkKey: String): String {
-            return "${DeeplinkConstants.SCHEMA}$deeplinkKey/{${DeeplinkConstants.KEY}}"
-        }
+    @IgnoredOnParcel
+    @delegate:Transient
+    val serialization: String by lazy {
+        Uri.encode(Json.encodeToString(this))
     }
 }

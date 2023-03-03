@@ -4,8 +4,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
@@ -13,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -43,12 +42,6 @@ fun ComposableMainScreen(
     val currentDestination by navController.currentBackStackEntryAsState()
     key(currentDestination?.destination) {
         navigationViewModel.invalidateSelectedTab(currentDestination?.destination)
-    }
-
-    SideEffect {
-        deeplink?.buildIntent()?.let { intent ->
-            navController.handleDeepLink(intent)
-        }
     }
 
     Scaffold(

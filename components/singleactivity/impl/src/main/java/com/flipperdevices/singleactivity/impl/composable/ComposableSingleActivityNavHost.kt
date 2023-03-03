@@ -15,7 +15,7 @@ import kotlinx.collections.immutable.ImmutableSet
 @Composable
 fun ComposableSingleActivityNavHost(
     navController: NavHostController,
-    bottomNavigationFeatureEntry: BottomNavigationFeatureEntry,
+    starDestination: String,
     featureEntries: ImmutableSet<AggregateFeatureEntry>,
     composableEntries: ImmutableSet<ComposableFeatureEntry>,
     modifier: Modifier = Modifier,
@@ -25,7 +25,7 @@ fun ComposableSingleActivityNavHost(
             .fillMaxSize()
             .background(MaterialTheme.colors.background),
         navController = navController,
-        startDestination = bottomNavigationFeatureEntry.start()
+        startDestination = starDestination
     ) {
         featureEntries.forEach {
             with(it) {

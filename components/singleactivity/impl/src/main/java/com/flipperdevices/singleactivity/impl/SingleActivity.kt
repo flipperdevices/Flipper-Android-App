@@ -1,11 +1,14 @@
 package com.flipperdevices.singleactivity.impl
 
+import android.app.PendingIntent
+import android.app.TaskStackBuilder
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -22,6 +25,7 @@ import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.flipperdevices.core.ui.navigation.LocalGlobalNavigationNavStack
 import com.flipperdevices.core.ui.theme.FlipperTheme
 import com.flipperdevices.deeplink.model.Deeplink
+import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.flipperdevices.singleactivity.impl.composable.ComposableSingleActivityNavHost
 import com.flipperdevices.singleactivity.impl.di.SingleActivityComponent
 import com.github.terrakok.cicerone.Router
@@ -66,6 +70,8 @@ class SingleActivity :
                 "and intent ${intent.toFullString()}"
         }
 
+        val starDestination = deepLinkHelper.getStartDestination()
+
         setContent {
             val navControllerLocal = rememberNavController().also {
                 globalNavController = it
@@ -80,7 +86,7 @@ class SingleActivity :
                 ) {
                     ComposableSingleActivityNavHost(
                         navController = navControllerLocal,
-                        bottomNavigationFeatureEntry = bottomNavigationFeatureEntry,
+                        starDestination = starDestination,
                         featureEntries = featureEntriesMutable.toPersistentSet(),
                         composableEntries = composableEntriesMutable.toPersistentSet()
                     )

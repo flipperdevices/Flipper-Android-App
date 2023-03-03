@@ -47,6 +47,7 @@ dependencies {
 
     // Dagger deps
     implementation(libs.dagger)
+    implementation(project(mapOf("path" to ":components:singleactivity:api")))
     kapt(libs.dagger.kapt)
     implementation(libs.tangle.viewmodel.compose)
     implementation(libs.tangle.viewmodel.api)

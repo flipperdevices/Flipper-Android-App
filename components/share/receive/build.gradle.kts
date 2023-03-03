@@ -7,6 +7,8 @@ plugins {
 dependencies {
     implementation(projects.components.deeplink.api)
     implementation(projects.components.share.api)
+    implementation(projects.components.singleactivity.api)
+    implementation(projects.components.bottombar.api)
 
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)
@@ -51,6 +53,8 @@ dependencies {
 
     // Dagger deps
     implementation(libs.dagger)
+    implementation(project(mapOf("path" to ":components:archive:api")))
+    implementation(project(mapOf("path" to ":components:singleactivity:impl")))
     kapt(libs.dagger.kapt)
     implementation(libs.tangle.viewmodel.compose)
     implementation(libs.tangle.viewmodel.api)

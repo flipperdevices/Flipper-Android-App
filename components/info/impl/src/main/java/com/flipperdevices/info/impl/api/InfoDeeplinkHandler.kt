@@ -1,4 +1,4 @@
-package com.flipperdevices.widget.screen.deeplink
+package com.flipperdevices.info.impl.api
 
 import android.content.Intent
 import androidx.core.net.toUri
@@ -8,21 +8,20 @@ import com.flipperdevices.deeplink.api.DeepLinkHandler
 import com.flipperdevices.deeplink.api.DispatcherPriority
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkConstants
-import com.flipperdevices.widget.screen.api.DEEPLINK_WIDGET_URL
 import com.squareup.anvil.annotations.ContributesMultibinding
 import javax.inject.Inject
 
 @ContributesMultibinding(AppGraph::class, DeepLinkHandler::class)
-class WidgetDeeplinkHandler @Inject constructor() : DeepLinkHandler {
+class InfoDeeplinkHandler @Inject constructor() : DeepLinkHandler {
     override fun isSupportLink(link: Deeplink): DispatcherPriority? {
         return when (link) {
-            is Deeplink.WidgetOptions -> DispatcherPriority.HIGH
+            is Deeplink.WebUpdate -> DispatcherPriority.DEFAULT
             else -> null
         }
     }
 
     override fun processLink(navController: NavController, link: Deeplink) {
-        val url = DEEPLINK_WIDGET_URL.replace(
+        val url = DEEPLINK_WEB_UPDATER_URL.replace(
             oldValue = "{${DeeplinkConstants.KEY}}",
             newValue = link.serialization
         )

@@ -23,7 +23,11 @@ import com.squareup.anvil.annotations.ContributesMultibinding
 import tangle.viewmodel.compose.tangleViewModel
 import javax.inject.Inject
 
+private const val DEEPLINK_KEY = DeeplinkConstants.KEY
+private const val DEEPLINK_SCHEME = DeeplinkConstants.SCHEMA
+
 internal const val EXTRA_WIDGET_ID_KEY = "widget_id"
+internal const val DEEPLINK_WIDGET_URL = "${DEEPLINK_SCHEME}widget{$DEEPLINK_KEY}"
 
 @ContributesBinding(AppGraph::class, WidgetFeatureEntry::class)
 @ContributesMultibinding(AppGraph::class, ComposableFeatureEntry::class)
@@ -35,23 +39,23 @@ class WidgetFeatureEntryImpl @Inject constructor(
         return "@${ROUTE.name}?id=$widgetId"
     }
 
-    private val deeplinkKey = DeeplinkConstants.KEY
+    private val widgetRoute = "@${ROUTE.name}/$DEEPLINK_KEY={$DEEPLINK_KEY}"
 
     private val widgetArguments = listOf(
-        navArgument(deeplinkKey) {
+        navArgument(DEEPLINK_KEY) {
             type = DeeplinkNavType()
             nullable = true
         }
     )
 
     private val deeplinkArguments = listOf(
-        navDeepLink { uriPattern = Deeplink.buildDeeplinkPattern(DeeplinkConstants.WIDGET_OPTIONS) }
+        navDeepLink { uriPattern = DEEPLINK_WIDGET_URL }
     )
 
 
     override fun NavGraphBuilder.composable(navController: NavHostController) {
         composable(
-            route = "@${ROUTE.name}/$deeplinkKey={$deeplinkKey}",
+            route = widgetRoute,
             arguments = widgetArguments,
             deepLinks = deeplinkArguments
         ) {

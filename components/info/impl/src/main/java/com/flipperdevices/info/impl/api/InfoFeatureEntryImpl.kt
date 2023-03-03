@@ -22,6 +22,11 @@ import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
 import javax.inject.Inject
 
+private const val DEEPLINK_KEY = DeeplinkConstants.KEY
+private const val DEEPLINK_SCHEME = DeeplinkConstants.SCHEMA
+
+internal const val DEEPLINK_WEB_UPDATER_URL = "${DEEPLINK_SCHEME}web_updater{$DEEPLINK_KEY}"
+
 @ContributesBinding(AppGraph::class, InfoFeatureEntry::class)
 @ContributesMultibinding(AppGraph::class, AggregateFeatureEntry::class)
 class InfoFeatureEntryImpl @Inject constructor(
@@ -30,9 +35,7 @@ class InfoFeatureEntryImpl @Inject constructor(
     private val updaterFeatureEntry: UpdaterFeatureEntry
 ) : InfoFeatureEntry {
 
-    private val deeplinkKey = DeeplinkConstants.KEY
-
-    private fun start(): String = "@${ROUTE.name}/$deeplinkKey={$deeplinkKey}"
+    private val infoRoute = "@${ROUTE.name}/$DEEPLINK_KEY={$DEEPLINK_KEY}"
 
     override fun fullInfo(): String = "@${ROUTE.name}full"
 
@@ -44,13 +47,13 @@ class InfoFeatureEntryImpl @Inject constructor(
     )
 
     private val deeplinkArguments = listOf(
-        navDeepLink { uriPattern = Deeplink.buildDeeplinkPattern(DeeplinkConstants.WEB_UPDATE) }
+        navDeepLink { uriPattern = DEEPLINK_WEB_UPDATER_URL }
     )
 
     override fun NavGraphBuilder.navigation(navController: NavHostController) {
-        navigation(startDestination = start(), route = ROUTE.name) {
+        navigation(startDestination = infoRoute, route = ROUTE.name) {
             composable(
-                route = start(),
+                route = infoRoute,
                 arguments = arguments,
                 deepLinks = deeplinkArguments
             ) {

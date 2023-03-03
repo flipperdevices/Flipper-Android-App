@@ -11,14 +11,19 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.SelectedTab
 import com.flipperdevices.core.preference.pb.Settings
+import com.flipperdevices.deeplink.model.Deeplink
+import com.flipperdevices.deeplink.model.DeeplinkConstants
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import tangle.inject.TangleParam
 import tangle.viewmodel.VMInject
 
 class BottomNavigationViewModel @VMInject constructor(
-    private val settingsDataStore: DataStore<Settings>
+    private val settingsDataStore: DataStore<Settings>,
+    @TangleParam(DeeplinkConstants.KEY)
+    private val deeplink: Deeplink?
 ) : ViewModel(), LogTagProvider {
     override val TAG = "BottomNavigationViewModel"
 
@@ -28,6 +33,8 @@ class BottomNavigationViewModel @VMInject constructor(
         get() = selectedTabInternal
 
     fun getStartDestination(): FlipperBottomTab {
+        if (deeplink is Deeplink.OpenArchive) return FlipperBottomTab.ARCHIVE
+
         return runBlockingWithLog("selected_tab") {
             return@runBlockingWithLog when (settingsDataStore.data.first().selectedTab) {
                 null,
@@ -40,7 +47,10 @@ class BottomNavigationViewModel @VMInject constructor(
     }
 
     fun invalidateSelectedTab(currentDestination: NavDestination?) {
-        val currentTab = FlipperBottomTab.DEVICE
+        val currentTab = FlipperBottomTab.values()
+            .find { tab ->
+                currentDestination.isTopLevelDestinationInHierarchy(tab)
+            }
         if (currentTab == null) {
             info { "Can't find current tab for $currentDestination" }
             return
@@ -67,5 +77,5 @@ class BottomNavigationViewModel @VMInject constructor(
  */
 private fun NavDestination?.isTopLevelDestinationInHierarchy(destination: FlipperBottomTab) =
     this?.hierarchy?.any {
-        it.route?.startsWith(destination.name, true) ?: false
+        it.route?.contains(destination.name, true) ?: false
     } ?: false
