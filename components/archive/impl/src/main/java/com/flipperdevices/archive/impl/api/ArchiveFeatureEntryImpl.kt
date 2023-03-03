@@ -13,7 +13,6 @@ import com.flipperdevices.archive.impl.composable.ComposableArchive
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
-import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.flipperdevices.deeplink.model.DeeplinkNavType
 import com.flipperdevices.keyscreen.api.KeyScreenFeatureEntry
@@ -36,8 +35,6 @@ class ArchiveFeatureEntryImpl @Inject constructor(
     override fun getArchiveScreen(): String {
         return "@${ROUTE.name}?$deeplinkKey={$deeplinkKey}"
     }
-
-    override fun getDeeplinkPattern(): String = DEEPLINK_ARCHIVE_URL
 
     private val archiveArguments = listOf(
         navArgument(deeplinkKey) {

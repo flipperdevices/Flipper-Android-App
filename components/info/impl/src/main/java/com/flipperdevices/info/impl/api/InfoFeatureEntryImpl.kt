@@ -9,7 +9,6 @@ import androidx.navigation.navigation
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.core.ui.navigation.LocalGlobalNavigationNavStack
-import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.flipperdevices.deeplink.model.DeeplinkNavType
 import com.flipperdevices.info.api.screen.InfoFeatureEntry

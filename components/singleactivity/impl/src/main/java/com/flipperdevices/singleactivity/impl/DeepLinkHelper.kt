@@ -18,11 +18,11 @@ import com.flipperdevices.firstpair.api.FirstPairFeatureEntry
 import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.api.UpdaterFeatureEntry
 import com.squareup.anvil.annotations.ContributesBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.util.Stack
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 interface DeepLinkHelper {
     suspend fun onNewIntent(context: Context, navController: NavController, intent: Intent)

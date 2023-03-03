@@ -9,6 +9,7 @@ dependencies {
     implementation(projects.components.keyscreen.api)
     implementation(projects.components.share.api)
     implementation(projects.components.keyscreen.shared)
+    implementation(projects.components.singleactivity.api)
 
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.di)
@@ -47,7 +48,6 @@ dependencies {
 
     // Dagger deps
     implementation(libs.dagger)
-    implementation(project(mapOf("path" to ":components:singleactivity:api")))
     kapt(libs.dagger.kapt)
     implementation(libs.tangle.viewmodel.compose)
     implementation(libs.tangle.viewmodel.api)

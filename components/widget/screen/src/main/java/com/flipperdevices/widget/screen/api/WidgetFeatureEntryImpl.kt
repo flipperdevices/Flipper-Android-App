@@ -12,7 +12,6 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.flipperdevices.core.ui.navigation.GetOnceResult
-import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.flipperdevices.deeplink.model.DeeplinkNavType
 import com.flipperdevices.widget.api.WidgetFeatureEntry
@@ -51,7 +50,6 @@ class WidgetFeatureEntryImpl @Inject constructor(
     private val deeplinkArguments = listOf(
         navDeepLink { uriPattern = DEEPLINK_WIDGET_URL }
     )
-
 
     override fun NavGraphBuilder.composable(navController: NavHostController) {
         composable(

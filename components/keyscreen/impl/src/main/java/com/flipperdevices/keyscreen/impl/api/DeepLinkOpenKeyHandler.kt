@@ -8,13 +8,10 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.deeplink.api.DeepLinkHandler
 import com.flipperdevices.deeplink.api.DispatcherPriority
 import com.flipperdevices.deeplink.model.Deeplink
-import com.flipperdevices.keyscreen.api.KeyScreenApi
-import com.github.terrakok.cicerone.Router
 import com.squareup.anvil.annotations.ContributesMultibinding
-import java.net.URL
-import javax.inject.Inject
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import javax.inject.Inject
 
 @ContributesMultibinding(AppGraph::class, DeepLinkHandler::class)
 class DeepLinkOpenKeyHandler @Inject constructor() : DeepLinkHandler {

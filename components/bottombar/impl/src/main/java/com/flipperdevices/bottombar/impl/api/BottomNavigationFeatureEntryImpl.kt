@@ -21,11 +21,11 @@ import com.flipperdevices.deeplink.model.DeeplinkNavType
 import com.flipperdevices.inappnotification.api.InAppNotificationRenderer
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
-import javax.inject.Inject
-import javax.inject.Provider
 import kotlinx.collections.immutable.toPersistentSet
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import javax.inject.Inject
+import javax.inject.Provider
 
 private const val DEEPLINK_KEY = DeeplinkConstants.KEY
 private const val DEEPLINK_SCHEME = DeeplinkConstants.SCHEMA
@@ -49,8 +49,6 @@ class BottomNavigationFeatureEntryImpl @Inject constructor(
         return "@${ROUTE.name}?$DEEPLINK_KEY=$deeplinkStr"
     }
 
-    override fun getDeeplinkPattern() = DEEPLINK_BOTTOM_BAR_URL
-
     private val bottomNavigationArguments = listOf(
         navArgument(DEEPLINK_KEY) {
             type = DeeplinkNavType()
@@ -70,13 +68,12 @@ class BottomNavigationFeatureEntryImpl @Inject constructor(
                 route = bottomNavigationRoute,
                 arguments = bottomNavigationArguments,
                 deepLinks = deeplinkArguments
-            ) { navBackStackEntry ->
+            ) {
                 ComposableMainScreen(
                     connectionApi = connectionApi,
                     featureEntries = featureEntriesMutable.toPersistentSet(),
                     composableEntries = composableEntriesMutable.toPersistentSet(),
-                    notificationRenderer = notificationRenderer,
-                    deeplink = navBackStackEntry.arguments?.parcelable(DeeplinkConstants.KEY)
+                    notificationRenderer = notificationRenderer
                 )
             }
         }

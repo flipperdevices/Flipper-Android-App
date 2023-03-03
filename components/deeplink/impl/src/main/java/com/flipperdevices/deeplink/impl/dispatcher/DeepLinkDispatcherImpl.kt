@@ -7,7 +7,6 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.deeplink.api.DeepLinkDispatcher
 import com.flipperdevices.deeplink.api.DeepLinkHandler
 import com.flipperdevices.deeplink.model.Deeplink
-import com.github.terrakok.cicerone.Router
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 

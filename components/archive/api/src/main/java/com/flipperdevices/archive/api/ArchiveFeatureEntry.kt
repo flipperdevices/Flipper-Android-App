@@ -8,6 +8,4 @@ interface ArchiveFeatureEntry : AggregateFeatureEntry {
         get() = FeatureScreenRootRoute.ARCHIVE
 
     fun getArchiveScreen(): String
-
-    fun getDeeplinkPattern(): String
 }

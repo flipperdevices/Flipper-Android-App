@@ -11,7 +11,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -21,7 +20,6 @@ import com.flipperdevices.bottombar.impl.viewmodel.BottomNavigationViewModel
 import com.flipperdevices.connection.api.ConnectionApi
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
-import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.inappnotification.api.InAppNotificationRenderer
 import kotlinx.collections.immutable.ImmutableSet
 import tangle.viewmodel.compose.tangleViewModel
@@ -33,7 +31,6 @@ fun ComposableMainScreen(
     featureEntries: ImmutableSet<AggregateFeatureEntry>,
     composableEntries: ImmutableSet<ComposableFeatureEntry>,
     modifier: Modifier = Modifier,
-    deeplink: Deeplink? = null,
     navigationViewModel: BottomNavigationViewModel = tangleViewModel()
 ) {
     val selectedTab by navigationViewModel.selectedTab.collectAsState()

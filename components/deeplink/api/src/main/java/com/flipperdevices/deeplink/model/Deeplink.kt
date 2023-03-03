@@ -6,7 +6,6 @@ import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -43,7 +42,7 @@ sealed class Deeplink(
 
     @Parcelize
     @Serializable
-    object OpenArchive: Deeplink(isInternal = true)
+    object OpenArchive : Deeplink(isInternal = true)
 
     @IgnoredOnParcel
     @delegate:Transient
