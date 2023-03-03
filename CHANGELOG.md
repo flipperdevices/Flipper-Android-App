@@ -9,6 +9,7 @@
 - [Feature] Animation on theme changing
 - [Feature] Reset tab on double tap
 - [Feature] Add back button in options screen
+- [Feature] Hide bottombar when keyboard close
 - [GitHub] Update github repo picture
 - [CI] Migrate to Detekt
 - [CI] Android lint in CI
