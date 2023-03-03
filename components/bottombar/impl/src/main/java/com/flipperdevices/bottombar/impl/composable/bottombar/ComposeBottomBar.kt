@@ -1,10 +1,15 @@
 package com.flipperdevices.bottombar.impl.composable.bottombar
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.TabPosition
@@ -35,6 +40,27 @@ fun ComposeBottomBar(
     modifier: Modifier = Modifier,
     selectedItem: FlipperBottomTab = FlipperBottomTab.ARCHIVE,
     onBottomBarClick: (FlipperBottomTab) -> Unit = {}
+) {
+    AnimatedVisibility(
+        visible = !WindowInsets.isImeVisible,
+        enter = fadeIn(),
+        exit = fadeOut()
+    ) {
+        ComposeBottomBarInternal(
+            connectionApi = connectionApi,
+            modifier = modifier,
+            selectedItem = selectedItem,
+            onBottomBarClick = onBottomBarClick
+        )
+    }
+}
+
+@Composable
+private fun ComposeBottomBarInternal(
+    connectionApi: ConnectionApi,
+    selectedItem: FlipperBottomTab,
+    onBottomBarClick: (FlipperBottomTab) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val tabs = remember { FlipperBottomTab.values() }
     var selectedIndex by remember(selectedItem) {
@@ -83,7 +109,6 @@ fun ComposeBottomBar(
             }
         }
     }
-    connectionApi.CheckAndShowUnsupportedDialog()
 }
 
 @Composable

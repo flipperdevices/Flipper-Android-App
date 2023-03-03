@@ -8,6 +8,7 @@
 - [Feature] Pass flipper color from searching screen
 - [Feature] Animation on theme changing
 - [Feature] Reset tab on double tap
+- [Feature] Hide bottombar when keyboard close
 - [GitHub] Update github repo picture
 - [CI] Migrate to Detekt
 - [CI] Android lint in CI
