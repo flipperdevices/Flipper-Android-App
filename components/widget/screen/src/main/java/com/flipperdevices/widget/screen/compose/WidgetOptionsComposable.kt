@@ -1,5 +1,6 @@
 package com.flipperdevices.widget.screen.compose
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,14 +18,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.archive.api.ArchiveApi
-import com.flipperdevices.archive.shared.composable.ComposableAppBar
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.core.ktx.jre.roundPercentToString
+import com.flipperdevices.core.ui.ktx.OrangeAppBarWithIcon
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.widget.screen.R
 import com.flipperdevices.widget.screen.viewmodel.WidgetSelectViewModel
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun WidgetOptionsComposable(
@@ -52,10 +52,10 @@ private fun ComposableArchiveReady(
     onOpenSearchScreen: () -> Unit,
 ) {
     Column(verticalArrangement = Arrangement.Top) {
-        ComposableAppBar(
+        OrangeAppBarWithIcon(
             title = stringResource(R.string.widget_options_title),
-            iconId = DesignSystem.drawable.ic_search,
-            onIconClick = onOpenSearchScreen
+            endIconId = DesignSystem.drawable.ic_search,
+            onEndClick = onOpenSearchScreen
         )
         ComposableKeys(archiveApi, widgetSelectViewModel)
     }

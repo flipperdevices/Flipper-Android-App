@@ -1,5 +1,6 @@
 package com.flipperdevices.info.impl.compose.bar
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -20,15 +21,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.preference.pb.HardwareColor
+import com.flipperdevices.core.ui.ktx.SetUpStatusBarColor
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
 import com.flipperdevices.info.impl.viewmodel.FlipperColorViewModel
-import tangle.viewmodel.compose.tangleViewModel
 import kotlin.math.roundToInt
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import tangle.viewmodel.compose.tangleViewModel
 
 const val FLOAT_TO_PERCENT_QUALIFIER = 100
 
@@ -47,6 +48,7 @@ private fun DeviceBar(deviceStatus: DeviceStatus) {
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
+        SetUpStatusBarColor(LocalPallet.current.accent)
         FlipperImage(deviceStatus)
         FlipperInformation(deviceStatus)
     }

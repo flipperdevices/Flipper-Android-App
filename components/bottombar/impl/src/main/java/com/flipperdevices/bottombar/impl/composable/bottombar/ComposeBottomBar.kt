@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
 import com.flipperdevices.bottombar.impl.viewmodel.BottomBarViewModel
 import com.flipperdevices.connection.api.ConnectionApi
+import com.flipperdevices.core.ui.ktx.SetUpNavigationBarColor
 import com.flipperdevices.core.ui.ktx.tab.tabIndicatorOffset
 import com.flipperdevices.core.ui.theme.LocalPallet
 import tangle.viewmodel.compose.tangleViewModel
@@ -83,6 +84,8 @@ fun ComposeBottomBar(
             }
         }
     }
+    SetUpNavigationBarColor(LocalPallet.current.bottomBarBackground)
+
     connectionApi.CheckAndShowUnsupportedDialog()
 }
 

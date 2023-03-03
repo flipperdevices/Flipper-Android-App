@@ -1,5 +1,6 @@
 package com.flipperdevices.archive.impl.composable
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -32,17 +33,16 @@ import com.flipperdevices.archive.impl.composable.page.ComposableFavoriteKeysTit
 import com.flipperdevices.archive.impl.composable.page.ComposableKeysGrid
 import com.flipperdevices.archive.impl.viewmodel.GeneralTabViewModel
 import com.flipperdevices.archive.model.CategoryType
-import com.flipperdevices.archive.shared.composable.ComposableAppBar
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
+import com.flipperdevices.core.ui.ktx.OrangeAppBarWithIcon
 import com.flipperdevices.core.ui.ktx.SwipeRefresh
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import kotlinx.collections.immutable.ImmutableList
 import tangle.viewmodel.compose.tangleViewModel
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableArchive(
@@ -92,10 +92,10 @@ private fun ComposableArchiveReady(
         modifier = modifier,
         verticalArrangement = Arrangement.Top
     ) {
-        ComposableAppBar(
+        OrangeAppBarWithIcon(
             title = stringResource(R.string.archive_title),
-            iconId = DesignSystem.drawable.ic_search,
-            onIconClick = onOpenSearchScreen
+            endIconId = DesignSystem.drawable.ic_search,
+            onEndClick = onOpenSearchScreen
         )
         SwipeRefresh(onRefresh = tabViewModel::refresh) {
             LazyColumn(

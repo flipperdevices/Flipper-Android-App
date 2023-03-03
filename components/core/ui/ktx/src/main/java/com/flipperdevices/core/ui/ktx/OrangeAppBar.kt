@@ -1,5 +1,6 @@
 package com.flipperdevices.core.ui.ktx
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
@@ -19,13 +20,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun OrangeAppBar(
     @StringRes titleId: Int,
     onBack: (() -> Unit)? = null,
-    endBlock: (@Composable () -> Unit)? = null
+    endBlock: (@Composable (Modifier) -> Unit)? = null
 ) {
     OrangeAppBar(
         title = stringResource(titleId),
@@ -39,8 +39,9 @@ fun OrangeAppBar(
     title: String,
     modifier: Modifier = Modifier,
     onBack: (() -> Unit)? = null,
-    endBlock: (@Composable () -> Unit)? = null
+    endBlock: (@Composable (Modifier) -> Unit)? = null
 ) {
+    SetUpStatusBarColor(LocalPallet.current.accent)
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -68,7 +69,7 @@ fun OrangeAppBar(
             overflow = TextOverflow.Ellipsis
         )
         if (endBlock != null) {
-            endBlock()
+            endBlock(Modifier.padding(end = 14.dp))
         }
     }
 }

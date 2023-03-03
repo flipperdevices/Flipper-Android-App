@@ -20,7 +20,6 @@ import com.flipperdevices.archive.category.R
 import com.flipperdevices.archive.category.model.CategoryState
 import com.flipperdevices.archive.category.viewmodels.CategoryViewModel
 import com.flipperdevices.archive.model.CategoryType
-import com.flipperdevices.archive.shared.composable.ComposableAppBar
 import com.flipperdevices.archive.shared.composable.ComposableKeyCard
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
@@ -28,6 +27,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyType.Companion.colorByF
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
+import com.flipperdevices.core.ui.ktx.OrangeAppBar
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import kotlinx.collections.immutable.ImmutableList
@@ -42,7 +42,7 @@ fun ComposableCategory(
     onOpenKeyScreen: (FlipperKeyPath) -> Unit
 ) {
     Column(modifier = modifier) {
-        ComposableAppBar(
+        OrangeAppBar(
             title = categoryType.fileType.humanReadableName,
             onBack = onBack
         )
