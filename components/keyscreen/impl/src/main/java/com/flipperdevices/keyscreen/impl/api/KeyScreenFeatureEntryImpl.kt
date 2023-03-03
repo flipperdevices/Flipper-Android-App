@@ -35,6 +35,7 @@ private const val DEEPLINK_SCHEME = DeeplinkConstants.SCHEMA
 
 internal const val DEEPLINK_FLIPPER_KEY_URL = "${DEEPLINK_SCHEME}flipper_key{$EXTRA_KEY_PATH}"
 
+@Suppress("LongParameterList")
 @ContributesBinding(AppGraph::class, KeyScreenFeatureEntry::class)
 @ContributesMultibinding(AppGraph::class, ComposableFeatureEntry::class)
 class KeyScreenFeatureEntryImpl @Inject constructor(
