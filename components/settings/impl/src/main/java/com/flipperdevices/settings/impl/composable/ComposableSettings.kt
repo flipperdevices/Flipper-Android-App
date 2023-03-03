@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.flipperdevices.core.ui.ktx.OrangeAppBar
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.composable.category.DebugCategory
@@ -19,7 +20,6 @@ import com.flipperdevices.settings.impl.composable.category.ExportKeysCategory
 import com.flipperdevices.settings.impl.composable.category.OtherSettingsCategory
 import com.flipperdevices.settings.impl.composable.category.ThemeCategory
 import com.flipperdevices.settings.impl.composable.category.VersionCategory
-import com.flipperdevices.settings.impl.composable.elements.AppBar
 import com.flipperdevices.settings.impl.viewmodels.SettingsViewModel
 import tangle.viewmodel.compose.tangleViewModel
 
@@ -37,7 +37,7 @@ fun ComposableCommonSetting(
             .background(LocalPallet.current.background),
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
-        AppBar(R.string.options)
+        OrangeAppBar(R.string.options, onBack = navController::popBackStack)
         ThemeCategory(settingsViewModel)
         if (settings.expertMode) {
             DebugCategory(settings, navController, settingsViewModel)
