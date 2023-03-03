@@ -12,7 +12,6 @@ import com.flipperdevices.bottombar.impl.composable.ComposableMainScreen
 import com.flipperdevices.connection.api.ConnectionApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.provideDelegate
-import com.flipperdevices.core.ktx.android.parcelable
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.flipperdevices.deeplink.model.Deeplink
