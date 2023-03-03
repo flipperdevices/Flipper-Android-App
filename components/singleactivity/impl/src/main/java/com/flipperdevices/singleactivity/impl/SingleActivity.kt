@@ -4,8 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Modifier
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -66,6 +69,8 @@ class SingleActivity :
                 "and intent ${intent.toFullString()}"
         }
 
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
         setContent {
             val navControllerLocal = rememberNavController().also {
                 globalNavController = it
@@ -82,7 +87,9 @@ class SingleActivity :
                         navController = navControllerLocal,
                         bottomNavigationFeatureEntry = bottomNavigationFeatureEntry,
                         featureEntries = featureEntriesMutable.toPersistentSet(),
-                        composableEntries = composableEntriesMutable.toPersistentSet()
+                        composableEntries = composableEntriesMutable.toPersistentSet(),
+                        modifier = Modifier
+                            .safeDrawingPadding()
                     )
                 }
             })
