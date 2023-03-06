@@ -155,6 +155,9 @@ dependencies {
     implementation(projects.components.faphub.installedtab.api)
     implementation(projects.components.faphub.installedtab.impl)
 
+    implementation(projects.components.selfupdater.api)
+    implementation(projects.components.selfupdater.impl)
+
     implementation(libs.ktor.client)
 
     implementation(libs.annotations)

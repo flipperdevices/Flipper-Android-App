@@ -26,6 +26,7 @@ dependencies {
     implementation(projects.components.inappnotification.api)
     implementation(projects.components.hub.api)
     implementation(projects.components.deeplink.api)
+    implementation(projects.components.selfupdater.api)
 
     implementation(libs.appcompat)
     implementation(libs.dagger)

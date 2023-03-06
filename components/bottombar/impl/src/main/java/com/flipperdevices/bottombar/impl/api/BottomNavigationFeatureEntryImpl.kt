@@ -10,6 +10,7 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
+import com.flipperdevices.impl.api.SelfUpdaterApi
 import com.flipperdevices.inappnotification.api.InAppNotificationRenderer
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
@@ -23,7 +24,8 @@ class BottomNavigationFeatureEntryImpl @Inject constructor(
     featureEntriesProvider: Provider<MutableSet<AggregateFeatureEntry>>,
     composableEntriesProvider: Provider<MutableSet<ComposableFeatureEntry>>,
     private val connectionApi: ConnectionApi,
-    private val notificationRenderer: InAppNotificationRenderer
+    private val notificationRenderer: InAppNotificationRenderer,
+    private val selfUpdaterApi: SelfUpdaterApi
 ) : BottomNavigationFeatureEntry {
     private val featureEntriesMutable by featureEntriesProvider
     private val composableEntriesMutable by composableEntriesProvider
@@ -38,6 +40,7 @@ class BottomNavigationFeatureEntryImpl @Inject constructor(
                 composableEntries = composableEntriesMutable.toPersistentSet(),
                 notificationRenderer = notificationRenderer
             )
+            selfUpdaterApi.CheckAndShowUpdateDialog()
         }
     }
 }

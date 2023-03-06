@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="info_debug">Debug</string>
+    <string name="info_file_manager">File Manager</string>
+    <string name="info_screen_streaming">Screen Streaming</string>
+    <string name="info_connection_to_another_device">Connection to another device</string>
+
+    <string name="info_device_no_device">No device</string>
+    <string name="info_device_not_connected">Not connected</string>
+    <string name="info_device_connected">Connected</string>
+    <string name="info_device_model_name">Flipper Zero</string>
+
+    <string name="info_firmware_update_title">Firmware Update</string>
+    <string name="info_firmware_update_unsupported_title">Outdated firmware version</string>
+    <string name="info_firmware_update_unsupported_desc">Firmware version on your Flipper is not supported. Please update it via PC.</string>
+    <string name="info_firmware_update_unsupported_link">[How to update Flipper](https://docs.flipperzero.one/basics/firmware-update)</string>
+    <string name="info_firmware_update_application_unsupported_title">Outdated Mobile App version</string>
+    <string name="info_firmware_update_application_unsupported_desc">Update App to the latest version to connect Flipper</string>
+    <string name="info_firmware_update_application_unsupported_link">[Go to Google Play](https://play.google.com/store/apps/details?id=com.flipperdevices.app)</string>
+    <string name="info_firmware_waiting">Waiting for Flipper to finish update.\nReconnecting</string>
+
+    <string name="info_device_options">Options</string>
+
+    <string name="info_device_connect">Connect</string>
+    <string name="info_device_disconnect">Disconnect</string>
+    <string name="info_device_synchronize">Synchronize</string>
+    <string name="info_device_play_alert">Play Alert on Flipper</string>
+    <string name="info_device_forget">Forget Flipper</string>
+    <string name="info_device_forget_dialog_title">Forget Flipper?</string>
+    <string name="info_device_forget_dialog_description">App will no longer be paired with Flipper %1$s</string>
+    <string name="info_device_forget_dialog_forget">Forget</string>
+    <string name="info_device_forget_dialog_cancel">Cancel</string>
+
+    <string name="info_device_info_title">Device Info</string>
+    <string name="info_device_info_version">Firmware Version</string>
+    <string name="info_device_info_build_date">Build Date</string>
+    <string name="info_device_info_int_flash">Int. Flash (Used/Total)</string>
+    <string name="info_device_info_ext_flash">SD Card (Used/Total)</string>
+    <string name="info_device_info_more_information">Full Info</string>
+
+    <string name="full_info_flipper_device">Flipper Device</string>
+    <string name="full_info_firmware">Firmware</string>
+    <string name="full_info_radio_stack">Radio Stack</string>
+    <string name="full_info_other">Other</string>
+
+    <string name="full_info_device_name">Device Name</string>
+    <string name="full_info_hardware_model">Hardware Model</string>
+    <string name="full_info_hardware_region">Hardware Region</string>
+    <string name="full_info_hardware_region_provisioned">Hardware Region Provisioned</string>
+    <string name="full_info_hardware_region_provisioned_ru">Russia Will Be Free</string>
+    <string name="full_info_hardware_version">Hardware Version</string>
+    <string name="full_info_hardware_otp_version">Hardware OTP Version</string>
+    <string name="full_info_serial_number">Serial Number</string>
+
+    <string name="full_info_software_revision">Software Revision</string>
+    <string name="full_info_build_date">Build Date</string>
+    <string name="full_info_target">Target</string>
+    <string name="full_info_protobuf_version">Protobuf Version</string>
+    <string name="full_info_device_info_version">Device Info</string>
+
+    <string name="full_info_radio_firmware">Radio Firmware</string>
+    <string name="radio_stack_type_full">Full</string>
+    <string name="radio_stack_type_light">Light</string>
+    <string name="radio_stack_type_beacon">Beacon</string>
+    <string name="radio_stack_type_basic">Basic</string>
+    <string name="radio_stack_type_full_ext_adv">Full Ext Adv</string>
+    <string name="radio_stack_type_hci_ext_adv">Hci Ext Adv</string>
+    <string name="radio_stack_type_unknown">Unknown</string>
+    <string name="device_info_share">Share Device Info %1$s</string>
+</resources>
