@@ -99,7 +99,10 @@ private val lightPallet = FlipperPallet(
     fapHubSelectedBackgroundColor = Color(0xFFFFFFFF),
     fapHubDividerColor = Color(0xFFE9E9E9),
     fapHubSortedColor = Color(0xFFAAAAAA),
-    fapHubCategoryText = Color(0xFF616161)
+    fapHubCategoryText = Color(0xFF616161),
+
+    flipperDisableButton = Color(0xFFC1C1C1),
+    borderViewReportBug = Color(0xFFD6D6D6),
 )
 
 @Suppress("MagicNumber")
@@ -142,5 +145,8 @@ private val darkPallet = FlipperPallet(
     fapHubSelectedBackgroundColor = Color(0xFF1C1C1C),
     fapHubDividerColor = Color(0xFF303030),
     fapHubSortedColor = Color(0xFFC1C1C1),
-    fapHubCategoryText = Color(0xFFCCCCCC)
+    fapHubCategoryText = Color(0xFFCCCCCC),
+
+    flipperDisableButton = Color(0xFFAAAAAA),
+    borderViewReportBug = Color(0xFF616161),
 )

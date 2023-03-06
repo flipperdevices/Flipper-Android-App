@@ -34,6 +34,9 @@ data class FlipperPallet(
     val iconTint30: Color,
     val iconTint16: Color,
 
+    val flipperDisableButton: Color,
+    val borderViewReportBug: Color,
+
     val bottomBarBackground: Color = Color(0xFFFFFFFF),
     val bottomBarSelected: Color = Color(0xFF303030),
     val bottomBarSelectedFlipperStatus: Color = Color(0xFF919191),

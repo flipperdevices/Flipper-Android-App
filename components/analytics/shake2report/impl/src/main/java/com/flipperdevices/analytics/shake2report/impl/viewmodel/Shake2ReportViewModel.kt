@@ -44,19 +44,28 @@ class Shake2ReportViewModel @VMInject constructor(
 
     fun report(
         name: String,
-        description: String
+        description: String,
+        addLogs: Boolean
     ) = viewModelScope.launch(Dispatchers.Default) {
         if (shake2ReportStateFlow.value !is Shake2ReportState.Pending) {
             return@launch
         }
-        shake2ReportStateFlow.emit(Shake2ReportState.Compressing)
-        val compressingFile = compressLogFolder()
-        shake2ReportStateFlow.emit(Shake2ReportState.Uploading)
-        val sentryId = sendingReport(name, description, compressingFile)
-        shake2ReportStateFlow.emit(Shake2ReportState.Complete(sentryId))
+
+        runCatching {
+            shake2ReportStateFlow.emit(Shake2ReportState.Uploading)
+            val compressingFile = if (addLogs) compressLogFolder() else null
+            val sentryId = sendingReport(name, description, compressingFile)
+            shake2ReportStateFlow.emit(Shake2ReportState.Complete(sentryId))
+        }.onFailure {
+            shake2ReportStateFlow.emit(Shake2ReportState.Error)
+        }
     }
 
-    fun copyToClipboard(id: String) {
+    fun copyToClipboard() {
+        val state = shake2ReportStateFlow.value
+        if (state !is Shake2ReportState.Complete) return
+        val id = state.id
+
         val context = getApplication<Application>()
         val clipboardManager = ContextCompat.getSystemService(context, ClipboardManager::class.java)
         val clipData = ClipData.newHtmlText(
@@ -68,7 +77,6 @@ class Shake2ReportViewModel @VMInject constructor(
         context.toast(R.string.shake2report_copy_sentry_copy_toast)
     }
 
-    @Suppress("BlockingMethodInNonBlockingContext")
     private suspend fun compressLogFolder(): File = withContext(Dispatchers.IO) {
         val logDir = internalShake2Report.logDir
         val zipFile = ZipFile(
@@ -89,7 +97,7 @@ class Shake2ReportViewModel @VMInject constructor(
     private suspend fun sendingReport(
         name: String,
         description: String,
-        logZip: File
+        logZip: File?
     ): String = withContext(Dispatchers.IO) {
         val event = SentryEvent()
         event.level = SentryLevel.ERROR
@@ -102,7 +110,9 @@ class Shake2ReportViewModel @VMInject constructor(
 
         lateinit var sentryId: SentryId
         Sentry.withScope { scope ->
-            scope.addAttachment(Attachment(logZip.absolutePath))
+            logZip?.let { logs ->
+                scope.addAttachment(Attachment(logs.absolutePath))
+            }
             sentryId = Sentry.captureEvent(event)
             Sentry.flush(SENTRY_TIMEOUT_MS)
             scope.clearAttachments()

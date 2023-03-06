@@ -4,7 +4,7 @@
     <string name="shake2report_name">Title</string>
     <string name="shake2report_name_placeholder">Describe the bug in one sentence</string>
     <string name="shake2report_description">Description</string>
-    <string name="shake2report_description_placeholder">Describe the bug in details with the reproduction steps. For example:\n1. Open App\n2. Connect Flipper\n3. Open "Archive" tab\n4. Press to "Sub-Ghz" category\n\nExpected result: I see my Sub-Ghz keys\nActual result: The app closes</string>
+    <string name="shake2report_description_placeholder">Describe your bug in details, with the playback steps, expected result and your actual result.\n\nFor example:\n1. Open App\n2. Connect Flipper\n3. Open "Archive" tab\n4. Press to "Sub-Ghz" category\n\nExpected result: I see my Sub-GHz keys\nActual result: App crashes</string>
     <string name="shake2report_progress_compressing">Compressing logs</string>
     <string name="shake2report_progress_uploading">Uploading report</string>
     <string name="shake2report_btn">Submit</string>
@@ -14,4 +14,10 @@
     <string name="shake2report_submit_btn">Close</string>
     <string name="shake2report_copy_sentry_title">Sentry Report ID</string>
     <string name="shake2report_copy_sentry_copy_toast">Copy to clipboard</string>
+    <string name="shake2report_add_log">Add Logs</string>
+    <string name="shake2report_issue_id">Your issue ID:</string>
+    <string name="shake2report_copy">Copy</string>
+    <string name="shake2report_check_bug">Check the bug in Dev/Beta version of the app. If it doesn’t reproduce, then we have already fixed it.</string>
+    <string name="shake2report_post_forum">You can also post your bug on our forum so we can fix it faster. [Here is the instruction how to do it.](https://flipp.dev/mobile-app-bug-report)</string>
+    <string name="shake2report_error_post_forum">Unable to report bug from the app. Try again later or post your bug on our forum so we can fix it faster. [Here is the instruction how to do it.](https://flipp.dev/mobile-app-bug-report)</string>
 </resources>
