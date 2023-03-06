@@ -42,7 +42,6 @@ internal fun ComposableCheckBox(
     }
 }
 
-
 private const val BOX_IN_DURATION = 50
 private const val BOX_OUT_DURATION = 100
 

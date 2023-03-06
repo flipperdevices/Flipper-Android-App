@@ -1,6 +1,5 @@
 package com.flipperdevices.analytics.shake2report.impl.composable.states
 
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,13 +7,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Checkbox
-import androidx.compose.material.CheckboxDefaults
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.LocalMinimumTouchTargetEnforcement
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,15 +43,16 @@ internal fun ComposableReportPending(
     val placeHolderStyle = LocalTypography.current.bodyR14.copy(
         color = LocalPallet.current.borderViewReportBug
     )
+    val titleStyle = LocalTypography.current.buttonB16.copy(
+        color = LocalPallet.current.text100
+    )
 
     ComposableReportTextField(
         value = name,
         title = {
             Text(
                 text = stringResource(R.string.shake2report_name),
-                style = LocalTypography.current.buttonB16.copy(
-                    color = LocalPallet.current.text100
-                ),
+                style = titleStyle,
             )
         },
         placeholder = {
@@ -75,9 +70,7 @@ internal fun ComposableReportPending(
         title = {
             Text(
                 text = stringResource(R.string.shake2report_description),
-                style = LocalTypography.current.buttonB16.copy(
-                    color = LocalPallet.current.text100
-                ),
+                style = titleStyle,
             )
         },
         placeholder = {
