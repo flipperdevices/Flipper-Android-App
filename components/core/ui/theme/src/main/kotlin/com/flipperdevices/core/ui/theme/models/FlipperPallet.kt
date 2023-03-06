@@ -1,4 +1,3 @@
-
 package com.flipperdevices.core.ui.theme.models
 
 import androidx.compose.foundation.text.selection.TextSelectionColors
