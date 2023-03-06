@@ -1,10 +1,8 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.android-compose")
     id("com.squareup.anvil")
     id("kotlin-kapt")
 }
-
-android.buildFeatures.viewBinding = true
 
 dependencies {
     implementation(projects.components.analytics.shake2report.api)
@@ -12,6 +10,11 @@ dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.activityholder)
     implementation(projects.components.core.preference)
+    implementation(projects.components.core.markdown)
+    implementation(projects.components.core.ui.ktx)
+    implementation(projects.components.core.ui.res)
+    implementation(projects.components.core.ui.theme)
+    implementation(projects.components.core.ui.navigation)
 
     implementation(projects.components.bridge.api)
 
@@ -24,14 +27,23 @@ dependencies {
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
 
-    implementation(libs.seismic)
     implementation(libs.timber)
     implementation(libs.timber.tressence)
     implementation(libs.sentry)
     implementation(libs.sentry.timber)
     implementation(libs.zip4j)
 
+    // Compose
+    implementation(libs.compose.ui)
+    implementation(libs.compose.tooling)
+    implementation(libs.compose.foundation)
+    implementation(libs.compose.material)
+    implementation(libs.compose.navigation)
+
     // Dagger deps
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
+    implementation(libs.tangle.viewmodel.compose)
+    implementation(libs.tangle.viewmodel.api)
+    anvil(libs.tangle.viewmodel.compiler)
 }

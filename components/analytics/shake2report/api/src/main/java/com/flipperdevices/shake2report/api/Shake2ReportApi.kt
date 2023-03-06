@@ -1,8 +1,6 @@
 package com.flipperdevices.shake2report.api
 
-import android.content.Context
 import com.flipperdevices.bridge.api.model.FlipperGATTInformation
-import com.github.terrakok.cicerone.Screen
 
 interface Shake2ReportApi {
     /**
@@ -10,8 +8,6 @@ interface Shake2ReportApi {
      * And call empty method in release build
      */
     fun init()
-
-    fun reportBugScreen(context: Context): Screen?
 
     fun updateGattInformation(gattInformation: FlipperGATTInformation)
     fun setExtra(tags: List<Pair<String, String>>)
