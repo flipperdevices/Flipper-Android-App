@@ -1,6 +1,5 @@
 package com.flipperdevices.info.impl.compose.screens
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.CircularProgressIndicator
@@ -27,6 +26,7 @@ import com.flipperdevices.info.impl.viewmodel.deviceinfo.BasicInfoViewModel
 import com.flipperdevices.info.impl.viewmodel.deviceinfo.FullInfoViewModel
 import com.flipperdevices.info.impl.viewmodel.deviceinfo.ShareFullInfoFileViewModel
 import tangle.viewmodel.compose.tangleViewModel
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableFullDeviceInfoScreen(
@@ -48,9 +48,9 @@ fun ComposableFullDeviceInfoScreen(
         }
         is DeviceStatus.Connected -> {
             flipperRpcInformation !is FlipperInformationStatus.Ready ||
-                    basicInfo.storageInfo.externalStorageStatus !is FlipperInformationStatus.Ready ||
-                    basicInfo.storageInfo.internalStorageStatus !is FlipperInformationStatus.Ready ||
-                    basicInfo.firmwareVersion !is FlipperInformationStatus.Ready
+                basicInfo.storageInfo.externalStorageStatus !is FlipperInformationStatus.Ready ||
+                basicInfo.storageInfo.internalStorageStatus !is FlipperInformationStatus.Ready ||
+                basicInfo.firmwareVersion !is FlipperInformationStatus.Ready
         }
         else -> false
     }
