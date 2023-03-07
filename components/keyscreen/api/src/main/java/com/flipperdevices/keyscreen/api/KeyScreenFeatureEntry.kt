@@ -9,4 +9,5 @@ interface KeyScreenFeatureEntry : ComposableFeatureEntry {
         get() = FeatureScreenRootRoute.KEY_SCREEN
 
     fun getKeyScreen(keyPath: FlipperKeyPath): String
+    fun getKeyScreenByDeeplink(keyPath: FlipperKeyPath): String
 }

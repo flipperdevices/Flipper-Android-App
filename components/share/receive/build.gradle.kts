@@ -9,6 +9,7 @@ dependencies {
     implementation(projects.components.share.api)
     implementation(projects.components.singleactivity.api)
     implementation(projects.components.bottombar.api)
+    implementation(projects.components.archive.api)
 
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)

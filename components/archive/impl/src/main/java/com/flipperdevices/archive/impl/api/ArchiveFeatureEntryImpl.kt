@@ -21,7 +21,6 @@ import com.squareup.anvil.annotations.ContributesMultibinding
 import javax.inject.Inject
 
 private const val DEEPLINK_SCHEME = DeeplinkConstants.SCHEMA
-internal const val DEEPLINK_ARCHIVE_URL = "${DEEPLINK_SCHEME}archive"
 
 @ContributesBinding(AppGraph::class, ArchiveFeatureEntry::class)
 @ContributesMultibinding(AppGraph::class, AggregateFeatureEntry::class)
@@ -36,6 +35,8 @@ class ArchiveFeatureEntryImpl @Inject constructor(
         return "@${ROUTE.name}?$deeplinkKey={$deeplinkKey}"
     }
 
+    override fun getArchiveScreenByDeeplink(): String = "${DEEPLINK_SCHEME}archive"
+
     private val archiveArguments = listOf(
         navArgument(deeplinkKey) {
             type = DeeplinkNavType()
@@ -45,7 +46,7 @@ class ArchiveFeatureEntryImpl @Inject constructor(
 
     private val deeplinkArguments = listOf(
         navDeepLink {
-            uriPattern = DEEPLINK_ARCHIVE_URL
+            uriPattern = getArchiveScreenByDeeplink()
         }
     )
 

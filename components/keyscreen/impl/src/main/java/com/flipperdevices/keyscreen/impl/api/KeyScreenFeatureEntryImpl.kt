@@ -11,7 +11,6 @@ import com.flipperdevices.bridge.dao.api.model.navigation.FlipperKeyPathType
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
-import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.flipperdevices.keyedit.api.KeyEditFeatureEntry
 import com.flipperdevices.keyscreen.api.KeyEmulateApi
@@ -22,7 +21,6 @@ import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModel
 import com.flipperdevices.nfceditor.api.NfcEditorApi
 import com.flipperdevices.nfceditor.api.NfcEditorFeatureEntry
 import com.flipperdevices.share.api.ShareBottomFeatureEntry
-import com.flipperdevices.singleactivity.api.SingleActivityApi
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
 import kotlinx.serialization.encodeToString
@@ -32,8 +30,7 @@ import javax.inject.Inject
 
 internal const val EXTRA_KEY_PATH = "flipper_key_path"
 private const val DEEPLINK_SCHEME = DeeplinkConstants.SCHEMA
-
-internal const val DEEPLINK_FLIPPER_KEY_URL = "${DEEPLINK_SCHEME}flipper_key{$EXTRA_KEY_PATH}"
+private const val DEEPLINK_FLIPPER_KEY_URL = "${DEEPLINK_SCHEME}flipper_key={$EXTRA_KEY_PATH}"
 
 @Suppress("LongParameterList")
 @ContributesBinding(AppGraph::class, KeyScreenFeatureEntry::class)
@@ -44,11 +41,15 @@ class KeyScreenFeatureEntryImpl @Inject constructor(
     private val keyEmulateApi: KeyEmulateApi,
     private val nfcEditorFeatureEntry: NfcEditorFeatureEntry,
     private val keyEditFeatureEntry: KeyEditFeatureEntry,
-    private val shareBottomFeatureEntry: ShareBottomFeatureEntry,
-    private val singleActivityApi: SingleActivityApi
+    private val shareBottomFeatureEntry: ShareBottomFeatureEntry
 ) : KeyScreenFeatureEntry {
     override fun getKeyScreen(keyPath: FlipperKeyPath): String {
         return "@${ROUTE.name}?key_path=${Uri.encode(Json.encodeToString(keyPath))}"
+    }
+
+    override fun getKeyScreenByDeeplink(keyPath: FlipperKeyPath): String {
+        val keyPathStr = Uri.encode(Json.encodeToString(keyPath))
+        return "${DEEPLINK_SCHEME}flipper_key=$keyPathStr"
     }
 
     private val keyScreenArguments = listOf(
@@ -78,11 +79,7 @@ class KeyScreenFeatureEntryImpl @Inject constructor(
                     nfcEditorApi = nfcEditor,
                     keyEmulateApi = keyEmulateApi,
                     onShare = onShare,
-                    onBack = {
-                        if (navController.popBackStack().not()) {
-                            singleActivityApi.open(Deeplink.OpenArchive)
-                        }
-                    },
+                    onBack = navController::popBackStack,
                     onOpenNfcEditor = {
                         viewModel.openNfcEditor { flipperKeyPath ->
                             val nfcEditorScreen =

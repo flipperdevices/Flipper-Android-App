@@ -9,4 +9,5 @@ interface KeyReceiveFeatureEntry : ComposableFeatureEntry {
         get() = FeatureScreenRootRoute.KEY_RECEIVE
 
     fun getKeyReceiveScreen(deeplink: Deeplink): String
+    fun getKeyReceiveScreenDeeplinkUrl(deeplink: Deeplink): String
 }

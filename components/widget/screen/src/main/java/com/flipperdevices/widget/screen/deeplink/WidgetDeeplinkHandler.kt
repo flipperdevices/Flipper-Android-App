@@ -7,13 +7,14 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.deeplink.api.DeepLinkHandler
 import com.flipperdevices.deeplink.api.DispatcherPriority
 import com.flipperdevices.deeplink.model.Deeplink
-import com.flipperdevices.deeplink.model.DeeplinkConstants
-import com.flipperdevices.widget.screen.api.DEEPLINK_WIDGET_URL
+import com.flipperdevices.widget.api.WidgetFeatureEntry
 import com.squareup.anvil.annotations.ContributesMultibinding
 import javax.inject.Inject
 
 @ContributesMultibinding(AppGraph::class, DeepLinkHandler::class)
-class WidgetDeeplinkHandler @Inject constructor() : DeepLinkHandler {
+class WidgetDeeplinkHandler @Inject constructor(
+    private val widgetFeatureEntry: WidgetFeatureEntry
+) : DeepLinkHandler {
     override fun isSupportLink(link: Deeplink): DispatcherPriority? {
         return when (link) {
             is Deeplink.WidgetOptions -> DispatcherPriority.HIGH
@@ -22,15 +23,9 @@ class WidgetDeeplinkHandler @Inject constructor() : DeepLinkHandler {
     }
 
     override fun processLink(navController: NavController, link: Deeplink) {
-        val url = DEEPLINK_WIDGET_URL.replace(
-            oldValue = "{${DeeplinkConstants.KEY}}",
-            newValue = link.serialization
-        )
-
         val intent = Intent().apply {
-            data = url.toUri()
+            data = widgetFeatureEntry.getWidgetScreenByDeeplink(link).toUri()
         }
-
         navController.handleDeepLink(intent)
     }
 }

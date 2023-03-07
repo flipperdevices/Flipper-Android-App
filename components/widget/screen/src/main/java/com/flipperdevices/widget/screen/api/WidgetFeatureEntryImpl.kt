@@ -1,5 +1,6 @@
 package com.flipperdevices.widget.screen.api
 
+import android.net.Uri
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -12,6 +13,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.flipperdevices.core.ui.navigation.GetOnceResult
+import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.flipperdevices.deeplink.model.DeeplinkNavType
 import com.flipperdevices.widget.api.WidgetFeatureEntry
@@ -19,14 +21,15 @@ import com.flipperdevices.widget.screen.compose.WidgetOptionsComposable
 import com.flipperdevices.widget.screen.viewmodel.WidgetSelectViewModel
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import tangle.viewmodel.compose.tangleViewModel
 import javax.inject.Inject
 
 private const val DEEPLINK_KEY = DeeplinkConstants.KEY
 private const val DEEPLINK_SCHEME = DeeplinkConstants.SCHEMA
-
+private const val DEEPLINK_WIDGET_URL = "${DEEPLINK_SCHEME}widget={$DEEPLINK_KEY}"
 internal const val EXTRA_WIDGET_ID_KEY = "widget_id"
-internal const val DEEPLINK_WIDGET_URL = "${DEEPLINK_SCHEME}widget{$DEEPLINK_KEY}"
 
 @ContributesBinding(AppGraph::class, WidgetFeatureEntry::class)
 @ContributesMultibinding(AppGraph::class, ComposableFeatureEntry::class)
@@ -36,6 +39,11 @@ class WidgetFeatureEntryImpl @Inject constructor(
 ) : WidgetFeatureEntry {
     override fun getWidgetScreen(widgetId: Int): String {
         return "@${ROUTE.name}?id=$widgetId"
+    }
+
+    override fun getWidgetScreenByDeeplink(deeplink: Deeplink): String {
+        val deeplinkStr = Uri.encode(Json.encodeToString(deeplink))
+        return "${DEEPLINK_SCHEME}widget=$deeplinkStr"
     }
 
     private val widgetRoute = "@${ROUTE.name}/$DEEPLINK_KEY={$DEEPLINK_KEY}"

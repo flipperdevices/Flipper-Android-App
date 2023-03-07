@@ -14,7 +14,6 @@ import com.flipperdevices.deeplink.model.DeeplinkNavType
 import com.flipperdevices.keyscreen.api.KeyScreenApi
 import com.flipperdevices.share.api.KeyReceiveFeatureEntry
 import com.flipperdevices.share.receive.composable.ComposableKeyReceive
-import com.flipperdevices.singleactivity.api.SingleActivityApi
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
 import kotlinx.serialization.encodeToString
@@ -23,18 +22,21 @@ import javax.inject.Inject
 
 private const val DEEPLINK_KEY = DeeplinkConstants.KEY
 private const val DEEPLINK_SCHEME = DeeplinkConstants.SCHEMA
-
-internal const val DEEPLINK_KEY_RECEIVE_URL = "${DEEPLINK_SCHEME}key_receive{$DEEPLINK_KEY}"
+private const val DEEPLINK_KEY_RECEIVE_URL = "${DEEPLINK_SCHEME}key_receive={$DEEPLINK_KEY}"
 
 @ContributesBinding(AppGraph::class, KeyReceiveFeatureEntry::class)
 @ContributesMultibinding(AppGraph::class, ComposableFeatureEntry::class)
 class KeyReceiveFeatureEntryImpl @Inject constructor(
     private val keyScreenApi: KeyScreenApi,
-    private val singleActivity: SingleActivityApi
 ) : KeyReceiveFeatureEntry {
     override fun getKeyReceiveScreen(deeplink: Deeplink): String {
         val strDeeplink = Uri.encode(Json.encodeToString(deeplink))
         return "@${ROUTE.name}?$DEEPLINK_KEY=$strDeeplink"
+    }
+
+    override fun getKeyReceiveScreenDeeplinkUrl(deeplink: Deeplink): String {
+        val deeplinkStr = Uri.encode(Json.encodeToString(deeplink))
+        return "${DEEPLINK_SCHEME}key_receive=$deeplinkStr"
     }
 
     private val keyReceiveArguments = listOf(
@@ -56,7 +58,7 @@ class KeyReceiveFeatureEntryImpl @Inject constructor(
         ) {
             ComposableKeyReceive(
                 keyScreenApi = keyScreenApi,
-                onCancel = { singleActivity.open(Deeplink.OpenArchive) }
+                onCancel = navController::popBackStack
             )
         }
     }

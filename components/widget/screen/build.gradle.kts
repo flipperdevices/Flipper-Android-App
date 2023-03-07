@@ -40,6 +40,7 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.ktx)
 
     implementation(libs.kotlin.immutable.collections)
+    implementation(libs.kotlin.serialization.json)
 
     // Dagger deps
     implementation(libs.dagger)

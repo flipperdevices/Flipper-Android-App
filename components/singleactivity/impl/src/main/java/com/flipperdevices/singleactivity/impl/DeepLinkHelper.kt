@@ -83,6 +83,8 @@ class DeepLinkHelperImpl @Inject constructor(
                 inclusive = true
                 saveState = true
             }
+            launchSingleTop = true
+            restoreState = true
         }
 
         if (firstPairApi.shouldWeOpenPairScreen()) {
@@ -101,19 +103,13 @@ class DeepLinkHelperImpl @Inject constructor(
 
         val deeplink = deeplinkStack.pop()
         info { "Process deeplink $deeplink" }
-
-        if (deeplink.isInternal) {
-            navController.navigate(bottomBarFeatureEntry.start(deeplink), topScreenOptions)
-            return@withContext
-        }
-
         deepLinkDispatcher.process(navController = navController, deeplink = deeplink)
     }
 
     override fun getStartDestination(): String {
         return when {
             firstPairApi.shouldWeOpenPairScreen() -> firstPairFeatureEntry.start()
-            else -> bottomBarFeatureEntry.ROUTE.name
+            else -> bottomBarFeatureEntry.start()
         }
     }
 }
