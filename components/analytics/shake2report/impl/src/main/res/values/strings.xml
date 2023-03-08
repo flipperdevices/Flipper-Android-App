@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="shake2report_dialog_title">Report error?</string>
-    <string name="shake2report_dialog_edittext_hint">Error message</string>
-    <string name="shake2report_dialog_cancel">Cancel</string>
-    <string name="shake2report_dialog_ok">Yes</string>
-    <string name="shake2report_activity_title">Sending report…</string>
-    <string name="shake2report_activity_status_screenshot">Save screenshot</string>
-    <string name="shake2report_activity_status_zipping">Zipping logs and screenshot</string>
-    <string name="shake2report_activity_status_sending">Sending to server</string>
-    <string name="shake2report_activity_report_title">Your report id is</string>
-    <string name="shake2report_activity_report_click">Click to copy</string>
-    <string name="shake2report_activity_btn_close">Close</string>
+    <string name="shake2report_title">Report bug</string>
+    <string name="shake2report_name">Title</string>
+    <string name="shake2report_name_placeholder">Describe the bug in one sentence</string>
+    <string name="shake2report_description">Description</string>
+    <string name="shake2report_description_placeholder">Describe your bug in details, with the playback steps, expected result and your actual result.\n\nFor example:\n1. Open App\n2. Connect Flipper\n3. Open "Archive" tab\n4. Press to "Sub-Ghz" category\n\nExpected result: I see my Sub-GHz keys\nActual result: App crashes</string>
+    <string name="shake2report_progress_compressing">Compressing logs</string>
+    <string name="shake2report_progress_uploading">Uploading report</string>
+    <string name="shake2report_btn">Submit</string>
+    <string name="shake2report_submit_title">Bug reported</string>
+    <string name="shake2report_submit_desc">We are very ashamed that you had problems with the application. Please document the bug on the forum. There are detailed instructions on how to do it: [https://docs.flipperzero.one/mobile-app/bug-report](https://docs.flipperzero.one/mobile-app/bug-report) \n\nAfter that, we can take care of it. Also please check the bug in dev/beta version of the application. If it does not reproduce, then it is already fixed</string>
+    <string name="shake2report_submit_click">Click to copy:</string>
+    <string name="shake2report_submit_btn">Close</string>
     <string name="shake2report_copy_sentry_title">Sentry Report ID</string>
     <string name="shake2report_copy_sentry_copy_toast">Copy to clipboard</string>
+    <string name="shake2report_add_log">Add Logs</string>
+    <string name="shake2report_issue_id">Your issue ID:</string>
+    <string name="shake2report_copy">Copy</string>
+    <string name="shake2report_check_bug">Check the bug in Dev/Beta version of the app. If it doesn’t reproduce, then we have already fixed it.</string>
+    <string name="shake2report_post_forum">You can also post your bug on our forum so we can fix it faster. [Here is the instruction how to do it.](https://flipp.dev/mobile-app-bug-report)</string>
+    <string name="shake2report_error_post_forum">Unable to report bug from the app. Try again later or post your bug on our forum so we can fix it faster. [Here is the instruction how to do it.](https://flipp.dev/mobile-app-bug-report)</string>
 </resources>

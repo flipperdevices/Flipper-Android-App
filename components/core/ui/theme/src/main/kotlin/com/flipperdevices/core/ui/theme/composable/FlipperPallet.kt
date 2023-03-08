@@ -5,6 +5,7 @@ import androidx.compose.material.Colors
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.Color
 
+// After add color to pallet, don`t forget add to switch() method
 @Stable
 @Suppress("MagicNumber")
 data class FlipperPallet(
@@ -45,6 +46,9 @@ data class FlipperPallet(
 
     val shareSheetBackground: Color,
     val shareSheetScrimColor: Color,
+
+    val flipperDisableButton: Color,
+    val borderViewReportBug: Color,
 
     val fapHubSwitchBackground: Color,
     val fapHubSelectedBackgroundColor: Color,

@@ -28,7 +28,6 @@ timber-treessence = "1.0.5" # https://github.com/bastienpaulfr/Treessence/tags
 sentry-runtime = "6.10.0" # https://github.com/getsentry/sentry-java/releases
 sentry-gradle = "3.3.0" # https://github.com/getsentry/sentry-android-gradle-plugin/releases
 zip4j = "2.11.2" # https://github.com/srikanth-lingala/zip4j/releases
-seismic = "1.0.3" # https://github.com/square/seismic/tags
 cicerone = "7.1" # https://github.com/terrakok/Cicerone/releases
 ktx = "1.9.0" # https://developer.android.com/jetpack/androidx/releases/core
 ktx-fragment = "1.5.5" # https://developer.android.com/jetpack/androidx/releases/fragment
@@ -164,7 +163,6 @@ sentry = { module = "io.sentry:sentry-android", version.ref = "sentry-runtime" }
 sentry-gradle = { module = "io.sentry:sentry-android-gradle-plugin", version.ref = "sentry-gradle" }
 sentry-timber = { module = "io.sentry:sentry-android-timber", version.ref = "sentry-runtime" }
 zip4j = { module = "net.lingala.zip4j:zip4j", version.ref = "zip4j" }
-seismic = { module = "com.squareup:seismic", version.ref = "seismic" }
 countly = { module = "ly.count.android:sdk", version.ref = "countly" }
 
 # KTX
