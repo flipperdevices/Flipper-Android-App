@@ -2,7 +2,6 @@ package com.flipperdevices.shake2report.noop
 
 import android.content.Context
 import com.flipperdevices.bridge.api.model.FlipperGATTInformation
-import com.flipperdevices.bridge.api.model.FlipperRpcInformation
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.shake2report.api.Shake2ReportApi
 import com.github.terrakok.cicerone.Screen
@@ -21,7 +20,7 @@ class Shake2ReportStub @Inject constructor() : Shake2ReportApi {
         // Do nothing
     }
 
-    override fun updateRpcInformation(rpcInformation: FlipperRpcInformation) {
+    override fun setExtra(tags: List<Pair<String, String>>) {
         // Do nothing
     }
 

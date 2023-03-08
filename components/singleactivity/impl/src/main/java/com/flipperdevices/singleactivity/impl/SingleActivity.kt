@@ -4,13 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Modifier
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.flipperdevices.bottombar.api.BottomNavigationFeatureEntry
-import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.parcelableExtra
 import com.flipperdevices.core.ktx.android.toFullString
@@ -23,8 +25,6 @@ import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.flipperdevices.core.ui.navigation.LocalGlobalNavigationNavStack
 import com.flipperdevices.core.ui.theme.FlipperTheme
 import com.flipperdevices.deeplink.model.Deeplink
-import com.flipperdevices.metric.api.MetricApi
-import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.singleactivity.impl.composable.ComposableSingleActivityNavHost
 import com.flipperdevices.singleactivity.impl.di.SingleActivityComponent
 import com.github.terrakok.cicerone.Router
@@ -45,12 +45,6 @@ class SingleActivity :
 
     @Inject
     lateinit var deepLinkHelper: DeepLinkHelper
-
-    @Inject
-    lateinit var metricApi: MetricApi
-
-    @Inject
-    lateinit var synchronizationApi: SynchronizationApi
 
     @Inject
     lateinit var bottomNavigationFeatureEntry: BottomNavigationFeatureEntry
@@ -75,9 +69,7 @@ class SingleActivity :
                 "and intent ${intent.toFullString()}"
         }
 
-        if (savedInstanceState != null) {
-            return
-        }
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
             val navControllerLocal = rememberNavController().also {
@@ -95,14 +87,13 @@ class SingleActivity :
                         navController = navControllerLocal,
                         bottomNavigationFeatureEntry = bottomNavigationFeatureEntry,
                         featureEntries = featureEntriesMutable.toPersistentSet(),
-                        composableEntries = composableEntriesMutable.toPersistentSet()
+                        composableEntries = composableEntriesMutable.toPersistentSet(),
+                        modifier = Modifier
+                            .safeDrawingPadding()
                     )
                 }
             })
         }
-        metricApi.reportSimpleEvent(SimpleEvent.APP_OPEN)
-
-        synchronizationApi.startSynchronization()
     }
 
     override fun onNewIntent(intent: Intent?) {

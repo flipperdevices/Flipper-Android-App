@@ -59,7 +59,7 @@ fun ComposableMainScreen(
                         // reselecting the same item
                         launchSingleTop = true
                         // Restore state when reselecting a previously selected item
-                        restoreState = true
+                        restoreState = selectedTab != it
                     }
                     navController.navigate(it.startRoute.name, topLevelNavOptions)
                 }
@@ -82,10 +82,12 @@ fun ComposableMainScreen(
                     }
                 }
             }
+
             ComposableInAppNotification(
                 modifier = Modifier.align(Alignment.BottomCenter),
                 notificationRenderer = notificationRenderer
             )
+            connectionApi.CheckAndShowUnsupportedDialog()
         }
     }
 }

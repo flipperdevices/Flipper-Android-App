@@ -27,7 +27,7 @@ class ConnectViewModel @VMInject constructor(
     private val alreadyRequestConnect = AtomicBoolean(false)
 
     fun goToConnectScreen(navController: NavController) {
-        navController.navigate(firstPairFeatureEntry.getFirstPairScreen())
+        navController.navigate(firstPairFeatureEntry.start())
     }
 
     fun connectAndSynchronize() {

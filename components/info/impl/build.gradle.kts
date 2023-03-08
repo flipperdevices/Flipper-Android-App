@@ -23,11 +23,11 @@ dependencies {
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.dialog)
     implementation(projects.components.core.share)
-    implementation(projects.components.updater.api)
 
     implementation(projects.components.info.api)
     implementation(projects.components.info.shared)
 
+    implementation(projects.components.updater.api)
     implementation(projects.components.firstpair.api)
     implementation(projects.components.updater.api)
     implementation(projects.components.settings.api)
@@ -37,6 +37,7 @@ dependencies {
     implementation(projects.components.bridge.synchronization.api)
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.pbutils)
+    implementation(projects.components.bridge.rpcinfo.api)
 
     // Core deps
     implementation(libs.ktx)

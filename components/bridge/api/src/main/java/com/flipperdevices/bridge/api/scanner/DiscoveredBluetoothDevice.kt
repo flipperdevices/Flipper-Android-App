@@ -2,9 +2,11 @@ package com.flipperdevices.bridge.api.scanner
 
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothDevice
+import android.os.ParcelUuid
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import no.nordicsemi.android.support.v18.scanner.ScanResult
+import java.util.UUID
 
 @Parcelize
 data class DiscoveredBluetoothDevice(
@@ -13,7 +15,8 @@ data class DiscoveredBluetoothDevice(
     private var nameInternal: String?,
     private var rssiInternal: Int,
     private var previousRssi: Int,
-    private var highestRssiInternal: Int = Byte.MIN_VALUE.toInt()
+    private var highestRssiInternal: Int = Byte.MIN_VALUE.toInt(),
+    private var servicesResult: List<ParcelUuid>? = null
 ) : Parcelable {
     // Wrapper for data variables
     val address: String get() = device.address
@@ -21,6 +24,7 @@ data class DiscoveredBluetoothDevice(
     val name: String? get() = nameInternal
     val rssi: Int get() = rssiInternal
     val highestRssi: Int get() = highestRssiInternal
+    val services: List<UUID> get() = servicesResult?.map { it.uuid } ?: emptyList()
 
     constructor(scanResult: ScanResult) : this(
         device = scanResult.device,
@@ -29,12 +33,14 @@ data class DiscoveredBluetoothDevice(
             ?: scanResult.device.getNameSafe(),
         rssiInternal = scanResult.rssi,
         previousRssi = scanResult.rssi,
-        highestRssiInternal = scanResult.rssi
+        highestRssiInternal = scanResult.rssi,
+        servicesResult = scanResult.scanRecord?.serviceUuids
     )
 
     fun update(scanResult: ScanResult) {
         lastScanResult = scanResult
         nameInternal = scanResult.scanRecord?.deviceName ?: nameInternal
+        servicesResult = scanResult.scanRecord?.serviceUuids
         previousRssi = rssiInternal
         rssiInternal = scanResult.rssi
         if (highestRssi < rssi) {
@@ -46,7 +52,7 @@ data class DiscoveredBluetoothDevice(
         if (other is DiscoveredBluetoothDevice) {
             return device.address == other.address
         }
-        return super.equals(other)
+        return false
     }
 
     override fun hashCode() = device.hashCode()

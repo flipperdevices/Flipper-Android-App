@@ -1,6 +1,5 @@
 package com.flipperdevices.core.ui.theme.composable
 
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -8,7 +7,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.preference.pb.SelectedTheme
-import com.flipperdevices.core.ui.theme.models.FlipperPallet
 import com.flipperdevices.core.ui.theme.viewmodel.ThemeViewModel
 
 /**
@@ -31,7 +29,7 @@ fun getThemedFlipperPallet(
         SelectedTheme.DARK -> darkPallet
         SelectedTheme.UNRECOGNIZED,
         SelectedTheme.SYSTEM -> getThemedFlipperPallet(isLight)
-    }
+    }.toAnimatePallet()
 }
 
 @Composable
@@ -47,16 +45,6 @@ fun isLight(
         SelectedTheme.UNRECOGNIZED,
         SelectedTheme.SYSTEM -> !systemIsDark
     }
-}
-
-fun setAppCompatDelegateTheme(theme: SelectedTheme) {
-    val systemThemeId = when (theme) {
-        SelectedTheme.LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
-        SelectedTheme.DARK -> AppCompatDelegate.MODE_NIGHT_YES
-        SelectedTheme.UNRECOGNIZED,
-        SelectedTheme.SYSTEM -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-    }
-    AppCompatDelegate.setDefaultNightMode(systemThemeId)
 }
 
 @Suppress("MagicNumber")
@@ -99,7 +87,9 @@ private val lightPallet = FlipperPallet(
     fapHubSelectedBackgroundColor = Color(0xFFFFFFFF),
     fapHubDividerColor = Color(0xFFE9E9E9),
     fapHubSortedColor = Color(0xFFAAAAAA),
-    fapHubCategoryText = Color(0xFF616161)
+    fapHubCategoryText = Color(0xFF616161),
+    fapHubActiveColor = Color(0xFF000000),
+    fapHubInactiveColor = Color(0xFF919191)
 )
 
 @Suppress("MagicNumber")
@@ -142,5 +132,7 @@ private val darkPallet = FlipperPallet(
     fapHubSelectedBackgroundColor = Color(0xFF1C1C1C),
     fapHubDividerColor = Color(0xFF303030),
     fapHubSortedColor = Color(0xFFC1C1C1),
-    fapHubCategoryText = Color(0xFFCCCCCC)
+    fapHubCategoryText = Color(0xFFCCCCCC),
+    fapHubActiveColor = Color(0xFF000000),
+    fapHubInactiveColor = Color(0xFF919191)
 )

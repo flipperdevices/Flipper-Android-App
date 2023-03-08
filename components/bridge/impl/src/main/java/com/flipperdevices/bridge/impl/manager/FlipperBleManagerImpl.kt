@@ -20,7 +20,6 @@ import com.flipperdevices.bridge.impl.manager.service.FlipperInformationApiImpl
 import com.flipperdevices.bridge.impl.manager.service.FlipperVersionApiImpl
 import com.flipperdevices.bridge.impl.manager.service.RestartRPCApiImpl
 import com.flipperdevices.bridge.impl.manager.service.request.FlipperRequestApiImpl
-import com.flipperdevices.bridge.impl.manager.service.requestservice.FlipperRpcInformationApiImpl
 import com.flipperdevices.bridge.impl.manager.service.requestservice.FlipperRtcUpdateService
 import com.flipperdevices.bridge.impl.utils.initializeSafe
 import com.flipperdevices.bridge.impl.utils.onServiceReceivedSafe
@@ -31,7 +30,6 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.debug
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.preference.pb.PairSettings
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.shake2report.api.Shake2ReportApi
@@ -46,7 +44,6 @@ import no.nordicsemi.android.ble.ConnectionPriorityRequest
 class FlipperBleManagerImpl(
     context: Context,
     private val settingsStore: DataStore<Settings>,
-    dataStore: DataStore<PairSettings>,
     private val scope: CoroutineScope,
     private val serviceErrorListener: FlipperServiceErrorListener,
     flipperLagsDetector: FlipperLagsDetector,
@@ -73,11 +70,6 @@ class FlipperBleManagerImpl(
     override val flipperVersionApi = FlipperVersionApiImpl(settingsStore)
 
     // RPC services
-    override val flipperRpcInformationApi = FlipperRpcInformationApiImpl(
-        scope,
-        metricApi,
-        dataStore
-    )
     private val flipperRtcUpdateService = FlipperRtcUpdateService()
 
     // Manager delegates
@@ -168,11 +160,6 @@ class FlipperBleManagerImpl(
                 )
             }
             runCatching {
-                flipperRpcInformationApi.initialize(flipperRequestApi)
-            }.onFailure {
-                error(it) { "Error while initialize rpc information api" }
-            }
-            runCatching {
                 flipperRtcUpdateService.initialize(flipperRequestApi)
             }.onFailure {
                 error(it) { "Error while initialize RTC" }
@@ -225,8 +212,6 @@ class FlipperBleManagerImpl(
             info { "FlipperVersionApi reset done" }
             flipperRequestApi.reset(this@FlipperBleManagerImpl)
             info { "FlipperRequestApi reset done" }
-            flipperRpcInformationApi.reset()
-            info { "FlipperRpcInformationApi reset done" }
             restartRPCApi.reset(this@FlipperBleManagerImpl)
             info { "RestartRPCApi reset done" }
         }

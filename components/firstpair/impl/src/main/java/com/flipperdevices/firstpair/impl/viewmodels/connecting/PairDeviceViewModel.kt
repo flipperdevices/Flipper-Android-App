@@ -27,7 +27,8 @@ private const val TIMEOUT_MS = 30L * 1000
 
 class PairDeviceViewModel @VMInject constructor(
     application: Application,
-    private val firstPairStorage: FirstPairStorage
+    private val firstPairStorage: FirstPairStorage,
+    private val deviceColorSaver: DeviceColorSaver
 ) : AndroidViewModel(application),
     LogTagProvider {
     override val TAG = "PairDeviceViewModel"
@@ -51,13 +52,15 @@ class PairDeviceViewModel @VMInject constructor(
                 withTimeout(TIMEOUT_MS) {
                     firstPairBleManager.connectToDevice(device.device)
                 }
+                deviceColorSaver.saveDeviceColor(device)
             } catch (timeout: TimeoutCancellationException) {
                 pairState.emit(DevicePairState.Timeout)
             } catch (anyOtherException: Throwable) {
                 error(anyOtherException) { "Fatal exception while try connecting to device" }
                 pairState.emit(DevicePairState.Timeout)
+            } finally {
+                connectingJob = null
             }
-            connectingJob = null
         }
     }
 

@@ -128,7 +128,8 @@ private fun Project.suppressOptIn() {
                     "-Xopt-in=kotlin.time.ExperimentalTime",
                     "-Xopt-in=kotlin.RequiresOptIn",
                     "-Xopt-in=androidx.compose.animation.ExperimentalAnimationApi",
-                    "-Xopt-in=com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi" // ktlint-disable max-line-length
+                    "-Xopt-in=com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi", // ktlint-disable max-line-length
+                    "-Xopt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi"
                 )
             }
         }
