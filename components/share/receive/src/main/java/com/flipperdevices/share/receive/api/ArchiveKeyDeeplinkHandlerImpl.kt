@@ -1,5 +1,10 @@
 package com.flipperdevices.share.receive.api
 
+import android.content.Intent
+import androidx.core.net.toUri
+import androidx.navigation.NavController
+import com.flipperdevices.archive.api.ArchiveFeatureEntry
+import com.flipperdevices.bottombar.api.BottomNavigationHandleDeeplink
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.deeplink.api.DeepLinkHandler
 import com.flipperdevices.deeplink.api.DispatcherPriority
@@ -7,8 +12,7 @@ import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
-import com.flipperdevices.share.api.ArchiveKeyDeeplinkHandler
-import com.github.terrakok.cicerone.Router
+import com.flipperdevices.share.api.KeyReceiveFeatureEntry
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
 import javax.inject.Inject
@@ -16,8 +20,11 @@ import javax.inject.Inject
 @ContributesBinding(AppGraph::class)
 @ContributesMultibinding(AppGraph::class, DeepLinkHandler::class)
 class ArchiveKeyDeeplinkHandlerImpl @Inject constructor(
-    private val metricApi: MetricApi
-) : ArchiveKeyDeeplinkHandler {
+    private val metricApi: MetricApi,
+    private val archiveFeatureEntry: ArchiveFeatureEntry,
+    private val keyReceiveFeatureEntry: KeyReceiveFeatureEntry,
+    private val bottomHandleDeeplink: BottomNavigationHandleDeeplink
+) : DeepLinkHandler {
     override fun isSupportLink(link: Deeplink): DispatcherPriority? {
         if (link !is Deeplink.FlipperKey) {
             return null
@@ -33,8 +40,19 @@ class ArchiveKeyDeeplinkHandlerImpl @Inject constructor(
         }
     }
 
-    override fun processLink(router: Router, link: Deeplink) {
-        // TODO
+    override fun processLink(navController: NavController, link: Deeplink) {
         metricApi.reportSimpleEvent(SimpleEvent.OPEN_SAVE_KEY)
+
+        val archiveIntent = Intent().apply {
+            data = archiveFeatureEntry.getArchiveScreenByDeeplink().toUri()
+        }
+
+        val keyReceiveIntent = Intent().apply {
+            data = keyReceiveFeatureEntry.getKeyReceiveScreenDeeplinkUrl(link).toUri()
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+
+        bottomHandleDeeplink.handleDeepLink(archiveIntent)
+        navController.handleDeepLink(keyReceiveIntent)
     }
 }

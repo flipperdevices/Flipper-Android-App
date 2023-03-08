@@ -9,6 +9,7 @@ dependencies {
     implementation(projects.components.keyscreen.api)
     implementation(projects.components.share.api)
     implementation(projects.components.keyscreen.shared)
+    implementation(projects.components.archive.api)
 
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.di)
@@ -33,6 +34,7 @@ dependencies {
     implementation(projects.components.keyedit.api)
     implementation(projects.components.nfceditor.api)
     implementation(projects.components.deeplink.api)
+    implementation(projects.components.bottombar.api)
 
     implementation(libs.kotlin.serialization.json)
 

@@ -27,6 +27,8 @@ dependencies {
     implementation(projects.components.hub.api)
     implementation(projects.components.deeplink.api)
 
+    implementation(libs.kotlin.serialization.json)
+
     implementation(libs.appcompat)
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
