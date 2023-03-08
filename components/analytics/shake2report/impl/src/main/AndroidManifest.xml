@@ -1,12 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         package="com.flipperdevices.analytics.shake2report.impl">
-
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission
-            android:name="android.permission.HIGH_SAMPLING_RATE_SENSORS"
-            tools:ignore="HighSamplingRate" />
-
     <application>
         <meta-data
                 android:name="io.sentry.auto-init"
@@ -14,10 +8,5 @@
         <meta-data
                 android:name="io.sentry.dsn"
                 android:value="https://e3c73bc8fe924e97bcb8719dd8b2cee9@sentry.flipperdevices.com/2" />
-
-        <activity
-                android:exported="false"
-                android:screenOrientation="portrait"
-                android:name=".activity.Shake2ReportActivity" />
     </application>
 </manifest>

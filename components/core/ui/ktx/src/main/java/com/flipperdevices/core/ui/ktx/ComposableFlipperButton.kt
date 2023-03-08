@@ -23,13 +23,20 @@ fun ComposableFlipperButton(
     modifier: Modifier = Modifier,
     textPadding: PaddingValues = PaddingValues(vertical = 16.dp, horizontal = 38.dp),
     onClick: () -> Unit = {},
-    textStyle: TextStyle = TextStyle()
+    textStyle: TextStyle = TextStyle(),
+    enabled: Boolean = true
 ) {
+    val background = if (enabled) {
+        LocalPallet.current.accentSecond
+    } else {
+        LocalPallet.current.flipperDisableButton
+    }
+
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(size = 30.dp))
             .placeholderByLocalProvider()
-            .background(LocalPallet.current.accentSecond)
+            .background(background)
             .clickableRipple(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
