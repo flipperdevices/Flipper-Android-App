@@ -28,7 +28,6 @@ import javax.inject.Inject
 private const val DEEPLINK_KEY = DeeplinkConstants.KEY
 private const val DEEPLINK_SCHEME = DeeplinkConstants.SCHEMA
 private const val DEEPLINK_WIDGET_URL = "${DEEPLINK_SCHEME}widget={$DEEPLINK_KEY}"
-internal const val EXTRA_WIDGET_ID_KEY = "widget_id"
 
 @ContributesBinding(AppGraph::class, WidgetFeatureEntry::class)
 @ContributesMultibinding(AppGraph::class, ComposableFeatureEntry::class)
@@ -36,10 +35,6 @@ class WidgetFeatureEntryImpl @Inject constructor(
     private val archiveApi: ArchiveApi,
     private val searchFeatureEntry: SearchFeatureEntry
 ) : WidgetFeatureEntry {
-    override fun getWidgetScreen(widgetId: Int): String {
-        return "@${ROUTE.name}?id=$widgetId"
-    }
-
     override fun getWidgetScreenByDeeplink(deeplink: Deeplink): String {
         val deeplinkStr = Uri.encode(Json.encodeToString(deeplink))
         return "${DEEPLINK_SCHEME}widget=$deeplinkStr"
