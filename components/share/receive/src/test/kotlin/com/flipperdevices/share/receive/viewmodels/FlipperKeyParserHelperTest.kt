@@ -74,7 +74,7 @@ class FlipperKeyParserHelperTest {
     @Test
     fun `Web update deeplink parse`() = runTest {
         // Initialize
-        val deeplink = Deeplink.WebUpdate(url = "", name = "", intent = mockk())
+        val deeplink = Deeplink.WebUpdate(url = "", name = "")
 
         // Actions
         val resultParse = flipperKeyParserHelper.toFlipperKey(deeplink)

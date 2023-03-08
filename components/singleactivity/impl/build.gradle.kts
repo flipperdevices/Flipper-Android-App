@@ -8,7 +8,6 @@ dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)
-    implementation(projects.components.core.navigation)
     implementation(projects.components.core.ui.navigation)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.theme)
@@ -38,6 +37,4 @@ dependencies {
     // Dagger deps
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
-
-    implementation(libs.cicerone)
 }

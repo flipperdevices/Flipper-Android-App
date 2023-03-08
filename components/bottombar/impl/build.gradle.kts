@@ -12,11 +12,9 @@ dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.log)
-    implementation(projects.components.core.navigation)
     implementation(projects.components.core.preference)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.ktx)
-    implementation(projects.components.core.ui.fragment)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.navigation)
 
@@ -26,6 +24,8 @@ dependencies {
     implementation(projects.components.inappnotification.api)
     implementation(projects.components.hub.api)
     implementation(projects.components.deeplink.api)
+
+    implementation(libs.kotlin.serialization.json)
 
     implementation(libs.appcompat)
     implementation(libs.dagger)
@@ -47,6 +47,4 @@ dependencies {
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.ktx.fragment)
-
-    implementation(libs.cicerone)
 }

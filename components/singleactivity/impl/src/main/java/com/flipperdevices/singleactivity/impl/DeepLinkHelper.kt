@@ -10,6 +10,7 @@ import com.flipperdevices.core.ktx.android.toFullString
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.deeplink.api.DeepLinkDispatcher
 import com.flipperdevices.deeplink.api.DeepLinkParser
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.firstpair.api.FirstPairApi
@@ -27,6 +28,7 @@ interface DeepLinkHelper {
     suspend fun onNewIntent(context: Context, navController: NavController, intent: Intent)
     suspend fun onNewDeeplink(navController: NavController, deeplink: Deeplink)
     suspend fun invalidate(navController: NavController)
+    fun getStartDestination(): String
 }
 
 @Singleton
@@ -38,7 +40,8 @@ class DeepLinkHelperImpl @Inject constructor(
     private val updaterApi: UpdaterApi,
     private val updaterFeatureEntry: UpdaterFeatureEntry,
     private val bottomBarFeatureEntry: BottomNavigationFeatureEntry,
-    private val deepLinkParser: DeepLinkParser
+    private val deepLinkParser: DeepLinkParser,
+    private val deepLinkDispatcher: DeepLinkDispatcher
 ) : DeepLinkHelper, LogTagProvider {
     override val TAG = "DeepLinkHelper"
 
@@ -78,16 +81,18 @@ class DeepLinkHelperImpl @Inject constructor(
         val topScreenOptions = navOptions {
             popUpTo(0) {
                 inclusive = true
+                saveState = true
             }
+            launchSingleTop = true
+            restoreState = true
         }
 
         if (firstPairApi.shouldWeOpenPairScreen()) {
-            navController.navigate(firstPairFeatureEntry.start(), topScreenOptions)
             return@withContext
         }
 
         if (updaterApi.isUpdateInProcess()) {
-            navController.navigate(updaterFeatureEntry.getUpdaterScreen())
+            navController.navigate(updaterFeatureEntry.getUpdaterScreen(), topScreenOptions)
             return@withContext
         }
 
@@ -98,13 +103,13 @@ class DeepLinkHelperImpl @Inject constructor(
 
         val deeplink = deeplinkStack.pop()
         info { "Process deeplink $deeplink" }
-        @Suppress("ForbiddenComment")
-        if (deeplink.isInternal) {
-            // TODO: Handle deeplink
-            navController.navigate(bottomBarFeatureEntry.start(), topScreenOptions)
-        } else {
-            navController.navigate(bottomBarFeatureEntry.start(), topScreenOptions)
-            // TODO: deepLinkDispatcher.process()
+        deepLinkDispatcher.process(navController = navController, deeplink = deeplink)
+    }
+
+    override fun getStartDestination(): String {
+        return when {
+            firstPairApi.shouldWeOpenPairScreen() -> firstPairFeatureEntry.start()
+            else -> bottomBarFeatureEntry.start()
         }
     }
 }

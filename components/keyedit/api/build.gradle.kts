@@ -9,7 +9,5 @@ dependencies {
     implementation(projects.components.core.preference)
     implementation(projects.components.core.ui.navigation)
 
-    implementation(libs.cicerone)
-
     implementation(libs.kotlin.serialization.json)
 }

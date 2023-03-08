@@ -11,10 +11,8 @@ dependencies {
 
     implementation(projects.components.core.di)
     implementation(projects.components.core.ktx)
-    implementation(projects.components.core.navigation)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.ktx)
-    implementation(projects.components.core.ui.fragment)
     implementation(projects.components.core.preference)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.navigation)
@@ -22,6 +20,7 @@ dependencies {
     implementation(projects.components.connection.api)
     implementation(projects.components.keyscreen.api)
     implementation(projects.components.keyedit.api)
+    implementation(projects.components.deeplink.api)
 
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.synchronization.api)
@@ -45,8 +44,6 @@ dependencies {
     implementation(libs.tangle.viewmodel.compose)
     implementation(libs.tangle.viewmodel.api)
     anvil(libs.tangle.viewmodel.compiler)
-
-    implementation(libs.cicerone)
 
     implementation(libs.kotlin.immutable.collections)
 

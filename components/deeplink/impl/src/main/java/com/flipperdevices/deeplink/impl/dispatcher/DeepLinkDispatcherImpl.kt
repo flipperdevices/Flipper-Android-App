@@ -1,12 +1,12 @@
 package com.flipperdevices.deeplink.impl.dispatcher
 
+import androidx.navigation.NavController
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.deeplink.api.DeepLinkDispatcher
 import com.flipperdevices.deeplink.api.DeepLinkHandler
 import com.flipperdevices.deeplink.model.Deeplink
-import com.github.terrakok.cicerone.Router
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
@@ -16,7 +16,7 @@ class DeepLinkDispatcherImpl @Inject constructor(
 ) : DeepLinkDispatcher, LogTagProvider {
     override val TAG = "DeepLinkDispatcher"
 
-    override fun process(router: Router, deeplink: Deeplink): Boolean {
+    override fun process(navController: NavController, deeplink: Deeplink): Boolean {
         val supportedHandlers = handlers.map { it.isSupportLink(deeplink) to it }
             .filter { it.first != null }
 
@@ -30,7 +30,7 @@ class DeepLinkDispatcherImpl @Inject constructor(
                 "with priority ${processHandler.first}"
         }
 
-        processHandler.second.processLink(router, deeplink)
+        processHandler.second.processLink(navController = navController, deeplink)
 
         return true
     }

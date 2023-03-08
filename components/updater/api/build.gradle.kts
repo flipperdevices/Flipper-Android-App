@@ -14,6 +14,4 @@ dependencies {
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.compose.ui)
-
-    implementation(libs.cicerone)
 }

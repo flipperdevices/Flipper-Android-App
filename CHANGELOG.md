@@ -33,7 +33,7 @@
 - [REFACTOR] Enable detekt formatting with rules
 - [REFACTOR] Fix gradle warnings (Deprecated API, PredefinedEnumMap)
 - [REFACTOR] Replace some clickable to card function + reuse orange app bar
-- [REFACTOR] Google Compose Navigation (archive, firstpair, widgets(composable entry), updater, import)
+- [REFACTOR] Google Compose Navigation (archive, firstpair, widgets, updater, import, deeplinks)
 - [REFACTOR] Migrate to new device info api
 - [REFACTOR] Migrate to isSupported in version api
 

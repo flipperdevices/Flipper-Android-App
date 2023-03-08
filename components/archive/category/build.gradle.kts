@@ -14,7 +14,6 @@ dependencies {
     implementation(projects.components.core.activityholder)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.ktx)
-    implementation(projects.components.core.ui.fragment)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.dialog)
     implementation(projects.components.core.ui.navigation)
@@ -23,7 +22,6 @@ dependencies {
     implementation(projects.components.bridge.synchronization.api)
     implementation(projects.components.keyscreen.api)
 
-    implementation(libs.cicerone)
     implementation(libs.appcompat)
 
     // Compose

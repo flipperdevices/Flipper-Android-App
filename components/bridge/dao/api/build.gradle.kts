@@ -10,9 +10,6 @@ dependencies {
     implementation(projects.components.core.ktx)
 
     implementation(libs.kotlin.coroutines)
-
-    implementation(libs.cicerone)
-
     implementation(libs.kotlin.serialization.json)
     implementation(libs.kotlin.immutable.collections)
 
