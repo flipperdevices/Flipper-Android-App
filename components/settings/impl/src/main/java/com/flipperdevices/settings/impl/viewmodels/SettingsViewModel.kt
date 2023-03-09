@@ -4,18 +4,16 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.flipperdevices.core.di.ApplicationParams
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
-import com.flipperdevices.core.navigation.global.CiceroneGlobal
 import com.flipperdevices.core.preference.pb.SelectedTheme
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.share.ShareHelper
-import com.flipperdevices.debug.api.StressTestFeatureEntry
-import com.flipperdevices.screenstreaming.api.ScreenStreamingFeatureEntry
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.model.ExportState
-import com.flipperdevices.shake2report.api.Shake2ReportApi
+import com.flipperdevices.shake2report.api.Shake2ReportFeatureEntry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -28,12 +26,9 @@ import tangle.viewmodel.VMInject
 @Suppress("LongParameterList")
 class SettingsViewModel @VMInject constructor(
     private val dataStoreSettings: DataStore<Settings>,
-    private val cicerone: CiceroneGlobal,
-    private val shakeToReportApi: Shake2ReportApi,
-    val screenStreamingFeatureEntry: ScreenStreamingFeatureEntry,
-    val stressTestFeatureEntry: StressTestFeatureEntry,
     private val applicationParams: ApplicationParams,
-    private val exportKeysHelper: ExportKeysHelper
+    private val exportKeysHelper: ExportKeysHelper,
+    private val shake2ReportFeatureEntry: Shake2ReportFeatureEntry
 ) : ViewModel(), LogTagProvider {
     override val TAG = "SettingsViewModel"
 
@@ -70,11 +65,8 @@ class SettingsViewModel @VMInject constructor(
         }
     }
 
-    fun onReportBug(context: Context) {
-        val screen = shakeToReportApi.reportBugScreen(context)
-        if (screen != null) {
-            cicerone.getRouter().navigateTo(screen)
-        }
+    fun onReportBug(navController: NavController) {
+        navController.navigate(shake2ReportFeatureEntry.start())
     }
 
     fun onMakeExport(context: Context) {

@@ -18,8 +18,6 @@
     <string name="debug_ignored_unsupported_version_desc">App will work with an unsupported Flipper firmware version</string>
     <string name="debug_ignored_update_version">Ignore Firmware Version in Updater</string>
     <string name="debug_ignored_update_version_desc">Update button is active even if the selected Flipper firmware version is already installed</string>
-    <string name="debug_shake2report">Enable \"shake to report\"</string>
-    <string name="debug_shake2report_desc">Shake your phone to submit a bug report</string>
     <string name="debug_subghz_provisioning_ignore">Skip SubGhz provisioning</string>
     <string name="debug_subghz_provisioning_ignore_desc">Not provisioning SubGhz region when hardware region 0</string>
     <string name="debug_restart_rpc">Restart RPC</string>
