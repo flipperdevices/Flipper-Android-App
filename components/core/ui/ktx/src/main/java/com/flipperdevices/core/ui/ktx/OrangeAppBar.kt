@@ -41,7 +41,7 @@ fun OrangeAppBar(
     onBack: (() -> Unit)? = null,
     endBlock: (@Composable (Modifier) -> Unit)? = null
 ) {
-    SetUpStatusBarColor(LocalPallet.current.accent)
+    SetUpStatusBarColor(LocalPallet.current.accent, darkIcon = true)
     Row(
         modifier = modifier
             .fillMaxWidth()

@@ -6,13 +6,21 @@ import androidx.compose.ui.graphics.Color
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
-fun SetUpStatusBarColor(color: Color) {
+fun SetUpStatusBarColor(color: Color, darkIcon: Boolean? = null) {
     val systemUiController = rememberSystemUiController()
     DisposableEffect(systemUiController, color) {
-        systemUiController.setStatusBarColor(
-            color = color,
-            transformColorForLightContent = { color }
-        )
+        if (darkIcon == null) {
+            systemUiController.setStatusBarColor(
+                color = color,
+                transformColorForLightContent = { color },
+            )
+        } else {
+            systemUiController.setStatusBarColor(
+                color = color,
+                transformColorForLightContent = { color },
+                darkIcons = darkIcon
+            )
+        }
 
         onDispose {}
     }
