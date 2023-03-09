@@ -24,6 +24,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.core.ui.ktx.SetUpNavigationBarColor
+import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.screenstreaming.impl.R
 import com.flipperdevices.screenstreaming.impl.viewmodel.FLIPPER_SCREEN_RATIO
 import com.flipperdevices.screenstreaming.impl.viewmodel.ScreenStreamingViewModel
@@ -59,6 +61,7 @@ fun ComposableScreen(
             Text(stringResource(R.string.screen_streaming_speed_send, tx))
         }
     }
+    SetUpNavigationBarColor(LocalPallet.current.background)
 }
 
 @ExperimentalFoundationApi

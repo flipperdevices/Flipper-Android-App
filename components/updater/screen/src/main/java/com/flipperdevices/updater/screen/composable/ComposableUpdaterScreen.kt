@@ -1,6 +1,7 @@
 package com.flipperdevices.updater.screen.composable
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -17,6 +18,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.preference.pb.HardwareColor
+import com.flipperdevices.core.ui.ktx.SetUpNavigationBarColor
+import com.flipperdevices.core.ui.ktx.SetUpStatusBarColor
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
@@ -33,7 +36,11 @@ fun ComposableUpdaterScreen(
     onRetry: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(modifier) {
+    SetUpStatusBarColor(LocalPallet.current.background)
+    Column(
+        modifier
+            .background(LocalPallet.current.background)
+    ) {
         Column(
             Modifier
                 .weight(weight = 1f)
@@ -132,4 +139,5 @@ private fun CancelButton(
             style = LocalTypography.current.buttonM16
         )
     }
+    SetUpNavigationBarColor(LocalPallet.current.background)
 }
