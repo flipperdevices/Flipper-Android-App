@@ -48,7 +48,7 @@ private fun DeviceBar(deviceStatus: DeviceStatus) {
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        SetUpStatusBarColor(LocalPallet.current.accent)
+        SetUpStatusBarColor(LocalPallet.current.accent, darkIcon = true)
         FlipperImage(deviceStatus)
         FlipperInformation(deviceStatus)
     }
