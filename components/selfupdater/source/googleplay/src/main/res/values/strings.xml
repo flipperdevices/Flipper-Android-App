@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="ready_update_title">Update Downloaded</string>
+    <string name="ready_update_title">Update Ready</string>
     <string name="ready_update_text">New update is ready and can be installed</string>
     <string name="ready_update_button">Update</string>
-    <string name="pending_update_title">New Update</string>
-    <string name="pending_update_desc">New update from Google Play Market available</string>
-    <string name="pending_update_accept">Download</string>
-    <string name="pending_update_decline">Not Now</string>
+    <string name="ready_update_cancel_button">Not Now</string>
 </resources>
