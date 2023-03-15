@@ -25,7 +25,7 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 fun OrangeAppBar(
     @StringRes titleId: Int,
     onBack: (() -> Unit)? = null,
-    endBlock: (@Composable () -> Unit)? = null
+    endBlock: (@Composable (Modifier) -> Unit)? = null
 ) {
     OrangeAppBar(
         title = stringResource(titleId),
@@ -39,8 +39,9 @@ fun OrangeAppBar(
     title: String,
     modifier: Modifier = Modifier,
     onBack: (() -> Unit)? = null,
-    endBlock: (@Composable () -> Unit)? = null
+    endBlock: (@Composable (Modifier) -> Unit)? = null
 ) {
+    SetUpStatusBarColor(LocalPallet.current.accent, darkIcon = true)
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -68,7 +69,7 @@ fun OrangeAppBar(
             overflow = TextOverflow.Ellipsis
         )
         if (endBlock != null) {
-            endBlock()
+            endBlock(Modifier.padding(end = 14.dp))
         }
     }
 }

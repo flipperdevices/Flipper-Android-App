@@ -85,7 +85,7 @@ class SingleActivity :
                 ) {
                     ComposableSingleActivityNavHost(
                         navController = navControllerLocal,
-                        bottomNavigationFeatureEntry = bottomNavigationFeatureEntry,
+                        starDestination = deepLinkHelper.getStartDestination(),
                         featureEntries = featureEntriesMutable.toPersistentSet(),
                         composableEntries = composableEntriesMutable.toPersistentSet(),
                         modifier = Modifier

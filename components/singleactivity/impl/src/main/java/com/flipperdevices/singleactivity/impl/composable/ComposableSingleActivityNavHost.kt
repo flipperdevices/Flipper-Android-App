@@ -7,7 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.flipperdevices.bottombar.api.BottomNavigationFeatureEntry
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import kotlinx.collections.immutable.ImmutableSet
@@ -15,7 +14,7 @@ import kotlinx.collections.immutable.ImmutableSet
 @Composable
 fun ComposableSingleActivityNavHost(
     navController: NavHostController,
-    bottomNavigationFeatureEntry: BottomNavigationFeatureEntry,
+    starDestination: String,
     featureEntries: ImmutableSet<AggregateFeatureEntry>,
     composableEntries: ImmutableSet<ComposableFeatureEntry>,
     modifier: Modifier = Modifier,
@@ -25,7 +24,7 @@ fun ComposableSingleActivityNavHost(
             .fillMaxSize()
             .background(MaterialTheme.colors.background),
         navController = navController,
-        startDestination = bottomNavigationFeatureEntry.start()
+        startDestination = starDestination
     ) {
         featureEntries.forEach {
             with(it) {

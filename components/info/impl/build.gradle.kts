@@ -32,6 +32,7 @@ dependencies {
     implementation(projects.components.updater.api)
     implementation(projects.components.settings.api)
     implementation(projects.components.deeplink.api)
+    implementation(projects.components.bottombar.api)
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.synchronization.api)

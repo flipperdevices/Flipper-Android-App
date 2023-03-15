@@ -28,6 +28,8 @@ dependencies {
     implementation(projects.components.deeplink.api)
     implementation(projects.components.selfupdater.api)
 
+    implementation(libs.kotlin.serialization.json)
+
     implementation(libs.appcompat)
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)

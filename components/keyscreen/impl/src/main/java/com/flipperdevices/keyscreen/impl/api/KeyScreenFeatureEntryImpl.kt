@@ -5,11 +5,13 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.api.model.navigation.FlipperKeyPathType
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
+import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.flipperdevices.keyedit.api.KeyEditFeatureEntry
 import com.flipperdevices.keyscreen.api.KeyEmulateApi
 import com.flipperdevices.keyscreen.api.KeyScreenFeatureEntry
@@ -27,7 +29,10 @@ import tangle.viewmodel.compose.tangleViewModel
 import javax.inject.Inject
 
 internal const val EXTRA_KEY_PATH = "flipper_key_path"
+private const val DEEPLINK_SCHEME = DeeplinkConstants.SCHEMA
+private const val DEEPLINK_FLIPPER_KEY_URL = "${DEEPLINK_SCHEME}flipper_key={$EXTRA_KEY_PATH}"
 
+@Suppress("LongParameterList")
 @ContributesBinding(AppGraph::class, KeyScreenFeatureEntry::class)
 @ContributesMultibinding(AppGraph::class, ComposableFeatureEntry::class)
 class KeyScreenFeatureEntryImpl @Inject constructor(
@@ -42,6 +47,11 @@ class KeyScreenFeatureEntryImpl @Inject constructor(
         return "@${ROUTE.name}?key_path=${Uri.encode(Json.encodeToString(keyPath))}"
     }
 
+    override fun getKeyScreenByDeeplink(keyPath: FlipperKeyPath): String {
+        val keyPathStr = Uri.encode(Json.encodeToString(keyPath))
+        return "${DEEPLINK_SCHEME}flipper_key=$keyPathStr"
+    }
+
     private val keyScreenArguments = listOf(
         navArgument(EXTRA_KEY_PATH) {
             nullable = false
@@ -49,10 +59,17 @@ class KeyScreenFeatureEntryImpl @Inject constructor(
         }
     )
 
+    private val deeplinkArguments = listOf(
+        navDeepLink {
+            uriPattern = DEEPLINK_FLIPPER_KEY_URL
+        }
+    )
+
     override fun NavGraphBuilder.composable(navController: NavHostController) {
         composable(
             route = "@${ROUTE.name}?key_path={$EXTRA_KEY_PATH}",
-            arguments = keyScreenArguments
+            arguments = keyScreenArguments,
+            deepLinks = deeplinkArguments
         ) {
             val viewModel: KeyScreenViewModel = tangleViewModel()
             KeyScreenNavigation(shareBottomFeatureEntry) { onShare ->

@@ -1,31 +1,33 @@
-package com.flipperdevices.widget.screen.deeplink
+package com.flipperdevices.info.impl.api
 
 import android.content.Intent
 import androidx.core.net.toUri
 import androidx.navigation.NavController
+import com.flipperdevices.bottombar.api.BottomNavigationHandleDeeplink
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.deeplink.api.DeepLinkHandler
 import com.flipperdevices.deeplink.api.DispatcherPriority
 import com.flipperdevices.deeplink.model.Deeplink
-import com.flipperdevices.widget.api.WidgetFeatureEntry
+import com.flipperdevices.info.api.screen.InfoFeatureEntry
 import com.squareup.anvil.annotations.ContributesMultibinding
 import javax.inject.Inject
 
 @ContributesMultibinding(AppGraph::class, DeepLinkHandler::class)
-class WidgetDeeplinkHandler @Inject constructor(
-    private val widgetFeatureEntry: WidgetFeatureEntry
+class InfoDeeplinkHandler @Inject constructor(
+    private val infoFeatureEntry: InfoFeatureEntry,
+    private val bottomHandleDeeplink: BottomNavigationHandleDeeplink
 ) : DeepLinkHandler {
     override fun isSupportLink(link: Deeplink): DispatcherPriority? {
         return when (link) {
-            is Deeplink.WidgetOptions -> DispatcherPriority.HIGH
+            is Deeplink.WebUpdate -> DispatcherPriority.DEFAULT
             else -> null
         }
     }
 
     override fun processLink(navController: NavController, link: Deeplink) {
         val intent = Intent().apply {
-            data = widgetFeatureEntry.getWidgetScreenByDeeplink(link).toUri()
+            data = infoFeatureEntry.getWebUpdateByDeeplink(link).toUri()
         }
-        navController.handleDeepLink(intent)
+        bottomHandleDeeplink.handleDeepLink(intent)
     }
 }

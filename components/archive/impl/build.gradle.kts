@@ -22,6 +22,7 @@ dependencies {
     implementation(projects.components.connection.api)
     implementation(projects.components.keyscreen.api)
     implementation(projects.components.keyedit.api)
+    implementation(projects.components.deeplink.api)
 
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.synchronization.api)

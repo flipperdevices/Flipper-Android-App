@@ -115,8 +115,7 @@ class UpdateCardHelperTest {
             alwaysShowUpdate = false,
             webUpdate = Deeplink.WebUpdate(
                 name = "123 test",
-                url = "456",
-                intent = null
+                url = "456"
             ),
             latestVersionAsync = latestVersionAsync
         )

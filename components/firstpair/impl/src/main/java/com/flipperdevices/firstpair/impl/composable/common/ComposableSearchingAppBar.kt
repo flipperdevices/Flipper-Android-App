@@ -1,5 +1,6 @@
 package com.flipperdevices.firstpair.impl.composable.common
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -13,7 +14,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.core.ui.ktx.SetUpStatusBarColor
 import com.flipperdevices.core.ui.ktx.clickableRipple
+import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.firstpair.impl.R
 import com.flipperdevices.core.ui.res.R as DesignSystem
@@ -27,8 +30,11 @@ fun ComposableSearchingAppBar(
     onBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    SetUpStatusBarColor(LocalPallet.current.background)
     Row(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .background(LocalPallet.current.background),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
