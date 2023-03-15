@@ -1,5 +1,5 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.android-compose")
     id("com.squareup.anvil")
     id("kotlin-kapt")
 }
@@ -8,10 +8,12 @@ dependencies {
     implementation(projects.components.analytics.shake2report.api)
     implementation(projects.components.bridge.api)
     implementation(projects.components.core.di)
+    implementation(projects.components.core.ui.navigation)
 
     implementation(libs.cicerone)
     implementation(libs.annotations)
     implementation(libs.appcompat)
+    implementation(libs.compose.navigation)
 
     // Dagger deps
     implementation(libs.dagger)

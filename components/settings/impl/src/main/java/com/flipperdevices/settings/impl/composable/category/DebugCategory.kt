@@ -71,13 +71,6 @@ private fun DebugCategoryItems(
     )
     GrayDivider()
     SwitchableElement(
-        titleId = R.string.debug_shake2report,
-        descriptionId = R.string.debug_shake2report_desc,
-        state = settings.shakeToReport,
-        onSwitchState = debugViewModel::onSwitchShakeToReport
-    )
-    GrayDivider()
-    SwitchableElement(
         titleId = R.string.debug_subghz_provisioning_ignore,
         descriptionId = R.string.debug_subghz_provisioning_ignore_desc,
         state = settings.ignoreSubghzProvisioningOnZeroRegion,

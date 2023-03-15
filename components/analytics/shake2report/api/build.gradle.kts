@@ -3,7 +3,6 @@ plugins {
 }
 
 dependencies {
-    implementation(libs.cicerone)
-
     implementation(projects.components.bridge.api)
+    implementation(projects.components.core.ui.navigation)
 }
