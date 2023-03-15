@@ -54,6 +54,7 @@ grgit-gradle = "8d818b74b9"
 tangle = "0.15.1" # https://github.com/RBusarow/Tangle/releases
 work = "2.7.1" # https://developer.android.com/jetpack/androidx/releases/work
 coil = "2.2.2" # https://github.com/coil-kt/coil/releases
+play-core = "2.0.1" # https://developer.android.com/guide/playcore#java-kotlin-in-app-update
 
 # Testing
 junit = "4.12"
@@ -221,6 +222,10 @@ wear-interaction-remote = { module = "androidx.wear:wear-remote-interactions", v
 
 # Work manager
 work-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "work" }
+
+# Google play core
+app-update = { module = "com.google.android.play:app-update", version.ref = "play-core" }
+app-update-ktx = { module = "com.google.android.play:app-update-ktx", version.ref = "play-core" }
 
 
 

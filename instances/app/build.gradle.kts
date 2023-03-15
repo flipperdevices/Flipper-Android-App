@@ -1,3 +1,6 @@
+import com.flipperdevices.buildlogic.ApkConfig
+import com.flipperdevices.buildlogic.SourceInstall
+
 plugins {
     id("flipper.android-app")
     id("com.squareup.anvil")
@@ -102,7 +105,7 @@ dependencies {
     implementation(projects.components.nfceditor.impl)
 
     implementation(projects.components.wearable.sync.handheld.api)
-    if (com.flipperdevices.buildlogic.ApkConfig.IS_GOOGLE_FEATURE_AVAILABLE) {
+    if (ApkConfig.IS_GOOGLE_FEATURE_AVAILABLE) {
         implementation(libs.wear.gms)
         implementation(projects.components.wearable.sync.handheld.impl)
         implementation(projects.components.wearable.emulate.handheld.impl)
@@ -156,7 +159,17 @@ dependencies {
     implementation(projects.components.faphub.installedtab.impl)
 
     implementation(projects.components.selfupdater.api)
-    implementation(projects.components.selfupdater.impl)
+    when (ApkConfig.sourceInstall) {
+        SourceInstall.GITHUB -> {
+            implementation(projects.components.selfupdater.source.github)
+        }
+        SourceInstall.GOOGLE_PLAY -> {
+            implementation(projects.components.selfupdater.source.googleplay)
+        }
+        SourceInstall.NONE -> {
+            implementation(projects.components.selfupdater.source.noop)
+        }
+    }
 
     implementation(libs.ktor.client)
 

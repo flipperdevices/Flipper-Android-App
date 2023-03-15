@@ -13,8 +13,8 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
-import com.flipperdevices.impl.api.SelfUpdaterApi
 import com.flipperdevices.inappnotification.api.InAppNotificationRenderer
+import com.flipperdevices.selfupdater.api.SelfUpdaterUIApi
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
 import kotlinx.collections.immutable.toPersistentSet
@@ -30,7 +30,7 @@ class BottomNavigationFeatureEntryImpl @Inject constructor(
     featureEntriesProvider: Provider<MutableSet<AggregateFeatureEntry>>,
     composableEntriesProvider: Provider<MutableSet<ComposableFeatureEntry>>,
     private val connectionApi: ConnectionApi,
-    private val selfUpdaterApi: SelfUpdaterApi,
+    private val selfUpdaterUIApi: SelfUpdaterUIApi,
     private val notificationRenderer: InAppNotificationRenderer
 ) : BottomNavigationFeatureEntry, BottomNavigationHandleDeeplink {
     private val featureEntriesMutable by featureEntriesProvider
@@ -51,7 +51,7 @@ class BottomNavigationFeatureEntryImpl @Inject constructor(
                 notificationRenderer = notificationRenderer,
                 navController = childNavController
             )
-            selfUpdaterApi.CheckAndShowUpdateDialog()
+            selfUpdaterUIApi.CheckAndShowUpdateDialog()
         }
     }
 

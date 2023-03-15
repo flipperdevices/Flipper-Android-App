@@ -1,8 +1,8 @@
-package com.flipperdevices.impl.api
+package com.flipperdevices.selfupdater.api
 
 import androidx.compose.runtime.Composable
 
-interface SelfUpdaterApi {
+interface SelfUpdaterUIApi {
     @Composable
     fun CheckAndShowUpdateDialog()
 }
