@@ -11,9 +11,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.flipperdevices.bottombar.impl.composable.bottombar.ComposeBottomBar
 import com.flipperdevices.bottombar.impl.viewmodel.BottomNavigationViewModel
@@ -30,12 +30,12 @@ fun ComposableMainScreen(
     notificationRenderer: InAppNotificationRenderer,
     featureEntries: ImmutableSet<AggregateFeatureEntry>,
     composableEntries: ImmutableSet<ComposableFeatureEntry>,
+    navController: NavHostController,
     modifier: Modifier = Modifier,
     navigationViewModel: BottomNavigationViewModel = tangleViewModel()
 ) {
     val selectedTab by navigationViewModel.selectedTab.collectAsState()
     val startDestination = remember { navigationViewModel.getStartDestination().startRoute.name }
-    val navController = rememberNavController()
     val currentDestination by navController.currentBackStackEntryAsState()
     key(currentDestination?.destination) {
         navigationViewModel.invalidateSelectedTab(currentDestination?.destination)
