@@ -167,7 +167,7 @@ dependencies {
             implementation(projects.components.selfupdater.source.googleplay)
         }
         SourceInstall.NONE -> {
-            implementation(projects.components.selfupdater.source.noop)
+            implementation(projects.components.selfupdater.source.googleplay)
         }
     }
 

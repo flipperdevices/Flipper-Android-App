@@ -4,6 +4,9 @@ import android.app.Activity
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.flipperdevices.inappnotification.api.InAppNotificationStorage
+import com.flipperdevices.inappnotification.api.model.InAppNotification
+import com.flipperdevices.selfupdater.source.googleplay.R
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
@@ -18,21 +21,21 @@ internal const val UPDATE_CODE = 228
 
 class GooglePlayUpdaterViewModel @VMInject constructor(
     private val context: Context,
+    private val inAppNotificationStorage: InAppNotificationStorage,
 ) : ViewModel() {
     private val appUpdateManager = AppUpdateManagerFactory.create(context)
     private val appUpdateInfoTask = appUpdateManager.appUpdateInfo
     private var updateListener = InstallStateUpdatedListener { state ->
         if (state.installStatus() == InstallStatus.DOWNLOADED) {
-            viewModelScope.launch {
-                isShowDialogState.emit(true)
-            }
+            //
         }
     }
 
-    private val isShowDialogState = MutableStateFlow(false)
+    private val isShowDialogState = MutableStateFlow(true)
     fun getUpdateState() = isShowDialogState.asStateFlow()
 
     init {
+        showUpdateDialog()
         appUpdateManager.registerListener(updateListener)
         appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
@@ -48,7 +51,18 @@ class GooglePlayUpdaterViewModel @VMInject constructor(
         }
     }
 
-    fun startUpdate() {
+    private fun showUpdateDialog() {
+        inAppNotificationStorage.addNotification(
+            InAppNotification.UpdateReady(
+                title = context.getString(R.string.ready_update_title),
+                descriptionId = R.string.ready_update_text,
+                action = ::startUpdate,
+                durationMs = 5000L
+            )
+        )
+    }
+
+    private fun startUpdate() {
         appUpdateManager.completeUpdate()
     }
 

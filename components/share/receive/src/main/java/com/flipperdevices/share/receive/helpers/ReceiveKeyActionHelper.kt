@@ -22,7 +22,7 @@ class ReceiveKeyActionHelper @Inject constructor(
     suspend fun saveKey(key: FlipperKey): Result<Unit> = runCatching {
         simpleKeyApi.insertKey(key)
         notificationStorage.addNotification(
-            InAppNotification(
+            InAppNotification.SavedKey(
                 title = key.path.nameWithoutExtension,
                 descriptionId = R.string.receive_notification_description,
                 durationMs = NOTIFICATION_DURATION_MS

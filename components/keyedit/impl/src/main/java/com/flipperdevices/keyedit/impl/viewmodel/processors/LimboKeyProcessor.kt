@@ -70,7 +70,7 @@ class LimboKeyProcessor @Inject constructor(
         simpleKeyApi.insertKey(newKey)
         synchronizationApi.startSynchronization(force = true)
         inAppNotificationStorage.addNotification(
-            InAppNotification(
+            InAppNotification.SavedKey(
                 title = newKey.path.nameWithExtension,
                 descriptionId = R.string.keyedit_notification_desc,
                 durationMs = NOTIFICATION_DURATION_MS

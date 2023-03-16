@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,12 +17,17 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.inappnotification.api.model.InAppNotification
+import com.flipperdevices.inappnotification.impl.R
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
-internal fun ComposableInAppNotificationCardContent(notification: InAppNotification) {
+internal fun ComposableInAppNotificationCardContent(
+    notification: InAppNotification
+) {
     Row {
-        ComposableSaveIcon()
+        if (notification is InAppNotification.SavedKey) {
+            ComposableSaveIcon()
+        }
         Column(modifier = Modifier.padding(top = 9.dp, bottom = 9.dp, end = 12.dp)) {
             Text(
                 text = notification.title,
@@ -32,6 +38,16 @@ internal fun ComposableInAppNotificationCardContent(notification: InAppNotificat
                 style = LocalTypography.current.subtitleR12
             )
         }
+        if (notification is InAppNotification.UpdateReady) {
+            ComposableActionButton(notification.action)
+        }
+    }
+}
+
+@Composable
+private fun ComposableActionButton(onAction: () -> Unit) {
+    Button(onClick = onAction) {
+        Text(text = stringResource(id = R.string.update_ready))
     }
 }
 
