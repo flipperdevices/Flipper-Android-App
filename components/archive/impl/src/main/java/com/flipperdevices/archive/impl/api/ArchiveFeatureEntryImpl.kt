@@ -13,6 +13,7 @@ import com.flipperdevices.archive.impl.composable.ComposableArchive
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
+import com.flipperdevices.core.ui.navigation.LocalGlobalNavigationNavStack
 import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.flipperdevices.deeplink.model.DeeplinkNavType
 import com.flipperdevices.keyscreen.api.KeyScreenFeatureEntry
@@ -60,6 +61,7 @@ class ArchiveFeatureEntryImpl @Inject constructor(
                 arguments = archiveArguments,
                 deepLinks = deeplinkArguments
             ) {
+                val globalNavController = LocalGlobalNavigationNavStack.current
                 ComposableArchive(
                     synchronizationUiApi = synchronizationUiApi,
                     onOpenSearchScreen = {
@@ -68,7 +70,7 @@ class ArchiveFeatureEntryImpl @Inject constructor(
                     },
                     onOpenKeyScreen = { flipperKeyPath ->
                         val keyScreen = keyScreenFeatureEntry.getKeyScreen(flipperKeyPath)
-                        navController.navigate(keyScreen)
+                        globalNavController.navigate(keyScreen)
                     },
                     onOpenCategory = { categoryType ->
                         val categoryScreen = categoryFeatureEntry.getCategoryScreen(categoryType)
