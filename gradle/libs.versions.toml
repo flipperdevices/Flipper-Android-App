@@ -53,7 +53,7 @@ apache-compress = "1.22" # https://commons.apache.org/proper/commons-compress/
 apache-codec = "1.15" # https://mvnrepository.com/artifact/commons-codec/commons-codec
 countly = "22.09.0" # https://github.com/Countly/countly-sdk-android/releases
 grgit-gradle = "8d818b74b9"
-tangle = "968662f0f1" # https://github.com/RBusarow/Tangle/releases
+tangle = "806bc6eeba" # https://github.com/RBusarow/Tangle/releases
 work = "2.8.0" # https://developer.android.com/jetpack/androidx/releases/work
 coil = "2.2.2" # https://github.com/coil-kt/coil/releases
 
