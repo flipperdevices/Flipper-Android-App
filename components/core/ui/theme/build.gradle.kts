@@ -15,8 +15,8 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
 
-    implementation(libs.lifecycle.compose)
     implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.lifecycle.compose)
     implementation(libs.appcompat)
 
     // Dagger deps
