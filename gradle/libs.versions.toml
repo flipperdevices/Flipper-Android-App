@@ -1,16 +1,16 @@
 [versions]
 # You also need to bump the version of ksp, anvil, compose
-kotlin-general = "1.7.20" # https://kotlinlang.org/docs/releases.html#release-details
+kotlin-general = "1.8.10" # https://kotlinlang.org/docs/releases.html#release-details
 kotlin-immutable-collections = "0.3.5" # https://github.com/Kotlin/kotlinx.collections.immutable/releases
 kotlinx = "1.6.4" # https://github.com/Kotlin/kotlinx.coroutines/releases
-ksp = "1.7.20-1.0.8" # https://github.com/google/ksp/releases
-anvil = "2.4.2" # https://github.com/square/anvil/releases/tag/v2.4.2
+ksp = "1.8.10-1.0.9" # https://github.com/google/ksp/releases
+anvil = "2.4.4" # https://github.com/square/anvil/releases
 android-gradle = "7.4.1" # https://developer.android.com/studio/releases/gradle-plugin
 protobuf = "3.21.12" # https://github.com/protocolbuffers/protobuf/releases
 protobuf-gradle = "0.9.1" # https://github.com/google/protobuf-gradle-plugin/releases
 compose = "1.3.1" # https://developer.android.com/jetpack/androidx/releases/compose#versions
 compose-wear = "1.1.0" # https://developer.android.com/jetpack/androidx/releases/wear-compose
-compose-compiler = "1.3.2" # https://developer.android.com/jetpack/androidx/releases/compose#versions
+compose-compiler = "1.4.3" # https://developer.android.com/jetpack/androidx/releases/compose#versions
 compose-accompanist = "0.28.0" # https://github.com/google/accompanist/releases
 compose-constraint = "1.0.1" # https://developer.android.com/jetpack/compose/layouts/constraintlayout
 compose-navigation = "2.5.3" # https://developer.android.com/jetpack/compose/navigation
@@ -51,7 +51,7 @@ apache-compress = "1.22" # https://commons.apache.org/proper/commons-compress/
 apache-codec = "1.15" # https://mvnrepository.com/artifact/commons-codec/commons-codec
 countly = "22.06.2" # https://github.com/Countly/countly-sdk-android/releases
 grgit-gradle = "8d818b74b9"
-tangle = "0.15.1" # https://github.com/RBusarow/Tangle/releases
+tangle = "968662f0f1" # https://github.com/RBusarow/Tangle/releases
 work = "2.7.1" # https://developer.android.com/jetpack/androidx/releases/work
 coil = "2.2.2" # https://github.com/coil-kt/coil/releases
 
@@ -143,12 +143,12 @@ square-anvil-compiler-utils = { module = "com.squareup.anvil:compiler-utils", ve
 square-anvil-gradle = { module = "com.squareup.anvil:gradle-plugin", version.ref = "anvil" }
 
 # Dependency Injection - Tangle
-tangle-fragment-api = { module = "com.rickbusarow.tangle:tangle-fragment-api", version.ref = "tangle" }
-tangle-fragment-compiler = { module = "com.rickbusarow.tangle:tangle-fragment-compiler", version.ref = "tangle" }
-tangle-viewmodel-api = { module = "com.rickbusarow.tangle:tangle-viewmodel-api", version.ref = "tangle" }
-tangle-viewmodel-compiler = { module = "com.rickbusarow.tangle:tangle-viewmodel-compiler", version.ref = "tangle" }
-tangle-viewmodel-compose = { module = "com.rickbusarow.tangle:tangle-viewmodel-compose", version.ref = "tangle" }
-tangle-viewmodel-fragment = { module = "com.rickbusarow.tangle:tangle-viewmodel-fragment", version.ref = "tangle" }
+tangle-fragment-api = { module = "com.github.LionZXY.Tangle:tangle-fragment-api", version.ref = "tangle" }
+tangle-fragment-compiler = { module = "com.github.LionZXY.Tangle:tangle-fragment-compiler", version.ref = "tangle" }
+tangle-viewmodel-api = { module = "com.github.LionZXY.Tangle:tangle-viewmodel-api", version.ref = "tangle" }
+tangle-viewmodel-compiler = { module = "com.github.LionZXY.Tangle:tangle-viewmodel-compiler", version.ref = "tangle" }
+tangle-viewmodel-compose = { module = "com.github.LionZXY.Tangle:tangle-viewmodel-compose", version.ref = "tangle" }
+tangle-viewmodel-fragment = { module = "com.github.LionZXY.Tangle:tangle-viewmodel-fragment", version.ref = "tangle" }
 
 # Navigation
 cicerone = { module = "com.github.terrakok:cicerone", version.ref = "cicerone" }
