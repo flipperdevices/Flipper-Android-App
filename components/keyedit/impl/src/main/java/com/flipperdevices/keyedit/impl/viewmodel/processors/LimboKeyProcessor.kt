@@ -11,7 +11,6 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
 import com.flipperdevices.keyedit.api.NotSavedFlipperKey
-import com.flipperdevices.keyedit.impl.R
 import com.flipperdevices.keyedit.impl.model.EditableKey
 import com.flipperdevices.keyedit.impl.model.KeyEditState
 import com.flipperdevices.singleactivity.api.SingleActivityApi
@@ -72,7 +71,6 @@ class LimboKeyProcessor @Inject constructor(
         inAppNotificationStorage.addNotification(
             InAppNotification.SavedKey(
                 title = newKey.path.nameWithExtension,
-                descriptionId = R.string.keyedit_notification_desc,
                 durationMs = NOTIFICATION_DURATION_MS
             )
         )

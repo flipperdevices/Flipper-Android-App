@@ -6,7 +6,8 @@ plugins {
 
 dependencies {
     implementation(projects.components.core.di)
-    implementation(projects.components.core.preference)
+    // FlipperTheme need transitive SelectedTheme from pb
+    api(projects.components.core.preference)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ktx)
 

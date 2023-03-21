@@ -1,10 +1,9 @@
-package com.flipperdevices.inappnotification.impl.composable
+package com.flipperdevices.inappnotification.impl.composable.type
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -21,33 +20,21 @@ import com.flipperdevices.inappnotification.impl.R
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
-internal fun ComposableInAppNotificationCardContent(
-    notification: InAppNotification
+internal fun ComposableInAppNotificationSavedKey(
+    notification: InAppNotification.SavedKey
 ) {
     Row {
-        if (notification is InAppNotification.SavedKey) {
-            ComposableSaveIcon()
-        }
+        ComposableSaveIcon()
         Column(modifier = Modifier.padding(top = 9.dp, bottom = 9.dp, end = 12.dp)) {
             Text(
                 text = notification.title,
                 style = LocalTypography.current.subtitleB12
             )
             Text(
-                text = stringResource(notification.descriptionId),
+                text = stringResource(R.string.saved_key_desc),
                 style = LocalTypography.current.subtitleR12
             )
         }
-        if (notification is InAppNotification.UpdateReady) {
-            ComposableActionButton(notification.action)
-        }
-    }
-}
-
-@Composable
-private fun ComposableActionButton(onAction: () -> Unit) {
-    Button(onClick = onAction) {
-        Text(text = stringResource(id = R.string.update_ready))
     }
 }
 

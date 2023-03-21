@@ -6,7 +6,7 @@ object ApkConfig {
     const val APPLICATION_ID = "com.flipperdevices.app"
 
     const val MIN_SDK_VERSION = 26
-    const val TARGET_SDK_VERSION = 33
+    const val TARGET_SDK_VERSION = 34
     const val COMPILE_SDK_VERSION = 33
 
     val VERSION_CODE = getProperty("version_code", Integer.MAX_VALUE.toString()).toInt()
@@ -21,8 +21,9 @@ object ApkConfig {
     val IS_SENTRY_PUBLISH = getProperty("is_sentry_publish", "false").toBoolean()
 
     val sourceInstall = when {
-        getProperty("is_github_install", "false").toBoolean() -> SourceInstall.GITHUB
-        getProperty("is_google_play_install", "false").toBoolean() -> SourceInstall.GITHUB
+        // getProperty("is_github_install", "false").toBoolean() -> SourceInstall.GITHUB
+        // getProperty("is_google_play_install", "false").toBoolean() -> SourceInstall.GOOGLE_PLAY
+        IS_GOOGLE_FEATURE_AVAILABLE -> SourceInstall.GOOGLE_PLAY
         else -> SourceInstall.NONE
     }
 }

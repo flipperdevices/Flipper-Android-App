@@ -8,7 +8,6 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
-import com.flipperdevices.share.receive.R
 import javax.inject.Inject
 
 private const val NOTIFICATION_DURATION_MS = 3 * 1000L
@@ -24,7 +23,6 @@ class ReceiveKeyActionHelper @Inject constructor(
         notificationStorage.addNotification(
             InAppNotification.SavedKey(
                 title = key.path.nameWithoutExtension,
-                descriptionId = R.string.receive_notification_description,
                 durationMs = NOTIFICATION_DURATION_MS
             )
         )

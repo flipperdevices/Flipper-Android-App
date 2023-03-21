@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="ready_update_title">Update Ready</string>
-    <string name="ready_update_text">New update is ready and can be installed</string>
-    <string name="ready_update_button">Update</string>
-    <string name="ready_update_cancel_button">Not Now</string>
-</resources>
