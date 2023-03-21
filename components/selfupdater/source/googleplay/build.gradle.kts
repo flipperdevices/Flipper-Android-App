@@ -1,5 +1,5 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.android-lib")
     id("com.squareup.anvil")
     id("kotlin-kapt")
 }
@@ -8,14 +8,9 @@ dependencies {
     implementation(projects.components.selfupdater.api)
     implementation(projects.components.inappnotification.api)
 
+    // In-app update
     implementation(libs.app.update)
     implementation(libs.app.update.ktx)
-
-    // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.material)
 
     // ViewModel
     implementation(libs.lifecycle.viewmodel.ktx)

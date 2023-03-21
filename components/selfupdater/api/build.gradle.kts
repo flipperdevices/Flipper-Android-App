@@ -1,7 +1,5 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.android-lib")
 }
 
-dependencies {
-    implementation(libs.compose.ui)
-}
+dependencies {}
