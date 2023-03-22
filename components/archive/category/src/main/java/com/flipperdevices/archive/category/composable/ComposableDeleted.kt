@@ -21,8 +21,8 @@ import com.flipperdevices.archive.category.composable.dialogs.ComposableDeleteAl
 import com.flipperdevices.archive.category.composable.dialogs.ComposableRestoreAllDialog
 import com.flipperdevices.archive.category.viewmodels.DeleteViewModel
 import com.flipperdevices.archive.model.CategoryType
-import com.flipperdevices.archive.shared.composable.ComposableAppBar
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
+import com.flipperdevices.core.ui.ktx.OrangeAppBar
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
 import tangle.viewmodel.compose.tangleViewModel
@@ -70,10 +70,10 @@ private fun ComposableDeletedAppBar(
         )
     }
 
-    ComposableAppBar(
+    OrangeAppBar(
         title = stringResource(R.string.category_deleted_title),
         onBack = onBack,
-        endContent = {
+        endBlock = {
             ComposableDeletedAppBarInternal(
                 modifier = it,
                 onDeleteAllDialogOpen = { isDeleteAllDialog = true },

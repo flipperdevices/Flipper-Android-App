@@ -35,12 +35,13 @@ class WidgetFeatureEntryImpl @Inject constructor(
     private val archiveApi: ArchiveApi,
     private val searchFeatureEntry: SearchFeatureEntry
 ) : WidgetFeatureEntry {
+
+    private val widgetRoute = "@${ROUTE.name}/$DEEPLINK_KEY={$DEEPLINK_KEY}"
+
     override fun getWidgetScreenByDeeplink(deeplink: Deeplink): String {
         val deeplinkStr = Uri.encode(Json.encodeToString(deeplink))
         return "${DEEPLINK_SCHEME}widget=$deeplinkStr"
     }
-
-    private val widgetRoute = "@${ROUTE.name}/$DEEPLINK_KEY={$DEEPLINK_KEY}"
 
     private val widgetArguments = listOf(
         navArgument(DEEPLINK_KEY) {

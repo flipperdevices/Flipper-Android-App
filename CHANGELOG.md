@@ -26,6 +26,7 @@
 - [FIX] Firstpair flow open by navigation graph route
 - [FIX] Fix crush with inapp storage on startup
 - [FIX] Fix change color scheme bug
+- [FIX] Fix status bar color
 - [REFACTOR] Migrate bottom bar to compose navigation
 - [REFACTOR] Bump Android Gradle Plugin
 - [REFACTOR] Fix detekt compose issues
