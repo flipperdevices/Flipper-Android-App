@@ -18,9 +18,8 @@ abstract class AndroidLifecycleViewModel(
         registry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
     }
 
-    override fun getLifecycle(): Lifecycle {
-        return registry
-    }
+    override val lifecycle: Lifecycle
+        get() = registry
 
     @CallSuper
     override fun onCleared() {

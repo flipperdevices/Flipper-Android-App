@@ -58,9 +58,9 @@ private fun BoxWithConstraintsScope.shouldShrink(
         textStyle,
         maxLines = 1,
         softWrap = false,
-        TextOverflow.Visible,
-        LocalDensity.current,
-        LocalFontFamilyResolver.current
+        overflow = TextOverflow.Visible,
+        density = LocalDensity.current,
+        fontFamilyResolver = LocalFontFamilyResolver.current
     )
 
     val textLayoutResult = textDelegate.layout(
