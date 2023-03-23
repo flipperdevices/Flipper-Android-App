@@ -35,7 +35,7 @@ ktx = "1.9.0" # https://developer.android.com/jetpack/androidx/releases/core
 ktx-fragment = "1.5.5" # https://developer.android.com/jetpack/androidx/releases/fragment
 ktx-activity = "1.6.1" # https://developer.android.com/jetpack/androidx/releases/activity
 ktx-testing = "1.1.5" # https://developer.android.com/jetpack/androidx/releases/test
-lifecycle = "2.6.0" # https://developer.android.com/jetpack/androidx/releases/lifecycle
+lifecycle = "2.6.1" # https://developer.android.com/jetpack/androidx/releases/lifecycle
 # https://github.com/vigna/fastutil/issues/136
 fastutil = "7.2.1"
 ble = "2.6.0" # https://github.com/NordicSemiconductor/Android-BLE-Library/releases
