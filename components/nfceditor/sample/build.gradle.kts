@@ -24,7 +24,6 @@ dependencies {
     implementation(projects.components.core.ui.navigation)
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)
-    implementation(projects.components.core.preference)
 
     implementation(projects.components.nfceditor.api)
     implementation(projects.components.nfceditor.impl)

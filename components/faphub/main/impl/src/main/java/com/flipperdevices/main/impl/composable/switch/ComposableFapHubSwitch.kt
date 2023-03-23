@@ -207,7 +207,7 @@ private fun ComposableFapHubSwitchPreview() {
 )
 @Composable
 private fun ComposableFapHubSwitchDarkPreview() {
-    FlipperThemeInternal(isLight = false) {
+    FlipperThemeInternal {
         var selectedTab by remember { mutableStateOf(FapHubTabEnum.APPS) }
         Box {
             ComposableFapHubSwitch(

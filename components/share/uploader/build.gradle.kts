@@ -18,7 +18,6 @@ dependencies {
     implementation(projects.components.core.ui.navigation)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.share)
-    implementation(projects.components.core.preference)
 
     implementation(libs.appcompat)
 
