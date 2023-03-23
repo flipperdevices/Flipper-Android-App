@@ -15,7 +15,6 @@ abstract class LifecycleViewModel : ViewModel(), LifecycleOwner {
         registry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
     }
 
-
     override val lifecycle: Lifecycle
         get() = registry
 
