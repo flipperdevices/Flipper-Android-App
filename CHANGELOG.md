@@ -41,6 +41,7 @@
 - [REFACTOR] Migrate to isSupported in version api
 - [REFACTOR] Remove cicerone
 - [REFACTOR] Composable Preview Theme without protobuf
+- [REFACTOR] Bump deps
 
 # 1.4.1
 

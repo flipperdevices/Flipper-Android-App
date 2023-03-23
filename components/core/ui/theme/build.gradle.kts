@@ -15,13 +15,14 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
 
-    implementation(libs.lifecycle.compose)
     implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.lifecycle.compose)
     implementation(libs.appcompat)
 
     // Dagger deps
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
     implementation(libs.tangle.viewmodel.api)
+    implementation(libs.tangle.viewmodel.compose)
     anvil(libs.tangle.viewmodel.compiler)
 }

@@ -15,9 +15,8 @@ abstract class TaskWithLifecycle : LifecycleOwner {
         registry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
     }
 
-    override fun getLifecycle(): Lifecycle {
-        return registry
-    }
+    override val lifecycle: Lifecycle
+        get() = registry
 
     suspend fun onStop() = withContext(Dispatchers.Main) {
         if (registry.currentState == Lifecycle.State.DESTROYED) {
