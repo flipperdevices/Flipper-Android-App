@@ -33,7 +33,6 @@ dependencies {
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.service)
-    kapt(libs.lifecycle.kapt)
 
     implementation(libs.ble)
     implementation(libs.ble.common)

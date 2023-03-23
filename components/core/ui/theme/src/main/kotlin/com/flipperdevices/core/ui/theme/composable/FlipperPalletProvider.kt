@@ -5,9 +5,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.preference.pb.SelectedTheme
 import com.flipperdevices.core.ui.theme.viewmodel.ThemeViewModel
+import tangle.viewmodel.compose.tangleViewModel
 
 /**
  * Please, use LocalPallet instead
@@ -35,7 +35,7 @@ fun getThemedFlipperPallet(
 @Composable
 fun isLight(
     systemIsDark: Boolean = isSystemInDarkTheme(),
-    themeViewModel: ThemeViewModel = viewModel()
+    themeViewModel: ThemeViewModel = tangleViewModel()
 ): Boolean {
     val theme by themeViewModel.getAppTheme().collectAsState()
 

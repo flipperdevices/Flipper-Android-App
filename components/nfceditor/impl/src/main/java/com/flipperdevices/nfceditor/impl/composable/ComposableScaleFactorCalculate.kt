@@ -55,9 +55,9 @@ private fun BoxWithConstraintsScope.shouldShrink(maxIndexCount: Int, scaleFactor
         ),
         maxLines = 1,
         softWrap = false,
-        TextOverflow.Visible,
-        LocalDensity.current,
-        LocalFontFamilyResolver.current
+        overflow = TextOverflow.Visible,
+        density = LocalDensity.current,
+        fontFamilyResolver = LocalFontFamilyResolver.current
     )
 
     val otherWidthsDpWithoutScaleFactor = (maxIndexCount * WIDTH_LINE_INDEX_DP) +

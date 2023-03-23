@@ -2,9 +2,11 @@ package com.flipperdevices.wearable.emulate.impl.di
 
 import android.app.Application
 import android.content.Context
+import androidx.datastore.core.DataStore
 import androidx.lifecycle.LifecycleOwner
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.SingleIn
+import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.wearable.emulate.impl.model.KeyToEmulate
 import com.flipperdevices.wearable.emulate.impl.viewmodel.ConnectionChannelHelper
 import com.flipperdevices.wearable.emulate.impl.viewmodel.ConnectionTester
@@ -23,6 +25,7 @@ interface WearEmulateComponentDependencies {
     val context: Context
     val application: Application
     val setupApi: SetupApi
+    val dataStore: DataStore<Settings>
 }
 
 @SingleIn(WearGraph::class)
