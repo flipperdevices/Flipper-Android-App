@@ -45,7 +45,7 @@ class SelfUpdaterGooglePlayApi @Inject constructor(
         )
     }
 
-    override fun startCheckUpdate() {
+    override fun startCheckUpdateAsync() {
         info { "Process checkout new update" }
         appUpdateManager.registerListener(updateListener)
         appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
@@ -64,9 +64,5 @@ class SelfUpdaterGooglePlayApi @Inject constructor(
     private fun isUpdateAvailable(appUpdateInfo: AppUpdateInfo): Boolean {
         return appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
             appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
-    }
-
-    override fun stopProcessCheckUpdate() {
-        appUpdateManager.unregisterListener(updateListener)
     }
 }

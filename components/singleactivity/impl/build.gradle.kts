@@ -17,7 +17,6 @@ dependencies {
     implementation(projects.components.singleactivity.api)
     implementation(projects.components.firstpair.api)
     implementation(projects.components.updater.api)
-    implementation(projects.components.selfupdater.api)
 
     implementation(projects.components.analytics.metric.api)
     implementation(projects.components.bridge.synchronization.api)

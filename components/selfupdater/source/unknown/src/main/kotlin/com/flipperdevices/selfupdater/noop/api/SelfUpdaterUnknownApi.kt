@@ -6,8 +6,6 @@ import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, SelfUpdaterApi::class)
-class SelfUpdaterNoopApi @Inject constructor() : SelfUpdaterApi {
-    override fun startCheckUpdate() = Unit
-
-    override fun stopProcessCheckUpdate() = Unit
+class SelfUpdaterUnknownApi @Inject constructor() : SelfUpdaterApi {
+    override fun startCheckUpdateAsync() = Unit
 }
