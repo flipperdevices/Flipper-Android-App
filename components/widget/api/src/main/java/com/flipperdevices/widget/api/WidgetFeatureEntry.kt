@@ -8,6 +8,5 @@ interface WidgetFeatureEntry : ComposableFeatureEntry {
     override val ROUTE: FeatureScreenRootRoute
         get() = FeatureScreenRootRoute.WIDGET
 
-    fun getWidgetScreen(widgetId: Int): String
     fun getWidgetScreenByDeeplink(deeplink: Deeplink): String
 }

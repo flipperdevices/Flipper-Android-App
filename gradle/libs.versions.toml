@@ -153,7 +153,6 @@ tangle-viewmodel-compose = { module = "com.github.LionZXY.Tangle:tangle-viewmode
 tangle-viewmodel-fragment = { module = "com.github.LionZXY.Tangle:tangle-viewmodel-fragment", version.ref = "tangle" }
 
 # Navigation
-cicerone = { module = "com.github.terrakok:cicerone", version.ref = "cicerone" }
 compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "compose-navigation" }
 compose-navigation-material = { module = "com.google.accompanist:accompanist-navigation-material", version.ref = "compose-accompanist" }
 compose-wear-navigation = { module = "androidx.wear.compose:compose-navigation", version.ref = "compose-wear" }

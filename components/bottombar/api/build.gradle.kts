@@ -3,9 +3,6 @@ plugins {
 }
 
 dependencies {
-
-    implementation(libs.cicerone)
-
     implementation(libs.compose.ui)
     implementation(projects.components.deeplink.api)
     implementation(projects.components.core.ui.navigation)

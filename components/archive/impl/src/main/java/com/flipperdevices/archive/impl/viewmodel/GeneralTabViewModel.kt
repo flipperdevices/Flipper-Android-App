@@ -2,17 +2,11 @@ package com.flipperdevices.archive.impl.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.flipperdevices.archive.api.SearchApi
 import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
-import com.flipperdevices.core.navigation.global.CiceroneGlobal
-import com.flipperdevices.keyscreen.api.KeyScreenApi
-import com.github.terrakok.cicerone.ResultListener
-import com.github.terrakok.cicerone.ResultListenerHandler
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -28,15 +22,11 @@ class GeneralTabViewModel @VMInject constructor(
     private val simpleKeyApi: SimpleKeyApi,
     private val favoriteApi: FavoriteApi,
     private val synchronizationApi: SynchronizationApi,
-    private val searchApi: SearchApi,
-    private val keyScreenApi: KeyScreenApi,
-    private val ciceroneGlobal: CiceroneGlobal
-) : ViewModel(), ResultListener {
+) : ViewModel() {
     private val keys = MutableStateFlow<ImmutableList<FlipperKey>>(persistentListOf())
     private val favoriteKeys = MutableStateFlow<ImmutableList<FlipperKey>>(persistentListOf())
     private val synchronizationState =
         MutableStateFlow<SynchronizationState>(SynchronizationState.NotStarted)
-    private var resultListenerDispatcher: ResultListenerHandler? = null
 
     init {
         viewModelScope.launch {
@@ -58,14 +48,6 @@ class GeneralTabViewModel @VMInject constructor(
     fun getFavoriteKeys(): StateFlow<ImmutableList<FlipperKey>> = favoriteKeys
     fun getSynchronizationState(): StateFlow<SynchronizationState> = synchronizationState
 
-    fun onOpenSearch() {
-        val router = ciceroneGlobal.getRouter()
-        router.navigateTo(searchApi.getSearchScreen())
-        resultListenerDispatcher?.dispose()
-        resultListenerDispatcher =
-            router.setResultListener(SearchApi.SEARCH_RESULT_KEY, this)
-    }
-
     fun refresh() {
         synchronizationApi.startSynchronization(force = true)
     }
@@ -76,16 +58,7 @@ class GeneralTabViewModel @VMInject constructor(
         }
     }
 
-    override fun onResult(data: Any) {
-        if (data is FlipperKeyPath) {
-            ciceroneGlobal.getRouter().navigateTo(
-                keyScreenApi.getKeyScreenScreen(data)
-            )
-        }
-    }
-
     override fun onCleared() {
         super.onCleared()
-        resultListenerDispatcher?.dispose()
     }
 }

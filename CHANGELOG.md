@@ -38,6 +38,7 @@
 - [REFACTOR] Google Compose Navigation (archive, firstpair, widgets, updater, import, deeplinks)
 - [REFACTOR] Migrate to new device info api
 - [REFACTOR] Migrate to isSupported in version api
+- [REFACTOR] Remove cicerone
 
 # 1.4.1
 

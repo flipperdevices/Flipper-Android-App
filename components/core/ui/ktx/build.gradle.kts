@@ -7,9 +7,6 @@ dependencies {
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.theme)
 
-    implementation(libs.cicerone)
-    implementation(projects.components.core.navigation)
-
     // Compose
     implementation(libs.compose.ui)
     implementation(libs.compose.tooling)

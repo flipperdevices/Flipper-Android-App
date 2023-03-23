@@ -10,11 +10,9 @@ dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.log)
-    implementation(projects.components.core.navigation)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.theme)
-    implementation(projects.components.core.ui.fragment)
     implementation(projects.components.core.ui.navigation)
 
     implementation(projects.components.keyedit.api)
@@ -28,7 +26,6 @@ dependencies {
     implementation(projects.components.singleactivity.api)
     implementation(projects.components.deeplink.api)
 
-    implementation(libs.cicerone)
     implementation(libs.appcompat)
 
     implementation(libs.kotlin.serialization.json)

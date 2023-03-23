@@ -10,7 +10,6 @@ dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.ui.navigation)
 
-    implementation(libs.cicerone)
     implementation(libs.annotations)
     implementation(libs.appcompat)
     implementation(libs.compose.navigation)

@@ -12,7 +12,6 @@ dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)
-    implementation(projects.components.core.navigation)
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.res)
@@ -21,7 +20,6 @@ dependencies {
     implementation(projects.components.core.share)
     implementation(projects.components.core.preference)
 
-    implementation(libs.cicerone)
     implementation(libs.appcompat)
 
     implementation(libs.kotlin.coroutines)
