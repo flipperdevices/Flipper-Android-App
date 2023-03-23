@@ -19,7 +19,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.drawscope.ContentDrawScope
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.flipperdevices.core.preference.pb.SelectedTheme
 import com.flipperdevices.core.ui.theme.composable.FlipperPallet
 import com.flipperdevices.core.ui.theme.composable.FlipperTypography
 import com.flipperdevices.core.ui.theme.composable.getThemedFlipperPallet
@@ -39,21 +38,20 @@ fun FlipperTheme(
 ) {
     val theme by themeViewModel.getAppTheme().collectAsState()
     val isLight = isLight(systemIsDark = isSystemInDarkTheme())
-    FlipperThemeInternal(
+    val pallet = getThemedFlipperPallet(theme, isLight)
+    FlipperTheme(
         content = content,
-        theme = theme,
+        pallet = pallet,
         isLight = isLight
     )
 }
 
-// For preview composable function, because we don`t provide LocalPallet/Typography/MaterialDesign
 @Composable
-fun FlipperThemeInternal(
-    theme: SelectedTheme = SelectedTheme.SYSTEM,
+private fun FlipperTheme(
+    pallet: FlipperPallet,
     isLight: Boolean = !isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    val pallet = getThemedFlipperPallet(theme, isLight)
     val colors = pallet.toMaterialColors(isLight)
     val shapes = Shapes(medium = RoundedCornerShape(size = 10.dp))
 
@@ -70,6 +68,17 @@ fun FlipperThemeInternal(
             content = content
         )
     }
+}
+
+// For preview composable function, because we don`t provide LocalPallet/Typography/MaterialDesign
+@Composable
+fun FlipperThemeInternal(
+    content: @Composable () -> Unit
+) {
+    FlipperTheme(
+        pallet = getThemedFlipperPallet(!isSystemInDarkTheme()),
+        content = content
+    )
 }
 
 /**
