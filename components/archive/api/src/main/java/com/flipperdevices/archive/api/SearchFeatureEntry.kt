@@ -8,4 +8,8 @@ interface SearchFeatureEntry : ComposableFeatureEntry {
         get() = FeatureScreenRootRoute.SEARCH_ARCHIVE
 
     fun getSearchScreen(isExitOnOpenKey: Boolean): String
+
+    companion object {
+        const val SEARCH_RESULT_KEY = "search_result"
+    }
 }

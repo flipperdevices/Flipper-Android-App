@@ -28,7 +28,6 @@ timber-treessence = "1.0.5" # https://github.com/bastienpaulfr/Treessence/tags
 sentry-runtime = "6.10.0" # https://github.com/getsentry/sentry-java/releases
 sentry-gradle = "3.3.0" # https://github.com/getsentry/sentry-android-gradle-plugin/releases
 zip4j = "2.11.2" # https://github.com/srikanth-lingala/zip4j/releases
-cicerone = "7.1" # https://github.com/terrakok/Cicerone/releases
 ktx = "1.9.0" # https://developer.android.com/jetpack/androidx/releases/core
 ktx-fragment = "1.5.5" # https://developer.android.com/jetpack/androidx/releases/fragment
 ktx-activity = "1.6.1" # https://developer.android.com/jetpack/androidx/releases/activity
@@ -151,7 +150,6 @@ tangle-viewmodel-compose = { module = "com.rickbusarow.tangle:tangle-viewmodel-c
 tangle-viewmodel-fragment = { module = "com.rickbusarow.tangle:tangle-viewmodel-fragment", version.ref = "tangle" }
 
 # Navigation
-cicerone = { module = "com.github.terrakok:cicerone", version.ref = "cicerone" }
 compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "compose-navigation" }
 compose-navigation-material = { module = "com.google.accompanist:accompanist-navigation-material", version.ref = "compose-accompanist" }
 compose-wear-navigation = { module = "androidx.wear.compose:compose-navigation", version.ref = "compose-wear" }

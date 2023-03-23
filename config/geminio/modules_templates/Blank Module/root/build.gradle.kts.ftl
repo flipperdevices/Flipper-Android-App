@@ -26,7 +26,7 @@ dependencies {
 
     implementation(libs.cicerone)
     implementation(libs.appcompat)
-    implementation(projects.components.core.ui.fragment)
+
 </#if>
 </#if>
 <#if needCompose>
