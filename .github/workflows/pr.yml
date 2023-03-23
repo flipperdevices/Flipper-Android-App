@@ -4,6 +4,9 @@ on:
   pull_request:
     branches:
       - 'dev'
+  merge_group:
+    branches:
+      - 'dev'
 
 jobs:
   test:
