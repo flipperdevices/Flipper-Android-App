@@ -18,7 +18,7 @@ android {
 }
 
 dependencies {
-
+    implementation(projects.components.core.preference)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ui.navigation)
