@@ -23,6 +23,8 @@ import com.flipperdevices.nfc.tools.api.MfKey32Nonce
 import com.flipperdevices.nfc.tools.api.NfcToolsApi
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.deleteRequest
+import java.io.FileNotFoundException
+import java.util.concurrent.Executors
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asCoroutineDispatcher
@@ -34,8 +36,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tangle.viewmodel.VMInject
-import java.io.FileNotFoundException
-import java.util.concurrent.Executors
 
 const val PATH_NONCE_LOG = "/ext/nfc/.mfkey32.log"
 private const val TOTAL_PERCENT = 1.0f
@@ -156,7 +156,7 @@ class MfKey32ViewModel @VMInject constructor(
         val foundedKey = FoundedKey(
             nonce.sectorName,
             nonce.keyName,
-            key?.toString(radix = 16)?.uppercase()
+            "%012X".format(key)
         )
         existedKeysStorage.onNewKey(foundedKey)
     }
