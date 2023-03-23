@@ -4,8 +4,6 @@ plugins {
     id("kotlin-kapt")
 }
 
-android.buildFeatures.viewBinding = true
-
 dependencies {
     implementation(projects.components.bottombar.api)
 
@@ -24,7 +22,6 @@ dependencies {
     implementation(projects.components.inappnotification.api)
     implementation(projects.components.hub.api)
     implementation(projects.components.deeplink.api)
-    implementation(projects.components.selfupdater.api)
 
     implementation(libs.kotlin.serialization.json)
 

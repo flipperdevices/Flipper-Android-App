@@ -1,8 +1,6 @@
 package com.flipperdevices.bottombar.impl.api
 
 import android.content.Intent
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -16,7 +14,6 @@ import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.flipperdevices.inappnotification.api.InAppNotificationRenderer
-import com.flipperdevices.selfupdater.api.SelfUpdaterApi
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
 import kotlinx.collections.immutable.toPersistentSet
@@ -32,7 +29,6 @@ class BottomNavigationFeatureEntryImpl @Inject constructor(
     featureEntriesProvider: Provider<MutableSet<AggregateFeatureEntry>>,
     composableEntriesProvider: Provider<MutableSet<ComposableFeatureEntry>>,
     private val connectionApi: ConnectionApi,
-    private val selfUpdaterApi: SelfUpdaterApi,
     private val notificationRenderer: InAppNotificationRenderer
 ) : BottomNavigationFeatureEntry, BottomNavigationHandleDeeplink {
     private val featureEntriesMutable by featureEntriesProvider
@@ -53,18 +49,6 @@ class BottomNavigationFeatureEntryImpl @Inject constructor(
                 notificationRenderer = notificationRenderer,
                 navController = childNavController
             )
-            ComposableSelfUpdater()
-        }
-    }
-
-    @Composable
-    private fun ComposableSelfUpdater() {
-        DisposableEffect(key1 = Unit) {
-            selfUpdaterApi.startCheckUpdate()
-
-            onDispose {
-                selfUpdaterApi.stopProcessCheckUpdate()
-            }
         }
     }
 

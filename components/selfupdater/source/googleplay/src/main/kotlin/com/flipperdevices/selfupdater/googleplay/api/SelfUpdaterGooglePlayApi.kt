@@ -3,6 +3,8 @@ package com.flipperdevices.selfupdater.googleplay.api
 import android.app.Activity
 import android.content.Context
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
 import com.flipperdevices.selfupdater.api.SelfUpdaterApi
@@ -23,13 +25,16 @@ private const val NOTIFICATION_MS = 5000L
 class SelfUpdaterGooglePlayApi @Inject constructor(
     private val context: Context,
     private val inAppNotificationStorage: InAppNotificationStorage
-) : SelfUpdaterApi {
+) : SelfUpdaterApi, LogTagProvider {
 
-    private val appUpdateManager = AppUpdateManagerFactory.create(context)
+    override val TAG: String get() = "SelfUpdaterGooglePlayApi"
+
+    private val appUpdateManager by lazy { AppUpdateManagerFactory.create(context) }
     private val appUpdateInfoTask = appUpdateManager.appUpdateInfo
     private var updateListener = InstallStateUpdatedListener(::processUpdateListener)
 
     private fun processUpdateListener(state: InstallState) {
+        info { "Current update state $state" }
         if (state.installStatus() != InstallStatus.DOWNLOADED) return
 
         inAppNotificationStorage.addNotification(
@@ -41,9 +46,11 @@ class SelfUpdaterGooglePlayApi @Inject constructor(
     }
 
     override fun startCheckUpdate() {
+        info { "Process checkout new update" }
         appUpdateManager.registerListener(updateListener)
         appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
             if (isUpdateAvailable(appUpdateInfo)) {
+                info { "New update available, suggest to update" }
                 appUpdateManager.startUpdateFlowForResult(
                     appUpdateInfo,
                     AppUpdateType.FLEXIBLE,

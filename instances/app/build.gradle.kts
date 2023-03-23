@@ -159,14 +159,11 @@ dependencies {
 
     implementation(projects.components.selfupdater.api)
     when (ApkConfig.sourceInstall) {
-        SourceInstall.GITHUB -> {
-            implementation(projects.components.selfupdater.source.github)
-        }
         SourceInstall.GOOGLE_PLAY -> {
             implementation(projects.components.selfupdater.source.googleplay)
         }
-        SourceInstall.NONE -> {
-            implementation(projects.components.selfupdater.source.googleplay)
+        else -> {
+            implementation(projects.components.selfupdater.source.unknown)
         }
     }
 

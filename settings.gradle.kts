@@ -190,6 +190,6 @@ include(
     ":components:selfupdater:api",
     ":components:selfupdater:source:github",
     ":components:selfupdater:source:googleplay",
-    ":components:selfupdater:source:noop",
+    ":components:selfupdater:source:unknown",
 
 )

@@ -22,6 +22,6 @@ object ApkConfig {
 
     val sourceInstall = when {
         IS_GOOGLE_FEATURE_AVAILABLE -> SourceInstall.GOOGLE_PLAY
-        else -> SourceInstall.NONE
+        else -> SourceInstall.UNKNOWN
     }
 }

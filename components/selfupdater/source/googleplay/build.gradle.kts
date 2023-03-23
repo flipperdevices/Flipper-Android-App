@@ -8,6 +8,8 @@ dependencies {
     implementation(projects.components.selfupdater.api)
     implementation(projects.components.inappnotification.api)
 
+    implementation(projects.components.core.log)
+
     // In-app update
     implementation(libs.app.update)
     implementation(libs.app.update.ktx)
