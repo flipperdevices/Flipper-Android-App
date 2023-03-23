@@ -7,6 +7,12 @@ on:
       - 'build-logic/**'
       - 'gradle/**'
       - 'gradle.properties'
+  merge_group:
+    paths:
+      - '**.gradle.kts'
+      - 'build-logic/**'
+      - 'gradle/**'
+      - 'gradle.properties'
 
 jobs:
   release_build:
