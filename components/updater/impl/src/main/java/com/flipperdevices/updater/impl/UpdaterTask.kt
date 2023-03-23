@@ -24,9 +24,14 @@ import com.flipperdevices.updater.subghz.model.FailedUploadSubGhzException
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeoutOrNull
 import java.io.File
 import java.net.UnknownHostException
+
+private const val DISCONNECT_WAIT_TIMEOUT_MS = 30 * 1000L
 
 class UpdaterTask(
     serviceProvider: FlipperServiceProvider,
@@ -145,6 +150,10 @@ class UpdaterTask(
             return@useTemporaryFolder
         }
 
+        withTimeoutOrNull(DISCONNECT_WAIT_TIMEOUT_MS) {
+            serviceApi.connectionInformationApi.getConnectionStateFlow()
+                .filter { !it.isConnected }.first()
+        }
         stateListener(UpdatingState.Rebooting)
     }
 
