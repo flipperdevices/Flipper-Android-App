@@ -18,7 +18,6 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.drawscope.ContentDrawScope
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.ui.theme.composable.FlipperPallet
 import com.flipperdevices.core.ui.theme.composable.FlipperTypography
 import com.flipperdevices.core.ui.theme.composable.getThemedFlipperPallet
@@ -27,6 +26,7 @@ import com.flipperdevices.core.ui.theme.composable.isLight
 import com.flipperdevices.core.ui.theme.composable.toMaterialColors
 import com.flipperdevices.core.ui.theme.composable.toTextSelectionColors
 import com.flipperdevices.core.ui.theme.viewmodel.ThemeViewModel
+import tangle.viewmodel.compose.tangleViewModel
 
 val LocalPallet = compositionLocalOf<FlipperPallet> { error("No local pallet") }
 val LocalTypography = compositionLocalOf<FlipperTypography> { error("No local typography") }
@@ -34,7 +34,7 @@ val LocalTypography = compositionLocalOf<FlipperTypography> { error("No local ty
 @Composable
 fun FlipperTheme(
     content: @Composable () -> Unit,
-    themeViewModel: ThemeViewModel = viewModel()
+    themeViewModel: ThemeViewModel = tangleViewModel()
 ) {
     val theme by themeViewModel.getAppTheme().collectAsState()
     val isLight = isLight(systemIsDark = isSystemInDarkTheme())
