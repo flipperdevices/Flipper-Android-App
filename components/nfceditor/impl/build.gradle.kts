@@ -9,7 +9,7 @@ dependencies {
     implementation(projects.components.nfceditor.api)
 
     implementation(projects.components.core.ui.lifecycle)
-    implementation(projects.components.core.ui.fragment)
+
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.dialog)
     implementation(projects.components.core.ui.res)
@@ -17,7 +17,6 @@ dependencies {
     implementation(projects.components.core.ui.hexkeyboard)
     implementation(projects.components.core.ui.navigation)
     implementation(projects.components.core.ktx)
-    implementation(projects.components.core.navigation)
     implementation(projects.components.core.log)
     implementation(projects.components.core.di)
     implementation(projects.components.core.preference)
@@ -28,7 +27,6 @@ dependencies {
     implementation(projects.components.keyedit.api)
     implementation(projects.components.keyscreen.shared)
 
-    implementation(libs.cicerone)
     implementation(libs.appcompat)
 
     // Compose

@@ -6,7 +6,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.flipperdevices.archive.api.SearchApi
 import com.flipperdevices.archive.api.SearchFeatureEntry
 import com.flipperdevices.archive.search.composable.ComposableSearch
 import com.flipperdevices.archive.search.viewmodel.SearchViewModel
@@ -61,7 +60,7 @@ class SearchFeatureEntryImpl @Inject constructor(
                     val keyScreen = keyScreenFeatureEntry.getKeyScreen(flipperKeyPath)
                     if (isExitOnOpenKey) {
                         navController.setOnResult(
-                            key = SearchApi.SEARCH_RESULT_KEY,
+                            key = SearchFeatureEntry.SEARCH_RESULT_KEY,
                             value = flipperKeyPath
                         )
                     } else {

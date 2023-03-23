@@ -11,13 +11,12 @@ dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.log)
-    implementation(projects.components.core.navigation)
     implementation(projects.components.core.preference)
     implementation(projects.components.core.activityholder)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.lifecycle)
-    implementation(projects.components.core.ui.fragment)
+
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.navigation)
 
@@ -191,6 +190,5 @@ dependencies {
     implementation(libs.tangle.fragment.api)
     anvil(libs.tangle.fragment.compiler)
 
-    implementation(libs.cicerone)
     implementation(libs.timber)
 }

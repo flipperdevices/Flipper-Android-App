@@ -18,7 +18,6 @@ dependencies {
 
     implementation(projects.components.bridge.api)
 
-    implementation(libs.cicerone)
     implementation(libs.annotations)
     implementation(libs.appcompat)
 

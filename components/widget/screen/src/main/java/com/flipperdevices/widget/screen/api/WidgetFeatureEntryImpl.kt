@@ -7,7 +7,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 import com.flipperdevices.archive.api.ArchiveApi
-import com.flipperdevices.archive.api.SearchApi
 import com.flipperdevices.archive.api.SearchFeatureEntry
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.di.AppGraph
@@ -29,7 +28,6 @@ import javax.inject.Inject
 private const val DEEPLINK_KEY = DeeplinkConstants.KEY
 private const val DEEPLINK_SCHEME = DeeplinkConstants.SCHEMA
 private const val DEEPLINK_WIDGET_URL = "${DEEPLINK_SCHEME}widget={$DEEPLINK_KEY}"
-internal const val EXTRA_WIDGET_ID_KEY = "widget_id"
 
 @ContributesBinding(AppGraph::class, WidgetFeatureEntry::class)
 @ContributesMultibinding(AppGraph::class, ComposableFeatureEntry::class)
@@ -37,16 +35,13 @@ class WidgetFeatureEntryImpl @Inject constructor(
     private val archiveApi: ArchiveApi,
     private val searchFeatureEntry: SearchFeatureEntry
 ) : WidgetFeatureEntry {
-    override fun getWidgetScreen(widgetId: Int): String {
-        return "@${ROUTE.name}?id=$widgetId"
-    }
+
+    private val widgetRoute = "@${ROUTE.name}/$DEEPLINK_KEY={$DEEPLINK_KEY}"
 
     override fun getWidgetScreenByDeeplink(deeplink: Deeplink): String {
         val deeplinkStr = Uri.encode(Json.encodeToString(deeplink))
         return "${DEEPLINK_SCHEME}widget=$deeplinkStr"
     }
-
-    private val widgetRoute = "@${ROUTE.name}/$DEEPLINK_KEY={$DEEPLINK_KEY}"
 
     private val widgetArguments = listOf(
         navArgument(DEEPLINK_KEY) {
@@ -66,7 +61,7 @@ class WidgetFeatureEntryImpl @Inject constructor(
             deepLinks = deeplinkArguments
         ) {
             val widgetSelectViewModel: WidgetSelectViewModel = tangleViewModel()
-            navController.GetOnceResult<FlipperKeyPath>(SearchApi.SEARCH_RESULT_KEY) {
+            navController.GetOnceResult<FlipperKeyPath>(SearchFeatureEntry.SEARCH_RESULT_KEY) {
                 widgetSelectViewModel.onSelectKey(it)
             }
             WidgetOptionsComposable(
