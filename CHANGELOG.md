@@ -30,6 +30,7 @@
 - [FIX] Fix change color scheme bug
 - [FIX] Fix status bar color
 - [FIX] Fix open key screen in global scope
+- [FIX] Wait for disconnect while update
 - [FIX] Fix mfkey32
 - [REFACTOR] Migrate bottom bar to compose navigation
 - [REFACTOR] Bump Android Gradle Plugin
