@@ -59,7 +59,7 @@ fun ComposableMainScreen(
                         // reselecting the same item
                         launchSingleTop = true
                         // Restore state when reselecting a previously selected item
-                        restoreState = selectedTab != it
+                        restoreState = true
                     }
                     navController.navigate(it.startRoute.name, topLevelNavOptions)
                 }

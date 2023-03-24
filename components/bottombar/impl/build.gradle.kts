@@ -4,8 +4,6 @@ plugins {
     id("kotlin-kapt")
 }
 
-android.buildFeatures.viewBinding = true
-
 dependencies {
     implementation(projects.components.bottombar.api)
 

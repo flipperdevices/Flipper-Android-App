@@ -19,4 +19,9 @@ object ApkConfig {
     val IS_GOOGLE_FEATURE_AVAILABLE = getProperty("is_google_feature", true.toString()).toBoolean()
 
     val IS_SENTRY_PUBLISH = getProperty("is_sentry_publish", "false").toBoolean()
+
+    val sourceInstall = when {
+        IS_GOOGLE_FEATURE_AVAILABLE -> SourceInstall.GOOGLE_PLAY
+        else -> SourceInstall.UNKNOWN
+    }
 }

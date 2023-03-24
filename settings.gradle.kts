@@ -186,4 +186,10 @@ include(
     ":components:faphub:fapscreen:impl",
     ":components:faphub:installation:api",
     ":components:faphub:installation:impl",
+
+    ":components:selfupdater:api",
+    ":components:selfupdater:source:github",
+    ":components:selfupdater:source:googleplay",
+    ":components:selfupdater:source:unknown",
+
 )

@@ -8,6 +8,4 @@
     <string name="keyedit_bar_cancel">Cancel</string>
     <string name="keyedit_bar_title">Editing</string>
     <string name="keyedit_bar_save">Save</string>
-
-    <string name="keyedit_notification_desc">saved to Archive</string>
 </resources>

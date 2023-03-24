@@ -1,4 +1,4 @@
-package com.flipperdevices.inappnotification.impl.composable
+package com.flipperdevices.inappnotification.impl.composable.type
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,10 +16,13 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.inappnotification.api.model.InAppNotification
+import com.flipperdevices.inappnotification.impl.R
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
-internal fun ComposableInAppNotificationCardContent(notification: InAppNotification) {
+internal fun ComposableInAppNotificationSavedKey(
+    notification: InAppNotification.SavedKey
+) {
     Row {
         ComposableSaveIcon()
         Column(modifier = Modifier.padding(top = 9.dp, bottom = 9.dp, end = 12.dp)) {
@@ -28,7 +31,7 @@ internal fun ComposableInAppNotificationCardContent(notification: InAppNotificat
                 style = LocalTypography.current.subtitleB12
             )
             Text(
-                text = stringResource(notification.descriptionId),
+                text = stringResource(R.string.saved_key_desc),
                 style = LocalTypography.current.subtitleR12
             )
         }
