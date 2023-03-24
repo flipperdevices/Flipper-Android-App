@@ -11,9 +11,11 @@
 - [Feature] Add back button in options screen
 - [Feature] Hide bottombar when keyboard close
 - [Feature] New report bug screen
+- [Feature] Self update(Google play)
 - [GitHub] Update github repo picture
 - [CI] Migrate to Detekt
 - [CI] Android lint in CI
+- [CI] Enable back github queue
 - [FIX] Clickable modifier ktx
 - [FIX] Refactor `share:receive` module
 - [FIX] Bump length for server-side share link

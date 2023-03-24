@@ -6,9 +6,9 @@ plugins {
 
 dependencies {
     implementation(projects.components.core.di)
-    implementation(projects.components.core.preference)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ktx)
+    implementation(projects.components.core.preference)
 
     // Compose
     implementation(libs.compose.ui)

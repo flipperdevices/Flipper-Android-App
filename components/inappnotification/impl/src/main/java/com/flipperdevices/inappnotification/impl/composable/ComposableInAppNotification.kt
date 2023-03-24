@@ -22,6 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.inappnotification.api.model.InAppNotification
+import com.flipperdevices.inappnotification.impl.composable.type.ComposableInAppNotificationSavedKey
+import com.flipperdevices.inappnotification.impl.composable.type.ComposableInAppNotificationUpdateReady
 import kotlin.math.max
 
 const val VISIBLE_ANIMATION_MS = 1000
@@ -60,7 +62,14 @@ private fun ComposableInAppNotificationCard(
             shape = RoundedCornerShape(size = 8.dp),
             backgroundColor = LocalPallet.current.notificationCard
         ) {
-            ComposableInAppNotificationCardContent(notification)
+            when (notification) {
+                is InAppNotification.SavedKey -> {
+                    ComposableInAppNotificationSavedKey(notification)
+                }
+                is InAppNotification.UpdateReady -> {
+                    ComposableInAppNotificationUpdateReady(notification)
+                }
+            }
         }
     }
     DisposableEffect(notification) {
