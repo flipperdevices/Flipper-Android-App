@@ -14,6 +14,8 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
+import com.flipperdevices.metric.api.MetricApi
+import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.nfc.mfkey32.api.MfKey32Api
 import com.flipperdevices.nfc.mfkey32.screen.model.ErrorType
 import com.flipperdevices.nfc.mfkey32.screen.model.FoundedInformation
@@ -23,6 +25,8 @@ import com.flipperdevices.nfc.tools.api.MfKey32Nonce
 import com.flipperdevices.nfc.tools.api.NfcToolsApi
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.deleteRequest
+import java.io.FileNotFoundException
+import java.util.concurrent.Executors
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asCoroutineDispatcher
@@ -34,8 +38,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tangle.viewmodel.VMInject
-import java.io.FileNotFoundException
-import java.util.concurrent.Executors
 
 const val PATH_NONCE_LOG = "/ext/nfc/.mfkey32.log"
 private const val TOTAL_PERCENT = 1.0f
@@ -44,6 +46,7 @@ class MfKey32ViewModel @VMInject constructor(
     context: Context,
     private val nfcToolsApi: NfcToolsApi,
     private val mfKey32Api: MfKey32Api,
+    private val metricApi: MetricApi,
     flipperServiceProvider: FlipperServiceProvider
 ) : LifecycleViewModel(), LogTagProvider, FlipperBleServiceConsumer {
     override val TAG = "MfKey32ViewModel"
@@ -121,6 +124,7 @@ class MfKey32ViewModel @VMInject constructor(
             mfKey32StateFlow.emit(MfKey32State.Error(ErrorType.NOT_FOUND_FILE))
             return false
         }
+        metricApi.reportSimpleEvent(SimpleEvent.MFKEY32)
         try {
             existedKeysStorage.load(serviceApi.requestApi)
         } catch (exception: Throwable) {

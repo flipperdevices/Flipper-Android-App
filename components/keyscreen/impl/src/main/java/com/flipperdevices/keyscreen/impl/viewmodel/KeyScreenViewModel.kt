@@ -19,6 +19,7 @@ import com.flipperdevices.keyscreen.impl.model.KeyScreenState
 import com.flipperdevices.keyscreen.impl.model.ShareState
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
+import java.util.concurrent.atomic.AtomicBoolean
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,7 +29,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tangle.inject.TangleParam
 import tangle.viewmodel.VMInject
-import java.util.concurrent.atomic.AtomicBoolean
 
 @Suppress("LongParameterList")
 class KeyScreenViewModel @VMInject constructor(
@@ -95,26 +95,6 @@ class KeyScreenViewModel @VMInject constructor(
         }
     }
 
-    fun onShare() {
-        metricApi.reportSimpleEvent(SimpleEvent.OPEN_SHARE)
-        val state = keyScreenState.value
-        if (state !is KeyScreenState.Ready || state.shareState == ShareState.PROGRESS) {
-            warn { "We skip onShare, because state is $state" }
-            return
-        }
-        keyScreenState.update {
-            if (it is KeyScreenState.Ready) it.copy(shareState = ShareState.PROGRESS) else it
-        }
-
-        viewModelScope.launch {
-            val flipperKey = state.flipperKey
-            shareDelegate.share(flipperKey)
-            keyScreenState.update {
-                if (it is KeyScreenState.Ready) it.copy(shareState = ShareState.NOT_SHARING) else it
-            }
-        }
-    }
-
     fun onDelete(onEndAction: () -> Unit) {
         val state = keyScreenState.value
         if (state !is KeyScreenState.Ready || state.deleteState == DeleteState.PROGRESS) {
@@ -158,6 +138,7 @@ class KeyScreenViewModel @VMInject constructor(
     fun openNfcEditor(onEndAction: (FlipperKeyPath) -> Unit) {
         when (val state = keyScreenState.value) {
             is KeyScreenState.Ready -> {
+                metricApi.reportSimpleEvent(SimpleEvent.OPEN_NFC_DUMP_EDITOR)
                 val flipperKey = state.flipperKey
                 val flipperKeyPath = flipperKey.getKeyPath()
                 onEndAction(flipperKeyPath)

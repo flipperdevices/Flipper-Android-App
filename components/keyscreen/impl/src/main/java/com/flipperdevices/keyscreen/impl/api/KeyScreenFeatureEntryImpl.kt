@@ -11,6 +11,7 @@ import com.flipperdevices.bridge.dao.api.model.navigation.FlipperKeyPathType
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
+import com.flipperdevices.core.ui.navigation.LocalGlobalNavigationNavStack
 import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.flipperdevices.keyedit.api.KeyEditFeatureEntry
 import com.flipperdevices.keyscreen.api.KeyEmulateApi
@@ -23,10 +24,10 @@ import com.flipperdevices.nfceditor.api.NfcEditorFeatureEntry
 import com.flipperdevices.share.api.ShareBottomFeatureEntry
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
+import javax.inject.Inject
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import tangle.viewmodel.compose.tangleViewModel
-import javax.inject.Inject
 
 internal const val EXTRA_KEY_PATH = "flipper_key_path"
 private const val DEEPLINK_SCHEME = DeeplinkConstants.SCHEMA
@@ -72,6 +73,7 @@ class KeyScreenFeatureEntryImpl @Inject constructor(
             deepLinks = deeplinkArguments
         ) {
             val viewModel: KeyScreenViewModel = tangleViewModel()
+            val globalNavController = LocalGlobalNavigationNavStack.current
             KeyScreenNavigation(shareBottomFeatureEntry) { onShare ->
                 ComposableKeyScreen(
                     viewModel = viewModel,
@@ -84,7 +86,7 @@ class KeyScreenFeatureEntryImpl @Inject constructor(
                         viewModel.openNfcEditor { flipperKeyPath ->
                             val nfcEditorScreen =
                                 nfcEditorFeatureEntry.getNfcEditorScreen(flipperKeyPath)
-                            navController.navigate(nfcEditorScreen)
+                            globalNavController.navigate(nfcEditorScreen)
                         }
                     },
                     onOpenEditScreen = { flipperKeyPath ->
