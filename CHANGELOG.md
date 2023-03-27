@@ -12,6 +12,7 @@
 - [Feature] Hide bottombar when keyboard close
 - [Feature] New report bug screen
 - [Feature] Self update(Google play)
+- [Feature] Add SAVE_DUMP, MFKEY32, OPEN_NFC_DUMP_EDITOR
 - [GitHub] Update github repo picture
 - [CI] Migrate to Detekt
 - [CI] Android lint in CI

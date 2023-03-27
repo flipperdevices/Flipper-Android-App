@@ -39,14 +39,14 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.isSuccess
-import java.util.UUID
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.util.UUID
+import javax.inject.Inject
+import javax.inject.Singleton
 
 const val METRIC_API_URL = "https://metric.flipperdevices.com/report"
 
@@ -75,9 +75,9 @@ class ClickhouseApiImpl @Inject constructor(
             SimpleEvent.SHARE_SHORT_LINK -> OpenOuterClass.Open.OpenTarget.SHARE_SHORTLINK
             SimpleEvent.SHARE_LONG_LINK -> OpenOuterClass.Open.OpenTarget.SHARE_LONGLINK
             SimpleEvent.SHARE_FILE -> OpenOuterClass.Open.OpenTarget.SHARE_FILE
-            SimpleEvent.SAVE_DUMP -> OpenOuterClass.Open.OpenTarget.S
-            SimpleEvent.MFKEY32 -> TODO()
-            SimpleEvent.OPEN_NFC_DUMP_EDITOR -> TODO()
+            SimpleEvent.SAVE_DUMP -> OpenOuterClass.Open.OpenTarget.SAVE_DUMP
+            SimpleEvent.MFKEY32 -> OpenOuterClass.Open.OpenTarget.MFKEY32
+            SimpleEvent.OPEN_NFC_DUMP_EDITOR -> OpenOuterClass.Open.OpenTarget.OPEN_NFC_DUMP_EDITOR
         }
         scope.launch(Dispatchers.Default) {
             reportToServerSafe(

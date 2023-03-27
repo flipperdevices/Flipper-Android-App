@@ -24,10 +24,10 @@ import com.flipperdevices.nfceditor.api.NfcEditorFeatureEntry
 import com.flipperdevices.share.api.ShareBottomFeatureEntry
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
-import javax.inject.Inject
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import tangle.viewmodel.compose.tangleViewModel
+import javax.inject.Inject
 
 internal const val EXTRA_KEY_PATH = "flipper_key_path"
 private const val DEEPLINK_SCHEME = DeeplinkConstants.SCHEMA

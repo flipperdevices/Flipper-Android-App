@@ -19,7 +19,6 @@ import com.flipperdevices.keyscreen.impl.model.KeyScreenState
 import com.flipperdevices.keyscreen.impl.model.ShareState
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
-import java.util.concurrent.atomic.AtomicBoolean
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -29,6 +28,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tangle.inject.TangleParam
 import tangle.viewmodel.VMInject
+import java.util.concurrent.atomic.AtomicBoolean
 
 @Suppress("LongParameterList")
 class KeyScreenViewModel @VMInject constructor(
@@ -45,7 +45,6 @@ class KeyScreenViewModel @VMInject constructor(
     override val TAG = "KeyScreenViewModel"
 
     private val keyScreenState = MutableStateFlow<KeyScreenState>(KeyScreenState.InProgress)
-    private val shareDelegate = ShareDelegate(application, keyParser)
     private val restoreInProgress = AtomicBoolean(false)
     private var loadKeyJob: Job? = null
 
