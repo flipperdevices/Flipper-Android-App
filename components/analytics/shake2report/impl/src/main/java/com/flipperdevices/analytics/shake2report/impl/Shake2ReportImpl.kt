@@ -9,11 +9,13 @@ import io.sentry.Sentry
 import io.sentry.SentryLevel
 import io.sentry.android.core.SentryAndroid
 import io.sentry.android.timber.SentryTimberIntegration
-import timber.log.Timber
 import java.io.File
-import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.getAndUpdate
+import timber.log.Timber
 
 private const val FILE_LOG_DIR = "log"
 private const val FILE_LOG_SIZE = 1 * 1024 * 1024 // 1 MB
@@ -24,12 +26,12 @@ private const val FILE_LOG_LIMIT = 10
 class Shake2ReportImpl @Inject constructor(
     private val application: Application
 ) : InternalShake2Report {
-    private val alreadyRegistered = AtomicBoolean(false)
+    private val alreadyRegistered = MutableStateFlow(false)
 
     override val logDir: File by lazy { File(application.cacheDir, FILE_LOG_DIR) }
 
     override fun register() {
-        if (!alreadyRegistered.compareAndSet(false, true)) {
+        if (alreadyRegistered.getAndUpdate { true }) {
             return
         }
 
@@ -64,4 +66,6 @@ class Shake2ReportImpl @Inject constructor(
             }
         }
     }
+
+    override fun getIsRegisteredFlow() = alreadyRegistered.asStateFlow()
 }

@@ -13,6 +13,7 @@ import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.share.ShareHelper
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.model.ExportState
+import com.flipperdevices.shake2report.api.Shake2ReportApi
 import com.flipperdevices.shake2report.api.Shake2ReportFeatureEntry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,12 +24,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import tangle.viewmodel.VMInject
 
-@Suppress("LongParameterList")
+@Suppress("LongParameterList", "TooManyFunctions")
 class SettingsViewModel @VMInject constructor(
     private val dataStoreSettings: DataStore<Settings>,
     private val applicationParams: ApplicationParams,
     private val exportKeysHelper: ExportKeysHelper,
-    private val shake2ReportFeatureEntry: Shake2ReportFeatureEntry
+    private val shake2ReportFeatureEntry: Shake2ReportFeatureEntry,
+    private val shake2ReportApi: Shake2ReportApi
 ) : ViewModel(), LogTagProvider {
     override val TAG = "SettingsViewModel"
 
@@ -44,6 +46,8 @@ class SettingsViewModel @VMInject constructor(
     fun getState(): StateFlow<Settings> = settingsState
 
     fun getExportState(): StateFlow<ExportState> = exportStateFlow
+
+    fun getShake2ReportInitializationState(): StateFlow<Boolean> = shake2ReportApi.isInitialized()
 
     fun onSwitchDebug(value: Boolean) {
         viewModelScope.launch {

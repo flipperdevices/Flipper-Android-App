@@ -5,6 +5,7 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.shake2report.api.Shake2ReportApi
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableStateFlow
 
 @ContributesBinding(AppGraph::class)
 class Shake2ReportStub @Inject constructor() : Shake2ReportApi {
@@ -22,4 +23,6 @@ class Shake2ReportStub @Inject constructor() : Shake2ReportApi {
     override fun reportException(throwable: Throwable, tag: String?, extras: Map<String, String>?) {
         // Do nothing
     }
+
+    override fun isInitialized() = MutableStateFlow(true)
 }

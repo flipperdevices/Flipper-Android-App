@@ -27,8 +27,7 @@ object ApkConfig {
         get() = prop("is_sentry_publish", false).toBoolean()
 
     val Project.SOURCE_INSTALL
-        get() = when {
-            IS_GOOGLE_FEATURE_AVAILABLE -> SourceInstall.GOOGLE_PLAY
+        get() = when (providers.gradleProperty("source_install").orNull) {
             else -> SourceInstall.UNKNOWN
         }
 
