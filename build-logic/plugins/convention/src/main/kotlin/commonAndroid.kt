@@ -2,6 +2,8 @@
 
 import com.android.build.gradle.BaseExtension
 import com.flipperdevices.buildlogic.ApkConfig
+import com.flipperdevices.buildlogic.ApkConfig.VERSION_CODE
+import com.flipperdevices.buildlogic.ApkConfig.VERSION_NAME
 import org.gradle.api.JavaVersion
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
@@ -15,7 +17,7 @@ private const val SPLASH_SCREEN_ACTIVITY = "com.flipperdevices.singleactivity.im
 private const val SPLASH_SCREEN_ACTIVITY_KEY = "splashScreenActivity"
 
 fun BaseExtension.commonAndroid(target: Project) {
-    configureDefaultConfig()
+    configureDefaultConfig(target)
     configureBuildTypes()
     configureBuildFeatures()
     configureCompileOptions()
@@ -24,13 +26,13 @@ fun BaseExtension.commonAndroid(target: Project) {
 }
 
 @Suppress("UnstableApiUsage")
-private fun BaseExtension.configureDefaultConfig() {
+private fun BaseExtension.configureDefaultConfig(project: Project) {
     compileSdkVersion(ApkConfig.COMPILE_SDK_VERSION)
     defaultConfig {
         minSdk = ApkConfig.MIN_SDK_VERSION
         targetSdk = ApkConfig.TARGET_SDK_VERSION
-        versionCode = ApkConfig.VERSION_CODE
-        versionName = ApkConfig.VERSION_NAME
+        versionCode = project.VERSION_CODE
+        versionName = project.VERSION_NAME
 
         consumerProguardFiles(
             "consumer-rules.pro"

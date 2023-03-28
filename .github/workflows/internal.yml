@@ -5,6 +5,9 @@ on:
     branches:
       - 'dev'
 
+concurrency:
+  group: "deploy"
+
 jobs:
   build_number:
     name: Generate build number
@@ -18,7 +21,7 @@ jobs:
         uses: einaregilsson/build-number@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Generate build number
+      - name: Generate build number for WearOS
         id: buildnumber_wearos
         uses: einaregilsson/build-number@v3
         with:

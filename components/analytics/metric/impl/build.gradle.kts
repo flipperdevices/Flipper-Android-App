@@ -1,4 +1,5 @@
-import com.flipperdevices.buildlogic.ApkConfig
+import com.flipperdevices.buildlogic.ApkConfig.COUNTLY_APP_KEY
+import com.flipperdevices.buildlogic.ApkConfig.COUNTLY_URL
 
 plugins {
     id("flipper.android-lib")
@@ -12,12 +13,12 @@ android {
             buildConfigField(
                 "String",
                 "COUNTLY_URL",
-                "\"${ApkConfig.COUNTLY_URL}\""
+                "\"${COUNTLY_URL}\""
             )
             buildConfigField(
                 "String",
                 "COUNTLY_APP_KEY",
-                "\"${ApkConfig.COUNTLY_APP_KEY}\""
+                "\"${COUNTLY_APP_KEY}\""
             )
         }
     }

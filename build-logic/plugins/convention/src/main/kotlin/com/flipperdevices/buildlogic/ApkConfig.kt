@@ -1,6 +1,7 @@
 package com.flipperdevices.buildlogic
 
-import java.lang.System.getProperty
+import org.gradle.api.Project
+
 
 object ApkConfig {
     const val APPLICATION_ID = "com.flipperdevices.app"
@@ -9,19 +10,32 @@ object ApkConfig {
     const val TARGET_SDK_VERSION = 33
     const val COMPILE_SDK_VERSION = 33
 
-    val VERSION_CODE = getProperty("version_code", Integer.MAX_VALUE.toString()).toInt()
-    val VERSION_NAME = getProperty("version_name", "DEBUG_VERSION")!!
-    val COUNTLY_URL = getProperty("countly_url", "https://countly.lionzxy.ru/")!!
-    val COUNTLY_APP_KEY = getProperty(
-        "countly_app_key",
-        "171c41398e2459b068869d6409047680896ed062"
-    )!!
-    val IS_GOOGLE_FEATURE_AVAILABLE = getProperty("is_google_feature", true.toString()).toBoolean()
+    val Project.VERSION_CODE
+        get() = prop("version_code", Integer.MAX_VALUE).toInt()
+    val Project.VERSION_NAME
+        get() = prop("version_name", "DEBUG_VERSION")
 
-    val IS_SENTRY_PUBLISH = getProperty("is_sentry_publish", "false").toBoolean()
+    val Project.COUNTLY_URL
+        get() = prop("countly_url", "https://countly.lionzxy.ru/")
+    val Project.COUNTLY_APP_KEY
+        get() = prop("countly_app_key", "171c41398e2459b068869d6409047680896ed062")
 
-    val sourceInstall = when {
-        IS_GOOGLE_FEATURE_AVAILABLE -> SourceInstall.GOOGLE_PLAY
-        else -> SourceInstall.UNKNOWN
-    }
+    val Project.IS_GOOGLE_FEATURE_AVAILABLE
+        get() = prop("is_google_feature", true).toBoolean()
+
+    val Project.IS_SENTRY_PUBLISH
+        get() = prop("is_sentry_publish", false).toBoolean()
+
+    val Project.SOURCE_INSTALL
+        get() = when {
+            IS_GOOGLE_FEATURE_AVAILABLE -> SourceInstall.GOOGLE_PLAY
+            else -> SourceInstall.UNKNOWN
+        }
+
+    val Project.IS_METRIC_ENABLED
+        get() = prop("is_metric_enabled", true).toBoolean()
+}
+
+private fun Project.prop(key: String, default: Any): String {
+    return providers.gradleProperty(key).getOrElse(default.toString())
 }
