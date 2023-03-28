@@ -11,6 +11,7 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.preference.pb.SelectedTheme
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.share.ShareHelper
+import com.flipperdevices.selfupdater.api.SelfUpdaterApi
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.model.ExportState
 import com.flipperdevices.shake2report.api.Shake2ReportApi
@@ -30,7 +31,8 @@ class SettingsViewModel @VMInject constructor(
     private val applicationParams: ApplicationParams,
     private val exportKeysHelper: ExportKeysHelper,
     private val shake2ReportFeatureEntry: Shake2ReportFeatureEntry,
-    private val shake2ReportApi: Shake2ReportApi
+    private val shake2ReportApi: Shake2ReportApi,
+    private val selfUpdaterApi: SelfUpdaterApi
 ) : ViewModel(), LogTagProvider {
     override val TAG = "SettingsViewModel"
 
@@ -116,4 +118,5 @@ class SettingsViewModel @VMInject constructor(
     }
 
     fun versionApp() = applicationParams.version
+    fun sourceInstall() = selfUpdaterApi.getInstallSourceName()
 }

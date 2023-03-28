@@ -50,6 +50,7 @@ fun ComposableCommonSettings(
         )
         VersionCategory(
             version = settingsViewModel.versionApp(),
+            sourceInstall = settingsViewModel.sourceInstall(),
             onActivateExpertMode = settingsViewModel::onExpertModeActivate
         )
     }

@@ -61,8 +61,10 @@ class SelfUpdaterGooglePlayApi @Inject constructor(
         }
     }
 
+    override fun getInstallSourceName() = "Google Play"
+
     private fun isUpdateAvailable(appUpdateInfo: AppUpdateInfo): Boolean {
         return appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
-            appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
+                appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
     }
 }

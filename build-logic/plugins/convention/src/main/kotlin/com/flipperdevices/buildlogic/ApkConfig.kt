@@ -28,6 +28,9 @@ object ApkConfig {
 
     val Project.SOURCE_INSTALL
         get() = when (providers.gradleProperty("source_install").orNull) {
+            "fdroid" -> SourceInstall.FDROID
+            "github" -> SourceInstall.GITHUB
+            "googleplay" -> SourceInstall.GOOGLE_PLAY
             else -> SourceInstall.UNKNOWN
         }
 

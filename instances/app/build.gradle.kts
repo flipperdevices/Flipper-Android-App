@@ -108,7 +108,7 @@ dependencies {
     if (IS_METRIC_ENABLED) {
         implementation(projects.components.analytics.metric.impl)
     } else {
-        // implementation(projects.components.analytics.metric.noop)
+        implementation(projects.components.analytics.metric.noop)
     }
 
     implementation(projects.components.nfceditor.api)
