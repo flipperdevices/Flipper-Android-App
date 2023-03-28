@@ -31,6 +31,9 @@ dependencies {
     implementation(projects.components.keyedit.api)
     implementation(projects.components.keyedit.noop)
 
+    implementation(projects.components.analytics.metric.api)
+    implementation(projects.components.analytics.metric.noop)
+
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.dao.impl)
     implementation(projects.components.bridge.synchronization.api)
