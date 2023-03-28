@@ -45,7 +45,6 @@ class KeyScreenViewModel @VMInject constructor(
     override val TAG = "KeyScreenViewModel"
 
     private val keyScreenState = MutableStateFlow<KeyScreenState>(KeyScreenState.InProgress)
-    private val shareDelegate = ShareDelegate(application, keyParser)
     private val restoreInProgress = AtomicBoolean(false)
     private var loadKeyJob: Job? = null
 
@@ -95,26 +94,6 @@ class KeyScreenViewModel @VMInject constructor(
         }
     }
 
-    fun onShare() {
-        metricApi.reportSimpleEvent(SimpleEvent.OPEN_SHARE)
-        val state = keyScreenState.value
-        if (state !is KeyScreenState.Ready || state.shareState == ShareState.PROGRESS) {
-            warn { "We skip onShare, because state is $state" }
-            return
-        }
-        keyScreenState.update {
-            if (it is KeyScreenState.Ready) it.copy(shareState = ShareState.PROGRESS) else it
-        }
-
-        viewModelScope.launch {
-            val flipperKey = state.flipperKey
-            shareDelegate.share(flipperKey)
-            keyScreenState.update {
-                if (it is KeyScreenState.Ready) it.copy(shareState = ShareState.NOT_SHARING) else it
-            }
-        }
-    }
-
     fun onDelete(onEndAction: () -> Unit) {
         val state = keyScreenState.value
         if (state !is KeyScreenState.Ready || state.deleteState == DeleteState.PROGRESS) {
@@ -158,6 +137,7 @@ class KeyScreenViewModel @VMInject constructor(
     fun openNfcEditor(onEndAction: (FlipperKeyPath) -> Unit) {
         when (val state = keyScreenState.value) {
             is KeyScreenState.Ready -> {
+                metricApi.reportSimpleEvent(SimpleEvent.OPEN_NFC_DUMP_EDITOR)
                 val flipperKey = state.flipperKey
                 val flipperKeyPath = flipperKey.getKeyPath()
                 onEndAction(flipperKeyPath)

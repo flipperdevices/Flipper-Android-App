@@ -75,6 +75,9 @@ class ClickhouseApiImpl @Inject constructor(
             SimpleEvent.SHARE_SHORT_LINK -> OpenOuterClass.Open.OpenTarget.SHARE_SHORTLINK
             SimpleEvent.SHARE_LONG_LINK -> OpenOuterClass.Open.OpenTarget.SHARE_LONGLINK
             SimpleEvent.SHARE_FILE -> OpenOuterClass.Open.OpenTarget.SHARE_FILE
+            SimpleEvent.SAVE_DUMP -> OpenOuterClass.Open.OpenTarget.SAVE_DUMP
+            SimpleEvent.MFKEY32 -> OpenOuterClass.Open.OpenTarget.MFKEY32
+            SimpleEvent.OPEN_NFC_DUMP_EDITOR -> OpenOuterClass.Open.OpenTarget.OPEN_NFC_DUMP_EDITOR
         }
         scope.launch(Dispatchers.Default) {
             reportToServerSafe(
