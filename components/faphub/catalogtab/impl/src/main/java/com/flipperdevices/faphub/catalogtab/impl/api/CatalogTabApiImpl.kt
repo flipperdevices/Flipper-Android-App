@@ -6,6 +6,7 @@ import com.flipperdevices.faphub.catalogtab.api.CatalogTabApi
 import com.flipperdevices.faphub.catalogtab.impl.composable.ComposableCatalogTabScreen
 import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.dao.api.model.FapItem
+import com.flipperdevices.faphub.installation.api.FapInstallationState
 import com.flipperdevices.faphub.installation.api.FapInstallationUIApi
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
@@ -23,7 +24,12 @@ class CatalogTabApiImpl @Inject constructor(
             onOpenFapItem = onOpenFapItem,
             onCategoryClick = onCategoryClick,
             installationButton = { fapItem, modifier, fontSize ->
-                fapInstallationUIApi.ComposableInstallButton(fapItem, modifier, fontSize)
+                fapInstallationUIApi.ComposableButton(
+                    fapItem = fapItem,
+                    modifier = modifier,
+                    textSize = fontSize,
+                    state = FapInstallationState.getRandomState()
+                )
             }
         )
     }

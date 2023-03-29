@@ -28,6 +28,7 @@
 - [FIX] Fix change color scheme bug
 - [FIX] Fix status bar color
 - [FIX] Fix open key screen in global scope
+- [FIX] Fix fap hub design
 - [REFACTOR] Migrate bottom bar to compose navigation
 - [REFACTOR] Bump Android Gradle Plugin
 - [REFACTOR] Fix detekt compose issues

@@ -7,16 +7,10 @@ import com.flipperdevices.faphub.dao.api.model.FapItem
 
 interface FapInstallationUIApi {
     @Composable
-    fun ComposableInstallButton(
+    fun ComposableButton(
         fapItem: FapItem?,
         modifier: Modifier,
-        textSize: TextUnit
-    )
-
-    @Composable
-    fun ComposableUpdateButton(
-        fapItem: FapItem?,
-        modifier: Modifier,
-        textSize: TextUnit
+        textSize: TextUnit,
+        state: FapInstallationState
     )
 }

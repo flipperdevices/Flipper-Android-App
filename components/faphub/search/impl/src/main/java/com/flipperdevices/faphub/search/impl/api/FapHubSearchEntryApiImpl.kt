@@ -8,6 +8,7 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.faphub.fapscreen.api.FapScreenApi
+import com.flipperdevices.faphub.installation.api.FapInstallationState
 import com.flipperdevices.faphub.installation.api.FapInstallationUIApi
 import com.flipperdevices.faphub.search.api.FapHubSearchEntryApi
 import com.flipperdevices.faphub.search.impl.composable.ComposableSearchScreen
@@ -35,7 +36,12 @@ class FapHubSearchEntryApiImpl @Inject constructor(
                         navController.navigate(fapScreenApi.getFapScreen(it.id))
                     },
                     installationButton = { fapItem, modifier, fontSize ->
-                        fapInstallationUIApi.ComposableInstallButton(fapItem, modifier, fontSize)
+                        fapInstallationUIApi.ComposableButton(
+                            fapItem = fapItem,
+                            modifier = modifier,
+                            textSize = fontSize,
+                            state = FapInstallationState.getRandomState()
+                        )
                     }
                 )
             }
