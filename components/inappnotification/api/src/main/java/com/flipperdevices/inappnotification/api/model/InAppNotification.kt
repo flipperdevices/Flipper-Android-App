@@ -1,8 +1,13 @@
 package com.flipperdevices.inappnotification.api.model
 
-data class InAppNotification(
-    val title: String,
-    val descriptionId: Int,
-    val durationMs: Long,
-    val timestamp: Long = System.currentTimeMillis()
-)
+sealed class InAppNotification(val durationMs: Long) {
+    class SavedKey(
+        val title: String,
+        durationMs: Long
+    ) : InAppNotification(durationMs)
+
+    class UpdateReady(
+        val action: () -> Unit,
+        durationMs: Long
+    ) : InAppNotification(durationMs)
+}

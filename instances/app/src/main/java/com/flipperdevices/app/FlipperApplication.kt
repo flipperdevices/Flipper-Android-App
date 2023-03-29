@@ -48,5 +48,7 @@ class FlipperApplication : Application() {
         metricApi.reportSimpleEvent(SimpleEvent.APP_OPEN)
         val synchronizationApi by component.synchronizationApi
         synchronizationApi.startSynchronization()
+        val selfUpdaterApi by component.selfUpdaterApi
+        selfUpdaterApi.startCheckUpdateAsync()
     }
 }

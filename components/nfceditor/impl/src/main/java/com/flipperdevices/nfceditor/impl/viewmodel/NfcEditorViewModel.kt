@@ -14,6 +14,8 @@ import com.flipperdevices.core.ui.hexkeyboard.HexKey
 import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
 import com.flipperdevices.keyedit.api.NotSavedFlipperKey
 import com.flipperdevices.keyedit.api.toNotSavedFlipperFile
+import com.flipperdevices.metric.api.MetricApi
+import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.nfceditor.impl.api.EXTRA_KEY_PATH
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCellLocation
 import com.flipperdevices.nfceditor.impl.model.NfcEditorState
@@ -34,7 +36,8 @@ class NfcEditorViewModel @VMInject constructor(
     private val keyParser: KeyParser,
     private val updateKeyApi: UpdateKeyApi,
     private val synchronizationApi: SynchronizationApi,
-    private val simpleKeyApi: SimpleKeyApi
+    private val simpleKeyApi: SimpleKeyApi,
+    private val metricApi: MetricApi
 ) : AndroidLifecycleViewModel(application), LogTagProvider {
     override val TAG = "NfcEditorViewModel"
 
@@ -106,6 +109,7 @@ class NfcEditorViewModel @VMInject constructor(
             )
             updateKeyApi.updateKey(flipperKey, newFlipperKey)
             synchronizationApi.startSynchronization(force = true)
+            metricApi.reportSimpleEvent(SimpleEvent.SAVE_DUMP)
             onEndAction()
         }
     }
@@ -125,6 +129,7 @@ class NfcEditorViewModel @VMInject constructor(
                 additionalFiles = listOf(),
                 notes = newFlipperKey.notes
             )
+            metricApi.reportSimpleEvent(SimpleEvent.SAVE_DUMP)
             onEndAction(notSavedKey)
         }
     }
