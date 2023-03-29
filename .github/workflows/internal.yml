@@ -30,8 +30,8 @@ jobs:
       - name: 'Set variables'
         id: vars
         run: |
-          echo "::set-output name=number::${{ steps.buildnumber.outputs.build_number }}"
-          echo "::set-output name=number_wearos::${{ steps.buildnumber_wearos.outputs.build_number }}"
+          echo "number=${{ steps.buildnumber.outputs.build_number }}" >> $GITHUB_OUTPUT
+          echo "number_wearos=${{ steps.buildnumber_wearos.outputs.build_number }}" >> $GITHUB_OUTPUT
   build_internal_release:
     name: Build Internal AAB and APK
     runs-on: ubuntu-latest
@@ -52,8 +52,8 @@ jobs:
         id: vars
         run: |
           export $(cat .github/workflows/version.env | xargs)
-          echo "::set-output name=major_version::${MAJOR_VERSION}"
-          echo "::set-output name=minor_version::${{ needs.build_number.outputs.number }}"
+          echo "major_version=${MAJOR_VERSION}" >> $GITHUB_OUTPUT
+          echo "minor_version=needs.build_number.outputs.number" >> $GITHUB_OUTPUT
       - name: Build internal release
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
@@ -87,7 +87,7 @@ jobs:
           cp ${{ steps.sign_aab.outputs.signedReleaseFile }} artifacts/flipper-zero-${{ matrix.target }}.aab
           cp ${{ steps.sign_apk.outputs.signedReleaseFile }} artifacts/flipper-zero-${{ matrix.target }}.apk
           cp instances/app/build/outputs/mapping/internal/mapping.txt artifacts/mapping-${{ matrix.target }}.txt
-          echo "::set-output name=path::artifacts/"
+          echo "path=artifacts/" >> $GITHUB_OUTPUT
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -110,8 +110,8 @@ jobs:
         id: vars
         run: |
           export $(cat .github/workflows/version.env | xargs)
-          echo "::set-output name=major_version::${MAJOR_VERSION}"
-          echo "::set-output name=minor_version::${{ needs.build_number.outputs.number_wearos }}"
+          echo "major_version=${MAJOR_VERSION}" >> $GITHUB_OUTPUT
+          echo "minor_version=${{ needs.build_number.outputs.number_wearos }}" >> $GITHUB_OUTPUT
       - name: Build internal release
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
@@ -145,7 +145,7 @@ jobs:
           cp ${{ steps.sign_wear_aab.outputs.signedReleaseFile }} artifacts/flipper-zero-wearos.aab
           cp ${{ steps.sign_wear_apk.outputs.signedReleaseFile }} artifacts/flipper-zero-wearos.apk
           cp instances/wearable/build/outputs/mapping/internal/mapping.txt artifacts/mapping-wearos.txt
-          echo "::set-output name=path::artifacts/"
+          echo "path=artifacts/" >> $GITHUB_OUTPUT
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -179,9 +179,9 @@ jobs:
         id: vars
         run: |
           export $(cat .github/workflows/version.env | xargs)
-          echo "::set-output name=major_version::${MAJOR_VERSION}"
-          echo "::set-output name=minor_version::${{ needs.build_number.outputs.number }}"
-          echo "::set-output name=minor_version_wearos::${{ needs.build_number.outputs.number_wearos }}"
+          echo "major_version=${MAJOR_VERSION}" >> $GITHUB_OUTPUT
+          echo "minor_version=${{ needs.build_number.outputs.number }}" >> $GITHUB_OUTPUT
+          echo "minor_version_wearos=${{ needs.build_number.outputs.number_wearos }}" >> $GITHUB_OUTPUT
       - name: 'Copy artifacts'
         id: artifacts_copy
         run: |
@@ -190,7 +190,7 @@ jobs:
           cp ${{steps.download-gh_nogms.outputs.download-path}}/* artifacts/
           cp ${{steps.download-googleplay.outputs.download-path}}/* artifacts/
           cp ${{steps.download-wearos.outputs.download-path}}/* artifacts/
-          echo "::set-output name=path::artifacts/"
+          echo "path=artifacts/" >> $GITHUB_OUTPUT
       - name: Install zip
         uses: montudor/action-zip@v1
       - name: Prepare mapping
@@ -200,7 +200,7 @@ jobs:
           for target in "gh_gms" "gh_nogms" "googleplay" "wearos"; do echo \
           mv "${{ steps.artifacts_copy.outputs.path }}/mapping-${target}.txt" mappings/ ; do
           zip -qq -r mappings.zip mappings
-          echo "::set-output name=archive::mappings.zip"
+          echo "archive=mappings.zip" >> $GITHUB_OUTPUT
       - name: Prepare other builds
         id: other
         run: |
@@ -208,7 +208,7 @@ jobs:
           mv "${{ steps.artifacts_copy.outputs.path }}/flipper-zero-googleplay.apk" other/
           mv "${{ steps.artifacts_copy.outputs.path }}/*.aab" other/
           zip -qq -r other.zip other
-          echo "::set-output name=archive::other.zip"
+          echo "archive=other.zip" >> $GITHUB_OUTPUT
       - name: Artefact build beautifier
         id: beautifier
         run: |
@@ -248,7 +248,7 @@ jobs:
           mkdir artifacts
           cp ${{steps.download-googleplay.outputs.download-path}}/flipper-zero-googleplay.aab artifacts
           cp ${{steps.download-wearos.outputs.download-path}}/flipper-zero-wear-gms.aab artifacts
-          echo "::set-output name=path::artifacts"
+          echo "path=artifacts" >> $GITHUB_OUTPUT
       - name: Upload to Play Store
         uses: r0adkll/upload-google-play@v1.0.15
         with:
