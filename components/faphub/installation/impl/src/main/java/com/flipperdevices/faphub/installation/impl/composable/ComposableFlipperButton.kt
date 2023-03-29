@@ -92,4 +92,3 @@ private fun BoxScope.ComposableProgressRow(percent: Float, accentColor: Color) {
         }
     }
 }
-
