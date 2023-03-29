@@ -34,4 +34,33 @@
                 android:resource="@xml/shortcuts" />
         </activity>
     </application>
+<!-- Request legacy Bluetooth permissions for devices on API 29,30. -->
+    <uses-permission
+        android:name="android.permission.BLUETOOTH"
+        android:maxSdkVersion="30" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_ADMIN"
+        android:maxSdkVersion="30" />
+    <uses-permission
+        android:name="android.permission.ACCESS_FINE_LOCATION"
+        android:maxSdkVersion="30" />
+    <uses-permission
+        android:name="android.permission.ACCESS_BACKGROUND_LOCATION"
+        android:maxSdkVersion="30" />
+    <uses-permission
+        android:name="android.permission.ACCESS_COARSE_LOCATION"
+        android:maxSdkVersion="30" />
+
+    <!-- Request Bluetooth permissions for devices on API 31,32. -->
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_SCAN"
+        android:usesPermissionFlags="neverForLocation"
+        tools:targetApi="s" />
+    <!-- Needed only if your app communicates with already-paired Bluetooth
+             devices. -->
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <!-- Since Bluetooth is a basic requirement for our app -->
+    <uses-feature
+        android:name="android.hardware.bluetooth"
+        android:required="true" />
 </manifest>
