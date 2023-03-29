@@ -11,9 +11,12 @@
 - [Feature] Add back button in options screen
 - [Feature] Hide bottombar when keyboard close
 - [Feature] New report bug screen
+- [Feature] Self update(Google play)
+- [Feature] Add SAVE_DUMP, MFKEY32, OPEN_NFC_DUMP_EDITOR
 - [GitHub] Update github repo picture
 - [CI] Migrate to Detekt
 - [CI] Android lint in CI
+- [CI] Enable back github queue
 - [FIX] Clickable modifier ktx
 - [FIX] Refactor `share:receive` module
 - [FIX] Bump length for server-side share link
@@ -29,6 +32,8 @@
 - [FIX] Fix status bar color
 - [FIX] Fix open key screen in global scope
 - [FIX] Fix fap hub design
+- [FIX] Wait for disconnect while update
+- [FIX] Fix mfkey32
 - [REFACTOR] Migrate bottom bar to compose navigation
 - [REFACTOR] Bump Android Gradle Plugin
 - [REFACTOR] Fix detekt compose issues

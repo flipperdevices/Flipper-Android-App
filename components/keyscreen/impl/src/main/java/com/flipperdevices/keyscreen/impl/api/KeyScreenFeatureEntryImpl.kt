@@ -11,6 +11,7 @@ import com.flipperdevices.bridge.dao.api.model.navigation.FlipperKeyPathType
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
+import com.flipperdevices.core.ui.navigation.LocalGlobalNavigationNavStack
 import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.flipperdevices.keyedit.api.KeyEditFeatureEntry
 import com.flipperdevices.keyscreen.api.KeyEmulateApi
@@ -72,6 +73,7 @@ class KeyScreenFeatureEntryImpl @Inject constructor(
             deepLinks = deeplinkArguments
         ) {
             val viewModel: KeyScreenViewModel = tangleViewModel()
+            val globalNavController = LocalGlobalNavigationNavStack.current
             KeyScreenNavigation(shareBottomFeatureEntry) { onShare ->
                 ComposableKeyScreen(
                     viewModel = viewModel,
@@ -84,7 +86,7 @@ class KeyScreenFeatureEntryImpl @Inject constructor(
                         viewModel.openNfcEditor { flipperKeyPath ->
                             val nfcEditorScreen =
                                 nfcEditorFeatureEntry.getNfcEditorScreen(flipperKeyPath)
-                            navController.navigate(nfcEditorScreen)
+                            globalNavController.navigate(nfcEditorScreen)
                         }
                     },
                     onOpenEditScreen = { flipperKeyPath ->

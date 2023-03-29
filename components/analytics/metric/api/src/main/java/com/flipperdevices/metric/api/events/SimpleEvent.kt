@@ -10,5 +10,8 @@ enum class SimpleEvent(val id: String) {
     EXPERIMENTAL_OPEN_SCREEN_STREAMING("experimental_open_screenstreaming"),
     SHARE_SHORT_LINK("share_shortlink"),
     SHARE_LONG_LINK("share_longlink"),
-    SHARE_FILE("share_file")
+    SHARE_FILE("share_file"),
+    SAVE_DUMP("save_dump"),
+    MFKEY32("mfkey32"),
+    OPEN_NFC_DUMP_EDITOR("open_nfc_dump_editor")
 }

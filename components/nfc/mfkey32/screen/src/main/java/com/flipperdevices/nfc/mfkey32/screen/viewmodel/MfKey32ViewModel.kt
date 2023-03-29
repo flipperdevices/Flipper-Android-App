@@ -14,6 +14,8 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
+import com.flipperdevices.metric.api.MetricApi
+import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.nfc.mfkey32.api.MfKey32Api
 import com.flipperdevices.nfc.mfkey32.screen.model.ErrorType
 import com.flipperdevices.nfc.mfkey32.screen.model.FoundedInformation
@@ -44,6 +46,7 @@ class MfKey32ViewModel @VMInject constructor(
     context: Context,
     private val nfcToolsApi: NfcToolsApi,
     private val mfKey32Api: MfKey32Api,
+    private val metricApi: MetricApi,
     flipperServiceProvider: FlipperServiceProvider
 ) : LifecycleViewModel(), LogTagProvider, FlipperBleServiceConsumer {
     override val TAG = "MfKey32ViewModel"
@@ -121,6 +124,7 @@ class MfKey32ViewModel @VMInject constructor(
             mfKey32StateFlow.emit(MfKey32State.Error(ErrorType.NOT_FOUND_FILE))
             return false
         }
+        metricApi.reportSimpleEvent(SimpleEvent.MFKEY32)
         try {
             existedKeysStorage.load(serviceApi.requestApi)
         } catch (exception: Throwable) {
@@ -156,7 +160,7 @@ class MfKey32ViewModel @VMInject constructor(
         val foundedKey = FoundedKey(
             nonce.sectorName,
             nonce.keyName,
-            key?.toString(radix = 16)?.uppercase()
+            "%012X".format(key)
         )
         existedKeysStorage.onNewKey(foundedKey)
     }

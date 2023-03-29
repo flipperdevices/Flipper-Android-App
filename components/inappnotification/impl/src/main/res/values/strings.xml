@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ready_update_title">Flipper App Update</string>
+    <string name="ready_update_desc">New mobile app version is ready to install</string>
+    <string name="ready_update_button">Update</string>
+
+    <string name="saved_key_desc">saved to Archive</string>
+</resources>
