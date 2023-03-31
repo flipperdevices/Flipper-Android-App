@@ -4,8 +4,8 @@ import com.flipperdevices.bridge.api.model.FlipperGATTInformation
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.shake2report.api.Shake2ReportApi
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
+import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class)
 class Shake2ReportStub @Inject constructor() : Shake2ReportApi {

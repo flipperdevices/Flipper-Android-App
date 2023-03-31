@@ -2,7 +2,6 @@ package com.flipperdevices.buildlogic
 
 import org.gradle.api.Project
 
-
 object ApkConfig {
     const val APPLICATION_ID = "com.flipperdevices.app"
 
