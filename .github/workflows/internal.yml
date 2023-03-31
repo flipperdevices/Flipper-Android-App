@@ -166,18 +166,22 @@ jobs:
         id: download-gh_gms
         with:
           name: artifacts-gh_gms
+          path: download/gh_gms
       - uses: actions/download-artifact@v3
         id: download-gh_nogms
         with:
           name: artifacts-gh_nogms
+          path: download/gh_nogms
       - uses: actions/download-artifact@v3
         id: download-googleplay
         with:
           name: artifacts-googleplay
+          path: download/googleplay
       - uses: actions/download-artifact@v3
         id: download-wearos
         with:
           name: artifacts-wearos
+          path: download/wearos
       - name: 'Set variables'
         id: vars
         run: |
