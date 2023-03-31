@@ -14,8 +14,8 @@ jobs:
     name: Generate build number
     runs-on: ubuntu-latest
     outputs:
-      number: ${{ steps.vars.outputs.number }}
-      number_wearos: ${{ steps.vars.outputs.number_wearos }}
+      number: ${{ steps.build_out.outputs.number }}
+      number_wearos: ${{ steps.wearos_out.outputs.number_wearos }}
     steps:
       - name: Generate build number
         id: buildnumber
@@ -27,10 +27,13 @@ jobs:
         uses: onyxmueller/build-tag-number@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: 'Set variables'
-        id: vars
+      - name: 'Set output for simple build'
+        id: build_out
         run: |
           echo "number=${{ steps.buildnumber.outputs.build_number }}" >> $GITHUB_OUTPUT
+      - name: 'Set output for WearOS'
+        id: wearos_out
+        run: |
           echo "number_wearos=${{ steps.buildnumber_wearos.outputs.build_number }}" >> $GITHUB_OUTPUT
   build_internal_release:
     name: Build Internal AAB and APK
