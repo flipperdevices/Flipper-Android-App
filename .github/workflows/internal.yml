@@ -204,8 +204,8 @@ jobs:
         id: mappings
         run: |
           mkdir mappings
-          for target in "gh_gms" "gh_nogms" "googleplay" "wearos"; do echo \
-          mv "${{ steps.artifacts_copy.outputs.path }}/mapping-${target}.txt" mappings/ ; do
+          for target in "gh_gms" "gh_nogms" "googleplay" "wearos"; do \
+          mv "${{ steps.artifacts_copy.outputs.path }}/mapping-${target}.txt" mappings/ ; done
           zip -qq -r mappings.zip mappings
           echo "archive=mappings.zip" >> $GITHUB_OUTPUT
       - name: Prepare other builds
@@ -253,6 +253,7 @@ jobs:
         id: artifacts_copy
         run: |
           mkdir artifacts
+          ls ${{steps.download-googleplay.outputs.download-path}}
           cp ${{steps.download-googleplay.outputs.download-path}}/flipper-zero-googleplay.aab artifacts
           cp ${{steps.download-wearos.outputs.download-path}}/flipper-zero-wear-gms.aab artifacts
           echo "path=artifacts" >> $GITHUB_OUTPUT
