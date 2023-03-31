@@ -213,7 +213,7 @@ jobs:
         run: |
           mkdir other
           mv "${{ steps.artifacts_copy.outputs.path }}/flipper-zero-googleplay.apk" other/
-          mv "${{ steps.artifacts_copy.outputs.path }}/*.aab" other/
+          mv ${{ steps.artifacts_copy.outputs.path }}/*.aab other/
           zip -qq -r other.zip other
           echo "archive=other.zip" >> $GITHUB_OUTPUT
       - name: Artefact build beautifier
@@ -253,9 +253,8 @@ jobs:
         id: artifacts_copy
         run: |
           mkdir artifacts
-          ls ${{steps.download-googleplay.outputs.download-path}}
           cp ${{steps.download-googleplay.outputs.download-path}}/flipper-zero-googleplay.aab artifacts
-          cp ${{steps.download-wearos.outputs.download-path}}/flipper-zero-wear-gms.aab artifacts
+          cp ${{steps.download-wearos.outputs.download-path}}/flipper-zero-wearos.aab artifacts
           echo "path=artifacts" >> $GITHUB_OUTPUT
       - name: Upload to Play Store
         uses: r0adkll/upload-google-play@v1.0.15
