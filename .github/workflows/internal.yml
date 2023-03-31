@@ -56,7 +56,7 @@ jobs:
         run: |
           export $(cat .github/workflows/version.env | xargs)
           echo "major_version=${MAJOR_VERSION}" >> $GITHUB_OUTPUT
-          echo "minor_version=needs.build_number.outputs.number" >> $GITHUB_OUTPUT
+          echo "minor_version=${{ needs.build_number.outputs.number }}" >> $GITHUB_OUTPUT
       - name: Build internal release
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
