@@ -270,4 +270,4 @@ jobs:
           track: production
           status: draft
           whatsNewDirectory: .github/changelog
-          mappingFile: ${{steps.download-gms.outputs.download-path}}/mapping-googleplay.txt
+          mappingFile: ${{steps.download-googleplay.outputs.download-path}}/mapping-googleplay.txt
