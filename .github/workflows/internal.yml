@@ -92,7 +92,7 @@ jobs:
           cp instances/app/build/outputs/mapping/internal/mapping.txt artifacts/mapping-${{ matrix.target }}.txt
           echo "path=artifacts/" >> $GITHUB_OUTPUT
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: artifacts-${{ matrix.target }}
           path: ${{ steps.artifacts_copy.outputs.path }}
@@ -150,7 +150,7 @@ jobs:
           cp instances/wearable/build/outputs/mapping/internal/mapping.txt artifacts/mapping-wearos.txt
           echo "path=artifacts/" >> $GITHUB_OUTPUT
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: artifacts-wearos
           path: ${{ steps.artifacts_copy.outputs.path }}
