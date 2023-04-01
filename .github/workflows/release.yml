@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - 'master'
-      - 'feature/separate_build'
 
 jobs:
   build_number:
@@ -234,7 +233,7 @@ jobs:
           tag_name: ${{ steps.vars.outputs.major_version }}.${{ steps.vars.outputs.minor_version }}
           name: Flipper App ${{ steps.vars.outputs.major_version }} (${{ steps.vars.outputs.minor_version }})
           draft: false
-          prerelease: true
+          prerelease: false
   upload_to_playstore:
     name: Upload to Play Store
     runs-on: ubuntu-latest
