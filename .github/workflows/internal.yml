@@ -10,6 +10,15 @@ concurrency:
   group: "deploy"
 
 jobs:
+  invalidate_gradle_cache:
+    name: Update gradle cache
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build internal
+        uses: gradle/gradle-build-action@v2
+        with:
+          cache-read-only: false
+          arguments: testDebug detekt lint
   build_number:
     name: Generate build number
     runs-on: ubuntu-latest
