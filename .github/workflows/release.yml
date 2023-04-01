@@ -1,4 +1,4 @@
-name: internal
+name: Build and publish Release
 
 on:
   push:
@@ -258,8 +258,11 @@ jobs:
           cp ${{steps.download-googleplay.outputs.download-path}}/flipper-zero-googleplay.aab artifacts
           cp ${{steps.download-wearos.outputs.download-path}}/flipper-zero-wearos.aab artifacts
           echo "path=artifacts" >> $GITHUB_OUTPUT
+      - uses: actions/checkout@v3
+        with:
+            submodules: 'recursive'
       - name: Upload to Play Store
-        uses: r0adkll/upload-google-play@v1.0.15
+        uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_PUBLISHER_JSON }}
           packageName: com.flipperdevices.app
