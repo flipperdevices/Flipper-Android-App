@@ -14,6 +14,9 @@ jobs:
     name: Update gradle cache
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
       - name: Build internal
         uses: gradle/gradle-build-action@v2
         with:
