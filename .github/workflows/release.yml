@@ -6,9 +6,6 @@ on:
       - 'master'
       - 'feature/separate_build'
 
-concurrency:
-  group: "deploy"
-
 jobs:
   build_number:
     name: Generate build number
