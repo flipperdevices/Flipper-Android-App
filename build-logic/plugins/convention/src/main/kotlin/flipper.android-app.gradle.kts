@@ -1,6 +1,7 @@
 import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.gradle.BaseExtension
 import com.flipperdevices.buildlogic.ApkConfig
+import com.flipperdevices.buildlogic.ApkConfig.IS_SENTRY_PUBLISH
 import io.sentry.android.gradle.extensions.SentryPluginExtension
 
 plugins {
@@ -36,7 +37,7 @@ configure<ApplicationExtension> {
 }
 
 configure<SentryPluginExtension> {
-    autoUploadProguardMapping.set(ApkConfig.IS_SENTRY_PUBLISH)
+    autoUploadProguardMapping.set(IS_SENTRY_PUBLISH)
 
     ignoredBuildTypes.set(setOf("release", "debug"))
 

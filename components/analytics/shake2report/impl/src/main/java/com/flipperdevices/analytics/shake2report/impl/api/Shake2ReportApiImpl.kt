@@ -32,6 +32,8 @@ class Shake2ReportApiImpl @Inject constructor(
 
         Sentry.captureEvent(event)
     }
+
+    override fun isInitialized() = internalShake2Report.getIsRegisteredFlow()
 }
 
 private const val FLIPPER_DEVICE_NAME = "flipper_device_name"
