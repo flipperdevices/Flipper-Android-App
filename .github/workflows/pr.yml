@@ -5,15 +5,13 @@ on:
     branches:
       - 'dev'
   merge_group:
-    branches:
-      - 'dev'
 
 jobs:
   test:
     name: "Run unit tests"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: 'recursive'
       - name: Set up JDK 1.11
@@ -21,15 +19,15 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '11'
-      - name: Build debug
-        run: ./gradlew assembleDebug
-      - name: Unit-test
-        run: ./gradlew testDebug
+      - name: Unit test
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: testDebug
   detekt:
     name: "Check project by detekt"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: 'recursive'
       - name: Set up JDK 1.11
@@ -38,12 +36,14 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
       - name: detekt
-        run: ./gradlew detekt
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: detekt
   android_lint:
     name: "Check project by android`s lint"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: 'recursive'
       - name: Set up JDK 1.11
@@ -52,12 +52,14 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
       - name: Android lint
-        run: ./gradlew lint
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: lint
   changelog_changes:
     name: "Checking that changelog has changed"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: 'recursive'
       - name: Get change status for CHANGELOG.md

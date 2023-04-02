@@ -24,7 +24,7 @@ import com.flipperdevices.settings.impl.viewmodels.SettingsViewModel
 import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
-fun ComposableCommonSetting(
+fun ComposableCommonSettings(
     navController: NavController,
     modifier: Modifier = Modifier,
     settingsViewModel: SettingsViewModel = tangleViewModel()
@@ -44,9 +44,13 @@ fun ComposableCommonSetting(
         }
         ExperimentalCategory(settings, navController, settingsViewModel)
         ExportKeysCategory(settingsViewModel)
-        OtherSettingsCategory(settingsViewModel, navController)
+        OtherSettingsCategory(
+            settingsViewModel = settingsViewModel,
+            navController = navController
+        )
         VersionCategory(
             version = settingsViewModel.versionApp(),
+            sourceInstall = settingsViewModel.sourceInstall(),
             onActivateExpertMode = settingsViewModel::onExpertModeActivate
         )
     }

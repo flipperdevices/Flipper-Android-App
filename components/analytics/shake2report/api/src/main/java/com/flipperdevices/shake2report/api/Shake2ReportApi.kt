@@ -1,6 +1,7 @@
 package com.flipperdevices.shake2report.api
 
 import com.flipperdevices.bridge.api.model.FlipperGATTInformation
+import kotlinx.coroutines.flow.StateFlow
 
 interface Shake2ReportApi {
     /**
@@ -17,4 +18,6 @@ interface Shake2ReportApi {
         tag: String? = null,
         extras: Map<String, String>? = null
     )
+
+    fun isInitialized(): StateFlow<Boolean>
 }

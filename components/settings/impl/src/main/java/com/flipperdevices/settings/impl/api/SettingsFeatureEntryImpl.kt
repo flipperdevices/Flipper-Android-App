@@ -7,7 +7,7 @@ import androidx.navigation.navigation
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.settings.api.SettingsFeatureEntry
-import com.flipperdevices.settings.impl.composable.ComposableCommonSetting
+import com.flipperdevices.settings.impl.composable.ComposableCommonSettings
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
 import javax.inject.Inject
@@ -19,7 +19,7 @@ class SettingsFeatureEntryImpl @Inject constructor() : SettingsFeatureEntry {
     override fun NavGraphBuilder.navigation(navController: NavHostController) {
         navigation(startDestination = start(), route = ROUTE.name) {
             composable("@${ROUTE.name}") {
-                ComposableCommonSetting(navController)
+                ComposableCommonSettings(navController)
             }
         }
     }
