@@ -4,6 +4,7 @@ import android.content.Context
 import com.flipperdevices.core.activityholder.CurrentActivityHolder
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
@@ -46,15 +47,15 @@ class SelfUpdaterGooglePlayApi @Inject constructor(
     }
 
     override fun startCheckUpdateAsync() {
-        val currentActivity = CurrentActivityHolder.getCurrentActivity()
-        if (currentActivity == null) {
-            info { "Current activity is null, skip update check" }
-            return
-        }
-
         info { "Process checkout new update" }
         appUpdateManager.registerListener(updateListener)
         appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+            val currentActivity = CurrentActivityHolder.getCurrentActivity()
+            if (currentActivity == null) {
+                error { "Current activity is null, skip update check" }
+                return@addOnSuccessListener
+            }
+
             if (isUpdateAvailable(appUpdateInfo)) {
                 info { "New update available, suggest to update" }
                 appUpdateManager.startUpdateFlowForResult(
