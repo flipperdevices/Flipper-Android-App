@@ -1,7 +1,7 @@
 package com.flipperdevices.selfupdater.googleplay.api
 
-import android.app.Activity
 import android.content.Context
+import com.flipperdevices.core.activityholder.CurrentActivityHolder
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
@@ -46,6 +46,12 @@ class SelfUpdaterGooglePlayApi @Inject constructor(
     }
 
     override fun startCheckUpdateAsync() {
+        val currentActivity = CurrentActivityHolder.getCurrentActivity()
+        if (currentActivity == null) {
+            info { "Current activity is null, skip update check" }
+            return
+        }
+
         info { "Process checkout new update" }
         appUpdateManager.registerListener(updateListener)
         appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
@@ -54,7 +60,7 @@ class SelfUpdaterGooglePlayApi @Inject constructor(
                 appUpdateManager.startUpdateFlowForResult(
                     appUpdateInfo,
                     AppUpdateType.FLEXIBLE,
-                    context as Activity,
+                    currentActivity,
                     UPDATE_CODE
                 )
             }
