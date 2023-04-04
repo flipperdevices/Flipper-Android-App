@@ -66,7 +66,8 @@ fun ComposableFullDeviceInfoScreen(
         ComposableFullInfoDevice(
             fullDeviceInfo = flipperRpcInformation.dataOrNull() ?: FlipperRpcInformation(),
             inProgress = inProgress,
-            getFirmwareChannel = fullInfoViewModel::getFirmwareChannel
+            getFirmwareChannel = fullInfoViewModel::getFirmwareChannel,
+            onRefresh = fullInfoViewModel::refresh
         )
     }
 }

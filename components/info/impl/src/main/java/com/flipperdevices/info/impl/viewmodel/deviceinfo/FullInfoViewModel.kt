@@ -26,7 +26,7 @@ import kotlinx.coroutines.plus
 import tangle.viewmodel.VMInject
 
 class FullInfoViewModel @VMInject constructor(
-    serviceProvider: FlipperServiceProvider,
+    private val serviceProvider: FlipperServiceProvider,
     private val flipperRpcInformationApi: FlipperRpcInformationApi,
     private val firmwareVersionBuilderApi: FirmwareVersionBuilderApi,
     application: Application
@@ -45,6 +45,16 @@ class FullInfoViewModel @VMInject constructor(
     }
 
     fun getFlipperRpcInformation() = flipperRpcInformationState.asStateFlow()
+
+    fun refresh() {
+        viewModelScope.launch {
+            flipperRpcInformationApi.invalidate(
+                viewModelScope,
+                serviceProvider.getServiceApi(),
+                force = true
+            )
+        }
+    }
 
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
         jobs.cancelAndClear()

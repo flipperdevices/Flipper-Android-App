@@ -13,6 +13,7 @@
 - [Feature] New report bug screen
 - [Feature] Self update(Google play)
 - [Feature] Add SAVE_DUMP, MFKEY32, OPEN_NFC_DUMP_EDITOR
+- [Feature] Add pull to refresh to full device info
 - [Feature] Add report changes to synchronization end event
 - [GitHub] Update github repo picture
 - [CI] Migrate to Detekt
@@ -38,7 +39,8 @@
 - [FIX] Fix mfkey32
 - [FIX] Use CurrentActivityHolder for get activity in updater(replace Context cast)
 - [FIX] Back on mfkey32 screen
-- [FIX] Crash with ulong mapping to string in mfkey32
+- [FIX] Cash with ulong mapping to string in mfkey32
+- [FIX] Move apps from experimental settings to debug
 - [FIX] Fix customize button when set widget state
 - [REFACTOR] Migrate bottom bar to compose navigation
 - [REFACTOR] Bump Android Gradle Plugin

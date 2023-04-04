@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.rpcinfo.model.FlipperRpcInformation
 import com.flipperdevices.core.ktx.jre.titlecaseFirstCharIfItIsLowercase
+import com.flipperdevices.core.ui.ktx.SwipeRefresh
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.shared.ComposableDeviceInfoRowWithText
 import com.flipperdevices.info.shared.ComposableInfoDivider
@@ -21,11 +22,12 @@ import kotlinx.collections.immutable.ImmutableSet
 fun ComposableFullInfoDevice(
     fullDeviceInfo: FlipperRpcInformation,
     inProgress: Boolean,
+    onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
     getFirmwareChannel: (String?) -> FirmwareChannel?,
-) {
+) = SwipeRefresh(modifier = modifier, onRefresh = onRefresh) {
     Column(
-        modifier = modifier
+        modifier = Modifier
             .verticalScroll(rememberScrollState())
             .padding(vertical = 14.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp)
