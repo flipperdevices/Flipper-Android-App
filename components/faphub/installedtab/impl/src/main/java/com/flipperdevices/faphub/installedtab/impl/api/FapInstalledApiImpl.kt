@@ -18,7 +18,11 @@ class FapInstalledApiImpl @Inject constructor(
         ComposableInstalledTabScreen(
             onOpenFapItem = onOpenFapItem,
             installationButton = { fapItem, modifier, fontSize ->
-                fapInstallationUIApi.ComposableUpdateButton(fapItem, modifier, fontSize)
+                fapInstallationUIApi.ComposableButton(
+                    fapItem = fapItem,
+                    modifier = modifier,
+                    textSize = fontSize
+                )
             }
         )
     }

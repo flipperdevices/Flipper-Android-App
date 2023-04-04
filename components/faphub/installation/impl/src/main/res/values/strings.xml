@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="faphub_installation_install">INSTALL</string>
+    <string name="faphub_installation_installed">INSTALLED</string>
     <string name="faphub_installation_update">UPDATE</string>
 </resources>

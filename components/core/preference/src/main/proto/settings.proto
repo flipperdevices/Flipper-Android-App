@@ -27,6 +27,7 @@ message Settings {
   reserved 16; // Already unused last_provided_region
   reserved 18; // https://github.com/flipperdevices/Flipper-Android-App/pull/452
   reserved 9; // Already unused shake_to_report
+  reserved 20; // Already unused faphub_new_switch
 
   bool used_foreground_service = 2;
   bool enabled_debug_settings = 3;
@@ -41,5 +42,4 @@ message Settings {
   bool ignore_subghz_provisioning_on_zero_region = 15;
   bool skip_auto_sync_in_debug = 17;
   bool application_catalog = 19;
-  bool faphub_new_switch = 20;
 }

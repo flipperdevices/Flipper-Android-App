@@ -185,7 +185,12 @@ data class FlipperTypography(
         fontSize = 18.sp,
         fontFamily = FontFamily(Font(R.font.flipper_action)),
         fontWeight = FontWeight.W500
-    )
+    ),
+    val fapHubButtonProgressText: TextStyle = TextStyle(
+        fontSize = 18.sp,
+        fontFamily = FontFamily(Font(R.font.flipper)),
+        fontWeight = FontWeight.W500
+    ),
 )
 
 fun getTypography(): FlipperTypography {
