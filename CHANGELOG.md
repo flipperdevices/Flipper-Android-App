@@ -32,6 +32,7 @@
 - [FIX] Fix change color scheme bug
 - [FIX] Fix status bar color
 - [FIX] Fix open key screen in global scope
+- [FIX] Fix fap hub design
 - [FIX] Wait for disconnect while update
 - [FIX] Fix mfkey32
 - [FIX] Use CurrentActivityHolder for get activity in updater(replace Context cast)

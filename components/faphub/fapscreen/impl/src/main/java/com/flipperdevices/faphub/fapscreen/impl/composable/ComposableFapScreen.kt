@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.ktx.OrangeAppBarWithIcon
+import com.flipperdevices.core.ui.ktx.OrangeAppBar
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.faphub.appcard.composable.components.AppCardScreenshots
 import com.flipperdevices.faphub.dao.api.model.FapItem
@@ -24,29 +24,26 @@ import com.flipperdevices.faphub.fapscreen.impl.composable.header.ComposableFapH
 import com.flipperdevices.faphub.fapscreen.impl.model.FapScreenLoadingState
 import com.flipperdevices.faphub.fapscreen.impl.viewmodel.FapScreenViewModel
 import tangle.viewmodel.compose.tangleViewModel
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableFapScreen(
     onBack: () -> Unit,
-    onSearch: () -> Unit,
     installationButton: @Composable (FapItem?, Modifier, TextUnit) -> Unit
 ) {
     val viewModel = tangleViewModel<FapScreenViewModel>()
     val loadingState by viewModel.getLoadingState().collectAsState()
     val fapItem = (loadingState as? FapScreenLoadingState.Loaded)?.fapItem
 
-    ComposableFapScreenInternal(fapItem, onBack, onSearch, installationButton)
+    ComposableFapScreenInternal(fapItem, onBack, installationButton)
 }
 
 @Composable
 private fun ComposableFapScreenInternal(
     fapItem: FapItem?,
     onBack: () -> Unit,
-    onSearch: () -> Unit,
     installationButton: @Composable (FapItem?, Modifier, TextUnit) -> Unit
 ) = Column(Modifier.verticalScroll(rememberScrollState())) {
-    ComposableFapScreenBar(fapItem?.name, onBack, onSearch)
+    ComposableFapScreenBar(fapItem?.name, onBack)
     ComposableFapHeader(
         modifier = Modifier.padding(start = 14.dp, end = 14.dp, top = 14.dp),
         fapItem = fapItem,
@@ -76,12 +73,9 @@ private fun ComposableFapScreenInternal(
 private fun ComposableFapScreenBar(
     fapName: String?,
     onBack: () -> Unit,
-    onSearch: () -> Unit
 ) {
-    OrangeAppBarWithIcon(
+    OrangeAppBar(
         title = fapName ?: stringResource(R.string.fapscreen_title_default),
-        endIconId = DesignSystem.drawable.ic_search,
-        onBack = onBack,
-        onEndClick = onSearch
+        onBack = onBack
     )
 }

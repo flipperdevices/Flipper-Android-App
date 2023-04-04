@@ -23,7 +23,11 @@ class CatalogTabApiImpl @Inject constructor(
             onOpenFapItem = onOpenFapItem,
             onCategoryClick = onCategoryClick,
             installationButton = { fapItem, modifier, fontSize ->
-                fapInstallationUIApi.ComposableInstallButton(fapItem, modifier, fontSize)
+                fapInstallationUIApi.ComposableButton(
+                    fapItem = fapItem,
+                    modifier = modifier,
+                    textSize = fontSize
+                )
             }
         )
     }
