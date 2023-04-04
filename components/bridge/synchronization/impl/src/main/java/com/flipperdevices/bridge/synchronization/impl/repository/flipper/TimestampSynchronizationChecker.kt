@@ -14,10 +14,10 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.timestampRequest
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.flow.flowOf
 import java.io.File
 import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
+import kotlinx.coroutines.flow.flowOf
 
 interface TimestampSynchronizationChecker {
     suspend fun fetchFoldersTimestamp(
@@ -39,7 +39,7 @@ class TimestampSynchronizationCheckerImpl @Inject constructor(
         types: Array<FlipperKeyType>,
         progressTracker: ProgressWrapperTracker
     ): Map<FlipperKeyType, Long?> {
-        if (flipperVersionApi.isSupported(SUPPORTED_VERSION)) {
+        if (!flipperVersionApi.isSupported(SUPPORTED_VERSION)) {
             return types.associateWith { null }
         }
 

@@ -39,14 +39,14 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.isSuccess
+import java.util.UUID
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import java.util.UUID
-import javax.inject.Inject
-import javax.inject.Singleton
 
 const val METRIC_API_URL = "https://metric.flipperdevices.com/report"
 
@@ -115,6 +115,7 @@ class ClickhouseApiImpl @Inject constructor(
                     infraredCount = complexEvent.infraredCount
                     ibuttonCount = complexEvent.iButtonCount
                     synchronizationTimeMs = complexEvent.synchronizationTimeMs
+
                 }
             }
             is UpdateFlipperEnd -> metricEventsCollection {

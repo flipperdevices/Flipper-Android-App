@@ -14,9 +14,12 @@ import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
 interface KeysSynchronization {
+    /**
+     * @return keys changed
+     */
     suspend fun syncKeys(
         progressTracker: ProgressWrapperTracker
-    )
+    ): Int
 }
 
 private const val PERCENT_FETCH_TIMESTAMP = 0.1f
@@ -34,7 +37,7 @@ class KeysSynchronizationImpl @Inject constructor(
 
     override suspend fun syncKeys(
         progressTracker: ProgressWrapperTracker
-    ) {
+    ): Int {
         val typesUpdateTimestamps = timestampSynchronizationChecker.fetchFoldersTimestamp(
             FlipperKeyType.values(),
             ProgressWrapperTracker(
@@ -47,10 +50,14 @@ class KeysSynchronizationImpl @Inject constructor(
         val typesToUpdates = typesUpdateTimestamps.filter { (type, timestamp) ->
             isNeedUpdate(type, timestamp)
         }
+        if (typesToUpdates.isEmpty()) {
+            return -1
+        }
         val percentForOneType = (1.0f - PERCENT_FETCH_TIMESTAMP) / typesToUpdates.size
         var currentMinPercent = PERCENT_FETCH_TIMESTAMP
+        var keysChanged = 0
         typesToUpdates.forEach { (type, timestamp) ->
-            folderKeySynchronization.syncFolder(
+            keysChanged += folderKeySynchronization.syncFolder(
                 type,
                 ProgressWrapperTracker(
                     min = currentMinPercent,
@@ -63,6 +70,7 @@ class KeysSynchronizationImpl @Inject constructor(
                 manifestTimestampRepository.setTimestampForType(type, timestamp)
             }
         }
+        return keysChanged
     }
 
     private suspend fun isNeedUpdate(type: FlipperKeyType, lastFolderUpdate: Long?): Boolean {
