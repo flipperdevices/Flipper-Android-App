@@ -111,7 +111,6 @@ class SynchronizationTaskImpl(
         val mfKey32check = scope.async { checkMfKey32Safe(serviceApi.requestApi) }
         try {
             progressTracker.onProgress(START_SYNCHRONIZATION_PERCENT)
-            val startSynchronizationTime = System.currentTimeMillis()
             launch(
                 serviceApi,
                 ProgressWrapperTracker(
@@ -120,8 +119,6 @@ class SynchronizationTaskImpl(
                     progressListener = progressTracker
                 )
             )
-            val endSynchronizationTime = System.currentTimeMillis() - startSynchronizationTime
-            reportSynchronizationEnd(endSynchronizationTime)
             progressTracker.onProgress(1.0f)
             mfKey32check.await()
         } catch (
@@ -143,6 +140,7 @@ class SynchronizationTaskImpl(
         serviceApi: FlipperServiceApi,
         progressTracker: ProgressWrapperTracker
     ) = withContext(Dispatchers.Default) {
+        val startSynchronizationTime = System.currentTimeMillis()
         val taskComponent = DaggerTaskSynchronizationComponent.factory()
             .create(
                 ComponentHolder.component(),
@@ -150,7 +148,7 @@ class SynchronizationTaskImpl(
                 serviceApi.flipperVersionApi
             )
 
-        taskComponent.keysSynchronization.syncKeys(
+        val keysChanged = taskComponent.keysSynchronization.syncKeys(
             ProgressWrapperTracker(
                 min = 0f,
                 max = 0.90f,
@@ -164,6 +162,8 @@ class SynchronizationTaskImpl(
                 progressListener = progressTracker
             )
         )
+        val endSynchronizationTime = System.currentTimeMillis() - startSynchronizationTime
+        reportSynchronizationEnd(endSynchronizationTime, keysChanged)
 
         try {
             syncWearableApi.updateWearableIndex()
@@ -173,7 +173,7 @@ class SynchronizationTaskImpl(
         progressTracker.onProgress(1.0f)
     }
 
-    private suspend fun reportSynchronizationEnd(totalTime: Long) {
+    private suspend fun reportSynchronizationEnd(totalTime: Long, keysChanged: Int) {
         val keys = simpleKeyApi.getAllKeys().groupBy { it.path.keyType }
         metricApi.reportComplexEvent(
             SynchronizationEnd(
@@ -182,7 +182,8 @@ class SynchronizationTaskImpl(
                 nfcCount = keys[FlipperKeyType.NFC]?.size ?: 0,
                 infraredCount = keys[FlipperKeyType.INFRARED]?.size ?: 0,
                 iButtonCount = keys[FlipperKeyType.I_BUTTON]?.size ?: 0,
-                synchronizationTimeMs = totalTime
+                synchronizationTimeMs = totalTime,
+                changesCount = keysChanged
             )
         )
     }

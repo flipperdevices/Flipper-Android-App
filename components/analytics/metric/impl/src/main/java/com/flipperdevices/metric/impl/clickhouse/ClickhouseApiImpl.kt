@@ -115,6 +115,7 @@ class ClickhouseApiImpl @Inject constructor(
                     infraredCount = complexEvent.infraredCount
                     ibuttonCount = complexEvent.iButtonCount
                     synchronizationTimeMs = complexEvent.synchronizationTimeMs
+                    changesCount = complexEvent.changesCount
                 }
             }
             is UpdateFlipperEnd -> metricEventsCollection {

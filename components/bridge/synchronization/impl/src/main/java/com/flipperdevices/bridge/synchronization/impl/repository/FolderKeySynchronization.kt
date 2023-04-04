@@ -19,7 +19,7 @@ interface FolderKeySynchronization {
     suspend fun syncFolder(
         flipperKeyType: FlipperKeyType,
         tracker: ProgressWrapperTracker
-    )
+    ): Int
 }
 
 @ContributesBinding(TaskGraph::class, FolderKeySynchronization::class)
@@ -36,7 +36,7 @@ class FolderKeySynchronizationImpl @Inject constructor(
     override suspend fun syncFolder(
         flipperKeyType: FlipperKeyType,
         tracker: ProgressWrapperTracker
-    ) {
+    ): Int {
         info { "Start synchronize $flipperKeyType" }
         val androidKeys = simpleKeyApi.getExistKeys(flipperKeyType)
         val androidHashes = androidHashRepository.getHashes(androidKeys)
@@ -83,5 +83,6 @@ class FolderKeySynchronizationImpl @Inject constructor(
         )
 
         synchronizationRepository.markAsSynchronized(androidKeys)
+        return diffWithAndroid.size + diffWithFlipper.size
     }
 }
