@@ -44,7 +44,7 @@ class KeysSynchronizationTest {
 
     @Before
     fun setUp() {
-        folderKeySynchronization = mockk(relaxUnitFun = true)
+        folderKeySynchronization = mockk(relaxed = true)
         timestampSynchronizationChecker = mockk()
         manifestTimestampRepository = mockk(relaxUnitFun = true)
         manifestRepository = mockk()
