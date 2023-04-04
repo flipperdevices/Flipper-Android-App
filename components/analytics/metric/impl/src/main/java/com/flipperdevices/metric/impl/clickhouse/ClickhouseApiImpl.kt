@@ -115,7 +115,7 @@ class ClickhouseApiImpl @Inject constructor(
                     infraredCount = complexEvent.infraredCount
                     ibuttonCount = complexEvent.iButtonCount
                     synchronizationTimeMs = complexEvent.synchronizationTimeMs
-
+                    changesCount = complexEvent.changesCount
                 }
             }
             is UpdateFlipperEnd -> metricEventsCollection {
@@ -198,7 +198,7 @@ class ClickhouseApiImpl @Inject constructor(
         if (!httpResponse.status.isSuccess()) {
             error {
                 "Failed report event to $METRIC_API_URL" +
-                    " $reportRequest with code ${httpResponse.status}"
+                        " $reportRequest with code ${httpResponse.status}"
             }
         } else {
             verbose { "Sucs send event $event with ${reportRequest.uuid}" }
