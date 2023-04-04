@@ -50,6 +50,7 @@ class SelfUpdaterGooglePlayApi @Inject constructor(
         info { "Process checkout new update" }
         appUpdateManager.registerListener(updateListener)
         appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+            info { "Current state update id ${appUpdateInfo.updateAvailability()}" }
             val currentActivity = CurrentActivityHolder.getCurrentActivity()
             if (currentActivity == null) {
                 error { "Current activity is null, skip update check" }
