@@ -1,5 +1,6 @@
 package com.flipperdevices.nfc.mfkey32.screen.composable
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -44,6 +45,7 @@ fun ComposableMfKey32Screen(
             { navController.popBackStack() }
         }
     }
+    BackHandler(enabled = true, onBack)
 
     if (isDisplayDialog) {
         ComposableMfKey32Dialog(

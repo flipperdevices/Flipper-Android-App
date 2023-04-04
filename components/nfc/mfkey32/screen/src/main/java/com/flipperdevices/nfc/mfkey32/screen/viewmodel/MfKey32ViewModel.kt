@@ -37,6 +37,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tangle.viewmodel.VMInject
 import java.io.FileNotFoundException
+import java.math.BigInteger
 import java.util.concurrent.Executors
 
 const val PATH_NONCE_LOG = "/ext/nfc/.mfkey32.log"
@@ -148,7 +149,7 @@ class MfKey32ViewModel @VMInject constructor(
         mfKey32Api.checkBruteforceFileExist(requestApi)
     }
 
-    private suspend fun onFoundKey(nonce: MfKey32Nonce, key: ULong?, totalCount: Int) {
+    private suspend fun onFoundKey(nonce: MfKey32Nonce, key: BigInteger?, totalCount: Int) {
         val perNoncePercent = TOTAL_PERCENT / totalCount
         mfKey32StateFlow.update {
             if (it is MfKey32State.Calculating) {
