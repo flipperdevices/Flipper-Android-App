@@ -1,4 +1,6 @@
-import com.flipperdevices.buildlogic.ApkConfig
+import com.flipperdevices.buildlogic.ApkConfig.IS_GOOGLE_FEATURE_AVAILABLE
+import com.flipperdevices.buildlogic.ApkConfig.IS_METRIC_ENABLED
+import com.flipperdevices.buildlogic.ApkConfig.SOURCE_INSTALL
 import com.flipperdevices.buildlogic.SourceInstall
 
 plugins {
@@ -94,17 +96,26 @@ dependencies {
 
     implementation(projects.components.analytics.shake2report.api)
     releaseImplementation(projects.components.analytics.shake2report.noop)
-    debugImplementation(projects.components.analytics.shake2report.impl)
-    internalImplementation(projects.components.analytics.shake2report.impl)
+    if (IS_METRIC_ENABLED) {
+        debugImplementation(projects.components.analytics.shake2report.impl)
+        internalImplementation(projects.components.analytics.shake2report.impl)
+    } else {
+        debugImplementation(projects.components.analytics.shake2report.noop)
+        internalImplementation(projects.components.analytics.shake2report.noop)
+    }
 
     implementation(projects.components.analytics.metric.api)
-    implementation(projects.components.analytics.metric.impl)
+    if (IS_METRIC_ENABLED) {
+        implementation(projects.components.analytics.metric.impl)
+    } else {
+        implementation(projects.components.analytics.metric.noop)
+    }
 
     implementation(projects.components.nfceditor.api)
     implementation(projects.components.nfceditor.impl)
 
     implementation(projects.components.wearable.sync.handheld.api)
-    if (ApkConfig.IS_GOOGLE_FEATURE_AVAILABLE) {
+    if (IS_GOOGLE_FEATURE_AVAILABLE) {
         implementation(libs.wear.gms)
         implementation(projects.components.wearable.sync.handheld.impl)
         implementation(projects.components.wearable.emulate.handheld.impl)
@@ -158,7 +169,7 @@ dependencies {
     implementation(projects.components.faphub.installedtab.impl)
 
     implementation(projects.components.selfupdater.api)
-    when (ApkConfig.sourceInstall) {
+    when (SOURCE_INSTALL) {
         SourceInstall.GOOGLE_PLAY -> {
             implementation(projects.components.selfupdater.source.googleplay)
         }

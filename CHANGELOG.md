@@ -17,6 +17,7 @@
 - [CI] Migrate to Detekt
 - [CI] Android lint in CI
 - [CI] Enable back github queue
+- [CI] Migrate to matrix CI with source install
 - [FIX] Clickable modifier ktx
 - [FIX] Refactor `share:receive` module
 - [FIX] Bump length for server-side share link
@@ -34,6 +35,7 @@
 - [FIX] Fix fap hub design
 - [FIX] Wait for disconnect while update
 - [FIX] Fix mfkey32
+- [FIX] Use CurrentActivityHolder for get activity in updater(replace Context cast)
 - [REFACTOR] Migrate bottom bar to compose navigation
 - [REFACTOR] Bump Android Gradle Plugin
 - [REFACTOR] Fix detekt compose issues

@@ -25,18 +25,21 @@ private const val EXPERT_MODE_CLICK_COUNT = 10
 @Composable
 fun VersionCategory(
     version: String,
+    sourceInstall: String,
     modifier: Modifier = Modifier,
     onActivateExpertMode: () -> Unit
 ) {
     var howMuchClick by remember { mutableStateOf(0) }
-    val versionText = "${stringResource(id = R.string.version)}: $version"
+    val versionText = "${stringResource(id = R.string.version)}: $version ($sourceInstall)"
     Column(
-        modifier = modifier.fillMaxWidth().clickable {
-            howMuchClick++
-            if (howMuchClick > EXPERT_MODE_CLICK_COUNT) {
-                onActivateExpertMode()
-            }
-        },
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable {
+                howMuchClick++
+                if (howMuchClick > EXPERT_MODE_CLICK_COUNT) {
+                    onActivateExpertMode()
+                }
+            },
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
