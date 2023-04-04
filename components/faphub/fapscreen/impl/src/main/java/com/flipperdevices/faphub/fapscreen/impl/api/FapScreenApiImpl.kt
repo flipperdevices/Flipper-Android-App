@@ -10,7 +10,6 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.flipperdevices.faphub.fapscreen.api.FapScreenApi
 import com.flipperdevices.faphub.fapscreen.impl.composable.ComposableFapScreen
-import com.flipperdevices.faphub.installation.api.FapInstallationState
 import com.flipperdevices.faphub.installation.api.FapInstallationUIApi
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
@@ -45,8 +44,7 @@ class FapScreenApiImpl @Inject constructor(
                     installationUIApi.ComposableButton(
                         fapItem = fapItem,
                         modifier = modifier,
-                        textSize = fontSize,
-                        state = FapInstallationState.getRandomState()
+                        textSize = fontSize
                     )
                 }
             )

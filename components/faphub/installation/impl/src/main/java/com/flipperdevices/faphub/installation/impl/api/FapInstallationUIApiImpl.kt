@@ -6,13 +6,13 @@ import androidx.compose.ui.unit.TextUnit
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.faphub.dao.api.model.FapItem
-import com.flipperdevices.faphub.installation.api.FapInstallationState
 import com.flipperdevices.faphub.installation.api.FapInstallationUIApi
 import com.flipperdevices.faphub.installation.impl.composable.ComposableFapInstallButton
 import com.flipperdevices.faphub.installation.impl.composable.ComposableFapInstalledButton
 import com.flipperdevices.faphub.installation.impl.composable.ComposableFapInstallingButton
 import com.flipperdevices.faphub.installation.impl.composable.ComposableFapUpdateButton
 import com.flipperdevices.faphub.installation.impl.composable.ComposableFapUpdatingButton
+import com.flipperdevices.faphub.installation.impl.model.FapInstallationState
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
@@ -22,9 +22,10 @@ class FapInstallationUIApiImpl @Inject constructor() : FapInstallationUIApi {
     override fun ComposableButton(
         fapItem: FapItem?,
         modifier: Modifier,
-        textSize: TextUnit,
-        state: FapInstallationState
+        textSize: TextUnit
     ) {
+        val state = FapInstallationState.getRandomState()
+
         val buttonModifier = if (fapItem == null) {
             modifier.placeholderConnecting()
         } else {

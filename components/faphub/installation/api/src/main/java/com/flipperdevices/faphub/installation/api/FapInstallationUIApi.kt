@@ -10,7 +10,6 @@ interface FapInstallationUIApi {
     fun ComposableButton(
         fapItem: FapItem?,
         modifier: Modifier,
-        textSize: TextUnit,
-        state: FapInstallationState
+        textSize: TextUnit
     )
 }
