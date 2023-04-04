@@ -10,7 +10,6 @@ import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.composable.elements.CategoryElement
 import com.flipperdevices.settings.impl.composable.elements.ClickableElement
 import com.flipperdevices.settings.impl.composable.elements.GrayDivider
-import com.flipperdevices.settings.impl.composable.elements.SwitchableElement
 import com.flipperdevices.settings.impl.viewmodels.ExperimentalViewModel
 import com.flipperdevices.settings.impl.viewmodels.SettingsViewModel
 import tangle.viewmodel.compose.tangleViewModel
@@ -45,12 +44,6 @@ fun ExperimentalCategory(
                     onClick = {
                         experimentalViewModel.onOpenScreenStreaming(globalNavController)
                     }
-                )
-                GrayDivider()
-                SwitchableElement(
-                    titleId = R.string.experimental_application_catalog,
-                    state = settings.applicationCatalog,
-                    onSwitchState = experimentalViewModel::onSwitchApplicationCatalog
                 )
             }
         }

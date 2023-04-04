@@ -38,6 +38,7 @@
 - [FIX] Wait for disconnect while update
 - [FIX] Fix mfkey32
 - [FIX] Use CurrentActivityHolder for get activity in updater(replace Context cast)
+- [FIX] Move apps from experimental settings to debug
 - [FIX] Fix customize button when set widget state
 - [REFACTOR] Migrate bottom bar to compose navigation
 - [REFACTOR] Bump Android Gradle Plugin
