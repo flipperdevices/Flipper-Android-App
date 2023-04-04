@@ -39,7 +39,7 @@ class TimestampSynchronizationCheckerImpl @Inject constructor(
         types: Array<FlipperKeyType>,
         progressTracker: ProgressWrapperTracker
     ): Map<FlipperKeyType, Long?> {
-        if (flipperVersionApi.isSupported(SUPPORTED_VERSION)) {
+        if (!flipperVersionApi.isSupported(SUPPORTED_VERSION)) {
             return types.associateWith { null }
         }
 

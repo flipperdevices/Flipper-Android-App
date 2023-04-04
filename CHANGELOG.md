@@ -14,6 +14,7 @@
 - [Feature] Self update(Google play)
 - [Feature] Add SAVE_DUMP, MFKEY32, OPEN_NFC_DUMP_EDITOR
 - [Feature] Add pull to refresh to full device info
+- [Feature] Add report changes to synchronization end event
 - [GitHub] Update github repo picture
 - [CI] Migrate to Detekt
 - [CI] Android lint in CI
@@ -37,6 +38,7 @@
 - [FIX] Wait for disconnect while update
 - [FIX] Fix mfkey32
 - [FIX] Use CurrentActivityHolder for get activity in updater(replace Context cast)
+- [FIX] Fix customize button when set widget state
 - [REFACTOR] Migrate bottom bar to compose navigation
 - [REFACTOR] Bump Android Gradle Plugin
 - [REFACTOR] Fix detekt compose issues
