@@ -8,7 +8,8 @@ data class SynchronizationEnd(
     val nfcCount: Int,
     val infraredCount: Int,
     val iButtonCount: Int,
-    val synchronizationTimeMs: Long
+    val synchronizationTimeMs: Long,
+    val changesCount: Int
 ) : ComplexEvent("synchronization_end") {
     override fun getParamsMap(): Map<String, Any> {
         return mapOf(
@@ -17,7 +18,8 @@ data class SynchronizationEnd(
             "nfc_count" to nfcCount,
             "infrared_count" to infraredCount,
             "ibutton_count" to iButtonCount,
-            "synchronization_time_ms" to synchronizationTimeMs
+            "synchronization_time_ms" to synchronizationTimeMs,
+            "changes_count" to changesCount
         )
     }
 }
