@@ -11,10 +11,10 @@ data class FavoriteSynchronizationTestParam(
     val initialFlipperFavoriteManifest: List<FlipperFilePath> = initialFavoriteManifest,
     val flipperFavorites: List<FlipperFilePath> = emptyList(),
     val androidFavorites: List<FlipperFilePath> = emptyList(),
-    val expectedDiffOnFlipper: List<KeyDiff>,
-    val expectedFavoritesOnAndroid: List<FlipperFilePath>,
-    val expectedFavoritesOnAndroidManifest: List<FlipperFilePath> = expectedFavoritesOnAndroid,
-    val expectedFavoritesOnFlipperManifest: List<FlipperFilePath> = expectedFavoritesOnAndroid
+    val expectedDiffOnFlipper: List<KeyDiff>?,
+    val expectedFavoritesOnAndroid: List<FlipperFilePath>?,
+    val expectedFavoritesOnAndroidManifest: List<FlipperFilePath> = expectedFavoritesOnAndroid!!,
+    val expectedFavoritesOnFlipperManifest: List<FlipperFilePath> = expectedFavoritesOnAndroid!!
 )
 
 val testRuns = listOf(
@@ -124,8 +124,13 @@ val testRuns = listOf(
             FlipperFilePath("test", "test.ibtn"),
             FlipperFilePath("test", "test2.nfc")
         ),
-        expectedDiffOnFlipper = emptyList(),
-        expectedFavoritesOnAndroid = listOf(
+        expectedDiffOnFlipper = null,
+        expectedFavoritesOnAndroid = null,
+        expectedFavoritesOnAndroidManifest = listOf(
+            FlipperFilePath("test", "test.ibtn"),
+            FlipperFilePath("test", "test2.nfc")
+        ),
+        expectedFavoritesOnFlipperManifest = listOf(
             FlipperFilePath("test", "test.ibtn"),
             FlipperFilePath("test", "test2.nfc")
         )
