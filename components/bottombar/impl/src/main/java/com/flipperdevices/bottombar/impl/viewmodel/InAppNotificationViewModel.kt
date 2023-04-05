@@ -1,7 +1,10 @@
 package com.flipperdevices.bottombar.impl.viewmodel
 
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import com.flipperdevices.core.di.provideDelegate
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.verbose
 import com.flipperdevices.inappnotification.api.InAppNotificationListener
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
@@ -13,7 +16,9 @@ import javax.inject.Provider
 
 class InAppNotificationViewModel @VMInject constructor(
     notificationStorageProvider: Provider<InAppNotificationStorage>
-) : ViewModel(), InAppNotificationListener {
+) : ViewModel(), InAppNotificationListener, LogTagProvider {
+    override val TAG = "InAppNotificationViewModel"
+
     private val notificationStorage by notificationStorageProvider
 
     private val notificationState = MutableStateFlow<InAppNotificationState>(
@@ -22,12 +27,13 @@ class InAppNotificationViewModel @VMInject constructor(
 
     fun state(): StateFlow<InAppNotificationState> = notificationState
 
-    fun onCreate() {
-        notificationStorage.subscribe(this)
-    }
-
-    fun onDestroy() {
-        notificationStorage.unsubscribe()
+    fun onLifecycleEvent(event: Lifecycle.Event) {
+        verbose { "#onLifecycleEvent $event" }
+        when (event) {
+            Lifecycle.Event.ON_RESUME -> notificationStorage.subscribe(this)
+            Lifecycle.Event.ON_PAUSE -> notificationStorage.unsubscribe()
+            else -> {}
+        }
     }
 
     fun onNotificationHidden(notification: InAppNotification) {

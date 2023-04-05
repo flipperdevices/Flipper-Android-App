@@ -3,6 +3,7 @@ package com.flipperdevices.inappnotification.impl.storage
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.runBlockingWithLog
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import com.flipperdevices.inappnotification.api.InAppNotificationListener
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
@@ -34,6 +35,7 @@ class InAppNotificationStorageImpl @Inject constructor() :
     private var nextNotificationTime = 0L
 
     override fun subscribe(listener: InAppNotificationListener) {
+        info { "#subscribe. Current listener: ${this.listener}, updated: $listener" }
         if (this.listener != null) {
             unsubscribe()
         }
@@ -43,6 +45,7 @@ class InAppNotificationStorageImpl @Inject constructor() :
     }
 
     override fun unsubscribe() {
+        info { "#unsubscribe. Current listener: ${this.listener}" }
         this.listener = null
         timerTask.shutdown()
     }
