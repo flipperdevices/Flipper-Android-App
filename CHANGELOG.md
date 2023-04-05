@@ -43,6 +43,7 @@
 - [FIX] Move apps from experimental settings to debug
 - [FIX] Fix customize button when set widget state
 - [FIX] Fix incorrect diff combiner, add KeyDiffCombinerTest
+- [FIX] Use lifecycle event for inapp notification
 - [REFACTOR] Migrate bottom bar to compose navigation
 - [REFACTOR] Bump Android Gradle Plugin
 - [REFACTOR] Fix detekt compose issues
