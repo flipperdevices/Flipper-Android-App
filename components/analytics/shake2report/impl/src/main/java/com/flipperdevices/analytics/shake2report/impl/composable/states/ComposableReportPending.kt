@@ -3,10 +3,11 @@ package com.flipperdevices.analytics.shake2report.impl.composable.states
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,13 +34,49 @@ internal fun ComposableReportPending(
     modifier: Modifier = Modifier,
     onSubmit: (title: String, desc: String, addLogs: Boolean) -> Unit
 ) = Column(
-    modifier = modifier.padding(horizontal = 16.dp),
-    verticalArrangement = Arrangement.spacedBy(16.dp)
+    modifier = modifier
+        .padding(horizontal = 16.dp)
 ) {
     var name by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     var checked by remember { mutableStateOf(true) }
 
+    ComposableReportPendingFields(
+        modifier = Modifier.weight(1f),
+        name = name,
+        description = description,
+        checked = checked,
+        onChangeName = { name = it.take(MAX_TITLE) },
+        onChangeDescription = { description = it },
+        onChangeChecked = { checked = it }
+    )
+
+    ComposableFlipperButton(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 16.dp),
+        text = stringResource(R.string.shake2report_btn),
+        onClick = { onSubmit(name, description, checked) },
+        enabled = name.isNotEmpty() && description.isNotEmpty()
+    )
+}
+
+@Composable
+@Suppress("LongParameterList")
+private fun ComposableReportPendingFields(
+    name: String,
+    description: String,
+    checked: Boolean,
+    onChangeName: (String) -> Unit,
+    onChangeDescription: (String) -> Unit,
+    onChangeChecked: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) = Column(
+    modifier = modifier
+        .padding(bottom = 16.dp)
+        .verticalScroll(rememberScrollState()),
+    verticalArrangement = Arrangement.spacedBy(16.dp)
+) {
     val placeHolderStyle = LocalTypography.current.bodyR14.copy(
         color = LocalPallet.current.borderViewReportBug
     )
@@ -62,7 +99,7 @@ internal fun ComposableReportPending(
             )
         },
         maxLines = 1,
-        onValueChange = { name = it.take(MAX_TITLE) }
+        onValueChange = onChangeName
     )
 
     ComposableReportTextField(
@@ -79,22 +116,11 @@ internal fun ComposableReportPending(
                 style = placeHolderStyle
             )
         },
-        onValueChange = { description = it },
+        onValueChange = onChangeDescription,
         modifier = Modifier.height(250.dp)
     )
 
-    ComposableReportAddLog(checked = checked, onCheckedChange = { checked = it })
-
-    Spacer(modifier = Modifier.weight(1f))
-
-    ComposableFlipperButton(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 16.dp),
-        text = stringResource(R.string.shake2report_btn),
-        onClick = { onSubmit(name, description, checked) },
-        enabled = name.isNotEmpty() && description.isNotEmpty()
-    )
+    ComposableReportAddLog(checked = checked, onCheckedChange = onChangeChecked)
 }
 
 @Composable
