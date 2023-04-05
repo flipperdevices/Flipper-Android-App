@@ -3,6 +3,7 @@ package com.flipperdevices.settings.impl.composable.elements
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,26 +18,30 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.core.ktx.jre.then
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.settings.impl.R
 
 @Composable
+@Suppress("LongParameterList")
 fun SimpleElement(
     modifier: Modifier = Modifier,
     @StringRes titleId: Int? = null,
     @StringRes descriptionId: Int? = null,
     onClick: (() -> Unit)? = null,
+    paddings: PaddingValues = PaddingValues(12.dp),
     titleTextStyle: TextStyle = LocalTypography.current.bodyR14
 ) {
     val title: String? = titleId?.let { stringResource(id = it) }
     val description = descriptionId?.let { stringResource(id = it) }
 
-    var rowModifier = modifier
+    var rowModifier = Modifier
         .heightIn(min = 48.dp)
-        .padding(all = 12.dp)
+        .padding(paddings)
         .fillMaxWidth()
+        .then(modifier)
     if (onClick != null) {
         rowModifier = Modifier
             .clickableRipple(onClick = onClick)

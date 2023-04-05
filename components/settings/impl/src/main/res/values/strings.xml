@@ -35,7 +35,11 @@
     <string name="experimental_application_catalog">Enable Apps in Hub</string>
     <string name="experimental_application_switch">New switch in Apps</string>
 
-    <string name="debug_shake2report_open">Report a bug</string>
+    <string name="other_github_open">GitHub</string>
+    <string name="other_github_url">https://github.com/flipperdevices/Flipper-Android-App</string>
+    <string name="other_forum_open">Forum</string>
+    <string name="other_forum_url">https://forum.flipperzero.one/</string>
+    <string name="other_shake2report_open">Report a bug</string>
     <string name="export_keys">Backup keys</string>
     <string name="export_keys_picker_title">Save the zip with the keys…</string>
     <string name="version_name_app">Flipper Mobile App</string>

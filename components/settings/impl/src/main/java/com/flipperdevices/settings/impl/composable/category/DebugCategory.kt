@@ -1,6 +1,5 @@
 package com.flipperdevices.settings.impl.composable.category
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
@@ -24,16 +23,14 @@ fun DebugCategory(
     debugViewModel: DebugViewModel = tangleViewModel()
 ) {
     CardCategory(modifier = modifier) {
-        Column {
-            CategoryElement(
-                titleId = R.string.debug_options,
-                descriptionId = R.string.debug_options_desc,
-                state = settings.enabledDebugSettings,
-                onSwitchState = settingsViewModel::onSwitchDebug
-            )
-            if (settings.enabledDebugSettings) {
-                DebugCategoryItems(navController, debugViewModel, settings)
-            }
+        CategoryElement(
+            titleId = R.string.debug_options,
+            descriptionId = R.string.debug_options_desc,
+            state = settings.enabledDebugSettings,
+            onSwitchState = settingsViewModel::onSwitchDebug
+        )
+        if (settings.enabledDebugSettings) {
+            DebugCategoryItems(navController, debugViewModel, settings)
         }
     }
 }
