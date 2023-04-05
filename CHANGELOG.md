@@ -42,6 +42,7 @@
 - [FIX] Cash with ulong mapping to string in mfkey32
 - [FIX] Move apps from experimental settings to debug
 - [FIX] Fix customize button when set widget state
+- [FIX] Use lifecycle event for inapp notification
 - [REFACTOR] Migrate bottom bar to compose navigation
 - [REFACTOR] Bump Android Gradle Plugin
 - [REFACTOR] Fix detekt compose issues

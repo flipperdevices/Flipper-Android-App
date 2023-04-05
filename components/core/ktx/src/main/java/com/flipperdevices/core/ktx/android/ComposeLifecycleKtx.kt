@@ -27,9 +27,46 @@ fun OnLifecycleEvent(onEvent: (event: Lifecycle.Event) -> Unit) {
         }
 
         lifecycle.addObserver(observer)
+        emitCurrentState(lifecycle.currentState, onEvent)
         onDispose {
-            onEvent(Lifecycle.Event.ON_DESTROY)
+            emitOnDestroy(currentEvent, onEvent)
             lifecycle.removeObserver(observer)
         }
     }
+}
+
+private fun emitCurrentState(
+    currentState: Lifecycle.State,
+    onEvent: (event: Lifecycle.Event) -> Unit
+) {
+    val event = when (currentState) {
+        Lifecycle.State.DESTROYED -> Lifecycle.Event.ON_DESTROY
+        Lifecycle.State.INITIALIZED -> Lifecycle.Event.ON_CREATE
+        Lifecycle.State.CREATED -> Lifecycle.Event.ON_CREATE
+        Lifecycle.State.STARTED -> Lifecycle.Event.ON_START
+        Lifecycle.State.RESUMED -> Lifecycle.Event.ON_RESUME
+    }
+    onEvent(event)
+}
+
+/**
+ * If we left the screen, but all states have not passed - we must process all changes
+ */
+private fun emitOnDestroy(
+    currentEvent: Lifecycle.Event?,
+    onEvent: (event: Lifecycle.Event) -> Unit
+) {
+    val newState = when (currentEvent) {
+        Lifecycle.Event.ON_CREATE,
+        Lifecycle.Event.ON_START,
+        Lifecycle.Event.ON_RESUME -> Lifecycle.Event.ON_PAUSE
+        Lifecycle.Event.ON_PAUSE -> Lifecycle.Event.ON_STOP
+        Lifecycle.Event.ON_STOP -> Lifecycle.Event.ON_DESTROY
+        Lifecycle.Event.ON_DESTROY -> null
+        Lifecycle.Event.ON_ANY,
+        null -> Lifecycle.Event.ON_PAUSE
+    } ?: return
+
+    onEvent(newState)
+    emitOnDestroy(newState, onEvent)
 }
