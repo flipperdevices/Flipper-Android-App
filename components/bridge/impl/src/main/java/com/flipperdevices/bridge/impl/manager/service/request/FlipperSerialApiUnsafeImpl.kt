@@ -10,6 +10,7 @@ import com.flipperdevices.bridge.impl.manager.UnsafeBleManager
 import com.flipperdevices.bridge.impl.manager.service.BluetoothGattServiceWrapper
 import com.flipperdevices.bridge.impl.manager.service.getCharacteristicOrLog
 import com.flipperdevices.bridge.impl.manager.service.getServiceOrLog
+import com.flipperdevices.bridge.impl.utils.BridgeImplConfig.BLE_VLOG
 import com.flipperdevices.bridge.impl.utils.SpeedMeter
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
@@ -53,7 +54,9 @@ class FlipperSerialApiUnsafeImpl(
     override suspend fun initialize(bleManager: UnsafeBleManager) {
         bleManagerInternal = bleManager
         bleManager.setNotificationCallbackUnsafe(serialRxCharacteristic).with { _, data ->
-            info { "Receive serial data ${data.value?.size}" }
+            if (BLE_VLOG) {
+                info { "Receive serial data ${data.value?.size}" }
+            }
             val bytes = data.value ?: return@with
             rxSpeed.onReceiveBytes(bytes.size)
             scope.launch {
