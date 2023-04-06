@@ -77,17 +77,21 @@ class SelfUpdaterGithubApi @Inject constructor(
     }
 
     private fun downloadFile(githubUpdate: GithubUpdate) {
-        val url = githubUpdate.downloadUrl
-        val title = githubUpdate.name
+        try {
+            val url = githubUpdate.downloadUrl
+            val title = githubUpdate.name
 
-        val networkTypes = DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE
-        val request = DownloadManager.Request(Uri.parse(url))
-            .setAllowedNetworkTypes(networkTypes)
-            .setTitle(title)
-            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-            .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, title)
+            val networkTypes = DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE
+            val request = DownloadManager.Request(Uri.parse(url))
+                .setAllowedNetworkTypes(networkTypes)
+                .setTitle(title)
+                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, title)
 
-        this.downloadId = manager.enqueue(request)
+            this.downloadId = manager.enqueue(request)
+        } catch (e: Exception) {
+            error { "Error while download update $e" }
+        }
         registerDownloadReceiver()
     }
 
