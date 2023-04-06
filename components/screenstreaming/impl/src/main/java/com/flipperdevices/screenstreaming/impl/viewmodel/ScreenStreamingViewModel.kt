@@ -67,13 +67,13 @@ class ScreenStreamingViewModel @VMInject constructor(
     fun getFlipperScreen(): StateFlow<FlipperScreenSnapshot> = flipperScreen
 
     fun onPressButton(buttonEnum: ButtonEnum) = when (buttonEnum) {
-        ButtonEnum.UNLOCK -> serviceApi?.requestApi?.pressOnButton(
+        /*ButtonEnum.UNLOCK -> serviceApi?.requestApi?.pressOnButton(
             viewModelScope,
             Gui.InputKey.BACK,
             Gui.InputType.SHORT,
             times = 3
         )
-        ButtonEnum.SCREENSHOT -> shareScreenshot()
+        ButtonEnum.SCREENSHOT -> shareScreenshot()*/
         ButtonEnum.LEFT,
         ButtonEnum.RIGHT,
         ButtonEnum.UP,
@@ -89,7 +89,7 @@ class ScreenStreamingViewModel @VMInject constructor(
         serviceApi?.requestApi?.pressOnButton(viewModelScope, key, Gui.InputType.LONG)
     }
 
-    private fun shareScreenshot() = lifecycleScope.launch(Dispatchers.Default) {
+    fun shareScreenshot() = lifecycleScope.launch(Dispatchers.Default) {
         val currentSnapshot = flipperScreen.value.bitmap ?: return@launch
         val date = SimpleDateFormat(TIMEFORMAT, Locale.US).format(Date())
         val filename = "$SCREENSHOT_FILE_PREFIX-$date.png"
