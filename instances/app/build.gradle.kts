@@ -175,7 +175,7 @@ dependencies {
             implementation(projects.components.selfupdater.source.github)
         }
         else -> {
-            implementation(projects.components.selfupdater.source.github)
+            implementation(projects.components.selfupdater.source.unknown)
         }
     }
 
