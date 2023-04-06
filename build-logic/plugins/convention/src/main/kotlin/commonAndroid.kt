@@ -79,7 +79,7 @@ private fun BaseExtension.configureBuildTypes() {
             )
         }
         maybeCreate("release").apply {
-            buildConfigField("boolean", "INTERNAL", "false")
+            buildConfigField("boolean", "INTERNAL", "true")
             isMinifyEnabled = true
             consumerProguardFile(
                 "proguard-rules.pro"
