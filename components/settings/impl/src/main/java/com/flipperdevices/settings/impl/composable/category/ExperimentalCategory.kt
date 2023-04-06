@@ -1,6 +1,5 @@
 package com.flipperdevices.settings.impl.composable.category
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
@@ -10,7 +9,6 @@ import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.composable.elements.CategoryElement
 import com.flipperdevices.settings.impl.composable.elements.ClickableElement
 import com.flipperdevices.settings.impl.composable.elements.GrayDivider
-import com.flipperdevices.settings.impl.composable.elements.SwitchableElement
 import com.flipperdevices.settings.impl.viewmodels.ExperimentalViewModel
 import com.flipperdevices.settings.impl.viewmodels.SettingsViewModel
 import tangle.viewmodel.compose.tangleViewModel
@@ -25,40 +23,26 @@ fun ExperimentalCategory(
 ) {
     val globalNavController = LocalGlobalNavigationNavStack.current
     CardCategory(modifier = modifier) {
-        Column {
-            CategoryElement(
-                titleId = R.string.experimental_options,
-                descriptionId = R.string.experimental_options_desc,
-                state = settings.enabledExperimentalFunctions,
-                onSwitchState = settingsViewModel::onSwitchExperimental
+        CategoryElement(
+            titleId = R.string.experimental_options,
+            descriptionId = R.string.experimental_options_desc,
+            state = settings.enabledExperimentalFunctions,
+            onSwitchState = settingsViewModel::onSwitchExperimental
+        )
+        if (settings.enabledExperimentalFunctions) {
+            ClickableElement(
+                titleId = R.string.experimental_file_manager,
+                descriptionId = R.string.experimental_file_manager_desc,
+                onClick = { experimentalViewModel.onOpenFileManager(navController) }
             )
-            if (settings.enabledExperimentalFunctions) {
-                ClickableElement(
-                    titleId = R.string.experimental_file_manager,
-                    descriptionId = R.string.experimental_file_manager_desc,
-                    onClick = { experimentalViewModel.onOpenFileManager(navController) }
-                )
-                GrayDivider()
-                ClickableElement(
-                    titleId = R.string.experimental_screen_streaming,
-                    descriptionId = R.string.experimental_screen_streaming_desc,
-                    onClick = {
-                        experimentalViewModel.onOpenScreenStreaming(globalNavController)
-                    }
-                )
-                GrayDivider()
-                SwitchableElement(
-                    titleId = R.string.experimental_application_catalog,
-                    state = settings.applicationCatalog,
-                    onSwitchState = experimentalViewModel::onSwitchApplicationCatalog
-                )
-                GrayDivider()
-                SwitchableElement(
-                    titleId = R.string.experimental_application_switch,
-                    state = settings.faphubNewSwitch,
-                    onSwitchState = experimentalViewModel::onSwitchAppsSwitch
-                )
-            }
+            GrayDivider()
+            ClickableElement(
+                titleId = R.string.experimental_screen_streaming,
+                descriptionId = R.string.experimental_screen_streaming_desc,
+                onClick = {
+                    experimentalViewModel.onOpenScreenStreaming(globalNavController)
+                }
+            )
         }
     }
 }

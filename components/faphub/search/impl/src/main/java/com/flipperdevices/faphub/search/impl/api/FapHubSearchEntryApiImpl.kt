@@ -35,7 +35,11 @@ class FapHubSearchEntryApiImpl @Inject constructor(
                         navController.navigate(fapScreenApi.getFapScreen(it.id))
                     },
                     installationButton = { fapItem, modifier, fontSize ->
-                        fapInstallationUIApi.ComposableInstallButton(fapItem, modifier, fontSize)
+                        fapInstallationUIApi.ComposableButton(
+                            fapItem = fapItem,
+                            modifier = modifier,
+                            textSize = fontSize
+                        )
                     }
                 )
             }

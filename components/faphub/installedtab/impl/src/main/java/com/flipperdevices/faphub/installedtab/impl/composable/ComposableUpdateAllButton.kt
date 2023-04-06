@@ -1,8 +1,9 @@
 package com.flipperdevices.faphub.installedtab.impl.composable
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
@@ -22,9 +23,11 @@ import com.flipperdevices.faphub.installedtab.impl.R
 fun ComposableUpdateAllButton(modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
+            .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
             .background(LocalPallet.current.updateProgressGreen),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
     ) {
         Text(
             modifier = Modifier.padding(start = 12.dp, top = 8.dp, bottom = 8.dp, end = 8.dp),
@@ -35,19 +38,5 @@ fun ComposableUpdateAllButton(modifier: Modifier = Modifier) {
             ),
             color = LocalPallet.current.onFapHubInstallButton
         )
-        Box(
-            Modifier
-                .padding(end = 8.dp)
-                .clip(RoundedCornerShape(4.dp))
-                .background(LocalPallet.current.onFapHubInstallButtonCounterBackground)
-        ) {
-            Text(
-                modifier = Modifier.padding(all = 4.dp),
-                text = 4.toString(),
-                textAlign = TextAlign.Center,
-                style = LocalTypography.current.monoSpaceM10,
-                color = LocalPallet.current.onFapHubInstallButtonCounterText
-            )
-        }
     }
 }

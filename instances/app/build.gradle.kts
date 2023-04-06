@@ -1,5 +1,6 @@
 import com.flipperdevices.buildlogic.ApkConfig.IS_GOOGLE_FEATURE_AVAILABLE
 import com.flipperdevices.buildlogic.ApkConfig.IS_METRIC_ENABLED
+import com.flipperdevices.buildlogic.ApkConfig.IS_SENTRY_ENABLED
 import com.flipperdevices.buildlogic.ApkConfig.SOURCE_INSTALL
 import com.flipperdevices.buildlogic.SourceInstall
 
@@ -95,13 +96,10 @@ dependencies {
     implementation(libs.ble.scan)
 
     implementation(projects.components.analytics.shake2report.api)
-    releaseImplementation(projects.components.analytics.shake2report.noop)
-    if (IS_METRIC_ENABLED) {
-        debugImplementation(projects.components.analytics.shake2report.impl)
-        internalImplementation(projects.components.analytics.shake2report.impl)
+    if (IS_SENTRY_ENABLED) {
+        implementation(projects.components.analytics.shake2report.impl)
     } else {
-        debugImplementation(projects.components.analytics.shake2report.noop)
-        internalImplementation(projects.components.analytics.shake2report.noop)
+        implementation(projects.components.analytics.shake2report.noop)
     }
 
     implementation(projects.components.analytics.metric.api)

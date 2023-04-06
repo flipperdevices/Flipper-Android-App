@@ -12,13 +12,14 @@ object KeyDiffCombiner {
         first: List<KeyDiff>,
         second: List<KeyDiff>
     ): List<KeyDiff> {
-        val resultMap = first.map {
-            it.newHash.keyPath to it
-        }.toMap(LinkedHashMap(first.size + second.size))
+        val firstKeysAsMap = first.associateBy {
+            it.newHash.keyPath
+        }.toMutableMap()
+        val resultMap = LinkedHashMap<FlipperFilePath, KeyDiff>()
 
         for (keyDiff in second) {
             val keyPath = keyDiff.newHash.keyPath
-            val foundedKey = resultMap[keyPath]
+            val foundedKey = firstKeysAsMap.remove(keyPath)
             if (foundedKey == null) {
                 resultMap[keyPath] = keyDiff
                 continue
@@ -29,42 +30,19 @@ object KeyDiffCombiner {
             }
         }
 
-        return resultMap.values.toList()
+        return firstKeysAsMap.values + resultMap.values
     }
 
     @Throws(UnresolvedConflictException::class)
     @Suppress("ComplexMethod")
     private fun resolveConflict(first: KeyDiff, second: KeyDiff): KeyDiff? {
-        /**
-         * If the file is shadow, we always give priority
-         * to a copy of the file from the flipper.
-         */
-        if (first.newHash.keyPath.fileType == FlipperFileType.SHADOW_NFC) {
-            if (first.source == DiffSource.FLIPPER) {
-                return first
-            }
-            if (second.source == DiffSource.FLIPPER) {
-                return second
-            }
-        }
-
         return when (first.action) {
             KeyAction.ADD -> when (second.action) {
-                KeyAction.ADD, KeyAction.MODIFIED ->
-                    if (first.newHash.hash == second.newHash.hash) {
-                        null
-                    } else {
-                        throw UnresolvedConflictException(first.newHash.keyPath)
-                    }
+                KeyAction.ADD, KeyAction.MODIFIED -> resolveConflictBothAdd(first, second)
                 KeyAction.DELETED -> first // Impossible situation
             }
             KeyAction.MODIFIED -> when (second.action) {
-                KeyAction.ADD, KeyAction.MODIFIED ->
-                    if (first.newHash.hash == second.newHash.hash) {
-                        null
-                    } else {
-                        throw UnresolvedConflictException(first.newHash.keyPath)
-                    }
+                KeyAction.ADD, KeyAction.MODIFIED -> resolveConflictBothAdd(first, second)
                 KeyAction.DELETED -> KeyDiff(first.newHash, KeyAction.ADD, first.source)
             }
             KeyAction.DELETED -> when (second.action) {
@@ -72,6 +50,26 @@ object KeyDiffCombiner {
                 KeyAction.MODIFIED -> KeyDiff(second.newHash, KeyAction.ADD, second.source)
                 KeyAction.DELETED -> null
             }
+        }
+    }
+
+    private fun resolveConflictBothAdd(first: KeyDiff, second: KeyDiff): KeyDiff? {
+        return if (first.newHash.hash == second.newHash.hash) {
+            null
+        } else if (first.newHash.keyPath.fileType == FlipperFileType.SHADOW_NFC) {
+            /**
+             * If the file is shadow, we always give priority
+             * to a copy of the file from the flipper.
+             */
+            if (first.source == DiffSource.FLIPPER) {
+                first
+            } else if (second.source == DiffSource.FLIPPER) {
+                second
+            } else {
+                throw UnresolvedConflictException(first.newHash.keyPath) // Impossible situation
+            }
+        } else {
+            throw UnresolvedConflictException(first.newHash.keyPath)
         }
     }
 }

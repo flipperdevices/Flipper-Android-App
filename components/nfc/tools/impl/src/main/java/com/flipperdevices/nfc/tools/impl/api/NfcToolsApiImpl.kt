@@ -6,13 +6,14 @@ import com.flipperdevices.nfc.tools.api.MfKey32Nonce
 import com.flipperdevices.nfc.tools.api.NfcToolsApi
 import com.flipperdevices.nfc.tools.impl.bindings.MfKey32Binding
 import com.squareup.anvil.annotations.ContributesBinding
+import java.math.BigInteger
 import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, NfcToolsApi::class)
 class NfcToolsApiImpl @Inject constructor() : NfcToolsApi, LogTagProvider {
     override val TAG = "NfcToolsApi"
 
-    override suspend fun bruteforceKey(mfKey32Nonce: MfKey32Nonce): ULong? {
+    override suspend fun bruteforceKey(mfKey32Nonce: MfKey32Nonce): BigInteger? {
         val key = MfKey32Binding.tryRecoverKey(
             uid = mfKey32Nonce.uid.toLong(),
             nt0 = mfKey32Nonce.nt0.toLong(),
@@ -22,6 +23,7 @@ class NfcToolsApiImpl @Inject constructor() : NfcToolsApi, LogTagProvider {
             nr1 = mfKey32Nonce.nr1.toLong(),
             ar1 = mfKey32Nonce.ar1.toLong()
         )
-        return key?.toULongOrNull()
+
+        return key?.let { BigInteger(it) }
     }
 }

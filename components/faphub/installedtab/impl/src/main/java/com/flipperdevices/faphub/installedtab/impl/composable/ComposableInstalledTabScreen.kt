@@ -52,7 +52,7 @@ private fun ComposableInstalledTabScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 12.dp),
-                contentAlignment = Alignment.CenterEnd
+                contentAlignment = Alignment.Center
             ) {
                 ComposableUpdateAllButton(
                     if (faps == null) {
