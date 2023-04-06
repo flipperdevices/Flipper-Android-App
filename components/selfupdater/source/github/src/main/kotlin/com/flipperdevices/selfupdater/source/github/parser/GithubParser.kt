@@ -1,10 +1,10 @@
 package com.flipperdevices.selfupdater.source.github.parser
 
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.di.ApplicationParams
+import com.flipperdevices.core.di.BuildConfig
 import com.flipperdevices.selfupdater.source.github.model.GithubRelease
 import com.flipperdevices.selfupdater.source.github.model.GithubUpdate
-import com.squareup.anvil.annotations.ContributesMultibinding
+import com.squareup.anvil.annotations.ContributesBinding
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -15,57 +15,55 @@ private const val GITHUB_API_ALL_RELEASES =
 private const val GITHUB_API_LAST_RELEASE =
     "https://api.github.com/repos/flipperdevices/Flipper-Android-App/releases/latest"
 
-interface GithubParser {
-    suspend fun getLastRelease(): GithubUpdate?
+private const val INTERNAL = "internal"
 
-    fun isParserValid(): Boolean
+interface GithubParser {
+    suspend fun getLastUpdate(): GithubUpdate?
 }
 
-@ContributesMultibinding(AppGraph::class, GithubParser::class)
-class GithubDevParserImpl @Inject constructor(
-    private val client: HttpClient,
-    private val applicationParams: ApplicationParams
+@ContributesBinding(AppGraph::class, GithubParser::class)
+class GithubParserImpl @Inject constructor(
+    private val client: HttpClient
 ) : GithubParser {
-    override suspend fun getLastRelease(): GithubUpdate? {
+    override suspend fun getLastUpdate(): GithubUpdate? {
+        return runCatching {
+            val update = if (isDev()) {
+                parseDevUpdate()
+            } else {
+                parseReleaseUpdate()
+            }
+
+            val downloadUrl = update
+                ?.getDownloadUrl(isGooglePlayEnable = isGooglePlayEnable())
+                ?: return null
+
+            return GithubUpdate(
+                version = update.tagName,
+                downloadUrl = downloadUrl,
+                name = update.name
+            )
+        }.getOrNull()
+    }
+
+    private suspend fun parseReleaseUpdate(): GithubRelease {
+        return client.get(
+            urlString = GITHUB_API_LAST_RELEASE
+        ).body()
+    }
+
+    private suspend fun parseDevUpdate(): GithubRelease? {
         val response = client.get(
             urlString = GITHUB_API_ALL_RELEASES
         ).body<List<GithubRelease>>()
 
-        val dev = response.firstOrNull { it.isDev() } ?: return null
-        val downloadUrl = dev.getDownloadUrl(applicationParams.isGooglePlayEnable) ?: return null
-
-        return GithubUpdate(
-            version = dev.tagName,
-            downloadUrl = downloadUrl,
-            name = dev.name
-        )
+        return response.firstOrNull { it.isDev() }
     }
 
-    override fun isParserValid(): Boolean {
-        return applicationParams.isReleaseBuild().not()
+    private fun isGooglePlayEnable(): Boolean {
+        return System.getProperty("is_google_feature", "true") == "true"
+    }
+
+    private fun isDev(): Boolean {
+        return BuildConfig.BUILD_TYPE == INTERNAL
     }
 }
-
-@ContributesMultibinding(AppGraph::class, GithubParser::class)
-class GithubReleaseParserImpl @Inject constructor(
-    private val client: HttpClient,
-    private val applicationParams: ApplicationParams
-) : GithubParser {
-    override suspend fun getLastRelease(): GithubUpdate? {
-        val release = client.get(
-            urlString = GITHUB_API_LAST_RELEASE
-        ).body<GithubRelease>()
-        val downloadUrl = release.getDownloadUrl(applicationParams.isGooglePlayEnable) ?: return null
-
-        return GithubUpdate(
-            version = release.tagName,
-            downloadUrl = downloadUrl,
-            name = release.name
-        )
-    }
-
-    override fun isParserValid(): Boolean {
-        return applicationParams.isReleaseBuild()
-    }
-}
-

@@ -15,6 +15,7 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
+import com.flipperdevices.selfupdater.api.BuildConfig
 import com.flipperdevices.selfupdater.api.SelfUpdaterApi
 import com.flipperdevices.selfupdater.source.github.model.GithubUpdate
 import com.flipperdevices.selfupdater.source.github.parser.CompareVersionParser
@@ -24,13 +25,13 @@ import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, SelfUpdaterApi::class)
 class SelfUpdaterGithubApi @Inject constructor(
-    private val context: Context,
+    context: Context,
     private val compareVersionParser: CompareVersionParser,
-    private val githubReleaseParsers: MutableSet<GithubParser>,
+    private val githubReleaseParser: GithubParser,
     private val inAppNotificationStorage: InAppNotificationStorage
 ) : SelfUpdaterApi, LogTagProvider {
     override val TAG: String get() = "SelfUpdaterGithubApi"
-    override fun getInstallSourceName() = "Github"
+    override fun getInstallSourceName() = "Github/${BuildConfig.BUILD_TYPE}"
 
     private var downloadId: Long? = null
     private val manager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
@@ -38,25 +39,17 @@ class SelfUpdaterGithubApi @Inject constructor(
     override suspend fun startCheckUpdateAsync(activity: Activity) {
         val lastRelease = processCheckGithubUpdate() ?: return
         val notification = InAppNotification.UpdateReady(
-            action = { downloadFile(lastRelease) },
+            action = { downloadFile(lastRelease, activity) },
         )
         inAppNotificationStorage.addNotification(notification)
     }
 
     private suspend fun processCheckGithubUpdate(): GithubUpdate? {
-        val githubParser = githubReleaseParsers.firstOrNull { it.isParserValid() }
-        if (githubParser == null) {
-            error { "No parser found for github update" }
-            return null
-        }
-
-        val lastRelease = githubParser.getLastRelease()
+        val lastRelease = githubReleaseParser.getLastUpdate()
         if (lastRelease == null) {
             error { "No release found for github update" }
             return null
         }
-
-        info { "Choose github parser for update ${githubParser::javaClass} with $lastRelease" }
 
         if (!compareVersionParser.isThatNewVersion(lastRelease.version)) {
             info { "No new version found for github update" }
@@ -66,17 +59,17 @@ class SelfUpdaterGithubApi @Inject constructor(
         return lastRelease
     }
 
-    private fun registerDownloadReceiver() {
+    private fun registerDownloadReceiver(activity: Activity) {
         val intentFilter = IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            context.registerReceiver(downloadReceiver, intentFilter, Context.RECEIVER_EXPORTED)
+            activity.registerReceiver(downloadReceiver, intentFilter, Context.RECEIVER_EXPORTED)
         } else {
-            context.registerReceiver(downloadReceiver, intentFilter)
+            activity.registerReceiver(downloadReceiver, intentFilter)
         }
         info { "Register download receiver" }
     }
 
-    private fun downloadFile(githubUpdate: GithubUpdate) {
+    private fun downloadFile(githubUpdate: GithubUpdate, activity: Activity) {
         try {
             val url = githubUpdate.downloadUrl
             val title = githubUpdate.name
@@ -92,7 +85,7 @@ class SelfUpdaterGithubApi @Inject constructor(
         } catch (e: Exception) {
             error { "Error while download update $e" }
         }
-        registerDownloadReceiver()
+        registerDownloadReceiver(activity)
     }
 
     private val downloadReceiver: BroadcastReceiver = object : BroadcastReceiver() {

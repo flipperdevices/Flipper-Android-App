@@ -3,6 +3,7 @@ package com.flipperdevices.selfupdater.source.github.parser
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.ApplicationParams
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
@@ -24,11 +25,16 @@ class CompareVersionParserImpl @Inject constructor(
         if (currentVersionParts.size > newVersionParts.size) return false
 
         for (i in currentVersionParts.indices) {
-            val currentVersionPart = currentVersionParts[i].toInt()
-            val newVersionPart = newVersionParts[i].toInt()
+            try {
+                val currentVersionPart = currentVersionParts[i].toInt()
+                val newVersionPart = newVersionParts[i].toInt()
 
-            if (currentVersionPart < newVersionPart) return true
-            if (currentVersionPart > newVersionPart) return false
+                if (currentVersionPart < newVersionPart) return true
+                if (currentVersionPart > newVersionPart) return false
+            } catch (e: NumberFormatException) {
+                error(e) { "Can't parse version part" }
+                return false
+            }
         }
 
         return false

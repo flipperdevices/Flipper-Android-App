@@ -25,8 +25,7 @@ class FlipperApplication : Application() {
                 application = this,
                 ApplicationParams(
                     startApplicationClass = SingleActivity::class,
-                    version = "1.4.1.860",
-                    isGooglePlayEnable = ApplicationParams.getIsGooglePlayEnableByProps(),
+                    version = BuildConfig.VERSION_NAME
                 )
             )
 
