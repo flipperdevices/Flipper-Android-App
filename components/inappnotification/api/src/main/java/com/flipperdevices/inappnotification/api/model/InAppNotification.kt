@@ -13,4 +13,3 @@ sealed class InAppNotification(val durationMs: Long) {
         durationMs: Long = NOTIFICATION_UPDATE_MS
     ) : InAppNotification(durationMs)
 }
-
