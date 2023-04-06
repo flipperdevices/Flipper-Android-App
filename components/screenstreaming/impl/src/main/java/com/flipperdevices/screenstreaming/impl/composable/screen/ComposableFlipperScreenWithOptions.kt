@@ -62,6 +62,7 @@ fun ComposableFlipperScreenWithOptions(
     Column(
         modifier = Modifier
             .size(height = height, width = width)
+            .padding(horizontal = 24.dp)
             .rotate(angel),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
@@ -98,15 +99,15 @@ private fun ColumnScope.ComposableFlipperScreenOptions(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.Top
         ) {
+            ComposableFlipperScreenScreenshot(
+                modifier = optionsModifier,
+                onClick = onTakeScreenshot
+            )
             var isLock by remember { mutableStateOf(false) }
             ComposableFlipperScreenLock(
                 modifier = optionsModifier,
                 isLock = isLock,
                 onChangeState = { isLock = it }
-            )
-            ComposableFlipperScreenScreenshot(
-                modifier = optionsModifier,
-                onClick = onTakeScreenshot
             )
         }
     }

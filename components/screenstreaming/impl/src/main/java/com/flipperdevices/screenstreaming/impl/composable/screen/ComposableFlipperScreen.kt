@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.asImageBitmap
@@ -25,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.screenstreaming.impl.R
@@ -34,7 +36,7 @@ import kotlin.math.roundToInt
 
 @Composable
 fun ComposableFlipperScreen(
-    bitmap: Bitmap,
+    bitmap: Bitmap?,
     showLogo: Boolean
 ) {
     Column(
@@ -54,27 +56,33 @@ fun ComposableFlipperScreen(
 }
 
 @Composable
-private fun ComposableFlipperScreenInternal(flipperScreen: Bitmap) {
+private fun ComposableFlipperScreenInternal(flipperScreen: Bitmap?) {
+    var boxModifier = Modifier
+        .border(
+            width = 3.dp,
+            color = LocalPallet.current.screenStreamingBorderColor,
+            shape = RoundedCornerShape(16.dp)
+        )
+        .padding(6.dp)
+        .border(
+            width = 2.dp,
+            color = LocalPallet.current.screenStreamingBorderColor,
+            shape = RoundedCornerShape(12.dp)
+        )
+        .background(
+            color = LocalPallet.current.flipperScreenColor,
+            shape = RoundedCornerShape(12.dp)
+        )
+    if (flipperScreen == null) {
+        boxModifier = boxModifier
+            .clip(RoundedCornerShape(12.dp))
+            .placeholderConnecting()
+    }
     Box(
-        Modifier
-            .border(
-                width = 3.dp,
-                color = LocalPallet.current.screenStreamingBorderColor,
-                shape = RoundedCornerShape(16.dp)
-            )
-            .padding(6.dp)
-            .border(
-                width = 2.dp,
-                color = LocalPallet.current.screenStreamingBorderColor,
-                shape = RoundedCornerShape(12.dp)
-            )
-            .background(
-                color = LocalPallet.current.flipperScreenColor,
-                shape = RoundedCornerShape(12.dp)
-            )
+        modifier = boxModifier
             .padding(8.dp)
     ) {
-        ComposableFlipperScreenRaw(flipperScreen)
+        ComposableFlipperScreenRaw(flipperScreen ?: ScreenStreamFrameDecoder.emptyBitmap())
     }
 }
 

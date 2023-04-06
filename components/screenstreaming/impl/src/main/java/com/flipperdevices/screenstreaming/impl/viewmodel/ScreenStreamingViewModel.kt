@@ -90,13 +90,13 @@ class ScreenStreamingViewModel @VMInject constructor(
     }
 
     private fun shareScreenshot() = lifecycleScope.launch(Dispatchers.Default) {
-        val currentSnapshot = flipperScreen.value
+        val currentSnapshot = flipperScreen.value.bitmap ?: return@launch
         val date = SimpleDateFormat(TIMEFORMAT, Locale.US).format(Date())
         val filename = "$SCREENSHOT_FILE_PREFIX-$date.png"
         val sharableFile = SharableFile(application, filename)
         sharableFile.createClearNewFileWithMkDirs()
         sharableFile.outputStream().use {
-            currentSnapshot.bitmap.compress(Bitmap.CompressFormat.PNG, QUALITY, it)
+            currentSnapshot.compress(Bitmap.CompressFormat.PNG, QUALITY, it)
         }
         ShareHelper.shareFile(application, sharableFile, R.string.screenshot_export_title)
     }
