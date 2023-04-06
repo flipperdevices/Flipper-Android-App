@@ -2,6 +2,7 @@ package com.flipperdevices.screenstreaming.impl.viewmodel
 
 import android.app.Application
 import android.graphics.Bitmap
+import android.graphics.Matrix
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.model.wrapToRequest
@@ -20,6 +21,7 @@ import com.flipperdevices.screenstreaming.impl.R
 import com.flipperdevices.screenstreaming.impl.composable.ButtonEnum
 import com.flipperdevices.screenstreaming.impl.di.ScreenStreamingComponent
 import com.flipperdevices.screenstreaming.impl.model.FlipperScreenSnapshot
+import com.flipperdevices.screenstreaming.impl.model.ScreenOrientationEnum
 import com.flipperdevices.screenstreaming.impl.model.StreamingState
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -66,40 +68,31 @@ class ScreenStreamingViewModel @VMInject constructor(
 
     fun getFlipperScreen(): StateFlow<FlipperScreenSnapshot> = flipperScreen
 
-    fun onPressButton(buttonEnum: ButtonEnum) = when (buttonEnum) {
-        /*ButtonEnum.UNLOCK -> serviceApi?.requestApi?.pressOnButton(
-            viewModelScope,
-            Gui.InputKey.BACK,
-            Gui.InputType.SHORT,
-            times = 3
-        )
-        ButtonEnum.SCREENSHOT -> shareScreenshot()*/
-        ButtonEnum.LEFT,
-        ButtonEnum.RIGHT,
-        ButtonEnum.UP,
-        ButtonEnum.DOWN,
-        ButtonEnum.OK,
-        ButtonEnum.BACK -> buttonEnum.key?.let { key ->
-            serviceApi?.requestApi?.pressOnButton(viewModelScope, key, Gui.InputType.SHORT)
-        }
+    fun onPressButton(
+        buttonEnum: ButtonEnum,
+        inputType: Gui.InputType
+    ) {
+        serviceApi?.requestApi?.pressOnButton(viewModelScope, buttonEnum.key, inputType)
     }
 
-    fun onLongPressButton(buttonEnum: ButtonEnum) {
-        val key = buttonEnum.key ?: return
-        serviceApi?.requestApi?.pressOnButton(viewModelScope, key, Gui.InputType.LONG)
-    }
-
-    fun shareScreenshot() = lifecycleScope.launch(Dispatchers.Default) {
-        val currentSnapshot = flipperScreen.value.bitmap ?: return@launch
-        val date = SimpleDateFormat(TIMEFORMAT, Locale.US).format(Date())
-        val filename = "$SCREENSHOT_FILE_PREFIX-$date.png"
-        val sharableFile = SharableFile(application, filename)
-        sharableFile.createClearNewFileWithMkDirs()
-        sharableFile.outputStream().use {
-            currentSnapshot.compress(Bitmap.CompressFormat.PNG, QUALITY, it)
+    fun shareScreenshot(orientation: ScreenOrientationEnum) =
+        lifecycleScope.launch(Dispatchers.Default) {
+            var currentSnapshot = flipperScreen.value.bitmap ?: return@launch
+            currentSnapshot = when (orientation) {
+                ScreenOrientationEnum.VERTICAL,
+                ScreenOrientationEnum.VERTICAL_FLIP -> currentSnapshot.rotate(angel = 90f)
+                ScreenOrientationEnum.HORIZONTAL,
+                ScreenOrientationEnum.HORIZONTAL_FLIP -> currentSnapshot
+            }
+            val date = SimpleDateFormat(TIMEFORMAT, Locale.US).format(Date())
+            val filename = "$SCREENSHOT_FILE_PREFIX-$date.png"
+            val sharableFile = SharableFile(application, filename)
+            sharableFile.createClearNewFileWithMkDirs()
+            sharableFile.outputStream().use {
+                currentSnapshot.compress(Bitmap.CompressFormat.PNG, QUALITY, it)
+            }
+            ShareHelper.shareFile(application, sharableFile, R.string.screenshot_export_title)
         }
-        ShareHelper.shareFile(application, sharableFile, R.string.screenshot_export_title)
-    }
 
     private fun onStartStreaming(serviceApi: FlipperServiceApi) {
         serviceApi.requestApi.request(
@@ -114,9 +107,9 @@ class ScreenStreamingViewModel @VMInject constructor(
     private suspend fun onStreamFrameReceived(
         streamFrame: Gui.ScreenFrame
     ) = withContext(Dispatchers.IO) {
-        val screen = ScreenStreamFrameDecoder.decode(streamFrame)
+        val screen = ScreenStreamFrameDecoder.decode(streamFrame) ?: return@withContext
         viewModelScope.launch {
-            flipperScreen.emit(FlipperScreenSnapshot(screen))
+            flipperScreen.emit(screen)
         }
     }
 
@@ -141,4 +134,22 @@ class ScreenStreamingViewModel @VMInject constructor(
             update = StreamingState.DISABLED
         )
     }
+}
+
+fun Bitmap.rotate(angel: Float): Bitmap {
+    val matrix = Matrix()
+
+    matrix.postRotate(angel)
+
+    val scaledBitmap = Bitmap.createScaledBitmap(this, width, height, true)
+
+    return Bitmap.createBitmap(
+        scaledBitmap,
+        0,
+        0,
+        scaledBitmap.width,
+        scaledBitmap.height,
+        matrix,
+        true
+    )
 }

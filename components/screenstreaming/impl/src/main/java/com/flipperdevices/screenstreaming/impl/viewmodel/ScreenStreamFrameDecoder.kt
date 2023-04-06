@@ -6,6 +6,8 @@ import androidx.core.graphics.set
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.protobuf.screen.Gui
+import com.flipperdevices.screenstreaming.impl.model.FlipperScreenSnapshot
+import com.flipperdevices.screenstreaming.impl.model.ScreenOrientationEnum
 import kotlin.experimental.and
 
 private const val SCREEN_WIDTH = 128
@@ -24,20 +26,44 @@ object ScreenStreamFrameDecoder : LogTagProvider {
         return bitmap
     }
 
-    fun decode(streamFrame: Gui.ScreenFrame): Bitmap {
+    fun decode(streamFrame: Gui.ScreenFrame): FlipperScreenSnapshot? {
         val bytes = streamFrame.data.toByteArray()
         info { "Receive package with ${bytes.size} bytes" }
         if (bytes.isEmpty()) {
-            return emptyBitmap()
+            return null
+        }
+        val orientation = when (streamFrame.orientation) {
+            Gui.ScreenOrientation.HORIZONTAL -> ScreenOrientationEnum.HORIZONTAL
+            Gui.ScreenOrientation.HORIZONTAL_FLIP -> ScreenOrientationEnum.HORIZONTAL_FLIP
+            Gui.ScreenOrientation.VERTICAL -> ScreenOrientationEnum.VERTICAL
+            Gui.ScreenOrientation.VERTICAL_FLIP -> ScreenOrientationEnum.VERTICAL_FLIP
+            else -> ScreenOrientationEnum.HORIZONTAL
         }
         val screen = Bitmap.createBitmap(SCREEN_WIDTH, SCREEN_HEIGHT, Bitmap.Config.ARGB_8888)
+        fillBitmap(screen, bytes, orientation)
+        return FlipperScreenSnapshot(
+            bitmap = screen,
+            orientation = orientation
+        )
+    }
+
+    private fun fillBitmap(screen: Bitmap, bytes: ByteArray, orientation: ScreenOrientationEnum) {
         for (x in 0 until SCREEN_WIDTH) {
             for (y in 0 until SCREEN_HEIGHT) {
                 val color = if (bytes.isPixelSet(x, y)) Color.BLACK else BACKGROUND_COLOR
-                screen[x, y] = color
+                val bitmapX = when (orientation) {
+                    ScreenOrientationEnum.VERTICAL_FLIP,
+                    ScreenOrientationEnum.HORIZONTAL_FLIP -> SCREEN_WIDTH - x - 1
+                    else -> x
+                }
+                val bitmapY = when (orientation) {
+                    ScreenOrientationEnum.HORIZONTAL_FLIP,
+                    ScreenOrientationEnum.VERTICAL_FLIP -> SCREEN_HEIGHT - y - 1
+                    else -> y
+                }
+                screen[bitmapX, bitmapY] = color
             }
         }
-        return screen
     }
 
     private fun ByteArray.isPixelSet(x: Int, y: Int): Boolean {

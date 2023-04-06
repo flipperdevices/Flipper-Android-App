@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import com.flipperdevices.core.ui.ktx.OrangeAppBar
+import com.flipperdevices.protobuf.screen.Gui
 import com.flipperdevices.screenstreaming.impl.R
 import com.flipperdevices.screenstreaming.impl.composable.controls.ComposableFlipperControls
 import com.flipperdevices.screenstreaming.impl.composable.screen.ComposableFlipperScreenWithOptions
@@ -21,8 +22,6 @@ import com.flipperdevices.screenstreaming.impl.viewmodel.ScreenStreamingViewMode
 fun ComposableStreamingScreen(
     viewModel: ScreenStreamingViewModel,
     modifier: Modifier = Modifier,
-    onPressButton: (ButtonEnum) -> Unit = {},
-    onLongPressButton: (ButtonEnum) -> Unit = {},
     onBack: () -> Unit
 ) {
     val flipperScreen by viewModel.getFlipperScreen().collectAsState()
@@ -37,12 +36,16 @@ fun ComposableStreamingScreen(
         )
         ComposableFlipperScreenWithOptions(
             flipperScreen = flipperScreen,
-            onTakeScreenshot = viewModel::shareScreenshot,
+            onTakeScreenshot = { viewModel.shareScreenshot(flipperScreen.orientation) },
             modifier = Modifier.weight(1f)
         )
         ComposableFlipperControls(
-            onPressButton = onPressButton,
-            onLongPressButton = onLongPressButton
+            onPressButton = {
+                viewModel.onPressButton(it, Gui.InputType.SHORT)
+            },
+            onLongPressButton = {
+                viewModel.onPressButton(it, Gui.InputType.LONG)
+            }
         )
     }
 }

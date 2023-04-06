@@ -36,12 +36,6 @@ class ScreenStreamingFeatureEntryImpl @Inject constructor() : ScreenStreamingFea
 
                 ComposableStreamingScreen(
                     screenStreamingViewModel,
-                    onPressButton = { button ->
-                        screenStreamingViewModel.onPressButton(button)
-                    },
-                    onLongPressButton = { button ->
-                        screenStreamingViewModel.onLongPressButton(button)
-                    },
                     onBack = navController::popBackStack
                 )
             }

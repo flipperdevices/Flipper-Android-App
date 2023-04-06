@@ -8,7 +8,7 @@ import com.flipperdevices.screenstreaming.impl.R
 enum class ButtonEnum(
     @DrawableRes val icon: Int,
     @StringRes val description: Int,
-    val key: Gui.InputKey?
+    val key: Gui.InputKey
 ) {
     LEFT(R.drawable.ic_control_left, R.string.control_left, Gui.InputKey.LEFT),
     RIGHT(R.drawable.ic_control_right, R.string.control_right, Gui.InputKey.RIGHT),

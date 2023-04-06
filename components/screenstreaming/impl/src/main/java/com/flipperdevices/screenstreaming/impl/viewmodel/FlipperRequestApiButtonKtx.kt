@@ -13,15 +13,12 @@ import kotlinx.coroutines.launch
 internal fun FlipperRequestApi.pressOnButton(
     viewModelScope: CoroutineScope,
     key: Gui.InputKey,
-    type: Gui.InputType,
-    times: Int = 1
+    type: Gui.InputType
 ) = viewModelScope.launch {
     val requests = mutableListOf<FlipperRequest>()
-    repeat(times) {
-        requests.add(getRequestFor(key, Gui.InputType.PRESS))
-        requests.add(getRequestFor(key, type))
-        requests.add(getRequestFor(key, Gui.InputType.RELEASE))
-    }
+    requests.add(getRequestFor(key, Gui.InputType.PRESS))
+    requests.add(getRequestFor(key, type))
+    requests.add(getRequestFor(key, Gui.InputType.RELEASE))
     requestWithoutAnswer(*requests.toTypedArray())
 }
 

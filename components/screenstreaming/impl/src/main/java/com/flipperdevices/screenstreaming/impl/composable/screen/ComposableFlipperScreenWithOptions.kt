@@ -40,14 +40,16 @@ fun ComposableFlipperScreenWithOptions(
         targetValue = when (flipperScreen.orientation) {
             ScreenOrientationEnum.HORIZONTAL,
             ScreenOrientationEnum.HORIZONTAL_FLIP -> 0f
-            ScreenOrientationEnum.VERTICAL -> VERTICAL_ORIENTATION_ANGEL
+            ScreenOrientationEnum.VERTICAL,
+            ScreenOrientationEnum.VERTICAL_FLIP -> VERTICAL_ORIENTATION_ANGEL
         }
     )
     val height by animateDpAsState(
         targetValue = when (flipperScreen.orientation) {
             ScreenOrientationEnum.HORIZONTAL,
             ScreenOrientationEnum.HORIZONTAL_FLIP -> maxHeight
-            ScreenOrientationEnum.VERTICAL -> maxWidth
+            ScreenOrientationEnum.VERTICAL,
+            ScreenOrientationEnum.VERTICAL_FLIP -> maxWidth
         }
     )
 
@@ -55,7 +57,8 @@ fun ComposableFlipperScreenWithOptions(
         targetValue = when (flipperScreen.orientation) {
             ScreenOrientationEnum.HORIZONTAL,
             ScreenOrientationEnum.HORIZONTAL_FLIP -> maxWidth
-            ScreenOrientationEnum.VERTICAL -> maxHeight
+            ScreenOrientationEnum.VERTICAL,
+            ScreenOrientationEnum.VERTICAL_FLIP -> maxHeight
         }
     )
 
