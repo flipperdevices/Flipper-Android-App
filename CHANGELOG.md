@@ -15,6 +15,7 @@
 - [Feature] Add SAVE_DUMP, MFKEY32, OPEN_NFC_DUMP_EDITOR
 - [Feature] Add pull to refresh to full device info
 - [Feature] Add report changes to synchronization end event
+- [Feature] Add GitHub and Forum link to options
 - [GitHub] Update github repo picture
 - [CI] Migrate to Detekt
 - [CI] Android lint in CI
