@@ -1,10 +1,9 @@
 package com.flipperdevices.screenstreaming.impl.viewmodel
 
-import android.content.Context
+import android.app.Application
 import android.graphics.Bitmap
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
-import com.flipperdevices.bridge.api.model.FlipperSerialSpeed
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
@@ -20,7 +19,11 @@ import com.flipperdevices.protobuf.screen.stopScreenStreamRequest
 import com.flipperdevices.screenstreaming.impl.R
 import com.flipperdevices.screenstreaming.impl.composable.ButtonEnum
 import com.flipperdevices.screenstreaming.impl.di.ScreenStreamingComponent
+import com.flipperdevices.screenstreaming.impl.model.FlipperScreenSnapshot
 import com.flipperdevices.screenstreaming.impl.model.StreamingState
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -29,9 +32,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import tangle.viewmodel.VMInject
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 private const val SCREENSHOT_FILE_PREFIX = "flpr"
 private const val TIMEFORMAT = "yyyy-MM-dd-HH:mm:ss"
@@ -39,13 +39,12 @@ private const val QUALITY = 100
 
 class ScreenStreamingViewModel @VMInject constructor(
     serviceProvider: FlipperServiceProvider,
-    private val context: Context
+    private val application: Application
 ) : LifecycleViewModel() {
 
-    private val flipperScreen = MutableStateFlow(ScreenStreamFrameDecoder.emptyBitmap())
+    private val flipperScreen = MutableStateFlow(FlipperScreenSnapshot())
     private var serviceApi: FlipperServiceApi? = null
     private val streamingState = MutableStateFlow(StreamingState.DISABLED)
-    private val speedState = MutableStateFlow(FlipperSerialSpeed())
 
     init {
         ComponentHolder.component<ScreenStreamingComponent>().inject(this)
@@ -62,16 +61,10 @@ class ScreenStreamingViewModel @VMInject constructor(
                     onStreamFrameReceived(it.guiScreenFrame)
                 }
             }.launchIn(viewModelScope)
-            viewModelScope.launch {
-                serviceApiInternal.requestApi.getSpeed().collect {
-                    speedState.emit(it)
-                }
-            }
         }
     }
 
-    fun getFlipperScreen(): StateFlow<Bitmap> = flipperScreen
-    fun getSpeed(): StateFlow<FlipperSerialSpeed> = speedState
+    fun getFlipperScreen(): StateFlow<FlipperScreenSnapshot> = flipperScreen
 
     fun onPressButton(buttonEnum: ButtonEnum) = when (buttonEnum) {
         ButtonEnum.UNLOCK -> serviceApi?.requestApi?.pressOnButton(
@@ -100,12 +93,12 @@ class ScreenStreamingViewModel @VMInject constructor(
         val currentSnapshot = flipperScreen.value
         val date = SimpleDateFormat(TIMEFORMAT, Locale.US).format(Date())
         val filename = "$SCREENSHOT_FILE_PREFIX-$date.png"
-        val sharableFile = SharableFile(context, filename)
+        val sharableFile = SharableFile(application, filename)
         sharableFile.createClearNewFileWithMkDirs()
         sharableFile.outputStream().use {
-            currentSnapshot.compress(Bitmap.CompressFormat.PNG, QUALITY, it)
+            currentSnapshot.bitmap.compress(Bitmap.CompressFormat.PNG, QUALITY, it)
         }
-        ShareHelper.shareFile(context, sharableFile, R.string.screenshot_export_title)
+        ShareHelper.shareFile(application, sharableFile, R.string.screenshot_export_title)
     }
 
     private fun onStartStreaming(serviceApi: FlipperServiceApi) {
@@ -123,7 +116,7 @@ class ScreenStreamingViewModel @VMInject constructor(
     ) = withContext(Dispatchers.IO) {
         val screen = ScreenStreamFrameDecoder.decode(streamFrame)
         viewModelScope.launch {
-            flipperScreen.emit(screen)
+            flipperScreen.emit(FlipperScreenSnapshot(screen))
         }
     }
 

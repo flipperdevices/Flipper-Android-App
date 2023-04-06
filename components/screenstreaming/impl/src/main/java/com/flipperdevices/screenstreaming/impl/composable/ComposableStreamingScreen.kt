@@ -1,27 +1,43 @@
 package com.flipperdevices.screenstreaming.impl.composable
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.Modifier
+import com.flipperdevices.core.ui.ktx.OrangeAppBar
+import com.flipperdevices.screenstreaming.impl.R
+import com.flipperdevices.screenstreaming.impl.composable.controls.ComposableFlipperControls
+import com.flipperdevices.screenstreaming.impl.composable.screen.ComposableFlipperScreenWithOptions
 import com.flipperdevices.screenstreaming.impl.viewmodel.ScreenStreamingViewModel
-import tangle.viewmodel.compose.tangleViewModel
 
+@ExperimentalFoundationApi
+@ExperimentalComposeUiApi
 @Composable
-fun ComposableStreamingScreen() {
-    val screenStreamingViewModel: ScreenStreamingViewModel = tangleViewModel()
-    DisposableEffect(key1 = Unit) {
-        screenStreamingViewModel.enableStreaming()
-        onDispose {
-            screenStreamingViewModel.disableStreaming()
-        }
-    }
+fun ComposableStreamingScreen(
+    viewModel: ScreenStreamingViewModel,
+    modifier: Modifier = Modifier,
+    onPressButton: (ButtonEnum) -> Unit = {},
+    onLongPressButton: (ButtonEnum) -> Unit = {},
+    onBack: () -> Unit
+) {
+    val flipperScreen by viewModel.getFlipperScreen().collectAsState()
 
-    ComposableScreen(
-        screenStreamingViewModel,
-        onPressButton = { button ->
-            screenStreamingViewModel.onPressButton(button)
-        },
-        onLongPressButton = { button ->
-            screenStreamingViewModel.onLongPressButton(button)
-        }
-    )
+    Column(
+        modifier = modifier.fillMaxSize(),
+    ) {
+        OrangeAppBar(
+            titleId = R.string.control_title,
+            onBack = onBack
+        )
+        ComposableFlipperScreenWithOptions(
+            flipperScreen = flipperScreen,
+            onTakeScreenshot = {},
+            modifier = Modifier.weight(1f)
+        )
+        ComposableFlipperControls()
+    }
 }

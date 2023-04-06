@@ -56,7 +56,9 @@ data class FlipperPallet(
     val fapHubSortedColor: Color,
     val fapHubCategoryText: Color,
     val fapHubActiveColor: Color = text100,
-    val fapHubInactiveColor: Color = text40
+    val fapHubInactiveColor: Color = text40,
+
+    val screenStreamingBorderColor: Color
 ) {
     val accent: Color = Color(0xFFFF8200)
     val accentSecond: Color = Color(0xFF589DFF)
@@ -137,8 +139,10 @@ data class FlipperPallet(
     val fapScreenshotBorder: Color = Color(0xFF000000)
 
     val onFapHubInstallButton: Color = Color(0xFFFFFFFF)
-    val onFapHubInstallButtonCounterBackground: Color = Color(0xFFE5FFE6)
-    val onFapHubInstallButtonCounterText: Color = Color(0xFF616161)
+
+    val flipperScreenColor: Color = Color(0xFFFF8C29)
+
+    val flipperScreenOptionsBackground: Color = accent.copy(alpha = 0.2f)
 }
 
 internal fun FlipperPallet.toMaterialColors(isLight: Boolean) = Colors(
