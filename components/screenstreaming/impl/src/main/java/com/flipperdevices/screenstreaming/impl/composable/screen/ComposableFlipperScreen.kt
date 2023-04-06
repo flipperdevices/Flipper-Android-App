@@ -33,18 +33,23 @@ import com.flipperdevices.screenstreaming.impl.viewmodel.ScreenStreamFrameDecode
 import kotlin.math.roundToInt
 
 @Composable
-fun ComposableFlipperScreen(flipperScreen: Bitmap) {
+fun ComposableFlipperScreen(
+    bitmap: Bitmap,
+    showLogo: Boolean
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        ComposableFlipperScreenInternal(flipperScreen)
+        ComposableFlipperScreenInternal(bitmap)
 
-        Image(
-            modifier = Modifier.padding(top = 12.dp),
-            painter = painterResource(DesignSystem.drawable.ic_flipper_logo),
-            contentDescription = null
-        )
+        if (showLogo) {
+            Image(
+                modifier = Modifier.padding(top = 12.dp),
+                painter = painterResource(DesignSystem.drawable.ic_flipper_logo),
+                contentDescription = null
+            )
+        }
     }
 }
 
