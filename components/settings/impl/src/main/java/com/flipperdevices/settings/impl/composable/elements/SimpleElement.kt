@@ -25,7 +25,6 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.settings.impl.R
 
 @Composable
-@Suppress("LongParameterList")
 fun SimpleElement(
     modifier: Modifier = Modifier,
     @StringRes titleId: Int? = null,
