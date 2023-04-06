@@ -11,6 +11,9 @@ dependencies {
 
     implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)
+    implementation(projects.components.core.data)
+
+    implementation(libs.lifecycle.runtime.ktx)
 
     // Ktor deps
     implementation(libs.kotlin.serialization.json)

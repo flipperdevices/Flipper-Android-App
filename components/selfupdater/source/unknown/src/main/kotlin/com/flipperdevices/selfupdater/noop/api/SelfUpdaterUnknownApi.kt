@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, SelfUpdaterApi::class)
 class SelfUpdaterUnknownApi @Inject constructor() : SelfUpdaterApi {
-    override suspend fun startCheckUpdateAsync(activity: Activity) = Unit
+    override fun startCheckUpdateAsync(activity: Activity) = Unit
 
     override fun getInstallSourceName() = "Unknown"
 }

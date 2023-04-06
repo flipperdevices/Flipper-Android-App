@@ -15,7 +15,7 @@ private const val GITHUB_API_ALL_RELEASES =
 private const val GITHUB_API_LAST_RELEASE =
     "https://api.github.com/repos/flipperdevices/Flipper-Android-App/releases/latest"
 
-private const val INTERNAL = "internal"
+private const val DEV_BUILD_TYPE = "internal"
 
 interface GithubParser {
     suspend fun getLastUpdate(): GithubUpdate?
@@ -64,6 +64,6 @@ class GithubParserImpl @Inject constructor(
     }
 
     private fun isDev(): Boolean {
-        return BuildConfig.BUILD_TYPE == INTERNAL
+        return BuildConfig.BUILD_TYPE == DEV_BUILD_TYPE
     }
 }

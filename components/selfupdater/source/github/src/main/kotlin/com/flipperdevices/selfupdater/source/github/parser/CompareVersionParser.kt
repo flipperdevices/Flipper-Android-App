@@ -16,6 +16,8 @@ interface CompareVersionParser {
 class CompareVersionParserImpl @Inject constructor(
     private val applicationParams: ApplicationParams
 ) : CompareVersionParser, LogTagProvider {
+    override val TAG: String get() = "CompareVersionParserImpl"
+
     override fun isThatNewVersion(newVersion: String): Boolean {
         info { "Compare version ${applicationParams.version} with $newVersion" }
 
@@ -39,6 +41,4 @@ class CompareVersionParserImpl @Inject constructor(
 
         return false
     }
-
-    override val TAG: String get() = "CompareVersionParserImpl"
 }

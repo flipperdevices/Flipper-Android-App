@@ -9,7 +9,11 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.coroutineScope
+import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.di.ApplicationParams
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
@@ -18,17 +22,17 @@ import com.flipperdevices.inappnotification.api.model.InAppNotification
 import com.flipperdevices.selfupdater.api.BuildConfig
 import com.flipperdevices.selfupdater.api.SelfUpdaterApi
 import com.flipperdevices.selfupdater.source.github.model.GithubUpdate
-import com.flipperdevices.selfupdater.source.github.parser.CompareVersionParser
 import com.flipperdevices.selfupdater.source.github.parser.GithubParser
 import com.squareup.anvil.annotations.ContributesBinding
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, SelfUpdaterApi::class)
 class SelfUpdaterGithubApi @Inject constructor(
     context: Context,
-    private val compareVersionParser: CompareVersionParser,
     private val githubReleaseParser: GithubParser,
-    private val inAppNotificationStorage: InAppNotificationStorage
+    private val inAppNotificationStorage: InAppNotificationStorage,
+    private val applicationParams: ApplicationParams
 ) : SelfUpdaterApi, LogTagProvider {
     override val TAG: String get() = "SelfUpdaterGithubApi"
     override fun getInstallSourceName() = "Github/${BuildConfig.BUILD_TYPE}"
@@ -36,12 +40,14 @@ class SelfUpdaterGithubApi @Inject constructor(
     private var downloadId: Long? = null
     private val manager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
 
-    override suspend fun startCheckUpdateAsync(activity: Activity) {
-        val lastRelease = processCheckGithubUpdate() ?: return
-        val notification = InAppNotification.UpdateReady(
-            action = { downloadFile(lastRelease, activity) },
-        )
-        inAppNotificationStorage.addNotification(notification)
+    override fun startCheckUpdateAsync(activity: Activity) {
+        (activity as LifecycleOwner).lifecycle.coroutineScope.launch {
+            val lastRelease = processCheckGithubUpdate() ?: return@launch
+            val notification = InAppNotification.UpdateReady(
+                action = { downloadFile(lastRelease, activity) },
+            )
+            inAppNotificationStorage.addNotification(notification)
+        }
     }
 
     private suspend fun processCheckGithubUpdate(): GithubUpdate? {
@@ -51,8 +57,13 @@ class SelfUpdaterGithubApi @Inject constructor(
             return null
         }
 
-        if (!compareVersionParser.isThatNewVersion(lastRelease.version)) {
-            info { "No new version found for github update" }
+        val currentVersion = SemVer.fromString(applicationParams.version) ?: return null
+        val newVersion = SemVer.fromString(lastRelease.version) ?: return null
+
+        info { "Current version: $currentVersion && new version $newVersion" }
+
+        if (currentVersion >= newVersion) {
+            info { "Current version is up to date" }
             return null
         }
 
@@ -62,7 +73,7 @@ class SelfUpdaterGithubApi @Inject constructor(
     private fun registerDownloadReceiver(activity: Activity) {
         val intentFilter = IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            activity.registerReceiver(downloadReceiver, intentFilter, Context.RECEIVER_EXPORTED)
+            activity.registerReceiver(downloadReceiver, intentFilter, Context.RECEIVER_EXPORTED) // check NOT
         } else {
             activity.registerReceiver(downloadReceiver, intentFilter)
         }

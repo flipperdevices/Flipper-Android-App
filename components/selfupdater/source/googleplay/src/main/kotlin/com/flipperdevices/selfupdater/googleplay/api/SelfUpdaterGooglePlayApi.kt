@@ -44,7 +44,7 @@ class SelfUpdaterGooglePlayApi @Inject constructor(
         )
     }
 
-    override suspend fun startCheckUpdateAsync(activity: Activity) {
+    override fun startCheckUpdateAsync(activity: Activity) {
         info { "Process checkout new update" }
         appUpdateManager.registerListener(updateListener)
         appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
