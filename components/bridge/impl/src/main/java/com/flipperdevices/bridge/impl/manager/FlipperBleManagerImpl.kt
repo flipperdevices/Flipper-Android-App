@@ -21,6 +21,7 @@ import com.flipperdevices.bridge.impl.manager.service.FlipperVersionApiImpl
 import com.flipperdevices.bridge.impl.manager.service.RestartRPCApiImpl
 import com.flipperdevices.bridge.impl.manager.service.request.FlipperRequestApiImpl
 import com.flipperdevices.bridge.impl.manager.service.requestservice.FlipperRtcUpdateService
+import com.flipperdevices.bridge.impl.utils.BridgeImplConfig.BLE_VLOG
 import com.flipperdevices.bridge.impl.utils.initializeSafe
 import com.flipperdevices.bridge.impl.utils.onServiceReceivedSafe
 import com.flipperdevices.core.ktx.jre.launchWithLock
@@ -110,7 +111,9 @@ class FlipperBleManagerImpl(
     }
 
     override fun log(priority: Int, message: String) {
-        info { "From BleManager: $message" }
+        if (BLE_VLOG) {
+            info { "From BleManager: $message" }
+        }
     }
 
     override fun getGattCallback(): BleManagerGattCallback = FlipperBleManagerGattCallback()

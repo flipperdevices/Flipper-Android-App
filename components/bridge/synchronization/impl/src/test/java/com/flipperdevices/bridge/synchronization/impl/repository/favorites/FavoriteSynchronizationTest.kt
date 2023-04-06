@@ -108,22 +108,26 @@ class FavoriteSynchronizationTest(
 
         underTest.syncFavorites(progressWrapperTrackerStub())
 
-        coVerify {
-            favoritesRepository.applyDiff(
-                flipperKeyStorage = eq(flipperStorage),
-                oldFavorites = eq(favoritesFromFlipper),
-                favoritesDiff = eq(param.expectedDiffOnFlipper)
-            )
+        if (param.expectedDiffOnFlipper != null) {
+            coVerify {
+                favoritesRepository.applyDiff(
+                    flipperKeyStorage = eq(flipperStorage),
+                    oldFavorites = eq(favoritesFromFlipper),
+                    favoritesDiff = eq(param.expectedDiffOnFlipper)
+                )
+            }
         }
 
-        coVerify {
-            favoriteApi.updateFavorites(
-                eq(
-                    param.expectedFavoritesOnAndroid.map {
-                        FlipperKeyPath(it, false)
-                    }
+        if (param.expectedFavoritesOnAndroid != null) {
+            coVerify {
+                favoriteApi.updateFavorites(
+                    eq(
+                        param.expectedFavoritesOnAndroid.map {
+                            FlipperKeyPath(it, false)
+                        }
+                    )
                 )
-            )
+            }
         }
 
         val manifestFile = manifestStorage.load()

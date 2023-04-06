@@ -43,6 +43,7 @@
 - [FIX] Cash with ulong mapping to string in mfkey32
 - [FIX] Move apps from experimental settings to debug
 - [FIX] Fix customize button when set widget state
+- [FIX] Fix incorrect diff combiner, add KeyDiffCombinerTest
 - [FIX] Use lifecycle event for inapp notification
 - [FIX] Fix Report bug scroll
 - [REFACTOR] Migrate bottom bar to compose navigation

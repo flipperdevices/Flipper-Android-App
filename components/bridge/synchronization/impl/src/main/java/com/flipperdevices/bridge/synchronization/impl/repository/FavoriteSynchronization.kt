@@ -1,13 +1,10 @@
 package com.flipperdevices.bridge.synchronization.impl.repository
 
 import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
-import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
 import com.flipperdevices.bridge.synchronization.impl.executor.FlipperKeyStorage
 import com.flipperdevices.bridge.synchronization.impl.model.DiffSource
-import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
-import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
 import com.flipperdevices.bridge.synchronization.impl.repository.flipper.FlipperFavoritesRepository
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestRepository
 import com.flipperdevices.bridge.synchronization.impl.utils.KeyDiffCombiner
@@ -54,6 +51,10 @@ class FavoriteSynchronizationImpl @Inject constructor(
         info { "Favorites diff is $combinedDiff" }
 
         if (combinedDiff.isEmpty()) {
+            manifestRepository.updateManifest(
+                favorites = favoritesFromAndroid,
+                favoritesOnFlipper = favoritesFromFlipper
+            )
             return
         }
 
@@ -64,9 +65,8 @@ class FavoriteSynchronizationImpl @Inject constructor(
             favoritesFromFlipper,
             diffForFlipper
         ) // Update on Flipper
-        val resultFavoritesList = mergedWithManifestList(combinedDiff)
         val favoritesOnAndroid = favoriteApi.updateFavorites(
-            resultFavoritesList.map {
+            newFavoritesOnFlipper.map {
                 FlipperKeyPath(path = it, deleted = false)
             }
         )
@@ -76,19 +76,5 @@ class FavoriteSynchronizationImpl @Inject constructor(
             favoritesOnFlipper = newFavoritesOnFlipper
         )
         progressTracker.onProgress(current = 1f)
-    }
-
-    private suspend fun mergedWithManifestList(combinedDiff: List<KeyDiff>): List<FlipperFilePath> {
-        val favoritesFromManifest = manifestRepository.getFavorites() ?: emptyList()
-        val resultFavoritesList = ArrayList(favoritesFromManifest)
-        for (diff in combinedDiff) {
-            when (diff.action) {
-                KeyAction.ADD -> resultFavoritesList.add(diff.newHash.keyPath)
-                KeyAction.MODIFIED -> resultFavoritesList.add(diff.newHash.keyPath)
-                KeyAction.DELETED -> resultFavoritesList.remove(diff.newHash.keyPath)
-            }
-        }
-        info { "Favorites list is $resultFavoritesList" }
-        return resultFavoritesList
     }
 }

@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.impl.manager
 
 import com.flipperdevices.bridge.api.manager.service.RestartRPCApi
+import com.flipperdevices.bridge.impl.utils.BridgeImplConfig.BLE_VLOG
 import com.flipperdevices.bridge.impl.utils.ByteEndlessInputStream
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
@@ -44,7 +45,9 @@ class PeripheralResponseReader(
     }
 
     fun onReceiveBytes(byteArray: ByteArray) {
-        info { "Receive proto array with size: ${byteArray.size}" }
+        if (BLE_VLOG) {
+            info { "Receive proto array with size: ${byteArray.size}" }
+        }
         byteInputStream?.write(byteArray)
     }
 
@@ -59,7 +62,9 @@ class PeripheralResponseReader(
         while (this.isActive) {
             try {
                 val main = Flipper.Main.parseDelimitedFrom(byteInputStream)
-                info { "Receive $main response" }
+                if (BLE_VLOG) {
+                    info { "Receive $main response" }
+                }
                 scope.launch(Dispatchers.Default) {
                     responses.emit(main)
                 }
