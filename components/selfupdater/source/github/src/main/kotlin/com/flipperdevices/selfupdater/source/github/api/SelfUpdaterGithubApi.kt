@@ -41,6 +41,11 @@ class SelfUpdaterGithubApi @Inject constructor(
     private val manager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
 
     override fun startCheckUpdateAsync(activity: Activity) {
+        if (activity !is LifecycleOwner) {
+            error { "Activity must be LifecycleOwner" }
+            return
+        }
+
         (activity as LifecycleOwner).lifecycle.coroutineScope.launch {
             val lastRelease = processCheckGithubUpdate() ?: return@launch
             val notification = InAppNotification.UpdateReady(

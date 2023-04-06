@@ -65,9 +65,7 @@ class SingleActivity :
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
-        lifecycleScope.launch {
-            selfUpdaterApi.startCheckUpdateAsync(activity = this@SingleActivity)
-        }
+        selfUpdaterApi.startCheckUpdateAsync(activity = this@SingleActivity)
 
         setContent {
             val navControllerLocal = rememberNavController().also {
