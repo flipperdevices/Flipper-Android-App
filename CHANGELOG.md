@@ -21,6 +21,7 @@
 - [CI] Android lint in CI
 - [CI] Enable back github queue
 - [CI] Migrate to matrix CI with source install
+- [CI] Use release build for release
 - [FIX] Clickable modifier ktx
 - [FIX] Refactor `share:receive` module
 - [FIX] Bump length for server-side share link

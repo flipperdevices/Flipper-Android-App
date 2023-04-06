@@ -35,6 +35,9 @@ object ApkConfig {
 
     val Project.IS_METRIC_ENABLED
         get() = prop("is_metric_enabled", true).toBoolean()
+
+    val Project.IS_SENTRY_ENABLED
+        get() = prop("is_metric_enabled", true).toBoolean()
 }
 
 private fun Project.prop(key: String, default: Any): String {
