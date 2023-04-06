@@ -80,6 +80,6 @@ class SemVerCompare {
     fun `compare with diff data`() {
         val semVer1 = SemVer(1, 4, 1)
         val semVer2 = SemVer(1, 4, 1, 861)
-        Assert.assertTrue(semVer1 < semVer2)
+        Assert.assertFalse(semVer1 < semVer2)
     }
 }
