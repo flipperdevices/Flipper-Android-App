@@ -1,6 +1,7 @@
 package com.flipperdevices.info.impl.compose.screens
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -24,7 +25,7 @@ fun ComposableDeviceInfoScreen(
     onStartUpdateRequest: (UpdateRequest) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(modifier = modifier.verticalScroll(rememberScrollState())) {
+    Column(modifier = modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
         ComposableDeviceBar()
         updaterCardApi.ComposableUpdaterCard(
             modifier = Modifier.padding(top = 14.dp),

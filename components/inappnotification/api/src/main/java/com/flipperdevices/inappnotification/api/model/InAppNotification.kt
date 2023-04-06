@@ -1,5 +1,7 @@
 package com.flipperdevices.inappnotification.api.model
 
+private const val NOTIFICATION_UPDATE_MS = 5000L
+
 sealed class InAppNotification(val durationMs: Long) {
     class SavedKey(
         val title: String,
@@ -8,6 +10,6 @@ sealed class InAppNotification(val durationMs: Long) {
 
     class UpdateReady(
         val action: () -> Unit,
-        durationMs: Long
+        durationMs: Long = NOTIFICATION_UPDATE_MS
     ) : InAppNotification(durationMs)
 }
