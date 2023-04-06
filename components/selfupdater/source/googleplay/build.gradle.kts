@@ -9,7 +9,6 @@ dependencies {
     implementation(projects.components.inappnotification.api)
 
     implementation(projects.components.core.log)
-    implementation(projects.components.core.activityholder)
 
     // In-app update
     implementation(libs.app.update)

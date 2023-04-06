@@ -173,6 +173,9 @@ dependencies {
         SourceInstall.GOOGLE_PLAY -> {
             implementation(projects.components.selfupdater.source.googleplay)
         }
+        SourceInstall.GITHUB -> {
+            implementation(projects.components.selfupdater.source.github)
+        }
         else -> {
             implementation(projects.components.selfupdater.source.unknown)
         }

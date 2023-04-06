@@ -25,7 +25,8 @@ class FlipperApplication : Application() {
                 application = this,
                 ApplicationParams(
                     startApplicationClass = SingleActivity::class,
-                    version = BuildConfig.VERSION_NAME
+                    version = "1.4.1.860",
+                    isGooglePlayEnable = ApplicationParams.getIsGooglePlayEnableByProps(),
                 )
             )
 
@@ -48,7 +49,5 @@ class FlipperApplication : Application() {
         metricApi.reportSimpleEvent(SimpleEvent.APP_OPEN)
         val synchronizationApi by component.synchronizationApi
         synchronizationApi.startSynchronization()
-        val selfUpdaterApi by component.selfUpdaterApi
-        selfUpdaterApi.startCheckUpdateAsync()
     }
 }

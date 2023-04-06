@@ -1,1 +1,4 @@
-<manifest package="com.flipperdevices.selfupdater.source.github" />
+<manifest package="com.flipperdevices.selfupdater.source.github"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+</manifest>

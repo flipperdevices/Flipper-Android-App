@@ -21,7 +21,8 @@ class FlipperApplication : Application() {
                 application = this,
                 ApplicationParams(
                     startApplicationClass = MainWearActivity::class,
-                    version = BuildConfig.VERSION_NAME
+                    version = BuildConfig.VERSION_NAME,
+                    isGooglePlayEnable = true
                 )
             )
 
