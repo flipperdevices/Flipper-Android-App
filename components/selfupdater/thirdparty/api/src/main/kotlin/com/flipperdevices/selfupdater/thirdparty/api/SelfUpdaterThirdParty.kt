@@ -20,8 +20,6 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
 import com.flipperdevices.selfupdater.api.BuildConfig
-import com.flipperdevices.selfupdater.api.SelfUpdate
-import com.flipperdevices.selfupdater.api.SelfUpdateParserApi
 import com.flipperdevices.selfupdater.api.SelfUpdaterApi
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.launch

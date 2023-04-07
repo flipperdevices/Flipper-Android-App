@@ -1,8 +1,8 @@
 package com.flipperdevices.selfupdater.thirdparty.fdroid.parser
 
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.selfupdater.api.SelfUpdate
-import com.flipperdevices.selfupdater.api.SelfUpdateParserApi
+import com.flipperdevices.selfupdater.thirdparty.api.SelfUpdate
+import com.flipperdevices.selfupdater.thirdparty.api.SelfUpdateParserApi
 import com.flipperdevices.selfupdater.thirdparty.fdroid.model.FDroidReleases
 import com.squareup.anvil.annotations.ContributesBinding
 import io.ktor.client.HttpClient

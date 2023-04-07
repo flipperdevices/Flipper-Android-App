@@ -6,7 +6,7 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.components.selfupdater.api)
+    implementation(projects.components.selfupdater.thirdparty.api)
     implementation(projects.components.inappnotification.api)
 
     implementation(projects.components.core.log)

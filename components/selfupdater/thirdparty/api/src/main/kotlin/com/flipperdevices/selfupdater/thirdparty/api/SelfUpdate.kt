@@ -1,4 +1,4 @@
-package com.flipperdevices.selfupdater.api
+package com.flipperdevices.selfupdater.thirdparty.api
 
 data class SelfUpdate(
     val version: String,
