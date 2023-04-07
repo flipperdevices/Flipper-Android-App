@@ -27,6 +27,11 @@ import com.flipperdevices.screenstreaming.impl.model.ScreenOrientationEnum
 
 private const val VERTICAL_ORIENTATION_ANGEL = 90f
 
+/**
+ * Now this animation is made difficult.
+ * In the future it can be simplified if Google adds "Animation: Shared element transitions".
+ * This is already in RoadMap
+ */
 @Composable
 fun ComposableFlipperScreenWithOptions(
     flipperScreen: FlipperScreenSnapshot,
