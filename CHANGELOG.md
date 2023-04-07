@@ -11,7 +11,7 @@
 - [Feature] Add back button in options screen
 - [Feature] Hide bottombar when keyboard close
 - [Feature] New report bug screen
-- [Feature] Self update(Google play, Github)
+- [Feature] Self update(Google play, Github, FDroid)
 - [Feature] Add SAVE_DUMP, MFKEY32, OPEN_NFC_DUMP_EDITOR
 - [Feature] Add pull to refresh to full device info
 - [Feature] Add report changes to synchronization end event

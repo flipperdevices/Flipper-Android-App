@@ -25,7 +25,7 @@ class FlipperApplication : Application() {
                 application = this,
                 ApplicationParams(
                     startApplicationClass = SingleActivity::class,
-                    version = BuildConfig.VERSION_NAME
+                    version = "1.3.9"
                 )
             )
 
