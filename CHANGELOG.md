@@ -11,15 +11,17 @@
 - [Feature] Add back button in options screen
 - [Feature] Hide bottombar when keyboard close
 - [Feature] New report bug screen
-- [Feature] Self update(Google play)
+- [Feature] Self update(Google play, Github)
 - [Feature] Add SAVE_DUMP, MFKEY32, OPEN_NFC_DUMP_EDITOR
 - [Feature] Add pull to refresh to full device info
 - [Feature] Add report changes to synchronization end event
+- [Feature] Add GitHub and Forum link to options
 - [GitHub] Update github repo picture
 - [CI] Migrate to Detekt
 - [CI] Android lint in CI
 - [CI] Enable back github queue
 - [CI] Migrate to matrix CI with source install
+- [CI] Use release build for release
 - [FIX] Clickable modifier ktx
 - [FIX] Refactor `share:receive` module
 - [FIX] Bump length for server-side share link
@@ -42,7 +44,9 @@
 - [FIX] Cash with ulong mapping to string in mfkey32
 - [FIX] Move apps from experimental settings to debug
 - [FIX] Fix customize button when set widget state
+- [FIX] Fix incorrect diff combiner, add KeyDiffCombinerTest
 - [FIX] Use lifecycle event for inapp notification
+- [FIX] Fix Report bug scroll
 - [REFACTOR] Migrate bottom bar to compose navigation
 - [REFACTOR] Bump Android Gradle Plugin
 - [REFACTOR] Fix detekt compose issues

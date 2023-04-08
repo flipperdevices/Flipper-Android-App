@@ -1,6 +1,5 @@
 package com.flipperdevices.settings.impl.composable.category
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
@@ -22,28 +21,26 @@ fun ExperimentalCategory(
     experimentalViewModel: ExperimentalViewModel = tangleViewModel()
 ) {
     CardCategory(modifier = modifier) {
-        Column {
-            CategoryElement(
-                titleId = R.string.experimental_options,
-                descriptionId = R.string.experimental_options_desc,
-                state = settings.enabledExperimentalFunctions,
-                onSwitchState = settingsViewModel::onSwitchExperimental
+        CategoryElement(
+            titleId = R.string.experimental_options,
+            descriptionId = R.string.experimental_options_desc,
+            state = settings.enabledExperimentalFunctions,
+            onSwitchState = settingsViewModel::onSwitchExperimental
+        )
+        if (settings.enabledExperimentalFunctions) {
+            ClickableElement(
+                titleId = R.string.experimental_file_manager,
+                descriptionId = R.string.experimental_file_manager_desc,
+                onClick = { experimentalViewModel.onOpenFileManager(navController) }
             )
-            if (settings.enabledExperimentalFunctions) {
-                ClickableElement(
-                    titleId = R.string.experimental_file_manager,
-                    descriptionId = R.string.experimental_file_manager_desc,
-                    onClick = { experimentalViewModel.onOpenFileManager(navController) }
-                )
-                GrayDivider()
-                ClickableElement(
-                    titleId = R.string.experimental_screen_streaming,
-                    descriptionId = R.string.experimental_screen_streaming_desc,
-                    onClick = {
-                        experimentalViewModel.onOpenScreenStreaming(navController)
-                    }
-                )
-            }
+            GrayDivider()
+            ClickableElement(
+                titleId = R.string.experimental_screen_streaming,
+                descriptionId = R.string.experimental_screen_streaming_desc,
+                onClick = {
+                    experimentalViewModel.onOpenScreenStreaming(navController)
+                }
+            )
         }
     }
 }

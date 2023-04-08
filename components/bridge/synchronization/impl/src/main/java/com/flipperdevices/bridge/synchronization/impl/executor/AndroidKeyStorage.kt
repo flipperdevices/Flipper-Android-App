@@ -59,7 +59,7 @@ class AndroidKeyStorage @Inject constructor(
     }
 
     override suspend fun saveFile(filePath: FlipperFilePath, keyContent: FlipperKeyContent) {
-        info { "Save key $filePath with $keyContent" }
+        info { "Save key $filePath with ${keyContent.length()} bytes" }
         when (filePath.fileType) {
             FlipperFileType.KEY -> simpleKeyApi.insertKey(
                 FlipperKey(

@@ -23,6 +23,7 @@ import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.flipperdevices.core.ui.navigation.LocalGlobalNavigationNavStack
 import com.flipperdevices.core.ui.theme.FlipperTheme
 import com.flipperdevices.deeplink.model.Deeplink
+import com.flipperdevices.selfupdater.api.SelfUpdaterApi
 import com.flipperdevices.singleactivity.impl.composable.ComposableSingleActivityNavHost
 import com.flipperdevices.singleactivity.impl.di.SingleActivityComponent
 import kotlinx.collections.immutable.toPersistentSet
@@ -48,6 +49,9 @@ class SingleActivity :
     @Inject
     lateinit var composableEntriesMutable: MutableSet<ComposableFeatureEntry>
 
+    @Inject
+    lateinit var selfUpdaterApi: SelfUpdaterApi
+
     private var globalNavController: NavHostController? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,6 +64,8 @@ class SingleActivity :
         }
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
+
+        selfUpdaterApi.startCheckUpdateAsync(activity = this@SingleActivity)
 
         setContent {
             val navControllerLocal = rememberNavController().also {

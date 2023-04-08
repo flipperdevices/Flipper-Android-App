@@ -1,13 +1,13 @@
 package com.flipperdevices.selfupdater.googleplay.api
 
+import android.app.Activity
 import android.content.Context
-import com.flipperdevices.core.activityholder.CurrentActivityHolder
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
+import com.flipperdevices.selfupdater.api.BuildConfig
 import com.flipperdevices.selfupdater.api.SelfUpdaterApi
 import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
@@ -20,7 +20,6 @@ import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
 private const val UPDATE_CODE = 228
-private const val NOTIFICATION_MS = 5000L
 
 @ContributesBinding(AppGraph::class, SelfUpdaterApi::class)
 class SelfUpdaterGooglePlayApi @Inject constructor(
@@ -40,35 +39,29 @@ class SelfUpdaterGooglePlayApi @Inject constructor(
 
         inAppNotificationStorage.addNotification(
             InAppNotification.UpdateReady(
-                action = appUpdateManager::completeUpdate,
-                durationMs = NOTIFICATION_MS
+                action = appUpdateManager::completeUpdate
             )
         )
     }
 
-    override fun startCheckUpdateAsync() {
+    override fun startCheckUpdateAsync(activity: Activity) {
         info { "Process checkout new update" }
         appUpdateManager.registerListener(updateListener)
         appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
-            val currentActivity = CurrentActivityHolder.getCurrentActivity()
-            if (currentActivity == null) {
-                error { "Current activity is null, skip update check" }
-                return@addOnSuccessListener
-            }
-
+            info { "Current state update id ${appUpdateInfo.updateAvailability()}" }
             if (isUpdateAvailable(appUpdateInfo)) {
                 info { "New update available, suggest to update" }
                 appUpdateManager.startUpdateFlowForResult(
                     appUpdateInfo,
                     AppUpdateType.FLEXIBLE,
-                    currentActivity,
+                    activity,
                     UPDATE_CODE
                 )
             }
         }
     }
 
-    override fun getInstallSourceName() = "Google Play"
+    override fun getInstallSourceName() = "Google Play/" + BuildConfig.BUILD_TYPE
 
     private fun isUpdateAvailable(appUpdateInfo: AppUpdateInfo): Boolean {
         return appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&

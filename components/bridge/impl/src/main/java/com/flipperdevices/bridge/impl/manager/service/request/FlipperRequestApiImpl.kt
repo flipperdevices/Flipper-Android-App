@@ -13,6 +13,7 @@ import com.flipperdevices.bridge.impl.manager.overflow.FlipperRequestStorage
 import com.flipperdevices.bridge.impl.manager.overflow.FlipperRequestStorageImpl
 import com.flipperdevices.bridge.impl.manager.overflow.FlipperSerialOverflowThrottler
 import com.flipperdevices.bridge.impl.manager.service.BluetoothGattServiceWrapper
+import com.flipperdevices.bridge.impl.utils.BridgeImplConfig.BLE_VLOG
 import com.flipperdevices.core.ktx.jre.updateAndGetSafe
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
@@ -80,7 +81,9 @@ class FlipperRequestApiImpl(
     ): Flow<Flipper.Main> = lagsDetector.wrapPendingAction(
         command,
         channelFlow {
-            verbose { "Pending commands count: ${requestListeners.size}. Request $command" }
+            if (BLE_VLOG) {
+                verbose { "Pending commands count: ${requestListeners.size}. Request $command" }
+            }
             // Generate unique ID for each command
             val uniqueId = findEmptyId(currentId = command.data.commandId)
             val requestWithId = command.copy(
@@ -111,7 +114,9 @@ class FlipperRequestApiImpl(
         commandFlow: Flow<FlipperRequest>,
         onCancel: suspend (Int) -> Unit
     ): Flipper.Main = lagsDetector.wrapPendingAction(null) {
-        verbose { "Pending commands count: ${requestListeners.size}. Request command flow" }
+        if (BLE_VLOG) {
+            verbose { "Pending commands count: ${requestListeners.size}. Request command flow" }
+        }
         // Generate unique ID for each command
         val uniqueId = findEmptyId()
         // This is dirty way to understand if request is finished correctly with response

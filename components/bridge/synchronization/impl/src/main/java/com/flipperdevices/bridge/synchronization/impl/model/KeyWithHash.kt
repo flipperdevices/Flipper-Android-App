@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
 
 @Serializable
-data class KeyWithHash constructor(
+data class KeyWithHash(
     @JsonNames("keyPath")
     @SerialName("key_path")
     val keyPath: FlipperFilePath,
