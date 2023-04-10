@@ -20,7 +20,7 @@ object Constants {
     )
     val API_SUPPORTED_GET_REQUEST = API_SUPPORTED_FLIPPER_ERROR
     val API_SUPPORTED_VERSION = SemVer(majorVersion = 0, minorVersion = 3)
-    const val LAGS_FLIPPER_DETECT_TIMEOUT_MS = 30 * 1000L // 30 seconds
+    const val LAGS_FLIPPER_DETECT_TIMEOUT_MS = 5 * 1000L // 5 seconds
     const val FLIPPER_AUTODISCONNECT_TIMEOUT_MS = 5 * 60 * 1000L // 5 minutes
 
     object GenericService {
@@ -61,7 +61,7 @@ object Constants {
     }
 
     object BLE {
-        private const val CONNECT_TIME_SEC = 30L
+        private const val CONNECT_TIME_SEC = 3L
         val CONNECT_TIME_MS = TimeUnit.MILLISECONDS.convert(CONNECT_TIME_SEC, TimeUnit.SECONDS)
         const val RECONNECT_COUNT = 1
         const val RECONNECT_TIME_MS = 100L
