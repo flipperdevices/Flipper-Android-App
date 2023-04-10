@@ -47,6 +47,7 @@
 - [FIX] Fix incorrect diff combiner, add KeyDiffCombinerTest
 - [FIX] Use lifecycle event for inapp notification
 - [FIX] Fix Report bug scroll
+- [FIX] InAppNotification update redesign for font scale
 - [REFACTOR] Migrate bottom bar to compose navigation
 - [REFACTOR] Bump Android Gradle Plugin
 - [REFACTOR] Fix detekt compose issues
