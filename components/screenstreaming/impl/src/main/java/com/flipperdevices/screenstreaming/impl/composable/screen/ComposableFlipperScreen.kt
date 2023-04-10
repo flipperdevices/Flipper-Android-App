@@ -82,12 +82,12 @@ private fun ComposableFlipperScreenInternal(flipperScreen: Bitmap?) {
         modifier = boxModifier
             .padding(8.dp)
     ) {
-        ComposableFlipperScreenRaw(flipperScreen ?: ScreenStreamFrameDecoder.emptyBitmap())
+        ComposableFlipperScreenRaw(flipperScreen)
     }
 }
 
 @Composable
-private fun ComposableFlipperScreenRaw(flipperScreen: Bitmap) {
+private fun ComposableFlipperScreenRaw(flipperScreen: Bitmap?) {
     val imageDrawPaint = remember {
         Paint().apply {
             filterQuality = FilterQuality.None
@@ -99,14 +99,16 @@ private fun ComposableFlipperScreenRaw(flipperScreen: Bitmap) {
             .aspectRatio(FLIPPER_SCREEN_RATIO),
         contentDescription = stringResource(R.string.flipper_display)
     ) {
-        drawContext.canvas.drawImageRect(
-            image = flipperScreen.asImageBitmap(),
-            dstSize = IntSize(
-                size.width.roundToInt(),
-                size.height.roundToInt()
-            ),
-            paint = imageDrawPaint
-        )
+        if (flipperScreen != null) {
+            drawContext.canvas.drawImageRect(
+                image = flipperScreen.asImageBitmap(),
+                dstSize = IntSize(
+                    size.width.roundToInt(),
+                    size.height.roundToInt()
+                ),
+                paint = imageDrawPaint
+            )
+        }
     }
 }
 
