@@ -1,6 +1,5 @@
 package com.flipperdevices.screenstreaming.impl.composable.screen
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import android.graphics.Bitmap
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
@@ -33,13 +32,16 @@ import com.flipperdevices.screenstreaming.impl.R
 import com.flipperdevices.screenstreaming.impl.viewmodel.FLIPPER_SCREEN_RATIO
 import com.flipperdevices.screenstreaming.impl.viewmodel.ScreenStreamFrameDecoder
 import kotlin.math.roundToInt
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableFlipperScreen(
     bitmap: Bitmap?,
-    showLogo: Boolean
+    showLogo: Boolean,
+    modifier: Modifier = Modifier
 ) {
     Column(
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {

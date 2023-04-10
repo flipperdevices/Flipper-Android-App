@@ -16,6 +16,7 @@
 - [Feature] Add pull to refresh to full device info
 - [Feature] Add report changes to synchronization end event
 - [Feature] Add GitHub and Forum link to options
+- [Feature] New screen streaming design
 - [GitHub] Update github repo picture
 - [CI] Migrate to Detekt
 - [CI] Android lint in CI

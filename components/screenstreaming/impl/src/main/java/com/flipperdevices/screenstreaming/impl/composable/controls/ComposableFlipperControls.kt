@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.screenstreaming.impl.R
 import com.flipperdevices.screenstreaming.impl.composable.ButtonEnum
-import com.flipperdevices.screenstreaming.impl.composable.ComposableFlipperDPad
 
 @Composable
 fun ComposableFlipperControls(
