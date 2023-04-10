@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="control_title">Remote Control</string>
+    <string name="control_options_screenshot">Screenshot</string>
+    <string name="control_options_lock">Lock Flipper</string>
+    <string name="control_options_unlock">Unlock Flipper</string>
     <string name="control_up">Up</string>
     <string name="control_down">Down</string>
     <string name="control_left">Left</string>

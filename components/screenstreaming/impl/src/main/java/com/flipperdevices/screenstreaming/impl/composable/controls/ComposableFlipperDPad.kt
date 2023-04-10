@@ -1,5 +1,8 @@
-package com.flipperdevices.screenstreaming.impl.composable
+package com.flipperdevices.screenstreaming.impl.composable.controls
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -8,14 +11,21 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Icon
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.screenstreaming.impl.composable.ButtonEnum
 
 private const val BUTTON_WEIGHT = 0.3f
 
@@ -25,21 +35,32 @@ private const val BUTTON_WEIGHT = 0.3f
 )
 @Suppress("LongMethod")
 @Composable
-fun ComposableControlButtons(
+fun ComposableFlipperDPad(
     modifier: Modifier = Modifier,
     onPressButton: (ButtonEnum) -> Unit = {},
     onLongPressButton: (ButtonEnum) -> Unit = {}
 ) {
     /**
-     * | photo |  up  | unlock |
+     * |------|  up  |------|
      * | left |  ok  | right |
-     * |------| down  | back |
+     * |------| down  |-----|
      */
-    Column(modifier) {
+    Column(
+        modifier
+            .size(162.dp)
+            .border(
+                width = 3.dp,
+                color = LocalPallet.current.screenStreamingBorderColor,
+                shape = CircleShape
+            )
+            .padding(3.dp)
+            .clip(CircleShape)
+            .background(LocalPallet.current.accent)
+    ) {
         ControlRow(
-            start = ButtonEnum.SCREENSHOT,
+            start = null,
             center = ButtonEnum.UP,
-            end = ButtonEnum.UNLOCK,
+            end = null,
             onPressButton,
             onLongPressButton
         )
@@ -53,7 +74,7 @@ fun ComposableControlButtons(
         ControlRow(
             start = null,
             center = ButtonEnum.DOWN,
-            end = ButtonEnum.BACK,
+            end = null,
             onPressButton,
             onLongPressButton
         )
@@ -108,7 +129,7 @@ private fun ControlButton(
         return
     }
 
-    Icon(
+    Box(
         modifier = modifier
             .fillMaxSize()
             .combinedClickable(
@@ -117,7 +138,16 @@ private fun ControlButton(
                 onClick = { onPressButton(button) },
                 onLongClick = { onLongPressButton(button) }
             ),
-        painter = painterResource(button.icon),
-        contentDescription = stringResource(button.description)
-    )
+        contentAlignment = Alignment.Center
+    ) {
+        Box(
+            modifier = Modifier.size(44.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                painter = painterResource(button.icon),
+                contentDescription = stringResource(button.description)
+            )
+        }
+    }
 }
