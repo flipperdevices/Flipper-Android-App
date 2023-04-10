@@ -48,6 +48,7 @@
 - [FIX] Use lifecycle event for inapp notification
 - [FIX] Fix Report bug scroll
 - [FIX] InAppNotification update redesign for font scale
+- [FIX] Decrease reconnect timeouts and lags detector timeout
 - [REFACTOR] Migrate bottom bar to compose navigation
 - [REFACTOR] Bump Android Gradle Plugin
 - [REFACTOR] Fix detekt compose issues
