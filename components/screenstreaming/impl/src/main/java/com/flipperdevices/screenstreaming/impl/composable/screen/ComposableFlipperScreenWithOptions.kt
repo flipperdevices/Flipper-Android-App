@@ -38,7 +38,7 @@ fun ComposableFlipperScreenWithOptions(
     onTakeScreenshot: () -> Unit,
     modifier: Modifier = Modifier
 ) = BoxWithConstraints(
-    modifier = modifier.padding(top = 14.dp, bottom = 24.dp),
+    modifier = modifier.padding(top = 14.dp, bottom = 24.dp, start = 24.dp, end = 24.dp),
     contentAlignment = Alignment.Center
 ) {
     val angel by animateFloatAsState(
@@ -70,7 +70,6 @@ fun ComposableFlipperScreenWithOptions(
     Column(
         modifier = Modifier
             .size(height = height, width = width)
-            .padding(horizontal = 24.dp)
             .rotate(angel),
         verticalArrangement = Arrangement.SpaceBetween
     ) {

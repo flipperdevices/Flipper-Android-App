@@ -1,6 +1,7 @@
 package com.flipperdevices.screenstreaming.impl.composable
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -10,6 +11,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import com.flipperdevices.core.ui.ktx.OrangeAppBar
+import com.flipperdevices.core.ui.ktx.SetUpNavigationBarColor
+import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.protobuf.screen.Gui
 import com.flipperdevices.screenstreaming.impl.R
 import com.flipperdevices.screenstreaming.impl.composable.controls.ComposableFlipperControls
@@ -29,7 +32,9 @@ fun ComposableStreamingScreen(
     val flipperScreen by screenStreamingViewModel.getFlipperScreen().collectAsState()
 
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .background(LocalPallet.current.background),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         OrangeAppBar(
@@ -49,5 +54,6 @@ fun ComposableStreamingScreen(
                 screenStreamingViewModel.onPressButton(it, Gui.InputType.LONG)
             }
         )
+        SetUpNavigationBarColor(LocalPallet.current.background)
     }
 }
