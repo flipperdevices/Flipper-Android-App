@@ -87,8 +87,15 @@ internal class NewFlipperRpcInfoMapper : FlipperRpcInfoMapper {
             )
         )
 
-        val otherFields = fields.minus(usedFields)
-            .mapKeys { it.key.substringAfter('_') }
+        val otherFields = mutableMapOf<String, String>()
+        for ((key, value) in fields.minus(usedFields)) {
+            val newKeyName = key.substringAfter('_')
+            if (otherFields.containsKey(newKeyName)) {
+                otherFields[key] = value
+            } else {
+                otherFields[newKeyName] = value
+            }
+        }
 
         return FlipperRpcInformation(
             flipperDeviceInfo = flipperDeviceInfo,
