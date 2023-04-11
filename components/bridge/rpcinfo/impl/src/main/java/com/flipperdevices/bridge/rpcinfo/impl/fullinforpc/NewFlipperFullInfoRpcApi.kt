@@ -5,6 +5,7 @@ import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.rpcinfo.impl.mapper.NewFlipperRpcInfoMapper
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.property.getRequest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 
 private val PROPERTY_KEYS = listOf("devinfo", "pwrinfo", "pwrdebug")
@@ -21,14 +22,14 @@ internal class NewFlipperFullInfoRpcApi : FlipperFullInfoRpcApi(
                 main {
                     propertyGetRequest = getRequest { key = propertyKey }
                 }.wrapToRequest()
-            )
-        }.merge().collect { response ->
+            ).map { it to propertyKey }
+        }.merge().collect { (response, propertyKey) ->
             if (!response.hasPropertyGetResponse()) {
                 return@collect
             }
 
             onNewPair(
-                response.propertyGetResponse.key,
+                "${propertyKey}_" + response.propertyGetResponse.key,
                 response.propertyGetResponse.value
             )
         }
