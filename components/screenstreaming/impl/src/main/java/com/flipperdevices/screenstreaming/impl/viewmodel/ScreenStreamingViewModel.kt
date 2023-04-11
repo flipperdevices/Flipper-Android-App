@@ -13,6 +13,7 @@ import com.flipperdevices.screenstreaming.impl.composable.ButtonEnum
 import com.flipperdevices.screenstreaming.impl.model.FlipperButtonStack
 import com.flipperdevices.screenstreaming.impl.model.FlipperScreenSnapshot
 import com.flipperdevices.screenstreaming.impl.model.StreamingState
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -32,7 +33,7 @@ class ScreenStreamingViewModel @VMInject constructor(
     private val flipperScreen = MutableStateFlow(FlipperScreenSnapshot())
     private var serviceApi: FlipperServiceApi? = null
     private val streamingState = MutableStateFlow(StreamingState.DISABLED)
-    private val stackFlipperButtons = MutableStateFlow(mutableListOf<FlipperButtonStack>())
+    private val stackFlipperButtons = MutableStateFlow(persistentListOf<FlipperButtonStack>())
 
     init {
         serviceProvider.provideServiceApi(this) { serviceApiInternal ->
@@ -60,7 +61,6 @@ class ScreenStreamingViewModel @VMInject constructor(
     ) {
         stackFlipperButtons.update {
             it.add(FlipperButtonStack(buttonEnum))
-            it
         }
         flipperButtonRequestHelper.pressOnButton(
             viewModelScope = viewModelScope,
@@ -69,7 +69,6 @@ class ScreenStreamingViewModel @VMInject constructor(
             onComplete = {
                 stackFlipperButtons.update {
                     it.removeAt(0)
-                    it
                 }
             }
         )

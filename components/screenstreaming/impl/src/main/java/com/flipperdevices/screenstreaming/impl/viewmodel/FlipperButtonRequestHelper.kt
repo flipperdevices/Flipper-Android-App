@@ -29,11 +29,10 @@ class FlipperButtonRequestHelper @Inject constructor(
     ) = launchWithLock(mutex = mutex, scope = viewModelScope) {
         val requestApi = serviceProvider.getServiceApi().requestApi
 
-        val requests = arrayOf(
+        requestApi.requestWithoutAnswer(
             getRequestFor(key, Gui.InputType.PRESS),
             getRequestFor(key, type)
         )
-        requestApi.requestWithoutAnswer(*requests)
 
         requestApi.request(getRequestFor(key, Gui.InputType.RELEASE))
             .onEach { onComplete() }
