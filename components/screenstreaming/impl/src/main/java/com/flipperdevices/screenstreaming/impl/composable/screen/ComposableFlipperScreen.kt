@@ -29,15 +29,19 @@ import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.screenstreaming.impl.R
+import com.flipperdevices.screenstreaming.impl.composable.controls.ComposableFlipperButtonAnimation
+import com.flipperdevices.screenstreaming.impl.model.FlipperButtonStack
 import com.flipperdevices.screenstreaming.impl.viewmodel.FLIPPER_SCREEN_RATIO
 import com.flipperdevices.screenstreaming.impl.viewmodel.ScreenStreamFrameDecoder
+import kotlinx.collections.immutable.ImmutableList
 import kotlin.math.roundToInt
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableFlipperScreen(
+    buttons: ImmutableList<FlipperButtonStack>,
     bitmap: Bitmap?,
-    showLogo: Boolean,
+    isHorizontal: Boolean,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -45,9 +49,13 @@ fun ComposableFlipperScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        if (isHorizontal) {
+            ComposableFlipperButtonAnimation(buttons)
+        }
+
         ComposableFlipperScreenInternal(bitmap)
 
-        if (showLogo) {
+        if (isHorizontal) {
             Image(
                 modifier = Modifier.padding(top = 12.dp),
                 painter = painterResource(DesignSystem.drawable.ic_flipper_logo),

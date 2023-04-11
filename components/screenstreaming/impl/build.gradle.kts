@@ -23,6 +23,8 @@ dependencies {
     implementation(libs.annotations)
     implementation(libs.appcompat)
 
+    implementation(libs.kotlin.immutable.collections)
+
     // Compose
     implementation(libs.compose.ui)
     implementation(libs.compose.tooling)
