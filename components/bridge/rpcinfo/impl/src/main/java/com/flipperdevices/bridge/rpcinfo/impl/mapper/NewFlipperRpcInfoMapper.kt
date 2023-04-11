@@ -6,26 +6,26 @@ import com.flipperdevices.bridge.rpcinfo.model.FlipperRpcInformation
 import com.flipperdevices.bridge.rpcinfo.model.RadioStackInfo
 import kotlinx.collections.immutable.toImmutableMap
 
-private const val DEVICE_NAME = "hardware.name"
-private const val HARDWARE_MODEL = "hardware.model"
-private const val HARDWARE_REGION = "hardware.region.builtin"
-private const val HARDWARE_REGION_PROV = "hardware.region.provisioned"
-private const val HARDWARE_VERSION = "hardware.ver"
-private const val HARDWARE_OTP_VERSION = "hardware.otp.ver"
-private const val SERIAL_NUMBER = "hardware.uid"
+private const val DEVICE_NAME = "devinfo_hardware.name"
+private const val HARDWARE_MODEL = "devinfo_hardware.model"
+private const val HARDWARE_REGION = "devinfo_hardware.region.builtin"
+private const val HARDWARE_REGION_PROV = "devinfo_hardware.region.provisioned"
+private const val HARDWARE_VERSION = "devinfo_hardware.ver"
+private const val HARDWARE_OTP_VERSION = "devinfo_hardware.otp.ver"
+private const val SERIAL_NUMBER = "devinfo_hardware.uid"
 
-private const val FIRMWARE_COMMIT = "firmware.commit.hash"
-private const val FIRMWARE_BRANCH = "firmware.branch.name"
-private const val FIRMWARE_BUILD_DATE = "firmware.build.date"
-private const val FIRMWARE_TARGET = "firmware.target"
-private const val PROTOBUF_MAJOR = "protobuf.version.major"
-private const val PROTOBUF_MINOR = "protobuf.version.minor"
-private const val DEVICE_INFO_MAJOR = "format.major"
-private const val DEVICE_INFO_MINOR = "format.minor"
+private const val FIRMWARE_COMMIT = "devinfo_firmware.commit.hash"
+private const val FIRMWARE_BRANCH = "devinfo_firmware.branch.name"
+private const val FIRMWARE_BUILD_DATE = "devinfo_firmware.build.date"
+private const val FIRMWARE_TARGET = "devinfo_firmware.target"
+private const val PROTOBUF_MAJOR = "devinfo_protobuf.version.major"
+private const val PROTOBUF_MINOR = "devinfo_protobuf.version.minor"
+private const val DEVICE_INFO_MAJOR = "devinfo_format.major"
+private const val DEVICE_INFO_MINOR = "devinfo_format.minor"
 
-private const val RADIO_STACK_MAJOR = "radio.stack.major"
-private const val RADIO_STACK_MINOR = "radio.stack.minor"
-private const val RADIO_STACK_TYPE = "radio.stack.type"
+private const val RADIO_STACK_MAJOR = "devinfo_radio.stack.major"
+private const val RADIO_STACK_MINOR = "devinfo_radio.stack.minor"
+private const val RADIO_STACK_TYPE = "devinfo_radio.stack.type"
 
 // This fields uses in NOT other section
 private val usedFields = setOf(
@@ -87,11 +87,14 @@ internal class NewFlipperRpcInfoMapper : FlipperRpcInfoMapper {
             )
         )
 
+        val otherFields = fields.minus(usedFields)
+            .mapKeys { it.key.substringAfter('_') }
+
         return FlipperRpcInformation(
             flipperDeviceInfo = flipperDeviceInfo,
             firmware = firmwareInfo,
             radioStack = radioStackInfo,
-            otherFields = fields.minus(usedFields).toImmutableMap(),
+            otherFields = otherFields.toImmutableMap(),
             allFields = fields.toImmutableMap()
         )
     }
