@@ -63,7 +63,7 @@ object Constants {
     object BLE {
         private const val CONNECT_TIME_SEC = 3L
         val CONNECT_TIME_MS = TimeUnit.MILLISECONDS.convert(CONNECT_TIME_SEC, TimeUnit.SECONDS)
-        const val RECONNECT_COUNT = 1
+        const val RECONNECT_COUNT = 100
         const val RECONNECT_TIME_MS = 100L
         const val MAX_MTU = 512
 

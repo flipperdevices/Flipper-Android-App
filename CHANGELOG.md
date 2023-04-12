@@ -52,6 +52,7 @@
 - [FIX] InAppNotification update redesign for font scale
 - [FIX] Decrease reconnect timeouts and lags detector timeout
 - [FIX] Device info mapping keys
+- [FIX] Wait disconnecting from device when restart rpc
 - [REFACTOR] Migrate bottom bar to compose navigation
 - [REFACTOR] Bump Android Gradle Plugin
 - [REFACTOR] Fix detekt compose issues

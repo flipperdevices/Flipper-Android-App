@@ -14,6 +14,7 @@ dependencies {
     implementation(projects.components.analytics.metric.api)
 
     implementation(projects.components.bridge.api)
+    implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.pbutils)
 
     implementation(libs.kotlin.coroutines)

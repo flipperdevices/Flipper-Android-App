@@ -88,7 +88,9 @@ class DebugViewModel @VMInject constructor(
 
     fun restartRpc() {
         serviceProvider.provideServiceApi(this) {
-            it.restartRPC()
+            viewModelScope.launch {
+                it.restartRPC()
+            }
         }
     }
 
