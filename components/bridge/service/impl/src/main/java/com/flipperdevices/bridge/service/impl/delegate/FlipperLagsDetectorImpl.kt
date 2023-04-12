@@ -23,7 +23,6 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -46,12 +45,10 @@ class FlipperLagsDetectorImpl(
             ) { _, connectionState ->
                 connectionState
             }.collectLatest { connectionState ->
-                val uniqUUID = UUID.randomUUID()
-                info { "[$uniqUUID] Start waiting" }
                 delay(Constants.LAGS_FLIPPER_DETECT_TIMEOUT_MS)
                 if (pendingResponseCounter.get() > 0) {
                     error {
-                        "[$uniqUUID] We have pending commands, but flipper not respond " +
+                        "We have pending commands, but flipper not respond " +
                             "${Constants.LAGS_FLIPPER_DETECT_TIMEOUT_MS}ms. Pending commands is " +
                             pendingCommands.keys().toList().joinToString()
                     }
