@@ -15,6 +15,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -24,15 +25,22 @@ import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.screenstreaming.impl.R
+import com.flipperdevices.screenstreaming.impl.model.FlipperLockState
 
 @Composable
 fun ComposableFlipperScreenLock(
-    isLock: Boolean,
+    lockState: FlipperLockState,
     modifier: Modifier = Modifier,
-    onChangeState: (isLock: Boolean) -> Unit
+    onChangeState: () -> Unit
 ) {
+    val isLock = lockState is FlipperLockState.Ready && lockState.isLocked
+    val lockModifier = when (lockState) {
+        is FlipperLockState.Ready -> modifier
+        FlipperLockState.NotInitialized,
+        FlipperLockState.NotSupported -> modifier.alpha(alpha = 0.5f)
+    }
     ComposableFlipperScreenOptionButton(
-        modifier = modifier,
+        modifier = lockModifier,
         iconId = if (isLock) {
             R.drawable.ic_unlock
         } else {
@@ -43,9 +51,7 @@ fun ComposableFlipperScreenLock(
         } else {
             R.string.control_options_lock
         },
-        onClick = {
-            onChangeState(!isLock)
-        }
+        onClick = onChangeState
     )
 }
 
@@ -103,7 +109,10 @@ private fun ComposableFlipperScreenOptionsPreview() {
             horizontalArrangement = Arrangement.SpaceAround
         ) {
             ComposableFlipperScreenScreenshot(onClick = {})
-            ComposableFlipperScreenLock(isLock = true, onChangeState = {})
+            ComposableFlipperScreenLock(
+                lockState = FlipperLockState.NotInitialized,
+                onChangeState = {}
+            )
         }
     }
 }

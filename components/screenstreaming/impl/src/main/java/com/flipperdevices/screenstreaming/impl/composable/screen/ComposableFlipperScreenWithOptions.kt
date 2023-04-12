@@ -13,9 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -23,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.screenstreaming.impl.model.FlipperButtonStack
+import com.flipperdevices.screenstreaming.impl.model.FlipperLockState
 import com.flipperdevices.screenstreaming.impl.model.FlipperScreenState
 import com.flipperdevices.screenstreaming.impl.model.ScreenOrientationEnum
 import kotlinx.collections.immutable.ImmutableList
@@ -40,6 +39,8 @@ fun ComposableFlipperScreenWithOptions(
     flipperScreen: FlipperScreenState,
     buttons: ImmutableList<FlipperButtonStack>,
     onTakeScreenshot: () -> Unit,
+    lockState: FlipperLockState,
+    onClickLockButton: () -> Unit,
     modifier: Modifier = Modifier
 ) = BoxWithConstraints(
     modifier = modifier.padding(top = 14.dp, bottom = 24.dp, start = 24.dp, end = 24.dp),
@@ -74,7 +75,12 @@ fun ComposableFlipperScreenWithOptions(
             .rotate(angel),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        ComposableFlipperScreenOptions(angel, onTakeScreenshot)
+        ComposableFlipperScreenOptions(
+            angel = angel,
+            onTakeScreenshot = onTakeScreenshot,
+            lockState = lockState,
+            onClickLockButton = onClickLockButton
+        )
 
         ComposableFlipperScreen(
             buttons = buttons,
@@ -87,6 +93,8 @@ fun ComposableFlipperScreenWithOptions(
 @Composable
 private fun ColumnScope.ComposableFlipperScreenOptions(
     angel: Float,
+    lockState: FlipperLockState,
+    onClickLockButton: () -> Unit,
     onTakeScreenshot: () -> Unit
 ) {
     BoxWithConstraints(
@@ -112,11 +120,10 @@ private fun ColumnScope.ComposableFlipperScreenOptions(
                 modifier = optionsModifier,
                 onClick = onTakeScreenshot
             )
-            var isLock by remember { mutableStateOf(false) }
             ComposableFlipperScreenLock(
                 modifier = optionsModifier,
-                isLock = isLock,
-                onChangeState = { isLock = it }
+                lockState = lockState,
+                onChangeState = onClickLockButton
             )
         }
     }
@@ -132,7 +139,9 @@ fun ComposableFlipperScreenWithOptionsHorizontalPreview() {
         ComposableFlipperScreenWithOptions(
             flipperScreen = FlipperScreenState.NotConnected,
             buttons = persistentListOf(),
-            onTakeScreenshot = {}
+            onTakeScreenshot = {},
+            lockState = FlipperLockState.NotInitialized,
+            onClickLockButton = {}
         )
     }
 }
@@ -147,7 +156,9 @@ fun ComposableFlipperScreenWithOptionsVerticalPreview() {
         ComposableFlipperScreenWithOptions(
             flipperScreen = FlipperScreenState.NotConnected,
             buttons = persistentListOf(),
-            onTakeScreenshot = {}
+            onTakeScreenshot = {},
+            lockState = FlipperLockState.NotInitialized,
+            onClickLockButton = {}
         )
     }
 }
