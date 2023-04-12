@@ -16,8 +16,8 @@ import com.flipperdevices.screenstreaming.impl.viewmodel.ScreenStreamingViewMode
 import com.flipperdevices.screenstreaming.impl.viewmodel.ScreenshotViewModel
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
-import javax.inject.Inject
 import tangle.viewmodel.compose.tangleViewModel
+import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, ScreenStreamingFeatureEntry::class)
 @ContributesMultibinding(AppGraph::class, AggregateFeatureEntry::class)
@@ -30,7 +30,6 @@ class ScreenStreamingFeatureEntryImpl @Inject constructor() : ScreenStreamingFea
                 val screenStreamingViewModel: ScreenStreamingViewModel = tangleViewModel()
                 val screenshotViewModel: ScreenshotViewModel = viewModel()
                 val lockViewModel: LockViewModel = tangleViewModel()
-
 
                 OnLifecycleEvent {
                     when (it) {

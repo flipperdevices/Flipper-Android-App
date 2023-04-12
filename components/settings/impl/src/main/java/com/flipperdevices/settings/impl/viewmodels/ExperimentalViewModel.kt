@@ -7,8 +7,8 @@ import com.flipperdevices.filemanager.api.navigation.FileManagerEntry
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.settings.api.SettingsFeatureEntry
-import javax.inject.Provider
 import tangle.viewmodel.VMInject
+import javax.inject.Provider
 
 class ExperimentalViewModel @VMInject constructor(
     fileManagerEntryProvider: Provider<FileManagerEntry>,

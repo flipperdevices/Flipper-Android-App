@@ -1,6 +1,5 @@
 package com.flipperdevices.screenstreaming.impl.composable
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -32,6 +31,7 @@ import com.flipperdevices.screenstreaming.impl.viewmodel.LockViewModel
 import com.flipperdevices.screenstreaming.impl.viewmodel.ScreenStreamingViewModel
 import com.flipperdevices.screenstreaming.impl.viewmodel.ScreenshotViewModel
 import kotlinx.collections.immutable.toImmutableList
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @ExperimentalFoundationApi
 @ExperimentalComposeUiApi

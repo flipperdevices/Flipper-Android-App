@@ -17,6 +17,8 @@
 - [Feature] Add report changes to synchronization end event
 - [Feature] Add GitHub and Forum link to options
 - [Feature] New screen streaming design with animation
+- [Feature] Migrate screen streaming to hub
+- [Feature] Dialog on lock/unlock unsupported by firmware
 - [GitHub] Update github repo picture
 - [CI] Migrate to Detekt
 - [CI] Android lint in CI

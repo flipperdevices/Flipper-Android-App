@@ -23,9 +23,10 @@ import com.flipperdevices.settings.impl.R
 
 @Composable
 fun ComposableMigrateRemoteControlScreen(
+    modifier: Modifier = Modifier,
     onBack: () -> Unit = {}
 ) {
-    Column {
+    Column(modifier) {
         OrangeAppBar(
             titleId = R.string.options_remote_control_title,
             onBack = onBack
