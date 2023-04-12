@@ -75,6 +75,6 @@ private fun ComposableMigrateDescription(
 @Composable
 private fun ComposableMigrateRemoteControlScreenPreview() {
     FlipperThemeInternal {
-        ComposableMigrateRemoteControlScreen({})
+        ComposableMigrateRemoteControlScreen(onBack = {})
     }
 }
