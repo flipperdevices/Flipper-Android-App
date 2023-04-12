@@ -44,4 +44,9 @@
     <string name="export_keys_picker_title">Save the zip with the keys…</string>
     <string name="version_name_app">Flipper Mobile App</string>
     <string name="version">Version</string>
+
+    <string name="options_remote_control_title">Remote Control</string>
+    <string name="options_remote_control_subtitle">New Remote Control</string>
+    <string name="options_remote_control_desc">We’ve improved this feature and moved it to the Hub tab</string>
+
 </resources>

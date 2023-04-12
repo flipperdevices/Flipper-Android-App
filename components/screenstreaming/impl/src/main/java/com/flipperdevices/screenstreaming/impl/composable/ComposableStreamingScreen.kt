@@ -101,7 +101,7 @@ private fun ComposableDeprecatedLockDialog(
         textId = R.string.control_options_dialog_desc,
         imageComposable = {
             Image(
-                modifier = Modifier.size(96.dp),
+                modifier = Modifier.size(size = 96.dp),
                 painter = painterResource(DesignSystem.drawable.ic_firmware_flipper_deprecated),
                 contentDescription = stringResource(R.string.control_options_dialog_title)
             )
