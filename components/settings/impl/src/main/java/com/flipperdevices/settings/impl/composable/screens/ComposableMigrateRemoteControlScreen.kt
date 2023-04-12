@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -51,6 +52,7 @@ private fun ComposableMigrateDescription(
         R.drawable.pic_migrate_remote_control_dark
     }
     Image(
+        modifier = Modifier.fillMaxWidth(),
         painter = painterResource(picId),
         contentDescription = stringResource(R.string.options_remote_control_subtitle)
     )
