@@ -6,7 +6,7 @@ import androidx.core.graphics.set
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.protobuf.screen.Gui
-import com.flipperdevices.screenstreaming.impl.model.FlipperScreenSnapshot
+import com.flipperdevices.screenstreaming.impl.model.FlipperScreenState
 import com.flipperdevices.screenstreaming.impl.model.ScreenOrientationEnum
 import kotlin.experimental.and
 
@@ -26,7 +26,7 @@ object ScreenStreamFrameDecoder : LogTagProvider {
         return bitmap
     }
 
-    fun decode(streamFrame: Gui.ScreenFrame): FlipperScreenSnapshot? {
+    fun decode(streamFrame: Gui.ScreenFrame): FlipperScreenState.Ready? {
         val bytes = streamFrame.data.toByteArray()
         info { "Receive package with ${bytes.size} bytes" }
         if (bytes.isEmpty()) {
@@ -41,7 +41,7 @@ object ScreenStreamFrameDecoder : LogTagProvider {
         }
         val screen = Bitmap.createBitmap(SCREEN_WIDTH, SCREEN_HEIGHT, Bitmap.Config.ARGB_8888)
         fillBitmap(screen, bytes, orientation)
-        return FlipperScreenSnapshot(
+        return FlipperScreenState.Ready(
             bitmap = screen,
             orientation = orientation
         )

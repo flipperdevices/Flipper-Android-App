@@ -23,7 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.screenstreaming.impl.model.FlipperButtonStack
-import com.flipperdevices.screenstreaming.impl.model.FlipperScreenSnapshot
+import com.flipperdevices.screenstreaming.impl.model.FlipperScreenState
 import com.flipperdevices.screenstreaming.impl.model.ScreenOrientationEnum
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -37,7 +37,7 @@ private const val VERTICAL_ORIENTATION_ANGEL = 90f
  */
 @Composable
 fun ComposableFlipperScreenWithOptions(
-    flipperScreen: FlipperScreenSnapshot,
+    flipperScreen: FlipperScreenState,
     buttons: ImmutableList<FlipperButtonStack>,
     onTakeScreenshot: () -> Unit,
     modifier: Modifier = Modifier
@@ -45,30 +45,27 @@ fun ComposableFlipperScreenWithOptions(
     modifier = modifier.padding(top = 14.dp, bottom = 24.dp, start = 24.dp, end = 24.dp),
     contentAlignment = Alignment.Center
 ) {
-    val angel by animateFloatAsState(
-        targetValue = when (flipperScreen.orientation) {
-            ScreenOrientationEnum.HORIZONTAL,
-            ScreenOrientationEnum.HORIZONTAL_FLIP -> 0f
-            ScreenOrientationEnum.VERTICAL,
-            ScreenOrientationEnum.VERTICAL_FLIP -> VERTICAL_ORIENTATION_ANGEL
+    val isHorizontal = remember(flipperScreen) {
+        when (flipperScreen) {
+            FlipperScreenState.InProgress,
+            FlipperScreenState.NotConnected -> true
+            is FlipperScreenState.Ready -> when (flipperScreen.orientation) {
+                ScreenOrientationEnum.HORIZONTAL,
+                ScreenOrientationEnum.HORIZONTAL_FLIP -> true
+                ScreenOrientationEnum.VERTICAL,
+                ScreenOrientationEnum.VERTICAL_FLIP -> false
+            }
         }
+    }
+    val angel by animateFloatAsState(
+        targetValue = if (isHorizontal) 0f else VERTICAL_ORIENTATION_ANGEL
     )
     val height by animateDpAsState(
-        targetValue = when (flipperScreen.orientation) {
-            ScreenOrientationEnum.HORIZONTAL,
-            ScreenOrientationEnum.HORIZONTAL_FLIP -> maxHeight
-            ScreenOrientationEnum.VERTICAL,
-            ScreenOrientationEnum.VERTICAL_FLIP -> maxWidth
-        }
+        targetValue = if (isHorizontal) maxHeight else maxWidth
     )
 
     val width by animateDpAsState(
-        targetValue = when (flipperScreen.orientation) {
-            ScreenOrientationEnum.HORIZONTAL,
-            ScreenOrientationEnum.HORIZONTAL_FLIP -> maxWidth
-            ScreenOrientationEnum.VERTICAL,
-            ScreenOrientationEnum.VERTICAL_FLIP -> maxHeight
-        }
+        targetValue = if (isHorizontal) maxWidth else maxHeight
     )
 
     Column(
@@ -81,8 +78,8 @@ fun ComposableFlipperScreenWithOptions(
 
         ComposableFlipperScreen(
             buttons = buttons,
-            bitmap = flipperScreen.bitmap,
-            isHorizontal = flipperScreen.orientation != ScreenOrientationEnum.VERTICAL
+            flipperScreen = flipperScreen,
+            isHorizontal = isHorizontal
         )
     }
 }
@@ -133,9 +130,7 @@ private fun ColumnScope.ComposableFlipperScreenOptions(
 fun ComposableFlipperScreenWithOptionsHorizontalPreview() {
     FlipperThemeInternal {
         ComposableFlipperScreenWithOptions(
-            flipperScreen = FlipperScreenSnapshot(
-                orientation = ScreenOrientationEnum.HORIZONTAL
-            ),
+            flipperScreen = FlipperScreenState.NotConnected,
             buttons = persistentListOf(),
             onTakeScreenshot = {}
         )
@@ -150,9 +145,7 @@ fun ComposableFlipperScreenWithOptionsHorizontalPreview() {
 fun ComposableFlipperScreenWithOptionsVerticalPreview() {
     FlipperThemeInternal {
         ComposableFlipperScreenWithOptions(
-            flipperScreen = FlipperScreenSnapshot(
-                orientation = ScreenOrientationEnum.VERTICAL
-            ),
+            flipperScreen = FlipperScreenState.NotConnected,
             buttons = persistentListOf(),
             onTakeScreenshot = {}
         )

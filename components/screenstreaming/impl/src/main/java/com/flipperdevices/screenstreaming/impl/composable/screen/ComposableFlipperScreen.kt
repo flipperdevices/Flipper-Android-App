@@ -1,5 +1,6 @@
 package com.flipperdevices.screenstreaming.impl.composable.screen
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import android.graphics.Bitmap
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
@@ -31,16 +32,16 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.screenstreaming.impl.R
 import com.flipperdevices.screenstreaming.impl.composable.controls.ComposableFlipperButtonAnimation
 import com.flipperdevices.screenstreaming.impl.model.FlipperButtonStack
+import com.flipperdevices.screenstreaming.impl.model.FlipperScreenState
 import com.flipperdevices.screenstreaming.impl.viewmodel.FLIPPER_SCREEN_RATIO
 import com.flipperdevices.screenstreaming.impl.viewmodel.ScreenStreamFrameDecoder
-import kotlinx.collections.immutable.ImmutableList
 import kotlin.math.roundToInt
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun ComposableFlipperScreen(
     buttons: ImmutableList<FlipperButtonStack>,
-    bitmap: Bitmap?,
+    flipperScreen: FlipperScreenState,
     isHorizontal: Boolean,
     modifier: Modifier = Modifier
 ) {
@@ -53,7 +54,7 @@ fun ComposableFlipperScreen(
             ComposableFlipperButtonAnimation(buttons)
         }
 
-        ComposableFlipperScreenInternal(bitmap)
+        ComposableFlipperScreenInternal(flipperScreen)
 
         if (isHorizontal) {
             Image(
@@ -66,7 +67,9 @@ fun ComposableFlipperScreen(
 }
 
 @Composable
-private fun ComposableFlipperScreenInternal(flipperScreen: Bitmap?) {
+private fun ComposableFlipperScreenInternal(
+    flipperScreenState: FlipperScreenState
+) {
     var boxModifier = Modifier
         .border(
             width = 3.dp,
@@ -83,7 +86,7 @@ private fun ComposableFlipperScreenInternal(flipperScreen: Bitmap?) {
             color = LocalPallet.current.flipperScreenColor,
             shape = RoundedCornerShape(12.dp)
         )
-    if (flipperScreen == null) {
+    if (flipperScreenState is FlipperScreenState.InProgress) {
         boxModifier = boxModifier
             .clip(RoundedCornerShape(12.dp))
             .placeholderConnecting()
@@ -92,33 +95,55 @@ private fun ComposableFlipperScreenInternal(flipperScreen: Bitmap?) {
         modifier = boxModifier
             .padding(8.dp)
     ) {
-        ComposableFlipperScreenRaw(flipperScreen)
+        ComposableFlipperScreenImage(flipperScreenState)
     }
 }
 
 @Composable
-private fun ComposableFlipperScreenRaw(flipperScreen: Bitmap?) {
+private fun ComposableFlipperScreenImage(flipperScreenState: FlipperScreenState) {
+    val canvasModifier = Modifier
+        .fillMaxWidth()
+        .aspectRatio(FLIPPER_SCREEN_RATIO)
+    val canvasDescription = stringResource(R.string.flipper_display)
+
+    when (flipperScreenState) {
+        FlipperScreenState.InProgress -> Box(
+            modifier = canvasModifier
+        )
+        FlipperScreenState.NotConnected -> Image(
+            modifier = canvasModifier,
+            painter = painterResource(R.drawable.pic_not_connected),
+            contentDescription = canvasDescription
+        )
+        is FlipperScreenState.Ready -> ComposableFlipperScreenRaw(
+            modifier = canvasModifier,
+            flipperScreen = flipperScreenState.bitmap
+        )
+    }
+}
+
+@Composable
+private fun ComposableFlipperScreenRaw(
+    flipperScreen: Bitmap,
+    modifier: Modifier = Modifier
+) {
     val imageDrawPaint = remember {
         Paint().apply {
             filterQuality = FilterQuality.None
         }
     }
     Canvas(
-        modifier = Modifier
-            .fillMaxWidth()
-            .aspectRatio(FLIPPER_SCREEN_RATIO),
+        modifier = modifier,
         contentDescription = stringResource(R.string.flipper_display)
     ) {
-        if (flipperScreen != null) {
-            drawContext.canvas.drawImageRect(
-                image = flipperScreen.asImageBitmap(),
-                dstSize = IntSize(
-                    size.width.roundToInt(),
-                    size.height.roundToInt()
-                ),
-                paint = imageDrawPaint
-            )
-        }
+        drawContext.canvas.drawImageRect(
+            image = flipperScreen.asImageBitmap(),
+            dstSize = IntSize(
+                size.width.roundToInt(),
+                size.height.roundToInt()
+            ),
+            paint = imageDrawPaint
+        )
     }
 }
 
@@ -129,6 +154,6 @@ private fun ComposableFlipperScreenRaw(flipperScreen: Bitmap?) {
 @Composable
 private fun ComposableFlipperScreenInternalPreview() {
     FlipperThemeInternal {
-        ComposableFlipperScreenInternal(ScreenStreamFrameDecoder.emptyBitmap())
+        ComposableFlipperScreenInternal(FlipperScreenState.Ready(ScreenStreamFrameDecoder.emptyBitmap()))
     }
 }

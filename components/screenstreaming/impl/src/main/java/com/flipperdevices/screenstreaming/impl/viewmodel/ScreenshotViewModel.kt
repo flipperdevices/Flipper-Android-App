@@ -9,13 +9,13 @@ import com.flipperdevices.core.share.SharableFile
 import com.flipperdevices.core.share.ShareHelper
 import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
 import com.flipperdevices.screenstreaming.impl.R
-import com.flipperdevices.screenstreaming.impl.model.FlipperScreenSnapshot
+import com.flipperdevices.screenstreaming.impl.model.FlipperScreenState
 import com.flipperdevices.screenstreaming.impl.model.ScreenOrientationEnum
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 private const val SCREENSHOT_FILE_PREFIX = "flpr"
 private const val TIMEFORMAT = "yyyy-MM-dd-HH:mm:ss"
@@ -26,9 +26,10 @@ class ScreenshotViewModel(
     application: Application
 ) : AndroidLifecycleViewModel(application) {
     fun shareScreenshot(
-        screenShapshot: FlipperScreenSnapshot
+        screenShapshot: FlipperScreenState
     ) = lifecycleScope.launch(Dispatchers.Default) {
-        var currentSnapshot = screenShapshot.bitmap ?: return@launch
+        val currentSnapshotState = screenShapshot as? FlipperScreenState.Ready ?: return@launch
+        var currentSnapshot = currentSnapshotState.bitmap
         currentSnapshot = currentSnapshot.rescale()
         currentSnapshot = when (screenShapshot.orientation) {
             ScreenOrientationEnum.VERTICAL,

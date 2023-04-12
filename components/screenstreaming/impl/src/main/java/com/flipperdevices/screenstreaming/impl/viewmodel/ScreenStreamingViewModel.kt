@@ -1,17 +1,20 @@
 package com.flipperdevices.screenstreaming.impl.viewmodel
 
+import android.app.Application
 import androidx.lifecycle.viewModelScope
+import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
+import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
-import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.screen.Gui
 import com.flipperdevices.protobuf.screen.startScreenStreamRequest
 import com.flipperdevices.protobuf.screen.stopScreenStreamRequest
 import com.flipperdevices.screenstreaming.impl.composable.ButtonEnum
 import com.flipperdevices.screenstreaming.impl.model.FlipperButtonStack
-import com.flipperdevices.screenstreaming.impl.model.FlipperScreenSnapshot
+import com.flipperdevices.screenstreaming.impl.model.FlipperScreenState
 import com.flipperdevices.screenstreaming.impl.model.StreamingState
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.Dispatchers
@@ -27,17 +30,16 @@ import tangle.viewmodel.VMInject
 
 class ScreenStreamingViewModel @VMInject constructor(
     serviceProvider: FlipperServiceProvider,
+    application: Application,
     private val flipperButtonRequestHelper: FlipperButtonRequestHelper
-) : LifecycleViewModel() {
+) : AndroidLifecycleViewModel(application) {
 
-    private val flipperScreen = MutableStateFlow(FlipperScreenSnapshot())
-    private var serviceApi: FlipperServiceApi? = null
+    private val flipperScreen = MutableStateFlow<FlipperScreenState>(FlipperScreenState.InProgress)
     private val streamingState = MutableStateFlow(StreamingState.DISABLED)
     private val stackFlipperButtons = MutableStateFlow(persistentListOf<FlipperButtonStack>())
 
     init {
         serviceProvider.provideServiceApi(this) { serviceApiInternal ->
-            serviceApi = serviceApiInternal
             streamingState.onEach { state ->
                 when (state) {
                     StreamingState.ENABLED -> onStartStreaming(serviceApiInternal)
@@ -49,10 +51,21 @@ class ScreenStreamingViewModel @VMInject constructor(
                     onStreamFrameReceived(it.guiScreenFrame)
                 }
             }.launchIn(viewModelScope)
+            serviceApiInternal
+                .connectionInformationApi
+                .getConnectionStateFlow().onEach {
+                    if (it is ConnectionState.Ready &&
+                        it.supportedState == FlipperSupportedState.READY
+                    ) {
+                        flipperScreen.emit(FlipperScreenState.InProgress)
+                    } else {
+                        flipperScreen.emit(FlipperScreenState.NotConnected)
+                    }
+                }.launchIn(viewModelScope)
         }
     }
 
-    fun getFlipperScreen(): StateFlow<FlipperScreenSnapshot> = flipperScreen.asStateFlow()
+    fun getFlipperScreen(): StateFlow<FlipperScreenState> = flipperScreen.asStateFlow()
     fun getFlipperButtons() = stackFlipperButtons.asStateFlow()
 
     fun onPressButton(
