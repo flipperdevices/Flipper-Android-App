@@ -19,6 +19,7 @@ dependencies {
     implementation(libs.appcompat)
 
     implementation(projects.components.nfc.attack.api)
+    implementation(projects.components.screenstreaming.api)
 
     // Compose
     implementation(libs.compose.ui)

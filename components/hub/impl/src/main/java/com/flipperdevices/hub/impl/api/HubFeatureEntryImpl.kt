@@ -9,11 +9,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
+import com.flipperdevices.core.ui.navigation.LocalGlobalNavigationNavStack
 import com.flipperdevices.faphub.main.api.FapHubMainScreenApi
 import com.flipperdevices.faphub.maincard.api.MainCardApi
 import com.flipperdevices.hub.api.HubFeatureEntry
 import com.flipperdevices.hub.impl.composable.ComposableHub
 import com.flipperdevices.nfc.attack.api.NFCAttackFeatureEntry
+import com.flipperdevices.screenstreaming.api.ScreenStreamingFeatureEntry
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
 import javax.inject.Inject
@@ -23,7 +25,8 @@ import javax.inject.Inject
 class HubFeatureEntryImpl @Inject constructor(
     private val nfcAttackFeatureEntry: NFCAttackFeatureEntry,
     private val mainCardApi: MainCardApi,
-    private val fapHubMainScreenApi: FapHubMainScreenApi
+    private val fapHubMainScreenApi: FapHubMainScreenApi,
+    private val screenStreamingFeatureEntry: ScreenStreamingFeatureEntry
 ) : HubFeatureEntry {
     override fun start() = "@${ROUTE.name}"
 
@@ -33,6 +36,7 @@ class HubFeatureEntryImpl @Inject constructor(
             route = ROUTE.name
         ) {
             composable(start()) {
+                val globalNavController = LocalGlobalNavigationNavStack.current
                 ComposableHub(
                     onOpenAttack = {
                         navController.navigate(nfcAttackFeatureEntry.ROUTE.name)
@@ -44,6 +48,9 @@ class HubFeatureEntryImpl @Inject constructor(
                                 navController.navigate(fapHubMainScreenApi.ROUTE.name)
                             }
                         )
+                    },
+                    onOpenRemoteControl = {
+                        globalNavController.navigate(screenStreamingFeatureEntry.ROUTE.name)
                     }
                 )
             }

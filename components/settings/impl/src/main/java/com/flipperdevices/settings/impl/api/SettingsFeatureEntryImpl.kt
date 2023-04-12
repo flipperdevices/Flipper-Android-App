@@ -8,6 +8,7 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.settings.api.SettingsFeatureEntry
 import com.flipperdevices.settings.impl.composable.ComposableCommonSettings
+import com.flipperdevices.settings.impl.composable.screens.ComposableMigrateRemoteControlScreen
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
 import javax.inject.Inject
@@ -16,10 +17,16 @@ import javax.inject.Inject
 @ContributesMultibinding(AppGraph::class, AggregateFeatureEntry::class)
 class SettingsFeatureEntryImpl @Inject constructor() : SettingsFeatureEntry {
     private fun start() = "@${ROUTE.name}"
+
+    override fun remoteControlStub() = "@${ROUTE.name}remotecontrol"
+
     override fun NavGraphBuilder.navigation(navController: NavHostController) {
         navigation(startDestination = start(), route = ROUTE.name) {
             composable("@${ROUTE.name}") {
                 ComposableCommonSettings(navController)
+            }
+            composable(remoteControlStub()) {
+                ComposableMigrateRemoteControlScreen()
             }
         }
     }

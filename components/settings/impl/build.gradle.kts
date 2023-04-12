@@ -25,7 +25,6 @@ dependencies {
     implementation(projects.components.firstpair.api)
     implementation(projects.components.filemanager.api)
     implementation(projects.components.selfupdater.api)
-    implementation(projects.components.screenstreaming.api)
     implementation(projects.components.nfc.mfkey32.api)
 
     implementation(projects.components.bridge.api)

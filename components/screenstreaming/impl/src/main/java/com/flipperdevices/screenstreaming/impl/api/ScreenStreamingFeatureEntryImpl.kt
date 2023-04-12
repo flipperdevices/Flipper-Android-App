@@ -11,6 +11,7 @@ import com.flipperdevices.core.ktx.android.OnLifecycleEvent
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.screenstreaming.api.ScreenStreamingFeatureEntry
 import com.flipperdevices.screenstreaming.impl.composable.ComposableStreamingScreen
+import com.flipperdevices.screenstreaming.impl.viewmodel.LockViewModel
 import com.flipperdevices.screenstreaming.impl.viewmodel.ScreenStreamingViewModel
 import com.flipperdevices.screenstreaming.impl.viewmodel.ScreenshotViewModel
 import com.squareup.anvil.annotations.ContributesBinding
@@ -28,6 +29,7 @@ class ScreenStreamingFeatureEntryImpl @Inject constructor() : ScreenStreamingFea
             composable("@${ROUTE.name}") {
                 val screenStreamingViewModel: ScreenStreamingViewModel = tangleViewModel()
                 val screenshotViewModel: ScreenshotViewModel = viewModel()
+                val lockViewModel: LockViewModel = tangleViewModel()
 
                 OnLifecycleEvent {
                     when (it) {
@@ -40,7 +42,8 @@ class ScreenStreamingFeatureEntryImpl @Inject constructor() : ScreenStreamingFea
                 ComposableStreamingScreen(
                     screenStreamingViewModel = screenStreamingViewModel,
                     screenshotViewModel = screenshotViewModel,
-                    onBack = navController::popBackStack
+                    lockViewModel = lockViewModel,
+                    onBack = navController::popBackStack,
                 )
             }
         }
