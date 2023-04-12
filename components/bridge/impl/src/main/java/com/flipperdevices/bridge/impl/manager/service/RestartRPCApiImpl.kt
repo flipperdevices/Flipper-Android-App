@@ -2,13 +2,24 @@ package com.flipperdevices.bridge.impl.manager.service
 
 import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattCharacteristic
+import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
+import com.flipperdevices.bridge.api.manager.ktx.stateAsFlow
 import com.flipperdevices.bridge.api.manager.service.RestartRPCApi
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.impl.manager.UnsafeBleManager
+import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withTimeoutOrNull
 
-class RestartRPCApiImpl : RestartRPCApi, BluetoothGattServiceWrapper, LogTagProvider {
+private const val WAIT_DISCONNECT_TIMEOUT_MS = 5 * 1000L // 5 ms
+
+class RestartRPCApiImpl(
+    private val serviceApi: FlipperServiceApi
+) : RestartRPCApi, BluetoothGattServiceWrapper, LogTagProvider {
     override val TAG = "RestartRPCApi"
 
     private var bleManagerInternal: UnsafeBleManager? = null
@@ -29,10 +40,19 @@ class RestartRPCApiImpl : RestartRPCApi, BluetoothGattServiceWrapper, LogTagProv
         return rpcStateCharacteristic != null
     }
 
-    override fun restartRpc() {
+    override suspend fun restartRpc() {
         info { "Request restart rpc" }
-        bleManagerInternal?.writeCharacteristicUnsafe(rpcStateCharacteristic, byteArrayOf(0))
-            ?.enqueue()
+        val bleManager = bleManagerInternal
+        if (bleManager == null) {
+            error { "Can't restart rpc, bleManager is null" }
+            return
+        }
+        bleManager.writeCharacteristicUnsafe(rpcStateCharacteristic, byteArrayOf(0))
+            .enqueue()
+        withTimeoutOrNull(WAIT_DISCONNECT_TIMEOUT_MS) {
+            bleManager.stateAsFlow().filter { it !is ConnectionState.Ready }.first()
+        }
+        serviceApi.reconnect()
     }
 
     override suspend fun initialize(bleManager: UnsafeBleManager) {

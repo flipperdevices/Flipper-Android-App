@@ -76,14 +76,15 @@ class FlipperServiceApiImpl(
         flipperActionNotifier = flipperActionNotifier
     )
     private val bleManager: FlipperBleManager = FlipperBleManagerImpl(
-        context,
-        settingsStore,
-        scope,
-        serviceErrorListener,
-        lagsDetector,
-        flipperActionNotifier,
-        sentryApi,
-        metricApi
+        context = context,
+        settingsStore = settingsStore,
+        scope = scope,
+        serviceErrorListener = serviceErrorListener,
+        flipperLagsDetector = lagsDetector,
+        flipperActionNotifier = flipperActionNotifier,
+        sentryApi = sentryApi,
+        metricApi = metricApi,
+        serviceApi = this
     ).apply {
         connectionStateProvider.initialize(this.connectionInformationApi)
     }
@@ -149,7 +150,7 @@ class FlipperServiceApiImpl(
         bleManager.close()
     }
 
-    override fun restartRPC() {
+    override suspend fun restartRPC() {
         bleManager.restartRPCApi.restartRpc()
     }
 }

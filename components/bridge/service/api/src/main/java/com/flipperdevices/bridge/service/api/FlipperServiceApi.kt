@@ -48,5 +48,5 @@ interface FlipperServiceApi {
     /**
      * An internal mechanism that allows you to restart the RPC flipper
      */
-    fun restartRPC()
+    suspend fun restartRPC()
 }

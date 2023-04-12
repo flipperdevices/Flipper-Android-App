@@ -73,11 +73,11 @@ class FlipperSerialOverflowThrottler(
     override suspend fun reset(
         bleManager: UnsafeBleManager
     ) = withLock(mutex, "reset") {
-        bufferSizeState.emit(0)
-        pendingBytes = null
-        bleManager.setNotificationCallbackUnsafe(overflowCharacteristics) // reset (free) callback
         overflowBufferJob?.cancelAndJoin()
         overflowBufferJob = null
+        info { "Cancel overflow buffer job" }
+        bufferSizeState.emit(0)
+        pendingBytes = null
     }
 
     @VisibleForTesting
