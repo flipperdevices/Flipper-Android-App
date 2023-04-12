@@ -32,7 +32,7 @@ class FlipperLagsDetectorImpl(
     private val connectionStateProvider: WeakConnectionStateProvider,
     private val flipperActionNotifier: FlipperActionNotifier
 ) : FlipperLagsDetector, LogTagProvider {
-    override val TAG = "FlipperLagsDetector"
+    override val TAG = "FlipperLagsDetector-${hashCode()}"
 
     private val pendingCommands = ConcurrentHashMap<FlipperRequest, Unit>()
     private val pendingResponseCounter = AtomicInteger(0)
@@ -55,7 +55,10 @@ class FlipperLagsDetectorImpl(
                     if (connectionState is ConnectionState.Ready &&
                         connectionState.supportedState == FlipperSupportedState.READY
                     ) {
+                        info { "Start restart RPC" }
                         serviceApi.restartRPC()
+                    } else {
+                        info { "Flipper not connected, so ignore it" }
                     }
                 } else if (pendingResponseCounter.get() < 0) {
                     pendingResponseCounter.set(0)
@@ -107,9 +110,6 @@ class FlipperLagsDetectorImpl(
     private suspend fun incrementPendingCounter(tag: String) {
         val pendingCount = pendingResponseCounter.getAndIncrement()
         verbose { "Increase pending response command $tag, current size is ${pendingCount + 1}" }
-        if (pendingCount == 0) {
-            info { "Pending response count is zero, so we launch pending flow" }
-            flipperActionNotifier.notifyAboutAction()
-        }
+        flipperActionNotifier.notifyAboutAction()
     }
 }

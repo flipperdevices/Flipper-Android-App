@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.bluetooth.BluetoothGattCharacteristic
 import android.bluetooth.BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT
 import android.content.Context
+import com.flipperdevices.bridge.api.manager.FlipperBleManager
 import com.flipperdevices.bridge.api.manager.ktx.providers.BondStateProvider
 import com.flipperdevices.bridge.api.manager.ktx.providers.ConnectionStateProvider
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
@@ -29,7 +30,11 @@ private const val UNSAFE_BLE_MANAGER_TAG = "UnsafeBleManager"
 abstract class UnsafeBleManager(
     scope: CoroutineScope,
     context: Context
-) : BleManager(context), ConnectionStateProvider, BondStateProvider, LogTagProvider {
+) : BleManager(context),
+    ConnectionStateProvider,
+    BondStateProvider,
+    LogTagProvider,
+    FlipperBleManager {
     override val TAG = UNSAFE_BLE_MANAGER_TAG
     private val connectionObservers = ConnectionObserverComposite(
         scope = scope,
@@ -51,7 +56,6 @@ abstract class UnsafeBleManager(
 
     fun setNotificationCallbackUnsafe(characteristic: BluetoothGattCharacteristic?) =
         setNotificationCallback(characteristic)
-
     fun enableNotificationsUnsafe(characteristic: BluetoothGattCharacteristic?) =
         enableNotifications(characteristic)
 
