@@ -19,6 +19,7 @@ import com.flipperdevices.screenstreaming.impl.composable.controls.ComposableFli
 import com.flipperdevices.screenstreaming.impl.composable.screen.ComposableFlipperScreenWithOptions
 import com.flipperdevices.screenstreaming.impl.viewmodel.ScreenStreamingViewModel
 import com.flipperdevices.screenstreaming.impl.viewmodel.ScreenshotViewModel
+import kotlinx.collections.immutable.toImmutableList
 
 @ExperimentalFoundationApi
 @ExperimentalComposeUiApi
@@ -30,6 +31,7 @@ fun ComposableStreamingScreen(
     onBack: () -> Unit
 ) {
     val flipperScreen by screenStreamingViewModel.getFlipperScreen().collectAsState()
+    val buttons by screenStreamingViewModel.getFlipperButtons().collectAsState()
 
     Column(
         modifier = modifier
@@ -43,6 +45,7 @@ fun ComposableStreamingScreen(
         )
         ComposableFlipperScreenWithOptions(
             flipperScreen = flipperScreen,
+            buttons = buttons.toImmutableList(),
             onTakeScreenshot = { screenshotViewModel.shareScreenshot(flipperScreen) },
             modifier = Modifier.weight(1f)
         )

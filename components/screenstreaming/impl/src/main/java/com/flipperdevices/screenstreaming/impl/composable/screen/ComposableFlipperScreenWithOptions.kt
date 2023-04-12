@@ -22,8 +22,11 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
+import com.flipperdevices.screenstreaming.impl.model.FlipperButtonStack
 import com.flipperdevices.screenstreaming.impl.model.FlipperScreenSnapshot
 import com.flipperdevices.screenstreaming.impl.model.ScreenOrientationEnum
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 private const val VERTICAL_ORIENTATION_ANGEL = 90f
 
@@ -35,6 +38,7 @@ private const val VERTICAL_ORIENTATION_ANGEL = 90f
 @Composable
 fun ComposableFlipperScreenWithOptions(
     flipperScreen: FlipperScreenSnapshot,
+    buttons: ImmutableList<FlipperButtonStack>,
     onTakeScreenshot: () -> Unit,
     modifier: Modifier = Modifier
 ) = BoxWithConstraints(
@@ -76,8 +80,9 @@ fun ComposableFlipperScreenWithOptions(
         ComposableFlipperScreenOptions(angel, onTakeScreenshot)
 
         ComposableFlipperScreen(
+            buttons = buttons,
             bitmap = flipperScreen.bitmap,
-            showLogo = flipperScreen.orientation != ScreenOrientationEnum.VERTICAL
+            isHorizontal = flipperScreen.orientation != ScreenOrientationEnum.VERTICAL
         )
     }
 }
@@ -131,6 +136,7 @@ fun ComposableFlipperScreenWithOptionsHorizontalPreview() {
             flipperScreen = FlipperScreenSnapshot(
                 orientation = ScreenOrientationEnum.HORIZONTAL
             ),
+            buttons = persistentListOf(),
             onTakeScreenshot = {}
         )
     }
@@ -147,6 +153,7 @@ fun ComposableFlipperScreenWithOptionsVerticalPreview() {
             flipperScreen = FlipperScreenSnapshot(
                 orientation = ScreenOrientationEnum.VERTICAL
             ),
+            buttons = persistentListOf(),
             onTakeScreenshot = {}
         )
     }
