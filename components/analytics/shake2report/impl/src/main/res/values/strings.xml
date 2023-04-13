@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="shake2report_title">Report bug</string>
+    <string name="shake2report_title">Report Bug</string>
     <string name="shake2report_name">Title</string>
     <string name="shake2report_name_placeholder">Describe the bug in one sentence</string>
     <string name="shake2report_description">Description</string>
@@ -18,6 +18,8 @@
     <string name="shake2report_issue_id">Your issue ID:</string>
     <string name="shake2report_copy">Copy</string>
     <string name="shake2report_check_bug">Check the bug in Dev/Beta version of the app. If it doesn’t reproduce, then we have already fixed it.</string>
+    <string name="shake2report_post_forum_title">Report Successful</string>
     <string name="shake2report_post_forum">You can also post your bug on our forum so we can fix it faster. [Here is the instruction how to do it.](https://flipp.dev/mobile-app-bug-report)</string>
+    <string name="shake2report_error_post_title">Report Failed</string>
     <string name="shake2report_error_post_forum">Unable to report bug from the app. Try again later or post your bug on our forum so we can fix it faster. [Here is the instruction how to do it.](https://flipp.dev/mobile-app-bug-report)</string>
 </resources>

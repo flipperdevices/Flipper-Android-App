@@ -26,7 +26,9 @@ class SettingsFeatureEntryImpl @Inject constructor() : SettingsFeatureEntry {
                 ComposableCommonSettings(navController)
             }
             composable(remoteControlStub()) {
-                ComposableMigrateRemoteControlScreen()
+                ComposableMigrateRemoteControlScreen(
+                    onBack = navController::popBackStack
+                )
             }
         }
     }

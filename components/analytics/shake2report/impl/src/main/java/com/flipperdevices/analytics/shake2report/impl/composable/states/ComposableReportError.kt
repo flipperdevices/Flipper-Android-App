@@ -1,5 +1,6 @@
 package com.flipperdevices.analytics.shake2report.impl.composable.states
 
+import com.flipperdevices.core.ui.res.R as SharedResources
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,7 +21,6 @@ import com.flipperdevices.core.markdown.ClickableUrlText
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.core.ui.res.R as SharedResources
 
 @Composable
 internal fun ComposableReportError(
@@ -32,8 +32,13 @@ internal fun ComposableReportError(
     horizontalAlignment = Alignment.CenterHorizontally,
     verticalArrangement = Arrangement.spacedBy(16.dp)
 ) {
+    Text(
+        text = stringResource(R.string.shake2report_error_post_title),
+        style = LocalTypography.current.titleSB18,
+        color = LocalPallet.current.text100
+    )
     Image(
-        modifier = Modifier.padding(bottom = 8.dp),
+        modifier = Modifier.padding(bottom = 8.dp, top = 12.dp),
         painter = painterResource(
             if (MaterialTheme.colors.isLight) {
                 SharedResources.drawable.pic_flippper_error_red

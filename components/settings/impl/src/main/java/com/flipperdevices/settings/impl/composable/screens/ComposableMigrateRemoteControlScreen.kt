@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.OrangeAppBar
@@ -24,7 +25,7 @@ import com.flipperdevices.settings.impl.R
 @Composable
 fun ComposableMigrateRemoteControlScreen(
     modifier: Modifier = Modifier,
-    onBack: () -> Unit = {}
+    onBack: () -> Unit
 ) {
     Column(modifier) {
         OrangeAppBar(
@@ -67,7 +68,8 @@ private fun ComposableMigrateDescription(
         modifier = Modifier.padding(top = 6.dp),
         text = stringResource(R.string.options_remote_control_desc),
         style = LocalTypography.current.bodyR14,
-        color = LocalPallet.current.text40
+        color = LocalPallet.current.text40,
+        textAlign = TextAlign.Center
     )
 }
 
