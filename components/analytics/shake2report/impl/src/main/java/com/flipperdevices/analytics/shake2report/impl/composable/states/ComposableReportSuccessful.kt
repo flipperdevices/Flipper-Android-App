@@ -1,6 +1,5 @@
 package com.flipperdevices.analytics.shake2report.impl.composable.states
 
-import com.flipperdevices.core.ui.res.R as SharedResources
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,6 +24,7 @@ import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
+import com.flipperdevices.core.ui.res.R as SharedResources
 
 @Composable
 internal fun ComposableReportSuccessful(
