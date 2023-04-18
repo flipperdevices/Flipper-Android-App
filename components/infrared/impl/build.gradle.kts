@@ -25,6 +25,8 @@ dependencies {
 
     implementation(libs.kotlin.serialization.json)
 
+    implementation(projects.components.core.log)
+
     // DI
     implementation(projects.components.core.di)
     implementation(libs.dagger)
