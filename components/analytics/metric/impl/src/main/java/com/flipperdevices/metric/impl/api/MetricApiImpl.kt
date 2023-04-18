@@ -6,15 +6,13 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.ComplexEvent
 import com.flipperdevices.metric.api.events.SimpleEvent
-import com.flipperdevices.metric.impl.clickhouse.ClickhouseApi
 import com.flipperdevices.metric.impl.countly.CountlyApi
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, MetricApi::class)
 class MetricApiImpl @Inject constructor(
-    private val countlyApi: CountlyApi,
-    private val clickhouseApi: ClickhouseApi
+    private val countlyApi: CountlyApi
 ) : MetricApi, LogTagProvider {
     override val TAG = "MetricApi"
 
@@ -24,11 +22,6 @@ class MetricApiImpl @Inject constructor(
         } catch (e: Exception) {
             error(e) { "Failed to report to Countly simple event: ${simpleEvent.id}" }
         }
-        try {
-            clickhouseApi.reportSimpleEvent(simpleEvent)
-        } catch (e: Exception) {
-            error(e) { "Failed to report to Clickhouse simple event: ${simpleEvent.id}" }
-        }
     }
 
     override fun reportComplexEvent(complexEvent: ComplexEvent) {
@@ -36,11 +29,6 @@ class MetricApiImpl @Inject constructor(
             countlyApi.reportEvent(complexEvent.id, complexEvent.getParamsMap())
         } catch (e: Exception) {
             error(e) { "Failed to report to Countly simple event: $complexEvent" }
-        }
-        try {
-            clickhouseApi.reportComplexEvent(complexEvent)
-        } catch (e: Exception) {
-            error(e) { "Failed to report to Clickhouse simple event: $complexEvent" }
         }
     }
 }
