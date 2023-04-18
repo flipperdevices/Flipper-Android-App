@@ -83,7 +83,7 @@ internal class DeprecatedFlipperRpcInfoMapper : FlipperRpcInfoMapper {
 
         val radioStackInfo = RadioStackInfo(
             type = radioType(radioType),
-            radioFirmware = radioFirmware(radioMajor, radioMinor, radioType)
+            radioFirmware = radioFirmware(radioMajor, radioMinor)
         )
 
         return FlipperRpcInformation(

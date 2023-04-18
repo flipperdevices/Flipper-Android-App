@@ -40,14 +40,13 @@ object RpcInformationInfoHelper {
         }
     }
 
-    // radio Major.Minor.Type
+    // radio Major.Minor
     fun radioFirmware(
         radioMajor: String?,
         radioMinor: String?,
-        radioType: String?
     ): String? {
-        return if (isNotNull(radioMajor, radioMinor, radioType)) {
-            "$radioMajor.$radioMinor.$radioType"
+        return if (isNotNull(radioMajor, radioMinor)) {
+            "$radioMajor.$radioMinor"
         } else {
             null
         }

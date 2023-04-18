@@ -82,8 +82,7 @@ internal class NewFlipperRpcInfoMapper : FlipperRpcInfoMapper {
             type = RpcInformationInfoHelper.radioType(radioType),
             radioFirmware = RpcInformationInfoHelper.radioFirmware(
                 radioMajor,
-                radioMinor,
-                radioType
+                radioMinor
             )
         )
 
