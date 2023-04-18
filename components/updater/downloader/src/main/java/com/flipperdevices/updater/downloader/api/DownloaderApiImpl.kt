@@ -29,7 +29,7 @@ import java.io.File
 import java.util.EnumMap
 import javax.inject.Inject
 
-private const val UPDATER_URL = "https://update.flipperzero.one/firmware/directory.json"
+private const val UPDATER_URL = "https://up.unleashedflip.com/directory.json"
 private const val SUB_GHZ_URL = "https://update.flipperzero.one/regions/api/v0/bundle"
 
 @ContributesBinding(AppGraph::class, DownloaderApi::class)
