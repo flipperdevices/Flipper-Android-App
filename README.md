@@ -1,18 +1,27 @@
-# Flipper Android App [![Flipper App Status](https://github.com/flipperdevices/Flipper-Android-App/actions/workflows/internal.yml/badge.svg)](https://github.com/Flipper-Zero/Flipper-Android-App/releases) [![Discord](https://img.shields.io/discord/740930220399525928.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](http://flipperzero.one/discord)
+# Unleashed Flipper Android App
 
-Mobile app to rule all Flipper's family
-
-![dolphin-dark](.github/dark_theme_banner.png#gh-dark-mode-only)
-![dolphin-light](.github/light_theme_banner.png#gh-light-mode-only)
+Mobile app to rule all Flipper's family, made for Unleashed Firmware
 
 ## Download
 
+get the app from the [Releases Section](https://github.com/DarkFlippers/Unleashed-Flipper-Android-App/releases/latest).
 
-[<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
-     alt="Get it on Google Play"
-     height="80">](https://play.google.com/store/apps/details?id=com.flipperdevices.app)
+## Please support development of the project
 
-or get the app from the [Releases Section](https://github.com/flipperdevices/Flipper-Android-App/releases/latest).
+You can support us by using links or addresses below:
+* **Boosty** (patreon alternative): https://boosty.to/mmxdev
+* Ko-Fi: https://ko-fi.com/masterx
+* cloudtips (only RU payments accepted): https://pay.cloudtips.ru/p/7b3e9d65
+* YooMoney (only RU payments accepted): https://yoomoney.ru/fundraise/XA49mgQLPA0.221209
+* USDT(TRC20): `TSXcitMSnWXUFqiUfEXrTVpVewXy2cYhrs`
+* BCH: `qquxfyzntuqufy2dx0hrfr4sndp0tucvky4sw8qyu3`
+* ETH/BSC/ERC20-Tokens: `darkflippers.eth` (or `0xFebF1bBc8229418FF2408C07AF6Afa49152fEc6a`)
+* BTC: `bc1q0np836jk9jwr4dd7p6qv66d04vamtqkxrecck9`
+* DOGE: `D6R6gYgBn5LwTNmPyvAQR6bZ9EtGgFCpvv`
+* LTC: `ltc1q3ex4ejkl0xpx3znwrmth4lyuadr5qgv8tmq8z9`
+* XMR (Monero): `41xUz92suUu1u5Mu4qkrcs52gtfpu9rnZRdBpCJ244KRHf6xXSvVFevdf2cnjS7RAeYr5hn9MsEfxKoFDRSctFjG5fv1Mhn`
+* TON: `EQCOqcnYkvzOZUV_9bPE_8oTbOrOF03MnF-VcJyjisTZmpGf`
+
 
 ## Module arch
 
