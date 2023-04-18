@@ -36,13 +36,12 @@
     <string name="experimental_application_switch">New switch in Apps</string>
 
     <string name="other_github_open">GitHub</string>
-    <string name="other_github_url">https://github.com/flipperdevices/Flipper-Android-App</string>
-    <string name="other_forum_open">Forum</string>
-    <string name="other_forum_url">https://forum.flipperzero.one/</string>
-    <string name="other_shake2report_open">Report a bug</string>
+    <string name="other_github_url">https://github.com/DarkFlippers/Unleashed-Flipper-Android-App</string>
+    <string name="other_telegram_open">Telegram</string>
+    <string name="other_telegram_url">https://t.me/flipperzero_unofficial</string>
     <string name="export_keys">Backup keys</string>
     <string name="export_keys_picker_title">Save the zip with the keys…</string>
-    <string name="version_name_app">Flipper Mobile App</string>
+    <string name="version_name_app">Unleashed Flipper Mobile App</string>
     <string name="version">Version</string>
 
     <string name="options_remote_control_title">Remote Control</string>
