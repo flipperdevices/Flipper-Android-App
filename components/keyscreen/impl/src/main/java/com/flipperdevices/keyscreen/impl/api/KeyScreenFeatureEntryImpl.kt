@@ -14,6 +14,7 @@ import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.flipperdevices.core.ui.navigation.LocalGlobalNavigationNavStack
 import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.flipperdevices.keyedit.api.KeyEditFeatureEntry
+import com.flipperdevices.keyscreen.api.ChooserKeyScreen
 import com.flipperdevices.keyscreen.api.KeyEmulateApi
 import com.flipperdevices.keyscreen.api.KeyScreenFeatureEntry
 import com.flipperdevices.keyscreen.impl.composable.ComposableKeyScreen
@@ -42,15 +43,23 @@ class KeyScreenFeatureEntryImpl @Inject constructor(
     private val keyEmulateApi: KeyEmulateApi,
     private val nfcEditorFeatureEntry: NfcEditorFeatureEntry,
     private val keyEditFeatureEntry: KeyEditFeatureEntry,
-    private val shareBottomFeatureEntry: ShareBottomFeatureEntry
+    private val shareBottomFeatureEntry: ShareBottomFeatureEntry,
+    private val chooserKeyScreen: MutableSet<ChooserKeyScreen>,
 ) : KeyScreenFeatureEntry {
     override fun getKeyScreen(keyPath: FlipperKeyPath): String {
-        return "@${ROUTE.name}?key_path=${Uri.encode(Json.encodeToString(keyPath))}"
+        val keyPathStr = Uri.encode(Json.encodeToString(keyPath))
+        return chooserKeyScreen
+            .firstOrNull { it.isSupported(keyPath) }
+            ?.getScreen(keyPath)
+            ?: "@${ROUTE.name}?key_path=$keyPathStr"
     }
 
     override fun getKeyScreenByDeeplink(keyPath: FlipperKeyPath): String {
         val keyPathStr = Uri.encode(Json.encodeToString(keyPath))
-        return "${DEEPLINK_SCHEME}flipper_key=$keyPathStr"
+        return chooserKeyScreen
+            .firstOrNull { it.isSupported(keyPath) }
+            ?.getDeeplink(keyPath)
+            ?: "${DEEPLINK_SCHEME}flipper_key=$keyPathStr"
     }
 
     private val keyScreenArguments = listOf(

@@ -194,4 +194,7 @@ include(
     ":components:selfupdater:thirdparty:api",
     ":components:selfupdater:thirdparty:github",
     ":components:selfupdater:thirdparty:fdroid",
+
+    ":components:infrared:api",
+    ":components:infrared:impl",
 )

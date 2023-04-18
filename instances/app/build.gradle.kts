@@ -184,6 +184,9 @@ dependencies {
         }
     }
 
+    implementation(projects.components.infrared.api)
+    implementation(projects.components.infrared.impl)
+
     implementation(libs.ktor.client)
 
     implementation(libs.annotations)
