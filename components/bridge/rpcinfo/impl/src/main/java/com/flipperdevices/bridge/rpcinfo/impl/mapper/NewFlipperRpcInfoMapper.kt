@@ -14,10 +14,10 @@ private const val HARDWARE_VERSION = "devinfo_hardware.ver"
 private const val HARDWARE_OTP_VERSION = "devinfo_hardware.otp.ver"
 private const val SERIAL_NUMBER = "devinfo_hardware.uid"
 
-private const val FIRMWARE_COMMIT = "devinfo_firmware.commit.hash"
 private const val FIRMWARE_BRANCH = "devinfo_firmware.branch.name"
 private const val FIRMWARE_BUILD_DATE = "devinfo_firmware.build.date"
 private const val FIRMWARE_TARGET = "devinfo_firmware.target"
+private const val FIRMWARE_VERSION = "devinfo_firmware.version"
 private const val PROTOBUF_MAJOR = "devinfo_protobuf.version.major"
 private const val PROTOBUF_MINOR = "devinfo_protobuf.version.minor"
 private const val DEVICE_INFO_MAJOR = "devinfo_format.major"
@@ -32,8 +32,8 @@ private const val RADIO_STACK_SUB = "devinfo_radio.stack.sub"
 private val usedFields = setOf(
     DEVICE_NAME, HARDWARE_MODEL, HARDWARE_REGION, HARDWARE_REGION_PROV,
     HARDWARE_VERSION, HARDWARE_OTP_VERSION, SERIAL_NUMBER,
-    FIRMWARE_COMMIT, FIRMWARE_BRANCH, FIRMWARE_BUILD_DATE,
-    FIRMWARE_TARGET, PROTOBUF_MAJOR, PROTOBUF_MINOR,
+    FIRMWARE_BRANCH, FIRMWARE_BUILD_DATE,
+    FIRMWARE_TARGET, FIRMWARE_VERSION, PROTOBUF_MAJOR, PROTOBUF_MINOR,
     RADIO_STACK_MAJOR, RADIO_STACK_MINOR, RADIO_STACK_TYPE, RADIO_STACK_SUB,
     DEVICE_INFO_MAJOR, DEVICE_INFO_MINOR
 )
@@ -53,10 +53,10 @@ internal class NewFlipperRpcInfoMapper : FlipperRpcInfoMapper {
             serialNumber = fields[SERIAL_NUMBER]
         )
 
-        val firmwareCommit = fields[FIRMWARE_COMMIT]
+        val firmwareVersion = fields[FIRMWARE_VERSION]
         val firmwareBranch = fields[FIRMWARE_BRANCH]
         val softwareRevision =
-            RpcInformationInfoHelper.softwareRevision(firmwareCommit, firmwareBranch)
+            RpcInformationInfoHelper.softwareRevision(firmwareVersion, firmwareBranch)
 
         val protobufMajor = fields[PROTOBUF_MAJOR]
         val protobufMinor = fields[PROTOBUF_MINOR]
