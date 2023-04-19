@@ -18,7 +18,6 @@ import com.flipperdevices.settings.impl.composable.category.DebugCategory
 import com.flipperdevices.settings.impl.composable.category.ExperimentalCategory
 import com.flipperdevices.settings.impl.composable.category.ExportKeysCategory
 import com.flipperdevices.settings.impl.composable.category.OtherSettingsCategory
-import com.flipperdevices.settings.impl.composable.category.ThemeCategory
 import com.flipperdevices.settings.impl.composable.category.VersionCategory
 import com.flipperdevices.settings.impl.viewmodels.SettingsViewModel
 import tangle.viewmodel.compose.tangleViewModel
@@ -38,7 +37,6 @@ fun ComposableCommonSettings(
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
         OrangeAppBar(R.string.options, onBack = navController::popBackStack)
-        ThemeCategory(settingsViewModel)
         if (settings.expertMode) {
             DebugCategory(settings, navController, settingsViewModel)
         }

@@ -8,7 +8,6 @@ import androidx.navigation.NavController
 import com.flipperdevices.core.di.ApplicationParams
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
-import com.flipperdevices.core.preference.pb.SelectedTheme
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.share.ShareHelper
 import com.flipperdevices.selfupdater.api.SelfUpdaterApi
@@ -91,20 +90,6 @@ class SettingsViewModel @VMInject constructor(
                 exportStateFlow.compareAndSet(ExportState.IN_PROGRESS, ExportState.NOT_STARTED)
             }
         }
-    }
-
-    fun onChangeSelectedTheme(theme: SelectedTheme) {
-        viewModelScope.launch {
-            dataStoreSettings.updateData {
-                it.toBuilder()
-                    .setSelectedTheme(theme)
-                    .build()
-            }
-        }
-    }
-
-    fun getSelectedTheme(): SelectedTheme {
-        return settingsState.value.selectedTheme
     }
 
     fun onExpertModeActivate() {
