@@ -25,6 +25,5 @@ fun OtherSettingsCategory(
             titleId = R.string.other_github_open,
             url = stringResource(R.string.other_github_url)
         )
-        GrayDivider()
     }
 }
