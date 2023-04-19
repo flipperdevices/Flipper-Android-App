@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.flipperdevices.core.di.ApplicationParams
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
@@ -13,8 +12,6 @@ import com.flipperdevices.core.share.ShareHelper
 import com.flipperdevices.selfupdater.api.SelfUpdaterApi
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.model.ExportState
-import com.flipperdevices.shake2report.api.Shake2ReportApi
-import com.flipperdevices.shake2report.api.Shake2ReportFeatureEntry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -29,8 +26,6 @@ class SettingsViewModel @VMInject constructor(
     private val dataStoreSettings: DataStore<Settings>,
     private val applicationParams: ApplicationParams,
     private val exportKeysHelper: ExportKeysHelper,
-    private val shake2ReportFeatureEntry: Shake2ReportFeatureEntry,
-    private val shake2ReportApi: Shake2ReportApi,
     private val selfUpdaterApi: SelfUpdaterApi
 ) : ViewModel(), LogTagProvider {
     override val TAG = "SettingsViewModel"
@@ -47,8 +42,6 @@ class SettingsViewModel @VMInject constructor(
     fun getState(): StateFlow<Settings> = settingsState
 
     fun getExportState(): StateFlow<ExportState> = exportStateFlow
-
-    fun getShake2ReportInitializationState(): StateFlow<Boolean> = shake2ReportApi.isInitialized()
 
     fun onSwitchDebug(value: Boolean) {
         viewModelScope.launch {
@@ -68,10 +61,6 @@ class SettingsViewModel @VMInject constructor(
                     .build()
             }
         }
-    }
-
-    fun onReportBug(navController: NavController) {
-        navController.navigate(shake2ReportFeatureEntry.start())
     }
 
     fun onMakeExport(context: Context) {
