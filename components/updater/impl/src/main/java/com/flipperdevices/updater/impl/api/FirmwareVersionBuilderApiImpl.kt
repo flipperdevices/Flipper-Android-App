@@ -10,10 +10,9 @@ import javax.inject.Inject
 private const val DEVICE_VERSION_PART_COUNT = 4
 private const val DEVICE_VERSION_COMMIT_INDEX = 0
 private const val DEVICE_VERSION_TYPE_INDEX = 1
-private const val DEVICE_VERSION_TYPE_DEV = "dev"
-private const val DEVICE_VERSION_TYPE_RC = "rc"
-private const val DEVICE_VERSION_TYPE_RC_REGEX = "^\\d+\\.\\d+\\.\\d+-rc"
-private const val DEVICE_VERSION_TYPE_RELEASE_REGEX = "^\\d+\\.\\d+\\.\\d+"
+private const val DEVICE_VERSION_TYPE_DEV = "dev-cfw"
+private const val DEVICE_VERSION_TYPE_RELEASE_CANDIDATE = "rc-cfw"
+private const val DEVICE_VERSION_TYPE_RELEASE = "release-cfw"
 private const val DEVICE_VERSION_DATE_INDEX = 3
 
 @ContributesBinding(AppGraph::class, FirmwareVersionBuilderApi::class)
@@ -24,11 +23,11 @@ class FirmwareVersionBuilderApiImpl @Inject constructor() : FirmwareVersionBuild
             return FirmwareChannel.DEV
         }
 
-        if (DEVICE_VERSION_TYPE_RC_REGEX.toRegex() matches preparedBranch) {
+        if (preparedBranch == DEVICE_VERSION_TYPE_RELEASE_CANDIDATE) {
             return FirmwareChannel.RELEASE_CANDIDATE
         }
 
-        if (DEVICE_VERSION_TYPE_RELEASE_REGEX.toRegex() matches preparedBranch) {
+        if (preparedBranch == DEVICE_VERSION_TYPE_RELEASE) {
             return FirmwareChannel.RELEASE
         }
 
@@ -52,14 +51,7 @@ class FirmwareVersionBuilderApiImpl @Inject constructor() : FirmwareVersionBuild
                 version = hash,
                 buildDate = date
             )
-            FirmwareChannel.RELEASE_CANDIDATE -> FirmwareVersion(
-                channel = channel,
-                version = typeVersion.replace(
-                    "-$DEVICE_VERSION_TYPE_RC",
-                    ""
-                ),
-                buildDate = date
-            )
+            FirmwareChannel.RELEASE_CANDIDATE,
             FirmwareChannel.RELEASE,
             FirmwareChannel.UNKNOWN,
             FirmwareChannel.CUSTOM -> FirmwareVersion(
