@@ -26,11 +26,12 @@ class KeyEmulateApiImpl @Inject constructor() : KeyEmulateApi {
             )
             FlipperKeyType.I_BUTTON,
             FlipperKeyType.RFID,
+            FlipperKeyType.INFRARED,
             FlipperKeyType.NFC -> ComposableSimpleEmulateButton(
                 modifier = modifier,
                 flipperKey = flipperKey
             )
-            FlipperKeyType.INFRARED, null -> {}
+            null -> {}
         }
     }
 }

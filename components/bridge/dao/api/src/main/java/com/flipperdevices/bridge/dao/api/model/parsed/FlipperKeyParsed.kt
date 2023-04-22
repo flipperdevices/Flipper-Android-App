@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.dao.api.model.parsed
 
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
+import com.flipperdevices.bridge.dao.api.model.infrared.InfraredControl
 import kotlinx.collections.immutable.ImmutableList
 
 sealed class FlipperKeyParsed(
@@ -11,7 +12,8 @@ sealed class FlipperKeyParsed(
     class Infrared(
         keyName: String,
         notes: String?,
-        val protocol: String?
+        val protocol: String?,
+        val remotes: List<InfraredControl>
     ) : FlipperKeyParsed(keyName, notes, FlipperKeyType.INFRARED)
 
     @Suppress("LongParameterList")

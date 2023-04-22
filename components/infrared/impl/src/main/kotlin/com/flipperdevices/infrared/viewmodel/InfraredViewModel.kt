@@ -2,66 +2,59 @@ package com.flipperdevices.infrared.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.flipperdevices.bridge.dao.api.delegates.KeyParser
-import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
-import com.flipperdevices.bridge.dao.api.delegates.key.UpdateKeyApi
-import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
+import com.flipperdevices.bridge.dao.api.model.infrared.InfraredControl
+import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.core.log.warn
 import com.flipperdevices.infrared.api.EXTRA_KEY_PATH
-import com.flipperdevices.infrared.models.InfraredKeyState
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.launch
+import com.flipperdevices.keyscreen.api.state.DeleteState
+import com.flipperdevices.keyscreen.api.state.FavoriteState
+import com.flipperdevices.keyscreen.api.state.KeyScreenState
+import com.flipperdevices.keyscreen.api.state.KeyStateHelperApi
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import tangle.inject.TangleParam
 import tangle.viewmodel.VMInject
 
 class InfraredViewModel @VMInject constructor(
     @TangleParam(EXTRA_KEY_PATH)
     private val keyPath: FlipperKeyPath,
-    private val updaterKeyApi: UpdateKeyApi,
-    private val simpleKeyApi: SimpleKeyApi,
-    private val keyParser: KeyParser,
+    keyStateHelperApi: KeyStateHelperApi.Builder,
 ) : ViewModel(), LogTagProvider {
     override val TAG = "InfraredViewModel"
 
-    private val state = MutableStateFlow<InfraredKeyState>(InfraredKeyState.Error)
-    fun state() = state.asStateFlow()
+    private val keyStateHelper = keyStateHelperApi.build(keyPath, viewModelScope)
 
-    init {
-        viewModelScope.launch { processFlowKey() }
+    fun state() = keyStateHelper.getKeyScreenState()
+
+    fun getRemoteControls(): ImmutableList<InfraredControl> {
+        val state = keyStateHelper.getKeyScreenState().value
+        if (state !is KeyScreenState.Ready) return persistentListOf()
+
+        val keyParser = state.parsedKey
+        if (keyParser !is FlipperKeyParsed.Infrared) return persistentListOf()
+
+        return keyParser.remotes.toImmutableList()
     }
 
-    private suspend fun processFlowKey() {
-        if (keyPath.path.keyType != FlipperKeyType.INFRARED) {
-            state.emit(InfraredKeyState.Error)
-            warn { "Key type is not infrared" }
-            return
-        }
+    fun onRename(action: (FlipperKeyPath) -> Unit) = keyStateHelper.onOpenEdit(action)
 
-        viewModelScope.launch {
-            updaterKeyApi.subscribeOnUpdatePath(keyPath).flatMapLatest {
-                simpleKeyApi.getKeyAsFlow(it)
-            }.collectLatest { flipperKey ->
-                when {
-                    flipperKey == null -> {
-                        state.emit(InfraredKeyState.Error)
-                    }
-                    (flipperKey.flipperKeyType != FlipperKeyType.INFRARED) -> {
-                        state.emit(InfraredKeyState.Error)
-                    }
-                    else -> {
-                        processParserKey(flipperKey)
-                    }
-                }
-            }
+    fun onDelete(action: () -> Unit) {
+        val state = keyStateHelper.getKeyScreenState().value
+        if (state !is KeyScreenState.Ready) return
+
+        when (state.deleteState) {
+            DeleteState.DELETED -> return
+            DeleteState.PROGRESS -> return
+            DeleteState.NOT_DELETED -> keyStateHelper.onDelete(action)
         }
     }
 
-    private suspend fun processParserKey(flipperKey: FlipperKey) {
+    fun onFavorite() {
+        val state = keyStateHelper.getKeyScreenState().value
+        if (state !is KeyScreenState.Ready) return
+
+        keyStateHelper.setFavorite(state.favoriteState != FavoriteState.FAVORITE)
     }
 }

@@ -10,19 +10,20 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.api.model.navigation.FlipperKeyPathType
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ui.ktx.SetUpNavigationBarColor
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.flipperdevices.core.ui.navigation.LocalGlobalNavigationNavStack
+import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.flipperdevices.keyedit.api.KeyEditFeatureEntry
 import com.flipperdevices.keyscreen.api.ChooserKeyScreen
 import com.flipperdevices.keyscreen.api.KeyEmulateApi
 import com.flipperdevices.keyscreen.api.KeyScreenFeatureEntry
 import com.flipperdevices.keyscreen.impl.composable.ComposableKeyScreen
-import com.flipperdevices.keyscreen.impl.composable.card.KeyScreenNavigation
 import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModel
 import com.flipperdevices.nfceditor.api.NfcEditorApi
 import com.flipperdevices.nfceditor.api.NfcEditorFeatureEntry
-import com.flipperdevices.share.api.ShareBottomFeatureEntry
+import com.flipperdevices.share.api.ShareBottomUIApi
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
 import kotlinx.serialization.encodeToString
@@ -43,7 +44,7 @@ class KeyScreenFeatureEntryImpl @Inject constructor(
     private val keyEmulateApi: KeyEmulateApi,
     private val nfcEditorFeatureEntry: NfcEditorFeatureEntry,
     private val keyEditFeatureEntry: KeyEditFeatureEntry,
-    private val shareBottomFeatureEntry: ShareBottomFeatureEntry,
+    private val shareBottomUI: ShareBottomUIApi,
     private val chooserKeyScreen: MutableSet<ChooserKeyScreen>,
 ) : KeyScreenFeatureEntry {
     override fun getKeyScreen(keyPath: FlipperKeyPath): String {
@@ -81,9 +82,11 @@ class KeyScreenFeatureEntryImpl @Inject constructor(
             arguments = keyScreenArguments,
             deepLinks = deeplinkArguments
         ) {
+            SetUpNavigationBarColor(LocalPallet.current.background)
             val viewModel: KeyScreenViewModel = tangleViewModel()
             val globalNavController = LocalGlobalNavigationNavStack.current
-            KeyScreenNavigation(shareBottomFeatureEntry) { onShare ->
+
+            shareBottomUI.ComposableShareBottomSheet { onShare ->
                 ComposableKeyScreen(
                     viewModel = viewModel,
                     synchronizationUiApi = synchronizationUiApi,

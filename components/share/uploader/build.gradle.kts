@@ -34,6 +34,7 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
     implementation(libs.compose.navigation)
+    implementation(libs.compose.navigation.material)
 
     // Dagger deps
     implementation(libs.dagger)

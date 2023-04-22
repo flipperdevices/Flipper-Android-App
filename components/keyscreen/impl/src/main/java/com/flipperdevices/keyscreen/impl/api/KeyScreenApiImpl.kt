@@ -5,8 +5,8 @@ import androidx.compose.ui.Modifier
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.keyscreen.api.KeyScreenApi
+import com.flipperdevices.keyscreen.api.state.DeleteState
 import com.flipperdevices.keyscreen.impl.composable.card.ComposableKeyCard
-import com.flipperdevices.keyscreen.impl.model.DeleteState
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 

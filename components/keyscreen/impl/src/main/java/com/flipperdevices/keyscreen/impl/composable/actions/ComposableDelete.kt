@@ -2,10 +2,10 @@ package com.flipperdevices.keyscreen.impl.composable.actions
 
 import androidx.compose.runtime.Composable
 import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.keyscreen.api.state.DeleteState
 import com.flipperdevices.keyscreen.impl.R
 import com.flipperdevices.keyscreen.impl.composable.actions.common.ComposableActionRow
 import com.flipperdevices.keyscreen.impl.composable.actions.common.ComposableActionRowInProgress
-import com.flipperdevices.keyscreen.impl.model.DeleteState
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable

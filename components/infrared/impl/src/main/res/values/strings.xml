@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="menu_favorite_remove">Remove from Favorites</string>
+    <string name="menu_favorite_add">Add to Favorites</string>
+    <string name="menu_edit">Edit Remote</string>
+    <string name="menu_rename">Rename Remote</string>
+    <string name="menu_share">Share Remote</string>
+    <string name="menu_delete">Delete Remote</string>
+</resources>

@@ -8,8 +8,16 @@ plugins {
 dependencies {
     // Api
     implementation(projects.components.infrared.api)
+    implementation(projects.components.share.api)
+    implementation(projects.components.keyedit.api)
     implementation(projects.components.keyscreen.api)
+    implementation(projects.components.keyscreen.shared)
     implementation(projects.components.bridge.dao.api)
+
+    // Core
+    implementation(projects.components.core.ui.ktx)
+    implementation(projects.components.core.ui.res)
+    implementation(projects.components.core.ui.theme)
 
     // Navigation
     implementation(libs.compose.navigation)
@@ -24,6 +32,7 @@ dependencies {
     implementation(libs.compose.navigation.material)
 
     implementation(libs.kotlin.serialization.json)
+    implementation(libs.kotlin.immutable.collections)
 
     implementation(projects.components.core.log)
 

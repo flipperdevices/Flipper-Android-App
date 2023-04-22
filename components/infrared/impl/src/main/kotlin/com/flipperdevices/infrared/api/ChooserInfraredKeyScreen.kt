@@ -16,6 +16,7 @@ class ChooserInfraredKeyScreen @Inject constructor() : ChooserKeyScreen {
     private val route = FeatureScreenRootRoute.INFRARED
 
     override fun isSupported(keyPath: FlipperKeyPath): Boolean {
+        if (keyPath.deleted) return false
         return keyPath.path.keyType == FlipperKeyType.INFRARED
     }
 
