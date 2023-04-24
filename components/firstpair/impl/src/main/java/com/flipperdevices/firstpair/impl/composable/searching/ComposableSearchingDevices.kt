@@ -21,9 +21,12 @@ fun ComposableSearchingDevices(
 ) {
     val devices = state.devices
 
-    SwipeRefresh(onRefreshSearching) {
+    SwipeRefresh(
+        modifier = modifier,
+        onRefresh = onRefreshSearching
+    ) {
         LazyColumn(
-            modifier = modifier.padding(vertical = 18.dp),
+            modifier = Modifier.padding(vertical = 18.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             items(
