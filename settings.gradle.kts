@@ -197,4 +197,5 @@ include(
 
     ":components:infrared:api",
     ":components:infrared:impl",
+    ":components:infrared:editor",
 )

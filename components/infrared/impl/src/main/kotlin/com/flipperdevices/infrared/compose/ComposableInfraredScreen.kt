@@ -16,10 +16,11 @@ internal fun ComposableInfraredScreen(
     viewModel: InfraredViewModel,
     onShare: (FlipperKeyPath) -> Unit,
     onRename: (FlipperKeyPath) -> Unit,
+    onEdit: (FlipperKeyPath) -> Unit,
     onBack: () -> Unit,
     keyEmulateApi: KeyEmulateApi,
 ) {
-    val state by viewModel.state().collectAsState()
+    val state by viewModel.keyState().collectAsState()
 
     when (val localState = state) {
         is KeyScreenState.Error -> ComposableInfraredErrorScreen(errorId = localState.reason)
@@ -31,7 +32,8 @@ internal fun ComposableInfraredScreen(
                 viewModel = viewModel,
                 onShare = { onShare(localState.flipperKey.getKeyPath()) },
                 onBack = onBack,
-                onRename = onRename
+                onRename = onRename,
+                onEdit = { onEdit(localState.flipperKey.getKeyPath()) },
             )
         }
     }

@@ -111,6 +111,8 @@ data class FlipperPallet(
     val actionOnFlipperProgress: Color = Color(0xFF89B9FE)
     val actionOnFlipperSubGhzEnable: Color = Color(0xFFFF8200)
     val actionOnFlipperSubGhzProgress: Color = Color(0xFFFEA64B)
+    val actionOnFlipperInfraredEnable: Color = Color(0xFFFF8200)
+    val actionOnFlipperInfraredProgress: Color = Color(0xFFFEA64B)
 
     val forgetFlipper: Color = Color(0xFFF63F3F)
     val progressBarGray: Color = Color(0xFFAAAAAA)

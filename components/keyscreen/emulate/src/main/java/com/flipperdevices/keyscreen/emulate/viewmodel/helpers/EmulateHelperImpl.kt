@@ -78,7 +78,8 @@ class EmulateHelperImpl @Inject constructor(
         serviceApi: FlipperServiceApi,
         keyType: FlipperKeyType,
         keyPath: FlipperFilePath,
-        minEmulateTime: Long
+        minEmulateTime: Long,
+        args: String?
     ) = withLockResult(mutex, "start") {
         val requestApi = serviceApi.requestApi
         if (currentKeyEmulating.value != null) {
@@ -92,7 +93,8 @@ class EmulateHelperImpl @Inject constructor(
                 serviceApi,
                 keyType,
                 keyPath,
-                minEmulateTime
+                minEmulateTime,
+                args
             )
         } catch (throwable: Throwable) {
             error(throwable) { "Failed start $keyPath" }
@@ -147,13 +149,14 @@ class EmulateHelperImpl @Inject constructor(
         AlreadyOpenedAppException::class,
         ForbiddenFrequencyException::class
     )
-    @Suppress("LongMethod")
+    @Suppress("LongMethod", "LongParameterList")
     private suspend fun startEmulateInternal(
         scope: CoroutineScope,
         serviceApi: FlipperServiceApi,
         keyType: FlipperKeyType,
         keyPath: FlipperFilePath,
-        minEmulateTime: Long
+        minEmulateTime: Long,
+        argButton: String?
     ): Boolean {
         val requestApi = serviceApi.requestApi
         info { "startEmulateInternal" }
@@ -186,24 +189,56 @@ class EmulateHelperImpl @Inject constructor(
             error { "Failed start key with error $appLoadFileResponse" }
             return false
         }
-        if (keyType != FlipperKeyType.SUB_GHZ) {
-            info { "Skip execute button press: $appLoadFileResponse" }
-            return true
-        }
-        info { "This is subghz, so start press button" }
-        val appButtonPressResponse = requestApi.request(
-            flowOf(
-                main {
-                    appButtonPressRequest = appButtonPressRequest {}
-                }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
-            )
-        )
-        val responseStatus = appButtonPressResponse.commandStatus
 
-        if (responseStatus == Flipper.CommandStatus.OK) {
-            stopEmulateTimeAllowedMs = TimeHelper.getNow() + minEmulateTime
-            return true
+        return when (keyType) {
+            FlipperKeyType.SUB_GHZ -> {
+                info { "This is subghz, so start press button" }
+                val appButtonPressResponse = requestApi.request(
+                    flowOf(
+                        main {
+                            appButtonPressRequest = appButtonPressRequest {}
+                        }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
+                    )
+                )
+                val responseStatus = appButtonPressResponse.commandStatus
+
+                if (responseStatus == Flipper.CommandStatus.OK) {
+                    stopEmulateTimeAllowedMs = TimeHelper.getNow() + minEmulateTime
+                    return true
+                }
+                processError(appButtonPressResponse, serviceApi)
+            }
+            FlipperKeyType.INFRARED -> {
+                info { "This is infarared, so start press button" }
+                if (argButton == null) {
+                    error { "Button arg is null" }
+                    return false
+                }
+                val appButtonPressResponse = requestApi.request(
+                    flowOf(
+                        main {
+                            appButtonPressRequest = appButtonPressRequest {
+                                args = argButton
+                            }
+                        }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
+                    )
+                )
+                processError(appButtonPressResponse, serviceApi)
+            }
+            FlipperKeyType.RFID,
+            FlipperKeyType.NFC,
+            FlipperKeyType.I_BUTTON -> {
+                info { "Skip execute button press: $appLoadFileResponse" }
+                true
+            }
         }
+    }
+
+    private suspend fun processError(
+        response: Flipper.Main,
+        serviceApi: FlipperServiceApi,
+    ): Boolean {
+        val responseStatus = response.commandStatus
 
         val flipperError = flipperAppErrorHelper.requestError(
             serviceApi = serviceApi,
@@ -215,7 +250,7 @@ class EmulateHelperImpl @Inject constructor(
             throw ForbiddenFrequencyException()
         }
 
-        error { "Failed press key $appButtonPressResponse error $flipperError" }
+        error { "Failed press key $response error $flipperError" }
         return false
     }
 

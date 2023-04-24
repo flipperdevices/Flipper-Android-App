@@ -14,6 +14,10 @@ import com.flipperdevices.keyscreen.api.state.KeyStateHelperApi
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import tangle.inject.TangleParam
 import tangle.viewmodel.VMInject
 
@@ -25,17 +29,29 @@ class InfraredViewModel @VMInject constructor(
     override val TAG = "InfraredViewModel"
 
     private val keyStateHelper = keyStateHelperApi.build(keyPath, viewModelScope)
+    fun keyState() = keyStateHelper.getKeyScreenState()
+    private val controlState = MutableStateFlow<ImmutableList<InfraredControl>>(persistentListOf())
+    fun controlState() = controlState.asStateFlow()
 
-    fun state() = keyStateHelper.getKeyScreenState()
+    init {
+        viewModelScope.launch {
+            keyStateHelper.getKeyScreenState().collectLatest(::collectControls)
+        }
+    }
 
-    fun getRemoteControls(): ImmutableList<InfraredControl> {
-        val state = keyStateHelper.getKeyScreenState().value
-        if (state !is KeyScreenState.Ready) return persistentListOf()
+    private suspend fun collectControls(state: KeyScreenState) {
+        if (state !is KeyScreenState.Ready) {
+            controlState.emit(persistentListOf())
+            return
+        }
 
         val keyParser = state.parsedKey
-        if (keyParser !is FlipperKeyParsed.Infrared) return persistentListOf()
+        if (keyParser !is FlipperKeyParsed.Infrared) {
+            controlState.emit(persistentListOf())
+            return
+        }
 
-        return keyParser.remotes.toImmutableList()
+        controlState.emit(keyParser.remotes.toImmutableList())
     }
 
     fun onRename(action: (FlipperKeyPath) -> Unit) = keyStateHelper.onOpenEdit(action)

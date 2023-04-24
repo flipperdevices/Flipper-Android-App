@@ -1,4 +1,4 @@
-package com.flipperdevices.keyscreen.emulate.composable.common
+package com.flipperdevices.keyscreen.emulate.composable.common.action
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
@@ -32,8 +33,36 @@ fun ComposableActionDisable(
     ComposableEmulateButtonWithText(
         modifier = modifier,
         progress = null,
-        buttonTextId = textId,
+        buttonText = stringResource(id = textId),
         picture = Picture.StaticRes(iconId),
+        color = LocalPallet.current.text8,
+        textId = warningTextId,
+        iconId = if (warningTextId != null) {
+            DesignSystem.drawable.ic_warning
+        } else {
+            null
+        }
+    )
+}
+
+@Composable
+fun ComposableActionDisable(
+    @DrawableRes iconId: Int?,
+    text: String,
+    modifier: Modifier = Modifier,
+    reason: DisableButtonReason? = null
+) {
+    val warningTextId = when (reason) {
+        DisableButtonReason.UNKNOWN, null -> null
+        DisableButtonReason.UPDATE_FLIPPER -> R.string.emulate_disabled_update_flipper
+        DisableButtonReason.NOT_CONNECTED -> R.string.emulate_disabled_not_connected
+        DisableButtonReason.NOT_SYNCHRONIZED -> R.string.emulate_disabled_not_synchronized
+    }
+    ComposableEmulateButtonWithText(
+        modifier = modifier,
+        progress = null,
+        buttonText = text,
+        picture = iconId?.let { Picture.StaticRes(it) },
         color = LocalPallet.current.text8,
         textId = warningTextId,
         iconId = if (warningTextId != null) {

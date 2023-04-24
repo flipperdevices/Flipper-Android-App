@@ -1,4 +1,4 @@
-package com.flipperdevices.keyscreen.emulate.composable
+package com.flipperdevices.keyscreen.emulate.composable.type
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -9,13 +9,13 @@ import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyscreen.api.Picture
 import com.flipperdevices.keyscreen.emulate.R
-import com.flipperdevices.keyscreen.emulate.composable.common.ComposableActionDisable
-import com.flipperdevices.keyscreen.emulate.composable.common.ComposableActionLoading
-import com.flipperdevices.keyscreen.emulate.composable.common.ComposableEmulateButtonWithText
 import com.flipperdevices.keyscreen.emulate.composable.common.ComposableErrorDialogs
+import com.flipperdevices.keyscreen.emulate.composable.common.action.ComposableActionDisable
+import com.flipperdevices.keyscreen.emulate.composable.common.action.ComposableActionLoading
+import com.flipperdevices.keyscreen.emulate.composable.common.action.ComposableEmulateButtonWithText
 import com.flipperdevices.keyscreen.emulate.model.DisableButtonReason
 import com.flipperdevices.keyscreen.emulate.model.EmulateButtonState
-import com.flipperdevices.keyscreen.emulate.viewmodel.SimpleEmulateViewModel
+import com.flipperdevices.keyscreen.emulate.viewmodel.type.SimpleEmulateViewModel
 import tangle.viewmodel.compose.tangleViewModel
 import com.flipperdevices.core.ui.res.R as DesignSystem
 

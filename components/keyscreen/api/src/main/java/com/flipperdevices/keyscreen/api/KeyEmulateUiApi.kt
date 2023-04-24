@@ -30,4 +30,17 @@ interface KeyEmulateUiApi {
         color: Color,
         progressColor: Color
     )
+
+    @Composable
+    fun ComposableEmulateButtonWithText(
+        modifier: Modifier,
+        buttonModifier: Modifier,
+        progress: EmulateProgress?,
+        buttonText: String,
+        @StringRes textId: Int?,
+        @DrawableRes iconId: Int?,
+        picture: Picture?,
+        color: Color,
+        progressColor: Color
+    )
 }

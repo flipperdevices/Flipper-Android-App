@@ -7,4 +7,11 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKey
 interface KeyEmulateApi {
     @Composable
     fun ComposableEmulateButton(modifier: Modifier, flipperKey: FlipperKey)
+
+    @Composable
+    fun ComposableEmulateInfraredButton(
+        modifier: Modifier,
+        flipperKey: FlipperKey,
+        name: String
+    )
 }

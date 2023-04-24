@@ -1,4 +1,4 @@
-package com.flipperdevices.keyscreen.emulate.viewmodel
+package com.flipperdevices.keyscreen.emulate.viewmodel.type
 
 import android.app.Application
 import androidx.lifecycle.viewModelScope
@@ -18,6 +18,8 @@ import com.flipperdevices.keyscreen.api.emulate.EmulateHelper
 import com.flipperdevices.keyscreen.api.emulate.ForbiddenFrequencyException
 import com.flipperdevices.keyscreen.api.emulate.SUBGHZ_DEFAULT_TIMEOUT_MS
 import com.flipperdevices.keyscreen.emulate.model.EmulateButtonState
+import com.flipperdevices.keyscreen.emulate.viewmodel.EmulateViewModel
+import com.flipperdevices.keyscreen.emulate.viewmodel.VIBRATOR_TIME
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.update

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="infrared_editor_save">Save</string>
+    <string name="infrared_editor_edit_remote">Edit Remote</string>
+    <string name="infrared_editor_dialog_title">Save Changes?</string>
+    <string name="infrared_editor_dialog_text">All unsaved changes will be lost</string>
+    <string name="infrared_editor_dialog_btn_save">Save</string>
+    <string name="infrared_editor_dialog_btn_not_save">Don’t Save</string>
+    <string name="infrared_editor_cancel">Cancel</string>
+</resources>

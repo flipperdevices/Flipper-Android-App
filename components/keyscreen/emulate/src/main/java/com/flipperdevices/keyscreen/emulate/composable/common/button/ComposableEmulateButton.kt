@@ -36,6 +36,28 @@ fun ComposableEmulateButton(
     emulateProgress: EmulateProgress? = null,
     progressColor: Color = Color.Transparent
 ) {
+    ComposableEmulateButton(
+        text = stringResource(textId),
+        picture = picture,
+        color = color,
+        modifier = modifier,
+        buttonContentModifier = buttonContentModifier,
+        emulateProgress = emulateProgress,
+        progressColor = progressColor
+    )
+}
+
+@Composable
+@Suppress("LongParameterList")
+fun ComposableEmulateButton(
+    text: String,
+    picture: Picture?,
+    color: Color,
+    modifier: Modifier = Modifier,
+    buttonContentModifier: Modifier = Modifier,
+    emulateProgress: EmulateProgress? = null,
+    progressColor: Color = Color.Transparent
+) {
     ComposableEmulateProgress(
         modifier = modifier,
         emulateProgress = emulateProgress,
@@ -43,7 +65,7 @@ fun ComposableEmulateButton(
     ) { contentModifier ->
         ComposableEmulateContent(
             modifier = contentModifier.then(buttonContentModifier),
-            text = stringResource(textId),
+            text = text,
             color = color,
             picture = picture
         )

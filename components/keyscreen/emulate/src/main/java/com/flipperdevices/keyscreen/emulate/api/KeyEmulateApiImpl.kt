@@ -6,8 +6,9 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.keyscreen.api.KeyEmulateApi
-import com.flipperdevices.keyscreen.emulate.composable.ComposableSimpleEmulateButton
-import com.flipperdevices.keyscreen.emulate.composable.ComposableSubGhzSendButton
+import com.flipperdevices.keyscreen.emulate.composable.type.ComposableInfraredEmulateButton
+import com.flipperdevices.keyscreen.emulate.composable.type.ComposableSimpleEmulateButton
+import com.flipperdevices.keyscreen.emulate.composable.type.ComposableSubGhzSendButton
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
@@ -26,12 +27,22 @@ class KeyEmulateApiImpl @Inject constructor() : KeyEmulateApi {
             )
             FlipperKeyType.I_BUTTON,
             FlipperKeyType.RFID,
-            FlipperKeyType.INFRARED,
             FlipperKeyType.NFC -> ComposableSimpleEmulateButton(
                 modifier = modifier,
                 flipperKey = flipperKey
             )
-            null -> {}
+            null, FlipperKeyType.INFRARED, -> {}
         }
     }
+
+    @Composable
+    override fun ComposableEmulateInfraredButton(
+        modifier: Modifier,
+        flipperKey: FlipperKey,
+        name: String
+    ) = ComposableInfraredEmulateButton(
+        modifier = modifier,
+        flipperKey = flipperKey,
+        name = name
+    )
 }

@@ -7,7 +7,6 @@ import androidx.navigation.navArgument
 import com.flipperdevices.bridge.dao.api.model.navigation.FlipperKeyPathType
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
-import com.flipperdevices.core.ui.navigation.FeatureScreenRootRoute
 import com.flipperdevices.infrared.compose.ComposableInfraredScreen
 import com.flipperdevices.infrared.viewmodel.InfraredViewModel
 import com.flipperdevices.keyedit.api.KeyEditFeatureEntry
@@ -25,10 +24,9 @@ internal const val EXTRA_KEY_PATH = "flipper_key_path"
 class InfraredFeatureEntryImpl @Inject constructor(
     private val shareBottomUI: ShareBottomUIApi,
     private val keyEditFeatureEntry: KeyEditFeatureEntry,
-    private val keyEmulateApi: KeyEmulateApi
+    private val keyEmulateApi: KeyEmulateApi,
+    private val infraredEditorFeatureEntry: InfraredEditorFeatureEntry
 ) : InfraredFeatureEntry {
-
-    override val ROUTE: FeatureScreenRootRoute = FeatureScreenRootRoute.INFRARED
 
     private val keyScreenArguments = listOf(
         navArgument(EXTRA_KEY_PATH) {
@@ -52,6 +50,10 @@ class InfraredFeatureEntryImpl @Inject constructor(
                     onRename = {
                         val keyEditScreen = keyEditFeatureEntry.getKeyEditScreen(it, null)
                         navController.navigate(keyEditScreen)
+                    },
+                    onEdit = {
+                        val infraredEditorScreen = infraredEditorFeatureEntry.getEditorScreen(it)
+                        navController.navigate(infraredEditorScreen)
                     },
                     onShare = onShare
                 )

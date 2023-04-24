@@ -1,4 +1,4 @@
-package com.flipperdevices.keyscreen.emulate.composable.common
+package com.flipperdevices.keyscreen.emulate.composable.common.action
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.shape.RoundedCornerShape

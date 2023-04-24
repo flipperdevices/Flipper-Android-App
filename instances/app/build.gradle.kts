@@ -186,6 +186,7 @@ dependencies {
 
     implementation(projects.components.infrared.api)
     implementation(projects.components.infrared.impl)
+    implementation(projects.components.infrared.editor)
 
     implementation(libs.ktor.client)
 

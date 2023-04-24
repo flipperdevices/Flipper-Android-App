@@ -1,4 +1,4 @@
-package com.flipperdevices.keyscreen.emulate.composable.common
+package com.flipperdevices.keyscreen.emulate.composable.common.action
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -23,7 +23,7 @@ import com.flipperdevices.keyscreen.api.Picture
 import com.flipperdevices.keyscreen.emulate.composable.common.button.ComposableEmulateButton
 
 @Composable
-fun ComposableEmulateButtonWithText(
+internal fun ComposableEmulateButtonWithText(
     @StringRes buttonTextId: Int,
     color: Color,
     modifier: Modifier = Modifier,
@@ -42,6 +42,51 @@ fun ComposableEmulateButtonWithText(
             buttonContentModifier = buttonModifier,
             emulateProgress = progress,
             textId = buttonTextId,
+            picture = picture,
+            color = color,
+            progressColor = progressColor
+        )
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            if (iconId != null) {
+                Icon(
+                    modifier = Modifier
+                        .padding(horizontal = 4.dp)
+                        .size(14.dp),
+                    painter = painterResource(iconId),
+                    contentDescription = textId?.let { stringResource(it) } ?: "",
+                    tint = LocalPallet.current.warningColor
+                )
+            }
+            Text(
+                text = textId?.let { stringResource(it) } ?: "",
+                style = LocalTypography.current.bodyR14.copy(fontSize = 12.sp),
+                color = LocalPallet.current.text30
+            )
+        }
+    }
+}
+
+@Composable
+internal fun ComposableEmulateButtonWithText(
+    buttonText: String,
+    color: Color,
+    modifier: Modifier = Modifier,
+    buttonModifier: Modifier = Modifier,
+    progress: EmulateProgress? = null,
+    @StringRes textId: Int? = null,
+    @DrawableRes iconId: Int? = null,
+    picture: Picture? = null,
+    progressColor: Color = Color.Transparent
+) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        ComposableEmulateButton(
+            buttonContentModifier = buttonModifier,
+            emulateProgress = progress,
+            text = buttonText,
             picture = picture,
             color = color,
             progressColor = progressColor

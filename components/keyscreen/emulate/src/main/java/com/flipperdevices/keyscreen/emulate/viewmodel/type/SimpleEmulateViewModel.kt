@@ -1,9 +1,10 @@
-package com.flipperdevices.keyscreen.emulate.viewmodel
+package com.flipperdevices.keyscreen.emulate.viewmodel.type
 
 import android.app.Application
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.keyscreen.api.emulate.EmulateHelper
+import com.flipperdevices.keyscreen.emulate.viewmodel.EmulateViewModel
 import tangle.viewmodel.VMInject
 
 class SimpleEmulateViewModel @VMInject constructor(

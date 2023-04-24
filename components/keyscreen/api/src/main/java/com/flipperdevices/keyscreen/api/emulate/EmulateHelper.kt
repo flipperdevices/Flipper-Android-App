@@ -8,6 +8,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 
 const val SUBGHZ_DEFAULT_TIMEOUT_MS = 500L
+const val INFRARED_DEFAULT_TIMEOUT_MS = 100L
 
 interface EmulateHelper {
     fun getCurrentEmulatingKey(): StateFlow<FlipperFilePath?>
@@ -16,7 +17,8 @@ interface EmulateHelper {
         serviceApi: FlipperServiceApi,
         keyType: FlipperKeyType,
         keyPath: FlipperFilePath,
-        minEmulateTime: Long = 0L
+        minEmulateTime: Long = 0L,
+        args: String? = null
     ): Boolean
 
     suspend fun stopEmulate(
