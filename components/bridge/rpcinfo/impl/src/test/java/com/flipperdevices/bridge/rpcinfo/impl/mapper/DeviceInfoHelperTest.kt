@@ -53,6 +53,7 @@ class DeviceInfoHelperTest(
                     "radio_stack_major" to "3",
                     "radio_stack_minor" to "5",
                     "radio_stack_type" to "7",
+                    "radio_stack_sub" to "7",
                     "other_fields_1" to "1",
                     "other_fields_2" to "2"
                 ),
@@ -98,6 +99,7 @@ class DeviceInfoHelperTest(
                     "radio_stack_major" to "3",
                     "radio_stack_minor" to "5",
                     "radio_stack_type" to "4",
+                    "radio_stack_sub" to "4",
                     "other_fields_1" to "1"
                 ),
                 FlipperRpcInformation(

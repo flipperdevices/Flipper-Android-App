@@ -161,7 +161,7 @@ class MfKey32ViewModel @VMInject constructor(
         val foundedKey = FoundedKey(
             nonce.sectorName,
             nonce.keyName,
-            "%012X".format(key)
+            key?.let { "%012X".format(it) }
         )
         existedKeysStorage.onNewKey(foundedKey)
     }

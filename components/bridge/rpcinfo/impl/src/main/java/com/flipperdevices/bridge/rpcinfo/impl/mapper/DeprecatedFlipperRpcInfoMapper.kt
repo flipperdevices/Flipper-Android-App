@@ -31,6 +31,7 @@ private const val DEVICE_INFO_MINOR = "device_info_minor"
 private const val RADIO_STACK_MAJOR = "radio_stack_major"
 private const val RADIO_STACK_MINOR = "radio_stack_minor"
 private const val RADIO_STACK_TYPE = "radio_stack_type"
+private const val RADIO_STACK_SUB = "radio_stack_sub"
 
 // This fields uses in NOT other section
 private val usedFields = setOf(
@@ -38,7 +39,7 @@ private val usedFields = setOf(
     HARDWARE_VERSION, HARDWARE_OTP_VERSION, SERIAL_NUMBER,
     FIRMWARE_COMMIT, FIRMWARE_BRANCH, FIRMWARE_BUILD_DATE,
     FIRMWARE_TARGET, PROTOBUF_MAJOR, PROTOBUF_MINOR,
-    RADIO_STACK_MAJOR, RADIO_STACK_MINOR, RADIO_STACK_TYPE,
+    RADIO_STACK_MAJOR, RADIO_STACK_MINOR, RADIO_STACK_TYPE, RADIO_STACK_SUB,
     DEVICE_INFO_MAJOR, DEVICE_INFO_MINOR
 )
 
@@ -80,10 +81,11 @@ internal class DeprecatedFlipperRpcInfoMapper : FlipperRpcInfoMapper {
         val radioMajor = fields[RADIO_STACK_MAJOR]
         val radioMinor = fields[RADIO_STACK_MINOR]
         val radioType = fields[RADIO_STACK_TYPE]
+        val radioSub = fields[RADIO_STACK_SUB]
 
         val radioStackInfo = RadioStackInfo(
             type = radioType(radioType),
-            radioFirmware = radioFirmware(radioMajor, radioMinor, radioType)
+            radioFirmware = radioFirmware(radioMajor, radioMinor, radioSub)
         )
 
         return FlipperRpcInformation(
