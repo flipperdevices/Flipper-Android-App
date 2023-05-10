@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.ktx.stateAsFlow
 import com.flipperdevices.bridge.api.scanner.DiscoveredBluetoothDevice
+import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
@@ -14,12 +15,14 @@ import com.flipperdevices.firstpair.impl.model.DevicePairState
 import com.flipperdevices.firstpair.impl.storage.FirstPairStorage
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.TimeoutCancellationException
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withTimeout
 import tangle.viewmodel.VMInject
 
@@ -39,6 +42,7 @@ class PairDeviceViewModel @VMInject constructor(
         get() = provideBleManager()
     private val pairState = MutableStateFlow<DevicePairState>(DevicePairState.NotInitialized)
     private var connectingJob: Job? = null
+    private val mutex = Mutex()
 
     fun startConnectToDevice(device: DiscoveredBluetoothDevice) {
         info { "Start connect to ${device.name} (${device.address})" }
@@ -52,16 +56,77 @@ class PairDeviceViewModel @VMInject constructor(
                 withTimeout(TIMEOUT_MS) {
                     firstPairBleManager.connectToDevice(device.device)
                 }
+
                 deviceColorSaver.saveDeviceColor(device)
             } catch (timeout: TimeoutCancellationException) {
-                pairState.emit(DevicePairState.Timeout)
+                pairState.emit(DevicePairState.TimeoutConnecting(device))
             } catch (anyOtherException: Throwable) {
                 error(anyOtherException) { "Fatal exception while try connecting to device" }
-                pairState.emit(DevicePairState.Timeout)
+                pairState.emit(DevicePairState.TimeoutPairing(device))
             } finally {
                 connectingJob = null
             }
         }
+
+        subscribeOnPairState(device)
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun subscribeOnPairState(
+        device: DiscoveredBluetoothDevice
+    ) = launchWithLock(mutex, viewModelScope) {
+        connectionStateUpdateJob?.cancelAndJoin()
+        connectionStateUpdateJob = firstPairBleManager.stateAsFlow().onEach {
+            when (it) {
+                is ConnectionState.Disconnected -> {
+                    pairState.update { localPairState ->
+                        when (localPairState) {
+                            is DevicePairState.Connecting -> DevicePairState.TimeoutPairing(device)
+                            is DevicePairState.Connected,
+                            DevicePairState.NotInitialized -> DevicePairState.NotInitialized
+
+                            is DevicePairState.TimeoutConnecting,
+                            is DevicePairState.TimeoutPairing -> localPairState
+                        }
+                    }
+                }
+
+                ConnectionState.Connecting,
+                ConnectionState.Initializing,
+                ConnectionState.Disconnecting -> {
+                    pairState.emit(
+                        DevicePairState.Connecting(
+                            firstPairBleManager.bluetoothDevice?.address,
+                            firstPairBleManager.bluetoothDevice?.name
+                        )
+                    )
+                }
+
+                ConnectionState.RetrievingInformation -> {
+                    pairState.emit(
+                        DevicePairState.Connecting(
+                            firstPairBleManager.bluetoothDevice?.address,
+                            firstPairBleManager.bluetoothDevice?.name
+                        )
+                    )
+                }
+
+                is ConnectionState.Ready -> {
+                    pairState.emit(
+                        DevicePairState.Connected(
+                            firstPairBleManager.bluetoothDevice?.address,
+                            firstPairBleManager.bluetoothDevice?.name
+                        )
+                    )
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    fun resetConnection() = viewModelScope.launch {
+        connectingJob?.cancelAndJoin()
+        connectingJob = null
+        pairState.emit(DevicePairState.NotInitialized)
     }
 
     fun getConnectionState(): StateFlow<DevicePairState> = pairState
@@ -98,33 +163,6 @@ class PairDeviceViewModel @VMInject constructor(
 
         bleManager = FirstPairBleManager(getApplication(), viewModelScope)
         _firstPairBleManager = bleManager
-
-        connectionStateUpdateJob = bleManager.stateAsFlow().onEach {
-            val devicePairState: DevicePairState = when (it) {
-                is ConnectionState.Disconnected -> DevicePairState.NotInitialized
-                ConnectionState.Connecting,
-                ConnectionState.Initializing,
-                ConnectionState.Disconnecting -> {
-                    DevicePairState.Connecting(
-                        bleManager.bluetoothDevice?.address,
-                        bleManager.bluetoothDevice?.name
-                    )
-                }
-                ConnectionState.RetrievingInformation -> {
-                    DevicePairState.Connecting(
-                        bleManager.bluetoothDevice?.address,
-                        bleManager.bluetoothDevice?.name
-                    )
-                }
-                is ConnectionState.Ready -> {
-                    DevicePairState.Connected(
-                        bleManager.bluetoothDevice?.address,
-                        bleManager.bluetoothDevice?.name
-                    )
-                }
-            }
-            pairState.update { devicePairState }
-        }.launchIn(viewModelScope)
 
         return bleManager
     }

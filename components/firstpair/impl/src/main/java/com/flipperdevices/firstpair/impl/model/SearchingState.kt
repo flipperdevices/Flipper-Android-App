@@ -1,5 +1,6 @@
 package com.flipperdevices.firstpair.impl.model
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -9,7 +10,6 @@ import androidx.annotation.StringRes
 import com.flipperdevices.bridge.api.scanner.DiscoveredBluetoothDevice
 import com.flipperdevices.firstpair.impl.R
 import com.flipperdevices.firstpair.impl.viewmodels.SearchStateBuilder
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 data class SearchingState(
     val showSearching: Boolean = false,
@@ -22,7 +22,7 @@ sealed class SearchingContent {
 
     data class FoundedDevices(
         val devices: List<DiscoveredBluetoothDevice>,
-        val selectedAddress: String? = null
+        val pairState: DevicePairState
     ) : SearchingContent()
 
     class Finished(

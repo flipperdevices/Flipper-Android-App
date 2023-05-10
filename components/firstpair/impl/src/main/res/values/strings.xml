@@ -28,6 +28,12 @@
     <string name="firstpair_permission_continue">Continue</string>
     <string name="firstpair_permission_retry">Retry</string>
     <string name="firstpair_permission_cancel_btn">Cancel</string>
+    <string name="firstpair_retry_dialog_connecting_title">Connection Failed</string>
+    <string name="firstpair_retry_dialog_connecting_desc">Unable to connect Flipper. Try again or use Help.</string>
+    <string name="firstpair_retry_dialog_pairing_title">Unable to Connect Flipper</string>
+    <string name="firstpair_retry_dialog_pairing_desc">Connection was canceled or the pairing code was entered incorrectly</string>
+    <string name="firstpair_retry_dialog_retry_btn">Retry</string>
+    <string name="firstpair_retry_dialog_cancel_btn">Cancel</string>
 
     <string name="firstpair_help_title">Can’t Find your Flipper?</string>
     <string name="firstpair_help_1_title">Check the correct name of your Flipper.</string>

@@ -23,6 +23,7 @@ fun ComposableSearchingScreen(
     onSkipConnection: () -> Unit,
     onDeviceClick: (DiscoveredBluetoothDevice) -> Unit,
     onRefreshSearching: () -> Unit,
+    onResetTimeoutState: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
@@ -32,7 +33,8 @@ fun ComposableSearchingScreen(
             modifier = Modifier.weight(weight = 1f),
             content = state.content,
             onDeviceClick = onDeviceClick,
-            onRefreshSearching = onRefreshSearching
+            onRefreshSearching = onRefreshSearching,
+            onResetTimeoutState = onResetTimeoutState
         )
         ComposableSearchingFooter(onSkipConnection)
     }
@@ -43,7 +45,8 @@ fun ComposableSearchingContent(
     content: SearchingContent,
     onDeviceClick: (DiscoveredBluetoothDevice) -> Unit,
     modifier: Modifier = Modifier,
-    onRefreshSearching: () -> Unit
+    onRefreshSearching: () -> Unit,
+    onResetTimeoutState: () -> Unit
 ) {
     when (content) {
         is SearchingContent.Finished -> Text(
@@ -55,7 +58,8 @@ fun ComposableSearchingContent(
             modifier = modifier,
             state = content,
             onDeviceClick = onDeviceClick,
-            onRefreshSearching = onRefreshSearching
+            onRefreshSearching = onRefreshSearching,
+            onResetTimeoutState = onResetTimeoutState
         )
         is SearchingContent.PermissionRequest -> ComposablePermissionRequest(
             modifier = modifier,
@@ -81,6 +85,7 @@ private fun ComposableSearchingScreenPreview() {
         onHelpClicking = {},
         onSkipConnection = {},
         onRefreshSearching = {},
-        onDeviceClick = {}
+        onDeviceClick = {},
+        onResetTimeoutState = {}
     )
 }
