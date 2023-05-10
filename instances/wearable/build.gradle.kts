@@ -5,6 +5,8 @@ plugins {
 }
 
 android {
+    namespace = "com.flipperdevices.wearable"
+
     buildFeatures {
         compose = true
     }

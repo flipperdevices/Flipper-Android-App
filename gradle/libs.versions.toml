@@ -5,7 +5,7 @@ kotlin-immutable-collections = "0.3.5" # https://github.com/Kotlin/kotlinx.colle
 kotlinx = "1.6.4" # https://github.com/Kotlin/kotlinx.coroutines/releases
 ksp = "1.8.10-1.0.9" # https://github.com/google/ksp/releases
 anvil = "2.4.4" # https://github.com/square/anvil/releases
-android-gradle = "7.4.2" # https://developer.android.com/studio/releases/gradle-plugin
+android-gradle = "8.0.1" # https://developer.android.com/studio/releases/gradle-plugin
 protobuf = "3.22.2" # https://github.com/protocolbuffers/protobuf/releases
 # https://github.com/google/protobuf-gradle-plugin/issues/656
 protobuf-gradle = "0.9.1" # https://github.com/google/protobuf-gradle-plugin/releases
