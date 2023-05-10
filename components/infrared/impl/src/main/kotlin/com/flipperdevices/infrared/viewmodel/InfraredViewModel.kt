@@ -3,7 +3,7 @@ package com.flipperdevices.infrared.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
-import com.flipperdevices.bridge.dao.api.model.infrared.InfraredControl
+import com.flipperdevices.bridge.dao.api.model.infrared.InfraredRemote
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.infrared.api.EXTRA_KEY_PATH
@@ -30,7 +30,8 @@ class InfraredViewModel @VMInject constructor(
 
     private val keyStateHelper = keyStateHelperApi.build(keyPath, viewModelScope)
     fun keyState() = keyStateHelper.getKeyScreenState()
-    private val controlState = MutableStateFlow<ImmutableList<InfraredControl>>(persistentListOf())
+
+    private val controlState = MutableStateFlow<ImmutableList<InfraredRemote>>(persistentListOf())
     fun controlState() = controlState.asStateFlow()
 
     init {

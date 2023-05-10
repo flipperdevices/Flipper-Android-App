@@ -29,6 +29,7 @@ class InfraredEditorViewModel @VMInject constructor(
     private val updateKeyApi: UpdateKeyApi,
     private val synchronizationApi: SynchronizationApi,
     private val simpleKeyApi: SimpleKeyApi,
+    private val infraredEditorSaver: InfraredEditorSaver
 ) : ViewModel(), LogTagProvider {
     override val TAG = "InfraredEditorViewModel"
 
@@ -60,9 +61,9 @@ class InfraredEditorViewModel @VMInject constructor(
             startFlipperKeyParsed = parsedKey
             startFlipperKey = flipperKey
 
-            val controls = parsedKey.remotes.toImmutableList()
+            val remotes = parsedKey.remotes.toImmutableList()
             val name = flipperKey.path.nameWithoutExtension
-            infraredControlFlow.emit(InfraredEditorState.LoadedKey(name, controls))
+            infraredControlFlow.emit(InfraredEditorState.LoadedKey(name, remotes))
         }
     }
 
@@ -77,7 +78,7 @@ class InfraredEditorViewModel @VMInject constructor(
             if (state !is InfraredEditorState.LoadedKey) return@launch
 
             val flipperKey = startFlipperKey ?: return@launch
-            val newFlipperKey = InfraredEditorSaver.newFlipperKey(flipperKey, state.remotes)
+            val newFlipperKey = infraredEditorSaver.newFlipperKey(flipperKey, state.remotes)
 
             updateKeyApi.updateKey(flipperKey, newFlipperKey)
             synchronizationApi.startSynchronization(force = true)

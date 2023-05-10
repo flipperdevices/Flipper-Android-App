@@ -6,13 +6,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
-import com.flipperdevices.bridge.dao.api.model.infrared.InfraredControl
+import com.flipperdevices.bridge.dao.api.model.infrared.InfraredRemote
 import com.flipperdevices.keyscreen.api.KeyEmulateApi
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun ComposableInfraredControls(
-    controls: ImmutableList<InfraredControl>,
+    controls: ImmutableList<InfraredRemote>,
     flipperKey: FlipperKey,
     keyEmulateApi: KeyEmulateApi,
     modifier: Modifier = Modifier,

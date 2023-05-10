@@ -1,4 +1,4 @@
-package com.flipperdevices.infrared.editor.composable
+package com.flipperdevices.infrared.editor.composable.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize

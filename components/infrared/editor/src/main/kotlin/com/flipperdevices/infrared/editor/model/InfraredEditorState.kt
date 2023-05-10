@@ -1,6 +1,6 @@
 package com.flipperdevices.infrared.editor.model
 
-import com.flipperdevices.bridge.dao.api.model.infrared.InfraredControl
+import com.flipperdevices.bridge.dao.api.model.infrared.InfraredRemote
 import kotlinx.collections.immutable.ImmutableList
 
 sealed class InfraredEditorState {
@@ -9,6 +9,6 @@ sealed class InfraredEditorState {
 
     data class LoadedKey(
         val name: String,
-        val remotes: ImmutableList<InfraredControl>
+        val remotes: ImmutableList<InfraredRemote>
     ) : InfraredEditorState()
 }

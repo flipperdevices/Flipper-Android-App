@@ -4,8 +4,9 @@ import com.flipperdevices.bridge.dao.api.model.FlipperFile
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
-import com.flipperdevices.bridge.dao.api.model.infrared.InfraredControl
+import com.flipperdevices.bridge.dao.api.model.infrared.InfraredRemote
 import kotlinx.collections.immutable.ImmutableList
+import javax.inject.Inject
 
 private const val KEY_NAME = "name"
 private const val KEY_TYPE = "type"
@@ -31,10 +32,10 @@ private val allFields = listOf(
     KEY_DATA
 )
 
-object InfraredEditorSaver {
+class InfraredEditorSaver @Inject constructor() {
     fun newFlipperKey(
         oldKey: FlipperKey,
-        remotes: ImmutableList<InfraredControl>
+        remotes: ImmutableList<InfraredRemote>
     ): FlipperKey {
         val newContent = newContent(oldKey, remotes)
 
@@ -54,7 +55,7 @@ object InfraredEditorSaver {
 
     private fun newContent(
         oldKey: FlipperKey,
-        remotes: ImmutableList<InfraredControl>
+        remotes: ImmutableList<InfraredRemote>
     ): FlipperKeyContent {
         val fff = FlipperFileFormat.fromFlipperContent(oldKey.keyContent)
         val infraredControl = generateInfraredContent(remotes)
@@ -65,20 +66,20 @@ object InfraredEditorSaver {
     }
 
     private fun generateInfraredContent(
-        remotes: ImmutableList<InfraredControl>
+        remotes: ImmutableList<InfraredRemote>
     ): List<Pair<String, String>> {
         val content = mutableListOf<Pair<String, String>>()
 
         remotes.forEach { remote ->
             when (remote) {
-                is InfraredControl.Parsed -> {
+                is InfraredRemote.Parsed -> {
                     content.add(KEY_NAME to remote.name)
                     content.add(KEY_TYPE to KEY_TYPE_PARSED)
                     content.add(KEY_PROTOCOL to remote.protocol)
                     content.add(KEY_ADDRESS to remote.address)
                     content.add(KEY_COMMAND to remote.command)
                 }
-                is InfraredControl.Raw -> {
+                is InfraredRemote.Raw -> {
                     content.add(KEY_NAME to remote.name)
                     content.add(KEY_TYPE to KEY_TYPE_RAW)
                     content.add(KEY_FREQUENCY to remote.frequency)

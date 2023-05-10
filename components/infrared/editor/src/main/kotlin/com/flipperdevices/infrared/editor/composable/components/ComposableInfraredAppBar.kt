@@ -1,4 +1,4 @@
-package com.flipperdevices.infrared.editor.composable
+package com.flipperdevices.infrared.editor.composable.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

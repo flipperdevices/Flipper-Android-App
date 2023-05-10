@@ -39,31 +39,6 @@ class KeyEmulateUiApiImpl @Inject constructor() : KeyEmulateUiApi {
         modifier: Modifier,
         buttonModifier: Modifier,
         progress: EmulateProgress?,
-        buttonTextId: Int,
-        textId: Int?,
-        iconId: Int?,
-        picture: Picture?,
-        color: Color,
-        progressColor: Color
-    ) {
-        com.flipperdevices.keyscreen.emulate.composable.common.action.ComposableEmulateButtonWithText(
-            modifier = modifier,
-            buttonModifier = buttonModifier,
-            progress = progress,
-            buttonTextId = buttonTextId,
-            textId = textId,
-            iconId = iconId,
-            picture = picture,
-            color = color,
-            progressColor = progressColor
-        )
-    }
-
-    @Composable
-    override fun ComposableEmulateButtonWithText(
-        modifier: Modifier,
-        buttonModifier: Modifier,
-        progress: EmulateProgress?,
         buttonText: String,
         textId: Int?,
         iconId: Int?,

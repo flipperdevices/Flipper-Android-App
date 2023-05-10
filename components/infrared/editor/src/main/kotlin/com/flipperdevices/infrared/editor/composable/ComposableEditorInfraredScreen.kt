@@ -12,6 +12,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.infrared.editor.composable.components.ComposableEditorInfraredControls
+import com.flipperdevices.infrared.editor.composable.components.ComposableInfraredDialog
 import com.flipperdevices.infrared.editor.model.InfraredEditorState
 import com.flipperdevices.infrared.editor.viewmodel.InfraredEditorViewModel
 import com.flipperdevices.keyscreen.api.KeyEmulateUiApi

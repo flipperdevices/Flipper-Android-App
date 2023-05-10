@@ -39,10 +39,17 @@ dependencies {
     // DI
     implementation(projects.components.core.di)
     implementation(libs.dagger)
-    implementation(project(mapOf("path" to ":components:bridge:synchronization:api")))
-    implementation(project(mapOf("path" to ":components:analytics:metric:api")))
     kapt(libs.dagger.kapt)
     implementation(libs.tangle.viewmodel.compose)
     implementation(libs.tangle.viewmodel.api)
     anvil(libs.tangle.viewmodel.compiler)
+
+    // Testing
+    testImplementation(projects.components.core.test)
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.ktx.testing)
+    testImplementation(libs.roboelectric)
+    testImplementation(libs.lifecycle.test)
+    testImplementation(libs.kotlin.coroutines.test)
 }

@@ -8,7 +8,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
-import com.flipperdevices.bridge.dao.api.model.infrared.InfraredControl
+import com.flipperdevices.bridge.dao.api.model.infrared.InfraredRemote
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.core.test.readTestAsset
 import com.flipperdevices.core.test.readTestAssetString
@@ -38,19 +38,19 @@ class InfraredParserTest {
         )
 
         val listRemotes = listOf(
-            InfraredControl.Parsed(
+            InfraredRemote.Parsed(
                 nameInternal = "Button_1",
                 protocol = "NECext",
                 address = "EE 87 00 00",
                 command = "5D A0 00 00",
             ),
-            InfraredControl.Raw(
+            InfraredRemote.Raw(
                 nameInternal = "Button_2",
                 frequency = "38000",
                 dutyCycle = "0.330000",
                 data = "504 3432 502 483 500 484 510 502 502 482 501 485 509 1452 504 1458 509 1452 504 481 501 474 509 3420 503"
             ),
-            InfraredControl.Parsed(
+            InfraredRemote.Parsed(
                 nameInternal = "Button_3",
                 protocol = "SIRC",
                 address = "01 00 00 00",

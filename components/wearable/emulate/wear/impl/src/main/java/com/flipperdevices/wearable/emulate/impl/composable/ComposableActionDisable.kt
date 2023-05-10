@@ -3,6 +3,7 @@ package com.flipperdevices.wearable.emulate.impl.composable
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyscreen.api.KeyEmulateUiApi
@@ -26,7 +27,7 @@ fun ComposableActionDisable(
     keyEmulateUiApi.ComposableEmulateButtonWithText(
         modifier = modifier,
         progress = null,
-        buttonTextId = textId,
+        buttonText = stringResource(id = textId),
         picture = null,
         color = LocalPallet.current.text8,
         textId = R.string.keyscreen_not_supported,

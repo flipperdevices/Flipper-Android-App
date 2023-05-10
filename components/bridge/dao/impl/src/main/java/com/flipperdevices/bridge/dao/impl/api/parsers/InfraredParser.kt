@@ -2,10 +2,11 @@ package com.flipperdevices.bridge.dao.impl.api.parsers
 
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
-import com.flipperdevices.bridge.dao.api.model.infrared.InfraredControl
+import com.flipperdevices.bridge.dao.api.model.infrared.InfraredRemote
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 
 private const val KEY_NAME = "name"
+private const val KEY_TYPE = "type"
 
 private const val KEY_PROTOCOL = "protocol"
 private const val KEY_ADDRESS = "address"
@@ -15,6 +16,17 @@ private const val KEY_FREQUENCY = "frequency"
 private const val KEY_DUTY_CYCLE = "duty_cycle"
 private const val KEY_DATA = "data"
 
+private val allFields = listOf(
+    KEY_NAME,
+    KEY_TYPE,
+    KEY_PROTOCOL,
+    KEY_ADDRESS,
+    KEY_COMMAND,
+    KEY_FREQUENCY,
+    KEY_DUTY_CYCLE,
+    KEY_DATA
+)
+
 private const val REMOTE_FIELD_COUNT = 5
 
 class InfraredParser : KeyParserDelegate {
@@ -23,23 +35,25 @@ class InfraredParser : KeyParserDelegate {
         fff: FlipperFileFormat
     ): FlipperKeyParsed {
         val keyContentAsMap = fff.orderedDict.toMap()
+        val remotes = parseRemoteControls(keyContent = fff.orderedDict)
         val keyProtocol = keyContentAsMap[KEY_PROTOCOL]
 
         return FlipperKeyParsed.Infrared(
             keyName = flipperKey.path.nameWithoutExtension,
             notes = flipperKey.notes,
             protocol = keyProtocol,
-            remotes = parseRemote(keyContent = fff.orderedDict)
+            remotes = remotes
         )
     }
 
-    private fun parseRemote(keyContent: List<Pair<String, String>>): List<InfraredControl> {
-        val keyRemotes = keyContent.drop(2).toMutableList() // Remove Filetype and Version
-        val remotes = mutableListOf<InfraredControl>()
+    private fun parseRemoteControls(keyContent: List<Pair<String, String>>): List<InfraredRemote> {
+        val keyRemotes = keyContent.filter { it.first in allFields }.toMutableList()
 
         if (keyRemotes.size % REMOTE_FIELD_COUNT != 0) {
-            return remotes
+            return listOf()
         }
+
+        val remotes = mutableListOf<InfraredRemote>()
 
         while (keyRemotes.isNotEmpty()) {
             val tryRemote = keyRemotes.take(REMOTE_FIELD_COUNT)
@@ -48,7 +62,7 @@ class InfraredParser : KeyParserDelegate {
 
             when (lastField.first) {
                 KEY_COMMAND -> {
-                    remotes.add(getParseRemoteControl(tryRemoteMap))
+                    remotes.add(getParsedRemoteControl(tryRemoteMap))
                 }
                 KEY_DATA -> {
                     remotes.add(getRawRemoteControl(tryRemoteMap))
@@ -62,8 +76,8 @@ class InfraredParser : KeyParserDelegate {
         return remotes
     }
 
-    private fun getParseRemoteControl(fields: Map<String, String>): InfraredControl.Parsed {
-        return InfraredControl.Parsed(
+    private fun getParsedRemoteControl(fields: Map<String, String>): InfraredRemote.Parsed {
+        return InfraredRemote.Parsed(
             nameInternal = fields[KEY_NAME] ?: "",
             protocol = fields[KEY_PROTOCOL] ?: "",
             address = fields[KEY_ADDRESS] ?: "",
@@ -71,8 +85,8 @@ class InfraredParser : KeyParserDelegate {
         )
     }
 
-    private fun getRawRemoteControl(fields: Map<String, String>): InfraredControl.Raw {
-        return InfraredControl.Raw(
+    private fun getRawRemoteControl(fields: Map<String, String>): InfraredRemote.Raw {
+        return InfraredRemote.Raw(
             nameInternal = fields[KEY_NAME] ?: "",
             frequency = fields[KEY_FREQUENCY] ?: "",
             dutyCycle = fields[KEY_DUTY_CYCLE] ?: "",
