@@ -1,9 +1,9 @@
 package com.flipperdevices.updater.card.helpers
 
-import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.rpcinfo.api.FlipperStorageInformationApi
 import com.flipperdevices.bridge.rpcinfo.model.FlipperInformationStatus
 import com.flipperdevices.bridge.rpcinfo.model.StorageStats
+import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.core.log.info
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -26,9 +26,9 @@ class StorageExistHelper @Inject constructor(
 
     suspend fun invalidate(
         scope: CoroutineScope,
-        requestApi: FlipperRequestApi,
+        serviceApi: FlipperServiceApi,
         force: Boolean
     ) {
-        flipperStorageInfoApi.invalidate(scope, requestApi, force)
+        flipperStorageInfoApi.invalidate(scope, serviceApi, force)
     }
 }

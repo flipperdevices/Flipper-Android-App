@@ -61,7 +61,7 @@ play-core = "2.0.1" # https://developer.android.com/guide/playcore#java-kotlin-i
 # Testing
 junit = "4.12"
 mockito = "4.0.0"
-roboelectric = "4.9"
+roboelectric = "4.10.2"
 mockk = "1.13.2"
 
 # Linters
