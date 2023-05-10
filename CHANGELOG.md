@@ -56,6 +56,7 @@
 - [FIX] Device info mapping keys
 - [FIX] Wait disconnecting from device when restart rpc
 - [FIX] Replace radio type to sub number in device info
+- [FIX] Progress bar on disconnected state on device info screen
 - [REFACTOR] Migrate bottom bar to compose navigation
 - [REFACTOR] Bump Android Gradle Plugin
 - [REFACTOR] Fix detekt compose issues

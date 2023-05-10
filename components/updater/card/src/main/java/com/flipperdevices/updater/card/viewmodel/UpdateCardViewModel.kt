@@ -94,7 +94,7 @@ class UpdateCardViewModel @VMInject constructor(
                 // that's why we set state in progress
                 updateCardState.emit(UpdateCardState.InProgress)
                 cardStateJob?.cancelAndJoin()
-                storageExistHelper.invalidate(viewModelScope, it.requestApi, force = true)
+                storageExistHelper.invalidate(viewModelScope, it, force = true)
                 invalidateUnsafe(it)
             }
         }
@@ -110,7 +110,7 @@ class UpdateCardViewModel @VMInject constructor(
         cardStateJob?.cancelAndJoin()
         cardStateJob = null
         cardStateJob = viewModelScope.launch(Dispatchers.Default) {
-            storageExistHelper.invalidate(this, serviceApi.requestApi, force = false)
+            storageExistHelper.invalidate(this, serviceApi, force = false)
             val latestVersionAsync = async {
                 val result = runCatching { downloaderApi.getLatestVersion() }
                 verbose { "latestVersionAsyncResult: $result" }
