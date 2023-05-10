@@ -12,6 +12,8 @@ const val INFRARED_DEFAULT_TIMEOUT_MS = 100L
 
 interface EmulateHelper {
     fun getCurrentEmulatingKey(): StateFlow<FlipperFilePath?>
+
+    @Suppress("LongParameterList")
     suspend fun startEmulate(
         scope: CoroutineScope,
         serviceApi: FlipperServiceApi,

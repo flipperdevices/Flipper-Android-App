@@ -27,4 +27,3 @@ internal fun ComposableInfraredDialog(
 
     FlipperMultiChoiceDialog(model = dialogModel)
 }
-

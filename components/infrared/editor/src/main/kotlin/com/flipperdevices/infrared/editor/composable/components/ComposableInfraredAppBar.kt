@@ -43,4 +43,3 @@ internal fun ComposableInfraredAppBar(
         }
     )
 }
-
