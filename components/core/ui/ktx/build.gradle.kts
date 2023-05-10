@@ -2,6 +2,8 @@ plugins {
     id("flipper.android-compose")
 }
 
+android.namespace = "com.flipperdevices.core.ui.ktx"
+
 dependencies {
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.core.ui.res)

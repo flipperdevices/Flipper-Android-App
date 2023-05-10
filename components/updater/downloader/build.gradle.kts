@@ -5,6 +5,8 @@ plugins {
     id("kotlinx-serialization")
 }
 
+android.namespace = "com.flipperdevices.updater.downloader"
+
 dependencies {
     implementation(projects.components.updater.api)
 

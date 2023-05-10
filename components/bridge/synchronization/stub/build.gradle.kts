@@ -4,6 +4,8 @@ plugins {
     id("kotlin-kapt")
 }
 
+android.namespace = "com.flipperdevices.bridge.synchronization.stub"
+
 dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.bridge.dao.api)

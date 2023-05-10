@@ -4,6 +4,8 @@ plugins {
     id("kotlin-parcelize")
 }
 
+android.namespace = "com.flipperdevices.bridge.api"
+
 dependencies {
     implementation(projects.components.bridge.pbutils)
     implementation(projects.components.core.log)

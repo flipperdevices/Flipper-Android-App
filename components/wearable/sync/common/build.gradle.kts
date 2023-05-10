@@ -4,6 +4,8 @@ plugins {
     id("flipper.protobuf")
 }
 
+android.namespace = "com.flipperdevices.wearable.sync.common"
+
 dependencies {
     implementation(projects.components.core.ktx)
 

@@ -4,6 +4,8 @@ plugins {
     id("kotlin-kapt")
 }
 
+android.namespace = "com.flipperdevices.faphub.installedtab.impl"
+
 dependencies {
     implementation(projects.components.faphub.installedtab.api)
 

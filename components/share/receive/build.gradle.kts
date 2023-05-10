@@ -4,6 +4,8 @@ plugins {
     id("kotlin-kapt")
 }
 
+android.namespace = "com.flipperdevices.share.receive"
+
 dependencies {
     implementation(projects.components.deeplink.api)
     implementation(projects.components.share.api)

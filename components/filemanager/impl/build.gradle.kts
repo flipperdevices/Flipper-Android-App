@@ -6,6 +6,8 @@ plugins {
     id("kotlinx-serialization")
 }
 
+android.namespace = "com.flipperdevices.filemanager.impl"
+
 dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)

@@ -2,6 +2,8 @@ plugins {
     id("flipper.android-compose")
 }
 
+android.namespace = "com.flipperdevices.archive.shared"
+
 dependencies {
     implementation(projects.components.bridge.dao.api)
 

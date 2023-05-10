@@ -5,6 +5,8 @@ plugins {
     id("kotlinx-serialization")
 }
 
+android.namespace = "com.flipperdevices.updater.screen"
+
 dependencies {
     implementation(projects.components.updater.api)
     implementation(projects.components.info.shared)

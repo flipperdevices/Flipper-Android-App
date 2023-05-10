@@ -4,6 +4,8 @@ plugins {
     id("kotlin-parcelize")
 }
 
+android.namespace = "com.flipperdevices.bridge.dao.api"
+
 dependencies {
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.res)

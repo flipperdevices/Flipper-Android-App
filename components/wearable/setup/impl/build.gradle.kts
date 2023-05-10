@@ -4,6 +4,8 @@ plugins {
     id("kotlin-kapt")
 }
 
+android.namespace = "com.flipperdevices.wearable.setup.impl"
+
 dependencies {
     implementation(projects.components.wearable.setup.api)
 

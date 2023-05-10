@@ -2,6 +2,8 @@ plugins {
     id("flipper.android-compose")
 }
 
+android.namespace = "com.flipperdevices.wearable.core.ui.ktx"
+
 dependencies {
 
     // Compose

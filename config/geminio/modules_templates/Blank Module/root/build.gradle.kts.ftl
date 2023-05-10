@@ -10,6 +10,8 @@ plugins {
 </#if>
 }
 
+android.namespace = "${packageName}"
+
 <#if needCompose>
 
 </#if>

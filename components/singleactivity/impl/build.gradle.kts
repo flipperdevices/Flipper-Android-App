@@ -4,6 +4,8 @@ plugins {
     id("kotlin-kapt")
 }
 
+android.namespace = "com.flipperdevices.singleactivity.impl"
+
 dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)

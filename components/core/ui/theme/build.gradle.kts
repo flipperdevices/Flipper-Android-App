@@ -4,6 +4,8 @@ plugins {
     id("kotlin-kapt")
 }
 
+android.namespace = "com.flipperdevices.core.ui.theme"
+
 dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.ui.res)

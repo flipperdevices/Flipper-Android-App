@@ -25,6 +25,7 @@
 - [CI] Enable back github queue
 - [CI] Migrate to matrix CI with source install
 - [CI] Use release build for release
+- [CI] Migrate to AGP 8
 - [FIX] Disable verbose logging for ble
 - [FIX] Clickable modifier ktx
 - [FIX] Refactor `share:receive` module

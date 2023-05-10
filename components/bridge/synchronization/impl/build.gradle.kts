@@ -6,6 +6,8 @@ plugins {
     id("kotlinx-serialization")
 }
 
+android.namespace = "com.flipperdevices.bridge.synchronization.impl"
+
 dependencies {
     implementation(projects.components.bridge.synchronization.api)
 

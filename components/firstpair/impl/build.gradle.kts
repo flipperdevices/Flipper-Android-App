@@ -4,6 +4,8 @@ plugins {
     id("kotlin-kapt")
 }
 
+android.namespace = "com.flipperdevices.firstpair.impl"
+
 dependencies {
     implementation(projects.components.firstpair.api)
     implementation(projects.components.core.di)

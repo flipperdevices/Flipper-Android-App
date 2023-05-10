@@ -4,6 +4,8 @@ plugins {
     id("kotlin-kapt")
 }
 
+android.namespace = "com.flipperdevices.bottombar.impl"
+
 dependencies {
     implementation(projects.components.bottombar.api)
 

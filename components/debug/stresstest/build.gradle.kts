@@ -4,6 +4,8 @@ plugins {
     id("kotlin-kapt")
 }
 
+android.namespace = "com.flipperdevices.debug.stresstest"
+
 dependencies {
     implementation(projects.components.debug.api)
 
