@@ -22,9 +22,9 @@ import com.flipperdevices.firstpair.impl.model.SearchingContent
 fun ComposableSearchingDevices(
     state: SearchingContent.FoundedDevices,
     onDeviceClick: (DiscoveredBluetoothDevice) -> Unit,
-    modifier: Modifier = Modifier,
     onRefreshSearching: () -> Unit,
-    onResetTimeoutState: () -> Unit
+    onResetTimeoutState: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val devices = state.devices
 
@@ -61,8 +61,8 @@ fun ComposableSearchingDevices(
             ) { device ->
                 val deviceName = device.name ?: device.address
                 val name = deviceName.replaceFirst(Constants.DEVICENAME_PREFIX, "")
-                val isConnecting = device.address ==
-                        (state.pairState as? DevicePairState.Connecting)?.address
+                val currentDevice = (state.pairState as? DevicePairState.Connecting)?.address
+                val isConnecting = device.address == currentDevice
                 ComposableSearchItem(text = name, isConnecting = isConnecting) {
                     onDeviceClick(device)
                 }
