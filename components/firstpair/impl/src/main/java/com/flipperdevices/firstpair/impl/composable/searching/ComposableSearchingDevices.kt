@@ -28,23 +28,26 @@ fun ComposableSearchingDevices(
 ) {
     val devices = state.devices
 
-    if (state.pairState is DevicePairState.TimeoutPairing) {
-        val pairDevice = state.pairState.discoveredBluetoothDevice
-        ComposableConnectingTimeoutDialog(
-            titleId = R.string.firstpair_retry_dialog_pairing_title,
-            descId = R.string.firstpair_retry_dialog_pairing_desc,
-            onRetry = { onDeviceClick(pairDevice) },
-            onResetTimeoutState = onResetTimeoutState
-        )
-    }
-    if (state.pairState is DevicePairState.TimeoutConnecting) {
-        val pairDevice = state.pairState.discoveredBluetoothDevice
-        ComposableConnectingTimeoutDialog(
-            titleId = R.string.firstpair_retry_dialog_connecting_title,
-            descId = R.string.firstpair_retry_dialog_connecting_desc,
-            onRetry = { onDeviceClick(pairDevice) },
-            onResetTimeoutState = onResetTimeoutState
-        )
+    when (state.pairState) {
+        is DevicePairState.TimeoutPairing -> {
+            val pairDevice = state.pairState.discoveredBluetoothDevice
+            ComposableConnectingTimeoutDialog(
+                titleId = R.string.firstpair_retry_dialog_pairing_title,
+                descId = R.string.firstpair_retry_dialog_pairing_desc,
+                onRetry = { onDeviceClick(pairDevice) },
+                onResetTimeoutState = onResetTimeoutState
+            )
+        }
+        is DevicePairState.TimeoutConnecting -> {
+            val pairDevice = state.pairState.discoveredBluetoothDevice
+            ComposableConnectingTimeoutDialog(
+                titleId = R.string.firstpair_retry_dialog_connecting_title,
+                descId = R.string.firstpair_retry_dialog_connecting_desc,
+                onRetry = { onDeviceClick(pairDevice) },
+                onResetTimeoutState = onResetTimeoutState
+            )
+        }
+        else -> {}
     }
 
     SwipeRefresh(
