@@ -4,6 +4,8 @@ plugins {
     id("kotlin-kapt")
 }
 
+android.namespace = "com.flipperdevices.bridge"
+
 dependencies {
     implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)

@@ -5,6 +5,8 @@ plugins {
     id("kotlinx-serialization")
 }
 
+android.namespace = "com.flipperdevices.share.cryptostorage"
+
 dependencies {
     implementation(projects.components.share.api)
 

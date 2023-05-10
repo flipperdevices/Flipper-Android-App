@@ -4,6 +4,8 @@ plugins {
     id("kotlin-kapt")
 }
 
+android.namespace = "com.flipperdevices.screenstreaming.impl"
+
 dependencies {
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.service.api)

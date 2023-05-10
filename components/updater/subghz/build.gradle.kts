@@ -4,6 +4,8 @@ plugins {
     id("kotlin-kapt")
 }
 
+android.namespace = "com.flipperdevices.updater.subghz"
+
 dependencies {
     implementation(projects.components.updater.api)
 

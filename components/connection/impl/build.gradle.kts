@@ -4,6 +4,8 @@ plugins {
     id("kotlin-kapt")
 }
 
+android.namespace = "com.flipperdevices.connection.impl"
+
 dependencies {
     implementation(projects.components.connection.api)
     implementation(projects.components.bottombar.api)

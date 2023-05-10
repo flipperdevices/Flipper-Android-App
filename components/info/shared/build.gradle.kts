@@ -2,6 +2,8 @@ plugins {
     id("flipper.android-compose")
 }
 
+android.namespace = "com.flipperdevices.info.shared"
+
 dependencies {
     implementation(projects.components.updater.api)
     implementation(projects.components.core.ui.res)

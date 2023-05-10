@@ -2,6 +2,8 @@ plugins {
     id("flipper.android-compose")
 }
 
+android.namespace = "com.flipperdevices.wearable.setup.api"
+
 dependencies {
     implementation(projects.components.core.ui.navigation)
 

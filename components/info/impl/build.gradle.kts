@@ -6,6 +6,8 @@ plugins {
     id("kotlinx-serialization")
 }
 
+android.namespace = "com.flipperdevices.info.impl"
+
 dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.markdown)

@@ -5,6 +5,8 @@ plugins {
     id("kotlinx-serialization")
 }
 
+android.namespace = "com.flipperdevices.keyscreen.impl"
+
 dependencies {
     implementation(projects.components.keyscreen.api)
     implementation(projects.components.share.api)

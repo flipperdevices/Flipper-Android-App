@@ -5,6 +5,8 @@ plugins {
     id("kotlinx-serialization")
 }
 
+android.namespace = "com.flipperdevices.nfceditor.impl"
+
 dependencies {
     implementation(projects.components.nfceditor.api)
 

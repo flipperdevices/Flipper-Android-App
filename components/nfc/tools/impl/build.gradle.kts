@@ -5,6 +5,8 @@ plugins {
     id("flipper.git-submodule-fetch")
 }
 
+android.namespace = "com.flipperdevices.nfc.tools.impl"
+
 android {
     externalNativeBuild {
         cmake {
