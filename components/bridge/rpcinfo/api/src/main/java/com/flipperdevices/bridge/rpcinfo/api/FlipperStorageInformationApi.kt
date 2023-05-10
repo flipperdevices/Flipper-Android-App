@@ -1,7 +1,7 @@
 package com.flipperdevices.bridge.rpcinfo.api
 
-import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.rpcinfo.model.FlipperStorageInformation
+import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 
@@ -10,7 +10,7 @@ interface FlipperStorageInformationApi {
 
     suspend fun invalidate(
         scope: CoroutineScope,
-        requestApi: FlipperRequestApi,
+        serviceApi: FlipperServiceApi,
         force: Boolean = false
     )
 

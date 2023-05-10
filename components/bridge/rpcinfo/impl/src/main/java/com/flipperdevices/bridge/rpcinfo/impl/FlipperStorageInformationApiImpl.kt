@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.rpcinfo.impl
 
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
+import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.rpcinfo.api.FlipperStorageInformationApi
@@ -8,6 +9,7 @@ import com.flipperdevices.bridge.rpcinfo.impl.shaketoreport.FlipperInformationMa
 import com.flipperdevices.bridge.rpcinfo.model.FlipperInformationStatus
 import com.flipperdevices.bridge.rpcinfo.model.FlipperStorageInformation
 import com.flipperdevices.bridge.rpcinfo.model.StorageStats
+import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
@@ -24,6 +26,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
@@ -48,7 +51,7 @@ class FlipperStorageInformationApiImpl @Inject constructor(
     override fun getStorageInformationFlow() = storageInformationFlow.asStateFlow()
     override suspend fun invalidate(
         scope: CoroutineScope,
-        requestApi: FlipperRequestApi,
+        serviceApi: FlipperServiceApi,
         force: Boolean
     ) = withLock(mutex, "invalidate") {
         if (force.not() && alreadyRequested) {
@@ -58,7 +61,13 @@ class FlipperStorageInformationApiImpl @Inject constructor(
 
         job?.cancelAndJoin()
         job = scope.launch {
-            invalidateInternal(requestApi)
+            serviceApi.connectionInformationApi
+                .getConnectionStateFlow().collect { connectionState ->
+                    when (connectionState) {
+                        is ConnectionState.Ready -> invalidateInternal(serviceApi.requestApi)
+                        else -> {}
+                    }
+                }
         }
     }
 
