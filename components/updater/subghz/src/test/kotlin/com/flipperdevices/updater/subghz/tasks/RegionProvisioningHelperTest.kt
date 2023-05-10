@@ -21,9 +21,9 @@ import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.robolectric.util.ReflectionHelpers
 import java.util.Locale
-import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class RegionProvisioningHelperTest {
