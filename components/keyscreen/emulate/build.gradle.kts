@@ -4,6 +4,8 @@ plugins {
     id("kotlin-kapt")
 }
 
+android.namespace = "com.flipperdevices.keyscreen.emulate"
+
 dependencies {
     implementation(projects.components.keyscreen.api)
 

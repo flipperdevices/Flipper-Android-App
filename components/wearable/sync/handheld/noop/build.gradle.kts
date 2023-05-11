@@ -4,6 +4,8 @@ plugins {
     id("kotlin-kapt")
 }
 
+android.namespace = "com.flipperdevices.wearable.sync.handheld.noop"
+
 dependencies {
     implementation(projects.components.wearable.sync.handheld.api)
 

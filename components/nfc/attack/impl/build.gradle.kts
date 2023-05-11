@@ -4,6 +4,8 @@ plugins {
     id("kotlin-kapt")
 }
 
+android.namespace = "com.flipperdevices.nfc.attack.impl"
+
 dependencies {
     implementation(projects.components.nfc.attack.api)
 

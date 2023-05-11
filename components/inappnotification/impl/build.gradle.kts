@@ -4,6 +4,8 @@ plugins {
     id("kotlin-kapt")
 }
 
+android.namespace = "com.flipperdevices.inappnotification.impl"
+
 dependencies {
     implementation(projects.components.inappnotification.api)
     implementation(projects.components.core.di)

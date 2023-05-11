@@ -4,6 +4,8 @@ plugins {
     id("kotlin-kapt")
 }
 
+android.namespace = "com.flipperdevices.nfc.mfkey32.screen"
+
 dependencies {
     implementation(projects.components.nfc.mfkey32.api)
     implementation(projects.components.nfc.tools.api)

@@ -2,6 +2,8 @@ plugins {
     id("flipper.android-compose")
 }
 
+android.namespace = "com.flipperdevices.wearable.theme"
+
 dependencies {
     implementation(projects.components.core.ui.theme)
 

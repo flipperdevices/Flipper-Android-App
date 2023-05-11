@@ -4,6 +4,8 @@ plugins {
     id("kotlin-kapt")
 }
 
+android.namespace = "com.flipperdevices.analytics.shake2report.impl"
+
 dependencies {
     implementation(projects.components.analytics.shake2report.api)
     implementation(projects.components.core.ktx)

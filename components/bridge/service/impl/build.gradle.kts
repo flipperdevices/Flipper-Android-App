@@ -4,6 +4,8 @@ plugins {
     id("kotlin-kapt")
 }
 
+android.namespace = "com.flipperdevices.bridge.service.impl"
+
 android {
     testOptions {
         unitTests.isIncludeAndroidResources = true

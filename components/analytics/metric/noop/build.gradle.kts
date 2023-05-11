@@ -4,6 +4,8 @@ plugins {
     id("kotlin-kapt")
 }
 
+android.namespace = "com.flipperdevices.metric.noop"
+
 dependencies {
     implementation(projects.components.analytics.metric.api)
 

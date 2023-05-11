@@ -2,6 +2,8 @@ plugins {
     id("flipper.android-compose")
 }
 
+android.namespace = "com.flipperdevices.keyscreen.shared"
+
 dependencies {
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.theme)

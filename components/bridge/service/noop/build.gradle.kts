@@ -4,6 +4,8 @@ plugins {
     id("kotlin-kapt")
 }
 
+android.namespace = "com.flipperdevices.bridge.service.noop"
+
 dependencies {
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.core.di)

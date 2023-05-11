@@ -2,6 +2,8 @@ plugins {
     id("flipper.android-compose")
 }
 
+android.namespace = "com.flipperdevices.core.ui.hexkeyboard"
+
 dependencies {
     implementation(projects.components.core.ui.ktx)
 

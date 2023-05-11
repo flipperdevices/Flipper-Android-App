@@ -5,6 +5,8 @@ plugins {
     id("kotlinx-serialization")
 }
 
+android.namespace = "com.flipperdevices.archive.category"
+
 dependencies {
     implementation(projects.components.archive.api)
     implementation(projects.components.archive.shared)

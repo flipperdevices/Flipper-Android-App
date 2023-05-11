@@ -4,6 +4,8 @@ plugins {
     id("kotlin-kapt")
 }
 
+android.namespace = "com.flipperdevices.bridge.rpcinfo.impl"
+
 dependencies {
     implementation(projects.components.bridge.rpcinfo.api)
 

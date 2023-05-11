@@ -4,6 +4,8 @@ plugins {
     id("kotlin-kapt")
 }
 
+android.namespace = "com.flipperdevices.wearable.emulate.handheld.impl"
+
 dependencies {
     implementation(projects.components.wearable.emulate.common)
 

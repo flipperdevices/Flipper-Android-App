@@ -3,6 +3,8 @@ plugins {
     id("flipper.protobuf")
 }
 
+android.namespace = "com.flipperdevices.wearable.emulate.common"
+
 dependencies {
     implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)

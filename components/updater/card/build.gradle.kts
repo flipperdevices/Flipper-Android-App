@@ -4,6 +4,8 @@ plugins {
     id("kotlin-kapt")
 }
 
+android.namespace = "com.flipperdevices.updater.card"
+
 dependencies {
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.log)

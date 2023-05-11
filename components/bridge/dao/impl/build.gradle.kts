@@ -5,6 +5,8 @@ plugins {
     id("com.google.devtools.ksp")
 }
 
+android.namespace = "com.flipperdevices.bridge.dao.impl"
+
 ksp {
     arg("room.schemaLocation", "$projectDir/schemas")
 }

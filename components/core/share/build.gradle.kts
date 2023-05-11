@@ -2,6 +2,8 @@ plugins {
     id("flipper.android-lib")
 }
 
+android.namespace = "com.flipperdevices.core.share"
+
 android {
     defaultConfig {
         val applicationId = com.flipperdevices.buildlogic.ApkConfig.APPLICATION_ID

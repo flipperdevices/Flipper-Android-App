@@ -4,6 +4,8 @@ plugins {
     id("kotlin-kapt")
 }
 
+android.namespace = "com.flipperdevices.selfupdater.unknown"
+
 dependencies {
     implementation(projects.components.selfupdater.api)
 

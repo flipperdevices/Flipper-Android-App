@@ -4,6 +4,8 @@ plugins {
     id("kotlin-kapt")
 }
 
+android.namespace = "com.flipperdevices.bridge.synchronization.ui"
+
 dependencies {
     implementation(projects.components.bridge.synchronization.api)
 

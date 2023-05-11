@@ -4,6 +4,8 @@ plugins {
     id("kotlin-kapt")
 }
 
+android.namespace = "com.flipperdevices.share.uploader"
+
 dependencies {
     implementation(projects.components.analytics.metric.api)
     implementation(projects.components.share.api)
