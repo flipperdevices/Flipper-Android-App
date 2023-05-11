@@ -90,7 +90,8 @@ internal fun ComposableSearchingView(
         onHelpClicking = onHelpClicking,
         onSkipConnection = { pairViewModel.finishConnection(onEndAction = onFinishConnection) },
         onDeviceClick = pairViewModel::startConnectToDevice,
-        onRefreshSearching = searchStateBuilder::resetByUser
+        onRefreshSearching = searchStateBuilder::resetByUser,
+        onResetTimeoutState = pairViewModel::resetConnection
     )
 }
 

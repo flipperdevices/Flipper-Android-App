@@ -22,7 +22,7 @@ sealed class SearchingContent {
 
     data class FoundedDevices(
         val devices: List<DiscoveredBluetoothDevice>,
-        val selectedAddress: String? = null
+        val pairState: DevicePairState
     ) : SearchingContent()
 
     class Finished(
