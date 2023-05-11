@@ -35,8 +35,7 @@ ktx-fragment = "1.5.7" # https://developer.android.com/jetpack/androidx/releases
 ktx-activity = "1.7.1" # https://developer.android.com/jetpack/androidx/releases/activity
 ktx-testing = "1.1.5" # https://developer.android.com/jetpack/androidx/releases/test
 lifecycle = "2.6.1" # https://developer.android.com/jetpack/androidx/releases/lifecycle
-# TODO: https://github.com/vigna/fastutil/issues/136
-fastutil = "7.2.1"
+fastutil = "8.5.12" # https://github.com/vigna/fastutil/tags
 ble = "2.6.1" # https://github.com/NordicSemiconductor/Android-BLE-Library/releases
 ble-scan = "1.6.0" # https://github.com/NordicSemiconductor/Android-Scanner-Compat-Library/releases
 lottie = "6.0.0" # https://github.com/airbnb/lottie/blob/master/android-compose.md
@@ -44,7 +43,7 @@ material = "1.9.0" # https://github.com/material-components/material-components-
 annotations = "1.6.0" # https://developer.android.com/jetpack/androidx/releases/annotation
 appcompat = "1.6.1" # https://developer.android.com/jetpack/androidx/releases/appcompat
 datastore = "1.0.0" # https://developer.android.com/topic/libraries/architecture/datastore
-# TODO: https://github.com/vsch/flexmark-java/issues/442
+# https://github.com/vsch/flexmark-java/issues/442
 flexmark = "0.42.14"
 markdown = "0.1.9" # https://github.com/Programistich/multiplatform-markdown-renderer
 ktor = "2.3.0" # https://ktor.io/
