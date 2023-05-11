@@ -1,10 +1,10 @@
 [versions]
 # You also need to bump the version of ksp, anvil, compose
-kotlin-general = "1.8.10" # https://kotlinlang.org/docs/releases.html#release-details
+kotlin-general = "1.8.21" # https://kotlinlang.org/docs/releases.html#release-details
 kotlin-immutable-collections = "0.3.5" # https://github.com/Kotlin/kotlinx.collections.immutable/releases
 kotlinx = "1.6.4" # https://github.com/Kotlin/kotlinx.coroutines/releases
-ksp = "1.8.10-1.0.9" # https://github.com/google/ksp/releases
-anvil = "2.4.4" # https://github.com/square/anvil/releases
+ksp = "1.8.21-1.0.11" # https://github.com/google/ksp/releases
+anvil = "2.4.5" # https://github.com/square/anvil/releases
 android-gradle = "8.0.1" # https://developer.android.com/studio/releases/gradle-plugin
 protobuf = "3.22.2" # https://github.com/protocolbuffers/protobuf/releases
 # https://github.com/google/protobuf-gradle-plugin/issues/656
@@ -13,7 +13,7 @@ compose-material = "1.4.0" # https://developer.android.com/jetpack/androidx/rele
 compose-foundation = "1.4.0" # https://developer.android.com/jetpack/androidx/releases/compose#versions
 compose-ui = "1.4.0" # https://developer.android.com/jetpack/androidx/releases/compose#versions
 compose-wear = "1.1.2" # https://developer.android.com/jetpack/androidx/releases/wear-compose
-compose-compiler = "1.4.4" # https://developer.android.com/jetpack/androidx/releases/compose#versions
+compose-compiler = "1.4.7" # https://developer.android.com/jetpack/androidx/releases/compose#versions
 compose-accompanist = "0.30.0" # https://github.com/google/accompanist/releases
 compose-constraint = "1.0.1" # https://developer.android.com/jetpack/compose/layouts/constraintlayout
 compose-navigation = "2.5.3" # https://developer.android.com/jetpack/compose/navigation
@@ -53,7 +53,7 @@ apache-compress = "1.22" # https://commons.apache.org/proper/commons-compress/
 apache-codec = "1.15" # https://mvnrepository.com/artifact/commons-codec/commons-codec
 countly = "22.09.1" # https://github.com/Countly/countly-sdk-android/releases
 grgit-gradle = "8d818b74b9"
-tangle = "806bc6eeba" # https://github.com/RBusarow/Tangle/releases
+tangle = "9be551e193" # https://github.com/RBusarow/Tangle/releases
 work = "2.8.1" # https://developer.android.com/jetpack/androidx/releases/work
 coil = "2.2.2" # https://github.com/coil-kt/coil/releases
 play-core = "2.0.1" # https://developer.android.com/guide/playcore#java-kotlin-in-app-update
