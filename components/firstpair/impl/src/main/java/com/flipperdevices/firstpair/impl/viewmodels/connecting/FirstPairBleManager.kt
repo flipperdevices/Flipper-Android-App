@@ -21,11 +21,11 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.sync.Mutex
 import no.nordicsemi.android.ble.BleManager
+import no.nordicsemi.android.ble.ConnectRequest
 
 /**
  * Class for initial connection to device. Set up connection and set up pairing
  */
-@Suppress("BlockingMethodInNonBlockingContext")
 internal class FirstPairBleManager(
     context: Context,
     scope: CoroutineScope
@@ -40,55 +40,58 @@ internal class FirstPairBleManager(
     )
     private val bleMutex = Mutex()
 
+    // Store a connection request to cancel it during a disconnection
+    private var connectRequest: ConnectRequest? = null
+
+    private var informationService: BluetoothGattService? = null
+
     init {
         setConnectionObserver(connectionObservers)
     }
 
     override fun supportState() = FlipperSupportedState.READY
 
-    override fun getGattCallback(): BleManagerGattCallback = FirstPairBleManagerGattCallback()
+    override fun initialize() {
+        info { "Initialize device" }
 
-    private inner class FirstPairBleManagerGattCallback :
-        BleManagerGattCallback() {
-        private var informationService: BluetoothGattService? = null
-
-        override fun initialize() {
-            info { "Initialize device" }
-            if (!isBonded) {
-                info { "Start bond secure" }
-                ensureBond().enqueue()
-            }
+        if (!isBonded) {
+            info { "Start bond secure" }
+            ensureBond().enqueue()
         }
-
-        @SuppressLint("MissingPermission")
-        override fun onDeviceReady() {
-            super.onDeviceReady()
-            info { "On device ready called" }
-            readCharacteristic(
-                informationService?.getCharacteristic(
-                    Constants.BLEInformationService.SOFTWARE_VERSION
-                )
-            ).with { device, data ->
-                val softwareVersion = String(data.value ?: byteArrayOf())
-                info { "Software version on ${device.name} is $softwareVersion" }
-            }.enqueue()
-        }
-
-        override fun isRequiredServiceSupported(gatt: BluetoothGatt): Boolean {
-            informationService = gatt.getService(Constants.BLEInformationService.SERVICE_UUID)
-            return informationService != null
-        }
-
-        override fun onServicesInvalidated() = Unit
     }
 
+    @SuppressLint("MissingPermission")
+    override fun onDeviceReady() {
+        super.onDeviceReady()
+        info { "On device ready called" }
+        readCharacteristic(
+            informationService?.getCharacteristic(
+                Constants.BLEInformationService.SOFTWARE_VERSION
+            )
+        ).with { device, data ->
+            val softwareVersion = String(data.value ?: byteArrayOf())
+            info { "Software version on ${device.name} is $softwareVersion" }
+        }.enqueue()
+    }
+
+    override fun isRequiredServiceSupported(gatt: BluetoothGatt): Boolean {
+        informationService = gatt.getService(Constants.BLEInformationService.SERVICE_UUID)
+        return informationService != null
+    }
+
+    override fun onServicesInvalidated() = Unit
+
     suspend fun connectToDevice(device: BluetoothDevice) = withLock(bleMutex, "connect") {
+        connectRequest?.cancelPendingConnection()
         connect(device)
             .useAutoConnect(false)
+            .also { connectRequest = it }
             .enqueue()
+        info { "Start waiting Initializing" }
 
         // Wait until device is really connected
         stateAsFlow().filter { it is ConnectionState.Initializing }.first()
+        info { "Finish waiting Initializing" }
     }
 
     override fun subscribeOnConnectionState(observer: SuspendConnectionObserver) {

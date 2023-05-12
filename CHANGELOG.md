@@ -19,12 +19,15 @@
 - [Feature] New screen streaming design with animation
 - [Feature] Migrate screen streaming to hub
 - [Feature] Dialog on lock/unlock unsupported by firmware
+- [Feature] Dialog on first pair failed
 - [GitHub] Update github repo picture
 - [CI] Migrate to Detekt
 - [CI] Android lint in CI
 - [CI] Enable back github queue
 - [CI] Migrate to matrix CI with source install
 - [CI] Use release build for release
+- [CI] Migrate to AGP 8
+- [CI] Bump deps
 - [FIX] Disable verbose logging for ble
 - [FIX] Clickable modifier ktx
 - [FIX] Refactor `share:receive` module
@@ -56,6 +59,8 @@
 - [FIX] Device info mapping keys
 - [FIX] Wait disconnecting from device when restart rpc
 - [FIX] Replace radio type to sub number in device info
+- [FIX] Progress bar on disconnected state on device info screen
+- [FIX] Remove proguard rules from submodules, remove minify from submodules
 - [REFACTOR] Migrate bottom bar to compose navigation
 - [REFACTOR] Bump Android Gradle Plugin
 - [REFACTOR] Fix detekt compose issues

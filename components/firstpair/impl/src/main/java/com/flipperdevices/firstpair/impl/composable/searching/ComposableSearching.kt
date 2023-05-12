@@ -23,6 +23,7 @@ fun ComposableSearchingScreen(
     onSkipConnection: () -> Unit,
     onDeviceClick: (DiscoveredBluetoothDevice) -> Unit,
     onRefreshSearching: () -> Unit,
+    onResetTimeoutState: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
@@ -32,7 +33,8 @@ fun ComposableSearchingScreen(
             modifier = Modifier.weight(weight = 1f),
             content = state.content,
             onDeviceClick = onDeviceClick,
-            onRefreshSearching = onRefreshSearching
+            onRefreshSearching = onRefreshSearching,
+            onResetTimeoutState = onResetTimeoutState
         )
         ComposableSearchingFooter(onSkipConnection)
     }
@@ -42,8 +44,9 @@ fun ComposableSearchingScreen(
 fun ComposableSearchingContent(
     content: SearchingContent,
     onDeviceClick: (DiscoveredBluetoothDevice) -> Unit,
-    modifier: Modifier = Modifier,
-    onRefreshSearching: () -> Unit
+    onRefreshSearching: () -> Unit,
+    onResetTimeoutState: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     when (content) {
         is SearchingContent.Finished -> Text(
@@ -51,16 +54,20 @@ fun ComposableSearchingContent(
             text = stringResource(R.string.firstpair_search_title),
             textAlign = TextAlign.Center
         )
+
         is SearchingContent.FoundedDevices -> ComposableSearchingDevices(
             modifier = modifier,
             state = content,
             onDeviceClick = onDeviceClick,
-            onRefreshSearching = onRefreshSearching
+            onRefreshSearching = onRefreshSearching,
+            onResetTimeoutState = onResetTimeoutState
         )
+
         is SearchingContent.PermissionRequest -> ComposablePermissionRequest(
             modifier = modifier,
             state = content
         )
+
         SearchingContent.Searching -> ComposableSearchingProgress(modifier)
     }
 }
@@ -81,6 +88,7 @@ private fun ComposableSearchingScreenPreview() {
         onHelpClicking = {},
         onSkipConnection = {},
         onRefreshSearching = {},
-        onDeviceClick = {}
+        onDeviceClick = {},
+        onResetTimeoutState = {}
     )
 }

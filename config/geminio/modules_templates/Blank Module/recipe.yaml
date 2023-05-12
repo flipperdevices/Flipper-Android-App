@@ -49,10 +49,6 @@ recipe:
       from: root/build.gradle.kts.ftl
       to: ${rootOut}/build.gradle.kts
 
-  - instantiate:
-      from: root/src/main/AndroidManifest.xml.ftl
-      to: ${manifestOut}/AndroidManifest.xml
-
   - predicate:
       validIf: ${shouldGenerateDI}
       commands:

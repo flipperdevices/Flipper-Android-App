@@ -4,6 +4,8 @@ plugins {
     id("kotlin-kapt")
 }
 
+android.namespace = "com.flipperdevices.bridge.dao.noop"
+
 dependencies {
     implementation(projects.components.bridge.dao.api)
 

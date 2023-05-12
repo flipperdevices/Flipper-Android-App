@@ -1,12 +1,15 @@
 package com.flipperdevices.bridge.rpcinfo.impl
 
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
+import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
+import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.rpcinfo.api.FlipperStorageInformationApi
 import com.flipperdevices.bridge.rpcinfo.model.FlipperInformationStatus
 import com.flipperdevices.bridge.rpcinfo.model.FlipperStorageInformation
 import com.flipperdevices.bridge.rpcinfo.model.StorageStats
+import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.core.ktx.jre.TimeHelper
 import com.flipperdevices.core.test.PendingCoroutineExceptionHandler
 import com.flipperdevices.metric.api.MetricApi
@@ -33,6 +36,7 @@ import org.junit.Test
 class FlipperStorageInformationTest {
     private lateinit var exceptionHandler: PendingCoroutineExceptionHandler
 
+    private lateinit var serviceApi: FlipperServiceApi
     private lateinit var requestApi: FlipperRequestApi
 
     private lateinit var metricApi: MetricApi
@@ -45,6 +49,16 @@ class FlipperStorageInformationTest {
         every { TimeHelper.getNanoTime() } returns 0L
 
         requestApi = mockk()
+        serviceApi = mockk {
+            every { requestApi } returns this@FlipperStorageInformationTest.requestApi
+            every { connectionInformationApi } returns mockk {
+                every { getConnectionStateFlow() } returns flowOf(
+                    ConnectionState.Ready(
+                        FlipperSupportedState.READY
+                    )
+                )
+            }
+        }
 
         metricApi = mockk(relaxUnitFun = true)
         underTest = FlipperStorageInformationApiImpl(metricApi, mockk(relaxUnitFun = true))
@@ -56,7 +70,7 @@ class FlipperStorageInformationTest {
         mockStorageInfo(requestApi, "/ext/", 400, 800)
 
         launch(exceptionHandler) {
-            underTest.invalidate(this, requestApi)
+            underTest.invalidate(this, serviceApi)
         }
 
         advanceUntilIdle()
@@ -101,7 +115,7 @@ class FlipperStorageInformationTest {
         mockStorageInfo(requestApi, "/ext/", 400, 800)
 
         launch(exceptionHandler) {
-            underTest.invalidate(this, requestApi)
+            underTest.invalidate(this, serviceApi)
         }
 
         advanceUntilIdle()
@@ -110,7 +124,7 @@ class FlipperStorageInformationTest {
         mockStorageInfo(requestApi, "/ext/", 1600, 3200)
 
         launch(exceptionHandler) {
-            underTest.invalidate(this, requestApi)
+            underTest.invalidate(this, serviceApi)
         }
 
         advanceUntilIdle()
@@ -141,7 +155,7 @@ class FlipperStorageInformationTest {
         mockStorageInfo(requestApi, "/ext/", 400, 800)
 
         launch(exceptionHandler) {
-            underTest.invalidate(this, requestApi)
+            underTest.invalidate(this, serviceApi)
         }
 
         advanceUntilIdle()
@@ -150,7 +164,7 @@ class FlipperStorageInformationTest {
         mockStorageInfo(requestApi, "/ext/", 1600, 3200)
 
         launch(exceptionHandler) {
-            underTest.invalidate(this, requestApi, force = true)
+            underTest.invalidate(this, serviceApi, force = true)
         }
 
         advanceUntilIdle()

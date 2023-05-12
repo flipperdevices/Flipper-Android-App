@@ -4,6 +4,8 @@ plugins {
     id("kotlin-kapt")
 }
 
+android.namespace = "com.flipperdevices.nfceditor.sample"
+
 android {
     buildFeatures.compose = true
     composeOptions {

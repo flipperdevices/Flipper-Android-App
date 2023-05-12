@@ -4,6 +4,8 @@ plugins {
     id("kotlin-kapt")
 }
 
+android.namespace = "com.flipperdevices.faphub.dao.flipper"
+
 dependencies {
     implementation(projects.components.faphub.dao.api)
 

@@ -2,6 +2,8 @@ plugins {
     id("flipper.android-lib")
 }
 
+android.namespace = "com.flipperdevices.bridge.rpcinfo.api"
+
 dependencies {
     implementation(projects.components.core.data)
     implementation(projects.components.core.ktx)

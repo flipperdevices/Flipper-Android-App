@@ -169,12 +169,7 @@ class SearchStateBuilder(
                     showHelp = true,
                     content = SearchingContent.FoundedDevices(
                         devices = scanState.devices,
-                        selectedAddress = when (pairState) {
-                            is DevicePairState.Connected,
-                            DevicePairState.NotInitialized,
-                            DevicePairState.Timeout -> null
-                            is DevicePairState.Connecting -> pairState.address
-                        }
+                        pairState = pairState
                     )
                 )
             )

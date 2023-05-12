@@ -4,6 +4,8 @@ plugins {
     id("kotlin-kapt")
 }
 
+android.namespace = "com.flipperdevices.keyedit.noop"
+
 dependencies {
     implementation(projects.components.keyedit.api)
 

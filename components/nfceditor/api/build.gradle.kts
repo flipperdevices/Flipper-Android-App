@@ -2,6 +2,8 @@ plugins {
     id("flipper.android-compose")
 }
 
+android.namespace = "com.flipperdevices.nfceditor.api"
+
 dependencies {
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.core.ui.navigation)

@@ -7,6 +7,8 @@ plugins {
     id("kotlin-kapt")
     id("flipper.protobuf")
 }
+
+android.namespace = "com.flipperdevices.metric.impl"
 android {
     buildTypes {
         defaultConfig {

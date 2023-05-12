@@ -5,6 +5,8 @@ plugins {
     id("kotlinx-serialization")
 }
 
+android.namespace = "com.flipperdevices.selfupdater.thirdparty.github"
+
 dependencies {
     implementation(projects.components.selfupdater.thirdparty.api)
     implementation(projects.components.inappnotification.api)
