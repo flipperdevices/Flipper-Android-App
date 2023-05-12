@@ -1,4 +1,4 @@
-import com.android.build.api.dsl.ApplicationExtension
+
 import com.android.build.gradle.BaseExtension
 import com.flipperdevices.buildlogic.ApkConfig
 import com.flipperdevices.buildlogic.ApkConfig.IS_SENTRY_PUBLISH
@@ -21,18 +21,26 @@ configure<BaseExtension> {
     buildTypes {
         internal {
             isShrinkResources = true
+            isMinifyEnabled = true
+            consumerProguardFile(
+                "proguard-rules.pro"
+            )
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
         release {
             isShrinkResources = true
+            isMinifyEnabled = true
+            consumerProguardFile(
+                "proguard-rules.pro"
+            )
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
-    }
-}
-
-configure<ApplicationExtension> {
-    // https://issuetracker.google.com/issues/162074215
-    dependenciesInfo {
-        includeInBundle = false
-        includeInApk = false
     }
 }
 
