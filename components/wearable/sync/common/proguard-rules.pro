@@ -1,1 +1,0 @@
--keep class * extends com.google.protobuf.GeneratedMessageLite { *; }

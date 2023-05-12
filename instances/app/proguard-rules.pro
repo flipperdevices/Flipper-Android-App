@@ -20,3 +20,14 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 -keep class * extends com.google.protobuf.GeneratedMessageLite { *; }
+
+# https://github.com/ktorio/ktor/issues/379
+-dontwarn kotlinx.atomicfu.**
+-dontwarn io.netty.**
+-dontwarn com.typesafe.**
+-dontwarn org.slf4j.**
+
+-dontwarn okhttp3.internal.platform.**
+-dontwarn org.conscrypt.**
+-dontwarn org.bouncycastle.**
+-dontwarn org.openjsse.**
