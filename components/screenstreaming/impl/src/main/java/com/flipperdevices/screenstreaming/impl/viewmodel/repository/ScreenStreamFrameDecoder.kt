@@ -1,4 +1,4 @@
-package com.flipperdevices.screenstreaming.impl.viewmodel
+package com.flipperdevices.screenstreaming.impl.viewmodel.repository
 
 import android.graphics.Bitmap
 import android.graphics.Color
