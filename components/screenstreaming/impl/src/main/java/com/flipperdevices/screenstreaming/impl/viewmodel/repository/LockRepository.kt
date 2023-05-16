@@ -58,7 +58,9 @@ class LockRepository(
 
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
         serviceApi.flipperVersionApi.getVersionInformationFlow().onEach {
-            if (it != null && it >= Constants.API_SUPPORTED_UNLOCK) {
+            if (it == null) {
+                lockStateFlow.emit(FlipperLockState.NotInitialized)
+            } else if (it >= Constants.API_SUPPORTED_UNLOCK) {
                 lockStateFlow.emit(FlipperLockState.Ready(isLocked = true)) // Always unlock
             } else {
                 lockStateFlow.emit(FlipperLockState.NotSupported)
