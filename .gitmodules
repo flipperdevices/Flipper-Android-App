@@ -1,9 +1,12 @@
 [submodule "components/nfc/tools/impl/src/main/cpp/nfc-tools"]
 	path = components/nfc/tools/impl/src/main/cpp/nfc-tools
 	url = https://github.com/flipperdevices/flipperzero-nfc-tools.git
+	branch = 808695143e7d6eb225398bcfd29e0009066e2c93
 [submodule "components/bridge/pbutils/src/main/proto"]
 	path = components/bridge/pbutils/src/main/proto
 	url = https://github.com/flipperdevices/flipperzero-protobuf.git
+	branch = 0.16
 [submodule "components/analytics/metric/impl/src/main/proto"]
 	path = components/analytics/metric/impl/src/main/proto
 	url = https://github.com/flipperdevices/flipperzero-protobuf-metric.git
+	branch = c7294ff66e4a475016672613de951f6bdba1cfa4
