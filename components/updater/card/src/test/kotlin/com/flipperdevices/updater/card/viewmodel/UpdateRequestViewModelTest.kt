@@ -8,6 +8,7 @@ import com.flipperdevices.bridge.api.model.FlipperGATTInformation
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
+import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.core.ktx.jre.filename
 import com.flipperdevices.core.ktx.jre.length
 import com.flipperdevices.updater.card.model.BatteryState
@@ -24,6 +25,7 @@ import io.mockk.mockk
 import io.mockk.mockkStatic
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
@@ -34,7 +36,12 @@ import org.junit.runner.RunWith
 class UpdateRequestViewModelTest {
     private val serviceProvider: FlipperServiceProvider = mockk(relaxUnitFun = true)
     private val serviceApi: FlipperServiceApi = mockk(relaxUnitFun = true)
-    private val synchronizationApi: SynchronizationApi = mockk()
+    private val synchronizationState = MutableStateFlow<SynchronizationState>(
+        SynchronizationState.NotStarted
+    )
+    private val synchronizationApi: SynchronizationApi = mockk() {
+        every { getSynchronizationState() } returns synchronizationState
+    }
     private val viewModel = UpdateRequestViewModel(
         serviceProvider = serviceProvider,
         synchronizationApi = synchronizationApi
@@ -52,7 +59,7 @@ class UpdateRequestViewModelTest {
     @Before
     fun setup() {
         mockkStatic("com.flipperdevices.core.ktx.jre.UriKtxKt")
-        every { synchronizationApi.isSynchronizationRunning() } returns false
+        synchronizationState.update { SynchronizationState.NotStarted }
         every { serviceApi.flipperInformationApi.getInformationFlow() } answers {
             MutableStateFlow(FlipperGATTInformation(batteryLevel = 0.3f))
         }
@@ -94,21 +101,21 @@ class UpdateRequestViewModelTest {
             state,
             UpdatePendingState.Ready(
                 requestServer.updateRequest,
-                SyncingState.Complete
+                SyncingState.COMPLETE
             )
         )
     }
 
     @Test
     fun `Open update request with sync`() = runTest {
-        every { synchronizationApi.isSynchronizationRunning() } returns true
+        synchronizationState.emit(SynchronizationState.InProgress(0f))
         viewModel.onUpdateRequest(requestServer)
         val state = viewModel.getUpdatePendingState().first()
         Assert.assertEquals(
             state,
             UpdatePendingState.Ready(
                 requestServer.updateRequest,
-                SyncingState.InProgress
+                SyncingState.IN_PROGRESS
             )
         )
     }
@@ -121,7 +128,7 @@ class UpdateRequestViewModelTest {
             state,
             UpdatePendingState.Ready(
                 requestServer.updateRequest,
-                SyncingState.Stop
+                SyncingState.STOP
             )
         )
     }

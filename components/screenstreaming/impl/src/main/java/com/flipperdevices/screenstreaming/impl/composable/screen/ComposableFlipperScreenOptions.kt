@@ -33,7 +33,7 @@ fun ComposableFlipperScreenLock(
     modifier: Modifier = Modifier,
     onChangeState: () -> Unit
 ) {
-    val isLock = lockState is FlipperLockState.Ready && lockState.isLocked
+    val isLock = lockState !is FlipperLockState.Ready || lockState.isLocked
     val lockModifier = when (lockState) {
         is FlipperLockState.Ready -> modifier
         FlipperLockState.NotInitialized,

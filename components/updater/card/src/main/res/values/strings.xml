@@ -33,13 +33,17 @@
     <string name="update_card_dialog_file_big_desc">Are you sure for upload biggest file on Flipper?</string>
 
     <string name="update_card_dialog_pause_sync_title">Pause Synchronization?</string>
-    <string name="update_card_dialog_pause_sync_desc">Firmware update is not possible during synchronization. Wait for sync to finish or pause it.</string>
     <string name="update_card_dialog_pause_sync_update">Pause &amp; Update</string>
+    <string name="update_card_dialog_pause_sync_install">Pause &amp; Install</string>
+    <string name="update_card_dialog_pause_sync_desc_pre_install">Cannot update to</string>
+    <string name="update_card_dialog_pause_sync_desc_pre_update">Cannot install</string>
+    <string name="update_card_dialog_pause_sync_desc_post">during synchronization. Wait for sync to finish or pause it.</string>
     <string name="update_card_dialog_pause_sync_cancel">Cancel</string>
 
     <string name="update_card_confirm_update_title">Update Firmware?</string>
     <string name="update_card_confirm_install_title">Install Firmware?</string>
-    <string name="update_card_confirm_desc">will be installed on your Flipper</string>
+    <string name="update_card_confirm_desc_pre">New firmware</string>
+    <string name="update_card_confirm_desc_post">will be installed</string>
     <string name="update_card_confirm_update">Update</string>
     <string name="update_card_confirm_install">Install</string>
     <string name="update_card_confirm_stop">Cancel</string>

@@ -95,6 +95,7 @@ private val lightPallet = FlipperPallet(
     borderViewReportBug = Color(0xFFD6D6D6),
 
     screenStreamingBorderColor = Color(0xFF000000),
+    screenStreamingNotConnectedColor = Color(0xFFDFDFDF)
 )
 
 @Suppress("MagicNumber")
@@ -145,4 +146,5 @@ private val darkPallet = FlipperPallet(
     borderViewReportBug = Color(0xFF616161),
 
     screenStreamingBorderColor = Color(0x7FFF8200),
+    screenStreamingNotConnectedColor = Color(0xFF303030)
 )

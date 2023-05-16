@@ -59,5 +59,6 @@ internal fun FlipperPallet.toAnimatePallet() = FlipperPallet(
     flipperDisableButton = animateColor(flipperDisableButton),
     borderViewReportBug = animateColor(borderViewReportBug),
 
-    screenStreamingBorderColor = animateColor(screenStreamingBorderColor)
+    screenStreamingBorderColor = animateColor(screenStreamingBorderColor),
+    screenStreamingNotConnectedColor = animateColor(screenStreamingNotConnectedColor)
 )

@@ -37,10 +37,14 @@ fun ComposableUpdateRequest(
         is UpdatePendingState.Ready -> {
             val version = localUpdatePendingState.request.updateTo
             when (localUpdatePendingState.syncingState) {
-                SyncingState.InProgress -> FlipperDialogSynchronization(localDismiss) {
+                SyncingState.IN_PROGRESS -> FlipperDialogSynchronization(
+                    isInstallUpdate = isInstallUpdate(localUpdatePendingState.request),
+                    version = version,
+                    onCancel = localDismiss
+                ) {
                     updateRequestViewModel.stopSyncAndStartUpdate(localUpdatePendingState.request)
                 }
-                SyncingState.Complete -> {
+                SyncingState.COMPLETE -> {
                     val isInstall = isInstallUpdate(localUpdatePendingState.request)
                     FlipperDialogReadyUpdate(isInstall, version, localDismiss) {
                         onStartUpdateRequest(localUpdatePendingState.request)
@@ -48,7 +52,7 @@ fun ComposableUpdateRequest(
                         return@FlipperDialogReadyUpdate
                     }
                 }
-                SyncingState.Stop -> {
+                SyncingState.STOP -> {
                     onStartUpdateRequest(localUpdatePendingState.request)
                     localDismiss()
                     return

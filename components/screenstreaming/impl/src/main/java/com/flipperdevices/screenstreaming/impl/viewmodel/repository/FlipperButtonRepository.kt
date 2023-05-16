@@ -1,4 +1,4 @@
-package com.flipperdevices.screenstreaming.impl.viewmodel
+package com.flipperdevices.screenstreaming.impl.viewmodel.repository
 
 import com.flipperdevices.bridge.api.model.FlipperRequest
 import com.flipperdevices.bridge.api.model.wrapToRequest
@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.sync.Mutex
 import javax.inject.Inject
 
-class FlipperButtonRequestHelper @Inject constructor(
+class FlipperButtonRepository @Inject constructor(
     private val serviceProvider: FlipperServiceProvider
 ) : LogTagProvider {
     override val TAG: String = "FlipperButtonRequest"

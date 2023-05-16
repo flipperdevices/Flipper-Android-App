@@ -79,6 +79,21 @@ class FlipperMultiChoiceDialogModel private constructor(
             return this
         }
 
+        fun addButton(
+            text: String,
+            onClick: () -> Unit,
+            isActive: Boolean = false
+        ): Builder {
+            buttonComposables.add {
+                ComposableFlipperFlatButton(
+                    text,
+                    onClick,
+                    if (isActive) LocalPallet.current.accentSecond else null
+                )
+            }
+            return this
+        }
+
         fun build(): FlipperMultiChoiceDialogModel = FlipperMultiChoiceDialogModel(
             imageComposable,
             titleComposable,

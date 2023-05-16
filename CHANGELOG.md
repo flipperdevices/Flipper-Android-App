@@ -20,6 +20,8 @@
 - [Feature] Migrate screen streaming to hub
 - [Feature] Dialog on lock/unlock unsupported by firmware
 - [Feature] Dialog on first pair failed
+- [Feature] Add unlock request
+- [Feature] New update dialogs
 - [GitHub] Update github repo picture
 - [CI] Migrate to Detekt
 - [CI] Android lint in CI

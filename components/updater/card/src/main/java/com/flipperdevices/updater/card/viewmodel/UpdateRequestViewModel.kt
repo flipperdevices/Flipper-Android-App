@@ -5,6 +5,7 @@ import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
+import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.core.ktx.jre.filename
 import com.flipperdevices.core.ktx.jre.length
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
@@ -18,8 +19,10 @@ import com.flipperdevices.updater.model.InternalStorageFirmware
 import com.flipperdevices.updater.model.UpdateRequest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tangle.viewmodel.VMInject
 import java.io.File
@@ -39,6 +42,15 @@ class UpdateRequestViewModel @VMInject constructor(
 
     init {
         serviceProvider.provideServiceApi(consumer = this, lifecycleOwner = this)
+        synchronizationApi.getSynchronizationState().onEach { syncState ->
+            pendingFlow.update {
+                if (it != null && it is UpdatePendingState.Ready) {
+                    it.copy(syncingState = syncState.toSyncingState())
+                } else {
+                    it
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
@@ -68,7 +80,7 @@ class UpdateRequestViewModel @VMInject constructor(
 
     fun stopSyncAndStartUpdate(request: UpdateRequest) {
         viewModelScope.launch {
-            pendingFlow.emit(UpdatePendingState.Ready(request, SyncingState.Stop))
+            pendingFlow.emit(UpdatePendingState.Ready(request, SyncingState.STOP))
         }
     }
 
@@ -77,9 +89,8 @@ class UpdateRequestViewModel @VMInject constructor(
     }
 
     private suspend fun startUpdateFromServer(updatePending: UpdatePending.Request) {
-        val isSyncing = synchronizationApi.isSynchronizationRunning()
-        val syncState = if (isSyncing) SyncingState.InProgress else SyncingState.Complete
-        pendingFlow.emit(UpdatePendingState.Ready(updatePending.updateRequest, syncState))
+        val syncState = synchronizationApi.getSynchronizationState().first()
+        pendingFlow.emit(UpdatePendingState.Ready(updatePending.updateRequest, syncState.toSyncingState()))
     }
 
     private fun startUpdateFromFile(updatePending: UpdatePending.URI) {
@@ -110,9 +121,14 @@ class UpdateRequestViewModel @VMInject constructor(
                 content = InternalStorageFirmware(updatePending.uri.toString())
             )
 
-            val isSyncing = synchronizationApi.isSynchronizationRunning()
-            val syncState = if (isSyncing) SyncingState.InProgress else SyncingState.Complete
-            pendingFlow.emit(UpdatePendingState.Ready(request, syncState))
+            val syncState = synchronizationApi.getSynchronizationState().first()
+            pendingFlow.emit(UpdatePendingState.Ready(request, syncState.toSyncingState()))
         }
+    }
+
+    private fun SynchronizationState.toSyncingState(): SyncingState = when (this) {
+        SynchronizationState.NotStarted,
+        SynchronizationState.Finished -> SyncingState.COMPLETE
+        is SynchronizationState.InProgress -> SyncingState.IN_PROGRESS
     }
 }
