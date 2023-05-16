@@ -13,7 +13,7 @@ sealed class UpdatePendingState {
 }
 
 enum class SyncingState {
-    InProgress,
-    Stop,
-    Complete
+    IN_PROGRESS,
+    STOP,
+    COMPLETE
 }

@@ -94,7 +94,7 @@ class UpdateRequestViewModelTest {
             state,
             UpdatePendingState.Ready(
                 requestServer.updateRequest,
-                SyncingState.Complete
+                SyncingState.COMPLETE
             )
         )
     }
@@ -108,7 +108,7 @@ class UpdateRequestViewModelTest {
             state,
             UpdatePendingState.Ready(
                 requestServer.updateRequest,
-                SyncingState.InProgress
+                SyncingState.IN_PROGRESS
             )
         )
     }
@@ -121,7 +121,7 @@ class UpdateRequestViewModelTest {
             state,
             UpdatePendingState.Ready(
                 requestServer.updateRequest,
-                SyncingState.Stop
+                SyncingState.STOP
             )
         )
     }
