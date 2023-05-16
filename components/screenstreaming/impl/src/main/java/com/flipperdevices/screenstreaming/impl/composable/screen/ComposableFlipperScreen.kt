@@ -1,5 +1,6 @@
 package com.flipperdevices.screenstreaming.impl.composable.screen
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import android.graphics.Bitmap
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
@@ -30,17 +31,16 @@ import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.screenstreaming.impl.R
 import com.flipperdevices.screenstreaming.impl.composable.controls.ComposableFlipperButtonAnimation
-import com.flipperdevices.screenstreaming.impl.model.FlipperButtonStack
+import com.flipperdevices.screenstreaming.impl.model.FlipperButtonStackElement
 import com.flipperdevices.screenstreaming.impl.model.FlipperScreenState
-import com.flipperdevices.screenstreaming.impl.viewmodel.FLIPPER_SCREEN_RATIO
-import com.flipperdevices.screenstreaming.impl.viewmodel.ScreenStreamFrameDecoder
-import kotlinx.collections.immutable.ImmutableList
+import com.flipperdevices.screenstreaming.impl.viewmodel.repository.FLIPPER_SCREEN_RATIO
+import com.flipperdevices.screenstreaming.impl.viewmodel.repository.ScreenStreamFrameDecoder
 import kotlin.math.roundToInt
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun ComposableFlipperScreen(
-    buttons: ImmutableList<FlipperButtonStack>,
+    buttons: ImmutableList<FlipperButtonStackElement>,
     flipperScreen: FlipperScreenState,
     isHorizontal: Boolean,
     modifier: Modifier = Modifier

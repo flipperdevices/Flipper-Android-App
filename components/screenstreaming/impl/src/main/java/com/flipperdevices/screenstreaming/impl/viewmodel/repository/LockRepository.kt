@@ -1,27 +1,21 @@
-package com.flipperdevices.screenstreaming.impl.viewmodel
+package com.flipperdevices.screenstreaming.impl.viewmodel.repository
 
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
-import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.screenstreaming.impl.model.FlipperLockState
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
-import tangle.viewmodel.VMInject
 
-class LockViewModel @VMInject constructor(
-    serviceProvider: FlipperServiceProvider,
-) : LifecycleViewModel(), FlipperBleServiceConsumer {
+class LockRepository(
+    private val scope: CoroutineScope,
+    private val repository: ButtonStackRepository
+) : FlipperBleServiceConsumer {
     private val lockStateFlow = MutableStateFlow<FlipperLockState>(FlipperLockState.NotInitialized)
-
-    init {
-        serviceProvider.provideServiceApi(this, this)
-    }
 
     fun getLockState() = lockStateFlow.asStateFlow()
 
@@ -36,6 +30,6 @@ class LockViewModel @VMInject constructor(
             } else {
                 lockStateFlow.emit(FlipperLockState.NotInitialized)
             }
-        }.launchIn(viewModelScope)
+        }.launchIn(scope)
     }
 }

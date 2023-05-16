@@ -20,7 +20,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
-import com.flipperdevices.screenstreaming.impl.model.FlipperButtonStack
+import com.flipperdevices.screenstreaming.impl.model.FlipperButtonStackElement
 import com.flipperdevices.screenstreaming.impl.model.FlipperLockState
 import com.flipperdevices.screenstreaming.impl.model.FlipperScreenState
 import com.flipperdevices.screenstreaming.impl.model.ScreenOrientationEnum
@@ -37,7 +37,7 @@ private const val VERTICAL_ORIENTATION_ANGEL = 90f
 @Composable
 fun ComposableFlipperScreenWithOptions(
     flipperScreen: FlipperScreenState,
-    buttons: ImmutableList<FlipperButtonStack>,
+    buttons: ImmutableList<FlipperButtonStackElement>,
     onTakeScreenshot: () -> Unit,
     lockState: FlipperLockState,
     onClickLockButton: () -> Unit,

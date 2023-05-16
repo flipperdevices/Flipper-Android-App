@@ -1,5 +1,6 @@
 package com.flipperdevices.screenstreaming.impl.composable
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -27,11 +28,9 @@ import com.flipperdevices.screenstreaming.impl.R
 import com.flipperdevices.screenstreaming.impl.composable.controls.ComposableFlipperControls
 import com.flipperdevices.screenstreaming.impl.composable.screen.ComposableFlipperScreenWithOptions
 import com.flipperdevices.screenstreaming.impl.model.FlipperLockState
-import com.flipperdevices.screenstreaming.impl.viewmodel.LockViewModel
 import com.flipperdevices.screenstreaming.impl.viewmodel.ScreenStreamingViewModel
 import com.flipperdevices.screenstreaming.impl.viewmodel.ScreenshotViewModel
 import kotlinx.collections.immutable.toImmutableList
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @ExperimentalFoundationApi
 @ExperimentalComposeUiApi
@@ -39,13 +38,12 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 fun ComposableStreamingScreen(
     screenStreamingViewModel: ScreenStreamingViewModel,
     screenshotViewModel: ScreenshotViewModel,
-    lockViewModel: LockViewModel,
     modifier: Modifier = Modifier,
     onBack: () -> Unit
 ) {
     val flipperScreen by screenStreamingViewModel.getFlipperScreen().collectAsState()
     val buttons by screenStreamingViewModel.getFlipperButtons().collectAsState()
-    val lockState by lockViewModel.getLockState().collectAsState()
+    val lockState by screenStreamingViewModel.getLockState().collectAsState()
 
     Column(
         modifier = modifier
@@ -72,7 +70,7 @@ fun ComposableStreamingScreen(
                     when (it) {
                         FlipperLockState.NotInitialized -> {}
                         FlipperLockState.NotSupported -> showDeprecatedLockDialog = true
-                        is FlipperLockState.Ready -> lockViewModel.onChangeLock(!it.isLocked)
+                        is FlipperLockState.Ready -> screenStreamingViewModel.onChangeLock(!it.isLocked)
                     }
                 }
             }
