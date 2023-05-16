@@ -13,6 +13,7 @@
     <string name="control_right">Right</string>
     <string name="control_ok">OK</string>
     <string name="control_back">Back</string>
+    <string name="control_unlock">Back</string>
     <string name="screenshot_export_title">Share screenshot of flipper…</string>
     <string name="flipper_display">Flipper display</string>
 </resources>

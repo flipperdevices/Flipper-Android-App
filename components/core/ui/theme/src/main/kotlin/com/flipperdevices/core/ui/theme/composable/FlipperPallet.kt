@@ -58,7 +58,8 @@ data class FlipperPallet(
     val fapHubActiveColor: Color = text100,
     val fapHubInactiveColor: Color = text40,
 
-    val screenStreamingBorderColor: Color
+    val screenStreamingBorderColor: Color,
+    val screenStreamingNotConnectedColor: Color
 ) {
     val accent: Color = Color(0xFFFF8200)
     val accentSecond: Color = Color(0xFF589DFF)
