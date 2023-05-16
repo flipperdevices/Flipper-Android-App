@@ -89,9 +89,8 @@ class UpdateRequestViewModel @VMInject constructor(
     }
 
     private suspend fun startUpdateFromServer(updatePending: UpdatePending.Request) {
-        val isSyncing = synchronizationApi.isSynchronizationRunning()
-        val syncState = if (isSyncing) SyncingState.IN_PROGRESS else SyncingState.COMPLETE
-        pendingFlow.emit(UpdatePendingState.Ready(updatePending.updateRequest, syncState))
+        val syncState = synchronizationApi.getSynchronizationState().first()
+        pendingFlow.emit(UpdatePendingState.Ready(updatePending.updateRequest, syncState.toSyncingState()))
     }
 
     private fun startUpdateFromFile(updatePending: UpdatePending.URI) {
@@ -128,8 +127,8 @@ class UpdateRequestViewModel @VMInject constructor(
     }
 
     private fun SynchronizationState.toSyncingState(): SyncingState = when (this) {
+        SynchronizationState.NotStarted,
         SynchronizationState.Finished -> SyncingState.COMPLETE
         is SynchronizationState.InProgress -> SyncingState.IN_PROGRESS
-        SynchronizationState.NotStarted -> SyncingState.STOP
     }
 }
