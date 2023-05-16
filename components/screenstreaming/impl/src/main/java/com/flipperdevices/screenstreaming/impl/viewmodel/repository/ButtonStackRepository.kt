@@ -2,12 +2,12 @@ package com.flipperdevices.screenstreaming.impl.viewmodel.repository
 
 import com.flipperdevices.screenstreaming.impl.model.ButtonAnimEnum
 import com.flipperdevices.screenstreaming.impl.model.FlipperButtonStackElement
-import java.util.UUID
-import javax.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import java.util.UUID
+import javax.inject.Inject
 
 class ButtonStackRepository @Inject constructor() {
     private val stackFlipperButtons =

@@ -18,10 +18,14 @@ class ScreenStreamingViewModel @VMInject constructor(
     serviceProvider: FlipperServiceProvider,
     application: Application,
     private val flipperButtonRepository: FlipperButtonRepository,
-    private val buttonStackRepository: ButtonStackRepository
+    private val buttonStackRepository: ButtonStackRepository,
 ) : AndroidLifecycleViewModel(application) {
 
-    private val lockRepository = LockRepository(viewModelScope, buttonStackRepository)
+    private val lockRepository = LockRepository(
+        scope = viewModelScope,
+        stackRepository = buttonStackRepository,
+        serviceProvider = serviceProvider
+    )
     private val streamingRepository = StreamingRepository(viewModelScope)
 
     init {

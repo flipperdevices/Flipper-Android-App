@@ -8,11 +8,11 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.screen.Gui
 import com.flipperdevices.protobuf.screen.sendInputEventRequest
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.sync.Mutex
+import javax.inject.Inject
 
 class FlipperButtonRepository @Inject constructor(
     private val serviceProvider: FlipperServiceProvider
