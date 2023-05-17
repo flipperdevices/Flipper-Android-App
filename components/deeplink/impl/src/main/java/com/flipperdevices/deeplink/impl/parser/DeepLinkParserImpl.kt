@@ -8,6 +8,7 @@ import com.flipperdevices.core.ktx.android.toFullString
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.log.warn
 import com.flipperdevices.deeplink.api.DeepLinkParser
 import com.flipperdevices.deeplink.api.DeepLinkParserDelegate
 import com.flipperdevices.deeplink.model.Deeplink
@@ -40,12 +41,14 @@ class DeepLinkParserImpl @Inject constructor(
                 info { "Try ${delegate.javaClass}..." }
                 val deeplink = delegate.fromIntent(context, intent)
                 if (deeplink != null) {
+                    info { "Parsed deeplink: $deeplink. " }
                     return deeplink
                 }
             } catch (e: Throwable) {
                 error(e) { "Exception while try open ${intent.toFullString()}" }
             }
         }
+        warn { "Failed parse intent ${intent.toFullString()}" }
         return null
     }
 }

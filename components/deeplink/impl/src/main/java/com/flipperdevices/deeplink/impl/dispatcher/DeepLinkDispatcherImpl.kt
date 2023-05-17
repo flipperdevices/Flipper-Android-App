@@ -8,6 +8,8 @@ import com.flipperdevices.deeplink.api.DeepLinkDispatcher
 import com.flipperdevices.deeplink.api.DeepLinkHandler
 import com.flipperdevices.deeplink.model.Deeplink
 import com.squareup.anvil.annotations.ContributesBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, DeepLinkDispatcher::class)
@@ -16,14 +18,17 @@ class DeepLinkDispatcherImpl @Inject constructor(
 ) : DeepLinkDispatcher, LogTagProvider {
     override val TAG = "DeepLinkDispatcher"
 
-    override fun process(navController: NavController, deeplink: Deeplink): Boolean {
+    override suspend fun process(
+        navController: NavController,
+        deeplink: Deeplink
+    ): Boolean = withContext(Dispatchers.Main) {
         val supportedHandlers = handlers.map { it.isSupportLink(deeplink) to it }
             .filter { it.first != null }
 
         info { "Found ${supportedHandlers.size} supported handlers: $supportedHandlers" }
 
         val processHandler = supportedHandlers
-            .maxByOrNull { it.first!! } ?: return false
+            .maxByOrNull { it.first!! } ?: return@withContext false
 
         info {
             "Choice handler ${processHandler.second.javaClass} " +
@@ -32,6 +37,6 @@ class DeepLinkDispatcherImpl @Inject constructor(
 
         processHandler.second.processLink(navController = navController, deeplink)
 
-        return true
+        return@withContext true
     }
 }

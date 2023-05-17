@@ -14,6 +14,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.createGraph
 import androidx.navigation.navOptions
 import com.flipperdevices.bottombar.impl.composable.bottombar.ComposeBottomBar
 import com.flipperdevices.bottombar.impl.viewmodel.BottomNavigationViewModel
@@ -59,7 +60,7 @@ fun ComposableMainScreen(
                         // reselecting the same item
                         launchSingleTop = true
                         // Restore state when reselecting a previously selected item
-                        restoreState = true
+                        restoreState = selectedTab != it
                     }
                     navController.navigate(it.startRoute.name, topLevelNavOptions)
                 }
@@ -67,21 +68,24 @@ fun ComposableMainScreen(
         }
     ) {
         Box(modifier = Modifier.padding(it)) {
-            NavHost(
-                navController = navController,
-                startDestination = startDestination
-            ) {
-                featureEntries.forEach {
-                    with(it) {
-                        navigation(navController)
+            val graph = remember(startDestination, featureEntries, composableEntries) {
+                navController.createGraph(startDestination, null) {
+                    featureEntries.forEach {
+                        with(it) {
+                            navigation(navController)
+                        }
                     }
-                }
-                composableEntries.forEach {
-                    with(it) {
-                        composable(navController)
+                    composableEntries.forEach {
+                        with(it) {
+                            composable(navController)
+                        }
                     }
                 }
             }
+            NavHost(
+                navController = navController,
+                graph = graph
+            )
 
             ComposableInAppNotification(
                 modifier = Modifier.align(Alignment.BottomCenter),

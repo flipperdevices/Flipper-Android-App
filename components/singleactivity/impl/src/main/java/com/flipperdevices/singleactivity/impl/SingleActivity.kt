@@ -2,6 +2,7 @@ package com.flipperdevices.singleactivity.impl
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.safeDrawingPadding
@@ -67,6 +68,10 @@ class SingleActivity :
 
         selfUpdaterApi.startCheckUpdateAsync(activity = this@SingleActivity)
 
+        val featureEntries = featureEntriesMutable.toPersistentSet()
+        val composableEntries = composableEntriesMutable.toPersistentSet()
+        val startDestination = deepLinkHelper.getStartDestination()
+
         setContent {
             val navControllerLocal = rememberNavController().also {
                 globalNavController = it
@@ -75,15 +80,18 @@ class SingleActivity :
                 // Open deeplink
                 deepLinkHelper.onNewIntent(this@SingleActivity, navControllerLocal, intent)
             }
+            Log.i("SingleActivity", "Recompose outside FlipperTheme")
             FlipperTheme(content = {
+                Log.i("SingleActivity", "Recompose inside FlipperTheme")
                 CompositionLocalProvider(
                     LocalGlobalNavigationNavStack provides navControllerLocal
                 ) {
+                    Log.i("SingleActivity", "Recompose inside provider")
                     ComposableSingleActivityNavHost(
                         navController = navControllerLocal,
-                        starDestination = deepLinkHelper.getStartDestination(),
-                        featureEntries = featureEntriesMutable.toPersistentSet(),
-                        composableEntries = composableEntriesMutable.toPersistentSet(),
+                        startDestination = startDestination,
+                        featureEntries = featureEntries,
+                        composableEntries = composableEntries,
                         modifier = Modifier
                             .safeDrawingPadding()
                     )
@@ -94,6 +102,7 @@ class SingleActivity :
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
+        info { "Receive new intent: ${intent?.toFullString()}" }
         if (intent == null) {
             return
         }
