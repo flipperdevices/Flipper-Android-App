@@ -5,6 +5,7 @@ import com.flipperdevices.faphub.dao.api.model.FapItemShort
 import com.flipperdevices.faphub.dao.network.model.MockConstants
 import com.flipperdevices.faphub.dao.network.retrofit.utils.DateSerializer
 import java.util.Date
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -32,6 +33,7 @@ data class RetrofitApplicationShort(
             description = description,
             name = name,
             category = category,
+            screenshots = screenshots.toImmutableList()
         )
     }
 }

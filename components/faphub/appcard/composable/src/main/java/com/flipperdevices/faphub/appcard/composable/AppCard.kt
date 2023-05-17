@@ -25,7 +25,7 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.faphub.appcard.composable.components.AppCardScreenshots
 import com.flipperdevices.faphub.appcard.composable.components.ComposableAppCategory
 import com.flipperdevices.faphub.appcard.composable.components.ComposableAppIcon
-import com.flipperdevices.faphub.dao.api.model.FapItem
+import com.flipperdevices.faphub.dao.api.model.FapItemShort
 
 private val DEFAULT_NAME
     get() = String((Array(size = 10) { 'L' }).toCharArray())
@@ -34,7 +34,7 @@ private val DEFAULT_DESCRIPTION
 
 @Composable
 fun AppCard(
-    fapItem: FapItem?,
+    fapItem: FapItemShort?,
     modifier: Modifier = Modifier,
     installationButton: @Composable (Modifier, TextUnit) -> Unit
 ) {
@@ -63,7 +63,7 @@ fun AppCard(
 
 @Composable
 private fun AppCardTop(
-    fapItem: FapItem?,
+    fapItem: FapItemShort?,
     modifier: Modifier = Modifier,
     installationButton: @Composable (modifier: Modifier, fontSize: TextUnit) -> Unit
 ) {

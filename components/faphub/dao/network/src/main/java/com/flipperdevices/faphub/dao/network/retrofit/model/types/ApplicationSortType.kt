@@ -1,4 +1,4 @@
-package com.flipperdevices.faphub.dao.network.retrofit.model
+package com.flipperdevices.faphub.dao.network.retrofit.model.types
 
 import androidx.annotation.StringDef
 

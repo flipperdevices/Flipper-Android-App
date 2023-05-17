@@ -36,7 +36,7 @@ class FapHubSearchEntryApiImpl @Inject constructor(
                     },
                     installationButton = { fapItem, modifier, fontSize ->
                         fapInstallationUIApi.ComposableButton(
-                            fapItem = fapItem,
+                            fapItemId = fapItem?.id,
                             modifier = modifier,
                             textSize = fontSize
                         )

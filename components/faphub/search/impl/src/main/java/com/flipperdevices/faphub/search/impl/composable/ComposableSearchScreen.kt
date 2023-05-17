@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.flipperdevices.core.ui.searchbar.ComposableSearchBar
 import com.flipperdevices.faphub.appcard.composable.paging.ComposableFapsList
-import com.flipperdevices.faphub.dao.api.model.FapItem
+import com.flipperdevices.faphub.dao.api.model.FapItemShort
 import com.flipperdevices.faphub.search.impl.R
 import com.flipperdevices.faphub.search.impl.viewmodel.FapHubSearchViewModel
 import tangle.viewmodel.compose.tangleViewModel
@@ -17,9 +17,9 @@ import tangle.viewmodel.compose.tangleViewModel
 @Composable
 fun ComposableSearchScreen(
     onBack: () -> Unit,
-    onFapItemClick: (FapItem) -> Unit,
+    onFapItemClick: (FapItemShort) -> Unit,
     modifier: Modifier = Modifier,
-    installationButton: @Composable (FapItem?, Modifier, TextUnit) -> Unit
+    installationButton: @Composable (FapItemShort?, Modifier, TextUnit) -> Unit
 ) {
     val viewModel = tangleViewModel<FapHubSearchViewModel>()
     val fapsList = viewModel.faps.collectAsLazyPagingItems()

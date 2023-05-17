@@ -193,6 +193,7 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.work.ktx)
+    implementation(libs.retrofit)
 
     implementation(libs.compose.pager)
 

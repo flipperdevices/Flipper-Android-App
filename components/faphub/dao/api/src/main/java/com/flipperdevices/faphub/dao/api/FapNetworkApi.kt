@@ -9,10 +9,17 @@ interface FapNetworkApi {
     suspend fun getFeaturedItem(): FapItemShort
     suspend fun getAllItem(
         category: FapCategory? = null,
-        sortType: SortType
-    ): List<FapItem>
+        sortType: SortType,
+        offset: Int,
+        limit: Int
+    ): List<FapItemShort>
 
-    suspend fun search(query: String): List<FapItem>
+    suspend fun search(
+        query: String,
+        offset: Int,
+        limit: Int
+    ): List<FapItemShort>
+
     suspend fun getCategories(): List<FapCategory>
     suspend fun getFapItemById(id: String): FapItem
 }

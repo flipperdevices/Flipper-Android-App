@@ -20,7 +20,7 @@ class InstalledFapsViewModel @VMInject constructor(
 
     init {
         viewModelScope.launch {
-            val faps = fapNetworkApi.getAllItem(sortType = SortType.UPDATED).take(n = 4)
+            val faps = fapNetworkApi.getAllItem(sortType = SortType.UPDATED, offset = 0, limit = 4)
             fapInstalledScreenStateFlow.emit(
                 FapInstalledScreenState.Loaded(
                     faps.toImmutableList()
