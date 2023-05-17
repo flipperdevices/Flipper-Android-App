@@ -55,6 +55,9 @@ tangle = "ndoglio-kotlin-1.8-SNAPSHOT" # https://github.com/RBusarow/Tangle/rele
 work = "2.8.1" # https://developer.android.com/jetpack/androidx/releases/work
 coil = "2.3.0" # https://github.com/coil-kt/coil/releases
 play-core = "2.0.1" # https://developer.android.com/guide/playcore#java-kotlin-in-app-update
+retrofit = "2.9.0" # https://github.com/square/retrofit/tags
+retrofit-json = "1.0.0" # https://github.com/JakeWharton/retrofit2-kotlinx-serialization-converter/releases
+
 
 # Testing
 junit = "4.12"
@@ -189,6 +192,10 @@ ktor-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version
 ktor-serialization = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-logging = { module = "io.ktor:ktor-client-logging-jvm", version.ref = "ktor" }
 ktor-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
+
+# Retrofit
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+retrofit-json = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version.ref = "retrofit-json" }
 
 # Apache commons
 apache-compress = { module = "org.apache.commons:commons-compress", version.ref = "apache-compress" }

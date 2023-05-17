@@ -10,31 +10,33 @@ import com.flipperdevices.faphub.dao.api.model.FapItemShort
 import com.flipperdevices.faphub.dao.api.model.SortType
 import com.flipperdevices.faphub.dao.network.model.ApplicationDetailed
 import com.flipperdevices.faphub.dao.network.model.ApplicationDetailed.Companion.toFapItem
-import com.flipperdevices.faphub.dao.network.model.ApplicationShort
-import com.flipperdevices.faphub.dao.network.model.ApplicationShort.Companion.toFapItemShort
 import com.flipperdevices.faphub.dao.network.model.Category
 import com.flipperdevices.faphub.dao.network.model.Category.Companion.toFapCategory
+import com.flipperdevices.faphub.dao.network.retrofit.api.RetrofitApplicationApi
+import com.flipperdevices.faphub.dao.network.retrofit.model.RetrofitApplicationShort
 import com.squareup.anvil.annotations.ContributesBinding
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
 private const val FAP_URL = "https://catalog.flipp.dev/api/v0"
 
 @ContributesBinding(AppGraph::class, FapNetworkApi::class)
 class FapNetworkApiImpl @Inject constructor(
     private val client: HttpClient,
+    private val applicationApi: RetrofitApplicationApi
 ) : FapNetworkApi, LogTagProvider {
     override val TAG = "FapNetworkApi"
     override suspend fun getFeaturedItem(): FapItemShort = withContext(Dispatchers.IO) {
         debug { "Request featured item" }
 
+        applicationApi.getFeaturedApps(limit = 1)
         val response = client.get(
             urlString = "$FAP_URL/application/featured?limit=1"
-        ).body<Array<ApplicationShort>>()
+        ).body<Array<RetrofitApplicationShort>>()
         debug { "Provider response: $response" }
 
         val responseItem = response.firstOrNull() ?: error("Empty response")
