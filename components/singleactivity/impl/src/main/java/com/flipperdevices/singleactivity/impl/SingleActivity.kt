@@ -2,7 +2,6 @@ package com.flipperdevices.singleactivity.impl
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.safeDrawingPadding
@@ -80,13 +79,10 @@ class SingleActivity :
                 // Open deeplink
                 deepLinkHelper.onNewIntent(this@SingleActivity, navControllerLocal, intent)
             }
-            Log.i("SingleActivity", "Recompose outside FlipperTheme")
             FlipperTheme(content = {
-                Log.i("SingleActivity", "Recompose inside FlipperTheme")
                 CompositionLocalProvider(
                     LocalGlobalNavigationNavStack provides navControllerLocal
                 ) {
-                    Log.i("SingleActivity", "Recompose inside provider")
                     ComposableSingleActivityNavHost(
                         navController = navControllerLocal,
                         startDestination = startDestination,
