@@ -24,7 +24,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofit.json)
     implementation(libs.okhttp)
-    debugImplementation(libs.okhttp.logging)
+    implementation(libs.okhttp.logging)
 
     // Dagger deps
     implementation(libs.dagger)

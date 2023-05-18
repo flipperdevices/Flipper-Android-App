@@ -80,12 +80,14 @@ private fun BoxScope.ComposableProgressRow(percent: Float, accentColor: Color) {
             .matchParentSize()
     ) {
         val remainingWeight = 1.0f - percent
-        Box(
-            modifier = Modifier
-                .fillMaxHeight()
-                .weight(percent)
-                .background(accentColor)
-        )
+        if (percent > 0.0f) {
+            Box(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(percent)
+                    .background(accentColor)
+            )
+        }
 
         if (remainingWeight > 0.0f) {
             Box(modifier = Modifier.weight(remainingWeight))

@@ -10,6 +10,7 @@ dependencies {
     implementation(projects.components.faphub.installedtab.api)
 
     implementation(projects.components.core.di)
+    implementation(projects.components.core.log)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.errors)
     implementation(projects.components.core.ui.res)
