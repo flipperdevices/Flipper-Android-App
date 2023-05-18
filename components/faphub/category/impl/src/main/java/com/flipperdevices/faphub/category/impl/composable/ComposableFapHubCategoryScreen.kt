@@ -1,6 +1,5 @@
 package com.flipperdevices.faphub.category.impl.composable
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
@@ -15,6 +14,7 @@ import com.flipperdevices.faphub.appcard.composable.paging.ComposableSortChoice
 import com.flipperdevices.faphub.category.impl.viewmodel.FapHubCategoryViewModel
 import com.flipperdevices.faphub.dao.api.model.FapItemShort
 import tangle.viewmodel.compose.tangleViewModel
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableFapHubCategory(

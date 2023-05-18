@@ -1,9 +1,6 @@
 package com.flipperdevices.faphub.dao.network.retrofit.utils
 
 import android.annotation.SuppressLint
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.Date
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializer
 import kotlinx.serialization.descriptors.PrimitiveKind
@@ -11,6 +8,9 @@ import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.Date
 
 @Serializer(forClass = Date::class)
 object DateSerializer : KSerializer<Date> {

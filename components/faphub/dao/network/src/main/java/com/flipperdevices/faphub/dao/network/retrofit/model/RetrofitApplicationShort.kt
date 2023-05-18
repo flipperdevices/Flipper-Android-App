@@ -4,10 +4,10 @@ import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.dao.api.model.FapItemShort
 import com.flipperdevices.faphub.dao.network.model.MockConstants
 import com.flipperdevices.faphub.dao.network.retrofit.utils.DateSerializer
-import java.util.Date
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import java.util.Date
 
 @Serializable
 data class RetrofitApplicationShort(

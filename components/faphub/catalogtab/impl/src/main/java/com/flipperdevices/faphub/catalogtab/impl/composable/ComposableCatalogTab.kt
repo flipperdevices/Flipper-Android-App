@@ -15,7 +15,6 @@ import com.flipperdevices.faphub.catalogtab.impl.composable.categories.Composabl
 import com.flipperdevices.faphub.catalogtab.impl.viewmodel.CategoriesViewModel
 import com.flipperdevices.faphub.catalogtab.impl.viewmodel.FapsListViewModel
 import com.flipperdevices.faphub.dao.api.model.FapCategory
-import com.flipperdevices.faphub.dao.api.model.FapItem
 import com.flipperdevices.faphub.dao.api.model.FapItemShort
 import tangle.viewmodel.compose.tangleViewModel
 
