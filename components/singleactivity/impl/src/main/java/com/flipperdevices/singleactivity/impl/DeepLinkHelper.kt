@@ -7,6 +7,7 @@ import androidx.navigation.navOptions
 import com.flipperdevices.bottombar.api.BottomNavigationFeatureEntry
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.android.toFullString
+import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
@@ -19,6 +20,7 @@ import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.api.UpdaterFeatureEntry
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
 import java.util.Stack
 import javax.inject.Inject
@@ -45,6 +47,7 @@ class DeepLinkHelperImpl @Inject constructor(
 ) : DeepLinkHelper, LogTagProvider {
     override val TAG = "DeepLinkHelper"
 
+    private val mutex = Mutex()
     private val deeplinkStack = Stack<Deeplink>()
 
     override suspend fun onNewIntent(
@@ -60,12 +63,10 @@ class DeepLinkHelperImpl @Inject constructor(
             null
         }
 
-        withContext(Dispatchers.Main) {
-            if (deeplink != null) {
-                onNewDeeplink(navController, deeplink)
-            } else {
-                invalidate(navController)
-            }
+        if (deeplink != null) {
+            onNewDeeplink(navController, deeplink)
+        } else {
+            invalidate(navController)
         }
     }
 
@@ -75,9 +76,36 @@ class DeepLinkHelperImpl @Inject constructor(
         invalidate(navController)
     }
 
-    override suspend fun invalidate(navController: NavController) = withContext(Dispatchers.Main) {
+    override suspend fun invalidate(navController: NavController) = withLock(mutex, "invalidate") {
         info { "Pending deeplinks size is ${deeplinkStack.size}" }
 
+        if (firstPairApi.shouldWeOpenPairScreen()) {
+            info { "Open pair screen" }
+            return@withLock
+        }
+
+        if (updaterApi.isUpdateInProcess()) {
+            info { "Open updater" }
+            openTopDestination(navController, updaterFeatureEntry.getUpdaterScreen())
+            return@withLock
+        }
+
+        if (deeplinkStack.empty()) {
+            info { "Open bottomBarFeatureEntry, because deeplinkStack is empty" }
+            openTopDestination(navController, bottomBarFeatureEntry.start())
+            return@withLock
+        }
+
+        val deeplink = deeplinkStack.pop()
+        info { "Process deeplink $deeplink" }
+        deepLinkDispatcher.process(navController = navController, deeplink = deeplink)
+    }
+
+    private suspend fun openTopDestination(
+        navController: NavController,
+        destination: String
+    ) = withContext(Dispatchers.Main) {
+        info { "Top destination is $destination" }
         val topScreenOptions = navOptions {
             popUpTo(0) {
                 inclusive = true
@@ -86,24 +114,7 @@ class DeepLinkHelperImpl @Inject constructor(
             launchSingleTop = true
             restoreState = true
         }
-
-        if (firstPairApi.shouldWeOpenPairScreen()) {
-            return@withContext
-        }
-
-        if (updaterApi.isUpdateInProcess()) {
-            navController.navigate(updaterFeatureEntry.getUpdaterScreen(), topScreenOptions)
-            return@withContext
-        }
-
-        if (deeplinkStack.empty()) {
-            navController.navigate(bottomBarFeatureEntry.start(), topScreenOptions)
-            return@withContext
-        }
-
-        val deeplink = deeplinkStack.pop()
-        info { "Process deeplink $deeplink" }
-        deepLinkDispatcher.process(navController = navController, deeplink = deeplink)
+        navController.navigate(destination, topScreenOptions)
     }
 
     override fun getStartDestination(): String {

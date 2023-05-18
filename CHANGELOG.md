@@ -64,6 +64,7 @@
 - [FIX] Replace radio type to sub number in device info
 - [FIX] Progress bar on disconnected state on device info screen
 - [FIX] Remove proguard rules from submodules, remove minify from submodules
+- [FIX] Crash on theme changing
 - [REFACTOR] Migrate bottom bar to compose navigation
 - [REFACTOR] Bump Android Gradle Plugin
 - [REFACTOR] Fix detekt compose issues
