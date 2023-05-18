@@ -21,11 +21,16 @@ class FapScreenViewModel @VMInject constructor(
     )
 
     init {
-        viewModelScope.launch {
-            val fapItem = fapNetworkApi.getFapItemById(fapId)
-            fapScreenLoadingStateFlow.emit(FapScreenLoadingState.Loaded(fapItem))
-        }
+        onRefresh()
     }
 
     fun getLoadingState(): StateFlow<FapScreenLoadingState> = fapScreenLoadingStateFlow
+
+    fun onRefresh() = viewModelScope.launch {
+        fapNetworkApi.getFapItemById(fapId).onSuccess { fapItem ->
+            fapScreenLoadingStateFlow.emit(FapScreenLoadingState.Loaded(fapItem))
+        }.onFailure {
+            fapScreenLoadingStateFlow.emit(FapScreenLoadingState.Error(it))
+        }
+    }
 }

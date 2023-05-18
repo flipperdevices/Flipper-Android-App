@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="common_error_no_network_title">No Internet Connection</string>
+    <string name="common_error_no_network_desc">Turn on mobile data or Wi-Fi to acces the Apps</string>
+    <string name="common_error_no_network_btn">Retry</string>
+</resources>

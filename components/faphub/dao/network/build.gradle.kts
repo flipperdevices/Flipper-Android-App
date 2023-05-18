@@ -23,6 +23,8 @@ dependencies {
 
     implementation(libs.retrofit)
     implementation(libs.retrofit.json)
+    implementation(libs.okhttp)
+    debugImplementation(libs.okhttp.logging)
 
     // Dagger deps
     implementation(libs.dagger)
@@ -30,6 +32,7 @@ dependencies {
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.kotlin.immutable.collections)
+    implementation(libs.kotlin.datetime)
 
     implementation(libs.annotations)
 }

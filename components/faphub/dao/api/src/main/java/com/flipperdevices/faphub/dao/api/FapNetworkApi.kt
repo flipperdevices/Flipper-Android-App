@@ -6,20 +6,20 @@ import com.flipperdevices.faphub.dao.api.model.FapItemShort
 import com.flipperdevices.faphub.dao.api.model.SortType
 
 interface FapNetworkApi {
-    suspend fun getFeaturedItem(): FapItemShort
+    suspend fun getFeaturedItem(): Result<FapItemShort>
     suspend fun getAllItem(
         category: FapCategory? = null,
         sortType: SortType,
         offset: Int,
         limit: Int
-    ): List<FapItemShort>
+    ): Result<List<FapItemShort>>
 
     suspend fun search(
         query: String,
         offset: Int,
         limit: Int
-    ): List<FapItemShort>
+    ): Result<List<FapItemShort>>
 
-    suspend fun getCategories(): List<FapCategory>
-    suspend fun getFapItemById(id: String): FapItem
+    suspend fun getCategories(): Result<List<FapCategory>>
+    suspend fun getFapItemById(id: String): Result<FapItem>
 }
