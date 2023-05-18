@@ -2,6 +2,8 @@ package com.flipperdevices.faphub.installedtab.impl.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.dao.api.model.SortType
 import com.flipperdevices.faphub.installedtab.impl.model.FapInstalledScreenState
@@ -13,7 +15,8 @@ import tangle.viewmodel.VMInject
 
 class InstalledFapsViewModel @VMInject constructor(
     private val fapNetworkApi: FapNetworkApi
-) : ViewModel() {
+) : ViewModel(), LogTagProvider {
+    override val TAG = "InstalledFapsViewModel"
     private val fapInstalledScreenStateFlow = MutableStateFlow<FapInstalledScreenState>(
         FapInstalledScreenState.Loading
     )
@@ -34,6 +37,7 @@ class InstalledFapsViewModel @VMInject constructor(
                     )
                 )
             }.onFailure {
+                error(it) { "Failed get installed fap" }
                 fapInstalledScreenStateFlow.emit(FapInstalledScreenState.Error(it))
             }
     }

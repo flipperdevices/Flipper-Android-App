@@ -1,7 +1,7 @@
 package com.flipperdevices.faphub.dao.network.retrofit.api
 
-import com.flipperdevices.faphub.dao.network.retrofit.model.RetrofitApplicationDetailed
 import com.flipperdevices.faphub.dao.network.retrofit.model.RetrofitApplicationShort
+import com.flipperdevices.faphub.dao.network.retrofit.model.detailed.RetrofitApplicationDetailed
 import com.flipperdevices.faphub.dao.network.retrofit.model.types.ApplicationSortType
 import com.flipperdevices.faphub.dao.network.retrofit.model.types.SortOrderType
 import retrofit2.http.GET

@@ -24,18 +24,25 @@ abstract class OffsetAndLimitPagingSource<Value : Any>(
                 INITIAL_LOAD_SIZE
             }
             val faps = load(offset, params.loadSize)
-            val nextKey = position + (params.loadSize / pageSize)
-
             verbose { "Load ${faps.size} successful" }
+            if (faps.isEmpty()) {
+                LoadResult.Page(
+                    data = faps,
+                    prevKey = null,
+                    nextKey = null
+                )
+            } else {
+                val nextKey = position + (params.loadSize / pageSize)
 
-            LoadResult.Page(
-                data = faps,
-                prevKey = null,
-                nextKey = nextKey
-            )
+                LoadResult.Page(
+                    data = faps,
+                    prevKey = null,
+                    nextKey = nextKey
+                )
+            }
         } catch (exception: Throwable) {
             error(exception) { "Failed load $params" }
-            return LoadResult.Error(exception)
+            LoadResult.Error(exception)
         }
     }
 

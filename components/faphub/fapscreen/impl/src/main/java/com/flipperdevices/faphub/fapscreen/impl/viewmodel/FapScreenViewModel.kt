@@ -2,6 +2,8 @@ package com.flipperdevices.faphub.fapscreen.impl.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.fapscreen.impl.api.FAP_ID_KEY
 import com.flipperdevices.faphub.fapscreen.impl.model.FapScreenLoadingState
@@ -15,7 +17,9 @@ class FapScreenViewModel @VMInject constructor(
     @TangleParam(FAP_ID_KEY)
     private val fapId: String,
     private val fapNetworkApi: FapNetworkApi
-) : ViewModel() {
+) : ViewModel(), LogTagProvider {
+    override val TAG = "FapScreenViewModel"
+
     private val fapScreenLoadingStateFlow = MutableStateFlow<FapScreenLoadingState>(
         FapScreenLoadingState.Loading
     )
@@ -30,6 +34,7 @@ class FapScreenViewModel @VMInject constructor(
         fapNetworkApi.getFapItemById(fapId).onSuccess { fapItem ->
             fapScreenLoadingStateFlow.emit(FapScreenLoadingState.Loaded(fapItem))
         }.onFailure {
+            error(it) { "Failed fetch single application" }
             fapScreenLoadingStateFlow.emit(FapScreenLoadingState.Error(it))
         }
     }
