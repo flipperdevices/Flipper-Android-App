@@ -2,6 +2,7 @@ package com.flipperdevices.faphub.installedtab.impl.composable
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.core.ui.errors.ComposableThrowableError
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.faphub.appcard.composable.AppCard
@@ -27,69 +29,88 @@ private const val DEFAULT_FAP_COUNT = 20
 @Composable
 fun ComposableInstalledTabScreen(
     onOpenFapItem: (FapItemShort) -> Unit,
-    installationButton: @Composable (FapItemShort?, Modifier, TextUnit) -> Unit
+    installationButton: @Composable (FapItemShort?, Modifier, TextUnit) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val viewModel = tangleViewModel<InstalledFapsViewModel>()
     val state by viewModel.getFapInstalledScreenState().collectAsState()
-    val faps = (state as? FapInstalledScreenState.Loaded)?.faps
 
-    ComposableInstalledTabScreen(
-        faps = faps,
-        onOpenFapItem = onOpenFapItem,
-        installationButton = installationButton
-    )
+    state.let { stateLocal ->
+        when (stateLocal) {
+            is FapInstalledScreenState.Error -> ComposableThrowableError(
+                throwable = stateLocal.throwable,
+                onRetry = viewModel::onRefresh,
+                modifier = modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 14.dp)
+            )
+
+            is FapInstalledScreenState.Loaded -> ComposableInstalledTabScreen(
+                faps = stateLocal.faps,
+                onOpenFapItem = onOpenFapItem,
+                installationButton = installationButton,
+                modifier = modifier
+            )
+
+            FapInstalledScreenState.Loading -> ComposableInstalledTabScreen(
+                faps = null,
+                onOpenFapItem = onOpenFapItem,
+                installationButton = installationButton,
+                modifier = modifier
+            )
+        }
+    }
 }
 
 @Composable
 private fun ComposableInstalledTabScreen(
     faps: ImmutableList<FapItemShort>?,
     onOpenFapItem: (FapItemShort) -> Unit,
-    installationButton: @Composable (FapItemShort?, Modifier, TextUnit) -> Unit
-) {
-    LazyColumn {
-        item {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 12.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                ComposableUpdateAllButton(
-                    if (faps == null) {
-                        Modifier.placeholderConnecting()
-                    } else {
-                        Modifier
-                    }
-                )
-            }
-        }
-        if (faps == null) {
-            items(DEFAULT_FAP_COUNT) {
-                AppCard(
-                    modifier = Modifier.padding(horizontal = 14.dp, vertical = 12.dp),
-                    fapItem = null,
-                    installationButton = { modifier, fontSize ->
-                        installationButton(null, modifier, fontSize)
-                    }
-                )
-            }
-        } else {
-            items(faps.size) { index ->
-                val item = faps[index]
-                AppCard(
-                    modifier = Modifier
-                        .clickable(
-                            onClick = { onOpenFapItem(item) }
-                        )
-                        .padding(horizontal = 14.dp, vertical = 12.dp),
-                    fapItem = item,
-                    installationButton = { modifier, fontSize ->
-                        installationButton(item, modifier, fontSize)
-                    }
-                )
-                if (index != faps.lastIndex) {
-                    ComposableLoadingItemDivider()
+    installationButton: @Composable (FapItemShort?, Modifier, TextUnit) -> Unit,
+    modifier: Modifier = Modifier
+) = LazyColumn(modifier) {
+    item {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            ComposableUpdateAllButton(
+                if (faps == null) {
+                    Modifier.placeholderConnecting()
+                } else {
+                    Modifier
                 }
+            )
+        }
+    }
+    if (faps == null) {
+        items(DEFAULT_FAP_COUNT) {
+            AppCard(
+                modifier = Modifier.padding(horizontal = 14.dp, vertical = 12.dp),
+                fapItem = null,
+                installationButton = { modifier, fontSize ->
+                    installationButton(null, modifier, fontSize)
+                }
+            )
+        }
+    } else {
+        items(faps.size) { index ->
+            val item = faps[index]
+            AppCard(
+                modifier = Modifier
+                    .clickable(
+                        onClick = { onOpenFapItem(item) }
+                    )
+                    .padding(horizontal = 14.dp, vertical = 12.dp),
+                fapItem = item,
+                installationButton = { modifier, fontSize ->
+                    installationButton(item, modifier, fontSize)
+                }
+            )
+            if (index != faps.lastIndex) {
+                ComposableLoadingItemDivider()
             }
         }
     }

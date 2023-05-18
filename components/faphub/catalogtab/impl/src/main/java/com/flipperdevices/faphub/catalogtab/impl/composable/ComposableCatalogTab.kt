@@ -35,7 +35,11 @@ fun ComposableCatalogTabScreen(
     LazyColumn(
         modifier = modifier
     ) {
-        ComposableCategories(categoriesLoadState, onCategoryClick)
+        ComposableCategories(
+            categoriesLoadState,
+            onCategoryClick,
+            onRetry = categoriesViewModel::onRefresh
+        )
         item {
             ComposableSortChoice(
                 title = stringResource(R.string.faphub_catalog_title),

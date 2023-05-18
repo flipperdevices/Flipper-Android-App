@@ -6,7 +6,11 @@ import kotlinx.collections.immutable.ImmutableList
 sealed class FapInstalledScreenState {
     object Loading : FapInstalledScreenState()
 
-    class Loaded(
+    data class Loaded(
         val faps: ImmutableList<FapItemShort>
+    ) : FapInstalledScreenState()
+
+    data class Error(
+        val throwable: Throwable
     ) : FapInstalledScreenState()
 }

@@ -2,6 +2,7 @@
 # You also need to bump the version of ksp, anvil, compose
 kotlin-general = "1.8.21" # https://kotlinlang.org/docs/releases.html#release-details
 kotlin-immutable-collections = "0.3.5" # https://github.com/Kotlin/kotlinx.collections.immutable/releases
+kotlin-datetime = "0.4.0" # https://github.com/Kotlin/kotlinx-datetime/releases
 kotlinx = "1.7.0" # https://github.com/Kotlin/kotlinx.coroutines/releases
 ksp = "1.8.21-1.0.11" # https://github.com/google/ksp/releases
 anvil = "2.4.5" # https://github.com/square/anvil/releases
@@ -57,6 +58,7 @@ coil = "2.3.0" # https://github.com/coil-kt/coil/releases
 play-core = "2.0.1" # https://developer.android.com/guide/playcore#java-kotlin-in-app-update
 retrofit = "2.9.0" # https://github.com/square/retrofit/tags
 retrofit-json = "1.0.0" # https://github.com/JakeWharton/retrofit2-kotlinx-serialization-converter/releases
+okhttp = "4.10.0" # https://square.github.io/okhttp/changelogs/changelog/#version-4x
 
 
 # Testing
@@ -92,6 +94,8 @@ kotlin-serialization-gradle = { module = "org.jetbrains.kotlin:kotlin-serializat
 kotlin-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization-json" }
 
 kotlin-immutable-collections = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlin-immutable-collections" }
+
+kotlin-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlin-datetime" }
 
 protobuf-gradle = { module = "com.google.protobuf:protobuf-gradle-plugin", version.ref = "protobuf-gradle" }
 datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
@@ -196,6 +200,8 @@ ktor-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
 # Retrofit
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 retrofit-json = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version.ref = "retrofit-json" }
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+okhttp-logging = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
 
 # Apache commons
 apache-compress = { module = "org.apache.commons:commons-compress", version.ref = "apache-compress" }

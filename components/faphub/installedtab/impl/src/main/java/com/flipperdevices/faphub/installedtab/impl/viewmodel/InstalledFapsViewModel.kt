@@ -19,16 +19,22 @@ class InstalledFapsViewModel @VMInject constructor(
     )
 
     init {
-        viewModelScope.launch {
-            val faps = fapNetworkApi.getAllItem(sortType = SortType.UPDATED, offset = 0, limit = 4)
-            fapInstalledScreenStateFlow.emit(
-                FapInstalledScreenState.Loaded(
-                    faps.toImmutableList()
-                )
-            )
-        }
+        onRefresh()
     }
 
     fun getFapInstalledScreenState(): StateFlow<FapInstalledScreenState> =
         fapInstalledScreenStateFlow
+
+    fun onRefresh() = viewModelScope.launch {
+        fapNetworkApi.getAllItem(sortType = SortType.UPDATED, offset = 0, limit = 4)
+            .onSuccess { faps ->
+                fapInstalledScreenStateFlow.emit(
+                    FapInstalledScreenState.Loaded(
+                        faps.toImmutableList()
+                    )
+                )
+            }.onFailure {
+                fapInstalledScreenStateFlow.emit(FapInstalledScreenState.Error(it))
+            }
+    }
 }

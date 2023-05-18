@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.Divider
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,7 +13,9 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.itemsIndexed
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
+import com.flipperdevices.core.ui.errors.ComposableThrowableError
 import com.flipperdevices.core.ui.ktx.ComposeLottiePic
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.faphub.appcard.composable.AppCard
@@ -29,14 +30,27 @@ fun LazyListScope.ComposableFapsList(
     onOpenFapItem: (FapItemShort) -> Unit,
     installationButton: @Composable (FapItemShort?, Modifier, TextUnit) -> Unit
 ) {
+    val elementModifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 14.dp, vertical = 12.dp)
     if (faps.loadState.refresh is LoadState.Loading) {
         items(DEFAULT_FAP_COUNT) {
             AppCard(
-                modifier = Modifier.padding(horizontal = 14.dp, vertical = 12.dp),
+                modifier = elementModifier,
                 fapItem = null,
                 installationButton = { modifier, fontSize ->
                     installationButton(null, modifier, fontSize)
                 }
+            )
+        }
+        return
+    } else if (faps.loadState.refresh is LoadState.Error) {
+        val loadState = faps.loadState.refresh as? LoadState.Error ?: return
+        item {
+            ComposableThrowableError(
+                modifier = elementModifier,
+                throwable = loadState.error,
+                onRetry = faps::retry
             )
         }
         return
@@ -47,15 +61,22 @@ fun LazyListScope.ComposableFapsList(
         onOpenFapItem = onOpenFapItem,
         installationButton = installationButton
     )
+    faps.loadState.append.let { loadState ->
+        when (loadState) {
+            is LoadState.Loading -> item {
+                ComposableLoadingItem()
+            }
 
-    when (faps.loadState.append) {
-        is LoadState.Loading -> item {
-            ComposableLoadingItem()
+            is LoadState.Error -> item {
+                ComposableThrowableError(
+                    throwable = loadState.error,
+                    onRetry = faps::retry,
+                    modifier = elementModifier
+                )
+            }
+
+            else -> {}
         }
-        is LoadState.Error -> item {
-            Text("Error: ${(faps.loadState.append as LoadState.Error).error}")
-        }
-        else -> {}
     }
 }
 
@@ -66,7 +87,12 @@ private fun LazyListScope.ComposableLoadedFapsList(
     installationButton: @Composable (FapItemShort?, Modifier, TextUnit) -> Unit
 ) {
     val lastIndex = faps.itemCount - 1
-    itemsIndexed(faps) { index, item ->
+    items(
+        count = faps.itemCount,
+        key = faps.itemKey(),
+        contentType = faps.itemContentType()
+    ) { index ->
+        val item = faps[index]
         item?.let {
             AppCard(
                 modifier = Modifier

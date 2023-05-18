@@ -18,7 +18,7 @@ object DateSerializer : KSerializer<Date> {
         PrimitiveSerialDescriptor("Date", PrimitiveKind.STRING)
 
     @SuppressLint("SimpleDateFormat")
-    private val df: DateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+    private val df: DateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
 
     override fun deserialize(decoder: Decoder): Date {
         val rawDate = decoder.decodeString()
