@@ -67,6 +67,10 @@ class SingleActivity :
 
         selfUpdaterApi.startCheckUpdateAsync(activity = this@SingleActivity)
 
+        val featureEntries = featureEntriesMutable.toPersistentSet()
+        val composableEntries = composableEntriesMutable.toPersistentSet()
+        val startDestination = deepLinkHelper.getStartDestination()
+
         setContent {
             val navControllerLocal = rememberNavController().also {
                 globalNavController = it
@@ -81,9 +85,9 @@ class SingleActivity :
                 ) {
                     ComposableSingleActivityNavHost(
                         navController = navControllerLocal,
-                        starDestination = deepLinkHelper.getStartDestination(),
-                        featureEntries = featureEntriesMutable.toPersistentSet(),
-                        composableEntries = composableEntriesMutable.toPersistentSet(),
+                        startDestination = startDestination,
+                        featureEntries = featureEntries,
+                        composableEntries = composableEntries,
                         modifier = Modifier
                             .safeDrawingPadding()
                     )
@@ -94,6 +98,7 @@ class SingleActivity :
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
+        info { "Receive new intent: ${intent?.toFullString()}" }
         if (intent == null) {
             return
         }

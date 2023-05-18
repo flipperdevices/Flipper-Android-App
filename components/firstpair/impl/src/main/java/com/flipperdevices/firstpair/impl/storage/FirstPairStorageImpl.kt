@@ -17,14 +17,14 @@ class FirstPairStorageImpl @Inject constructor(
     override val TAG = "FirstPairStorage"
 
     override fun isTosPassed(): Boolean {
-        return runBlockingWithLog { pairSettingsStore.data.first() }.tosPassed
+        return runBlockingWithLog("is_passed") { pairSettingsStore.data.first() }.tosPassed
     }
 
     override fun isDeviceSelected(): Boolean {
-        return runBlockingWithLog { pairSettingsStore.data.first() }.pairDevicePass
+        return runBlockingWithLog("is_device_selected") { pairSettingsStore.data.first() }.pairDevicePass
     }
 
-    override fun markTosPassed(): Unit = runBlockingWithLog {
+    override fun markTosPassed(): Unit = runBlockingWithLog("mark_tos_passed") {
         pairSettingsStore.updateData {
             it.toBuilder()
                 .setTosPassed(true)
@@ -35,7 +35,7 @@ class FirstPairStorageImpl @Inject constructor(
     override fun markDeviceSelected(
         deviceId: String?,
         deviceName: String?
-    ): Unit = runBlockingWithLog {
+    ): Unit = runBlockingWithLog("mark_device_selected") {
         pairSettingsStore.updateData {
             var builder = it.toBuilder()
                 .setPairDevicePass(true)

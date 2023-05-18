@@ -7,5 +7,5 @@ interface DeepLinkDispatcher {
     /**
      * @return false if dispatcher not found handler for this uri
      */
-    fun process(navController: NavController, deeplink: Deeplink): Boolean
+    suspend fun process(navController: NavController, deeplink: Deeplink): Boolean
 }
