@@ -16,7 +16,7 @@ import tangle.viewmodel.VMInject
 class FapsListViewModel @VMInject constructor(
     private val fapNetworkApi: FapNetworkApi
 ) : ViewModel() {
-    private val sortTypeFlow = MutableStateFlow(SortType.UPDATED)
+    private val sortTypeFlow = MutableStateFlow(SortType.NAME_DESC)
     val faps = sortTypeFlow.flatMapLatest { sortType ->
         Pager(
             PagingConfig(pageSize = FAPS_PAGE_SIZE)

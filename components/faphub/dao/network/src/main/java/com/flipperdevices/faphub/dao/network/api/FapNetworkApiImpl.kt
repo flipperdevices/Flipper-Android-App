@@ -8,11 +8,13 @@ import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.dao.api.model.SortType
 import com.flipperdevices.faphub.dao.network.retrofit.api.RetrofitApplicationApi
+import com.flipperdevices.faphub.dao.network.retrofit.model.types.ApplicationSortType
+import com.flipperdevices.faphub.dao.network.retrofit.model.types.SortOrderType
 import com.flipperdevices.faphub.dao.network.retrofit.utils.FapHubNetworkCategoryApi
 import com.squareup.anvil.annotations.ContributesBinding
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, FapNetworkApi::class)
 class FapNetworkApiImpl @Inject constructor(
@@ -41,10 +43,11 @@ class FapNetworkApiImpl @Inject constructor(
         limit: Int
     ) = catchWithDispatcher {
         debug { "Request all item" }
-
         val response = applicationApi.getAll(
             offset = offset,
-            limit = limit
+            limit = limit,
+            sortBy = ApplicationSortType.fromSortType(sortType),
+            sortOrder = SortOrderType.fromSortType(sortType)
         )
         debug { "Provider response: $response" }
 
@@ -62,7 +65,7 @@ class FapNetworkApiImpl @Inject constructor(
         offset: Int,
         limit: Int
     ) = getAllItem(
-        sortType = SortType.UPDATED,
+        sortType = SortType.NAME_DESC,
         offset = offset,
         limit = limit
     )

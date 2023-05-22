@@ -29,7 +29,7 @@ class InstalledFapsViewModel @VMInject constructor(
         fapInstalledScreenStateFlow
 
     fun onRefresh() = viewModelScope.launch {
-        fapNetworkApi.getAllItem(sortType = SortType.UPDATED, offset = 0, limit = 4)
+        fapNetworkApi.getAllItem(sortType = SortType.UPDATE_AT_DESC, offset = 0, limit = 4)
             .onSuccess { faps ->
                 fapInstalledScreenStateFlow.emit(
                     FapInstalledScreenState.Loaded(

@@ -1,5 +1,6 @@
 package com.flipperdevices.faphub.appcard.composable.paging
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Row
@@ -28,7 +29,6 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.faphub.appcard.composable.R
 import com.flipperdevices.faphub.dao.api.model.SortType
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableSortChoice(
@@ -123,7 +123,11 @@ private fun ComposableDropDown(
 @Composable
 private fun getSortTypeName(sortType: SortType): String {
     return when (sortType) {
-        SortType.UPDATED -> stringResource(R.string.faphub_catalog_choice_updated)
-        SortType.PUBLISHED -> stringResource(R.string.faphub_catalog_choice_published)
+        SortType.UPDATE_AT_DESC -> stringResource(R.string.faphub_catalog_choice_updated_desc)
+        SortType.UPDATE_AT_ASC -> stringResource(R.string.faphub_catalog_choice_updated_asc)
+        SortType.CREATED_AT_DESC -> stringResource(R.string.faphub_catalog_choice_published_desc)
+        SortType.CREATED_AT_ASC -> stringResource(R.string.faphub_catalog_choice_published_asc)
+        SortType.NAME_DESC -> stringResource(R.string.faphub_catalog_choice_name_desc)
+        SortType.NAME_ASC -> stringResource(R.string.faphub_catalog_choice_name_asc)
     }
 }
