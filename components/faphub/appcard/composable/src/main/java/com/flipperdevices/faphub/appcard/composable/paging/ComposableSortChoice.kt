@@ -1,6 +1,5 @@
 package com.flipperdevices.faphub.appcard.composable.paging
 
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Row
@@ -29,6 +28,7 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.faphub.appcard.composable.R
 import com.flipperdevices.faphub.dao.api.model.SortType
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableSortChoice(
