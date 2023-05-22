@@ -23,7 +23,6 @@ data class RetrofitApplicationDetailed(
     @SerialName("category_id") val categoryId: String,
     @SerialName("alias") val alias: String,
     @SerialName("name") val name: String,
-    @SerialName("description") val description: String,
     @SerialName("current_version") val currentVersion: RetrofitVersionDetailed,
 ) {
     fun toFapItem(category: FapCategory): FapItem {
@@ -42,14 +41,12 @@ data class RetrofitApplicationDetailed(
                 ?: error("Failed parse ${currentVersion.version}")
         )
 
-        val changelog = "Empty for now"
-
         return FapItem(
             id = id,
             screenshots = currentVersion.screenshots.toImmutableList(),
-            description = description,
+            description = currentVersion.description,
             name = name,
-            changelog = changelog,
+            changelog = currentVersion.changelog,
             category = category,
             picUrl = picUrl,
             metaInformation = metaInformation,
