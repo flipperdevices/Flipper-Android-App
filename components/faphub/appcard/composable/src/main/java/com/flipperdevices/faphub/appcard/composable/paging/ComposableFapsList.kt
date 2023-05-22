@@ -18,16 +18,16 @@ import androidx.paging.compose.itemsIndexed
 import com.flipperdevices.core.ui.ktx.ComposeLottiePic
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.faphub.appcard.composable.AppCard
-import com.flipperdevices.faphub.dao.api.model.FapItem
+import com.flipperdevices.faphub.dao.api.model.FapItemShort
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 private const val DEFAULT_FAP_COUNT = 20
 
 @Suppress("FunctionNaming")
 fun LazyListScope.ComposableFapsList(
-    faps: LazyPagingItems<FapItem>,
-    onOpenFapItem: (FapItem) -> Unit,
-    installationButton: @Composable (FapItem?, Modifier, TextUnit) -> Unit
+    faps: LazyPagingItems<FapItemShort>,
+    onOpenFapItem: (FapItemShort) -> Unit,
+    installationButton: @Composable (FapItemShort?, Modifier, TextUnit) -> Unit
 ) {
     if (faps.loadState.refresh is LoadState.Loading) {
         items(DEFAULT_FAP_COUNT) {
@@ -61,9 +61,9 @@ fun LazyListScope.ComposableFapsList(
 
 @Suppress("FunctionNaming")
 private fun LazyListScope.ComposableLoadedFapsList(
-    faps: LazyPagingItems<FapItem>,
-    onOpenFapItem: (FapItem) -> Unit,
-    installationButton: @Composable (FapItem?, Modifier, TextUnit) -> Unit
+    faps: LazyPagingItems<FapItemShort>,
+    onOpenFapItem: (FapItemShort) -> Unit,
+    installationButton: @Composable (FapItemShort?, Modifier, TextUnit) -> Unit
 ) {
     val lastIndex = faps.itemCount - 1
     itemsIndexed(faps) { index, item ->

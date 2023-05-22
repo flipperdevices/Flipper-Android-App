@@ -17,7 +17,7 @@ class FapHubSearchViewModel @VMInject constructor(
     private val searchRequestFlow = MutableStateFlow("")
 
     val faps = searchRequestFlow.flatMapLatest { sortType ->
-        Pager(PagingConfig(pageSize = 10)) {
+        Pager(PagingConfig(pageSize = FAPS_PAGE_SIZE)) {
             FapsSearchPagingSource(fapNetworkApi, sortType)
         }.flow
     }.cachedIn(viewModelScope)

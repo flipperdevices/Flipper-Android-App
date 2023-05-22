@@ -62,6 +62,7 @@ include(
     ":components:core:markdown",
     ":components:core:activityholder",
     ":components:core:share",
+    ":components:core:pager",
 
     ":components:bottombar:api",
     ":components:bottombar:impl",

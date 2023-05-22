@@ -18,7 +18,9 @@ class FapsListViewModel @VMInject constructor(
 ) : ViewModel() {
     private val sortTypeFlow = MutableStateFlow(SortType.UPDATED)
     val faps = sortTypeFlow.flatMapLatest { sortType ->
-        Pager(PagingConfig(pageSize = 10)) {
+        Pager(
+            PagingConfig(pageSize = FAPS_PAGE_SIZE)
+        ) {
             FapsPagingSource(fapNetworkApi, sortType)
         }.flow
     }.cachedIn(viewModelScope)

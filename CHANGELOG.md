@@ -22,6 +22,7 @@
 - [Feature] Dialog on first pair failed
 - [Feature] Add unlock request
 - [Feature] New update dialogs
+- [Feature] FapHub api integration (10%)
 - [GitHub] Update github repo picture
 - [CI] Migrate to Detekt
 - [CI] Android lint in CI

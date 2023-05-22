@@ -16,11 +16,11 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.faphub.appcard.composable.components.ComposableAppCategory
 import com.flipperdevices.faphub.appcard.composable.components.ComposableAppIcon
-import com.flipperdevices.faphub.dao.api.model.FapItem
+import com.flipperdevices.faphub.dao.api.model.FapItemShort
 
 @Composable
 fun SmallHorizontalAppCard(
-    fapItem: FapItem,
+    fapItem: FapItemShort,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -41,7 +41,7 @@ fun SmallHorizontalAppCard(
 
 @Composable
 private fun SmallHorizontalAppCardText(
-    fapItem: FapItem,
+    fapItem: FapItemShort,
     modifier: Modifier = Modifier
 ) = Column(modifier, verticalArrangement = Arrangement.spacedBy(1.dp)) {
     Text(

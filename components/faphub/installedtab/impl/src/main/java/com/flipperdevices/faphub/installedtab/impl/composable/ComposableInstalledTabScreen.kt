@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.faphub.appcard.composable.AppCard
-import com.flipperdevices.faphub.dao.api.model.FapItem
+import com.flipperdevices.faphub.dao.api.model.FapItemShort
 import com.flipperdevices.faphub.installedtab.impl.model.FapInstalledScreenState
 import com.flipperdevices.faphub.installedtab.impl.viewmodel.InstalledFapsViewModel
 import kotlinx.collections.immutable.ImmutableList
@@ -26,8 +26,8 @@ private const val DEFAULT_FAP_COUNT = 20
 
 @Composable
 fun ComposableInstalledTabScreen(
-    onOpenFapItem: (FapItem) -> Unit,
-    installationButton: @Composable (FapItem?, Modifier, TextUnit) -> Unit
+    onOpenFapItem: (FapItemShort) -> Unit,
+    installationButton: @Composable (FapItemShort?, Modifier, TextUnit) -> Unit
 ) {
     val viewModel = tangleViewModel<InstalledFapsViewModel>()
     val state by viewModel.getFapInstalledScreenState().collectAsState()
@@ -42,9 +42,9 @@ fun ComposableInstalledTabScreen(
 
 @Composable
 private fun ComposableInstalledTabScreen(
-    faps: ImmutableList<FapItem>?,
-    onOpenFapItem: (FapItem) -> Unit,
-    installationButton: @Composable (FapItem?, Modifier, TextUnit) -> Unit
+    faps: ImmutableList<FapItemShort>?,
+    onOpenFapItem: (FapItemShort) -> Unit,
+    installationButton: @Composable (FapItemShort?, Modifier, TextUnit) -> Unit
 ) {
     LazyColumn {
         item {

@@ -10,6 +10,7 @@ dependencies {
     implementation(projects.components.faphub.search.api)
 
     implementation(projects.components.core.di)
+    implementation(projects.components.core.pager)
     implementation(projects.components.core.ui.searchbar)
     implementation(projects.components.core.ui.navigation)
 

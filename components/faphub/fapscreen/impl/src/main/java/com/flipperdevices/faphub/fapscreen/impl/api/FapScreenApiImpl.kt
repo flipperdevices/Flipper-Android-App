@@ -42,7 +42,7 @@ class FapScreenApiImpl @Inject constructor(
                 onBack = navController::popBackStack,
                 installationButton = { fapItem, modifier, fontSize ->
                     installationUIApi.ComposableButton(
-                        fapItem = fapItem,
+                        fapItemId = fapItem?.id,
                         modifier = modifier,
                         textSize = fontSize
                     )
