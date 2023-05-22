@@ -10,7 +10,6 @@ import com.flipperdevices.bridge.api.manager.FlipperBleManager
 import com.flipperdevices.bridge.impl.manager.FlipperBleManagerImpl
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.impl.delegate.FlipperActionNotifierImpl
-import com.flipperdevices.bridge.service.impl.delegate.FlipperAutoDisconnect
 import com.flipperdevices.bridge.service.impl.delegate.FlipperLagsDetectorImpl
 import com.flipperdevices.bridge.service.impl.delegate.FlipperSafeConnectWrapper
 import com.flipperdevices.bridge.service.impl.di.FlipperServiceComponent
@@ -63,12 +62,6 @@ class FlipperServiceApiImpl(
     private val scope = lifecycleOwner.lifecycleScope + Dispatchers.Default
     private val connectionStateProvider = WeakConnectionStateProvider(scope)
     private val flipperActionNotifier = FlipperActionNotifierImpl(scope)
-    private val flipperAutoDisconnect = FlipperAutoDisconnect(
-        scope,
-        flipperActionNotifier,
-        this,
-        application
-    )
     private val lagsDetector = FlipperLagsDetectorImpl(
         scope = scope,
         serviceApi = this,
@@ -105,7 +98,6 @@ class FlipperServiceApiImpl(
             error { "Service api already inited" }
             return
         }
-        flipperAutoDisconnect.init()
         info { "Internal init and try connect" }
 
         var deviceId: String? = null
