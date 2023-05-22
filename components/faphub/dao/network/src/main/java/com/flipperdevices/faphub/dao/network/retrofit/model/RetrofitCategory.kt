@@ -11,6 +11,7 @@ data class RetrofitCategory(
     @SerialName("name") val name: String,
     @SerialName("color") val color: String,
     @SerialName("icon_uri") val iconUrl: String,
+    @SerialName("applications") val applicationsCount: Int
 ) {
     fun toFapCategory(): FapCategory {
         return FapCategory(

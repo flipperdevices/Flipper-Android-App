@@ -8,5 +8,6 @@ data class RetrofitCurrentVersionShort(
     @SerialName("_id") val id: String,
     @SerialName("version") val version: String,
     @SerialName("icon") val iconUrl: String,
-    @SerialName("screenshots") val screenshots: List<String>
+    @SerialName("screenshots") val screenshots: List<String>,
+    @SerialName("description") val description: String
 )

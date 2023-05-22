@@ -20,14 +20,13 @@ data class RetrofitApplicationShort(
     @SerialName("category_id") val categoryId: String,
     @SerialName("alias") val alias: String,
     @SerialName("name") val name: String,
-    @SerialName("description") val description: String,
     @SerialName("current_version") val currentVersion: RetrofitCurrentVersionShort,
 ) {
     fun toFapItemShort(category: FapCategory): FapItemShort {
         return FapItemShort(
             id = id,
             picUrl = currentVersion.iconUrl,
-            description = description,
+            description = currentVersion.description,
             name = name,
             category = category,
             screenshots = currentVersion.screenshots.toImmutableList()
