@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="faphub_catalog_choice_updated_desc">Recently Updated</string>
-    <string name="faphub_catalog_choice_updated_asc">Updated ASC</string>
-    <string name="faphub_catalog_choice_published_desc">Recently Published</string>
-    <string name="faphub_catalog_choice_published_asc">Published ASC</string>
-    <string name="faphub_catalog_choice_name_desc">By Name DESC</string>
-    <string name="faphub_catalog_choice_name_asc">By Name ASC</string>
+    <string name="faphub_catalog_choice_updated_desc">New Updates</string>
+    <string name="faphub_catalog_choice_updated_asc">Old Updates</string>
+    <string name="faphub_catalog_choice_published_desc">New Releases</string>
+    <string name="faphub_catalog_choice_published_asc">Old Releases</string>
+    <string name="faphub_catalog_choice_unknown">Unknown</string>
 </resources>
