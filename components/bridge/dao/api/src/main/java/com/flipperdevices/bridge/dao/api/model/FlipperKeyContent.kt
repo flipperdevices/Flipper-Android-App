@@ -1,14 +1,14 @@
 package com.flipperdevices.bridge.dao.api.model
 
 import android.os.Parcelable
-import kotlinx.parcelize.IgnoredOnParcel
-import kotlinx.parcelize.Parcelize
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.io.FileInputStream
 import java.io.InputStream
+import kotlinx.parcelize.IgnoredOnParcel
+import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 /**
  * Describes the contents of the key.
@@ -89,7 +89,7 @@ data class FlipperFileFormat(
                 .filterNot { it.startsWith("#") }
                 .map {
                     it.substringBefore(":").trim() to
-                        it.substringAfter(":").trim()
+                            it.substringAfter(":").trim()
                 }.filterNot { it.first.isBlank() || it.second.isBlank() }
 
             return FlipperFileFormat(pairs)
@@ -102,7 +102,7 @@ data class FlipperFileFormat(
     private fun generateFileContent(): String {
         val sb = StringBuilder()
         orderedDict.forEach { line ->
-            sb.append(line.first).append(": ").append(line.second).append("\n")
+            sb.append(line.first).append(": ").append(line.second).append('\n')
         }
         return sb.toString()
     }

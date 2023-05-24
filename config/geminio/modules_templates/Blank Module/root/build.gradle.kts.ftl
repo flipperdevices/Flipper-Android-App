@@ -20,10 +20,6 @@ dependencies {
 <#if shouldGenerateDI>
     implementation(projects.components.core.di)
 </#if>
-<#if isApi>
-
-    implementation(libs.cicerone)
-<#else>
 <#if needFragment>
 
     implementation(libs.cicerone)

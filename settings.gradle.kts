@@ -174,7 +174,6 @@ include(
     ":components:faphub:appcard:composable",
     ":components:faphub:dao:api",
     ":components:faphub:dao:network",
-    ":components:faphub:dao:flipper",
     ":components:faphub:main:api",
     ":components:faphub:main:impl",
     ":components:faphub:catalogtab:api",
@@ -189,6 +188,8 @@ include(
     ":components:faphub:fapscreen:impl",
     ":components:faphub:installation:button:api",
     ":components:faphub:installation:button:impl",
+    ":components:faphub:installation:manifest:api",
+    ":components:faphub:installation:manifest:impl",
 
     ":components:selfupdater:api",
     ":components:selfupdater:googleplay",
