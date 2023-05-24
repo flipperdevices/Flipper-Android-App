@@ -1,4 +1,4 @@
-package com.flipperdevices.faphub.installation.impl.composable
+package com.flipperdevices.faphub.installation.button.impl.composable
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
@@ -8,7 +8,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
-import com.flipperdevices.faphub.installation.impl.R
+import com.flipperdevices.faphub.installation.button.impl.R
 
 @Composable
 fun ComposableFapInstallButton(

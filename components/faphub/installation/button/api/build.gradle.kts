@@ -2,7 +2,7 @@ plugins {
     id("flipper.android-compose")
 }
 
-android.namespace = "com.flipperdevices.faphub.installation.api"
+android.namespace = "com.flipperdevices.faphub.installation.button.api"
 
 dependencies {
     implementation(projects.components.faphub.dao.api)

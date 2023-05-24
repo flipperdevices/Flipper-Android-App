@@ -1,17 +1,17 @@
-package com.flipperdevices.faphub.installation.impl.api
+package com.flipperdevices.faphub.installation.button.impl.api
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.TextUnit
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
-import com.flipperdevices.faphub.installation.api.FapInstallationUIApi
-import com.flipperdevices.faphub.installation.impl.composable.ComposableFapInstallButton
-import com.flipperdevices.faphub.installation.impl.composable.ComposableFapInstalledButton
-import com.flipperdevices.faphub.installation.impl.composable.ComposableFapInstallingButton
-import com.flipperdevices.faphub.installation.impl.composable.ComposableFapUpdateButton
-import com.flipperdevices.faphub.installation.impl.composable.ComposableFapUpdatingButton
-import com.flipperdevices.faphub.installation.impl.model.FapInstallationState
+import com.flipperdevices.faphub.installation.button.api.FapInstallationUIApi
+import com.flipperdevices.faphub.installation.button.impl.composable.ComposableFapInstallButton
+import com.flipperdevices.faphub.installation.button.impl.composable.ComposableFapInstalledButton
+import com.flipperdevices.faphub.installation.button.impl.composable.ComposableFapInstallingButton
+import com.flipperdevices.faphub.installation.button.impl.composable.ComposableFapUpdateButton
+import com.flipperdevices.faphub.installation.button.impl.composable.ComposableFapUpdatingButton
+import com.flipperdevices.faphub.installation.button.impl.model.FapInstallationState
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 

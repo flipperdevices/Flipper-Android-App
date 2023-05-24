@@ -1,4 +1,4 @@
-package com.flipperdevices.faphub.installation.impl.model
+package com.flipperdevices.faphub.installation.button.impl.model
 
 import androidx.annotation.FloatRange
 

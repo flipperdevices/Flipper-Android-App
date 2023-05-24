@@ -187,8 +187,8 @@ include(
     ":components:faphub:category:impl",
     ":components:faphub:fapscreen:api",
     ":components:faphub:fapscreen:impl",
-    ":components:faphub:installation:api",
-    ":components:faphub:installation:impl",
+    ":components:faphub:installation:button:api",
+    ":components:faphub:installation:button:impl",
 
     ":components:selfupdater:api",
     ":components:selfupdater:googleplay",

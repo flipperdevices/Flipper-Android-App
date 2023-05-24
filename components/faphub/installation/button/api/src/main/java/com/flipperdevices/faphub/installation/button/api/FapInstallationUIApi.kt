@@ -1,4 +1,4 @@
-package com.flipperdevices.faphub.installation.api
+package com.flipperdevices.faphub.installation.button.api
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

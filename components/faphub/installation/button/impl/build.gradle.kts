@@ -4,10 +4,10 @@ plugins {
     id("kotlin-kapt")
 }
 
-android.namespace = "com.flipperdevices.faphub.installation.impl"
+android.namespace = "com.flipperdevices.faphub.installation.button.impl"
 
 dependencies {
-    implementation(projects.components.faphub.installation.api)
+    implementation(projects.components.faphub.installation.button.api)
 
     implementation(projects.components.core.di)
     implementation(projects.components.core.ui.res)

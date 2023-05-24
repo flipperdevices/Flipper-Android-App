@@ -6,7 +6,7 @@ import com.flipperdevices.faphub.catalogtab.api.CatalogTabApi
 import com.flipperdevices.faphub.catalogtab.impl.composable.ComposableCatalogTabScreen
 import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.dao.api.model.FapItemShort
-import com.flipperdevices.faphub.installation.api.FapInstallationUIApi
+import com.flipperdevices.faphub.installation.button.api.FapInstallationUIApi
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 

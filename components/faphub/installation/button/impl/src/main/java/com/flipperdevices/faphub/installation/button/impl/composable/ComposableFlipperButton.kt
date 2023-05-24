@@ -1,4 +1,4 @@
-package com.flipperdevices.faphub.installation.impl.composable
+package com.flipperdevices.faphub.installation.button.impl.composable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

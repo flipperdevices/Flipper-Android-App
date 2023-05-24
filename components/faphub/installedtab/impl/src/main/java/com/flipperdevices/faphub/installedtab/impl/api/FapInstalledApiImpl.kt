@@ -3,7 +3,7 @@ package com.flipperdevices.faphub.installedtab.impl.api
 import androidx.compose.runtime.Composable
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.faphub.dao.api.model.FapItemShort
-import com.flipperdevices.faphub.installation.api.FapInstallationUIApi
+import com.flipperdevices.faphub.installation.button.api.FapInstallationUIApi
 import com.flipperdevices.faphub.installedtab.api.FapInstalledApi
 import com.flipperdevices.faphub.installedtab.impl.composable.ComposableInstalledTabScreen
 import com.squareup.anvil.annotations.ContributesBinding
