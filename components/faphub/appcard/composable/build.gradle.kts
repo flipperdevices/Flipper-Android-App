@@ -9,6 +9,7 @@ dependencies {
 
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.res)
+    implementation(projects.components.core.ui.errors)
     implementation(projects.components.core.ui.theme)
 
     implementation(libs.kotlin.immutable.collections)

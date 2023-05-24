@@ -2,12 +2,15 @@ package com.flipperdevices.core.pager
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
+import com.flipperdevices.core.log.verbose
 
 private const val INITIAL_LOAD_SIZE = 0
 
 abstract class OffsetAndLimitPagingSource<Value : Any>(
     private val pageSize: Int
-) : PagingSource<Int, Value>() {
+) : PagingSource<Int, Value>(), LogTagProvider {
     override fun getRefreshKey(state: PagingState<Int, Value>): Int? {
         return state.anchorPosition
     }
@@ -21,14 +24,25 @@ abstract class OffsetAndLimitPagingSource<Value : Any>(
                 INITIAL_LOAD_SIZE
             }
             val faps = load(offset, params.loadSize)
-            val nextKey = position + (params.loadSize / pageSize)
-            LoadResult.Page(
-                data = faps,
-                prevKey = null,
-                nextKey = nextKey
-            )
+            verbose { "Load ${faps.size} successful" }
+            if (faps.isEmpty()) {
+                LoadResult.Page(
+                    data = faps,
+                    prevKey = null,
+                    nextKey = null
+                )
+            } else {
+                val nextKey = position + (params.loadSize / pageSize)
+
+                LoadResult.Page(
+                    data = faps,
+                    prevKey = null,
+                    nextKey = nextKey
+                )
+            }
         } catch (exception: Throwable) {
-            return LoadResult.Error(exception)
+            error(exception) { "Failed load $params" }
+            LoadResult.Error(exception)
         }
     }
 

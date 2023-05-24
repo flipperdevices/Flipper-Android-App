@@ -1,16 +1,18 @@
 package com.flipperdevices.faphub.dao.network.retrofit
 
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.di.BuildConfig
 import com.flipperdevices.faphub.dao.network.retrofit.api.RetrofitApplicationApi
 import com.flipperdevices.faphub.dao.network.retrofit.api.RetrofitCategoryApi
 import com.flipperdevices.faphub.dao.network.retrofit.utils.FapHubNetworkCategoryApi
+import com.flipperdevices.faphub.dao.network.retrofit.utils.RetrofitDebugLoggingEnable
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.squareup.anvil.annotations.ContributesTo
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
 import kotlinx.serialization.json.Json
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 
 private const val FAP_URL = "https://catalog.flipp.dev/api/v0/"
@@ -18,14 +20,24 @@ private const val FAP_URL = "https://catalog.flipp.dev/api/v0/"
 @Module
 @ContributesTo(AppGraph::class)
 class RetrofitModule {
+    private val json by lazy {
+        Json {
+            ignoreUnknownKeys = !BuildConfig.DEBUG
+        }
+    }
+
     @Provides
     @Reusable
+    @Suppress("")
     fun provideRetrofit(): Retrofit {
-        val contentType = MediaType.get("application/json")
-        return Retrofit.Builder()
+        val contentType = "application/json".toMediaType()
+        var builder = Retrofit.Builder()
             .baseUrl(FAP_URL)
-            .addConverterFactory(Json.asConverterFactory(contentType))
-            .build()
+            .addConverterFactory(json.asConverterFactory(contentType))
+        if (BuildConfig.INTERNAL) {
+            builder = RetrofitDebugLoggingEnable.enableDebugLogging(builder)
+        }
+        return builder.build()
     }
 
     @Provides

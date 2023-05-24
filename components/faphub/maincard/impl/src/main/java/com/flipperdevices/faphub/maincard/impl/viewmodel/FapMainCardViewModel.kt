@@ -20,9 +20,7 @@ class FapMainCardViewModel @VMInject constructor(
 
     init {
         viewModelScope.launch {
-            runCatching {
-                fapNetworkApi.getFeaturedItem()
-            }.onSuccess {
+            fapNetworkApi.getFeaturedItem().onSuccess {
                 fapMainCardStateFlow.emit(FapMainCardState.Loaded(it))
             }.onFailure {
                 error(it) { "Failed load suggested item" }

@@ -21,7 +21,7 @@ class FapHubCategoryViewModel @VMInject constructor(
     @TangleParam(CATEGORY_OPEN_PATH_KEY)
     private val category: FapCategory
 ) : ViewModel() {
-    private val sortTypeFlow = MutableStateFlow(SortType.UPDATED)
+    private val sortTypeFlow = MutableStateFlow(SortType.UPDATE_AT_DESC)
 
     val faps = sortTypeFlow.flatMapLatest { sortType ->
         Pager(PagingConfig(pageSize = FAPS_PAGE_SIZE)) {

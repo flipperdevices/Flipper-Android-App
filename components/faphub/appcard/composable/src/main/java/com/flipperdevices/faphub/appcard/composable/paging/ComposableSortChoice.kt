@@ -1,5 +1,6 @@
 package com.flipperdevices.faphub.appcard.composable.paging
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Row
@@ -73,9 +74,14 @@ private fun ComposableFapsChoice(
             .clickableRipple { choiceDialogOpen = true },
         verticalAlignment = Alignment.CenterVertically
     ) {
+        var sortTypeName = getSortTypeName(sortType)
+        if (sortTypeName == null) {
+            sortTypeName = stringResource(R.string.faphub_catalog_choice_unknown)
+            onSelectSortType(SortType.UPDATE_AT_DESC)
+        }
         Text(
             modifier = Modifier.padding(top = 5.dp, bottom = 5.dp, start = 12.dp),
-            text = getSortTypeName(sortType),
+            text = sortTypeName,
             style = LocalTypography.current.subtitleM12,
             color = LocalPallet.current.fapHubSortedColor
         )
@@ -105,25 +111,59 @@ private fun ComposableDropDown(
         expanded = isDialogOpen,
         onDismissRequest = onCloseDialog
     ) {
-        SortType.values().forEach { sortType ->
-            DropdownMenuItem(onClick = {
-                onSelectSortType(sortType)
-                onCloseDialog()
-            }) {
-                Text(
-                    text = getSortTypeName(sortType),
-                    style = LocalTypography.current.bodyR14,
-                    color = LocalPallet.current.text100
-                )
-            }
-        }
+        SortTypeItem(
+            onSelectSortType,
+            onCloseDialog,
+            SortType.UPDATE_AT_DESC,
+            R.string.faphub_catalog_choice_updated_desc
+        )
+        SortTypeItem(
+            onSelectSortType,
+            onCloseDialog,
+            SortType.CREATED_AT_DESC,
+            R.string.faphub_catalog_choice_published_desc
+        )
+        SortTypeItem(
+            onSelectSortType,
+            onCloseDialog,
+            SortType.UPDATE_AT_ASC,
+            R.string.faphub_catalog_choice_updated_asc
+        )
+        SortTypeItem(
+            onSelectSortType,
+            onCloseDialog,
+            SortType.CREATED_AT_ASC,
+            R.string.faphub_catalog_choice_published_asc
+        )
     }
 }
 
 @Composable
-private fun getSortTypeName(sortType: SortType): String {
+private fun SortTypeItem(
+    onSelectSortType: (SortType) -> Unit,
+    onCloseDialog: () -> Unit,
+    sortType: SortType,
+    @StringRes textId: Int
+) {
+    DropdownMenuItem(onClick = {
+        onSelectSortType(sortType)
+        onCloseDialog()
+    }) {
+        Text(
+            text = stringResource(textId),
+            style = LocalTypography.current.bodyR14,
+            color = LocalPallet.current.text100
+        )
+    }
+}
+
+@Composable
+private fun getSortTypeName(sortType: SortType): String? {
     return when (sortType) {
-        SortType.UPDATED -> stringResource(R.string.faphub_catalog_choice_updated)
-        SortType.PUBLISHED -> stringResource(R.string.faphub_catalog_choice_published)
+        SortType.UPDATE_AT_DESC -> stringResource(R.string.faphub_catalog_choice_updated_desc)
+        SortType.UPDATE_AT_ASC -> stringResource(R.string.faphub_catalog_choice_updated_asc)
+        SortType.CREATED_AT_DESC -> stringResource(R.string.faphub_catalog_choice_published_desc)
+        SortType.CREATED_AT_ASC -> stringResource(R.string.faphub_catalog_choice_published_asc)
+        else -> null
     }
 }
