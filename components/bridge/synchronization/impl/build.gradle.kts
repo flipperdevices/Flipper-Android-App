@@ -16,6 +16,7 @@ dependencies {
     implementation(projects.components.core.log)
     implementation(projects.components.core.data)
     implementation(projects.components.core.preference)
+    implementation(projects.components.core.progress)
     implementation(projects.components.core.ui.lifecycle)
 
     implementation(projects.components.bridge.api)

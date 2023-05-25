@@ -64,6 +64,7 @@ include(
     ":components:core:activityholder",
     ":components:core:share",
     ":components:core:pager",
+    ":components:core:progress",
 
     ":components:bottombar:api",
     ":components:bottombar:impl",

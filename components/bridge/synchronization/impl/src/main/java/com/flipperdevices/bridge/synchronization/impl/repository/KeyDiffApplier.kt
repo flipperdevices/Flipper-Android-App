@@ -8,9 +8,9 @@ import com.flipperdevices.bridge.synchronization.impl.executor.StorageType
 import com.flipperdevices.bridge.synchronization.impl.model.DiffSource
 import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.DiffMergeHelper
-import com.flipperdevices.bridge.synchronization.impl.utils.ProgressWrapperTracker
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.progress.ProgressWrapperTracker
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 

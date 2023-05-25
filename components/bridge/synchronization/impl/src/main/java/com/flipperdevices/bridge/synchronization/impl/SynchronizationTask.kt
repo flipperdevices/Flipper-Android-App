@@ -10,18 +10,19 @@ import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.impl.di.DaggerTaskSynchronizationComponent
 import com.flipperdevices.bridge.synchronization.impl.model.RestartSynchronizationException
-import com.flipperdevices.bridge.synchronization.impl.utils.ProgressWrapperTracker
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.progress.ProgressWrapperTracker
 import com.flipperdevices.core.ui.lifecycle.OneTimeExecutionBleTask
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.complex.SynchronizationEnd
 import com.flipperdevices.nfc.mfkey32.api.MfKey32Api
 import com.flipperdevices.wearable.sync.handheld.api.SyncWearableApi
 import com.squareup.anvil.annotations.ContributesBinding
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -29,7 +30,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
 interface SynchronizationTask {
     fun start(

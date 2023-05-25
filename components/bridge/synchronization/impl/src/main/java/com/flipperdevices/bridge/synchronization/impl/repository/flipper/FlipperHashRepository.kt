@@ -9,17 +9,17 @@ import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
 import com.flipperdevices.bridge.synchronization.impl.model.KeyWithHash
 import com.flipperdevices.bridge.synchronization.impl.model.ResultWithProgress
 import com.flipperdevices.bridge.synchronization.impl.model.trackProgressAndReturn
-import com.flipperdevices.bridge.synchronization.impl.utils.ProgressWrapperTracker
 import com.flipperdevices.core.ktx.jre.pmap
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.progress.ProgressWrapperTracker
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.md5sumRequest
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.single
 import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.single
 
 interface FlipperHashRepository {
     suspend fun getHashesForType(

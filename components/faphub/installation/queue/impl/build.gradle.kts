@@ -11,6 +11,7 @@ dependencies {
 
     implementation(projects.components.core.di)
     implementation(projects.components.core.data)
+    implementation(projects.components.core.progress)
 
     implementation(projects.components.faphub.dao.api)
     implementation(projects.components.faphub.target.api)
