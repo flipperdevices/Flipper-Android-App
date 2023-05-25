@@ -14,6 +14,9 @@ dependencies {
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ktx)
+    implementation(projects.components.core.data)
+
+    implementation(projects.components.faphub.installation.stateprovider.api)
 
     // Compose
     implementation(libs.compose.ui)
@@ -29,4 +32,7 @@ dependencies {
     implementation(libs.tangle.viewmodel.compose)
     implementation(libs.tangle.viewmodel.api)
     anvil(libs.tangle.viewmodel.compiler)
+
+    implementation(libs.kotlin.coroutines)
+    implementation(libs.lifecycle.viewmodel.ktx)
 }

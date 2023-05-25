@@ -7,7 +7,7 @@ import androidx.compose.ui.unit.TextUnit
 interface FapInstallationUIApi {
     @Composable
     fun ComposableButton(
-        fapItemId: String?,
+        config: FapButtonConfig?,
         modifier: Modifier,
         textSize: TextUnit
     )

@@ -7,6 +7,8 @@ android.namespace = "com.flipperdevices.faphub.installation.button.api"
 dependencies {
     implementation(projects.components.faphub.dao.api)
 
+    implementation(projects.components.core.data)
+
     // Compose
     implementation(libs.compose.ui)
     implementation(libs.compose.tooling)

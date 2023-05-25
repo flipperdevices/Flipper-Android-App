@@ -11,6 +11,7 @@ import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.flipperdevices.faphub.fapscreen.api.FapScreenApi
 import com.flipperdevices.faphub.fapscreen.impl.composable.ComposableFapScreen
 import com.flipperdevices.faphub.installation.button.api.FapInstallationUIApi
+import com.flipperdevices.faphub.installation.button.api.toFapButtonConfig
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
 import javax.inject.Inject
@@ -42,7 +43,7 @@ class FapScreenApiImpl @Inject constructor(
                 onBack = navController::popBackStack,
                 installationButton = { fapItem, modifier, fontSize ->
                     installationUIApi.ComposableButton(
-                        fapItemId = fapItem?.id,
+                        config = fapItem?.toFapButtonConfig(),
                         modifier = modifier,
                         textSize = fontSize
                     )

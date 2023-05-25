@@ -50,7 +50,10 @@ data class RetrofitApplicationDetailed(
             category = category,
             picUrl = picUrl,
             metaInformation = metaInformation,
-            fapDeveloperInformation = fapDeveloperInformation
+            fapDeveloperInformation = fapDeveloperInformation,
+            applicationId = alias,
+            currentVersion = SemVer.fromString(currentVersion.version)
+                ?: error("Can't parse ${currentVersion.version}")
         )
     }
 }

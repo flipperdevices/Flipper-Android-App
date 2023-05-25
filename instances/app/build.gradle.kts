@@ -167,6 +167,9 @@ dependencies {
     implementation(projects.components.faphub.installation.manifest.api)
     implementation(projects.components.faphub.installation.manifest.impl)
 
+    implementation(projects.components.faphub.installation.stateprovider.api)
+    implementation(projects.components.faphub.installation.stateprovider.impl)
+
     implementation(projects.components.faphub.installedtab.api)
     implementation(projects.components.faphub.installedtab.impl)
 

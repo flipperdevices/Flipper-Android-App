@@ -190,6 +190,8 @@ include(
     ":components:faphub:installation:button:impl",
     ":components:faphub:installation:manifest:api",
     ":components:faphub:installation:manifest:impl",
+    ":components:faphub:installation:stateprovider:api",
+    ":components:faphub:installation:stateprovider:impl",
 
     ":components:selfupdater:api",
     ":components:selfupdater:googleplay",
