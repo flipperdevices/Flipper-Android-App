@@ -54,7 +54,7 @@ fun ComposableCategoryCard(
                     category = fapCategory
                 )
                 Text(
-                    text = "0",
+                    text = fapCategory?.applicationCount?.toString() ?: "0",
                     style = LocalTypography.current.subtitleR10,
                     color = LocalPallet.current.fapHubCategoryText
                 )

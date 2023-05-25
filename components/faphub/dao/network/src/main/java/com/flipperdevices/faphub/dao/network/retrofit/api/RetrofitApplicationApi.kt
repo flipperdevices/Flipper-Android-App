@@ -22,7 +22,13 @@ interface RetrofitApplicationApi {
         @SortOrderType
         sortOrder: Int? = null,
         @Query("applications")
-        applications: List<String>? = null
+        applications: List<String>? = null,
+        @Query("target")
+        target: String? = null,
+        @Query("api")
+        sdkApiVersion: String? = null,
+        @Query("category_id")
+        categoryId: String? = null
     ): List<RetrofitApplicationShort>
 
     @GET("application/featured")

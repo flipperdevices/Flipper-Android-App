@@ -1,6 +1,5 @@
 package com.flipperdevices.faphub.dao.api.model
 
-import com.flipperdevices.core.data.SemVer
 import kotlinx.collections.immutable.ImmutableList
 
 data class FapItem(
@@ -14,5 +13,5 @@ data class FapItem(
     val metaInformation: FapMetaInformation,
     val fapDeveloperInformation: FapDeveloperInformation,
     val applicationId: String,
-    val currentVersion: SemVer
+    val upToDateVersion: FapItemVersion
 )

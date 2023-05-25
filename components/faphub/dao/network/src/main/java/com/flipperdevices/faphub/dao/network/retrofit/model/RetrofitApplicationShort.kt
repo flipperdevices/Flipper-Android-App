@@ -3,6 +3,7 @@ package com.flipperdevices.faphub.dao.network.retrofit.model
 import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.dao.api.model.FapItemShort
+import com.flipperdevices.faphub.dao.api.model.FapItemVersion
 import com.flipperdevices.faphub.dao.network.retrofit.utils.DateSerializer
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.datetime.LocalDateTime
@@ -24,6 +25,12 @@ data class RetrofitApplicationShort(
     @SerialName("current_version") val currentVersion: RetrofitCurrentVersionShort,
 ) {
     fun toFapItemShort(category: FapCategory): FapItemShort {
+        val fapItemVersion = FapItemVersion(
+            id = currentVersion.id,
+            version = SemVer.fromString(currentVersion.version)
+                ?: error("Can't parse ${currentVersion.version}")
+        )
+
         return FapItemShort(
             id = id,
             picUrl = currentVersion.iconUrl,
@@ -32,8 +39,7 @@ data class RetrofitApplicationShort(
             category = category,
             screenshots = currentVersion.screenshots.toImmutableList(),
             applicationId = alias,
-            currentVersion = SemVer.fromString(currentVersion.version)
-                ?: error("Can't parse ${currentVersion.version}")
+            upToDateVersion = fapItemVersion
         )
     }
 }

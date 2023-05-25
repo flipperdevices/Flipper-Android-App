@@ -19,7 +19,7 @@ class FapStatusViewModel @VMInject constructor(
         stateManager.getFapStateFlow(
             scope = viewModelScope,
             applicationId = fapButtonConfig.applicationId,
-            currentVersion = fapButtonConfig.version
+            currentVersion = fapButtonConfig.version.version
         )
     }
 }

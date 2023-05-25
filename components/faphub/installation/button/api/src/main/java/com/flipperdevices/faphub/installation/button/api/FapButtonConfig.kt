@@ -1,20 +1,20 @@
 package com.flipperdevices.faphub.installation.button.api
 
-import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.faphub.dao.api.model.FapItem
 import com.flipperdevices.faphub.dao.api.model.FapItemShort
+import com.flipperdevices.faphub.dao.api.model.FapItemVersion
 
 data class FapButtonConfig(
     val applicationId: String,
-    val version: SemVer,
+    val version: FapItemVersion,
 )
 
 fun FapItemShort.toFapButtonConfig() = FapButtonConfig(
     applicationId = applicationId,
-    version = currentVersion
+    version = upToDateVersion
 )
 
 fun FapItem.toFapButtonConfig() = FapButtonConfig(
     applicationId = applicationId,
-    version = currentVersion
+    version = upToDateVersion
 )

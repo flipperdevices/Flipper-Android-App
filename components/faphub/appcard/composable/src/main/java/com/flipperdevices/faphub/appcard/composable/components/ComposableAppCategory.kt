@@ -16,6 +16,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.FilterQuality
+import androidx.compose.ui.text.PlatformTextStyle
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.image.FlipperAsyncImage
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
@@ -44,7 +46,15 @@ fun ComposableAppCategory(
     Text(
         modifier = textModifier,
         text = category?.name ?: DEFAULT_CATEGORY_NAME,
-        style = LocalTypography.current.subtitleR12,
+        style = LocalTypography.current.subtitleR12.copy(
+            platformStyle = PlatformTextStyle(
+                includeFontPadding = false
+            ),
+            lineHeightStyle = LineHeightStyle(
+                alignment = LineHeightStyle.Alignment.Center,
+                trim = LineHeightStyle.Trim.Both
+            )
+        ),
         color = LocalPallet.current.text60
     )
 }
