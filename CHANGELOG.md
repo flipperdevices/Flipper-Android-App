@@ -8,7 +8,7 @@
 - [FIX] Position bubble on key sub-ghz emulate and update hold modifier by new api
 - [FIX] Hotfix wearos app and app catalog switch
 
-# 1.5.0 - In Progress
+# 1.5.0
 
 - [Feature] Flipper app loader errors
 - [Feature] More smoothly synchronization percent
