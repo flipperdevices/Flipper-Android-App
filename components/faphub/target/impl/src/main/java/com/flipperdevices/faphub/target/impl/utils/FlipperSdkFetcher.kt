@@ -55,9 +55,9 @@ class FlipperSdkFetcher @Inject constructor() : LogTagProvider {
 
         return FlipperSdkVersion.Received(
             SemVer(
-                majorVersion = 23,
-                minorVersion = 0
-            ) // TODO replace mock
+                majorVersion = major,
+                minorVersion = minor
+            )
         )
     }
 }
