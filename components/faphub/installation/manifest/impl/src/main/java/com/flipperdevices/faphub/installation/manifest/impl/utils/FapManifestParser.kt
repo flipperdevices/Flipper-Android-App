@@ -36,5 +36,4 @@ class FapManifestParser @Inject constructor() {
 
         return FlipperFileFormat(orderedDict)
     }
-
 }

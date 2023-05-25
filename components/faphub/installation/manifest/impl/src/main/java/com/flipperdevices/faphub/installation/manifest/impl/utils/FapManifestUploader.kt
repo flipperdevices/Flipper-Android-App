@@ -14,10 +14,10 @@ import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.file
 import com.flipperdevices.protobuf.storage.mkdirRequest
 import com.flipperdevices.protobuf.storage.writeRequest
-import java.io.File
-import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import java.io.File
+import javax.inject.Inject
 
 private const val FLIPPER_TMP_FOLDER = "/ext/.tmp/android"
 private const val FLIPPER_TMP_MANIFEST_FILE = "$FLIPPER_TMP_FOLDER/tmp.fim"

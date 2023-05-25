@@ -7,11 +7,11 @@ import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
 import com.flipperdevices.faphub.installation.stateprovider.api.api.FapInstallationStateManager
 import com.flipperdevices.faphub.installation.stateprovider.api.model.FapState
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, FapInstallationStateManager::class)
 class FapInstallationStateManagerImpl @Inject constructor(
@@ -25,7 +25,7 @@ class FapInstallationStateManagerImpl @Inject constructor(
         getState(manifests, applicationId, currentVersion)
     }.stateIn(scope, SharingStarted.Eagerly, FapState.NotInitialized)
 
-
+    @Suppress("UnusedPrivateMember")
     private suspend fun getState(
         manifests: List<FapManifestItem>?,
         applicationId: String,
@@ -35,6 +35,8 @@ class FapInstallationStateManagerImpl @Inject constructor(
             FapState.RetrievingManifest
         } else if (manifests.find { it.applicationId == applicationId } != null) {
             FapState.Installed
-        } else FapState.ReadyToInstall
+        } else {
+            FapState.ReadyToInstall
+        }
     }
 }

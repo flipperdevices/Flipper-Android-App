@@ -1,14 +1,14 @@
 package com.flipperdevices.bridge.dao.api.model
 
 import android.os.Parcelable
-import java.io.ByteArrayInputStream
-import java.io.File
-import java.io.FileInputStream
-import java.io.InputStream
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import java.io.ByteArrayInputStream
+import java.io.File
+import java.io.FileInputStream
+import java.io.InputStream
 
 /**
  * Describes the contents of the key.
@@ -89,7 +89,7 @@ data class FlipperFileFormat(
                 .filterNot { it.startsWith("#") }
                 .map {
                     it.substringBefore(":").trim() to
-                            it.substringAfter(":").trim()
+                        it.substringAfter(":").trim()
                 }.filterNot { it.first.isBlank() || it.second.isBlank() }
 
             return FlipperFileFormat(pairs)

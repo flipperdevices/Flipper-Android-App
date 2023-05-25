@@ -15,10 +15,10 @@ import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.listRequest
 import com.flipperdevices.protobuf.storage.readRequest
+import kotlinx.coroutines.flow.toList
 import java.io.File
 import java.nio.charset.Charset
 import javax.inject.Inject
-import kotlinx.coroutines.flow.toList
 
 class FapManifestsLoader @Inject constructor(
     private val flipperServiceProvider: FlipperServiceProvider,
