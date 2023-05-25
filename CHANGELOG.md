@@ -1,6 +1,6 @@
 # Changelog
 
-# 1.4.2 - In Progress
+# 1.5.0
 
 - [Feature] Flipper app loader errors
 - [Feature] More smoothly synchronization percent 
