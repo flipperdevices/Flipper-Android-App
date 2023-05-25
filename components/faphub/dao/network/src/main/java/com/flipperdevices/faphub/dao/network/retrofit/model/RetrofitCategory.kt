@@ -15,8 +15,10 @@ data class RetrofitCategory(
 ) {
     fun toFapCategory(): FapCategory {
         return FapCategory(
+            id = id,
             name = name,
             picUrl = iconUrl,
+            applicationCount = applicationsCount
         )
     }
 }

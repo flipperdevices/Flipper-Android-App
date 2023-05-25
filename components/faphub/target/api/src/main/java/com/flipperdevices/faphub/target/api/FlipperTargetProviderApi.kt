@@ -5,4 +5,5 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface FlipperTargetProviderApi {
     fun getFlipperTarget(): StateFlow<FlipperTarget>
+    suspend fun getFlipperTargetSync(): Result<FlipperTarget.Received>
 }

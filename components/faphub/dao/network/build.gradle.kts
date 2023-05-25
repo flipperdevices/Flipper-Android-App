@@ -15,6 +15,8 @@ dependencies {
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.data)
 
+    implementation(projects.components.faphub.target.api)
+
     implementation(libs.ktor.client)
     implementation(libs.ktor.serialization)
     implementation(libs.kotlin.serialization.json)

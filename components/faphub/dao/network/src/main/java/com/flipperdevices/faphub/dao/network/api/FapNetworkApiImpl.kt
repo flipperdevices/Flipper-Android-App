@@ -11,6 +11,7 @@ import com.flipperdevices.faphub.dao.network.retrofit.api.RetrofitApplicationApi
 import com.flipperdevices.faphub.dao.network.retrofit.model.types.ApplicationSortType
 import com.flipperdevices.faphub.dao.network.retrofit.model.types.SortOrderType
 import com.flipperdevices.faphub.dao.network.retrofit.utils.FapHubNetworkCategoryApi
+import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -19,7 +20,8 @@ import javax.inject.Inject
 @ContributesBinding(AppGraph::class, FapNetworkApi::class)
 class FapNetworkApiImpl @Inject constructor(
     private val applicationApi: RetrofitApplicationApi,
-    private val categoryApi: FapHubNetworkCategoryApi
+    private val categoryApi: FapHubNetworkCategoryApi,
+    private val flipperTargetApi: FlipperTargetProviderApi
 ) : FapNetworkApi, LogTagProvider {
     override val TAG = "FapNetworkApi"
     override suspend fun getFeaturedItem() = catchWithDispatcher {
@@ -42,12 +44,17 @@ class FapNetworkApiImpl @Inject constructor(
         offset: Int,
         limit: Int
     ) = catchWithDispatcher {
+        val target = flipperTargetApi.getFlipperTargetSync().getOrThrow()
+
         debug { "Request all item" }
         val response = applicationApi.getAll(
             offset = offset,
             limit = limit,
             sortBy = ApplicationSortType.fromSortType(sortType),
-            sortOrder = SortOrderType.fromSortType(sortType)
+            sortOrder = SortOrderType.fromSortType(sortType),
+            target = target.target,
+            sdkApiVersion = target.sdk.toString(),
+            categoryId = category?.id
         )
         debug { "Provider response: $response" }
 
