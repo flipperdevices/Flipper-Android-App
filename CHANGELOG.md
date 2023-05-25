@@ -2,7 +2,7 @@
 
 # 1.5.1 - In Progress
 
-- [Feature] FapHub api integration (40%)
+- [Feature] FapHub api integration (50%) (Network, FAP Manifest)
 
 # 1.5.0 - In Progress
 
