@@ -1,9 +1,13 @@
 # Changelog
 
-# 1.4.2 - In Progress
+# 1.5.1 - In Progress
+
+- [Feature] FapHub api integration (40%)
+
+# 1.5.0 - In Progress
 
 - [Feature] Flipper app loader errors
-- [Feature] More smoothly synchronization percent 
+- [Feature] More smoothly synchronization percent
 - [Feature] Skip synchronization if file system on flipper not changed
 - [Feature] Pass flipper color from searching screen
 - [Feature] Animation on theme changing
@@ -22,7 +26,7 @@
 - [Feature] Dialog on first pair failed
 - [Feature] Add unlock request
 - [Feature] New update dialogs
-- [Feature] FapHub api integration (40%)
+- [Feature] FapHub api integration (10%)
 - [GitHub] Update github repo picture
 - [CI] Migrate to Detekt
 - [CI] Android lint in CI
