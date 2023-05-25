@@ -145,7 +145,6 @@ dependencies {
 
     implementation(projects.components.faphub.dao.api)
     implementation(projects.components.faphub.dao.network)
-    implementation(projects.components.faphub.dao.flipper)
 
     implementation(projects.components.faphub.main.api)
     implementation(projects.components.faphub.main.impl)
@@ -162,8 +161,14 @@ dependencies {
     implementation(projects.components.faphub.fapscreen.api)
     implementation(projects.components.faphub.fapscreen.impl)
 
-    implementation(projects.components.faphub.installation.api)
-    implementation(projects.components.faphub.installation.impl)
+    implementation(projects.components.faphub.installation.button.api)
+    implementation(projects.components.faphub.installation.button.impl)
+
+    implementation(projects.components.faphub.installation.manifest.api)
+    implementation(projects.components.faphub.installation.manifest.impl)
+
+    implementation(projects.components.faphub.installation.stateprovider.api)
+    implementation(projects.components.faphub.installation.stateprovider.impl)
 
     implementation(projects.components.faphub.installedtab.api)
     implementation(projects.components.faphub.installedtab.impl)
@@ -173,6 +178,7 @@ dependencies {
         SourceInstall.GOOGLE_PLAY -> {
             implementation(projects.components.selfupdater.googleplay)
         }
+
         SourceInstall.GITHUB -> {
             implementation(projects.components.selfupdater.thirdparty.api)
             implementation(projects.components.selfupdater.thirdparty.github)

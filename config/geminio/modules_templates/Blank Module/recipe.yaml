@@ -14,12 +14,6 @@ widgets:
       default: false
 
   - booleanParameter:
-      id: needFragment
-      name: Add feature fragment?
-      help: Adds fragment and default api implementation
-      default: false
-
-  - booleanParameter:
       id: isApi
       name: Is API submodule?
       help: If it is api module, we create only interface for instances
@@ -66,20 +60,6 @@ recipe:
         - instantiateAndOpen:
             from: root/src/app_package/composable/ComposableBlank.kt.ftl
             to: ${srcOut}/composable/Composable${__formattedModuleName}.kt
-
-  - predicate:
-      validIf: ${needFragment}
-      commands:
-        - mkDirs:
-            - ${srcOut}/fragments/
-        - instantiateAndOpen:
-            from: root/src/app_package/fragments/BlankFragment.kt.ftl
-            to: ${srcOut}/fragments/${__formattedModuleName}Fragment.kt
-        - mkDirs:
-            - ${srcOut}/api/
-        - instantiateAndOpen:
-            from: root/src/app_package/api/BlankApiImpl.kt.ftl
-            to: ${srcOut}/api/${__formattedModuleName}ApiImpl.kt
 
   - predicate:
       validIf: ${isApi}

@@ -11,7 +11,8 @@ import com.flipperdevices.faphub.category.api.FapHubCategoryApi
 import com.flipperdevices.faphub.category.impl.composable.ComposableFapHubCategory
 import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.fapscreen.api.FapScreenApi
-import com.flipperdevices.faphub.installation.api.FapInstallationUIApi
+import com.flipperdevices.faphub.installation.button.api.FapInstallationUIApi
+import com.flipperdevices.faphub.installation.button.api.toFapButtonConfig
 import com.flipperdevices.faphub.search.api.FapHubSearchEntryApi
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
@@ -52,7 +53,7 @@ class FapHubCategoryApiImpl @Inject constructor(
                 },
                 installationButton = { fapItem, modifier, fontSize ->
                     fapInstallationUIApi.ComposableButton(
-                        fapItemId = fapItem?.id,
+                        config = fapItem?.toFapButtonConfig(),
                         modifier = modifier,
                         textSize = fontSize
                     )

@@ -102,7 +102,7 @@ data class FlipperFileFormat(
     private fun generateFileContent(): String {
         val sb = StringBuilder()
         orderedDict.forEach { line ->
-            sb.append(line.first).append(": ").append(line.second).append("\n")
+            sb.append(line.first).append(": ").append(line.second).append('\n')
         }
         return sb.toString()
     }

@@ -1,5 +1,6 @@
 package com.flipperdevices.faphub.dao.network.retrofit.model
 
+import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.dao.api.model.FapItemShort
 import com.flipperdevices.faphub.dao.network.retrofit.utils.DateSerializer
@@ -29,7 +30,10 @@ data class RetrofitApplicationShort(
             description = currentVersion.description,
             name = name,
             category = category,
-            screenshots = currentVersion.screenshots.toImmutableList()
+            screenshots = currentVersion.screenshots.toImmutableList(),
+            applicationId = alias,
+            currentVersion = SemVer.fromString(currentVersion.version)
+                ?: error("Can't parse ${currentVersion.version}")
         )
     }
 }
