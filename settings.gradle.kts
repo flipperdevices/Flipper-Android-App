@@ -192,6 +192,10 @@ include(
     ":components:faphub:installation:manifest:impl",
     ":components:faphub:installation:stateprovider:api",
     ":components:faphub:installation:stateprovider:impl",
+    ":components:faphub:installation:queue:api",
+    ":components:faphub:installation:queue:impl",
+    ":components:faphub:target:api",
+    ":components:faphub:target:impl",
 
     ":components:selfupdater:api",
     ":components:selfupdater:googleplay",

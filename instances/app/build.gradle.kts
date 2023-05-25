@@ -170,6 +170,12 @@ dependencies {
     implementation(projects.components.faphub.installation.stateprovider.api)
     implementation(projects.components.faphub.installation.stateprovider.impl)
 
+    implementation(projects.components.faphub.installation.queue.api)
+    implementation(projects.components.faphub.installation.queue.impl)
+
+    implementation(projects.components.faphub.target.api)
+    implementation(projects.components.faphub.target.impl)
+
     implementation(projects.components.faphub.installedtab.api)
     implementation(projects.components.faphub.installedtab.impl)
 

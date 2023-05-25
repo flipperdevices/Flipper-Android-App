@@ -4,6 +4,7 @@ import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.dao.api.model.FapDeveloperInformation
 import com.flipperdevices.faphub.dao.api.model.FapItem
+import com.flipperdevices.faphub.dao.api.model.FapItemVersion
 import com.flipperdevices.faphub.dao.api.model.FapMetaInformation
 import com.flipperdevices.faphub.dao.network.retrofit.utils.DateSerializer
 import kotlinx.collections.immutable.toImmutableList
@@ -41,6 +42,12 @@ data class RetrofitApplicationDetailed(
                 ?: error("Failed parse ${currentVersion.version}")
         )
 
+        val fapItemVersion = FapItemVersion(
+            id = currentVersion.id,
+            version = SemVer.fromString(currentVersion.version)
+                ?: error("Can't parse ${currentVersion.version}")
+        )
+
         return FapItem(
             id = id,
             screenshots = currentVersion.screenshots.toImmutableList(),
@@ -52,8 +59,7 @@ data class RetrofitApplicationDetailed(
             metaInformation = metaInformation,
             fapDeveloperInformation = fapDeveloperInformation,
             applicationId = alias,
-            currentVersion = SemVer.fromString(currentVersion.version)
-                ?: error("Can't parse ${currentVersion.version}")
+            upToDateVersion = fapItemVersion
         )
     }
 }
