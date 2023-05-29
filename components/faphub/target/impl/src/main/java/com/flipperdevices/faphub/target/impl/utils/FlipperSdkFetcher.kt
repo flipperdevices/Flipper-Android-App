@@ -9,8 +9,8 @@ import com.flipperdevices.faphub.target.impl.model.FlipperSdkVersion
 import com.flipperdevices.faphub.utils.FapHubConstants
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.property.getRequest
-import javax.inject.Inject
 import kotlinx.coroutines.flow.toList
+import javax.inject.Inject
 
 private const val RPC_SDK_KEY = "devinfo.firmware.api"
 private const val RPC_SDK_MAJOR_KEY = "firmware.api.major"
@@ -28,7 +28,7 @@ class FlipperSdkFetcher @Inject constructor() : LogTagProvider {
         } else if (currentVersion < FapHubConstants.RPC_SUPPORTED_VERSION) {
             info {
                 "Current version RPC is outdated ($currentVersion). " +
-                        "Need ${FapHubConstants.RPC_SUPPORTED_VERSION}"
+                    "Need ${FapHubConstants.RPC_SUPPORTED_VERSION}"
             }
             return FlipperSdkVersion.Unsupported
         }
@@ -44,11 +44,11 @@ class FlipperSdkFetcher @Inject constructor() : LogTagProvider {
 
         val major = answers.find {
             it.hasPropertyGetResponse() &&
-                    it.propertyGetResponse.key == RPC_SDK_MAJOR_KEY
+                it.propertyGetResponse.key == RPC_SDK_MAJOR_KEY
         }?.propertyGetResponse?.value?.toIntOrNull() ?: return FlipperSdkVersion.Error
         val minor = answers.find {
             it.hasPropertyGetResponse() &&
-                    it.propertyGetResponse.key == RPC_SDK_MINOR_KEY
+                it.propertyGetResponse.key == RPC_SDK_MINOR_KEY
         }?.propertyGetResponse?.value?.toIntOrNull() ?: return FlipperSdkVersion.Error
 
         info { "Receive version $major and $minor" }

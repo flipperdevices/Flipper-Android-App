@@ -54,7 +54,6 @@ class RetrofitModule {
         return FapHubNetworkCategoryApi(categoryApi)
     }
 
-
     @Provides
     @Reusable
     fun provideBundleApi(retrofit: Retrofit): RetrofitBundleApi {

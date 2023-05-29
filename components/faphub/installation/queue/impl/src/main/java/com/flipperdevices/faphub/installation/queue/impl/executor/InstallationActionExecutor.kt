@@ -16,7 +16,6 @@ import javax.inject.Inject
 private const val PERCENT_FOR_DOWNLOAD = 0.1f
 private const val PERCENT_FOR_UPLOAD = 0.99f
 
-
 class InstallationActionExecutor @Inject constructor(
     private val fapDownloadApi: FapDownloadApi,
     private val fapUploadAction: FapActionUpload,

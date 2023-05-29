@@ -21,8 +21,6 @@ import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.model.UpdatingState
 import com.flipperdevices.updater.subghz.helpers.SubGhzProvisioningHelper
 import com.flipperdevices.updater.subghz.model.FailedUploadSubGhzException
-import java.io.File
-import java.net.UnknownHostException
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.NonCancellable
@@ -30,6 +28,8 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
+import java.io.File
+import java.net.UnknownHostException
 
 private const val DISCONNECT_WAIT_TIMEOUT_MS = 30 * 1000L
 

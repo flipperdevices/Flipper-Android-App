@@ -14,10 +14,10 @@ import com.flipperdevices.core.progress.ProgressWrapperTracker
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.timestampRequest
 import com.squareup.anvil.annotations.ContributesBinding
+import kotlinx.coroutines.flow.flowOf
 import java.io.File
 import java.util.concurrent.atomic.AtomicLong
 import javax.inject.Inject
-import kotlinx.coroutines.flow.flowOf
 
 interface TimestampSynchronizationChecker {
     suspend fun fetchFoldersTimestamp(

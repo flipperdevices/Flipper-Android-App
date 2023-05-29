@@ -1,9 +1,9 @@
 package com.flipperdevices.core.ktx.jre
 
-import java.io.InputStream
-import java.io.OutputStream
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.io.InputStream
+import java.io.OutputStream
 
 /**
  * Copies this stream to the given output stream, returning the number of bytes copied

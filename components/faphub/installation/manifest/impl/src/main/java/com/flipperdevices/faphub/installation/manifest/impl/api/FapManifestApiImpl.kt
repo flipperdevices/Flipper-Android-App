@@ -10,9 +10,6 @@ import com.flipperdevices.faphub.installation.manifest.impl.utils.FapManifestUpl
 import com.flipperdevices.faphub.installation.manifest.impl.utils.FapManifestsLoader
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
 import com.squareup.anvil.annotations.ContributesBinding
-import java.util.concurrent.atomic.AtomicBoolean
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -21,6 +18,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.sync.Mutex
+import java.util.concurrent.atomic.AtomicBoolean
+import javax.inject.Inject
+import javax.inject.Singleton
 
 @Singleton
 @ContributesBinding(AppGraph::class, FapManifestApi::class)

@@ -12,10 +12,10 @@ import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.deleteRequest
 import com.flipperdevices.protobuf.storage.mkdirRequest
 import com.flipperdevices.protobuf.storage.renameRequest
-import javax.inject.Inject
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 private val UNIX_MV_SUPPORTED_VERSION_API = SemVer(majorVersion = 0, minorVersion = 17)
 
@@ -54,8 +54,8 @@ class FapManifestAtomicMover @Inject constructor(
                 }
             }.wrapToRequest()
         ).first()
-        if (response.commandStatus != Flipper.CommandStatus.OK
-            && response.commandStatus != Flipper.CommandStatus.ERROR_STORAGE_EXIST
+        if (response.commandStatus != Flipper.CommandStatus.OK &&
+            response.commandStatus != Flipper.CommandStatus.ERROR_STORAGE_EXIST
         ) {
             error("Failed create $FAP_MANIFESTS_FOLDER_ON_FLIPPER with command status ${response.commandStatus}")
         }
