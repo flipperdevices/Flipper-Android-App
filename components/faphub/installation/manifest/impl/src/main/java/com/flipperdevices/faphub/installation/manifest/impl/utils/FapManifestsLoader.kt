@@ -15,10 +15,10 @@ import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.listRequest
 import com.flipperdevices.protobuf.storage.readRequest
-import kotlinx.coroutines.flow.toList
 import java.io.File
 import java.nio.charset.Charset
 import javax.inject.Inject
+import kotlinx.coroutines.flow.toList
 
 class FapManifestsLoader @Inject constructor(
     private val flipperServiceProvider: FlipperServiceProvider,
@@ -36,7 +36,7 @@ class FapManifestsLoader @Inject constructor(
         val fapItems = manifestNames.pmap { name ->
             val content = loadManifestFile(
                 requestApi = serviceApi.requestApi,
-                filePath = FAP_MANIFESTS_FOLDER_ON_FLIPPER + name
+                filePath = File(FAP_MANIFESTS_FOLDER_ON_FLIPPER, name).absolutePath
             ) ?: return@pmap null
             parser.parse(content, name)
         }.filterNotNull()

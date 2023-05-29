@@ -6,7 +6,7 @@ kotlin-datetime = "0.4.0" # https://github.com/Kotlin/kotlinx-datetime/releases
 kotlinx = "1.7.0" # https://github.com/Kotlin/kotlinx.coroutines/releases
 ksp = "1.8.21-1.0.11" # https://github.com/google/ksp/releases
 anvil = "2.4.5" # https://github.com/square/anvil/releases
-android-gradle = "8.0.1" # https://developer.android.com/studio/releases/gradle-plugin
+android-gradle = "8.0.2" # https://developer.android.com/studio/releases/gradle-plugin
 protobuf = "3.22.5" # https://github.com/protocolbuffers/protobuf/releases
 protobuf-gradle = "0.9.3" # https://github.com/google/protobuf-gradle-plugin/releases
 compose-material = "1.4.3" # https://developer.android.com/jetpack/androidx/releases/compose#versions
@@ -54,7 +54,7 @@ countly = "22.09.4" # https://github.com/Countly/countly-sdk-android/releases
 grgit-gradle = "8d818b74b9"
 tangle = "ndoglio-kotlin-1.8-SNAPSHOT" # https://github.com/RBusarow/Tangle/releases
 work = "2.8.1" # https://developer.android.com/jetpack/androidx/releases/work
-coil = "2.3.0" # https://github.com/coil-kt/coil/releases
+coil = "2.4.0" # https://github.com/coil-kt/coil/releases
 play-core = "2.0.1" # https://developer.android.com/guide/playcore#java-kotlin-in-app-update
 retrofit = "2.9.0" # https://github.com/square/retrofit/tags
 retrofit-json = "1.0.0" # https://github.com/JakeWharton/retrofit2-kotlinx-serialization-converter/releases
@@ -128,6 +128,7 @@ compose-placeholder = { module = "com.google.accompanist:accompanist-placeholder
 compose-swipetorefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "compose-accompanist" }
 compose-constraint = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "compose-constraint" }
 compose-coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+compose-coil-svg = { module = "io.coil-kt:coil-svg", version.ref = "coil" }
 compose-paging = { module = "androidx.paging:paging-compose", version.ref = "compose-paging" }
 
 # Markdown

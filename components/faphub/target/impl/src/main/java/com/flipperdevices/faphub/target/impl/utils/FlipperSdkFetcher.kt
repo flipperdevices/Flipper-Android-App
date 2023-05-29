@@ -5,8 +5,8 @@ import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.flipperdevices.faphub.constants.FapHubConstants
 import com.flipperdevices.faphub.target.impl.model.FlipperSdkVersion
+import com.flipperdevices.faphub.utils.FapHubConstants
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.property.getRequest
 import javax.inject.Inject

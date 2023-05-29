@@ -4,8 +4,8 @@ import kotlinx.coroutines.flow.Flow
 
 sealed class ResultWithProgress<T> {
     class InProgress<T>(
-        val currentPosition: Int = 0,
-        val maxPosition: Int = 0,
+        val currentPosition: Long = 0L,
+        val maxPosition: Long = 0L,
         val text: String? = null
     ) : ResultWithProgress<T>()
 

@@ -207,6 +207,8 @@ dependencies {
     implementation(libs.work.ktx)
     implementation(libs.retrofit)
 
+    implementation(libs.compose.coil.svg)
+    implementation(libs.compose.coil)
     implementation(libs.compose.pager)
 
     implementation(libs.kotlin.coroutines)

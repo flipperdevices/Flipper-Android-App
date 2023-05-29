@@ -1,6 +1,7 @@
 package com.flipperdevices.faphub.installation.queue.impl.api
 
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.faphub.installation.queue.api.FapInstallationQueueApi
 import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest
 import com.flipperdevices.faphub.installation.queue.api.model.FapQueueState
@@ -18,7 +19,9 @@ import kotlinx.coroutines.flow.stateIn
 @ContributesBinding(AppGraph::class, FapInstallationQueueApi::class)
 class FapInstallationQueueApiImpl @Inject constructor(
     private val queueRunner: FapQueueRunner
-) : FapInstallationQueueApi {
+) : FapInstallationQueueApi, LogTagProvider {
+    override val TAG = "FapInstallationQueueApi"
+
     override fun getFlowById(
         scope: CoroutineScope,
         applicationUid: String
@@ -44,7 +47,9 @@ class FapInstallationQueueApiImpl @Inject constructor(
                 val task = pendingTasks.find { it.applicationUid == applicationUid }
                 if (task != null) {
                     FapQueueState.Pending(task)
-                } else FapQueueState.NotFound
+                } else {
+                    FapQueueState.NotFound
+                }
             }
         }.stateIn(scope, SharingStarted.WhileSubscribed(), FapQueueState.NotFound)
     }

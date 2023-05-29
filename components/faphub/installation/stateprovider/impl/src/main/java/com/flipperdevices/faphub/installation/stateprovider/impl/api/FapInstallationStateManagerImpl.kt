@@ -2,6 +2,8 @@ package com.flipperdevices.faphub.installation.stateprovider.impl.api
 
 import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import com.flipperdevices.faphub.installation.manifest.api.FapManifestApi
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
 import com.flipperdevices.faphub.installation.queue.api.FapInstallationQueueApi
@@ -20,7 +22,9 @@ import kotlinx.coroutines.flow.stateIn
 class FapInstallationStateManagerImpl @Inject constructor(
     private val fapManifestApi: FapManifestApi,
     private val queueApi: FapInstallationQueueApi
-) : FapInstallationStateManager {
+) : FapInstallationStateManager, LogTagProvider {
+    override val TAG = "FapInstallationStateManager"
+
     override fun getFapStateFlow(
         scope: CoroutineScope,
         applicationUid: String,
@@ -29,7 +33,9 @@ class FapInstallationStateManagerImpl @Inject constructor(
         fapManifestApi.getManifestFlow(),
         queueApi.getFlowById(scope, applicationUid)
     ) { manifests, queueState ->
-        getState(manifests, applicationUid, queueState, currentVersion)
+        val state = getState(manifests, applicationUid, queueState, currentVersion)
+        info { "State for $applicationUid is $state" }
+        return@combine state
     }.stateIn(scope, SharingStarted.Eagerly, FapState.NotInitialized)
 
     @Suppress("UnusedPrivateMember")

@@ -3,6 +3,7 @@ package com.flipperdevices.faphub.installation.queue.impl.api
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.ktx.jre.withLockResult
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest
 import com.flipperdevices.faphub.installation.queue.impl.executor.FapActionExecutor
@@ -74,6 +75,7 @@ class FapQueueRunner @Inject constructor(
                     currentTaskFlow.emit(FapInternalQueueState.InProgress(currentTask, progress))
                 }
             } catch (throwable: Throwable) {
+                error(throwable) { "While executing $currentTask" }
                 currentTaskFlow.emit(FapInternalQueueState.Failed(currentTask, throwable))
             } finally {
                 withContext(NonCancellable) {

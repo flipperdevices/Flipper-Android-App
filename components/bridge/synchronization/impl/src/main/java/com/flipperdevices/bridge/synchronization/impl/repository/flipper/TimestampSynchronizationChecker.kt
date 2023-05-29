@@ -15,7 +15,7 @@ import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.timestampRequest
 import com.squareup.anvil.annotations.ContributesBinding
 import java.io.File
-import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.atomic.AtomicLong
 import javax.inject.Inject
 import kotlinx.coroutines.flow.flowOf
 
@@ -43,7 +43,7 @@ class TimestampSynchronizationCheckerImpl @Inject constructor(
             return types.associateWith { null }
         }
 
-        val resultCounter = AtomicInteger(0)
+        val resultCounter = AtomicLong(0)
 
         val timestampHashes = types.toList().pmap { type ->
             val response = requestApi.request(
@@ -55,7 +55,7 @@ class TimestampSynchronizationCheckerImpl @Inject constructor(
                     }.wrapToRequest()
                 )
             )
-            progressTracker.report(resultCounter.incrementAndGet(), types.size)
+            progressTracker.report(resultCounter.incrementAndGet(), types.size.toLong())
             type to response
         }.associate { (type, response) ->
             val timestamp = if (response.hasStorageTimestampResponse()) {

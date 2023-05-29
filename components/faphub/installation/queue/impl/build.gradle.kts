@@ -15,7 +15,7 @@ dependencies {
     implementation(projects.components.core.log)
     implementation(projects.components.core.progress)
 
-    implementation(projects.components.faphub.constants)
+    implementation(projects.components.faphub.utils)
     implementation(projects.components.faphub.dao.api)
     implementation(projects.components.faphub.target.api)
     implementation(projects.components.faphub.installation.manifest.api)
