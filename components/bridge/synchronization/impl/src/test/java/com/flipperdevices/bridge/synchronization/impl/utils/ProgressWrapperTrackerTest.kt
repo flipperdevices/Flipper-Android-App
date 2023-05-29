@@ -1,5 +1,6 @@
 package com.flipperdevices.bridge.synchronization.impl.utils
 
+import com.flipperdevices.core.progress.ProgressWrapperTracker
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Test
