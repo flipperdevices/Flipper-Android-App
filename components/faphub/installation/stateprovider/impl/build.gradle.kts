@@ -16,6 +16,7 @@ dependencies {
 
     implementation(projects.components.faphub.dao.api)
     implementation(projects.components.faphub.installation.manifest.api)
+    implementation(projects.components.faphub.installation.queue.api)
 
     // Dagger deps
     implementation(libs.dagger)

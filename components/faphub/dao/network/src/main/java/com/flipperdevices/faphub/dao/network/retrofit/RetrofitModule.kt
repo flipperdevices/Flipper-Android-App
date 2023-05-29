@@ -3,6 +3,7 @@ package com.flipperdevices.faphub.dao.network.retrofit
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.BuildConfig
 import com.flipperdevices.faphub.dao.network.retrofit.api.RetrofitApplicationApi
+import com.flipperdevices.faphub.dao.network.retrofit.api.RetrofitBundleApi
 import com.flipperdevices.faphub.dao.network.retrofit.api.RetrofitCategoryApi
 import com.flipperdevices.faphub.dao.network.retrofit.utils.FapHubNetworkCategoryApi
 import com.flipperdevices.faphub.dao.network.retrofit.utils.RetrofitDebugLoggingEnable
@@ -51,5 +52,11 @@ class RetrofitModule {
     fun provideNetworkCategoryApi(retrofit: Retrofit): FapHubNetworkCategoryApi {
         val categoryApi = retrofit.create(RetrofitCategoryApi::class.java)
         return FapHubNetworkCategoryApi(categoryApi)
+    }
+
+    @Provides
+    @Reusable
+    fun provideBundleApi(retrofit: Retrofit): RetrofitBundleApi {
+        return retrofit.create(RetrofitBundleApi::class.java)
     }
 }

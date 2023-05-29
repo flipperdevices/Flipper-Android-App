@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 interface UpdateContentHelper {
     fun isSupport(updateContent: UpdateContent): Boolean
-    suspend fun uploadFirmwareLocal(
+    suspend fun downloadFirmwareLocal(
         updateContent: UpdateContent,
         updaterFolder: File,
         stateListener: suspend (UpdatingState) -> Unit
@@ -36,7 +36,7 @@ class UpdateContentHelperOfficial @Inject constructor(
         return updateContent is OfficialFirmware
     }
 
-    override suspend fun uploadFirmwareLocal(
+    override suspend fun downloadFirmwareLocal(
         updateContent: UpdateContent,
         updaterFolder: File,
         stateListener: suspend (UpdatingState) -> Unit
@@ -63,7 +63,7 @@ class UpdateContentHelperInternalStorage @Inject constructor(
         return updateContent is InternalStorageFirmware
     }
 
-    override suspend fun uploadFirmwareLocal(
+    override suspend fun downloadFirmwareLocal(
         updateContent: UpdateContent,
         updaterFolder: File,
         stateListener: suspend (UpdatingState) -> Unit
@@ -95,14 +95,14 @@ class UpdateContentHelperInternalStorage @Inject constructor(
 }
 
 @ContributesMultibinding(scope = AppGraph::class, boundType = UpdateContentHelper::class)
-class UpdateContentHelperWepUpdater @Inject constructor(
+class UpdateContentHelperWebUpdater @Inject constructor(
     private val firmwareDownloaderHelper: FirmwareDownloaderHelper
 ) : UpdateContentHelper {
     override fun isSupport(updateContent: UpdateContent): Boolean {
         return updateContent is WebUpdaterFirmware
     }
 
-    override suspend fun uploadFirmwareLocal(
+    override suspend fun downloadFirmwareLocal(
         updateContent: UpdateContent,
         updaterFolder: File,
         stateListener: suspend (UpdatingState) -> Unit

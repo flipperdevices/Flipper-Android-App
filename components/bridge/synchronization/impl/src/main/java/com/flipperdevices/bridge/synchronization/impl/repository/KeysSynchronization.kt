@@ -8,8 +8,8 @@ import com.flipperdevices.bridge.synchronization.impl.repository.android.Android
 import com.flipperdevices.bridge.synchronization.impl.repository.flipper.TimestampSynchronizationChecker
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestRepository
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestTimestampRepository
-import com.flipperdevices.bridge.synchronization.impl.utils.ProgressWrapperTracker
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.progress.ProgressWrapperTracker
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 

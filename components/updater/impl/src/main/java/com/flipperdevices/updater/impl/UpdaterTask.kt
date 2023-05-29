@@ -84,7 +84,7 @@ class UpdaterTask(
 
         val updaterFolder = File(tempFolder, updateContent.folderName())
         try {
-            uploadFirmwareLocal(input.content, updaterFolder, stateListener)
+            downloadFirmwareLocal(input.content, updaterFolder, stateListener)
         } catch (e: Throwable) {
             error(e) { "Failed when download from network" }
             when (e) {
@@ -157,15 +157,15 @@ class UpdaterTask(
         stateListener(UpdatingState.Rebooting)
     }
 
-    private suspend fun uploadFirmwareLocal(
+    private suspend fun downloadFirmwareLocal(
         content: UpdateContent,
         updaterFolder: File,
         stateListener: suspend (UpdatingState) -> Unit
     ) {
-        val helper = updateContentHelper
+        val downloadHelper = updateContentHelper
             .firstOrNull { it.isSupport(content) }
             ?: throw IllegalArgumentException("No one helper for upload fw to local")
-        helper.uploadFirmwareLocal(content, updaterFolder, stateListener)
+        downloadHelper.downloadFirmwareLocal(content, updaterFolder, stateListener)
     }
 
     private suspend fun prepareToUpload(

@@ -36,7 +36,7 @@ class FapManifestsLoader @Inject constructor(
         val fapItems = manifestNames.pmap { name ->
             val content = loadManifestFile(
                 requestApi = serviceApi.requestApi,
-                filePath = FAP_MANIFESTS_FOLDER_ON_FLIPPER + name
+                filePath = File(FAP_MANIFESTS_FOLDER_ON_FLIPPER, name).absolutePath
             ) ?: return@pmap null
             parser.parse(content, name)
         }.filterNotNull()

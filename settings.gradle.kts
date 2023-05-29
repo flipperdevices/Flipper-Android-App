@@ -64,6 +64,7 @@ include(
     ":components:core:activityholder",
     ":components:core:share",
     ":components:core:pager",
+    ":components:core:progress",
 
     ":components:bottombar:api",
     ":components:bottombar:impl",
@@ -196,6 +197,7 @@ include(
     ":components:faphub:installation:queue:impl",
     ":components:faphub:target:api",
     ":components:faphub:target:impl",
+    ":components:faphub:utils",
 
     ":components:selfupdater:api",
     ":components:selfupdater:googleplay",

@@ -47,8 +47,14 @@ class FapManifestApiImpl @Inject constructor(
         fapManifestItem: FapManifestItem
     ) = withLock(mutex, "add") {
         manifestUploader.save(pathToFap, fapManifestItem)
-        fapManifestItemFlow.update {
-            it?.plus(fapManifestItem) ?: it
+        fapManifestItemFlow.update { manifests ->
+            if (manifests != null) {
+                val toDelete =
+                    manifests.filter { it.applicationAlias == fapManifestItem.applicationAlias }
+                manifests.minus(toDelete.toSet()).plus(fapManifestItem)
+            } else {
+                null
+            }
         }
     }
 

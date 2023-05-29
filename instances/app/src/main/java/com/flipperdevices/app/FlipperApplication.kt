@@ -1,6 +1,9 @@
 package com.flipperdevices.app
 
 import android.app.Application
+import coil.ImageLoader
+import coil.ImageLoaderFactory
+import coil.decode.SvgDecoder
 import com.flipperdevices.app.di.DaggerAppComponent
 import com.flipperdevices.app.di.MainComponent
 import com.flipperdevices.core.activityholder.CurrentActivityHolder
@@ -13,7 +16,7 @@ import com.flipperdevices.singleactivity.impl.SingleActivity
 import tangle.inject.TangleGraph
 import timber.log.Timber
 
-class FlipperApplication : Application() {
+class FlipperApplication : Application(), ImageLoaderFactory {
     override fun onCreate() {
         super.onCreate()
 
@@ -48,5 +51,14 @@ class FlipperApplication : Application() {
         metricApi.reportSimpleEvent(SimpleEvent.APP_OPEN)
         val synchronizationApi by component.synchronizationApi
         synchronizationApi.startSynchronization()
+    }
+
+    override fun newImageLoader(): ImageLoader {
+        return ImageLoader.Builder(this)
+            .components {
+                add(SvgDecoder.Factory())
+            }
+            .crossfade(true)
+            .build()
     }
 }

@@ -6,17 +6,17 @@ import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
-import com.flipperdevices.bridge.synchronization.impl.utils.ProgressWrapperTracker
 import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.ktx.jre.pmap
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.progress.ProgressWrapperTracker
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.timestampRequest
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.flow.flowOf
 import java.io.File
-import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.atomic.AtomicLong
 import javax.inject.Inject
 
 interface TimestampSynchronizationChecker {
@@ -43,7 +43,7 @@ class TimestampSynchronizationCheckerImpl @Inject constructor(
             return types.associateWith { null }
         }
 
-        val resultCounter = AtomicInteger(0)
+        val resultCounter = AtomicLong(0)
 
         val timestampHashes = types.toList().pmap { type ->
             val response = requestApi.request(
@@ -55,7 +55,7 @@ class TimestampSynchronizationCheckerImpl @Inject constructor(
                     }.wrapToRequest()
                 )
             )
-            progressTracker.report(resultCounter.incrementAndGet(), types.size)
+            progressTracker.report(resultCounter.incrementAndGet(), types.size.toLong())
             type to response
         }.associate { (type, response) ->
             val timestamp = if (response.hasStorageTimestampResponse()) {

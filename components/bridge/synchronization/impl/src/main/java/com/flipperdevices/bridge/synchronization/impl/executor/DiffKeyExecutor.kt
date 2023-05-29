@@ -6,10 +6,10 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
 import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
 import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
-import com.flipperdevices.bridge.synchronization.impl.utils.ProgressWrapperTracker
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.progress.ProgressWrapperTracker
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
@@ -47,7 +47,7 @@ class DiffKeyExecutorImpl @Inject constructor() : DiffKeyExecutor, LogTagProvide
             try {
                 info { "Execute $diff for $source to $target" }
                 execute(source, target, diff)
-                tracker.report(index, diffs.size)
+                tracker.report(index.toLong(), diffs.size.toLong())
                 return@mapIndexedNotNull diff
             } catch (executeError: Exception) {
                 error(executeError) { "While apply diff $diff we have error" }

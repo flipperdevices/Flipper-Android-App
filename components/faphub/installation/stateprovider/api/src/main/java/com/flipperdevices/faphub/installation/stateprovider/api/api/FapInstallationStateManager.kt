@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 interface FapInstallationStateManager {
     fun getFapStateFlow(
         scope: CoroutineScope,
-        applicationId: String,
+        applicationUid: String,
         currentVersion: SemVer
     ): StateFlow<FapState>
 }

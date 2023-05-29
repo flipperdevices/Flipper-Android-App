@@ -1,16 +1,14 @@
-package com.flipperdevices.bridge.synchronization.impl.utils
+package com.flipperdevices.core.progress
 
-import com.flipperdevices.bridge.synchronization.impl.BuildConfig
 import java.lang.Float.min
 
-fun interface ProgressListener {
-    suspend fun onProgress(current: Float)
-}
+private const val MAX_PERCENT = 1.0f
+private const val MIN_PERCENT = 0f
 
 class ProgressWrapperTracker(
     private val progressListener: ProgressListener,
-    private val min: Float,
-    private val max: Float
+    private val min: Float = MIN_PERCENT,
+    private val max: Float = MAX_PERCENT
 ) : ProgressListener {
     override suspend fun onProgress(current: Float) {
         val diff = max - min
@@ -23,18 +21,18 @@ class ProgressWrapperTracker(
             error("Incorrect current percent (min: $min, current: $current, diff: $diff)")
         }
 
-        progressListener.onProgress(min(min(currentPercent, max), 1.0f))
+        progressListener.onProgress(min(min(currentPercent, max), MAX_PERCENT))
     }
 
-    suspend fun report(current: Int, max: Int) {
+    suspend fun report(current: Long, max: Long) {
         if (current > max) {
-            onProgress(1.0f)
+            onProgress(MAX_PERCENT)
             if (BuildConfig.DEBUG) {
                 error("Current larger then max (current: $current, max: $max)")
             }
             return
         }
-        val percent = current.toFloat() / max.toFloat()
-        onProgress(percent)
+        val percent = current.toDouble() / max
+        onProgress(percent.toFloat())
     }
 }

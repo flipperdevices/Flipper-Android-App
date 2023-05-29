@@ -17,7 +17,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 @ContributesBinding(AppGraph::class, FlipperTargetProviderApi::class)
 class FlipperTargetProviderApiImpl @Inject constructor(
     private val serviceProvider: FlipperServiceProvider,

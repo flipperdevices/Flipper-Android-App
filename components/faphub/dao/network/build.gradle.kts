@@ -14,14 +14,12 @@ dependencies {
     implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.data)
+    implementation(projects.components.core.progress)
+    implementation(projects.components.core.preference)
 
     implementation(projects.components.faphub.target.api)
 
-    implementation(libs.ktor.client)
-    implementation(libs.ktor.serialization)
     implementation(libs.kotlin.serialization.json)
-    implementation(libs.ktor.logging)
-    implementation(libs.ktor.negotiation)
 
     implementation(libs.retrofit)
     implementation(libs.retrofit.json)

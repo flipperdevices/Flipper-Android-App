@@ -9,16 +9,16 @@ import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
 import com.flipperdevices.bridge.synchronization.impl.model.KeyWithHash
 import com.flipperdevices.bridge.synchronization.impl.model.ResultWithProgress
 import com.flipperdevices.bridge.synchronization.impl.model.trackProgressAndReturn
-import com.flipperdevices.bridge.synchronization.impl.utils.ProgressWrapperTracker
 import com.flipperdevices.core.ktx.jre.pmap
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.progress.ProgressWrapperTracker
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.md5sumRequest
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.single
-import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.atomic.AtomicLong
 import javax.inject.Inject
 
 interface FlipperHashRepository {
@@ -56,7 +56,7 @@ class FlipperHashRepositoryImpl @Inject constructor(
     private fun calculateHash(
         keys: List<FlipperFilePath>
     ) = callbackFlow {
-        val alreadyHashReceiveCounter = AtomicInteger(0)
+        val alreadyHashReceiveCounter = AtomicLong(0)
         info { "Start request hashes for ${keys.size} keys" }
 
         val hashList = keys.pmap { keyPath ->
@@ -64,7 +64,7 @@ class FlipperHashRepositoryImpl @Inject constructor(
             send(
                 ResultWithProgress.InProgress(
                     currentPosition = alreadyHashReceiveCounter.incrementAndGet(),
-                    maxPosition = keys.size
+                    maxPosition = keys.size.toLong()
                 )
             )
             return@pmap KeyWithHash(keyPath, hash)

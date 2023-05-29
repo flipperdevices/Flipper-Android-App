@@ -9,6 +9,7 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.faphub.installation.button.api.FapButtonConfig
 import com.flipperdevices.faphub.installation.button.api.FapInstallationUIApi
+import com.flipperdevices.faphub.installation.button.impl.composable.ComposableFapCancelingButton
 import com.flipperdevices.faphub.installation.button.impl.composable.ComposableFapInstallButton
 import com.flipperdevices.faphub.installation.button.impl.composable.ComposableFapInstalledButton
 import com.flipperdevices.faphub.installation.button.impl.composable.ComposableFapInstallingButton
@@ -45,11 +46,12 @@ class FapInstallationUIApiImpl @Inject constructor() : FapInstallationUIApi {
 
             FapState.ReadyToInstall -> ComposableFapInstallButton(
                 modifier = modifier,
-                textSize = textSize
+                textSize = textSize,
+                onClick = { statusViewModel.install(config) }
             )
 
             FapState.NotInitialized,
-            FapState.RetrievingManifest -> ComposableFapInstallButton(
+            FapState.RetrievingManifest -> ComposableFapInstalledButton(
                 modifier = modifier.placeholderConnecting(),
                 textSize = textSize
             )
@@ -63,6 +65,11 @@ class FapInstallationUIApiImpl @Inject constructor() : FapInstallationUIApi {
                 modifier = modifier,
                 textSize = textSize,
                 percent = localState.progress
+            )
+
+            FapState.Canceling -> ComposableFapCancelingButton(
+                textSize = textSize,
+                modifier = modifier
             )
         }
     }

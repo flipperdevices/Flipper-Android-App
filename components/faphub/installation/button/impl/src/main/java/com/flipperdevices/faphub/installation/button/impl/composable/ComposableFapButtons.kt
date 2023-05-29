@@ -13,13 +13,15 @@ import com.flipperdevices.faphub.installation.button.impl.R
 @Composable
 fun ComposableFapInstallButton(
     textSize: TextUnit,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     ComposableFlipperButton(
         modifier = modifier,
         text = stringResource(R.string.faphub_installation_install),
         color = LocalPallet.current.accent,
-        fontSize = textSize
+        fontSize = textSize,
+        onClick = onClick
     )
 }
 
@@ -77,12 +79,25 @@ fun ComposableFapUpdatingButton(
     )
 }
 
+@Composable
+fun ComposableFapCancelingButton(
+    textSize: TextUnit,
+    modifier: Modifier = Modifier
+) {
+    ComposableFlipperButton(
+        modifier = modifier,
+        text = stringResource(R.string.faphub_installation_canceling),
+        color = LocalPallet.current.updateProgressGreen,
+        fontSize = textSize
+    )
+}
+
 @Preview
 @Composable
 private fun ComposableFapInstallButtonPreview() {
     FlipperThemeInternal {
         Column {
-            ComposableFapInstallButton(textSize = TextUnit.Unspecified)
+            ComposableFapInstallButton(textSize = TextUnit.Unspecified, onClick = {})
             ComposableFapInstalledButton(textSize = TextUnit.Unspecified)
             ComposableFapUpdateButton(textSize = TextUnit.Unspecified)
             ComposableFapInstallingButton(percent = 0.5f, textSize = TextUnit.Unspecified)

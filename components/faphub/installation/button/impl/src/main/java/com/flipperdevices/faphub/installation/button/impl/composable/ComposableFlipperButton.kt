@@ -18,6 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ktx.jre.roundPercentToString
+import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 
@@ -26,12 +27,18 @@ fun ComposableFlipperButton(
     text: String,
     fontSize: TextUnit,
     color: Color,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: (() -> Unit)? = null,
 ) {
+    var buttonModifier = modifier
+        .clip(RoundedCornerShape(6.dp))
+        .background(color)
+    if (onClick != null) {
+        buttonModifier = buttonModifier
+            .clickableRipple(onClick = onClick)
+    }
     Box(
-        modifier = modifier
-            .clip(RoundedCornerShape(6.dp))
-            .background(color),
+        modifier = buttonModifier,
         contentAlignment = Alignment.Center
     ) {
         Text(
