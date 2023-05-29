@@ -1,15 +1,101 @@
 package com.flipperdevices.faphub.installation.queue.impl.api
 
-import com.flipperdevices.faphub.installation.queue.impl.model.FapActionRequest
+import com.flipperdevices.core.ktx.jre.withLock
+import com.flipperdevices.core.ktx.jre.withLockResult
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
+import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest
+import com.flipperdevices.faphub.installation.queue.impl.executor.FapActionExecutor
+import com.flipperdevices.faphub.installation.queue.impl.model.FapInternalQueueState
 import javax.inject.Inject
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.withContext
 
-class FapQueueRunner @Inject constructor() {
+class FapQueueRunner @Inject constructor(
+    private val fapActionExecutor: FapActionExecutor
+) : LogTagProvider {
+    override val TAG = "FapQueueRunner"
+
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
-    fun enqueue(actionRequest: FapActionRequest) {
+    private val mutex = Mutex()
+    private val pendingTaskFlow =
+        MutableStateFlow<ImmutableList<FapActionRequest>>(persistentListOf())
+    private var currentTaskJob: Job? = null
+    private val currentTaskFlow = MutableStateFlow<FapInternalQueueState?>(null)
 
+    init {
+        scope.launch {
+            pendingTaskFlow.collect { loop() }
+        }
+    }
+
+    fun pendingTasksFlow() = pendingTaskFlow.asStateFlow()
+    fun currentTaskFlow() = currentTaskFlow.asStateFlow()
+
+    fun enqueue(actionRequest: FapActionRequest) = scope.launch {
+        if (actionRequest is FapActionRequest.Cancel) {
+            cancelTasksForApplicationUid(actionRequest)
+        } else {
+            withLock(mutex, "enqueue") {
+                pendingTaskFlow.update { list ->
+                    list.filterNot { it.applicationUid == actionRequest.applicationUid }
+                        .plus(actionRequest).toImmutableList()
+                }
+            }
+        }
+    }
+
+    private suspend fun loop() {
+        val currentJob = takeJobForLoop() ?: return
+        currentJob.join()
+    }
+
+    private suspend fun takeJobForLoop() = withLockResult(mutex, "create_job") {
+        val mutableList = pendingTaskFlow.value.toMutableList()
+        val currentTask = mutableList.removeFirstOrNull() ?: return@withLockResult null
+        pendingTaskFlow.emit(mutableList.toImmutableList())
+        currentTaskFlow.emit(FapInternalQueueState.Scheduled(currentTask))
+        return@withLockResult scope.launch {
+            try {
+                fapActionExecutor.execute(currentTask) { progress ->
+                    currentTaskFlow.emit(FapInternalQueueState.InProgress(currentTask, progress))
+                }
+            } catch (throwable: Throwable) {
+                currentTaskFlow.emit(FapInternalQueueState.Failed(currentTask, throwable))
+            } finally {
+                withContext(NonCancellable) {
+                    withLock(mutex, "finally_clean") {
+                        currentTaskJob = null
+                        currentTaskFlow.emit(null)
+                    }
+                }
+            }
+        }.also { currentTaskJob = it }
+    }
+
+    private suspend fun cancelTasksForApplicationUid(
+        actionRequest: FapActionRequest.Cancel
+    ) = withLock(mutex, "cancel") {
+        info { "Cancel tasks with application uid: $actionRequest" }
+        if (currentTaskFlow.value?.request?.applicationUid == actionRequest.applicationUid) {
+            info { "Current job is job for canceling, so cancel job" }
+            currentTaskJob?.cancel()
+        }
+        pendingTaskFlow.update { list ->
+            list.filterNot { it.applicationUid == actionRequest.applicationUid }.toImmutableList()
+        }
     }
 }

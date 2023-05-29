@@ -3,4 +3,5 @@
     <string name="faphub_installation_install">INSTALL</string>
     <string name="faphub_installation_installed">INSTALLED</string>
     <string name="faphub_installation_update">UPDATE</string>
+    <string name="faphub_installation_canceling">Canceling</string>
 </resources>

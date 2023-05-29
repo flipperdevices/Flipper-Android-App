@@ -22,4 +22,6 @@ sealed class FapState {
         @FloatRange(from = 0.0, to = 1.0)
         val progress: Float
     ) : FapState()
+
+    object Canceling : FapState()
 }

@@ -36,7 +36,7 @@ class FapManifestUploader @Inject constructor(
         val tmpManifestPath = saveToTmp(fapManifestItem)
         val newManifestPath = File(
             FAP_MANIFESTS_FOLDER_ON_FLIPPER,
-            "${fapManifestItem.applicationId}.$FAP_MANIFEST_EXTENSION"
+            "${fapManifestItem.applicationAlias}.$FAP_MANIFEST_EXTENSION"
         ).absolutePath
         atomicMover.atomicMove(
             pathToFap to fapManifestItem.path,
@@ -45,7 +45,7 @@ class FapManifestUploader @Inject constructor(
     }
 
     private suspend fun saveToTmp(fapManifestItem: FapManifestItem): String {
-        info { "Start save tmp manifest for ${fapManifestItem.applicationId}" }
+        info { "Start save tmp manifest for ${fapManifestItem.applicationAlias}" }
         val serviceApi = flipperServiceProvider.getServiceApi()
         prepareFolder(serviceApi.requestApi)
         info { "Folder prepared" }

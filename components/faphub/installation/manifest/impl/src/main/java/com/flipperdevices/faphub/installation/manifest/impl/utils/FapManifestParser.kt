@@ -15,11 +15,11 @@ private const val FAP_MANIFEST_PATH_KEY = "Path"
 
 class FapManifestParser @Inject constructor() {
     fun parse(fff: FlipperFileFormat, name: String): FapManifestItem? {
-        val applicationId = File(name).nameWithoutExtension
+        val applicationAlias = File(name).nameWithoutExtension
 
         val dict = fff.orderedDict.toMap()
         return FapManifestItem(
-            applicationId = applicationId,
+            applicationAlias = applicationAlias,
             uid = dict[FAP_MANIFEST_UID_KEY] ?: return null,
             versionUid = dict[FAP_MANIFEST_VERSION_UID_KEY] ?: return null,
             path = dict[FAP_MANIFEST_PATH_KEY] ?: return null

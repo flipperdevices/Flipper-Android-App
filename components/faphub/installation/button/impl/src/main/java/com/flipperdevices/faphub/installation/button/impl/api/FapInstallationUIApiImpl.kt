@@ -9,6 +9,7 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.faphub.installation.button.api.FapButtonConfig
 import com.flipperdevices.faphub.installation.button.api.FapInstallationUIApi
+import com.flipperdevices.faphub.installation.button.impl.composable.ComposableFapCancelingButton
 import com.flipperdevices.faphub.installation.button.impl.composable.ComposableFapInstallButton
 import com.flipperdevices.faphub.installation.button.impl.composable.ComposableFapInstalledButton
 import com.flipperdevices.faphub.installation.button.impl.composable.ComposableFapInstallingButton
@@ -17,8 +18,8 @@ import com.flipperdevices.faphub.installation.button.impl.composable.ComposableF
 import com.flipperdevices.faphub.installation.button.impl.viewmodel.FapStatusViewModel
 import com.flipperdevices.faphub.installation.stateprovider.api.model.FapState
 import com.squareup.anvil.annotations.ContributesBinding
-import tangle.viewmodel.compose.tangleViewModel
 import javax.inject.Inject
+import tangle.viewmodel.compose.tangleViewModel
 
 @ContributesBinding(AppGraph::class, FapInstallationUIApi::class)
 class FapInstallationUIApiImpl @Inject constructor() : FapInstallationUIApi {
@@ -45,11 +46,12 @@ class FapInstallationUIApiImpl @Inject constructor() : FapInstallationUIApi {
 
             FapState.ReadyToInstall -> ComposableFapInstallButton(
                 modifier = modifier,
-                textSize = textSize
+                textSize = textSize,
+                onClick = { statusViewModel.install(config) }
             )
 
             FapState.NotInitialized,
-            FapState.RetrievingManifest -> ComposableFapInstallButton(
+            FapState.RetrievingManifest -> ComposableFapInstalledButton(
                 modifier = modifier.placeholderConnecting(),
                 textSize = textSize
             )
@@ -63,6 +65,11 @@ class FapInstallationUIApiImpl @Inject constructor() : FapInstallationUIApi {
                 modifier = modifier,
                 textSize = textSize,
                 percent = localState.progress
+            )
+
+            FapState.Canceling -> ComposableFapCancelingButton(
+                textSize = textSize,
+                modifier = modifier
             )
         }
     }

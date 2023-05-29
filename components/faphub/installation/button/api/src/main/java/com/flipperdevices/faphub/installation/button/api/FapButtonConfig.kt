@@ -5,16 +5,22 @@ import com.flipperdevices.faphub.dao.api.model.FapItemShort
 import com.flipperdevices.faphub.dao.api.model.FapItemVersion
 
 data class FapButtonConfig(
-    val applicationId: String,
+    val applicationUid: String,
+    val applicationAlias: String,
     val version: FapItemVersion,
+    val categoryAlias: String
 )
 
 fun FapItemShort.toFapButtonConfig() = FapButtonConfig(
-    applicationId = applicationId,
-    version = upToDateVersion
+    applicationAlias = applicationId,
+    version = upToDateVersion,
+    applicationUid = id,
+    categoryAlias = category.name
 )
 
 fun FapItem.toFapButtonConfig() = FapButtonConfig(
-    applicationId = applicationId,
-    version = upToDateVersion
+    applicationAlias = applicationId,
+    version = upToDateVersion,
+    applicationUid = id,
+    categoryAlias = category.name
 )

@@ -50,7 +50,7 @@ class FapManifestApiImpl @Inject constructor(
         fapManifestItemFlow.update { manifests ->
             if (manifests != null) {
                 val toDelete =
-                    manifests.filter { it.applicationId == fapManifestItem.applicationId }
+                    manifests.filter { it.applicationAlias == fapManifestItem.applicationAlias }
                 manifests.minus(toDelete.toSet()).plus(fapManifestItem)
             } else {
                 null
