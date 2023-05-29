@@ -6,6 +6,7 @@ import com.flipperdevices.bridge.protobuf.streamToCommandFlow
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.faphub.constants.FapHubConstants.FLIPPER_TMP_FOLDER
 import com.flipperdevices.faphub.installation.manifest.impl.utils.FapManifestConstants.FAP_MANIFESTS_FOLDER_ON_FLIPPER
 import com.flipperdevices.faphub.installation.manifest.impl.utils.FapManifestConstants.FAP_MANIFEST_EXTENSION
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
@@ -14,12 +15,11 @@ import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.file
 import com.flipperdevices.protobuf.storage.mkdirRequest
 import com.flipperdevices.protobuf.storage.writeRequest
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import java.io.File
 import javax.inject.Inject
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 
-private const val FLIPPER_TMP_FOLDER = "/ext/.tmp/android"
 private const val FLIPPER_TMP_MANIFEST_FILE = "$FLIPPER_TMP_FOLDER/tmp.fim"
 
 class FapManifestUploader @Inject constructor(

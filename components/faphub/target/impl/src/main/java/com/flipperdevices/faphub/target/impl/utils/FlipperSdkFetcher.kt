@@ -5,16 +5,13 @@ import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.faphub.constants.FapHubConstants
 import com.flipperdevices.faphub.target.impl.model.FlipperSdkVersion
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.property.getRequest
-import kotlinx.coroutines.flow.toList
 import javax.inject.Inject
+import kotlinx.coroutines.flow.toList
 
-private val RPC_SUPPORTED_VERSION = SemVer(
-    majorVersion = 0,
-    minorVersion = 16
-) // TODO migrate to 17
 private const val RPC_SDK_KEY = "devinfo.firmware.api"
 private const val RPC_SDK_MAJOR_KEY = "firmware.api.major"
 private const val RPC_SDK_MINOR_KEY = "firmware.api.minor"
@@ -28,8 +25,11 @@ class FlipperSdkFetcher @Inject constructor() : LogTagProvider {
         if (currentVersion == null) {
             info { "Don't receive version, skip" }
             return FlipperSdkVersion.InProgress
-        } else if (currentVersion < RPC_SUPPORTED_VERSION) {
-            info { "Current version RPC is outdated ($currentVersion). Need $RPC_SUPPORTED_VERSION" }
+        } else if (currentVersion < FapHubConstants.RPC_SUPPORTED_VERSION) {
+            info {
+                "Current version RPC is outdated ($currentVersion). " +
+                        "Need ${FapHubConstants.RPC_SUPPORTED_VERSION}"
+            }
             return FlipperSdkVersion.Unsupported
         }
 
@@ -44,11 +44,11 @@ class FlipperSdkFetcher @Inject constructor() : LogTagProvider {
 
         val major = answers.find {
             it.hasPropertyGetResponse() &&
-                it.propertyGetResponse.key == RPC_SDK_MAJOR_KEY
+                    it.propertyGetResponse.key == RPC_SDK_MAJOR_KEY
         }?.propertyGetResponse?.value?.toIntOrNull() ?: return FlipperSdkVersion.Error
         val minor = answers.find {
             it.hasPropertyGetResponse() &&
-                it.propertyGetResponse.key == RPC_SDK_MINOR_KEY
+                    it.propertyGetResponse.key == RPC_SDK_MINOR_KEY
         }?.propertyGetResponse?.value?.toIntOrNull() ?: return FlipperSdkVersion.Error
 
         info { "Receive version $major and $minor" }

@@ -18,6 +18,8 @@ dependencies {
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.rpcinfo.api)
 
+    implementation(projects.components.faphub.constants)
+
     // Dagger deps
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)

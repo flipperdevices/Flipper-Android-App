@@ -15,6 +15,7 @@ dependencies {
     implementation(projects.components.core.log)
 
     implementation(projects.components.faphub.dao.api)
+    implementation(projects.components.faphub.constants)
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.dao.api)

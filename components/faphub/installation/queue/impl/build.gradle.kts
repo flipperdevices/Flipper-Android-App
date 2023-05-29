@@ -11,8 +11,10 @@ dependencies {
 
     implementation(projects.components.core.di)
     implementation(projects.components.core.data)
+    implementation(projects.components.core.log)
     implementation(projects.components.core.progress)
 
+    implementation(projects.components.faphub.constants)
     implementation(projects.components.faphub.dao.api)
     implementation(projects.components.faphub.target.api)
     implementation(projects.components.faphub.installation.manifest.api)
@@ -24,4 +26,6 @@ dependencies {
     // Dagger deps
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
+
+    implementation(libs.kotlin.coroutines)
 }

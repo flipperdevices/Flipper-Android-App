@@ -4,6 +4,7 @@ import android.content.Context
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.copyTo
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.core.progress.ProgressListener
 import com.flipperdevices.core.progress.ProgressWrapperTracker
@@ -27,12 +28,14 @@ class FapDownloadApiImpl @Inject constructor(
         versionId: String,
         listener: ProgressListener?
     ): File {
+        info { "Start download bundle for $versionId" }
         val target = flipperTargetApi.getFlipperTargetSync().getOrThrow()
 
         val file = FlipperStorageProvider.getTemporaryFile(context)
 
         bundleApi.downloadBundle(versionId, target.target, target.sdk.toString())
             .saveToFile(file, listener?.let { ProgressWrapperTracker(it) })
+        info { "Complete download for $versionId" }
 
         return file
     }

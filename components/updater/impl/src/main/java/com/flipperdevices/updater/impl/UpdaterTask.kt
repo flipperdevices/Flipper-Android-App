@@ -21,6 +21,8 @@ import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.model.UpdatingState
 import com.flipperdevices.updater.subghz.helpers.SubGhzProvisioningHelper
 import com.flipperdevices.updater.subghz.model.FailedUploadSubGhzException
+import java.io.File
+import java.net.UnknownHostException
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.NonCancellable
@@ -28,8 +30,6 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
-import java.io.File
-import java.net.UnknownHostException
 
 private const val DISCONNECT_WAIT_TIMEOUT_MS = 30 * 1000L
 
@@ -84,7 +84,7 @@ class UpdaterTask(
 
         val updaterFolder = File(tempFolder, updateContent.folderName())
         try {
-            uploadFirmwareLocal(input.content, updaterFolder, stateListener)
+            downloadFirmwareLocal(input.content, updaterFolder, stateListener)
         } catch (e: Throwable) {
             error(e) { "Failed when download from network" }
             when (e) {
@@ -157,15 +157,15 @@ class UpdaterTask(
         stateListener(UpdatingState.Rebooting)
     }
 
-    private suspend fun uploadFirmwareLocal(
+    private suspend fun downloadFirmwareLocal(
         content: UpdateContent,
         updaterFolder: File,
         stateListener: suspend (UpdatingState) -> Unit
     ) {
-        val helper = updateContentHelper
+        val downloadHelper = updateContentHelper
             .firstOrNull { it.isSupport(content) }
             ?: throw IllegalArgumentException("No one helper for upload fw to local")
-        helper.uploadFirmwareLocal(content, updaterFolder, stateListener)
+        downloadHelper.downloadFirmwareLocal(content, updaterFolder, stateListener)
     }
 
     private suspend fun prepareToUpload(

@@ -197,6 +197,7 @@ include(
     ":components:faphub:installation:queue:impl",
     ":components:faphub:target:api",
     ":components:faphub:target:impl",
+    ":components:faphub:constants",
 
     ":components:selfupdater:api",
     ":components:selfupdater:googleplay",
