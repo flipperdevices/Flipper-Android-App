@@ -8,8 +8,11 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -75,12 +78,15 @@ fun ComposableBubbleHoldToSend(
 @Composable
 private fun calculateBubblePosition(
     positionYEmulateButton: Int,
-    positionXBubble: Int
+    positionYBubble: Int
 ): IntOffset {
-    return IntOffset(
-        x = LocalDensity.current.run { PADDING_END_BUBBLE_FROM_DEVICE.dp.toPx() }.toInt() * -1,
-        y = positionYEmulateButton - positionXBubble + DISTANCE_FROM_BUBBLE_BUTTON
-    )
+    val statusBarHeightDp = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
+    val statusBarCoordinate = LocalDensity.current.run { statusBarHeightDp.toPx() }.toInt()
+
+    val bubbleY = positionYEmulateButton - positionYBubble + DISTANCE_FROM_BUBBLE_BUTTON - statusBarCoordinate
+    val bubbleX = LocalDensity.current.run { PADDING_END_BUBBLE_FROM_DEVICE.dp.toPx() }.toInt() * -1
+
+    return IntOffset(x = bubbleX, y = bubbleY)
 }
 
 @Composable

@@ -3,6 +3,7 @@
 # 1.5.1 - In Progress
 
 - [Feature] FapHub api integration (70%) (Network, FAP Manifest, Target, Installation)
+- [FIX] Position bubble on key sub-ghz emulate and update hold modifier by new api
 
 # 1.5.0 - In Progress
 
