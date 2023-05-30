@@ -17,7 +17,7 @@ fun Modifier.onHoldPress(
         val down = awaitFirstDown(requireUnconsumed = false)
         val change = awaitLongPressOrCancellation(down.id)
 
-        val wasLongPress = (change == down)
+        val wasLongPress = change != null
 
         if (!wasLongPress) {
             onTap()
