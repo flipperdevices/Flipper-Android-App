@@ -12,9 +12,9 @@ import com.flipperdevices.faphub.dao.api.FapDownloadApi
 import com.flipperdevices.faphub.dao.network.retrofit.api.RetrofitBundleApi
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
 import com.squareup.anvil.annotations.ContributesBinding
-import okhttp3.ResponseBody
 import java.io.File
 import javax.inject.Inject
+import okhttp3.ResponseBody
 
 @ContributesBinding(AppGraph::class, FapDownloadApi::class)
 class FapDownloadApiImpl @Inject constructor(
@@ -48,7 +48,9 @@ private suspend fun ResponseBody.saveToFile(
     file.outputStream().use { fileStream ->
         val totalBytes = contentLength()
         streamFromNetwork.copyTo(fileStream, onProcessed = { bytesSentTotal ->
-            listener?.report(bytesSentTotal, totalBytes)
+            if (totalBytes > 0) {
+                listener?.report(bytesSentTotal, totalBytes)
+            }
         })
     }
 }

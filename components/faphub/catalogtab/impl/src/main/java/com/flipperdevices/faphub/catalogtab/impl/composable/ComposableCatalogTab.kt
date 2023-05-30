@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.TextUnit
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.flipperdevices.core.ui.ktx.SwipeRefresh
 import com.flipperdevices.faphub.appcard.composable.paging.ComposableFapsList
 import com.flipperdevices.faphub.appcard.composable.paging.ComposableSortChoice
 import com.flipperdevices.faphub.catalogtab.impl.R
@@ -31,22 +32,27 @@ fun ComposableCatalogTabScreen(
 
     val categoriesViewModel = tangleViewModel<CategoriesViewModel>()
     val categoriesLoadState by categoriesViewModel.getCategoriesLoadState().collectAsState()
-
-    LazyColumn(
-        modifier = modifier
-    ) {
-        ComposableCategories(
-            categoriesLoadState,
-            onCategoryClick,
-            onRetry = categoriesViewModel::onRefresh
-        )
-        item {
-            ComposableSortChoice(
-                title = stringResource(R.string.faphub_catalog_title),
-                sortType = sortType,
-                onSelectSortType = fapsListViewModel::onSelectSortType
+    SwipeRefresh(onRefresh = {
+        fapsListViewModel.refreshManifest()
+        fapsList.refresh()
+        categoriesViewModel.onRefresh()
+    }) {
+        LazyColumn(
+            modifier = modifier
+        ) {
+            ComposableCategories(
+                categoriesLoadState,
+                onCategoryClick,
+                onRetry = categoriesViewModel::onRefresh
             )
+            item {
+                ComposableSortChoice(
+                    title = stringResource(R.string.faphub_catalog_title),
+                    sortType = sortType,
+                    onSelectSortType = fapsListViewModel::onSelectSortType
+                )
+            }
+            ComposableFapsList(fapsList, onOpenFapItem, installationButton)
         }
-        ComposableFapsList(fapsList, onOpenFapItem, installationButton)
     }
 }

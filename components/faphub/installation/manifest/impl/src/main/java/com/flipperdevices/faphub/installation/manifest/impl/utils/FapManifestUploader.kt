@@ -13,14 +13,15 @@ import com.flipperdevices.faphub.utils.FapHubTmpFolderProvider
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.storage.file
 import com.flipperdevices.protobuf.storage.writeRequest
-import kotlinx.coroutines.flow.map
 import java.io.File
 import javax.inject.Inject
+import kotlinx.coroutines.flow.map
 
 class FapManifestUploader @Inject constructor(
     private val parser: FapManifestParser,
     private val flipperServiceProvider: FlipperServiceProvider,
-    private val atomicMover: FapManifestAtomicMover
+    private val atomicMover: FapManifestAtomicMover,
+    private val tmpFolderProvider: FapHubTmpFolderProvider
 ) : LogTagProvider {
     override val TAG = "FapManifestUploader"
 
@@ -43,7 +44,7 @@ class FapManifestUploader @Inject constructor(
         info { "Start save tmp manifest for ${fapManifestItem.applicationAlias}" }
         val serviceApi = flipperServiceProvider.getServiceApi()
         val tmpFapPath = File(
-            FapHubTmpFolderProvider.provideTmpFolder(serviceApi.requestApi),
+            tmpFolderProvider.provideTmpFolder(),
             "tmp.fim"
         ).absolutePath
         uploadTmpManifest(serviceApi.requestApi, fapManifestItem, tmpFapPath)

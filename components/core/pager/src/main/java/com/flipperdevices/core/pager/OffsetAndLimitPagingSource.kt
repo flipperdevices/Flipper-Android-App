@@ -12,7 +12,7 @@ abstract class OffsetAndLimitPagingSource<Value : Any>(
     private val pageSize: Int
 ) : PagingSource<Int, Value>(), LogTagProvider {
     override fun getRefreshKey(state: PagingState<Int, Value>): Int? {
-        return state.anchorPosition
+        return null
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Value> {

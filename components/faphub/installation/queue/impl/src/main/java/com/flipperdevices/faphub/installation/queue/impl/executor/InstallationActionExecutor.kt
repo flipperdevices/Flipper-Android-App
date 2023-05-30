@@ -30,11 +30,10 @@ class InstallationActionExecutor @Inject constructor(
         info { "Start install $request" }
         val downloadedFap = fapDownloadApi.downloadBundle(
             versionId = request.toVersionId,
-            listener = null // TODO ask backend add content length
-            /*ProgressWrapperTracker(
+            listener = ProgressWrapperTracker(
                 progressListener,
                 max = PERCENT_FOR_DOWNLOAD
-            )*/
+            )
         )
         info { "Fap downloaded by request $request" }
         val path = fapUploadAction.upload(

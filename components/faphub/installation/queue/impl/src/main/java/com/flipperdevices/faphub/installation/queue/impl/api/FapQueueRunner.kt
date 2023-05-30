@@ -8,6 +8,7 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest
 import com.flipperdevices.faphub.installation.queue.impl.executor.FapActionExecutor
 import com.flipperdevices.faphub.installation.queue.impl.model.FapInternalQueueState
+import javax.inject.Inject
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -22,7 +23,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
 class FapQueueRunner @Inject constructor(
     private val fapActionExecutor: FapActionExecutor
@@ -60,13 +60,17 @@ class FapQueueRunner @Inject constructor(
     }
 
     private suspend fun loop() {
+        info { "Start loop" }
         val currentJob = takeJobForLoop() ?: return
+        info { "Current job is: $currentJob" }
         currentJob.join()
+        info { "Complete current job" }
     }
 
     private suspend fun takeJobForLoop() = withLockResult(mutex, "create_job") {
         val mutableList = pendingTaskFlow.value.toMutableList()
         val currentTask = mutableList.removeFirstOrNull() ?: return@withLockResult null
+        info { "Start execute $currentTask" }
         pendingTaskFlow.emit(mutableList.toImmutableList())
         currentTaskFlow.emit(FapInternalQueueState.Scheduled(currentTask))
         return@withLockResult scope.launch {

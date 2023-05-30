@@ -11,13 +11,14 @@ import com.flipperdevices.faphub.utils.FapHubTmpFolderProvider
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.storage.file
 import com.flipperdevices.protobuf.storage.writeRequest
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.runBlocking
 import java.io.File
 import javax.inject.Inject
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.runBlocking
 
 class FapActionUpload @Inject constructor(
-    private val serviceProvider: FlipperServiceProvider
+    private val serviceProvider: FlipperServiceProvider,
+    private val tmpFolderProvider: FapHubTmpFolderProvider
 ) : LogTagProvider {
     override val TAG = "FapActionUpload"
 
@@ -28,7 +29,7 @@ class FapActionUpload @Inject constructor(
         info { "Start upload ${fapFile.absolutePath}" }
         val requestApi = serviceProvider.getServiceApi().requestApi
         val fapPath = File(
-            FapHubTmpFolderProvider.provideTmpFolder(requestApi),
+            tmpFolderProvider.provideTmpFolder(),
             "tmp.fap"
         ).absolutePath
         val progressWrapper = ProgressWrapperTracker(progressListener)
