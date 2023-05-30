@@ -1,5 +1,7 @@
 package com.flipperdevices.keyscreen.emulate.composable
 
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -10,8 +12,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.core.ui.ktx.onHoldPress
+import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyscreen.api.EmulateProgress
 import com.flipperdevices.keyscreen.api.Picture
@@ -151,4 +156,41 @@ private fun ComposableActiveEmulateInternal(
         progress = emulateProgress,
         picture = picture
     )
+}
+
+@Preview(
+    showBackground = true,
+    showSystemUi = true
+)
+@Composable
+private fun ComposableHoldToSendWithButtonPreview() {
+    FlipperThemeInternal {
+        var positionYEmulateButton by remember { mutableStateOf(0) }
+        var isBubbleOpen by remember { mutableStateOf(false) }
+
+        val buttonActiveModifier = Modifier.onHoldPress(
+            onTap = { isBubbleOpen = true },
+            onLongPressStart = { },
+            onLongPressEnd = { },
+        )
+
+        val modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp)
+
+        ComposableActiveEmulateInternal(
+            modifier = modifier
+                .onGloballyPositioned {
+                    val coordinate = it.positionInRoot()
+                    positionYEmulateButton = coordinate.y.toInt()
+                },
+            buttonActiveModifier = buttonActiveModifier,
+            emulateProgress = null,
+            isActive = false
+        )
+
+        if (isBubbleOpen) {
+            ComposableBubbleHoldToSend(positionYEmulateButton)
+        }
+    }
 }
