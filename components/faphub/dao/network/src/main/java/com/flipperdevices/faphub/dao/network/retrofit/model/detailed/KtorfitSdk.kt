@@ -4,8 +4,9 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RetrofitBundle(
+data class KtorfitSdk(
     @SerialName("_id") val id: String,
-    @SerialName("filename") val filename: String,
-    @SerialName("length") val length: Long
+    @SerialName("name") val name: String,
+    @SerialName("target") val target: String,
+    @SerialName("api") val api: String
 )

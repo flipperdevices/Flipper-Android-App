@@ -1,11 +1,11 @@
 package com.flipperdevices.faphub.dao.network.retrofit.api
 
-import okhttp3.ResponseBody
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Streaming
+import de.jensklingenberg.ktorfit.http.GET
+import de.jensklingenberg.ktorfit.http.Path
+import de.jensklingenberg.ktorfit.http.Streaming
+import io.ktor.client.statement.HttpStatement
 
-interface RetrofitBundleApi {
+interface KtorfitBundleApi {
 
     @Streaming
     @GET("application/version/{uid}/build/{target}/{api}")
@@ -13,5 +13,5 @@ interface RetrofitBundleApi {
         @Path("uid") versionId: String,
         @Path("target") target: String,
         @Path("api") sdkApi: String
-    ): ResponseBody
+    ): HttpStatement
 }

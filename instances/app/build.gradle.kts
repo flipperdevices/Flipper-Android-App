@@ -205,7 +205,7 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.work.ktx)
-    implementation(libs.retrofit)
+    implementation(libs.ktorfit.lib)
 
     implementation(libs.compose.coil.svg)
     implementation(libs.compose.coil)

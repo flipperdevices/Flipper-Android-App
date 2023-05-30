@@ -7,27 +7,34 @@ import com.flipperdevices.core.log.debug
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.dao.api.model.SortType
-import com.flipperdevices.faphub.dao.network.retrofit.api.RetrofitApplicationApi
+import com.flipperdevices.faphub.dao.network.retrofit.api.KtorfitApplicationApi
+import com.flipperdevices.faphub.dao.network.retrofit.model.KtorfitApplicationShort
 import com.flipperdevices.faphub.dao.network.retrofit.model.types.ApplicationSortType
 import com.flipperdevices.faphub.dao.network.retrofit.model.types.SortOrderType
 import com.flipperdevices.faphub.dao.network.retrofit.utils.FapHubNetworkCategoryApi
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
 import com.squareup.anvil.annotations.ContributesBinding
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.request.get
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, FapNetworkApi::class)
 class FapNetworkApiImpl @Inject constructor(
-    private val applicationApi: RetrofitApplicationApi,
+    private val applicationApi: KtorfitApplicationApi,
     private val categoryApi: FapHubNetworkCategoryApi,
-    private val flipperTargetApi: FlipperTargetProviderApi
+    private val flipperTargetApi: FlipperTargetProviderApi,
+    private val client: HttpClient
 ) : FapNetworkApi, LogTagProvider {
     override val TAG = "FapNetworkApi"
     override suspend fun getFeaturedItem() = catchWithDispatcher {
         debug { "Request featured item" }
 
-        val response = applicationApi.getFeaturedApps(limit = 1)
+        val response = client
+            .get("https://catalog.flipp.dev/api/v0/application/featured?limit=1&offset=0")
+            .body<List<KtorfitApplicationShort>>()
         debug { "Provider response: $response" }
 
         val responseItem = response.firstOrNull() ?: error("Empty response")
@@ -58,7 +65,7 @@ class FapNetworkApiImpl @Inject constructor(
         )
         debug { "Provider response: $response" }
 
-        val fapItems = response.pmap {
+        val fapItems = response.toList().pmap {
             it.toFapItemShort(categoryApi.get(it.categoryId))
         }.also {
             debug { "Provider all item: $it" }
