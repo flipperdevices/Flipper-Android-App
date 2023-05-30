@@ -232,7 +232,7 @@ jobs:
             ${{ steps.other.outputs.archive }}
             ${{ steps.artifacts_copy.outputs.path }}/flipper-zero-gms-${{ steps.vars.outputs.major_version }}.${{ steps.vars.outputs.minor_version }}.apk
             ${{ steps.artifacts_copy.outputs.path }}/flipper-zero-nogms-${{ steps.vars.outputs.major_version }}.${{ steps.vars.outputs.minor_version }}.apk
-          tag_name: ${{ steps.vars.outputs.major_version }}.${{ steps.vars.outputs.minor_version }}
+          tag_name: ${{ steps.vars.outputs.major_version }}.${{ steps.vars.outputs.minor_version }}-release
           name: Flipper App ${{ steps.vars.outputs.major_version }} (${{ steps.vars.outputs.minor_version }})
           draft: false
           prerelease: false
