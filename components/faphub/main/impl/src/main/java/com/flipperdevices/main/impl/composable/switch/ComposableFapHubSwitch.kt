@@ -1,5 +1,6 @@
 package com.flipperdevices.main.impl.composable.switch
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -35,7 +36,6 @@ import com.flipperdevices.core.ui.ktx.tab.tabIndicatorOffset
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.main.impl.model.FapHubTabEnum
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableFapHubNewSwitch(
@@ -173,7 +173,7 @@ private fun ComposeTabAnimatedBackground(
     ) {
         Box(
             modifier = Modifier
-                .padding(horizontal = 4.dp, vertical = 4.dp)
+                .padding(horizontal = 2.dp, vertical = 2.dp)
                 .fillMaxHeight()
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(size = 8.dp))
