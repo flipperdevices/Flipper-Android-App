@@ -5,9 +5,9 @@ import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.mkdirRequest
+import kotlinx.coroutines.flow.first
 import java.io.File
 import javax.inject.Inject
-import kotlinx.coroutines.flow.first
 
 class MkDirDelegate @Inject constructor() {
     suspend fun mkdir(requestApi: FlipperRequestApi, pathToFolder: String) {

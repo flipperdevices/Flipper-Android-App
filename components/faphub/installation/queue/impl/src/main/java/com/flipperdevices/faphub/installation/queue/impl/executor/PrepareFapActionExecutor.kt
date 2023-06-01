@@ -7,7 +7,6 @@ import com.flipperdevices.core.progress.ProgressWrapperTracker
 import com.flipperdevices.faphub.dao.api.FapDownloadApi
 import com.flipperdevices.faphub.installation.queue.impl.executor.actions.FapActionUpload
 
-
 private const val PERCENT_FOR_DOWNLOAD = 0.1f
 private const val PERCENT_FOR_UPLOAD = 0.99f
 

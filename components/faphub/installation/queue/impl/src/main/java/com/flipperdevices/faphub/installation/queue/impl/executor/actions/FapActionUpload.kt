@@ -11,10 +11,10 @@ import com.flipperdevices.faphub.utils.FapHubTmpFolderProvider
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.storage.file
 import com.flipperdevices.protobuf.storage.writeRequest
-import java.io.File
-import javax.inject.Inject
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
+import java.io.File
+import javax.inject.Inject
 
 class FapActionUpload @Inject constructor(
     private val serviceProvider: FlipperServiceProvider,

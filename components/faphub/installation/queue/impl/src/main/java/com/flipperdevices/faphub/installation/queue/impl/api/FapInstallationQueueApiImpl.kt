@@ -7,13 +7,13 @@ import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest
 import com.flipperdevices.faphub.installation.queue.api.model.FapQueueState
 import com.flipperdevices.faphub.installation.queue.impl.model.FapInternalQueueState
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import javax.inject.Inject
+import javax.inject.Singleton
 
 @Singleton
 @ContributesBinding(AppGraph::class, FapInstallationQueueApi::class)
@@ -42,16 +42,16 @@ class FapInstallationQueueApiImpl @Inject constructor(
                         is FapInternalQueueState.InProgress -> FapQueueState.InProgress(
                             currentTask.request,
                             currentTask.float
-                    )
-                }
-            } else {
-                val task = pendingTasks.find { it.applicationUid == applicationUid }
-                if (task != null) {
-                    FapQueueState.Pending(task)
+                        )
+                    }
                 } else {
-                    FapQueueState.NotFound
+                    val task = pendingTasks.find { it.applicationUid == applicationUid }
+                    if (task != null) {
+                        FapQueueState.Pending(task)
+                    } else {
+                        FapQueueState.NotFound
+                    }
                 }
-            }
             return@combine state
         }.stateIn(scope, SharingStarted.WhileSubscribed(), FapQueueState.NotFound)
     }
