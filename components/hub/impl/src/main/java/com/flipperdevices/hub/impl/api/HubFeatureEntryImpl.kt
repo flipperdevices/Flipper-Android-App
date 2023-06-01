@@ -1,6 +1,8 @@
 package com.flipperdevices.hub.impl.api
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraphBuilder
@@ -14,10 +16,12 @@ import com.flipperdevices.faphub.main.api.FapHubMainScreenApi
 import com.flipperdevices.faphub.maincard.api.MainCardApi
 import com.flipperdevices.hub.api.HubFeatureEntry
 import com.flipperdevices.hub.impl.composable.ComposableHub
+import com.flipperdevices.hub.impl.viewmodel.HubViewModel
 import com.flipperdevices.nfc.attack.api.NFCAttackFeatureEntry
 import com.flipperdevices.screenstreaming.api.ScreenStreamingFeatureEntry
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
+import tangle.viewmodel.compose.tangleViewModel
 import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, HubFeatureEntry::class)
@@ -37,17 +41,26 @@ class HubFeatureEntryImpl @Inject constructor(
         ) {
             composable(start()) {
                 val globalNavController = LocalGlobalNavigationNavStack.current
+                val hubViewModel = tangleViewModel<HubViewModel>()
+                val isApplicationCatalogEnabled by hubViewModel.isApplicationCatalogEnabledFlow()
+                    .collectAsState()
                 ComposableHub(
                     onOpenAttack = {
                         navController.navigate(nfcAttackFeatureEntry.ROUTE.name)
                     },
                     mainCardComposable = {
-                        mainCardApi.ComposableMainCard(
-                            modifier = Modifier.padding(start = 14.dp, end = 14.dp, top = 14.dp),
-                            onClick = {
-                                navController.navigate(fapHubMainScreenApi.ROUTE.name)
-                            }
-                        )
+                        if (isApplicationCatalogEnabled) {
+                            mainCardApi.ComposableMainCard(
+                                modifier = Modifier.padding(
+                                    start = 14.dp,
+                                    end = 14.dp,
+                                    top = 14.dp
+                                ),
+                                onClick = {
+                                    navController.navigate(fapHubMainScreenApi.ROUTE.name)
+                                }
+                            )
+                        }
                     },
                     onOpenRemoteControl = {
                         globalNavController.navigate(screenStreamingFeatureEntry.ROUTE.name)
