@@ -37,5 +37,4 @@ internal fun ColumnScope.ComposableFapDescriptionText(
         },
         content = description ?: DEFAULT_DESCRIPTION
     )
-
 }

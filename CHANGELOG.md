@@ -2,7 +2,7 @@
 
 # 1.5.2 - In Progress
 
-- [Feature] FapHub api integration (80%) (Network, FAP Manifest, Target, Installation, Updating, Cancel, Share, Delete)
+- [Feature] FapHub MVPv0
 
 # 1.5.1
 

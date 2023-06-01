@@ -11,8 +11,8 @@ import com.flipperdevices.faphub.installation.queue.api.model.FapQueueState
 import com.flipperdevices.faphub.installation.stateprovider.api.api.FapInstallationStateManager
 import com.flipperdevices.faphub.installation.stateprovider.api.model.FapState
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
 import kotlinx.coroutines.flow.combine
+import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, FapInstallationStateManager::class)
 class FapInstallationStateManagerImpl @Inject constructor(

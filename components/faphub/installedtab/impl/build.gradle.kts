@@ -24,7 +24,6 @@ dependencies {
     implementation(projects.components.faphub.installation.queue.api)
     implementation(projects.components.faphub.installation.stateprovider.api)
 
-
     // Compose
     implementation(libs.compose.ui)
     implementation(libs.compose.tooling)
