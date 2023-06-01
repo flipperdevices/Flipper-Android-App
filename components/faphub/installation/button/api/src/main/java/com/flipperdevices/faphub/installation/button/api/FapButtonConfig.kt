@@ -19,7 +19,7 @@ fun FapItemShort.toFapButtonConfig() = FapButtonConfig(
 )
 
 fun FapItem.toFapButtonConfig() = FapButtonConfig(
-    applicationAlias = applicationId,
+    applicationAlias = applicationAlias,
     version = upToDateVersion,
     applicationUid = id,
     categoryAlias = category.name

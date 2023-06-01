@@ -24,5 +24,7 @@ sealed class FapState {
         val progress: Float
     ) : FapState()
 
+    object Deleting : FapState()
+
     object Canceling : FapState()
 }

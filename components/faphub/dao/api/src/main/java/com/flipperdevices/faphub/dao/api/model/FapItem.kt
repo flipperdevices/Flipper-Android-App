@@ -12,6 +12,6 @@ data class FapItem(
     val screenshots: ImmutableList<String>,
     val metaInformation: FapMetaInformation,
     val fapDeveloperInformation: FapDeveloperInformation,
-    val applicationId: String,
+    val applicationAlias: String,
     val upToDateVersion: FapItemVersion
 )

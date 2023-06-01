@@ -9,11 +9,14 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.faphub.dao.api.model.FapItem
+import com.flipperdevices.faphub.fapscreen.impl.model.FapDetailedControlState
 
 @Composable
 fun ComposableFapHeader(
     fapItem: FapItem?,
     modifier: Modifier = Modifier,
+    controlState: FapDetailedControlState,
+    onDelete: () -> Unit,
     installationButton: @Composable (FapItem?, Modifier, TextUnit) -> Unit
 ) = Column(modifier) {
     ComposableFapTitle(
@@ -28,21 +31,8 @@ fun ComposableFapHeader(
     )
     ComposableFapControlRow(
         modifier = Modifier.padding(bottom = 12.dp),
-        fapItem = fapItem,
-        installationButton = installationButton
+        installationButton = installationButton,
+        controlState = controlState,
+        onDelete = onDelete
     )
-}
-
-@Preview(
-    showBackground = true,
-    showSystemUi = true
-)
-@Composable
-private fun ComposableFapHeaderPreview() {
-    FlipperThemeInternal {
-        ComposableFapHeader(
-            fapItem = null,
-            Modifier.padding(horizontal = 24.dp),
-        ) { _, _, _ -> }
-    }
 }

@@ -51,6 +51,7 @@ class FapInstallationUIApiImpl @Inject constructor() : FapInstallationUIApi {
             )
 
             FapState.NotInitialized,
+            FapState.Deleting,
             FapState.RetrievingManifest -> ComposableFapInstalledButton(
                 modifier = modifier.placeholderConnecting(),
                 textSize = textSize
