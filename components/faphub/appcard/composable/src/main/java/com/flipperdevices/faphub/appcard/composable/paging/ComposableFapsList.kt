@@ -9,7 +9,6 @@ import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
@@ -28,7 +27,7 @@ private const val DEFAULT_FAP_COUNT = 20
 fun LazyListScope.ComposableFapsList(
     faps: LazyPagingItems<FapItemShort>,
     onOpenFapItem: (FapItemShort) -> Unit,
-    installationButton: @Composable (FapItemShort?, Modifier, TextUnit) -> Unit
+    installationButton: @Composable (FapItemShort?, Modifier) -> Unit
 ) {
     val elementModifier = Modifier
         .fillMaxWidth()
@@ -38,8 +37,8 @@ fun LazyListScope.ComposableFapsList(
             AppCard(
                 modifier = elementModifier,
                 fapItem = null,
-                installationButton = { modifier, fontSize ->
-                    installationButton(null, modifier, fontSize)
+                installationButton = { modifier ->
+                    installationButton(null, modifier)
                 }
             )
         }
@@ -84,7 +83,7 @@ fun LazyListScope.ComposableFapsList(
 private fun LazyListScope.ComposableLoadedFapsList(
     faps: LazyPagingItems<FapItemShort>,
     onOpenFapItem: (FapItemShort) -> Unit,
-    installationButton: @Composable (FapItemShort?, Modifier, TextUnit) -> Unit
+    installationButton: @Composable (FapItemShort?, Modifier) -> Unit
 ) {
     val lastIndex = faps.itemCount - 1
     items(
@@ -101,8 +100,8 @@ private fun LazyListScope.ComposableLoadedFapsList(
                     )
                     .padding(horizontal = 14.dp, vertical = 12.dp),
                 fapItem = it,
-                installationButton = { modifier, fontSize ->
-                    installationButton(item, modifier, fontSize)
+                installationButton = { modifier ->
+                    installationButton(item, modifier)
                 }
             )
             if (index != lastIndex) {

@@ -58,7 +58,7 @@ data class RetrofitApplicationDetailed(
             picUrl = picUrl,
             metaInformation = metaInformation,
             fapDeveloperInformation = fapDeveloperInformation,
-            applicationId = alias,
+            applicationAlias = alias,
             upToDateVersion = fapItemVersion
         )
     }

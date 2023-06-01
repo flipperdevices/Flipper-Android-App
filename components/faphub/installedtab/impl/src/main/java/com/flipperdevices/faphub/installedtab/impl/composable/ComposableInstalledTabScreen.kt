@@ -12,7 +12,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.errors.ComposableThrowableError
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
@@ -29,7 +28,7 @@ private const val DEFAULT_FAP_COUNT = 20
 @Composable
 fun ComposableInstalledTabScreen(
     onOpenFapItem: (FapItemShort) -> Unit,
-    installationButton: @Composable (FapItemShort?, Modifier, TextUnit) -> Unit,
+    installationButton: @Composable (FapItemShort?, Modifier) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val viewModel = tangleViewModel<InstalledFapsViewModel>()
@@ -66,7 +65,7 @@ fun ComposableInstalledTabScreen(
 private fun ComposableInstalledTabScreen(
     faps: ImmutableList<FapItemShort>?,
     onOpenFapItem: (FapItemShort) -> Unit,
-    installationButton: @Composable (FapItemShort?, Modifier, TextUnit) -> Unit,
+    installationButton: @Composable (FapItemShort?, Modifier) -> Unit,
     modifier: Modifier = Modifier
 ) = LazyColumn(modifier) {
     item {
@@ -90,8 +89,8 @@ private fun ComposableInstalledTabScreen(
             AppCard(
                 modifier = Modifier.padding(horizontal = 14.dp, vertical = 12.dp),
                 fapItem = null,
-                installationButton = { modifier, fontSize ->
-                    installationButton(null, modifier, fontSize)
+                installationButton = { modifier ->
+                    installationButton(null, modifier)
                 }
             )
         }
@@ -105,8 +104,8 @@ private fun ComposableInstalledTabScreen(
                     )
                     .padding(horizontal = 14.dp, vertical = 12.dp),
                 fapItem = item,
-                installationButton = { modifier, fontSize ->
-                    installationButton(item, modifier, fontSize)
+                installationButton = { modifier ->
+                    installationButton(item, modifier)
                 }
             )
             if (index != faps.lastIndex) {

@@ -13,7 +13,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.errors.ComposableThrowableError
 import com.flipperdevices.core.ui.ktx.OrangeAppBar
@@ -23,6 +22,7 @@ import com.flipperdevices.faphub.dao.api.model.FapItem
 import com.flipperdevices.faphub.fapscreen.impl.R
 import com.flipperdevices.faphub.fapscreen.impl.composable.description.ComposableFapDescription
 import com.flipperdevices.faphub.fapscreen.impl.composable.header.ComposableFapHeader
+import com.flipperdevices.faphub.fapscreen.impl.model.FapDetailedControlState
 import com.flipperdevices.faphub.fapscreen.impl.model.FapScreenLoadingState
 import com.flipperdevices.faphub.fapscreen.impl.viewmodel.FapScreenViewModel
 import tangle.viewmodel.compose.tangleViewModel
@@ -30,11 +30,12 @@ import tangle.viewmodel.compose.tangleViewModel
 @Composable
 fun ComposableFapScreen(
     onBack: () -> Unit,
-    installationButton: @Composable (FapItem?, Modifier, TextUnit) -> Unit,
+    installationButton: @Composable (FapItem?, Modifier) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val viewModel = tangleViewModel<FapScreenViewModel>()
     val loadingState by viewModel.getLoadingState().collectAsState()
+    val controlState by viewModel.getControlState().collectAsState()
     loadingState.let { loadingStateLocal ->
         when (loadingStateLocal) {
             is FapScreenLoadingState.Error -> ComposableThrowableError(
@@ -49,14 +50,18 @@ fun ComposableFapScreen(
                 fapItem = loadingStateLocal.fapItem,
                 onBack = onBack,
                 installationButton = installationButton,
-                modifier = modifier
+                modifier = modifier,
+                controlState = controlState,
+                onDelete = viewModel::onDelete
             )
 
             FapScreenLoadingState.Loading -> ComposableFapScreenInternal(
                 fapItem = null,
                 onBack = onBack,
                 installationButton = installationButton,
-                modifier = modifier
+                modifier = modifier,
+                controlState = controlState,
+                onDelete = viewModel::onDelete
             )
         }
     }
@@ -66,14 +71,18 @@ fun ComposableFapScreen(
 private fun ComposableFapScreenInternal(
     fapItem: FapItem?,
     onBack: () -> Unit,
-    installationButton: @Composable (FapItem?, Modifier, TextUnit) -> Unit,
+    controlState: FapDetailedControlState,
+    onDelete: () -> Unit,
+    installationButton: @Composable (FapItem?, Modifier) -> Unit,
     modifier: Modifier = Modifier
 ) = Column(modifier.verticalScroll(rememberScrollState())) {
     ComposableFapScreenBar(fapItem?.name, onBack)
     ComposableFapHeader(
         modifier = Modifier.padding(start = 14.dp, end = 14.dp, top = 14.dp),
         fapItem = fapItem,
-        installationButton = installationButton
+        installationButton = installationButton,
+        controlState = controlState,
+        onDelete = onDelete
     )
     Divider(
         modifier = Modifier

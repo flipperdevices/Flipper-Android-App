@@ -4,10 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.TextUnit
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.faphub.installation.button.api.FapButtonConfig
+import com.flipperdevices.faphub.installation.button.api.FapButtonSize
 import com.flipperdevices.faphub.installation.button.api.FapInstallationUIApi
 import com.flipperdevices.faphub.installation.button.impl.composable.ComposableFapCancelingButton
 import com.flipperdevices.faphub.installation.button.impl.composable.ComposableFapInstallButton
@@ -27,7 +27,7 @@ class FapInstallationUIApiImpl @Inject constructor() : FapInstallationUIApi {
     override fun ComposableButton(
         config: FapButtonConfig?,
         modifier: Modifier,
-        textSize: TextUnit
+        fapButtonSize: FapButtonSize
     ) {
         val statusViewModel = tangleViewModel<FapStatusViewModel>()
         val state by statusViewModel.getStateForApplicationId(config).collectAsState()
@@ -35,41 +35,44 @@ class FapInstallationUIApiImpl @Inject constructor() : FapInstallationUIApi {
         when (val localState = state) {
             is FapState.InstallationInProgress -> ComposableFapInstallingButton(
                 modifier = modifier,
-                textSize = textSize,
-                percent = localState.progress
+                fapButtonSize = fapButtonSize,
+                percent = localState.progress,
+                onCancel = { statusViewModel.cancel(config) }
             )
 
             FapState.Installed -> ComposableFapInstalledButton(
                 modifier = modifier,
-                textSize = textSize
+                fapButtonSize = fapButtonSize
             )
 
             FapState.ReadyToInstall -> ComposableFapInstallButton(
                 modifier = modifier,
-                textSize = textSize,
+                fapButtonSize = fapButtonSize,
                 onClick = { statusViewModel.install(config) }
             )
 
             FapState.NotInitialized,
+            FapState.Deleting,
             FapState.RetrievingManifest -> ComposableFapInstalledButton(
                 modifier = modifier.placeholderConnecting(),
-                textSize = textSize
+                fapButtonSize = fapButtonSize
             )
 
             is FapState.ReadyToUpdate -> ComposableFapUpdateButton(
                 modifier = modifier,
-                textSize = textSize,
+                fapButtonSize = fapButtonSize,
                 onClick = { statusViewModel.update(config, localState.from) }
             )
 
             is FapState.UpdatingInProgress -> ComposableFapUpdatingButton(
                 modifier = modifier,
-                textSize = textSize,
-                percent = localState.progress
+                fapButtonSize = fapButtonSize,
+                percent = localState.progress,
+                onCancel = { statusViewModel.cancel(config) }
             )
 
             FapState.Canceling -> ComposableFapCancelingButton(
-                textSize = textSize,
+                fapButtonSize = fapButtonSize,
                 modifier = modifier
             )
         }

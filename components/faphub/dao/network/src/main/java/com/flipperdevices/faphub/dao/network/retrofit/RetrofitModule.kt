@@ -24,7 +24,7 @@ private const val FAP_URL = "https://catalog.flipp.dev/api/v0/"
 class RetrofitModule {
     private val json by lazy {
         Json {
-            ignoreUnknownKeys = !BuildConfig.DEBUG
+            ignoreUnknownKeys = true
         }
     }
 

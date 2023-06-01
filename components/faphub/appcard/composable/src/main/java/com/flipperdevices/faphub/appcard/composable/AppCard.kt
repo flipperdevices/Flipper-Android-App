@@ -15,9 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
@@ -36,7 +34,7 @@ private val DEFAULT_DESCRIPTION
 fun AppCard(
     fapItem: FapItemShort?,
     modifier: Modifier = Modifier,
-    installationButton: @Composable (Modifier, TextUnit) -> Unit
+    installationButton: @Composable (Modifier) -> Unit
 ) {
     Column(modifier) {
         AppCardTop(
@@ -65,7 +63,7 @@ fun AppCard(
 private fun AppCardTop(
     fapItem: FapItemShort?,
     modifier: Modifier = Modifier,
-    installationButton: @Composable (modifier: Modifier, fontSize: TextUnit) -> Unit
+    installationButton: @Composable (modifier: Modifier) -> Unit
 ) {
     Row(
         modifier = modifier
@@ -95,8 +93,7 @@ private fun AppCardTop(
         installationButton(
             modifier = Modifier
                 .fillMaxHeight()
-                .padding(vertical = 4.dp),
-            fontSize = 18.sp
+                .padding(vertical = 4.dp)
         )
     }
 }
@@ -105,6 +102,6 @@ private fun AppCardTop(
 @Composable
 private fun ComposableAppCardLoadingPreview() {
     FlipperThemeInternal {
-        AppCard(null) { _, _ -> }
+        AppCard(null) { }
     }
 }

@@ -75,6 +75,7 @@ class FapQueueRunner @Inject constructor(
         currentTaskFlow.emit(FapInternalQueueState.Scheduled(currentTask))
         return@withLockResult scope.launch {
             try {
+                currentTaskFlow.emit(FapInternalQueueState.InProgress(currentTask, 0f))
                 fapActionExecutor.execute(currentTask) { progress ->
                     currentTaskFlow.emit(FapInternalQueueState.InProgress(currentTask, progress))
                 }

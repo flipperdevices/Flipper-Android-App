@@ -8,6 +8,7 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.faphub.fapscreen.api.FapScreenApi
+import com.flipperdevices.faphub.installation.button.api.FapButtonSize
 import com.flipperdevices.faphub.installation.button.api.FapInstallationUIApi
 import com.flipperdevices.faphub.installation.button.api.toFapButtonConfig
 import com.flipperdevices.faphub.search.api.FapHubSearchEntryApi
@@ -35,11 +36,11 @@ class FapHubSearchEntryApiImpl @Inject constructor(
                     onFapItemClick = {
                         navController.navigate(fapScreenApi.getFapScreen(it.id))
                     },
-                    installationButton = { fapItem, modifier, fontSize ->
+                    installationButton = { fapItem, modifier ->
                         fapInstallationUIApi.ComposableButton(
                             config = fapItem?.toFapButtonConfig(),
                             modifier = modifier,
-                            textSize = fontSize
+                            fapButtonSize = FapButtonSize.COMPACTED
                         )
                     }
                 )

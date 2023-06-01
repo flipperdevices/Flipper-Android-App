@@ -6,7 +6,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.TextUnit
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.flipperdevices.core.ui.ktx.SwipeRefresh
 import com.flipperdevices.faphub.appcard.composable.paging.ComposableFapsList
@@ -24,7 +23,7 @@ fun ComposableCatalogTabScreen(
     onOpenFapItem: (FapItemShort) -> Unit,
     onCategoryClick: (FapCategory) -> Unit,
     modifier: Modifier = Modifier,
-    installationButton: @Composable (FapItemShort?, Modifier, TextUnit) -> Unit
+    installationButton: @Composable (FapItemShort?, Modifier) -> Unit
 ) {
     val fapsListViewModel = tangleViewModel<FapsListViewModel>()
     val fapsList = fapsListViewModel.faps.collectAsLazyPagingItems()

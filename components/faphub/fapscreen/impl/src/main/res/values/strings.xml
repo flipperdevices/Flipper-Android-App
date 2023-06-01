@@ -5,6 +5,7 @@
     <string name="fapscreen_information_size">Size:</string>
     <string name="fapscreen_information_api">Api:</string>
     <string name="fapscreen_install_share_desc">Share app link</string>
+    <string name="fapscreen_install_delete_desc">Delete application from Flipper</string>
     <string name="fapscreen_desc_title">Description</string>
     <string name="fapscreen_changelog_title">Changelog</string>
     <string name="fapscreen_changelog_more">More</string>
