@@ -41,6 +41,13 @@ class FapStatusViewModel @VMInject constructor(
         )
     }
 
+    fun cancel(fapButtonConfig: FapButtonConfig?) {
+        if (fapButtonConfig == null) {
+            return
+        }
+        queueApi.enqueue(FapActionRequest.Cancel(fapButtonConfig.applicationUid))
+    }
+
     fun update(
         fapButtonConfig: FapButtonConfig?,
         from: FapManifestItem

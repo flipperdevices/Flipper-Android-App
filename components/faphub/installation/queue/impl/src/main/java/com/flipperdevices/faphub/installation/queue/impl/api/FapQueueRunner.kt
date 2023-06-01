@@ -8,7 +8,6 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest
 import com.flipperdevices.faphub.installation.queue.impl.executor.FapActionExecutor
 import com.flipperdevices.faphub.installation.queue.impl.model.FapInternalQueueState
-import javax.inject.Inject
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -23,6 +22,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 class FapQueueRunner @Inject constructor(
     private val fapActionExecutor: FapActionExecutor

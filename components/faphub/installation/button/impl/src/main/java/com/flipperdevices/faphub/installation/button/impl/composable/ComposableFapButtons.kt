@@ -9,6 +9,8 @@ import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.faphub.installation.button.api.FapButtonSize
 import com.flipperdevices.faphub.installation.button.impl.R
+import com.flipperdevices.faphub.installation.button.impl.composable.elements.ComposableFlipperButton
+import com.flipperdevices.faphub.installation.button.impl.composable.elements.ComposableInProgressFapButton
 
 @Composable
 fun ComposableFapInstallButton(
@@ -57,13 +59,15 @@ fun ComposableFapUpdateButton(
 fun ComposableFapInstallingButton(
     percent: Float,
     fapButtonSize: FapButtonSize,
+    onCancel: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    ComposableDynamicFlipperButton(
+    ComposableInProgressFapButton(
         modifier = modifier,
         percent = percent,
         color = LocalPallet.current.accent,
-        fapButtonSize = fapButtonSize
+        fapButtonSize = fapButtonSize,
+        onCancel = onCancel
     )
 }
 
@@ -71,13 +75,15 @@ fun ComposableFapInstallingButton(
 fun ComposableFapUpdatingButton(
     percent: Float,
     fapButtonSize: FapButtonSize,
+    onCancel: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    ComposableDynamicFlipperButton(
+    ComposableInProgressFapButton(
         modifier = modifier,
         percent = percent,
         color = LocalPallet.current.updateProgressGreen,
-        fapButtonSize = fapButtonSize
+        fapButtonSize = fapButtonSize,
+        onCancel = onCancel
     )
 }
 
@@ -102,8 +108,16 @@ private fun ComposableFapInstallButtonPreview() {
             ComposableFapInstallButton(fapButtonSize = FapButtonSize.LARGE, onClick = {})
             ComposableFapInstalledButton(fapButtonSize = FapButtonSize.LARGE)
             ComposableFapUpdateButton(fapButtonSize = FapButtonSize.LARGE, onClick = {})
-            ComposableFapInstallingButton(percent = 0.5f, fapButtonSize = FapButtonSize.LARGE)
-            ComposableFapUpdatingButton(percent = 0.5f, fapButtonSize = FapButtonSize.LARGE)
+            ComposableFapInstallingButton(
+                percent = 0.5f,
+                fapButtonSize = FapButtonSize.LARGE,
+                onCancel = {}
+            )
+            ComposableFapUpdatingButton(
+                percent = 0.5f,
+                fapButtonSize = FapButtonSize.LARGE,
+                onCancel = {}
+            )
         }
     }
 }

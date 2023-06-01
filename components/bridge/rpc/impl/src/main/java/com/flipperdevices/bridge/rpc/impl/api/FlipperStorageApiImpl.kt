@@ -9,8 +9,8 @@ import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.deleteRequest
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
 import kotlinx.coroutines.flow.first
+import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, FlipperStorageApi::class)
 class FlipperStorageApiImpl @Inject constructor(

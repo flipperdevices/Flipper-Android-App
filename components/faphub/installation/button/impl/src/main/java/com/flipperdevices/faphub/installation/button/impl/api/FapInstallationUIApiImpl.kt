@@ -18,8 +18,8 @@ import com.flipperdevices.faphub.installation.button.impl.composable.ComposableF
 import com.flipperdevices.faphub.installation.button.impl.viewmodel.FapStatusViewModel
 import com.flipperdevices.faphub.installation.stateprovider.api.model.FapState
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
 import tangle.viewmodel.compose.tangleViewModel
+import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, FapInstallationUIApi::class)
 class FapInstallationUIApiImpl @Inject constructor() : FapInstallationUIApi {
@@ -36,7 +36,8 @@ class FapInstallationUIApiImpl @Inject constructor() : FapInstallationUIApi {
             is FapState.InstallationInProgress -> ComposableFapInstallingButton(
                 modifier = modifier,
                 fapButtonSize = fapButtonSize,
-                percent = localState.progress
+                percent = localState.progress,
+                onCancel = { statusViewModel.cancel(config) }
             )
 
             FapState.Installed -> ComposableFapInstalledButton(
@@ -66,7 +67,8 @@ class FapInstallationUIApiImpl @Inject constructor() : FapInstallationUIApi {
             is FapState.UpdatingInProgress -> ComposableFapUpdatingButton(
                 modifier = modifier,
                 fapButtonSize = fapButtonSize,
-                percent = localState.progress
+                percent = localState.progress,
+                onCancel = { statusViewModel.cancel(config) }
             )
 
             FapState.Canceling -> ComposableFapCancelingButton(

@@ -1,4 +1,4 @@
-package com.flipperdevices.faphub.installation.button.impl.composable
+package com.flipperdevices.faphub.installation.button.impl.composable.elements
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -8,13 +8,18 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -23,48 +28,65 @@ import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.faphub.installation.button.api.FapButtonSize
+import com.flipperdevices.faphub.installation.button.impl.R
 
 @Composable
-fun ComposableFlipperButton(
-    text: String,
+fun ComposableInProgressFapButton(
+    percent: Float,
     fapButtonSize: FapButtonSize,
     color: Color,
-    modifier: Modifier = Modifier,
-    onClick: (() -> Unit)? = null,
+    onCancel: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    var buttonModifier = modifier
-        .clip(RoundedCornerShape(6.dp))
-        .background(color)
-    if (onClick != null) {
-        buttonModifier = buttonModifier
-            .clickableRipple(onClick = onClick)
-    }
-    Box(
-        modifier = buttonModifier
-            .height(fapButtonSize.heightDp.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            modifier = Modifier.padding(vertical = 4.dp, horizontal = 21.dp),
-            text = text,
-            textAlign = TextAlign.Center,
-            style = LocalTypography.current.fapHubButtonText.copy(
-                fontSize = fapButtonSize.textSizeSp.sp
-            ),
-            color = LocalPallet.current.onFapHubInstallButton
-        )
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        when (fapButtonSize) {
+            FapButtonSize.COMPACTED -> {}
+            FapButtonSize.LARGE -> ComposableInProgressFapCancel(
+                Modifier
+                    .padding(end = 12.dp)
+                    .size(46.dp)
+                    .clickableRipple(onClick = onCancel)
+            )
+        }
+        ComposableInProgressFapButtonInternal(percent, fapButtonSize, color, modifier)
+        when (fapButtonSize) {
+            FapButtonSize.COMPACTED -> ComposableInProgressFapCancel(
+                Modifier
+                    .padding(start = 8.dp)
+                    .size(34.dp)
+                    .clickableRipple(onClick = onCancel)
+            )
+
+            FapButtonSize.LARGE -> {}
+        }
     }
 }
 
 @Composable
-fun ComposableDynamicFlipperButton(
+private fun ComposableInProgressFapCancel(
+    modifier: Modifier = Modifier
+) {
+    Icon(
+        modifier = modifier,
+        painter = painterResource(R.drawable.ic_cancel),
+        contentDescription = stringResource(R.string.faphub_installation_cancel_desc),
+        tint = LocalPallet.current.text40
+    )
+}
+
+@Composable
+private fun ComposableInProgressFapButtonInternal(
     percent: Float,
     fapButtonSize: FapButtonSize,
     color: Color,
     modifier: Modifier = Modifier
 ) {
+    val buttonModifier = when (fapButtonSize) {
+        FapButtonSize.COMPACTED -> modifier.width(92.dp)
+        FapButtonSize.LARGE -> modifier
+    }
     Box(
-        modifier = modifier
+        modifier = buttonModifier
             .height(fapButtonSize.heightDp.dp)
             .clip(RoundedCornerShape(6.dp))
             .background(color.copy(alpha = 0.5f))
@@ -73,12 +95,13 @@ fun ComposableDynamicFlipperButton(
     ) {
         ComposableProgressRow(percent, color)
         Text(
-            modifier = Modifier.padding(vertical = 4.dp, horizontal = 21.dp),
+            modifier = Modifier.padding(vertical = 4.dp),
             text = percent.roundPercentToString(),
             textAlign = TextAlign.Center,
             style = LocalTypography.current.fapHubButtonProgressText.copy(
                 fontSize = fapButtonSize.textSizeSp.sp
             ),
+            maxLines = 1,
             color = LocalPallet.current.onFapHubInstallButton
         )
     }

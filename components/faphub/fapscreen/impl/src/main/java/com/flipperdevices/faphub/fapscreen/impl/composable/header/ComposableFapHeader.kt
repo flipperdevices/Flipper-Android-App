@@ -11,10 +11,10 @@ import com.flipperdevices.faphub.fapscreen.impl.model.FapDetailedControlState
 @Composable
 fun ComposableFapHeader(
     fapItem: FapItem?,
-    modifier: Modifier = Modifier,
     controlState: FapDetailedControlState,
     onDelete: () -> Unit,
-    installationButton: @Composable (FapItem?, Modifier) -> Unit
+    installationButton: @Composable (FapItem?, Modifier) -> Unit,
+    modifier: Modifier = Modifier
 ) = Column(modifier) {
     ComposableFapTitle(
         modifier = Modifier,
