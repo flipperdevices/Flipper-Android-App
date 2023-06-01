@@ -30,27 +30,29 @@ class FapInstallationQueueApiImpl @Inject constructor(
             queueRunner.currentTaskFlow(),
             queueRunner.pendingTasksFlow()
         ) { currentTask, pendingTasks ->
-            return@combine if (currentTask != null && currentTask.request.applicationUid == applicationUid) {
-                when (currentTask) {
-                    is FapInternalQueueState.Failed -> FapQueueState.Failed(
-                        currentTask.request,
-                        currentTask.throwable
-                    )
+            val state =
+                if (currentTask != null && currentTask.request.applicationUid == applicationUid) {
+                    when (currentTask) {
+                        is FapInternalQueueState.Failed -> FapQueueState.Failed(
+                            currentTask.request,
+                            currentTask.throwable
+                        )
 
-                    is FapInternalQueueState.Scheduled -> FapQueueState.Pending(currentTask.request)
-                    is FapInternalQueueState.InProgress -> FapQueueState.InProgress(
-                        currentTask.request,
-                        currentTask.float
-                    )
-                }
-            } else {
-                val task = pendingTasks.find { it.applicationUid == applicationUid }
-                if (task != null) {
-                    FapQueueState.Pending(task)
+                        is FapInternalQueueState.Scheduled -> FapQueueState.Pending(currentTask.request)
+                        is FapInternalQueueState.InProgress -> FapQueueState.InProgress(
+                            currentTask.request,
+                            currentTask.float
+                        )
+                    }
                 } else {
-                    FapQueueState.NotFound
+                    val task = pendingTasks.find { it.applicationUid == applicationUid }
+                    if (task != null) {
+                        FapQueueState.Pending(task)
+                    } else {
+                        FapQueueState.NotFound
+                    }
                 }
-            }
+            return@combine state
         }.stateIn(scope, SharingStarted.WhileSubscribed(), FapQueueState.NotFound)
     }
 

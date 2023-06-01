@@ -20,6 +20,7 @@ dependencies {
     implementation(projects.components.faphub.dao.api)
     implementation(projects.components.faphub.appcard.composable)
     implementation(projects.components.faphub.installation.button.api)
+    implementation(projects.components.faphub.installation.manifest.api)
 
     // Compose
     implementation(libs.compose.ui)

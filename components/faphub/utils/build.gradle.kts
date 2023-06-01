@@ -9,6 +9,9 @@ dependencies {
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.pbutils)
+    implementation(projects.components.bridge.rpc.api)
 
     implementation(libs.kotlin.coroutines)
+
+    implementation(libs.dagger)
 }

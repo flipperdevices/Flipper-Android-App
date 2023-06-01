@@ -5,6 +5,7 @@ import com.flipperdevices.core.di.BuildConfig
 import com.flipperdevices.faphub.dao.network.retrofit.api.RetrofitApplicationApi
 import com.flipperdevices.faphub.dao.network.retrofit.api.RetrofitBundleApi
 import com.flipperdevices.faphub.dao.network.retrofit.api.RetrofitCategoryApi
+import com.flipperdevices.faphub.dao.network.retrofit.api.RetrofitVersionApi
 import com.flipperdevices.faphub.dao.network.retrofit.utils.FapHubNetworkCategoryApi
 import com.flipperdevices.faphub.dao.network.retrofit.utils.RetrofitDebugLoggingEnable
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -58,5 +59,11 @@ class RetrofitModule {
     @Reusable
     fun provideBundleApi(retrofit: Retrofit): RetrofitBundleApi {
         return retrofit.create(RetrofitBundleApi::class.java)
+    }
+
+    @Provides
+    @Reusable
+    fun providerVersionApi(retrofit: Retrofit): RetrofitVersionApi {
+        return retrofit.create(RetrofitVersionApi::class.java)
     }
 }

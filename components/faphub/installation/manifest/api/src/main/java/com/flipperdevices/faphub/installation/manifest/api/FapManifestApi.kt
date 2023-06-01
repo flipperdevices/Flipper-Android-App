@@ -6,4 +6,5 @@ import kotlinx.coroutines.flow.StateFlow
 interface FapManifestApi {
     fun getManifestFlow(): StateFlow<List<FapManifestItem>?>
     suspend fun add(pathToFap: String, fapManifestItem: FapManifestItem)
+    fun invalidateAsync()
 }

@@ -48,7 +48,9 @@ private suspend fun ResponseBody.saveToFile(
     file.outputStream().use { fileStream ->
         val totalBytes = contentLength()
         streamFromNetwork.copyTo(fileStream, onProcessed = { bytesSentTotal ->
-            listener?.report(bytesSentTotal, totalBytes)
+            if (totalBytes > 0) {
+                listener?.report(bytesSentTotal, totalBytes)
+            }
         })
     }
 }

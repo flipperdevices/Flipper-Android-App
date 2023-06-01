@@ -56,9 +56,10 @@ class FapInstallationUIApiImpl @Inject constructor() : FapInstallationUIApi {
                 textSize = textSize
             )
 
-            FapState.ReadyToUpdate -> ComposableFapUpdateButton(
+            is FapState.ReadyToUpdate -> ComposableFapUpdateButton(
                 modifier = modifier,
-                textSize = textSize
+                textSize = textSize,
+                onClick = { statusViewModel.update(config, localState.from) }
             )
 
             is FapState.UpdatingInProgress -> ComposableFapUpdatingButton(
