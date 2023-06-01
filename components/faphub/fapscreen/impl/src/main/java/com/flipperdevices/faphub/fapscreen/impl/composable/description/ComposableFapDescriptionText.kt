@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.core.markdown.ComposableMarkdown
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
@@ -26,7 +27,7 @@ internal fun ColumnScope.ComposableFapDescriptionText(
         style = LocalTypography.current.buttonM16,
         color = LocalPallet.current.text100
     )
-    Text(
+    ComposableMarkdown(
         modifier = if (description == null) {
             Modifier
                 .fillMaxWidth()
@@ -34,8 +35,7 @@ internal fun ColumnScope.ComposableFapDescriptionText(
         } else {
             Modifier.fillMaxWidth()
         },
-        text = description ?: DEFAULT_DESCRIPTION,
-        style = LocalTypography.current.bodyR14,
-        color = LocalPallet.current.text100
+        content = description ?: DEFAULT_DESCRIPTION
     )
+
 }
