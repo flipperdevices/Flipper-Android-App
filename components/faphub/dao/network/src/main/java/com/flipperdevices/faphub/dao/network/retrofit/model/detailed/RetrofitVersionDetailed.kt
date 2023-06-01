@@ -9,7 +9,7 @@ data class RetrofitVersionDetailed(
     @SerialName("version") val version: String,
     @SerialName("current_build") val currentBuild: RetrofitBuild,
     @SerialName("bundle") val bundle: RetrofitBundle,
-    @SerialName("icon") val iconUrl: String,
+    @SerialName("icon_uri") val iconUrl: String,
     @SerialName("screenshots") val screenshots: List<String>,
     @SerialName("links") val links: RetrofitLinks,
     @SerialName("description") val description: String,

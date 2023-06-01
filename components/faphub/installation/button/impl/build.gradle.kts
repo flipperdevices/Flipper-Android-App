@@ -17,6 +17,7 @@ dependencies {
     implementation(projects.components.core.data)
 
     implementation(projects.components.faphub.installation.stateprovider.api)
+    implementation(projects.components.faphub.installation.manifest.api)
     implementation(projects.components.faphub.installation.queue.api)
 
     // Compose

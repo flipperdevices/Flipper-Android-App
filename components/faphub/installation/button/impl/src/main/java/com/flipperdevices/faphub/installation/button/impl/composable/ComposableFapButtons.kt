@@ -41,13 +41,15 @@ fun ComposableFapInstalledButton(
 @Composable
 fun ComposableFapUpdateButton(
     textSize: TextUnit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
 ) {
     ComposableFlipperButton(
         modifier = modifier,
         text = stringResource(R.string.faphub_installation_update),
         color = LocalPallet.current.updateProgressGreen,
-        fontSize = textSize
+        fontSize = textSize,
+        onClick = onClick
     )
 }
 
@@ -99,7 +101,7 @@ private fun ComposableFapInstallButtonPreview() {
         Column {
             ComposableFapInstallButton(textSize = TextUnit.Unspecified, onClick = {})
             ComposableFapInstalledButton(textSize = TextUnit.Unspecified)
-            ComposableFapUpdateButton(textSize = TextUnit.Unspecified)
+            ComposableFapUpdateButton(textSize = TextUnit.Unspecified, onClick = {})
             ComposableFapInstallingButton(percent = 0.5f, textSize = TextUnit.Unspecified)
             ComposableFapUpdatingButton(percent = 0.5f, textSize = TextUnit.Unspecified)
         }
