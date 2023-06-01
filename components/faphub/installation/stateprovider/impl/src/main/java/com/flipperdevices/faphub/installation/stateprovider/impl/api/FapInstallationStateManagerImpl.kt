@@ -11,11 +11,8 @@ import com.flipperdevices.faphub.installation.queue.api.model.FapQueueState
 import com.flipperdevices.faphub.installation.stateprovider.api.api.FapInstallationStateManager
 import com.flipperdevices.faphub.installation.stateprovider.api.model.FapState
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
+import kotlinx.coroutines.flow.combine
 
 @ContributesBinding(AppGraph::class, FapInstallationStateManager::class)
 class FapInstallationStateManagerImpl @Inject constructor(
@@ -25,15 +22,14 @@ class FapInstallationStateManagerImpl @Inject constructor(
     override val TAG = "FapInstallationStateManager"
 
     override fun getFapStateFlow(
-        scope: CoroutineScope,
         applicationUid: String,
         currentVersion: SemVer
     ) = combine(
         fapManifestApi.getManifestFlow(),
-        queueApi.getFlowById(scope, applicationUid)
+        queueApi.getFlowById(applicationUid)
     ) { manifests, queueState ->
         return@combine getState(manifests, applicationUid, queueState, currentVersion)
-    }.stateIn(scope, SharingStarted.Eagerly, FapState.NotInitialized)
+    }
 
     @Suppress("UnusedPrivateMember")
     private suspend fun getState(

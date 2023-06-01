@@ -106,7 +106,10 @@ private fun ComposableInstalledTabScreen(
             )
         }
     } else {
-        items(faps.size) { index ->
+        items(
+            count = faps.size,
+            key = { faps[it].id }
+        ) { index ->
             val item = faps[index]
             AppCard(
                 modifier = Modifier

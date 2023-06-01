@@ -1,7 +1,6 @@
 package com.flipperdevices.faphub.installation.button.impl.viewmodel
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.faphub.installation.button.api.FapButtonConfig
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
 import com.flipperdevices.faphub.installation.queue.api.FapInstallationQueueApi
@@ -21,7 +20,6 @@ class FapStatusViewModel @VMInject constructor(
         MutableStateFlow(FapState.NotInitialized)
     } else {
         stateManager.getFapStateFlow(
-            scope = viewModelScope,
             applicationUid = fapButtonConfig.applicationUid,
             currentVersion = fapButtonConfig.version.version
         )

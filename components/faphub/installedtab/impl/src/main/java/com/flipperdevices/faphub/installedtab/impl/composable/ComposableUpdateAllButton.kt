@@ -1,7 +1,6 @@
 package com.flipperdevices.faphub.installedtab.impl.composable
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -32,39 +31,48 @@ fun ComposableUpdateAllButton(
     modifier: Modifier = Modifier
 ) {
     when (state) {
-        FapBatchUpdateButtonState.Loading -> ComposableUpdateAllButtonInProgress(
-            modifier.placeholderConnecting()
-        )
-
-        is FapBatchUpdateButtonState.ReadyToUpdate -> ComposableUpdateAllButtonPending(
-            pendingCount = state.count,
-            modifier = modifier.clickableRipple(onClick = onUpdateAll)
-        )
-
-        FapBatchUpdateButtonState.UpdatingInProgress -> ComposableUpdateAllButtonInProgress(
-            modifier = modifier.clickableRipple(onClick = onCancelAll)
-        )
-
         FapBatchUpdateButtonState.NoUpdates -> {
             return
+        }
+
+        FapBatchUpdateButtonState.Loading -> {
+            ComposableCancelAllButton(
+                modifier.placeholderConnecting()
+            )
+        }
+
+        is FapBatchUpdateButtonState.ReadyToUpdate -> {
+            ComposableUpdateAllButtonPending(
+                pendingCount = state.count,
+                modifier = modifier.clickableRipple(onClick = onUpdateAll)
+            )
+        }
+
+        FapBatchUpdateButtonState.UpdatingInProgress -> {
+            ComposableCancelAllButton(
+                modifier = modifier.clickableRipple(onClick = onCancelAll)
+            )
         }
     }
 }
 
 @Composable
-private fun ComposableUpdateAllButtonInProgress(
+private fun ComposableCancelAllButton(
     modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
-            .border(2.dp, LocalPallet.current.text40),
+            .background(LocalPallet.current.text40)
+            .padding(2.dp)
+            .clip(RoundedCornerShape(8.dp))
+            .background(LocalPallet.current.background),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
         Text(
-            modifier = Modifier.padding(vertical = 8.dp),
+            modifier = Modifier.padding(vertical = 12.dp),
             text = stringResource(R.string.faphub_installed_update_cancel),
             textAlign = TextAlign.Center,
             style = LocalTypography.current.fapHubButtonText.copy(

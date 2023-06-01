@@ -70,7 +70,6 @@ class InstalledFapsViewModel @VMInject constructor(
                 is FapInstalledInternalLoadingState.Loaded -> combine(
                     state.faps.map { it.first }.map {
                         fapStateManager.getFapStateFlow(
-                            scope = viewModelScope,
                             applicationUid = it.id,
                             currentVersion = it.upToDateVersion.version
                         )
@@ -86,7 +85,9 @@ class InstalledFapsViewModel @VMInject constructor(
                             FapState.Installed,
                             FapState.NotInitialized,
                             FapState.ReadyToInstall,
-                            FapState.RetrievingManifest,
+                            FapState.RetrievingManifest -> {
+                            }
+
                             is FapState.UpdatingInProgress -> updatingInProgress++
 
                             is FapState.ReadyToUpdate -> pendingToUpdate++
@@ -96,7 +97,9 @@ class InstalledFapsViewModel @VMInject constructor(
                         FapBatchUpdateButtonState.ReadyToUpdate(pendingToUpdate)
                     } else if (updatingInProgress > 0) {
                         FapBatchUpdateButtonState.UpdatingInProgress
-                    } else FapBatchUpdateButtonState.NoUpdates
+                    } else {
+                        FapBatchUpdateButtonState.NoUpdates
+                    }
                 }
             }
         }.stateIn(viewModelScope, SharingStarted.Eagerly, FapBatchUpdateButtonState.Loading)
@@ -109,7 +112,6 @@ class InstalledFapsViewModel @VMInject constructor(
         }
         val toUpdate = state.faps.filter { (fapItem, _) ->
             fapStateManager.getFapStateFlow(
-                scope = viewModelScope,
                 applicationUid = fapItem.id,
                 currentVersion = fapItem.upToDateVersion.version
             ).first() is FapState.ReadyToUpdate
@@ -136,7 +138,6 @@ class InstalledFapsViewModel @VMInject constructor(
         }
         state.faps.map { it.first }.map {
             fapStateManager.getFapStateFlow(
-                scope = viewModelScope,
                 applicationUid = it.id,
                 currentVersion = it.upToDateVersion.version
             ).first() to it
@@ -151,6 +152,7 @@ class InstalledFapsViewModel @VMInject constructor(
         fetcherJob = viewModelScope.launch {
             oldJob?.cancelAndJoin()
             installedFapsStateFlow.emit(FapInstalledInternalLoadingState.Loading)
+            fapManifestApi.invalidateAsync()
             fapManifestApi.getManifestFlow().filterNotNull().map { manifestItems ->
                 val faps = fapNetworkApi.getAllItem(
                     applicationIds = manifestItems.map { it.uid },

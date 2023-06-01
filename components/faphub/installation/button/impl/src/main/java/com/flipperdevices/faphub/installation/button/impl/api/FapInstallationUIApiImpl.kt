@@ -34,7 +34,7 @@ class FapInstallationUIApiImpl @Inject constructor() : FapInstallationUIApi {
         val stateFlow = remember(config) {
             statusViewModel.getStateForApplicationId(config)
         }
-        val state by stateFlow.collectAsState()
+        val state by stateFlow.collectAsState(FapState.NotInitialized)
 
         when (val localState = state) {
             is FapState.InstallationInProgress -> ComposableFapInstallingButton(

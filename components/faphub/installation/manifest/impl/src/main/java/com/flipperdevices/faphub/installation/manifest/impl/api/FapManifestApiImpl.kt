@@ -15,6 +15,9 @@ import com.flipperdevices.faphub.installation.manifest.impl.utils.FapManifestsLo
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestVersion
 import com.squareup.anvil.annotations.ContributesBinding
+import java.util.concurrent.atomic.AtomicBoolean
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -23,9 +26,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.sync.Mutex
-import java.util.concurrent.atomic.AtomicBoolean
-import javax.inject.Inject
-import javax.inject.Singleton
 
 @Singleton
 @ContributesBinding(AppGraph::class, FapManifestApi::class)
@@ -83,6 +83,7 @@ class FapManifestApiImpl @Inject constructor(
     }
 
     override fun invalidateAsync() = launchWithLock(mutex, scope, "invalidate") {
+        fapManifestItemFlow.emit(null)
         runCatching {
             loader.load()
         }.mapCatching { manifestItems ->
