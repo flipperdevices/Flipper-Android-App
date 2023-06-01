@@ -3,7 +3,6 @@ package com.flipperdevices.faphub.installation.stateprovider.impl.api
 import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.core.log.info
 import com.flipperdevices.faphub.installation.manifest.api.FapManifestApi
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
 import com.flipperdevices.faphub.installation.queue.api.FapInstallationQueueApi
@@ -33,9 +32,7 @@ class FapInstallationStateManagerImpl @Inject constructor(
         fapManifestApi.getManifestFlow(),
         queueApi.getFlowById(scope, applicationUid)
     ) { manifests, queueState ->
-        val state = getState(manifests, applicationUid, queueState, currentVersion)
-        info { "State for $applicationUid is $state" }
-        return@combine state
+        return@combine getState(manifests, applicationUid, queueState, currentVersion)
     }.stateIn(scope, SharingStarted.Eagerly, FapState.NotInitialized)
 
     @Suppress("UnusedPrivateMember")
@@ -59,7 +56,7 @@ class FapInstallationStateManagerImpl @Inject constructor(
         return if (currentVersion > itemFromManifest.version.semVer) {
             FapState.ReadyToUpdate(itemFromManifest)
         } else {
-            FapState.ReadyToInstall
+            FapState.Installed
         }
     }
 
