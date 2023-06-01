@@ -11,6 +11,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.flipperdevices.core.ui.ktx.SetUpStatusBarColor
+import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.main.impl.composable.switch.ComposableFapHubNewSwitch
 import com.flipperdevices.main.impl.model.FapHubTabEnum
 import com.flipperdevices.main.impl.viewmodel.InstalledNotificationViewModel
@@ -36,6 +38,7 @@ fun ComposableFapHubMainScreen(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        SetUpStatusBarColor(LocalPallet.current.accent)
         ComposableFapHubNewSwitch(
             fapHubTabEnum = selectedTab,
             onSelect = mainViewModel::onSelectTab,

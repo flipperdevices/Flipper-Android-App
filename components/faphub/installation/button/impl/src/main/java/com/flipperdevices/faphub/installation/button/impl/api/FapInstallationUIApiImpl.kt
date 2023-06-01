@@ -3,6 +3,7 @@ package com.flipperdevices.faphub.installation.button.impl.api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
@@ -18,8 +19,8 @@ import com.flipperdevices.faphub.installation.button.impl.composable.ComposableF
 import com.flipperdevices.faphub.installation.button.impl.viewmodel.FapStatusViewModel
 import com.flipperdevices.faphub.installation.stateprovider.api.model.FapState
 import com.squareup.anvil.annotations.ContributesBinding
-import tangle.viewmodel.compose.tangleViewModel
 import javax.inject.Inject
+import tangle.viewmodel.compose.tangleViewModel
 
 @ContributesBinding(AppGraph::class, FapInstallationUIApi::class)
 class FapInstallationUIApiImpl @Inject constructor() : FapInstallationUIApi {
@@ -30,7 +31,10 @@ class FapInstallationUIApiImpl @Inject constructor() : FapInstallationUIApi {
         fapButtonSize: FapButtonSize
     ) {
         val statusViewModel = tangleViewModel<FapStatusViewModel>()
-        val state by statusViewModel.getStateForApplicationId(config).collectAsState()
+        val stateFlow = remember(config) {
+            statusViewModel.getStateForApplicationId(config)
+        }
+        val state by stateFlow.collectAsState()
 
         when (val localState = state) {
             is FapState.InstallationInProgress -> ComposableFapInstallingButton(
