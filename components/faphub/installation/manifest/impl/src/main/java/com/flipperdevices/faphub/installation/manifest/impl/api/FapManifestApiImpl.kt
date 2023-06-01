@@ -83,6 +83,7 @@ class FapManifestApiImpl @Inject constructor(
     }
 
     override fun invalidateAsync() = launchWithLock(mutex, scope, "invalidate") {
+        fapManifestItemFlow.emit(null)
         runCatching {
             loader.load()
         }.mapCatching { manifestItems ->

@@ -61,7 +61,6 @@ class FapScreenViewModel @VMInject constructor(
             fapScreenLoadingStateFlow.emit(FapScreenLoadingState.Loaded(fapItem))
             controlStateJob?.cancelAndJoin()
             controlStateJob = stateManager.getFapStateFlow(
-                scope = viewModelScope,
                 applicationUid = fapId,
                 currentVersion = fapItem.upToDateVersion.version
             ).onEach { state ->

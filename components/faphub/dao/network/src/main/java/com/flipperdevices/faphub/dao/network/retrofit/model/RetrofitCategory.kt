@@ -1,5 +1,6 @@
 package com.flipperdevices.faphub.dao.network.retrofit.model
 
+import android.graphics.Color
 import com.flipperdevices.faphub.dao.api.model.FapCategory
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -18,7 +19,8 @@ data class RetrofitCategory(
             id = id,
             name = name,
             picUrl = iconUrl,
-            applicationCount = applicationsCount
+            applicationCount = applicationsCount,
+            color = runCatching { Color.parseColor(color) }.getOrNull()
         )
     }
 }

@@ -5,6 +5,9 @@ import com.flipperdevices.faphub.dao.api.model.FapItemShort
 
 interface FapInstalledApi {
     @Composable
+    fun getUpdatePendingCount(): Int
+
+    @Composable
     fun ComposableInstalledTab(
         onOpenFapItem: (FapItemShort) -> Unit
     )

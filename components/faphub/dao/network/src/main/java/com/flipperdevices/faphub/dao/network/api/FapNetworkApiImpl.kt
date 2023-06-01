@@ -42,7 +42,8 @@ class FapNetworkApiImpl @Inject constructor(
         category: FapCategory?,
         sortType: SortType,
         offset: Int,
-        limit: Int
+        limit: Int,
+        applicationIds: List<String>?
     ) = catchWithDispatcher {
         val target = flipperTargetApi.getFlipperTargetSync().getOrThrow()
 
@@ -54,7 +55,8 @@ class FapNetworkApiImpl @Inject constructor(
             sortOrder = SortOrderType.fromSortType(sortType),
             target = target.target,
             sdkApiVersion = target.sdk.toString(),
-            categoryId = category?.id
+            categoryId = category?.id,
+            applications = applicationIds
         )
         debug { "Provider response: $response" }
 
@@ -75,7 +77,11 @@ class FapNetworkApiImpl @Inject constructor(
         sortType = SortType.NAME_DESC,
         offset = offset,
         limit = limit
-    )
+    ).map { items ->
+        items.filter {
+            it.name.contains(query) || it.description.contains(query)
+        }
+    }
 
     override suspend fun getCategories() = catchWithDispatcher {
         debug { "Request categories" }

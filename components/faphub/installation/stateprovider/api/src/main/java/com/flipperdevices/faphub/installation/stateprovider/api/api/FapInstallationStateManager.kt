@@ -2,13 +2,11 @@ package com.flipperdevices.faphub.installation.stateprovider.api.api
 
 import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.faphub.installation.stateprovider.api.model.FapState
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.Flow
 
 interface FapInstallationStateManager {
     fun getFapStateFlow(
-        scope: CoroutineScope,
         applicationUid: String,
         currentVersion: SemVer
-    ): StateFlow<FapState>
+    ): Flow<FapState>
 }
