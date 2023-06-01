@@ -5,13 +5,19 @@ import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
+import com.flipperdevices.core.log.info
+import com.flipperdevices.core.log.warn
 import com.flipperdevices.faphub.dao.api.FapVersionApi
 import com.flipperdevices.faphub.installation.manifest.api.FapManifestApi
+import com.flipperdevices.faphub.installation.manifest.impl.utils.FapManifestDeleter
 import com.flipperdevices.faphub.installation.manifest.impl.utils.FapManifestUploader
 import com.flipperdevices.faphub.installation.manifest.impl.utils.FapManifestsLoader
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestVersion
 import com.squareup.anvil.annotations.ContributesBinding
+import java.util.concurrent.atomic.AtomicBoolean
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -20,16 +26,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.sync.Mutex
-import java.util.concurrent.atomic.AtomicBoolean
-import javax.inject.Inject
-import javax.inject.Singleton
 
 @Singleton
 @ContributesBinding(AppGraph::class, FapManifestApi::class)
 class FapManifestApiImpl @Inject constructor(
     private val loader: FapManifestsLoader,
     private val manifestUploader: FapManifestUploader,
-    private val fapVersionApi: FapVersionApi
+    private val fapVersionApi: FapVersionApi,
+    private val manifestDeleter: FapManifestDeleter
 ) : FapManifestApi, LogTagProvider {
     override val TAG = "FapManifestApi"
 
@@ -58,6 +62,23 @@ class FapManifestApiImpl @Inject constructor(
             } else {
                 null
             }
+        }
+    }
+
+    override suspend fun remove(
+        applicationId: String
+    ) = withLock(mutex, "remove") {
+        val toRemoveManifest = fapManifestItemFlow.value?.find {
+            it.uid == applicationId
+        }
+        if (toRemoveManifest == null) {
+            warn { "Can't find manifest for $applicationId" }
+            return@withLock
+        }
+        info { "Delete for $applicationId $toRemoveManifest" }
+        manifestDeleter.delete(toRemoveManifest)
+        fapManifestItemFlow.update { manifests ->
+            manifests?.minus(toRemoveManifest)
         }
     }
 

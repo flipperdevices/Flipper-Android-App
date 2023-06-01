@@ -11,16 +11,15 @@ import com.flipperdevices.faphub.fapscreen.impl.api.FAP_ID_KEY
 import com.flipperdevices.faphub.fapscreen.impl.model.FapDetailedControlState
 import com.flipperdevices.faphub.fapscreen.impl.model.FapScreenLoadingState
 import com.flipperdevices.faphub.installation.queue.api.FapInstallationQueueApi
+import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest
 import com.flipperdevices.faphub.installation.stateprovider.api.api.FapInstallationStateManager
 import com.flipperdevices.faphub.installation.stateprovider.api.model.FapState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import tangle.inject.TangleParam
 import tangle.viewmodel.VMInject
@@ -54,7 +53,7 @@ class FapScreenViewModel @VMInject constructor(
     fun getControlState() = controlStateFlow.asStateFlow()
 
     fun onDelete() {
-
+        fapQueueApi.enqueue(FapActionRequest.Delete(fapId))
     }
 
     fun onRefresh() = launchWithLock(mutex, viewModelScope, "refresh") {

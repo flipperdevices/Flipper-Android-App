@@ -11,11 +11,11 @@ import com.flipperdevices.faphub.installation.queue.api.model.FapQueueState
 import com.flipperdevices.faphub.installation.stateprovider.api.api.FapInstallationStateManager
 import com.flipperdevices.faphub.installation.stateprovider.api.model.FapState
 import com.squareup.anvil.annotations.ContributesBinding
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
-import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, FapInstallationStateManager::class)
 class FapInstallationStateManagerImpl @Inject constructor(
@@ -65,12 +65,14 @@ class FapInstallationStateManagerImpl @Inject constructor(
             is FapActionRequest.Cancel -> FapState.Canceling
             is FapActionRequest.Install -> FapState.InstallationInProgress(queueState.float)
             is FapActionRequest.Update -> FapState.UpdatingInProgress(queueState.float)
+            is FapActionRequest.Delete -> FapState.Deleting
         }
 
         is FapQueueState.Pending -> when (queueState.request) {
             is FapActionRequest.Cancel -> FapState.Canceling
             is FapActionRequest.Install -> FapState.InstallationInProgress(0f)
             is FapActionRequest.Update -> FapState.UpdatingInProgress(0f)
+            is FapActionRequest.Delete -> FapState.Deleting
         }
 
         FapQueueState.NotFound,

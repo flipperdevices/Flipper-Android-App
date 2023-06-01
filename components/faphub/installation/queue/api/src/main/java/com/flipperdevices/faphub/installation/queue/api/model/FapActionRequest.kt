@@ -20,6 +20,10 @@ sealed class FapActionRequest {
         override val applicationUid = from.uid
     }
 
+    data class Delete(
+        override val applicationUid: String
+    ) : FapActionRequest()
+
     data class Cancel(
         override val applicationUid: String
     ) : FapActionRequest()

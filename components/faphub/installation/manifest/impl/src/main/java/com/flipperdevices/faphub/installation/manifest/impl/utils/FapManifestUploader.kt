@@ -13,9 +13,9 @@ import com.flipperdevices.faphub.utils.FapHubTmpFolderProvider
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.storage.file
 import com.flipperdevices.protobuf.storage.writeRequest
-import kotlinx.coroutines.flow.map
 import java.io.File
 import javax.inject.Inject
+import kotlinx.coroutines.flow.map
 
 class FapManifestUploader @Inject constructor(
     private val parser: FapManifestParser,
@@ -33,7 +33,7 @@ class FapManifestUploader @Inject constructor(
         val newManifestPath = File(
             FAP_MANIFESTS_FOLDER_ON_FLIPPER,
             "${fapManifestItem.applicationAlias}.$FAP_MANIFEST_EXTENSION"
-        ).absolutePath
+        ).path
         atomicMover.atomicMove(
             pathToFap to fapManifestItem.path,
             tmpManifestPath to newManifestPath
@@ -46,7 +46,7 @@ class FapManifestUploader @Inject constructor(
         val tmpFapPath = File(
             tmpFolderProvider.provideTmpFolder(),
             "tmp.fim"
-        ).absolutePath
+        ).path
         uploadTmpManifest(serviceApi.requestApi, fapManifestItem, tmpFapPath)
         info { "Finish tmp manifest upload, path is $tmpFapPath" }
         return tmpFapPath
