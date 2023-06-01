@@ -13,7 +13,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.errors.ComposableThrowableError
 import com.flipperdevices.core.ui.ktx.OrangeAppBar
@@ -31,7 +30,7 @@ import tangle.viewmodel.compose.tangleViewModel
 @Composable
 fun ComposableFapScreen(
     onBack: () -> Unit,
-    installationButton: @Composable (FapItem?, Modifier, TextUnit) -> Unit,
+    installationButton: @Composable (FapItem?, Modifier) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val viewModel = tangleViewModel<FapScreenViewModel>()
@@ -74,7 +73,7 @@ private fun ComposableFapScreenInternal(
     onBack: () -> Unit,
     controlState: FapDetailedControlState,
     onDelete: () -> Unit,
-    installationButton: @Composable (FapItem?, Modifier, TextUnit) -> Unit,
+    installationButton: @Composable (FapItem?, Modifier) -> Unit,
     modifier: Modifier = Modifier
 ) = Column(modifier.verticalScroll(rememberScrollState())) {
     ComposableFapScreenBar(fapItem?.name, onBack)

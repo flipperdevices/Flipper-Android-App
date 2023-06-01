@@ -4,10 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.faphub.dao.api.model.FapItem
 import com.flipperdevices.faphub.fapscreen.impl.model.FapDetailedControlState
 
@@ -17,7 +14,7 @@ fun ComposableFapHeader(
     modifier: Modifier = Modifier,
     controlState: FapDetailedControlState,
     onDelete: () -> Unit,
-    installationButton: @Composable (FapItem?, Modifier, TextUnit) -> Unit
+    installationButton: @Composable (FapItem?, Modifier) -> Unit
 ) = Column(modifier) {
     ComposableFapTitle(
         modifier = Modifier,

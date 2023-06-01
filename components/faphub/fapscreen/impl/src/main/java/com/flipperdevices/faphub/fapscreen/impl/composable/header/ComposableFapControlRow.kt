@@ -3,7 +3,6 @@ package com.flipperdevices.faphub.fapscreen.impl.composable.header
 import android.content.Intent
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,9 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
@@ -33,7 +30,7 @@ fun ComposableFapControlRow(
     controlState: FapDetailedControlState,
     onDelete: () -> Unit,
     modifier: Modifier = Modifier,
-    installationButton: @Composable (FapItem?, Modifier, TextUnit) -> Unit
+    installationButton: @Composable (FapItem?, Modifier) -> Unit
 ) {
     Crossfade(targetState = controlState) { controlStateLocal ->
         when (controlStateLocal) {
@@ -68,10 +65,10 @@ private fun ComposableFapControlRowInProgress(
 @Composable
 private fun ComposableFapControlRowInProgress(
     state: FapDetailedControlState.InProgressOrNotInstalled,
+    installationButton: @Composable (FapItem?, Modifier) -> Unit,
     modifier: Modifier = Modifier,
-    installationButton: @Composable (FapItem?, Modifier, TextUnit) -> Unit,
 ) = Row(
-    modifier = modifier.height(IntrinsicSize.Min),
+    modifier = modifier,
     verticalAlignment = Alignment.CenterVertically
 ) {
     ComposableFapControlShareButton(state.shareUrl)
@@ -79,24 +76,23 @@ private fun ComposableFapControlRowInProgress(
         state.fapItem,
         Modifier
             .weight(weight = 1f)
-            .fillMaxHeight(),
-        32.sp
+            .fillMaxHeight()
     )
 }
 
 @Composable
 private fun ComposableFapControlRowInstalled(
     state: FapDetailedControlState.Installed,
-    modifier: Modifier = Modifier,
-    installationButton: @Composable (FapItem?, Modifier, TextUnit) -> Unit,
-    onDelete: () -> Unit
+    installationButton: @Composable (FapItem?, Modifier) -> Unit,
+    onDelete: () -> Unit,
+    modifier: Modifier = Modifier
 ) = Row(
-    modifier = modifier.height(IntrinsicSize.Min),
+    modifier = modifier,
     verticalAlignment = Alignment.CenterVertically
 ) {
     ComposableFapControlShareButton(state.shareUrl)
     Icon(
-        modifier = modifier
+        modifier = Modifier
             .padding(end = 12.dp)
             .size(46.dp)
             .clickableRipple(onClick = onDelete),
@@ -108,8 +104,7 @@ private fun ComposableFapControlRowInstalled(
         state.fapItem,
         Modifier
             .weight(weight = 1f)
-            .fillMaxHeight(),
-        32.sp
+            .fillMaxHeight()
     )
 }
 
