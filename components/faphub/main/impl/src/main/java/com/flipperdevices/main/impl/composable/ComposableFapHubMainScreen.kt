@@ -10,12 +10,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.core.ui.ktx.SetUpStatusBarColor
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.main.impl.composable.switch.ComposableFapHubNewSwitch
 import com.flipperdevices.main.impl.model.FapHubTabEnum
-import com.flipperdevices.main.impl.viewmodel.InstalledNotificationViewModel
 import com.flipperdevices.main.impl.viewmodel.MainViewModel
 import tangle.viewmodel.compose.tangleViewModel
 
@@ -25,13 +23,10 @@ fun ComposableFapHubMainScreen(
     catalogTabComposable: @Composable () -> Unit,
     installedTabComposable: @Composable () -> Unit,
     onOpenSearch: () -> Unit,
+    installedNotificationCount: Int,
     modifier: Modifier = Modifier,
-    installedNotificationViewModel: InstalledNotificationViewModel = viewModel(),
     mainViewModel: MainViewModel = tangleViewModel()
 ) {
-    val installedNotificationCount by
-    installedNotificationViewModel.getNotificationCountStateFlow().collectAsState()
-
     val selectedTab by mainViewModel.getTabFlow().collectAsState()
 
     Column(

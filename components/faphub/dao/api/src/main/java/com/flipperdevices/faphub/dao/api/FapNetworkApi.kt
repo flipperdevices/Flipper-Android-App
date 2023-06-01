@@ -11,7 +11,8 @@ interface FapNetworkApi {
         category: FapCategory? = null,
         sortType: SortType,
         offset: Int,
-        limit: Int
+        limit: Int,
+        applicationIds: List<String>? = null
     ): Result<List<FapItemShort>>
 
     suspend fun search(

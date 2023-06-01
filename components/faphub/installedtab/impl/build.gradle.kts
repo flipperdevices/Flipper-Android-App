@@ -10,6 +10,7 @@ dependencies {
     implementation(projects.components.faphub.installedtab.api)
 
     implementation(projects.components.core.di)
+    implementation(projects.components.core.data)
     implementation(projects.components.core.log)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.errors)
@@ -19,6 +20,10 @@ dependencies {
     implementation(projects.components.faphub.dao.api)
     implementation(projects.components.faphub.appcard.composable)
     implementation(projects.components.faphub.installation.button.api)
+    implementation(projects.components.faphub.installation.manifest.api)
+    implementation(projects.components.faphub.installation.queue.api)
+    implementation(projects.components.faphub.installation.stateprovider.api)
+
 
     // Compose
     implementation(libs.compose.ui)
