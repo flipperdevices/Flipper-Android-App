@@ -5,7 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.ui.theme.LocalPallet
-import com.flipperdevices.keyscreen.api.KeyEmulateUiApi
+import com.flipperdevices.keyemulate.api.KeyEmulateUiApi
 import com.flipperdevices.wearable.emulate.impl.R
 
 @Composable

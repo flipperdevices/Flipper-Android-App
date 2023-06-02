@@ -2,7 +2,7 @@ package com.flipperdevices.wearable.emulate.handheld.impl.request
 
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
-import com.flipperdevices.keyscreen.api.emulate.EmulateHelper
+import com.flipperdevices.keyemulate.api.EmulateHelper
 import com.flipperdevices.wearable.emulate.common.WearableCommandInputStream
 import com.flipperdevices.wearable.emulate.common.WearableCommandOutputStream
 import com.flipperdevices.wearable.emulate.common.ipcemulate.Main

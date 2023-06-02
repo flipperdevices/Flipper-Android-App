@@ -33,7 +33,7 @@ dependencies {
     implementation(projects.components.wearable.theme)
 
     implementation(projects.components.keyscreen.api)
-    implementation(projects.components.keyscreen.emulate)
+    implementation(projects.components.keyemulate.api)
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.service.noop)
     implementation(projects.components.bridge.synchronization.api)

@@ -30,7 +30,7 @@ import com.flipperdevices.archive.api.ArchiveApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
-import com.flipperdevices.core.ui.ktx.SwipeRefresh
+import com.flipperdevices.core.ui.ktx.elements.SwipeRefresh
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.widget.screen.R

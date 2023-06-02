@@ -16,7 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
-import com.flipperdevices.core.ui.ktx.ComposableKeyType
+import com.flipperdevices.core.ui.ktx.elements.ComposableKeyType
 import com.flipperdevices.core.ui.ktx.placeholderByLocalProvider
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography

@@ -9,7 +9,7 @@ import androidx.wear.compose.navigation.composable
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
-import com.flipperdevices.keyscreen.api.KeyEmulateUiApi
+import com.flipperdevices.keyemulate.api.KeyEmulateUiApi
 import com.flipperdevices.wearable.emulate.api.WearEmulateApi
 import com.flipperdevices.wearable.emulate.impl.composable.ComposableWearEmulate
 import com.flipperdevices.wearable.emulate.impl.di.WearEmulateComponent

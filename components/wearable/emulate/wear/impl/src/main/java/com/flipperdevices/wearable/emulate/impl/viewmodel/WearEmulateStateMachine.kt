@@ -4,7 +4,7 @@ import com.flipperdevices.core.di.SingleIn
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.flipperdevices.keyscreen.api.EmulateProgress
+import com.flipperdevices.keyemulate.model.EmulateProgress
 import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.ConnectStatusOuterClass.ConnectStatus
 import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.Emulate.EmulateStatus
 import com.flipperdevices.wearable.emulate.impl.di.WearGraph

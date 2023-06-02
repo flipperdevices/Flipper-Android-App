@@ -9,7 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
-import com.flipperdevices.keyscreen.api.KeyEmulateUiApi
+import com.flipperdevices.keyemulate.api.KeyEmulateUiApi
 import com.flipperdevices.wearable.emulate.impl.model.WearEmulateState
 import com.flipperdevices.wearable.emulate.impl.model.WearLoadingState
 import com.flipperdevices.wearable.emulate.impl.viewmodel.WearEmulateViewModel

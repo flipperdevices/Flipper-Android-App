@@ -4,7 +4,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.flipperdevices.bottombar.model.TabState
-import com.flipperdevices.core.ui.ktx.animatedDots
+import com.flipperdevices.core.ui.ktx.elements.animatedDots
 import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable

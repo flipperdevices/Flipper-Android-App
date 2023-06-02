@@ -6,7 +6,7 @@ import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.SingleIn
-import com.flipperdevices.keyscreen.api.emulate.EmulateHelper
+import com.flipperdevices.keyemulate.api.EmulateHelper
 import com.flipperdevices.wearable.emulate.common.WearableCommandInputStream
 import com.flipperdevices.wearable.emulate.common.WearableCommandOutputStream
 import com.flipperdevices.wearable.emulate.common.ipcemulate.Main

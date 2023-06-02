@@ -5,8 +5,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.flipperdevices.core.ui.ktx.onHoldPress
 import com.flipperdevices.core.ui.theme.LocalPallet
-import com.flipperdevices.keyscreen.api.EmulateProgress
-import com.flipperdevices.keyscreen.api.KeyEmulateUiApi
+import com.flipperdevices.keyemulate.api.KeyEmulateUiApi
+import com.flipperdevices.keyemulate.model.EmulateProgress
 import com.flipperdevices.wearable.emulate.impl.R
 
 @Composable

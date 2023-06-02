@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.analytics.shake2report.impl.R
 import com.flipperdevices.analytics.shake2report.impl.composable.components.ComposableCheckBox
 import com.flipperdevices.analytics.shake2report.impl.composable.components.ComposableReportTextField
-import com.flipperdevices.core.ui.ktx.ComposableFlipperButton
+import com.flipperdevices.core.ui.ktx.elements.ComposableFlipperButton
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography

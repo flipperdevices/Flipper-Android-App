@@ -3,6 +3,7 @@
 # 1.5.2 - In Progress
 
 - [Feature] FapHub MVPv0
+- [FIX] Migrate key emulate to new module
 
 # 1.5.1
 
