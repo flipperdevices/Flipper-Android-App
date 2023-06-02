@@ -4,6 +4,7 @@ import androidx.annotation.StringRes
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
@@ -49,6 +50,11 @@ class FlipperMultiChoiceDialogModel private constructor(
             return this
         }
 
+        fun setDescription(content: @Composable () -> Unit): Builder {
+            textComposable = content
+            return this
+        }
+
         @Composable
         private fun ComposableDescription(text: AnnotatedString) {
             Text(
@@ -89,6 +95,21 @@ class FlipperMultiChoiceDialogModel private constructor(
                     text,
                     onClick,
                     if (isActive) LocalPallet.current.accentSecond else null
+                )
+            }
+            return this
+        }
+
+        fun addButton(
+            text: String,
+            onClick: () -> Unit,
+            textColor: Color
+        ): Builder {
+            buttonComposables.add {
+                ComposableFlipperFlatButton(
+                    text,
+                    onClick,
+                    textColor
                 )
             }
             return this

@@ -2,6 +2,7 @@
 
 # 1.5.2 - In Progress
 
+- [FIX] Add confirm delete dialog and some small fixes
 - [Feature] FapHub MVPv0
 - [FIX] Migrate key emulate to new module
 
