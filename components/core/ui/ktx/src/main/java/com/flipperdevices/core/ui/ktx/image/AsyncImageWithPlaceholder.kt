@@ -27,21 +27,9 @@ fun FlipperAsyncImage(
     val request = remember(url, enableDiskCache, enableMemoryCache) {
         ImageRequest.Builder(context)
             .data(url)
-            .diskCachePolicy(
-                if (enableDiskCache) {
-                    CachePolicy.ENABLED
-                } else {
-                    CachePolicy.READ_ONLY
-                }
-            )
+            .diskCachePolicy(CachePolicy.ENABLED)
             .diskCacheKey(url)
-            .memoryCachePolicy(
-                if (enableMemoryCache) {
-                    CachePolicy.ENABLED
-                } else {
-                    CachePolicy.READ_ONLY
-                }
-            )
+            .memoryCachePolicy(CachePolicy.ENABLED)
             .memoryCacheKey(url)
             .transformations(WhiteToAlphaTransformation())
             .build()

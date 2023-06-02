@@ -1,5 +1,6 @@
 package com.flipperdevices.faphub.installation.button.impl.composable.elements
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -14,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -109,16 +111,17 @@ private fun ComposableInProgressFapButtonInternal(
 
 @Composable
 private fun BoxScope.ComposableProgressRow(percent: Float, accentColor: Color) {
+    val animatedPercent by animateFloatAsState(targetValue = percent)
     Row(
         modifier = Modifier
             .matchParentSize()
     ) {
-        val remainingWeight = 1.0f - percent
-        if (percent > 0.0f) {
+        val remainingWeight = 1.0f - animatedPercent
+        if (animatedPercent > 0.0f) {
             Box(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .weight(percent)
+                    .weight(animatedPercent)
                     .background(accentColor)
             )
         }

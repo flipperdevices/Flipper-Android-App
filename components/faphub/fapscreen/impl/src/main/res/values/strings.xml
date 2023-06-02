@@ -12,4 +12,7 @@
     <string name="fapscreen_developer_title">Developer</string>
     <string name="fapscreen_developer_github">View on GitHub</string>
     <string name="fapscreen_developer_manifest">Manifest</string>
+    <string name="fapscreen_dialog_delete_title">Delete this App?</string>
+    <string name="fapscreen_dialog_delete_btn">Delete</string>
+    <string name="fapscreen_dialog_delete_cancel">Cancel</string>
 </resources>
