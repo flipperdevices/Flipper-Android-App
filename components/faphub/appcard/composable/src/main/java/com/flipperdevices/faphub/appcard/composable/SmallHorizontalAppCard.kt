@@ -3,7 +3,6 @@ package com.flipperdevices.faphub.appcard.composable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
@@ -24,7 +23,7 @@ fun SmallHorizontalAppCard(
     modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
         ComposableAppIcon(
@@ -43,7 +42,7 @@ fun SmallHorizontalAppCard(
 private fun SmallHorizontalAppCardText(
     fapItem: FapItemShort,
     modifier: Modifier = Modifier
-) = Column(modifier, verticalArrangement = Arrangement.spacedBy(1.dp)) {
+) = Column(modifier, verticalArrangement = Arrangement.spacedBy(1.dp, Alignment.CenterVertically)) {
     Text(
         text = fapItem.name,
         style = LocalTypography.current.subtitleM12,

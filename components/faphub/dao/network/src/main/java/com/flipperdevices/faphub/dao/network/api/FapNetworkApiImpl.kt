@@ -79,7 +79,9 @@ class FapNetworkApiImpl @Inject constructor(
         limit = limit
     ).map { items ->
         items.filter {
-            it.name.contains(query) || it.description.contains(query)
+            it.name.contains(query, ignoreCase = true) ||
+                it.description.contains(query, ignoreCase = true) ||
+                it.category.name.contains(query, ignoreCase = true)
         }
     }
 

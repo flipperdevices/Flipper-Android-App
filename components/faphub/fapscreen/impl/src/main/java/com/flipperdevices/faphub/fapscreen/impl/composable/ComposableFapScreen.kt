@@ -11,6 +11,9 @@ import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -21,6 +24,7 @@ import com.flipperdevices.faphub.appcard.composable.components.AppCardScreenshot
 import com.flipperdevices.faphub.dao.api.model.FapItem
 import com.flipperdevices.faphub.fapscreen.impl.R
 import com.flipperdevices.faphub.fapscreen.impl.composable.description.ComposableFapDescription
+import com.flipperdevices.faphub.fapscreen.impl.composable.header.ComposableDeleteConfirmDialog
 import com.flipperdevices.faphub.fapscreen.impl.composable.header.ComposableFapHeader
 import com.flipperdevices.faphub.fapscreen.impl.model.FapDetailedControlState
 import com.flipperdevices.faphub.fapscreen.impl.model.FapScreenLoadingState
@@ -77,12 +81,24 @@ private fun ComposableFapScreenInternal(
     modifier: Modifier = Modifier
 ) = Column(modifier.verticalScroll(rememberScrollState())) {
     ComposableFapScreenBar(fapItem?.name, onBack)
+    var showDeleteDialog by remember { mutableStateOf(false) }
+    if (showDeleteDialog && fapItem != null) {
+        ComposableDeleteConfirmDialog(
+            fapItem = fapItem,
+            onConfirmDelete = onDelete,
+            onDismiss = {
+                showDeleteDialog = false
+            }
+        )
+    }
     ComposableFapHeader(
         modifier = Modifier.padding(start = 14.dp, end = 14.dp, top = 14.dp),
         fapItem = fapItem,
         installationButton = installationButton,
         controlState = controlState,
-        onDelete = onDelete
+        onDelete = {
+            showDeleteDialog = true
+        }
     )
     Divider(
         modifier = Modifier

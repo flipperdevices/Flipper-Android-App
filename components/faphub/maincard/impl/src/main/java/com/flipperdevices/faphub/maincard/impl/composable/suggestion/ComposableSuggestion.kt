@@ -42,7 +42,7 @@ private fun ComposableSuggestionContent(
             color = LocalPallet.current.text30
         )
         is FapMainCardState.Loaded -> SmallHorizontalAppCard(
-            modifier = modifier,
+            modifier = modifier.fillMaxWidth(),
             fapItem = state.fapItem
         )
         FapMainCardState.Loading -> Box(
