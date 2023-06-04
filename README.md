@@ -11,8 +11,9 @@ Mobile app to rule all Flipper's family
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
      alt="Get it on Google Play"
      height="80">](https://play.google.com/store/apps/details?id=com.flipperdevices.app)
+[<img height="80" alt='Get it on F-Droid' src='https://gitlab.com/fdroid/artwork/-/raw/master/badge/get-it-on-en.png'/>](https://f-droid.org/en/packages/com.flipperdevices.app/)
 
-or get the app from the [Releases Section](https://github.com/flipperdevices/Flipper-Android-App/releases/latest).
+Or get the app from the [Releases Section](https://github.com/flipperdevices/Flipper-Android-App/releases/latest).
 
 ## Module arch
 
