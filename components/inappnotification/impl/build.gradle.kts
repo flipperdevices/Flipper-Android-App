@@ -1,7 +1,6 @@
 plugins {
     id("flipper.android-compose")
-    id("com.squareup.anvil")
-    id("kotlin-kapt")
+    id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.inappnotification.impl"
@@ -24,8 +23,4 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
     implementation(libs.image.lottie)
-
-    // Dagger deps
-    implementation(libs.dagger)
-    kapt(libs.dagger.kapt)
 }

@@ -1,7 +1,6 @@
 plugins {
     id("flipper.android-lib")
-    id("com.squareup.anvil")
-    id("kotlin-kapt")
+    id("flipper.anvil")
     id("flipper.git-submodule-fetch")
 }
 
@@ -21,8 +20,4 @@ dependencies {
     implementation(projects.components.nfc.tools.api)
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)
-
-    // Dagger deps
-    implementation(libs.dagger)
-    kapt(libs.dagger.kapt)
 }

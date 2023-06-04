@@ -5,8 +5,7 @@ plugins {
     id("flipper.android-lib")
 </#if>
 <#if shouldGenerateDI>
-    id("com.squareup.anvil")
-    id("kotlin-kapt")
+    id("flipper.anvil")
 </#if>
 }
 
@@ -23,12 +22,6 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
-</#if>
-<#if shouldGenerateDI>
-
-    // Dagger deps
-    implementation(libs.dagger)
-    kapt(libs.dagger.kapt)
 </#if>
 
 <#if needTest>

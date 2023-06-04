@@ -1,7 +1,6 @@
 plugins {
     id("flipper.android-lib")
-    id("com.squareup.anvil")
-    id("kotlin-kapt")
+    id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.faphub.target.impl"
@@ -19,10 +18,6 @@ dependencies {
     implementation(projects.components.bridge.rpcinfo.api)
 
     implementation(projects.components.faphub.utils)
-
-    // Dagger deps
-    implementation(libs.dagger)
-    kapt(libs.dagger.kapt)
 
     implementation(libs.kotlin.coroutines)
 }

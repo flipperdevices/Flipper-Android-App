@@ -1,7 +1,6 @@
 plugins {
     id("flipper.android-lib")
-    id("com.squareup.anvil")
-    id("kotlin-kapt")
+    id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.bridge.rpc.impl"
@@ -16,10 +15,6 @@ dependencies {
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.pbutils)
-
-    // Dagger deps
-    implementation(libs.dagger)
-    kapt(libs.dagger.kapt)
 
     implementation(libs.kotlin.coroutines)
 }

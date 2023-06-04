@@ -1,10 +1,11 @@
 plugins {
     id("flipper.android-app")
-    id("com.squareup.anvil")
+    id("flipper.anvil")
     id("kotlin-kapt")
 }
 
 android.namespace = "com.flipperdevices.nfceditor.sample"
+anvil.generateDaggerFactories.set(false) // AppComponent
 
 android {
     buildFeatures.compose = true
@@ -48,6 +49,7 @@ dependencies {
 
     implementation(libs.appcompat)
 
+    // Dagger deps
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
     implementation(libs.tangle.viewmodel.api)

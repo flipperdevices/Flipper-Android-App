@@ -1,7 +1,6 @@
 plugins {
     id("flipper.android-lib")
-    id("com.squareup.anvil")
-    id("kotlin-kapt")
+    id("flipper.anvil")
     id("kotlinx-serialization")
 }
 
@@ -28,10 +27,6 @@ dependencies {
     implementation(libs.ktor.serialization)
     implementation(libs.ktor.logging)
     implementation(libs.ktor.negotiation)
-
-    // Dagger deps
-    implementation(libs.dagger)
-    kapt(libs.dagger.kapt)
 
     // Testing
     testImplementation(libs.junit)
