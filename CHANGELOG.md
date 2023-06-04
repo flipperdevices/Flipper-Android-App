@@ -4,6 +4,7 @@
 
 - [FIX] Add confirm delete dialog and some small fixes
 - [Feature] FapHub MVPv0
+- [Feature] Update README with Fdroid badge
 
 # 1.5.1
 
