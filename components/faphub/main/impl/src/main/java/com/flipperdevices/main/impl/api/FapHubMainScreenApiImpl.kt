@@ -31,6 +31,7 @@ class FapHubMainScreenApiImpl @Inject constructor(
     override fun NavGraphBuilder.navigation(navController: NavHostController) {
         navigation(startDestination = start(), route = ROUTE.name) {
             composable("@${ROUTE.name}") {
+                val readyToUpdateCount = installedApi.getUpdatePendingCount()
                 ComposableFapHubMainScreen(
                     onBack = {
                         navController.popBackStack()
@@ -52,7 +53,8 @@ class FapHubMainScreenApiImpl @Inject constructor(
                     },
                     onOpenSearch = {
                         navController.navigate(searchEntryApi.start())
-                    }
+                    },
+                    installedNotificationCount = readyToUpdateCount
                 )
             }
         }

@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.TabPosition
@@ -27,12 +26,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.ktx.tab.tabIndicatorOffset
-import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.main.impl.model.FapHubTabEnum
 import com.flipperdevices.core.ui.res.R as DesignSystem
@@ -96,28 +93,6 @@ fun ComposableFapHubNewSwitch(
 }
 
 @Composable
-fun ComposableFapHubSwitch(
-    fapHubTabEnum: FapHubTabEnum,
-    onSelect: (FapHubTabEnum) -> Unit,
-    installedNotificationCount: Int,
-    modifier: Modifier = Modifier
-) {
-    Box(
-        modifier = modifier
-            .width(width = 215.dp)
-            .clip(RoundedCornerShape(12.dp))
-            .background(LocalPallet.current.fapHubSwitchBackground)
-    ) {
-        ComposableFapHubSwitchInternal(
-            fapHubTabEnum,
-            onSelect,
-            installedNotificationCount,
-            LocalPallet.current.fapHubSelectedBackgroundColor
-        )
-    }
-}
-
-@Composable
 private fun ComposableFapHubSwitchInternal(
     fapHubTabEnum: FapHubTabEnum,
     onSelect: (FapHubTabEnum) -> Unit,
@@ -173,51 +148,11 @@ private fun ComposeTabAnimatedBackground(
     ) {
         Box(
             modifier = Modifier
-                .padding(horizontal = 4.dp, vertical = 4.dp)
+                .padding(horizontal = 2.dp, vertical = 2.dp)
                 .fillMaxHeight()
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(size = 8.dp))
                 .background(activeColor)
         )
-    }
-}
-
-@Preview(
-    showBackground = true
-)
-@Composable
-private fun ComposableFapHubSwitchPreview() {
-    FlipperThemeInternal {
-        var selectedTab by remember { mutableStateOf(FapHubTabEnum.APPS) }
-        Box {
-            ComposableFapHubSwitch(
-                modifier = Modifier,
-                fapHubTabEnum = selectedTab,
-                onSelect = {
-                    selectedTab = it
-                },
-                installedNotificationCount = 4
-            )
-        }
-    }
-}
-
-@Preview(
-    showBackground = true
-)
-@Composable
-private fun ComposableFapHubSwitchDarkPreview() {
-    FlipperThemeInternal {
-        var selectedTab by remember { mutableStateOf(FapHubTabEnum.APPS) }
-        Box {
-            ComposableFapHubSwitch(
-                modifier = Modifier,
-                fapHubTabEnum = selectedTab,
-                onSelect = {
-                    selectedTab = it
-                },
-                installedNotificationCount = 4
-            )
-        }
     }
 }

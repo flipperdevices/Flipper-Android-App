@@ -2,6 +2,7 @@ package com.flipperdevices.faphub.installedtab.impl.composable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,12 +16,78 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.flipperdevices.core.ui.ktx.clickableRipple
+import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.faphub.installedtab.impl.R
+import com.flipperdevices.faphub.installedtab.impl.model.FapBatchUpdateButtonState
 
 @Composable
-fun ComposableUpdateAllButton(modifier: Modifier = Modifier) {
+fun ComposableUpdateAllButton(
+    state: FapBatchUpdateButtonState,
+    onUpdateAll: () -> Unit,
+    onCancelAll: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    when (state) {
+        FapBatchUpdateButtonState.NoUpdates -> {
+            return
+        }
+
+        FapBatchUpdateButtonState.Loading -> {
+            ComposableCancelAllButton(
+                modifier.placeholderConnecting()
+            )
+        }
+
+        is FapBatchUpdateButtonState.ReadyToUpdate -> {
+            ComposableUpdateAllButtonPending(
+                pendingCount = state.count,
+                modifier = modifier.clickableRipple(onClick = onUpdateAll)
+            )
+        }
+
+        FapBatchUpdateButtonState.UpdatingInProgress -> {
+            ComposableCancelAllButton(
+                modifier = modifier.clickableRipple(onClick = onCancelAll)
+            )
+        }
+    }
+}
+
+@Composable
+private fun ComposableCancelAllButton(
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(8.dp))
+            .background(LocalPallet.current.text40)
+            .padding(2.dp)
+            .clip(RoundedCornerShape(8.dp))
+            .background(LocalPallet.current.background),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Text(
+            modifier = Modifier.padding(vertical = 12.dp),
+            text = stringResource(R.string.faphub_installed_update_cancel),
+            textAlign = TextAlign.Center,
+            style = LocalTypography.current.fapHubButtonText.copy(
+                fontSize = 18.sp
+            ),
+            color = LocalPallet.current.text40
+        )
+    }
+}
+
+@Composable
+private fun ComposableUpdateAllButtonPending(
+    pendingCount: Int,
+    modifier: Modifier = Modifier
+) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -30,7 +97,7 @@ fun ComposableUpdateAllButton(modifier: Modifier = Modifier) {
         horizontalArrangement = Arrangement.Center
     ) {
         Text(
-            modifier = Modifier.padding(start = 12.dp, top = 8.dp, bottom = 8.dp, end = 8.dp),
+            modifier = Modifier.padding(start = 12.dp, top = 9.dp, bottom = 9.dp, end = 12.dp),
             text = stringResource(R.string.faphub_installed_update_all),
             textAlign = TextAlign.Center,
             style = LocalTypography.current.fapHubButtonText.copy(
@@ -38,5 +105,20 @@ fun ComposableUpdateAllButton(modifier: Modifier = Modifier) {
             ),
             color = LocalPallet.current.onFapHubInstallButton
         )
+
+        Box(
+            modifier = Modifier
+                .padding(vertical = 8.dp)
+                .clip(RoundedCornerShape(4.dp))
+                .background(LocalPallet.current.onFapHubInstallButton.copy(alpha = 0.8f))
+        ) {
+            Text(
+                modifier = Modifier.padding(vertical = 2.dp, horizontal = 7.dp),
+                text = pendingCount.toString(),
+                style = LocalTypography.current.titleB18,
+                textAlign = TextAlign.Center,
+                color = LocalPallet.current.updateProgressGreen
+            )
+        }
     }
 }

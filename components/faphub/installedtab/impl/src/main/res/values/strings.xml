@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="faphub_installed_update_all">UPDATE ALL</string>
+    <string name="faphub_installed_update_cancel">CANCEL UPDATING</string>
 </resources>

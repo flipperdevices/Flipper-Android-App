@@ -1,32 +1,34 @@
 package com.flipperdevices.faphub.installation.manifest.impl.utils
 
-import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.manager.service.FlipperVersionApi
 import com.flipperdevices.bridge.api.model.FlipperRequest
 import com.flipperdevices.bridge.api.model.wrapToRequest
+import com.flipperdevices.bridge.rpc.api.FlipperStorageApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.data.SemVer
-import com.flipperdevices.faphub.installation.manifest.impl.utils.FapManifestConstants.FAP_MANIFESTS_FOLDER_ON_FLIPPER
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.deleteRequest
-import com.flipperdevices.protobuf.storage.mkdirRequest
 import com.flipperdevices.protobuf.storage.renameRequest
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
+import java.io.File
 import javax.inject.Inject
 
 private val UNIX_MV_SUPPORTED_VERSION_API = SemVer(majorVersion = 0, minorVersion = 17)
 
 class FapManifestAtomicMover @Inject constructor(
-    private val flipperServiceProvider: FlipperServiceProvider
+    private val flipperServiceProvider: FlipperServiceProvider,
+    private val flipperStorageApi: FlipperStorageApi
 ) {
     suspend fun atomicMove(
         vararg fromToPair: Pair<String, String>
     ) {
         val serviceApi = flipperServiceProvider.getServiceApi()
-        createManifestFolder(serviceApi.requestApi)
+        fromToPair.mapNotNull { (_, to) -> File(to).parent }.forEach {
+            flipperStorageApi.mkdirs(it)
+        }
         val preparedRequest = getPrepareRequests(
             serviceApi.flipperVersionApi,
             fromToPair.map { it.second }
@@ -43,21 +45,6 @@ class FapManifestAtomicMover @Inject constructor(
                     error("Failed move path, failed response: $response")
                 }
             }
-        }
-    }
-
-    private suspend fun createManifestFolder(requestApi: FlipperRequestApi) {
-        val response = requestApi.request(
-            main {
-                storageMkdirRequest = mkdirRequest {
-                    path = FAP_MANIFESTS_FOLDER_ON_FLIPPER
-                }
-            }.wrapToRequest()
-        ).first()
-        if (response.commandStatus != Flipper.CommandStatus.OK &&
-            response.commandStatus != Flipper.CommandStatus.ERROR_STORAGE_EXIST
-        ) {
-            error("Failed create $FAP_MANIFESTS_FOLDER_ON_FLIPPER with command status ${response.commandStatus}")
         }
     }
 

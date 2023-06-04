@@ -33,6 +33,8 @@ include(
     ":components:bridge:service:api",
     ":components:bridge:rpcinfo:api",
     ":components:bridge:rpcinfo:impl",
+    ":components:bridge:rpc:api",
+    ":components:bridge:rpc:impl",
     ":components:bridge:pbutils",
     ":components:bridge:synchronization:api",
     ":components:bridge:synchronization:impl",

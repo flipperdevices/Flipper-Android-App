@@ -20,7 +20,8 @@ import javax.inject.Inject
 class FapManifestUploader @Inject constructor(
     private val parser: FapManifestParser,
     private val flipperServiceProvider: FlipperServiceProvider,
-    private val atomicMover: FapManifestAtomicMover
+    private val atomicMover: FapManifestAtomicMover,
+    private val tmpFolderProvider: FapHubTmpFolderProvider
 ) : LogTagProvider {
     override val TAG = "FapManifestUploader"
 
@@ -32,7 +33,7 @@ class FapManifestUploader @Inject constructor(
         val newManifestPath = File(
             FAP_MANIFESTS_FOLDER_ON_FLIPPER,
             "${fapManifestItem.applicationAlias}.$FAP_MANIFEST_EXTENSION"
-        ).absolutePath
+        ).path
         atomicMover.atomicMove(
             pathToFap to fapManifestItem.path,
             tmpManifestPath to newManifestPath
@@ -43,9 +44,9 @@ class FapManifestUploader @Inject constructor(
         info { "Start save tmp manifest for ${fapManifestItem.applicationAlias}" }
         val serviceApi = flipperServiceProvider.getServiceApi()
         val tmpFapPath = File(
-            FapHubTmpFolderProvider.provideTmpFolder(serviceApi.requestApi),
+            tmpFolderProvider.provideTmpFolder(),
             "tmp.fim"
-        ).absolutePath
+        ).path
         uploadTmpManifest(serviceApi.requestApi, fapManifestItem, tmpFapPath)
         info { "Finish tmp manifest upload, path is $tmpFapPath" }
         return tmpFapPath

@@ -17,7 +17,8 @@ import java.io.File
 import javax.inject.Inject
 
 class FapActionUpload @Inject constructor(
-    private val serviceProvider: FlipperServiceProvider
+    private val serviceProvider: FlipperServiceProvider,
+    private val tmpFolderProvider: FapHubTmpFolderProvider
 ) : LogTagProvider {
     override val TAG = "FapActionUpload"
 
@@ -28,7 +29,7 @@ class FapActionUpload @Inject constructor(
         info { "Start upload ${fapFile.absolutePath}" }
         val requestApi = serviceProvider.getServiceApi().requestApi
         val fapPath = File(
-            FapHubTmpFolderProvider.provideTmpFolder(requestApi),
+            tmpFolderProvider.provideTmpFolder(),
             "tmp.fap"
         ).absolutePath
         val progressWrapper = ProgressWrapperTracker(progressListener)

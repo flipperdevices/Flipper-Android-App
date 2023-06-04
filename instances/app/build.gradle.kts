@@ -85,6 +85,8 @@ dependencies {
 
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.dao.impl)
+    implementation(projects.components.bridge.rpc.api)
+    implementation(projects.components.bridge.rpc.impl)
     implementation(projects.components.bridge.synchronization.api)
     implementation(projects.components.bridge.synchronization.impl)
     implementation(projects.components.bridge.synchronization.ui)
@@ -178,6 +180,8 @@ dependencies {
 
     implementation(projects.components.faphub.installedtab.api)
     implementation(projects.components.faphub.installedtab.impl)
+
+    implementation(projects.components.faphub.utils)
 
     implementation(projects.components.selfupdater.api)
     when (SOURCE_INSTALL) {

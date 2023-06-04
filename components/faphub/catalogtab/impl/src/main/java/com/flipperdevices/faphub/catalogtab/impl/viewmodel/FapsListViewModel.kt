@@ -7,6 +7,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.dao.api.model.SortType
+import com.flipperdevices.faphub.installation.manifest.api.FapManifestApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flatMapLatest
@@ -14,7 +15,8 @@ import kotlinx.coroutines.launch
 import tangle.viewmodel.VMInject
 
 class FapsListViewModel @VMInject constructor(
-    private val fapNetworkApi: FapNetworkApi
+    private val fapNetworkApi: FapNetworkApi,
+    private val fapManifestApi: FapManifestApi
 ) : ViewModel() {
     private val sortTypeFlow = MutableStateFlow(SortType.NAME_DESC)
     val faps = sortTypeFlow.flatMapLatest { sortType ->
@@ -31,5 +33,9 @@ class FapsListViewModel @VMInject constructor(
         viewModelScope.launch {
             sortTypeFlow.emit(sortType)
         }
+    }
+
+    fun refreshManifest() {
+        fapManifestApi.invalidateAsync()
     }
 }

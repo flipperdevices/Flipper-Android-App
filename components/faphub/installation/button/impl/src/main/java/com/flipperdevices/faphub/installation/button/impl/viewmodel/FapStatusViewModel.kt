@@ -1,8 +1,8 @@
 package com.flipperdevices.faphub.installation.button.impl.viewmodel
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.faphub.installation.button.api.FapButtonConfig
+import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
 import com.flipperdevices.faphub.installation.queue.api.FapInstallationQueueApi
 import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest
 import com.flipperdevices.faphub.installation.stateprovider.api.api.FapInstallationStateManager
@@ -20,7 +20,6 @@ class FapStatusViewModel @VMInject constructor(
         MutableStateFlow(FapState.NotInitialized)
     } else {
         stateManager.getFapStateFlow(
-            scope = viewModelScope,
             applicationUid = fapButtonConfig.applicationUid,
             currentVersion = fapButtonConfig.version.version
         )
@@ -34,8 +33,30 @@ class FapStatusViewModel @VMInject constructor(
             FapActionRequest.Install(
                 applicationAlias = fapButtonConfig.applicationAlias,
                 applicationUid = fapButtonConfig.applicationUid,
-                toVersionId = fapButtonConfig.version.id,
+                toVersion = fapButtonConfig.version,
                 categoryAlias = fapButtonConfig.categoryAlias
+            )
+        )
+    }
+
+    fun cancel(fapButtonConfig: FapButtonConfig?) {
+        if (fapButtonConfig == null) {
+            return
+        }
+        queueApi.enqueue(FapActionRequest.Cancel(fapButtonConfig.applicationUid))
+    }
+
+    fun update(
+        fapButtonConfig: FapButtonConfig?,
+        from: FapManifestItem
+    ) {
+        if (fapButtonConfig == null) {
+            return
+        }
+        queueApi.enqueue(
+            FapActionRequest.Update(
+                from = from,
+                toVersion = fapButtonConfig.version
             )
         )
     }

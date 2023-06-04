@@ -38,7 +38,7 @@ data class KtorfitApplicationShort(
             name = name,
             category = category,
             screenshots = currentVersion.screenshots.toImmutableList(),
-            applicationId = alias,
+            applicationAlias = alias,
             upToDateVersion = fapItemVersion
         )
     }

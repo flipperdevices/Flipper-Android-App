@@ -57,6 +57,7 @@ data class FlipperPallet(
     val fapHubCategoryText: Color,
     val fapHubActiveColor: Color = text100,
     val fapHubInactiveColor: Color = text40,
+    val fapHubDeleteDialogBackground: Color,
 
     val screenStreamingBorderColor: Color,
     val screenStreamingNotConnectedColor: Color

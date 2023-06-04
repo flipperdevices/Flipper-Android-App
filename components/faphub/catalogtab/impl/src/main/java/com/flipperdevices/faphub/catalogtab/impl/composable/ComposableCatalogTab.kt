@@ -6,8 +6,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.TextUnit
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.flipperdevices.core.ui.ktx.SwipeRefresh
 import com.flipperdevices.faphub.appcard.composable.paging.ComposableFapsList
 import com.flipperdevices.faphub.appcard.composable.paging.ComposableSortChoice
 import com.flipperdevices.faphub.catalogtab.impl.R
@@ -23,7 +23,7 @@ fun ComposableCatalogTabScreen(
     onOpenFapItem: (FapItemShort) -> Unit,
     onCategoryClick: (FapCategory) -> Unit,
     modifier: Modifier = Modifier,
-    installationButton: @Composable (FapItemShort?, Modifier, TextUnit) -> Unit
+    installationButton: @Composable (FapItemShort?, Modifier) -> Unit
 ) {
     val fapsListViewModel = tangleViewModel<FapsListViewModel>()
     val fapsList = fapsListViewModel.faps.collectAsLazyPagingItems()
@@ -31,22 +31,27 @@ fun ComposableCatalogTabScreen(
 
     val categoriesViewModel = tangleViewModel<CategoriesViewModel>()
     val categoriesLoadState by categoriesViewModel.getCategoriesLoadState().collectAsState()
-
-    LazyColumn(
-        modifier = modifier
-    ) {
-        ComposableCategories(
-            categoriesLoadState,
-            onCategoryClick,
-            onRetry = categoriesViewModel::onRefresh
-        )
-        item {
-            ComposableSortChoice(
-                title = stringResource(R.string.faphub_catalog_title),
-                sortType = sortType,
-                onSelectSortType = fapsListViewModel::onSelectSortType
+    SwipeRefresh(onRefresh = {
+        fapsListViewModel.refreshManifest()
+        fapsList.refresh()
+        categoriesViewModel.onRefresh()
+    }) {
+        LazyColumn(
+            modifier = modifier
+        ) {
+            ComposableCategories(
+                categoriesLoadState,
+                onCategoryClick,
+                onRetry = categoriesViewModel::onRefresh
             )
+            item {
+                ComposableSortChoice(
+                    title = stringResource(R.string.faphub_catalog_title),
+                    sortType = sortType,
+                    onSelectSortType = fapsListViewModel::onSelectSortType
+                )
+            }
+            ComposableFapsList(fapsList, onOpenFapItem, installationButton)
         }
-        ComposableFapsList(fapsList, onOpenFapItem, installationButton)
     }
 }

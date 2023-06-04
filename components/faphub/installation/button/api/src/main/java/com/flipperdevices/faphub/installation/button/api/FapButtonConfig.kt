@@ -12,14 +12,14 @@ data class FapButtonConfig(
 )
 
 fun FapItemShort.toFapButtonConfig() = FapButtonConfig(
-    applicationAlias = applicationId,
+    applicationAlias = applicationAlias,
     version = upToDateVersion,
     applicationUid = id,
     categoryAlias = category.name
 )
 
 fun FapItem.toFapButtonConfig() = FapButtonConfig(
-    applicationAlias = applicationId,
+    applicationAlias = applicationAlias,
     version = upToDateVersion,
     applicationUid = id,
     categoryAlias = category.name

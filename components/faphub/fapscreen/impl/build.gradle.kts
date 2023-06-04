@@ -18,6 +18,7 @@ dependencies {
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.navigation)
+    implementation(projects.components.core.ui.dialog)
     implementation(projects.components.core.ui.errors)
 
     // Compose
@@ -30,6 +31,8 @@ dependencies {
     implementation(projects.components.faphub.search.api)
     implementation(projects.components.faphub.dao.api)
     implementation(projects.components.faphub.appcard.composable)
+    implementation(projects.components.faphub.installation.stateprovider.api)
+    implementation(projects.components.faphub.installation.queue.api)
     implementation(projects.components.faphub.installation.button.api)
 
     implementation(libs.kotlin.immutable.collections)

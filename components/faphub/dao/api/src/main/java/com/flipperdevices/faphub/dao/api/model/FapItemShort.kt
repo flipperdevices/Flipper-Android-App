@@ -9,6 +9,6 @@ data class FapItemShort(
     val name: String,
     val category: FapCategory,
     val screenshots: ImmutableList<String>,
-    val applicationId: String,
+    val applicationAlias: String,
     val upToDateVersion: FapItemVersion
 )

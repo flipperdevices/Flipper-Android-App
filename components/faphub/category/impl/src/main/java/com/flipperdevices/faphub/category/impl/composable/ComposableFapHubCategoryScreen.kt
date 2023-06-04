@@ -6,7 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.TextUnit
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.flipperdevices.core.ui.ktx.OrangeAppBarWithIcon
 import com.flipperdevices.faphub.appcard.composable.paging.ComposableFapsList
@@ -22,7 +21,7 @@ fun ComposableFapHubCategory(
     onOpenSearch: () -> Unit,
     onOpenFapItem: (FapItemShort) -> Unit,
     modifier: Modifier = Modifier,
-    installationButton: @Composable (FapItemShort?, Modifier, TextUnit) -> Unit
+    installationButton: @Composable (FapItemShort?, Modifier) -> Unit
 ) {
     val categoryViewModel = tangleViewModel<FapHubCategoryViewModel>()
     val fapsList = categoryViewModel.faps.collectAsLazyPagingItems()

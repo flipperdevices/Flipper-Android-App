@@ -6,6 +6,7 @@ import com.flipperdevices.faphub.catalogtab.api.CatalogTabApi
 import com.flipperdevices.faphub.catalogtab.impl.composable.ComposableCatalogTabScreen
 import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.dao.api.model.FapItemShort
+import com.flipperdevices.faphub.installation.button.api.FapButtonSize
 import com.flipperdevices.faphub.installation.button.api.FapInstallationUIApi
 import com.flipperdevices.faphub.installation.button.api.toFapButtonConfig
 import com.squareup.anvil.annotations.ContributesBinding
@@ -23,11 +24,11 @@ class CatalogTabApiImpl @Inject constructor(
         ComposableCatalogTabScreen(
             onOpenFapItem = onOpenFapItem,
             onCategoryClick = onCategoryClick,
-            installationButton = { fapItem, modifier, fontSize ->
+            installationButton = { fapItem, modifier ->
                 fapInstallationUIApi.ComposableButton(
                     config = fapItem?.toFapButtonConfig(),
                     modifier = modifier,
-                    textSize = fontSize
+                    fapButtonSize = FapButtonSize.COMPACTED
                 )
             }
         )

@@ -9,7 +9,7 @@ data class KtorfitVersionDetailed(
     @SerialName("version") val version: String,
     @SerialName("current_build") val currentBuild: KtorfitBuild,
     @SerialName("bundle") val bundle: KtorfitBundle,
-    @SerialName("icon") val iconUrl: String,
+    @SerialName("icon_uri") val iconUrl: String,
     @SerialName("screenshots") val screenshots: List<String>,
     @SerialName("links") val links: KtorfitLinks,
     @SerialName("description") val description: String,

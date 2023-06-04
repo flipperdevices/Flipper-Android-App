@@ -7,11 +7,8 @@ import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest
 import com.flipperdevices.faphub.installation.queue.api.model.FapQueueState
 import com.flipperdevices.faphub.installation.queue.impl.model.FapInternalQueueState
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -23,35 +20,36 @@ class FapInstallationQueueApiImpl @Inject constructor(
     override val TAG = "FapInstallationQueueApi"
 
     override fun getFlowById(
-        scope: CoroutineScope,
         applicationUid: String
-    ): StateFlow<FapQueueState> {
+    ): Flow<FapQueueState> {
         return combine(
             queueRunner.currentTaskFlow(),
             queueRunner.pendingTasksFlow()
         ) { currentTask, pendingTasks ->
-            return@combine if (currentTask != null && currentTask.request.applicationUid == applicationUid) {
-                when (currentTask) {
-                    is FapInternalQueueState.Failed -> FapQueueState.Failed(
-                        currentTask.request,
-                        currentTask.throwable
-                    )
+            val state =
+                if (currentTask != null && currentTask.request.applicationUid == applicationUid) {
+                    when (currentTask) {
+                        is FapInternalQueueState.Failed -> FapQueueState.Failed(
+                            currentTask.request,
+                            currentTask.throwable
+                        )
 
-                    is FapInternalQueueState.Scheduled -> FapQueueState.Pending(currentTask.request)
-                    is FapInternalQueueState.InProgress -> FapQueueState.InProgress(
-                        currentTask.request,
-                        currentTask.float
-                    )
-                }
-            } else {
-                val task = pendingTasks.find { it.applicationUid == applicationUid }
-                if (task != null) {
-                    FapQueueState.Pending(task)
+                        is FapInternalQueueState.Scheduled -> FapQueueState.Pending(currentTask.request)
+                        is FapInternalQueueState.InProgress -> FapQueueState.InProgress(
+                            currentTask.request,
+                            currentTask.float
+                        )
+                    }
                 } else {
-                    FapQueueState.NotFound
+                    val task = pendingTasks.find { it.applicationUid == applicationUid }
+                    if (task != null) {
+                        FapQueueState.Pending(task)
+                    } else {
+                        FapQueueState.NotFound
+                    }
                 }
-            }
-        }.stateIn(scope, SharingStarted.WhileSubscribed(), FapQueueState.NotFound)
+            return@combine state
+        }
     }
 
     override fun enqueue(actionRequest: FapActionRequest) {

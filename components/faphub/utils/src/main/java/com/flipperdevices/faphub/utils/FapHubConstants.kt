@@ -7,5 +7,5 @@ object FapHubConstants {
     val RPC_SUPPORTED_VERSION = SemVer(
         majorVersion = 0,
         minorVersion = 16
-    ) // TODO migrate to 17
+    )
 }
