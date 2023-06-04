@@ -4,6 +4,7 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.faphub.dao.network.retrofit.api.KtorfitApplicationApi
 import com.flipperdevices.faphub.dao.network.retrofit.api.KtorfitBundleApi
 import com.flipperdevices.faphub.dao.network.retrofit.api.KtorfitCategoryApi
+import com.flipperdevices.faphub.dao.network.retrofit.api.KtorfitVersionApi
 import com.flipperdevices.faphub.dao.network.retrofit.utils.FapHubNetworkCategoryApi
 import com.squareup.anvil.annotations.ContributesTo
 import dagger.Module
@@ -42,6 +43,12 @@ class KtorfitModule {
     @Provides
     @Reusable
     fun provideBundleApi(ktorfit: Ktorfit): KtorfitBundleApi {
+        return ktorfit.create()
+    }
+
+    @Provides
+    @Reusable
+    fun provideVersionApi(ktorfit: Ktorfit): KtorfitVersionApi {
         return ktorfit.create()
     }
 }

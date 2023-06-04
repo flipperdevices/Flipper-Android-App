@@ -9,4 +9,4 @@ data class KtorfitLinks(
     @SerialName("manifest_uri") val manifestUrl: String,
     @SerialName("source_code") val sourceCode: KtorfitSourceCodeLinks,
 
-    )
+)

@@ -29,13 +29,13 @@ interface KtorfitApplicationApi {
         sdkApiVersion: String? = null,
         @Query("category_id")
         categoryId: String? = null
-    ): Array<KtorfitApplicationShort>
+    ): List<KtorfitApplicationShort>
 
     @GET("application/featured")
     suspend fun getFeaturedApps(
         @Query("limit") limit: Int = 50,
         @Query("offset") offset: Int = 0
-    ): Array<KtorfitApplicationShort>
+    ): List<KtorfitApplicationShort>
 
     @GET("application/{uid}")
     suspend fun get(@Path("uid") id: String): KtorfitApplicationDetailed

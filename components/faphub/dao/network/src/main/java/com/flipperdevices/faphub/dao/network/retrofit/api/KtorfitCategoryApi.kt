@@ -9,5 +9,5 @@ interface KtorfitCategoryApi {
     suspend fun get(@Path("uid") id: String): KtorfitCategory
 
     @GET("category")
-    suspend fun getAll(): Array<KtorfitCategory>
+    suspend fun getAll(): List<KtorfitCategory>
 }

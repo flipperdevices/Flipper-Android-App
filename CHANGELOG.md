@@ -5,6 +5,7 @@
 - [FIX] Add confirm delete dialog and some small fixes
 - [Feature] FapHub MVPv0
 - [Feature] Update README with Fdroid badge
+= [REFACTOR] Migrate to Ktorfit
 
 # 1.5.1
 

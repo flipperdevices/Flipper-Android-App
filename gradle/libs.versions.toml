@@ -56,8 +56,8 @@ tangle = "ndoglio-kotlin-1.8-SNAPSHOT" # https://github.com/RBusarow/Tangle/rele
 work = "2.8.1" # https://developer.android.com/jetpack/androidx/releases/work
 coil = "2.4.0" # https://github.com/coil-kt/coil/releases
 play-core = "2.0.1" # https://developer.android.com/guide/playcore#java-kotlin-in-app-update
-ktorfit = "1.4.0"
-ktorfit-gradle = "1.0.0"
+ktorfit = "1.4.1" # https://github.com/Foso/Ktorfit/releases
+ktorfit-gradle = "1.0.0" # https://plugins.gradle.org/plugin/de.jensklingenberg.ktorfit
 
 
 # Testing

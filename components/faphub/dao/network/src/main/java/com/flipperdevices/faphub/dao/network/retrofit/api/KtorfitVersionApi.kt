@@ -1,10 +1,10 @@
 package com.flipperdevices.faphub.dao.network.retrofit.api
 
 import com.flipperdevices.faphub.dao.network.retrofit.model.RetrofitDetailedVersion
-import retrofit2.http.GET
-import retrofit2.http.Query
+import de.jensklingenberg.ktorfit.http.GET
+import de.jensklingenberg.ktorfit.http.Query
 
-interface RetrofitVersionApi {
+interface KtorfitVersionApi {
     @GET("application/versions")
     suspend fun getVersions(
         @Query("uid") ids: List<String>
