@@ -64,11 +64,13 @@ dependencies {
 
     implementation(projects.components.keyscreen.api)
     implementation(projects.components.keyscreen.impl)
-    implementation(projects.components.keyscreen.emulate)
     implementation(projects.components.keyscreen.shared)
 
     implementation(projects.components.keyedit.api)
     implementation(projects.components.keyedit.impl)
+
+    implementation(projects.components.keyemulate.api)
+    implementation(projects.components.keyemulate.impl)
 
     implementation(projects.components.inappnotification.api)
     implementation(projects.components.inappnotification.impl)

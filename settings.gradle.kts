@@ -111,8 +111,10 @@ include(
 
     ":components:keyscreen:api",
     ":components:keyscreen:impl",
-    ":components:keyscreen:emulate",
     ":components:keyscreen:shared",
+
+    ":components:keyemulate:api",
+    ":components:keyemulate:impl",
 
     ":components:keyedit:api",
     ":components:keyedit:impl",
