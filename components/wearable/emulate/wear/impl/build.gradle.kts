@@ -25,6 +25,7 @@ dependencies {
 
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.keyscreen.api)
+    implementation(projects.components.keyemulate.api)
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.kotlin.coroutines.play.services)

@@ -15,7 +15,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import com.flipperdevices.core.ui.errors.ComposableThrowableError
-import com.flipperdevices.core.ui.ktx.ComposeLottiePic
+import com.flipperdevices.core.ui.ktx.image.ComposeLottiePic
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.faphub.appcard.composable.AppCard
 import com.flipperdevices.faphub.dao.api.model.FapItemShort

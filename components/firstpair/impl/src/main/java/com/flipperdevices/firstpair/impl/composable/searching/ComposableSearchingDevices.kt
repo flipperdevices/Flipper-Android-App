@@ -13,7 +13,7 @@ import com.flipperdevices.bridge.api.scanner.DiscoveredBluetoothDevice
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialog
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialogModel
-import com.flipperdevices.core.ui.ktx.SwipeRefresh
+import com.flipperdevices.core.ui.ktx.elements.SwipeRefresh
 import com.flipperdevices.firstpair.impl.R
 import com.flipperdevices.firstpair.impl.model.DevicePairState
 import com.flipperdevices.firstpair.impl.model.SearchingContent

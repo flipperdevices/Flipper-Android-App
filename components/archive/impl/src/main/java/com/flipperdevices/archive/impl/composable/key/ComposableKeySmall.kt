@@ -12,8 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
-import com.flipperdevices.core.ui.ktx.ComposableKeyType
 import com.flipperdevices.core.ui.ktx.clickableRipple
+import com.flipperdevices.core.ui.ktx.elements.ComposableKeyType
 import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable

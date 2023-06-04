@@ -13,7 +13,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.analytics.shake2report.impl.R
-import com.flipperdevices.core.ui.ktx.animatedDots
+import com.flipperdevices.core.ui.ktx.elements.animatedDots
 import com.flipperdevices.core.ui.theme.LocalPallet
 
 @Composable

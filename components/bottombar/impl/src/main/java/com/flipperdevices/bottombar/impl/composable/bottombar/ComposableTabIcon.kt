@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.painterResource
 import com.flipperdevices.bottombar.model.TabState
-import com.flipperdevices.core.ui.ktx.painterResourceByKey
+import com.flipperdevices.core.ui.ktx.image.painterResourceByKey
 
 private const val FULL_CIRCLE = 360
 private const val TIME_ANIM = 1000

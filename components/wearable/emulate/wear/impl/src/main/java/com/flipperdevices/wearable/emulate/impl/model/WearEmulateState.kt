@@ -2,7 +2,7 @@ package com.flipperdevices.wearable.emulate.impl.model
 
 import androidx.compose.runtime.Stable
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
-import com.flipperdevices.keyscreen.api.EmulateProgress
+import com.flipperdevices.keyemulate.model.EmulateProgress
 
 @Stable
 sealed class WearEmulateState {
