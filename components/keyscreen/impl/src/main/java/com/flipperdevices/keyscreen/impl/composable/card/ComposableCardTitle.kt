@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.keyscreen.impl.R
-import com.flipperdevices.keyscreen.impl.model.DeleteState
+import com.flipperdevices.keyscreen.model.DeleteState
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable

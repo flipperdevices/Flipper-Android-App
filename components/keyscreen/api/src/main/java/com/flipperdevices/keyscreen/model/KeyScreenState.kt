@@ -1,4 +1,4 @@
-package com.flipperdevices.keyscreen.impl.model
+package com.flipperdevices.keyscreen.model
 
 import androidx.annotation.StringRes
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
