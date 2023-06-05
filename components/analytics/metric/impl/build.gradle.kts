@@ -3,8 +3,7 @@ import com.flipperdevices.buildlogic.ApkConfig.COUNTLY_URL
 
 plugins {
     id("flipper.android-lib")
-    id("com.squareup.anvil")
-    id("kotlin-kapt")
+    id("flipper.anvil")
     id("flipper.protobuf")
 }
 
@@ -36,8 +35,4 @@ dependencies {
     implementation(libs.countly)
     implementation(libs.ktor.client)
     implementation(libs.ktor.logging)
-
-    // Dagger deps
-    implementation(libs.dagger)
-    kapt(libs.dagger.kapt)
 }

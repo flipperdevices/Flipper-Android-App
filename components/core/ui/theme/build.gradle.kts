@@ -1,7 +1,6 @@
 plugins {
     id("flipper.android-compose")
-    id("com.squareup.anvil")
-    id("kotlin-kapt")
+    id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.core.ui.theme"
@@ -22,8 +21,6 @@ dependencies {
     implementation(libs.appcompat)
 
     // Dagger deps
-    implementation(libs.dagger)
-    kapt(libs.dagger.kapt)
     implementation(libs.tangle.viewmodel.api)
     implementation(libs.tangle.viewmodel.compose)
     anvil(libs.tangle.viewmodel.compiler)

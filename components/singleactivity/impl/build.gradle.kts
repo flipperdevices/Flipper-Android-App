@@ -1,7 +1,6 @@
 plugins {
     id("flipper.android-compose")
-    id("com.squareup.anvil")
-    id("kotlin-kapt")
+    id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.singleactivity.impl"
@@ -36,8 +35,4 @@ dependencies {
 
     implementation(libs.ktx.activity)
     implementation(libs.kotlin.immutable.collections)
-
-    // Dagger deps
-    implementation(libs.dagger)
-    kapt(libs.dagger.kapt)
 }

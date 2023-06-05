@@ -6,7 +6,8 @@
 - [FIX] Migrate key emulate to new module
 - [Feature] FapHub MVPv0
 - [Feature] Update README with Fdroid badge
-= [REFACTOR] Migrate to Ktorfit
+- [Refactor] Migrate all feature components modules from KSP to Anvil
+- [Refactor] Migrate to Ktorfit
 
 # 1.5.1
 

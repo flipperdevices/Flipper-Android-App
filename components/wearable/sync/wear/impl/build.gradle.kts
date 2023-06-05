@@ -1,7 +1,6 @@
 plugins {
     id("flipper.android-compose")
-    id("com.squareup.anvil")
-    id("kotlin-kapt")
+    id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.wearable.sync.wear.impl"
@@ -34,8 +33,4 @@ dependencies {
     implementation(libs.compose.wear.navigation)
     implementation(libs.horologist.layout)
     implementation(libs.lifecycle.compose)
-
-    // Dagger deps
-    implementation(libs.dagger)
-    kapt(libs.dagger.kapt)
 }

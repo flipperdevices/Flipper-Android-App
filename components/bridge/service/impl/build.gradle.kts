@@ -1,7 +1,6 @@
 plugins {
     id("flipper.android-lib")
-    id("com.squareup.anvil")
-    id("kotlin-kapt")
+    id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.bridge.service.impl"
@@ -39,9 +38,6 @@ dependencies {
     implementation(libs.ble)
     implementation(libs.ble.common)
     implementation(libs.ble.scan)
-
-    implementation(libs.dagger)
-    kapt(libs.dagger.kapt)
 
     testImplementation(projects.components.core.test)
     testImplementation(libs.junit)

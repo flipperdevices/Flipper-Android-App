@@ -1,7 +1,6 @@
 plugins {
     id("flipper.android-compose")
-    id("com.squareup.anvil")
-    id("kotlin-kapt")
+    id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.bridge.synchronization.stub"
@@ -10,10 +9,6 @@ dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.synchronization.api)
-
-    // Dagger deps
-    implementation(libs.dagger)
-    kapt(libs.dagger.kapt)
 
     // Compose
     implementation(libs.compose.ui)

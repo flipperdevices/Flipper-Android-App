@@ -1,10 +1,11 @@
 plugins {
     id("flipper.android-compose")
-    id("com.squareup.anvil")
+    id("flipper.anvil")
     id("kotlin-kapt")
 }
 
 android.namespace = "com.flipperdevices.wearable.emulate.impl"
+anvil.generateDaggerFactories.set(false) // WearEmulateComponent
 
 dependencies {
     implementation(projects.components.wearable.setup.api)

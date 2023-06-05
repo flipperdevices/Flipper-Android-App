@@ -1,7 +1,6 @@
 plugins {
     id("flipper.android-lib")
-    id("com.squareup.anvil")
-    id("kotlin-kapt")
+    id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.updater.impl"
@@ -25,10 +24,6 @@ dependencies {
     implementation(projects.components.analytics.metric.api)
 
     implementation(libs.lifecycle.runtime.ktx)
-
-    // Dagger deps
-    implementation(libs.dagger)
-    kapt(libs.dagger.kapt)
 
     // Testing
     testImplementation(projects.components.core.test)

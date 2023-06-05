@@ -1,7 +1,6 @@
 plugins {
     id("flipper.android-lib")
-    id("com.squareup.anvil")
-    id("kotlin-kapt")
+    id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.selfupdater.unknown"
@@ -11,6 +10,4 @@ dependencies {
 
     // Dagger deps
     implementation(projects.components.core.di)
-    implementation(libs.dagger)
-    kapt(libs.dagger.kapt)
 }

@@ -1,7 +1,6 @@
 plugins {
     id("flipper.android-lib")
-    id("com.squareup.anvil")
-    id("kotlin-kapt")
+    id("flipper.anvil")
     id("com.google.devtools.ksp")
 }
 
@@ -22,9 +21,6 @@ dependencies {
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.ksp)
-
-    implementation(libs.dagger)
-    kapt(libs.dagger.kapt)
 
     implementation(libs.kotlin.immutable.collections)
 

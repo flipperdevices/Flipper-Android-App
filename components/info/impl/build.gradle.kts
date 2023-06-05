@@ -1,7 +1,6 @@
 plugins {
     id("flipper.android-compose")
-    id("com.squareup.anvil")
-    id("kotlin-kapt")
+    id("flipper.anvil")
     id("kotlin-parcelize")
     id("kotlinx-serialization")
 }
@@ -45,8 +44,7 @@ dependencies {
     implementation(libs.annotations)
 
     implementation(libs.appcompat)
-    implementation(libs.dagger)
-    kapt(libs.dagger.kapt)
+
     implementation(libs.tangle.viewmodel.compose)
     implementation(libs.tangle.viewmodel.api)
     anvil(libs.tangle.viewmodel.compiler)

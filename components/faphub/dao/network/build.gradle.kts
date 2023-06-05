@@ -1,8 +1,7 @@
 plugins {
     id("flipper.android-lib")
     id("flipper.ktorfit")
-    id("com.squareup.anvil")
-    id("kotlin-kapt")
+    id("flipper.anvil")
     id("kotlinx-serialization")
 }
 
@@ -21,10 +20,6 @@ dependencies {
     implementation(projects.components.faphub.target.api)
 
     implementation(libs.kotlin.serialization.json)
-
-    // Dagger deps
-    implementation(libs.dagger)
-    kapt(libs.dagger.kapt)
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.kotlin.immutable.collections)
