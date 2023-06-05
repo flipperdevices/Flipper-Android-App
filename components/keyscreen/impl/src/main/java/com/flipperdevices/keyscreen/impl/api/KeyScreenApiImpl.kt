@@ -38,7 +38,7 @@ class KeyScreenApiImpl @Inject constructor(
             deleteState = state.deleteState,
             modifier = modifier,
             synchronizationState = if (state.deleteState == DeleteState.NOT_DELETED) {
-                { ->
+                {
                     synchronizationUiApi.RenderSynchronizationState(
                         state.flipperKey.getKeyPath(),
                         withText = true

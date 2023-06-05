@@ -18,7 +18,6 @@ import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -68,10 +67,9 @@ class KeyStateHelperImpl(
 ) : KeyStateHelperApi {
     private val keyScreenState = MutableStateFlow<KeyScreenState>(KeyScreenState.InProgress)
     private val restoreInProgress = AtomicBoolean(false)
-    private var loadKeyJob: Job? = null
 
     init {
-        loadKeyJob = scope.launch { loadFileAsFlow(keyPath) }
+        scope.launch { loadFileAsFlow(keyPath) }
     }
 
     override fun getKeyScreenState(): StateFlow<KeyScreenState> = keyScreenState.asStateFlow()
