@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPallet
-import com.flipperdevices.keyscreen.api.KeyEmulateUiApi
+import com.flipperdevices.keyemulate.api.KeyEmulateUiApi
 import com.flipperdevices.wearable.emulate.impl.R
 import com.flipperdevices.wearable.emulate.impl.model.WearLoadingState
 import com.google.accompanist.placeholder.PlaceholderHighlight

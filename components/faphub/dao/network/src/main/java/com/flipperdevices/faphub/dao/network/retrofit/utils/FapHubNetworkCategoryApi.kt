@@ -5,25 +5,25 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.verbose
 import com.flipperdevices.faphub.dao.api.model.FapCategory
-import com.flipperdevices.faphub.dao.network.retrofit.api.RetrofitCategoryApi
-import com.flipperdevices.faphub.dao.network.retrofit.model.RetrofitCategory
+import com.flipperdevices.faphub.dao.network.retrofit.api.KtorfitCategoryApi
+import com.flipperdevices.faphub.dao.network.retrofit.model.KtorfitCategory
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.sync.Mutex
 
 class FapHubNetworkCategoryApi(
-    private val categoryApi: RetrofitCategoryApi
+    private val categoryApi: KtorfitCategoryApi
 ) : LogTagProvider {
     override val TAG = "FapHubNetworkCategoryApi"
 
     private val mutex = Mutex()
-    private val categories = mutableMapOf<String, CompletableDeferred<RetrofitCategory>>()
+    private val categories = mutableMapOf<String, CompletableDeferred<KtorfitCategory>>()
     suspend fun get(id: String): FapCategory {
         val (deferred, needRequest) = withLockResult(mutex, "get") {
             val category = categories[id]
             if (category != null) {
                 return@withLockResult category to false
             }
-            return@withLockResult CompletableDeferred<RetrofitCategory>().also {
+            return@withLockResult CompletableDeferred<KtorfitCategory>().also {
                 categories[id] = it
             } to true
         }
@@ -47,7 +47,7 @@ class FapHubNetworkCategoryApi(
         return deferred.await().toFapCategory()
     }
 
-    suspend fun getAll(): List<RetrofitCategory> {
+    suspend fun getAll(): List<KtorfitCategory> {
         val fetchedCategories = categoryApi.getAll()
         withLockResult(mutex, "batch_update") {
             fetchedCategories.forEach { category ->
@@ -55,6 +55,6 @@ class FapHubNetworkCategoryApi(
                 deferred.complete(category)
             }
         }
-        return fetchedCategories
+        return fetchedCategories.toList()
     }
 }

@@ -64,11 +64,13 @@ dependencies {
 
     implementation(projects.components.keyscreen.api)
     implementation(projects.components.keyscreen.impl)
-    implementation(projects.components.keyscreen.emulate)
     implementation(projects.components.keyscreen.shared)
 
     implementation(projects.components.keyedit.api)
     implementation(projects.components.keyedit.impl)
+
+    implementation(projects.components.keyemulate.api)
+    implementation(projects.components.keyemulate.impl)
 
     implementation(projects.components.inappnotification.api)
     implementation(projects.components.inappnotification.impl)
@@ -209,7 +211,7 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.work.ktx)
-    implementation(libs.retrofit)
+    implementation(libs.ktorfit.lib)
 
     implementation(libs.compose.coil.svg)
     implementation(libs.compose.coil)

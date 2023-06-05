@@ -8,7 +8,7 @@ import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.jre.combine
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.keyscreen.api.emulate.EmulateHelper
+import com.flipperdevices.keyemulate.api.EmulateHelper
 import com.flipperdevices.protobuf.app.Application
 import com.flipperdevices.widget.impl.di.WidgetComponent
 import com.flipperdevices.widget.impl.tasks.invalidate.WidgetNotificationHelper

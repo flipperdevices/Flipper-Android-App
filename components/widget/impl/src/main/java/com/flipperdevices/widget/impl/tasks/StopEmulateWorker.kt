@@ -7,7 +7,7 @@ import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.jre.withCoroutineScope
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.keyscreen.api.emulate.EmulateHelper
+import com.flipperdevices.keyemulate.api.EmulateHelper
 import com.flipperdevices.widget.impl.di.WidgetComponent
 import com.flipperdevices.widget.impl.model.WidgetState
 import com.flipperdevices.widget.impl.storage.WidgetStateStorage
