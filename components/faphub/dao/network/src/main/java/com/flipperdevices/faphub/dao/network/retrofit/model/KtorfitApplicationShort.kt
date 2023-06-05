@@ -11,7 +11,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RetrofitApplicationShort(
+data class KtorfitApplicationShort(
     @SerialName("_id") val id: String,
     @SerialName("created_at")
     @Serializable(with = DateSerializer::class)
@@ -22,7 +22,7 @@ data class RetrofitApplicationShort(
     @SerialName("category_id") val categoryId: String,
     @SerialName("alias") val alias: String,
     @SerialName("name") val name: String,
-    @SerialName("current_version") val currentVersion: RetrofitCurrentVersionShort,
+    @SerialName("current_version") val currentVersion: KtorfitCurrentVersionShort,
 ) {
     fun toFapItemShort(category: FapCategory): FapItemShort {
         val fapItemVersion = FapItemVersion(

@@ -1,5 +1,6 @@
 plugins {
     id("flipper.android-lib")
+    id("flipper.ktorfit")
     id("com.squareup.anvil")
     id("kotlin-kapt")
     id("kotlinx-serialization")
@@ -20,11 +21,6 @@ dependencies {
     implementation(projects.components.faphub.target.api)
 
     implementation(libs.kotlin.serialization.json)
-
-    implementation(libs.retrofit)
-    implementation(libs.retrofit.json)
-    implementation(libs.okhttp)
-    implementation(libs.okhttp.logging)
 
     // Dagger deps
     implementation(libs.dagger)

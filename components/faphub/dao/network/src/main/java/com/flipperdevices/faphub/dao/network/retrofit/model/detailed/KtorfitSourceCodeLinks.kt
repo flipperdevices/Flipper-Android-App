@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RetrofitSourceCodeLinks(
+data class KtorfitSourceCodeLinks(
     @SerialName("type") val type: String,
     @SerialName("uri") val url: String
 )

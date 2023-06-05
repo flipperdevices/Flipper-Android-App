@@ -7,7 +7,7 @@ import com.flipperdevices.core.log.debug
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.dao.api.model.SortType
-import com.flipperdevices.faphub.dao.network.retrofit.api.RetrofitApplicationApi
+import com.flipperdevices.faphub.dao.network.retrofit.api.KtorfitApplicationApi
 import com.flipperdevices.faphub.dao.network.retrofit.model.types.ApplicationSortType
 import com.flipperdevices.faphub.dao.network.retrofit.model.types.SortOrderType
 import com.flipperdevices.faphub.dao.network.retrofit.utils.FapHubNetworkCategoryApi
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, FapNetworkApi::class)
 class FapNetworkApiImpl @Inject constructor(
-    private val applicationApi: RetrofitApplicationApi,
+    private val applicationApi: KtorfitApplicationApi,
     private val categoryApi: FapHubNetworkCategoryApi,
     private val flipperTargetApi: FlipperTargetProviderApi
 ) : FapNetworkApi, LogTagProvider {
@@ -27,7 +27,7 @@ class FapNetworkApiImpl @Inject constructor(
     override suspend fun getFeaturedItem() = catchWithDispatcher {
         debug { "Request featured item" }
 
-        val response = applicationApi.getFeaturedApps(limit = 1)
+        val response = applicationApi.getFeaturedApps()
         debug { "Provider response: $response" }
 
         val responseItem = response.firstOrNull() ?: error("Empty response")
@@ -73,16 +73,20 @@ class FapNetworkApiImpl @Inject constructor(
         query: String,
         offset: Int,
         limit: Int
-    ) = getAllItem(
-        sortType = SortType.NAME_DESC,
-        offset = offset,
-        limit = limit
-    ).map { items ->
-        items.filter {
-            it.name.contains(query, ignoreCase = true) ||
-                it.description.contains(query, ignoreCase = true) ||
-                it.category.name.contains(query, ignoreCase = true)
+    ) = catchWithDispatcher {
+        val response = applicationApi.getAll(
+            limit = limit,
+            offset = offset,
+            query = query
+        )
+
+        val fapItems = response.pmap {
+            it.toFapItemShort(categoryApi.get(it.categoryId))
+        }.also {
+            debug { "Provider all item: $it" }
         }
+
+        return@catchWithDispatcher fapItems
     }
 
     override suspend fun getCategories() = catchWithDispatcher {

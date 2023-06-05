@@ -6,6 +6,7 @@
 - [FIX] Migrate key emulate to new module
 - [Feature] FapHub MVPv0
 - [Feature] Update README with Fdroid badge
+= [REFACTOR] Migrate to Ktorfit
 
 # 1.5.1
 
@@ -13,7 +14,7 @@
 - [FIX] Position bubble on key sub-ghz emulate and update hold modifier by new api
 - [FIX] Hotfix wearos app and app catalog switch
 
-# 1.5.0 - In Progress
+# 1.5.0
 
 - [Feature] Flipper app loader errors
 - [Feature] More smoothly synchronization percent

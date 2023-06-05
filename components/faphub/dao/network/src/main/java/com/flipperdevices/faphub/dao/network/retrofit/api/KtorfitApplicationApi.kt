@@ -1,15 +1,15 @@
 package com.flipperdevices.faphub.dao.network.retrofit.api
 
-import com.flipperdevices.faphub.dao.network.retrofit.model.RetrofitApplicationShort
-import com.flipperdevices.faphub.dao.network.retrofit.model.detailed.RetrofitApplicationDetailed
+import com.flipperdevices.faphub.dao.network.retrofit.model.KtorfitApplicationShort
+import com.flipperdevices.faphub.dao.network.retrofit.model.detailed.KtorfitApplicationDetailed
 import com.flipperdevices.faphub.dao.network.retrofit.model.types.ApplicationSortType
 import com.flipperdevices.faphub.dao.network.retrofit.model.types.SortOrderType
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import de.jensklingenberg.ktorfit.http.GET
+import de.jensklingenberg.ktorfit.http.Path
+import de.jensklingenberg.ktorfit.http.Query
 
 @Suppress("LongParameterList")
-interface RetrofitApplicationApi {
+interface KtorfitApplicationApi {
     @GET("application")
     suspend fun getAll(
         @Query("limit") limit: Int = 50,
@@ -29,14 +29,14 @@ interface RetrofitApplicationApi {
         sdkApiVersion: String? = null,
         @Query("category_id")
         categoryId: String? = null
-    ): List<RetrofitApplicationShort>
+    ): List<KtorfitApplicationShort>
 
     @GET("application/featured")
     suspend fun getFeaturedApps(
         @Query("limit") limit: Int = 50,
         @Query("offset") offset: Int = 0
-    ): List<RetrofitApplicationShort>
+    ): List<KtorfitApplicationShort>
 
     @GET("application/{uid}")
-    suspend fun get(@Path("uid") id: String): RetrofitApplicationDetailed
+    suspend fun get(@Path("uid") id: String): KtorfitApplicationDetailed
 }

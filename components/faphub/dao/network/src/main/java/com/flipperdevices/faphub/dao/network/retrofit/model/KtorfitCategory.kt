@@ -6,7 +6,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RetrofitCategory(
+data class KtorfitCategory(
     @SerialName("_id") val id: String,
     @SerialName("priority") val priority: Int,
     @SerialName("name") val name: String,
