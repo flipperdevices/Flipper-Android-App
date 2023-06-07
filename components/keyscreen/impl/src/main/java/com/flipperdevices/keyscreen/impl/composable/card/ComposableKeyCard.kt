@@ -22,8 +22,8 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.keyscreen.impl.R
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableFavorite
-import com.flipperdevices.keyscreen.impl.model.DeleteState
-import com.flipperdevices.keyscreen.impl.model.FavoriteState
+import com.flipperdevices.keyscreen.model.DeleteState
+import com.flipperdevices.keyscreen.model.FavoriteState
 import com.flipperdevices.keyscreen.shared.ComposableKeyContent
 
 @Composable

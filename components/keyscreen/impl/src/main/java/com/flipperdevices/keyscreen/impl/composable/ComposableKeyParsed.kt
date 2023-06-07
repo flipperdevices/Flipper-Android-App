@@ -17,9 +17,9 @@ import com.flipperdevices.keyscreen.impl.composable.actions.ComposableNfcEdit
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableRestore
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableShare
 import com.flipperdevices.keyscreen.impl.composable.card.ComposableKeyCard
-import com.flipperdevices.keyscreen.impl.model.DeleteState
-import com.flipperdevices.keyscreen.impl.model.KeyScreenState
 import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModel
+import com.flipperdevices.keyscreen.model.DeleteState
+import com.flipperdevices.keyscreen.model.KeyScreenState
 import com.flipperdevices.keyscreen.shared.bar.ComposableBarBackIcon
 import com.flipperdevices.keyscreen.shared.bar.ComposableBarTitleWithName
 import com.flipperdevices.keyscreen.shared.bar.ComposableKeyScreenAppBar

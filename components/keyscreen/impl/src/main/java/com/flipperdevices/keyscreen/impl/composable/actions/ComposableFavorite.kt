@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.ktx.image.painterResourceByKey
 import com.flipperdevices.core.ui.theme.LocalPallet
-import com.flipperdevices.keyscreen.impl.model.FavoriteState
+import com.flipperdevices.keyscreen.model.FavoriteState
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 private const val ICON_SIZE_DP = 24

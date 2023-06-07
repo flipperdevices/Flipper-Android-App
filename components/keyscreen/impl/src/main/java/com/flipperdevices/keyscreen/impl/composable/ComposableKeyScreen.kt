@@ -16,8 +16,8 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.keyemulate.api.KeyEmulateApi
-import com.flipperdevices.keyscreen.impl.model.KeyScreenState
 import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModel
+import com.flipperdevices.keyscreen.model.KeyScreenState
 import com.flipperdevices.nfceditor.api.NfcEditorApi
 
 @Composable

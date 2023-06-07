@@ -1,4 +1,4 @@
-package com.flipperdevices.keyscreen.impl.model
+package com.flipperdevices.keyscreen.model
 
 enum class FavoriteState {
     NOT_FAVORITE,
