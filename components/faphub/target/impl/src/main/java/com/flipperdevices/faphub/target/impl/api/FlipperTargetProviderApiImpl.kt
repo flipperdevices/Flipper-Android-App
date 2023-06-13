@@ -16,7 +16,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 @Singleton
@@ -37,18 +36,6 @@ class FlipperTargetProviderApiImpl @Inject constructor(
     }
 
     override fun getFlipperTarget() = targetFlow.asStateFlow()
-
-    override suspend fun getFlipperTargetSync(): Result<FlipperTarget.Received> = runCatching {
-        return@runCatching when (
-            val receivedTarget = getFlipperTarget().first {
-                it != null
-            }
-        ) {
-            is FlipperTarget.Received -> receivedTarget
-            null -> error("Please, wait until target is ready")
-            FlipperTarget.Unsupported -> error("Fap catalog unsupported on this api version")
-        }
-    }
 
     private suspend fun subscribe() {
         info { "Start subscribe" }

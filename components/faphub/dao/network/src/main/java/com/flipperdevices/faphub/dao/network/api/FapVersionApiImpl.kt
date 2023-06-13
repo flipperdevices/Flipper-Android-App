@@ -19,7 +19,8 @@ class FapVersionApiImpl @Inject constructor(
         return ktorfitVersionApi.getVersions(versions).map {
             FapItemVersion(
                 id = it.id,
-                version = SemVer.fromString(it.version) ?: error("Failed parse ${it.version}")
+                version = SemVer.fromString(it.version) ?: error("Failed parse ${it.version}"),
+                target = null
             )
         }
     }

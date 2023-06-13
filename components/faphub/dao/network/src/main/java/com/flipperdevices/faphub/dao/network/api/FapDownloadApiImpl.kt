@@ -9,7 +9,7 @@ import com.flipperdevices.core.progress.ProgressListener
 import com.flipperdevices.core.progress.ProgressWrapperTracker
 import com.flipperdevices.faphub.dao.api.FapDownloadApi
 import com.flipperdevices.faphub.dao.network.retrofit.api.KtorfitBundleApi
-import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
+import com.flipperdevices.faphub.target.model.FlipperTarget
 import com.squareup.anvil.annotations.ContributesBinding
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
@@ -23,17 +23,16 @@ import javax.inject.Inject
 @ContributesBinding(AppGraph::class, FapDownloadApi::class)
 class FapDownloadApiImpl @Inject constructor(
     private val bundleApi: KtorfitBundleApi,
-    private val flipperTargetApi: FlipperTargetProviderApi,
     private val context: Context
 ) : FapDownloadApi, LogTagProvider {
     override val TAG = "FapDownloadApi"
 
     override suspend fun downloadBundle(
+        target: FlipperTarget.Received,
         versionId: String,
         listener: ProgressListener?
     ): File {
-        info { "Start download bundle for $versionId" }
-        val target = flipperTargetApi.getFlipperTargetSync().getOrThrow()
+        info { "Start download bundle for $versionId and $target" }
 
         val file = FlipperStorageProvider.getTemporaryFile(context)
 

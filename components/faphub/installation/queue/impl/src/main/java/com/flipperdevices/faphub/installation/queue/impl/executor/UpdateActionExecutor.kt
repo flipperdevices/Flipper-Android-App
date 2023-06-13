@@ -20,7 +20,7 @@ class UpdateActionExecutor @Inject constructor(
         request: FapActionRequest.Update,
         progressListener: ProgressListener
     ) {
-        val path = uploadAndDownloadFap(request.toVersion.id, progressListener)
+        val path = uploadAndDownloadFap(request.toVersion, progressListener)
         fapManifestApi.add(
             pathToFap = path,
             request.from.copy(

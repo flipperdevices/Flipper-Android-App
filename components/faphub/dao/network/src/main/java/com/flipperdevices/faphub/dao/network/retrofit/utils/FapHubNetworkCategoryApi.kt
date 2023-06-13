@@ -41,6 +41,7 @@ class FapHubNetworkCategoryApi(
             error(ex) { "Failed get categories" }
             return@withLock
         }
+        info { "Received ${categoriesReceived.size} categories" }
         categories = categoriesReceived.associateBy { it.id }
         currentTarget = target
     }

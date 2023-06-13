@@ -13,5 +13,7 @@ dependencies {
     implementation(libs.kotlin.serialization.json)
     implementation(libs.kotlin.immutable.collections)
 
+    implementation(projects.components.faphub.target.api)
+
     implementation(libs.annotations)
 }

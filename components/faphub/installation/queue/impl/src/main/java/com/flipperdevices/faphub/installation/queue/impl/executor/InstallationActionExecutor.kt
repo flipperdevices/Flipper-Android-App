@@ -24,7 +24,7 @@ class InstallationActionExecutor @Inject constructor(
         request: FapActionRequest.Install,
         progressListener: ProgressListener
     ) {
-        val path = uploadAndDownloadFap(request.toVersion.id, progressListener)
+        val path = uploadAndDownloadFap(request.toVersion, progressListener)
         var finalFapPath = File(FLIPPER_APPS_FOLDER, request.categoryAlias).absolutePath
         finalFapPath = File(finalFapPath, "${request.applicationAlias}.fap").absolutePath
         fapManifestApi.add(
