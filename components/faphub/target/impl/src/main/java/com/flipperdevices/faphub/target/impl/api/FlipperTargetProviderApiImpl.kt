@@ -9,6 +9,8 @@ import com.flipperdevices.faphub.target.impl.model.FlipperSdkVersion
 import com.flipperdevices.faphub.target.impl.utils.FlipperSdkFetcher
 import com.flipperdevices.faphub.target.model.FlipperTarget
 import com.squareup.anvil.annotations.ContributesBinding
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -16,8 +18,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import javax.inject.Inject
-import javax.inject.Singleton
 
 @Singleton
 @ContributesBinding(AppGraph::class, FlipperTargetProviderApi::class)
@@ -28,7 +28,7 @@ class FlipperTargetProviderApiImpl @Inject constructor(
     override val TAG = "FlipperTargetProviderApi"
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-    private val targetFlow = MutableStateFlow<FlipperTarget>(FlipperTarget.Retrieving)
+    private val targetFlow = MutableStateFlow<FlipperTarget?>(null)
 
     init {
         scope.launch {
@@ -41,11 +41,11 @@ class FlipperTargetProviderApiImpl @Inject constructor(
     override suspend fun getFlipperTargetSync(): Result<FlipperTarget.Received> = runCatching {
         return@runCatching when (
             val receivedTarget = getFlipperTarget().first {
-                it != FlipperTarget.Retrieving
+                it != null
             }
         ) {
             is FlipperTarget.Received -> receivedTarget
-            FlipperTarget.Retrieving -> error("Please, wait until target is ready")
+            null -> error("Please, wait until target is ready")
             FlipperTarget.Unsupported -> error("Fap catalog unsupported on this api version")
         }
     }
@@ -61,7 +61,7 @@ class FlipperTargetProviderApiImpl @Inject constructor(
                 FlipperSdkVersion.Unsupported,
                 FlipperSdkVersion.Error -> FlipperTarget.Unsupported
 
-                FlipperSdkVersion.InProgress -> FlipperTarget.Retrieving
+                FlipperSdkVersion.InProgress -> null
                 is FlipperSdkVersion.Received -> FlipperTarget.Received(
                     target = "f7",
                     sdk = sdkVersion.sdk

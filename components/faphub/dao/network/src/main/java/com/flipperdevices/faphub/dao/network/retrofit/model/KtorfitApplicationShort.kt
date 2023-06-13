@@ -24,7 +24,10 @@ data class KtorfitApplicationShort(
     @SerialName("name") val name: String,
     @SerialName("current_version") val currentVersion: KtorfitCurrentVersionShort,
 ) {
-    fun toFapItemShort(category: FapCategory): FapItemShort {
+    fun toFapItemShort(category: FapCategory?): FapItemShort? {
+        if (category == null) {
+            return null
+        }
         val fapItemVersion = FapItemVersion(
             id = currentVersion.id,
             version = SemVer.fromString(currentVersion.version)
