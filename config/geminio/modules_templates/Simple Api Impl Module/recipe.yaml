@@ -1,0 +1,83 @@
+requiredParams:
+  name: Navigation Feature
+  description: Creates template API and IMPL Gradle-module for navigation feature
+
+predefinedFeatures:
+  - enableModuleCreationParams:
+      defaultPackageNamePrefix: com.flipperdevices
+
+widgets:
+  - booleanParameter:
+      id: needCompose
+      name: Add Compose dependencies?
+      help: Adds compose gradle plugin and compose deps
+      default: false
+
+  - booleanParameter:
+      id: needViewModel
+      name: Add ViewModel dependencies?
+      help: Adds viewmodel deps
+      default: false
+
+  - booleanParameter:
+      id: needTest
+      name: Add test?
+      help: Adds testing library
+      default: true
+
+recipe:
+  - mkDirs:
+    - api:
+        - src:
+            - main:
+                - kotlin:
+                    - com:
+                        - flipperdevices:
+                            - ${__moduleName}:
+                                - api
+    - impl:
+        - src:
+            - main:
+                - kotlin:
+                    - com:
+                        - flipperdevices:
+                            - ${__moduleName}:
+                                - impl
+
+  - instantiate:
+      from: root/gitignore.ftl
+      to: api/.gitignore
+
+  - instantiate:
+      from: root/gitignore.ftl
+      to: impl/.gitignore
+
+  - instantiate:
+      from: root/api.build.gradle.kts.ftl
+      to: api/build.gradle.kts
+
+  - instantiate:
+      from: root/impl.build.gradle.kts.ftl
+      to: impl/build.gradle.kts
+
+  - instantiate:
+      from: root/src/app_package/api/Api.kt.ftl
+      to: api/src/main/kotlin/com/flipperdevices/${__moduleName}/api/${__formattedModuleName}Api.kt
+
+  - instantiate:
+      from: root/src/app_package/api/Impl.kt.ftl
+      to: impl/src/main/kotlin/com/flipperdevices/${__moduleName}/impl/api/${__formattedModuleName}Impl.kt
+
+  - predicate:
+      validIf: ${needCompose}
+      commands:
+        - instantiate:
+            from: root/src/app_package/composable/ComposableBlank.kt.ftl
+            to: impl/src/main/kotlin/com/flipperdevices/${__moduleName}/impl/composable/Composable${__formattedModuleName}.kt
+
+  - predicate:
+      validIf: ${needViewModel}
+      commands:
+        - instantiate:
+            from: root/src/app_package/viewmodel/ViewModelBlank.kt.ftl
+            to: impl/src/main/kotlin/com/flipperdevices/${__moduleName}/impl/viewmodel/${__formattedModuleName}ViewModel.kt

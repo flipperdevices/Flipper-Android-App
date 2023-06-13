@@ -14,9 +14,9 @@ widgets:
       default: false
 
   - booleanParameter:
-      id: isApi
-      name: Is API submodule?
-      help: If it is api module, we create only interface for instances
+      id: needViewModel
+      name: Add ViewModel dependencies?
+      help: Adds viewmodel deps
       default: false
 
   - booleanParameter:
@@ -44,28 +44,19 @@ recipe:
       to: ${rootOut}/build.gradle.kts
 
   - predicate:
-      validIf: ${shouldGenerateDI}
-      commands:
-        - mkDirs:
-            - ${srcOut}/di/
-        - instantiateAndOpen:
-            from: root/src/app_package/di/BlankComponent.kt.ftl
-            to: ${srcOut}/di/${__formattedModuleName}Component.kt
-
-  - predicate:
       validIf: ${needCompose}
       commands:
         - mkDirs:
-            - ${srcOut}/composable/
-        - instantiateAndOpen:
+            - ${srcOut}/composable
+        - instantiate:
             from: root/src/app_package/composable/ComposableBlank.kt.ftl
             to: ${srcOut}/composable/Composable${__formattedModuleName}.kt
 
   - predicate:
-      validIf: ${isApi}
+      validIf: ${needViewModel}
       commands:
         - mkDirs:
-            - ${srcOut}/
-        - instantiateAndOpen:
-            from: root/src/app_package/api/BlankApi.kt.ftl
-            to: ${srcOut}/${__formattedModuleName}Api.kt
+            - ${srcOut}/viewmodel
+        - instantiate:
+            from: root/src/app_package/viewmodel/ViewModelBlank.kt.ftl
+            to: ${srcOut}/viewmodel/${__formattedModuleName}ViewModel.kt
