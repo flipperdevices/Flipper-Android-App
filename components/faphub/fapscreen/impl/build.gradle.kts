@@ -33,6 +33,7 @@ dependencies {
     implementation(projects.components.faphub.installation.stateprovider.api)
     implementation(projects.components.faphub.installation.queue.api)
     implementation(projects.components.faphub.installation.button.api)
+    implementation(projects.components.faphub.target.api)
 
     implementation(libs.kotlin.immutable.collections)
 

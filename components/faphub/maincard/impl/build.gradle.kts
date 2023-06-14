@@ -9,6 +9,7 @@ dependencies {
     implementation(projects.components.faphub.maincard.api)
     implementation(projects.components.faphub.dao.api)
     implementation(projects.components.faphub.appcard.composable)
+    implementation(projects.components.faphub.target.api)
 
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)

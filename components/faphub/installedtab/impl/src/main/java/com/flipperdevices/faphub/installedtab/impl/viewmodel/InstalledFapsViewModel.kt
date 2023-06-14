@@ -16,6 +16,7 @@ import com.flipperdevices.faphub.installation.stateprovider.api.api.FapInstallat
 import com.flipperdevices.faphub.installation.stateprovider.api.model.FapState
 import com.flipperdevices.faphub.installedtab.impl.model.FapBatchUpdateButtonState
 import com.flipperdevices.faphub.installedtab.impl.model.FapInstalledScreenState
+import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Job
@@ -38,7 +39,8 @@ class InstalledFapsViewModel @VMInject constructor(
     private val fapNetworkApi: FapNetworkApi,
     private val fapManifestApi: FapManifestApi,
     private val fapStateManager: FapInstallationStateManager,
-    private val queueApi: FapInstallationQueueApi
+    private val queueApi: FapInstallationQueueApi,
+    private val targetProviderApi: FlipperTargetProviderApi
 ) : ViewModel(), LogTagProvider {
     override val TAG = "InstalledFapsViewModel"
     private var fetcherJob: Job? = null
@@ -153,14 +155,17 @@ class InstalledFapsViewModel @VMInject constructor(
             oldJob?.cancelAndJoin()
             installedFapsStateFlow.emit(FapInstalledInternalLoadingState.Loading)
             fapManifestApi.invalidateAsync()
-            fapManifestApi.getManifestFlow().filterNotNull().map { manifestItems ->
+            combine(
+                fapManifestApi.getManifestFlow().filterNotNull(),
+                targetProviderApi.getFlipperTarget().filterNotNull()
+            ) { manifestItems, flipperTarget ->
                 val faps = fapNetworkApi.getAllItem(
                     applicationIds = manifestItems.map { it.uid },
                     offset = 0,
                     limit = manifestItems.size,
-                    sortType = SortType.UPDATE_AT_DESC
+                    sortType = SortType.UPDATE_AT_DESC,
+                    target = flipperTarget
                 ).getOrThrow().associateBy { it.id }
-
                 manifestItems.mapNotNull { manifestItem ->
                     faps[manifestItem.uid]?.let { manifestItem to it }
                 }

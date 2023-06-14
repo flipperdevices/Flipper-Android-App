@@ -1,13 +1,13 @@
 package com.flipperdevices.faphub.dao.network.retrofit.utils
 
-import com.flipperdevices.core.ktx.jre.withLockResult
+import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
-import com.flipperdevices.core.log.verbose
+import com.flipperdevices.core.log.info
 import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.dao.network.retrofit.api.KtorfitCategoryApi
 import com.flipperdevices.faphub.dao.network.retrofit.model.KtorfitCategory
-import kotlinx.coroutines.CompletableDeferred
+import com.flipperdevices.faphub.target.model.FlipperTarget
 import kotlinx.coroutines.sync.Mutex
 
 class FapHubNetworkCategoryApi(
@@ -16,45 +16,44 @@ class FapHubNetworkCategoryApi(
     override val TAG = "FapHubNetworkCategoryApi"
 
     private val mutex = Mutex()
-    private val categories = mutableMapOf<String, CompletableDeferred<KtorfitCategory>>()
-    suspend fun get(id: String): FapCategory {
-        val (deferred, needRequest) = withLockResult(mutex, "get") {
-            val category = categories[id]
-            if (category != null) {
-                return@withLockResult category to false
-            }
-            return@withLockResult CompletableDeferred<KtorfitCategory>().also {
-                categories[id] = it
-            } to true
-        }
+    private var currentTarget: FlipperTarget? = null
+    private var categories: Map<String, KtorfitCategory>? = null
 
-        if (needRequest) {
-            try {
-                val category = categoryApi.get(id)
-                verbose { "[CACHE MISS] Request category $id" }
-                deferred.complete(category)
-            } catch (throwable: Throwable) {
-                error(throwable) { "Failed get category" }
-                deferred.completeExceptionally(throwable)
-                withLockResult(mutex, "remove") {
-                    categories.remove(id)
-                }
-            }
-        } else {
-            verbose { "[CACHE HIT] Request category $id" }
-        }
-
-        return deferred.await().toFapCategory()
+    suspend fun get(target: FlipperTarget, id: String): FapCategory? {
+        invalidateIfNeed(target)
+        return categories?.get(id)?.toFapCategory()
     }
 
-    suspend fun getAll(): List<KtorfitCategory> {
-        val fetchedCategories = categoryApi.getAll()
-        withLockResult(mutex, "batch_update") {
-            fetchedCategories.forEach { category ->
-                val deferred = categories.getOrPut(category.id) { CompletableDeferred() }
-                deferred.complete(category)
-            }
+    suspend fun getAll(target: FlipperTarget): List<KtorfitCategory> {
+        invalidateIfNeed(target)
+        return categories?.map { it.value } ?: error("Failed receive categories")
+    }
+
+    private suspend fun invalidateIfNeed(target: FlipperTarget) = withLock(mutex, "invalidate") {
+        if (!shouldInvalidate(target)) {
+            return@withLock
         }
-        return fetchedCategories.toList()
+        val categoriesReceived = try {
+            categoryApi.getAll(
+                sdkApi = target.getApiForServer()
+            )
+        } catch (ex: Exception) {
+            error(ex) { "Failed get categories" }
+            return@withLock
+        }
+        info { "Received ${categoriesReceived.size} categories" }
+        categories = categoriesReceived.associateBy { it.id }
+        currentTarget = target
+    }
+
+    private fun shouldInvalidate(target: FlipperTarget): Boolean {
+        if (currentTarget != target) {
+            return true
+        }
+        if (categories == null) {
+            return true
+        }
+        info { "Skip invalidate because target is same and categories exist" }
+        return false
     }
 }

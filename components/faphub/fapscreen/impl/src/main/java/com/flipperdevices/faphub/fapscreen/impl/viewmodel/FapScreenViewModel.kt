@@ -14,12 +14,15 @@ import com.flipperdevices.faphub.installation.queue.api.FapInstallationQueueApi
 import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest
 import com.flipperdevices.faphub.installation.stateprovider.api.api.FapInstallationStateManager
 import com.flipperdevices.faphub.installation.stateprovider.api.model.FapState
+import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import tangle.inject.TangleParam
 import tangle.viewmodel.VMInject
@@ -29,10 +32,10 @@ class FapScreenViewModel @VMInject constructor(
     private val fapId: String,
     private val fapNetworkApi: FapNetworkApi,
     private val stateManager: FapInstallationStateManager,
-    private val fapQueueApi: FapInstallationQueueApi
+    private val fapQueueApi: FapInstallationQueueApi,
+    private val targetProviderApi: FlipperTargetProviderApi
 ) : ViewModel(), LogTagProvider {
     override val TAG = "FapScreenViewModel"
-    private val mutex = Mutex()
 
     private val fapScreenLoadingStateFlow = MutableStateFlow<FapScreenLoadingState>(
         FapScreenLoadingState.Loading
@@ -42,7 +45,9 @@ class FapScreenViewModel @VMInject constructor(
         FapDetailedControlState.Loading
     )
 
+    private val mutex = Mutex()
     private var controlStateJob: Job? = null
+    private var downloadFapJob: Job? = null
 
     init {
         onRefresh()
@@ -57,18 +62,29 @@ class FapScreenViewModel @VMInject constructor(
     }
 
     fun onRefresh() = launchWithLock(mutex, viewModelScope, "refresh") {
-        fapNetworkApi.getFapItemById(fapId).onSuccess { fapItem ->
-            fapScreenLoadingStateFlow.emit(FapScreenLoadingState.Loaded(fapItem))
-            controlStateJob?.cancelAndJoin()
-            controlStateJob = stateManager.getFapStateFlow(
-                applicationUid = fapId,
-                currentVersion = fapItem.upToDateVersion.version
-            ).onEach { state ->
-                controlStateFlow.emit(state.toControlState(fapItem))
-            }.launchIn(viewModelScope)
-        }.onFailure {
-            error(it) { "Failed fetch single application" }
-            fapScreenLoadingStateFlow.emit(FapScreenLoadingState.Error(it))
+        downloadFapJob?.cancelAndJoin()
+        downloadFapJob = viewModelScope.launch {
+            targetProviderApi.getFlipperTarget().collectLatest { target ->
+                if (target == null) {
+                    fapScreenLoadingStateFlow.emit(FapScreenLoadingState.Loading)
+                    controlStateFlow.emit(FapDetailedControlState.Loading)
+                    controlStateJob?.cancelAndJoin()
+                    return@collectLatest
+                }
+                fapNetworkApi.getFapItemById(target, fapId).onSuccess { fapItem ->
+                    fapScreenLoadingStateFlow.emit(FapScreenLoadingState.Loaded(fapItem))
+                    controlStateJob?.cancelAndJoin()
+                    controlStateJob = stateManager.getFapStateFlow(
+                        applicationUid = fapId,
+                        currentVersion = fapItem.upToDateVersion.version
+                    ).onEach { state ->
+                        controlStateFlow.emit(state.toControlState(fapItem))
+                    }.launchIn(viewModelScope)
+                }.onFailure {
+                    error(it) { "Failed fetch single application" }
+                    fapScreenLoadingStateFlow.emit(FapScreenLoadingState.Error(it))
+                }
+            }
         }
     }
 

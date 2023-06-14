@@ -1,7 +1,6 @@
 package com.flipperdevices.faphub.dao.network.api
 
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.ktx.jre.pmap
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.debug
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
@@ -11,7 +10,7 @@ import com.flipperdevices.faphub.dao.network.retrofit.api.KtorfitApplicationApi
 import com.flipperdevices.faphub.dao.network.retrofit.model.types.ApplicationSortType
 import com.flipperdevices.faphub.dao.network.retrofit.model.types.SortOrderType
 import com.flipperdevices.faphub.dao.network.retrofit.utils.FapHubNetworkCategoryApi
-import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
+import com.flipperdevices.faphub.target.model.FlipperTarget
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -20,48 +19,47 @@ import javax.inject.Inject
 @ContributesBinding(AppGraph::class, FapNetworkApi::class)
 class FapNetworkApiImpl @Inject constructor(
     private val applicationApi: KtorfitApplicationApi,
-    private val categoryApi: FapHubNetworkCategoryApi,
-    private val flipperTargetApi: FlipperTargetProviderApi
+    private val categoryApi: FapHubNetworkCategoryApi
 ) : FapNetworkApi, LogTagProvider {
     override val TAG = "FapNetworkApi"
-    override suspend fun getFeaturedItem() = catchWithDispatcher {
+    override suspend fun getFeaturedItem(target: FlipperTarget) = catchWithDispatcher {
         debug { "Request featured item" }
 
         val response = applicationApi.getFeaturedApps()
         debug { "Provider response: $response" }
 
         val responseItem = response.firstOrNull() ?: error("Empty response")
-        val fapCategory = categoryApi.get(responseItem.categoryId)
+        val fapCategory = categoryApi.get(target, responseItem.categoryId)
 
-        return@catchWithDispatcher responseItem.toFapItemShort(fapCategory).also {
-            debug { "Provider feature item: $it" }
-        }
+        val item = responseItem.toFapItemShort(fapCategory, target)
+        debug { "Provider feature item: $item" }
+
+        return@catchWithDispatcher item ?: error("Fap item is empty")
     }
 
     override suspend fun getAllItem(
+        target: FlipperTarget,
         category: FapCategory?,
         sortType: SortType,
         offset: Int,
         limit: Int,
         applicationIds: List<String>?
     ) = catchWithDispatcher {
-        val target = flipperTargetApi.getFlipperTargetSync().getOrThrow()
-
         debug { "Request all item" }
         val response = applicationApi.getAll(
             offset = offset,
             limit = limit,
             sortBy = ApplicationSortType.fromSortType(sortType),
             sortOrder = SortOrderType.fromSortType(sortType),
-            target = target.target,
-            sdkApiVersion = target.sdk.toString(),
+            target = target.getTargetForServer(),
+            sdkApiVersion = target.getApiForServer(),
             categoryId = category?.id,
             applications = applicationIds
         )
         debug { "Provider response: $response" }
 
-        val fapItems = response.pmap {
-            it.toFapItemShort(categoryApi.get(it.categoryId))
+        val fapItems = response.mapNotNull {
+            it.toFapItemShort(categoryApi.get(target, it.categoryId), target)
         }.also {
             debug { "Provider all item: $it" }
         }
@@ -70,6 +68,7 @@ class FapNetworkApiImpl @Inject constructor(
     }
 
     override suspend fun search(
+        target: FlipperTarget,
         query: String,
         offset: Int,
         limit: Int
@@ -80,8 +79,8 @@ class FapNetworkApiImpl @Inject constructor(
             query = query
         )
 
-        val fapItems = response.pmap {
-            it.toFapItemShort(categoryApi.get(it.categoryId))
+        val fapItems = response.mapNotNull {
+            it.toFapItemShort(categoryApi.get(target, it.categoryId), target)
         }.also {
             debug { "Provider all item: $it" }
         }
@@ -89,10 +88,10 @@ class FapNetworkApiImpl @Inject constructor(
         return@catchWithDispatcher fapItems
     }
 
-    override suspend fun getCategories() = catchWithDispatcher {
+    override suspend fun getCategories(target: FlipperTarget) = catchWithDispatcher {
         debug { "Request categories" }
 
-        val response = categoryApi.getAll()
+        val response = categoryApi.getAll(target)
         debug { "Provider response: $response" }
 
         return@catchWithDispatcher response.map { it.toFapCategory() }.also {
@@ -100,13 +99,16 @@ class FapNetworkApiImpl @Inject constructor(
         }
     }
 
-    override suspend fun getFapItemById(id: String) = catchWithDispatcher {
+    override suspend fun getFapItemById(target: FlipperTarget, id: String) = catchWithDispatcher {
         debug { "Request fap item by id $id" }
 
         val response = applicationApi.get(id)
         debug { "Provider response: $response" }
+        val category = categoryApi.get(target, response.categoryId)
+            ?: error("Category can't be empty")
+        debug { "Provided category: $category" }
 
-        return@catchWithDispatcher response.toFapItem(categoryApi.get(response.categoryId))
+        return@catchWithDispatcher response.toFapItem(category, target)
     }
 }
 

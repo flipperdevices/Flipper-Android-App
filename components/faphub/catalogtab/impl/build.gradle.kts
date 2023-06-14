@@ -11,6 +11,7 @@ dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)
     implementation(projects.components.core.pager)
+    implementation(projects.components.core.ktx)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.ktx)
@@ -20,6 +21,7 @@ dependencies {
     implementation(projects.components.faphub.appcard.composable)
     implementation(projects.components.faphub.installation.button.api)
     implementation(projects.components.faphub.installation.manifest.api)
+    implementation(projects.components.faphub.target.api)
 
     // Compose
     implementation(libs.compose.ui)

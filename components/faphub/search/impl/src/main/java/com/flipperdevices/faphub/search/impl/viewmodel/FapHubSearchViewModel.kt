@@ -5,22 +5,32 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
+import com.flipperdevices.core.pager.loadingPagingDataFlow
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
+import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 import tangle.viewmodel.VMInject
 
 class FapHubSearchViewModel @VMInject constructor(
-    private val fapNetworkApi: FapNetworkApi
+    private val fapNetworkApi: FapNetworkApi,
+    targetProviderApi: FlipperTargetProviderApi
 ) : ViewModel() {
     private val searchRequestFlow = MutableStateFlow("")
 
-    val faps = searchRequestFlow.flatMapLatest { sortType ->
+    val faps = combine(
+        searchRequestFlow,
+        targetProviderApi.getFlipperTarget()
+    ) { searchRequest, target ->
+        if (target == null) {
+            return@combine loadingPagingDataFlow()
+        }
         Pager(PagingConfig(pageSize = FAPS_PAGE_SIZE)) {
-            FapsSearchPagingSource(fapNetworkApi, sortType)
+            FapsSearchPagingSource(fapNetworkApi, searchRequest, target)
         }.flow
-    }.cachedIn(viewModelScope)
+    }.flatMapLatest { it }.cachedIn(viewModelScope)
 
     fun onChangeSearchText(text: String) {
         viewModelScope.launch {

@@ -89,6 +89,7 @@ class FlipperVersionApiImpl(
 
     override suspend fun reset(bleManager: UnsafeBleManager) {
         // Do nothing
+        semVerStateFlow.emit(null)
     }
 
     private fun onSupportedVersionReceived(bleManager: UnsafeBleManager, apiVersion: String) {

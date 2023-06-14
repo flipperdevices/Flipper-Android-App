@@ -7,6 +7,7 @@ import com.flipperdevices.faphub.dao.api.model.FapItem
 import com.flipperdevices.faphub.dao.api.model.FapItemVersion
 import com.flipperdevices.faphub.dao.api.model.FapMetaInformation
 import com.flipperdevices.faphub.dao.network.retrofit.utils.DateSerializer
+import com.flipperdevices.faphub.target.model.FlipperTarget
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.SerialName
@@ -26,7 +27,7 @@ data class KtorfitApplicationDetailed(
     @SerialName("name") val name: String,
     @SerialName("current_version") val currentVersion: KtorfitVersionDetailed,
 ) {
-    fun toFapItem(category: FapCategory): FapItem {
+    fun toFapItem(category: FapCategory, target: FlipperTarget): FapItem {
         val picUrl = currentVersion.iconUrl
 
         val fapDeveloperInformation = FapDeveloperInformation(
@@ -45,7 +46,8 @@ data class KtorfitApplicationDetailed(
         val fapItemVersion = FapItemVersion(
             id = currentVersion.id,
             version = SemVer.fromString(currentVersion.version)
-                ?: error("Can't parse ${currentVersion.version}")
+                ?: error("Can't parse ${currentVersion.version}"),
+            target = target
         )
 
         return FapItem(
