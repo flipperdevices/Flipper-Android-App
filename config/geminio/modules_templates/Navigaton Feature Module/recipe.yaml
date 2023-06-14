@@ -1,0 +1,77 @@
+requiredParams:
+  name: Navigation Feature
+  description: Creates template API and IMPL Gradle-module for navigation feature
+
+predefinedFeatures:
+  - enableModuleCreationParams:
+      defaultPackageNamePrefix: com.flipperdevices
+
+widgets:
+  - booleanParameter:
+      id: needSerialization
+      name: Add serialization library?
+      help: Serialization library and plugin need for parse navigation args
+      default: false
+
+  - booleanParameter:
+      id: isSingleScreenNavigation
+      name: Use single screen navigation?
+      help: Single navigation use NavGraphBuilder.composable(Default is NavGraphBuilder.navigation)
+      default: false
+
+  - booleanParameter:
+      id: needTest
+      name: Add test?
+      help: Adds testing library
+      default: true
+
+recipe:
+  - mkDirs:
+    - api:
+        - src:
+            - main:
+                - kotlin:
+                    - com:
+                        - flipperdevices:
+                            - ${__moduleName}:
+                                - api
+    - impl:
+        - src:
+            - main:
+                - kotlin:
+                    - com:
+                        - flipperdevices:
+                            - ${__moduleName}:
+                                - impl
+
+  - instantiate:
+      from: root/gitignore.ftl
+      to: api/.gitignore
+
+  - instantiate:
+      from: root/gitignore.ftl
+      to: impl/.gitignore
+
+  - instantiate:
+      from: root/api.build.gradle.kts.ftl
+      to: api/build.gradle.kts
+
+  - instantiate:
+      from: root/impl.build.gradle.kts.ftl
+      to: impl/build.gradle.kts
+
+  - instantiate:
+      from: root/src/app_package/api/FeatureEntry.kt.ftl
+      to: api/src/main/kotlin/com/flipperdevices/${__moduleName}/api/${__formattedModuleName}FeatureEntry.kt
+
+  - instantiate:
+      from: root/src/app_package/api/FeatureEntryImpl.kt.ftl
+      to: impl/src/main/kotlin/com/flipperdevices/${__moduleName}/impl/api/${__formattedModuleName}FeatureEntryImpl.kt
+
+  - instantiate:
+      from: root/src/app_package/composable/ComposableBlank.kt.ftl
+      to: impl/src/main/kotlin/com/flipperdevices/${__moduleName}/impl/composable/Composable${__formattedModuleName}.kt
+
+  - instantiate:
+      from: root/src/app_package/viewmodel/ViewModelBlank.kt.ftl
+      to: impl/src/main/kotlin/com/flipperdevices/${__moduleName}/impl/viewmodel/${__formattedModuleName}ViewModel.kt
