@@ -1,4 +1,4 @@
-package com.flipperdevices.keyemulate.viewmodel.helpers
+package com.flipperdevices.keyemulate.helpers
 
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest

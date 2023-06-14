@@ -8,9 +8,14 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.core.test.TimberRule
 import com.flipperdevices.keyemulate.api.EmulateHelper
+import com.flipperdevices.keyemulate.helpers.AppEmulateHelper
+import com.flipperdevices.keyemulate.helpers.EmulateHelperImpl
+import com.flipperdevices.keyemulate.helpers.FlipperAppErrorHelper
+import com.flipperdevices.keyemulate.helpers.StartEmulateHelper
+import com.flipperdevices.keyemulate.helpers.StartEmulateHelperImpl
+import com.flipperdevices.keyemulate.helpers.StopEmulateHelper
+import com.flipperdevices.keyemulate.helpers.StopEmulateHelperImpl
 import com.flipperdevices.keyemulate.model.FlipperAppError
-import com.flipperdevices.keyemulate.viewmodel.helpers.EmulateHelperImpl
-import com.flipperdevices.keyemulate.viewmodel.helpers.FlipperAppErrorHelper
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.app.Application
 import com.flipperdevices.protobuf.app.appStateResponse
@@ -18,6 +23,7 @@ import com.flipperdevices.protobuf.main
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -45,9 +51,22 @@ private val appStateResponseOk = main {
 
 class EmulateHelperTest {
     private lateinit var flipperAppErrorHandler: FlipperAppErrorHelper
+    private lateinit var startEmulateHelper: StartEmulateHelper
+    private lateinit var stopEmulateHelper: StopEmulateHelper
+    private lateinit var appEmulateHelper: AppEmulateHelper
     private lateinit var serviceApi: FlipperServiceApi
     private lateinit var requestTestApi: FlipperRequestApi
     private lateinit var underTest: EmulateHelper
+
+    private fun mockAfterStart(scope: CoroutineScope) {
+        coEvery {
+            appEmulateHelper.tryOpenApp(
+                scope,
+                requestTestApi,
+                KEY_TYPE
+            )
+        } answers { true }
+    }
 
     @Before
     fun setUp() {
@@ -59,7 +78,11 @@ class EmulateHelperTest {
                 FlipperAppError.NotSupportedApi
             }
         }
-        underTest = EmulateHelperImpl(flipperAppErrorHandler)
+        appEmulateHelper = mockk()
+        stopEmulateHelper = StopEmulateHelperImpl()
+        startEmulateHelper = StartEmulateHelperImpl(appEmulateHelper, flipperAppErrorHandler)
+
+        underTest = EmulateHelperImpl(startEmulateHelper, stopEmulateHelper)
         requestTestApi = mockk {
             every { notificationFlow() } coAnswers {
                 flowOf(appStateResponseOk)
@@ -82,6 +105,7 @@ class EmulateHelperTest {
             }
         )
         var startJob = launch(Dispatchers.Default) {
+            mockAfterStart(this)
             underTest.startEmulate(
                 this,
                 serviceApi,
@@ -91,6 +115,7 @@ class EmulateHelperTest {
         }
         startJob.join()
         startJob = launch(Dispatchers.Default) {
+            mockAfterStart(this)
             underTest.startEmulate(
                 this,
                 serviceApi,
@@ -100,10 +125,11 @@ class EmulateHelperTest {
         }
         startJob.join()
         val stopJob = launch(UnconfinedTestDispatcher()) {
-            underTest.stopEmulate(this, requestTestApi)
+            underTest.stopEmulate(this@runTest, requestTestApi)
         }
         stopJob.join()
         startJob = launch(Dispatchers.Default) {
+            mockAfterStart(this)
             underTest.startEmulate(
                 this,
                 serviceApi,

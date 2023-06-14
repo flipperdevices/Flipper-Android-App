@@ -9,7 +9,7 @@
 - [Feature] Update Geminio for create modules - simple, navigation, api/impl
 - [Refactor] Migrate all feature components modules from KSP to Anvil
 - [Refactor] Migrate to Ktorfit
-- [Refactor] Migrate key emulate to new module
+- [Refactor] Migrate key emulate to new module, decompose Emulate Helper
 - [Refactor] Key Screen state in API and KeyCard with state
 
 # 1.5.1
