@@ -6,6 +6,10 @@
         <activity
                 android:exported="true"
                 android:name="${splashScreenActivity}">
+            <meta-data
+                    android:name="android.app.shortcuts"
+                    android:resource="@xml/shortcuts" />
+
             <intent-filter
                     android:autoVerify="true"
                     tools:ignore="UnusedAttribute">

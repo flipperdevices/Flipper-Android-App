@@ -7,6 +7,7 @@
 - [Feature] Update README with Fdroid badge
 - [Feature] Migrate faphub to target flow
 - [Feature] Update Geminio for create modules - simple, navigation, api/impl
+- [Feature] Google Assistant like open ping OR find in Flipper App
 - [Refactor] Migrate all feature components modules from KSP to Anvil
 - [Refactor] Migrate to Ktorfit
 - [Refactor] Migrate key emulate to new module

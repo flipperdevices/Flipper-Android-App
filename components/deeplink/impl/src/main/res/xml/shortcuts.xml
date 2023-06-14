@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <capability android:name="actions.intent.OPEN_APP_FEATURE">
+        <intent>
+            <url-template android:value="https://flpr.app/open{?feature}" />
+            <parameter
+                android:name="feature"
+                android:key="feature" />
+        </intent>
+    </capability>
+    <shortcut
+            android:shortcutId="ping"
+            android:shortcutShortLabel="@string/shortcut_ping">
+        <capability-binding android:key="actions.intent.OPEN_APP_FEATURE">
+            <parameter-binding
+                    android:key="feature"
+                    android:value="@array/ping_set" />
+        </capability-binding>
+    </shortcut>
+</shortcuts>
