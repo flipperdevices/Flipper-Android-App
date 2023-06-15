@@ -11,5 +11,5 @@ data class RetrofitDetailedVersion(
     @SerialName("version") val version: String,
     @SerialName("icon_uri") val iconUrl: String,
     @SerialName("screenshots") val screenshots: List<String>,
-    @SerialName("description") val description: String
+    @SerialName("short_description") val shortDescription: String
 )

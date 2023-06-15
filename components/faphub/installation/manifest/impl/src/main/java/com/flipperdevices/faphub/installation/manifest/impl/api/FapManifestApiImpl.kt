@@ -1,29 +1,27 @@
 package com.flipperdevices.faphub.installation.manifest.impl.api
 
+import android.app.Application
+import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.log.warn
 import com.flipperdevices.faphub.dao.api.FapVersionApi
 import com.flipperdevices.faphub.installation.manifest.api.FapManifestApi
 import com.flipperdevices.faphub.installation.manifest.impl.utils.FapManifestDeleter
 import com.flipperdevices.faphub.installation.manifest.impl.utils.FapManifestUploader
 import com.flipperdevices.faphub.installation.manifest.impl.utils.FapManifestsLoader
-import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
-import com.flipperdevices.faphub.installation.manifest.model.FapManifestVersion
+import com.flipperdevices.faphub.installation.manifest.model.FapManifestEnrichedItem
+import com.flipperdevices.faphub.installation.manifest.model.FapManifestState
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
-import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -32,80 +30,68 @@ import javax.inject.Singleton
 class FapManifestApiImpl @Inject constructor(
     private val loader: FapManifestsLoader,
     private val manifestUploader: FapManifestUploader,
-    private val fapVersionApi: FapVersionApi,
-    private val manifestDeleter: FapManifestDeleter
+    private val manifestDeleter: FapManifestDeleter,
+    private val flipperServiceProvider: FlipperServiceProvider,
+    fapVersionApi: FapVersionApi,
+    application: Application,
 ) : FapManifestApi, LogTagProvider {
     override val TAG = "FapManifestApi"
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private val mutex = Mutex()
-    private val fapManifestItemFlow = MutableStateFlow<List<FapManifestItem>?>(null)
-    private val shouldInvalidate = AtomicBoolean(true)
 
-    override fun getManifestFlow(): StateFlow<List<FapManifestItem>?> {
-        if (shouldInvalidate.compareAndSet(true, false)) {
-            invalidateAsync()
+    private val enrichedHelper = FapManifestEnrichedHelper(
+        scope = scope,
+        versionApi = fapVersionApi,
+        application = application
+    )
+
+    init {
+        scope.launch {
+            flipperServiceProvider
+                .getServiceApi()
+                .connectionInformationApi
+                .getConnectionStateFlow()
+                .collectLatest {
+                    invalidate()
+                }
         }
-        return fapManifestItemFlow.asStateFlow()
+    }
+
+    override fun getManifestFlow(): StateFlow<FapManifestState> {
+        return enrichedHelper.getManifestState()
     }
 
     override suspend fun add(
         pathToFap: String,
-        fapManifestItem: FapManifestItem
+        fapManifestItem: FapManifestEnrichedItem
     ) = withLock(mutex, "add") {
-        manifestUploader.save(pathToFap, fapManifestItem)
-        fapManifestItemFlow.update { manifests ->
-            if (manifests != null) {
-                val toDelete =
-                    manifests.filter { it.applicationAlias == fapManifestItem.applicationAlias }
-                manifests.minus(toDelete.toSet()).plus(fapManifestItem)
-            } else {
-                null
-            }
-        }
+        manifestUploader.save(pathToFap, fapManifestItem.fapManifestItem)
+        enrichedHelper.onAdd(fapManifestItem)
     }
 
     override suspend fun remove(
-        applicationId: String
+        applicationUid: String
     ) = withLock(mutex, "remove") {
-        val toRemoveManifest = fapManifestItemFlow.value?.find {
-            it.uid == applicationId
-        }
-        if (toRemoveManifest == null) {
-            warn { "Can't find manifest for $applicationId" }
-            return@withLock
-        }
-        info { "Delete for $applicationId $toRemoveManifest" }
-        manifestDeleter.delete(toRemoveManifest)
-        fapManifestItemFlow.update { manifests ->
-            manifests?.minus(toRemoveManifest)
+        val toRemoveManifests = enrichedHelper.onDelete(applicationUid)
+        info { "On $applicationUid toRemoveManifests is $toRemoveManifests" }
+        toRemoveManifests.forEach {
+            manifestDeleter.delete(it)
         }
     }
 
-    override fun invalidateAsync() = launchWithLock(mutex, scope, "invalidate") {
-        fapManifestItemFlow.emit(null)
+    override fun invalidateAsync() {
+        scope.launch { invalidate() }
+    }
+
+    private suspend fun invalidate() = withLock(mutex, "invalidate") {
         runCatching {
             loader.load()
-        }.mapCatching { manifestItems ->
-            val versions = fapVersionApi.getVersions(manifestItems.map { it.versionUid })
-                .associateBy { it.id }
-            manifestItems.mapNotNull { internalManifestItem ->
-                val version = versions[internalManifestItem.versionUid] ?: return@mapNotNull null
-                FapManifestItem(
-                    applicationAlias = internalManifestItem.applicationAlias,
-                    uid = internalManifestItem.uid,
-                    version = FapManifestVersion(
-                        versionUid = version.id,
-                        semVer = version.version
-                    ),
-                    path = internalManifestItem.path
-                )
-            }
         }.onFailure {
             error(it) { "Failed load manifests" }
-            shouldInvalidate.compareAndSet(false, true)
+            enrichedHelper.onError()
         }.onSuccess {
-            fapManifestItemFlow.emit(it)
+            enrichedHelper.onUpdateManifests(it)
         }
     }
 }

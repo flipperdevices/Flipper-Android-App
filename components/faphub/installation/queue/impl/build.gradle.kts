@@ -25,4 +25,6 @@ dependencies {
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.kotlin.immutable.collections)
+
+    implementation(libs.coil)
 }

@@ -9,13 +9,17 @@ sealed class FapActionRequest {
     data class Install(
         val applicationAlias: String,
         override val applicationUid: String,
+        val applicationName: String,
         val toVersion: FapItemVersion,
-        val categoryAlias: String
+        val categoryAlias: String,
+        val iconUrl: String
     ) : FapActionRequest()
 
     data class Update(
         val from: FapManifestItem,
-        val toVersion: FapItemVersion
+        val toVersion: FapItemVersion,
+        val iconUrl: String,
+        val applicationName: String
     ) : FapActionRequest() {
         override val applicationUid = from.uid
     }

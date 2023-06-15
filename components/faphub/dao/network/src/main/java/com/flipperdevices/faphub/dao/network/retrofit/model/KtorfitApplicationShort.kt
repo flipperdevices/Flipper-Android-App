@@ -39,7 +39,7 @@ data class KtorfitApplicationShort(
         return FapItemShort(
             id = id,
             picUrl = currentVersion.iconUrl,
-            description = currentVersion.description,
+            description = currentVersion.shortDescription,
             name = name,
             category = category,
             screenshots = currentVersion.screenshots.toImmutableList(),

@@ -15,8 +15,8 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
     implementation(libs.compose.placeholder)
-    implementation(libs.compose.coil)
-    implementation(libs.compose.coil.svg)
+    implementation(libs.coil.compose)
+    implementation(libs.coil.svg)
     implementation(libs.compose.systemuicontroller)
     implementation(libs.image.lottie)
 }

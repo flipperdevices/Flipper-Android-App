@@ -79,6 +79,17 @@ class FapInstallationUIApiImpl @Inject constructor() : FapInstallationUIApi {
                 fapButtonSize = fapButtonSize,
                 modifier = modifier
             )
+
+            FapState.ConnectFlipper -> ComposableFapInstallButton(
+                modifier = modifier,
+                fapButtonSize = fapButtonSize,
+                onClick = { }
+            )
+
+            FapState.FlipperOutdated -> ComposableFapInstalledButton(
+                modifier = modifier,
+                fapButtonSize = fapButtonSize
+            )
         }
     }
 }

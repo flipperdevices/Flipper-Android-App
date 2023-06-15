@@ -3,6 +3,7 @@ package com.flipperdevices.faphub.dao.network.api
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.debug
+import com.flipperdevices.core.log.warn
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.dao.api.model.SortType
@@ -45,6 +46,10 @@ class FapNetworkApiImpl @Inject constructor(
         limit: Int,
         applicationIds: List<String>?
     ) = catchWithDispatcher {
+        if (limit == 0) {
+            warn { "Receive limit as zero, so just return empty request" }
+            return@catchWithDispatcher emptyList()
+        }
         debug { "Request all item" }
         val response = applicationApi.getAll(
             offset = offset,

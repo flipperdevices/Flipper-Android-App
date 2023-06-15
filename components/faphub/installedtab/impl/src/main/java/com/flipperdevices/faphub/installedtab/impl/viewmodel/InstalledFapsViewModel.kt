@@ -10,6 +10,7 @@ import com.flipperdevices.faphub.dao.api.model.FapItemShort
 import com.flipperdevices.faphub.dao.api.model.SortType
 import com.flipperdevices.faphub.installation.manifest.api.FapManifestApi
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
+import com.flipperdevices.faphub.installation.manifest.model.FapManifestState
 import com.flipperdevices.faphub.installation.queue.api.FapInstallationQueueApi
 import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest
 import com.flipperdevices.faphub.installation.stateprovider.api.api.FapInstallationStateManager
@@ -26,6 +27,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
@@ -87,6 +89,8 @@ class InstalledFapsViewModel @VMInject constructor(
                             FapState.Installed,
                             FapState.NotInitialized,
                             FapState.ReadyToInstall,
+                            FapState.ConnectFlipper,
+                            FapState.FlipperOutdated,
                             FapState.RetrievingManifest -> {
                             }
 
@@ -125,7 +129,9 @@ class InstalledFapsViewModel @VMInject constructor(
                 queueApi.enqueue(
                     FapActionRequest.Update(
                         from = state.manifestItem,
-                        toVersion = fapItem.upToDateVersion
+                        toVersion = fapItem.upToDateVersion,
+                        iconUrl = fapItem.picUrl,
+                        applicationName = fapItem.name
                     )
                 )
             }
@@ -156,23 +162,27 @@ class InstalledFapsViewModel @VMInject constructor(
             installedFapsStateFlow.emit(FapInstalledInternalLoadingState.Loading)
             fapManifestApi.invalidateAsync()
             combine(
-                fapManifestApi.getManifestFlow().filterNotNull(),
+                fapManifestApi.getManifestFlow().filterIsInstance<FapManifestState.Loaded>()
+                    .map { it.items },
                 targetProviderApi.getFlipperTarget().filterNotNull()
             ) { manifestItems, flipperTarget ->
                 val faps = fapNetworkApi.getAllItem(
-                    applicationIds = manifestItems.map { it.uid },
+                    applicationIds = manifestItems.map { it.fapManifestItem.uid },
                     offset = 0,
                     limit = manifestItems.size,
                     sortType = SortType.UPDATE_AT_DESC,
                     target = flipperTarget
                 ).getOrThrow().associateBy { it.id }
                 manifestItems.mapNotNull { manifestItem ->
-                    faps[manifestItem.uid]?.let { manifestItem to it }
+                    faps[manifestItem.fapManifestItem.uid]?.let { manifestItem to it }
                 }
             }.map {
                 it.map { (manifestItem, fapItem) ->
-                    fapItem to if (fapItem.upToDateVersion.version > manifestItem.version.semVer) {
-                        FapInstalledInternalState.ReadyToUpdate(manifestItem)
+                    fapItem to if (fapItem.upToDateVersion.version > manifestItem.numberVersion
+                    ) {
+                        FapInstalledInternalState.ReadyToUpdate(
+                            manifestItem = manifestItem.fapManifestItem
+                        )
                     } else {
                         FapInstalledInternalState.Installed
                     }
@@ -200,7 +210,10 @@ private sealed class FapInstalledInternalLoadingState {
 }
 
 private sealed class FapInstalledInternalState : Comparable<FapInstalledInternalState> {
-    class ReadyToUpdate(val manifestItem: FapManifestItem) : FapInstalledInternalState()
+    class ReadyToUpdate(
+        val manifestItem: FapManifestItem
+    ) : FapInstalledInternalState()
+
     object Installed : FapInstalledInternalState()
 
     override fun compareTo(other: FapInstalledInternalState): Int {

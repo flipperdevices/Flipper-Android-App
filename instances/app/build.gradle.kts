@@ -213,8 +213,8 @@ dependencies {
     implementation(libs.work.ktx)
     implementation(libs.ktorfit.lib)
 
-    implementation(libs.compose.coil.svg)
-    implementation(libs.compose.coil)
+    implementation(libs.coil.svg)
+    implementation(libs.coil.compose)
     implementation(libs.compose.pager)
 
     implementation(libs.kotlin.coroutines)
