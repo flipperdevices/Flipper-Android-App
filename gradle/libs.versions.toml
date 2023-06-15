@@ -126,9 +126,12 @@ compose-pager-indicators = { module = "com.google.accompanist:accompanist-pager-
 compose-placeholder = { module = "com.google.accompanist:accompanist-placeholder", version.ref = "compose-accompanist" }
 compose-swipetorefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "compose-accompanist" }
 compose-constraint = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "compose-constraint" }
-compose-coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
-compose-coil-svg = { module = "io.coil-kt:coil-svg", version.ref = "coil" }
 compose-paging = { module = "androidx.paging:paging-compose", version.ref = "compose-paging" }
+
+# Coil
+coil = { module = "io.coil-kt:coil", version.ref = "coil" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+coil-svg = { module = "io.coil-kt:coil-svg", version.ref = "coil" }
 
 # Markdown
 flexmark-core = { module = "com.vladsch.flexmark:flexmark", version.ref = "flexmark" }

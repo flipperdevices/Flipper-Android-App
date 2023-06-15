@@ -13,6 +13,8 @@ private const val FAP_MANIFEST_VERSION_VALUE = "1"
 private const val FAP_MANIFEST_UID_KEY = "UID"
 private const val FAP_MANIFEST_VERSION_UID_KEY = "Version UID"
 private const val FAP_MANIFEST_PATH_KEY = "Path"
+private const val FAP_MANIFEST_FULL_NAME_KEY = "name"
+private const val FAP_MANIFEST_ICON_KEY = "icon"
 
 class FapManifestParser @Inject constructor() {
     fun parse(fff: FlipperFileFormat, name: String): FapManifestInternalItem? {
@@ -23,7 +25,9 @@ class FapManifestParser @Inject constructor() {
             applicationAlias = applicationAlias,
             uid = dict[FAP_MANIFEST_UID_KEY] ?: return null,
             versionUid = dict[FAP_MANIFEST_VERSION_UID_KEY] ?: return null,
-            path = dict[FAP_MANIFEST_PATH_KEY] ?: return null
+            path = dict[FAP_MANIFEST_PATH_KEY] ?: return null,
+            fullName = dict[FAP_MANIFEST_FULL_NAME_KEY] ?: applicationAlias,
+            iconBase64 = dict[FAP_MANIFEST_ICON_KEY]
         )
     }
 
@@ -31,6 +35,12 @@ class FapManifestParser @Inject constructor() {
         val orderedDict = mutableListOf<Pair<String, String>>()
         orderedDict.add(FAP_MANIFEST_FILETYPE_KEY to FAP_MANIFEST_FILETYPE_VALUE)
         orderedDict.add(FAP_MANIFEST_VERSION_KEY to FAP_MANIFEST_VERSION_VALUE)
+        orderedDict.add(FAP_MANIFEST_FULL_NAME_KEY to fapItem.fullName)
+
+        fapItem.iconBase64?.let { icon ->
+            orderedDict.add(FAP_MANIFEST_ICON_KEY to icon)
+        }
+
         orderedDict.add(FAP_MANIFEST_UID_KEY to fapItem.uid)
         orderedDict.add(FAP_MANIFEST_VERSION_UID_KEY to fapItem.version.versionUid)
         orderedDict.add(FAP_MANIFEST_PATH_KEY to fapItem.path)

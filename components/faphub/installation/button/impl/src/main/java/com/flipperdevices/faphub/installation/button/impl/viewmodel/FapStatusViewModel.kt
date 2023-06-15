@@ -34,7 +34,9 @@ class FapStatusViewModel @VMInject constructor(
                 applicationAlias = fapButtonConfig.applicationAlias,
                 applicationUid = fapButtonConfig.applicationUid,
                 toVersion = fapButtonConfig.version,
-                categoryAlias = fapButtonConfig.categoryAlias
+                categoryAlias = fapButtonConfig.categoryAlias,
+                applicationName = fapButtonConfig.applicationName,
+                iconUrl = fapButtonConfig.iconUrl
             )
         )
     }

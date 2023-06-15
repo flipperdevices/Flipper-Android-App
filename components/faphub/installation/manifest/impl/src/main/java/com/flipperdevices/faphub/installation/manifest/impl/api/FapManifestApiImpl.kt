@@ -15,6 +15,9 @@ import com.flipperdevices.faphub.installation.manifest.impl.utils.FapManifestsLo
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestVersion
 import com.squareup.anvil.annotations.ContributesBinding
+import java.util.concurrent.atomic.AtomicBoolean
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -23,9 +26,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.sync.Mutex
-import java.util.concurrent.atomic.AtomicBoolean
-import javax.inject.Inject
-import javax.inject.Singleton
 
 @Singleton
 @ContributesBinding(AppGraph::class, FapManifestApi::class)
@@ -98,7 +98,9 @@ class FapManifestApiImpl @Inject constructor(
                         versionUid = version.id,
                         semVer = version.version
                     ),
-                    path = internalManifestItem.path
+                    path = internalManifestItem.path,
+                    fullName = internalManifestItem.fullName,
+                    iconBase64 = internalManifestItem.iconBase64
                 )
             }
         }.onFailure {
