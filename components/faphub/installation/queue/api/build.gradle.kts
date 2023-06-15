@@ -8,5 +8,7 @@ dependencies {
     implementation(projects.components.faphub.dao.api)
     implementation(projects.components.faphub.installation.manifest.api)
 
+    implementation(projects.components.core.data)
+
     implementation(libs.kotlin.coroutines)
 }

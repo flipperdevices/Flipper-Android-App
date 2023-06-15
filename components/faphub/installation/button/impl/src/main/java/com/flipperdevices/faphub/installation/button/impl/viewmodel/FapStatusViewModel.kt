@@ -58,7 +58,9 @@ class FapStatusViewModel @VMInject constructor(
         queueApi.enqueue(
             FapActionRequest.Update(
                 from = from,
-                toVersion = fapButtonConfig.version
+                toVersion = fapButtonConfig.version,
+                iconUrl = fapButtonConfig.iconUrl,
+                applicationName = fapButtonConfig.applicationName
             )
         )
     }

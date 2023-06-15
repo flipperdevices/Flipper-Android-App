@@ -1,6 +1,7 @@
 package com.flipperdevices.faphub.installation.manifest.impl.utils
 
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
+import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.faphub.installation.manifest.impl.model.FapManifestInternalItem
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
 import java.io.File
@@ -13,8 +14,9 @@ private const val FAP_MANIFEST_VERSION_VALUE = "1"
 private const val FAP_MANIFEST_UID_KEY = "UID"
 private const val FAP_MANIFEST_VERSION_UID_KEY = "Version UID"
 private const val FAP_MANIFEST_PATH_KEY = "Path"
-private const val FAP_MANIFEST_FULL_NAME_KEY = "name"
-private const val FAP_MANIFEST_ICON_KEY = "icon"
+private const val FAP_MANIFEST_FULL_NAME_KEY = "Full Name"
+private const val FAP_MANIFEST_ICON_KEY = "Icon"
+private const val FAP_MANIFEST_API_KEY = "Version Build API"
 
 class FapManifestParser @Inject constructor() {
     fun parse(fff: FlipperFileFormat, name: String): FapManifestInternalItem? {
@@ -27,7 +29,8 @@ class FapManifestParser @Inject constructor() {
             versionUid = dict[FAP_MANIFEST_VERSION_UID_KEY] ?: return null,
             path = dict[FAP_MANIFEST_PATH_KEY] ?: return null,
             fullName = dict[FAP_MANIFEST_FULL_NAME_KEY] ?: applicationAlias,
-            iconBase64 = dict[FAP_MANIFEST_ICON_KEY]
+            iconBase64 = dict[FAP_MANIFEST_ICON_KEY],
+            sdkApi = dict[FAP_MANIFEST_API_KEY]?.let { SemVer.fromString(it) }
         )
     }
 
@@ -39,6 +42,10 @@ class FapManifestParser @Inject constructor() {
 
         fapItem.iconBase64?.let { icon ->
             orderedDict.add(FAP_MANIFEST_ICON_KEY to icon)
+        }
+
+        fapItem.sdkApi?.let {
+            orderedDict.add(FAP_MANIFEST_API_KEY to it.toString())
         }
 
         orderedDict.add(FAP_MANIFEST_UID_KEY to fapItem.uid)

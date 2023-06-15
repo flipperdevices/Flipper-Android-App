@@ -125,7 +125,9 @@ class InstalledFapsViewModel @VMInject constructor(
                 queueApi.enqueue(
                     FapActionRequest.Update(
                         from = state.manifestItem,
-                        toVersion = fapItem.upToDateVersion
+                        toVersion = fapItem.upToDateVersion,
+                        iconUrl = fapItem.picUrl,
+                        applicationName = fapItem.name
                     )
                 )
             }
@@ -171,8 +173,11 @@ class InstalledFapsViewModel @VMInject constructor(
                 }
             }.map {
                 it.map { (manifestItem, fapItem) ->
-                    fapItem to if (fapItem.upToDateVersion.version > manifestItem.version.semVer) {
-                        FapInstalledInternalState.ReadyToUpdate(manifestItem)
+                    fapItem to if (fapItem.upToDateVersion.version > manifestItem.version.semVer
+                    ) {
+                        FapInstalledInternalState.ReadyToUpdate(
+                            manifestItem = manifestItem
+                        )
                     } else {
                         FapInstalledInternalState.Installed
                     }
@@ -200,7 +205,10 @@ private sealed class FapInstalledInternalLoadingState {
 }
 
 private sealed class FapInstalledInternalState : Comparable<FapInstalledInternalState> {
-    class ReadyToUpdate(val manifestItem: FapManifestItem) : FapInstalledInternalState()
+    class ReadyToUpdate(
+        val manifestItem: FapManifestItem
+    ) : FapInstalledInternalState()
+
     object Installed : FapInstalledInternalState()
 
     override fun compareTo(other: FapInstalledInternalState): Int {

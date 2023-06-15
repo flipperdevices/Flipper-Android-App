@@ -87,20 +87,20 @@ class FapManifestApiImpl @Inject constructor(
         runCatching {
             loader.load()
         }.mapCatching { manifestItems ->
-            val versions = fapVersionApi.getVersions(manifestItems.map { it.versionUid })
-                .associateBy { it.id }
+            val versions = fapVersionApi.getVersionsMap(manifestItems.map { it.versionUid })
             manifestItems.mapNotNull { internalManifestItem ->
                 val version = versions[internalManifestItem.versionUid] ?: return@mapNotNull null
                 FapManifestItem(
                     applicationAlias = internalManifestItem.applicationAlias,
                     uid = internalManifestItem.uid,
                     version = FapManifestVersion(
-                        versionUid = version.id,
-                        semVer = version.version
+                        versionUid = internalManifestItem.versionUid,
+                        semVer = version
                     ),
                     path = internalManifestItem.path,
                     fullName = internalManifestItem.fullName,
-                    iconBase64 = internalManifestItem.iconBase64
+                    iconBase64 = internalManifestItem.iconBase64,
+                    sdkApi = internalManifestItem.sdkApi
                 )
             }
         }.onFailure {

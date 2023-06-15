@@ -4,7 +4,6 @@ import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.faphub.dao.api.FapVersionApi
-import com.flipperdevices.faphub.dao.api.model.FapItemVersion
 import com.flipperdevices.faphub.dao.network.retrofit.api.KtorfitVersionApi
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
@@ -15,13 +14,11 @@ class FapVersionApiImpl @Inject constructor(
 ) : FapVersionApi, LogTagProvider {
     override val TAG = "FapVersionApi"
 
-    override suspend fun getVersions(versions: List<String>): List<FapItemVersion> {
-        return ktorfitVersionApi.getVersions(versions).map {
-            FapItemVersion(
-                id = it.id,
-                version = SemVer.fromString(it.version) ?: error("Failed parse ${it.version}"),
-                target = null
-            )
+    override suspend fun getVersionsMap(versions: List<String>): Map<String, SemVer> {
+        return ktorfitVersionApi.getVersions(versions).associate {
+            val numberVersion = SemVer.fromString(it.version)
+                ?: error("Failed parse ${it.version}")
+            it.id to numberVersion
         }
     }
 }

@@ -11,6 +11,7 @@ import com.flipperdevices.faphub.installation.manifest.model.FapManifestVersion
 import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest
 import com.flipperdevices.faphub.installation.queue.impl.executor.actions.FapActionUpload
 import com.flipperdevices.faphub.installation.queue.impl.executor.actions.FapIconDownloader
+import com.flipperdevices.faphub.target.model.FlipperTarget
 import com.flipperdevices.faphub.utils.FapHubConstants.FLIPPER_APPS_FOLDER
 import java.io.File
 import javax.inject.Inject
@@ -46,7 +47,8 @@ class InstallationActionExecutor @Inject constructor(
                 ),
                 path = finalFapPath,
                 fullName = request.applicationName,
-                iconBase64 = iconBase64Request.getOrNull()
+                iconBase64 = iconBase64Request.getOrNull(),
+                sdkApi = (request.toVersion.target as? FlipperTarget.Received)?.sdk
             )
         )
         info { "Fap manifest added by request $request" }

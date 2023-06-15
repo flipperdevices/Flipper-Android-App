@@ -17,7 +17,9 @@ sealed class FapActionRequest {
 
     data class Update(
         val from: FapManifestItem,
-        val toVersion: FapItemVersion
+        val toVersion: FapItemVersion,
+        val iconUrl: String,
+        val applicationName: String
     ) : FapActionRequest() {
         override val applicationUid = from.uid
     }
