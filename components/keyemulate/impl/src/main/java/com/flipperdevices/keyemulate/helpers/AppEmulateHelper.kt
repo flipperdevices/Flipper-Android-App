@@ -67,26 +67,38 @@ class AppEmulateHelperImpl @Inject constructor() : AppEmulateHelper, LogTagProvi
                     }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
                 )
             )
-            if (appStartResponse.commandStatus == Flipper.CommandStatus.ERROR_APP_SYSTEM_LOCKED) {
-                error { "Handle already opened app" }
-                throw AlreadyOpenedAppException()
-            }
-            if (appStartResponse.commandStatus != Flipper.CommandStatus.OK) {
-                error { "Failed start rpc app with error $appStartResponse" }
-                return false
-            }
-            info { "Start waiting for stateAppFlow" }
-            val appState = withTimeoutOrNull(APP_STARTED_TIMEOUT_MS) {
+            return processOpenAppResult(appStartResponse) {
                 stateAppFlow.filter { it == Application.AppState.APP_STARTED }.first()
             }
-            if (appState != null) {
-                info { "Receive that app state started" }
-                return true
-            }
-            info { "Failed wait for app state started" }
         } finally {
             pendingStateJob.cancelAndJoin()
         }
+    }
+
+    @Throws(AlreadyOpenedAppException::class)
+    private suspend fun processOpenAppResult(
+        appStartResponse: Flipper.Main,
+        onAppTimeout: suspend () -> Unit,
+    ): Boolean {
+        if (appStartResponse.commandStatus == Flipper.CommandStatus.ERROR_APP_SYSTEM_LOCKED) {
+            error { "Handle already opened app" }
+            throw AlreadyOpenedAppException()
+        }
+
+        if (appStartResponse.commandStatus != Flipper.CommandStatus.OK) {
+            error { "Failed start rpc app with error $appStartResponse" }
+            return false
+        }
+
+        info { "Start waiting for stateAppFlow" }
+        val appState = withTimeoutOrNull(APP_STARTED_TIMEOUT_MS) {
+            onAppTimeout()
+        }
+        if (appState != null) {
+            info { "Receive that app state started" }
+            return true
+        }
+        info { "Failed wait for app state started" }
         return false
     }
 }

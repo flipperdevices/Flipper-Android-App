@@ -100,6 +100,15 @@ class StartEmulateHelperImpl @Inject constructor(
                 }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
             )
         )
+        return processResultStart(appButtonPressResponse, onResultTime, minEmulateTime, serviceApi)
+    }
+
+    private suspend fun processResultStart(
+        appButtonPressResponse: Flipper.Main,
+        onResultTime: (Long) -> Unit,
+        minEmulateTime: Long,
+        serviceApi: FlipperServiceApi
+    ): Boolean {
         val responseStatus = appButtonPressResponse.commandStatus
 
         if (responseStatus == Flipper.CommandStatus.OK) {
