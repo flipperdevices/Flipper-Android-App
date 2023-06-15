@@ -3,5 +3,7 @@
     <string-array name="ping_set">
         <item>ping</item>
         <item>find</item>
+        <item>ping device</item>
+        <item>find device</item>
     </string-array>
 </resources>

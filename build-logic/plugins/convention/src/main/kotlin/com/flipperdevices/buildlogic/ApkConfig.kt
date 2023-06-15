@@ -3,16 +3,16 @@ package com.flipperdevices.buildlogic
 import org.gradle.api.Project
 
 object ApkConfig {
-    const val APPLICATION_ID = "com.flipperdevices.app"
+    const val APPLICATION_ID = "com.test.flipperdevices"
 
     const val MIN_SDK_VERSION = 26
     const val TARGET_SDK_VERSION = 33
     const val COMPILE_SDK_VERSION = 33
 
     val Project.VERSION_CODE
-        get() = prop("version_code", Integer.MAX_VALUE).toInt()
+        get() = 1
     val Project.VERSION_NAME
-        get() = prop("version_name", "DEBUG_VERSION")
+        get() = "1"
 
     val Project.COUNTLY_URL
         get() = prop("countly_url", "https://countly.lionzxy.ru/")

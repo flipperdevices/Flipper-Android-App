@@ -6,9 +6,6 @@
         <activity
                 android:exported="true"
                 android:name="${splashScreenActivity}">
-            <meta-data
-                    android:name="android.app.shortcuts"
-                    android:resource="@xml/shortcuts" />
 
             <intent-filter
                     android:autoVerify="true"
@@ -26,6 +23,7 @@
                 <data android:host="flpr.app" />
                 <data android:host="my.flipp.dev" />
                 <data android:host="lab.flipper.net" />
+                <data android:host="flpr.google.assistant" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
