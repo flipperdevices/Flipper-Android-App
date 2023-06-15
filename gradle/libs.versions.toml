@@ -59,7 +59,6 @@ play-core = "2.0.1" # https://developer.android.com/guide/playcore#java-kotlin-i
 ktorfit = "1.4.1" # https://github.com/Foso/Ktorfit/releases
 ktorfit-gradle = "1.0.0" # https://plugins.gradle.org/plugin/de.jensklingenberg.ktorfit
 
-
 # Testing
 junit = "4.12"
 mockito = "4.0.0"

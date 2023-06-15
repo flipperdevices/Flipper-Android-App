@@ -12,6 +12,10 @@ sealed class FapState {
 
     object ReadyToInstall : FapState()
 
+    object FlipperOutdated : FapState()
+
+    object ConnectFlipper : FapState()
+
     data class ReadyToUpdate(val from: FapManifestItem) : FapState()
 
     data class InstallationInProgress(

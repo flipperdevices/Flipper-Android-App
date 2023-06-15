@@ -23,6 +23,7 @@ dependencies {
     implementation(projects.components.bridge.pbutils)
 
     implementation(libs.kotlin.coroutines)
+    implementation(libs.kotlin.immutable.collections)
 
     implementation(libs.tangle.viewmodel.compose)
     implementation(libs.tangle.viewmodel.api)

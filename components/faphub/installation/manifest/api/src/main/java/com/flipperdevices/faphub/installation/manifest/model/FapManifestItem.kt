@@ -5,7 +5,7 @@ import com.flipperdevices.core.data.SemVer
 data class FapManifestItem(
     val applicationAlias: String,
     val uid: String,
-    val version: FapManifestVersion,
+    val versionUid: String,
     val path: String,
     val fullName: String,
     val iconBase64: String?,
