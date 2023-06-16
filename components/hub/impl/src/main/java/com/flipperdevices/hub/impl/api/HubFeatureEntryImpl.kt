@@ -1,5 +1,6 @@
 package com.flipperdevices.hub.impl.api
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -45,6 +46,7 @@ class HubFeatureEntryImpl @Inject constructor(
                 val isApplicationCatalogEnabled by hubViewModel.isApplicationCatalogEnabledFlow()
                     .collectAsState()
                 ComposableHub(
+                    modifier = Modifier.fillMaxSize(),
                     onOpenAttack = {
                         navController.navigate(nfcAttackFeatureEntry.ROUTE.name)
                     },
