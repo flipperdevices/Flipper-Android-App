@@ -23,6 +23,7 @@
     <string name="debug_restart_rpc">Restart RPC</string>
     <string name="debug_open_mfkey32">Open MFKey32</string>
     <string name="debug_skip_autosync">Skip auto synchronization in Debug mode</string>
+    <string name="debug_selfupdater">Suggest self update in debug mode</string>
 
     <string name="debug_ignored_unsupported_version_toast">Please restart the application to apply</string>
 
@@ -33,7 +34,6 @@
     <string name="experimental_screen_streaming">Screen Streaming</string>
     <string name="experimental_screen_streaming_desc">Control Flipper via phone</string>
     <string name="experimental_application_catalog">Enable Apps in Hub</string>
-    <string name="experimental_application_switch">New switch in Apps</string>
 
     <string name="other_github_open">GitHub</string>
     <string name="other_github_url">https://github.com/flipperdevices/Flipper-Android-App</string>

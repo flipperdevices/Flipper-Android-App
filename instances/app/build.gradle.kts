@@ -190,7 +190,6 @@ dependencies {
         SourceInstall.GOOGLE_PLAY -> {
             implementation(projects.components.selfupdater.googleplay)
         }
-
         SourceInstall.GITHUB -> {
             implementation(projects.components.selfupdater.thirdparty.api)
             implementation(projects.components.selfupdater.thirdparty.github)
@@ -198,6 +197,9 @@ dependencies {
         SourceInstall.FDROID -> {
             implementation(projects.components.selfupdater.thirdparty.api)
             implementation(projects.components.selfupdater.thirdparty.fdroid)
+        }
+        SourceInstall.DEBUG -> {
+            implementation(projects.components.selfupdater.debug)
         }
         else -> {
             implementation(projects.components.selfupdater.unknown)

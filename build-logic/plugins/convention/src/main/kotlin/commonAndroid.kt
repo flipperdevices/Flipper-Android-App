@@ -2,6 +2,7 @@
 
 import com.android.build.gradle.BaseExtension
 import com.flipperdevices.buildlogic.ApkConfig
+import com.flipperdevices.buildlogic.ApkConfig.IS_GOOGLE_FEATURE_AVAILABLE
 import com.flipperdevices.buildlogic.ApkConfig.VERSION_CODE
 import com.flipperdevices.buildlogic.ApkConfig.VERSION_NAME
 import org.gradle.api.JavaVersion
@@ -18,7 +19,7 @@ private const val SPLASH_SCREEN_ACTIVITY_KEY = "splashScreenActivity"
 
 fun BaseExtension.commonAndroid(target: Project) {
     configureDefaultConfig(target)
-    configureBuildTypes()
+    configureBuildTypes(target)
     configureBuildFeatures()
     configureCompileOptions()
 
@@ -54,10 +55,13 @@ private fun BaseExtension.configureDefaultConfig(project: Project) {
     }
 }
 
-private fun BaseExtension.configureBuildTypes() {
+private fun BaseExtension.configureBuildTypes(target: Project) {
+    val isGoogleFeatureAvailable = target.IS_GOOGLE_FEATURE_AVAILABLE.toString()
+
     buildTypes {
         defaultConfig {
             manifestPlaceholders[SPLASH_SCREEN_ACTIVITY_KEY] = SPLASH_SCREEN_ACTIVITY
+            buildConfigField("boolean", "IS_GOOGLE_FEATURE_AVAILABLE", isGoogleFeatureAvailable)
         }
         maybeCreate("debug").apply {
             buildConfigField("boolean", "INTERNAL", "true")
