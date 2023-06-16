@@ -2,6 +2,10 @@ package com.flipperdevices.faphub.installation.button.impl.composable
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -9,6 +13,7 @@ import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.faphub.installation.button.api.FapButtonSize
 import com.flipperdevices.faphub.installation.button.impl.R
+import com.flipperdevices.faphub.installation.button.impl.composable.dialogs.ComposableFlipperNotConnectedDialog
 import com.flipperdevices.faphub.installation.button.impl.composable.elements.ComposableFlipperButton
 import com.flipperdevices.faphub.installation.button.impl.composable.elements.ComposableInProgressFapButton
 
@@ -24,6 +29,45 @@ fun ComposableFapInstallButton(
         color = LocalPallet.current.accent,
         fapButtonSize = fapButtonSize,
         onClick = onClick
+    )
+}
+
+@Composable
+fun ComposableFlipperNotConnectedButton(
+    fapButtonSize: FapButtonSize,
+    onOpenDeviceTab: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var showDialog by remember { mutableStateOf(false) }
+    ComposableFlipperButton(
+        modifier = modifier,
+        text = stringResource(R.string.faphub_installation_install),
+        color = LocalPallet.current.accent,
+        fapButtonSize = fapButtonSize,
+        onClick = {
+            showDialog = true
+        }
+    )
+    if (showDialog) {
+        ComposableFlipperNotConnectedDialog(
+            onDismiss = {
+                showDialog = false
+            },
+            onOpenDeviceTab = onOpenDeviceTab
+        )
+    }
+}
+
+@Composable
+fun ComposableFapNoInstallButton(
+    fapButtonSize: FapButtonSize,
+    modifier: Modifier = Modifier
+) {
+    ComposableFlipperButton(
+        modifier = modifier,
+        text = stringResource(R.string.faphub_installation_install),
+        color = LocalPallet.current.text20,
+        fapButtonSize = fapButtonSize
     )
 }
 
