@@ -1,6 +1,7 @@
 package com.flipperdevices.bottombar.impl.composable
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
@@ -67,7 +68,7 @@ fun ComposableMainScreen(
             )
         }
     ) {
-        Box(modifier = Modifier.padding(it)) {
+        Box(modifier = Modifier.padding(it).fillMaxSize()) {
             val graph = remember(startDestination, featureEntries, composableEntries) {
                 navController.createGraph(startDestination, null) {
                     featureEntries.forEach {
