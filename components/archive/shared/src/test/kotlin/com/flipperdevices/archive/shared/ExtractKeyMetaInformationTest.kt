@@ -1,7 +1,7 @@
 package com.flipperdevices.archive.shared
 
 import com.flipperdevices.archive.shared.utils.ExtractKeyMetaInformation
-import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
+import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
 import kotlinx.collections.immutable.persistentListOf
 import org.junit.Assert
 import org.junit.Test

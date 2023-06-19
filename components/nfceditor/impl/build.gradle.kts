@@ -56,5 +56,5 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.ktx.testing)
     testImplementation(libs.mockito.kotlin)
-    testImplementation(projects.components.bridge.dao.impl)
+    testImplementation(projects.components.keyparser.impl)
 }
