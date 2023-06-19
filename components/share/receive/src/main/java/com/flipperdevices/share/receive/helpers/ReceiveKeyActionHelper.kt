@@ -1,13 +1,13 @@
 package com.flipperdevices.share.receive.helpers
 
-import com.flipperdevices.bridge.dao.api.delegates.KeyParser
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
-import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
+import com.flipperdevices.keyparser.api.KeyParser
+import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
 import javax.inject.Inject
 
 private const val NOTIFICATION_DURATION_MS = 3 * 1000L

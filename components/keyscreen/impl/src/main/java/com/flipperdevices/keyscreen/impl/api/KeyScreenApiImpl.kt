@@ -2,9 +2,9 @@ package com.flipperdevices.keyscreen.impl.api
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
 import com.flipperdevices.keyscreen.api.KeyScreenApi
 import com.flipperdevices.keyscreen.impl.composable.card.ComposableKeyCard
 import com.flipperdevices.keyscreen.model.DeleteState

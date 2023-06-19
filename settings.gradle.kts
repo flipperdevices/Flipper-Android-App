@@ -42,7 +42,6 @@ include(
     ":components:bridge:synchronization:ui",
     ":components:bridge:dao:api",
     ":components:bridge:dao:impl",
-    ":components:bridge:dao:noop",
 
     ":components:filemanager:api",
     ":components:filemanager:impl",
@@ -115,6 +114,10 @@ include(
 
     ":components:keyemulate:api",
     ":components:keyemulate:impl",
+
+    ":components:keyparser:api",
+    ":components:keyparser:impl",
+    ":components:keyparser:noop",
 
     ":components:keyedit:api",
     ":components:keyedit:impl",

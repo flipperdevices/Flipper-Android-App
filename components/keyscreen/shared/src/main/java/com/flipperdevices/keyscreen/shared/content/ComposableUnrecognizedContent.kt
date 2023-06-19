@@ -2,7 +2,7 @@ package com.flipperdevices.keyscreen.shared.content
 
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.runtime.Composable
-import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
+import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
 
 @Composable
 internal fun ColumnScope.ComposableUnrecognizedContent(

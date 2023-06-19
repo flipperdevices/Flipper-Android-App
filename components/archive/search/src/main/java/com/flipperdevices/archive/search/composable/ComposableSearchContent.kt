@@ -24,11 +24,11 @@ import com.flipperdevices.archive.search.viewmodel.SearchViewModel
 import com.flipperdevices.archive.shared.composable.ComposableKeyCard
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
-import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
+import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
 import kotlinx.collections.immutable.ImmutableList
 import com.flipperdevices.core.ui.res.R as DesignSystem
 

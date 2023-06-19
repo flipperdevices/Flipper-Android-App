@@ -24,6 +24,7 @@ dependencies {
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.synchronization.api)
 
+    implementation(projects.components.keyparser.api)
     implementation(projects.components.keyedit.api)
     implementation(projects.components.keyscreen.shared)
 

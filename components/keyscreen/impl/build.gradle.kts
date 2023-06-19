@@ -12,6 +12,7 @@ dependencies {
     implementation(projects.components.keyscreen.shared)
     implementation(projects.components.archive.api)
     implementation(projects.components.keyemulate.api)
+    implementation(projects.components.keyparser.api)
 
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.di)

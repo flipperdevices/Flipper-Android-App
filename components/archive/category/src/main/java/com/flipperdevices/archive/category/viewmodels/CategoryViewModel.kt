@@ -5,10 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.flipperdevices.archive.category.api.EXTRA_CATEGORY_TYPE
 import com.flipperdevices.archive.category.model.CategoryState
 import com.flipperdevices.archive.model.CategoryType
-import com.flipperdevices.bridge.dao.api.delegates.KeyParser
 import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
+import com.flipperdevices.keyparser.api.KeyParser
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

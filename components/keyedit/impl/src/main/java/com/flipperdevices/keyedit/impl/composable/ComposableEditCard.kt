@@ -12,11 +12,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.core.ui.ktx.elements.ComposableKeyType
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyedit.impl.R
 import com.flipperdevices.keyedit.impl.viewmodel.KeyEditViewModel
+import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
 import com.flipperdevices.keyscreen.shared.ComposableKeyContent
 
 @Composable

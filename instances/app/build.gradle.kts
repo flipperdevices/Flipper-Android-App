@@ -72,6 +72,9 @@ dependencies {
     implementation(projects.components.keyemulate.api)
     implementation(projects.components.keyemulate.impl)
 
+    implementation(projects.components.keyparser.api)
+    implementation(projects.components.keyparser.impl)
+
     implementation(projects.components.inappnotification.api)
     implementation(projects.components.inappnotification.impl)
 
