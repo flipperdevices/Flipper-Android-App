@@ -9,11 +9,14 @@ dependencies {
     implementation(projects.components.faphub.installation.button.api)
 
     implementation(projects.components.core.di)
+    implementation(projects.components.core.ktx)
+    implementation(projects.components.core.data)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.theme)
-    implementation(projects.components.core.ktx)
-    implementation(projects.components.core.data)
+    implementation(projects.components.core.ui.dialog)
+
+    implementation(projects.components.bottombar.api)
 
     implementation(projects.components.faphub.installation.stateprovider.api)
     implementation(projects.components.faphub.installation.manifest.api)

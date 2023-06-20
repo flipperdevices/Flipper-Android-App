@@ -10,13 +10,12 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.createGraph
-import androidx.navigation.navOptions
 import com.flipperdevices.bottombar.impl.composable.bottombar.ComposeBottomBar
+import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
 import com.flipperdevices.bottombar.impl.viewmodel.BottomNavigationViewModel
 import com.flipperdevices.connection.api.ConnectionApi
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
@@ -32,6 +31,7 @@ fun ComposableMainScreen(
     featureEntries: ImmutableSet<AggregateFeatureEntry>,
     composableEntries: ImmutableSet<ComposableFeatureEntry>,
     navController: NavHostController,
+    onTabClick: (tab: FlipperBottomTab, force: Boolean) -> Unit,
     modifier: Modifier = Modifier,
     navigationViewModel: BottomNavigationViewModel = tangleViewModel()
 ) {
@@ -49,20 +49,7 @@ fun ComposableMainScreen(
                 connectionApi = connectionApi,
                 selectedItem = selectedTab,
                 onBottomBarClick = {
-                    val topLevelNavOptions = navOptions {
-                        // Pop up to the start destination of the graph to
-                        // avoid building up a large stack of destinations
-                        // on the back stack as users select items
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        // Avoid multiple copies of the same destination when
-                        // reselecting the same item
-                        launchSingleTop = true
-                        // Restore state when reselecting a previously selected item
-                        restoreState = selectedTab != it
-                    }
-                    navController.navigate(it.startRoute.name, topLevelNavOptions)
+                    onTabClick(it, selectedTab == it)
                 }
             )
         }

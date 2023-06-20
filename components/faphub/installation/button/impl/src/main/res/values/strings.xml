@@ -5,4 +5,9 @@
     <string name="faphub_installation_update">UPDATE</string>
     <string name="faphub_installation_canceling">Canceling</string>
     <string name="faphub_installation_cancel_desc">Cancel</string>
+
+    <string name="faphub_installation_dialog_flipper_not_connected_title">Flipper is Not Connected</string>
+    <string name="faphub_installation_dialog_flipper_not_connected_desc">Connect your Flipper Zero to install this app</string>
+    <string name="faphub_installation_dialog_flipper_not_connected_btn">Go to Device Screen</string>
+
 </resources>
