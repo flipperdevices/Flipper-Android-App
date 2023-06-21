@@ -103,9 +103,9 @@ class FlipperScannerImpl @Inject constructor(
     private fun getAlreadyConnectedDevices(): List<DiscoveredBluetoothDevice> {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.S &&
             ActivityCompat.checkSelfPermission(
-                    context,
-                    Manifest.permission.BLUETOOTH_CONNECT
-                ) != PackageManager.PERMISSION_GRANTED
+                context,
+                Manifest.permission.BLUETOOTH_CONNECT
+            ) != PackageManager.PERMISSION_GRANTED
         ) {
             return emptyList()
         }

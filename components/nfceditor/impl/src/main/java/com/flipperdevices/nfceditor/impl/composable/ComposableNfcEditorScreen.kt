@@ -70,10 +70,10 @@ fun ComposableNfcEditorScreen(
         ComposableNfcEditorBar(localNfcEditorState.cardName, onBack = {
             nfcEditorViewModel.onProcessBack(onBack)
         }, onSave = {
-                nfcEditorViewModel.onSaveProcess(onSaveEndAction)
-            }, onSaveAs = {
-                nfcEditorViewModel.onSaveAs(onSaveAsEndAction)
-            })
+            nfcEditorViewModel.onSaveProcess(onSaveEndAction)
+        }, onSaveAs = {
+            nfcEditorViewModel.onSaveAs(onSaveAsEndAction)
+        })
         ComposableNfcEditor(
             modifier = Modifier.weight(1f),
             nfcEditorViewModel = nfcEditorViewModel,
