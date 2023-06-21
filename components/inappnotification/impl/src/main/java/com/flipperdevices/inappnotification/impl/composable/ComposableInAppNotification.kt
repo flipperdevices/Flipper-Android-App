@@ -80,10 +80,12 @@ private fun ComposableInAppNotificationCard(
         val handler = Handler(Looper.getMainLooper())
 
         val fadeOutRunnable = {
-            if (visibleState) visibleState = false
+            visibleState = false
         }
         val hiddenRunnable = {
-            if (!actionClicked) onNotificationHidden()
+            if (!actionClicked) {
+                onNotificationHidden()
+            }
         }
 
         handler.postDelayed(

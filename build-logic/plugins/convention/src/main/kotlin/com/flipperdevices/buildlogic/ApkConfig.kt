@@ -9,10 +9,12 @@ object ApkConfig {
     const val TARGET_SDK_VERSION = 33
     const val COMPILE_SDK_VERSION = 33
 
+    private const val DEBUG_VERSION = "DEBUG_VERSION"
+
     val Project.VERSION_CODE
         get() = prop("version_code", Integer.MAX_VALUE).toInt()
     val Project.VERSION_NAME
-        get() = prop("version_name", "DEBUG_VERSION")
+        get() = prop("version_name", DEBUG_VERSION)
 
     val Project.COUNTLY_URL
         get() = prop("countly_url", "https://countly.lionzxy.ru/")
@@ -27,7 +29,7 @@ object ApkConfig {
 
     val Project.SOURCE_INSTALL
         get() = run {
-            if (VERSION_NAME == "DEBUG_VERSION") {
+            if (VERSION_NAME == DEBUG_VERSION) {
                 return@run SourceInstall.DEBUG
             }
             return@run when (providers.gradleProperty("source_install").orNull) {
