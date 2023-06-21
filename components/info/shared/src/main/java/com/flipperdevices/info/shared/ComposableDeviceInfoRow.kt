@@ -102,6 +102,7 @@ fun ComposableDeviceInfoRowText(
         modifier = modifier,
         text = text,
         color = color ?: LocalPallet.current.text100,
+        textAlign = TextAlign.Right,
         style = LocalTypography.current.bodyR14
     )
 }
