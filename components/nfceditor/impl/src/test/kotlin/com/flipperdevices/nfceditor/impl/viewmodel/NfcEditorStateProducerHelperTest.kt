@@ -10,7 +10,6 @@ import com.flipperdevices.core.test.readTestAsset
 import com.flipperdevices.core.test.readTestAssetString
 import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
 import com.flipperdevices.keyparser.impl.api.KeyParserImpl
-import com.flipperdevices.keyparser.impl.parsers.impl.NFCParser
 import com.flipperdevices.nfceditor.impl.model.CardFieldInfo
 import com.flipperdevices.nfceditor.impl.model.EditorField
 import com.flipperdevices.nfceditor.impl.model.NfcCellType
@@ -503,7 +502,7 @@ private fun parseNfcKey(
     path: String,
     shadowPath: String? = null
 ): FlipperKeyParsed.NFC = runBlocking {
-    val keyParser = KeyParserImpl(parsers = mutableSetOf(NFCParser()))
+    val keyParser = KeyParserImpl()
     val flipperKey = getFlipperKey(path, shadowPath)
     return@runBlocking keyParser.parseKey(flipperKey) as FlipperKeyParsed.NFC
 }
