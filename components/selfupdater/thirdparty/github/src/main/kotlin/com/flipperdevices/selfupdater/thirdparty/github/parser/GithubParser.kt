@@ -1,11 +1,11 @@
 package com.flipperdevices.selfupdater.thirdparty.github.parser
 
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.di.BuildConfig
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.selfupdater.thirdparty.api.SelfUpdate
 import com.flipperdevices.selfupdater.thirdparty.api.SelfUpdateParserApi
+import com.flipperdevices.selfupdater.thirdparty.github.BuildConfig
 import com.flipperdevices.selfupdater.thirdparty.github.model.GithubRelease
 import com.squareup.anvil.annotations.ContributesBinding
 import io.ktor.client.HttpClient
