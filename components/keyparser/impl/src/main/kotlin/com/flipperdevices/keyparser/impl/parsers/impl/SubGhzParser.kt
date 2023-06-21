@@ -5,7 +5,6 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
 import com.flipperdevices.keyparser.impl.parsers.KeyParserDelegate
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 import kotlin.math.abs
 
 private const val KEY_PROTOCOL = "Protocol"
@@ -13,7 +12,7 @@ private const val KEY_KEY = "Key"
 private const val KEY_RAW = "RAW"
 private const val KEY_RAW_DATA = "RAW_Data"
 
-class SubGhzParser @Inject constructor() : KeyParserDelegate {
+class SubGhzParser : KeyParserDelegate {
     override suspend fun parseKey(
         flipperKey: FlipperKey,
         fff: FlipperFileFormat

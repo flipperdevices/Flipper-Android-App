@@ -1,5 +1,5 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.android-lib")
 }
 
 android.namespace = "com.flipperdevices.core.data"
