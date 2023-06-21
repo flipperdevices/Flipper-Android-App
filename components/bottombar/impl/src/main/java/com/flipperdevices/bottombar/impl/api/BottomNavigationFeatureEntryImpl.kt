@@ -1,13 +1,17 @@
 package com.flipperdevices.bottombar.impl.api
 
 import android.content.Intent
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navOptions
 import com.flipperdevices.bottombar.api.BottomNavigationFeatureEntry
 import com.flipperdevices.bottombar.api.BottomNavigationHandleDeeplink
 import com.flipperdevices.bottombar.impl.composable.ComposableMainScreen
+import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
+import com.flipperdevices.bottombar.model.BottomBarTab
 import com.flipperdevices.connection.api.ConnectionApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.provideDelegate
@@ -47,8 +51,42 @@ class BottomNavigationFeatureEntryImpl @Inject constructor(
                 featureEntries = featureEntriesMutable.toPersistentSet(),
                 composableEntries = composableEntriesMutable.toPersistentSet(),
                 notificationRenderer = notificationRenderer,
-                navController = childNavController
+                navController = childNavController,
+                onTabClick = { tab, force -> onChangeTab(tab, force) }
             )
+        }
+    }
+
+    override fun onChangeTab(tab: BottomBarTab, force: Boolean) {
+        onChangeTab(
+            tab = when (tab) {
+                BottomBarTab.DEVICE -> FlipperBottomTab.DEVICE
+                BottomBarTab.ARCHIVE -> FlipperBottomTab.ARCHIVE
+                BottomBarTab.HUB -> FlipperBottomTab.HUB
+            },
+            force = force
+        )
+    }
+
+    private fun onChangeTab(
+        tab: FlipperBottomTab,
+        force: Boolean
+    ) {
+        childNavController?.let { navController ->
+            val topLevelNavOptions = navOptions {
+                // Pop up to the start destination of the graph to
+                // avoid building up a large stack of destinations
+                // on the back stack as users select items
+                popUpTo(navController.graph.findStartDestination().id) {
+                    saveState = true
+                }
+                // Avoid multiple copies of the same destination when
+                // reselecting the same item
+                launchSingleTop = true
+                // Restore state when reselecting a previously selected item
+                restoreState = force.not()
+            }
+            navController.navigate(tab.startRoute.name, topLevelNavOptions)
         }
     }
 
