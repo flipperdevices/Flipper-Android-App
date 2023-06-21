@@ -16,6 +16,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.core.markdown.ComposableMarkdown
 import com.flipperdevices.core.markdown.annotatedStringFromMarkdown
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.core.ui.theme.LocalPallet
@@ -38,6 +39,10 @@ fun ColumnScope.ComposableFapChangelogText(
         text = stringResource(R.string.fapscreen_changelog_title),
         style = LocalTypography.current.buttonM16,
         color = LocalPallet.current.text100
+    )
+
+    ComposableMarkdown(
+
     )
 
     Text(

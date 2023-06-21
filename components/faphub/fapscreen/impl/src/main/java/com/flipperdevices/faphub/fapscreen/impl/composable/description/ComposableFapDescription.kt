@@ -10,7 +10,14 @@ fun ComposableFapDescription(
     fapItem: FapItem?,
     modifier: Modifier = Modifier
 ) = Column(modifier) {
-    ComposableFapDescriptionText(fapItem?.description)
+    val description = if (fapItem != null) {
+        "${fapItem.shortDescription}\n\n${fapItem.description}"
+    } else {
+        null
+    }
+    ComposableFapDescriptionText(
+        description = description,
+    )
     ComposableFapChangelogText(fapItem?.changelog)
     ComposableDeveloperFooter(fapItem?.fapDeveloperInformation)
 }

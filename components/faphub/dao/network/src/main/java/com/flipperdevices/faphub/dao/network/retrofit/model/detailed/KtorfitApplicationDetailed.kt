@@ -54,6 +54,7 @@ data class KtorfitApplicationDetailed(
             id = id,
             screenshots = currentVersion.screenshots.toImmutableList(),
             description = currentVersion.description,
+            shortDescription = currentVersion.shortDescription,
             name = name,
             changelog = currentVersion.changelog,
             category = category,

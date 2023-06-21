@@ -50,7 +50,7 @@ private fun SmallHorizontalAppCardText(
     )
     ComposableAppCategory(category = fapItem.category)
     Text(
-        text = fapItem.description,
+        text = fapItem.shortDescription,
         style = LocalTypography.current.subtitleR12,
         color = LocalPallet.current.text100,
         maxLines = 1,
