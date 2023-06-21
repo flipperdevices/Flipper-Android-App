@@ -9,10 +9,12 @@ object ApkConfig {
     const val TARGET_SDK_VERSION = 33
     const val COMPILE_SDK_VERSION = 33
 
+    private const val DEBUG_VERSION = "DEBUG_VERSION"
+
     val Project.VERSION_CODE
         get() = prop("version_code", Integer.MAX_VALUE).toInt()
     val Project.VERSION_NAME
-        get() = prop("version_name", "DEBUG_VERSION")
+        get() = prop("version_name", DEBUG_VERSION)
 
     val Project.COUNTLY_URL
         get() = prop("countly_url", "https://countly.lionzxy.ru/")
@@ -26,11 +28,16 @@ object ApkConfig {
         get() = prop("is_sentry_publish", false).toBoolean()
 
     val Project.SOURCE_INSTALL
-        get() = when (providers.gradleProperty("source_install").orNull) {
-            "fdroid" -> SourceInstall.FDROID
-            "github" -> SourceInstall.GITHUB
-            "googleplay" -> SourceInstall.GOOGLE_PLAY
-            else -> SourceInstall.UNKNOWN
+        get() = run {
+            if (VERSION_NAME == DEBUG_VERSION) {
+                return@run SourceInstall.DEBUG
+            }
+            return@run when (providers.gradleProperty("source_install").orNull) {
+                "fdroid" -> SourceInstall.FDROID
+                "github" -> SourceInstall.GITHUB
+                "googleplay" -> SourceInstall.GOOGLE_PLAY
+                else -> SourceInstall.UNKNOWN
+            }
         }
 
     val Project.IS_METRIC_ENABLED
@@ -40,6 +47,6 @@ object ApkConfig {
         get() = prop("is_metric_enabled", true).toBoolean()
 }
 
-private fun Project.prop(key: String, default: Any): String {
+internal fun Project.prop(key: String, default: Any): String {
     return providers.gradleProperty(key).getOrElse(default.toString())
 }

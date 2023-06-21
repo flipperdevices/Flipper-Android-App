@@ -1,8 +1,8 @@
 package com.flipperdevices.share.cryptostorage
 
-import com.flipperdevices.bridge.dao.api.delegates.KeyParser
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyCrypto
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.keyparser.api.KeyParser
 import com.flipperdevices.share.api.CryptoStorageApi
 import com.flipperdevices.share.cryptostorage.helper.CryptoHelperApi
 import com.flipperdevices.share.cryptostorage.helper.StorageHelperApi

@@ -1,9 +1,11 @@
 package com.flipperdevices.selfupdater.thirdparty.github.parser
 
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.di.BuildConfig
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import com.flipperdevices.selfupdater.thirdparty.api.SelfUpdate
 import com.flipperdevices.selfupdater.thirdparty.api.SelfUpdateParserApi
+import com.flipperdevices.selfupdater.thirdparty.github.BuildConfig
 import com.flipperdevices.selfupdater.thirdparty.github.model.GithubRelease
 import com.squareup.anvil.annotations.ContributesBinding
 import io.ktor.client.HttpClient
@@ -21,8 +23,11 @@ private const val DEV_BUILD_TYPE = "internal"
 @ContributesBinding(AppGraph::class, SelfUpdateParserApi::class)
 class GithubParser @Inject constructor(
     private val client: HttpClient
-) : SelfUpdateParserApi {
-    override fun getName(): String = "Github"
+) : SelfUpdateParserApi, LogTagProvider {
+
+    override val TAG: String = "GithubParser"
+
+    override fun getName(): String = "Github. Google Feature: ${isGooglePlayEnable()}"
 
     override suspend fun getLastUpdate(): SelfUpdate? {
         return runCatching {
@@ -32,9 +37,13 @@ class GithubParser @Inject constructor(
                 parseReleaseUpdate()
             }
 
+            info { "Chooser update application $update" }
+
             val downloadUrl = update
                 ?.getDownloadUrl(isGooglePlayEnable = isGooglePlayEnable())
                 ?: return null
+
+            info { "Download url for update application $downloadUrl" }
 
             return SelfUpdate(
                 version = update.tagName,
@@ -58,9 +67,7 @@ class GithubParser @Inject constructor(
         return response.firstOrNull { it.isDev() }
     }
 
-    private fun isGooglePlayEnable(): Boolean {
-        return System.getProperty("is_google_feature", "true") == "true"
-    }
+    private fun isGooglePlayEnable() = BuildConfig.IS_GOOGLE_FEATURE_AVAILABLE
 
     private fun isDev(): Boolean {
         return BuildConfig.BUILD_TYPE == DEV_BUILD_TYPE

@@ -62,6 +62,8 @@ class SelfUpdaterThirdParty @Inject constructor(
             return null
         }
 
+        info { "Last update from Github $lastRelease" }
+
         val currentVersion = SemVer.fromString(applicationParams.version) ?: return null
         val newVersion = SemVer.fromString(lastRelease.version) ?: return null
 

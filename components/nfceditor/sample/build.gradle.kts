@@ -31,6 +31,9 @@ dependencies {
     implementation(projects.components.nfceditor.api)
     implementation(projects.components.nfceditor.impl)
 
+    implementation(projects.components.keyparser.api)
+    implementation(projects.components.keyparser.impl)
+
     implementation(projects.components.keyedit.api)
     implementation(projects.components.keyedit.noop)
 

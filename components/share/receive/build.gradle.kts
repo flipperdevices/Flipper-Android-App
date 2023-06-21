@@ -30,6 +30,7 @@ dependencies {
     implementation(projects.components.keyscreen.api)
     implementation(projects.components.keyscreen.shared)
     implementation(projects.components.keyedit.api)
+    implementation(projects.components.keyparser.api)
 
     implementation(projects.components.inappnotification.api)
 

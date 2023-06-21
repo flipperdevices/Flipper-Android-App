@@ -3,13 +3,13 @@ package com.flipperdevices.deeplink.impl.parser.delegates
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import com.flipperdevices.bridge.dao.api.delegates.KeyParser
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.deeplink.api.DeepLinkParserDelegate
 import com.flipperdevices.deeplink.model.DeepLinkParserDelegatePriority
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkContent
+import com.flipperdevices.keyparser.api.KeyParser
 import com.squareup.anvil.annotations.ContributesMultibinding
 import java.net.URLDecoder
 import javax.inject.Inject

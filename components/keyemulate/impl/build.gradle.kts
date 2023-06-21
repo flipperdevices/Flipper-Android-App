@@ -7,6 +7,7 @@ android.namespace = "com.flipperdevices.keyemulate.impl"
 
 dependencies {
     implementation(projects.components.keyemulate.api)
+    implementation(projects.components.keyparser.api)
 
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)

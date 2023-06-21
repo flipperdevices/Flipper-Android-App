@@ -1,6 +1,6 @@
 package com.flipperdevices.keyedit.impl.model
 
-import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
+import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
 
 sealed class KeyEditState {
     object Loading : KeyEditState()

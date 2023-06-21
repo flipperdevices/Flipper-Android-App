@@ -43,4 +43,5 @@ message Settings {
   bool ignore_subghz_provisioning_on_zero_region = 15;
   bool skip_auto_sync_in_debug = 17;
   bool application_catalog = 21;
+  bool self_updater_debug = 22;
 }
