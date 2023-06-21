@@ -14,22 +14,22 @@ import javax.inject.Inject
 @ContributesBinding(AppGraph::class, KeyParser::class)
 class KeyParserNoop @Inject constructor() : KeyParser {
     override suspend fun parseKey(flipperKey: FlipperKey): FlipperKeyParsed {
-        error("Not yet implemented")
+        throw NotImplementedError()
     }
 
     override suspend fun parseUri(uri: Uri): Pair<FlipperFilePath, FlipperFileFormat>? {
-        error("Not yet implemented")
+        throw NotImplementedError()
     }
 
     override suspend fun keyToUrl(flipperKey: FlipperKey): String {
-        error("Not yet implemented")
+        throw NotImplementedError()
     }
 
     override fun cryptoKeyDataToUri(key: FlipperKeyCrypto): String {
-        error("Not yet implemented")
+        throw NotImplementedError()
     }
 
     override fun parseUriToCryptoKeyData(uri: Uri): FlipperKeyCrypto? {
-        error("Not yet implemented")
+        throw NotImplementedError()
     }
 }

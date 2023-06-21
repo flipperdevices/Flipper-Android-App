@@ -7,7 +7,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.api.model.SHADOW_FILE_EXTENSION
-import com.flipperdevices.core.ui.hexkeyboard.PredefinedEnumMap
+import com.flipperdevices.core.data.PredefinedEnumMap
 import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
 import com.flipperdevices.nfceditor.impl.model.CardFieldInfo
 import com.flipperdevices.nfceditor.impl.model.NfcCellType

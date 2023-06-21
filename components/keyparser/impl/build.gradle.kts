@@ -11,6 +11,7 @@ dependencies {
 
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)
+    implementation(projects.components.core.data)
 
     implementation(libs.kotlin.immutable.collections)
     implementation(libs.kotlin.coroutines)

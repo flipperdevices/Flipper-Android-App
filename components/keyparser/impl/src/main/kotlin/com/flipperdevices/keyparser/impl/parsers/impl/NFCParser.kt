@@ -3,13 +3,9 @@ package com.flipperdevices.keyparser.impl.parsers.impl
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
 import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
-import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
 import com.flipperdevices.keyparser.impl.parsers.KeyParserDelegate
-import com.squareup.anvil.annotations.ContributesMultibinding
 import java.nio.charset.Charset
-import javax.inject.Inject
 
 private const val KEY_TYPE = "Device type"
 private const val KEY_VERSION = "Version"
@@ -20,11 +16,7 @@ private const val KEY_MF_CLASSIC_TYPE = "Mifare Classic type"
 private const val KEY_MF_VERSION = "Data format version"
 private const val KEY_BLOCK = "Block"
 
-@ContributesMultibinding(AppGraph::class, KeyParserDelegate::class)
-class NFCParser @Inject constructor() : KeyParserDelegate {
-    override val flipperType: FlipperKeyType
-        get() = FlipperKeyType.NFC
-
+class NFCParser : KeyParserDelegate {
     override suspend fun parseKey(
         flipperKey: FlipperKey,
         fff: FlipperFileFormat
