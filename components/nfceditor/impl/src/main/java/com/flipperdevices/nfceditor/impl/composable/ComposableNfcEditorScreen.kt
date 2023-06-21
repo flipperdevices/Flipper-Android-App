@@ -50,8 +50,10 @@ fun ComposableNfcEditorScreen(
     val nfcEditorState by nfcEditorViewModel.getNfcEditorState().collectAsState()
     val localNfcEditorState = nfcEditorState
 
+    val currentActiveCell by nfcEditorViewModel.getCurrentActiveCellState()
+
     if (localNfcEditorState == null) {
-        LaunchedEffect(key1 = localNfcEditorState) {
+        LaunchedEffect(null) {
             onBack()
         }
         return
@@ -76,12 +78,13 @@ fun ComposableNfcEditorScreen(
         })
         ComposableNfcEditor(
             modifier = Modifier.weight(1f),
-            nfcEditorViewModel = nfcEditorViewModel,
-            nfcEditorState = localNfcEditorState
+            nfcEditorState = localNfcEditorState,
+            onCellFocus = nfcEditorViewModel::onCellFocus,
+            currentActiveCell = currentActiveCell
         )
 
         var offsetForKeyboard by remember { mutableStateOf(KEYBOARD_HEIGHT_DP.dp) }
-        if (nfcEditorViewModel.currentActiveCell != null) {
+        if (currentActiveCell != null) {
             offsetForKeyboard = 0.dp
             val offset by animateDpAsState(offsetForKeyboard)
             ComposableHexKeyboard(

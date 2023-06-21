@@ -1,5 +1,6 @@
 package com.flipperdevices.nfceditor.impl.viewmodel
 
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -24,16 +25,21 @@ class TextUpdaterHelper {
         )
     )
 
-    var currentActiveCell by mutableStateOf<NfcEditorCellLocation?>(null)
-        private set
+    private var currentActiveCellState = mutableStateOf<NfcEditorCellLocation?>(null)
+    private var currentActiveCell by currentActiveCellState
+
     private var backupTextCurrentCell: String? = null
 
     fun getNfcEditorState(): StateFlow<NfcEditorState?> = nfcEditorStateFlow
 
+    fun getActiveCellState(): State<NfcEditorCellLocation?> = currentActiveCellState
+
+    @Synchronized
     fun onFileLoad(nfcEditorState: NfcEditorState?) {
         nfcEditorStateFlow.update { nfcEditorState }
     }
 
+    @Synchronized
     fun onSelectCell(location: NfcEditorCellLocation?) {
         val currentNfcEditorState = nfcEditorStateFlow.value ?: return
         val activeCellLocation = currentActiveCell
@@ -51,6 +57,7 @@ class TextUpdaterHelper {
         backupTextCurrentCell = location?.let { currentNfcEditorState[location].content }
     }
 
+    @Synchronized
     fun onKeyboardPress(
         key: HexKey
     ) {
@@ -71,6 +78,7 @@ class TextUpdaterHelper {
             EditorField.CARD ->
                 nfcEditorState.nfcEditorCardInfo?.fieldsAsSectors
                     ?.let { location.decrement(it) }
+
             EditorField.DATA -> location.decrement(nfcEditorState.sectors)
         }
         onSelectCell(newLocation)
@@ -91,6 +99,7 @@ class TextUpdaterHelper {
                 EditorField.CARD ->
                     nfcEditorState.nfcEditorCardInfo?.fieldsAsSectors
                         ?.let { location.increment(it) }
+
                 EditorField.DATA -> location.increment(nfcEditorState.sectors)
             }
             onSelectCell(newLocation)

@@ -11,19 +11,20 @@ import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.nfceditor.impl.R
+import com.flipperdevices.nfceditor.impl.model.NfcEditorCellLocation
 import com.flipperdevices.nfceditor.impl.model.NfcEditorState
-import com.flipperdevices.nfceditor.impl.viewmodel.NfcEditorViewModel
 
 @Composable
 @Suppress("MagicNumber")
 fun ComposableNfcSector(
-    nfcEditorViewModel: NfcEditorViewModel,
     nfcEditorState: NfcEditorState,
     sectorIndex: Int,
     maxIndexSymbolCount: Int,
     scaleFactor: Float,
+    onCellFocus: (NfcEditorCellLocation?) -> Unit,
+    currentActiveCell: NfcEditorCellLocation?,
     modifier: Modifier = Modifier,
-    onPositionActiveLine: (Int) -> Unit
+    onPositionActiveLine: (Int) -> Unit,
 ) {
     Column(modifier = modifier) {
         Text(
@@ -41,7 +42,6 @@ fun ComposableNfcSector(
         val currentSector = nfcEditorState.sectors[sectorIndex]
 
         currentSector.lines.forEachIndexed { lineIndex, line ->
-            val activeCell = nfcEditorViewModel.currentActiveCell
 
             ComposableNfcLine(
                 sectorIndex = sectorIndex,
@@ -50,10 +50,10 @@ fun ComposableNfcSector(
                 line = line.cells,
                 maxIndexSymbolCount = maxIndexSymbolCount,
                 scaleFactor = scaleFactor,
-                activeCell = activeCell,
-                onCellFocus = nfcEditorViewModel::onCellFocus,
-                onPositionActiveLine = if (activeCell?.sectorIndex == sectorIndex &&
-                    activeCell.lineIndex == lineIndex
+                activeCell = currentActiveCell,
+                onCellFocus = onCellFocus,
+                onPositionActiveLine = if (currentActiveCell?.sectorIndex == sectorIndex &&
+                    currentActiveCell.lineIndex == lineIndex
                 ) {
                     onPositionActiveLine
                 } else {
