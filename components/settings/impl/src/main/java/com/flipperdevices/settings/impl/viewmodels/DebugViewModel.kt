@@ -10,7 +10,6 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
 import com.flipperdevices.debug.api.StressTestFeatureEntry
-import com.flipperdevices.nfc.mfkey32.api.MfKey32ScreenEntry
 import com.flipperdevices.settings.impl.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,7 +21,6 @@ class DebugViewModel @VMInject constructor(
     private val synchronizationApi: SynchronizationApi,
     private val settingsDataStore: DataStore<Settings>,
     private val serviceProvider: FlipperServiceProvider,
-    private val mfKey32ScreenEntry: MfKey32ScreenEntry,
     private val stressTestFeatureEntry: StressTestFeatureEntry
 ) : AndroidLifecycleViewModel(application) {
 
@@ -94,10 +92,6 @@ class DebugViewModel @VMInject constructor(
         }
     }
 
-    fun openMfKey32(navController: NavController) {
-        navController.navigate(mfKey32ScreenEntry.startDestination())
-    }
-
     private suspend fun askRestartApp() = withContext(Dispatchers.Main) {
         val context = getApplication<Application>()
         Toast.makeText(
@@ -105,5 +99,15 @@ class DebugViewModel @VMInject constructor(
             R.string.debug_ignored_unsupported_version_toast,
             Toast.LENGTH_LONG
         ).show()
+    }
+
+    fun onSwitchSelfUpdaterDebug(enabled: Boolean) {
+        viewModelScope.launch {
+            settingsDataStore.updateData {
+                it.toBuilder()
+                    .setSelfUpdaterDebug(enabled)
+                    .build()
+            }
+        }
     }
 }

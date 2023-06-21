@@ -23,7 +23,8 @@ import com.flipperdevices.inappnotification.impl.R
 
 @Composable
 internal fun ComposableInAppNotificationUpdateReady(
-    notification: InAppNotification.UpdateReady
+    notification: InAppNotification.UpdateReady,
+    onClickAction: () -> Unit,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth().padding(12.dp),
@@ -53,6 +54,7 @@ internal fun ComposableInAppNotificationUpdateReady(
             ),
             onClick = {
                 notification.action()
+                onClickAction()
             }
         )
     }
@@ -68,7 +70,8 @@ private fun ComposableInAppNotificationUpdateReadyPreviewX2Font() {
             notification = InAppNotification.UpdateReady(
                 durationMs = 0,
                 action = { },
-            )
+            ),
+            {}
         )
     }
 }
@@ -83,7 +86,8 @@ private fun ComposableInAppNotificationUpdateReadyPreviewX15Font() {
             notification = InAppNotification.UpdateReady(
                 durationMs = 0,
                 action = { },
-            )
+            ),
+            {}
         )
     }
 }
@@ -96,7 +100,8 @@ private fun ComposableInAppNotificationUpdateReadyPreview() {
             notification = InAppNotification.UpdateReady(
                 durationMs = 0,
                 action = { },
-            )
+            ),
+            {}
         )
     }
 }

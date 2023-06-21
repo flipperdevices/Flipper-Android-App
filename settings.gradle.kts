@@ -206,6 +206,7 @@ include(
     ":components:selfupdater:api",
     ":components:selfupdater:googleplay",
     ":components:selfupdater:unknown",
+    ":components:selfupdater:debug",
     ":components:selfupdater:thirdparty:api",
     ":components:selfupdater:thirdparty:github",
     ":components:selfupdater:thirdparty:fdroid",
