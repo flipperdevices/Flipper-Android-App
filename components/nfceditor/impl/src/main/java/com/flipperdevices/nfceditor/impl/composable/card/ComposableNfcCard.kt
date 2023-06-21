@@ -22,7 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.flipperdevices.core.ui.hexkeyboard.PredefinedEnumMap
+import com.flipperdevices.core.data.PredefinedEnumMap
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography

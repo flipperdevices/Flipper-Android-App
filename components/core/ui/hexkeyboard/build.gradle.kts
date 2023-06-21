@@ -6,6 +6,7 @@ android.namespace = "com.flipperdevices.core.ui.hexkeyboard"
 
 dependencies {
     implementation(projects.components.core.ui.ktx)
+    implementation(projects.components.core.data)
 
     implementation(libs.kotlin.immutable.collections)
 

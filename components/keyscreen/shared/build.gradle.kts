@@ -10,6 +10,7 @@ dependencies {
     implementation(projects.components.core.ui.ktx)
 
     implementation(projects.components.bridge.dao.api)
+    implementation(projects.components.keyparser.api)
 
     implementation(libs.kotlin.immutable.collections)
 

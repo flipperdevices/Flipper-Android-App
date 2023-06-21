@@ -1,6 +1,6 @@
 package com.flipperdevices.archive.shared.utils
 
-import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
+import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
 
 object ExtractKeyMetaInformation {
     fun extractProtocol(keyParsed: FlipperKeyParsed): String? {

@@ -2,7 +2,7 @@ package com.flipperdevices.keyscreen.model
 
 import androidx.annotation.StringRes
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
-import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
+import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
 
 sealed class KeyScreenState {
     object InProgress : KeyScreenState()

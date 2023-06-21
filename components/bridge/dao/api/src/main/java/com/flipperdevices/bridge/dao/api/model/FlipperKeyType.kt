@@ -51,7 +51,7 @@ enum class FlipperKeyType(
 
     companion object {
         private val extensionToFormat by lazy {
-            values().map { it.extension to it }.toMap()
+            values().associateBy { it.extension }
         }
 
         fun getByExtension(extension: String): FlipperKeyType? {

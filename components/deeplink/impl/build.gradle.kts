@@ -12,6 +12,7 @@ dependencies {
     implementation(projects.components.core.ktx)
 
     implementation(projects.components.bridge.dao.api)
+    implementation(projects.components.keyparser.api)
 
     implementation(projects.components.deeplink.api)
     implementation(projects.components.filemanager.api)

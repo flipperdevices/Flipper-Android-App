@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstrainedLayoutReference
 import androidx.constraintlayout.compose.ConstraintLayout
+import com.flipperdevices.core.data.PredefinedEnumMap
 import com.flipperdevices.core.ui.ktx.clickableRipple
 
 /**
