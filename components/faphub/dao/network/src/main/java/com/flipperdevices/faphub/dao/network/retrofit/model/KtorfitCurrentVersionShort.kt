@@ -10,5 +10,6 @@ data class KtorfitCurrentVersionShort(
     @SerialName("icon_uri") val iconUrl: String,
     @SerialName("screenshots") val screenshots: List<String>,
     @SerialName("short_description") val shortDescription: String,
-    @SerialName("name") val name: String
+    @SerialName("name") val name: String,
+    @SerialName("status") val status: KtorfitBuildState
 )
