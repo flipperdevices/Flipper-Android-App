@@ -12,6 +12,8 @@ data class KtorfitVersionDetailed(
     @SerialName("icon_uri") val iconUrl: String,
     @SerialName("screenshots") val screenshots: List<String>,
     @SerialName("links") val links: KtorfitLinks,
+    @SerialName("short_description") val shortDescription: String,
     @SerialName("description") val description: String,
-    @SerialName("changelog") val changelog: String
+    @SerialName("changelog") val changelog: String,
+    @SerialName("name") val name: String
 )

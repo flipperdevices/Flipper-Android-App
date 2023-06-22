@@ -50,7 +50,7 @@ fun AppCard(
         )
         Text(
             modifier = if (fapItem == null) Modifier.placeholderConnecting() else Modifier,
-            text = fapItem?.description ?: DEFAULT_DESCRIPTION,
+            text = fapItem?.shortDescription ?: DEFAULT_DESCRIPTION,
             maxLines = 2,
             style = LocalTypography.current.subtitleR12,
             overflow = TextOverflow.Ellipsis,

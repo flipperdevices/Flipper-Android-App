@@ -11,6 +11,7 @@
 - [Feature] Update Geminio for create modules - simple, navigation, api/impl
 - [Feature] FapHub manifest support offline mode and add target support for buttons 
 - [Feature] Add flipper not connected dialog
+- [Feature] Markdown support for fap description and changelog
 - [Feature] Infrared Emulate (parse name remotes)
 - [Refactor] Migrate all feature components modules from KSP to Anvil
 - [Refactor] Migrate to Ktorfit
