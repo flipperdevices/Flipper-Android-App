@@ -13,9 +13,9 @@ import com.flipperdevices.faphub.dao.network.retrofit.model.types.SortOrderType
 import com.flipperdevices.faphub.dao.network.retrofit.utils.FapHubNetworkCategoryApi
 import com.flipperdevices.faphub.target.model.FlipperTarget
 import com.squareup.anvil.annotations.ContributesBinding
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, FapNetworkApi::class)
 class FapNetworkApiImpl @Inject constructor(
@@ -51,16 +51,28 @@ class FapNetworkApiImpl @Inject constructor(
             return@catchWithDispatcher emptyList()
         }
         debug { "Request all item" }
-        val response = applicationApi.getAll(
-            offset = offset,
-            limit = limit,
-            sortBy = ApplicationSortType.fromSortType(sortType),
-            sortOrder = SortOrderType.fromSortType(sortType),
-            target = target.getTargetForServer(),
-            sdkApiVersion = target.getApiForServer(),
-            categoryId = category?.id,
-            applications = applicationIds
-        )
+        val response = when (target) {
+            FlipperTarget.Unsupported,
+            FlipperTarget.NotConnected -> applicationApi.getAll(
+                offset = offset,
+                limit = limit,
+                sortBy = ApplicationSortType.fromSortType(sortType),
+                sortOrder = SortOrderType.fromSortType(sortType),
+                categoryId = category?.id,
+                applications = applicationIds
+            )
+
+            is FlipperTarget.Received -> applicationApi.getAllWithTarget(
+                offset = offset,
+                limit = limit,
+                sortBy = ApplicationSortType.fromSortType(sortType),
+                sortOrder = SortOrderType.fromSortType(sortType),
+                target = target.target,
+                sdkApiVersion = target.sdk.toString(),
+                categoryId = category?.id,
+                applications = applicationIds
+            )
+        }
         debug { "Provider response: $response" }
 
         val fapItems = response.mapNotNull {

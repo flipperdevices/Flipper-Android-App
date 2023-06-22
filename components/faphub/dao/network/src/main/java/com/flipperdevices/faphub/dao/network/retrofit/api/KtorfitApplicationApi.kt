@@ -11,7 +11,7 @@ import de.jensklingenberg.ktorfit.http.Query
 @Suppress("LongParameterList")
 interface KtorfitApplicationApi {
     @GET("application")
-    suspend fun getAll(
+    suspend fun getAllWithTarget(
         @Query("limit") limit: Int = 50,
         @Query("offset") offset: Int = 0,
         @Query("query") query: String? = null,
@@ -24,11 +24,30 @@ interface KtorfitApplicationApi {
         @Query("applications")
         applications: List<String>? = null,
         @Query("target")
-        target: String? = null,
+        target: String,
         @Query("api")
-        sdkApiVersion: String? = null,
+        sdkApiVersion: String,
         @Query("category_id")
         categoryId: String? = null
+    ): List<KtorfitApplicationShort>
+
+    @GET("application")
+    suspend fun getAll(
+        @Query("limit") limit: Int = 50,
+        @Query("offset") offset: Int = 0,
+        @Query("query") query: String? = null,
+        @Query("sort_by")
+        @ApplicationSortType
+        sortBy: String? = null,
+        @Query("sort_order")
+        @SortOrderType
+        sortOrder: Int? = null,
+        @Query("applications")
+        applications: List<String>? = null,
+        @Query("category_id")
+        categoryId: String? = null,
+        @Query("is_latest_version")
+        isLatestVersion: Boolean = true
     ): List<KtorfitApplicationShort>
 
     @GET("application/featured")

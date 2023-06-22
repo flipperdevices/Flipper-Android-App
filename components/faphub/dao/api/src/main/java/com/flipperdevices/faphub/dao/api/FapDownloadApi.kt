@@ -7,7 +7,7 @@ import java.io.File
 interface FapDownloadApi {
     suspend fun downloadBundle(
         target: FlipperTarget.Received,
-        versionId: String,
+        applicationUid: String,
         listener: ProgressListener? = null
     ): File
 }
