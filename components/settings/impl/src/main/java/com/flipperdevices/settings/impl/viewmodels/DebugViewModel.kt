@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import tangle.viewmodel.VMInject
 
+@Suppress("TooManyFunctions")
 class DebugViewModel @VMInject constructor(
     application: Application,
     private val synchronizationApi: SynchronizationApi,
@@ -108,6 +109,17 @@ class DebugViewModel @VMInject constructor(
                     .setSelfUpdaterDebug(enabled)
                     .build()
             }
+        }
+    }
+
+    fun onSwitchFapHubDev(enabled: Boolean) {
+        viewModelScope.launch {
+            settingsDataStore.updateData {
+                it.toBuilder()
+                    .setUseDevCatalog(enabled)
+                    .build()
+            }
+            askRestartApp()
         }
     }
 }

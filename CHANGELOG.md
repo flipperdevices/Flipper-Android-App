@@ -13,6 +13,7 @@
 - [Feature] Add flipper not connected dialog
 - [Feature] Markdown support for fap description and changelog
 - [Feature] Infrared Emulate (parse name remotes)
+- [Feature] Add url to release catalog
 - [Refactor] Migrate all feature components modules from KSP to Anvil
 - [Refactor] Migrate to Ktorfit
 - [Refactor] Migrate key emulate to new module, decompose Emulate Helper
