@@ -76,7 +76,7 @@ class SubGhzProvisioningHelperTest(
         )
 
         metricApi = mockk(relaxUnitFun = true)
-        skipProvisioningHelper = mockk() {
+        skipProvisioningHelper = mockk {
             coEvery { shouldSkipProvisioning(any()) } returns false
         }
         underTest = SubGhzProvisioningHelperImpl(

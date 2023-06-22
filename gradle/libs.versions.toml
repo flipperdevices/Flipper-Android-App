@@ -66,9 +66,9 @@ roboelectric = "4.10.2"
 mockk = "1.13.2"
 
 # Linters
-detekt = "1.22.0" # https://detekt.dev/docs/gettingstarted/gradle/
+detekt = "1.23.0" # https://detekt.dev/docs/gettingstarted/gradle/
 detekt-ruleset-compiler = "0.0.2" # https://github.com/BraisGabin/detekt-compiler-rules/releases
-detekt-ruleset-ktlint = "0.49.0" # https://github.com/pinterest/ktlint/releases
+detekt-ruleset-ktlint = "0.49.1" # https://github.com/pinterest/ktlint/releases
 detekt-ruleset-twitter-compose = "0.0.26" # https://github.com/twitter/compose-rules/releases
 
 [libraries]

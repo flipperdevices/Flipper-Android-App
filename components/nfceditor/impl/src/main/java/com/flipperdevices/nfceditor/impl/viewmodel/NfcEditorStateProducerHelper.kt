@@ -30,6 +30,9 @@ private const val MF_4K_LARGE_SECTOR_SIZE = 16
 private const val MF_1K_NAME = "1K"
 private const val MF_1K_SECTOR_COUNT = 16
 private const val MF_1K_SECTOR_SIZE = 4
+private const val MF_MINI_NAME = "MINI"
+private const val MF_MINI_SECTOR_COUNT = 5
+private const val MF_MINI_SECTOR_SIZE = 4
 
 private const val LINE_1_INDEX = 0
 private val LINE_1_CELL_RULES = listOf(
@@ -62,6 +65,11 @@ object NfcEditorStateProducerHelper {
                 parsedKey.lines,
                 MF_1K_SECTOR_COUNT,
                 MF_1K_SECTOR_SIZE
+            )
+            MF_MINI_NAME -> parseMifare(
+                parsedKey.lines,
+                MF_MINI_SECTOR_COUNT,
+                MF_MINI_SECTOR_SIZE
             )
             else -> return null
         }
