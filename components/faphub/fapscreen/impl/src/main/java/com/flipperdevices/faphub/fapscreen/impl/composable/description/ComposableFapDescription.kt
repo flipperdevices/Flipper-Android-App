@@ -11,7 +11,11 @@ fun ComposableFapDescription(
     modifier: Modifier = Modifier
 ) = Column(modifier) {
     val description = if (fapItem != null) {
-        "${fapItem.shortDescription}\n\n${fapItem.description}"
+        if (fapItem.description.startsWith(fapItem.shortDescription)) {
+            fapItem.description
+        } else {
+            "${fapItem.shortDescription}\n\n${fapItem.description}"
+        }
     } else {
         null
     }

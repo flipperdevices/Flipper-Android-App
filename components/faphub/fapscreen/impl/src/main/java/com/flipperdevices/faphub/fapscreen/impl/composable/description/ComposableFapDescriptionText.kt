@@ -27,6 +27,7 @@ internal fun ColumnScope.ComposableFapDescriptionText(
         style = LocalTypography.current.buttonM16,
         color = LocalPallet.current.text100
     )
+
     ComposableMarkdown(
         modifier = if (description == null) {
             Modifier
