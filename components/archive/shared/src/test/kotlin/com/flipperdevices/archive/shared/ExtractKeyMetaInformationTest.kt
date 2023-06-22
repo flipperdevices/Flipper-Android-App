@@ -37,7 +37,8 @@ class ExtractKeyMetaInformationTest(
                 FlipperKeyParsed.Infrared(
                     keyName = "Infrared",
                     notes = null,
-                    protocol = "TV"
+                    protocol = "TV",
+                    remotes = listOf()
                 ),
                 "TV"
             ),
