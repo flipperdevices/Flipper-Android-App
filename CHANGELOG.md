@@ -16,6 +16,7 @@
 - [Refactor] Migrate to Ktorfit
 - [Refactor] Migrate key emulate to new module, decompose Emulate Helper
 - [Refactor] Key Screen state in API and KeyCard with state
+- [Refactor] Add detekt property and fix perfomance issue in nfc editor
 - [Refactor] Key Parser new module
 
 # 1.5.1

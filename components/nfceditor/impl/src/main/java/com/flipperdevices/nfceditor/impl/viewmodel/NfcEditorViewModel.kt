@@ -49,12 +49,12 @@ class NfcEditorViewModel @VMInject constructor(
 
     private val flipperKeyFlow = MutableStateFlow<FlipperKey?>(null)
 
-    val currentActiveCell: NfcEditorCellLocation?
-        get() = textUpdaterHelper.currentActiveCell
+    fun getCurrentActiveCellState() = textUpdaterHelper.getActiveCellState()
 
     init {
         viewModelScope.launch(Dispatchers.Default) {
-            val flipperKey = requireNotNull(simpleKeyApi.getKey(flipperKeyPath)) { "Not find key by $flipperKeyPath" }
+            val flipperKey =
+                requireNotNull(simpleKeyApi.getKey(flipperKeyPath)) { "Not find key by $flipperKeyPath" }
             flipperKeyFlow.emit(flipperKey)
 
             val parsedKey = keyParser.parseKey(flipperKey)
@@ -86,7 +86,7 @@ class NfcEditorViewModel @VMInject constructor(
     }
 
     fun onProcessBack(onEndAction: () -> Unit) {
-        if (currentActiveCell != null) {
+        if (textUpdaterHelper.getActiveCellState().value != null) {
             onCellFocus(null)
             return
         }

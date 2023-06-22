@@ -28,13 +28,13 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.nfceditor.impl.composable.card.ComposableNfcCard
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCellLocation
 import com.flipperdevices.nfceditor.impl.model.NfcEditorState
-import com.flipperdevices.nfceditor.impl.viewmodel.NfcEditorViewModel
 import kotlinx.coroutines.launch
 
 @Composable
 fun ComposableNfcEditor(
-    nfcEditorViewModel: NfcEditorViewModel,
     nfcEditorState: NfcEditorState,
+    onCellFocus: (NfcEditorCellLocation?) -> Unit,
+    currentActiveCell: NfcEditorCellLocation?,
     modifier: Modifier = Modifier
 ) {
     BoxWithConstraints(
@@ -66,9 +66,10 @@ fun ComposableNfcEditor(
             SelectionContainer {
                 ComposableNfcEditor(
                     nfcEditorState = nfcEditorState,
-                    nfcEditorViewModel = nfcEditorViewModel,
                     maxIndexSymbolCount = maxIndexSymbolCount,
-                    scaleFactor = scaleFactor
+                    scaleFactor = scaleFactor,
+                    onCellFocus = onCellFocus,
+                    currentActiveCell = currentActiveCell
                 )
             }
         }
@@ -77,10 +78,11 @@ fun ComposableNfcEditor(
 
 @Composable
 private fun ComposableNfcEditor(
-    nfcEditorViewModel: NfcEditorViewModel,
     nfcEditorState: NfcEditorState,
     maxIndexSymbolCount: Int,
-    scaleFactor: Float
+    scaleFactor: Float,
+    onCellFocus: (NfcEditorCellLocation?) -> Unit,
+    currentActiveCell: NfcEditorCellLocation?,
 ) {
     val lazyColumnState = rememberLazyListState()
 
@@ -88,7 +90,7 @@ private fun ComposableNfcEditor(
     var offsetToCenter by remember { mutableStateOf(0) }
     ScrollToActiveCell(
         lazyColumnState,
-        nfcEditorViewModel.currentActiveCell,
+        currentActiveCell,
         nfcEditorState.nfcEditorCardInfo != null,
         scrollOffset - offsetToCenter
     )
@@ -103,18 +105,19 @@ private fun ComposableNfcEditor(
                 ComposableNfcCard(
                     nfcEditorState.nfcEditorCardInfo,
                     scaleFactor,
-                    nfcEditorViewModel.currentActiveCell,
-                    nfcEditorViewModel::onCellFocus
+                    currentActiveCell,
+                    onCellFocus
                 )
             }
         }
         items(nfcEditorState.sectors.size) { index ->
             ComposableNfcSector(
-                nfcEditorViewModel = nfcEditorViewModel,
                 nfcEditorState = nfcEditorState,
                 sectorIndex = index,
                 maxIndexSymbolCount = maxIndexSymbolCount,
                 scaleFactor = scaleFactor,
+                currentActiveCell = currentActiveCell,
+                onCellFocus = onCellFocus,
                 onPositionActiveLine = {
                     scrollOffset = it
                 }

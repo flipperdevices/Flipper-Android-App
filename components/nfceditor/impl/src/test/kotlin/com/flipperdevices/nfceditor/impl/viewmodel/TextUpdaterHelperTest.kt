@@ -50,7 +50,7 @@ class TextUpdaterHelperTest {
 
         Assert.assertEquals("??", underTest.getNfcEditorState().value?.get(testedLocation)?.content)
         Assert.assertNull(
-            underTest.currentActiveCell
+            underTest.getActiveCellState().value
         )
     }
 
@@ -70,7 +70,7 @@ class TextUpdaterHelperTest {
         )
         Assert.assertEquals(
             NfcEditorCellLocation(EditorField.DATA, 0, 0, 0),
-            underTest.currentActiveCell
+            underTest.getActiveCellState().value
         )
     }
 
@@ -86,7 +86,7 @@ class TextUpdaterHelperTest {
         Assert.assertEquals("??", nfcEditorState!![testedLocation].content)
         Assert.assertEquals(
             NfcEditorCellLocation(EditorField.DATA, 0, 0, TEST_CELLS - 1),
-            underTest.currentActiveCell
+            underTest.getActiveCellState().value
         )
     }
 
@@ -102,11 +102,11 @@ class TextUpdaterHelperTest {
         Assert.assertEquals("??", nfcEditorState!![testedLocation].content)
         Assert.assertEquals(
             NfcEditorCellLocation(EditorField.DATA, 0, TEST_LINES - 1, TEST_CELLS - 1),
-            underTest.currentActiveCell
+            underTest.getActiveCellState().value
         )
         Assert.assertEquals(
             NfcEditorCellLocation(EditorField.DATA, 0, TEST_LINES - 1, TEST_CELLS - 1),
-            underTest.currentActiveCell
+            underTest.getActiveCellState().value
         )
     }
 
@@ -122,7 +122,7 @@ class TextUpdaterHelperTest {
         Assert.assertEquals("A", nfcEditorState!![testedLocation].content)
         Assert.assertEquals(
             testedLocation,
-            underTest.currentActiveCell
+            underTest.getActiveCellState().value
         )
     }
 
@@ -138,12 +138,12 @@ class TextUpdaterHelperTest {
         Assert.assertEquals("A", nfcEditorState!![testedLocation].content)
         Assert.assertEquals(
             testedLocation,
-            underTest.currentActiveCell
+            underTest.getActiveCellState().value
         )
         underTest.onSelectCell(NfcEditorCellLocation(EditorField.DATA, 0, 0, 1))
         Assert.assertEquals(
             NfcEditorCellLocation(EditorField.DATA, 0, 0, 1),
-            underTest.currentActiveCell
+            underTest.getActiveCellState().value
         )
         nfcEditorState = underTest.getNfcEditorState().value
         Assert.assertEquals("04", nfcEditorState!![testedLocation].content)
