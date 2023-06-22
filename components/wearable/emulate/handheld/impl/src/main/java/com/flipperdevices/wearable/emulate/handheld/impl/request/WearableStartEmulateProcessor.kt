@@ -9,6 +9,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.keyemulate.api.EmulateHelper
+import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.wearable.emulate.common.WearableCommandInputStream
 import com.flipperdevices.wearable.emulate.common.WearableCommandOutputStream
 import com.flipperdevices.wearable.emulate.common.ipcemulate.Main
@@ -56,12 +57,11 @@ class WearableStartEmulateProcessor @Inject constructor(
         val keyPath = path.replaceFirstChar { if (it == '/') "" else it.toString() }
         val keyFile = File(keyPath)
         try {
-            emulateHelper.startEmulate(
-                scope,
-                serviceApi,
-                keyType,
-                FlipperFilePath(keyFile.parent ?: "", keyFile.name)
+            val emulateConfig = EmulateConfig(
+                keyType = keyType,
+                keyPath = FlipperFilePath(keyFile.parent ?: "", keyFile.name)
             )
+            emulateHelper.startEmulate(scope, serviceApi, emulateConfig)
             commandOutputStream.send(
                 mainResponse {
                     emulateStatus = Emulate.EmulateStatus.EMULATING

@@ -16,6 +16,7 @@
 - [Refactor] Migrate key emulate to new module, decompose Emulate Helper
 - [Refactor] Key Screen state in API and KeyCard with state
 - [Refactor] Key Parser new module
+- [Refactor] Emulate by config
 
 # 1.5.1
 

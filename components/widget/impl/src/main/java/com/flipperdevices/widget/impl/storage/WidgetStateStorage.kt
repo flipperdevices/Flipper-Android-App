@@ -54,7 +54,7 @@ class WidgetStateStorageImpl @Inject constructor(
         if (widgetKeyPath != null) {
             info { "Widget key path for $widgetId is $widgetKeyPath" }
             val currentActiveEmulating = emulateHelper.getCurrentEmulatingKey().value
-            if (currentActiveEmulating == widgetKeyPath.path) {
+            if (currentActiveEmulating?.keyPath == widgetKeyPath.path) {
                 info {
                     "Current active emulating is $currentActiveEmulating, so return IN_PROGRESS"
                 }

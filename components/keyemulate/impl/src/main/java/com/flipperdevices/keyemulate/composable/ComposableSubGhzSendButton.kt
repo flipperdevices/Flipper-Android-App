@@ -14,7 +14,6 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.core.ui.ktx.image.Picture
 import com.flipperdevices.core.ui.ktx.onHoldPress
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
@@ -27,19 +26,21 @@ import com.flipperdevices.keyemulate.composable.common.ComposableErrorDialogs
 import com.flipperdevices.keyemulate.impl.R
 import com.flipperdevices.keyemulate.model.DisableButtonReason
 import com.flipperdevices.keyemulate.model.EmulateButtonState
+import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyemulate.viewmodel.SubGhzViewModel
 import tangle.viewmodel.compose.tangleViewModel
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableSubGhzSendButton(
-    flipperKey: FlipperKey,
+    emulateConfig: EmulateConfig,
+    isSynchronized: Boolean,
     modifier: Modifier = Modifier
 ) {
     val emulateViewModel = tangleViewModel<SubGhzViewModel>()
     val emulateButtonState by emulateViewModel.getEmulateButtonStateFlow().collectAsState()
 
-    if (!flipperKey.synchronized) {
+    if (!isSynchronized) {
         ComposableActionDisable(
             modifier = modifier,
             textId = R.string.keyscreen_send,
@@ -64,7 +65,7 @@ fun ComposableSubGhzSendButton(
                 modifier = modifier,
                 emulateButtonState = emulateButtonState,
                 emulateViewModel = emulateViewModel,
-                flipperKey = flipperKey
+                emulateConfig = emulateConfig
             )
         }
         is EmulateButtonState.Loading -> ComposableActionLoading(
@@ -77,7 +78,7 @@ fun ComposableSubGhzSendButton(
 @Composable
 private fun ComposableActiveStateEmulateInternal(
     emulateViewModel: SubGhzViewModel,
-    flipperKey: FlipperKey,
+    emulateConfig: EmulateConfig,
     emulateButtonState: EmulateButtonState,
     modifier: Modifier = Modifier
 ) {
@@ -85,10 +86,10 @@ private fun ComposableActiveStateEmulateInternal(
     val buttonActiveModifier = Modifier.onHoldPress(
         onTap = {
             isBubbleOpen = true
-            emulateViewModel.onSinglePress(flipperKey)
+            emulateViewModel.onSinglePress(emulateConfig)
         },
         onLongPressStart = {
-            emulateViewModel.onStartEmulate(flipperKey)
+            emulateViewModel.onStartEmulate(emulateConfig)
         },
         onLongPressEnd = {
             emulateViewModel.onStopEmulate()
