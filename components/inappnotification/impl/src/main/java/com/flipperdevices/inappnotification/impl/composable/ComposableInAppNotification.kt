@@ -46,6 +46,7 @@ private fun ComposableInAppNotificationCard(
     modifier: Modifier = Modifier
 ) {
     var visibleState by remember { mutableStateOf(false) }
+    var actionClicked by remember { mutableStateOf(false) }
     LaunchedEffect(notification) {
         visibleState = true
     }
@@ -67,7 +68,10 @@ private fun ComposableInAppNotificationCard(
                     ComposableInAppNotificationSavedKey(notification)
                 }
                 is InAppNotification.UpdateReady -> {
-                    ComposableInAppNotificationUpdateReady(notification)
+                    ComposableInAppNotificationUpdateReady(notification) {
+                        visibleState = false
+                        actionClicked = true
+                    }
                 }
             }
         }
@@ -79,7 +83,9 @@ private fun ComposableInAppNotificationCard(
             visibleState = false
         }
         val hiddenRunnable = {
-            onNotificationHidden()
+            if (!actionClicked) {
+                onNotificationHidden()
+            }
         }
 
         handler.postDelayed(

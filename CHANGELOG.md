@@ -3,6 +3,8 @@
 # 1.5.2 - In Progress
 
 - [FIX] Add confirm delete dialog and some small fixes
+- [FIX] Hide self updater dialog on click, add self updater in debug mode, remove nfc mfkey32 from options
+- [FIX] Text alignment for simple device info
 - [Feature] FapHub MVPv0
 - [Feature] Update README with Fdroid badge
 - [Feature] Migrate faphub to target flow
@@ -14,6 +16,8 @@
 - [Refactor] Migrate to Ktorfit
 - [Refactor] Migrate key emulate to new module, decompose Emulate Helper
 - [Refactor] Key Screen state in API and KeyCard with state
+- [Refactor] Add detekt property and fix perfomance issue in nfc editor
+- [Refactor] Key Parser new module
 
 # 1.5.1
 

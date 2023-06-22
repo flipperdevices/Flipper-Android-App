@@ -33,6 +33,7 @@ fun ComposableDeviceInfoRowWithText(
 }
 
 @Composable
+@Suppress("ModifierReused")
 fun ComposableDeviceInfoRowWithText(
     text: String,
     inProgress: Boolean,
@@ -41,12 +42,18 @@ fun ComposableDeviceInfoRowWithText(
     color: Color? = null,
 ) {
     if (value == null) {
-        ComposableDeviceInfoRow(text, inProgress, content = null)
+        ComposableDeviceInfoRow(
+            modifier = modifier,
+            text = text,
+            inProgress = inProgress,
+            content = null
+        )
         return
     }
     ComposableDeviceInfoRow(
-        text,
-        inProgress,
+        modifier = modifier,
+        text = text,
+        inProgress = inProgress,
         content = {
             ComposableDeviceInfoRowText(modifier = it, text = value, color = color)
         }
@@ -61,7 +68,9 @@ fun ComposableDeviceInfoRow(
     modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = modifier.fillMaxWidth().padding(12.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -102,6 +111,7 @@ fun ComposableDeviceInfoRowText(
         modifier = modifier,
         text = text,
         color = color ?: LocalPallet.current.text100,
+        textAlign = TextAlign.Right,
         style = LocalTypography.current.bodyR14
     )
 }

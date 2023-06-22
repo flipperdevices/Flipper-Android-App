@@ -17,6 +17,7 @@ dependencies {
 
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.bridge.dao.api)
+    implementation(projects.components.keyparser.api)
 
     implementation(libs.appcompat)
 

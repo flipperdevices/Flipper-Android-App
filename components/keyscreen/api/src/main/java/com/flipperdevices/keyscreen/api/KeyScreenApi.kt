@@ -2,7 +2,7 @@ package com.flipperdevices.keyscreen.api
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
+import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
 import com.flipperdevices.keyscreen.model.KeyScreenState
 
 interface KeyScreenApi {

@@ -1,6 +1,5 @@
 package com.flipperdevices.keyedit.impl.viewmodel.processors
 
-import com.flipperdevices.bridge.dao.api.delegates.KeyParser
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperFile
@@ -13,6 +12,7 @@ import com.flipperdevices.inappnotification.api.model.InAppNotification
 import com.flipperdevices.keyedit.api.NotSavedFlipperKey
 import com.flipperdevices.keyedit.impl.model.EditableKey
 import com.flipperdevices.keyedit.impl.model.KeyEditState
+import com.flipperdevices.keyparser.api.KeyParser
 import com.flipperdevices.singleactivity.api.SingleActivityApi
 import javax.inject.Inject
 

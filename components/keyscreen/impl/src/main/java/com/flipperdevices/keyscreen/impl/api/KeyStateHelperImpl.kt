@@ -1,13 +1,13 @@
 package com.flipperdevices.keyscreen.impl.api
 
 import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
-import com.flipperdevices.bridge.dao.api.delegates.KeyParser
 import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UpdateKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.warn
+import com.flipperdevices.keyparser.api.KeyParser
 import com.flipperdevices.keyscreen.api.KeyStateHelperApi
 import com.flipperdevices.keyscreen.impl.R
 import com.flipperdevices.keyscreen.model.DeleteState

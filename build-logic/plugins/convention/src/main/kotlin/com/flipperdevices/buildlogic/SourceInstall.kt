@@ -4,5 +4,6 @@ enum class SourceInstall {
     GITHUB,
     GOOGLE_PLAY,
     FDROID,
-    UNKNOWN
+    UNKNOWN,
+    DEBUG
 }

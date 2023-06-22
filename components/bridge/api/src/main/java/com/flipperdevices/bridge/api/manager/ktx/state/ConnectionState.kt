@@ -29,7 +29,7 @@ sealed class ConnectionState {
             LINK_LOSS,
             NOT_SUPPORTED,
             CANCELLED,
-            TIMEOUT;
+            TIMEOUT
         }
 
         /** Whether the device, that was connected using auto connect, has disconnected. */

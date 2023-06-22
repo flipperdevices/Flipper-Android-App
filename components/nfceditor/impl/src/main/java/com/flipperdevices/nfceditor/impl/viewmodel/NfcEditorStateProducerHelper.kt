@@ -7,8 +7,8 @@ import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.api.model.SHADOW_FILE_EXTENSION
-import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
-import com.flipperdevices.core.ui.hexkeyboard.PredefinedEnumMap
+import com.flipperdevices.core.data.PredefinedEnumMap
+import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
 import com.flipperdevices.nfceditor.impl.model.CardFieldInfo
 import com.flipperdevices.nfceditor.impl.model.NfcCellType
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCardInfo
@@ -30,6 +30,9 @@ private const val MF_4K_LARGE_SECTOR_SIZE = 16
 private const val MF_1K_NAME = "1K"
 private const val MF_1K_SECTOR_COUNT = 16
 private const val MF_1K_SECTOR_SIZE = 4
+private const val MF_MINI_NAME = "MINI"
+private const val MF_MINI_SECTOR_COUNT = 5
+private const val MF_MINI_SECTOR_SIZE = 4
 
 private const val LINE_1_INDEX = 0
 private val LINE_1_CELL_RULES = listOf(
@@ -62,6 +65,11 @@ object NfcEditorStateProducerHelper {
                 parsedKey.lines,
                 MF_1K_SECTOR_COUNT,
                 MF_1K_SECTOR_SIZE
+            )
+            MF_MINI_NAME -> parseMifare(
+                parsedKey.lines,
+                MF_MINI_SECTOR_COUNT,
+                MF_MINI_SECTOR_SIZE
             )
             else -> return null
         }

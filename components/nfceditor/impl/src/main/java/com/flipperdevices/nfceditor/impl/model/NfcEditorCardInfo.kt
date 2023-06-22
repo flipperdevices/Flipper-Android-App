@@ -1,7 +1,7 @@
 package com.flipperdevices.nfceditor.impl.model
 
 import androidx.compose.runtime.Stable
-import com.flipperdevices.core.ui.hexkeyboard.PredefinedEnumMap
+import com.flipperdevices.core.data.PredefinedEnumMap
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList

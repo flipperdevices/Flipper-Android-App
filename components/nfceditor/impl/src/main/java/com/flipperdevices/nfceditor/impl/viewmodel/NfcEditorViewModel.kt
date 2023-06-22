@@ -2,18 +2,18 @@ package com.flipperdevices.nfceditor.impl.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.viewModelScope
-import com.flipperdevices.bridge.dao.api.delegates.KeyParser
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UpdateKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
-import com.flipperdevices.bridge.dao.api.model.parsed.FlipperKeyParsed
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.ui.hexkeyboard.HexKey
 import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
 import com.flipperdevices.keyedit.api.NotSavedFlipperKey
 import com.flipperdevices.keyedit.api.toNotSavedFlipperFile
+import com.flipperdevices.keyparser.api.KeyParser
+import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.nfceditor.impl.api.EXTRA_KEY_PATH
@@ -49,12 +49,12 @@ class NfcEditorViewModel @VMInject constructor(
 
     private val flipperKeyFlow = MutableStateFlow<FlipperKey?>(null)
 
-    val currentActiveCell: NfcEditorCellLocation?
-        get() = textUpdaterHelper.currentActiveCell
+    fun getCurrentActiveCellState() = textUpdaterHelper.getActiveCellState()
 
     init {
         viewModelScope.launch(Dispatchers.Default) {
-            val flipperKey = requireNotNull(simpleKeyApi.getKey(flipperKeyPath)) { "Not find key by $flipperKeyPath" }
+            val flipperKey =
+                requireNotNull(simpleKeyApi.getKey(flipperKeyPath)) { "Not find key by $flipperKeyPath" }
             flipperKeyFlow.emit(flipperKey)
 
             val parsedKey = keyParser.parseKey(flipperKey)
@@ -86,7 +86,7 @@ class NfcEditorViewModel @VMInject constructor(
     }
 
     fun onProcessBack(onEndAction: () -> Unit) {
-        if (currentActiveCell != null) {
+        if (textUpdaterHelper.getActiveCellState().value != null) {
             onCellFocus(null)
             return
         }

@@ -65,7 +65,7 @@ fun ComposableNfcCell(
 
     if (isActive) {
         Box(
-            Modifier
+            modifier
                 .clip(RoundedCornerShape(2.dp))
                 .background(LocalPallet.current.substrateActiveCellNfcEditor)
         ) {

@@ -27,7 +27,7 @@ internal fun ComposableCheckBox(
     /*
     Disable padding for checkbox
     https://stackoverflow.com/a/71609165
- */
+     */
     CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
         Checkbox(
             checked = checked,
