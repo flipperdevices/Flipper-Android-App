@@ -14,5 +14,6 @@ data class KtorfitVersionDetailed(
     @SerialName("links") val links: KtorfitLinks,
     @SerialName("short_description") val shortDescription: String,
     @SerialName("description") val description: String,
-    @SerialName("changelog") val changelog: String
+    @SerialName("changelog") val changelog: String,
+    @SerialName("name") val name: String
 )

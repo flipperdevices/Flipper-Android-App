@@ -9,7 +9,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.markdown.ComposableMarkdown
-import com.flipperdevices.core.markdown.markdownTypography
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
@@ -36,6 +35,6 @@ internal fun ColumnScope.ComposableFapDescriptionText(
         } else {
             Modifier.fillMaxWidth()
         },
-        content = description ?: DEFAULT_DESCRIPTION,
+        content = description ?: DEFAULT_DESCRIPTION
     )
 }

@@ -12,12 +12,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.markdown.ComposableMarkdown
-import com.flipperdevices.core.markdown.annotatedStringFromMarkdown
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
@@ -32,7 +29,6 @@ fun ColumnScope.ComposableFapChangelogText(
     changelog: String?,
     modifier: Modifier = Modifier
 ) {
-    var showMoreButton by remember { mutableStateOf(false) }
     var maxChangelogLines by remember { mutableStateOf(MAX_CHANGELOG_LINE) }
     Text(
         modifier = modifier.padding(bottom = 8.dp, top = 24.dp),
@@ -41,40 +37,34 @@ fun ColumnScope.ComposableFapChangelogText(
         color = LocalPallet.current.text100
     )
 
+    val (processedChangelog, hasOverflow) = remember(changelog, maxChangelogLines) {
+        if (changelog == null) {
+            return@remember null to false
+        }
+        val lines = changelog.lines()
+        if (lines.size > maxChangelogLines) {
+            return@remember lines.take(maxChangelogLines).joinToString("\n") to true
+        }
+        return@remember changelog to false
+    }
+
     ComposableMarkdown(
-
-    )
-
-    Text(
-        modifier = if (changelog == null) {
+        modifier = if (processedChangelog == null) {
             Modifier
                 .fillMaxWidth()
                 .placeholderConnecting()
         } else {
-            Modifier
+            Modifier.fillMaxWidth()
         },
-        text = changelog?.let { annotatedStringFromMarkdown(it) }
-            ?: AnnotatedString(DEFAULT_CHANGELOG),
-        style = LocalTypography.current.bodyR14,
-        color = LocalPallet.current.text100,
-        maxLines = maxChangelogLines,
-        overflow = TextOverflow.Ellipsis,
-        onTextLayout = {
-            if (it.hasVisualOverflow) {
-                showMoreButton = changelog != null
-            } else {
-                showMoreButton = false
-            }
-        }
+        content = processedChangelog ?: DEFAULT_CHANGELOG,
     )
 
-    if (showMoreButton) {
+    if (hasOverflow) {
         Text(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
                     maxChangelogLines = Int.MAX_VALUE
-                    showMoreButton = false
                 }
                 .padding(top = 2.dp),
             text = stringResource(R.string.fapscreen_changelog_more),

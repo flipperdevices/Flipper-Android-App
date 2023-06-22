@@ -22,7 +22,6 @@ data class KtorfitApplicationShort(
     val updatedAt: LocalDateTime,
     @SerialName("category_id") val categoryId: String,
     @SerialName("alias") val alias: String,
-    @SerialName("name") val name: String,
     @SerialName("current_version") val currentVersion: KtorfitCurrentVersionShort,
 ) {
     fun toFapItemShort(category: FapCategory?, target: FlipperTarget): FapItemShort? {
@@ -40,7 +39,7 @@ data class KtorfitApplicationShort(
             id = id,
             picUrl = currentVersion.iconUrl,
             shortDescription = currentVersion.shortDescription,
-            name = name,
+            name = currentVersion.name,
             category = category,
             screenshots = currentVersion.screenshots.toImmutableList(),
             applicationAlias = alias,
