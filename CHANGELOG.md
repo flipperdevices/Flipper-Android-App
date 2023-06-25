@@ -2,6 +2,7 @@
 
 # 1.5.2 - In Progress
 
+- [FIX] White Screen after import key
 - [FIX] Add confirm delete dialog and some small fixes
 - [FIX] Hide self updater dialog on click, add self updater in debug mode, remove nfc mfkey32 from options
 - [FIX] Text alignment for simple device info
