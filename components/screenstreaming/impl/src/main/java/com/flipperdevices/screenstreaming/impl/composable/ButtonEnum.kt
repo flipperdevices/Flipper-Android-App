@@ -22,5 +22,5 @@ enum class ButtonEnum(
     UP(R.drawable.ic_control_up, R.string.control_up, Gui.InputKey.UP, ButtonAnimEnum.UP),
     DOWN(R.drawable.ic_control_down, R.string.control_down, Gui.InputKey.DOWN, ButtonAnimEnum.DOWN),
     OK(R.drawable.ic_control_ok, R.string.control_ok, Gui.InputKey.OK, ButtonAnimEnum.OK),
-    BACK(R.drawable.ic_control_back, R.string.control_back, Gui.InputKey.BACK, ButtonAnimEnum.BACK);
+    BACK(R.drawable.ic_control_back, R.string.control_back, Gui.InputKey.BACK, ButtonAnimEnum.BACK)
 }

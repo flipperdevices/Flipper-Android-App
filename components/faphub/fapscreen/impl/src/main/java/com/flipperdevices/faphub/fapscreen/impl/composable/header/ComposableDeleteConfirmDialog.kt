@@ -48,7 +48,7 @@ fun ComposableDeleteConfirmDialog(
             .addButton(textId = R.string.fapscreen_dialog_delete_cancel, onClick = onDismiss)
             .setOnDismissRequest(onDismiss)
             .setDescription {
-                Column() {
+                Column {
                     ComposableDeleteConfirmDialogBox(
                         fapItem = fapItem,
                         modifier = Modifier

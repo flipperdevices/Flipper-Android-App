@@ -31,6 +31,8 @@ tasks.withType<Detekt> {
 
     buildUponDefaultConfig = true
 
+    allRules = true
+
     // Target version of the generated JVM bytecode. It is used for type resolution.
     this.jvmTarget = "1.8"
 }

@@ -11,7 +11,8 @@ sealed class FlipperKeyParsed(
     class Infrared(
         keyName: String,
         notes: String?,
-        val protocol: String?
+        val protocol: String?,
+        val remotes: List<String>
     ) : FlipperKeyParsed(keyName, notes, FlipperKeyType.INFRARED)
 
     @Suppress("LongParameterList")
