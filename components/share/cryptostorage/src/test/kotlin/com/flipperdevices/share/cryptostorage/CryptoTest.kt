@@ -17,7 +17,7 @@ import java.io.File
 class CryptoTest {
 
     @Test
-    fun simpleTest() = runTest {
+    fun simpleCryptoTest() = runTest {
         val originalData = "I Love Flipper".toByteArray()
         val flipperKeyContent = FlipperKeyContent.RawData(originalData)
 
