@@ -61,7 +61,7 @@ class SkipProvisioningHelperTest {
         }
 
         val shouldProvide = underTest.shouldSkipProvisioning(
-            mockk() {
+            mockk {
                 every { flipperVersionApi } returns versionApi
             }
         )
@@ -84,7 +84,7 @@ class SkipProvisioningHelperTest {
         }
 
         val shouldProvide = underTest.shouldSkipProvisioning(
-            mockk() {
+            mockk {
                 every { flipperVersionApi } returns versionApi
             }
         )
@@ -110,7 +110,7 @@ class SkipProvisioningHelperTest {
         }
 
         val shouldProvide = underTest.shouldSkipProvisioning(
-            mockk() {
+            mockk {
                 every { flipperVersionApi } returns versionApi
                 every { requestApi } returns mockRequestApi
             }
@@ -141,7 +141,7 @@ class SkipProvisioningHelperTest {
         }
 
         val shouldProvide = underTest.shouldSkipProvisioning(
-            mockk() {
+            mockk {
                 every { flipperVersionApi } returns versionApi
                 every { requestApi } returns mockRequestApi
             }

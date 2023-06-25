@@ -39,7 +39,7 @@ class UpdateRequestViewModelTest {
     private val synchronizationState = MutableStateFlow<SynchronizationState>(
         SynchronizationState.NotStarted
     )
-    private val synchronizationApi: SynchronizationApi = mockk() {
+    private val synchronizationApi: SynchronizationApi = mockk {
         every { getSynchronizationState() } returns synchronizationState
     }
     private val viewModel = UpdateRequestViewModel(

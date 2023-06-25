@@ -1,0 +1,20 @@
+Filetype: IR signals file
+Version: 1
+#
+name: Button_1
+type: parsed
+protocol: NECext
+address: EE 87 00 00
+command: 5D A0 00 00
+#
+name: Button_2
+type: raw
+frequency: 38000
+duty_cycle: 0.330000
+data: 504 3432 502 483 500 484 510 502 502 482 501 485 509 1452 504 1458 509 1452 504 481 501 474 509 3420 503
+#
+name: Button_3
+type: parsed
+protocol: SIRC
+address: 01 00 00 00
+command: 15 00 00 00

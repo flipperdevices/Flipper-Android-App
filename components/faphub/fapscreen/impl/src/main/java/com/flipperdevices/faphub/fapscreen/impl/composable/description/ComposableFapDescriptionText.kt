@@ -19,7 +19,7 @@ private val DEFAULT_DESCRIPTION
 
 @Composable
 internal fun ColumnScope.ComposableFapDescriptionText(
-    description: String?
+    description: String?,
 ) {
     Text(
         modifier = Modifier.padding(bottom = 8.dp, top = 24.dp),
@@ -27,6 +27,7 @@ internal fun ColumnScope.ComposableFapDescriptionText(
         style = LocalTypography.current.buttonM16,
         color = LocalPallet.current.text100
     )
+
     ComposableMarkdown(
         modifier = if (description == null) {
             Modifier

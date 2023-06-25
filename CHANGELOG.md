@@ -11,10 +11,14 @@
 - [Feature] Update Geminio for create modules - simple, navigation, api/impl
 - [Feature] FapHub manifest support offline mode and add target support for buttons 
 - [Feature] Add flipper not connected dialog
+- [Feature] Markdown support for fap description and changelog
+- [Feature] Infrared Emulate (parse name remotes)
+- [Feature] Add url to release catalog
 - [Refactor] Migrate all feature components modules from KSP to Anvil
 - [Refactor] Migrate to Ktorfit
 - [Refactor] Migrate key emulate to new module, decompose Emulate Helper
 - [Refactor] Key Screen state in API and KeyCard with state
+- [Refactor] Add detekt property and fix perfomance issue in nfc editor
 - [Refactor] Key Parser new module
 - [Refactor] Stream for crypto and share key content
 

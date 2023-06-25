@@ -37,7 +37,7 @@ class RegionProvisioningHelperTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(mainThreadSurrogate)
-        telephonyManager = mockk() {
+        telephonyManager = mockk {
             every { simCountryIso } returns null
             every { networkCountryIso } returns null
             every { isNetworkRoaming } returns false
