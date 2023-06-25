@@ -1,40 +1,98 @@
 package com.flipperdevices.share.cryptostorage
 
+import android.content.Context
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyCrypto
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.keyparser.api.KeyParser
 import com.flipperdevices.share.api.CryptoStorageApi
-import com.flipperdevices.share.cryptostorage.helper.CryptoHelperApi
-import com.flipperdevices.share.cryptostorage.helper.StorageHelperApi
+import com.flipperdevices.share.cryptostorage.helper.DecryptHelper
+import com.flipperdevices.share.cryptostorage.helper.EncryptHelper
 import com.squareup.anvil.annotations.ContributesBinding
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.request.get
+import io.ktor.client.request.put
+import io.ktor.client.statement.bodyAsChannel
+import io.ktor.http.HttpStatusCode
+import io.ktor.http.content.OutgoingContent
+import io.ktor.util.InternalAPI
+import io.ktor.utils.io.ByteWriteChannel
+import java.io.FileNotFoundException
+import java.net.UnknownServiceException
 import javax.inject.Inject
+
+internal const val ALGORITHM_HELPER = "AES/GCM/NoPadding"
+internal const val KEY_SIZE = 128
+internal const val TAG_LENGTH = 16
+internal const val BIT_SIZE = 8
+internal const val IV_LENGTH = 12
+
+private const val STORAGE_URL = "https://transfer.flpr.app/"
+private const val STORAGE_NAME = "hakuna-matata"
 
 @ContributesBinding(AppGraph::class)
 class CryptoStorageApiImpl @Inject constructor(
-    private val cryptoHelperApi: CryptoHelperApi,
-    private val storageHelperApi: StorageHelperApi,
-    private val keyParser: KeyParser
+    private val keyParser: KeyParser,
+    private val client: HttpClient,
+    private val context: Context
 ) : CryptoStorageApi {
-    override suspend fun upload(data: ByteArray, path: String, name: String): Result<String> {
+    @OptIn(InternalAPI::class)
+    override suspend fun upload(
+        keyContent: FlipperKeyContent,
+        path: String,
+        name: String
+    ): Result<String> {
         return runCatching {
-            val encryptedData = cryptoHelperApi.encrypt(data)
+            val encryptHelper = EncryptHelper(keyContent)
 
-            val storageLink = storageHelperApi.upload(data = encryptedData.data)
+            val response = client.put(
+                urlString = "$STORAGE_URL$STORAGE_NAME"
+            ) {
+                body = object : OutgoingContent.WriteChannelContent() {
+                    override suspend fun writeTo(channel: ByteWriteChannel) {
+                        encryptHelper.writeEncrypt(channel)
+                    }
+                }
+            }
+
+            when (response.status) {
+                HttpStatusCode.OK -> {}
+                else -> throw UnknownServiceException()
+            }
+            val storageLink: String = response.body()
 
             return@runCatching keyParser.cryptoKeyDataToUri(
                 key = FlipperKeyCrypto(
                     fileId = getFileId(storageLink),
-                    cryptoKey = encryptedData.key,
+                    cryptoKey = encryptHelper.getKeyString(),
                     pathToKey = path
                 )
             )
         }
     }
 
-    override suspend fun download(id: String, key: String, name: String): Result<ByteArray> {
+    override suspend fun download(
+        id: String,
+        key: String,
+        name: String,
+    ): Result<FlipperKeyContent> {
         return runCatching {
-            val downloadedData = storageHelperApi.download(id = id)
-            return@runCatching cryptoHelperApi.decrypt(downloadedData, key)
+            val tempFile = FlipperStorageProvider.getTemporaryFile(context)
+            val decryptHelper = DecryptHelper()
+
+            val response = client.get(urlString = "${STORAGE_URL}$id/$STORAGE_NAME")
+
+            when (response.status) {
+                HttpStatusCode.OK -> {}
+                HttpStatusCode.NotFound -> throw FileNotFoundException()
+                else -> throw UnknownServiceException()
+            }
+            val inputStream = response.bodyAsChannel()
+
+            decryptHelper.writeDecrypt(inputStream, tempFile, key)
+            return@runCatching FlipperKeyContent.InternalFile(tempFile.absolutePath)
         }
     }
 

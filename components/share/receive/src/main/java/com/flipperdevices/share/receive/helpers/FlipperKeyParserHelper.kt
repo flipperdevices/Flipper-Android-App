@@ -64,23 +64,23 @@ class FlipperKeyParserHelper @Inject constructor(
         deeplinkContent: DeeplinkContent.FFFCryptoContent
     ): Result<FlipperKey> {
         val localPath = path ?: return Result.failure(FlipperKeyParseException())
-        val data = cryptoStorageApi.download(
+        val flipperKeyContent = cryptoStorageApi.download(
             id = deeplinkContent.key.fileId,
             key = deeplinkContent.key.cryptoKey,
             name = localPath.nameWithExtension
         )
-        data.onSuccess {
+        flipperKeyContent.onSuccess {
             val flipperKey = FlipperKey(
                 mainFile = FlipperFile(
                     localPath,
-                    FlipperKeyContent.RawData(it)
+                    it
                 ),
                 synchronized = false,
                 deleted = false
             )
             return Result.success(flipperKey)
         }
-        val exception = data.exceptionOrNull() ?: FlipperKeyParseException()
+        val exception = flipperKeyContent.exceptionOrNull() ?: FlipperKeyParseException()
         return Result.failure(exception)
     }
 }

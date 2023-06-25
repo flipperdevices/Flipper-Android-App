@@ -16,6 +16,7 @@
 - [Refactor] Migrate key emulate to new module, decompose Emulate Helper
 - [Refactor] Key Screen state in API and KeyCard with state
 - [Refactor] Key Parser new module
+- [Refactor] Stream for crypto and share key content
 
 # 1.5.1
 
