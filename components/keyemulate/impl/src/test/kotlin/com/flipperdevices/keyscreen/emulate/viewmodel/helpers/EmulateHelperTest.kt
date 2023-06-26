@@ -15,6 +15,7 @@ import com.flipperdevices.keyemulate.helpers.StartEmulateHelper
 import com.flipperdevices.keyemulate.helpers.StartEmulateHelperImpl
 import com.flipperdevices.keyemulate.helpers.StopEmulateHelper
 import com.flipperdevices.keyemulate.helpers.StopEmulateHelperImpl
+import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyemulate.model.FlipperAppError
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.app.Application
@@ -93,6 +94,8 @@ class EmulateHelperTest {
 
     @Test
     fun `respect emulate order`() = runTest {
+        val emulateConfig = EmulateConfig(KEY_TYPE, TEST_KEY_PATH)
+
         val callOrder = mutableListOf<String>()
         mockFlipperRequest(
             onAppLoadFileResponse = {
@@ -109,8 +112,7 @@ class EmulateHelperTest {
             underTest.startEmulate(
                 this,
                 serviceApi,
-                KEY_TYPE,
-                TEST_KEY_PATH
+                emulateConfig
             )
         }
         startJob.join()
@@ -119,8 +121,7 @@ class EmulateHelperTest {
             underTest.startEmulate(
                 this,
                 serviceApi,
-                KEY_TYPE,
-                TEST_KEY_PATH
+                emulateConfig
             )
         }
         startJob.join()
@@ -133,8 +134,7 @@ class EmulateHelperTest {
             underTest.startEmulate(
                 this,
                 serviceApi,
-                KEY_TYPE,
-                TEST_KEY_PATH
+                emulateConfig
             )
         }
         startJob.join()

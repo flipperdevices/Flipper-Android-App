@@ -20,6 +20,7 @@
 - [Refactor] Key Screen state in API and KeyCard with state
 - [Refactor] Add detekt property and fix perfomance issue in nfc editor
 - [Refactor] Key Parser new module
+- [Refactor] Emulate by config
 
 # 1.5.1
 
