@@ -33,13 +33,11 @@ class EncryptHelper(
 
     suspend fun writeEncrypt(outputChannel: ByteWriteChannel) {
         val encryptBuffer = ByteArray(DEFAULT_BUFFER_SIZE)
-        val inputStream = flipperKeyContent.openStream()
-
         val iv = encryptionCipher.iv
         outputChannel.writeFully(iv)
 
         var length: Int
-        inputStream.use { stream ->
+        flipperKeyContent.openStream().use { stream ->
             while (stream.read(encryptBuffer).also { length = it } >= 0) {
                 val encryptedBytes =
                     encryptionCipher.update(encryptBuffer, 0, length)

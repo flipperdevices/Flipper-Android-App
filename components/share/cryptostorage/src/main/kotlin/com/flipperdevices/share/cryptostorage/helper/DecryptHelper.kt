@@ -34,7 +34,7 @@ class DecryptHelper {
         inputStream: ByteReadChannel,
         secretKey: SecretKeySpec,
         outputStream: FileOutputStream
-    ) {
+    ) = withContext(Dispatchers.IO) {
         var cipher: Cipher? = null
 
         while (!inputStream.isClosedForRead) {
@@ -52,14 +52,10 @@ class DecryptHelper {
                     )
                 }
                 val decryptedBytes = cipher.doFinal(cipherText)
-                withContext(Dispatchers.IO) {
-                    outputStream.write(decryptedBytes)
-                }
+                outputStream.write(decryptedBytes)
             } else {
                 val decryptedBytes = cipher.doFinal(bytes)
-                withContext(Dispatchers.IO) {
-                    outputStream.write(decryptedBytes)
-                }
+                outputStream.write(decryptedBytes)
             }
         }
     }

@@ -90,8 +90,9 @@ class CryptoStorageApiImpl @Inject constructor(
                 else -> throw UnknownServiceException()
             }
             val inputStream = response.bodyAsChannel()
-
             decryptHelper.writeDecrypt(inputStream, tempFile, key)
+            inputStream.cancel(null) // ByteReadChannel use cancel to close instead of "use"
+
             return@runCatching FlipperKeyContent.InternalFile(tempFile.absolutePath)
         }
     }
