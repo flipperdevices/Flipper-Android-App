@@ -26,6 +26,7 @@ fun ComposableFapHeader(
         modifier = Modifier.padding(vertical = 12.dp),
         metaInformation = fapItem?.metaInformation
     )
+
     ComposableFapControlRow(
         modifier = Modifier.padding(bottom = 12.dp),
         installationButton = installationButton,

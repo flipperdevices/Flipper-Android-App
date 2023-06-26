@@ -1,8 +1,9 @@
 package com.flipperdevices.faphub.installation.stateprovider.impl.api
 
-import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.faphub.dao.api.model.FapBuildState
+import com.flipperdevices.faphub.dao.api.model.FapItemVersion
 import com.flipperdevices.faphub.installation.manifest.api.FapManifestApi
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestState
 import com.flipperdevices.faphub.installation.queue.api.FapInstallationQueueApi
@@ -10,11 +11,12 @@ import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest
 import com.flipperdevices.faphub.installation.queue.api.model.FapQueueState
 import com.flipperdevices.faphub.installation.stateprovider.api.api.FapInstallationStateManager
 import com.flipperdevices.faphub.installation.stateprovider.api.model.FapState
+import com.flipperdevices.faphub.installation.stateprovider.api.model.NotAvailableReason
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
 import com.flipperdevices.faphub.target.model.FlipperTarget
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
+import kotlinx.coroutines.flow.combine
 
 @ContributesBinding(AppGraph::class, FapInstallationStateManager::class)
 class FapInstallationStateManagerImpl @Inject constructor(
@@ -26,7 +28,7 @@ class FapInstallationStateManagerImpl @Inject constructor(
 
     override fun getFapStateFlow(
         applicationUid: String,
-        currentVersion: SemVer
+        currentVersion: FapItemVersion
     ) = combine(
         fapManifestApi.getManifestFlow(),
         queueApi.getFlowById(applicationUid),
@@ -40,7 +42,7 @@ class FapInstallationStateManagerImpl @Inject constructor(
         manifest: FapManifestState,
         applicationUid: String,
         queueState: FapQueueState,
-        currentVersion: SemVer,
+        currentVersion: FapItemVersion,
         target: FlipperTarget?
     ): FapState {
         val stateFromQueue = queueStateToFapState(queueState)
@@ -54,7 +56,10 @@ class FapInstallationStateManagerImpl @Inject constructor(
 
         when (target) {
             FlipperTarget.NotConnected -> return FapState.ConnectFlipper
-            FlipperTarget.Unsupported -> return FapState.FlipperOutdated
+            FlipperTarget.Unsupported -> return FapState.NotAvailableForInstall(
+                NotAvailableReason.FLIPPER_OUTDATED
+            )
+
             is FlipperTarget.Received -> {}
         }
 
@@ -69,19 +74,36 @@ class FapInstallationStateManagerImpl @Inject constructor(
             return stateFromManifest
         }
 
+        when (currentVersion.buildState) {
+            FapBuildState.READY -> {}
+            FapBuildState.BUILD_RUNNING ->
+                return FapState.NotAvailableForInstall(NotAvailableReason.BUILD_RUNNING)
+
+            FapBuildState.UNSUPPORTED_APP ->
+                return FapState.NotAvailableForInstall(NotAvailableReason.UNSUPPORTED_APP)
+
+            FapBuildState.FLIPPER_OUTDATED ->
+                return FapState.NotAvailableForInstall(NotAvailableReason.FLIPPER_OUTDATED)
+
+            FapBuildState.UNSUPPORTED_SDK ->
+                return FapState.NotAvailableForInstall(NotAvailableReason.UNSUPPORTED_SDK)
+        }
+
         return FapState.ReadyToInstall
     }
 
     private fun manifestStateToFapState(
         manifest: FapManifestState,
         applicationUid: String,
-        currentVersion: SemVer,
+        currentVersion: FapItemVersion,
         flipperTarget: FlipperTarget.Received
     ) = when (manifest) {
         is FapManifestState.Loaded -> manifest.items.find { it.fapManifestItem.uid == applicationUid }
             ?.let { fapManifestEnrichedItem ->
                 val sdkApi = fapManifestEnrichedItem.fapManifestItem.sdkApi
-                if (fapManifestEnrichedItem.numberVersion > currentVersion) {
+                if (currentVersion.buildState != FapBuildState.READY) {
+                    return@let FapState.Installed
+                } else if (fapManifestEnrichedItem.numberVersion > currentVersion.version) {
                     return@let FapState.ReadyToUpdate(fapManifestEnrichedItem.fapManifestItem)
                 } else if (sdkApi == null || sdkApi != flipperTarget.sdk) {
                     return@let FapState.ReadyToUpdate(fapManifestEnrichedItem.fapManifestItem)

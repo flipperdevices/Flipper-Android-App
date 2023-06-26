@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
+import com.flipperdevices.core.log.warn
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.dao.api.model.FapItem
 import com.flipperdevices.faphub.fapscreen.impl.api.FAP_ID_KEY
@@ -29,7 +30,7 @@ import tangle.viewmodel.VMInject
 
 class FapScreenViewModel @VMInject constructor(
     @TangleParam(FAP_ID_KEY)
-    private val fapId: String,
+    private val fapUniversalId: String,
     private val fapNetworkApi: FapNetworkApi,
     private val stateManager: FapInstallationStateManager,
     private val fapQueueApi: FapInstallationQueueApi,
@@ -58,7 +59,12 @@ class FapScreenViewModel @VMInject constructor(
     fun getControlState() = controlStateFlow.asStateFlow()
 
     fun onDelete() {
-        fapQueueApi.enqueue(FapActionRequest.Delete(fapId))
+        val loadingState = fapScreenLoadingStateFlow.value as? FapScreenLoadingState.Loaded
+        if (loadingState == null) {
+            warn { "#onDelete calls when fapScreenLoadingStateFlow is null or not loaded" }
+            return
+        }
+        fapQueueApi.enqueue(FapActionRequest.Delete(loadingState.fapItem.id))
     }
 
     fun onRefresh() = launchWithLock(mutex, viewModelScope, "refresh") {
@@ -71,12 +77,12 @@ class FapScreenViewModel @VMInject constructor(
                     controlStateJob?.cancelAndJoin()
                     return@collectLatest
                 }
-                fapNetworkApi.getFapItemById(target, fapId).onSuccess { fapItem ->
+                fapNetworkApi.getFapItemById(target, fapUniversalId).onSuccess { fapItem ->
                     fapScreenLoadingStateFlow.emit(FapScreenLoadingState.Loaded(fapItem))
                     controlStateJob?.cancelAndJoin()
                     controlStateJob = stateManager.getFapStateFlow(
-                        applicationUid = fapId,
-                        currentVersion = fapItem.upToDateVersion.version
+                        applicationUid = fapItem.id,
+                        currentVersion = fapItem.upToDateVersion
                     ).onEach { state ->
                         controlStateFlow.emit(state.toControlState(fapItem))
                     }.launchIn(viewModelScope)
@@ -97,7 +103,7 @@ class FapScreenViewModel @VMInject constructor(
         is FapState.InstallationInProgress,
         is FapState.UpdatingInProgress,
         FapState.ConnectFlipper,
-        FapState.FlipperOutdated,
+        is FapState.NotAvailableForInstall,
         FapState.ReadyToInstall -> FapDetailedControlState.InProgressOrNotInstalled(
             fapItem,
             generateUrl(fapItem.applicationAlias)

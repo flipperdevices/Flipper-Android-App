@@ -23,8 +23,8 @@ import com.flipperdevices.faphub.installation.button.impl.composable.ComposableF
 import com.flipperdevices.faphub.installation.button.impl.viewmodel.FapStatusViewModel
 import com.flipperdevices.faphub.installation.stateprovider.api.model.FapState
 import com.squareup.anvil.annotations.ContributesBinding
-import tangle.viewmodel.compose.tangleViewModel
 import javax.inject.Inject
+import tangle.viewmodel.compose.tangleViewModel
 
 @ContributesBinding(AppGraph::class, FapInstallationUIApi::class)
 class FapInstallationUIApiImpl @Inject constructor(
@@ -97,7 +97,7 @@ class FapInstallationUIApiImpl @Inject constructor(
                 }
             )
 
-            FapState.FlipperOutdated -> ComposableFapNoInstallButton(
+            is FapState.NotAvailableForInstall -> ComposableFapNoInstallButton(
                 modifier = modifier,
                 fapButtonSize = fapButtonSize
             )
