@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.ktx.image.Picture
 import com.flipperdevices.core.ui.theme.LocalPallet
@@ -15,13 +14,15 @@ import com.flipperdevices.keyemulate.composable.common.ComposableErrorDialogs
 import com.flipperdevices.keyemulate.impl.R
 import com.flipperdevices.keyemulate.model.DisableButtonReason
 import com.flipperdevices.keyemulate.model.EmulateButtonState
+import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyemulate.viewmodel.SimpleEmulateViewModel
 import tangle.viewmodel.compose.tangleViewModel
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableSimpleEmulateButton(
-    flipperKey: FlipperKey,
+    emulateConfig: EmulateConfig,
+    isSynchronized: Boolean,
     modifier: Modifier = Modifier
 ) {
     val emulateViewModel = tangleViewModel<SimpleEmulateViewModel>()
@@ -29,13 +30,13 @@ fun ComposableSimpleEmulateButton(
 
     val buttonActiveModifier = Modifier.clickableRipple {
         if (emulateButtonState is EmulateButtonState.Inactive) {
-            emulateViewModel.onStartEmulate(flipperKey)
+            emulateViewModel.onStartEmulate(emulateConfig)
         } else if (emulateButtonState is EmulateButtonState.Active) {
             emulateViewModel.onStopEmulate()
         }
     }
 
-    if (!flipperKey.synchronized) {
+    if (!isSynchronized) {
         ComposableActionDisable(
             modifier = modifier,
             textId = R.string.keyscreen_emulate,

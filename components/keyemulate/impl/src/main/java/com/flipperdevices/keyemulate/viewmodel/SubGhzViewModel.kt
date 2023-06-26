@@ -2,7 +2,6 @@ package com.flipperdevices.keyemulate.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.viewModelScope
-import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
@@ -11,13 +10,11 @@ import com.flipperdevices.core.ktx.android.vibrateCompat
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.keyemulate.api.EmulateHelper
-import com.flipperdevices.keyemulate.api.SUBGHZ_DEFAULT_TIMEOUT_MS
 import com.flipperdevices.keyemulate.exception.AlreadyOpenedAppException
 import com.flipperdevices.keyemulate.exception.ForbiddenFrequencyException
 import com.flipperdevices.keyemulate.model.EmulateButtonState
+import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyemulate.model.EmulateProgress
-import com.flipperdevices.keyparser.api.KeyParser
-import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.update
@@ -27,7 +24,6 @@ import tangle.viewmodel.VMInject
 class SubGhzViewModel @VMInject constructor(
     private val serviceProvider: FlipperServiceProvider,
     private val emulateHelper: EmulateHelper,
-    private val keyParser: KeyParser,
     synchronizationApi: SynchronizationApi,
     application: Application
 ) : EmulateViewModel(serviceProvider, emulateHelper, synchronizationApi, application) {
@@ -36,13 +32,12 @@ class SubGhzViewModel @VMInject constructor(
     override suspend fun onStartEmulateInternal(
         scope: CoroutineScope,
         serviceApi: FlipperServiceApi,
-        keyType: FlipperKeyType,
-        flipperKey: FlipperKey
+        config: EmulateConfig
     ) {
         val appStarted = calculateTimeoutAndStartEmulate(
             scope = scope,
             serviceApi = serviceApi,
-            flipperKey = flipperKey,
+            config = config,
             oneTimePress = false
         )
 
@@ -51,11 +46,10 @@ class SubGhzViewModel @VMInject constructor(
         }
     }
 
-    fun onSinglePress(flipperKey: FlipperKey) {
+    fun onSinglePress(config: EmulateConfig) {
         info { "#onSinglePress" }
         vibrator?.vibrateCompat(VIBRATOR_TIME)
-        val fileType = flipperKey.path.keyType ?: return
-        if (fileType != FlipperKeyType.SUB_GHZ) {
+        if (config.keyType != FlipperKeyType.SUB_GHZ) {
             return
         }
 
@@ -75,7 +69,7 @@ class SubGhzViewModel @VMInject constructor(
 
         serviceProvider.provideServiceApi(this) {
             viewModelScope.launch(Dispatchers.Default) {
-                startEmulateInternal(this, it, flipperKey)
+                startEmulateInternal(this, it, config)
             }
         }
     }
@@ -83,38 +77,27 @@ class SubGhzViewModel @VMInject constructor(
     private suspend fun startEmulateInternal(
         scope: CoroutineScope,
         serviceApi: FlipperServiceApi,
-        flipperKey: FlipperKey
+        config: EmulateConfig,
     ) {
-        calculateTimeoutAndStartEmulate(scope, serviceApi, flipperKey, oneTimePress = true)
+        calculateTimeoutAndStartEmulate(scope, serviceApi, config, oneTimePress = true)
         emulateHelper.stopEmulate(viewModelScope, serviceApi.requestApi)
     }
 
     private suspend fun calculateTimeoutAndStartEmulate(
         scope: CoroutineScope,
         serviceApi: FlipperServiceApi,
-        flipperKey: FlipperKey,
+        config: EmulateConfig,
         oneTimePress: Boolean
     ): Boolean {
         val requestApi = serviceApi.requestApi
-        val parsedKey = keyParser.parseKey(flipperKey)
-
-        val timeout = if (parsedKey is FlipperKeyParsed.SubGhz &&
-            parsedKey.totalTimeMs != null
-        ) {
-            parsedKey.totalTimeMs
-        } else {
-            null
-        }
-
+        val timeout = config.minEmulateTime
         val appStarted: Boolean?
 
         try {
             appStarted = emulateHelper.startEmulate(
                 scope,
                 serviceApi,
-                FlipperKeyType.SUB_GHZ,
-                flipperKey.path,
-                timeout ?: SUBGHZ_DEFAULT_TIMEOUT_MS
+                config
             )
             if (appStarted && timeout != null) {
                 if (oneTimePress) {

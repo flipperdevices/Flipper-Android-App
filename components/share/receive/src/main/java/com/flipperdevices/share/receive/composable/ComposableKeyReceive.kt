@@ -1,6 +1,7 @@
 package com.flipperdevices.share.receive.composable
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.flipperdevices.keyscreen.api.KeyScreenApi
@@ -37,8 +38,10 @@ fun ComposableKeyReceive(
             onCancel = onCancel
         )
         ReceiveState.Finished -> {
-            viewModel.onFinish()
-            onCancel()
+            LaunchedEffect(Unit) {
+                viewModel.onFinish()
+                onCancel()
+            }
         }
     }
 }
