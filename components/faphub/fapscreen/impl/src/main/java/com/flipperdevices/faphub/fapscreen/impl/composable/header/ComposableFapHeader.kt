@@ -13,6 +13,7 @@ fun ComposableFapHeader(
     fapItem: FapItem?,
     controlState: FapDetailedControlState,
     onDelete: () -> Unit,
+    onOpenDeviceTab: () -> Unit,
     installationButton: @Composable (FapItem?, Modifier) -> Unit,
     modifier: Modifier = Modifier
 ) = Column(modifier) {
@@ -33,4 +34,11 @@ fun ComposableFapHeader(
         controlState = controlState,
         onDelete = onDelete
     )
+    if (fapItem != null) {
+        ComposableFapBuildStatus(
+            modifier = Modifier.padding(bottom = 12.dp),
+            fapItem = fapItem,
+            onOpenDeviceTab = onOpenDeviceTab
+        )
+    }
 }

@@ -26,7 +26,8 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
     implementation(libs.compose.navigation)
-    implementation(libs.compose.constraint)
+
+    implementation(projects.components.bottombar.api)
 
     implementation(projects.components.faphub.search.api)
     implementation(projects.components.faphub.dao.api)

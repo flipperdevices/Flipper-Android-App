@@ -45,7 +45,7 @@ data class KtorfitApplicationDetailed(
             version = SemVer.fromString(currentVersion.version)
                 ?: error("Can't parse ${currentVersion.version}"),
             target = target,
-            buildState = currentVersion.status.toFapBuildState()
+            buildState = currentVersion.status.toFapBuildState(target)
         )
 
         return FapItem(

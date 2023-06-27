@@ -34,6 +34,7 @@ import tangle.viewmodel.compose.tangleViewModel
 @Composable
 fun ComposableFapScreen(
     onBack: () -> Unit,
+    onOpenDeviceTab: () -> Unit,
     installationButton: @Composable (FapItem?, Modifier) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -56,7 +57,8 @@ fun ComposableFapScreen(
                 installationButton = installationButton,
                 modifier = modifier,
                 controlState = controlState,
-                onDelete = viewModel::onDelete
+                onDelete = viewModel::onDelete,
+                onOpenDeviceTab = onOpenDeviceTab
             )
 
             FapScreenLoadingState.Loading -> ComposableFapScreenInternal(
@@ -65,7 +67,8 @@ fun ComposableFapScreen(
                 installationButton = installationButton,
                 modifier = modifier,
                 controlState = controlState,
-                onDelete = viewModel::onDelete
+                onDelete = viewModel::onDelete,
+                onOpenDeviceTab = onOpenDeviceTab
             )
         }
     }
@@ -77,6 +80,7 @@ private fun ComposableFapScreenInternal(
     onBack: () -> Unit,
     controlState: FapDetailedControlState,
     onDelete: () -> Unit,
+    onOpenDeviceTab: () -> Unit,
     installationButton: @Composable (FapItem?, Modifier) -> Unit,
     modifier: Modifier = Modifier
 ) = Column(modifier.verticalScroll(rememberScrollState())) {
@@ -98,7 +102,8 @@ private fun ComposableFapScreenInternal(
         controlState = controlState,
         onDelete = {
             showDeleteDialog = true
-        }
+        },
+        onOpenDeviceTab = onOpenDeviceTab
     )
     Divider(
         modifier = Modifier
