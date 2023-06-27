@@ -7,6 +7,7 @@ import com.flipperdevices.faphub.dao.api.model.SortType
 import com.flipperdevices.faphub.target.model.FlipperTarget
 
 interface FapNetworkApi {
+    suspend fun getHostUrl(): String
     suspend fun getFeaturedItem(
         target: FlipperTarget
     ): Result<FapItemShort>

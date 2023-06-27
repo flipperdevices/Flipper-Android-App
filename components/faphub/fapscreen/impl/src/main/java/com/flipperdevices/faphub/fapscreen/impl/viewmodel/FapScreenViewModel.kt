@@ -35,6 +35,7 @@ class FapScreenViewModel @VMInject constructor(
     private val stateManager: FapInstallationStateManager,
     private val fapQueueApi: FapInstallationQueueApi,
     private val targetProviderApi: FlipperTargetProviderApi
+
 ) : ViewModel(), LogTagProvider {
     override val TAG = "FapScreenViewModel"
 
@@ -78,7 +79,12 @@ class FapScreenViewModel @VMInject constructor(
                     return@collectLatest
                 }
                 fapNetworkApi.getFapItemById(target, fapUniversalId).onSuccess { fapItem ->
-                    fapScreenLoadingStateFlow.emit(FapScreenLoadingState.Loaded(fapItem))
+                    fapScreenLoadingStateFlow.emit(
+                        FapScreenLoadingState.Loaded(
+                            fapItem = fapItem,
+                            shareUrl = generateUrl(fapItem.applicationAlias)
+                        )
+                    )
                     controlStateJob?.cancelAndJoin()
                     controlStateJob = stateManager.getFapStateFlow(
                         applicationUid = fapItem.id,
@@ -105,16 +111,14 @@ class FapScreenViewModel @VMInject constructor(
         FapState.ConnectFlipper,
         is FapState.NotAvailableForInstall,
         FapState.ReadyToInstall -> FapDetailedControlState.InProgressOrNotInstalled(
-            fapItem,
-            generateUrl(fapItem.applicationAlias)
+            fapItem
         )
 
         FapState.Installed,
         is FapState.ReadyToUpdate -> FapDetailedControlState.Installed(
-            fapItem,
-            generateUrl(fapItem.applicationAlias)
+            fapItem
         )
     }
 
-    private fun generateUrl(alias: String) = "https://lab.flipp.dev/apps/$alias"
+    private suspend fun generateUrl(alias: String) = "${fapNetworkApi.getHostUrl()}/apps/$alias"
 }

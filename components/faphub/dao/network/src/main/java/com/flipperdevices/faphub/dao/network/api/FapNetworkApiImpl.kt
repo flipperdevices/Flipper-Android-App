@@ -11,6 +11,7 @@ import com.flipperdevices.faphub.dao.network.retrofit.api.KtorfitApplicationApi
 import com.flipperdevices.faphub.dao.network.retrofit.model.types.ApplicationSortType
 import com.flipperdevices.faphub.dao.network.retrofit.model.types.SortOrderType
 import com.flipperdevices.faphub.dao.network.retrofit.utils.FapHubNetworkCategoryApi
+import com.flipperdevices.faphub.dao.network.retrofit.utils.HostUrlBuilder
 import com.flipperdevices.faphub.target.model.FlipperTarget
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.Dispatchers
@@ -20,9 +21,12 @@ import javax.inject.Inject
 @ContributesBinding(AppGraph::class, FapNetworkApi::class)
 class FapNetworkApiImpl @Inject constructor(
     private val applicationApi: KtorfitApplicationApi,
-    private val categoryApi: FapHubNetworkCategoryApi
+    private val categoryApi: FapHubNetworkCategoryApi,
+    private val hostUrlBuilder: HostUrlBuilder
 ) : FapNetworkApi, LogTagProvider {
     override val TAG = "FapNetworkApi"
+
+    override suspend fun getHostUrl() = hostUrlBuilder.getHostUrl()
     override suspend fun getFeaturedItem(target: FlipperTarget) = catchWithDispatcher {
         debug { "Request featured item" }
 

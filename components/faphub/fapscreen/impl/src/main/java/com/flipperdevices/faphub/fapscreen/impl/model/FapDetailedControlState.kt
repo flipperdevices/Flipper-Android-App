@@ -6,12 +6,10 @@ sealed class FapDetailedControlState {
     object Loading : FapDetailedControlState()
 
     data class Installed(
-        val fapItem: FapItem,
-        val shareUrl: String
+        val fapItem: FapItem
     ) : FapDetailedControlState()
 
     data class InProgressOrNotInstalled(
-        val fapItem: FapItem,
-        val shareUrl: String
+        val fapItem: FapItem
     ) : FapDetailedControlState()
 }

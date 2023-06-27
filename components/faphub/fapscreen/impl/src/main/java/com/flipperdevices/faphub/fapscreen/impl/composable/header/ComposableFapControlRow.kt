@@ -1,6 +1,5 @@
 package com.flipperdevices.faphub.fapscreen.impl.composable.header
 
-import android.content.Intent
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -13,11 +12,9 @@ import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.core.ui.theme.LocalPallet
@@ -71,7 +68,6 @@ private fun ComposableFapControlRowInProgress(
     modifier = modifier,
     verticalAlignment = Alignment.CenterVertically
 ) {
-    ComposableFapControlShareButton(state.shareUrl)
     installationButton(
         state.fapItem,
         Modifier
@@ -90,7 +86,6 @@ private fun ComposableFapControlRowInstalled(
     modifier = modifier,
     verticalAlignment = Alignment.CenterVertically
 ) {
-    ComposableFapControlShareButton(state.shareUrl)
     Icon(
         modifier = Modifier
             .padding(end = 12.dp)
@@ -105,34 +100,5 @@ private fun ComposableFapControlRowInstalled(
         Modifier
             .weight(weight = 1f)
             .fillMaxHeight()
-    )
-}
-
-@Composable
-private fun ComposableFapControlShareButton(
-    shareUrl: String,
-    modifier: Modifier = Modifier
-) {
-    val context = LocalContext.current
-    val shareTitle = stringResource(R.string.fapscreen_install_share_desc)
-    Icon(
-        modifier = modifier
-            .padding(end = 12.dp)
-            .size(46.dp)
-            .clickableRipple {
-                val intent = Intent().apply {
-                    action = Intent.ACTION_SEND
-                    putExtra(Intent.EXTRA_TEXT, shareUrl)
-                    type = "text/plain"
-                }
-                ContextCompat.startActivity(
-                    context,
-                    Intent.createChooser(intent, shareTitle),
-                    null
-                )
-            },
-        painter = painterResource(R.drawable.ic_share),
-        contentDescription = shareTitle,
-        tint = LocalPallet.current.accent
     )
 }
