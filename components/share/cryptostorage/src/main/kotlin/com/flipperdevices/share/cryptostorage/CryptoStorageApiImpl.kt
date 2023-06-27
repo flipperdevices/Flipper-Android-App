@@ -18,6 +18,7 @@ import io.ktor.client.statement.bodyAsChannel
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.content.OutgoingContent
 import io.ktor.util.InternalAPI
+import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.ByteWriteChannel
 import java.io.FileNotFoundException
 import java.net.UnknownServiceException
@@ -89,9 +90,9 @@ class CryptoStorageApiImpl @Inject constructor(
                 HttpStatusCode.NotFound -> throw FileNotFoundException()
                 else -> throw UnknownServiceException()
             }
-            val inputStream = response.bodyAsChannel()
-            decryptHelper.writeDecrypt(inputStream, tempFile, key)
-            inputStream.cancel(null) // ByteReadChannel use cancel to close instead of "use"
+            response.bodyAsChannel().use { inputStream ->
+                decryptHelper.writeDecrypt(inputStream, tempFile, key)
+            }
 
             return@runCatching FlipperKeyContent.InternalFile(tempFile.absolutePath)
         }
@@ -101,5 +102,17 @@ class CryptoStorageApiImpl @Inject constructor(
     private fun getFileId(link: String): String {
         val split = link.split("/")
         return split[split.size - 2]
+    }
+}
+
+suspend fun <R> ByteReadChannel.use(block: suspend (ByteReadChannel) -> R): R {
+    var exception: Throwable? = null
+    try {
+        return block(this)
+    } catch (throwable: Throwable) {
+        exception = throwable
+        throw throwable
+    } finally {
+        cancel(exception)
     }
 }
