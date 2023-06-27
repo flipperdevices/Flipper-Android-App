@@ -97,7 +97,7 @@ class FapInstallationUIApiImpl @Inject constructor(
                 }
             )
 
-            FapState.FlipperOutdated -> ComposableFapNoInstallButton(
+            is FapState.NotAvailableForInstall -> ComposableFapNoInstallButton(
                 modifier = modifier,
                 fapButtonSize = fapButtonSize
             )

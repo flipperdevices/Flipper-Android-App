@@ -37,16 +37,15 @@ data class KtorfitApplicationDetailed(
         val metaInformation = FapMetaInformation(
             version = SemVer.fromString(currentVersion.version)
                 ?: error("Failed parse ${currentVersion.version}"),
-            sizeBytes = currentVersion.bundle.length,
-            apiVersion = SemVer.fromString(currentVersion.currentBuild.sdk.api)
-                ?: error("Failed parse ${currentVersion.version}")
+            sizeBytes = currentVersion.bundle.length
         )
 
         val fapItemVersion = FapItemVersion(
             id = currentVersion.id,
             version = SemVer.fromString(currentVersion.version)
                 ?: error("Can't parse ${currentVersion.version}"),
-            target = target
+            target = target,
+            buildState = currentVersion.status.toFapBuildState(target)
         )
 
         return FapItem(
