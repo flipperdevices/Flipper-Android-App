@@ -33,4 +33,10 @@ sealed class Deeplink : Parcelable {
         val url: String,
         val name: String,
     ) : Deeplink()
+
+    @Parcelize
+    @Serializable
+    data class Fap(
+        val appId: String,
+    ) : Deeplink()
 }

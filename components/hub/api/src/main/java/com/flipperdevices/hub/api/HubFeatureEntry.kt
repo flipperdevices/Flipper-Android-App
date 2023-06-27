@@ -8,4 +8,6 @@ interface HubFeatureEntry : AggregateFeatureEntry {
         get() = FeatureScreenRootRoute.HUB
 
     fun start(): String
+
+    fun getHubScreenByDeeplink(): String
 }
