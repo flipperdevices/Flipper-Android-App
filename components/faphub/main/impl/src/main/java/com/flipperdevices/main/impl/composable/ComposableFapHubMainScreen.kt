@@ -33,7 +33,7 @@ fun ComposableFapHubMainScreen(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        SetUpStatusBarColor(LocalPallet.current.accent)
+        SetUpStatusBarColor(LocalPallet.current.accent, darkIcon = true)
         ComposableFapHubNewSwitch(
             fapHubTabEnum = selectedTab,
             onSelect = mainViewModel::onSelectTab,
