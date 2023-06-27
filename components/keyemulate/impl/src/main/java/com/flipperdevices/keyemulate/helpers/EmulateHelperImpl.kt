@@ -1,8 +1,6 @@
 package com.flipperdevices.keyemulate.helpers
 
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
-import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.TimeHelper
@@ -13,6 +11,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.keyemulate.api.EmulateHelper
+import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -39,40 +38,36 @@ class EmulateHelperImpl @Inject constructor(
 ) : EmulateHelper, LogTagProvider {
     override val TAG = "EmulateHelper"
 
-    private var currentKeyEmulating = MutableStateFlow<FlipperFilePath?>(null)
+    private var currentKeyEmulating = MutableStateFlow<EmulateConfig?>(null)
 
     @Volatile
     private var stopEmulateTimeAllowedMs: Long = 0
     private var stopJob: Job? = null
     private val mutex = Mutex()
 
-    override fun getCurrentEmulatingKey(): StateFlow<FlipperFilePath?> = currentKeyEmulating
+    override fun getCurrentEmulatingKey(): StateFlow<EmulateConfig?> = currentKeyEmulating
 
     override suspend fun startEmulate(
         scope: CoroutineScope,
         serviceApi: FlipperServiceApi,
-        keyType: FlipperKeyType,
-        keyPath: FlipperFilePath,
-        minEmulateTime: Long
+        config: EmulateConfig
     ) = withLockResult(mutex, "start") {
         val requestApi = serviceApi.requestApi
         if (currentKeyEmulating.value != null) {
             info { "Emulate already running, start stop" }
             stopEmulateInternal(requestApi)
         }
-        currentKeyEmulating.emit(keyPath)
+        currentKeyEmulating.emit(config)
         try {
             return@withLockResult startEmulateHelper.onStart(
                 scope,
                 serviceApi,
-                keyType,
-                keyPath,
-                minEmulateTime,
+                config,
                 onStop = { stopEmulateInternal(requestApi) },
                 onResultTime = { time -> stopEmulateTimeAllowedMs = time }
             )
         } catch (throwable: Throwable) {
-            error(throwable) { "Failed start $keyPath" }
+            error(throwable) { "Failed start $config" }
             currentKeyEmulating.emit(null)
             throw throwable
         }

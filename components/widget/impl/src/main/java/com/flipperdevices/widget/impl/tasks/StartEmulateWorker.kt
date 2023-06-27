@@ -17,6 +17,7 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.keyemulate.api.EmulateHelper
 import com.flipperdevices.keyemulate.exception.AlreadyOpenedAppException
+import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.widget.impl.di.WidgetComponent
 import com.flipperdevices.widget.impl.model.WidgetState
 import com.flipperdevices.widget.impl.storage.WidgetStateStorage
@@ -103,7 +104,8 @@ class StartEmulateWorker(
     ): Boolean {
         info { "Start emulate" }
         val keyType = filePath.keyType ?: error("Not found key type")
-        return emulateHelper.startEmulate(scope, serviceApi, keyType, filePath)
+        val emulateConfig = EmulateConfig(keyType, filePath)
+        return emulateHelper.startEmulate(scope, serviceApi, emulateConfig)
     }
 
     private fun getFilePath(): FlipperFilePath {

@@ -3,7 +3,10 @@ package com.flipperdevices.keyscreen.impl.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.keyemulate.model.EmulateConfig
+import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
 import com.flipperdevices.keyscreen.api.KeyStateHelperApi
 import com.flipperdevices.keyscreen.impl.api.EXTRA_KEY_PATH
 import com.flipperdevices.keyscreen.model.KeyScreenState
@@ -42,5 +45,32 @@ class KeyScreenViewModel @VMInject constructor(
         val flipperKey = state.flipperKey
         val flipperKeyPath = flipperKey.getKeyPath()
         onEndAction(flipperKeyPath)
+    }
+
+    fun getEmulateConfig(): EmulateConfig? {
+        val state = getKeyScreenState().value
+        if (state !is KeyScreenState.Ready) return null
+
+        val flipperKey = state.flipperKey
+        val keyType = flipperKey.flipperKeyType
+        val parsedKey = state.parsedKey
+
+        if (keyType == null || keyType == FlipperKeyType.INFRARED) {
+            return null
+        }
+
+        val timeout = if (parsedKey is FlipperKeyParsed.SubGhz &&
+            parsedKey.totalTimeMs != null
+        ) {
+            parsedKey.totalTimeMs
+        } else {
+            null
+        }
+
+        return EmulateConfig(
+            keyType = keyType,
+            keyPath = flipperKey.path,
+            minEmulateTime = timeout,
+        )
     }
 }

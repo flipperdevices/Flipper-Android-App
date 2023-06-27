@@ -8,6 +8,7 @@ import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.keyemulate.api.EmulateHelper
+import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyparser.api.KeyParser
 import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
 import com.flipperdevices.wearable.emulate.common.WearableCommandInputStream
@@ -55,13 +56,12 @@ class WearableSendProcessor @Inject constructor(
         val filePath = FlipperFilePath(keyFile.parent ?: "", keyFile.name)
         val timeout = calculateTimeout(filePath)
         try {
-            emulateHelper.startEmulate(
-                scope,
-                serviceApi,
-                keyType,
-                filePath,
-                timeout
+            val emulateConfig = EmulateConfig(
+                keyPath = filePath,
+                keyType = keyType,
+                minEmulateTime = timeout
             )
+            emulateHelper.startEmulate(scope, serviceApi, emulateConfig)
             emulateHelper.stopEmulate(scope, serviceApi.requestApi)
         } catch (throwable: Throwable) {
             error(throwable) { "Failed start send $path" }

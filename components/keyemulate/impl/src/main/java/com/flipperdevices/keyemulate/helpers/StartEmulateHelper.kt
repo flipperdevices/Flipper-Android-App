@@ -3,7 +3,6 @@ package com.flipperdevices.keyemulate.helpers
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
-import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.core.di.AppGraph
@@ -11,10 +10,14 @@ import com.flipperdevices.core.ktx.jre.TimeHelper
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.keyemulate.api.INFRARED_DEFAULT_TIMEOUT_MS
+import com.flipperdevices.keyemulate.api.SUBGHZ_DEFAULT_TIMEOUT_MS
 import com.flipperdevices.keyemulate.exception.AlreadyOpenedAppException
 import com.flipperdevices.keyemulate.exception.ForbiddenFrequencyException
+import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyemulate.model.FlipperAppError
 import com.flipperdevices.protobuf.Flipper
+import com.flipperdevices.protobuf.app.Application
 import com.flipperdevices.protobuf.app.appButtonPressRequest
 import com.flipperdevices.protobuf.app.appLoadFileRequest
 import com.flipperdevices.protobuf.main
@@ -28,13 +31,10 @@ private const val APP_RETRY_COUNT = 3
 private const val APP_RETRY_SLEEP_TIME_MS = 1 * 1000L // 1 second
 
 interface StartEmulateHelper {
-    @Suppress("LongParameterList") // TODO emulate config
     suspend fun onStart(
         scope: CoroutineScope,
         serviceApi: FlipperServiceApi,
-        keyType: FlipperKeyType,
-        keyPath: FlipperFilePath,
-        minEmulateTime: Long,
+        config: EmulateConfig,
         onStop: suspend () -> Unit,
         onResultTime: (Long) -> Unit
     ): Boolean
@@ -51,13 +51,13 @@ class StartEmulateHelperImpl @Inject constructor(
     override suspend fun onStart(
         scope: CoroutineScope,
         serviceApi: FlipperServiceApi,
-        keyType: FlipperKeyType,
-        keyPath: FlipperFilePath,
-        minEmulateTime: Long,
+        config: EmulateConfig,
         onStop: suspend () -> Unit,
         onResultTime: (Long) -> Unit,
     ): Boolean {
         val requestApi = serviceApi.requestApi
+        val keyType = config.keyType
+
         info { "startEmulateInternal" }
 
         var appOpen = tryOpenApp(scope, requestApi, keyType)
@@ -79,7 +79,7 @@ class StartEmulateHelperImpl @Inject constructor(
             flowOf(
                 main {
                     appLoadFileRequest = appLoadFileRequest {
-                        path = keyPath.getPathOnFlipper()
+                        path = config.keyPath.getPathOnFlipper()
                     }
                 }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
             )
@@ -88,27 +88,40 @@ class StartEmulateHelperImpl @Inject constructor(
             error { "Failed start key with error $appLoadFileResponse" }
             return false
         }
-        if (keyType != FlipperKeyType.SUB_GHZ) {
+        if (!isNeedButtonPress(config)) {
             info { "Skip execute button press: $appLoadFileResponse" }
             return true
         }
-        info { "This is subghz, so start press button" }
-        val appButtonPressResponse = requestApi.request(
+
+        return processButtonPress(
+            config = config,
+            onResultTime = onResultTime,
+            serviceApi = serviceApi
+        )
+    }
+
+    private fun isNeedButtonPress(config: EmulateConfig): Boolean {
+        return config.keyType == FlipperKeyType.SUB_GHZ ||
+            config.keyType == FlipperKeyType.INFRARED
+    }
+
+    private suspend fun processButtonPress(
+        config: EmulateConfig,
+        onResultTime: (Long) -> Unit,
+        serviceApi: FlipperServiceApi
+    ): Boolean {
+        val minEmulateTime = getMinEmulateTime(config)
+
+        info { "This is ${config.keyType}, so start press button with time $minEmulateTime" }
+
+        val appButtonPressResponse = serviceApi.requestApi.request(
             flowOf(
                 main {
-                    appButtonPressRequest = appButtonPressRequest {}
+                    appButtonPressRequest = getAppButtonPressRequest(config)
                 }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
             )
         )
-        return processResultStart(appButtonPressResponse, onResultTime, minEmulateTime, serviceApi)
-    }
 
-    private suspend fun processResultStart(
-        appButtonPressResponse: Flipper.Main,
-        onResultTime: (Long) -> Unit,
-        minEmulateTime: Long,
-        serviceApi: FlipperServiceApi
-    ): Boolean {
         val responseStatus = appButtonPressResponse.commandStatus
 
         if (responseStatus == Flipper.CommandStatus.OK) {
@@ -128,6 +141,32 @@ class StartEmulateHelperImpl @Inject constructor(
 
         error { "Failed press key $appButtonPressResponse error $flipperError" }
         return false
+    }
+
+    private fun getMinEmulateTime(config: EmulateConfig): Long {
+        val configMinEmulateTime = config.minEmulateTime
+        if (configMinEmulateTime != null) {
+            return configMinEmulateTime
+        }
+
+        return when (config.keyType) {
+            FlipperKeyType.SUB_GHZ -> SUBGHZ_DEFAULT_TIMEOUT_MS
+            FlipperKeyType.INFRARED -> INFRARED_DEFAULT_TIMEOUT_MS
+            else -> error("Unknown key type for get min emulate time ${config.keyType}")
+        }
+    }
+
+    private fun getAppButtonPressRequest(config: EmulateConfig): Application.AppButtonPressRequest {
+        val configArgs = config.args
+        val keyType = config.keyType
+
+        return when {
+            keyType == FlipperKeyType.SUB_GHZ -> appButtonPressRequest {}
+            configArgs != null && keyType == FlipperKeyType.INFRARED -> appButtonPressRequest {
+                args = configArgs
+            }
+            else -> error("Unknown button press request with config $config")
+        }
     }
 
     private fun isForbiddenFrequencyError(

@@ -6,8 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.api.utils.Constants.API_SUPPORTED_REMOTE_EMULATE
-import com.flipperdevices.bridge.dao.api.model.FlipperKey
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
@@ -23,6 +21,7 @@ import com.flipperdevices.keyemulate.exception.AlreadyOpenedAppException
 import com.flipperdevices.keyemulate.exception.ForbiddenFrequencyException
 import com.flipperdevices.keyemulate.model.DisableButtonReason
 import com.flipperdevices.keyemulate.model.EmulateButtonState
+import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyemulate.model.LoadingState
 import com.flipperdevices.keyemulate.tasks.CloseEmulateAppTaskHolder
 import com.flipperdevices.protobuf.app.Application
@@ -58,12 +57,11 @@ abstract class EmulateViewModel(
     fun getEmulateButtonStateFlow(): StateFlow<EmulateButtonState> = emulateButtonStateFlow
 
     open fun onStartEmulate(
-        flipperKey: FlipperKey
+        config: EmulateConfig
     ) {
         info { "#onStartEmulate" }
         vibrator?.vibrateCompat(VIBRATOR_TIME)
 
-        val fileType = flipperKey.path.keyType ?: return
         emulateButtonStateFlow.update {
             when (it) {
                 is EmulateButtonState.Disabled -> it
@@ -77,7 +75,7 @@ abstract class EmulateViewModel(
 
         serviceProvider.provideServiceApi(this) {
             viewModelScope.launch(Dispatchers.Default) {
-                onStartEmulateInternal(this, it, fileType, flipperKey)
+                onStartEmulateInternal(this, it, config)
             }
         }
     }
@@ -85,8 +83,7 @@ abstract class EmulateViewModel(
     protected open suspend fun onStartEmulateInternal(
         scope: CoroutineScope,
         serviceApi: FlipperServiceApi,
-        keyType: FlipperKeyType,
-        flipperKey: FlipperKey
+        config: EmulateConfig
     ) {
         val requestApi = serviceApi.requestApi
         info { "#onStartEmulateInternal" }
@@ -94,9 +91,7 @@ abstract class EmulateViewModel(
             emulateHelper.startEmulate(
                 scope,
                 serviceApi,
-                keyType,
-                flipperKey.path,
-                minEmulateTime = 0L
+                config
             )
         } catch (ignored: AlreadyOpenedAppException) {
             emulateHelper.stopEmulateForce(requestApi)

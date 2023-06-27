@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
@@ -63,14 +64,19 @@ fun ComposableKeyParsed(
             }
         )
 
-        keyEmulateApi.ComposableEmulateButton(
-            Modifier
-                .fillMaxWidth()
-                .padding(start = 20.dp, end = 20.dp, bottom = 14.dp),
-            keyScreenState.flipperKey
-        )
-
         if (keyScreenState.deleteState == DeleteState.NOT_DELETED) {
+            val emulateConfig = remember { viewModel.getEmulateConfig() }
+            emulateConfig?.let { config ->
+
+                keyEmulateApi.ComposableEmulateButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 20.dp, end = 20.dp, bottom = 14.dp),
+                    emulateConfig = config,
+                    isSynchronized = keyScreenState.flipperKey.synchronized
+                )
+            }
+
             if (nfcEditorApi.isSupportedByNfcEditor(keyScreenState.parsedKey)) {
                 ComposableNfcEdit {
                     onOpenNfcEditor(keyScreenState.flipperKey.getKeyPath())
