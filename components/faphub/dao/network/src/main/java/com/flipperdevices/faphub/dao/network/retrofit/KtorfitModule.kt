@@ -1,25 +1,19 @@
 package com.flipperdevices.faphub.dao.network.retrofit
 
-import androidx.datastore.core.DataStore
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.faphub.dao.network.retrofit.api.KtorfitApplicationApi
 import com.flipperdevices.faphub.dao.network.retrofit.api.KtorfitBundleApi
 import com.flipperdevices.faphub.dao.network.retrofit.api.KtorfitCategoryApi
 import com.flipperdevices.faphub.dao.network.retrofit.api.KtorfitVersionApi
 import com.flipperdevices.faphub.dao.network.retrofit.utils.FapHubNetworkCategoryApi
+import com.flipperdevices.faphub.dao.network.retrofit.utils.HostUrlBuilder
 import com.squareup.anvil.annotations.ContributesTo
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
 import de.jensklingenberg.ktorfit.Ktorfit
 import io.ktor.client.HttpClient
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
-
-private const val FAP_URL_DEV = "https://catalog.flipp.dev/api/v0/"
-
-private const val FAP_URL = "https://catalog.flipperzero.one/api/v0/"
 
 @Module
 @ContributesTo(AppGraph::class)
@@ -28,14 +22,10 @@ class KtorfitModule {
     @Reusable
     fun provideRetrofit(
         httpClient: HttpClient,
-        settings: DataStore<Settings>
+        hostUrlBuilder: HostUrlBuilder
     ): Ktorfit {
-        val useDevCatalog = runBlocking { settings.data.first().useDevCatalog }
-        val url = if (useDevCatalog) {
-            FAP_URL_DEV
-        } else {
-            FAP_URL
-        }
+        val hostUrl = runBlocking { hostUrlBuilder.getHostUrl() }
+        val url = "$hostUrl/api/v0/"
         return Ktorfit.Builder()
             .baseUrl(url)
             .httpClient(httpClient)

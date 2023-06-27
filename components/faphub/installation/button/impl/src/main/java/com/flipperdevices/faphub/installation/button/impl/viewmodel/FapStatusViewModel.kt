@@ -21,7 +21,7 @@ class FapStatusViewModel @VMInject constructor(
     } else {
         stateManager.getFapStateFlow(
             applicationUid = fapButtonConfig.applicationUid,
-            currentVersion = fapButtonConfig.version.version
+            currentVersion = fapButtonConfig.version
         )
     }
 

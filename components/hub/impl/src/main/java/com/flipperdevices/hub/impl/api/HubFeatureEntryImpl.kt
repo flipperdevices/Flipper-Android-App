@@ -9,7 +9,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
@@ -37,18 +36,11 @@ class HubFeatureEntryImpl @Inject constructor(
     private val fapHubMainScreenApi: FapHubMainScreenApi
 ) : HubFeatureEntry {
     override fun start() = "@${ROUTE.name}"
-    override fun getHubScreenByDeeplink(): String = "${DeeplinkConstants.SCHEMA}hub"
 
     private val hubArguments = listOf(
         navArgument(DeeplinkConstants.KEY) {
             type = DeeplinkNavType()
             nullable = true
-        }
-    )
-
-    private val deeplinkArguments = listOf(
-        navDeepLink {
-            uriPattern = getHubScreenByDeeplink()
         }
     )
 
@@ -59,8 +51,7 @@ class HubFeatureEntryImpl @Inject constructor(
         ) {
             composable(
                 route = start(),
-                arguments = hubArguments,
-                deepLinks = deeplinkArguments
+                arguments = hubArguments
             ) {
                 val globalNavController = LocalGlobalNavigationNavStack.current
                 val hubViewModel = tangleViewModel<HubViewModel>()

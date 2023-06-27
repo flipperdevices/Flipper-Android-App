@@ -9,7 +9,6 @@ dependencies {
     implementation(projects.components.faphub.fapscreen.api)
 
     implementation(projects.components.deeplink.api)
-    implementation(projects.components.hub.api)
     implementation(projects.components.bottombar.api)
 
     implementation(projects.components.core.di)
@@ -30,6 +29,8 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
     implementation(libs.compose.navigation)
+
+    implementation(projects.components.bottombar.api)
 
     implementation(projects.components.faphub.search.api)
     implementation(projects.components.faphub.dao.api)

@@ -6,7 +6,8 @@ sealed class FapScreenLoadingState {
     object Loading : FapScreenLoadingState()
 
     data class Loaded(
-        val fapItem: FapItem
+        val fapItem: FapItem,
+        val shareUrl: String
     ) : FapScreenLoadingState()
     data class Error(
         val throwable: Throwable

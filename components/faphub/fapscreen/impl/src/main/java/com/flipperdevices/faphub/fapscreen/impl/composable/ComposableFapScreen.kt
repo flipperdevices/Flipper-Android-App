@@ -1,5 +1,6 @@
 package com.flipperdevices.faphub.fapscreen.impl.composable
 
+import android.content.Intent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
+import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -15,10 +17,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import com.flipperdevices.core.ui.errors.ComposableThrowableError
 import com.flipperdevices.core.ui.ktx.OrangeAppBar
+import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.faphub.appcard.composable.components.AppCardScreenshots
 import com.flipperdevices.faphub.dao.api.model.FapItem
@@ -34,6 +40,7 @@ import tangle.viewmodel.compose.tangleViewModel
 @Composable
 fun ComposableFapScreen(
     onBack: () -> Unit,
+    onOpenDeviceTab: () -> Unit,
     installationButton: @Composable (FapItem?, Modifier) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -56,7 +63,9 @@ fun ComposableFapScreen(
                 installationButton = installationButton,
                 modifier = modifier,
                 controlState = controlState,
-                onDelete = viewModel::onDelete
+                onDelete = viewModel::onDelete,
+                onOpenDeviceTab = onOpenDeviceTab,
+                shareUrl = loadingStateLocal.shareUrl
             )
 
             FapScreenLoadingState.Loading -> ComposableFapScreenInternal(
@@ -65,7 +74,9 @@ fun ComposableFapScreen(
                 installationButton = installationButton,
                 modifier = modifier,
                 controlState = controlState,
-                onDelete = viewModel::onDelete
+                onDelete = viewModel::onDelete,
+                onOpenDeviceTab = onOpenDeviceTab,
+                shareUrl = null
             )
         }
     }
@@ -74,13 +85,15 @@ fun ComposableFapScreen(
 @Composable
 private fun ComposableFapScreenInternal(
     fapItem: FapItem?,
+    shareUrl: String?,
     onBack: () -> Unit,
     controlState: FapDetailedControlState,
     onDelete: () -> Unit,
+    onOpenDeviceTab: () -> Unit,
     installationButton: @Composable (FapItem?, Modifier) -> Unit,
     modifier: Modifier = Modifier
 ) = Column(modifier.verticalScroll(rememberScrollState())) {
-    ComposableFapScreenBar(fapItem?.name, onBack)
+    ComposableFapScreenBar(fapName = fapItem?.name, url = shareUrl, onBack = onBack)
     var showDeleteDialog by remember { mutableStateOf(false) }
     if (showDeleteDialog && fapItem != null) {
         ComposableDeleteConfirmDialog(
@@ -98,7 +111,8 @@ private fun ComposableFapScreenInternal(
         controlState = controlState,
         onDelete = {
             showDeleteDialog = true
-        }
+        },
+        onOpenDeviceTab = onOpenDeviceTab
     )
     Divider(
         modifier = Modifier
@@ -123,10 +137,37 @@ private fun ComposableFapScreenInternal(
 @Composable
 private fun ComposableFapScreenBar(
     fapName: String?,
+    url: String?,
     onBack: () -> Unit,
 ) {
+    val context = LocalContext.current
+    val shareTitle = stringResource(R.string.fapscreen_install_share_desc)
+
     OrangeAppBar(
         title = fapName ?: stringResource(R.string.fapscreen_title_default),
-        onBack = onBack
+        onBack = onBack,
+        endBlock = { modifier ->
+            if (url != null) {
+                Icon(
+                    modifier = modifier
+                        .size(24.dp)
+                        .clickableRipple {
+                            val intent = Intent().apply {
+                                action = Intent.ACTION_SEND
+                                putExtra(Intent.EXTRA_TEXT, url)
+                                type = "text/plain"
+                            }
+                            ContextCompat.startActivity(
+                                context,
+                                Intent.createChooser(intent, shareTitle),
+                                null
+                            )
+                        },
+                    painter = painterResource(R.drawable.ic_share),
+                    contentDescription = shareTitle,
+                    tint = LocalPallet.current.onAppBar
+                )
+            }
+        }
     )
 }

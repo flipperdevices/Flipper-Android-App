@@ -24,7 +24,9 @@ class UpdateActionExecutor @Inject constructor(
         request: FapActionRequest.Update,
         progressListener: ProgressListener
     ) {
-        val path = uploadAndDownloadFap(request.toVersion, progressListener)
+        val target = request.toVersion.target as? FlipperTarget.Received
+            ?: error("Failed download fap for $request")
+        val path = uploadAndDownloadFap(request.applicationUid, target, progressListener)
 
         val iconBase64Request = fapIconDownloader.downloadToBase64(request.iconUrl).onFailure {
             error(it) { "Failed download ${request.iconUrl}" }

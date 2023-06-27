@@ -75,7 +75,7 @@ class InstalledFapsViewModel @VMInject constructor(
                     state.faps.map { it.first }.map {
                         fapStateManager.getFapStateFlow(
                             applicationUid = it.id,
-                            currentVersion = it.upToDateVersion.version
+                            currentVersion = it.upToDateVersion
                         )
                     }
                 ) { fapStates ->
@@ -90,7 +90,7 @@ class InstalledFapsViewModel @VMInject constructor(
                             FapState.NotInitialized,
                             FapState.ReadyToInstall,
                             FapState.ConnectFlipper,
-                            FapState.FlipperOutdated,
+                            is FapState.NotAvailableForInstall,
                             FapState.RetrievingManifest -> {
                             }
 
@@ -119,7 +119,7 @@ class InstalledFapsViewModel @VMInject constructor(
         val toUpdate = state.faps.filter { (fapItem, _) ->
             fapStateManager.getFapStateFlow(
                 applicationUid = fapItem.id,
-                currentVersion = fapItem.upToDateVersion.version
+                currentVersion = fapItem.upToDateVersion
             ).first() is FapState.ReadyToUpdate
         }
         info { "Pending items is $toUpdate" }
@@ -147,7 +147,7 @@ class InstalledFapsViewModel @VMInject constructor(
         state.faps.map { it.first }.map {
             fapStateManager.getFapStateFlow(
                 applicationUid = it.id,
-                currentVersion = it.upToDateVersion.version
+                currentVersion = it.upToDateVersion
             ).first() to it
         }.filter { (state, _) -> state is FapState.UpdatingInProgress }
             .forEach { (_, fapItem) ->

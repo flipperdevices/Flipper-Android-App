@@ -28,7 +28,9 @@ class InstallationActionExecutor @Inject constructor(
         request: FapActionRequest.Install,
         progressListener: ProgressListener
     ) {
-        val path = uploadAndDownloadFap(request.toVersion, progressListener)
+        val target = request.toVersion.target as? FlipperTarget.Received
+            ?: error("Failed download fap for $request")
+        val path = uploadAndDownloadFap(request.applicationUid, target, progressListener)
         var finalFapPath = File(FLIPPER_APPS_FOLDER, request.categoryAlias).absolutePath
         finalFapPath = File(finalFapPath, "${request.applicationAlias}.fap").absolutePath
 

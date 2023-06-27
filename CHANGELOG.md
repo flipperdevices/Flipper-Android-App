@@ -16,12 +16,14 @@
 - [Feature] Infrared Emulate (parse name remotes)
 - [Feature] Deeplik on open fap application
 - [Feature] Add url to release catalog
+- [Feature] Add build status card to app screen
 - [Refactor] Migrate all feature components modules from KSP to Anvil
 - [Refactor] Migrate to Ktorfit
 - [Refactor] Migrate key emulate to new module, decompose Emulate Helper
 - [Refactor] Key Screen state in API and KeyCard with state
 - [Refactor] Add detekt property and fix perfomance issue in nfc editor
 - [Refactor] Key Parser new module
+- [Refactor] Stream for crypto and share key content
 - [Refactor] Emulate by config
 
 # 1.5.1

@@ -32,7 +32,8 @@ data class KtorfitApplicationShort(
             id = currentVersion.id,
             version = SemVer.fromString(currentVersion.version)
                 ?: error("Can't parse ${currentVersion.version}"),
-            target = target
+            target = target,
+            buildState = currentVersion.status.toFapBuildState(target)
         )
 
         return FapItemShort(

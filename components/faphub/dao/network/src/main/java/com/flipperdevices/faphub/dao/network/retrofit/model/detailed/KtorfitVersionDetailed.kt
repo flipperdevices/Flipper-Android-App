@@ -1,5 +1,6 @@
 package com.flipperdevices.faphub.dao.network.retrofit.model.detailed
 
+import com.flipperdevices.faphub.dao.network.retrofit.model.KtorfitBuildState
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -15,5 +16,6 @@ data class KtorfitVersionDetailed(
     @SerialName("short_description") val shortDescription: String,
     @SerialName("description") val description: String,
     @SerialName("changelog") val changelog: String,
-    @SerialName("name") val name: String
+    @SerialName("name") val name: String,
+    @SerialName("status") val status: KtorfitBuildState
 )

@@ -5,7 +5,6 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.core.progress.ProgressListener
 import com.flipperdevices.core.progress.ProgressWrapperTracker
 import com.flipperdevices.faphub.dao.api.FapDownloadApi
-import com.flipperdevices.faphub.dao.api.model.FapItemVersion
 import com.flipperdevices.faphub.installation.queue.impl.executor.actions.FapActionUpload
 import com.flipperdevices.faphub.target.model.FlipperTarget
 
@@ -17,21 +16,20 @@ abstract class PrepareFapActionExecutor(
     private val fapUploadAction: FapActionUpload
 ) : LogTagProvider {
     protected suspend fun uploadAndDownloadFap(
-        version: FapItemVersion,
+        applicationUid: String,
+        target: FlipperTarget.Received,
         progressListener: ProgressListener
     ): String {
-        info { "Start download $version" }
-        val target = version.target as? FlipperTarget.Received
-            ?: error("Failed download fap for $version")
+        info { "Start download $applicationUid" }
         val downloadedFap = fapDownloadApi.downloadBundle(
-            versionId = version.id,
+            applicationUid = applicationUid,
             listener = ProgressWrapperTracker(
                 progressListener,
                 max = PERCENT_FOR_DOWNLOAD
             ),
             target = target
         )
-        info { "Fap downloaded by request $version to ${downloadedFap.path}" }
+        info { "Fap downloaded by request $applicationUid to ${downloadedFap.path}" }
         val path = fapUploadAction.upload(
             downloadedFap,
             ProgressWrapperTracker(
@@ -40,7 +38,7 @@ abstract class PrepareFapActionExecutor(
                 max = PERCENT_FOR_UPLOAD
             )
         )
-        info { "Fap uploaded by request $version to $path" }
+        info { "Fap uploaded by request $applicationUid to $path" }
         return path
     }
 }

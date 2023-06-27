@@ -141,6 +141,13 @@ data class FlipperPallet(
     val fapScreenshotBorder: Color = Color(0xFF000000)
 
     val onFapHubInstallButton: Color = Color(0xFFFFFFFF)
+    val fapHubBuildStatusReadyBackground: Color = Color(0xFF93F9B0).copy(0.15f)
+    val fapHubBuildStatusReadyText: Color = Color(0xFF268D43)
+    val fapHubBuildStatusRebuildingBackground: Color = Color(0xFFFFE300).copy(0.20f)
+    val fapHubBuildStatusRebuildingText: Color = Color(0xFFA98F01)
+    val fapHubBuildStatusFailedBackground: Color = Color(0xFFF9939F).copy(0.20f)
+    val fapHubBuildStatusFailedText: Color = Color(0xFFC30046)
+    val fapHubBuildStatusInfo: Color = Color(0xFF919191)
 
     val flipperScreenColor: Color = Color(0xFFFF8C29)
 
