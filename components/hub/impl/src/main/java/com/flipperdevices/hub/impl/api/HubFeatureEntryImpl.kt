@@ -8,10 +8,13 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.core.ui.navigation.LocalGlobalNavigationNavStack
+import com.flipperdevices.deeplink.model.DeeplinkConstants
+import com.flipperdevices.deeplink.model.DeeplinkNavType
 import com.flipperdevices.faphub.main.api.FapHubMainScreenApi
 import com.flipperdevices.faphub.maincard.api.MainCardApi
 import com.flipperdevices.hub.api.HubFeatureEntry
@@ -29,17 +32,27 @@ import javax.inject.Inject
 class HubFeatureEntryImpl @Inject constructor(
     private val nfcAttackFeatureEntry: NFCAttackFeatureEntry,
     private val mainCardApi: MainCardApi,
-    private val fapHubMainScreenApi: FapHubMainScreenApi,
-    private val screenStreamingFeatureEntry: ScreenStreamingFeatureEntry
+    private val screenStreamingFeatureEntry: ScreenStreamingFeatureEntry,
+    private val fapHubMainScreenApi: FapHubMainScreenApi
 ) : HubFeatureEntry {
     override fun start() = "@${ROUTE.name}"
+
+    private val hubArguments = listOf(
+        navArgument(DeeplinkConstants.KEY) {
+            type = DeeplinkNavType()
+            nullable = true
+        }
+    )
 
     override fun NavGraphBuilder.navigation(navController: NavHostController) {
         navigation(
             startDestination = start(),
             route = ROUTE.name
         ) {
-            composable(start()) {
+            composable(
+                route = start(),
+                arguments = hubArguments
+            ) {
                 val globalNavController = LocalGlobalNavigationNavStack.current
                 val hubViewModel = tangleViewModel<HubViewModel>()
                 val isApplicationCatalogEnabled by hubViewModel.isApplicationCatalogEnabledFlow()

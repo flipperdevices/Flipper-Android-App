@@ -8,6 +8,9 @@ android.namespace = "com.flipperdevices.faphub.fapscreen.impl"
 dependencies {
     implementation(projects.components.faphub.fapscreen.api)
 
+    implementation(projects.components.deeplink.api)
+    implementation(projects.components.bottombar.api)
+
     implementation(projects.components.core.di)
     implementation(projects.components.core.data)
     implementation(projects.components.core.log)
@@ -36,6 +39,7 @@ dependencies {
     implementation(projects.components.faphub.installation.queue.api)
     implementation(projects.components.faphub.installation.button.api)
     implementation(projects.components.faphub.target.api)
+    implementation(projects.components.faphub.main.api)
 
     implementation(libs.kotlin.immutable.collections)
 

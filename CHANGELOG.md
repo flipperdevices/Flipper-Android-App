@@ -14,6 +14,7 @@
 - [Feature] Add flipper not connected dialog
 - [Feature] Markdown support for fap description and changelog
 - [Feature] Infrared Emulate (parse name remotes)
+- [Feature] Deeplik on open fap application
 - [Feature] Add url to release catalog
 - [Feature] Add build status card to app screen
 - [Refactor] Migrate all feature components modules from KSP to Anvil

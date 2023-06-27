@@ -8,4 +8,6 @@ interface FapScreenApi : ComposableFeatureEntry {
         get() = FeatureScreenRootRoute.FAP_HUB_APPSCREEN
 
     fun getFapScreen(id: String): String
+
+    fun getFapScreenByDeeplink(id: String): String
 }
