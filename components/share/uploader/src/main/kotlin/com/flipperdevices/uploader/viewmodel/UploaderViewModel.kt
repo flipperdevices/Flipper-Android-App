@@ -116,11 +116,8 @@ class UploaderViewModel @VMInject constructor(
     }
 
     private suspend fun shareLongLink(flipperKey: FlipperKey, context: Context) {
-        val data = extractKeyContentForShare(flipperKey).openStream()
-            .use { it.readBytes() }
-
         val uploadedLink = cryptoStorageApi.upload(
-            data = data,
+            keyContent = extractKeyContentForShare(flipperKey),
             path = flipperKey.path.pathToKey,
             name = flipperKey.mainFile.path.nameWithExtension
         )
