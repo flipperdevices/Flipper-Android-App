@@ -7,5 +7,5 @@ import kotlinx.serialization.Serializable
 data class KtorfitBundle(
     @SerialName("_id") val id: String,
     @SerialName("filename") val filename: String,
-    @SerialName("length") val length: Long
+    @SerialName("length") val length: Long?
 )

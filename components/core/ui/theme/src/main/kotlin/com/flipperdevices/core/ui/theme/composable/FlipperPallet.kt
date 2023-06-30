@@ -48,7 +48,7 @@ data class FlipperPallet(
     val shareSheetScrimColor: Color,
 
     val flipperDisableButton: Color,
-    val borderViewReportBug: Color,
+    val reportBorder: Color,
 
     val fapHubSwitchBackground: Color,
     val fapHubSelectedBackgroundColor: Color,

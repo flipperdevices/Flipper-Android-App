@@ -18,6 +18,7 @@ enum class FeatureScreenRootRoute {
     FAP_HUB_SEARCH,
     FAP_HUB_CATEGORY,
     FAP_HUB_APPSCREEN,
+    FAP_HUB_REPORT,
     SEARCH_ARCHIVE,
     ARCHIVE,
     KEY_SCREEN,

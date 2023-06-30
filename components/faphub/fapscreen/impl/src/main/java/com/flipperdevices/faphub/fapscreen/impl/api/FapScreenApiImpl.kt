@@ -59,6 +59,7 @@ class FapScreenApiImpl @Inject constructor(
             deepLinks = deeplinkArguments
         ) {
             ComposableFapScreen(
+                navController = navController,
                 onBack = navController::popBackStack,
                 installationButton = { fapItem, modifier ->
                     installationUIApi.ComposableButton(

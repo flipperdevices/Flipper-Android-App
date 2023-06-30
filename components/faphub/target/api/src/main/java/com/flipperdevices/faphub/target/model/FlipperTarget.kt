@@ -11,12 +11,4 @@ sealed class FlipperTarget {
         val target: String,
         val sdk: SemVer
     ) : FlipperTarget()
-
-    fun getApiForServer(): String? {
-        return when (this) {
-            is Received -> sdk.toString()
-            Unsupported,
-            NotConnected -> null
-        }
-    }
 }

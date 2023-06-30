@@ -30,6 +30,7 @@ class KtorModule {
         val ktorTimber = TaggedTimber("Ktor")
 
         return HttpClient(Android) {
+            expectSuccess = true
             install(ContentNegotiation) {
                 json(
                     Json {

@@ -2,6 +2,7 @@ package com.flipperdevices.faphub.fapscreen.impl.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
@@ -15,6 +16,7 @@ import com.flipperdevices.faphub.installation.queue.api.FapInstallationQueueApi
 import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest
 import com.flipperdevices.faphub.installation.stateprovider.api.api.FapInstallationStateManager
 import com.flipperdevices.faphub.installation.stateprovider.api.model.FapState
+import com.flipperdevices.faphub.report.api.FapReportFeatureEntry
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
@@ -34,7 +36,8 @@ class FapScreenViewModel @VMInject constructor(
     private val fapNetworkApi: FapNetworkApi,
     private val stateManager: FapInstallationStateManager,
     private val fapQueueApi: FapInstallationQueueApi,
-    private val targetProviderApi: FlipperTargetProviderApi
+    private val targetProviderApi: FlipperTargetProviderApi,
+    private val fapReportFeatureEntry: FapReportFeatureEntry
 
 ) : ViewModel(), LogTagProvider {
     override val TAG = "FapScreenViewModel"
@@ -66,6 +69,15 @@ class FapScreenViewModel @VMInject constructor(
             return
         }
         fapQueueApi.enqueue(FapActionRequest.Delete(loadingState.fapItem.id))
+    }
+
+    fun onOpenReportApp(navController: NavController) {
+        val loadingState = fapScreenLoadingStateFlow.value as? FapScreenLoadingState.Loaded
+        if (loadingState == null) {
+            warn { "#onOpenReportApp calls when fapScreenLoadingStateFlow is null or not loaded" }
+            return
+        }
+        navController.navigate(fapReportFeatureEntry.start(loadingState.fapItem.id))
     }
 
     fun onRefresh() = launchWithLock(mutex, viewModelScope, "refresh") {

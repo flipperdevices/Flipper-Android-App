@@ -35,7 +35,11 @@ class FapHubNetworkCategoryApi(
         }
         val categoriesReceived = try {
             categoryApi.getAll(
-                sdkApi = target.getApiForServer()
+                sdkApi = when (target) {
+                    is FlipperTarget.Received -> target.sdk.toString()
+                    FlipperTarget.Unsupported,
+                    FlipperTarget.NotConnected -> null
+                }
             )
         } catch (ex: Exception) {
             error(ex) { "Failed get categories" }
