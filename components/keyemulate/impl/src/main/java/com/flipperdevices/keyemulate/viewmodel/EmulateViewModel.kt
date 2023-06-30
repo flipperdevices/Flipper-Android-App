@@ -22,6 +22,7 @@ import com.flipperdevices.keyemulate.exception.ForbiddenFrequencyException
 import com.flipperdevices.keyemulate.model.DisableButtonReason
 import com.flipperdevices.keyemulate.model.EmulateButtonState
 import com.flipperdevices.keyemulate.model.EmulateConfig
+import com.flipperdevices.keyemulate.model.EmulateProgress
 import com.flipperdevices.keyemulate.model.LoadingState
 import com.flipperdevices.keyemulate.tasks.CloseEmulateAppTaskHolder
 import com.flipperdevices.protobuf.app.Application
@@ -48,6 +49,8 @@ abstract class EmulateViewModel(
     protected val emulateButtonStateFlow =
         MutableStateFlow<EmulateButtonState>(EmulateButtonState.Loading(LoadingState.CONNECTING))
 
+    protected val emulateConfigFlow = emulateHelper.getCurrentEmulatingKey()
+
     protected val vibrator = ContextCompat.getSystemService(application, Vibrator::class.java)
 
     init {
@@ -67,7 +70,7 @@ abstract class EmulateViewModel(
                 is EmulateButtonState.Disabled -> it
                 is EmulateButtonState.Loading -> it
                 is EmulateButtonState.Inactive -> EmulateButtonState.Active(
-                    com.flipperdevices.keyemulate.model.EmulateProgress.Infinite
+                    EmulateProgress.Infinite
                 )
                 is EmulateButtonState.Active -> return
             }

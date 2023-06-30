@@ -21,6 +21,7 @@ dependencies {
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.share)
 
+
     implementation(projects.components.keyedit.api)
 
     implementation(libs.appcompat)
@@ -38,6 +39,7 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
     implementation(libs.compose.navigation)
+    implementation(libs.compose.navigation.material)
 
     // Dagger deps
     implementation(libs.tangle.viewmodel.compose)

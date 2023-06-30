@@ -1,0 +1,134 @@
+package com.flipperdevices.keyemulate.composable
+
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import com.flipperdevices.core.ui.ktx.onHoldPress
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.keyemulate.composable.common.ComposableActionDisable
+import com.flipperdevices.keyemulate.composable.common.ComposableActionLoading
+import com.flipperdevices.keyemulate.composable.common.ComposableEmulateButtonWithText
+import com.flipperdevices.keyemulate.composable.common.ComposableErrorDialogs
+import com.flipperdevices.keyemulate.model.EmulateButtonState
+import com.flipperdevices.keyemulate.model.EmulateConfig
+import com.flipperdevices.keyemulate.model.EmulateProgress
+import com.flipperdevices.keyemulate.viewmodel.InfraredViewModel
+import tangle.viewmodel.compose.tangleViewModel
+
+@Composable
+internal fun ComposableInfraredSendButton(
+    emulateConfig: EmulateConfig,
+    isSynchronized: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    val emulateViewModel = tangleViewModel<InfraredViewModel>()
+    val name = emulateConfig.args ?: return
+
+    val emulateButtonState by emulateViewModel.getEmulateButtonStateFlow().collectAsState()
+
+    if (!isSynchronized) {
+        ComposableActionDisable(
+            modifier = modifier,
+            text = name,
+            iconId = null,
+            reason = null
+        )
+        return
+    }
+
+    ComposableErrorDialogs(emulateButtonState, emulateViewModel::closeDialog)
+
+    when (emulateButtonState) {
+        is EmulateButtonState.Disabled -> ComposableActionDisable(
+            modifier = modifier,
+            text = name,
+            iconId = null,
+            reason = null
+        )
+        is EmulateButtonState.Active,
+        is EmulateButtonState.Inactive -> {
+            ComposableActiveStateEmulateInternal(
+                modifier = modifier,
+                emulateButtonState = emulateButtonState,
+                emulateViewModel = emulateViewModel,
+                emulateConfig = emulateConfig
+            )
+        }
+        is EmulateButtonState.Loading -> ComposableActionLoading(
+            modifier = modifier,
+            loadingState = null
+        )
+    }
+}
+
+@Composable
+private fun ComposableActiveStateEmulateInternal(
+    emulateViewModel: InfraredViewModel,
+    emulateConfig: EmulateConfig,
+    emulateButtonState: EmulateButtonState,
+    modifier: Modifier = Modifier
+) {
+    val name = emulateConfig.args ?: return
+
+    var isBubbleOpen by remember { mutableStateOf(false) }
+
+    val buttonActiveModifier = Modifier.onHoldPress(
+        onTap = {
+            isBubbleOpen = true
+            emulateViewModel.onSinglePress(emulateConfig)
+        },
+        onLongPressStart = {
+            emulateViewModel.onStartEmulate(emulateConfig)
+        },
+        onLongPressEnd = {
+            emulateViewModel.onStopEmulate()
+        }
+    )
+
+    ComposableActiveEmulateInternal(
+        modifier = modifier,
+        buttonActiveModifier = buttonActiveModifier,
+        emulateProgress = (emulateButtonState as? EmulateButtonState.Active)?.progress,
+        isActive = emulateButtonState is EmulateButtonState.Active,
+        text = name
+    )
+}
+
+/**
+ * We need to use a single composable function here because
+ * the gesture listener must be the same for both components and the components must be the same
+ */
+@Composable
+private fun ComposableActiveEmulateInternal(
+    emulateProgress: EmulateProgress?,
+    isActive: Boolean,
+    text: String,
+    modifier: Modifier = Modifier,
+    buttonActiveModifier: Modifier = Modifier
+) {
+    val color = if (isActive) {
+        LocalPallet.current.actionOnFlipperSubGhzProgress
+    } else {
+        LocalPallet.current.actionOnFlipperSubGhzEnable
+    }
+    val progressColor = if (isActive) {
+        LocalPallet.current.actionOnFlipperSubGhzEnable
+    } else {
+        Color.Transparent
+    }
+
+    ComposableEmulateButtonWithText(
+        modifier = modifier,
+        buttonModifier = buttonActiveModifier,
+        buttonText = text,
+        color = color,
+        progressColor = progressColor,
+        progress = emulateProgress,
+        picture = null
+    )
+}
