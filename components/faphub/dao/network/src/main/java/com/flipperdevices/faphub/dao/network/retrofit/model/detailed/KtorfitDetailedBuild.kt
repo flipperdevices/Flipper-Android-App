@@ -4,8 +4,8 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class KtorfitBuild(
+data class KtorfitDetailedBuild(
     @SerialName("_id") val id: String,
-    @SerialName("build_gfs_id") val gfsId: String,
-    @SerialName("sdk") val sdk: KtorfitSdk
+    @SerialName("sdk") val sdk: KtorfitSdk,
+    @SerialName("metadata") val metadata: KtorfitMetadata? = null
 )

@@ -8,8 +8,7 @@ import kotlinx.serialization.Serializable
 data class KtorfitVersionDetailed(
     @SerialName("_id") val id: String,
     @SerialName("version") val version: String,
-    @SerialName("current_build") val currentBuild: KtorfitBuild,
-    @SerialName("bundle") val bundle: KtorfitBundle,
+    @SerialName("current_build") val currentBuild: KtorfitDetailedBuild,
     @SerialName("icon_uri") val iconUrl: String,
     @SerialName("screenshots") val screenshots: List<String>,
     @SerialName("links") val links: KtorfitLinks,
