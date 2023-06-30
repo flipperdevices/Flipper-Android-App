@@ -34,8 +34,8 @@ internal fun ComposableCheckBox(
             onCheckedChange = onCheckedChange,
             colors = CheckboxColors(
                 checkedCheckmarkColor = LocalPallet.current.accent,
-                checkedBorderColor = LocalPallet.current.borderViewReportBug,
-                uncheckedBorderColor = LocalPallet.current.borderViewReportBug,
+                checkedBorderColor = LocalPallet.current.reportBorder,
+                uncheckedBorderColor = LocalPallet.current.reportBorder,
             ),
             interactionSource = remember { MutableInteractionSource() }
         )

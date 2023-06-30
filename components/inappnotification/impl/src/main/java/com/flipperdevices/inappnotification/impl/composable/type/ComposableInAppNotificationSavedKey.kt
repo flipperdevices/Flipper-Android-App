@@ -41,7 +41,7 @@ internal fun ComposableInAppNotificationSavedKey(
 private const val ICON_ANIMATION_DURATION_MS = 1000.0f
 
 @Composable
-private fun ComposableSaveIcon() {
+internal fun ComposableSaveIcon() {
     val composition by rememberLottieComposition(
         LottieCompositionSpec.RawRes(DesignSystem.raw.import_status_successful)
     )

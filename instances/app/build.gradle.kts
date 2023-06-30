@@ -183,6 +183,9 @@ dependencies {
     implementation(projects.components.faphub.target.api)
     implementation(projects.components.faphub.target.impl)
 
+    implementation(projects.components.faphub.report.api)
+    implementation(projects.components.faphub.report.impl)
+
     implementation(projects.components.faphub.installedtab.api)
     implementation(projects.components.faphub.installedtab.impl)
 
