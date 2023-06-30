@@ -4,6 +4,7 @@ package com.flipperdevices.infrared.impl.composable.components.bar
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -32,9 +33,8 @@ import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.infrared.impl.R
-import com.flipperdevices.core.ui.res.R as SharedRes
-import androidx.compose.foundation.Image
 import com.flipperdevices.infrared.impl.composable.components.ComposableInfraredDialogHowToUse
+import com.flipperdevices.core.ui.res.R as SharedRes
 
 private val LocalOnChangeState = compositionLocalOf<() -> Unit> { error("Not realization") }
 

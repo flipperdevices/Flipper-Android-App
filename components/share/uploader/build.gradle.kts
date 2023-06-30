@@ -21,7 +21,6 @@ dependencies {
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.share)
 
-
     implementation(projects.components.keyedit.api)
 
     implementation(libs.appcompat)

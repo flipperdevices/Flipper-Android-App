@@ -76,12 +76,14 @@ internal fun ComposableInfraredAppBar(
 @Composable
 private fun InfraredAppBar() {
     FlipperThemeInternal {
-        ComposableInfraredAppBar(onBack = { }, currentTab = InfraredTab.INFO,
+        ComposableInfraredAppBar(
+            onBack = { }, currentTab = InfraredTab.INFO,
             onChangeTab = {},
             onFavorite = {},
             onEdit = {},
             onRename = {},
             onDelete = {},
-            onShare = {}, isFavorite = false)
+            onShare = {}, isFavorite = false
+        )
     }
 }
