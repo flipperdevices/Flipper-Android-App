@@ -58,7 +58,8 @@ class InfraredViewModel @VMInject constructor(
                 is EmulateButtonState.Disabled,
                 is EmulateButtonState.Loading -> it
                 is EmulateButtonState.Inactive -> EmulateButtonState.Active(
-                    EmulateProgress.Infinite
+                    progress = EmulateProgress.Infinite,
+                    config = config
                 )
                 is EmulateButtonState.Active -> {
                     super.onStopEmulate(force = true)
@@ -103,13 +104,15 @@ class InfraredViewModel @VMInject constructor(
                 if (oneTimePress) {
                     emulateButtonStateFlow.emit(
                         EmulateButtonState.Active(
-                            progress = EmulateProgress.GrowingAndStop(timeout)
+                            progress = EmulateProgress.GrowingAndStop(timeout),
+                            config = config
                         )
                     )
                 } else {
                     emulateButtonStateFlow.emit(
                         EmulateButtonState.Active(
-                            progress = EmulateProgress.Growing(timeout)
+                            progress = EmulateProgress.Growing(timeout),
+                            config = config
                         )
                     )
                 }
@@ -123,7 +126,7 @@ class InfraredViewModel @VMInject constructor(
             emulateButtonStateFlow.emit(EmulateButtonState.ForbiddenFrequencyDialog)
             return false
         } catch (fatal: Throwable) {
-            error(fatal) { "Handle fatal exception on emulate subghz" }
+            error(fatal) { "Handle fatal exception on emulate infrared" }
             emulateHelper.stopEmulateForce(requestApi)
             emulateButtonStateFlow.emit(EmulateButtonState.Inactive())
             return false

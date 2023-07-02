@@ -49,8 +49,6 @@ abstract class EmulateViewModel(
     protected val emulateButtonStateFlow =
         MutableStateFlow<EmulateButtonState>(EmulateButtonState.Loading(LoadingState.CONNECTING))
 
-    protected val emulateConfigFlow = emulateHelper.getCurrentEmulatingKey()
-
     protected val vibrator = ContextCompat.getSystemService(application, Vibrator::class.java)
 
     init {
@@ -70,7 +68,8 @@ abstract class EmulateViewModel(
                 is EmulateButtonState.Disabled -> it
                 is EmulateButtonState.Loading -> it
                 is EmulateButtonState.Inactive -> EmulateButtonState.Active(
-                    EmulateProgress.Infinite
+                    progress = EmulateProgress.Infinite,
+                    config = config
                 )
                 is EmulateButtonState.Active -> return
             }

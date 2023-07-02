@@ -3,8 +3,6 @@ package com.flipperdevices.keyemulate.composable
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -75,11 +73,8 @@ private fun ComposableActiveStateEmulateInternal(
 ) {
     val name = emulateConfig.args ?: return
 
-    var isBubbleOpen by remember { mutableStateOf(false) }
-
     val buttonActiveModifier = Modifier.onHoldPress(
         onTap = {
-            isBubbleOpen = true
             emulateViewModel.onSinglePress(emulateConfig)
         },
         onLongPressStart = {
@@ -90,11 +85,23 @@ private fun ComposableActiveStateEmulateInternal(
         }
     )
 
+    val isActive = when {
+        emulateButtonState !is EmulateButtonState.Active -> false
+        emulateButtonState.config == emulateConfig -> true
+        else -> false
+    }
+
+    val emulateProgress = if (isActive) {
+        (emulateButtonState as? EmulateButtonState.Active)?.progress
+    } else {
+        null
+    }
+
     ComposableActiveEmulateInternal(
         modifier = modifier,
         buttonActiveModifier = buttonActiveModifier,
-        emulateProgress = (emulateButtonState as? EmulateButtonState.Active)?.progress,
-        isActive = emulateButtonState is EmulateButtonState.Active,
+        emulateProgress = emulateProgress,
+        isActive = isActive,
         text = name
     )
 }
@@ -112,12 +119,12 @@ private fun ComposableActiveEmulateInternal(
     buttonActiveModifier: Modifier = Modifier
 ) {
     val color = if (isActive) {
-        LocalPallet.current.actionOnFlipperSubGhzProgress
+        LocalPallet.current.actionOnFlipperInfraredProgress
     } else {
-        LocalPallet.current.actionOnFlipperSubGhzEnable
+        LocalPallet.current.actionOnFlipperInfraredEnable
     }
     val progressColor = if (isActive) {
-        LocalPallet.current.actionOnFlipperSubGhzEnable
+        LocalPallet.current.actionOnFlipperInfraredEnable
     } else {
         Color.Transparent
     }
