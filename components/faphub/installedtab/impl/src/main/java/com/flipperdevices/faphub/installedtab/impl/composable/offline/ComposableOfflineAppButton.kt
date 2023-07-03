@@ -20,7 +20,7 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.faphub.installedtab.impl.R
 
 @Composable
-fun ComposableOfflineAppButton(modifier: Modifier) {
+fun ComposableOfflineAppButton(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(6.dp))

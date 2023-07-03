@@ -13,8 +13,8 @@ import com.flipperdevices.faphub.installedtab.impl.composable.ComposableInstalle
 import com.flipperdevices.faphub.installedtab.impl.model.FapBatchUpdateButtonState
 import com.flipperdevices.faphub.installedtab.impl.viewmodel.InstalledFapsViewModel
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
 import tangle.viewmodel.compose.tangleViewModel
+import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, FapInstalledApi::class)
 class FapInstalledApiImpl @Inject constructor(
