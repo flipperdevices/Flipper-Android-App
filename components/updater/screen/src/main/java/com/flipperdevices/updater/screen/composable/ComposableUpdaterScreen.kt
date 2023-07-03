@@ -126,7 +126,7 @@ private fun CancelButton(
                 modifier = Modifier.padding(vertical = 8.dp),
                 color = LocalPallet.current.accentSecond
             )
-            return@Box
+            return
         }
         Text(
             modifier = Modifier
