@@ -1,6 +1,7 @@
 package com.flipperdevices.faphub.fapscreen.impl.composable.description
 
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
@@ -21,7 +22,9 @@ fun ComposableFapReport(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) = Row(
-    modifier = modifier.clickableRipple(onClick = onClick),
+    modifier = modifier
+        .fillMaxWidth()
+        .clickableRipple(onClick = onClick),
     verticalAlignment = Alignment.CenterVertically
 ) {
     val text = stringResource(R.string.fapscreen_developer_report)

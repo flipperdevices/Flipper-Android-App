@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -48,16 +49,18 @@ fun ColumnScope.ComposableFapChangelogText(
         return@remember changelog to false
     }
 
-    ComposableMarkdown(
-        modifier = if (processedChangelog == null) {
-            Modifier
-                .fillMaxWidth()
-                .placeholderConnecting()
-        } else {
-            Modifier.fillMaxWidth()
-        },
-        content = processedChangelog ?: DEFAULT_CHANGELOG,
-    )
+    SelectionContainer {
+        ComposableMarkdown(
+            modifier = if (processedChangelog == null) {
+                Modifier
+                    .fillMaxWidth()
+                    .placeholderConnecting()
+            } else {
+                Modifier.fillMaxWidth()
+            },
+            content = processedChangelog ?: DEFAULT_CHANGELOG,
+        )
+    }
 
     if (hasOverflow) {
         Text(

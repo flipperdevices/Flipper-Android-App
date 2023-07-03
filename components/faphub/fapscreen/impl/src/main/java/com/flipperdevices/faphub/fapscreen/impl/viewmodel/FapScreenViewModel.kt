@@ -38,7 +38,6 @@ class FapScreenViewModel @VMInject constructor(
     private val fapQueueApi: FapInstallationQueueApi,
     private val targetProviderApi: FlipperTargetProviderApi,
     private val fapReportFeatureEntry: FapReportFeatureEntry
-
 ) : ViewModel(), LogTagProvider {
     override val TAG = "FapScreenViewModel"
 
@@ -132,5 +131,5 @@ class FapScreenViewModel @VMInject constructor(
         )
     }
 
-    private suspend fun generateUrl(alias: String) = "${fapNetworkApi.getHostUrl()}/apps/$alias"
+    private fun generateUrl(alias: String) = "https://lab.flipper.net/apps/$alias"
 }
