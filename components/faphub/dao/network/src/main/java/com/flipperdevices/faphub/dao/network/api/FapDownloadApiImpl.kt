@@ -29,20 +29,20 @@ class FapDownloadApiImpl @Inject constructor(
 
     override suspend fun downloadBundle(
         target: FlipperTarget.Received,
-        applicationUid: String,
+        versionUid: String,
         listener: ProgressListener?
     ): File {
-        info { "Start download bundle for $applicationUid and $target" }
+        info { "Start download bundle for $versionUid and $target" }
 
         val file = FlipperStorageProvider.getTemporaryFile(context)
 
         bundleApi
-            .downloadBundle(applicationUid, target.target, target.sdk.toString())
+            .downloadBundle(versionUid, target.target, target.sdk.toString())
             .execute { response ->
                 response.saveToFile(file, listener?.let { ProgressWrapperTracker(it) })
             }
 
-        info { "Complete download for $applicationUid" }
+        info { "Complete download for $versionUid" }
 
         return file
     }
