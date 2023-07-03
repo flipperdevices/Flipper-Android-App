@@ -129,13 +129,28 @@ class FapManifestEnrichedHelper(
 
     private suspend fun invalidateInternal(manifests: List<FapManifestItem>) {
         runCatching {
+            if (manifests.isEmpty()) {
+                return@runCatching emptyList()
+            }
             val numberVersions = versionApi.getVersionsMap(manifests.map { it.versionUid })
-            manifests.mapNotNull {
+            info { "Loaded $numberVersions" }
+
+            val loadedManifests = manifests.mapNotNull {
                 FapManifestEnrichedItem(
                     fapManifestItem = it,
                     numberVersion = numberVersions[it.versionUid] ?: return@mapNotNull null
                 )
             }
+            info {
+                "Loaded ${loadedManifests.size}/${manifests.size}. Not loaded: ${
+                    manifests.filter {
+                        !numberVersions.containsKey(
+                            it.versionUid
+                        )
+                    }.map { it.versionUid }
+                }. Loaded $loadedManifests"
+            }
+            return@runCatching loadedManifests
         }.onSuccess {
             fapManifestState.emit(FapManifestState.Loaded(it.toImmutableList()))
         }.onFailure {

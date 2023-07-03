@@ -106,7 +106,8 @@ private fun LazyListScope.ComposableInstalledTabScreenState(
                     .clickable(
                         onClick = { onOpenFapItem(item.id) }
                     )
-                    .padding(vertical = 12.dp),
+                    .padding(vertical = 12.dp)
+                    .animateItemPlacement(),
                 fapItem = item,
                 installationButton = { modifier ->
                     installationButton(item, modifier)

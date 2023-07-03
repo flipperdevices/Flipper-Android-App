@@ -2,6 +2,7 @@ package com.flipperdevices.faphub.installation.queue.impl.api
 
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import com.flipperdevices.faphub.installation.queue.api.FapInstallationQueueApi
 import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest
 import com.flipperdevices.faphub.installation.queue.api.model.FapQueueState
@@ -53,6 +54,7 @@ class FapInstallationQueueApiImpl @Inject constructor(
     }
 
     override fun enqueue(actionRequest: FapActionRequest) {
+        info { "Enqueue $actionRequest" }
         queueRunner.enqueue(actionRequest)
     }
 }
