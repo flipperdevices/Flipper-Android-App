@@ -8,31 +8,42 @@ import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import coil.compose.AsyncImage
+import coil.compose.AsyncImagePainter
 import coil.request.CachePolicy
 import coil.request.ImageRequest
 
 @Composable
 fun FlipperAsyncImage(
-    url: String,
+    url: String?,
     contentDescription: String?,
     onLoading: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     filterQuality: FilterQuality = FilterQuality.None,
     contentScale: ContentScale = ContentScale.FillBounds,
-    enableDiskCache: Boolean = false,
-    enableMemoryCache: Boolean = false,
-    colorFilter: ColorFilter? = null
+    enableDiskCache: Boolean = true,
+    enableMemoryCache: Boolean = true,
+    colorFilter: ColorFilter? = null,
+    cacheKey: String? = url,
+    onError: ((AsyncImagePainter.State.Error) -> Unit)? = null,
 ) {
     val context = LocalContext.current
-    val request = remember(url, enableDiskCache, enableMemoryCache) {
-        ImageRequest.Builder(context)
-            .data(url)
-            .diskCachePolicy(CachePolicy.ENABLED)
-            .diskCacheKey(url)
-            .memoryCachePolicy(CachePolicy.ENABLED)
-            .memoryCacheKey(url)
+    val request = remember(url, cacheKey, enableDiskCache, enableMemoryCache) {
+        var builder = ImageRequest.Builder(context)
             .transformations(WhiteToAlphaTransformation())
-            .build()
+        if (url != null) {
+            builder = builder.data(url)
+        }
+        if (cacheKey != null) {
+            builder = builder.diskCacheKey(cacheKey)
+                .memoryCacheKey(cacheKey)
+        }
+        if (enableDiskCache) {
+            builder = builder.diskCachePolicy(CachePolicy.ENABLED)
+        }
+        if (enableMemoryCache) {
+            builder = builder.memoryCachePolicy(CachePolicy.ENABLED)
+        }
+        builder.build()
     }
     AsyncImage(
         modifier = modifier,
@@ -43,6 +54,9 @@ fun FlipperAsyncImage(
         colorFilter = colorFilter,
         onLoading = { onLoading(true) },
         onSuccess = { onLoading(false) },
-        onError = { onLoading(false) }
+        onError = {
+            onLoading(false)
+            onError?.invoke(it)
+        }
     )
 }

@@ -5,7 +5,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.faphub.dao.api.model.FapItemShort
 import com.flipperdevices.faphub.installation.button.api.FapButtonSize
 import com.flipperdevices.faphub.installation.button.api.FapInstallationUIApi
 import com.flipperdevices.faphub.installation.button.api.toFapButtonConfig
@@ -14,8 +13,8 @@ import com.flipperdevices.faphub.installedtab.impl.composable.ComposableInstalle
 import com.flipperdevices.faphub.installedtab.impl.model.FapBatchUpdateButtonState
 import com.flipperdevices.faphub.installedtab.impl.viewmodel.InstalledFapsViewModel
 import com.squareup.anvil.annotations.ContributesBinding
-import tangle.viewmodel.compose.tangleViewModel
 import javax.inject.Inject
+import tangle.viewmodel.compose.tangleViewModel
 
 @ContributesBinding(AppGraph::class, FapInstalledApi::class)
 class FapInstalledApiImpl @Inject constructor(
@@ -39,7 +38,7 @@ class FapInstalledApiImpl @Inject constructor(
     }
 
     @Composable
-    override fun ComposableInstalledTab(onOpenFapItem: (FapItemShort) -> Unit) {
+    override fun ComposableInstalledTab(onOpenFapItem: (uid: String) -> Unit) {
         ComposableInstalledTabScreen(
             onOpenFapItem = onOpenFapItem,
             installationButton = { fapItem, modifier ->

@@ -18,7 +18,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.sync.Mutex
-import java.lang.Exception
 
 class FapManifestEnrichedHelper(
     private val scope: CoroutineScope,
@@ -56,7 +55,7 @@ class FapManifestEnrichedHelper(
     ) = withLock(mutex, "on_add") {
         when (val manifestState = fapManifestState.value) {
             FapManifestState.Loading,
-            FapManifestState.NotLoaded -> return@withLock
+            is FapManifestState.NotLoaded -> return@withLock
 
             is FapManifestState.LoadedOffline -> {
                 onUpdateManifests(
@@ -86,7 +85,7 @@ class FapManifestEnrichedHelper(
     ): List<FapManifestItem> = withLockResult(mutex, "on_delete") {
         when (val manifestState = fapManifestState.value) {
             FapManifestState.Loading,
-            FapManifestState.NotLoaded -> return@withLockResult emptyList()
+            is FapManifestState.NotLoaded -> return@withLockResult emptyList()
 
             is FapManifestState.Loaded -> {
                 val itemsToDelete = manifestState.items.filter {
@@ -114,8 +113,8 @@ class FapManifestEnrichedHelper(
         }
     }
 
-    suspend fun onError() = withLock(mutex, "on_error") {
-        fapManifestState.emit(FapManifestState.NotLoaded)
+    suspend fun onError(throwable: Throwable) = withLock(mutex, "on_error") {
+        fapManifestState.emit(FapManifestState.NotLoaded(throwable))
     }
 
     override fun onAvailable(network: Network) {

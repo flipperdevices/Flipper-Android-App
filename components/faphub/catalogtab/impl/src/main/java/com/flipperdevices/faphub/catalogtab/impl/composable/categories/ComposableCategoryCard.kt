@@ -89,8 +89,6 @@ fun ComposableCategoryIcon(
                 modifier = Modifier.fillMaxSize(),
                 url = category.picUrl,
                 contentDescription = category.name,
-                enableMemoryCache = true,
-                enableDiskCache = true,
                 colorFilter = ColorFilter.tint(LocalPallet.current.text100),
                 filterQuality = FilterQuality.None,
                 onLoading = { isPlaceholderActive = it }

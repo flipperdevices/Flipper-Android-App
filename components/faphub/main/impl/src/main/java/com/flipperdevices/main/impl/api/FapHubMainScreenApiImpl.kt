@@ -57,7 +57,7 @@ class FapHubMainScreenApiImpl @Inject constructor(
                     },
                     installedTabComposable = {
                         installedApi.ComposableInstalledTab(onOpenFapItem = {
-                            navController.navigate(fapScreenApi.getFapScreen(it.id))
+                            navController.navigate(fapScreenApi.getFapScreen(it))
                         })
                     },
                     onOpenSearch = {

@@ -1,4 +1,4 @@
-package com.flipperdevices.faphub.installedtab.impl.composable
+package com.flipperdevices.faphub.installedtab.impl.composable.button
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,75 +16,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.flipperdevices.core.ui.ktx.clickableRipple
-import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.faphub.installedtab.impl.R
-import com.flipperdevices.faphub.installedtab.impl.model.FapBatchUpdateButtonState
 
 @Composable
-fun ComposableUpdateAllButton(
-    state: FapBatchUpdateButtonState,
-    onUpdateAll: () -> Unit,
-    onCancelAll: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    when (state) {
-        FapBatchUpdateButtonState.NoUpdates -> {
-            return
-        }
-
-        FapBatchUpdateButtonState.Loading -> {
-            ComposableCancelAllButton(
-                modifier.placeholderConnecting()
-            )
-        }
-
-        is FapBatchUpdateButtonState.ReadyToUpdate -> {
-            ComposableUpdateAllButtonPending(
-                pendingCount = state.count,
-                modifier = modifier.clickableRipple(onClick = onUpdateAll)
-            )
-        }
-
-        FapBatchUpdateButtonState.UpdatingInProgress -> {
-            ComposableCancelAllButton(
-                modifier = modifier.clickableRipple(onClick = onCancelAll)
-            )
-        }
-    }
-}
-
-@Composable
-private fun ComposableCancelAllButton(
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(8.dp))
-            .background(LocalPallet.current.text40)
-            .padding(2.dp)
-            .clip(RoundedCornerShape(8.dp))
-            .background(LocalPallet.current.background),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-    ) {
-        Text(
-            modifier = Modifier.padding(vertical = 12.dp),
-            text = stringResource(R.string.faphub_installed_update_cancel),
-            textAlign = TextAlign.Center,
-            style = LocalTypography.current.fapHubButtonText.copy(
-                fontSize = 18.sp
-            ),
-            color = LocalPallet.current.text40
-        )
-    }
-}
-
-@Composable
-private fun ComposableUpdateAllButtonPending(
+fun ComposableUpdateAllButtonPending(
     pendingCount: Int,
     modifier: Modifier = Modifier
 ) {
