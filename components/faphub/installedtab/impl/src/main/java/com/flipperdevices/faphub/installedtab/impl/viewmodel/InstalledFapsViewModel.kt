@@ -23,6 +23,7 @@ import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
 import com.flipperdevices.faphub.target.model.FlipperTarget
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -191,9 +192,13 @@ class InstalledFapsViewModel @VMInject constructor(
                     )
                 }
             }.catch {
+                if (it is CancellationException) {
+                    return@catch
+                }
                 error(it) { "Failed get installed items" }
                 installedFapsStateFlow.emit(FapInstalledInternalLoadingState.Error(it))
             }.collect {
+                info { "Load $it" }
                 installedFapsStateFlow.emit(it)
             }
         }

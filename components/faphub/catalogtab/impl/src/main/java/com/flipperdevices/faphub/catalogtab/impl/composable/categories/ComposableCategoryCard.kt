@@ -91,7 +91,8 @@ fun ComposableCategoryIcon(
                 contentDescription = category.name,
                 colorFilter = ColorFilter.tint(LocalPallet.current.text100),
                 filterQuality = FilterQuality.None,
-                onLoading = { isPlaceholderActive = it }
+                onLoading = { isPlaceholderActive = it },
+                cacheKey = category.name
             )
         }
     }

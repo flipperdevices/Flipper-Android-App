@@ -30,7 +30,8 @@ class FapInstalledApiImpl @Inject constructor(
             when (it) {
                 FapBatchUpdateButtonState.Loading,
                 FapBatchUpdateButtonState.NoUpdates,
-                FapBatchUpdateButtonState.UpdatingInProgress -> 0
+                FapBatchUpdateButtonState.UpdatingInProgress,
+                FapBatchUpdateButtonState.Offline -> 0
 
                 is FapBatchUpdateButtonState.ReadyToUpdate -> it.count
             }

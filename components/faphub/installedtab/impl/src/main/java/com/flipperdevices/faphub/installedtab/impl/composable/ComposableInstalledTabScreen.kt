@@ -1,28 +1,26 @@
 package com.flipperdevices.faphub.installedtab.impl.composable
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.errors.ComposableThrowableError
+import com.flipperdevices.core.ui.ktx.elements.SwipeRefresh
 import com.flipperdevices.faphub.appcard.composable.AppCard
 import com.flipperdevices.faphub.dao.api.model.FapItemShort
 import com.flipperdevices.faphub.installedtab.impl.composable.button.ComposableUpdateAllButton
 import com.flipperdevices.faphub.installedtab.impl.composable.common.ComposableLoadingItemDivider
 import com.flipperdevices.faphub.installedtab.impl.composable.offline.ComposableFapOfflineScreen
-import com.flipperdevices.faphub.installedtab.impl.model.FapBatchUpdateButtonState
 import com.flipperdevices.faphub.installedtab.impl.model.FapInstalledScreenState
 import com.flipperdevices.faphub.installedtab.impl.viewmodel.InstalledFapsViewModel
-import kotlinx.collections.immutable.ImmutableList
 import tangle.viewmodel.compose.tangleViewModel
 
 private const val DEFAULT_FAP_COUNT = 20
@@ -49,59 +47,46 @@ fun ComposableInstalledTabScreen(
                 .fillMaxSize()
         )
 
-        is FapInstalledScreenState.Loaded -> ComposableInstalledTabScreen(
-            faps = stateLocal.faps,
-            buttonState = buttonState,
-            onUpdateAll = viewModel::updateAll,
-            onCancelAll = viewModel::cancelAll,
-            onOpenFapItem = onOpenFapItem,
-            installationButton = installationButton,
-            modifier = screenModifier
-        )
-
-        FapInstalledScreenState.Loading -> ComposableInstalledTabScreen(
-            faps = null,
-            buttonState = buttonState,
-            onUpdateAll = viewModel::updateAll,
-            onCancelAll = viewModel::cancelAll,
-            onOpenFapItem = onOpenFapItem,
-            installationButton = installationButton,
-            modifier = screenModifier
-        )
-
-        is FapInstalledScreenState.LoadedOffline -> ComposableFapOfflineScreen(
-            offlineApps = stateLocal.faps,
-            modifier = screenModifier,
-            onOpen = onOpenFapItem
-        )
+        is FapInstalledScreenState.Loaded,
+        FapInstalledScreenState.Loading,
+        is FapInstalledScreenState.LoadedOffline -> SwipeRefresh(onRefresh = viewModel::refresh) {
+            LazyColumn(
+                modifier = screenModifier
+            ) {
+                item {
+                    ComposableUpdateAllButton(
+                        state = buttonState,
+                        onUpdateAll = viewModel::updateAll,
+                        onCancelAll = viewModel::cancelAll,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp)
+                    )
+                }
+                ComposableInstalledTabScreenState(
+                    screenState = stateLocal,
+                    onOpenFapItem = onOpenFapItem,
+                    installationButton = installationButton
+                )
+            }
+        }
     }
 }
 
-@Composable
-private fun ComposableInstalledTabScreen(
-    faps: ImmutableList<FapItemShort>?,
+@Suppress("FunctionNaming")
+private fun LazyListScope.ComposableInstalledTabScreenState(
+    screenState: FapInstalledScreenState,
     onOpenFapItem: (String) -> Unit,
-    installationButton: @Composable (FapItemShort?, Modifier) -> Unit,
-    buttonState: FapBatchUpdateButtonState,
-    onUpdateAll: () -> Unit,
-    onCancelAll: () -> Unit,
-    modifier: Modifier = Modifier
-) = LazyColumn(modifier) {
-    item {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth(),
-            contentAlignment = Alignment.Center
-        ) {
-            ComposableUpdateAllButton(
-                state = buttonState,
-                onUpdateAll = onUpdateAll,
-                onCancelAll = onCancelAll
-            )
-        }
-    }
-    if (faps == null) {
-        items(DEFAULT_FAP_COUNT) {
+    installationButton: @Composable (FapItemShort?, Modifier) -> Unit
+) {
+    when (screenState) {
+        is FapInstalledScreenState.Error -> {}
+        is FapInstalledScreenState.LoadedOffline -> ComposableFapOfflineScreen(
+            offlineApps = screenState.faps,
+            onOpen = onOpenFapItem
+        )
+
+        FapInstalledScreenState.Loading -> items(DEFAULT_FAP_COUNT) {
             AppCard(
                 modifier = Modifier.padding(vertical = 12.dp),
                 fapItem = null,
@@ -110,12 +95,12 @@ private fun ComposableInstalledTabScreen(
                 }
             )
         }
-    } else {
-        items(
-            count = faps.size,
-            key = { faps[it].id }
+
+        is FapInstalledScreenState.Loaded -> items(
+            count = screenState.faps.size,
+            key = { screenState.faps[it].id }
         ) { index ->
-            val item = faps[index]
+            val item = screenState.faps[index]
             AppCard(
                 modifier = Modifier
                     .clickable(
@@ -127,7 +112,7 @@ private fun ComposableInstalledTabScreen(
                     installationButton(item, modifier)
                 }
             )
-            if (index != faps.lastIndex) {
+            if (index != screenState.faps.lastIndex) {
                 ComposableLoadingItemDivider()
             }
         }

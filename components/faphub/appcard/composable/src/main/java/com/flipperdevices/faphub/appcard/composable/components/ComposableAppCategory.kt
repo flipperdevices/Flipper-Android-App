@@ -82,7 +82,7 @@ private fun ComposableAppCategoryIcon(
                 colorFilter = ColorFilter.tint(LocalPallet.current.text60),
                 filterQuality = FilterQuality.None,
                 onLoading = { isPlaceholderActive = it },
-                cacheKey = remember(category.name) { category.name.lowercase() }
+                cacheKey = category.name
             )
         }
     }

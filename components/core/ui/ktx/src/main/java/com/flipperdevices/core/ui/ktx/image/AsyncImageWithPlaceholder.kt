@@ -14,34 +14,27 @@ import coil.request.ImageRequest
 
 @Composable
 fun FlipperAsyncImage(
-    url: String?,
+    url: String,
     contentDescription: String?,
     onLoading: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     filterQuality: FilterQuality = FilterQuality.None,
     contentScale: ContentScale = ContentScale.FillBounds,
-    enableDiskCache: Boolean = true,
-    enableMemoryCache: Boolean = true,
     colorFilter: ColorFilter? = null,
     cacheKey: String? = url,
     onError: ((AsyncImagePainter.State.Error) -> Unit)? = null,
 ) {
     val context = LocalContext.current
-    val request = remember(url, cacheKey, enableDiskCache, enableMemoryCache) {
+    val request = remember(context, url, cacheKey) {
         var builder = ImageRequest.Builder(context)
             .transformations(WhiteToAlphaTransformation())
-        if (url != null) {
-            builder = builder.data(url)
-        }
+            .diskCachePolicy(CachePolicy.ENABLED)
+            .memoryCachePolicy(CachePolicy.ENABLED)
+            .data(url)
+
         if (cacheKey != null) {
             builder = builder.diskCacheKey(cacheKey)
                 .memoryCacheKey(cacheKey)
-        }
-        if (enableDiskCache) {
-            builder = builder.diskCachePolicy(CachePolicy.ENABLED)
-        }
-        if (enableMemoryCache) {
-            builder = builder.memoryCachePolicy(CachePolicy.ENABLED)
         }
         builder.build()
     }

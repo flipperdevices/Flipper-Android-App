@@ -15,8 +15,8 @@ import com.flipperdevices.faphub.installation.stateprovider.api.model.NotAvailab
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
 import com.flipperdevices.faphub.target.model.FlipperTarget
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
+import kotlinx.coroutines.flow.combine
 
 @ContributesBinding(AppGraph::class, FapInstallationStateManager::class)
 class FapInstallationStateManagerImpl @Inject constructor(
@@ -76,7 +76,9 @@ class FapInstallationStateManagerImpl @Inject constructor(
 
         when (currentVersion.buildState) {
             FapBuildState.READY,
-            FapBuildState.READY_ON_RELEASE -> {}
+            FapBuildState.READY_ON_RELEASE -> {
+            }
+
             FapBuildState.BUILD_RUNNING ->
                 return FapState.NotAvailableForInstall(NotAvailableReason.BUILD_RUNNING)
 
@@ -120,7 +122,7 @@ class FapInstallationStateManagerImpl @Inject constructor(
         }
 
         FapManifestState.Loading,
-        FapManifestState.NotLoaded -> FapState.RetrievingManifest
+        is FapManifestState.NotLoaded -> FapState.RetrievingManifest
     }
 
     private fun queueStateToFapState(queueState: FapQueueState) = when (queueState) {

@@ -16,7 +16,8 @@ import com.flipperdevices.faphub.installedtab.impl.R
 @Composable
 fun ComposableOfflineButtonText(modifier: Modifier = Modifier) {
     Box(
-        modifier.height(38.dp),
+        modifier
+            .height(38.dp),
         contentAlignment = Alignment.Center
     ) {
         Text(
