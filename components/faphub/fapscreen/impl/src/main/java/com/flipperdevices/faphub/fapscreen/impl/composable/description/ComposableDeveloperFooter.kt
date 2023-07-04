@@ -4,6 +4,7 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
@@ -65,11 +66,13 @@ private fun ComposableGithubLink(
     val uriHandler = LocalUriHandler.current
 
     Row(
-        modifier = modifier.clickable {
-            if (url != null) {
-                uriHandler.openUri(url)
-            }
-        },
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable {
+                if (url != null) {
+                    uriHandler.openUri(url)
+                }
+            },
         verticalAlignment = Alignment.CenterVertically
     ) {
         val text = stringResource(textId)

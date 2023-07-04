@@ -36,7 +36,8 @@ class UpdateActionExecutor @Inject constructor(
             pathToFap = path,
             FapManifestEnrichedItem(
                 fapManifestItem = request.from.copy(
-                    versionUid = request.applicationUid,
+                    fullName = request.applicationName,
+                    versionUid = request.toVersion.id,
                     iconBase64 = iconBase64Request.getOrNull() ?: request.from.iconBase64,
                     sdkApi = (request.toVersion.target as? FlipperTarget.Received)?.sdk
                 ),

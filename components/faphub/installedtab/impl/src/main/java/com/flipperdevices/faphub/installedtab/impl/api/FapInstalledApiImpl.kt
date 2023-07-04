@@ -5,7 +5,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.faphub.dao.api.model.FapItemShort
 import com.flipperdevices.faphub.installation.button.api.FapButtonSize
 import com.flipperdevices.faphub.installation.button.api.FapInstallationUIApi
 import com.flipperdevices.faphub.installation.button.api.toFapButtonConfig
@@ -31,7 +30,8 @@ class FapInstalledApiImpl @Inject constructor(
             when (it) {
                 FapBatchUpdateButtonState.Loading,
                 FapBatchUpdateButtonState.NoUpdates,
-                FapBatchUpdateButtonState.UpdatingInProgress -> 0
+                FapBatchUpdateButtonState.UpdatingInProgress,
+                FapBatchUpdateButtonState.Offline -> 0
 
                 is FapBatchUpdateButtonState.ReadyToUpdate -> it.count
             }
@@ -39,7 +39,7 @@ class FapInstalledApiImpl @Inject constructor(
     }
 
     @Composable
-    override fun ComposableInstalledTab(onOpenFapItem: (FapItemShort) -> Unit) {
+    override fun ComposableInstalledTab(onOpenFapItem: (uid: String) -> Unit) {
         ComposableInstalledTabScreen(
             onOpenFapItem = onOpenFapItem,
             installationButton = { fapItem, modifier ->

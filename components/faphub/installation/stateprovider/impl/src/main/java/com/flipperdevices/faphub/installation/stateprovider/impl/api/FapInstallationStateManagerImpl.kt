@@ -76,7 +76,9 @@ class FapInstallationStateManagerImpl @Inject constructor(
 
         when (currentVersion.buildState) {
             FapBuildState.READY,
-            FapBuildState.READY_ON_RELEASE -> {}
+            FapBuildState.READY_ON_RELEASE -> {
+            }
+
             FapBuildState.BUILD_RUNNING ->
                 return FapState.NotAvailableForInstall(NotAvailableReason.BUILD_RUNNING)
 
@@ -120,7 +122,7 @@ class FapInstallationStateManagerImpl @Inject constructor(
         }
 
         FapManifestState.Loading,
-        FapManifestState.NotLoaded -> FapState.RetrievingManifest
+        is FapManifestState.NotLoaded -> FapState.RetrievingManifest
     }
 
     private fun queueStateToFapState(queueState: FapQueueState) = when (queueState) {

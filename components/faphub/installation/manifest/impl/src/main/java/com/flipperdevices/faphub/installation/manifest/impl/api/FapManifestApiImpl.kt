@@ -89,7 +89,7 @@ class FapManifestApiImpl @Inject constructor(
             loader.load()
         }.onFailure {
             error(it) { "Failed load manifests" }
-            enrichedHelper.onError()
+            enrichedHelper.onError(it)
         }.onSuccess {
             enrichedHelper.onUpdateManifests(it)
         }

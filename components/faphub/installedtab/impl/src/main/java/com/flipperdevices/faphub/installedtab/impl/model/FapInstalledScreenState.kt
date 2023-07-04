@@ -10,6 +10,10 @@ sealed class FapInstalledScreenState {
         val faps: ImmutableList<FapItemShort>
     ) : FapInstalledScreenState()
 
+    data class LoadedOffline(
+        val faps: ImmutableList<OfflineFapApp>
+    ) : FapInstalledScreenState()
+
     data class Error(
         val throwable: Throwable
     ) : FapInstalledScreenState()

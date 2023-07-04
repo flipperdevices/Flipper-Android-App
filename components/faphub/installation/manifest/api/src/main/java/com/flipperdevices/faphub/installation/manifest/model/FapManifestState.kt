@@ -5,7 +5,7 @@ import kotlinx.collections.immutable.ImmutableList
 sealed class FapManifestState {
     object Loading : FapManifestState()
 
-    object NotLoaded : FapManifestState()
+    class NotLoaded(val throwable: Throwable) : FapManifestState()
 
     data class LoadedOffline(
         val items: ImmutableList<FapManifestItem>

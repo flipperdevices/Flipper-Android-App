@@ -30,6 +30,7 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
     implementation(libs.compose.paging)
+    implementation(libs.coil.compose)
 
     implementation(libs.lifecycle.viewmodel.ktx)
 
