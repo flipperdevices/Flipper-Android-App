@@ -10,7 +10,6 @@ import com.flipperdevices.faphub.dao.api.model.FapItemShort
 import com.flipperdevices.faphub.dao.api.model.SortType
 import com.flipperdevices.faphub.installation.manifest.api.FapManifestApi
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestEnrichedItem
-import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestState
 import com.flipperdevices.faphub.installation.queue.api.FapInstallationQueueApi
 import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest
@@ -22,6 +21,7 @@ import com.flipperdevices.faphub.installedtab.impl.model.OfflineFapApp
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
 import com.flipperdevices.faphub.target.model.FlipperTarget
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
@@ -182,6 +182,9 @@ class InstalledFapsViewModel @VMInject constructor(
         manifestItems: List<FapManifestEnrichedItem>,
         flipperTarget: FlipperTarget
     ): Flow<FapInstalledInternalLoadingState> {
+        if (manifestItems.isEmpty()) {
+            return flowOf(FapInstalledInternalLoadingState.Loaded(persistentListOf()))
+        }
         val faps = fapNetworkApi.getAllItem(
             applicationIds = manifestItems.map { it.fapManifestItem.uid },
             offset = 0,
@@ -223,37 +226,4 @@ private sealed class FapInstalledInternalLoadingState {
     data class Error(
         val throwable: Throwable
     ) : FapInstalledInternalLoadingState()
-}
-
-private sealed class FapInstalledInternalState : Comparable<FapInstalledInternalState> {
-    object UpdatingInProgress : FapInstalledInternalState()
-
-    class ReadyToUpdate(
-        val manifestItem: FapManifestItem
-    ) : FapInstalledInternalState()
-
-    object Installed : FapInstalledInternalState()
-
-    @Suppress("MagicNumber")
-    override fun compareTo(other: FapInstalledInternalState): Int {
-        return when (this) {
-            Installed -> when (other) {
-                Installed -> 0
-                is ReadyToUpdate -> -1
-                UpdatingInProgress -> -2
-            }
-
-            is ReadyToUpdate -> when (other) {
-                Installed -> +1
-                is ReadyToUpdate -> 0
-                UpdatingInProgress -> -1
-            }
-
-            UpdatingInProgress -> when (other) {
-                Installed -> +2
-                is ReadyToUpdate -> +1
-                UpdatingInProgress -> 0
-            }
-        }
-    }
 }

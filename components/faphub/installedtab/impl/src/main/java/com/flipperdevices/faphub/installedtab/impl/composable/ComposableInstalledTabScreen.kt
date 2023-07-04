@@ -7,16 +7,23 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.errors.ComposableThrowableError
 import com.flipperdevices.core.ui.ktx.elements.SwipeRefresh
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.faphub.dao.api.model.FapItemShort
+import com.flipperdevices.faphub.installedtab.impl.R
 import com.flipperdevices.faphub.installedtab.impl.composable.button.ComposableUpdateAllButton
 import com.flipperdevices.faphub.installedtab.impl.composable.common.ComposableLoadingItemDivider
 import com.flipperdevices.faphub.installedtab.impl.composable.offline.ComposableFapOfflineScreen
@@ -107,27 +114,48 @@ private fun LazyListScope.ComposableInstalledTabScreenState(
             )
         }
 
-        is FapInstalledScreenState.Loaded -> items(
-            count = screenState.faps.size,
-            key = { screenState.faps[it].id }
-        ) { index ->
-            val item = screenState.faps[index]
-            ComposableOnlineFapApp(
-                modifier = Modifier
-                    .clickable(
-                        onClick = { onOpenFapItem(item.id) }
-                    )
-                    .padding(vertical = 12.dp)
-                    .animateItemPlacement(),
-                fapItem = item,
-                installationButton = { modifier ->
-                    installationButton(item, modifier)
-                },
-                uninstallButton = { uninstallButtonOnline(item, it) }
-            )
-            if (index != screenState.faps.lastIndex) {
-                ComposableLoadingItemDivider()
+        is FapInstalledScreenState.Loaded -> if (screenState.faps.isEmpty()) {
+            item {
+                ComposableEmpty(Modifier.fillParentMaxSize())
+            }
+        } else {
+            items(
+                count = screenState.faps.size,
+                key = { screenState.faps[it].id }
+            ) { index ->
+                val item = screenState.faps[index]
+                ComposableOnlineFapApp(
+                    modifier = Modifier
+                        .clickable(
+                            onClick = { onOpenFapItem(item.id) }
+                        )
+                        .padding(vertical = 12.dp)
+                        .animateItemPlacement(),
+                    fapItem = item,
+                    installationButton = { modifier ->
+                        installationButton(item, modifier)
+                    },
+                    uninstallButton = { uninstallButtonOnline(item, it) }
+                )
+                if (index != screenState.faps.lastIndex) {
+                    ComposableLoadingItemDivider()
+                }
             }
         }
+    }
+}
+
+@Composable
+private fun ComposableEmpty(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = stringResource(R.string.faphub_installed_empty_desc),
+            color = LocalPallet.current.text40,
+            textAlign = TextAlign.Center,
+            style = LocalTypography.current.bodyR14
+        )
     }
 }

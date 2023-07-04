@@ -15,8 +15,8 @@ import com.flipperdevices.faphub.installedtab.impl.model.FapBatchUpdateButtonSta
 import com.flipperdevices.faphub.installedtab.impl.viewmodel.InstalledFapsViewModel
 import com.flipperdevices.faphub.uninstallbutton.api.FapUninstallApi
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
 import tangle.viewmodel.compose.tangleViewModel
+import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, FapInstalledApi::class)
 class FapInstalledApiImpl @Inject constructor(
