@@ -1,4 +1,4 @@
-package com.flipperdevices.faphub.fapscreen.impl.composable.header
+package com.flipperdevices.faphub.appcard.composable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,11 +17,41 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.faphub.appcard.composable.components.ComposableAppCategory
 import com.flipperdevices.faphub.appcard.composable.components.ComposableAppIcon
+import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.dao.api.model.FapItem
+import com.flipperdevices.faphub.dao.api.model.FapItemShort
 
 @Composable
 fun ComposableAppDialogBox(
     fapItem: FapItem,
+    modifier: Modifier = Modifier
+) {
+    ComposableAppDialogBox(
+        name = fapItem.name,
+        iconUrl = fapItem.picUrl,
+        category = fapItem.category,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun ComposableAppDialogBox(
+    fapItem: FapItemShort,
+    modifier: Modifier = Modifier
+) {
+    ComposableAppDialogBox(
+        name = fapItem.name,
+        iconUrl = fapItem.picUrl,
+        category = fapItem.category,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun ComposableAppDialogBox(
+    name: String,
+    iconUrl: String,
+    category: FapCategory,
     modifier: Modifier = Modifier
 ) = Row(
     modifier = modifier
@@ -34,17 +64,17 @@ fun ComposableAppDialogBox(
         modifier = Modifier
             .padding(vertical = 12.dp, horizontal = 8.dp)
             .size(42.dp),
-        url = fapItem.picUrl,
-        description = fapItem.name
+        url = iconUrl,
+        description = name
     )
     Column(
         verticalArrangement = Arrangement.spacedBy(1.dp, Alignment.CenterVertically)
     ) {
         Text(
-            text = fapItem.name,
+            text = name,
             style = LocalTypography.current.bodyM14,
             color = LocalPallet.current.text100
         )
-        ComposableAppCategory(category = fapItem.category)
+        ComposableAppCategory(category = category)
     }
 }

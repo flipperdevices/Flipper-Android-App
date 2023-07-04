@@ -173,7 +173,6 @@ class InstalledFapsViewModel @VMInject constructor(
                 error(it) { "Failed get installed items" }
                 installedFapsStateFlow.emit(FapInstalledInternalLoadingState.Error(it))
             }.collect {
-                info { "Load $it" }
                 installedFapsStateFlow.emit(it)
             }
         }

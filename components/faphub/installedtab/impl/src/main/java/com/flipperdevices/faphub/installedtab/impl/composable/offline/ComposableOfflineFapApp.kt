@@ -12,8 +12,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.PlatformTextStyle
-import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
@@ -24,6 +22,7 @@ import com.flipperdevices.faphub.installedtab.impl.model.OfflineFapApp
 @Composable
 fun ComposableOfflineFapApp(
     offlineFapApp: OfflineFapApp,
+    uninstallButton: @Composable (Modifier) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -48,35 +47,18 @@ fun ComposableOfflineFapApp(
                 color = LocalPallet.current.text100
             )
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                ComposableOfflineAppCategoryIcon(
-                    modifier = Modifier.padding(end = 4.dp),
-                    categoryName = offlineFapApp.category
-                )
-
-                Text(
-                    modifier = Modifier
-                        .height(14.dp),
-                    text = offlineFapApp.category,
-                    style = LocalTypography.current.subtitleR12.copy(
-                        platformStyle = PlatformTextStyle(
-                            includeFontPadding = false
-                        ),
-                        lineHeightStyle = LineHeightStyle(
-                            alignment = LineHeightStyle.Alignment.Center,
-                            trim = LineHeightStyle.Trim.Both
-                        )
-                    ),
-                    color = LocalPallet.current.text60
-                )
-            }
+            ComposableOfflineAppCategory(offlineFapApp.category)
         }
 
         ComposableOfflineAppButton(
             modifier = Modifier
                 .padding(vertical = 4.dp)
+        )
+
+        uninstallButton(
+            Modifier
+                .padding(start = 12.dp)
+                .size(34.dp)
         )
     }
 }
@@ -95,7 +77,8 @@ private fun PreviewComposableOfflineFapApp() {
                 category = "Game",
                 applicationUid = "test",
                 applicationAlias = "test"
-            )
+            ),
+            uninstallButton = {}
         )
     }
 }

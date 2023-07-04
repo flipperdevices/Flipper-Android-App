@@ -13,9 +13,6 @@ import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -31,7 +28,6 @@ import com.flipperdevices.faphub.appcard.composable.components.AppCardScreenshot
 import com.flipperdevices.faphub.dao.api.model.FapItem
 import com.flipperdevices.faphub.fapscreen.impl.R
 import com.flipperdevices.faphub.fapscreen.impl.composable.description.ComposableFapDescription
-import com.flipperdevices.faphub.fapscreen.impl.composable.header.ComposableDeleteConfirmDialog
 import com.flipperdevices.faphub.fapscreen.impl.composable.header.ComposableFapHeader
 import com.flipperdevices.faphub.fapscreen.impl.model.FapDetailedControlState
 import com.flipperdevices.faphub.fapscreen.impl.model.FapScreenLoadingState
@@ -43,46 +39,46 @@ fun ComposableFapScreen(
     navController: NavController,
     onBack: () -> Unit,
     onOpenDeviceTab: () -> Unit,
+    uninstallButton: @Composable (Modifier, FapItem) -> Unit,
     installationButton: @Composable (FapItem?, Modifier) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val viewModel = tangleViewModel<FapScreenViewModel>()
     val loadingState by viewModel.getLoadingState().collectAsState()
     val controlState by viewModel.getControlState().collectAsState()
-    loadingState.let { loadingStateLocal ->
-        when (loadingStateLocal) {
-            is FapScreenLoadingState.Error -> ComposableThrowableError(
-                throwable = loadingStateLocal.throwable,
-                onRetry = viewModel::onRefresh,
-                modifier = modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 14.dp)
-            )
 
-            is FapScreenLoadingState.Loaded -> ComposableFapScreenInternal(
-                fapItem = loadingStateLocal.fapItem,
-                onBack = onBack,
-                installationButton = installationButton,
-                modifier = modifier,
-                controlState = controlState,
-                onDelete = viewModel::onDelete,
-                onOpenDeviceTab = onOpenDeviceTab,
-                shareUrl = loadingStateLocal.shareUrl,
-                onReportApp = { viewModel.onOpenReportApp(navController) }
-            )
+    when (val loadingStateLocal = loadingState) {
+        is FapScreenLoadingState.Error -> ComposableThrowableError(
+            throwable = loadingStateLocal.throwable,
+            onRetry = viewModel::onRefresh,
+            modifier = modifier
+                .fillMaxSize()
+                .padding(horizontal = 14.dp)
+        )
 
-            FapScreenLoadingState.Loading -> ComposableFapScreenInternal(
-                fapItem = null,
-                onBack = onBack,
-                installationButton = installationButton,
-                modifier = modifier,
-                controlState = controlState,
-                onDelete = viewModel::onDelete,
-                onOpenDeviceTab = onOpenDeviceTab,
-                shareUrl = null,
-                onReportApp = {}
-            )
-        }
+        is FapScreenLoadingState.Loaded -> ComposableFapScreenInternal(
+            fapItem = loadingStateLocal.fapItem,
+            onBack = onBack,
+            installationButton = installationButton,
+            modifier = modifier,
+            controlState = controlState,
+            uninstallButton = { uninstallButton(it, loadingStateLocal.fapItem) },
+            onOpenDeviceTab = onOpenDeviceTab,
+            shareUrl = loadingStateLocal.shareUrl,
+            onReportApp = { viewModel.onOpenReportApp(navController) }
+        )
+
+        FapScreenLoadingState.Loading -> ComposableFapScreenInternal(
+            fapItem = null,
+            onBack = onBack,
+            installationButton = installationButton,
+            modifier = modifier,
+            controlState = controlState,
+            uninstallButton = {},
+            onOpenDeviceTab = onOpenDeviceTab,
+            shareUrl = null,
+            onReportApp = {}
+        )
     }
 }
 
@@ -92,31 +88,19 @@ private fun ComposableFapScreenInternal(
     shareUrl: String?,
     onBack: () -> Unit,
     controlState: FapDetailedControlState,
-    onDelete: () -> Unit,
+    uninstallButton: @Composable (Modifier) -> Unit,
     onOpenDeviceTab: () -> Unit,
     onReportApp: () -> Unit,
     installationButton: @Composable (FapItem?, Modifier) -> Unit,
     modifier: Modifier = Modifier
 ) = Column(modifier.verticalScroll(rememberScrollState())) {
     ComposableFapScreenBar(fapName = fapItem?.name, url = shareUrl, onBack = onBack)
-    var showDeleteDialog by remember { mutableStateOf(false) }
-    if (showDeleteDialog && fapItem != null) {
-        ComposableDeleteConfirmDialog(
-            fapItem = fapItem,
-            onConfirmDelete = onDelete,
-            onDismiss = {
-                showDeleteDialog = false
-            }
-        )
-    }
     ComposableFapHeader(
         modifier = Modifier.padding(start = 14.dp, end = 14.dp, top = 14.dp),
         fapItem = fapItem,
         installationButton = installationButton,
         controlState = controlState,
-        onDelete = {
-            showDeleteDialog = true
-        },
+        uninstallButton = uninstallButton,
         onOpenDeviceTab = onOpenDeviceTab
     )
     Divider(

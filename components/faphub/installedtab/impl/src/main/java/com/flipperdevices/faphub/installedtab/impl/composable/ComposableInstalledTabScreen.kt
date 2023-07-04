@@ -20,6 +20,7 @@ import com.flipperdevices.faphub.installedtab.impl.composable.button.ComposableU
 import com.flipperdevices.faphub.installedtab.impl.composable.common.ComposableLoadingItemDivider
 import com.flipperdevices.faphub.installedtab.impl.composable.offline.ComposableFapOfflineScreen
 import com.flipperdevices.faphub.installedtab.impl.model.FapInstalledScreenState
+import com.flipperdevices.faphub.installedtab.impl.model.OfflineFapApp
 import com.flipperdevices.faphub.installedtab.impl.viewmodel.InstalledFapsViewModel
 import tangle.viewmodel.compose.tangleViewModel
 
@@ -28,6 +29,8 @@ private const val DEFAULT_FAP_COUNT = 20
 @Composable
 fun ComposableInstalledTabScreen(
     onOpenFapItem: (String) -> Unit,
+    uninstallButtonOffline: @Composable (OfflineFapApp, Modifier) -> Unit,
+    uninstallButtonOnline: @Composable (FapItemShort, Modifier) -> Unit,
     installationButton: @Composable (FapItemShort?, Modifier) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -66,7 +69,9 @@ fun ComposableInstalledTabScreen(
                 ComposableInstalledTabScreenState(
                     screenState = stateLocal,
                     onOpenFapItem = onOpenFapItem,
-                    installationButton = installationButton
+                    installationButton = installationButton,
+                    uninstallButtonOffline = uninstallButtonOffline,
+                    uninstallButtonOnline = uninstallButtonOnline
                 )
             }
         }
@@ -77,13 +82,16 @@ fun ComposableInstalledTabScreen(
 private fun LazyListScope.ComposableInstalledTabScreenState(
     screenState: FapInstalledScreenState,
     onOpenFapItem: (String) -> Unit,
+    uninstallButtonOffline: @Composable (OfflineFapApp, Modifier) -> Unit,
+    uninstallButtonOnline: @Composable (FapItemShort, Modifier) -> Unit,
     installationButton: @Composable (FapItemShort?, Modifier) -> Unit
 ) {
     when (screenState) {
         is FapInstalledScreenState.Error -> {}
         is FapInstalledScreenState.LoadedOffline -> ComposableFapOfflineScreen(
             offlineApps = screenState.faps,
-            onOpen = onOpenFapItem
+            onOpen = onOpenFapItem,
+            uninstallButton = uninstallButtonOffline
         )
 
         FapInstalledScreenState.Loading -> items(DEFAULT_FAP_COUNT) {

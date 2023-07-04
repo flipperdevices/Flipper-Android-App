@@ -12,7 +12,7 @@ import com.flipperdevices.faphub.fapscreen.impl.model.FapDetailedControlState
 fun ComposableFapHeader(
     fapItem: FapItem?,
     controlState: FapDetailedControlState,
-    onDelete: () -> Unit,
+    uninstallButton: @Composable (Modifier) -> Unit,
     onOpenDeviceTab: () -> Unit,
     installationButton: @Composable (FapItem?, Modifier) -> Unit,
     modifier: Modifier = Modifier
@@ -32,7 +32,7 @@ fun ComposableFapHeader(
         modifier = Modifier.padding(bottom = 12.dp),
         installationButton = installationButton,
         controlState = controlState,
-        onDelete = onDelete
+        uninstallButton = uninstallButton
     )
     if (fapItem != null) {
         ComposableFapBuildStatus(
