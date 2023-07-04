@@ -5,13 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.dao.api.model.FapItemShort
 import com.flipperdevices.faphub.installation.manifest.api.FapManifestApi
-import com.flipperdevices.faphub.installation.manifest.model.FapManifestState
 import com.flipperdevices.faphub.installation.queue.api.FapInstallationQueueApi
 import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest
-import com.flipperdevices.faphub.installation.stateprovider.api.api.FapInstallationStateManager
 import com.flipperdevices.faphub.installedtab.impl.model.FapBatchUpdateButtonState
 import com.flipperdevices.faphub.installedtab.impl.model.FapInstalledInternalState
 import com.flipperdevices.faphub.installedtab.impl.model.FapInstalledScreenState
@@ -27,31 +24,22 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import tangle.viewmodel.VMInject
 
 class InstalledFapsViewModel @VMInject constructor(
-    private val fapNetworkApi: FapNetworkApi,
     private val fapManifestApi: FapManifestApi,
-    private val fapStateManager: FapInstallationStateManager,
     private val queueApi: FapInstallationQueueApi,
-    private val targetProviderApi: FlipperTargetProviderApi
+    private val targetProviderApi: FlipperTargetProviderApi,
+    private val fapsStateProducer: InstalledFapsStateProducer
 ) : ViewModel(), LogTagProvider {
     override val TAG = "InstalledFapsViewModel"
     private var fetcherJob: Job? = null
-    private val fapsStateProducer = InstalledFapsStateProducer(
-        scope = viewModelScope,
-        queueApi = queueApi,
-        fapNetworkApi = fapNetworkApi,
-        fapStateManager = fapStateManager
-    )
 
     private val installedFapsStateFlow = MutableStateFlow<FapInstalledInternalLoadingState>(
         FapInstalledInternalLoadingState.Loading
@@ -143,36 +131,15 @@ class InstalledFapsViewModel @VMInject constructor(
     }
 
     fun refresh() {
+        fapsStateProducer.refresh(viewModelScope)
         val oldJob = fetcherJob
         fetcherJob = viewModelScope.launch {
             oldJob?.cancelAndJoin()
             installedFapsStateFlow.emit(FapInstalledInternalLoadingState.Loading)
             fapManifestApi.invalidateAsync()
-            combine(
-                fapManifestApi.getManifestFlow(),
-                targetProviderApi.getFlipperTarget().filterNotNull()
-            ) { manifestState, flipperTarget ->
-                manifestState to flipperTarget
-            }.flatMapLatest { (manifestState, flipperTarget) ->
-                when (manifestState) {
-                    is FapManifestState.LoadedOffline -> flowOf(
-                        FapInstalledInternalLoadingState.LoadedOffline(
-                            manifestState.items.map { OfflineFapApp(it) }.toImmutableList()
-                        )
-                    )
 
-                    FapManifestState.Loading -> flowOf(FapInstalledInternalLoadingState.Loading)
-                    is FapManifestState.NotLoaded -> flowOf(
-                        FapInstalledInternalLoadingState.Error(
-                            manifestState.throwable
-                        )
-                    )
-
-                    is FapManifestState.Loaded -> fapsStateProducer.getLoadedFapsFlow(
-                        manifestState.items,
-                        flipperTarget
-                    )
-                }
+            targetProviderApi.getFlipperTarget().filterNotNull().flatMapLatest { target ->
+                fapsStateProducer.getLoadedFapsFlow(target)
             }.catch {
                 if (it is CancellationException) {
                     return@catch
