@@ -1,6 +1,7 @@
 package com.flipperdevices.faphub.installedtab.impl.composable
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,11 +15,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.errors.ComposableThrowableError
 import com.flipperdevices.core.ui.ktx.elements.SwipeRefresh
-import com.flipperdevices.faphub.appcard.composable.AppCard
+import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.faphub.dao.api.model.FapItemShort
 import com.flipperdevices.faphub.installedtab.impl.composable.button.ComposableUpdateAllButton
 import com.flipperdevices.faphub.installedtab.impl.composable.common.ComposableLoadingItemDivider
 import com.flipperdevices.faphub.installedtab.impl.composable.offline.ComposableFapOfflineScreen
+import com.flipperdevices.faphub.installedtab.impl.composable.online.ComposableOnlineFapApp
 import com.flipperdevices.faphub.installedtab.impl.model.FapInstalledScreenState
 import com.flipperdevices.faphub.installedtab.impl.model.OfflineFapApp
 import com.flipperdevices.faphub.installedtab.impl.viewmodel.InstalledFapsViewModel
@@ -95,12 +97,13 @@ private fun LazyListScope.ComposableInstalledTabScreenState(
         )
 
         FapInstalledScreenState.Loading -> items(DEFAULT_FAP_COUNT) {
-            AppCard(
+            ComposableOnlineFapApp(
                 modifier = Modifier.padding(vertical = 12.dp),
                 fapItem = null,
                 installationButton = { modifier ->
                     installationButton(null, modifier)
-                }
+                },
+                uninstallButton = { Box(it.placeholderConnecting()) }
             )
         }
 
@@ -109,7 +112,7 @@ private fun LazyListScope.ComposableInstalledTabScreenState(
             key = { screenState.faps[it].id }
         ) { index ->
             val item = screenState.faps[index]
-            AppCard(
+            ComposableOnlineFapApp(
                 modifier = Modifier
                     .clickable(
                         onClick = { onOpenFapItem(item.id) }
@@ -119,7 +122,8 @@ private fun LazyListScope.ComposableInstalledTabScreenState(
                 fapItem = item,
                 installationButton = { modifier ->
                     installationButton(item, modifier)
-                }
+                },
+                uninstallButton = { uninstallButtonOnline(item, it) }
             )
             if (index != screenState.faps.lastIndex) {
                 ComposableLoadingItemDivider()
