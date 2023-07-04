@@ -85,12 +85,16 @@ data class FlipperFileFormat(
         }
 
         fun fromFileContent(fileContent: String): FlipperFileFormat {
-            val pairs = fileContent.split("\n")
+            val pairs = fileContent.split("\n\r")
+                .asSequence()
+                .map { it.split("\n") }.flatten()
+                .map { it.split("\r") }.flatten()
                 .filterNot { it.startsWith("#") }
                 .map {
                     it.substringBefore(":").trim() to
                         it.substringAfter(":").trim()
                 }.filterNot { it.first.isBlank() || it.second.isBlank() }
+                .toList()
 
             return FlipperFileFormat(pairs)
         }
