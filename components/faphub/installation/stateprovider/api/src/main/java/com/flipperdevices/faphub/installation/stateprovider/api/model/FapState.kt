@@ -18,11 +18,13 @@ sealed class FapState {
     data class ReadyToUpdate(val from: FapManifestItem) : FapState()
 
     data class InstallationInProgress(
+        val active: Boolean,
         @FloatRange(from = 0.0, to = 1.0)
         val progress: Float
     ) : FapState()
 
     data class UpdatingInProgress(
+        val active: Boolean,
         @FloatRange(from = 0.0, to = 1.0)
         val progress: Float
     ) : FapState()

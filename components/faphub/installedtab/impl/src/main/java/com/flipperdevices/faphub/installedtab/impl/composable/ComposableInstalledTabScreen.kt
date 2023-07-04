@@ -28,6 +28,7 @@ import com.flipperdevices.faphub.installedtab.impl.composable.button.ComposableU
 import com.flipperdevices.faphub.installedtab.impl.composable.common.ComposableLoadingItemDivider
 import com.flipperdevices.faphub.installedtab.impl.composable.offline.ComposableFapOfflineScreen
 import com.flipperdevices.faphub.installedtab.impl.composable.online.ComposableOnlineFapApp
+import com.flipperdevices.faphub.installedtab.impl.model.FapInstalledInternalState
 import com.flipperdevices.faphub.installedtab.impl.model.FapInstalledScreenState
 import com.flipperdevices.faphub.installedtab.impl.model.OfflineFapApp
 import com.flipperdevices.faphub.installedtab.impl.viewmodel.InstalledFapsViewModel
@@ -121,9 +122,9 @@ private fun LazyListScope.ComposableInstalledTabScreenState(
         } else {
             items(
                 count = screenState.faps.size,
-                key = { screenState.faps[it].id }
+                key = { screenState.faps[it].first.id }
             ) { index ->
-                val item = screenState.faps[index]
+                val (item, state) = screenState.faps[index]
                 ComposableOnlineFapApp(
                     modifier = Modifier
                         .clickable(
@@ -135,7 +136,19 @@ private fun LazyListScope.ComposableInstalledTabScreenState(
                     installationButton = { modifier ->
                         installationButton(item, modifier)
                     },
-                    uninstallButton = { uninstallButtonOnline(item, it) }
+                    uninstallButton = {
+                        when (state) {
+                            FapInstalledInternalState.Installed,
+                            is FapInstalledInternalState.ReadyToUpdate ->
+                                uninstallButtonOnline(item, it)
+
+                            FapInstalledInternalState.InstallingInProgress,
+                            FapInstalledInternalState.InstallingInProgressActive,
+                            FapInstalledInternalState.UpdatingInProgress,
+                            FapInstalledInternalState.UpdatingInProgressActive -> {
+                            }
+                        }
+                    }
                 )
                 if (index != screenState.faps.lastIndex) {
                     ComposableLoadingItemDivider()

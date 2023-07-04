@@ -7,30 +7,26 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.dao.api.model.FapItemShort
-import com.flipperdevices.faphub.dao.api.model.SortType
 import com.flipperdevices.faphub.installation.manifest.api.FapManifestApi
-import com.flipperdevices.faphub.installation.manifest.model.FapManifestEnrichedItem
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestState
 import com.flipperdevices.faphub.installation.queue.api.FapInstallationQueueApi
 import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest
 import com.flipperdevices.faphub.installation.stateprovider.api.api.FapInstallationStateManager
-import com.flipperdevices.faphub.installation.stateprovider.api.model.FapState
 import com.flipperdevices.faphub.installedtab.impl.model.FapBatchUpdateButtonState
+import com.flipperdevices.faphub.installedtab.impl.model.FapInstalledInternalState
 import com.flipperdevices.faphub.installedtab.impl.model.FapInstalledScreenState
 import com.flipperdevices.faphub.installedtab.impl.model.OfflineFapApp
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
-import com.flipperdevices.faphub.target.model.FlipperTarget
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
@@ -50,6 +46,13 @@ class InstalledFapsViewModel @VMInject constructor(
 ) : ViewModel(), LogTagProvider {
     override val TAG = "InstalledFapsViewModel"
     private var fetcherJob: Job? = null
+    private val fapsStateProducer = InstalledFapsStateProducer(
+        scope = viewModelScope,
+        queueApi = queueApi,
+        fapNetworkApi = fapNetworkApi,
+        fapStateManager = fapStateManager
+    )
+
     private val installedFapsStateFlow = MutableStateFlow<FapInstalledInternalLoadingState>(
         FapInstalledInternalLoadingState.Loading
     )
@@ -64,8 +67,12 @@ class InstalledFapsViewModel @VMInject constructor(
                 is FapInstalledInternalLoadingState.Error -> FapInstalledScreenState.Error(it.throwable)
                 FapInstalledInternalLoadingState.Loading -> FapInstalledScreenState.Loading
                 is FapInstalledInternalLoadingState.Loaded -> FapInstalledScreenState.Loaded(
-                    it.faps.sortedByDescending { (_, fapState) -> fapState }
-                        .map { (fapItem, _) -> fapItem }.toImmutableList()
+                    it.faps.sortedWith(
+                        compareBy(
+                            { (_, fapState) -> fapState },
+                            { (fapItem, _) -> fapItem.name }
+                        )
+                    ).toImmutableList()
                 )
 
                 is FapInstalledInternalLoadingState.LoadedOffline -> FapInstalledScreenState.LoadedOffline(
@@ -111,7 +118,7 @@ class InstalledFapsViewModel @VMInject constructor(
 
         toUpdate.forEach { (fapItem, state) ->
             if (state is FapInstalledInternalState.ReadyToUpdate) {
-                queueApi.enqueue(
+                queueApi.enqueueSync(
                     FapActionRequest.Update(
                         from = state.manifestItem,
                         toVersion = fapItem.upToDateVersion,
@@ -131,7 +138,7 @@ class InstalledFapsViewModel @VMInject constructor(
         }
         state.faps.filter { (_, state) -> state is FapInstalledInternalState.UpdatingInProgress }
             .forEach { (fapItem, _) ->
-                queueApi.enqueue(FapActionRequest.Cancel(fapItem.id))
+                queueApi.enqueueSync(FapActionRequest.Cancel(fapItem.id))
             }
     }
 
@@ -161,7 +168,7 @@ class InstalledFapsViewModel @VMInject constructor(
                         )
                     )
 
-                    is FapManifestState.Loaded -> getLoadedFapsState(
+                    is FapManifestState.Loaded -> fapsStateProducer.getLoadedFapsFlow(
                         manifestState.items,
                         flipperTarget
                     )
@@ -172,47 +179,14 @@ class InstalledFapsViewModel @VMInject constructor(
                 }
                 error(it) { "Failed get installed items" }
                 installedFapsStateFlow.emit(FapInstalledInternalLoadingState.Error(it))
-            }.collect {
+            }.collectLatest {
                 installedFapsStateFlow.emit(it)
             }
         }
     }
-
-    private suspend fun getLoadedFapsState(
-        manifestItems: List<FapManifestEnrichedItem>,
-        flipperTarget: FlipperTarget
-    ): Flow<FapInstalledInternalLoadingState> {
-        if (manifestItems.isEmpty()) {
-            return flowOf(FapInstalledInternalLoadingState.Loaded(persistentListOf()))
-        }
-        val faps = fapNetworkApi.getAllItem(
-            applicationIds = manifestItems.map { it.fapManifestItem.uid },
-            offset = 0,
-            limit = manifestItems.size,
-            sortType = SortType.UPDATE_AT_DESC,
-            target = flipperTarget
-        ).getOrThrow().associateBy { it.id }
-        val flows = manifestItems.mapNotNull { manifestItem ->
-            faps[manifestItem.fapManifestItem.uid]?.let { manifestItem to it }
-        }.map { (_, fapItem) ->
-            fapStateManager.getFapStateFlow(
-                applicationUid = fapItem.id,
-                currentVersion = fapItem.upToDateVersion
-            ).map { Pair(fapItem, it) }
-        }
-        return combine(flows) { items ->
-            items.map { (fapItem, state) ->
-                fapItem to when (state) {
-                    is FapState.ReadyToUpdate -> FapInstalledInternalState.ReadyToUpdate(state.from)
-                    is FapState.UpdatingInProgress -> FapInstalledInternalState.UpdatingInProgress
-                    else -> FapInstalledInternalState.Installed
-                }
-            }
-        }.map { FapInstalledInternalLoadingState.Loaded(it.toImmutableList()) }
-    }
 }
 
-private sealed class FapInstalledInternalLoadingState {
+sealed class FapInstalledInternalLoadingState {
     object Loading : FapInstalledInternalLoadingState()
 
     data class LoadedOffline(
