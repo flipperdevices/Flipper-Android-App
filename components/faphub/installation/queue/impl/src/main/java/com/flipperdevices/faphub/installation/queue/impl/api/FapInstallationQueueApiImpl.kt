@@ -7,10 +7,10 @@ import com.flipperdevices.faphub.installation.queue.api.FapInstallationQueueApi
 import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest
 import com.flipperdevices.faphub.installation.queue.api.model.FapQueueState
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import javax.inject.Inject
+import javax.inject.Singleton
 
 @Singleton
 @ContributesBinding(AppGraph::class, FapInstallationQueueApi::class)
@@ -26,8 +26,8 @@ class FapInstallationQueueApiImpl @Inject constructor(
             queueRunner.currentTaskFlow(),
             queueRunner.pendingTasksFlow()
         ) { currentTask, pendingTasks ->
-            val state = if (currentTask != null
-                && currentTask.request.applicationUid == applicationUid
+            val state = if (currentTask != null &&
+                currentTask.request.applicationUid == applicationUid
             ) {
                 currentTask.toFapQueueState()
             } else {
