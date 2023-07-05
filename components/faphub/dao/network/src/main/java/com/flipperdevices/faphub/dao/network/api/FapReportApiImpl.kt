@@ -2,8 +2,8 @@ package com.flipperdevices.faphub.dao.network.api
 
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.faphub.dao.api.FapReportApi
-import com.flipperdevices.faphub.dao.network.retrofit.api.KtorfitApplicationApi
-import com.flipperdevices.faphub.dao.network.retrofit.model.KtorfitReport
+import com.flipperdevices.faphub.dao.network.ktorfit.api.KtorfitApplicationApi
+import com.flipperdevices.faphub.dao.network.ktorfit.model.KtorfitReport
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 

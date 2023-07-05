@@ -4,7 +4,7 @@ import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.faphub.dao.api.FapVersionApi
-import com.flipperdevices.faphub.dao.network.retrofit.api.KtorfitVersionApi
+import com.flipperdevices.faphub.dao.network.ktorfit.api.KtorfitVersionApi
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
