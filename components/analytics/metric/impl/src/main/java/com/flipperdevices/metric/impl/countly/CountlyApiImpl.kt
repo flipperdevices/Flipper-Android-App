@@ -36,7 +36,7 @@ class CountlyApiImpl @Inject constructor(
 
     override fun reportEvent(
         id: String,
-        params: Map<String, Any>?
+        params: Map<String, Any?>?
     ) {
         scope.launch(Dispatchers.Default) {
             try {
@@ -49,7 +49,7 @@ class CountlyApiImpl @Inject constructor(
 
     private fun reportEventUnsafe(
         id: String,
-        params: Map<String, Any>?
+        params: Map<String, Any?>?
     ) {
         verbose { "Report event $id with $params" }
         if (params == null) {
@@ -84,7 +84,7 @@ class CountlyApiImpl @Inject constructor(
     }
 }
 
-private fun filterParams(params: Map<String, Any>): Map<String, Any> {
+private fun filterParams(params: Map<String, Any?>): Map<String, Any?> {
     return params.mapValues {
         return@mapValues when (val mapValue = it.value) {
             is String,
@@ -92,6 +92,7 @@ private fun filterParams(params: Map<String, Any>): Map<String, Any> {
             is Double,
             is Boolean -> mapValue
             is Long -> mapValue.toIntSafe()
+            null -> null
             else -> mapValue.toString()
         }
     }
