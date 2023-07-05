@@ -123,7 +123,18 @@ class FapNetworkApiImpl @Inject constructor(
     override suspend fun getFapItemById(target: FlipperTarget, id: String) = catchWithDispatcher {
         debug { "Request fap item by id $id" }
 
-        val response = applicationApi.get(id)
+        val response = when (target) {
+            is FlipperTarget.Received -> applicationApi.get(
+                id = id,
+                target = target.target,
+                sdkApiVersion = target.sdk.toString()
+            )
+            FlipperTarget.NotConnected,
+            FlipperTarget.Unsupported -> applicationApi.get(
+                id = id
+            )
+        }
+
         debug { "Provider response: $response" }
         val category = categoryApi.get(target, response.categoryId)
             ?: error("Category can't be empty")

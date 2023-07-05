@@ -61,29 +61,31 @@ private fun ComposableGithubLink(
     @StringRes textId: Int,
     url: String?,
     modifier: Modifier = Modifier
-) = Row(
-    modifier = modifier,
-    verticalAlignment = Alignment.CenterVertically
 ) {
-    val text = stringResource(textId)
-    Icon(
-        modifier = Modifier.size(24.dp),
-        painter = painterResource(R.drawable.ic_github),
-        contentDescription = text
-    )
     val uriHandler = LocalUriHandler.current
-    Text(
-        modifier = Modifier
-            .padding(start = 8.dp)
-            .clickable {
-                if (url != null) {
-                    uriHandler.openUri(url)
-                }
-            },
-        text = text,
-        style = LocalTypography.current.bodyR14.copy(
-            textDecoration = TextDecoration.Underline
-        ),
-        color = LocalPallet.current.text100
-    )
+
+    Row(
+        modifier = modifier.clickable {
+            if (url != null) {
+                uriHandler.openUri(url)
+            }
+        },
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        val text = stringResource(textId)
+        Icon(
+            modifier = Modifier.size(24.dp),
+            painter = painterResource(R.drawable.ic_github),
+            contentDescription = text
+        )
+        Text(
+            modifier = Modifier
+                .padding(start = 8.dp),
+            text = text,
+            style = LocalTypography.current.bodyR14.copy(
+                textDecoration = TextDecoration.Underline
+            ),
+            color = LocalPallet.current.text100
+        )
+    }
 }

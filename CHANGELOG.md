@@ -2,6 +2,7 @@
 
 # 1.5.2 - In Progress
 
+- [FIX] Crash application on cancel update
 - [FIX] White Screen after import key
 - [FIX] Add confirm delete dialog and some small fixes
 - [FIX] Hide self updater dialog on click, add self updater in debug mode, remove nfc mfkey32 from options
@@ -18,6 +19,7 @@
 - [Feature] Deeplik on open fap application
 - [Feature] Add url to release catalog
 - [Feature] Add build status card to app screen
+- [Feature] Add report app button
 - [Refactor] Migrate all feature components modules from KSP to Anvil
 - [Refactor] Migrate to Ktorfit
 - [Refactor] Migrate key emulate to new module, decompose Emulate Helper

@@ -209,6 +209,8 @@ include(
     ":components:faphub:target:api",
     ":components:faphub:target:impl",
     ":components:faphub:utils",
+    ":components:faphub:report:api",
+    ":components:faphub:report:impl",
 
     ":components:selfupdater:api",
     ":components:selfupdater:googleplay",

@@ -4,5 +4,5 @@ import com.flipperdevices.core.data.SemVer
 
 data class FapMetaInformation(
     val version: SemVer,
-    val sizeBytes: Long
+    val sizeBytes: Long?
 )

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fap_report_title">Report an App</string>
+    <string name="fap_report_field_title">Description</string>
+    <string name="fap_report_field_desc">Describe why are you reporting this app</string>
+    <string name="fap_report_field_btn">Submit</string>
+</resources>

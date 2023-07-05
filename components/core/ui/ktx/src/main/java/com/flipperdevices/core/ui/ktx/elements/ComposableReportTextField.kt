@@ -1,4 +1,4 @@
-package com.flipperdevices.analytics.shake2report.impl.composable.components
+package com.flipperdevices.core.ui.ktx.elements
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -24,7 +24,7 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-internal fun ComposableReportTextField(
+fun ComposableReportTextField(
     value: String,
     title: @Composable () -> Unit,
     placeholder: @Composable () -> Unit,
@@ -43,11 +43,11 @@ internal fun ComposableReportTextField(
                 .padding(top = 12.dp)
                 .border(
                     width = 1.dp,
-                    color = LocalPallet.current.borderViewReportBug,
+                    color = LocalPallet.current.reportBorder,
                     shape = RoundedCornerShape(8.dp)
                 ),
             textStyle = LocalTypography.current.bodyR14.copy(
-                color = LocalPallet.current.text100
+                color = LocalPallet.current.text100,
             ),
             enabled = enabled,
             singleLine = maxLines == 1,

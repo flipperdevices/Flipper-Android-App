@@ -1,10 +1,13 @@
 package com.flipperdevices.faphub.dao.network.retrofit.api
 
 import com.flipperdevices.faphub.dao.network.retrofit.model.KtorfitApplicationShort
+import com.flipperdevices.faphub.dao.network.retrofit.model.KtorfitReport
 import com.flipperdevices.faphub.dao.network.retrofit.model.detailed.KtorfitApplicationDetailed
 import com.flipperdevices.faphub.dao.network.retrofit.model.types.ApplicationSortType
 import com.flipperdevices.faphub.dao.network.retrofit.model.types.SortOrderType
+import de.jensklingenberg.ktorfit.http.Body
 import de.jensklingenberg.ktorfit.http.GET
+import de.jensklingenberg.ktorfit.http.POST
 import de.jensklingenberg.ktorfit.http.Path
 import de.jensklingenberg.ktorfit.http.Query
 
@@ -57,5 +60,15 @@ interface KtorfitApplicationApi {
     ): List<KtorfitApplicationShort>
 
     @GET("application/{uid}")
-    suspend fun get(@Path("uid") id: String): KtorfitApplicationDetailed
+    suspend fun get(
+        @Path("uid")
+        id: String,
+        @Query("target")
+        target: String? = null,
+        @Query("api")
+        sdkApiVersion: String? = null,
+    ): KtorfitApplicationDetailed
+
+    @POST("application/{uid}/issue")
+    suspend fun report(@Path("uid") applicationUid: String, @Body report: KtorfitReport)
 }

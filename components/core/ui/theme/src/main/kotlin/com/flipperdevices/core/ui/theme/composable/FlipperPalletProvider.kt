@@ -93,7 +93,7 @@ private val lightPallet = FlipperPallet(
     fapHubDeleteDialogBackground = Color(0xFFF6F6F6),
 
     flipperDisableButton = Color(0xFFC1C1C1),
-    borderViewReportBug = Color(0xFFD6D6D6),
+    reportBorder = Color(0xFFD6D6D6),
 
     screenStreamingBorderColor = Color(0xFF000000),
     screenStreamingNotConnectedColor = Color(0xFFDFDFDF)
@@ -145,7 +145,7 @@ private val darkPallet = FlipperPallet(
     fapHubDeleteDialogBackground = Color(0xFF232323),
 
     flipperDisableButton = Color(0xFFAAAAAA),
-    borderViewReportBug = Color(0xFF616161),
+    reportBorder = Color(0xFF616161),
 
     screenStreamingBorderColor = Color(0x7FFF8200),
     screenStreamingNotConnectedColor = Color(0xFF303030)

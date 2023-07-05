@@ -58,7 +58,7 @@ internal fun FlipperPallet.toAnimatePallet() = FlipperPallet(
     fapHubDeleteDialogBackground = animateColor(targetValue = fapHubDeleteDialogBackground),
 
     flipperDisableButton = animateColor(flipperDisableButton),
-    borderViewReportBug = animateColor(borderViewReportBug),
+    reportBorder = animateColor(reportBorder),
 
     screenStreamingBorderColor = animateColor(screenStreamingBorderColor),
     screenStreamingNotConnectedColor = animateColor(screenStreamingNotConnectedColor)

@@ -22,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.navigation.NavController
 import com.flipperdevices.core.ui.errors.ComposableThrowableError
 import com.flipperdevices.core.ui.ktx.OrangeAppBar
 import com.flipperdevices.core.ui.ktx.clickableRipple
@@ -39,6 +40,7 @@ import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 fun ComposableFapScreen(
+    navController: NavController,
     onBack: () -> Unit,
     onOpenDeviceTab: () -> Unit,
     installationButton: @Composable (FapItem?, Modifier) -> Unit,
@@ -65,7 +67,8 @@ fun ComposableFapScreen(
                 controlState = controlState,
                 onDelete = viewModel::onDelete,
                 onOpenDeviceTab = onOpenDeviceTab,
-                shareUrl = loadingStateLocal.shareUrl
+                shareUrl = loadingStateLocal.shareUrl,
+                onReportApp = { viewModel.onOpenReportApp(navController) }
             )
 
             FapScreenLoadingState.Loading -> ComposableFapScreenInternal(
@@ -76,7 +79,8 @@ fun ComposableFapScreen(
                 controlState = controlState,
                 onDelete = viewModel::onDelete,
                 onOpenDeviceTab = onOpenDeviceTab,
-                shareUrl = null
+                shareUrl = null,
+                onReportApp = {}
             )
         }
     }
@@ -90,6 +94,7 @@ private fun ComposableFapScreenInternal(
     controlState: FapDetailedControlState,
     onDelete: () -> Unit,
     onOpenDeviceTab: () -> Unit,
+    onReportApp: () -> Unit,
     installationButton: @Composable (FapItem?, Modifier) -> Unit,
     modifier: Modifier = Modifier
 ) = Column(modifier.verticalScroll(rememberScrollState())) {
@@ -130,7 +135,8 @@ private fun ComposableFapScreenInternal(
     )
     ComposableFapDescription(
         modifier = Modifier.padding(start = 14.dp, end = 14.dp, bottom = 36.dp),
-        fapItem = fapItem
+        fapItem = fapItem,
+        onReportApp = onReportApp
     )
 }
 
