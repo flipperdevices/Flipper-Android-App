@@ -17,6 +17,7 @@ import com.flipperdevices.faphub.fapscreen.impl.composable.ComposableFapScreen
 import com.flipperdevices.faphub.installation.button.api.FapButtonSize
 import com.flipperdevices.faphub.installation.button.api.FapInstallationUIApi
 import com.flipperdevices.faphub.installation.button.api.toFapButtonConfig
+import com.flipperdevices.faphub.uninstallbutton.api.FapUninstallApi
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
 import javax.inject.Inject
@@ -29,7 +30,8 @@ private const val DEEPLINK_FAP_ID = "${DEEPLINK_SCHEME}fap_id={$FAP_ID_KEY}"
 @ContributesMultibinding(AppGraph::class, ComposableFeatureEntry::class)
 class FapScreenApiImpl @Inject constructor(
     private val installationUIApi: FapInstallationUIApi,
-    private val bottomBarApi: BottomNavigationHandleDeeplink
+    private val bottomBarApi: BottomNavigationHandleDeeplink,
+    private val uninstallApi: FapUninstallApi
 ) : FapScreenApi {
     private val fapArguments = listOf(
         navArgument(FAP_ID_KEY) {
@@ -68,7 +70,13 @@ class FapScreenApiImpl @Inject constructor(
                         fapButtonSize = FapButtonSize.LARGE
                     )
                 },
-                onOpenDeviceTab = { bottomBarApi.onChangeTab(BottomBarTab.DEVICE, force = true) }
+                onOpenDeviceTab = { bottomBarApi.onChangeTab(BottomBarTab.DEVICE, force = true) },
+                uninstallButton = { modifier, fapItem ->
+                    uninstallApi.ComposableFapUninstallButton(
+                        modifier = modifier,
+                        fapItem = fapItem
+                    )
+                }
             )
         }
     }

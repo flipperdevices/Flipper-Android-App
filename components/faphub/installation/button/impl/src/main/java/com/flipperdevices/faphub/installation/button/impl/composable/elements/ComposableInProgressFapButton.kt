@@ -54,7 +54,7 @@ fun ComposableInProgressFapButton(
         when (fapButtonSize) {
             FapButtonSize.COMPACTED -> ComposableInProgressFapCancel(
                 Modifier
-                    .padding(start = 8.dp)
+                    .padding(start = 12.dp)
                     .size(34.dp)
                     .clickableRipple(onClick = onCancel)
             )

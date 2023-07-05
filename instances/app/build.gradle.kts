@@ -189,6 +189,9 @@ dependencies {
     implementation(projects.components.faphub.installedtab.api)
     implementation(projects.components.faphub.installedtab.impl)
 
+    implementation(projects.components.faphub.uninstallbutton.api)
+    implementation(projects.components.faphub.uninstallbutton.impl)
+
     implementation(projects.components.faphub.utils)
 
     implementation(projects.components.selfupdater.api)
@@ -196,6 +199,7 @@ dependencies {
         SourceInstall.GOOGLE_PLAY -> {
             implementation(projects.components.selfupdater.googleplay)
         }
+
         SourceInstall.GITHUB -> {
             implementation(projects.components.selfupdater.thirdparty.api)
             implementation(projects.components.selfupdater.thirdparty.github)

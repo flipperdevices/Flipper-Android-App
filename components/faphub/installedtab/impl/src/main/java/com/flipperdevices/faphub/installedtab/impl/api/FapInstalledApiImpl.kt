@@ -10,15 +10,18 @@ import com.flipperdevices.faphub.installation.button.api.FapInstallationUIApi
 import com.flipperdevices.faphub.installation.button.api.toFapButtonConfig
 import com.flipperdevices.faphub.installedtab.api.FapInstalledApi
 import com.flipperdevices.faphub.installedtab.impl.composable.ComposableInstalledTabScreen
+import com.flipperdevices.faphub.installedtab.impl.composable.offline.dialog.ComposableOfflineAppDialogBox
 import com.flipperdevices.faphub.installedtab.impl.model.FapBatchUpdateButtonState
 import com.flipperdevices.faphub.installedtab.impl.viewmodel.InstalledFapsViewModel
+import com.flipperdevices.faphub.uninstallbutton.api.FapUninstallApi
 import com.squareup.anvil.annotations.ContributesBinding
 import tangle.viewmodel.compose.tangleViewModel
 import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, FapInstalledApi::class)
 class FapInstalledApiImpl @Inject constructor(
-    private val fapInstallationUIApi: FapInstallationUIApi
+    private val fapInstallationUIApi: FapInstallationUIApi,
+    private val uninstallApi: FapUninstallApi
 ) : FapInstalledApi {
 
     @Composable
@@ -46,7 +49,21 @@ class FapInstalledApiImpl @Inject constructor(
                 fapInstallationUIApi.ComposableButton(
                     config = fapItem?.toFapButtonConfig(),
                     modifier = modifier,
-                    fapButtonSize = FapButtonSize.COMPACTED
+                    fapButtonSize = FapButtonSize.COMPACTED,
+                )
+            },
+            uninstallButtonOffline = { offlineFapApp, modifier ->
+                uninstallApi.ComposableFapUninstallButton(
+                    modifier = modifier,
+                    applicationUid = offlineFapApp.applicationUid
+                ) {
+                    ComposableOfflineAppDialogBox(offlineFapApp = offlineFapApp, modifier = it)
+                }
+            },
+            uninstallButtonOnline = { fapItemShort, modifier ->
+                uninstallApi.ComposableFapUninstallButton(
+                    modifier = modifier,
+                    fapItem = fapItemShort
                 )
             }
         )

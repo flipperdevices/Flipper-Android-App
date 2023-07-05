@@ -1,4 +1,4 @@
-package com.flipperdevices.faphub.fapscreen.impl.composable.header
+package com.flipperdevices.faphub.uninstallbutton.impl.composable
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,17 +14,16 @@ import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoi
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialogModel
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.faphub.dao.api.model.FapItem
-import com.flipperdevices.faphub.fapscreen.impl.R
+import com.flipperdevices.faphub.uninstallbutton.impl.R
 
 @Composable
 fun ComposableDeleteConfirmDialog(
-    fapItem: FapItem,
+    dialogAppBox: @Composable (Modifier) -> Unit,
     onConfirmDelete: () -> Unit,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val deleteText = stringResource(R.string.fapscreen_dialog_delete_btn)
+    val deleteText = stringResource(R.string.faphub_delete_dialog_btn)
     val deleteColor = LocalPallet.current.onError
     val config = remember(deleteText, deleteColor) {
         FlipperMultiChoiceDialogModel.Builder()
@@ -36,13 +35,12 @@ fun ComposableDeleteConfirmDialog(
                 },
                 textColor = deleteColor
             )
-            .addButton(textId = R.string.fapscreen_dialog_delete_cancel, onClick = onDismiss)
+            .addButton(textId = R.string.faphub_delete_dialog_cancel, onClick = onDismiss)
             .setOnDismissRequest(onDismiss)
             .setDescription {
                 Column {
-                    ComposableAppDialogBox(
-                        fapItem = fapItem,
-                        modifier = Modifier
+                    dialogAppBox(
+                        Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 12.dp, vertical = 24.dp)
                     )
@@ -50,7 +48,7 @@ fun ComposableDeleteConfirmDialog(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 12.dp),
-                        text = stringResource(R.string.fapscreen_dialog_delete_title),
+                        text = stringResource(R.string.faphub_delete_dialog_title),
                         textAlign = TextAlign.Center,
                         color = LocalPallet.current.text100,
                         style = LocalTypography.current.bodyM14

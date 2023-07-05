@@ -21,6 +21,7 @@
 - [Feature] Add build status card to app screen
 - [Feature] Add report app button
 - [Feature] Now the installed apps are even shown offline
+- [Feature] Change design for installed tab
 - [Refactor] Migrate all feature components modules from KSP to Anvil
 - [Refactor] Migrate to Ktorfit
 - [Refactor] Migrate key emulate to new module, decompose Emulate Helper

@@ -25,6 +25,7 @@ import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.ktx.placeholderByLocalProvider
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
+import com.flipperdevices.faphub.appcard.composable.ComposableAppDialogBox
 import com.flipperdevices.faphub.dao.api.model.FapBuildState
 import com.flipperdevices.faphub.dao.api.model.FapItem
 import com.flipperdevices.faphub.fapscreen.impl.R
