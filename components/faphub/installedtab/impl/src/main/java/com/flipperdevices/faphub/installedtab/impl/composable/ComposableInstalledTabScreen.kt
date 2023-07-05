@@ -55,14 +55,16 @@ fun ComposableInstalledTabScreen(
     when (val stateLocal = state) {
         is FapInstalledScreenState.Error -> ComposableThrowableError(
             throwable = stateLocal.throwable,
-            onRetry = viewModel::refresh,
+            onRetry = { viewModel.refresh(true) },
             modifier = screenModifier
                 .fillMaxSize()
         )
 
         is FapInstalledScreenState.Loaded,
         FapInstalledScreenState.Loading,
-        is FapInstalledScreenState.LoadedOffline -> SwipeRefresh(onRefresh = viewModel::refresh) {
+        is FapInstalledScreenState.LoadedOffline -> SwipeRefresh(onRefresh = {
+            viewModel.refresh(true)
+        }) {
             LazyColumn(
                 modifier = screenModifier
             ) {

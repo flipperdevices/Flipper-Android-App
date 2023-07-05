@@ -13,7 +13,6 @@ import com.flipperdevices.faphub.installedtab.impl.model.FapBatchUpdateButtonSta
 import com.flipperdevices.faphub.installedtab.impl.model.FapInstalledInternalState
 import com.flipperdevices.faphub.installedtab.impl.model.FapInstalledScreenState
 import com.flipperdevices.faphub.installedtab.impl.model.OfflineFapApp
-import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CancellationException
@@ -24,9 +23,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -35,8 +32,7 @@ import tangle.viewmodel.VMInject
 class InstalledFapsViewModel @VMInject constructor(
     private val fapManifestApi: FapManifestApi,
     private val queueApi: FapInstallationQueueApi,
-    private val targetProviderApi: FlipperTargetProviderApi,
-    private val fapsStateProducer: InstalledFapsStateProducer
+    private val fapsStateProducer: InstalledFapsFromNetworkProducer
 ) : ViewModel(), LogTagProvider {
     override val TAG = "InstalledFapsViewModel"
     private var fetcherJob: Job? = null
@@ -46,7 +42,7 @@ class InstalledFapsViewModel @VMInject constructor(
     )
 
     init {
-        refresh()
+        refresh(force = false)
     }
 
     fun getFapInstalledScreenState(): StateFlow<FapInstalledScreenState> =
@@ -130,17 +126,15 @@ class InstalledFapsViewModel @VMInject constructor(
             }
     }
 
-    fun refresh() {
-        fapsStateProducer.refresh(viewModelScope)
+    fun refresh(force: Boolean) {
+        fapsStateProducer.refresh(viewModelScope, force)
         val oldJob = fetcherJob
         fetcherJob = viewModelScope.launch {
             oldJob?.cancelAndJoin()
             installedFapsStateFlow.emit(FapInstalledInternalLoadingState.Loading)
             fapManifestApi.invalidateAsync()
 
-            targetProviderApi.getFlipperTarget().filterNotNull().flatMapLatest { target ->
-                fapsStateProducer.getLoadedFapsFlow(target)
-            }.catch {
+            fapsStateProducer.getLoadedFapsFlow().catch {
                 if (it is CancellationException) {
                     return@catch
                 }
