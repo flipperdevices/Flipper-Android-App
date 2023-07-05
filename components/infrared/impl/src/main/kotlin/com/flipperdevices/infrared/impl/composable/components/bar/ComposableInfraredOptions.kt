@@ -89,12 +89,12 @@ internal fun ComposableInfraredDropDown(
                     onClick = onFavorite
                 )
                 Divider(modifier = Modifier.padding(horizontal = 8.dp))
-                ComposableInfraredDropDownItem(
-                    textId = R.string.infrared_options_edit,
-                    iconId = R.drawable.ic_edit,
-                    onClick = onEdit
-                )
-                Divider(modifier = Modifier.padding(horizontal = 8.dp))
+//                ComposableInfraredDropDownItem(
+//                    textId = R.string.infrared_options_edit,
+//                    iconId = R.drawable.ic_edit,
+//                    onClick = onEdit
+//                )
+//                Divider(modifier = Modifier.padding(horizontal = 8.dp))
                 ComposableInfraredDropDownItem(
                     textId = R.string.infrared_options_rename,
                     iconId = SharedRes.drawable.ic_edit_icon,

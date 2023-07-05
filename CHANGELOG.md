@@ -6,6 +6,7 @@
 - [FIX] Add confirm delete dialog and some small fixes
 - [FIX] Hide self updater dialog on click, add self updater in debug mode, remove nfc mfkey32 from options
 - [FIX] Text alignment for simple device info
+- [Feature] Infrared Emulate (without editing)
 - [Feature] FapHub MVPv0
 - [Feature] Update README with Fdroid badge
 - [Feature] Migrate faphub to target flow
