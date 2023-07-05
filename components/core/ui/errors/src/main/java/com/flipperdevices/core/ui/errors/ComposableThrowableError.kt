@@ -2,10 +2,12 @@ package com.flipperdevices.core.ui.errors
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.flipperdevices.core.ui.errors.composable.ComposableFlipperNotConnectedError
 import com.flipperdevices.core.ui.errors.composable.ComposableGeneralError
 import com.flipperdevices.core.ui.errors.composable.ComposableNoNetworkError
 import com.flipperdevices.core.ui.errors.composable.ComposableNoServerError
 import com.flipperdevices.core.ui.errors.composable.ComposableWrongRequestError
+import com.flipperdevices.core.ui.errors.throwable.FlipperNotConnected
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ServerResponseException
 import io.ktor.serialization.JsonConvertException
@@ -28,7 +30,10 @@ fun ComposableThrowableError(
             modifier = modifier,
             onRetry = onRetry
         )
-
+        is FlipperNotConnected -> ComposableFlipperNotConnectedError(
+            modifier = modifier,
+            onRetry = onRetry
+        )
         is ServerResponseException -> ComposableNoServerError(
             modifier = modifier,
             onRetry = onRetry

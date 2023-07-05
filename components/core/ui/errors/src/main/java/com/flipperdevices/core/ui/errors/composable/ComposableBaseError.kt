@@ -25,8 +25,8 @@ internal fun ComposableBaseError(
     @StringRes titleId: Int,
     @StringRes descriptionId: Int,
     @DrawableRes iconId: Int,
-    @DrawableRes darkIconId: Int = iconId,
     modifier: Modifier = Modifier,
+    @DrawableRes darkIconId: Int = iconId,
     onRetry: (() -> Unit)? = null
 ) = Column(
     modifier = modifier,

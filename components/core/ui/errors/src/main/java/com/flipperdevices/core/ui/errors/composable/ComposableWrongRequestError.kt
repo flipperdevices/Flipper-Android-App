@@ -26,6 +26,6 @@ internal fun ComposableWrongRequestError(
 @Composable
 private fun ComposableWrongRequestErrorPreview() {
     FlipperThemeInternal {
-        ComposableNoNetworkError(onRetry = {})
+        ComposableWrongRequestError(onRetry = {})
     }
 }

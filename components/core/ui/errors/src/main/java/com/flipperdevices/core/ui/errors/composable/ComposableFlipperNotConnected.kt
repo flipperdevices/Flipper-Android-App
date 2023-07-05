@@ -7,15 +7,15 @@ import com.flipperdevices.core.ui.errors.R
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 
 @Composable
-internal fun ComposableNoServerError(
+internal fun ComposableFlipperNotConnectedError(
     modifier: Modifier = Modifier,
     onRetry: () -> Unit
 ) {
     ComposableBaseError(
         modifier = modifier,
-        titleId = R.string.common_error_no_server_title,
-        descriptionId = R.string.common_error_no_server_desc,
-        iconId = R.drawable.ic_no_server,
+        titleId = R.string.common_error_not_connected_flipper_apps_title,
+        descriptionId = R.string.common_error_not_connected_flipper_apps_desc,
+        iconId = R.drawable.ic_flipper_not_connected,
         onRetry = onRetry
     )
 }
@@ -24,8 +24,8 @@ internal fun ComposableNoServerError(
     showBackground = true
 )
 @Composable
-private fun ComposableNoNetworkErrorPreview() {
+private fun ComposableFlipperNotConnectedErrorPreview() {
     FlipperThemeInternal {
-        ComposableNoServerError(onRetry = {})
+        ComposableFlipperNotConnectedError(onRetry = {})
     }
 }
