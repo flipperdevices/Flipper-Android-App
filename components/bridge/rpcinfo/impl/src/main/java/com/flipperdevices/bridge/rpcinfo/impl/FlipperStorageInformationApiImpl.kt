@@ -166,7 +166,9 @@ class FlipperStorageInformationApiImpl @Inject constructor(
                 internalFreeBytes = internalStats?.free ?: 0,
                 internalTotalBytes = internalStats?.total ?: 0,
                 externalFreeBytes = externalStats?.free ?: 0,
-                externalTotalBytes = externalStats?.total ?: 0
+                externalTotalBytes = externalStats?.total ?: 0,
+                firmwareForkName = null,
+                firmwareGitUrl = null
             )
         )
         shake2ReportApi.setExtra(FlipperInformationMapping.convert(information))

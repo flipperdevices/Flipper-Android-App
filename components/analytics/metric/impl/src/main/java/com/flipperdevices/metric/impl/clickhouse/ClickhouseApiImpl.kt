@@ -72,6 +72,7 @@ class ClickhouseApiImpl @Inject constructor(
             SimpleEvent.EXPERIMENTAL_OPEN_FM -> OpenOuterClass.Open.OpenTarget.EXPERIMENTAL_FM
             SimpleEvent.EXPERIMENTAL_OPEN_SCREEN_STREAMING ->
                 OpenOuterClass.Open.OpenTarget.EXPERIMENTAL_SCREENSTREAMING
+
             SimpleEvent.SHARE_SHORT_LINK -> OpenOuterClass.Open.OpenTarget.SHARE_SHORTLINK
             SimpleEvent.SHARE_LONG_LINK -> OpenOuterClass.Open.OpenTarget.SHARE_LONGLINK
             SimpleEvent.SHARE_FILE -> OpenOuterClass.Open.OpenTarget.SHARE_FILE
@@ -98,6 +99,7 @@ class ClickhouseApiImpl @Inject constructor(
                     flipperVersion = complexEvent.flipperVersion
                 }
             }
+
             is FlipperRPCInfoEvent -> metricEventsCollection {
                 flipperRpcInfo = flipperRpcInfo {
                     sdcardIsAvailable = complexEvent.sdCardIsAvailable
@@ -105,8 +107,15 @@ class ClickhouseApiImpl @Inject constructor(
                     internalTotalByte = complexEvent.internalTotalBytes
                     externalFreeByte = complexEvent.externalFreeBytes
                     externalTotalByte = complexEvent.externalTotalBytes
+                    complexEvent.firmwareForkName?.let {
+                        firmwareForkName = it
+                    }
+                    complexEvent.firmwareGitUrl?.let {
+                        firmwareGitUrl = it
+                    }
                 }
             }
+
             is SynchronizationEnd -> metricEventsCollection {
                 synchronizationEnd = synchronizationEnd {
                     subghzCount = complexEvent.subghzCount
@@ -118,6 +127,7 @@ class ClickhouseApiImpl @Inject constructor(
                     changesCount = complexEvent.changesCount
                 }
             }
+
             is UpdateFlipperEnd -> metricEventsCollection {
                 updateFlipperEnd = updateFlipperEnd {
                     updateFrom = complexEvent.updateFrom
@@ -126,19 +136,25 @@ class ClickhouseApiImpl @Inject constructor(
                     updateStatus = when (complexEvent.updateStatus) {
                         UpdateStatus.COMPLETED ->
                             UpdateFlipperEndOuterClass.UpdateFlipperEnd.UpdateStatus.COMPLETED
+
                         UpdateStatus.CANCELED ->
                             UpdateFlipperEndOuterClass.UpdateFlipperEnd.UpdateStatus.CANCELED
+
                         UpdateStatus.FAILED_DOWNLOAD ->
                             UpdateFlipperEndOuterClass.UpdateFlipperEnd.UpdateStatus.FAILED_DOWNLOAD
+
                         UpdateStatus.FAILED_PREPARE ->
                             UpdateFlipperEndOuterClass.UpdateFlipperEnd.UpdateStatus.FAILED_PREPARE
+
                         UpdateStatus.FAILED_UPLOAD ->
                             UpdateFlipperEndOuterClass.UpdateFlipperEnd.UpdateStatus.FAILED_UPLOAD
+
                         UpdateStatus.FAILED ->
                             UpdateFlipperEndOuterClass.UpdateFlipperEnd.UpdateStatus.FAILED
                     }
                 }
             }
+
             is UpdateFlipperStart -> metricEventsCollection {
                 updateFlipperStart = updateFlipperStart {
                     updateFrom = complexEvent.updateFromVersion
@@ -146,6 +162,7 @@ class ClickhouseApiImpl @Inject constructor(
                     updateId = complexEvent.updateId
                 }
             }
+
             is SubGhzProvisioningEvent -> metricEventsCollection {
                 subghzProvisioning = subGhzProvisioning {
                     complexEvent.regionNetwork?.let { regionNetwork = it }
@@ -157,17 +174,22 @@ class ClickhouseApiImpl @Inject constructor(
                     regionSource = when (complexEvent.regionSource) {
                         RegionSource.SIM_NETWORK ->
                             SubGhzProvisioningOuterClass.SubGhzProvisioning.RegionSource.SIM_NETWORK
+
                         RegionSource.SIM_COUNTRY ->
                             SubGhzProvisioningOuterClass.SubGhzProvisioning.RegionSource.SIM_COUNTRY
+
                         RegionSource.GEO_IP ->
                             SubGhzProvisioningOuterClass.SubGhzProvisioning.RegionSource.GEO_IP
+
                         RegionSource.SYSTEM ->
                             SubGhzProvisioningOuterClass.SubGhzProvisioning.RegionSource.SYSTEM
+
                         RegionSource.DEFAULT ->
                             SubGhzProvisioningOuterClass.SubGhzProvisioning.RegionSource.DEFAULT
                     }
                 }
             }
+
             else -> null
         }
         if (event == null) {
@@ -198,7 +220,7 @@ class ClickhouseApiImpl @Inject constructor(
         if (!httpResponse.status.isSuccess()) {
             error {
                 "Failed report event to $METRIC_API_URL" +
-                    " $reportRequest with code ${httpResponse.status}"
+                        " $reportRequest with code ${httpResponse.status}"
             }
         } else {
             verbose { "Sucs send event $event with ${reportRequest.uuid}" }

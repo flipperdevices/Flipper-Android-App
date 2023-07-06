@@ -1,6 +1,5 @@
 package com.flipperdevices.bridge.service.impl
 
-import android.app.Application
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.LifecycleOwner
@@ -51,9 +50,6 @@ class FlipperServiceApiImpl(
 
     @Inject
     lateinit var sentryApi: Shake2ReportApi
-
-    @Inject
-    lateinit var application: Application
 
     init {
         ComponentHolder.component<FlipperServiceComponent>().inject(this)
