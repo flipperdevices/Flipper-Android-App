@@ -43,6 +43,10 @@ class FapManifestEnrichedHelper(
 
     fun getManifestState() = fapManifestState.asStateFlow()
 
+    suspend fun onLoadFresh() = withLock(mutex, "load_fresh") {
+        fapManifestState.emit(FapManifestState.Loading)
+    }
+
     suspend fun onUpdateManifests(
         manifests: List<FapManifestItem>
     ) = withLock(mutex, "new_manifest") {
@@ -114,6 +118,7 @@ class FapManifestEnrichedHelper(
     }
 
     suspend fun onError(throwable: Throwable) = withLock(mutex, "on_error") {
+        error(throwable) { "Receive error" }
         fapManifestState.emit(FapManifestState.NotLoaded(throwable))
     }
 

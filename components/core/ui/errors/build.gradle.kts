@@ -14,4 +14,6 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
     implementation(libs.compose.paging)
+
+    implementation(libs.ktor.client)
 }

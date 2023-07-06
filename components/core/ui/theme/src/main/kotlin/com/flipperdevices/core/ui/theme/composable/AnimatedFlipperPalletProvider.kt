@@ -55,7 +55,14 @@ internal fun FlipperPallet.toAnimatePallet() = FlipperPallet(
     fapHubDividerColor = animateColor(fapHubDividerColor),
     fapHubSortedColor = animateColor(fapHubSortedColor),
     fapHubCategoryText = animateColor(fapHubCategoryText),
-    fapHubDeleteDialogBackground = animateColor(targetValue = fapHubDeleteDialogBackground),
+    fapHubDeleteDialogBackground = animateColor(fapHubDeleteDialogBackground),
+
+    fapHubBuildStatusReadyBackground = animateColor(fapHubBuildStatusReadyBackground),
+    fapHubBuildStatusReadyText = animateColor(fapHubBuildStatusReadyText),
+    fapHubBuildStatusRebuildingBackground = animateColor(fapHubBuildStatusRebuildingBackground),
+    fapHubBuildStatusRebuildingText = animateColor(fapHubBuildStatusRebuildingText),
+    fapHubBuildStatusFailedBackground = animateColor(fapHubBuildStatusFailedBackground),
+    fapHubBuildStatusFailedText = animateColor(fapHubBuildStatusFailedText),
 
     flipperDisableButton = animateColor(flipperDisableButton),
     reportBorder = animateColor(reportBorder),
