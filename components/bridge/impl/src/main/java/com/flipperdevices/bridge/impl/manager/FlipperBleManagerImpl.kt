@@ -5,8 +5,10 @@ import android.bluetooth.BluetoothGatt
 import android.content.Context
 import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.BuildConfig
+import com.flipperdevices.bridge.api.di.FlipperBleServiceGraph
 import com.flipperdevices.bridge.api.error.FlipperBleServiceError
 import com.flipperdevices.bridge.api.error.FlipperServiceErrorListener
+import com.flipperdevices.bridge.api.manager.FlipperBleManager
 import com.flipperdevices.bridge.api.manager.delegates.FlipperActionNotifier
 import com.flipperdevices.bridge.api.manager.delegates.FlipperLagsDetector
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
@@ -23,6 +25,7 @@ import com.flipperdevices.bridge.impl.utils.BridgeImplConfig.BLE_VLOG
 import com.flipperdevices.bridge.impl.utils.initializeSafe
 import com.flipperdevices.bridge.impl.utils.onServiceReceivedSafe
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
+import com.flipperdevices.core.di.SingleIn
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.ktx.jre.runBlockingWithLog
 import com.flipperdevices.core.ktx.jre.withLock
@@ -33,6 +36,8 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.shake2report.api.Shake2ReportApi
+import com.squareup.anvil.annotations.ContributesBinding
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
@@ -40,8 +45,9 @@ import kotlinx.coroutines.sync.Mutex
 import no.nordicsemi.android.ble.ConnectRequest
 import no.nordicsemi.android.ble.ConnectionPriorityRequest
 
-@Suppress("LongParameterList")
-class FlipperBleManagerImpl(
+@SingleIn(FlipperBleServiceGraph::class)
+@ContributesBinding(FlipperBleServiceGraph::class, FlipperBleManager::class)
+class FlipperBleManagerImpl @Inject constructor(
     context: Context,
     private val settingsStore: DataStore<Settings>,
     private val scope: CoroutineScope,
@@ -51,7 +57,7 @@ class FlipperBleManagerImpl(
     sentryApi: Shake2ReportApi,
     metricApi: MetricApi,
     serviceApi: FlipperServiceApi
-) : UnsafeBleManager(scope, context), LogTagProvider {
+) : UnsafeBleManager(scope, context), FlipperBleManager, LogTagProvider {
     override val TAG = "FlipperBleManager"
     private val bleMutex = Mutex()
 

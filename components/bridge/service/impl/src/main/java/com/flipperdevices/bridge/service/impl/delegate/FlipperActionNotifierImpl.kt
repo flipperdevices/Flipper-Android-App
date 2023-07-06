@@ -1,7 +1,7 @@
 package com.flipperdevices.bridge.service.impl.delegate
 
+import com.flipperdevices.bridge.api.di.FlipperBleServiceGraph
 import com.flipperdevices.bridge.api.manager.delegates.FlipperActionNotifier
-import com.flipperdevices.bridge.service.impl.di.FlipperBleServiceGraph
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope

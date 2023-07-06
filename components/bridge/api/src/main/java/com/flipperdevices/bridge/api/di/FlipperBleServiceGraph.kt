@@ -1,3 +1,3 @@
-package com.flipperdevices.bridge.service.impl.di
+package com.flipperdevices.bridge.api.di
 
 abstract class FlipperBleServiceGraph private constructor()

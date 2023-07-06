@@ -19,20 +19,18 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withTimeout
 import no.nordicsemi.android.ble.exception.BluetoothDisabledException
 
-class FlipperServiceConnectDelegate(
-    private val bleManager: FlipperBleManager,
-    private val context: Context
+class FlipperServiceConnectDelegate @Inject constructor(
+    bleManagerProvider: Provider<FlipperBleManager>,
+    contextProvider: Provider<Context>,
+    scannerProvider: Provider<FlipperScanner>,
+    adapterProvider: Provider<BluetoothAdapter>
 ) : LogTagProvider {
     override val TAG = "FlipperServiceConnectDelegate"
 
-    @Inject
-    lateinit var scannerProvider: Provider<FlipperScanner>
-
-    @Inject
-    lateinit var adapterProvider: Provider<BluetoothAdapter>
-
     private val mutex = Mutex()
 
+    private val bleManager by bleManagerProvider
+    private val context by contextProvider
     private val scanner by scannerProvider
     private val adapter by adapterProvider
 
@@ -74,7 +72,7 @@ class FlipperServiceConnectDelegate(
         } catch (timeout: TimeoutCancellationException) {
             error(timeout.cause) {
                 "Can't disconnect device with timeout" +
-                    " ${Constants.BLE.DISCONNECT_TIMEOUT_MS}"
+                        " ${Constants.BLE.DISCONNECT_TIMEOUT_MS}"
             }
         }
     }

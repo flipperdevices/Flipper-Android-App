@@ -1,8 +1,11 @@
 package com.flipperdevices.bridge.service.impl.di
 
+import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import androidx.datastore.core.DataStore
+import com.flipperdevices.bridge.api.di.FlipperBleServiceGraph
 import com.flipperdevices.bridge.api.error.FlipperServiceErrorListener
+import com.flipperdevices.bridge.api.scanner.FlipperScanner
 import com.flipperdevices.bridge.service.impl.FlipperServiceApiImpl
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.SingleIn
@@ -23,6 +26,8 @@ interface FlipperBleServiceComponentDependencies {
     val settingsStore: DataStore<Settings>
     val metricApi: MetricApi
     val sentryApi: Shake2ReportApi
+    val bluetoothScanner: FlipperScanner
+    val bluetoothAdapter: BluetoothAdapter
 }
 
 @SingleIn(FlipperBleServiceGraph::class)

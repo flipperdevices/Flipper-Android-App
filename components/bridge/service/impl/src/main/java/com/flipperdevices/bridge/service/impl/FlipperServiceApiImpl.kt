@@ -1,29 +1,22 @@
 package com.flipperdevices.bridge.service.impl
 
-import android.content.Context
 import androidx.datastore.core.DataStore
-import com.flipperdevices.bridge.api.error.FlipperServiceErrorListener
+import com.flipperdevices.bridge.api.di.FlipperBleServiceGraph
 import com.flipperdevices.bridge.api.manager.FlipperBleManager
-import com.flipperdevices.bridge.api.manager.delegates.FlipperActionNotifier
-import com.flipperdevices.bridge.impl.manager.FlipperBleManagerImpl
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
-import com.flipperdevices.bridge.service.impl.delegate.FlipperLagsDetectorImpl
 import com.flipperdevices.bridge.service.impl.delegate.FlipperSafeConnectWrapper
-import com.flipperdevices.bridge.service.impl.di.FlipperBleServiceGraph
-import com.flipperdevices.bridge.service.impl.utils.WeakConnectionStateProvider
 import com.flipperdevices.core.di.SingleIn
+import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.PairSettings
-import com.flipperdevices.core.preference.pb.Settings
-import com.flipperdevices.metric.api.MetricApi
-import com.flipperdevices.shake2report.api.Shake2ReportApi
 import com.squareup.anvil.annotations.ContributesBinding
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
+import javax.inject.Provider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -34,42 +27,20 @@ import kotlinx.coroutines.sync.Mutex
 @SingleIn(FlipperBleServiceGraph::class)
 @ContributesBinding(FlipperBleServiceGraph::class, FlipperServiceApi::class)
 class FlipperServiceApiImpl @Inject constructor(
-    private val context: Context,
-    private val scope: CoroutineScope,
-    private val serviceErrorListener: FlipperServiceErrorListener,
-    private val connectionStateProvider: WeakConnectionStateProvider,
-    private val flipperActionNotifier: FlipperActionNotifier,
-    private val pairSettingsStore: DataStore<PairSettings>,
-    private val settingsStore: DataStore<Settings>,
-    private val metricApi: MetricApi,
-    private val sentryApi: Shake2ReportApi
+    scopeProvider: Provider<CoroutineScope>,
+    pairSettingsStoreProvider: Provider<DataStore<PairSettings>>,
+    bleManagerProvider: Provider<FlipperBleManager>,
+    flipperSafeConnectWrapperProvider: Provider<FlipperSafeConnectWrapper>
 ) : FlipperServiceApi, LogTagProvider {
     override val TAG = "FlipperServiceApi"
 
-    private val lagsDetector = FlipperLagsDetectorImpl(
-        scope = scope,
-        serviceApi = this,
-        connectionStateProvider = connectionStateProvider,
-        flipperActionNotifier = flipperActionNotifier
-    )
-    private val bleManager: FlipperBleManager = FlipperBleManagerImpl(
-        context = context,
-        settingsStore = settingsStore,
-        scope = scope,
-        serviceErrorListener = serviceErrorListener,
-        flipperLagsDetector = lagsDetector,
-        flipperActionNotifier = flipperActionNotifier,
-        sentryApi = sentryApi,
-        metricApi = metricApi,
-        serviceApi = this
-    ).apply {
-        connectionStateProvider.initialize(this.connectionInformationApi)
-    }
+    private val scope by scopeProvider
+    private val pairSettingsStore by pairSettingsStoreProvider
+    private val bleManager by bleManagerProvider
+    private val flipperSafeConnectWrapper by flipperSafeConnectWrapperProvider
 
     private val inited = AtomicBoolean(false)
     private val mutex = Mutex()
-    private val flipperSafeConnectWrapper =
-        FlipperSafeConnectWrapper(context, bleManager, scope, serviceErrorListener)
     private var disconnectForced = false
 
     override val connectionInformationApi = bleManager.connectionInformationApi
