@@ -2,29 +2,37 @@ package com.flipperdevices.bridge.impl.manager.service
 
 import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattCharacteristic
+import com.flipperdevices.bridge.api.di.FlipperBleServiceGraph
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.ktx.stateAsFlow
 import com.flipperdevices.bridge.api.manager.service.RestartRPCApi
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.impl.manager.UnsafeBleManager
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
+import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withTimeoutOrNull
+import javax.inject.Inject
+import javax.inject.Provider
 
 private const val WAIT_DISCONNECT_TIMEOUT_MS = 5 * 1000L // 5 ms
 
-class RestartRPCApiImpl(
-    private val serviceApi: FlipperServiceApi
+@ContributesBinding(FlipperBleServiceGraph::class, RestartRPCApi::class)
+class RestartRPCApiImpl @Inject constructor(
+    serviceApiProvider: Provider<FlipperServiceApi>
 ) : RestartRPCApi, BluetoothGattServiceWrapper, LogTagProvider {
     override val TAG = "RestartRPCApi"
 
     private var bleManagerInternal: UnsafeBleManager? = null
 
     private var rpcStateCharacteristic: BluetoothGattCharacteristic? = null
+
+    private val serviceApi by serviceApiProvider
 
     override fun onServiceReceived(gatt: BluetoothGatt): Boolean {
         val service = getServiceOrLog(

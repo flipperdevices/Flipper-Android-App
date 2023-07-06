@@ -10,7 +10,6 @@ import com.flipperdevices.bridge.api.error.FlipperBleServiceError
 import com.flipperdevices.bridge.api.error.FlipperServiceErrorListener
 import com.flipperdevices.bridge.api.manager.FlipperBleManager
 import com.flipperdevices.bridge.api.manager.delegates.FlipperActionNotifier
-import com.flipperdevices.bridge.api.manager.delegates.FlipperLagsDetector
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.api.manager.ktx.stateAsFlow
@@ -24,8 +23,8 @@ import com.flipperdevices.bridge.impl.manager.service.requestservice.FlipperRtcU
 import com.flipperdevices.bridge.impl.utils.BridgeImplConfig.BLE_VLOG
 import com.flipperdevices.bridge.impl.utils.initializeSafe
 import com.flipperdevices.bridge.impl.utils.onServiceReceivedSafe
-import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.core.di.SingleIn
+import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.ktx.jre.runBlockingWithLog
 import com.flipperdevices.core.ktx.jre.withLock
@@ -34,17 +33,17 @@ import com.flipperdevices.core.log.debug
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.Settings
-import com.flipperdevices.metric.api.MetricApi
-import com.flipperdevices.shake2report.api.Shake2ReportApi
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.sync.Mutex
 import no.nordicsemi.android.ble.ConnectRequest
 import no.nordicsemi.android.ble.ConnectionPriorityRequest
+import javax.inject.Inject
+import javax.inject.Provider
 
+@Suppress("LongParameterList")
 @SingleIn(FlipperBleServiceGraph::class)
 @ContributesBinding(FlipperBleServiceGraph::class, FlipperBleManager::class)
 class FlipperBleManagerImpl @Inject constructor(
@@ -52,11 +51,11 @@ class FlipperBleManagerImpl @Inject constructor(
     private val settingsStore: DataStore<Settings>,
     private val scope: CoroutineScope,
     private val serviceErrorListener: FlipperServiceErrorListener,
-    flipperLagsDetector: FlipperLagsDetector,
     private val flipperActionNotifier: FlipperActionNotifier,
-    sentryApi: Shake2ReportApi,
-    metricApi: MetricApi,
-    serviceApi: FlipperServiceApi
+    restartRPCApiProvider: Provider<RestartRPCApiImpl>,
+    informationApiProvider: Provider<FlipperInformationApiImpl>,
+    flipperRequestApiProvider: Provider<FlipperRequestApiImpl>,
+    flipperVersionApiProvider: Provider<FlipperVersionApiImpl>
 ) : UnsafeBleManager(scope, context), FlipperBleManager, LogTagProvider {
     override val TAG = "FlipperBleManager"
     private val bleMutex = Mutex()
@@ -65,16 +64,10 @@ class FlipperBleManagerImpl @Inject constructor(
     private var connectRequest: ConnectRequest? = null
 
     // Gatt Delegates
-    override val restartRPCApi = RestartRPCApiImpl(serviceApi)
-    override val informationApi = FlipperInformationApiImpl(scope, metricApi)
-    override val flipperRequestApi = FlipperRequestApiImpl(
-        scope,
-        flipperActionNotifier,
-        flipperLagsDetector,
-        restartRPCApi,
-        sentryApi
-    )
-    override val flipperVersionApi = FlipperVersionApiImpl(settingsStore)
+    override val restartRPCApi by restartRPCApiProvider
+    override val informationApi by informationApiProvider
+    override val flipperRequestApi by flipperRequestApiProvider
+    override val flipperVersionApi by flipperVersionApiProvider
 
     // RPC services
     private val flipperRtcUpdateService = FlipperRtcUpdateService()

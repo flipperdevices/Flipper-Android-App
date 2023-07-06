@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.impl.manager.service.request
 
 import android.bluetooth.BluetoothGatt
+import com.flipperdevices.bridge.api.di.FlipperBleServiceGraph
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.manager.delegates.FlipperActionNotifier
 import com.flipperdevices.bridge.api.manager.delegates.FlipperLagsDetector
@@ -14,6 +15,8 @@ import com.flipperdevices.bridge.impl.manager.overflow.FlipperRequestStorageImpl
 import com.flipperdevices.bridge.impl.manager.overflow.FlipperSerialOverflowThrottler
 import com.flipperdevices.bridge.impl.manager.service.BluetoothGattServiceWrapper
 import com.flipperdevices.bridge.impl.utils.BridgeImplConfig.BLE_VLOG
+import com.flipperdevices.core.di.SingleIn
+import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.ktx.jre.updateAndGetSafe
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
@@ -42,20 +45,29 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicInteger
+import javax.inject.Inject
+import javax.inject.Provider
 
 private typealias OnReceiveResponse = suspend (Flipper.Main) -> Unit
 
 @Suppress("TooManyFunctions")
-class FlipperRequestApiImpl(
-    private val scope: CoroutineScope,
-    private val flipperActionNotifier: FlipperActionNotifier,
-    private val lagsDetector: FlipperLagsDetector,
-    restartRPCApi: RestartRPCApi,
-    sentryApi: Shake2ReportApi
+@SingleIn(FlipperBleServiceGraph::class)
+class FlipperRequestApiImpl @Inject constructor(
+    scopeProvider: Provider<CoroutineScope>,
+    flipperActionNotifierProvider: Provider<FlipperActionNotifier>,
+    lagsDetectorProvider: Provider<FlipperLagsDetector>,
+    restartRPCApiProvider: Provider<RestartRPCApi>,
+    sentryApiProvider: Provider<Shake2ReportApi>
 ) : FlipperRequestApi,
     BluetoothGattServiceWrapper,
     LogTagProvider {
     override val TAG = "FlipperRequestApi"
+
+    private val scope by scopeProvider
+    private val flipperActionNotifier by flipperActionNotifierProvider
+    private val lagsDetector by lagsDetectorProvider
+    private val restartRPCApi by restartRPCApiProvider
+    private val sentryApi by sentryApiProvider
 
     // Start from 1 because 0 is default in protobuf
     private var idCounter = AtomicInteger(1)
@@ -75,7 +87,6 @@ class FlipperRequestApiImpl(
         return notificationMutableFlow
     }
 
-    @Suppress("BlockingMethodInNonBlockingContext")
     override fun request(
         command: FlipperRequest
     ): Flow<Flipper.Main> = lagsDetector.wrapPendingAction(

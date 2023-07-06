@@ -17,8 +17,8 @@ import com.squareup.anvil.annotations.ContributesTo
 import com.squareup.anvil.annotations.MergeComponent
 import dagger.BindsInstance
 import dagger.Component
-import javax.inject.Provider
 import kotlinx.coroutines.CoroutineScope
+import javax.inject.Provider
 
 @ContributesTo(AppGraph::class)
 interface FlipperBleServiceComponentDependencies {

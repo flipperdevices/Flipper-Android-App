@@ -6,9 +6,8 @@ import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.api.manager.service.FlipperInformationApi
 import com.flipperdevices.bridge.api.model.FlipperGATTInformation
 import com.flipperdevices.bridge.api.utils.Constants
-import com.flipperdevices.bridge.impl.di.BridgeImplComponent
 import com.flipperdevices.bridge.impl.manager.UnsafeBleManager
-import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.PairSettings
@@ -32,22 +31,22 @@ import kotlin.experimental.and
 
 private const val MAX_BATTERY_LEVEL = 100
 
-class FlipperInformationApiImpl(
-    private val scope: CoroutineScope,
-    private val metricApi: MetricApi
+class FlipperInformationApiImpl @Inject constructor(
+    scopeProvider: Provider<CoroutineScope>,
+    metricApiProvider: Provider<MetricApi>,
+    dataStoreFirstPairProvider: Provider<DataStore<PairSettings>>,
+    shake2ReportApiProvider: Provider<Shake2ReportApi>
 ) : BluetoothGattServiceWrapper, FlipperInformationApi, LogTagProvider {
     override val TAG = "FlipperInformationApi"
     private val informationState = MutableStateFlow(FlipperGATTInformation())
     private var infoCharacteristics = mutableMapOf<UUID, BluetoothGattCharacteristic>()
 
-    @Inject
-    lateinit var dataStoreFirstPair: Provider<DataStore<PairSettings>>
-
-    @Inject
-    lateinit var shake2ReportApi: Shake2ReportApi
+    private val scope by scopeProvider
+    private val metricApi by metricApiProvider
+    private val dataStoreFirstPair by dataStoreFirstPairProvider
+    private val shake2ReportApi by shake2ReportApiProvider
 
     init {
-        ComponentHolder.component<BridgeImplComponent>().inject(this)
         informationState.onEach {
             shake2ReportApi.updateGattInformation(it)
         }.launchIn(scope + Dispatchers.Default)
@@ -175,7 +174,7 @@ class FlipperInformationApiImpl(
 
     private fun onDeviceNameReceived(deviceName: String) {
         scope.launch {
-            dataStoreFirstPair.get().updateData {
+            dataStoreFirstPair.updateData {
                 var deviceNameFormatted = deviceName.trim()
                 if (deviceNameFormatted.startsWith(Constants.DEVICENAME_PREFIX)) {
                     deviceNameFormatted = deviceNameFormatted
