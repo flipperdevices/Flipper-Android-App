@@ -92,6 +92,13 @@ private val lightPallet = FlipperPallet(
     fapHubInactiveColor = Color(0xFF919191),
     fapHubDeleteDialogBackground = Color(0xFFF6F6F6),
 
+    fapHubBuildStatusReadyBackground = Color(0xFFD9FFE5),
+    fapHubBuildStatusReadyText = Color(0xFF19672F),
+    fapHubBuildStatusRebuildingBackground = Color(0xFFFFF5AA),
+    fapHubBuildStatusRebuildingText = Color(0xFF6B5B02),
+    fapHubBuildStatusFailedBackground = Color(0xFFFCD1D6),
+    fapHubBuildStatusFailedText = Color(0xFFBB2920),
+
     flipperDisableButton = Color(0xFFC1C1C1),
     reportBorder = Color(0xFFD6D6D6),
 
@@ -143,6 +150,13 @@ private val darkPallet = FlipperPallet(
     fapHubActiveColor = Color(0xFF000000),
     fapHubInactiveColor = Color(0xFF919191),
     fapHubDeleteDialogBackground = Color(0xFF232323),
+
+    fapHubBuildStatusReadyBackground = Color(0xFF16251A),
+    fapHubBuildStatusReadyText = Color(0xFF197B34),
+    fapHubBuildStatusRebuildingBackground = Color(0xFF242000),
+    fapHubBuildStatusRebuildingText = Color(0xFFB69903),
+    fapHubBuildStatusFailedBackground = Color(0xFF340006),
+    fapHubBuildStatusFailedText = Color(0xFFC82419),
 
     flipperDisableButton = Color(0xFFAAAAAA),
     reportBorder = Color(0xFF616161),

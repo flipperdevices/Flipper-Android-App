@@ -7,11 +7,11 @@ import com.flipperdevices.core.log.warn
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.dao.api.model.SortType
-import com.flipperdevices.faphub.dao.network.retrofit.api.KtorfitApplicationApi
-import com.flipperdevices.faphub.dao.network.retrofit.model.types.ApplicationSortType
-import com.flipperdevices.faphub.dao.network.retrofit.model.types.SortOrderType
-import com.flipperdevices.faphub.dao.network.retrofit.utils.FapHubNetworkCategoryApi
-import com.flipperdevices.faphub.dao.network.retrofit.utils.HostUrlBuilder
+import com.flipperdevices.faphub.dao.network.ktorfit.api.KtorfitApplicationApi
+import com.flipperdevices.faphub.dao.network.ktorfit.model.types.ApplicationSortType
+import com.flipperdevices.faphub.dao.network.ktorfit.model.types.SortOrderType
+import com.flipperdevices.faphub.dao.network.ktorfit.utils.FapHubNetworkCategoryApi
+import com.flipperdevices.faphub.dao.network.ktorfit.utils.HostUrlBuilder
 import com.flipperdevices.faphub.target.model.FlipperTarget
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.Dispatchers
