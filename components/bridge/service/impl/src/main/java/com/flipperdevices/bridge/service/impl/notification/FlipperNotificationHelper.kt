@@ -1,5 +1,6 @@
 package com.flipperdevices.bridge.service.impl.notification
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Notification
@@ -13,22 +14,15 @@ import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.flipperdevices.bridge.service.impl.R
-import com.flipperdevices.bridge.service.impl.di.FlipperServiceComponent
 import com.flipperdevices.core.di.ApplicationParams
-import com.flipperdevices.core.di.ComponentHolder
-import javax.inject.Inject
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 private const val FLIPPER_NOTIFICATION_CHANNEL = "flipper_service"
 const val FLIPPER_NOTIFICATION_ID = 1
 
-class FlipperNotificationHelper(private val context: Context) {
-    @Inject
-    lateinit var applicationParams: ApplicationParams
-
-    init {
-        ComponentHolder.component<FlipperServiceComponent>().inject(this)
-    }
+class FlipperNotificationHelper(
+    private val context: Context,
+    private val applicationParams: ApplicationParams
+) {
 
     private val notificationBuilder =
         NotificationCompat.Builder(context, FLIPPER_NOTIFICATION_CHANNEL)
@@ -84,8 +78,8 @@ class FlipperNotificationHelper(private val context: Context) {
     private fun getIntentForOpenApplication(): PendingIntent {
         val intent = Intent(context, applicationParams.startApplicationClass.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or
-                Intent.FLAG_ACTIVITY_CLEAR_TOP or
-                Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                    Intent.FLAG_ACTIVITY_SINGLE_TOP
         }
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)

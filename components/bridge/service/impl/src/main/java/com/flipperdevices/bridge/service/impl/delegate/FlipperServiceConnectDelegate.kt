@@ -7,19 +7,17 @@ import com.flipperdevices.bridge.api.manager.FlipperBleManager
 import com.flipperdevices.bridge.api.scanner.FlipperScanner
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.api.utils.PermissionHelper
-import com.flipperdevices.bridge.service.impl.di.FlipperServiceComponent
-import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
+import javax.inject.Inject
+import javax.inject.Provider
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withTimeout
 import no.nordicsemi.android.ble.exception.BluetoothDisabledException
-import javax.inject.Inject
-import javax.inject.Provider
 
 class FlipperServiceConnectDelegate(
     private val bleManager: FlipperBleManager,
@@ -32,10 +30,6 @@ class FlipperServiceConnectDelegate(
 
     @Inject
     lateinit var adapterProvider: Provider<BluetoothAdapter>
-
-    init {
-        ComponentHolder.component<FlipperServiceComponent>().inject(this)
-    }
 
     private val mutex = Mutex()
 

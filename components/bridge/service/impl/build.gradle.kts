@@ -1,5 +1,6 @@
 plugins {
     id("flipper.android-lib")
+    id("kotlin-kapt")
     id("flipper.anvil")
 }
 
@@ -38,6 +39,10 @@ dependencies {
     implementation(libs.ble)
     implementation(libs.ble.common)
     implementation(libs.ble.scan)
+
+    // Dagger deps
+    implementation(libs.dagger)
+    kapt(libs.dagger.kapt)
 
     testImplementation(projects.components.core.test)
     testImplementation(libs.junit)

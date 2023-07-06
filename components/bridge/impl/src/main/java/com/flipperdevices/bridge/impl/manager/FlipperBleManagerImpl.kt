@@ -40,7 +40,7 @@ import kotlinx.coroutines.sync.Mutex
 import no.nordicsemi.android.ble.ConnectRequest
 import no.nordicsemi.android.ble.ConnectionPriorityRequest
 
-@Suppress("BlockingMethodInNonBlockingContext", "LongParameterList")
+@Suppress("LongParameterList")
 class FlipperBleManagerImpl(
     context: Context,
     private val settingsStore: DataStore<Settings>,
