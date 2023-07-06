@@ -59,7 +59,7 @@ class FlipperStorageInformationTest {
         }
 
         metricApi = mockk(relaxUnitFun = true)
-        underTest = FlipperStorageInformationApiImpl(metricApi, mockk(relaxUnitFun = true))
+        underTest = FlipperStorageInformationApiImpl()
     }
 
     @Test
