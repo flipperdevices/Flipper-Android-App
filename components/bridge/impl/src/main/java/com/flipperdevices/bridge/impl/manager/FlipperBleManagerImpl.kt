@@ -9,6 +9,7 @@ import com.flipperdevices.bridge.api.di.FlipperBleServiceGraph
 import com.flipperdevices.bridge.api.error.FlipperBleServiceError
 import com.flipperdevices.bridge.api.error.FlipperServiceErrorListener
 import com.flipperdevices.bridge.api.manager.FlipperBleManager
+import com.flipperdevices.bridge.api.manager.FlipperReadyListener
 import com.flipperdevices.bridge.api.manager.delegates.FlipperActionNotifier
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
@@ -55,10 +56,13 @@ class FlipperBleManagerImpl @Inject constructor(
     restartRPCApiProvider: Provider<RestartRPCApiImpl>,
     informationApiProvider: Provider<FlipperInformationApiImpl>,
     flipperRequestApiProvider: Provider<FlipperRequestApiImpl>,
-    flipperVersionApiProvider: Provider<FlipperVersionApiImpl>
+    flipperVersionApiProvider: Provider<FlipperVersionApiImpl>,
+    private val flipperReadyListenersProvider: Provider<Set<FlipperReadyListener>>
 ) : UnsafeBleManager(scope, context), FlipperBleManager, LogTagProvider {
     override val TAG = "FlipperBleManager"
     private val bleMutex = Mutex()
+
+    private val flipperReadyListeners by flipperReadyListenersProvider
 
     // Store a connection request to cancel it during a disconnection
     private var connectRequest: ConnectRequest? = null
@@ -161,6 +165,14 @@ class FlipperBleManagerImpl @Inject constructor(
             flipperRtcUpdateService.initialize(flipperRequestApi)
         }.onFailure {
             error(it) { "Error while initialize RTC" }
+        }
+
+        flipperReadyListeners.forEach {
+            runCatching {
+                it.onFlipperReady(scope)
+            }.onFailure {
+                error(it) { "Failed notify flipper ready listener" }
+            }
         }
 
         return@launchWithLock

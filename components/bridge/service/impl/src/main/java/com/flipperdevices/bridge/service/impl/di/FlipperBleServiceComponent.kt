@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.api.di.FlipperBleServiceGraph
 import com.flipperdevices.bridge.api.error.FlipperServiceErrorListener
+import com.flipperdevices.bridge.api.manager.FlipperReadyListener
 import com.flipperdevices.bridge.api.scanner.FlipperScanner
 import com.flipperdevices.bridge.service.impl.FlipperServiceApiImpl
 import com.flipperdevices.core.di.AppGraph
@@ -28,6 +29,7 @@ interface FlipperBleServiceComponentDependencies {
     val sentryApi: Shake2ReportApi
     val bluetoothScanner: FlipperScanner
     val bluetoothAdapter: BluetoothAdapter
+    val flipperReadyListeners: Set<FlipperReadyListener>
 }
 
 @SingleIn(FlipperBleServiceGraph::class)
