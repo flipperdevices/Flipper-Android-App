@@ -9,6 +9,7 @@
 - [FIX] Text alignment for simple device info
 - [FIX] Endpoint for fap hub build download
 - [FIX] App open metric
+- [FIX] Remove kotlin incremental
 - [Feature] FapHub MVPv0
 - [Feature] Update README with Fdroid badge
 - [Feature] Migrate faphub to target flow
