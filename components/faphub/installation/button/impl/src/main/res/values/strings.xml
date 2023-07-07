@@ -2,8 +2,8 @@
 <resources>
     <string name="faphub_installation_install">INSTALL</string>
     <string name="faphub_installation_installed">INSTALLED</string>
-    <string name="faphub_installation_open">OPEN</string>
-    <string name="faphub_installation_open_long">Open On Flipper</string>
+    <string name="faphub_installation_open">RUN</string>
+    <string name="faphub_installation_open_long">RUN ON FLIPPER</string>
     <string name="faphub_installation_update">UPDATE</string>
     <string name="faphub_installation_canceling">Canceling</string>
     <string name="faphub_installation_cancel_desc">Cancel</string>
