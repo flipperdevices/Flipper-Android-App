@@ -9,6 +9,7 @@ import com.flipperdevices.bottombar.api.BottomNavigationHandleDeeplink
 import com.flipperdevices.bottombar.model.BottomBarTab
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
+import com.flipperdevices.core.ui.navigation.LocalGlobalNavigationNavStack
 import com.flipperdevices.faphub.installation.button.api.FapButtonConfig
 import com.flipperdevices.faphub.installation.button.api.FapButtonSize
 import com.flipperdevices.faphub.installation.button.api.FapInstallationUIApi
@@ -17,9 +18,11 @@ import com.flipperdevices.faphub.installation.button.impl.composable.ComposableF
 import com.flipperdevices.faphub.installation.button.impl.composable.ComposableFapInstalledButton
 import com.flipperdevices.faphub.installation.button.impl.composable.ComposableFapInstallingButton
 import com.flipperdevices.faphub.installation.button.impl.composable.ComposableFapNoInstallButton
+import com.flipperdevices.faphub.installation.button.impl.composable.ComposableFapOpenButton
 import com.flipperdevices.faphub.installation.button.impl.composable.ComposableFapUpdateButton
 import com.flipperdevices.faphub.installation.button.impl.composable.ComposableFapUpdatingButton
 import com.flipperdevices.faphub.installation.button.impl.composable.ComposableFlipperNotConnectedButton
+import com.flipperdevices.faphub.installation.button.impl.composable.dialogs.ComposableFlipperBusy
 import com.flipperdevices.faphub.installation.button.impl.viewmodel.FapStatusViewModel
 import com.flipperdevices.faphub.installation.stateprovider.api.model.FapState
 import com.squareup.anvil.annotations.ContributesBinding
@@ -30,6 +33,7 @@ import javax.inject.Inject
 class FapInstallationUIApiImpl @Inject constructor(
     private val bottomBarApi: BottomNavigationHandleDeeplink
 ) : FapInstallationUIApi {
+    @Suppress("LongMethod")
     @Composable
     override fun ComposableButton(
         config: FapButtonConfig?,
@@ -42,6 +46,11 @@ class FapInstallationUIApiImpl @Inject constructor(
         }
         val state by stateFlow.collectAsState(FapState.NotInitialized)
 
+        val dialogState by statusViewModel.getDialogState().collectAsState()
+        ComposableFlipperBusy(showBusyDialog = dialogState) {
+            statusViewModel.closeDialog()
+        }
+
         when (val localState = state) {
             is FapState.InstallationInProgress -> ComposableFapInstallingButton(
                 modifier = modifier,
@@ -50,10 +59,21 @@ class FapInstallationUIApiImpl @Inject constructor(
                 onCancel = { statusViewModel.cancel(config) }
             )
 
-            FapState.Installed -> ComposableFapInstalledButton(
-                modifier = modifier,
-                fapButtonSize = fapButtonSize
-            )
+            is FapState.Installed -> {
+                if (localState.canOpen) {
+                    val navController = LocalGlobalNavigationNavStack.current
+                    ComposableFapOpenButton(
+                        modifier = modifier,
+                        fapButtonSize = fapButtonSize,
+                        onClick = { statusViewModel.openApp(config, navController) }
+                    )
+                } else {
+                    ComposableFapInstalledButton(
+                        modifier = modifier,
+                        fapButtonSize = fapButtonSize
+                    )
+                }
+            }
 
             FapState.ReadyToInstall -> ComposableFapInstallButton(
                 modifier = modifier,

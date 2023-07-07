@@ -10,6 +10,7 @@
 - [FIX] Endpoint for fap hub build download
 - [FIX] App open metric
 - [FIX] Remove kotlin incremental
+- [Feature] Open application and screen streaming if install
 - [Feature] FapHub MVPv0
 - [Feature] Update README with Fdroid badge
 - [Feature] Migrate faphub to target flow
