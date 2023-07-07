@@ -10,12 +10,14 @@ import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.ktx.jre.map
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 import tangle.viewmodel.VMInject
 import java.util.TreeMap
 
@@ -36,7 +38,7 @@ class CategoryViewModel @VMInject constructor(
     )
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Default) {
             subscribeOnCategoriesCount()
         }
     }
@@ -57,7 +59,7 @@ class CategoryViewModel @VMInject constructor(
                     categoryType = CategoryType.Deleted
                 )
             )
-        }.launchIn(viewModelScope)
+        }.launchIn(viewModelScope + Dispatchers.Default)
 
         FlipperKeyType.values().forEach { fileType ->
             simpleKeyApi.getExistKeysAsFlow(fileType).onEach { keys ->
@@ -71,7 +73,7 @@ class CategoryViewModel @VMInject constructor(
                     )
                     return@update mutableMap
                 }
-            }.launchIn(viewModelScope)
+            }.launchIn(viewModelScope + Dispatchers.Default)
         }
     }
 }

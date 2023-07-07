@@ -4,6 +4,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.verbose
 import it.unimi.dsi.fastutil.bytes.ByteArrayFIFOQueue
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.isActive
@@ -21,7 +22,7 @@ class ByteEndlessInputStream(
     private var balancer = 0
 
     init {
-        scope.launch {
+        scope.launch(Dispatchers.Default) {
             try {
                 awaitCancellation()
             } finally {

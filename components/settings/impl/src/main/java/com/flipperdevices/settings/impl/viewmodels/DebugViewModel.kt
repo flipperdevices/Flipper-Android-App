@@ -75,16 +75,6 @@ class DebugViewModel @VMInject constructor(
         }
     }
 
-    fun onSwitchApplicationCatalog(enabled: Boolean) {
-        viewModelScope.launch {
-            settingsDataStore.updateData {
-                it.toBuilder()
-                    .setApplicationCatalog(enabled)
-                    .build()
-            }
-        }
-    }
-
     fun restartRpc() {
         serviceProvider.provideServiceApi(this) {
             viewModelScope.launch {

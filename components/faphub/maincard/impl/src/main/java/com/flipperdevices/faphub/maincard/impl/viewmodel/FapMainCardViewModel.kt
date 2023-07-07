@@ -7,6 +7,7 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.maincard.impl.model.FapMainCardState
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -22,7 +23,7 @@ class FapMainCardViewModel @VMInject constructor(
     private val fapMainCardStateFlow = MutableStateFlow<FapMainCardState>(FapMainCardState.Loading)
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Default) {
             targetProviderApi.getFlipperTarget().collectLatest { target ->
                 if (target == null) {
                     fapMainCardStateFlow.emit(FapMainCardState.Loading)

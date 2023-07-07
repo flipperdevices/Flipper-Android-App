@@ -11,6 +11,7 @@ import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.dao.api.model.SortType
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -43,7 +44,7 @@ class FapHubCategoryViewModel @VMInject constructor(
     fun getCategoryName() = category.name
 
     fun onSelectSortType(sortType: SortType) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Default) {
             sortTypeFlow.emit(sortType)
         }
     }

@@ -86,12 +86,6 @@ private fun DebugCategoryItems(
     )
     GrayDivider()
     SwitchableElement(
-        titleId = R.string.debug_application_catalog,
-        state = settings.applicationCatalog,
-        onSwitchState = debugViewModel::onSwitchApplicationCatalog
-    )
-    GrayDivider()
-    SwitchableElement(
         titleId = R.string.debug_application_catalog_dev,
         state = settings.useDevCatalog,
         onSwitchState = debugViewModel::onSwitchFapHubDev

@@ -18,6 +18,7 @@ import com.flipperdevices.faphub.installation.stateprovider.api.api.FapInstallat
 import com.flipperdevices.faphub.installation.stateprovider.api.model.FapState
 import com.flipperdevices.faphub.report.api.FapReportFeatureEntry
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,6 +27,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 import kotlinx.coroutines.sync.Mutex
 import tangle.inject.TangleParam
 import tangle.viewmodel.VMInject
@@ -81,7 +83,7 @@ class FapScreenViewModel @VMInject constructor(
 
     fun onRefresh() = launchWithLock(mutex, viewModelScope, "refresh") {
         downloadFapJob?.cancelAndJoin()
-        downloadFapJob = viewModelScope.launch {
+        downloadFapJob = viewModelScope.launch(Dispatchers.Default) {
             targetProviderApi.getFlipperTarget().collectLatest { target ->
                 if (target == null) {
                     fapScreenLoadingStateFlow.emit(FapScreenLoadingState.Loading)
@@ -102,7 +104,7 @@ class FapScreenViewModel @VMInject constructor(
                         currentVersion = fapItem.upToDateVersion
                     ).onEach { state ->
                         controlStateFlow.emit(state.toControlState(fapItem))
-                    }.launchIn(viewModelScope)
+                    }.launchIn(viewModelScope + Dispatchers.Default)
                 }.onFailure {
                     error(it) { "Failed fetch single application" }
                     fapScreenLoadingStateFlow.emit(FapScreenLoadingState.Error(it))

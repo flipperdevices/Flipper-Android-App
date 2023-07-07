@@ -8,6 +8,7 @@ import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.api.model.FlipperRequest
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
+import com.flipperdevices.core.di.SingleIn
 import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.log.BuildConfig
 import com.flipperdevices.core.log.LogTagProvider
@@ -30,6 +31,7 @@ import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
 import javax.inject.Provider
 
+@SingleIn(FlipperBleServiceGraph::class)
 @ContributesBinding(FlipperBleServiceGraph::class, FlipperLagsDetector::class)
 class FlipperLagsDetectorImpl @Inject constructor(
     scopeProvider: Provider<CoroutineScope>,
@@ -56,7 +58,7 @@ class FlipperLagsDetectorImpl @Inject constructor(
                 delay(Constants.LAGS_FLIPPER_DETECT_TIMEOUT_MS)
                 if (pendingResponseCounter.get() > 0) {
                     error {
-                        "We have pending commands, but flipper not respond " +
+                        "We have pending ${pendingResponseCounter.get()} commands, but flipper not respond " +
                             "${Constants.LAGS_FLIPPER_DETECT_TIMEOUT_MS}ms. Pending commands is " +
                             pendingCommands.keys().toList().joinToString()
                     }
@@ -116,8 +118,8 @@ class FlipperLagsDetectorImpl @Inject constructor(
     }
 
     private suspend fun incrementPendingCounter(tag: String) {
+        flipperActionNotifier.notifyAboutAction()
         val pendingCount = pendingResponseCounter.getAndIncrement()
         verbose { "Increase pending response command $tag, current size is ${pendingCount + 1}" }
-        flipperActionNotifier.notifyAboutAction()
     }
 }

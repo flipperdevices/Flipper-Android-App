@@ -10,12 +10,14 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 import tangle.viewmodel.VMInject
 
 class GeneralTabViewModel @VMInject constructor(
@@ -29,7 +31,7 @@ class GeneralTabViewModel @VMInject constructor(
         MutableStateFlow<SynchronizationState>(SynchronizationState.NotStarted)
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Default) {
             simpleKeyApi.getExistKeysAsFlow(null)
                 .combine(favoriteApi.getFavoritesFlow()) { keyList, favoriteKeysList ->
                     val favoriteKeyPaths = favoriteKeysList.map { it.path }.toSet()
@@ -37,10 +39,10 @@ class GeneralTabViewModel @VMInject constructor(
                         keyList.filterNot { favoriteKeyPaths.contains(it.path) }
                     keys.emit(keysExceptFavorite.toImmutableList())
                     favoriteKeys.emit(favoriteKeysList.toImmutableList())
-                }.launchIn(viewModelScope)
+                }.launchIn(viewModelScope + Dispatchers.Default)
             synchronizationApi.getSynchronizationState().onEach {
                 synchronizationState.emit(it)
-            }.launchIn(viewModelScope)
+            }.launchIn(viewModelScope + Dispatchers.Default)
         }
     }
 
@@ -53,7 +55,7 @@ class GeneralTabViewModel @VMInject constructor(
     }
 
     fun cancelSynchronization() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Default) {
             synchronizationApi.stop()
         }
     }

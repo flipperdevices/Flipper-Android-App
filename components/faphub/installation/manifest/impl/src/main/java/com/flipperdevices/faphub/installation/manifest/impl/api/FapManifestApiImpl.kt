@@ -47,7 +47,7 @@ class FapManifestApiImpl @Inject constructor(
     )
 
     init {
-        scope.launch {
+        scope.launch(Dispatchers.Default) {
             flipperServiceProvider
                 .getServiceApi()
                 .connectionInformationApi
@@ -81,7 +81,7 @@ class FapManifestApiImpl @Inject constructor(
     }
 
     override fun invalidateAsync() {
-        scope.launch { invalidate() }
+        scope.launch(Dispatchers.Default) { invalidate() }
     }
 
     private suspend fun invalidate() = withLock(mutex, "invalidate") {

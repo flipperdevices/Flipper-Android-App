@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="faphub_search_hint">App name, description</string>
+    <string name="faphub_search_small_request_title">Enter at least 2 symbols</string>
+    <string name="faphub_search_small_request_desc">to search for some apps</string>
+    <string name="faphub_search_empty_title">No Results Found</string>
+    <string name="faphub_search_empty_desc">for \"%1$s\"</string>
 </resources>

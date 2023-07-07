@@ -100,7 +100,8 @@ private fun ComposableFapBuildStatusCard(
             textColor = LocalPallet.current.fapHubBuildStatusFailedText,
             cardIconId = R.drawable.ic_triangle_warning,
             cardTextId = R.string.fapscreen_building_state_outdated_flipper_text,
-            onClick = onClick
+            onClick = onClick,
+            infoButtonEnabled = false
         )
     }
 }
@@ -112,7 +113,8 @@ private fun ComposableStatusCard(
     @DrawableRes cardIconId: Int,
     @StringRes cardTextId: Int,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    infoButtonEnabled: Boolean = true
 ) = Row(
     modifier = modifier
         .clip(RoundedCornerShape(8.dp))
@@ -148,14 +150,16 @@ private fun ComposableStatusCard(
         )
     }
 
-    Icon(
-        modifier = Modifier
-            .padding(vertical = 10.dp, horizontal = 12.dp)
-            .size(12.dp),
-        painter = painterResource(R.drawable.ic_info),
-        contentDescription = null,
-        tint = LocalPallet.current.fapHubBuildStatusInfo
-    )
+    if (infoButtonEnabled) {
+        Icon(
+            modifier = Modifier
+                .padding(vertical = 10.dp, horizontal = 12.dp)
+                .size(12.dp),
+            painter = painterResource(R.drawable.ic_info),
+            contentDescription = null,
+            tint = LocalPallet.current.fapHubBuildStatusInfo
+        )
+    }
 }
 
 @Preview(

@@ -5,4 +5,6 @@
     <string name="faphub_catalog_choice_published_desc">New Releases</string>
     <string name="faphub_catalog_choice_published_asc">Old Releases</string>
     <string name="faphub_catalog_choice_unknown">Unknown</string>
+    <string name="faphub_catalog_no_apps_title">No Apps Yet</string>
+    <string name="faphub_catalog_no_apps_desc">This category is empty or there are no apps for your Flipper firmware</string>
 </resources>
