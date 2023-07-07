@@ -10,19 +10,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
+import com.flipperdevices.core.ui.ktx.SetUpNavigationBarColor
+import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.infrared.impl.composable.components.bar.ComposableInfraredAppBar
-import com.flipperdevices.infrared.impl.composable.screens.ComposableInfraredScreenError
-import com.flipperdevices.infrared.impl.composable.screens.ComposableInfraredScreenLoading
-import com.flipperdevices.infrared.impl.composable.screens.ComposableInfraredScreenReady
 import com.flipperdevices.infrared.impl.model.InfraredTab
 import com.flipperdevices.infrared.impl.viewmodel.InfraredViewModel
 import com.flipperdevices.keyemulate.api.KeyEmulateApi
 import com.flipperdevices.keyscreen.api.KeyScreenApi
 import com.flipperdevices.keyscreen.model.FavoriteState
 import com.flipperdevices.keyscreen.model.KeyScreenState
+import com.flipperdevices.keyscreen.shared.screen.ComposableKeyScreenError
+import com.flipperdevices.keyscreen.shared.screen.ComposableKeyScreenLoading
 
 @Composable
 internal fun ComposableInfraredScreen(
@@ -38,8 +40,12 @@ internal fun ComposableInfraredScreen(
     var currentTab by remember { mutableStateOf(InfraredTab.REMOTE) }
 
     when (val localState = state) {
-        is KeyScreenState.Error -> ComposableInfraredScreenError(localState)
-        KeyScreenState.InProgress -> ComposableInfraredScreenLoading()
+        is KeyScreenState.Error -> {
+            ComposableKeyScreenError(text = stringResource(id = localState.reason))
+        }
+        KeyScreenState.InProgress -> {
+            ComposableKeyScreenLoading()
+        }
         is KeyScreenState.Ready -> {
             Column(modifier = Modifier.fillMaxSize()) {
                 ComposableInfraredAppBar(
@@ -79,4 +85,6 @@ internal fun ComposableInfraredScreen(
             }
         }
     }
+
+    SetUpNavigationBarColor(color = LocalPallet.current.background)
 }

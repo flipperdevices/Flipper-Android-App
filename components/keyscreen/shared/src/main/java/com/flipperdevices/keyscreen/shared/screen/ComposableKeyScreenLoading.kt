@@ -1,4 +1,4 @@
-package com.flipperdevices.infrared.impl.composable.screens
+package com.flipperdevices.keyscreen.shared.screen
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,10 +12,10 @@ import com.flipperdevices.core.ui.ktx.SetUpStatusBarColor
 import com.flipperdevices.core.ui.theme.LocalPallet
 
 @Composable
-internal fun ComposableInfraredScreenLoading() {
-    SetUpStatusBarColor(color = LocalPallet.current.background, darkIcon = true)
+fun ComposableKeyScreenLoading(modifier: Modifier = Modifier) {
+    SetUpStatusBarColor(LocalPallet.current.background, darkIcon = true)
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator(

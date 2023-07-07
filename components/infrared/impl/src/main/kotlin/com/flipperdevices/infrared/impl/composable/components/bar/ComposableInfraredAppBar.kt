@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.ktx.SetUpNavigationBarColor
 import com.flipperdevices.core.ui.ktx.SetUpStatusBarColor
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.tabswitch.ComposableTabSwitch
@@ -34,8 +33,6 @@ internal fun ComposableInfraredAppBar(
     isFavorite: Boolean,
 ) {
     SetUpStatusBarColor(color = LocalPallet.current.accent, darkIcon = true)
-    SetUpNavigationBarColor(color = LocalPallet.current.background)
-
     Row(
         modifier = Modifier
             .fillMaxWidth()

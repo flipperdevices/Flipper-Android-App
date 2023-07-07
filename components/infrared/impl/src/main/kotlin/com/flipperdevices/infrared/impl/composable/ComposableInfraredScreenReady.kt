@@ -1,4 +1,4 @@
-package com.flipperdevices.infrared.impl.composable.screens
+package com.flipperdevices.infrared.impl.composable
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
