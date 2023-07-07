@@ -13,23 +13,16 @@ import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.flipperdevices.bridge.service.impl.R
-import com.flipperdevices.bridge.service.impl.di.FlipperServiceComponent
 import com.flipperdevices.core.di.ApplicationParams
-import com.flipperdevices.core.di.ComponentHolder
-import javax.inject.Inject
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 private const val FLIPPER_NOTIFICATION_CHANNEL = "flipper_service"
 const val FLIPPER_NOTIFICATION_ID = 1
 
-class FlipperNotificationHelper(private val context: Context) {
-    @Inject
-    lateinit var applicationParams: ApplicationParams
-
-    init {
-        ComponentHolder.component<FlipperServiceComponent>().inject(this)
-    }
-
+class FlipperNotificationHelper(
+    private val context: Context,
+    private val applicationParams: ApplicationParams
+) {
     private val notificationBuilder =
         NotificationCompat.Builder(context, FLIPPER_NOTIFICATION_CHANNEL)
             .setContentTitle(context.getString(R.string.bridge_service_notification_title))
