@@ -93,35 +93,37 @@ private fun ComposableFapScreenInternal(
     onReportApp: () -> Unit,
     installationButton: @Composable (FapItem?, Modifier) -> Unit,
     modifier: Modifier = Modifier
-) = Column(modifier.verticalScroll(rememberScrollState())) {
+) = Column(modifier) {
     ComposableFapScreenBar(fapName = fapItem?.name, url = shareUrl, onBack = onBack)
-    ComposableFapHeader(
-        modifier = Modifier.padding(start = 14.dp, end = 14.dp, top = 14.dp),
-        fapItem = fapItem,
-        installationButton = installationButton,
-        controlState = controlState,
-        uninstallButton = uninstallButton,
-        onOpenDeviceTab = onOpenDeviceTab
-    )
-    Divider(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 14.dp),
-        thickness = 1.dp,
-        color = LocalPallet.current.fapHubDividerColor
-    )
-    AppCardScreenshots(
-        screenshots = fapItem?.screenshots,
-        modifier = Modifier.padding(top = 18.dp, start = 14.dp),
-        screenshotModifier = Modifier
-            .padding(end = 8.dp)
-            .size(width = 189.dp, height = 94.dp),
-    )
-    ComposableFapDescription(
-        modifier = Modifier.padding(start = 14.dp, end = 14.dp, bottom = 36.dp),
-        fapItem = fapItem,
-        onReportApp = onReportApp
-    )
+    Column(Modifier.verticalScroll(rememberScrollState())) {
+        ComposableFapHeader(
+            modifier = Modifier.padding(start = 14.dp, end = 14.dp, top = 14.dp),
+            fapItem = fapItem,
+            installationButton = installationButton,
+            controlState = controlState,
+            uninstallButton = uninstallButton,
+            onOpenDeviceTab = onOpenDeviceTab
+        )
+        Divider(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 14.dp),
+            thickness = 1.dp,
+            color = LocalPallet.current.fapHubDividerColor
+        )
+        AppCardScreenshots(
+            screenshots = fapItem?.screenshots,
+            modifier = Modifier.padding(top = 18.dp, start = 14.dp),
+            screenshotModifier = Modifier
+                .padding(end = 8.dp)
+                .size(width = 189.dp, height = 94.dp),
+        )
+        ComposableFapDescription(
+            modifier = Modifier.padding(start = 14.dp, end = 14.dp, bottom = 36.dp),
+            fapItem = fapItem,
+            onReportApp = onReportApp
+        )
+    }
 }
 
 @Composable

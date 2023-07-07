@@ -19,7 +19,7 @@ abstract class OffsetAndLimitPagingSource<Value : Any>(
         return try {
             val position = params.key ?: INITIAL_LOAD_SIZE
             val offset = if (params.key != null) {
-                ((position - 1) * pageSize) + 1
+                position * pageSize
             } else {
                 INITIAL_LOAD_SIZE
             }

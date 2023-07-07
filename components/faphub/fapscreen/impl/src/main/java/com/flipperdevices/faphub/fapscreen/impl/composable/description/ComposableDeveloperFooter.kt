@@ -29,9 +29,9 @@ fun ColumnScope.ComposableDeveloperFooter(
     modifier: Modifier = Modifier
 ) {
     Text(
-        modifier = modifier.padding(bottom = 8.dp, top = 24.dp),
+        modifier = modifier.padding(bottom = 8.dp, top = 32.dp),
         text = stringResource(R.string.fapscreen_developer_title),
-        style = LocalTypography.current.buttonM16,
+        style = LocalTypography.current.titleB18,
         color = LocalPallet.current.text100
     )
     val githubLinkModifier = Modifier.padding(top = 16.dp)
