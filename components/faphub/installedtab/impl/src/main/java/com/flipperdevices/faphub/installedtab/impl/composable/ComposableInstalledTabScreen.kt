@@ -90,7 +90,7 @@ fun ComposableInstalledTabScreen(
     }
 }
 
-@Suppress("FunctionNaming")
+@Suppress("FunctionNaming", "LongMethod")
 private fun LazyListScope.ComposableInstalledTabScreenState(
     screenState: FapInstalledScreenState,
     onOpenFapItem: (String) -> Unit,
@@ -100,11 +100,17 @@ private fun LazyListScope.ComposableInstalledTabScreenState(
 ) {
     when (screenState) {
         is FapInstalledScreenState.Error -> {}
-        is FapInstalledScreenState.LoadedOffline -> ComposableFapOfflineScreen(
-            offlineApps = screenState.faps,
-            onOpen = onOpenFapItem,
-            uninstallButton = uninstallButtonOffline
-        )
+        is FapInstalledScreenState.LoadedOffline -> if (screenState.faps.isEmpty()) {
+            item {
+                ComposableEmpty(Modifier.fillParentMaxSize())
+            }
+        } else {
+            ComposableFapOfflineScreen(
+                offlineApps = screenState.faps,
+                onOpen = onOpenFapItem,
+                uninstallButton = uninstallButtonOffline
+            )
+        }
 
         FapInstalledScreenState.Loading -> items(DEFAULT_FAP_COUNT) {
             ComposableOnlineFapApp(

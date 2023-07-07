@@ -87,7 +87,7 @@ class FlipperSerialOverflowThrottler(
         val remainingInternal = ByteBuffer.wrap(bytes).int
         info { "Invalidate buffer size. New size: $remainingInternal" }
 
-        scope.launch {
+        scope.launch(Dispatchers.Default) {
             bufferSizeState.emit(remainingInternal)
         }
     }

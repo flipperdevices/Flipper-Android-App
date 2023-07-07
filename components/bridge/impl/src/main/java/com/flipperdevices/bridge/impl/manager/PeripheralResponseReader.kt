@@ -37,7 +37,7 @@ class PeripheralResponseReader(
 
     suspend fun initialize() = withLock(mutex, "initialize") {
         responseReaderJob?.cancelAndJoin()
-        responseReaderJob = scope.launch {
+        responseReaderJob = scope.launch(Dispatchers.Default) {
             val byteInputStreamLocal = ByteEndlessInputStream(this)
             byteInputStream = byteInputStreamLocal
             parseLoopJob(byteInputStreamLocal)

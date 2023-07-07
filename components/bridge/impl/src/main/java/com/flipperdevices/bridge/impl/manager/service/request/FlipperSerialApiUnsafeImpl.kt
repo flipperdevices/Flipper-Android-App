@@ -16,6 +16,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.verbose
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
@@ -59,7 +60,7 @@ class FlipperSerialApiUnsafeImpl(
             }
             val bytes = data.value ?: return@with
             rxSpeed.onReceiveBytes(bytes.size)
-            scope.launch {
+            scope.launch(Dispatchers.Default) {
                 receiveBytesFlow.emit(bytes)
             }
         }

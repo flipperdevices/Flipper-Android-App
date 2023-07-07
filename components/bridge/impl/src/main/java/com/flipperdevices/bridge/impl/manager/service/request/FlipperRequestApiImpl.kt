@@ -41,6 +41,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import java.util.concurrent.ConcurrentHashMap
@@ -152,7 +153,7 @@ class FlipperRequestApiImpl @Inject constructor(
                 error(it) { "Cancel send because flow is failed" }
                 commandAnswerJob.cancelAndJoin()
             }
-        }.launchIn(scope)
+        }.launchIn(scope + Dispatchers.Default)
 
         return@wrapPendingAction try {
             commandAnswerJob.await()

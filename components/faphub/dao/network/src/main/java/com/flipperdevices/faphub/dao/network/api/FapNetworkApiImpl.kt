@@ -94,11 +94,26 @@ class FapNetworkApiImpl @Inject constructor(
         offset: Int,
         limit: Int
     ) = catchWithDispatcher {
-        val response = applicationApi.getAll(
-            limit = limit,
-            offset = offset,
-            query = query
-        )
+        val queryToServer = query.ifBlank {
+            null
+        }
+
+        val response = when (target) {
+            FlipperTarget.NotConnected,
+            FlipperTarget.Unsupported -> applicationApi.getAll(
+                limit = limit,
+                offset = offset,
+                query = queryToServer
+            )
+
+            is FlipperTarget.Received -> applicationApi.getAllWithTarget(
+                limit = limit,
+                offset = offset,
+                query = queryToServer,
+                target = target.target,
+                sdkApiVersion = target.sdk.toString()
+            )
+        }
 
         val fapItems = response.mapNotNull {
             it.toFapItemShort(categoryApi.get(target, it.categoryId), target)
@@ -129,6 +144,7 @@ class FapNetworkApiImpl @Inject constructor(
                 target = target.target,
                 sdkApiVersion = target.sdk.toString()
             )
+
             FlipperTarget.NotConnected,
             FlipperTarget.Unsupported -> applicationApi.get(
                 id = id

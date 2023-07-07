@@ -76,7 +76,7 @@ class ConnectionStatusViewModel(
             if (it is ConnectionStatusState.Synchronized &&
                 switchFromSynchronizedJob == null
             ) {
-                switchFromSynchronizedJob = viewModelScope.launch {
+                switchFromSynchronizedJob = viewModelScope.launch(Dispatchers.Default) {
                     delay(TIMEOUT_SYNCHRONIZED_STATUS_MS)
                     statusState.update {
                         if (it is ConnectionStatusState.Synchronized) {

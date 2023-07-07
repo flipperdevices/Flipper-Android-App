@@ -53,6 +53,13 @@ fun LazyListScope.ComposableFapsList(
             )
         }
         return
+    } else if (faps.loadState.append.endOfPaginationReached && faps.itemCount == 0) {
+        item {
+            ComposableEmpty(
+                modifier = elementModifier.fillParentMaxSize()
+            )
+        }
+        return
     }
 
     ComposableLoadedFapsList(

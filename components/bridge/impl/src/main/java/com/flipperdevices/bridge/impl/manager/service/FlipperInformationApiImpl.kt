@@ -173,7 +173,7 @@ class FlipperInformationApiImpl @Inject constructor(
     }
 
     private fun onDeviceNameReceived(deviceName: String) {
-        scope.launch {
+        scope.launch(Dispatchers.Default) {
             dataStoreFirstPair.updateData {
                 var deviceNameFormatted = deviceName.trim()
                 if (deviceNameFormatted.startsWith(Constants.DEVICENAME_PREFIX)) {
