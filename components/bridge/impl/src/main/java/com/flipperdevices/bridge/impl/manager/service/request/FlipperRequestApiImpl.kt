@@ -27,6 +27,10 @@ import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.copy
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.shake2report.api.Shake2ReportApi
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.atomic.AtomicInteger
+import javax.inject.Inject
+import javax.inject.Provider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
@@ -41,12 +45,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.atomic.AtomicInteger
-import javax.inject.Inject
-import javax.inject.Provider
 
 private typealias OnReceiveResponse = suspend (Flipper.Main) -> Unit
 
@@ -152,7 +153,7 @@ class FlipperRequestApiImpl @Inject constructor(
                 error(it) { "Cancel send because flow is failed" }
                 commandAnswerJob.cancelAndJoin()
             }
-        }.launchIn(scope)
+        }.launchIn(scope + Dispatchers.Default)
 
         return@wrapPendingAction try {
             commandAnswerJob.await()

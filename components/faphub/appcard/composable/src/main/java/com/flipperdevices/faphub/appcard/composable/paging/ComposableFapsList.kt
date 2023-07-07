@@ -1,5 +1,6 @@
 package com.flipperdevices.faphub.appcard.composable.paging
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,7 +20,6 @@ import com.flipperdevices.core.ui.ktx.image.ComposeLottiePic
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.faphub.appcard.composable.AppCard
 import com.flipperdevices.faphub.dao.api.model.FapItemShort
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 private const val DEFAULT_FAP_COUNT = 20
 
@@ -53,6 +53,8 @@ fun LazyListScope.ComposableFapsList(
             )
         }
         return
+    } else if (faps.loadState.append.endOfPaginationReached && faps.itemCount == 0) {
+
     }
 
     ComposableLoadedFapsList(

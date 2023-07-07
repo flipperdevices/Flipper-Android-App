@@ -1,5 +1,6 @@
 package com.flipperdevices.faphub.installedtab.impl.viewmodel
 
+import android.os.Looper
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
@@ -13,15 +14,16 @@ import com.flipperdevices.faphub.installedtab.impl.model.FapInstalledInternalSta
 import com.flipperdevices.faphub.installedtab.impl.model.OfflineFapApp
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
 import com.flipperdevices.faphub.target.model.FlipperTarget
+import javax.inject.Inject
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
@@ -29,7 +31,6 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
-import javax.inject.Inject
 
 class InstalledFapsFromNetworkProducer @Inject constructor(
     private val installedFapsUidsProducer: InstalledFapsUidsProducer,
@@ -48,7 +49,7 @@ class InstalledFapsFromNetworkProducer @Inject constructor(
     fun refresh(scope: CoroutineScope, force: Boolean) {
         installedFapsUidsProducer.refresh(scope, force)
         val oldJob = fetchFromNetworkJob
-        fetchFromNetworkJob = scope.launch {
+        fetchFromNetworkJob = scope.launch(Dispatchers.Default) {
             oldJob?.cancelAndJoin()
             applicationFromNetworkStateFlow.emit(FapInstalledFromNetworkState.Loading)
             combine(
@@ -108,6 +109,10 @@ class InstalledFapsFromNetworkProducer @Inject constructor(
     private fun getLoadedFapsFlow(
         fapItems: List<FapItemShort>
     ): Flow<FapInstalledInternalLoadingState.Loaded> {
+        if (fapItems.isEmpty()) {
+            return flowOf(FapInstalledInternalLoadingState.Loaded(persistentListOf()))
+        }
+
         info { "Update #getLoadedFapsFlow. ${fapItems.size} fap items" }
         val flows = fapItems.map { fapItem ->
             fapStateManager.getFapStateFlow(fapItem.id, fapItem.upToDateVersion)
@@ -153,6 +158,10 @@ class InstalledFapsFromNetworkProducer @Inject constructor(
             toRequestItems.remove(fapItem.id)
         }
         info { "To request apps: $toRequestItems, Loaded apps: ${alreadyLoadedApps.map { it.second.id }}" }
+
+        val isUiThread = Looper.myLooper() == Looper.getMainLooper()
+
+        info { "isUiThread: $isUiThread" }
 
         if (toRequestItems.isEmpty()) {
             info { "Not found faps for download" }

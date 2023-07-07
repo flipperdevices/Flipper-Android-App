@@ -9,6 +9,8 @@ import com.flipperdevices.faphub.target.impl.model.FlipperSdkVersion
 import com.flipperdevices.faphub.target.impl.utils.FlipperSdkFetcher
 import com.flipperdevices.faphub.target.model.FlipperTarget
 import com.squareup.anvil.annotations.ContributesBinding
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -17,8 +19,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-import javax.inject.Inject
-import javax.inject.Singleton
 
 @Singleton
 @ContributesBinding(AppGraph::class, FlipperTargetProviderApi::class)
@@ -32,7 +32,7 @@ class FlipperTargetProviderApiImpl @Inject constructor(
     private val targetFlow = MutableStateFlow<FlipperTarget?>(null)
 
     init {
-        scope.launch {
+        scope.launch(Dispatchers.Default) {
             subscribe()
         }
     }
