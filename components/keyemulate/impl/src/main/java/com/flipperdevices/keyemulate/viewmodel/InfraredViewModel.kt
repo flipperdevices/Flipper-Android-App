@@ -17,6 +17,8 @@ import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyemulate.model.EmulateProgress
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tangle.viewmodel.VMInject
@@ -47,32 +49,47 @@ class InfraredViewModel @VMInject constructor(
     }
 
     fun onSinglePress(config: EmulateConfig) {
-        info { "#onSinglePress" }
+        info { "#onSinglePress $config" }
         vibrator?.vibrateCompat(VIBRATOR_TIME)
         if (config.keyType != FlipperKeyType.INFRARED) {
             return
         }
 
-        emulateButtonStateFlow.update {
-            when (it) {
+        serviceProvider.provideServiceApi(this) { serviceApi ->
+            viewModelScope.launch(Dispatchers.Default) {
+                processSinglePress(serviceApi, this, config)
+            }
+        }
+    }
+
+    private suspend fun processSinglePress(
+        serviceApi: FlipperServiceApi,
+        scope: CoroutineScope,
+        config: EmulateConfig
+    ) {
+        val activeState = EmulateButtonState.Active(EmulateProgress.Infinite, config)
+        emulateButtonStateFlow.update { buttonState ->
+            when (buttonState) {
                 is EmulateButtonState.Disabled,
-                is EmulateButtonState.Loading -> it
-                is EmulateButtonState.Inactive -> EmulateButtonState.Active(
-                    progress = EmulateProgress.Infinite,
-                    config = config
-                )
+                is EmulateButtonState.Loading -> buttonState
+                is EmulateButtonState.Inactive -> activeState
                 is EmulateButtonState.Active -> {
-                    super.onStopEmulate(force = true)
-                    return
+                    emulateHelper.stopEmulateForce(serviceApi.requestApi)
+                    // If press same button, then stop emulate and do nothing
+                    if (buttonState.config == config) return
+
+                    // Wait for APP_CLOSED from Flipper and update to new active state
+                    emulateButtonStateFlow
+                        .filter { waitedButtonState ->
+                            waitedButtonState is EmulateButtonState.Inactive
+                        }
+                        .first()
+
+                    return@update activeState
                 }
             }
         }
-
-        serviceProvider.provideServiceApi(this) {
-            viewModelScope.launch(Dispatchers.Default) {
-                startEmulateInternal(this, it, config)
-            }
-        }
+        startEmulateInternal(scope, serviceApi, config)
     }
 
     private suspend fun startEmulateInternal(
