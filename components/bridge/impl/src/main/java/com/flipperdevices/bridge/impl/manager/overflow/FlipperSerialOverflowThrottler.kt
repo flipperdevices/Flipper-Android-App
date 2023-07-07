@@ -12,7 +12,6 @@ import com.flipperdevices.bridge.impl.manager.service.getServiceOrLog
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import java.nio.ByteBuffer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -23,6 +22,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import no.nordicsemi.android.ble.data.Data
+import java.nio.ByteBuffer
 
 const val CLASS_TAG = "FlipperSerialOverflowThrottler"
 

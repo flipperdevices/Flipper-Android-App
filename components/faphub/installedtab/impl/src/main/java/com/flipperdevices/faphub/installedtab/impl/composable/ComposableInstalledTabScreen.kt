@@ -90,7 +90,7 @@ fun ComposableInstalledTabScreen(
     }
 }
 
-@Suppress("FunctionNaming")
+@Suppress("FunctionNaming", "LongMethod")
 private fun LazyListScope.ComposableInstalledTabScreenState(
     screenState: FapInstalledScreenState,
     onOpenFapItem: (String) -> Unit,

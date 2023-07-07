@@ -14,7 +14,6 @@ import com.flipperdevices.faphub.installedtab.impl.model.FapInstalledInternalSta
 import com.flipperdevices.faphub.installedtab.impl.model.OfflineFapApp
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
 import com.flipperdevices.faphub.target.model.FlipperTarget
-import javax.inject.Inject
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -31,6 +30,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
+import javax.inject.Inject
 
 class InstalledFapsFromNetworkProducer @Inject constructor(
     private val installedFapsUidsProducer: InstalledFapsUidsProducer,

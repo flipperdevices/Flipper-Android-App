@@ -16,10 +16,6 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.verbose
 import com.squareup.anvil.annotations.ContributesBinding
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.atomic.AtomicInteger
-import javax.inject.Inject
-import javax.inject.Provider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -30,6 +26,10 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.atomic.AtomicInteger
+import javax.inject.Inject
+import javax.inject.Provider
 
 @SingleIn(FlipperBleServiceGraph::class)
 @ContributesBinding(FlipperBleServiceGraph::class, FlipperLagsDetector::class)
@@ -59,8 +59,8 @@ class FlipperLagsDetectorImpl @Inject constructor(
                 if (pendingResponseCounter.get() > 0) {
                     error {
                         "We have pending ${pendingResponseCounter.get()} commands, but flipper not respond " +
-                                "${Constants.LAGS_FLIPPER_DETECT_TIMEOUT_MS}ms. Pending commands is " +
-                                pendingCommands.keys().toList().joinToString()
+                            "${Constants.LAGS_FLIPPER_DETECT_TIMEOUT_MS}ms. Pending commands is " +
+                            pendingCommands.keys().toList().joinToString()
                     }
                     if (connectionState is ConnectionState.Ready &&
                         connectionState.supportedState == FlipperSupportedState.READY

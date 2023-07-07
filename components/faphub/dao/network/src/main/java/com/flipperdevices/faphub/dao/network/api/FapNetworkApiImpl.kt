@@ -14,9 +14,9 @@ import com.flipperdevices.faphub.dao.network.ktorfit.utils.FapHubNetworkCategory
 import com.flipperdevices.faphub.dao.network.ktorfit.utils.HostUrlBuilder
 import com.flipperdevices.faphub.target.model.FlipperTarget
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, FapNetworkApi::class)
 class FapNetworkApiImpl @Inject constructor(

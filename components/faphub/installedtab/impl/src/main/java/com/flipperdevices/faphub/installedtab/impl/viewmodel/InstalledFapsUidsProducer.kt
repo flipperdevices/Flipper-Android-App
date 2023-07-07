@@ -6,7 +6,6 @@ import com.flipperdevices.faphub.installation.manifest.model.FapManifestState
 import com.flipperdevices.faphub.installation.queue.api.FapInstallationQueueApi
 import com.flipperdevices.faphub.installation.queue.api.model.FapQueueState
 import com.flipperdevices.faphub.installedtab.impl.model.OfflineFapApp
-import javax.inject.Inject
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineScope
@@ -18,6 +17,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class InstalledFapsUidsProducer @Inject constructor(
     private val queueApi: FapInstallationQueueApi,

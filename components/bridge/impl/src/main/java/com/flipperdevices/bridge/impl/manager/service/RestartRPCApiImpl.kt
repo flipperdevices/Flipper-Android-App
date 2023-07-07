@@ -15,11 +15,11 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
-import javax.inject.Provider
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withTimeoutOrNull
+import javax.inject.Inject
+import javax.inject.Provider
 
 private const val WAIT_DISCONNECT_TIMEOUT_MS = 5 * 1000L // 5 ms
 
