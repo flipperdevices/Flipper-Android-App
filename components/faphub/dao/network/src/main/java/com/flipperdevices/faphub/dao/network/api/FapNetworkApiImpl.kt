@@ -14,9 +14,9 @@ import com.flipperdevices.faphub.dao.network.ktorfit.utils.FapHubNetworkCategory
 import com.flipperdevices.faphub.dao.network.ktorfit.utils.HostUrlBuilder
 import com.flipperdevices.faphub.target.model.FlipperTarget
 import com.squareup.anvil.annotations.ContributesBinding
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, FapNetworkApi::class)
 class FapNetworkApiImpl @Inject constructor(
@@ -94,11 +94,26 @@ class FapNetworkApiImpl @Inject constructor(
         offset: Int,
         limit: Int
     ) = catchWithDispatcher {
-        val response = applicationApi.getAll(
-            limit = limit,
-            offset = offset,
-            query = query
-        )
+        val queryToServer = query.ifBlank {
+            null
+        }
+
+        val response = when (target) {
+            FlipperTarget.NotConnected,
+            FlipperTarget.Unsupported -> applicationApi.getAll(
+                limit = limit,
+                offset = offset,
+                query = queryToServer
+            )
+
+            is FlipperTarget.Received -> applicationApi.getAllWithTarget(
+                limit = limit,
+                offset = offset,
+                query = queryToServer,
+                target = target.target,
+                sdkApiVersion = target.sdk.toString()
+            )
+        }
 
         val fapItems = response.mapNotNull {
             it.toFapItemShort(categoryApi.get(target, it.categoryId), target)
@@ -129,6 +144,7 @@ class FapNetworkApiImpl @Inject constructor(
                 target = target.target,
                 sdkApiVersion = target.sdk.toString()
             )
+
             FlipperTarget.NotConnected,
             FlipperTarget.Unsupported -> applicationApi.get(
                 id = id

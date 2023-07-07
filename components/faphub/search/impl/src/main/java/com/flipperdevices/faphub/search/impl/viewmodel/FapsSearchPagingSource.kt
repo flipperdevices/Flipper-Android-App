@@ -3,6 +3,7 @@ package com.flipperdevices.faphub.search.impl.viewmodel
 import com.flipperdevices.core.pager.OffsetAndLimitPagingSource
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.dao.api.model.FapItemShort
+import com.flipperdevices.faphub.search.impl.model.RequestTooSmallException
 import com.flipperdevices.faphub.target.model.FlipperTarget
 
 internal const val FAPS_PAGE_SIZE = 10
@@ -14,6 +15,10 @@ class FapsSearchPagingSource(
 ) : OffsetAndLimitPagingSource<FapItemShort>(FAPS_PAGE_SIZE) {
     override val TAG = "FapsSearchPagingSource"
     override suspend fun load(offset: Int, limit: Int): List<FapItemShort> {
+        if (searchRequest.isNotBlank() && searchRequest.length < 2) {
+            throw RequestTooSmallException()
+        }
+
         return fapNetworkApi.search(
             target = target,
             query = searchRequest,

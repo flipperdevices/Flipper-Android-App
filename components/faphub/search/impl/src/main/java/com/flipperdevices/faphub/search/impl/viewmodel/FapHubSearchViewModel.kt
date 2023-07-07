@@ -9,6 +9,7 @@ import com.flipperdevices.core.pager.loadingPagingDataFlow
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
@@ -31,6 +32,8 @@ class FapHubSearchViewModel @VMInject constructor(
             FapsSearchPagingSource(fapNetworkApi, searchRequest, target)
         }.flow
     }.flatMapLatest { it }.cachedIn(viewModelScope)
+
+    fun getSearchRequest() = searchRequestFlow.asStateFlow()
 
     fun onChangeSearchText(text: String) {
         viewModelScope.launch {
