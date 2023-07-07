@@ -8,6 +8,7 @@
 - [FIX] Hide self updater dialog on click, add self updater in debug mode, remove nfc mfkey32 from options
 - [FIX] Text alignment for simple device info
 - [FIX] Endpoint for fap hub build download
+- [FIX] App open metric
 - [FIX] Remove kotlin incremental
 - [Feature] FapHub MVPv0
 - [Feature] Update README with Fdroid badge
@@ -23,6 +24,7 @@
 - [Feature] Add report app button
 - [Feature] Now the installed apps are even shown offline
 - [Feature] Change design for installed tab
+- [Feature] Add metric for firmware origin
 - [Feature] Add more error catching for FapHub
 - [Refactor] Migrate all feature components modules from KSP to Anvil
 - [Refactor] Migrate to Ktorfit
@@ -32,6 +34,7 @@
 - [Refactor] Key Parser new module
 - [Refactor] Stream for crypto and share key content
 - [Refactor] Emulate by config
+- [Refactor] Refactor BLE API
 
 # 1.5.1
 

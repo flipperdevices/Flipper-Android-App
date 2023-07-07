@@ -12,7 +12,6 @@ import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.flipperdevices.bottombar.api.BottomNavigationFeatureEntry
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.parcelableExtra
 import com.flipperdevices.core.ktx.android.toFullString
@@ -26,6 +25,7 @@ import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.selfupdater.api.SelfUpdaterApi
 import com.flipperdevices.singleactivity.impl.composable.ComposableSingleActivityNavHost
 import com.flipperdevices.singleactivity.impl.di.SingleActivityComponent
+import com.flipperdevices.singleactivity.impl.utils.AppOpenMetricReported
 import kotlinx.collections.immutable.toPersistentSet
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -41,9 +41,6 @@ class SingleActivity :
     lateinit var deepLinkHelper: DeepLinkHelper
 
     @Inject
-    lateinit var bottomNavigationFeatureEntry: BottomNavigationFeatureEntry
-
-    @Inject
     lateinit var featureEntriesMutable: MutableSet<AggregateFeatureEntry>
 
     @Inject
@@ -51,6 +48,9 @@ class SingleActivity :
 
     @Inject
     lateinit var selfUpdaterApi: SelfUpdaterApi
+
+    @Inject
+    lateinit var appOpenMetricReported: AppOpenMetricReported
 
     private var globalNavController: NavHostController? = null
 
@@ -62,6 +62,8 @@ class SingleActivity :
             "Create new activity with hashcode: ${this.hashCode()} " +
                 "and intent ${intent.toFullString()}"
         }
+
+        appOpenMetricReported.report()
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
 

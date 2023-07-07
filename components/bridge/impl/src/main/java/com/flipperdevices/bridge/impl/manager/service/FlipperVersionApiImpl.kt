@@ -8,6 +8,7 @@ import com.flipperdevices.bridge.api.manager.service.FlipperVersionApi
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.impl.manager.UnsafeBleManager
 import com.flipperdevices.core.data.SemVer
+import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
@@ -19,11 +20,15 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withTimeoutOrNull
+import javax.inject.Inject
+import javax.inject.Provider
 
-class FlipperVersionApiImpl(
-    private val settingsStore: DataStore<Settings>
+class FlipperVersionApiImpl @Inject constructor(
+    settingsStoreProvider: Provider<DataStore<Settings>>
 ) : BluetoothGattServiceWrapper, FlipperVersionApi, LogTagProvider {
     override val TAG = "FlipperVersionApi"
+
+    private val settingsStore by settingsStoreProvider
 
     private val semVerStateFlow = MutableStateFlow<SemVer?>(null)
 

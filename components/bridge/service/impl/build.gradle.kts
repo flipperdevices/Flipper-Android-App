@@ -1,5 +1,6 @@
 plugins {
     id("flipper.android-lib")
+    id("kotlin-kapt")
     id("flipper.anvil")
 }
 
@@ -23,9 +24,9 @@ dependencies {
     implementation(projects.components.analytics.metric.api)
 
     implementation(projects.components.bridge.api)
+    implementation(projects.components.bridge.impl)
     implementation(projects.components.bridge.pbutils)
     implementation(projects.components.bridge.service.api)
-    implementation(projects.components.bridge.impl)
 
     implementation(libs.annotations)
     implementation(libs.appcompat)
@@ -38,6 +39,10 @@ dependencies {
     implementation(libs.ble)
     implementation(libs.ble.common)
     implementation(libs.ble.scan)
+
+    // Dagger deps
+    implementation(libs.dagger)
+    kapt(libs.dagger.kapt)
 
     testImplementation(projects.components.core.test)
     testImplementation(libs.junit)

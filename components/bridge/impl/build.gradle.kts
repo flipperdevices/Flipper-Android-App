@@ -17,6 +17,7 @@ dependencies {
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.pbutils)
+    implementation(projects.components.bridge.rpcinfo.api)
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.kotlin.immutable.collections)

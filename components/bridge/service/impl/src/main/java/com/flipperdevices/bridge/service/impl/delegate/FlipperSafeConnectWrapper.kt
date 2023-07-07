@@ -1,9 +1,8 @@
 package com.flipperdevices.bridge.service.impl.delegate
 
-import android.content.Context
 import com.flipperdevices.bridge.api.error.FlipperBleServiceError
 import com.flipperdevices.bridge.api.error.FlipperServiceErrorListener
-import com.flipperdevices.bridge.api.manager.FlipperBleManager
+import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
@@ -16,12 +15,13 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import no.nordicsemi.android.ble.exception.BluetoothDisabledException
+import javax.inject.Inject
+import javax.inject.Provider
 
-class FlipperSafeConnectWrapper(
-    context: Context,
-    bleManager: FlipperBleManager,
-    private val scope: CoroutineScope,
-    private val serviceErrorListener: FlipperServiceErrorListener
+class FlipperSafeConnectWrapper @Inject constructor(
+    scopeProvider: Provider<CoroutineScope>,
+    serviceErrorListenerProvider: Provider<FlipperServiceErrorListener>,
+    connectDelegateProvider: Provider<FlipperServiceConnectDelegate>
 ) : LogTagProvider {
     override val TAG = "FlipperSafeConnectWrapper"
 
@@ -29,7 +29,9 @@ class FlipperSafeConnectWrapper(
     private val mutex = Mutex()
     private var currentConnectingJob: Job? = null
 
-    private val connectDelegate = FlipperServiceConnectDelegate(bleManager, context)
+    private val scope by scopeProvider
+    private val serviceErrorListener by serviceErrorListenerProvider
+    private val connectDelegate by connectDelegateProvider
 
     suspend fun onActiveDeviceUpdate(
         deviceId: String?

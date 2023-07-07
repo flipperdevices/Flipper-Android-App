@@ -5,6 +5,7 @@ import android.os.Binder
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
+import com.flipperdevices.bridge.service.impl.di.DaggerFlipperBleServiceComponent
 import com.flipperdevices.bridge.service.impl.di.FlipperServiceComponent
 import com.flipperdevices.bridge.service.impl.notification.FLIPPER_NOTIFICATION_ID
 import com.flipperdevices.bridge.service.impl.notification.FlipperNotificationHelper
@@ -12,17 +13,30 @@ import com.flipperdevices.bridge.service.impl.provider.error.CompositeFlipperSer
 import com.flipperdevices.bridge.service.impl.provider.error.CompositeFlipperServiceErrorListenerImpl
 import com.flipperdevices.bridge.service.impl.provider.lifecycle.FlipperServiceLifecycleListener
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.ktx.jre.runBlockingWithLog
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 import java.util.concurrent.atomic.AtomicBoolean
 
 class FlipperService : LifecycleService(), LogTagProvider {
     override val TAG = "FlipperService-${hashCode()}"
     private val listener = CompositeFlipperServiceErrorListenerImpl()
-    private val serviceApi by lazy { FlipperServiceApiImpl(this, this, listener) }
+
+    private val bleServiceComponent by lazy {
+        DaggerFlipperBleServiceComponent.factory()
+            .create(
+                deps = ComponentHolder.component(),
+                context = this,
+                scope = lifecycleScope + Dispatchers.Default,
+                serviceErrorListener = listener
+            )
+    }
+    private val serviceApi by bleServiceComponent.serviceApiImpl
     private val binder by lazy { FlipperServiceBinder(serviceApi, listener) }
     private val stopped = AtomicBoolean(false)
     private var flipperNotification: FlipperNotificationHelper? = null
@@ -31,13 +45,16 @@ class FlipperService : LifecycleService(), LogTagProvider {
         super.onCreate()
         info { "Start flipper service" }
 
-        val dataStoreSettings = ComponentHolder
+        val component = ComponentHolder
             .component<FlipperServiceComponent>()
-            .dataStoreSettings
-            .get()
+
+        val dataStoreSettings = component.dataStoreSettings.get()
 
         if (runBlockingWithLog { dataStoreSettings.data.first() }.usedForegroundService) {
-            val flipperNotificationLocal = FlipperNotificationHelper(this)
+            val flipperNotificationLocal = FlipperNotificationHelper(
+                context = this,
+                applicationParams = component.applicationParams
+            )
             flipperNotification = flipperNotificationLocal
             startForeground(FLIPPER_NOTIFICATION_ID, flipperNotificationLocal.show())
             flipperNotificationLocal.showStopButton()

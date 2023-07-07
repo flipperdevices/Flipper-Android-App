@@ -13,13 +13,11 @@ import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.core.ktx.jre.TimeHelper
 import com.flipperdevices.core.test.PendingCoroutineExceptionHandler
 import com.flipperdevices.metric.api.MetricApi
-import com.flipperdevices.metric.api.events.complex.FlipperRPCInfoEvent
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.infoRequest
 import com.flipperdevices.protobuf.storage.infoResponse
 import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
@@ -61,52 +59,7 @@ class FlipperStorageInformationTest {
         }
 
         metricApi = mockk(relaxUnitFun = true)
-        underTest = FlipperStorageInformationApiImpl(metricApi, mockk(relaxUnitFun = true))
-    }
-
-    @Test
-    fun `request storage info first time`() = runTest {
-        mockStorageInfo(requestApi, "/int/", 100, 200)
-        mockStorageInfo(requestApi, "/ext/", 400, 800)
-
-        launch(exceptionHandler) {
-            underTest.invalidate(this, serviceApi)
-        }
-
-        advanceUntilIdle()
-
-        val state = underTest.getStorageInformationFlow().first()
-        Assert.assertEquals(
-            FlipperStorageInformation(
-                internalStorageStatus = FlipperInformationStatus.Ready(
-                    StorageStats.Loaded(
-                        free = 100,
-                        total = 200
-                    )
-                ),
-                externalStorageStatus = FlipperInformationStatus.Ready(
-                    StorageStats.Loaded(
-                        free = 400,
-                        total = 800
-                    )
-                )
-            ),
-            state,
-        )
-
-        coVerify {
-            metricApi.reportComplexEvent(
-                eq(
-                    FlipperRPCInfoEvent(
-                        sdCardIsAvailable = true,
-                        internalFreeBytes = 100,
-                        internalTotalBytes = 200,
-                        externalFreeBytes = 400,
-                        externalTotalBytes = 800
-                    )
-                )
-            )
-        }
+        underTest = FlipperStorageInformationApiImpl()
     }
 
     @Test
