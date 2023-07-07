@@ -8,6 +8,7 @@
 - [FIX] Hide self updater dialog on click, add self updater in debug mode, remove nfc mfkey32 from options
 - [FIX] Text alignment for simple device info
 - [FIX] Endpoint for fap hub build download
+- [FIX] Remove kotlin incremental
 - [Feature] FapHub MVPv0
 - [Feature] Infrared Emulate (without editing)
 - [Feature] Update README with Fdroid badge
