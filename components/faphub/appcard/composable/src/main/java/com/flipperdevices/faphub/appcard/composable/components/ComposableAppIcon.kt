@@ -48,8 +48,6 @@ fun ComposableAppIcon(
                 url = url,
                 contentDescription = description,
                 onLoading = { isPlaceholderActive = it },
-                enableDiskCache = false,
-                enableMemoryCache = false,
                 filterQuality = FilterQuality.None
             )
         }

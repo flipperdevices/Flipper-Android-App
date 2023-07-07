@@ -11,6 +11,7 @@ dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.data)
     implementation(projects.components.core.log)
+    implementation(projects.components.core.ktx)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.errors)
     implementation(projects.components.core.ui.res)
@@ -21,6 +22,7 @@ dependencies {
     implementation(projects.components.faphub.installation.button.api)
     implementation(projects.components.faphub.installation.manifest.api)
     implementation(projects.components.faphub.installation.queue.api)
+    implementation(projects.components.faphub.uninstallbutton.api)
     implementation(projects.components.faphub.installation.stateprovider.api)
     implementation(projects.components.faphub.target.api)
 
@@ -30,6 +32,7 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
     implementation(libs.compose.paging)
+    implementation(libs.coil.compose)
 
     implementation(libs.lifecycle.viewmodel.ktx)
 

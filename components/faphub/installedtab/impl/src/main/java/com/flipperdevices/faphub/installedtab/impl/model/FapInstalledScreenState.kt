@@ -7,7 +7,11 @@ sealed class FapInstalledScreenState {
     object Loading : FapInstalledScreenState()
 
     data class Loaded(
-        val faps: ImmutableList<FapItemShort>
+        val faps: ImmutableList<Pair<FapItemShort, FapInstalledInternalState>>
+    ) : FapInstalledScreenState()
+
+    data class LoadedOffline(
+        val faps: ImmutableList<OfflineFapApp>
     ) : FapInstalledScreenState()
 
     data class Error(

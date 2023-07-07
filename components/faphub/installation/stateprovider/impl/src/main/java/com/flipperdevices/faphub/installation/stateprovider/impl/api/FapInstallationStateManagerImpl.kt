@@ -75,19 +75,22 @@ class FapInstallationStateManagerImpl @Inject constructor(
         }
 
         when (currentVersion.buildState) {
-            FapBuildState.READY,
-            FapBuildState.READY_ON_RELEASE -> {}
-            FapBuildState.BUILD_RUNNING ->
-                return FapState.NotAvailableForInstall(NotAvailableReason.BUILD_RUNNING)
+            FapBuildState.READY, FapBuildState.READY_ON_RELEASE -> {
+            }
 
-            FapBuildState.UNSUPPORTED_APP ->
-                return FapState.NotAvailableForInstall(NotAvailableReason.UNSUPPORTED_APP)
+            FapBuildState.BUILD_RUNNING -> return FapState.NotAvailableForInstall(NotAvailableReason.BUILD_RUNNING)
 
-            FapBuildState.FLIPPER_OUTDATED ->
-                return FapState.NotAvailableForInstall(NotAvailableReason.FLIPPER_OUTDATED)
+            FapBuildState.UNSUPPORTED_APP -> return FapState.NotAvailableForInstall(
+                NotAvailableReason.UNSUPPORTED_APP
+            )
 
-            FapBuildState.UNSUPPORTED_SDK ->
-                return FapState.NotAvailableForInstall(NotAvailableReason.UNSUPPORTED_SDK)
+            FapBuildState.FLIPPER_OUTDATED -> return FapState.NotAvailableForInstall(
+                NotAvailableReason.FLIPPER_OUTDATED
+            )
+
+            FapBuildState.UNSUPPORTED_SDK -> return FapState.NotAvailableForInstall(
+                NotAvailableReason.UNSUPPORTED_SDK
+            )
         }
 
         return FapState.ReadyToInstall
@@ -119,26 +122,36 @@ class FapInstallationStateManagerImpl @Inject constructor(
             null
         }
 
-        FapManifestState.Loading,
-        FapManifestState.NotLoaded -> FapState.RetrievingManifest
+        FapManifestState.Loading, is FapManifestState.NotLoaded -> FapState.RetrievingManifest
     }
 
     private fun queueStateToFapState(queueState: FapQueueState) = when (queueState) {
         is FapQueueState.InProgress -> when (queueState.request) {
             is FapActionRequest.Cancel -> FapState.Canceling
-            is FapActionRequest.Install -> FapState.InstallationInProgress(queueState.float)
-            is FapActionRequest.Update -> FapState.UpdatingInProgress(queueState.float)
+            is FapActionRequest.Install -> FapState.InstallationInProgress(
+                active = true,
+                progress = queueState.float
+            )
+
+            is FapActionRequest.Update -> FapState.UpdatingInProgress(
+                active = true,
+                progress = queueState.float
+            )
+
             is FapActionRequest.Delete -> FapState.Deleting
         }
 
         is FapQueueState.Pending -> when (queueState.request) {
             is FapActionRequest.Cancel -> FapState.Canceling
-            is FapActionRequest.Install -> FapState.InstallationInProgress(0f)
-            is FapActionRequest.Update -> FapState.UpdatingInProgress(0f)
+            is FapActionRequest.Install -> FapState.InstallationInProgress(
+                active = false,
+                progress = 0f
+            )
+
+            is FapActionRequest.Update -> FapState.UpdatingInProgress(active = false, progress = 0f)
             is FapActionRequest.Delete -> FapState.Deleting
         }
 
-        FapQueueState.NotFound,
-        is FapQueueState.Failed -> null
+        FapQueueState.NotFound, is FapQueueState.Failed -> null
     }
 }

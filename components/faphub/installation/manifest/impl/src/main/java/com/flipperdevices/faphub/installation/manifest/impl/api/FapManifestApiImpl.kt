@@ -86,10 +86,11 @@ class FapManifestApiImpl @Inject constructor(
 
     private suspend fun invalidate() = withLock(mutex, "invalidate") {
         runCatching {
+            enrichedHelper.onLoadFresh()
             loader.load()
         }.onFailure {
             error(it) { "Failed load manifests" }
-            enrichedHelper.onError()
+            enrichedHelper.onError(it)
         }.onSuccess {
             enrichedHelper.onUpdateManifests(it)
         }

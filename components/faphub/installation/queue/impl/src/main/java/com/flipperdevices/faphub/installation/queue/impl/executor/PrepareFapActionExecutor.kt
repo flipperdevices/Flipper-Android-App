@@ -16,20 +16,20 @@ abstract class PrepareFapActionExecutor(
     private val fapUploadAction: FapActionUpload
 ) : LogTagProvider {
     protected suspend fun uploadAndDownloadFap(
-        applicationUid: String,
+        versionUid: String,
         target: FlipperTarget.Received,
         progressListener: ProgressListener
     ): String {
-        info { "Start download $applicationUid" }
+        info { "Start download $versionUid" }
         val downloadedFap = fapDownloadApi.downloadBundle(
-            applicationUid = applicationUid,
+            applicationUid = versionUid,
             listener = ProgressWrapperTracker(
                 progressListener,
                 max = PERCENT_FOR_DOWNLOAD
             ),
             target = target
         )
-        info { "Fap downloaded by request $applicationUid to ${downloadedFap.path}" }
+        info { "Fap downloaded by request $versionUid to ${downloadedFap.path}" }
         val path = fapUploadAction.upload(
             downloadedFap,
             ProgressWrapperTracker(
@@ -38,7 +38,7 @@ abstract class PrepareFapActionExecutor(
                 max = PERCENT_FOR_UPLOAD
             )
         )
-        info { "Fap uploaded by request $applicationUid to $path" }
+        info { "Fap uploaded by request $versionUid to $path" }
         return path
     }
 }

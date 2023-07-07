@@ -8,24 +8,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
-import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.faphub.dao.api.model.FapItem
-import com.flipperdevices.faphub.fapscreen.impl.R
 import com.flipperdevices.faphub.fapscreen.impl.model.FapDetailedControlState
 
 @Composable
 fun ComposableFapControlRow(
     controlState: FapDetailedControlState,
-    onDelete: () -> Unit,
+    uninstallButton: @Composable (Modifier) -> Unit,
     modifier: Modifier = Modifier,
     installationButton: @Composable (FapItem?, Modifier) -> Unit
 ) {
@@ -41,7 +35,7 @@ fun ComposableFapControlRow(
                 modifier = modifier,
                 state = controlStateLocal,
                 installationButton = installationButton,
-                onDelete = onDelete
+                uninstallButton = uninstallButton
             )
 
             FapDetailedControlState.Loading -> ComposableFapControlRowInProgress(modifier)
@@ -80,20 +74,16 @@ private fun ComposableFapControlRowInProgress(
 private fun ComposableFapControlRowInstalled(
     state: FapDetailedControlState.Installed,
     installationButton: @Composable (FapItem?, Modifier) -> Unit,
-    onDelete: () -> Unit,
+    uninstallButton: @Composable (Modifier) -> Unit,
     modifier: Modifier = Modifier
 ) = Row(
     modifier = modifier,
     verticalAlignment = Alignment.CenterVertically
 ) {
-    Icon(
-        modifier = Modifier
+    uninstallButton(
+        Modifier
             .padding(end = 12.dp)
             .size(46.dp)
-            .clickableRipple(onClick = onDelete),
-        painter = painterResource(R.drawable.ic_delete),
-        contentDescription = stringResource(R.string.fapscreen_install_delete_desc),
-        tint = LocalPallet.current.onError
     )
     installationButton(
         state.fapItem,

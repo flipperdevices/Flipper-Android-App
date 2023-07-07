@@ -54,8 +54,6 @@ fun ComposableAppScreenshot(
                 url = url,
                 contentDescription = null,
                 onLoading = { isPlaceholderActive = it },
-                enableDiskCache = false,
-                enableMemoryCache = false,
                 filterQuality = FilterQuality.None
             )
         }

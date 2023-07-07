@@ -47,6 +47,10 @@ class FapQueueRunner @Inject constructor(
     fun currentTaskFlow() = currentTaskFlow.asStateFlow()
 
     fun enqueue(actionRequest: FapActionRequest) = scope.launch {
+        enqueueSync(actionRequest)
+    }
+
+    suspend fun enqueueSync(actionRequest: FapActionRequest) {
         if (actionRequest is FapActionRequest.Cancel) {
             cancelTasksForApplicationUid(actionRequest)
         } else {

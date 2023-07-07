@@ -196,6 +196,8 @@ include(
     ":components:faphub:search:impl",
     ":components:faphub:category:api",
     ":components:faphub:category:impl",
+    ":components:faphub:uninstallbutton:api",
+    ":components:faphub:uninstallbutton:impl",
     ":components:faphub:fapscreen:api",
     ":components:faphub:fapscreen:impl",
     ":components:faphub:installation:button:api",

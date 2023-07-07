@@ -1,7 +1,6 @@
 package com.flipperdevices.faphub.installedtab.api
 
 import androidx.compose.runtime.Composable
-import com.flipperdevices.faphub.dao.api.model.FapItemShort
 
 interface FapInstalledApi {
     @Composable
@@ -9,6 +8,6 @@ interface FapInstalledApi {
 
     @Composable
     fun ComposableInstalledTab(
-        onOpenFapItem: (FapItemShort) -> Unit
+        onOpenFapItem: (uid: String) -> Unit
     )
 }

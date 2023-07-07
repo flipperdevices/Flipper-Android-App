@@ -26,7 +26,7 @@ class UpdateActionExecutor @Inject constructor(
     ) {
         val target = request.toVersion.target as? FlipperTarget.Received
             ?: error("Failed download fap for $request")
-        val path = uploadAndDownloadFap(request.applicationUid, target, progressListener)
+        val path = uploadAndDownloadFap(request.toVersion.id, target, progressListener)
 
         val iconBase64Request = fapIconDownloader.downloadToBase64(request.iconUrl).onFailure {
             error(it) { "Failed download ${request.iconUrl}" }
@@ -36,7 +36,8 @@ class UpdateActionExecutor @Inject constructor(
             pathToFap = path,
             FapManifestEnrichedItem(
                 fapManifestItem = request.from.copy(
-                    versionUid = request.applicationUid,
+                    fullName = request.applicationName,
+                    versionUid = request.toVersion.id,
                     iconBase64 = iconBase64Request.getOrNull() ?: request.from.iconBase64,
                     sdkApi = (request.toVersion.target as? FlipperTarget.Received)?.sdk
                 ),

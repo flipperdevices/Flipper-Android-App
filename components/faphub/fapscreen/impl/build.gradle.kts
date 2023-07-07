@@ -41,6 +41,7 @@ dependencies {
     implementation(projects.components.faphub.target.api)
     implementation(projects.components.faphub.report.api)
     implementation(projects.components.faphub.main.api)
+    implementation(projects.components.faphub.uninstallbutton.api)
 
     implementation(libs.kotlin.immutable.collections)
 

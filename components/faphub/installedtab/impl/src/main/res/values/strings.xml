@@ -2,4 +2,7 @@
 <resources>
     <string name="faphub_installed_update_all">UPDATE ALL</string>
     <string name="faphub_installed_update_cancel">CANCEL UPDATING</string>
+    <string name="faphub_installed_offline">Connect to the internet to see available updates</string>
+    <string name="faphub_installed_offline_btn">INSTALLED</string>
+    <string name="faphub_installed_empty_desc">No apps installed on your Flipper yet</string>
 </resources>

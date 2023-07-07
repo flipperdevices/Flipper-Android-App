@@ -79,11 +79,10 @@ private fun ComposableAppCategoryIcon(
                     .fillMaxSize(),
                 url = category.picUrl,
                 contentDescription = category.name,
-                enableMemoryCache = true,
-                enableDiskCache = true,
                 colorFilter = ColorFilter.tint(LocalPallet.current.text60),
                 filterQuality = FilterQuality.None,
-                onLoading = { isPlaceholderActive = it }
+                onLoading = { isPlaceholderActive = it },
+                cacheKey = category.name
             )
         }
     }

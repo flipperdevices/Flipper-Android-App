@@ -7,8 +7,9 @@
 - [FIX] Add confirm delete dialog and some small fixes
 - [FIX] Hide self updater dialog on click, add self updater in debug mode, remove nfc mfkey32 from options
 - [FIX] Text alignment for simple device info
-- [Feature] Infrared Emulate (without editing)
+- [FIX] Endpoint for fap hub build download
 - [Feature] FapHub MVPv0
+- [Feature] Infrared Emulate (without editing)
 - [Feature] Update README with Fdroid badge
 - [Feature] Migrate faphub to target flow
 - [Feature] Update Geminio for create modules - simple, navigation, api/impl
@@ -20,6 +21,9 @@
 - [Feature] Add url to release catalog
 - [Feature] Add build status card to app screen
 - [Feature] Add report app button
+- [Feature] Now the installed apps are even shown offline
+- [Feature] Change design for installed tab
+- [Feature] Add more error catching for FapHub
 - [Refactor] Migrate all feature components modules from KSP to Anvil
 - [Refactor] Migrate to Ktorfit
 - [Refactor] Migrate key emulate to new module, decompose Emulate Helper
