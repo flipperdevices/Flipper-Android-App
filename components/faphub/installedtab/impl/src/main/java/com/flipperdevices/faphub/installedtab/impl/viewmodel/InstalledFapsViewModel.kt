@@ -16,6 +16,7 @@ import com.flipperdevices.faphub.installedtab.impl.model.OfflineFapApp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -89,7 +90,7 @@ class InstalledFapsViewModel @VMInject constructor(
             }
         }.stateIn(viewModelScope, SharingStarted.Eagerly, FapBatchUpdateButtonState.Loading)
 
-    fun updateAll() = viewModelScope.launch {
+    fun updateAll() = viewModelScope.launch(Dispatchers.Default) {
         val state = installedFapsStateFlow.first()
         if (state !is FapInstalledInternalLoadingState.Loaded) {
             info { "State is $state, so just return" }
@@ -114,7 +115,7 @@ class InstalledFapsViewModel @VMInject constructor(
         }
     }
 
-    fun cancelAll() = viewModelScope.launch {
+    fun cancelAll() = viewModelScope.launch(Dispatchers.Default) {
         val state = installedFapsStateFlow.first()
         if (state !is FapInstalledInternalLoadingState.Loaded) {
             info { "State is $state, so just return" }
@@ -129,7 +130,7 @@ class InstalledFapsViewModel @VMInject constructor(
     fun refresh(force: Boolean) {
         fapsStateProducer.refresh(viewModelScope, force)
         val oldJob = fetcherJob
-        fetcherJob = viewModelScope.launch {
+        fetcherJob = viewModelScope.launch(Dispatchers.Default) {
             oldJob?.cancelAndJoin()
             installedFapsStateFlow.emit(FapInstalledInternalLoadingState.Loading)
             fapManifestApi.invalidateAsync()

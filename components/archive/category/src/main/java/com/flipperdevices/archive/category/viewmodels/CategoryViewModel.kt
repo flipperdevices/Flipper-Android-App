@@ -10,6 +10,7 @@ import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.keyparser.api.KeyParser
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -27,7 +28,7 @@ class CategoryViewModel @VMInject constructor(
 ) : ViewModel() {
     private val categoryState = MutableStateFlow<CategoryState>(CategoryState.Loading)
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Default) {
             when (categoryType) {
                 is CategoryType.ByFileType -> simpleKeyApi.getExistKeysAsFlow(categoryType.fileType)
                 CategoryType.Deleted -> deleteKeyApi.getDeletedKeyAsFlow()

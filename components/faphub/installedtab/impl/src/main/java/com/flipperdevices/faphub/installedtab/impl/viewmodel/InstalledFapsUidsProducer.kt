@@ -9,13 +9,13 @@ import com.flipperdevices.faphub.installedtab.impl.model.OfflineFapApp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -37,7 +37,7 @@ class InstalledFapsUidsProducer @Inject constructor(
             fapManifestApi.invalidateAsync()
         }
         val oldJob = applicationUidJob
-        applicationUidJob = scope.launch {
+        applicationUidJob = scope.launch(Dispatchers.Default) {
             oldJob?.cancelAndJoin()
             applicationUidsStateFlow.emit(FapInstalledUidsState.Loading)
             combine(

@@ -25,7 +25,7 @@ internal fun ColumnScope.ComposableFapDescriptionText(
     Text(
         modifier = Modifier.padding(bottom = 8.dp, top = 24.dp),
         text = stringResource(R.string.fapscreen_desc_title),
-        style = LocalTypography.current.buttonM16,
+        style = LocalTypography.current.titleB18,
         color = LocalPallet.current.text100
     )
 

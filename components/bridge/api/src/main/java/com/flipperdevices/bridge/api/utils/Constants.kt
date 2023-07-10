@@ -24,7 +24,7 @@ object Constants {
     )
     val API_SUPPORTED_GET_REQUEST = API_SUPPORTED_FLIPPER_ERROR
     val API_SUPPORTED_VERSION = SemVer(majorVersion = 0, minorVersion = 3)
-    const val LAGS_FLIPPER_DETECT_TIMEOUT_MS = 5 * 1000L // 5 seconds
+    const val LAGS_FLIPPER_DETECT_TIMEOUT_MS = 10 * 1000L // 10 seconds
 
     object GenericService {
         val SERVICE_UUID: UUID = UUID.fromString("00001800-0000-1000-8000-00805f9b34fb")

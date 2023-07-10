@@ -32,7 +32,7 @@ class FlipperTargetProviderApiImpl @Inject constructor(
     private val targetFlow = MutableStateFlow<FlipperTarget?>(null)
 
     init {
-        scope.launch {
+        scope.launch(Dispatchers.Default) {
             subscribe()
         }
     }

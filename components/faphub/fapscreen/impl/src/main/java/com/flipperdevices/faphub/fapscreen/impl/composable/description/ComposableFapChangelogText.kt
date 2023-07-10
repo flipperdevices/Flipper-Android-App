@@ -32,9 +32,9 @@ fun ColumnScope.ComposableFapChangelogText(
 ) {
     var maxChangelogLines by remember { mutableStateOf(MAX_CHANGELOG_LINE) }
     Text(
-        modifier = modifier.padding(bottom = 8.dp, top = 24.dp),
+        modifier = modifier.padding(bottom = 8.dp, top = 32.dp),
         text = stringResource(R.string.fapscreen_changelog_title),
-        style = LocalTypography.current.buttonM16,
+        style = LocalTypography.current.titleB18,
         color = LocalPallet.current.text100
     )
 

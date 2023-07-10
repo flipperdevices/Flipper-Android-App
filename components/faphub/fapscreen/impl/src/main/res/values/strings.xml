@@ -15,9 +15,9 @@
     <string name="fapscreen_building_state_ready_text">Runs on latest firmware Release</string>
     <string name="fapscreen_building_state_building_text">App is rebuilding…</string>
     <string name="fapscreen_building_state_outdated_app_text">Outdated app</string>
-    <string name="fapscreen_building_state_outdated_flipper_text">Update Flipper to latest Release</string>
-    <string name="fapscreen_building_dialog_not_connected_title">Flipper is Not Connected</string>
-    <string name="fapscreen_building_dialog_not_connected_desc">Connect your Flipper Zero to install this app</string>
+    <string name="fapscreen_building_state_outdated_flipper_text">To install, update firmware from Release Channel</string>
+    <string name="fapscreen_building_dialog_not_connected_title">Runs on Latest Firmware Release</string>
+    <string name="fapscreen_building_dialog_not_connected_desc">Connect your Flipper with latest firmware Release version to install this app</string>
     <string name="fapscreen_building_dialog_not_connected_btn">Go to Device Screen</string>
     <string name="fapscreen_building_dialog_running_title">App is Rebuilding</string>
     <string name="fapscreen_building_dialog_running_desc">A new app version is rebuilding on the server. Please wait, it can take some time.</string>
@@ -25,7 +25,7 @@
     <string name="fapscreen_building_dialog_outdated_app_title">Outdated App</string>
     <string name="fapscreen_building_dialog_outdated_app_desc">Contact the developer on GitHub to request further app support</string>
     <string name="fapscreen_building_dialog_outdated_app_btn">View on GitHub</string>
-    <string name="fapscreen_building_dialog_outdated_flipper_title">Outdated Flipper Firmware</string>
-    <string name="fapscreen_building_dialog_outdated_flipper_desc">Update your Flipper firmware to the latest Release version to install this app</string>
+    <string name="fapscreen_building_dialog_outdated_flipper_title">To install, update firmware from Release Channel</string>
+    <string name="fapscreen_building_dialog_outdated_flipper_desc">This app requires the latest Flipper firmware version from Release channel</string>
     <string name="fapscreen_building_dialog_outdated_flipper_btn">Go to Device Screen</string>
 </resources>

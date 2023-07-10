@@ -9,6 +9,7 @@ import com.flipperdevices.bridge.api.manager.service.RestartRPCApi
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.impl.manager.UnsafeBleManager
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
+import com.flipperdevices.core.di.SingleIn
 import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
@@ -22,6 +23,7 @@ import javax.inject.Provider
 
 private const val WAIT_DISCONNECT_TIMEOUT_MS = 5 * 1000L // 5 ms
 
+@SingleIn(FlipperBleServiceGraph::class)
 @ContributesBinding(FlipperBleServiceGraph::class, RestartRPCApi::class)
 class RestartRPCApiImpl @Inject constructor(
     serviceApiProvider: Provider<FlipperServiceApi>

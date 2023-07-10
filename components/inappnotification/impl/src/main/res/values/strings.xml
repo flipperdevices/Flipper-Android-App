@@ -6,5 +6,5 @@
 
     <string name="saved_key_desc">saved to Archive</string>
     <string name="report_app_title">Successfully</string>
-    <string name="report_app_desc">The report for the application has been sent</string>
+    <string name="report_app_desc">App report has been sent</string>
 </resources>
