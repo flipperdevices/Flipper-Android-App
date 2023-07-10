@@ -46,6 +46,7 @@ data class FlipperPallet(
 
     val shareSheetBackground: Color,
     val shareSheetScrimColor: Color,
+    val shareSheetStatusBarColor: Color = shareSheetScrimColor,
 
     val flipperDisableButton: Color,
     val reportBorder: Color,
@@ -160,6 +161,8 @@ data class FlipperPallet(
     val tabSwitchActiveColor: Color = Color(0xFF000000)
     val tabSwitchInActiveColor: Color = Color(0xFF000000).copy(alpha = 0.5f)
     val tabSwitchBackgroundColor: Color = Color(0xFFFFFFFF).copy(alpha = 0.5f)
+
+    val accentShareSheetStatusBarColor = Color(0xFFD96F00)
 }
 
 internal fun FlipperPallet.toMaterialColors(isLight: Boolean) = Colors(

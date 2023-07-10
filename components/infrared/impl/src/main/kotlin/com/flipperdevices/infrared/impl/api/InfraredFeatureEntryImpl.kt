@@ -1,7 +1,7 @@
 package com.flipperdevices.infrared.impl.api
 
 import android.net.Uri
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -10,6 +10,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.api.model.navigation.FlipperKeyPathType
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
+import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.infrared.api.InfraredFeatureEntry
 import com.flipperdevices.infrared.impl.composable.ComposableInfraredScreen
 import com.flipperdevices.infrared.impl.viewmodel.InfraredViewModel
@@ -52,18 +53,25 @@ class InfraredFeatureEntryImpl @Inject constructor(
             arguments = navArguments
         ) {
             val viewModel: InfraredViewModel = tangleViewModel()
-            shareBottomUIApi.ComposableShareBottomSheet { onShare ->
-                ComposableInfraredScreen(
-                    navController = navController,
-                    viewModel = viewModel,
-                    keyScreenApi = keyScreenApi,
-                    keyEmulateApi = keyEmulateApi,
-                    onEdit = {},
-                    onRename = {
-                        navController.navigate(keyEditFeatureEntry.getKeyEditScreen(it, null))
-                    },
-                    onShare = onShare
+
+            CompositionLocalProvider(
+                LocalPallet provides LocalPallet.current.copy(
+                    shareSheetStatusBarColor = LocalPallet.current.accentShareSheetStatusBarColor
                 )
+            ) {
+                shareBottomUIApi.ComposableShareBottomSheet { onShare ->
+                    ComposableInfraredScreen(
+                        navController = navController,
+                        viewModel = viewModel,
+                        keyScreenApi = keyScreenApi,
+                        keyEmulateApi = keyEmulateApi,
+                        onEdit = {},
+                        onRename = {
+                            navController.navigate(keyEditFeatureEntry.getKeyEditScreen(it, null))
+                        },
+                        onShare = onShare
+                    )
+                }
             }
         }
     }

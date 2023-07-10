@@ -6,6 +6,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
+import com.flipperdevices.core.ui.ktx.SetUpNavigationBarColor
+import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyemulate.api.KeyEmulateApi
 import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModel
 import com.flipperdevices.keyscreen.model.KeyScreenState
@@ -43,4 +45,5 @@ fun ComposableKeyScreen(
             onOpenEditScreen = onOpenEditScreen
         )
     }
+    SetUpNavigationBarColor(color = LocalPallet.current.background)
 }
