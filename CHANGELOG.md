@@ -1,11 +1,14 @@
 # Changelog
 
-# 1.5.2 - In Progress
+# 1.6.1 - In progress
+
+# 1.6.0
 
 - [FIX] Crash application on cancel update
 - [FIX] White Screen after import key
 - [FIX] Add confirm delete dialog and some small fixes
-- [FIX] Hide self updater dialog on click, add self updater in debug mode, remove nfc mfkey32 from options
+- [FIX] Hide self updater dialog on click, add self updater in debug mode, remove nfc mfkey32 from
+  options
 - [FIX] Text alignment for simple device info
 - [FIX] Endpoint for fap hub build download
 - [FIX] App open metric
