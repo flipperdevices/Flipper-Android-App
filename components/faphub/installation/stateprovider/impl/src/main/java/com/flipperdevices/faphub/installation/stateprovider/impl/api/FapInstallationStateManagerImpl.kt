@@ -104,24 +104,25 @@ class FapInstallationStateManagerImpl @Inject constructor(
         flipperTarget: FlipperTarget.Received
     ): FapState? {
         val canOpenFap = flipperTarget.sdk >= Constants.API_SUPPORTED_LOAD_FAP
+        val installedState = FapState.Installed(canOpenFap)
 
         return when (manifest) {
             is FapManifestState.Loaded -> manifest.items.find { it.fapManifestItem.uid == applicationUid }
                 ?.let { fapManifestEnrichedItem ->
                     val sdkApi = fapManifestEnrichedItem.fapManifestItem.sdkApi
                     if (currentVersion.buildState != FapBuildState.READY) {
-                        return@let FapState.Installed(canOpenFap)
+                        return@let installedState
                     } else if (fapManifestEnrichedItem.numberVersion > currentVersion.version) {
                         return@let FapState.ReadyToUpdate(fapManifestEnrichedItem.fapManifestItem)
                     } else if (sdkApi == null || sdkApi != flipperTarget.sdk) {
                         return@let FapState.ReadyToUpdate(fapManifestEnrichedItem.fapManifestItem)
                     } else {
-                        return@let FapState.Installed(canOpenFap)
+                        return@let installedState
                     }
                 }
 
             is FapManifestState.LoadedOffline -> if (manifest.items.find { it.uid == applicationUid } != null) {
-                FapState.Installed(canOpenFap)
+                installedState
             } else {
                 null
             }
