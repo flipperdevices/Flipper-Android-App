@@ -25,12 +25,12 @@ class DeepLinkFlipperFormatSharing @Inject constructor(
     override fun getPriority(
         context: Context,
         intent: Intent
-    ): DeepLinkParserDelegatePriority {
-        val uri = intent.data ?: return DeepLinkParserDelegatePriority.LOW
+    ): DeepLinkParserDelegatePriority? {
+        val uri = intent.data ?: return null
         return if (uri.scheme == SCHEME_FLIPPERKEY) {
             DeepLinkParserDelegatePriority.HIGH
         } else {
-            DeepLinkParserDelegatePriority.LOW
+            null
         }
     }
 

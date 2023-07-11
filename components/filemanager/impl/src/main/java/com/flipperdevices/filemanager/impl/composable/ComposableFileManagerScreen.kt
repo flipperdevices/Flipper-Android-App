@@ -157,7 +157,7 @@ private fun ComposableFileManagerScreenInternal(
             runBlocking {
                 val deeplink = deepLinkParser.fromUri(context, uri)
 
-                if (deeplink != null && deeplink is Deeplink.FlipperKey) {
+                if (deeplink != null && deeplink is Deeplink.ExternalContent) {
                     val deeplinkContent = deeplink.content
                     if (deeplinkContent != null) {
                         onUploadFile(deeplinkContent)

@@ -11,8 +11,8 @@ import com.flipperdevices.metric.api.events.complex.UpdateFlipperStart
 import com.flipperdevices.metric.api.events.complex.UpdateStatus
 import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.impl.UpdaterTask
-import com.flipperdevices.updater.impl.tasks.UpdateContentHelper
 import com.flipperdevices.updater.impl.tasks.UploadToFlipperHelper
+import com.flipperdevices.updater.impl.tasks.downloader.UpdateContentDownloader
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
 import com.flipperdevices.updater.model.UpdateRequest
@@ -33,7 +33,7 @@ import javax.inject.Singleton
 @ContributesBinding(AppGraph::class, UpdaterApi::class)
 class UpdaterApiImpl @Inject constructor(
     private val serviceProvider: FlipperServiceProvider,
-    private val updateContentHelper: MutableSet<UpdateContentHelper>,
+    private val updateContentDownloader: MutableSet<UpdateContentDownloader>,
     private val subGhzProvisioningHelper: SubGhzProvisioningHelper,
     private val uploadToFlipperHelper: UploadToFlipperHelper,
     private val context: Context,
@@ -59,7 +59,7 @@ class UpdaterApiImpl @Inject constructor(
             context,
             uploadToFlipperHelper,
             subGhzProvisioningHelper,
-            updateContentHelper
+            updateContentDownloader
         )
         currentActiveTask = localActiveTask
 

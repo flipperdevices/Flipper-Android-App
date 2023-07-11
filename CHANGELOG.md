@@ -3,6 +3,7 @@
 # 1.6.1 - In progress
 
 - [FIX] FapHub build status layout
+- [FIX] Custom install and file manager uploader, deeplink refactor
 
 # 1.6.0
 

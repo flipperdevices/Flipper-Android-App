@@ -25,11 +25,11 @@ class DeepLinkFileUriCopy @Inject constructor() : DeepLinkParserDelegate, LogTag
     override fun getPriority(
         context: Context,
         intent: Intent
-    ): DeepLinkParserDelegatePriority {
-        if (intent.data == null) {
+    ): DeepLinkParserDelegatePriority? {
+        if (intent.data != null) {
             return DeepLinkParserDelegatePriority.LOW
         }
-        return DeepLinkParserDelegatePriority.LAST_CHANCE
+        return null
     }
 
     // Fallback if DeepLinkFileUriGrantPermission failed: copy from uri to tmp file
@@ -38,7 +38,7 @@ class DeepLinkFileUriCopy @Inject constructor() : DeepLinkParserDelegate, LogTag
 
         val contentResolver = context.contentResolver
 
-        return Deeplink.FlipperKey(
+        return Deeplink.ExternalContent(
             content = buildInternalFile(
                 contentResolver,
                 context.cacheDir,

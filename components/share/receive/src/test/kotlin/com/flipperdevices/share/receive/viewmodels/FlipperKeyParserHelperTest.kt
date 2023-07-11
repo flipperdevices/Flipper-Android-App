@@ -131,26 +131,6 @@ class FlipperKeyParserHelperTest {
     }
 
     @Test
-    fun `Flipper key deeplink with FFF content and nullable path`() = runTest {
-        // Initialize
-        val deeplink = Deeplink.FlipperKey(
-            path = null,
-            content = mockk()
-        )
-
-        // Actions
-        val resultParse = flipperKeyParserHelper.toFlipperKey(deeplink)
-        val exception = resultParse.exceptionOrNull()
-
-        // Assertions
-        Assert.assertTrue(resultParse.isFailure)
-        when (exception) {
-            null -> Assert.fail("Exception is null")
-            else -> Assert.assertTrue(exception is FlipperKeyParseException)
-        }
-    }
-
-    @Test
     fun `Flipper key deeplink with FFF content`() = runTest {
         // Initialize
         val path = FlipperFilePath(
@@ -213,26 +193,6 @@ class FlipperKeyParserHelperTest {
                 Assert.assertEquals("test.test", flipperKeyFile.path.nameWithExtension)
                 Assert.assertEquals("test", flipperKeyFile.path.extension)
             }
-        }
-    }
-
-    @Test
-    fun `Flipper key deeplink with crypto storage content and nullable path`() = runTest {
-        // Initialize
-        val deeplink = Deeplink.FlipperKey(
-            path = null,
-            content = mockk()
-        )
-
-        // Actions
-        val resultParse = flipperKeyParserHelper.toFlipperKey(deeplink)
-        val exception = resultParse.exceptionOrNull()
-
-        // Assertions
-        Assert.assertTrue(resultParse.isFailure)
-        when (exception) {
-            null -> Assert.fail("Exception is null")
-            else -> Assert.assertTrue(exception is FlipperKeyParseException)
         }
     }
 
