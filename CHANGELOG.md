@@ -2,6 +2,8 @@
 
 # 1.6.1 - In progress
 
+- [FIX] FapHub build status layout
+
 # 1.6.0
 
 - [FIX] Crash application on cancel update

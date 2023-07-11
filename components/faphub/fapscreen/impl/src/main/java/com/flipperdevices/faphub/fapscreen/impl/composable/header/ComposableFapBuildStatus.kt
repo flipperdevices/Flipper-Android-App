@@ -123,13 +123,17 @@ private fun ComposableStatusCard(
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.Center
 ) {
-    Box(
-        modifier = Modifier
-            .padding(vertical = 10.dp, horizontal = 12.dp)
-            .size(12.dp)
-    )
+    if (infoButtonEnabled) {
+        Box(
+            modifier = Modifier
+                .padding(start = 12.dp, top = 10.dp, bottom = 10.dp)
+                .size(12.dp)
+        )
+    }
     Row(
-        modifier = Modifier.weight(1f),
+        modifier = Modifier
+            .weight(1f)
+            .padding(horizontal = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
@@ -153,7 +157,7 @@ private fun ComposableStatusCard(
     if (infoButtonEnabled) {
         Icon(
             modifier = Modifier
-                .padding(vertical = 10.dp, horizontal = 12.dp)
+                .padding(end = 12.dp, top = 10.dp, bottom = 10.dp)
                 .size(12.dp),
             painter = painterResource(R.drawable.ic_info),
             contentDescription = null,
