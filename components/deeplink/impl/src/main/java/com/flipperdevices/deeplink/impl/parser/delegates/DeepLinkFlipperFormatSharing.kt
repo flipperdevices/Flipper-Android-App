@@ -11,6 +11,8 @@ import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.keyparser.api.KeyParser
 import com.squareup.anvil.annotations.ContributesMultibinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.net.URLDecoder
 import javax.inject.Inject
 
@@ -30,7 +32,7 @@ class DeepLinkFlipperFormatSharing @Inject constructor(
         return if (uri.scheme == SCHEME_FLIPPERKEY) {
             DeepLinkParserDelegatePriority.HIGH
         } else {
-            null
+            DeepLinkParserDelegatePriority.LOW
         }
     }
 
@@ -39,7 +41,9 @@ class DeepLinkFlipperFormatSharing @Inject constructor(
 
         if (pureUri.scheme == SCHEME_FLIPPERKEY) {
             val query = pureUri.query
-            val decodedQuery = URLDecoder.decode(query, "UTF-8")
+            val decodedQuery = withContext(Dispatchers.IO) {
+                URLDecoder.decode(query, "UTF-8")
+            }
             pureUri = Uri.parse(decodedQuery)
         }
 
