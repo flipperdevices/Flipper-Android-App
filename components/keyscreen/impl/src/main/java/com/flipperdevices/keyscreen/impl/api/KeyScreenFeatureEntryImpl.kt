@@ -1,6 +1,7 @@
 package com.flipperdevices.keyscreen.impl.api
 
 import android.net.Uri
+import androidx.datastore.core.DataStore
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -11,6 +12,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.dao.api.model.navigation.FlipperKeyPathType
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.flipperdevices.core.ui.navigation.LocalGlobalNavigationNavStack
 import com.flipperdevices.deeplink.model.DeeplinkConstants
@@ -25,6 +27,8 @@ import com.flipperdevices.nfceditor.api.NfcEditorFeatureEntry
 import com.flipperdevices.share.api.ShareBottomUIApi
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import tangle.viewmodel.compose.tangleViewModel
@@ -44,15 +48,27 @@ class KeyScreenFeatureEntryImpl @Inject constructor(
     private val nfcEditorFeatureEntry: NfcEditorFeatureEntry,
     private val keyEditFeatureEntry: KeyEditFeatureEntry,
     private val shareBottomApi: ShareBottomUIApi,
-    private val infraredFeatureEntry: InfraredFeatureEntry
+    private val infraredFeatureEntry: InfraredFeatureEntry,
+    private val dataStoreSettings: DataStore<Settings>,
 ) : KeyScreenFeatureEntry {
     override fun getKeyScreen(keyPath: FlipperKeyPath): String {
         val defaultPath = "@${ROUTE.name}?key_path=${Uri.encode(Json.encodeToString(keyPath))}"
 
+        if (isOpenNewInfraredScreen(keyPath)) {
+            return infraredFeatureEntry.getInfraredScreen(keyPath)
+        }
+
+        return defaultPath
+    }
+
+    private fun isOpenNewInfraredScreen(keyPath: FlipperKeyPath): Boolean {
+        val settings = runBlocking { dataStoreSettings.data.first() }
+        val isNewInfraredEnable = settings.useNewInfrared
+
         return when {
-            keyPath.path.keyType == FlipperKeyType.INFRARED &&
-                keyPath.deleted.not() -> infraredFeatureEntry.getInfraredScreen(keyPath)
-            else -> defaultPath
+            keyPath.path.keyType != FlipperKeyType.INFRARED -> false
+            keyPath.deleted -> false
+            else -> isNewInfraredEnable
         }
     }
 

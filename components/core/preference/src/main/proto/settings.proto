@@ -45,4 +45,5 @@ message Settings {
   bool application_catalog = 21;
   bool self_updater_debug = 22;
   bool use_dev_catalog = 23;
+  bool use_new_infrared = 24;
 }

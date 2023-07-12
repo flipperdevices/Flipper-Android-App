@@ -42,4 +42,14 @@ class ExperimentalViewModel @VMInject constructor(
             }
         }
     }
+
+    fun onSwitchNewInfrared(enabled: Boolean) {
+        viewModelScope.launch {
+            settingsDataStore.updateData {
+                it.toBuilder()
+                    .setUseNewInfrared(enabled)
+                    .build()
+            }
+        }
+    }
 }
