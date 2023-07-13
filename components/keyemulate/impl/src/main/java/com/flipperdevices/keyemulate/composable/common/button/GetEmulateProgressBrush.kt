@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import com.flipperdevices.core.ktx.jre.toIntSafe
-import com.flipperdevices.core.ui.ktx.RotatableSweepGradient
+import com.flipperdevices.core.ui.ktx.sweep.RotatableSweepGradient
 import com.flipperdevices.keyemulate.model.EmulateProgress
 import kotlin.math.max
 
