@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.image.Picture
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.keyemulate.composable.common.button.sweep.getEmulateProgressBrush
 import com.flipperdevices.keyemulate.model.EmulateProgress
 
 private const val BUTTON_HEIGHT_DP = 56

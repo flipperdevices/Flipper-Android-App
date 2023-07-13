@@ -1,4 +1,4 @@
-package com.flipperdevices.keyemulate.composable.common.button.sweep
+package com.flipperdevices.keyemulate.composable.common.button
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
@@ -11,10 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import com.flipperdevices.core.ktx.jre.toIntSafe
+import com.flipperdevices.core.ui.ktx.RotatableSweepGradient
 import com.flipperdevices.keyemulate.model.EmulateProgress
 import kotlin.math.max
 
@@ -126,3 +128,15 @@ private fun animatedBrush(backgroundColor: Color, cursorColor: Color): Brush {
         angel = angelAnimated
     )
 }
+
+private fun rotatableSweepGradient(
+    vararg colorStops: Pair<Float, Color>,
+    angel: Float = 0f,
+    center: Offset = Offset.Unspecified
+): RotatableSweepGradient = RotatableSweepGradient(
+    colors = List(colorStops.size) { i -> colorStops[i].second },
+    stops = List(colorStops.size) { i -> colorStops[i].first },
+    center = center,
+    angel = angel
+)
+
