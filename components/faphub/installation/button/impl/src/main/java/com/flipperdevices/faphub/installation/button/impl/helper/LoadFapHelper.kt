@@ -10,17 +10,16 @@ import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.app.startRequest
 import com.flipperdevices.protobuf.main
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
 
 interface LoadFapHelper {
     suspend fun loadFap(
         serviceApi: FlipperServiceApi,
-        scope: CoroutineScope,
         config: FapButtonConfig,
         onSuccess: suspend () -> Unit,
         onBusy: suspend () -> Unit,
+        onError: suspend () -> Unit,
     )
 }
 
@@ -28,16 +27,18 @@ interface LoadFapHelper {
 class LoadFapHelperImpl @Inject constructor() : LoadFapHelper {
     override suspend fun loadFap(
         serviceApi: FlipperServiceApi,
-        scope: CoroutineScope,
         config: FapButtonConfig,
         onSuccess: suspend () -> Unit,
-        onBusy: suspend () -> Unit
+        onBusy: suspend () -> Unit,
+        onError: suspend () -> Unit,
     ) {
+        val path = "${Constants.PATH.APP_PATH}${config.categoryAlias}/${config.applicationAlias}.fap"
+
         val appLoadResponse = serviceApi.requestApi.request(
             flowOf(
                 main {
                     appStartRequest = startRequest {
-                        name = config.getFlipperPath()
+                        name = path
                         args = Constants.RPC_START_REQUEST_ARG
                     }
                 }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
@@ -47,13 +48,11 @@ class LoadFapHelperImpl @Inject constructor() : LoadFapHelper {
         when (appLoadResponse.commandStatus) {
             Flipper.CommandStatus.OK -> {
                 onSuccess()
-                return
             }
             Flipper.CommandStatus.ERROR_APP_SYSTEM_LOCKED -> {
                 onBusy()
-                return
             }
-            else -> { return }
+            else -> onError()
         }
     }
 }

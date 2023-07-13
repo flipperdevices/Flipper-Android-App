@@ -36,9 +36,10 @@ internal fun ComposableFapButton(
         )
 
         FapState.Installed -> {
-            ComposableFapInstalledButton(
-                modifier = modifier,
-                fapButtonSize = fapButtonSize
+            ComposableInstalledOpenButton(
+                config = config,
+                fapButtonSize = fapButtonSize,
+                modifier = modifier
             )
         }
 
