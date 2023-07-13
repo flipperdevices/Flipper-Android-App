@@ -3,13 +3,13 @@ package com.flipperdevices.faphub.installation.button.impl.composable.states
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.flipperdevices.core.ui.navigation.LocalGlobalNavigationNavStack
 import com.flipperdevices.faphub.installation.button.api.FapButtonConfig
 import com.flipperdevices.faphub.installation.button.api.FapButtonSize
 import com.flipperdevices.faphub.installation.button.impl.composable.ComposableFapInstalledButton
 import com.flipperdevices.faphub.installation.button.impl.composable.ComposableFapOpenButton
+import com.flipperdevices.faphub.installation.button.impl.composable.ComposableFapOpeningButton
 import com.flipperdevices.faphub.installation.button.impl.composable.dialogs.ComposableFlipperBusy
 import com.flipperdevices.faphub.installation.button.impl.model.OpenFapState
 import com.flipperdevices.faphub.installation.button.impl.viewmodel.OpenFapViewModel
@@ -21,18 +21,31 @@ internal fun ComposableInstalledOpenButton(
     fapButtonSize: FapButtonSize,
     modifier: Modifier = Modifier
 ) {
+    val navController = LocalGlobalNavigationNavStack.current
+
     val viewModel = tangleViewModel<OpenFapViewModel>()
-    val state by remember(config) {
-        viewModel.getOpenFapState(config)
-    }.collectAsState()
+    val state by viewModel.getOpenFapState().collectAsState()
 
     val dialogState by viewModel.getDialogState().collectAsState()
     ComposableFlipperBusy(showBusyDialog = dialogState) {
         viewModel.closeDialog()
     }
 
-    when (state) {
-        is OpenFapState.InProgress -> {}
+    when (val localState = state) {
+        is OpenFapState.InProgress -> {
+            if (localState.config == config) {
+                ComposableFapOpeningButton(
+                    modifier = modifier,
+                    fapButtonSize = fapButtonSize,
+                )
+            } else {
+                ComposableFapOpenButton(
+                    modifier = modifier,
+                    fapButtonSize = fapButtonSize,
+                    onClick = { viewModel.open(config, navController) }
+                )
+            }
+        }
         OpenFapState.NotSupported -> {
             ComposableFapInstalledButton(
                 modifier = modifier,
@@ -40,8 +53,6 @@ internal fun ComposableInstalledOpenButton(
             )
         }
         OpenFapState.Ready -> {
-            val navController = LocalGlobalNavigationNavStack.current
-
             ComposableFapOpenButton(
                 modifier = modifier,
                 fapButtonSize = fapButtonSize,

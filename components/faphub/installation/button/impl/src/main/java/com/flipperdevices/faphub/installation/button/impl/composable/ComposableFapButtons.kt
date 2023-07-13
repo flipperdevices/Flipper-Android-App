@@ -105,6 +105,24 @@ fun ComposableFapOpenButton(
 }
 
 @Composable
+fun ComposableFapOpeningButton(
+    fapButtonSize: FapButtonSize,
+    modifier: Modifier = Modifier,
+) {
+    val text = when (fapButtonSize) {
+        FapButtonSize.COMPACTED -> stringResource(R.string.faphub_installation_open)
+        FapButtonSize.LARGE -> stringResource(R.string.faphub_installation_open_long)
+    }
+
+    ComposableFlipperButton(
+        modifier = modifier,
+        text = text,
+        color = LocalPallet.current.accentSecond,
+        fapButtonSize = fapButtonSize,
+    )
+}
+
+@Composable
 fun ComposableFapUpdateButton(
     fapButtonSize: FapButtonSize,
     modifier: Modifier = Modifier,
