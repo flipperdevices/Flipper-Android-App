@@ -1,3 +1,5 @@
+@file:Suppress("TooManyFunctions")
+
 package com.flipperdevices.faphub.installation.button.impl.composable
 
 import androidx.compose.foundation.layout.Column

@@ -85,6 +85,6 @@ object Constants {
     object PATH {
         const val MANIFEST_FILE = "/ext/Manifest"
         const val REGION_FILE = "/int/.region_data"
-        const val APP_PATH = "/ext/app"
+        const val APPS = "/ext/apps/"
     }
 }

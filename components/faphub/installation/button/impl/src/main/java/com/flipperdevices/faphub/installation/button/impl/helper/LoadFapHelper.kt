@@ -32,7 +32,7 @@ class LoadFapHelperImpl @Inject constructor() : LoadFapHelper {
         onBusy: suspend () -> Unit,
         onError: suspend () -> Unit,
     ) {
-        val path = "${Constants.PATH.APP_PATH}${config.categoryAlias}/${config.applicationAlias}.fap"
+        val path = "${Constants.PATH.APPS}${config.categoryAlias}/${config.applicationAlias}.fap"
 
         val appLoadResponse = serviceApi.requestApi.request(
             flowOf(
