@@ -139,4 +139,3 @@ private fun rotatableSweepGradient(
     center = center,
     angel = angel
 )
-
