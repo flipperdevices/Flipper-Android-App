@@ -8,7 +8,7 @@ sealed class FapState {
 
     object RetrievingManifest : FapState()
 
-    data class Installed(val canOpen: Boolean) : FapState()
+    object Installed : FapState()
 
     object ReadyToInstall : FapState()
     object ConnectFlipper : FapState()

@@ -11,11 +11,7 @@ data class FapButtonConfig(
     val version: FapItemVersion,
     val categoryAlias: String,
     val applicationName: String
-) {
-    fun getFlipperPath(): String {
-        return "/ext/apps/${this.categoryAlias}/${this.applicationAlias}.fap"
-    }
-}
+)
 
 fun FapItemShort.toFapButtonConfig() = FapButtonConfig(
     applicationAlias = applicationAlias,
