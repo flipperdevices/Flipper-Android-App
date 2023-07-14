@@ -30,7 +30,9 @@ class FapNetworkApiImpl @Inject constructor(
     override suspend fun getFeaturedItem(target: FlipperTarget) = catchWithDispatcher {
         debug { "Request featured item" }
 
-        val response = applicationApi.getFeaturedApps()
+        val response = applicationApi.getFeaturedApps(
+            limit = 1
+        )
         debug { "Provider response: $response" }
 
         val responseItem = response.firstOrNull() ?: error("Empty response")

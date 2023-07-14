@@ -15,12 +15,20 @@ class FlipperKeyParserHelper @Inject constructor(
 ) {
     suspend fun toFlipperKey(link: Deeplink?): Result<FlipperKey> {
         if (link == null) return Result.failure(FlipperKeyParseException())
-        if (link !is Deeplink.FlipperKey) return Result.failure(FlipperKeyParseException())
+        var content: DeeplinkContent? = null
+        var path: FlipperFilePath? = null
+        if (link is Deeplink.ExternalContent) {
+            content = link.content
+        }
+        if (link is Deeplink.FlipperKey) {
+            path = link.path
+            content = link.content
+        }
 
-        return when (val content = link.content) {
-            is DeeplinkContent.FFFContent -> parseFFFContent(content, link.path)
+        return when (content) {
+            is DeeplinkContent.FFFContent -> parseFFFContent(content, path)
             is DeeplinkContent.InternalStorageFile -> parseInternalFile(content)
-            is DeeplinkContent.FFFCryptoContent -> parseCryptoContent(link.path, content)
+            is DeeplinkContent.FFFCryptoContent -> parseCryptoContent(path, content)
             else -> Result.failure(FlipperKeyParseException())
         }
     }

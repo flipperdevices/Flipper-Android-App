@@ -1,11 +1,19 @@
 # Changelog
 
-# 1.5.2 - In Progress
+# 1.6.1 - In progress
+
+- [FIX] FapHub build status layout
+- [FIX] Custom install and file manager uploader, deeplink refactor
+- [FIX] FapHub build status hide icon instead of info
+- [Feature] Add pull to refresh to fapscreen and category screen
+
+# 1.6.0
 
 - [FIX] Crash application on cancel update
 - [FIX] White Screen after import key
 - [FIX] Add confirm delete dialog and some small fixes
-- [FIX] Hide self updater dialog on click, add self updater in debug mode, remove nfc mfkey32 from options
+- [FIX] Hide self updater dialog on click, add self updater in debug mode, remove nfc mfkey32 from
+  options
 - [FIX] Text alignment for simple device info
 - [FIX] Endpoint for fap hub build download
 - [FIX] App open metric

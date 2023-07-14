@@ -19,11 +19,11 @@ class WidgetDeeplinkSettingsParserDelegate @Inject constructor() :
     LogTagProvider {
     override val TAG = "WidgetDeeplinkSettingsParserDelegate"
 
-    override fun getPriority(context: Context, intent: Intent): DeepLinkParserDelegatePriority {
+    override fun getPriority(context: Context, intent: Intent): DeepLinkParserDelegatePriority? {
         return if (isWidgetOptionsIntent(intent)) {
             DeepLinkParserDelegatePriority.HIGH
         } else {
-            DeepLinkParserDelegatePriority.LOW
+            null
         }
     }
 

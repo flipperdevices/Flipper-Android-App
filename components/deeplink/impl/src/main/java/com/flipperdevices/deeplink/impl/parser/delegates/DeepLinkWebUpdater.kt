@@ -22,14 +22,14 @@ class DeepLinkWebUpdater @Inject constructor() : DeepLinkParserDelegate, LogTagP
     override fun getPriority(
         context: Context,
         intent: Intent
-    ): DeepLinkParserDelegatePriority {
+    ): DeepLinkParserDelegatePriority? {
         if (intent.data == null) {
-            return DeepLinkParserDelegatePriority.LOW
+            return null
         }
         if (SUPPORTED_HOSTS.contains(intent.data?.host)) {
             return DeepLinkParserDelegatePriority.HIGH
         }
-        return DeepLinkParserDelegatePriority.LAST_CHANCE
+        return null
     }
 
     override suspend fun fromIntent(context: Context, intent: Intent): Deeplink? {

@@ -35,7 +35,9 @@ class DeepLinkParserImpl @Inject constructor(
     override suspend fun fromIntent(context: Context, intent: Intent): Deeplink? {
         info { "Try parse intent ${intent.toFullString()}" }
 
-        val sortedDelegate = delegates.sortedByDescending { it.getPriority(context, intent) }
+        val sortedDelegate = delegates.map { it to it.getPriority(context, intent) }
+            .filter { (_, state) -> state != null }.sortedByDescending { (_, state) -> state }
+            .map { (delegate, _) -> delegate }
         for (delegate in sortedDelegate) {
             try {
                 info { "Try ${delegate.javaClass}..." }
