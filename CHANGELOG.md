@@ -3,6 +3,7 @@
 # 1.6.1 - In progress
 
 - [FIX] FapHub build status layout
+- [FIX] FapHub build status hide icon instead of info
 - [Feature] Add pull to refresh to fapscreen and category screen
 
 # 1.6.0

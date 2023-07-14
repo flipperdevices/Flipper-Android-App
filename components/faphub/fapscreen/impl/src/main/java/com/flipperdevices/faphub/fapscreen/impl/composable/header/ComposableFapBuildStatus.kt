@@ -98,10 +98,9 @@ private fun ComposableFapBuildStatusCard(
             modifier = modifier,
             cardColor = LocalPallet.current.fapHubBuildStatusFailedBackground,
             textColor = LocalPallet.current.fapHubBuildStatusFailedText,
-            cardIconId = R.drawable.ic_triangle_warning,
+            cardIconId = null,
             cardTextId = R.string.fapscreen_building_state_outdated_flipper_text,
-            onClick = onClick,
-            infoButtonEnabled = false
+            onClick = onClick
         )
     }
 }
@@ -110,11 +109,10 @@ private fun ComposableFapBuildStatusCard(
 private fun ComposableStatusCard(
     cardColor: Color,
     textColor: Color,
-    @DrawableRes cardIconId: Int,
+    @DrawableRes cardIconId: Int?,
     @StringRes cardTextId: Int,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    infoButtonEnabled: Boolean = true
+    modifier: Modifier = Modifier
 ) = Row(
     modifier = modifier
         .clip(RoundedCornerShape(8.dp))
@@ -123,13 +121,11 @@ private fun ComposableStatusCard(
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.Center
 ) {
-    if (infoButtonEnabled) {
-        Box(
-            modifier = Modifier
-                .padding(start = 12.dp, top = 10.dp, bottom = 10.dp)
-                .size(12.dp)
-        )
-    }
+    Box(
+        modifier = Modifier
+            .padding(start = 12.dp, top = 10.dp, bottom = 10.dp)
+            .size(12.dp)
+    )
     Row(
         modifier = Modifier
             .weight(1f)
@@ -137,14 +133,16 @@ private fun ComposableStatusCard(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
-        Icon(
-            modifier = Modifier
-                .padding(vertical = 8.dp, horizontal = 4.dp)
-                .size(16.dp),
-            painter = painterResource(cardIconId),
-            contentDescription = stringResource(cardTextId),
-            tint = textColor
-        )
+        if (cardIconId != null) {
+            Icon(
+                modifier = Modifier
+                    .padding(vertical = 8.dp, horizontal = 4.dp)
+                    .size(16.dp),
+                painter = painterResource(cardIconId),
+                contentDescription = stringResource(cardTextId),
+                tint = textColor
+            )
+        }
 
         Text(
             text = stringResource(cardTextId),
@@ -154,16 +152,14 @@ private fun ComposableStatusCard(
         )
     }
 
-    if (infoButtonEnabled) {
-        Icon(
-            modifier = Modifier
-                .padding(end = 12.dp, top = 10.dp, bottom = 10.dp)
-                .size(12.dp),
-            painter = painterResource(R.drawable.ic_info),
-            contentDescription = null,
-            tint = LocalPallet.current.fapHubBuildStatusInfo
-        )
-    }
+    Icon(
+        modifier = Modifier
+            .padding(end = 12.dp, top = 10.dp, bottom = 10.dp)
+            .size(12.dp),
+        painter = painterResource(R.drawable.ic_info),
+        contentDescription = null,
+        tint = LocalPallet.current.fapHubBuildStatusInfo
+    )
 }
 
 @Preview(
