@@ -33,7 +33,7 @@ internal fun ComposableInstalledButton(
 
     when (val localState = state) {
         is OpenFapState.InProgress -> {
-            if (localState.config == config) {
+            if (localState.appId == config?.applicationUid) {
                 ComposableFapOpeningButton(
                     modifier = modifier,
                     fapButtonSize = fapButtonSize,
