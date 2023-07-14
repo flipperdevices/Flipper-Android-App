@@ -61,17 +61,17 @@ class OpenFapViewModel @VMInject constructor(
         viewModelScope.launch {
             openFapState.emit(OpenFapState.InProgress(config))
 
-            withContext(Dispatchers.Default) {
-                val serviceApi = serviceProvider.getServiceApi()
-
-                loadFapHelper.loadFap(
-                    serviceApi = serviceApi,
-                    config = config,
-                    onSuccess = { navigateToScreenStreaming(navController) },
-                    onBusy = ::processBusyFlipper,
-                    onError = ::processErrorOpen
-                )
-            }
+//            withContext(Dispatchers.Default) {
+//                val serviceApi = serviceProvider.getServiceApi()
+//
+//                loadFapHelper.loadFap(
+//                    serviceApi = serviceApi,
+//                    config = config,
+//                    onSuccess = { navigateToScreenStreaming(navController) },
+//                    onBusy = ::processBusyFlipper,
+//                    onError = ::processErrorOpen
+//                )
+//            }
         }
     }
 

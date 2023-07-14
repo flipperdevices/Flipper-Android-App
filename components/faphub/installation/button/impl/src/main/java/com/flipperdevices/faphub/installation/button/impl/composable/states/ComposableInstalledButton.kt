@@ -11,6 +11,8 @@ import com.flipperdevices.faphub.installation.button.api.FapButtonConfig
 import com.flipperdevices.faphub.installation.button.api.FapButtonSize
 import com.flipperdevices.faphub.installation.button.impl.R
 import com.flipperdevices.faphub.installation.button.impl.composable.ComposableFapInstalledButton
+import com.flipperdevices.faphub.installation.button.impl.composable.buttons.ComposableFapOpenButton
+import com.flipperdevices.faphub.installation.button.impl.composable.buttons.ComposableFapOpeningButton
 import com.flipperdevices.faphub.installation.button.impl.composable.dialogs.ComposableFlipperBusy
 import com.flipperdevices.faphub.installation.button.impl.composable.elements.ComposableFlipperButton
 import com.flipperdevices.faphub.installation.button.impl.model.OpenFapState
@@ -18,7 +20,7 @@ import com.flipperdevices.faphub.installation.button.impl.viewmodel.OpenFapViewM
 import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
-internal fun ComposableInstalledOpenButton(
+internal fun ComposableInstalledButton(
     config: FapButtonConfig?,
     fapButtonSize: FapButtonSize,
     modifier: Modifier = Modifier
@@ -62,42 +64,4 @@ internal fun ComposableInstalledOpenButton(
             )
         }
     }
-}
-
-@Composable
-private fun ComposableFapOpenButton(
-    fapButtonSize: FapButtonSize,
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit,
-) {
-    val text = when (fapButtonSize) {
-        FapButtonSize.COMPACTED -> stringResource(R.string.faphub_installation_open)
-        FapButtonSize.LARGE -> stringResource(R.string.faphub_installation_open_long)
-    }
-
-    ComposableFlipperButton(
-        modifier = modifier,
-        text = text,
-        color = LocalPallet.current.accentSecond,
-        fapButtonSize = fapButtonSize,
-        onClick = onClick
-    )
-}
-
-@Composable
-private fun ComposableFapOpeningButton(
-    fapButtonSize: FapButtonSize,
-    modifier: Modifier = Modifier,
-) {
-    val text = when (fapButtonSize) {
-        FapButtonSize.COMPACTED -> stringResource(R.string.faphub_installation_open)
-        FapButtonSize.LARGE -> stringResource(R.string.faphub_installation_open_long)
-    }
-
-    ComposableFlipperButton(
-        modifier = modifier,
-        text = text,
-        color = LocalPallet.current.accentSecond,
-        fapButtonSize = fapButtonSize,
-    )
 }
