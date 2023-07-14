@@ -6,6 +6,7 @@ import android.net.Uri
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.deeplink.api.DeepLinkParserDelegate
+import com.flipperdevices.deeplink.impl.utils.Constants
 import com.flipperdevices.deeplink.model.DeepLinkParserDelegatePriority
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkContent
@@ -29,11 +30,15 @@ class DeepLinkFlipperFormatSharing @Inject constructor(
         intent: Intent
     ): DeepLinkParserDelegatePriority? {
         val uri = intent.data ?: return null
-        return if (uri.scheme == SCHEME_FLIPPERKEY) {
+        if (uri.scheme == SCHEME_FLIPPERKEY) {
             DeepLinkParserDelegatePriority.HIGH
-        } else {
-            DeepLinkParserDelegatePriority.LOW
         }
+
+        if (Constants.SUPPORTED_HOSTS.contains(intent.data?.host)) {
+            return DeepLinkParserDelegatePriority.HIGH
+        }
+
+        return null
     }
 
     override suspend fun fromIntent(context: Context, intent: Intent): Deeplink? {
