@@ -1,4 +1,4 @@
-package com.flipperdevices.updater.impl.tasks
+package com.flipperdevices.updater.impl.tasks.downloader
 
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider

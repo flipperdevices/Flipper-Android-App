@@ -20,26 +20,29 @@ class DeepLinkFap @Inject constructor() : DeepLinkParserDelegate, LogTagProvider
     override fun getPriority(
         context: Context,
         intent: Intent
-    ): DeepLinkParserDelegatePriority {
+    ): DeepLinkParserDelegatePriority? {
         if (intent.data == null) {
-            return DeepLinkParserDelegatePriority.LOW
+            return null
         }
 
         if (!SUPPORTED_HOSTS.contains(intent.data?.host)) {
-            return DeepLinkParserDelegatePriority.LOW
+            return null
         }
 
         val pathSegment = intent.data?.pathSegments
-            ?: return DeepLinkParserDelegatePriority.LOW
+            ?: return null
 
         if (pathSegment.size == 2 && pathSegment.first() == PATH) {
             return DeepLinkParserDelegatePriority.HIGH
         }
 
-        return DeepLinkParserDelegatePriority.LAST_CHANCE
+        return null
     }
 
     override suspend fun fromIntent(context: Context, intent: Intent): Deeplink? {
+        if (!SUPPORTED_HOSTS.contains(intent.data?.host)) {
+            return null
+        }
         val pathSegment = intent.data?.pathSegments ?: return null
         val fapId = pathSegment[1] ?: return null
         return Deeplink.Fap(fapId)

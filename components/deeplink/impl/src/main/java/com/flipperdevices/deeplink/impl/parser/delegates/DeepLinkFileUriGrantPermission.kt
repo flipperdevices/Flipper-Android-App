@@ -21,12 +21,11 @@ class DeepLinkFileUriGrantPermission @Inject constructor() : DeepLinkParserDeleg
     override fun getPriority(
         context: Context,
         intent: Intent
-    ): DeepLinkParserDelegatePriority {
-        return if (intent.data == null) {
-            DeepLinkParserDelegatePriority.LOW
-        } else {
-            DeepLinkParserDelegatePriority.DEFAULT
+    ): DeepLinkParserDelegatePriority? {
+        if (intent.data != null) {
+            return DeepLinkParserDelegatePriority.DEFAULT
         }
+        return null
     }
 
     override suspend fun fromIntent(context: Context, intent: Intent): Deeplink? {
@@ -43,7 +42,7 @@ class DeepLinkFileUriGrantPermission @Inject constructor() : DeepLinkParserDeleg
             return null
         }
 
-        return Deeplink.FlipperKey(content = buildExternalUri(contentResolver, uri))
+        return Deeplink.ExternalContent(content = buildExternalUri(contentResolver, uri))
     }
 
     private suspend fun buildExternalUri(

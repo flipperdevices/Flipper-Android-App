@@ -12,8 +12,8 @@ import com.flipperdevices.core.ui.lifecycle.OneTimeExecutionBleTask
 import com.flipperdevices.updater.impl.model.IntFlashFullException
 import com.flipperdevices.updater.impl.model.UpdateContentException
 import com.flipperdevices.updater.impl.tasks.FlipperUpdateImageHelper
-import com.flipperdevices.updater.impl.tasks.UpdateContentHelper
 import com.flipperdevices.updater.impl.tasks.UploadToFlipperHelper
+import com.flipperdevices.updater.impl.tasks.downloader.UpdateContentDownloader
 import com.flipperdevices.updater.impl.utils.FolderCreateHelper
 import com.flipperdevices.updater.model.SubGhzProvisioningException
 import com.flipperdevices.updater.model.UpdateContent
@@ -38,7 +38,7 @@ class UpdaterTask(
     private val context: Context,
     private val uploadToFlipperHelper: UploadToFlipperHelper,
     private val subGhzProvisioningHelper: SubGhzProvisioningHelper,
-    private val updateContentHelper: MutableSet<UpdateContentHelper>
+    private val updateContentDownloader: MutableSet<UpdateContentDownloader>
 ) : OneTimeExecutionBleTask<UpdateRequest, UpdatingState>(serviceProvider),
     LogTagProvider {
     override val TAG = "UpdaterTask"
@@ -162,7 +162,7 @@ class UpdaterTask(
         updaterFolder: File,
         stateListener: suspend (UpdatingState) -> Unit
     ) {
-        val downloadHelper = updateContentHelper
+        val downloadHelper = updateContentDownloader
             .firstOrNull { it.isSupport(content) }
             ?: throw IllegalArgumentException("No one helper for upload fw to local")
         downloadHelper.downloadFirmwareLocal(content, updaterFolder, stateListener)

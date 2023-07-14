@@ -10,8 +10,14 @@ import kotlinx.serialization.Serializable
 sealed class Deeplink : Parcelable {
     @Parcelize
     @Serializable
+    data class ExternalContent(
+        val content: DeeplinkContent? = null
+    ) : Deeplink()
+
+    @Parcelize
+    @Serializable
     data class FlipperKey(
-        val path: FlipperFilePath? = null,
+        val path: FlipperFilePath,
         val content: DeeplinkContent? = null
     ) : Deeplink()
 
