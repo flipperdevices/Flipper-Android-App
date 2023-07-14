@@ -4,17 +4,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import com.flipperdevices.core.ui.navigation.LocalGlobalNavigationNavStack
-import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.faphub.installation.button.api.FapButtonConfig
 import com.flipperdevices.faphub.installation.button.api.FapButtonSize
-import com.flipperdevices.faphub.installation.button.impl.R
 import com.flipperdevices.faphub.installation.button.impl.composable.ComposableFapInstalledButton
 import com.flipperdevices.faphub.installation.button.impl.composable.buttons.ComposableFapOpenButton
 import com.flipperdevices.faphub.installation.button.impl.composable.buttons.ComposableFapOpeningButton
 import com.flipperdevices.faphub.installation.button.impl.composable.dialogs.ComposableFlipperBusy
-import com.flipperdevices.faphub.installation.button.impl.composable.elements.ComposableFlipperButton
 import com.flipperdevices.faphub.installation.button.impl.model.OpenFapState
 import com.flipperdevices.faphub.installation.button.impl.viewmodel.OpenFapViewModel
 import tangle.viewmodel.compose.tangleViewModel
