@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.flipperdevices.core.ui.ktx.OrangeAppBarWithIcon
+import com.flipperdevices.core.ui.ktx.elements.SwipeRefresh
 import com.flipperdevices.faphub.appcard.composable.paging.ComposableFapsList
 import com.flipperdevices.faphub.appcard.composable.paging.ComposableSortChoice
 import com.flipperdevices.faphub.category.impl.viewmodel.FapHubCategoryViewModel
@@ -26,7 +27,6 @@ fun ComposableFapHubCategory(
     val categoryViewModel = tangleViewModel<FapHubCategoryViewModel>()
     val fapsList = categoryViewModel.faps.collectAsLazyPagingItems()
     val sortType by categoryViewModel.getSortTypeFlow().collectAsState()
-
     Column(modifier = modifier) {
         OrangeAppBarWithIcon(
             title = categoryViewModel.getCategoryName(),
@@ -35,15 +35,17 @@ fun ComposableFapHubCategory(
             onEndClick = onOpenSearch
         )
 
-        LazyColumn {
-            item {
-                ComposableSortChoice(
-                    title = null,
-                    sortType = sortType,
-                    onSelectSortType = categoryViewModel::onSelectSortType
-                )
+        SwipeRefresh(onRefresh = fapsList::refresh) {
+            LazyColumn {
+                item {
+                    ComposableSortChoice(
+                        title = null,
+                        sortType = sortType,
+                        onSelectSortType = categoryViewModel::onSelectSortType
+                    )
+                }
+                ComposableFapsList(fapsList, onOpenFapItem, installationButton)
             }
-            ComposableFapsList(fapsList, onOpenFapItem, installationButton)
         }
     }
 }

@@ -18,6 +18,7 @@ import com.flipperdevices.faphub.installation.stateprovider.api.api.FapInstallat
 import com.flipperdevices.faphub.installation.stateprovider.api.model.FapState
 import com.flipperdevices.faphub.report.api.FapReportFeatureEntry
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
@@ -84,6 +85,8 @@ class FapScreenViewModel @VMInject constructor(
     fun onRefresh() = launchWithLock(mutex, viewModelScope, "refresh") {
         downloadFapJob?.cancelAndJoin()
         downloadFapJob = viewModelScope.launch(Dispatchers.Default) {
+            fapScreenLoadingStateFlow.emit(FapScreenLoadingState.Loading)
+            controlStateFlow.emit(FapDetailedControlState.Loading)
             targetProviderApi.getFlipperTarget().collectLatest { target ->
                 if (target == null) {
                     fapScreenLoadingStateFlow.emit(FapScreenLoadingState.Loading)
@@ -107,7 +110,9 @@ class FapScreenViewModel @VMInject constructor(
                     }.launchIn(viewModelScope + Dispatchers.Default)
                 }.onFailure {
                     error(it) { "Failed fetch single application" }
-                    fapScreenLoadingStateFlow.emit(FapScreenLoadingState.Error(it))
+                    if (it !is CancellationException) {
+                        fapScreenLoadingStateFlow.emit(FapScreenLoadingState.Error(it))
+                    }
                 }
             }
         }
