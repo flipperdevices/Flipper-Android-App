@@ -7,7 +7,6 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.faphub.installation.button.api.FapButtonConfig
 import com.flipperdevices.faphub.installation.button.impl.helper.OpenFapHelper
-import com.flipperdevices.faphub.installation.button.impl.model.OpenFapState
 import com.flipperdevices.screenstreaming.api.ScreenStreamingFeatureEntry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,16 +23,12 @@ class OpenFapViewModel @VMInject constructor(
 
     private val busyDialogState = MutableStateFlow(false)
     fun getDialogState() = busyDialogState.asStateFlow()
-    fun getOpenFapState() = openFapHelper.getOpenFapState()
+    fun getOpenFapState(fapButtonConfig: FapButtonConfig?) =
+        openFapHelper.getOpenFapState(fapButtonConfig)
 
     fun open(config: FapButtonConfig?, navController: NavHostController) {
         if (config == null) {
             info { "Cannot open because config in null" }
-            return
-        }
-
-        if (getOpenFapState().value !is OpenFapState.Ready) {
-            info { "Cannot open because state not in ready" }
             return
         }
 

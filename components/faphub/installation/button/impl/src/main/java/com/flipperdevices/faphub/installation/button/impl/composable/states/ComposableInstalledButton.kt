@@ -3,6 +3,7 @@ package com.flipperdevices.faphub.installation.button.impl.composable.states
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.flipperdevices.core.ui.navigation.LocalGlobalNavigationNavStack
 import com.flipperdevices.faphub.installation.button.api.FapButtonConfig
@@ -24,7 +25,9 @@ internal fun ComposableInstalledButton(
     val navController = LocalGlobalNavigationNavStack.current
 
     val viewModel = tangleViewModel<OpenFapViewModel>()
-    val state by viewModel.getOpenFapState().collectAsState()
+
+    val stateFlow = remember(config) { viewModel.getOpenFapState(config) }
+    val state by stateFlow.collectAsState(OpenFapState.Loading)
 
     val dialogState by viewModel.getDialogState().collectAsState()
     ComposableFlipperBusy(showBusyDialog = dialogState) {
@@ -33,7 +36,7 @@ internal fun ComposableInstalledButton(
 
     when (val localState = state) {
         is OpenFapState.InProgress -> {
-            if (localState.appId == config?.applicationUid) {
+            if (localState.config == config) {
                 ComposableFapOpeningButton(
                     modifier = modifier,
                     fapButtonSize = fapButtonSize,
@@ -46,7 +49,7 @@ internal fun ComposableInstalledButton(
                 )
             }
         }
-        OpenFapState.NotSupported -> {
+        OpenFapState.NotSupported, OpenFapState.Loading -> {
             ComposableFapInstalledButton(
                 modifier = modifier,
                 fapButtonSize = fapButtonSize
