@@ -64,7 +64,7 @@ class FapNetworkApiImpl @Inject constructor(
         debug { "Request all item" }
         val response = try {
             when (target) {
-                FlipperTarget.Unsupported,
+                FlipperTarget.Unsupported -> throw FirmwareNotSupported()
                 FlipperTarget.NotConnected -> applicationApi.getAll(
                     offset = offset,
                     limit = limit,
@@ -117,8 +117,8 @@ class FapNetworkApiImpl @Inject constructor(
         }
 
         val response = when (target) {
-            FlipperTarget.NotConnected,
-            FlipperTarget.Unsupported -> applicationApi.getAll(
+            FlipperTarget.Unsupported -> throw FirmwareNotSupported()
+            FlipperTarget.NotConnected -> applicationApi.getAll(
                 limit = limit,
                 offset = offset,
                 query = queryToServer
