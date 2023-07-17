@@ -1,10 +1,14 @@
 plugins {
     id("flipper.android-compose")
+    id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.core.ui.errors"
 
 dependencies {
+    implementation(projects.components.faphub.errors.api)
+
+    implementation(projects.components.core.di)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.theme)
 

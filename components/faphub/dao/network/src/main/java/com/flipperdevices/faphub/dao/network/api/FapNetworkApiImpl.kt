@@ -8,12 +8,16 @@ import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.dao.api.model.SortType
 import com.flipperdevices.faphub.dao.network.ktorfit.api.KtorfitApplicationApi
+import com.flipperdevices.faphub.dao.network.ktorfit.model.KtorfitException
 import com.flipperdevices.faphub.dao.network.ktorfit.model.types.ApplicationSortType
 import com.flipperdevices.faphub.dao.network.ktorfit.model.types.SortOrderType
 import com.flipperdevices.faphub.dao.network.ktorfit.utils.FapHubNetworkCategoryApi
 import com.flipperdevices.faphub.dao.network.ktorfit.utils.HostUrlBuilder
+import com.flipperdevices.faphub.errors.api.throwable.FirmwareNotSupported
 import com.flipperdevices.faphub.target.model.FlipperTarget
 import com.squareup.anvil.annotations.ContributesBinding
+import io.ktor.client.call.body
+import io.ktor.client.plugins.ClientRequestException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -57,27 +61,35 @@ class FapNetworkApiImpl @Inject constructor(
             return@catchWithDispatcher emptyList()
         }
         debug { "Request all item" }
-        val response = when (target) {
-            FlipperTarget.Unsupported,
-            FlipperTarget.NotConnected -> applicationApi.getAll(
-                offset = offset,
-                limit = limit,
-                sortBy = ApplicationSortType.fromSortType(sortType),
-                sortOrder = SortOrderType.fromSortType(sortType),
-                categoryId = category?.id,
-                applications = applicationIds
-            )
+        val response = try {
+            when (target) {
+                FlipperTarget.Unsupported,
+                FlipperTarget.NotConnected -> applicationApi.getAll(
+                    offset = offset,
+                    limit = limit,
+                    sortBy = ApplicationSortType.fromSortType(sortType),
+                    sortOrder = SortOrderType.fromSortType(sortType),
+                    categoryId = category?.id,
+                    applications = applicationIds
+                )
 
-            is FlipperTarget.Received -> applicationApi.getAllWithTarget(
-                offset = offset,
-                limit = limit,
-                sortBy = ApplicationSortType.fromSortType(sortType),
-                sortOrder = SortOrderType.fromSortType(sortType),
-                target = target.target,
-                sdkApiVersion = target.sdk.toString(),
-                categoryId = category?.id,
-                applications = applicationIds
-            )
+                is FlipperTarget.Received -> applicationApi.getAllWithTarget(
+                    offset = offset,
+                    limit = limit,
+                    sortBy = ApplicationSortType.fromSortType(sortType),
+                    sortOrder = SortOrderType.fromSortType(sortType),
+                    target = target.target,
+                    sdkApiVersion = target.sdk.toString(),
+                    categoryId = category?.id,
+                    applications = applicationIds
+                )
+            }
+        } catch (requestException: ClientRequestException) {
+            val ktorfitException = requestException.response.body<KtorfitException>()
+            if (ktorfitException.detail.details.startsWith("SDK with")) {
+                throw FirmwareNotSupported(requestException)
+            }
+            throw requestException
         }
         debug { "Provider response: $response" }
 

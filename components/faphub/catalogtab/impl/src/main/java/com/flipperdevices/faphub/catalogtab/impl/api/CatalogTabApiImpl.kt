@@ -6,6 +6,7 @@ import com.flipperdevices.faphub.catalogtab.api.CatalogTabApi
 import com.flipperdevices.faphub.catalogtab.impl.composable.ComposableCatalogTabScreen
 import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.dao.api.model.FapItemShort
+import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
 import com.flipperdevices.faphub.installation.button.api.FapButtonSize
 import com.flipperdevices.faphub.installation.button.api.FapInstallationUIApi
 import com.flipperdevices.faphub.installation.button.api.toFapButtonConfig
@@ -14,7 +15,8 @@ import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, CatalogTabApi::class)
 class CatalogTabApiImpl @Inject constructor(
-    private val fapInstallationUIApi: FapInstallationUIApi
+    private val fapInstallationUIApi: FapInstallationUIApi,
+    private val errorsRenderer: FapHubComposableErrorsRenderer
 ) : CatalogTabApi {
     @Composable
     override fun ComposableCatalogTab(
@@ -24,6 +26,7 @@ class CatalogTabApiImpl @Inject constructor(
         ComposableCatalogTabScreen(
             onOpenFapItem = onOpenFapItem,
             onCategoryClick = onCategoryClick,
+            errorsRenderer = errorsRenderer,
             installationButton = { fapItem, modifier ->
                 fapInstallationUIApi.ComposableButton(
                     config = fapItem?.toFapButtonConfig(),

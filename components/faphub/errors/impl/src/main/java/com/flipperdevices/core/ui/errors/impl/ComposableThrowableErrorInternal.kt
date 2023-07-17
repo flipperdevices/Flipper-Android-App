@@ -1,20 +1,21 @@
-package com.flipperdevices.core.ui.errors
+package com.flipperdevices.core.ui.errors.impl
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.flipperdevices.core.ui.errors.composable.ComposableFlipperNotConnectedError
-import com.flipperdevices.core.ui.errors.composable.ComposableGeneralError
-import com.flipperdevices.core.ui.errors.composable.ComposableNoNetworkError
-import com.flipperdevices.core.ui.errors.composable.ComposableNoServerError
-import com.flipperdevices.core.ui.errors.composable.ComposableWrongRequestError
-import com.flipperdevices.core.ui.errors.throwable.FlipperNotConnected
+import com.flipperdevices.core.ui.errors.impl.composable.ComposableFlipperNotConnectedError
+import com.flipperdevices.core.ui.errors.impl.composable.ComposableGeneralError
+import com.flipperdevices.core.ui.errors.impl.composable.ComposableNoNetworkError
+import com.flipperdevices.core.ui.errors.impl.composable.ComposableNoServerError
+import com.flipperdevices.core.ui.errors.impl.composable.ComposableWrongRequestError
+import com.flipperdevices.faphub.errors.api.throwable.FirmwareNotSupported
+import com.flipperdevices.faphub.errors.api.throwable.FlipperNotConnected
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ServerResponseException
 import io.ktor.serialization.JsonConvertException
 import java.net.UnknownHostException
 
 @Composable
-fun ComposableThrowableError(
+fun ComposableThrowableErrorInternal(
     throwable: Throwable,
     onRetry: () -> Unit,
     modifier: Modifier = Modifier
@@ -24,6 +25,8 @@ fun ComposableThrowableError(
             modifier = modifier,
             onRetry = onRetry
         )
+
+        is FirmwareNotSupported -> {}
 
         is JsonConvertException,
         is ClientRequestException -> ComposableWrongRequestError(

@@ -10,6 +10,7 @@ import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.flipperdevices.faphub.category.api.FapHubCategoryApi
 import com.flipperdevices.faphub.category.impl.composable.ComposableFapHubCategory
 import com.flipperdevices.faphub.dao.api.model.FapCategory
+import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
 import com.flipperdevices.faphub.fapscreen.api.FapScreenApi
 import com.flipperdevices.faphub.installation.button.api.FapButtonSize
 import com.flipperdevices.faphub.installation.button.api.FapInstallationUIApi
@@ -28,7 +29,8 @@ internal const val CATEGORY_OPEN_PATH_KEY = "open"
 class FapHubCategoryApiImpl @Inject constructor(
     private val searchEntryApi: FapHubSearchEntryApi,
     private val fapScreenApi: FapScreenApi,
-    private val fapInstallationUIApi: FapInstallationUIApi
+    private val fapInstallationUIApi: FapInstallationUIApi,
+    private val errorsRenderer: FapHubComposableErrorsRenderer
 ) : FapHubCategoryApi {
     private val categoryArguments = listOf(
         navArgument(CATEGORY_OPEN_PATH_KEY) {
@@ -52,6 +54,7 @@ class FapHubCategoryApiImpl @Inject constructor(
                 onOpenFapItem = {
                     navController.navigate(fapScreenApi.getFapScreen(it.id))
                 },
+                errorsRenderer = errorsRenderer,
                 installationButton = { fapItem, modifier ->
                     fapInstallationUIApi.ComposableButton(
                         config = fapItem?.toFapButtonConfig(),

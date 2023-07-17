@@ -1,4 +1,4 @@
-package com.flipperdevices.core.ui.errors.composable
+package com.flipperdevices.core.ui.errors.impl.composable
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes

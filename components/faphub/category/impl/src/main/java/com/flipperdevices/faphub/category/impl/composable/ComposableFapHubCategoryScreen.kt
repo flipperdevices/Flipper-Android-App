@@ -13,6 +13,7 @@ import com.flipperdevices.faphub.appcard.composable.paging.ComposableFapsList
 import com.flipperdevices.faphub.appcard.composable.paging.ComposableSortChoice
 import com.flipperdevices.faphub.category.impl.viewmodel.FapHubCategoryViewModel
 import com.flipperdevices.faphub.dao.api.model.FapItemShort
+import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
 import tangle.viewmodel.compose.tangleViewModel
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
@@ -21,6 +22,7 @@ fun ComposableFapHubCategory(
     onBack: () -> Unit,
     onOpenSearch: () -> Unit,
     onOpenFapItem: (FapItemShort) -> Unit,
+    errorsRenderer: FapHubComposableErrorsRenderer,
     modifier: Modifier = Modifier,
     installationButton: @Composable (FapItemShort?, Modifier) -> Unit
 ) {
@@ -44,7 +46,12 @@ fun ComposableFapHubCategory(
                         onSelectSortType = categoryViewModel::onSelectSortType
                     )
                 }
-                ComposableFapsList(fapsList, onOpenFapItem, installationButton)
+                ComposableFapsList(
+                    faps = fapsList,
+                    onOpenFapItem = onOpenFapItem,
+                    installationButton = installationButton,
+                    errorsRenderer = errorsRenderer
+                )
             }
         }
     }

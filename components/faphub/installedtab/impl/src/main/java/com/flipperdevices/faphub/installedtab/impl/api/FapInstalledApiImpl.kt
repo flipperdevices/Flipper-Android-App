@@ -5,6 +5,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
 import com.flipperdevices.faphub.installation.button.api.FapButtonSize
 import com.flipperdevices.faphub.installation.button.api.FapInstallationUIApi
 import com.flipperdevices.faphub.installation.button.api.toFapButtonConfig
@@ -21,7 +22,8 @@ import javax.inject.Inject
 @ContributesBinding(AppGraph::class, FapInstalledApi::class)
 class FapInstalledApiImpl @Inject constructor(
     private val fapInstallationUIApi: FapInstallationUIApi,
-    private val uninstallApi: FapUninstallApi
+    private val uninstallApi: FapUninstallApi,
+    private val errorsRenderer: FapHubComposableErrorsRenderer
 ) : FapInstalledApi {
 
     @Composable
@@ -65,7 +67,8 @@ class FapInstalledApiImpl @Inject constructor(
                     modifier = modifier,
                     fapItem = fapItemShort
                 )
-            }
+            },
+            errorsRenderer = errorsRenderer
         )
     }
 }

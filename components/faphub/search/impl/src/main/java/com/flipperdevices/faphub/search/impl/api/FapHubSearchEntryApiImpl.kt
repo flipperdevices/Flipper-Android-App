@@ -7,6 +7,7 @@ import androidx.navigation.navigation
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
+import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
 import com.flipperdevices.faphub.fapscreen.api.FapScreenApi
 import com.flipperdevices.faphub.installation.button.api.FapButtonSize
 import com.flipperdevices.faphub.installation.button.api.FapInstallationUIApi
@@ -22,7 +23,8 @@ import javax.inject.Provider
 @ContributesMultibinding(AppGraph::class, AggregateFeatureEntry::class)
 class FapHubSearchEntryApiImpl @Inject constructor(
     fapScreenApiProvider: Provider<FapScreenApi>,
-    private val fapInstallationUIApi: FapInstallationUIApi
+    private val fapInstallationUIApi: FapInstallationUIApi,
+    private val errorsRenderer: FapHubComposableErrorsRenderer
 ) : FapHubSearchEntryApi {
     private val fapScreenApi by fapScreenApiProvider
 
@@ -36,6 +38,7 @@ class FapHubSearchEntryApiImpl @Inject constructor(
                     onFapItemClick = {
                         navController.navigate(fapScreenApi.getFapScreen(it.id))
                     },
+                    errorsRenderer = errorsRenderer,
                     installationButton = { fapItem, modifier ->
                         fapInstallationUIApi.ComposableButton(
                             config = fapItem?.toFapButtonConfig(),

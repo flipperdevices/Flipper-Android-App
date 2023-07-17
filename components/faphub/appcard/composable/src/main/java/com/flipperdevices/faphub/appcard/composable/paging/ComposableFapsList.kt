@@ -14,11 +14,11 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
-import com.flipperdevices.core.ui.errors.ComposableThrowableError
 import com.flipperdevices.core.ui.ktx.image.ComposeLottiePic
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.faphub.appcard.composable.AppCard
 import com.flipperdevices.faphub.dao.api.model.FapItemShort
+import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 private const val DEFAULT_FAP_COUNT = 20
@@ -27,6 +27,7 @@ private const val DEFAULT_FAP_COUNT = 20
 fun LazyListScope.ComposableFapsList(
     faps: LazyPagingItems<FapItemShort>,
     onOpenFapItem: (FapItemShort) -> Unit,
+    errorsRenderer: FapHubComposableErrorsRenderer,
     installationButton: @Composable (FapItemShort?, Modifier) -> Unit
 ) {
     val elementModifier = Modifier
@@ -46,7 +47,7 @@ fun LazyListScope.ComposableFapsList(
     } else if (faps.loadState.refresh is LoadState.Error) {
         val loadState = faps.loadState.refresh as? LoadState.Error ?: return
         item {
-            ComposableThrowableError(
+            errorsRenderer.ComposableThrowableError(
                 modifier = elementModifier,
                 throwable = loadState.error,
                 onRetry = faps::retry
@@ -74,7 +75,7 @@ fun LazyListScope.ComposableFapsList(
             }
 
             is LoadState.Error -> item {
-                ComposableThrowableError(
+                errorsRenderer.ComposableThrowableError(
                     throwable = loadState.error,
                     onRetry = faps::retry,
                     modifier = elementModifier

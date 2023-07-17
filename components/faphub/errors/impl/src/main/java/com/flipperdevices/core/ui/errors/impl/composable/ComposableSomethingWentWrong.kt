@@ -1,4 +1,4 @@
-package com.flipperdevices.core.ui.errors.composable
+package com.flipperdevices.core.ui.errors.impl.composable
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

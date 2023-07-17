@@ -1,21 +1,23 @@
-package com.flipperdevices.core.ui.errors.composable
+package com.flipperdevices.core.ui.errors.impl.composable
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.flipperdevices.core.ui.errors.R
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
-internal fun ComposableNoServerError(
+internal fun ComposableNoNetworkError(
     modifier: Modifier = Modifier,
     onRetry: () -> Unit
 ) {
     ComposableBaseError(
         modifier = modifier,
-        titleId = R.string.common_error_no_server_title,
-        descriptionId = R.string.common_error_no_server_desc,
-        iconId = R.drawable.ic_no_server,
+        titleId = R.string.common_error_no_network_title,
+        descriptionId = R.string.common_error_no_network_desc,
+        iconId = DesignSystem.drawable.ic_no_internet,
+        darkIconId = DesignSystem.drawable.ic_no_internet_dark,
         onRetry = onRetry
     )
 }
@@ -26,6 +28,6 @@ internal fun ComposableNoServerError(
 @Composable
 private fun ComposableNoNetworkErrorPreview() {
     FlipperThemeInternal {
-        ComposableNoServerError(onRetry = {})
+        ComposableNoNetworkError(onRetry = {})
     }
 }

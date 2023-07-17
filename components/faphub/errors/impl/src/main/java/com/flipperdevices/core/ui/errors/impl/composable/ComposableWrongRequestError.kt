@@ -1,4 +1,4 @@
-package com.flipperdevices.core.ui.errors.composable
+package com.flipperdevices.core.ui.errors.impl.composable
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -7,15 +7,15 @@ import com.flipperdevices.core.ui.errors.R
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 
 @Composable
-internal fun ComposableFlipperNotConnectedError(
+internal fun ComposableWrongRequestError(
     modifier: Modifier = Modifier,
     onRetry: () -> Unit
 ) {
     ComposableBaseError(
         modifier = modifier,
-        titleId = R.string.common_error_not_connected_flipper_apps_title,
-        descriptionId = R.string.common_error_not_connected_flipper_apps_desc,
-        iconId = R.drawable.ic_flipper_not_connected,
+        titleId = R.string.common_error_wrong_request_title,
+        descriptionId = R.string.common_error_wrong_request_desc,
+        iconId = R.drawable.ic_update_app,
         onRetry = onRetry
     )
 }
@@ -24,8 +24,8 @@ internal fun ComposableFlipperNotConnectedError(
     showBackground = true
 )
 @Composable
-private fun ComposableFlipperNotConnectedErrorPreview() {
+private fun ComposableWrongRequestErrorPreview() {
     FlipperThemeInternal {
-        ComposableFlipperNotConnectedError(onRetry = {})
+        ComposableWrongRequestError(onRetry = {})
     }
 }

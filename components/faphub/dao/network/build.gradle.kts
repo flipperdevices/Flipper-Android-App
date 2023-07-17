@@ -18,6 +18,7 @@ dependencies {
     implementation(projects.components.core.preference)
 
     implementation(projects.components.faphub.target.api)
+    implementation(projects.components.faphub.errors.api)
 
     implementation(libs.kotlin.serialization.json)
 

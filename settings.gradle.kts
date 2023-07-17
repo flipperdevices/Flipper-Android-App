@@ -59,7 +59,6 @@ include(
     ":components:core:ui:searchbar",
     ":components:core:ui:hexkeyboard",
     ":components:core:ui:navigation",
-    ":components:core:ui:errors",
     ":components:core:test",
     ":components:core:markdown",
     ":components:core:activityholder",
@@ -209,6 +208,8 @@ include(
     ":components:faphub:utils",
     ":components:faphub:report:api",
     ":components:faphub:report:impl",
+    ":components:faphub:errors:api",
+    ":components:faphub:errors:impl",
 
     ":components:selfupdater:api",
     ":components:selfupdater:googleplay",
@@ -218,3 +219,5 @@ include(
     ":components:selfupdater:thirdparty:github",
     ":components:selfupdater:thirdparty:fdroid",
 )
+include(":errors")
+project(":errors").projectDir = settingsDir.resolve("components/faphub/errors/errors")
