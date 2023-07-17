@@ -26,6 +26,7 @@ import com.flipperdevices.core.ui.ktx.elements.SwipeRefresh
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.faphub.appcard.composable.components.AppCardScreenshots
 import com.flipperdevices.faphub.dao.api.model.FapItem
+import com.flipperdevices.faphub.errors.api.FapErrorSize
 import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
 import com.flipperdevices.faphub.fapscreen.impl.R
 import com.flipperdevices.faphub.fapscreen.impl.composable.description.ComposableFapDescription
@@ -55,7 +56,8 @@ fun ComposableFapScreen(
             onRetry = viewModel::onRefresh,
             modifier = modifier
                 .fillMaxSize()
-                .padding(horizontal = 14.dp)
+                .padding(horizontal = 14.dp),
+            fapErrorSize = FapErrorSize.FULLSCREEN
         )
 
         is FapScreenLoadingState.Loaded -> ComposableFapScreenInternal(

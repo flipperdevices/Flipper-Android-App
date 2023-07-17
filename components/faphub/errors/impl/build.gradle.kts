@@ -12,6 +12,8 @@ dependencies {
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.theme)
 
+    implementation(projects.components.bottombar.api)
+
     // Compose
     implementation(libs.compose.ui)
     implementation(libs.compose.tooling)

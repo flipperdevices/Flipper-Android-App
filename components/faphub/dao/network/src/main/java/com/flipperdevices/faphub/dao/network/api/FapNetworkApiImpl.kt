@@ -9,6 +9,7 @@ import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.dao.api.model.SortType
 import com.flipperdevices.faphub.dao.network.ktorfit.api.KtorfitApplicationApi
 import com.flipperdevices.faphub.dao.network.ktorfit.model.KtorfitException
+import com.flipperdevices.faphub.dao.network.ktorfit.model.KtorfitExceptionCode
 import com.flipperdevices.faphub.dao.network.ktorfit.model.types.ApplicationSortType
 import com.flipperdevices.faphub.dao.network.ktorfit.model.types.SortOrderType
 import com.flipperdevices.faphub.dao.network.ktorfit.utils.FapHubNetworkCategoryApi
@@ -85,8 +86,11 @@ class FapNetworkApiImpl @Inject constructor(
                 )
             }
         } catch (requestException: ClientRequestException) {
-            val ktorfitException = requestException.response.body<KtorfitException>()
-            if (ktorfitException.detail.details.startsWith("SDK with")) {
+            val ktorfitException = runCatching {
+                requestException.response.body<KtorfitException>()
+            }.getOrNull() ?: throw requestException
+            val exceptionCode = KtorfitExceptionCode.fromCode(ktorfitException.detail.code)
+            if (exceptionCode == KtorfitExceptionCode.UNKNOWN_SDK) {
                 throw FirmwareNotSupported(requestException)
             }
             throw requestException

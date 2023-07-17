@@ -7,6 +7,8 @@ import kotlinx.serialization.Serializable
 data class KtorfitExceptionDetail(
     @SerialName("status")
     val status: String,
+    @SerialName("code")
+    val code: Int,
     @SerialName("details")
     val details: String
 )

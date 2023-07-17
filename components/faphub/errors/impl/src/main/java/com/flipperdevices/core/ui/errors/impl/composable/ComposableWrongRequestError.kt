@@ -5,9 +5,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.flipperdevices.core.ui.errors.R
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
+import com.flipperdevices.faphub.errors.api.FapErrorSize
 
 @Composable
 internal fun ComposableWrongRequestError(
+    fapErrorSize: FapErrorSize,
     modifier: Modifier = Modifier,
     onRetry: () -> Unit
 ) {
@@ -16,7 +18,8 @@ internal fun ComposableWrongRequestError(
         titleId = R.string.common_error_wrong_request_title,
         descriptionId = R.string.common_error_wrong_request_desc,
         iconId = R.drawable.ic_update_app,
-        onRetry = onRetry
+        onRetry = onRetry,
+        fapErrorSize = fapErrorSize
     )
 }
 
@@ -26,6 +29,6 @@ internal fun ComposableWrongRequestError(
 @Composable
 private fun ComposableWrongRequestErrorPreview() {
     FlipperThemeInternal {
-        ComposableWrongRequestError(onRetry = {})
+        ComposableWrongRequestError(onRetry = {}, fapErrorSize = FapErrorSize.FULLSCREEN)
     }
 }

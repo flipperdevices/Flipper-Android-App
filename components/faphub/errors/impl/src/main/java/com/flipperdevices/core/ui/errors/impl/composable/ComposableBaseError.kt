@@ -19,11 +19,13 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.errors.R
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
+import com.flipperdevices.faphub.errors.api.FapErrorSize
 
 @Composable
 internal fun ComposableBaseError(
     @StringRes titleId: Int,
     @StringRes descriptionId: Int,
+    fapErrorSize: FapErrorSize,
     @DrawableRes iconId: Int,
     modifier: Modifier = Modifier,
     @DrawableRes darkIconId: Int = iconId,
@@ -47,14 +49,18 @@ internal fun ComposableBaseError(
     Text(
         modifier = Modifier.padding(top = 4.dp),
         text = stringResource(titleId),
-        style = LocalTypography.current.subtitleM12,
+        style = LocalTypography.current.bodyM14.copy(
+            fontSize = fapErrorSize.textSize
+        ),
         color = LocalPallet.current.text100,
         textAlign = TextAlign.Center
     )
     Text(
         modifier = Modifier.padding(top = 4.dp),
         text = stringResource(descriptionId),
-        style = LocalTypography.current.subtitleM12,
+        style = LocalTypography.current.bodyR14.copy(
+            fontSize = fapErrorSize.textSize
+        ),
         color = LocalPallet.current.text40,
         textAlign = TextAlign.Center
     )

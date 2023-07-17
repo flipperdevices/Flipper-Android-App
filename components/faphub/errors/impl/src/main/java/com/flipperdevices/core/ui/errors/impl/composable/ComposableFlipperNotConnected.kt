@@ -5,9 +5,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.flipperdevices.core.ui.errors.R
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
+import com.flipperdevices.faphub.errors.api.FapErrorSize
 
 @Composable
 internal fun ComposableFlipperNotConnectedError(
+    fapErrorSize: FapErrorSize,
     modifier: Modifier = Modifier,
     onRetry: () -> Unit
 ) {
@@ -16,7 +18,8 @@ internal fun ComposableFlipperNotConnectedError(
         titleId = R.string.common_error_not_connected_flipper_apps_title,
         descriptionId = R.string.common_error_not_connected_flipper_apps_desc,
         iconId = R.drawable.ic_flipper_not_connected,
-        onRetry = onRetry
+        onRetry = onRetry,
+        fapErrorSize = fapErrorSize
     )
 }
 
@@ -26,6 +29,6 @@ internal fun ComposableFlipperNotConnectedError(
 @Composable
 private fun ComposableFlipperNotConnectedErrorPreview() {
     FlipperThemeInternal {
-        ComposableFlipperNotConnectedError(onRetry = {})
+        ComposableFlipperNotConnectedError(onRetry = {}, fapErrorSize = FapErrorSize.FULLSCREEN)
     }
 }

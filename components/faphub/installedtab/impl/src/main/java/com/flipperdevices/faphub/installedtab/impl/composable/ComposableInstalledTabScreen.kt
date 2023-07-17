@@ -22,6 +22,7 @@ import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.faphub.dao.api.model.FapItemShort
+import com.flipperdevices.faphub.errors.api.FapErrorSize
 import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
 import com.flipperdevices.faphub.installedtab.impl.R
 import com.flipperdevices.faphub.installedtab.impl.composable.button.ComposableUpdateAllButton
@@ -58,7 +59,8 @@ fun ComposableInstalledTabScreen(
             throwable = stateLocal.throwable,
             onRetry = { viewModel.refresh(true) },
             modifier = screenModifier
-                .fillMaxSize()
+                .fillMaxSize(),
+            fapErrorSize = FapErrorSize.FULLSCREEN
         )
 
         is FapInstalledScreenState.Loaded,

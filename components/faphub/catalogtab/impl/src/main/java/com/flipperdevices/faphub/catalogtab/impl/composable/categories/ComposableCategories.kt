@@ -10,6 +10,7 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.faphub.catalogtab.impl.model.CategoriesLoadState
 import com.flipperdevices.faphub.dao.api.model.FapCategory
+import com.flipperdevices.faphub.errors.api.FapErrorSize
 import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
 
 private const val DEFAULT_CATEGORIES_SIZE = 12
@@ -35,14 +36,15 @@ fun LazyListScope.ComposableCategories(
             onClick = onCategoryClick
         )
 
-        is CategoriesLoadState.Error -> item {
-            errorsRenderer.ComposableThrowableError(
+        is CategoriesLoadState.Error -> with(errorsRenderer) {
+            ComposableThrowableErrorListItem(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 14.dp)
                     .height(height = 250.dp),
                 throwable = loadState.throwable,
-                onRetry = onRetry
+                onRetry = onRetry,
+                fapErrorSize = FapErrorSize.IN_LIST
             )
         }
     }

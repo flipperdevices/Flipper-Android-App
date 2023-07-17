@@ -5,9 +5,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.flipperdevices.core.ui.errors.R
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
+import com.flipperdevices.faphub.errors.api.FapErrorSize
 
 @Composable
 internal fun ComposableNoServerError(
+    fapErrorSize: FapErrorSize,
     modifier: Modifier = Modifier,
     onRetry: () -> Unit
 ) {
@@ -16,7 +18,8 @@ internal fun ComposableNoServerError(
         titleId = R.string.common_error_no_server_title,
         descriptionId = R.string.common_error_no_server_desc,
         iconId = R.drawable.ic_no_server,
-        onRetry = onRetry
+        onRetry = onRetry,
+        fapErrorSize = fapErrorSize
     )
 }
 
@@ -26,6 +29,6 @@ internal fun ComposableNoServerError(
 @Composable
 private fun ComposableNoNetworkErrorPreview() {
     FlipperThemeInternal {
-        ComposableNoServerError(onRetry = {})
+        ComposableNoServerError(onRetry = {}, fapErrorSize = FapErrorSize.FULLSCREEN)
     }
 }
