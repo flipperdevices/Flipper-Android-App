@@ -12,6 +12,7 @@ import com.flipperdevices.bottombar.model.BottomBarTab
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.flipperdevices.deeplink.model.DeeplinkConstants
+import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
 import com.flipperdevices.faphub.fapscreen.api.FapScreenApi
 import com.flipperdevices.faphub.fapscreen.impl.composable.ComposableFapScreen
 import com.flipperdevices.faphub.installation.button.api.FapButtonSize
@@ -31,7 +32,8 @@ private const val DEEPLINK_FAP_ID = "${DEEPLINK_SCHEME}fap_id={$FAP_ID_KEY}"
 class FapScreenApiImpl @Inject constructor(
     private val installationUIApi: FapInstallationUIApi,
     private val bottomBarApi: BottomNavigationHandleDeeplink,
-    private val uninstallApi: FapUninstallApi
+    private val uninstallApi: FapUninstallApi,
+    private val errorsRenderer: FapHubComposableErrorsRenderer
 ) : FapScreenApi {
     private val fapArguments = listOf(
         navArgument(FAP_ID_KEY) {
@@ -76,7 +78,8 @@ class FapScreenApiImpl @Inject constructor(
                         modifier = modifier,
                         fapItem = fapItem
                     )
-                }
+                },
+                errorsRenderer = errorsRenderer
             )
         }
     }

@@ -192,6 +192,9 @@ dependencies {
     implementation(projects.components.faphub.uninstallbutton.api)
     implementation(projects.components.faphub.uninstallbutton.impl)
 
+    implementation(projects.components.faphub.errors.api)
+    implementation(projects.components.faphub.errors.impl)
+
     implementation(projects.components.faphub.utils)
 
     implementation(projects.components.selfupdater.api)

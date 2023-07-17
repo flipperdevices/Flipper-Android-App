@@ -12,10 +12,10 @@ dependencies {
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.data)
     implementation(projects.components.core.log)
-    implementation(projects.components.core.ui.errors)
 
     implementation(projects.components.faphub.dao.api)
     implementation(projects.components.faphub.utils)
+    implementation(projects.components.faphub.errors.api)
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.dao.api)
