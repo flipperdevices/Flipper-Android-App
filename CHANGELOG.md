@@ -1,6 +1,8 @@
 # Changelog
 
-# 1.6.1 - In progress
+# 1.6.2 - In progress
+
+# 1.6.1
 
 - [FIX] FapHub build status layout
 - [FIX] Custom install and file manager uploader, deeplink refactor
