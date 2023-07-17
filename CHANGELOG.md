@@ -7,6 +7,7 @@
 - [FIX] FapHub build status hide icon instead of info
 - [Feature] Add pull to refresh to fapscreen and category screen
 - [Feature] Add "Not Compatible with your Firmware" error
+- [Feature] Remove InApp flag in settings
 
 # 1.6.0
 
