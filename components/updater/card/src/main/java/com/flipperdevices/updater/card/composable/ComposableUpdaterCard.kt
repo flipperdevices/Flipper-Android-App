@@ -26,14 +26,13 @@ import com.flipperdevices.updater.model.OfficialFirmware
 import com.flipperdevices.updater.model.UpdateCardState
 import com.flipperdevices.updater.model.UpdateErrorType
 import com.flipperdevices.updater.model.UpdateRequest
-import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 @Suppress("ModifierReused")
 internal fun ComposableUpdaterCardInternal(
+    updateStateViewModel: UpdateStateViewModel,
+    updateCardViewModel: UpdateCardViewModel,
     modifier: Modifier = Modifier,
-    updateStateViewModel: UpdateStateViewModel = tangleViewModel(),
-    updateCardViewModel: UpdateCardViewModel = tangleViewModel(),
     onStartUpdateRequest: (UpdateRequest) -> Unit = {},
 ) {
     val updateState by updateStateViewModel.getUpdateState().collectAsState()
@@ -50,13 +49,16 @@ internal fun ComposableUpdaterCardInternal(
             localDeviceStatus.version,
             updateStateViewModel::onDismissUpdateDialog
         )
+
         is FlipperUpdateState.Failed -> ComposableFailedUpdate(
             localDeviceStatus.version,
             updateStateViewModel::onDismissUpdateDialog
         )
+
         FlipperUpdateState.Ready,
         FlipperUpdateState.ConnectingInProgress -> {
         }
+
         FlipperUpdateState.NotConnected -> return
         else -> error("Can't find this device status")
     }
@@ -66,7 +68,7 @@ internal fun ComposableUpdaterCardInternal(
         modifier = modifier,
         cardStateLocal = cardState,
         onSelectChannel = updateCardViewModel::onSelectChannel,
-        retryUpdate = updateCardViewModel::retry,
+        retryUpdate = updateCardViewModel::refresh,
         onStartUpdateRequest = onStartUpdateRequest,
     )
 }
@@ -90,24 +92,28 @@ private fun ComposableUpdaterCard(
                     retryUpdate = retryUpdate
                 )
             }
+
             UpdateCardState.InProgress -> ComposableFirmwareUpdaterContent(
                 version = null,
                 updateCardState = cardStateLocal,
                 onSelectFirmwareChannel = onSelectChannel,
                 onStartUpdateRequest = onStartUpdateRequest
             )
+
             is UpdateCardState.NoUpdate -> ComposableFirmwareUpdaterContent(
                 version = cardStateLocal.flipperVersion,
                 updateCardState = cardStateLocal,
                 onSelectFirmwareChannel = onSelectChannel,
                 onStartUpdateRequest = onStartUpdateRequest
             )
+
             is UpdateCardState.UpdateAvailable -> ComposableFirmwareUpdaterContent(
                 version = cardStateLocal.update.updateTo,
                 updateCardState = cardStateLocal,
                 onSelectFirmwareChannel = onSelectChannel,
                 onStartUpdateRequest = onStartUpdateRequest
             )
+
             is UpdateCardState.UpdateFromFile -> ComposableFirmwareUpdaterContent(
                 version = cardStateLocal.updateVersion,
                 updateCardState = cardStateLocal,

@@ -2,6 +2,8 @@
 
 # 1.6.2 - In progress
 
+- [Feature] Add pull to refresh update for update card
+
 # 1.6.1
 
 - [FIX] FapHub build status layout
