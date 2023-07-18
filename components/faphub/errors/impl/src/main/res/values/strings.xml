@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="common_error_btn">Retry</string>
+
+    <string name="common_error_no_network_title">No Internet Connection</string>
+    <string name="common_error_no_network_desc">Turn on mobile data or Wi-Fi</string>
+    <string name="common_error_general_title">Something Went Wrong</string>
+    <string name="common_error_general_desc">¯\\_(ツ)_/¯\nTry again later</string>
+    <string name="common_error_no_server_title">No Server Connection</string>
+    <string name="common_error_no_server_desc">Can\'t browse apps</string>
+    <string name="common_error_wrong_request_title">Server Request Error</string>
+    <string name="common_error_wrong_request_desc">Update app to the latest version</string>
+    <string name="common_error_not_connected_flipper_apps_title">Flipper Not Connected</string>
+    <string name="common_error_not_connected_flipper_apps_desc">Connect your Flipper to see the installed apps</string>
+    <string name="common_error_firmware_wrong_title">Not Compatible with your Firmware</string>
+    <string name="common_error_firmware_wrong_desc_1">To access this category, install the latest firmware version from</string>
+    <string name="common_error_firmware_wrong_desc_2_green">Release</string>
+    <string name="common_error_firmware_wrong_desc_3">Channel on your Flipper</string>
+    <string name="common_error_firmware_wrong_btn">Go to Firmware Update</string>
+
+</resources>

@@ -1,11 +1,16 @@
 # Changelog
 
-# 1.6.1 - In progress
+# 1.6.2 - In progress
+
+# 1.6.1
 
 - [FIX] FapHub build status layout
 - [FIX] Custom install and file manager uploader, deeplink refactor
 - [FIX] FapHub build status hide icon instead of info
+- [FIX] Firmware outdated fix
 - [Feature] Add pull to refresh to fapscreen and category screen
+- [Feature] Add "Not Compatible with your Firmware" error
+- [Feature] Remove InApp flag in settings
 
 # 1.6.0
 

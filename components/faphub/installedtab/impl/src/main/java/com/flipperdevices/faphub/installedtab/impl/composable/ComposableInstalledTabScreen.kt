@@ -17,12 +17,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.errors.ComposableThrowableError
 import com.flipperdevices.core.ui.ktx.elements.SwipeRefresh
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.faphub.dao.api.model.FapItemShort
+import com.flipperdevices.faphub.errors.api.FapErrorSize
+import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
 import com.flipperdevices.faphub.installedtab.impl.R
 import com.flipperdevices.faphub.installedtab.impl.composable.button.ComposableUpdateAllButton
 import com.flipperdevices.faphub.installedtab.impl.composable.common.ComposableLoadingItemDivider
@@ -42,6 +43,7 @@ fun ComposableInstalledTabScreen(
     uninstallButtonOffline: @Composable (OfflineFapApp, Modifier) -> Unit,
     uninstallButtonOnline: @Composable (FapItemShort, Modifier) -> Unit,
     installationButton: @Composable (FapItemShort?, Modifier) -> Unit,
+    errorsRenderer: FapHubComposableErrorsRenderer,
     modifier: Modifier = Modifier
 ) {
     val viewModel = tangleViewModel<InstalledFapsViewModel>()
@@ -53,11 +55,12 @@ fun ComposableInstalledTabScreen(
     val screenModifier = modifier.padding(horizontal = 14.dp)
 
     when (val stateLocal = state) {
-        is FapInstalledScreenState.Error -> ComposableThrowableError(
+        is FapInstalledScreenState.Error -> errorsRenderer.ComposableThrowableError(
             throwable = stateLocal.throwable,
             onRetry = { viewModel.refresh(true) },
             modifier = screenModifier
-                .fillMaxSize()
+                .fillMaxSize(),
+            fapErrorSize = FapErrorSize.FULLSCREEN
         )
 
         is FapInstalledScreenState.Loaded,

@@ -15,9 +15,9 @@ dependencies {
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.ktx)
-    implementation(projects.components.core.ui.errors)
 
     implementation(projects.components.faphub.dao.api)
+    implementation(projects.components.faphub.errors.api)
     implementation(projects.components.faphub.appcard.composable)
     implementation(projects.components.faphub.installation.button.api)
     implementation(projects.components.faphub.installation.manifest.api)

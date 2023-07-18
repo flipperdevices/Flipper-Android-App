@@ -20,13 +20,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
-import com.flipperdevices.core.ui.errors.ComposableThrowableError
 import com.flipperdevices.core.ui.ktx.OrangeAppBar
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.ktx.elements.SwipeRefresh
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.faphub.appcard.composable.components.AppCardScreenshots
 import com.flipperdevices.faphub.dao.api.model.FapItem
+import com.flipperdevices.faphub.errors.api.FapErrorSize
+import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
 import com.flipperdevices.faphub.fapscreen.impl.R
 import com.flipperdevices.faphub.fapscreen.impl.composable.description.ComposableFapDescription
 import com.flipperdevices.faphub.fapscreen.impl.composable.header.ComposableFapHeader
@@ -42,6 +43,7 @@ fun ComposableFapScreen(
     onOpenDeviceTab: () -> Unit,
     uninstallButton: @Composable (Modifier, FapItem) -> Unit,
     installationButton: @Composable (FapItem?, Modifier) -> Unit,
+    errorsRenderer: FapHubComposableErrorsRenderer,
     modifier: Modifier = Modifier
 ) {
     val viewModel = tangleViewModel<FapScreenViewModel>()
@@ -49,12 +51,13 @@ fun ComposableFapScreen(
     val controlState by viewModel.getControlState().collectAsState()
 
     when (val loadingStateLocal = loadingState) {
-        is FapScreenLoadingState.Error -> ComposableThrowableError(
+        is FapScreenLoadingState.Error -> errorsRenderer.ComposableThrowableError(
             throwable = loadingStateLocal.throwable,
             onRetry = viewModel::onRefresh,
             modifier = modifier
                 .fillMaxSize()
-                .padding(horizontal = 14.dp)
+                .padding(horizontal = 14.dp),
+            fapErrorSize = FapErrorSize.FULLSCREEN
         )
 
         is FapScreenLoadingState.Loaded -> ComposableFapScreenInternal(

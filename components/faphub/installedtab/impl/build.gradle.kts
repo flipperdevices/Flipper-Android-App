@@ -13,7 +13,6 @@ dependencies {
     implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.ui.theme)
-    implementation(projects.components.core.ui.errors)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.ktx)
 
@@ -25,6 +24,7 @@ dependencies {
     implementation(projects.components.faphub.uninstallbutton.api)
     implementation(projects.components.faphub.installation.stateprovider.api)
     implementation(projects.components.faphub.target.api)
+    implementation(projects.components.faphub.errors.api)
 
     // Compose
     implementation(libs.compose.ui)
