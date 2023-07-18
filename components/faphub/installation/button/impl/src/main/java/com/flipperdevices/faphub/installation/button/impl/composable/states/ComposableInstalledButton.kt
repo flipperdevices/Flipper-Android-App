@@ -5,6 +5,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.core.ui.navigation.LocalGlobalNavigationNavStack
 import com.flipperdevices.faphub.installation.button.api.FapButtonConfig
 import com.flipperdevices.faphub.installation.button.api.FapButtonSize
@@ -49,9 +50,15 @@ internal fun ComposableInstalledButton(
                 )
             }
         }
-        OpenFapState.NotSupported, OpenFapState.Loading -> {
+        OpenFapState.NotSupported -> {
             ComposableFapInstalledButton(
                 modifier = modifier,
+                fapButtonSize = fapButtonSize
+            )
+        }
+        OpenFapState.Loading -> {
+            ComposableFapInstalledButton(
+                modifier = modifier.placeholderConnecting(),
                 fapButtonSize = fapButtonSize
             )
         }

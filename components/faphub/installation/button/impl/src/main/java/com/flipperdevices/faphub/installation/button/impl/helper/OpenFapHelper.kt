@@ -6,9 +6,12 @@ import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ktx.jre.launchWithLock
+import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.faphub.dao.api.model.FapBuildState
 import com.flipperdevices.faphub.installation.button.api.FapButtonConfig
+import com.flipperdevices.faphub.installation.button.impl.model.OpenFapResult
 import com.flipperdevices.faphub.installation.button.impl.model.OpenFapState
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.app.startRequest
@@ -23,26 +26,30 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
 import javax.inject.Inject
 import javax.inject.Singleton
 
 interface OpenFapHelper {
     fun getOpenFapState(fapButtonConfig: FapButtonConfig?): Flow<OpenFapState>
-    suspend fun loadFap(
+    fun loadFap(
         config: FapButtonConfig,
-        onSuccess: suspend () -> Unit,
-        onBusy: suspend () -> Unit,
-        onError: suspend () -> Unit,
+        scope: CoroutineScope,
+        onResult: (OpenFapResult) -> Unit
     )
 }
 
 @Singleton
-@ContributesBinding(AppGraph::class)
+@ContributesBinding(AppGraph::class, OpenFapHelper::class)
 class OpenFapHelperImpl @Inject constructor(
     private val serviceProvider: FlipperServiceProvider
-) : OpenFapHelper {
+) : OpenFapHelper, LogTagProvider {
+    override val TAG: String = "OpenFapHelperImpl"
+
     private val currentOpenAppFlow = MutableStateFlow<FapButtonConfig?>(null)
     private val rpcVersionFlow = MutableStateFlow<SemVer?>(null)
+
+    private val mutex = Mutex()
 
     override fun getOpenFapState(fapButtonConfig: FapButtonConfig?): Flow<OpenFapState> {
         return combine(
@@ -78,15 +85,14 @@ class OpenFapHelperImpl @Inject constructor(
         }
     }
 
-    override suspend fun loadFap(
+    override fun loadFap(
         config: FapButtonConfig,
-        onSuccess: suspend () -> Unit,
-        onBusy: suspend () -> Unit,
-        onError: suspend () -> Unit,
-    ) {
+        scope: CoroutineScope,
+        onResult: (OpenFapResult) -> Unit
+    ) = launchWithLock(mutex, scope, "loadFap") {
         if (currentOpenAppFlow.value != null) {
             info { "Cannot open because state not in ready" }
-            return
+            return@launchWithLock
         }
 
         currentOpenAppFlow.emit(config)
@@ -105,11 +111,12 @@ class OpenFapHelperImpl @Inject constructor(
             )
         )
 
-        when (appLoadResponse.commandStatus) {
-            Flipper.CommandStatus.OK -> onSuccess()
-            Flipper.CommandStatus.ERROR_APP_SYSTEM_LOCKED -> onBusy()
-            else -> onError()
+        val result: OpenFapResult = when (appLoadResponse.commandStatus) {
+            Flipper.CommandStatus.OK -> OpenFapResult.AllGood
+            Flipper.CommandStatus.ERROR_APP_SYSTEM_LOCKED -> OpenFapResult.FlipperIsBusy
+            else -> OpenFapResult.Error
         }
         currentOpenAppFlow.emit(null)
+        onResult(result)
     }
 }

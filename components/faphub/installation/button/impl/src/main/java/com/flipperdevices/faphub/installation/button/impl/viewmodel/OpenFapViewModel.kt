@@ -7,6 +7,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.faphub.installation.button.api.FapButtonConfig
 import com.flipperdevices.faphub.installation.button.impl.helper.OpenFapHelper
+import com.flipperdevices.faphub.installation.button.impl.model.OpenFapResult
 import com.flipperdevices.screenstreaming.api.ScreenStreamingFeatureEntry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,32 +33,31 @@ class OpenFapViewModel @VMInject constructor(
             return
         }
 
+        openFapHelper.loadFap(
+            config = config,
+            scope = viewModelScope,
+            onResult = { processOpenFapResult(it, navController) }
+        )
+    }
+
+    private fun processOpenFapResult(openFapResult: OpenFapResult, navController: NavHostController) {
         viewModelScope.launch {
-            withContext(Dispatchers.Default) {
-                openFapHelper.loadFap(
-                    config = config,
-                    onSuccess = { navigateToScreenStreaming(navController) },
-                    onBusy = ::processBusyFlipper,
-                    onError = ::processErrorOpen
-                )
+            when (openFapResult) {
+                OpenFapResult.AllGood -> {
+                    info { "Success open app, then go to screen streaming" }
+                    withContext(Dispatchers.Main) {
+                        navController.navigate(screenStreamingFeatureEntry.ROUTE.name)
+                    }
+                }
+                OpenFapResult.Error -> {
+                    info { "Error on open app" }
+                }
+                OpenFapResult.FlipperIsBusy -> {
+                    info { "Flipper is busy" }
+                    busyDialogState.emit(true)
+                }
             }
         }
-    }
-
-    private suspend fun navigateToScreenStreaming(navController: NavHostController) {
-        info { "Success open app, then go to screen streaming" }
-        withContext(Dispatchers.Main) {
-            navController.navigate(screenStreamingFeatureEntry.ROUTE.name)
-        }
-    }
-
-    private suspend fun processBusyFlipper() {
-        info { "Flipper is busy" }
-        busyDialogState.emit(true)
-    }
-
-    private fun processErrorOpen() {
-        info { "Error on try open app" }
     }
 
     fun closeDialog() {

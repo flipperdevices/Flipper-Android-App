@@ -1,11 +1,5 @@
 package com.flipperdevices.faphub.installation.button.impl.composable.buttons
 
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,27 +9,21 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.flipperdevices.core.ui.ktx.sweep.RotatableSweepGradient
+import com.flipperdevices.core.ui.ktx.sweep.animatedRotatableBrush
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.faphub.installation.button.api.FapButtonSize
 import com.flipperdevices.faphub.installation.button.impl.R
 
-private const val PROGRESS_BAR_END_PERCENT_INFINITE = 0.2f
-private const val PROGRESS_BAR_END_DURATION_MS = 1000
 private const val PROGRESS_BAR_SIZE = 4
 
 @Composable
@@ -58,7 +46,11 @@ internal fun ComposableFapOpeningButton(
     }
 
     val buttonClip = RoundedCornerShape(6.dp)
-    val buttonProgressBackground = animatedBrush(progressColor.copy(alpha = 0.4f), progressColor)
+    val buttonProgressBackground = animatedRotatableBrush(
+        backgroundColor = progressColor.copy(alpha = 0.4f),
+        cursorColor = progressColor,
+        tag = "ComposableFapOpeningButton"
+    )
 
     Box(
         modifier = buttonModifier
@@ -82,39 +74,6 @@ internal fun ComposableFapOpeningButton(
         )
     }
 }
-
-@Composable
-private fun animatedBrush(backgroundColor: Color, cursorColor: Color): Brush {
-    val rotationTransition = rememberInfiniteTransition(label = "ComposableFapOpeningButton")
-    val angelAnimated by rotationTransition.animateFloat(
-        initialValue = 0f,
-        targetValue = 360f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(
-                durationMillis = PROGRESS_BAR_END_DURATION_MS,
-                easing = LinearEasing
-            ),
-            repeatMode = RepeatMode.Restart
-        ),
-        label = "ComposableFapOpeningButton"
-    )
-    return rotatableSweepGradient(
-        0f to backgroundColor,
-        PROGRESS_BAR_END_PERCENT_INFINITE to cursorColor,
-        PROGRESS_BAR_END_PERCENT_INFINITE * 2 to backgroundColor,
-        angel = angelAnimated
-    )
-}
-
-private fun rotatableSweepGradient(
-    vararg colorStops: Pair<Float, Color>,
-    angel: Float = 0f,
-): RotatableSweepGradient = RotatableSweepGradient(
-    colors = List(colorStops.size) { i -> colorStops[i].second },
-    stops = List(colorStops.size) { i -> colorStops[i].first },
-    center = Offset.Unspecified,
-    angel = angel
-)
 
 @Preview
 @Composable
