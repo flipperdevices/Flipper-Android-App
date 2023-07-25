@@ -23,8 +23,8 @@ import com.flipperdevices.keyemulate.composable.common.button.ComposableEmulateB
 import com.flipperdevices.keyemulate.model.EmulateProgress
 
 @Composable
-fun ComposableEmulateButtonWithText(
-    @StringRes buttonTextId: Int,
+internal fun ComposableEmulateButtonWithText(
+    buttonText: String,
     color: Color,
     modifier: Modifier = Modifier,
     buttonModifier: Modifier = Modifier,
@@ -41,7 +41,7 @@ fun ComposableEmulateButtonWithText(
         ComposableEmulateButton(
             buttonContentModifier = buttonModifier,
             emulateProgress = progress,
-            textId = buttonTextId,
+            text = buttonText,
             picture = picture,
             color = color,
             progressColor = progressColor
@@ -58,11 +58,38 @@ fun ComposableEmulateButtonWithText(
                     tint = LocalPallet.current.warningColor
                 )
             }
-            Text(
-                text = textId?.let { stringResource(it) } ?: "",
-                style = LocalTypography.current.bodyR14.copy(fontSize = 12.sp),
-                color = LocalPallet.current.text30
-            )
+            if (textId != null) {
+                Text(
+                    text = stringResource(textId),
+                    style = LocalTypography.current.bodyR14.copy(fontSize = 12.sp),
+                    color = LocalPallet.current.text30
+                )
+            }
         }
     }
+}
+
+@Composable
+internal fun ComposableEmulateButtonWithText(
+    @StringRes buttonTextId: Int,
+    color: Color,
+    modifier: Modifier = Modifier,
+    buttonModifier: Modifier = Modifier,
+    progress: EmulateProgress? = null,
+    @StringRes textId: Int? = null,
+    @DrawableRes iconId: Int? = null,
+    picture: Picture? = null,
+    progressColor: Color = Color.Transparent
+) {
+    ComposableEmulateButtonWithText(
+        buttonText = stringResource(buttonTextId),
+        color = color,
+        modifier = modifier,
+        buttonModifier = buttonModifier,
+        progress = progress,
+        textId = textId,
+        iconId = iconId,
+        picture = picture,
+        progressColor = progressColor
+    )
 }

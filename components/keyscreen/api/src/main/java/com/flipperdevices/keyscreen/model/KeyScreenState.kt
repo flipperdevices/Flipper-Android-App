@@ -7,7 +7,7 @@ import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
 sealed class KeyScreenState {
     object InProgress : KeyScreenState()
     class Error(@StringRes val reason: Int) : KeyScreenState()
-    data class Ready constructor(
+    data class Ready(
         val parsedKey: FlipperKeyParsed,
         val favoriteState: FavoriteState,
         val shareState: ShareState,

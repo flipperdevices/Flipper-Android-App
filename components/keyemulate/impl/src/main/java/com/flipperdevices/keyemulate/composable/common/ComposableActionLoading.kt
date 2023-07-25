@@ -16,7 +16,7 @@ import com.google.accompanist.placeholder.shimmer
 
 @Composable
 fun ComposableActionLoading(
-    loadingState: LoadingState,
+    loadingState: LoadingState?,
     modifier: Modifier = Modifier
 ) {
     val placeholderColor = LocalPallet.current.text8.copy(alpha = 0.2f)
@@ -35,6 +35,7 @@ fun ComposableActionLoading(
         textId = when (loadingState) {
             LoadingState.CONNECTING -> R.string.emulate_loading_connecting
             LoadingState.SYNCING -> R.string.emulate_loading_syncing
+            null -> null
         }
     )
 }
