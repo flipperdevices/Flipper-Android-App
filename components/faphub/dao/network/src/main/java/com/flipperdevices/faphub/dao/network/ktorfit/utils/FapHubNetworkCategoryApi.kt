@@ -33,7 +33,7 @@ class FapHubNetworkCategoryApi(
         if (!shouldInvalidate(target)) {
             return@withLock
         }
-        val categoriesReceived = try {
+        var categoriesReceived = try {
             categoryApi.getAll(
                 sdkApi = when (target) {
                     is FlipperTarget.Received -> target.sdk.toString()
@@ -44,6 +44,9 @@ class FapHubNetworkCategoryApi(
         } catch (ex: Exception) {
             error(ex) { "Failed get categories" }
             return@withLock
+        }
+        if (target is FlipperTarget.Unsupported) {
+            categoriesReceived = categoriesReceived.map { it.copy(applicationsCount = 0) }
         }
         info { "Received ${categoriesReceived.size} categories" }
         categories = categoriesReceived.associateBy { it.id }

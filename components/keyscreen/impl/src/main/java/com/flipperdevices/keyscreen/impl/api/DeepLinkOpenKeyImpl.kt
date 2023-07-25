@@ -26,11 +26,11 @@ class DeepLinkOpenKeyImpl @Inject constructor(
     private val applicationParams: ApplicationParams
 ) : DeepLinkParserDelegate, DeepLinkOpenKey, LogTagProvider {
     override val TAG = "DeepLinkOpenKey"
-    override fun getPriority(context: Context, intent: Intent): DeepLinkParserDelegatePriority {
+    override fun getPriority(context: Context, intent: Intent): DeepLinkParserDelegatePriority? {
         return if (intent.hasExtra(EXTRA_PATH_KEY)) {
             DeepLinkParserDelegatePriority.HIGH
         } else {
-            DeepLinkParserDelegatePriority.LOW
+            null
         }
     }
 

@@ -5,6 +5,12 @@ import androidx.compose.ui.Modifier
 import com.flipperdevices.updater.model.UpdateRequest
 
 interface UpdaterCardApi {
+    @Suppress("ComposableNaming")
     @Composable
-    fun ComposableUpdaterCard(modifier: Modifier, onStartUpdateRequest: (UpdateRequest) -> Unit)
+    fun ComposableUpdaterCard(
+        modifier: Modifier,
+        onStartUpdateRequest: (UpdateRequest) -> Unit,
+        requestRefresh: Boolean,
+        onRefreshRequestExecuted: () -> Unit
+    )
 }

@@ -22,16 +22,21 @@ enum class KtorfitBuildState {
     @SerialName("UNSUPPORTED_SDK")
     UNSUPPORTED_SDK;
 
-    fun toFapBuildState(target: FlipperTarget): FapBuildState = when (this) {
-        READY -> if (target == FlipperTarget.NotConnected) {
-            FapBuildState.READY_ON_RELEASE
-        } else {
-            FapBuildState.READY
+    fun toFapBuildState(target: FlipperTarget): FapBuildState {
+        if (target is FlipperTarget.Unsupported) {
+            return FapBuildState.UNSUPPORTED_SDK
         }
+        return when (this) {
+            READY -> if (target == FlipperTarget.NotConnected) {
+                FapBuildState.READY_ON_RELEASE
+            } else {
+                FapBuildState.READY
+            }
 
-        BUILD_RUNNING -> FapBuildState.BUILD_RUNNING
-        UNSUPPORTED_APP -> FapBuildState.UNSUPPORTED_APP
-        FLIPPER_OUTDATED -> FapBuildState.FLIPPER_OUTDATED
-        UNSUPPORTED_SDK -> FapBuildState.UNSUPPORTED_SDK
+            BUILD_RUNNING -> FapBuildState.BUILD_RUNNING
+            UNSUPPORTED_APP -> FapBuildState.UNSUPPORTED_APP
+            FLIPPER_OUTDATED -> FapBuildState.FLIPPER_OUTDATED
+            UNSUPPORTED_SDK -> FapBuildState.UNSUPPORTED_SDK
+        }
     }
 }

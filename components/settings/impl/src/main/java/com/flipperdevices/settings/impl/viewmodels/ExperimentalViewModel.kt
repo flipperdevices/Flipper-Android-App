@@ -33,16 +33,6 @@ class ExperimentalViewModel @VMInject constructor(
         navController.navigate(settingsFeatureEntry.remoteControlStub())
     }
 
-    fun onSwitchApplicationCatalog(enabled: Boolean) {
-        viewModelScope.launch {
-            settingsDataStore.updateData {
-                it.toBuilder()
-                    .setApplicationCatalog(enabled)
-                    .build()
-            }
-        }
-    }
-
     fun onSwitchNewInfrared(enabled: Boolean) {
         viewModelScope.launch {
             settingsDataStore.updateData {

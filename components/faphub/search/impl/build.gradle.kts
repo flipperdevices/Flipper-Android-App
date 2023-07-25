@@ -20,6 +20,7 @@ dependencies {
     implementation(projects.components.faphub.fapscreen.api)
     implementation(projects.components.faphub.installation.button.api)
     implementation(projects.components.faphub.target.api)
+    implementation(projects.components.faphub.errors.api)
 
     // Compose
     implementation(libs.compose.ui)

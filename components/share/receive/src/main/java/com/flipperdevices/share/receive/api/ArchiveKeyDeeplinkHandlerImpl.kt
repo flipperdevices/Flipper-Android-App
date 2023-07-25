@@ -5,6 +5,7 @@ import androidx.core.net.toUri
 import androidx.navigation.NavController
 import com.flipperdevices.archive.api.ArchiveFeatureEntry
 import com.flipperdevices.bottombar.api.BottomNavigationHandleDeeplink
+import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.deeplink.api.DeepLinkHandler
 import com.flipperdevices.deeplink.api.DispatcherPriority
@@ -26,16 +27,24 @@ class ArchiveKeyDeeplinkHandlerImpl @Inject constructor(
     private val bottomHandleDeeplink: BottomNavigationHandleDeeplink
 ) : DeepLinkHandler {
     override fun isSupportLink(link: Deeplink): DispatcherPriority? {
-        if (link !is Deeplink.FlipperKey) {
-            return null
+        var content: DeeplinkContent? = null
+        var path: FlipperFilePath? = null
+        if (link is Deeplink.ExternalContent) {
+            content = link.content
         }
-        return when (link.content) {
+        if (link is Deeplink.FlipperKey) {
+            path = link.path
+            content = link.content
+        }
+
+        return when (content) {
             is DeeplinkContent.InternalStorageFile -> DispatcherPriority.DEFAULT
             is DeeplinkContent.FFFCryptoContent -> DispatcherPriority.DEFAULT
             is DeeplinkContent.FFFContent -> {
-                if (link.path == null) return null
+                if (path == null) return null
                 return DispatcherPriority.DEFAULT
             }
+
             else -> null
         }
     }

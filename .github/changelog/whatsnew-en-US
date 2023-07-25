@@ -1,11 +1,1 @@
-New Features:
-- Faster and smoother synchronization
-- Remote Control: new UI, animations, moved to the Hub tab
-- Added self update (Google Play, Github, FDroid)
-- Pull to refresh in Device Info 
-- Updated dialogs
-Fixes:
-- Improved navigation, animations and colors in systems bars
-- Improved connection and key encryption 
-- Updater and widget improvements
-- NFC: Dump Editor, shadow files, sharing and Mfkey32 fixes
+Introducing Apps: discover and install apps you'll like on your Flipper Zero

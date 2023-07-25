@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="maincard_title">Apps</string>
-    <string name="maincard_fallback_text">Discover and install apps you\'ll like on your Fipper Zero</string>
+    <string name="maincard_fallback_text">Discover and install apps you\'ll like on your Flipper Zero</string>
 </resources>

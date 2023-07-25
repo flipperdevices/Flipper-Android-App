@@ -12,6 +12,8 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.flipperdevices.core.ui.searchbar.ComposableSearchBar
 import com.flipperdevices.faphub.appcard.composable.paging.ComposableFapsList
 import com.flipperdevices.faphub.dao.api.model.FapItemShort
+import com.flipperdevices.faphub.errors.api.FapErrorSize
+import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
 import com.flipperdevices.faphub.search.impl.R
 import com.flipperdevices.faphub.search.impl.model.RequestTooSmallException
 import com.flipperdevices.faphub.search.impl.viewmodel.FapHubSearchViewModel
@@ -21,6 +23,7 @@ import tangle.viewmodel.compose.tangleViewModel
 fun ComposableSearchScreen(
     onBack: () -> Unit,
     onFapItemClick: (FapItemShort) -> Unit,
+    errorsRenderer: FapHubComposableErrorsRenderer,
     modifier: Modifier = Modifier,
     installationButton: @Composable (FapItemShort?, Modifier) -> Unit
 ) {
@@ -49,7 +52,13 @@ fun ComposableSearchScreen(
                         ComposableSearchRequestTooSmall(Modifier.fillParentMaxSize())
                     }
 
-                    else -> ComposableFapsList(fapsList, onFapItemClick, installationButton)
+                    else -> ComposableFapsList(
+                        faps = fapsList,
+                        onOpenFapItem = onFapItemClick,
+                        installationButton = installationButton,
+                        errorsRenderer = errorsRenderer,
+                        defaultFapErrorSize = FapErrorSize.FULLSCREEN
+                    )
                 }
             }
         }
