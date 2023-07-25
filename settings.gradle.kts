@@ -219,5 +219,3 @@ include(
     ":components:selfupdater:thirdparty:github",
     ":components:selfupdater:thirdparty:fdroid",
 )
-include(":errors")
-project(":errors").projectDir = settingsDir.resolve("components/faphub/errors/errors")
