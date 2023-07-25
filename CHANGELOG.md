@@ -3,6 +3,8 @@
 # 1.6.2 - In progress
 
 - [Feature] Add pull to refresh update for update card
+- [Feature] Infrared Emulate (without editing)
+- [REFACTOR] Bump deps
 
 # 1.6.1
 
@@ -27,7 +29,6 @@
 - [FIX] Remove kotlin incremental
 - [FIX] Faphub search, build status dialogs, placeholders
 - [Feature] FapHub MVPv0
-- [Feature] Infrared Emulate (without editing)
 - [Feature] Update README with Fdroid badge
 - [Feature] Migrate faphub to target flow
 - [Feature] Update Geminio for create modules - simple, navigation, api/impl
