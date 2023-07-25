@@ -4,6 +4,9 @@
 
 - [FIX] Fix bug with restoreState navigation
 - [Feature] Add pull to refresh update for update card
+- [Feature] Infrared Emulate (without editing)
+- [Feature] Use as key for fap appcard application id
+- [REFACTOR] Bump deps
 
 # 1.6.1
 
