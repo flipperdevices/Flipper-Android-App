@@ -93,8 +93,8 @@ private fun BaseExtension.configureBuildFeatures() {
 }
 
 private fun BaseExtension.configureCompileOptions() {
-    compileOptions.sourceCompatibility = JavaVersion.VERSION_1_8
-    compileOptions.targetCompatibility = JavaVersion.VERSION_1_8
+    compileOptions.sourceCompatibility = JavaVersion.VERSION_11
+    compileOptions.targetCompatibility = JavaVersion.VERSION_11
 }
 
 @Suppress("MaxLineLength")
@@ -102,7 +102,7 @@ private fun Project.suppressOptIn() {
     tasks.withType<KotlinCompile>()
         .configureEach {
             kotlinOptions {
-                jvmTarget = "1.8"
+                jvmTarget = "11"
 
                 freeCompilerArgs = freeCompilerArgs + listOf(
                     "-Xopt-in=com.google.accompanist.pager.ExperimentalPagerApi",
