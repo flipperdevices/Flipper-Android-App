@@ -75,6 +75,9 @@ dependencies {
     implementation(projects.components.keyparser.api)
     implementation(projects.components.keyparser.impl)
 
+    implementation(projects.components.infrared.api)
+    implementation(projects.components.infrared.impl)
+
     implementation(projects.components.inappnotification.api)
     implementation(projects.components.inappnotification.impl)
 

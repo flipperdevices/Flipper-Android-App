@@ -23,7 +23,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.ktx.image.painterResourceByKey
-import com.flipperdevices.core.ui.ktx.tab.TabTransition
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
@@ -34,7 +33,6 @@ import com.flipperdevices.main.impl.model.FapHubTabEnum
 fun ComposableFapHubTab(
     hubTabEnum: FapHubTabEnum,
     onSelectFapHubTabEnum: (FapHubTabEnum) -> Unit,
-    isSelected: Boolean,
     notificationCount: Int,
     modifier: Modifier = Modifier
 ) {
@@ -47,19 +45,13 @@ fun ComposableFapHubTab(
         FapHubTabEnum.INSTALLED -> R.string.faphub_main_tab_installed
     }
 
-    TabTransition(
-        activeColor = LocalPallet.current.fapHubActiveColor,
-        inactiveColor = LocalPallet.current.fapHubInactiveColor,
-        selected = isSelected
-    ) {
-        ComposableFapHubTabInternal(
-            modifier = modifier
-                .clickableRipple { onSelectFapHubTabEnum(hubTabEnum) },
-            iconId = iconId,
-            titleId = textId,
-            notificationCount = notificationCount
-        )
-    }
+    ComposableFapHubTabInternal(
+        modifier = modifier
+            .clickableRipple { onSelectFapHubTabEnum(hubTabEnum) },
+        iconId = iconId,
+        titleId = textId,
+        notificationCount = notificationCount
+    )
 }
 
 @Composable

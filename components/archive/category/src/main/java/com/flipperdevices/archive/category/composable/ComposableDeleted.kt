@@ -7,14 +7,13 @@ import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.flipperdevices.archive.category.R
 import com.flipperdevices.archive.category.composable.dialogs.ComposableDeleteAllDialog
@@ -26,6 +25,7 @@ import com.flipperdevices.core.ui.ktx.OrangeAppBar
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
 import tangle.viewmodel.compose.tangleViewModel
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableDeleted(
@@ -96,7 +96,7 @@ private fun ComposableDeletedAppBarInternal(
     ) {
         Icon(
             modifier = Modifier.clickableRipple(bounded = false) { showMenu = true },
-            imageVector = Icons.Default.MoreVert,
+            painter = painterResource(DesignSystem.drawable.ic_more_points),
             contentDescription = null,
             tint = LocalPallet.current.onAppBar
         )

@@ -29,5 +29,6 @@ enum class FeatureScreenRootRoute {
     WIDGET,
     UPDATER,
     KEY_RECEIVE,
-    SHAKE2REPORT
+    SHAKE2REPORT,
+    INFRARED
 }
