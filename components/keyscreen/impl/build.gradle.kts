@@ -13,6 +13,7 @@ dependencies {
     implementation(projects.components.archive.api)
     implementation(projects.components.keyemulate.api)
     implementation(projects.components.keyparser.api)
+    implementation(projects.components.infrared.api)
 
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.di)
@@ -22,6 +23,7 @@ dependencies {
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.navigation)
     implementation(projects.components.core.ui.lifecycle)
+    implementation(projects.components.core.preference)
 
     implementation(projects.components.analytics.metric.api)
 

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="infrared_tab_remote">Remote</string>
+    <string name="infrared_tab_info">Info</string>
+    <string name="infrared_options_favorite_remove">Remove from Favorites</string>
+    <string name="infrared_options_favorite_add">Add to Favorites</string>
+    <string name="infrared_options_edit">Edit Remote</string>
+    <string name="infrared_options_rename">Rename Remote</string>
+    <string name="infrared_options_share">Share Remote</string>
+    <string name="infrared_options_how_to_use">How To Use</string>
+    <string name="infrared_options_delete">Delete Remote</string>
+
+    <string name="infrared_dialog_how_to_use_title">How To Use</string>
+    <string name="infrared_dialog_how_to_use_text">Point Flipper Zero at the device. Tap or hold the button from your phone to send the signal remotely</string>
+    <string name="infrared_dialog_how_to_use_btn">Got It</string>
+</resources>

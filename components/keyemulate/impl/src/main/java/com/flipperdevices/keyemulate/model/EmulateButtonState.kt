@@ -20,7 +20,10 @@ sealed class EmulateButtonState {
     object ForbiddenFrequencyDialog : Inactive()
 
     @Stable
-    data class Active(val progress: EmulateProgress) : EmulateButtonState()
+    data class Active(
+        val progress: EmulateProgress,
+        val config: EmulateConfig
+    ) : EmulateButtonState()
 }
 
 enum class DisableButtonReason {
