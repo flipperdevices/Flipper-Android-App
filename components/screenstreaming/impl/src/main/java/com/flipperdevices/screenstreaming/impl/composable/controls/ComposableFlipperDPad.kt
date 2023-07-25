@@ -24,15 +24,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.screenstreaming.impl.composable.ButtonEnum
 
 private const val BUTTON_WEIGHT = 0.3f
 
-@Preview(
-    showSystemUi = true,
-    showBackground = true
-)
 @Suppress("LongMethod")
 @Composable
 fun ComposableFlipperDPad(
@@ -149,5 +146,16 @@ private fun ControlButton(
                 contentDescription = stringResource(button.description)
             )
         }
+    }
+}
+
+@Preview(
+    showSystemUi = true,
+    showBackground = true
+)
+@Composable
+private fun ComposableFlipperDPadPreview() {
+    FlipperThemeInternal {
+        ComposableFlipperDPad()
     }
 }

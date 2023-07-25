@@ -51,7 +51,7 @@ fun ComposableFirmwareUpdaterContent(
     showSystemUi = true
 )
 @Composable
-fun ComposableFirmwareUpdaterContentPreview() {
+private fun ComposableFirmwareUpdaterContentPreview() {
     FlipperThemeInternal {
         val lastVersion = FirmwareVersion(
             channel = FirmwareChannel.DEV,

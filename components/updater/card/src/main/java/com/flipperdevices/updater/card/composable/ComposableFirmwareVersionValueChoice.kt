@@ -1,5 +1,6 @@
 package com.flipperdevices.updater.card.composable
 
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -46,7 +47,6 @@ import com.flipperdevices.info.shared.getTextByVersion
 import com.flipperdevices.updater.card.R
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableUpdaterFirmwareVersionWithChoice(
@@ -192,7 +192,7 @@ fun ComposableFirmwareColumn(
     showBackground = true
 )
 @Composable
-fun ComposableUpdaterFirmwareVersionWithChoicePreview() {
+private fun ComposableUpdaterFirmwareVersionWithChoicePreview() {
     FlipperThemeInternal {
         val firmwareVersion = FirmwareVersion(
             channel = FirmwareChannel.RELEASE,
