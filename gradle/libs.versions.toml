@@ -18,7 +18,7 @@ compose-accompanist = "0.30.1" # https://github.com/google/accompanist/releases
 compose-constraint = "1.0.1" # https://developer.android.com/jetpack/compose/layouts/constraintlayout
 compose-navigation = "2.6.0" # https://developer.android.com/jetpack/compose/navigation
 compose-paging = "1.0.0-alpha20" # https://developer.android.com/jetpack/androidx/releases/paging
-horologist = "0.5.1" # https://github.com/google/horologist/releases
+horologist = "0.4.5" # https://github.com/google/horologist/releases
 serialization-json = "1.5.1" # https://github.com/Kotlin/kotlinx.serialization/releases
 wear = "1.2.0" # https://developer.android.com/jetpack/androidx/releases/wear
 wear-gms = "18.0.0" # https://mvnrepository.com/artifact/com.google.android.gms/play-services-wearable?repo=google
