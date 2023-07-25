@@ -59,6 +59,7 @@ include(
     ":components:core:ui:searchbar",
     ":components:core:ui:hexkeyboard",
     ":components:core:ui:navigation",
+    ":components:core:ui:tabswitch",
     ":components:core:test",
     ":components:core:markdown",
     ":components:core:activityholder",
