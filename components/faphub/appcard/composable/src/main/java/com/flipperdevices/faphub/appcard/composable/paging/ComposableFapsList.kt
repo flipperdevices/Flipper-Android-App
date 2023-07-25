@@ -100,7 +100,7 @@ private fun LazyListScope.ComposableLoadedFapsList(
     val lastIndex = faps.itemCount - 1
     items(
         count = faps.itemCount,
-        key = faps.itemKey(),
+        key = faps.itemKey { it.id },
         contentType = faps.itemContentType()
     ) { index ->
         val item = faps[index]
