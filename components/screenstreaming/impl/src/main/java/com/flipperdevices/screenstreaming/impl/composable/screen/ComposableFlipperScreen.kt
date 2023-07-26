@@ -147,7 +147,7 @@ private fun ComposableFlipperScreenRaw(
     modifier: Modifier = Modifier
 ) {
     val imageDrawPaint = remember {
-        Paint().apply {
+        return@remember Paint().apply {
             filterQuality = FilterQuality.None
         }
     }

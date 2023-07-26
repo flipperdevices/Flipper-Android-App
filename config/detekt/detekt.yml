@@ -729,13 +729,12 @@ formatting:
   IfElseBracing:
     active: true
 
-TwitterCompose:
+Compose:
   CompositionLocalAllowlist:
     active: true
     # You can optionally define a list of CompositionLocals that are allowed here
+    # allowedCompositionLocals: LocalSomething,LocalSomethingElse
     allowedCompositionLocals: LocalRouter,LocalPlaceholderEnable,LocalPallet,LocalTypography,LocalGlobalNavigationNavStack
-  CompositionLocalNaming:
-    active: true
   ContentEmitterReturningValues:
     active: true
     # You can optionally add your own composables here
@@ -744,6 +743,9 @@ TwitterCompose:
     active: true
   ModifierMissing:
     active: true
+    # You can optionally control the visibility of which composables to check for here
+    # Possible values are: `only_public`, `public_and_internal` and `all` (default is `only_public`)
+    # checkModifiersForVisibility: only_public
   ModifierReused:
     active: true
   ModifierWithoutDefault:
@@ -764,8 +766,6 @@ TwitterCompose:
     active: true
   PreviewPublic:
     active: true
-    # You can optionally disable that only previews with @PreviewParameter are flagged
-    # previewPublicOnlyIfParams: false
   RememberMissing:
     active: true
   UnstableCollections:
@@ -774,3 +774,5 @@ TwitterCompose:
     active: true
   ViewModelInjection:
     active: true
+    # You can optionally add your own ViewModel factories here
+    # viewModelFactories: hiltViewModel,potatoViewModel

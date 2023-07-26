@@ -54,7 +54,7 @@ fun ComposableFileManagerContent(
     showSystemUi = true
 )
 @Composable
-fun ComposableFileManagerPreview() {
+private fun ComposableFileManagerPreview() {
     ComposableFileManagerContent(
         fileManagerState = FileManagerState(
             "/",

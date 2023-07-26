@@ -22,14 +22,15 @@ import com.flipperdevices.bridge.dao.api.R
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType.Companion.colorByFlipperKeyType
 import com.flipperdevices.core.ui.ktx.placeholderByLocalProvider
+import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
-@Preview
 fun ComposableKeyType(
-    type: FlipperKeyType? = FlipperKeyType.NFC,
+    type: FlipperKeyType?,
+    modifier: Modifier = Modifier,
     colorKey: Color = colorByFlipperKeyType(type),
     minWidth: Dp? = 110.dp
 ) {
@@ -37,7 +38,7 @@ fun ComposableKeyType(
     val title = type?.humanReadableName
         ?: stringResource(R.string.fileformat_unknown)
 
-    var rowModifier = Modifier
+    var rowModifier = modifier
         .clip(RoundedCornerShape(bottomEnd = 18.dp))
         .placeholderByLocalProvider()
         .background(colorKey)
@@ -65,5 +66,13 @@ fun ComposableKeyType(
             style = LocalTypography.current.bodyM14,
             color = LocalPallet.current.keyTitle
         )
+    }
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+private fun ComposableKeyTypePreview() {
+    FlipperThemeInternal {
+        ComposableKeyType(type = FlipperKeyType.NFC)
     }
 }
