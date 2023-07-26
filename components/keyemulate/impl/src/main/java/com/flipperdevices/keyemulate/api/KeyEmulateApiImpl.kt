@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.keyemulate.composable.ComposableInfraredSendButton
 import com.flipperdevices.keyemulate.composable.ComposableSimpleEmulateButton
 import com.flipperdevices.keyemulate.composable.ComposableSubGhzSendButton
 import com.flipperdevices.keyemulate.model.EmulateConfig
@@ -31,7 +32,11 @@ class KeyEmulateApiImpl @Inject constructor() : KeyEmulateApi {
                 emulateConfig = emulateConfig,
                 isSynchronized = isSynchronized
             )
-            FlipperKeyType.INFRARED -> {}
+            FlipperKeyType.INFRARED -> ComposableInfraredSendButton(
+                modifier = modifier,
+                emulateConfig = emulateConfig,
+                isSynchronized = isSynchronized
+            )
         }
     }
 }

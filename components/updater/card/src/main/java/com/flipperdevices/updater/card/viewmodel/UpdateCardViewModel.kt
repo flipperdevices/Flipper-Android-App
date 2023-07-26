@@ -43,8 +43,7 @@ class UpdateCardViewModel @VMInject constructor(
     private val storageExistHelper: StorageExistHelper,
     @TangleParam(DeeplinkConstants.KEY)
     private val deeplink: Deeplink?
-) :
-    LifecycleViewModel(),
+) : LifecycleViewModel(),
     FlipperBleServiceConsumer,
     LogTagProvider {
     override val TAG = "UpdateCardViewModel"
@@ -87,7 +86,7 @@ class UpdateCardViewModel @VMInject constructor(
         }
     }
 
-    fun retry() {
+    fun refresh() {
         serviceProvider.provideServiceApi(this) {
             launchWithLock(mutex, viewModelScope, "retry") {
                 // in this case we get heavy information from fw server and flipper

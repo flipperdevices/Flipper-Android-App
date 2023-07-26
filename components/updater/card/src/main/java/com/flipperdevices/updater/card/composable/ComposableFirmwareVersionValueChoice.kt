@@ -192,7 +192,7 @@ fun ComposableFirmwareColumn(
     showBackground = true
 )
 @Composable
-fun ComposableUpdaterFirmwareVersionWithChoicePreview() {
+private fun ComposableUpdaterFirmwareVersionWithChoicePreview() {
     FlipperThemeInternal {
         val firmwareVersion = FirmwareVersion(
             channel = FirmwareChannel.RELEASE,

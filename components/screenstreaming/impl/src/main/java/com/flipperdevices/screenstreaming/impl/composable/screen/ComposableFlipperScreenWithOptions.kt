@@ -134,7 +134,7 @@ private fun ColumnScope.ComposableFlipperScreenOptions(
     showSystemUi = true
 )
 @Composable
-fun ComposableFlipperScreenWithOptionsHorizontalPreview() {
+private fun ComposableFlipperScreenWithOptionsHorizontalPreview() {
     FlipperThemeInternal {
         ComposableFlipperScreenWithOptions(
             flipperScreen = FlipperScreenState.NotConnected,
@@ -151,7 +151,7 @@ fun ComposableFlipperScreenWithOptionsHorizontalPreview() {
     showSystemUi = true
 )
 @Composable
-fun ComposableFlipperScreenWithOptionsVerticalPreview() {
+private fun ComposableFlipperScreenWithOptionsVerticalPreview() {
     FlipperThemeInternal {
         ComposableFlipperScreenWithOptions(
             flipperScreen = FlipperScreenState.NotConnected,

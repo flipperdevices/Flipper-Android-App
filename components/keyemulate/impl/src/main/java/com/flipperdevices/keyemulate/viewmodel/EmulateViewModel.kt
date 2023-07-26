@@ -22,6 +22,7 @@ import com.flipperdevices.keyemulate.exception.ForbiddenFrequencyException
 import com.flipperdevices.keyemulate.model.DisableButtonReason
 import com.flipperdevices.keyemulate.model.EmulateButtonState
 import com.flipperdevices.keyemulate.model.EmulateConfig
+import com.flipperdevices.keyemulate.model.EmulateProgress
 import com.flipperdevices.keyemulate.model.LoadingState
 import com.flipperdevices.keyemulate.tasks.CloseEmulateAppTaskHolder
 import com.flipperdevices.protobuf.app.Application
@@ -67,7 +68,8 @@ abstract class EmulateViewModel(
                 is EmulateButtonState.Disabled -> it
                 is EmulateButtonState.Loading -> it
                 is EmulateButtonState.Inactive -> EmulateButtonState.Active(
-                    com.flipperdevices.keyemulate.model.EmulateProgress.Infinite
+                    progress = EmulateProgress.Infinite,
+                    config = config
                 )
                 is EmulateButtonState.Active -> return
             }

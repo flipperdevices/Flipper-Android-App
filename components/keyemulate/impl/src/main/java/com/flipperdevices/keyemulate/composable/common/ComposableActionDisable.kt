@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.image.Picture
@@ -17,10 +18,25 @@ import com.flipperdevices.keyemulate.model.DisableButtonReason
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
-fun ComposableActionDisable(
+internal fun ComposableActionDisable(
     @DrawableRes iconId: Int,
     @StringRes textId: Int,
     reason: DisableButtonReason,
+    modifier: Modifier = Modifier
+) {
+    ComposableActionDisable(
+        modifier = modifier,
+        text = stringResource(id = textId),
+        iconId = iconId,
+        reason = reason
+    )
+}
+
+@Composable
+internal fun ComposableActionDisable(
+    @DrawableRes iconId: Int?,
+    text: String,
+    reason: DisableButtonReason?,
     modifier: Modifier = Modifier
 ) {
     val warningTextId = when (reason) {
@@ -28,12 +44,13 @@ fun ComposableActionDisable(
         DisableButtonReason.UPDATE_FLIPPER -> R.string.emulate_disabled_update_flipper
         DisableButtonReason.NOT_CONNECTED -> R.string.emulate_disabled_not_connected
         DisableButtonReason.NOT_SYNCHRONIZED -> R.string.emulate_disabled_not_synchronized
+        null -> null
     }
     ComposableEmulateButtonWithText(
         modifier = modifier,
         progress = null,
-        buttonTextId = textId,
-        picture = Picture.StaticRes(iconId),
+        buttonText = text,
+        picture = iconId?.let { Picture.StaticRes(it) },
         color = LocalPallet.current.text8,
         textId = warningTextId,
         iconId = if (warningTextId != null) {

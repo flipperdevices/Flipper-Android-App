@@ -46,6 +46,7 @@ data class FlipperPallet(
 
     val shareSheetBackground: Color,
     val shareSheetScrimColor: Color,
+    val shareSheetStatusBarColor: Color = shareSheetScrimColor,
 
     val flipperDisableButton: Color,
     val reportBorder: Color,
@@ -120,6 +121,8 @@ data class FlipperPallet(
     val actionOnFlipperProgress: Color = Color(0xFF89B9FE)
     val actionOnFlipperSubGhzEnable: Color = Color(0xFFFF8200)
     val actionOnFlipperSubGhzProgress: Color = Color(0xFFFEA64B)
+    val actionOnFlipperInfraredEnable: Color = Color(0xFFFF8200)
+    val actionOnFlipperInfraredProgress: Color = Color(0xFFFEA64B)
 
     val forgetFlipper: Color = Color(0xFFF63F3F)
     val progressBarGray: Color = Color(0xFFAAAAAA)
@@ -156,6 +159,12 @@ data class FlipperPallet(
     val flipperScreenColor: Color = Color(0xFFFF8C29)
 
     val flipperScreenOptionsBackground: Color = accent.copy(alpha = 0.2f)
+
+    val tabSwitchActiveColor: Color = Color(0xFF000000)
+    val tabSwitchInActiveColor: Color = Color(0xFF000000).copy(alpha = 0.5f)
+    val tabSwitchBackgroundColor: Color = Color(0xFFFFFFFF).copy(alpha = 0.5f)
+
+    val accentShareSheetStatusBarColor = Color(0xFFD96F00)
 }
 
 internal fun FlipperPallet.toMaterialColors(isLight: Boolean) = Colors(

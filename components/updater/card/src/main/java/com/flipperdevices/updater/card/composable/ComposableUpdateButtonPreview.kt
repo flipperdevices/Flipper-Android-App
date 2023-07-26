@@ -22,7 +22,7 @@ import com.flipperdevices.updater.model.UpdateRequest
     showSystemUi = true
 )
 @Composable
-fun ComposableUpdateButtonPreview() {
+private fun ComposableUpdateButtonPreview() {
     FlipperThemeInternal {
         val version = FirmwareVersion(
             channel = FirmwareChannel.RELEASE,

@@ -40,5 +40,5 @@ tasks.withType<Detekt> {
 dependencies {
     detektPlugins(libs.detekt.ruleset.compiler)
     detektPlugins(libs.detekt.ruleset.ktlint)
-    detektPlugins(libs.detekt.ruleset.twitter.compose)
+    detektPlugins(libs.detekt.ruleset.compose)
 }
