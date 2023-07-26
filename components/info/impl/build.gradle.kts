@@ -62,7 +62,6 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.compose)
 
-
     implementation(libs.ble)
     implementation(libs.ble.common)
     implementation(libs.ble.scan)
