@@ -33,11 +33,12 @@ class OpenFapViewModel @VMInject constructor(
             return
         }
 
-        openFapHelper.loadFap(
-            config = config,
-            scope = viewModelScope,
-            onResult = { processOpenFapResult(it, navController) }
-        )
+        viewModelScope.launch(Dispatchers.Default) {
+            openFapHelper.loadFap(
+                config = config,
+                onResult = { processOpenFapResult(it, navController) }
+            )
+        }
     }
 
     private fun processOpenFapResult(openFapResult: OpenFapResult, navController: NavHostController) {

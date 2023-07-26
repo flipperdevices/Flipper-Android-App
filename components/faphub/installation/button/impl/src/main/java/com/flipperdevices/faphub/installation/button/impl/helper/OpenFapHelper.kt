@@ -6,7 +6,6 @@ import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.faphub.dao.api.model.FapBuildState
@@ -26,15 +25,13 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
 import javax.inject.Inject
 import javax.inject.Singleton
 
 interface OpenFapHelper {
     fun getOpenFapState(fapButtonConfig: FapButtonConfig?): Flow<OpenFapState>
-    fun loadFap(
+    suspend fun loadFap(
         config: FapButtonConfig,
-        scope: CoroutineScope,
         onResult: (OpenFapResult) -> Unit
     )
 }
@@ -49,7 +46,7 @@ class OpenFapHelperImpl @Inject constructor(
     private val currentOpenAppFlow = MutableStateFlow<FapButtonConfig?>(null)
     private val rpcVersionFlow = MutableStateFlow<SemVer?>(null)
 
-    private val mutex = Mutex()
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     override fun getOpenFapState(fapButtonConfig: FapButtonConfig?): Flow<OpenFapState> {
         return combine(
@@ -74,8 +71,6 @@ class OpenFapHelperImpl @Inject constructor(
         }
     }
 
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-
     init {
         scope.launch(Dispatchers.Default) {
             val serviceApi = serviceProvider.getServiceApi()
@@ -85,17 +80,14 @@ class OpenFapHelperImpl @Inject constructor(
         }
     }
 
-    override fun loadFap(
+    override suspend fun loadFap(
         config: FapButtonConfig,
-        scope: CoroutineScope,
         onResult: (OpenFapResult) -> Unit
-    ) = launchWithLock(mutex, scope, "loadFap") {
-        if (currentOpenAppFlow.value != null) {
-            info { "Cannot open because state not in ready" }
-            return@launchWithLock
+    ) {
+        if (currentOpenAppFlow.compareAndSet(null, config).not()) {
+            info { "Cannot open because state not ready" }
+            return
         }
-
-        currentOpenAppFlow.emit(config)
 
         val path = "${Constants.PATH.APPS}${config.categoryAlias}/${config.applicationAlias}.fap"
         val serviceApi = serviceProvider.getServiceApi()
