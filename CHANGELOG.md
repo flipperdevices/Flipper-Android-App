@@ -6,7 +6,7 @@
 - [Feature] Add pull to refresh update for update card
 - [Feature] Infrared Emulate (without editing)
 - [Feature] Use as key for fap appcard application id
-- [REFACTOR] Bump deps
+- [REFACTOR] Bump deps and android gradle plugin
 
 # 1.6.1
 

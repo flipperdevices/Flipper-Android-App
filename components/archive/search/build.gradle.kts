@@ -35,7 +35,6 @@ dependencies {
 
     implementation(libs.lifecycle.compose)
     implementation(libs.lifecycle.viewmodel.ktx)
-    implementation(libs.ktx.fragment)
 
     implementation(libs.kotlin.immutable.collections)
 

@@ -58,7 +58,6 @@ dependencies {
     implementation(libs.lifecycle.compose)
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.runtime.ktx)
-    implementation(libs.ktx.fragment)
 
     // Testing
     testImplementation(projects.components.core.test)

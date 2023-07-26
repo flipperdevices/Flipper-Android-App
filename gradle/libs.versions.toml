@@ -6,7 +6,7 @@ kotlin-datetime = "0.4.0" # https://github.com/Kotlin/kotlinx-datetime/releases
 kotlinx = "1.7.2" # https://github.com/Kotlin/kotlinx.coroutines/releases
 ksp = "1.9.0-1.0.12" # https://github.com/google/ksp/releases
 anvil = "2.4.6" # https://github.com/square/anvil/releases
-android-gradle = "8.0.2" # https://developer.android.com/studio/releases/gradle-plugin
+android-gradle = "8.1.0" # https://developer.android.com/studio/releases/gradle-plugin
 protobuf = "3.23.4" # https://github.com/protocolbuffers/protobuf/releases
 protobuf-gradle = "0.9.4" # https://github.com/google/protobuf-gradle-plugin/releases
 compose-material = "1.4.3" # https://developer.android.com/jetpack/androidx/releases/compose#versions
@@ -17,7 +17,7 @@ compose-compiler = "1.5.0" # https://developer.android.com/jetpack/androidx/rele
 compose-accompanist = "0.30.1" # https://github.com/google/accompanist/releases
 compose-constraint = "1.0.1" # https://developer.android.com/jetpack/compose/layouts/constraintlayout
 compose-navigation = "2.6.0" # https://developer.android.com/jetpack/compose/navigation
-compose-paging = "1.0.0-alpha20" # https://developer.android.com/jetpack/androidx/releases/paging
+compose-paging = "3.2.0-rc01" # https://developer.android.com/jetpack/androidx/releases/paging
 horologist = "0.4.5" # https://github.com/google/horologist/releases
 serialization-json = "1.5.1" # https://github.com/Kotlin/kotlinx.serialization/releases
 wear = "1.2.0" # https://developer.android.com/jetpack/androidx/releases/wear
@@ -32,7 +32,6 @@ sentry-runtime = "6.26.0" # https://github.com/getsentry/sentry-java/releases
 sentry-gradle = "3.11.1" # https://github.com/getsentry/sentry-android-gradle-plugin/releases
 zip4j = "2.11.5" # https://github.com/srikanth-lingala/zip4j/releases
 ktx = "1.10.1" # https://developer.android.com/jetpack/androidx/releases/core
-ktx-fragment = "1.5.7" # https://developer.android.com/jetpack/androidx/releases/fragment
 ktx-activity = "1.7.2" # https://developer.android.com/jetpack/androidx/releases/activity
 ktx-testing = "1.1.5" # https://developer.android.com/jetpack/androidx/releases/test
 lifecycle = "2.6.1" # https://developer.android.com/jetpack/androidx/releases/lifecycle
@@ -55,7 +54,7 @@ grgit-gradle = "8d818b74b9"
 tangle = "ndoglio-kotlin-1.8-SNAPSHOT" # https://github.com/RBusarow/Tangle/releases
 work = "2.8.1" # https://developer.android.com/jetpack/androidx/releases/work
 coil = "2.4.0" # https://github.com/coil-kt/coil/releases
-play-core = "2.0.1" # https://developer.android.com/guide/playcore#java-kotlin-in-app-update
+play-core = "2.1.0" # https://developer.android.com/guide/playcore#java-kotlin-in-app-update
 ktorfit = "1.4.3" # https://github.com/Foso/Ktorfit/releases
 ktorfit-gradle = "1.0.0" # https://plugins.gradle.org/plugin/de.jensklingenberg.ktorfit
 
@@ -176,7 +175,6 @@ countly = { module = "ly.count.android:sdk", version.ref = "countly" }
 
 # KTX
 ktx = { module = "androidx.core:core-ktx", version.ref = "ktx" }
-ktx-fragment = { module = "androidx.fragment:fragment-ktx", version.ref = "ktx-fragment" }
 ktx-activity = { module = "androidx.activity:activity-ktx", version.ref = "ktx-activity" }
 ktx-testing = { module = "androidx.test.ext:junit", version.ref = "ktx-testing" }
 
