@@ -112,4 +112,14 @@ class DebugViewModel @VMInject constructor(
             askRestartApp()
         }
     }
+
+    fun onSwitchNewInfrared(enabled: Boolean) {
+        viewModelScope.launch {
+            settingsDataStore.updateData {
+                it.toBuilder()
+                    .setUseNewInfrared(enabled)
+                    .build()
+            }
+        }
+    }
 }
