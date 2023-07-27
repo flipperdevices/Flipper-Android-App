@@ -24,6 +24,7 @@
     <string name="debug_skip_autosync">Skip auto synchronization in Debug mode</string>
     <string name="debug_selfupdater">Suggest self update in debug mode</string>
     <string name="debug_application_catalog_dev">Use dev catalog</string>
+    <string name="debug_application_installall_dev">Install all app</string>
 
     <string name="debug_ignored_unsupported_version_toast">Please restart the application to apply</string>
 

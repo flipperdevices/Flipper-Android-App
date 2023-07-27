@@ -10,6 +10,7 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
 import com.flipperdevices.debug.api.StressTestFeatureEntry
+import com.flipperdevices.faphub.installation.all.api.FapInstallationAllApi
 import com.flipperdevices.settings.impl.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,7 +23,8 @@ class DebugViewModel @VMInject constructor(
     private val synchronizationApi: SynchronizationApi,
     private val settingsDataStore: DataStore<Settings>,
     private val serviceProvider: FlipperServiceProvider,
-    private val stressTestFeatureEntry: StressTestFeatureEntry
+    private val stressTestFeatureEntry: StressTestFeatureEntry,
+    private val fapInstallationAllApi: FapInstallationAllApi
 ) : AndroidLifecycleViewModel(application) {
 
     fun onOpenStressTest(navController: NavController) {
@@ -120,6 +122,12 @@ class DebugViewModel @VMInject constructor(
                     .setUseNewInfrared(enabled)
                     .build()
             }
+        }
+    }
+
+    fun installAllApplication() {
+        viewModelScope.launch {
+            fapInstallationAllApi.installAll()
         }
     }
 }
