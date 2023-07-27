@@ -207,6 +207,8 @@ include(
     ":components:faphub:installation:stateprovider:impl",
     ":components:faphub:installation:queue:api",
     ":components:faphub:installation:queue:impl",
+    ":components:faphub:installation:all:api",
+    ":components:faphub:installation:all:impl",
     ":components:faphub:target:api",
     ":components:faphub:target:impl",
     ":components:faphub:utils",

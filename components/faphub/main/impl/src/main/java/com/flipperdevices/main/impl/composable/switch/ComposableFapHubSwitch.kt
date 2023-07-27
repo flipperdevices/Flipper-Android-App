@@ -51,7 +51,11 @@ fun ComposableFapHubNewSwitch(
             ComposableFapHubTab(
                 hubTabEnum = it,
                 onSelectFapHubTabEnum = onSelect,
-                notificationCount = installedNotificationCount
+                if (it == FapHubTabEnum.INSTALLED) {
+                    installedNotificationCount
+                } else {
+                    0
+                }
             )
         }
         Icon(

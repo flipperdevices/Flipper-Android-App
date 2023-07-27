@@ -7,18 +7,13 @@ import com.flipperdevices.core.log.warn
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.dao.api.model.SortType
+import com.flipperdevices.faphub.dao.network.helper.FapApplicationReceiveHelper
 import com.flipperdevices.faphub.dao.network.ktorfit.api.KtorfitApplicationApi
-import com.flipperdevices.faphub.dao.network.ktorfit.model.KtorfitException
-import com.flipperdevices.faphub.dao.network.ktorfit.model.KtorfitExceptionCode
-import com.flipperdevices.faphub.dao.network.ktorfit.model.types.ApplicationSortType
-import com.flipperdevices.faphub.dao.network.ktorfit.model.types.SortOrderType
 import com.flipperdevices.faphub.dao.network.ktorfit.utils.FapHubNetworkCategoryApi
 import com.flipperdevices.faphub.dao.network.ktorfit.utils.HostUrlBuilder
 import com.flipperdevices.faphub.errors.api.throwable.FirmwareNotSupported
 import com.flipperdevices.faphub.target.model.FlipperTarget
 import com.squareup.anvil.annotations.ContributesBinding
-import io.ktor.client.call.body
-import io.ktor.client.plugins.ClientRequestException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -27,7 +22,8 @@ import javax.inject.Inject
 class FapNetworkApiImpl @Inject constructor(
     private val applicationApi: KtorfitApplicationApi,
     private val categoryApi: FapHubNetworkCategoryApi,
-    private val hostUrlBuilder: HostUrlBuilder
+    private val hostUrlBuilder: HostUrlBuilder,
+    private val fapApplicationReceiveHelper: FapApplicationReceiveHelper
 ) : FapNetworkApi, LogTagProvider {
     override val TAG = "FapNetworkApi"
 
@@ -62,39 +58,14 @@ class FapNetworkApiImpl @Inject constructor(
             return@catchWithDispatcher emptyList()
         }
         debug { "Request all item" }
-        val response = try {
-            when (target) {
-                FlipperTarget.Unsupported -> throw FirmwareNotSupported()
-                FlipperTarget.NotConnected -> applicationApi.getAll(
-                    offset = offset,
-                    limit = limit,
-                    sortBy = ApplicationSortType.fromSortType(sortType),
-                    sortOrder = SortOrderType.fromSortType(sortType),
-                    categoryId = category?.id,
-                    applications = applicationIds
-                )
-
-                is FlipperTarget.Received -> applicationApi.getAllWithTarget(
-                    offset = offset,
-                    limit = limit,
-                    sortBy = ApplicationSortType.fromSortType(sortType),
-                    sortOrder = SortOrderType.fromSortType(sortType),
-                    target = target.target,
-                    sdkApiVersion = target.sdk.toString(),
-                    categoryId = category?.id,
-                    applications = applicationIds
-                )
-            }
-        } catch (requestException: ClientRequestException) {
-            val ktorfitException = runCatching {
-                requestException.response.body<KtorfitException>()
-            }.getOrNull() ?: throw requestException
-            val exceptionCode = KtorfitExceptionCode.fromCode(ktorfitException.detail.code)
-            if (exceptionCode == KtorfitExceptionCode.UNKNOWN_SDK) {
-                throw FirmwareNotSupported(requestException)
-            }
-            throw requestException
-        }
+        val response = fapApplicationReceiveHelper.get(
+            target = target,
+            category = category,
+            sortType = sortType,
+            offset = offset,
+            limit = limit,
+            applicationIds = applicationIds
+        )
         debug { "Provider response: $response" }
 
         val fapItems = response.mapNotNull {

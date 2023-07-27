@@ -22,7 +22,7 @@ abstract class PrepareFapActionExecutor(
     ): String {
         info { "Start download $versionUid" }
         val downloadedFap = fapDownloadApi.downloadBundle(
-            applicationUid = versionUid,
+            versionUid = versionUid,
             listener = ProgressWrapperTracker(
                 progressListener,
                 max = PERCENT_FOR_DOWNLOAD

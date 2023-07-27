@@ -27,6 +27,7 @@ dependencies {
     implementation(projects.components.filemanager.api)
     implementation(projects.components.selfupdater.api)
     implementation(projects.components.nfc.mfkey32.api)
+    implementation(projects.components.faphub.installation.all.api)
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.dao.api)
