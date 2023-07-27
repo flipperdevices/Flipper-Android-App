@@ -7,6 +7,7 @@
 - [Feature] Add pull to refresh update for update card
 - [Feature] Infrared Emulate (without editing)
 - [Feature] Use as key for fap appcard application id
+- [Feature] Add install all button
 - [REFACTOR] Bump deps
 
 # 1.6.1
