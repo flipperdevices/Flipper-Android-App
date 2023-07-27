@@ -15,8 +15,8 @@ import com.flipperdevices.faphub.installation.stateprovider.api.model.NotAvailab
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
 import com.flipperdevices.faphub.target.model.FlipperTarget
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
+import kotlinx.coroutines.flow.combine
 
 @ContributesBinding(AppGraph::class, FapInstallationStateManager::class)
 class FapInstallationStateManagerImpl @Inject constructor(
@@ -107,7 +107,7 @@ class FapInstallationStateManagerImpl @Inject constructor(
                 val sdkApi = fapManifestEnrichedItem.fapManifestItem.sdkApi
                 if (currentVersion.buildState != FapBuildState.READY) {
                     return@let FapState.Installed
-                } else if (fapManifestEnrichedItem.numberVersion > currentVersion.version) {
+                } else if (fapManifestEnrichedItem.numberVersion < currentVersion.version) {
                     return@let FapState.ReadyToUpdate(fapManifestEnrichedItem.fapManifestItem)
                 } else if (sdkApi == null || sdkApi != flipperTarget.sdk) {
                     return@let FapState.ReadyToUpdate(fapManifestEnrichedItem.fapManifestItem)
