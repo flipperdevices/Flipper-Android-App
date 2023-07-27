@@ -1,4 +1,4 @@
-package com.flipperdevices.keyemulate.composable.common.button.sweep
+package com.flipperdevices.core.ui.ktx.sweep
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -60,14 +60,3 @@ class RotatableSweepGradient(
             "colors=$colors, stops=$stops)"
     }
 }
-
-fun rotatableSweepGradient(
-    vararg colorStops: Pair<Float, Color>,
-    angel: Float = 0f,
-    center: Offset = Offset.Unspecified
-): RotatableSweepGradient = RotatableSweepGradient(
-    colors = List(colorStops.size) { i -> colorStops[i].second },
-    stops = List(colorStops.size) { i -> colorStops[i].first },
-    center = center,
-    angel = angel
-)

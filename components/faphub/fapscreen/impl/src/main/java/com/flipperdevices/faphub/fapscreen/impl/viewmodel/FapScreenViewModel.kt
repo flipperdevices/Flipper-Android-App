@@ -132,7 +132,7 @@ class FapScreenViewModel @VMInject constructor(
             fapItem
         )
 
-        FapState.Installed,
+        is FapState.Installed,
         is FapState.ReadyToUpdate -> FapDetailedControlState.Installed(
             fapItem
         )

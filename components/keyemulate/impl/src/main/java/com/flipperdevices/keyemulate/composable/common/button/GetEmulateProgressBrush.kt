@@ -1,4 +1,4 @@
-package com.flipperdevices.keyemulate.composable.common.button.sweep
+package com.flipperdevices.keyemulate.composable.common.button
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
@@ -15,13 +15,13 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import com.flipperdevices.core.ktx.jre.toIntSafe
+import com.flipperdevices.core.ui.ktx.sweep.animatedRotatableBrush
+import com.flipperdevices.core.ui.ktx.sweep.rotatableSweepGradient
 import com.flipperdevices.keyemulate.model.EmulateProgress
 import kotlin.math.max
 
 private const val PROGRESS_BAR_END_PERCENT_FIXED_DELTA = 0.05f
-private const val PROGRESS_BAR_END_PERCENT_INFINITE = 0.2f
 private const val PROGRESS_BAR_END = 1.0f
-private const val PROGRESS_BAR_END_DURATION_MS = 1000
 
 @Composable
 fun getEmulateProgressBrush(
@@ -43,7 +43,7 @@ fun getEmulateProgressBrush(
             cursorColor,
             emulateProgress.duration
         )
-        EmulateProgress.Infinite -> animatedBrush(backgroundColor, cursorColor)
+        EmulateProgress.Infinite -> animatedRotatableBrush(backgroundColor, cursorColor, "Infinite")
     }
 }
 
@@ -55,7 +55,7 @@ private fun growingBrush(
     cursorColor: Color,
     duration: Long
 ): Brush {
-    val fixedProgress by rememberInfiniteTransition().animateFloat(
+    val fixedProgress by rememberInfiniteTransition(label = "growingBrush").animateFloat(
         initialValue = 0f,
         targetValue = PROGRESS_BAR_END,
         animationSpec = infiniteRepeatable(
@@ -64,7 +64,8 @@ private fun growingBrush(
                 easing = LinearEasing
             ),
             repeatMode = RepeatMode.Restart
-        )
+        ),
+        label = "growingBrush"
     )
 
     return rotatableSweepGradient(
@@ -94,7 +95,7 @@ private fun growingBrushOneTime(
     val fixedProgress = fixedProgressState.value
 
     if (fixedProgress == PROGRESS_BAR_END) {
-        return animatedBrush(backgroundColor, cursorColor)
+        return animatedRotatableBrush(backgroundColor, cursorColor, "growingBrushOneTime")
     }
 
     return rotatableSweepGradient(
@@ -102,27 +103,5 @@ private fun growingBrushOneTime(
         max(0f, fixedProgress - PROGRESS_BAR_END_PERCENT_FIXED_DELTA) to cursorColor,
         fixedProgress to backgroundColor,
         angel = FIXED_SIZE_BRUSH_ANGEL
-    )
-}
-
-@Composable
-private fun animatedBrush(backgroundColor: Color, cursorColor: Color): Brush {
-    val rotationTransition = rememberInfiniteTransition()
-    val angelAnimated by rotationTransition.animateFloat(
-        initialValue = 0f,
-        targetValue = 360f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(
-                durationMillis = PROGRESS_BAR_END_DURATION_MS,
-                easing = LinearEasing
-            ),
-            repeatMode = RepeatMode.Restart
-        )
-    )
-    return rotatableSweepGradient(
-        0f to backgroundColor,
-        PROGRESS_BAR_END_PERCENT_INFINITE to cursorColor,
-        PROGRESS_BAR_END_PERCENT_INFINITE * 2 to backgroundColor,
-        angel = angelAnimated
     )
 }

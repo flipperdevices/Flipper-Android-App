@@ -1,4 +1,4 @@
-package com.flipperdevices.keyemulate.composable.common.button.sweep
+package com.flipperdevices.core.ui.ktx.sweep
 
 import android.graphics.Matrix
 import android.graphics.SweepGradient

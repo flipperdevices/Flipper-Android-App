@@ -32,6 +32,7 @@
 - [FIX] App open metric
 - [FIX] Remove kotlin incremental
 - [FIX] Faphub search, build status dialogs, placeholders
+- [Feature] Open application and screen streaming if install
 - [Feature] FapHub MVPv0
 - [Feature] Update README with Fdroid badge
 - [Feature] Migrate faphub to target flow

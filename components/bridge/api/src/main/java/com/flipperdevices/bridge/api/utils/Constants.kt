@@ -22,6 +22,10 @@ object Constants {
         majorVersion = 0,
         minorVersion = 11
     )
+    val API_SUPPORTED_LOAD_FAP = SemVer(
+        majorVersion = 0,
+        minorVersion = 18
+    )
     val API_SUPPORTED_GET_REQUEST = API_SUPPORTED_FLIPPER_ERROR
     val API_SUPPORTED_VERSION = SemVer(majorVersion = 0, minorVersion = 3)
     const val LAGS_FLIPPER_DETECT_TIMEOUT_MS = 10 * 1000L // 10 seconds
@@ -81,5 +85,6 @@ object Constants {
     object PATH {
         const val MANIFEST_FILE = "/ext/Manifest"
         const val REGION_FILE = "/int/.region_data"
+        const val APPS = "/ext/apps/"
     }
 }
