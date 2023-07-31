@@ -1,37 +1,33 @@
 package com.flipperdevices.updater.impl.tasks
 
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
-import com.flipperdevices.bridge.api.model.FlipperRequest
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
-import com.flipperdevices.bridge.protobuf.ProtobufConstants
-import com.flipperdevices.bridge.protobuf.streamToCommandFlow
+import com.flipperdevices.bridge.rpc.api.FlipperStorageApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.md5
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.progress.ProgressListener
+import com.flipperdevices.core.progress.ProgressWrapperTracker
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.file
 import com.flipperdevices.protobuf.storage.md5sumRequest
-import com.flipperdevices.protobuf.storage.writeRequest
 import com.flipperdevices.protobuf.system.System
 import com.flipperdevices.protobuf.system.rebootRequest
 import com.flipperdevices.protobuf.system.updateRequest
 import com.flipperdevices.updater.impl.model.IntFlashFullException
 import com.flipperdevices.updater.model.UpdatingState
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import javax.inject.Inject
 
 interface UploadToFlipperHelper {
     suspend fun uploadToFlipper(
-        scope: CoroutineScope,
         flipperPath: String,
         updaterFolder: File,
         requestApi: FlipperRequestApi,
@@ -40,11 +36,12 @@ interface UploadToFlipperHelper {
 }
 
 @ContributesBinding(AppGraph::class, UploadToFlipperHelper::class)
-class UploadToFlipperHelperImpl @Inject constructor() : UploadToFlipperHelper, LogTagProvider {
+class UploadToFlipperHelperImpl @Inject constructor(
+    private val flipperStorageApi: FlipperStorageApi
+) : UploadToFlipperHelper, LogTagProvider {
     override val TAG = "UploadToFlipperHelper"
 
     override suspend fun uploadToFlipper(
-        scope: CoroutineScope,
         flipperPath: String,
         updaterFolder: File,
         requestApi: FlipperRequestApi,
@@ -54,11 +51,11 @@ class UploadToFlipperHelperImpl @Inject constructor() : UploadToFlipperHelper, L
             requestApi,
             updaterFolder,
             flipperPath
-        ) { sended, totalBytes ->
-            scope.launch(Dispatchers.Default) {
+        ) { percent ->
+            withContext(Dispatchers.Default) {
                 stateListener(
                     UpdatingState.UploadOnFlipper(
-                        sended.toFloat() / totalBytes.toFloat()
+                        percent = percent
                     )
                 )
             }
@@ -78,6 +75,7 @@ class UploadToFlipperHelperImpl @Inject constructor() : UploadToFlipperHelper, L
                     throw IntFlashFullException()
                 }
             }
+
             Flipper.CommandStatus.OK -> {}
             else -> error("Failed send update request with status ${response.commandStatus}")
         }
@@ -95,7 +93,7 @@ class UploadToFlipperHelperImpl @Inject constructor() : UploadToFlipperHelper, L
         requestApi: FlipperRequestApi,
         folder: File,
         pathOnFlipper: String,
-        onProgressUpdate: (Long, Long) -> Unit
+        progressListener: ProgressListener
     ) {
         val fileList = folder.walk().filterNot { it.isDirectory }.toList().filterNot {
             if (fileAlreadyUploaded(requestApi, it, File(pathOnFlipper, it.name).path)) {
@@ -105,7 +103,7 @@ class UploadToFlipperHelperImpl @Inject constructor() : UploadToFlipperHelper, L
                 return@filterNot false
             }
         }
-        var totalBytesSend: Long = 0
+        var sizeUploaded: Long = 0
         var totalSize: Long = 0
         fileList.forEach {
             totalSize += it.length()
@@ -115,29 +113,16 @@ class UploadToFlipperHelperImpl @Inject constructor() : UploadToFlipperHelper, L
 
         fileList.forEach { singleFile ->
             val flipperFilePath = File(pathOnFlipper, singleFile.name).path
-            singleFile.inputStream().use { inputStream ->
-                val requestFlow = streamToCommandFlow(
-                    inputStream,
-                    singleFile.length()
-                ) { chunkData ->
-                    storageWriteRequest = writeRequest {
-                        path = flipperFilePath
-                        file = file { data = chunkData }
-                    }
-                }.map {
-                    FlipperRequest(
-                        data = it,
-                        onSendCallback = {
-                            totalBytesSend += ProtobufConstants.MAX_FILE_DATA
-                            onProgressUpdate(totalBytesSend, totalSize)
-                        }
-                    )
-                }
-                val response = requestApi.request(requestFlow)
-                if (response.commandStatus != Flipper.CommandStatus.OK) {
-                    error("Failed with $response")
-                }
-            }
+            flipperStorageApi.upload(
+                pathOnFlipper = flipperFilePath,
+                fileOnAndroid = singleFile,
+                progressListener = ProgressWrapperTracker(
+                    progressListener = progressListener,
+                    min = sizeUploaded.toFloat() / totalSize.toFloat(),
+                    max = (sizeUploaded + singleFile.length()).toFloat() / totalSize.toFloat()
+                )
+            )
+            sizeUploaded += singleFile.length()
         }
     }
 

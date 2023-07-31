@@ -54,7 +54,7 @@ suspend fun FlipperRequestStorage.getPendingCommands(
         verbose { "Get $request" }
 
         val bytesToSend = request.data.toDelimitedBytes()
-        request.onSendCallback?.invoke()
+        request.onSendCallback?.onSendCallback()
 
         if (remainBufferSize >= bytesToSend.size) {
             // Just send byte

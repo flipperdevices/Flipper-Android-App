@@ -12,11 +12,13 @@ dependencies {
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.pbutils)
     implementation(projects.components.bridge.service.api)
+    implementation(projects.components.bridge.rpc.api)
     implementation(projects.components.deeplink.api)
 
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)
+    implementation(projects.components.core.progress)
     implementation(projects.components.core.preference)
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ui.res)

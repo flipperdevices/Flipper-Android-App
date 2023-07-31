@@ -1,5 +1,7 @@
 # Changelog
 
+- [FIX] Fix 101% issue on update screen
+
 # 1.6.2 - In progress
 
 - [FIX] Fix bug with restoreState navigation
