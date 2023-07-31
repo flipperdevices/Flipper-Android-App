@@ -1,8 +1,10 @@
 # Changelog
 
+# 1.6.3 - In progress
+
 - [FIX] Fix 101% issue on update screen
 
-# 1.6.2 - In progress
+# 1.6.2
 
 - [FIX] Fix bug with restoreState navigation
 - [FIX] Fix problems with large amount of application
