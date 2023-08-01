@@ -1,12 +1,12 @@
 package com.flipperdevices.info.impl.compose.bar
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
@@ -15,11 +15,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.preference.pb.HardwareColor
+import com.flipperdevices.core.ui.flippermockup.ComposableFlipperMockup
+import com.flipperdevices.core.ui.flippermockup.ComposableFlipperMockupImage
 import com.flipperdevices.core.ui.ktx.SetUpStatusBarColor
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
@@ -29,7 +29,6 @@ import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
 import com.flipperdevices.info.impl.viewmodel.FlipperColorViewModel
 import tangle.viewmodel.compose.tangleViewModel
 import kotlin.math.roundToInt
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 const val FLOAT_TO_PERCENT_QUALIFIER = 100
 
@@ -73,38 +72,19 @@ private fun FlipperImage(
     flipperColorViewModel: FlipperColorViewModel = tangleViewModel()
 ) {
     val flipperColor by flipperColorViewModel.getFlipperColor().collectAsState()
-    val disabledFlipperId = when (flipperColor) {
-        HardwareColor.UNRECOGNIZED,
-        HardwareColor.WHITE -> DesignSystem.drawable.pic_flipper_disabled
-        HardwareColor.BLACK -> DesignSystem.drawable.pic_black_flipper_disabled
-    }
-    val flipperId = when (flipperColor) {
-        HardwareColor.UNRECOGNIZED,
-        HardwareColor.WHITE -> DesignSystem.drawable.pic_flipper
-        HardwareColor.BLACK -> DesignSystem.drawable.pic_black_flipper
-    }
-    val imageId = when (deviceStatus) {
-        DeviceStatus.NoDevice -> disabledFlipperId
-        is DeviceStatus.Connected -> flipperId
-        is DeviceStatus.NoDeviceInformation -> {
-            if (deviceStatus.connectInProgress) {
-                disabledFlipperId
-            } else {
-                flipperId
-            }
-        }
-    }
 
-    val descriptionId = when (deviceStatus) {
-        DeviceStatus.NoDevice -> R.string.info_device_no_device
-        is DeviceStatus.Connected -> R.string.info_device_connected
-        is DeviceStatus.NoDeviceInformation -> R.string.info_device_not_connected
+    val isActive = when (deviceStatus) {
+        DeviceStatus.NoDevice -> false
+        is DeviceStatus.Connected -> true
+        is DeviceStatus.NoDeviceInformation -> !deviceStatus.connectInProgress
     }
-
-    Image(
-        modifier = Modifier.padding(top = 7.dp, bottom = 7.dp, end = 18.dp),
-        painter = painterResource(imageId),
-        contentDescription = stringResource(descriptionId)
+    ComposableFlipperMockup(
+        flipperColor = flipperColor,
+        isActive = isActive,
+        mockupImage = ComposableFlipperMockupImage.DEFAULT,
+        modifier = Modifier
+            .height(100.dp)
+            .padding(top = 7.dp, bottom = 7.dp, end = 18.dp)
     )
 }
 

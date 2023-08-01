@@ -60,6 +60,7 @@ include(
     ":components:core:ui:hexkeyboard",
     ":components:core:ui:navigation",
     ":components:core:ui:tabswitch",
+    ":components:core:ui:flippermockup",
     ":components:core:test",
     ":components:core:markdown",
     ":components:core:activityholder",
