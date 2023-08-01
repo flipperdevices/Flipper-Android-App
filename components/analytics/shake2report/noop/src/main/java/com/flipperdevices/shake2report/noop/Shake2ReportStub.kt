@@ -24,5 +24,5 @@ class Shake2ReportStub @Inject constructor() : Shake2ReportApi {
         // Do nothing
     }
 
-    override fun isInitialized() = MutableStateFlow(true)
+    override fun isInitialized() = MutableStateFlow(false)
 }

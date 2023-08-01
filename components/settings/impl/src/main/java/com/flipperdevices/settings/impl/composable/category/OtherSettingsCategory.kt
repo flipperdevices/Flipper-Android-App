@@ -31,13 +31,12 @@ fun OtherSettingsCategory(
         GrayDivider()
         val s2rInitialized by settingsViewModel.getShake2ReportInitializationState()
             .collectAsState()
-        if (!s2rInitialized) {
-            return@CardCategory
+        if (s2rInitialized) {
+            ClickableElement(
+                iconId = R.drawable.ic_bug,
+                titleId = R.string.other_shake2report_open,
+                onClick = { settingsViewModel.onReportBug(navController) }
+            )
         }
-        ClickableElement(
-            iconId = R.drawable.ic_bug,
-            titleId = R.string.other_shake2report_open,
-            onClick = { settingsViewModel.onReportBug(navController) }
-        )
     }
 }
