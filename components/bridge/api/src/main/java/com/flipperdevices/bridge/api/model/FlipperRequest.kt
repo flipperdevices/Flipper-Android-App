@@ -7,8 +7,12 @@ data class FlipperRequest(
     val data: Flipper.Main,
     val createTimestampNanos: Long = TimeHelper.getNanoTime(),
     val priority: FlipperRequestPriority = FlipperRequestPriority.DEFAULT,
-    val onSendCallback: (() -> Unit)? = null
+    val onSendCallback: SendCallback? = null
 )
+
+fun interface SendCallback {
+    suspend fun onSendCallback()
+}
 
 fun Flipper.Main.wrapToRequest(
     priority: FlipperRequestPriority = FlipperRequestPriority.DEFAULT

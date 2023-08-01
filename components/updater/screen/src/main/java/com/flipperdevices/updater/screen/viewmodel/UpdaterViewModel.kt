@@ -84,7 +84,7 @@ class UpdaterViewModel @VMInject constructor(
 
         info { "Start updating" }
 
-        updaterApi.start(updateRequest)
+        updaterApi.start(updateRequest.copy(requestId = System.currentTimeMillis()))
     }
 
     fun retry(
@@ -129,6 +129,7 @@ class UpdaterViewModel @VMInject constructor(
                         percent = state.percent,
                         updateRequest = updateRequest
                     )
+
                 is UpdatingState.UploadOnFlipper ->
                     UpdaterScreenState.UploadOnFlipper(
                         percent = state.percent,
@@ -138,30 +139,38 @@ class UpdaterViewModel @VMInject constructor(
                 UpdatingState.FailedUpload,
                 UpdatingState.FailedPrepare ->
                     UpdaterScreenState.Failed(FailedReason.UPLOAD_ON_FLIPPER)
+
                 UpdatingState.FailedDownload ->
                     UpdaterScreenState.Failed(FailedReason.DOWNLOAD_FROM_NETWORK)
+
                 UpdatingState.Complete,
                 UpdatingState.Failed -> {
                     UpdaterScreenState.Finish
                 }
+
                 UpdatingState.Rebooting ->
                     if (connectionState !is ConnectionState.Ready) {
                         UpdaterScreenState.Finish
                     } else {
                         UpdaterScreenState.Rebooting
                     }
+
                 UpdatingState.FailedOutdatedApp -> UpdaterScreenState.Failed(
                     FailedReason.OUTDATED_APP
                 )
+
                 UpdatingState.FailedSubGhzProvisioning -> UpdaterScreenState.Failed(
                     FailedReason.FAILED_SUB_GHZ_PROVISIONING
                 )
+
                 UpdatingState.FailedInternalStorage -> UpdaterScreenState.Failed(
                     FailedReason.FAILED_INT_STORAGE
                 )
+
                 UpdatingState.FailedCustomUpdate -> UpdaterScreenState.Failed(
                     FailedReason.FAILED_INTERNAL_UPDATE
                 )
+
                 UpdatingState.SubGhzProvisioning -> UpdaterScreenState.SubGhzProvisioning(
                     updateRequest = updateRequest
                 )
