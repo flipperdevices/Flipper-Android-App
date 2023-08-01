@@ -35,6 +35,9 @@
 -keep class de.jensklingenberg.ktorfit.** { *; }
 -keepclassmembers class de.jensklingenberg.ktorfit.** { *; }
 
+# Fix for some strange bug with ktorfit
+-keep class io.ktor.http.* { *; }
+
 # With R8 full mode generic signatures are stripped for classes that are not
 # kept. Suspend functions are wrapped in continuations where the type argument
 # is used.
