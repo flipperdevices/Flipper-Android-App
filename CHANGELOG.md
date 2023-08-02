@@ -3,6 +3,7 @@
 # 1.6.3 - In progress
 
 - [FIX] Fix 101% issue on update screen
+- [FIX] Fix build for fdroid
 
 # 1.6.2
 
