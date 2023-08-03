@@ -42,7 +42,7 @@ fun ComposableSchemeCard(
             modifier = Modifier.rotate(degrees = -90f)
         )
         Icon(
-            painter = painterResource(id = DesignSystem.drawable.ic_bracket),
+            painter = painterResource(id = R.drawable.ic_bracket),
             contentDescription = ""
         )
         ComposableSectorsCard(scaleFactor)
