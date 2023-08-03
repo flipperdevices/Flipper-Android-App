@@ -134,4 +134,4 @@ jobs:
           # Whitespace-separated list of files to upload
           artifacts: |
             instances/app/build/outputs/apk/debug/app-debug.apk
-            instances/wearable/build/outputs/apk/debug/app-debug.apk
+            instances/wearable/build/outputs/apk/debug/wearable-debug.apk
