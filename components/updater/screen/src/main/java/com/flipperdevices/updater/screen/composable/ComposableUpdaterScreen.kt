@@ -1,6 +1,5 @@
 package com.flipperdevices.updater.screen.composable
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,12 +11,12 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.preference.pb.HardwareColor
+import com.flipperdevices.core.ui.flippermockup.ComposableFlipperMockup
+import com.flipperdevices.core.ui.flippermockup.ComposableFlipperMockupImage
 import com.flipperdevices.core.ui.ktx.SetUpNavigationBarColor
 import com.flipperdevices.core.ui.ktx.SetUpStatusBarColor
 import com.flipperdevices.core.ui.ktx.clickableRipple
@@ -26,7 +25,6 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.updater.screen.R
 import com.flipperdevices.updater.screen.model.FailedReason
 import com.flipperdevices.updater.screen.model.UpdaterScreenState
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableUpdaterScreen(
@@ -78,38 +76,34 @@ private fun ColumnScope.UpdaterScreenHeader(
         textAlign = TextAlign.Center
     )
 
-    val imageId = when (flipperColor) {
-        HardwareColor.UNRECOGNIZED,
-        HardwareColor.WHITE -> if (updaterScreenState is UpdaterScreenState.Failed) {
-            when (updaterScreenState.failedReason) {
-                FailedReason.FAILED_SUB_GHZ_PROVISIONING,
-                FailedReason.FAILED_INT_STORAGE ->
-                    DesignSystem.drawable.pic_flipper_update_int_failed
-                else -> DesignSystem.drawable.pic_flipper_update_failed
-            }
-        } else {
-            DesignSystem.drawable.pic_flipper_update
-        }
-        HardwareColor.BLACK -> if (updaterScreenState is UpdaterScreenState.Failed) {
-            when (updaterScreenState.failedReason) {
-                FailedReason.FAILED_SUB_GHZ_PROVISIONING,
-                FailedReason.FAILED_INT_STORAGE ->
-                    DesignSystem.drawable.pic_black_flipper_update_int_failed
-                else -> DesignSystem.drawable.pic_black_flipper_update_failed
-            }
-        } else {
-            DesignSystem.drawable.pic_black_flipper_update
-        }
-    }
+    val flipperModifier = Modifier
+        .fillMaxWidth()
+        .padding(bottom = 14.dp)
 
-    Image(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 14.dp),
-        painter = painterResource(imageId),
-        contentDescription = stringResource(titleId),
-        contentScale = ContentScale.FillWidth
-    )
+    if (updaterScreenState is UpdaterScreenState.Failed) {
+        when (updaterScreenState.failedReason) {
+            FailedReason.FAILED_SUB_GHZ_PROVISIONING,
+            FailedReason.FAILED_INT_STORAGE -> ComposableFlipperMockup(
+                flipperColor = flipperColor,
+                isActive = false,
+                mockupImage = ComposableFlipperMockupImage.FLASH_FAILED,
+                modifier = flipperModifier
+            )
+            else -> ComposableFlipperMockup(
+                flipperColor = flipperColor,
+                isActive = false,
+                mockupImage = ComposableFlipperMockupImage.DEAD,
+                modifier = flipperModifier
+            )
+        }
+    } else {
+        ComposableFlipperMockup(
+            flipperColor = flipperColor,
+            isActive = true,
+            mockupImage = ComposableFlipperMockupImage.UPDATING,
+            modifier = flipperModifier
+        )
+    }
 }
 
 @Composable
