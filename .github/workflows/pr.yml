@@ -92,7 +92,7 @@ jobs:
         with:
           arguments: assembleDebug
       - name: Sign Android Debug APK
-        id: sign_apk
+        id: sign_android_apk
         uses: r0adkll/sign-android-release@v1
         with:
           releaseDirectory: instances/app/build/outputs/apk/debug
@@ -101,7 +101,7 @@ jobs:
           keyStorePassword: password
           keyPassword: password
       - name: Sign Wear Debug APK
-        id: sign_apk
+        id: sign_wear_apk
         uses: r0adkll/sign-android-release@v1
         with:
           releaseDirectory: instances/wearable/build/outputs/apk/debug
