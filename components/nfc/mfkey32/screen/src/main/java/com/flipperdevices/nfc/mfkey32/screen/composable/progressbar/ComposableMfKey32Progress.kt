@@ -26,7 +26,6 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.nfc.mfkey32.screen.R
 import com.flipperdevices.nfc.mfkey32.screen.composable.progressbar.error.ComposableMfKey32Error
 import com.flipperdevices.nfc.mfkey32.screen.model.MfKey32State
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableMfKey32Progress(navController: NavController, state: MfKey32State) {
@@ -34,7 +33,7 @@ fun ComposableMfKey32Progress(navController: NavController, state: MfKey32State)
         is MfKey32State.Calculating -> ComposableMfKey32ProgressInternal(
             titleId = R.string.mfkey32_calculation_title,
             descriptionId = R.string.mfkey32_calculation_desc,
-            iconId = DesignSystem.drawable.pic_key,
+            iconId = R.drawable.pic_key,
             percent = state.percent,
             accentColor = LocalPallet.current.calculationMfKey32,
             secondColor = LocalPallet.current.calculationMfKey32Background
@@ -42,7 +41,7 @@ fun ComposableMfKey32Progress(navController: NavController, state: MfKey32State)
         is MfKey32State.DownloadingRawFile -> ComposableMfKey32ProgressInternal(
             titleId = R.string.mfkey32_downloading_title,
             descriptionId = R.string.mfkey32_downloading_desc,
-            iconId = DesignSystem.drawable.pic_download,
+            iconId = R.drawable.pic_download,
             percent = state.percent,
             accentColor = LocalPallet.current.actionOnFlipperEnable,
             secondColor = LocalPallet.current.actionOnFlipperProgress
@@ -50,7 +49,7 @@ fun ComposableMfKey32Progress(navController: NavController, state: MfKey32State)
         MfKey32State.Uploading -> ComposableMfKey32ProgressInternal(
             titleId = R.string.mfkey32_uploading_title,
             descriptionId = R.string.mfkey32_uploading_desc,
-            iconId = DesignSystem.drawable.pic_key,
+            iconId = R.drawable.pic_key,
             percent = null,
             accentColor = LocalPallet.current.calculationMfKey32,
             secondColor = LocalPallet.current.calculationMfKey32Background

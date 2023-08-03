@@ -36,7 +36,7 @@ fun ComposableFileManagerTopBar(
                     IconButton(onClick = onClickAddButton) {
                         Icon(
                             painter = painterResource(
-                                DesignSystem.drawable.ic_plus
+                                R.drawable.ic_plus
                             ),
                             contentDescription = stringResource(
                                 R.string.filemanager_create_action

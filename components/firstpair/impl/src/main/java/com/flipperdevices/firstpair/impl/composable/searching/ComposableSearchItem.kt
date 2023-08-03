@@ -29,7 +29,6 @@ import com.flipperdevices.core.ui.ktx.elements.ComposableFlipperButton
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.firstpair.impl.R
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 @Suppress("LongMethod")
@@ -57,7 +56,7 @@ fun ComposableSearchItem(
                 Icon(
                     modifier = Modifier
                         .size(width = 60.dp, height = 26.dp),
-                    painter = painterResource(DesignSystem.drawable.pic_flipper_status),
+                    painter = painterResource(R.drawable.pic_flipper_status),
                     contentDescription = stringResource(R.string.firstpair_search_flipper_status),
                     tint = LocalPallet.current.accentSecond
                 )

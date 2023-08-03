@@ -35,7 +35,7 @@ class FlipperNotificationHelper(
 
     fun showStopButton() {
         notificationBuilder.addAction(
-            DesignSystem.drawable.ic_disconnect,
+            R.drawable.ic_disconnect,
             context.getString(R.string.bridge_service_notification_action_disconnect),
             FlipperDisconnectBroadcastReceiver.getDisconnectIntent(context)
         )

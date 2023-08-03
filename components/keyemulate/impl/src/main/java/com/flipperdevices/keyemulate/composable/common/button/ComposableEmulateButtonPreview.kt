@@ -11,7 +11,6 @@ import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyemulate.impl.R
 import com.flipperdevices.keyemulate.model.EmulateProgress
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 private const val TOTAL_PROGRESS_PREVIEW = 1000L
 
@@ -28,8 +27,8 @@ private fun ComposableEmulateButtonPreview() {
                 modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
                 emulateProgress = EmulateProgress.Infinite,
                 picture = Picture.LottieRes(
-                    picResId = DesignSystem.raw.ic_emulating,
-                    fallBackPicResId = DesignSystem.drawable.ic_emulate
+                    picResId = R.raw.ic_emulating,
+                    fallBackPicResId = R.drawable.ic_emulate
                 ),
                 textId = R.string.keyscreen_emulating,
                 color = LocalPallet.current.actionOnFlipperProgress,
@@ -38,7 +37,7 @@ private fun ComposableEmulateButtonPreview() {
 
             ComposableEmulateButton(
                 modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
-                picture = Picture.StaticRes(DesignSystem.drawable.ic_emulate),
+                picture = Picture.StaticRes(R.drawable.ic_emulate),
                 textId = R.string.keyscreen_emulate,
                 color = LocalPallet.current.actionOnFlipperEnable
             )
@@ -47,8 +46,8 @@ private fun ComposableEmulateButtonPreview() {
                 modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
                 emulateProgress = EmulateProgress.Infinite,
                 picture = Picture.LottieRes(
-                    picResId = DesignSystem.raw.ic_sending,
-                    fallBackPicResId = DesignSystem.drawable.ic_send
+                    picResId = R.raw.ic_sending,
+                    fallBackPicResId = R.drawable.ic_send
                 ),
                 textId = R.string.keyscreen_sending,
                 color = LocalPallet.current.actionOnFlipperSubGhzProgress,
@@ -57,7 +56,7 @@ private fun ComposableEmulateButtonPreview() {
 
             ComposableEmulateButton(
                 modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
-                picture = Picture.StaticRes(DesignSystem.drawable.ic_send),
+                picture = Picture.StaticRes(R.drawable.ic_send),
                 textId = R.string.keyscreen_send,
                 color = LocalPallet.current.actionOnFlipperSubGhzEnable
             )
@@ -66,8 +65,8 @@ private fun ComposableEmulateButtonPreview() {
                 modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
                 emulateProgress = EmulateProgress.Growing(TOTAL_PROGRESS_PREVIEW),
                 picture = Picture.LottieRes(
-                    picResId = DesignSystem.raw.ic_sending,
-                    fallBackPicResId = DesignSystem.drawable.ic_send
+                    picResId = R.raw.ic_sending,
+                    fallBackPicResId = R.drawable.ic_send
                 ),
                 textId = R.string.keyscreen_sending,
                 color = LocalPallet.current.actionOnFlipperSubGhzProgress,

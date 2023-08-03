@@ -51,7 +51,7 @@ fun ComposablePairDeviceActionCard(
         var isForgotDialogOpen by remember { mutableStateOf(false) }
         ButtonElementRow(
             titleId = R.string.info_device_forget,
-            iconId = DesignSystem.drawable.ic_disconnection,
+            iconId = R.drawable.ic_disconnection,
             color = LocalPallet.current.forgetFlipper,
             onClick = { isForgotDialogOpen = true }
         )

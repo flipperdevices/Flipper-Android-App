@@ -17,7 +17,6 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.inappnotification.api.model.InAppNotification
 import com.flipperdevices.inappnotification.impl.R
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 internal fun ComposableInAppNotificationSavedKey(
@@ -43,7 +42,7 @@ private const val ICON_ANIMATION_DURATION_MS = 1000.0f
 @Composable
 internal fun ComposableSaveIcon() {
     val composition by rememberLottieComposition(
-        LottieCompositionSpec.RawRes(DesignSystem.raw.import_status_successful)
+        LottieCompositionSpec.RawRes(R.raw.import_status_successful)
     )
     val localComposition = composition
     val speed = if (localComposition != null) {

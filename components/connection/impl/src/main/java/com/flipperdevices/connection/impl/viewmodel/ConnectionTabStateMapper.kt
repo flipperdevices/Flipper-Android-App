@@ -7,7 +7,6 @@ import com.flipperdevices.connection.impl.R
 import com.flipperdevices.connection.impl.model.ConnectionStatusState
 import com.flipperdevices.core.ktx.jre.roundPercentToString
 import com.flipperdevices.core.ui.theme.LocalPallet
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 object ConnectionTabStateMapper {
     @Composable
@@ -15,50 +14,50 @@ object ConnectionTabStateMapper {
     fun getConnectionTabState(connectionState: ConnectionStatusState): TabState {
         return when (connectionState) {
             ConnectionStatusState.NoDevice -> TabState.Static(
-                selectedIcon = DesignSystem.drawable.ic_no_device_filled,
-                notSelectedIcon = DesignSystem.drawable.ic_no_device,
+                selectedIcon = R.drawable.ic_no_device_filled,
+                notSelectedIcon = R.drawable.ic_no_device,
                 text = stringResource(id = R.string.connection_status_no_device),
                 selectedColor = LocalPallet.current.bottomBarSelectedFlipperStatus,
                 unselectedColor = LocalPallet.current.bottomBarUnselected
             )
             ConnectionStatusState.Disconnected -> TabState.Static(
-                selectedIcon = DesignSystem.drawable.ic_disconnected_filled,
-                notSelectedIcon = DesignSystem.drawable.ic_disconnected,
+                selectedIcon = R.drawable.ic_disconnected_filled,
+                notSelectedIcon = R.drawable.ic_disconnected,
                 text = stringResource(id = R.string.connection_status_not_connected),
                 selectedColor = LocalPallet.current.bottomBarSelectedFlipperStatus,
                 unselectedColor = LocalPallet.current.bottomBarUnselected
             )
             ConnectionStatusState.Connecting -> TabState.Animated(
-                selectedIcon = DesignSystem.drawable.ic_connection_selected,
-                selectedBackground = DesignSystem.drawable.ic_connection_selected_bg,
-                notSelectedIcon = DesignSystem.drawable.ic_connection_unselected,
-                notSelectedBackground = DesignSystem.drawable.ic_connection_unselected_bg,
+                selectedIcon = R.drawable.ic_connection_selected,
+                selectedBackground = R.drawable.ic_connection_selected_bg,
+                notSelectedIcon = R.drawable.ic_connection_unselected,
+                notSelectedBackground = R.drawable.ic_connection_unselected_bg,
                 text = stringResource(id = R.string.connection_status_connecting),
                 selectedColor = LocalPallet.current.bottomBarSelectedFlipperStatus,
                 unselectedColor = LocalPallet.current.bottomBarUnselected,
                 textDotsAnimated = true
             )
             ConnectionStatusState.Unsupported -> TabState.Static(
-                selectedIcon = DesignSystem.drawable.ic_no_device_filled,
-                notSelectedIcon = DesignSystem.drawable.ic_no_device,
+                selectedIcon = R.drawable.ic_no_device_filled,
+                notSelectedIcon = R.drawable.ic_no_device,
                 text = stringResource(id = R.string.connection_status_unsupported),
                 selectedColor = LocalPallet.current.bottomBarUnsupported,
                 unselectedColor = LocalPallet.current.bottomBarUnselected,
                 unselectedColorIcon = LocalPallet.current.bottomBarUnsupported
             )
             ConnectionStatusState.Connected -> TabState.Static(
-                selectedIcon = DesignSystem.drawable.ic_connected_filled,
-                notSelectedIcon = DesignSystem.drawable.ic_connected,
+                selectedIcon = R.drawable.ic_connected_filled,
+                notSelectedIcon = R.drawable.ic_connected,
                 text = stringResource(id = R.string.connection_status_connected),
                 selectedColor = LocalPallet.current.accentSecond,
                 unselectedColor = LocalPallet.current.bottomBarUnselected,
                 unselectedColorIcon = LocalPallet.current.accentSecond
             )
             is ConnectionStatusState.Synchronization -> TabState.Animated(
-                selectedIcon = DesignSystem.drawable.ic_syncing_selected,
-                selectedBackground = DesignSystem.drawable.ic_syncing_selected_bg,
-                notSelectedIcon = DesignSystem.drawable.ic_syncing_unselected,
-                notSelectedBackground = DesignSystem.drawable.ic_syncing_unselected_bg,
+                selectedIcon = R.drawable.ic_syncing_selected,
+                selectedBackground = R.drawable.ic_syncing_selected_bg,
+                notSelectedIcon = R.drawable.ic_syncing_unselected,
+                notSelectedBackground = R.drawable.ic_syncing_unselected_bg,
                 text = stringResource(
                     id =
                     R.string.connection_status_syncing,
@@ -68,8 +67,8 @@ object ConnectionTabStateMapper {
                 unselectedColor = LocalPallet.current.bottomBarUnselected
             )
             is ConnectionStatusState.Synchronized -> TabState.Static(
-                selectedIcon = DesignSystem.drawable.ic_synced_filled,
-                notSelectedIcon = DesignSystem.drawable.ic_synced,
+                selectedIcon = R.drawable.ic_synced_filled,
+                notSelectedIcon = R.drawable.ic_synced,
                 text = stringResource(id = R.string.connection_status_synced),
                 selectedColor = LocalPallet.current.accentSecond,
                 unselectedColor = LocalPallet.current.bottomBarUnselected,

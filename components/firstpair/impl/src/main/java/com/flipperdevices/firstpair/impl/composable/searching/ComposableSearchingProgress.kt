@@ -34,7 +34,7 @@ fun ComposableSearchingProgress(modifier: Modifier = Modifier) {
                 modifier = Modifier
                     .size(size = 82.dp)
                     .padding(end = 13.dp),
-                painter = painterResource(DesignSystem.drawable.pic_phone),
+                painter = painterResource(R.drawable.pic_phone),
                 contentDescription = null
             )
             ComposeLottiePic(
@@ -46,7 +46,7 @@ fun ComposableSearchingProgress(modifier: Modifier = Modifier) {
                 modifier = Modifier
                     .size(size = 82.dp)
                     .padding(start = 13.dp),
-                painter = painterResource(DesignSystem.drawable.pic_flipper_heavy),
+                painter = painterResource(R.drawable.pic_flipper_heavy),
                 contentDescription = stringResource(R.string.firstpair_search_flipper_status),
                 tint = LocalPallet.current.accentSecond
             )

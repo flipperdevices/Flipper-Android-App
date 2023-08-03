@@ -29,7 +29,6 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.faphub.appcard.composable.R
 import com.flipperdevices.faphub.dao.api.model.SortType
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableSortChoice(
@@ -89,7 +88,7 @@ private fun ComposableFapsChoice(
             modifier = Modifier
                 .padding(start = 4.dp, end = 12.dp)
                 .size(12.dp),
-            painter = painterResource(DesignSystem.drawable.ic_down),
+            painter = painterResource(R.drawable.ic_down),
             contentDescription = null,
             tint = LocalPallet.current.fapHubSortedColor
         )

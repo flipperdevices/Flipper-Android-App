@@ -26,6 +26,7 @@ import com.flipperdevices.core.data.PredefinedEnumMap
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
+import com.flipperdevices.nfceditor.impl.R
 import com.flipperdevices.nfceditor.impl.model.CardFieldInfo
 import com.flipperdevices.nfceditor.impl.model.NfcCellType
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCardInfo
@@ -33,7 +34,6 @@ import com.flipperdevices.nfceditor.impl.model.NfcEditorCardType
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCell
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCellLocation
 import kotlinx.collections.immutable.toImmutableList
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableNfcCard(
@@ -54,7 +54,7 @@ fun ComposableNfcCard(
             if (isOpened) {
                 Image(
                     modifier = Modifier.fillMaxWidth(),
-                    painter = painterResource(DesignSystem.drawable.pic_nfccard),
+                    painter = painterResource(R.drawable.pic_nfccard),
                     contentDescription = null,
                     contentScale = ContentScale.FillWidth
                 )

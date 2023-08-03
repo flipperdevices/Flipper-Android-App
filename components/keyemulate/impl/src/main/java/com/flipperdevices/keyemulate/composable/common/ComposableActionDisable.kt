@@ -75,12 +75,12 @@ private fun ComposableDisableActionPreview() {
         ) {
             ComposableActionDisable(
                 textId = R.string.keyscreen_emulate,
-                iconId = DesignSystem.drawable.ic_emulate,
+                iconId = R.drawable.ic_emulate,
                 reason = DisableButtonReason.NOT_CONNECTED
             )
             ComposableActionDisable(
                 textId = R.string.keyscreen_send,
-                iconId = DesignSystem.drawable.ic_send,
+                iconId = R.drawable.ic_send,
                 reason = DisableButtonReason.UPDATE_FLIPPER
             )
         }

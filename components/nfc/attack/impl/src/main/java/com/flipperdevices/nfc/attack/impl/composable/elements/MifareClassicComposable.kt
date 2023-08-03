@@ -84,9 +84,9 @@ private fun MifareClassicMfKey32(
             .size(64.dp),
         painter = painterResource(
             if (MaterialTheme.colors.isLight) {
-                DesignSystem.drawable.pic_detect_reader
+                R.drawable.pic_detect_reader
             } else {
-                DesignSystem.drawable.pic_detect_reader_black
+                R.drawable.pic_detect_reader_black
             }
         ),
         contentDescription = stringResource(R.string.nfcattack_mifare_classic_mfkey32_title)

@@ -80,7 +80,7 @@ private fun ComposableAlarmElement(
     ButtonElementRow(
         modifier = modifier,
         titleId = R.string.info_device_play_alert,
-        iconId = DesignSystem.drawable.ic_ring,
+        iconId = R.drawable.ic_ring,
         color = colorId,
         onClick = if (enabled) {
             alarmViewModel::alarmOnFlipper

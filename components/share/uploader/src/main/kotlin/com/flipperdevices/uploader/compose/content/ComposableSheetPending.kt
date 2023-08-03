@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.share.uploader.R
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 internal fun ComposableSheetPending(
@@ -39,13 +38,13 @@ internal fun ComposableSheetPending(
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         ComposableSheetAction(
-            imageId = DesignSystem.drawable.ic_share_link,
+            imageId = R.drawable.ic_share_link,
             titleId = R.string.share_via_secure_link_title,
             descId = if (isLongLink) R.string.share_via_secure_link_desc else null,
             onAction = onShareLink
         )
         ComposableSheetAction(
-            imageId = DesignSystem.drawable.ic_share_file,
+            imageId = R.drawable.ic_share_file,
             titleId = R.string.share_export_file_title,
             descId = null,
             onAction = onShareFile

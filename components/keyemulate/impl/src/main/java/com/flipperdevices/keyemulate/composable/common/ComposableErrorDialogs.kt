@@ -45,7 +45,7 @@ private fun ComposableForbiddenFrequencyDialog(onCloseDialog: () -> Unit) {
         imageComposable = {
             Icon(
                 modifier = Modifier.size(width = 120.dp, height = 112.dp),
-                painter = painterResource(DesignSystem.drawable.pic_flipper_alert),
+                painter = painterResource(R.drawable.pic_flipper_alert),
                 contentDescription = stringResource(R.string.forbidden_dialog_title),
                 tint = LocalPallet.current.text100
             )

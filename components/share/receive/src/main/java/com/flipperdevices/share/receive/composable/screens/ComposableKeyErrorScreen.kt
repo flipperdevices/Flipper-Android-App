@@ -101,15 +101,15 @@ private fun getImageByShareError(typeError: ReceiverError): Int {
         when (typeError) {
             ReceiverError.NO_INTERNET_CONNECTION -> DesignSystem.drawable.ic_no_internet_dark
             ReceiverError.CANT_CONNECT_TO_SERVER -> DesignSystem.drawable.ic_server_error_dark
-            ReceiverError.INVALID_FILE_FORMAT -> DesignSystem.drawable.ic_file_invalid_format
-            ReceiverError.EXPIRED_LINK -> DesignSystem.drawable.ic_expired_link
+            ReceiverError.INVALID_FILE_FORMAT -> R.drawable.ic_file_invalid_format
+            ReceiverError.EXPIRED_LINK -> R.drawable.ic_expired_link
         }
     } else {
         when (typeError) {
             ReceiverError.NO_INTERNET_CONNECTION -> DesignSystem.drawable.ic_no_internet
             ReceiverError.CANT_CONNECT_TO_SERVER -> DesignSystem.drawable.ic_server_error
-            ReceiverError.INVALID_FILE_FORMAT -> DesignSystem.drawable.ic_file_invalid_format
-            ReceiverError.EXPIRED_LINK -> DesignSystem.drawable.ic_expired_link
+            ReceiverError.INVALID_FILE_FORMAT -> R.drawable.ic_file_invalid_format
+            ReceiverError.EXPIRED_LINK -> R.drawable.ic_expired_link
         }
     }
 }

@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.nfceditor.impl.R
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 @Suppress("MagicNumber")

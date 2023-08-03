@@ -67,7 +67,7 @@ private fun ComposableNameCard(cardType: NfcEditorCardType) {
             color = LocalPallet.current.onNfcCard
         )
         Icon(
-            painter = painterResource(id = DesignSystem.drawable.ic_union),
+            painter = painterResource(id = R.drawable.ic_union),
             contentDescription = "",
             tint = LocalPallet.current.onNfcCard
         )

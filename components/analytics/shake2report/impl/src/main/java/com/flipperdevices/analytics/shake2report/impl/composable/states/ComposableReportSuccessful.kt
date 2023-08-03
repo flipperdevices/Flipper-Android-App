@@ -24,7 +24,6 @@ import com.flipperdevices.core.ui.ktx.elements.ComposableReportTextField
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.core.ui.res.R as SharedResources
 
 @Composable
 internal fun ComposableReportSuccessful(
@@ -47,9 +46,9 @@ internal fun ComposableReportSuccessful(
         modifier = Modifier.padding(bottom = 8.dp, top = 12.dp),
         painter = painterResource(
             if (MaterialTheme.colors.isLight) {
-                SharedResources.drawable.pic_flippper_successfull_green
+                R.drawable.pic_flippper_successfull_green
             } else {
-                SharedResources.drawable.pic_flippper_successfull_green_dark
+                R.drawable.pic_flippper_successfull_green_dark
             }
         ),
         contentDescription = null

@@ -37,7 +37,6 @@ import com.flipperdevices.screenstreaming.impl.viewmodel.repository.FLIPPER_SCRE
 import com.flipperdevices.screenstreaming.impl.viewmodel.repository.ScreenStreamFrameDecoder
 import kotlinx.collections.immutable.ImmutableList
 import kotlin.math.roundToInt
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableFlipperScreen(
@@ -60,7 +59,7 @@ fun ComposableFlipperScreen(
         if (isHorizontal) {
             Image(
                 modifier = Modifier.padding(top = 12.dp),
-                painter = painterResource(DesignSystem.drawable.ic_flipper_logo),
+                painter = painterResource(R.drawable.ic_flipper_logo),
                 contentDescription = null
             )
         }
