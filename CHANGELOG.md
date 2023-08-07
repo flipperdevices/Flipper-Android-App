@@ -2,13 +2,13 @@
 
 # 1.6.4 - In progress
 
+- [Feature] Add transparent flipper mockup
+
 # 1.6.3
 
 - [FIX] Fix 101% issue on update screen
 - [FIX] Fix build for fdroid
 - [FIX] Fix rpc request/update for 0.64.3 firmware
-
-- [Feature] Add transparent flipper mockup
 
 # 1.6.2
 
