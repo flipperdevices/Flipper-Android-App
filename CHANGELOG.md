@@ -3,6 +3,7 @@
 # 1.6.4 - In progress
 
 - [CI] Add apk artifacts to Pull Requests
+- [CI] Fix failed build in merge_group
 
 # 1.6.3
 
