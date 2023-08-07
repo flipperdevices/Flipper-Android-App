@@ -20,7 +20,6 @@ import com.flipperdevices.core.markdown.ClickableUrlText
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.core.ui.res.R as SharedResources
 
 @Composable
 internal fun ComposableReportError(
@@ -41,9 +40,9 @@ internal fun ComposableReportError(
         modifier = Modifier.padding(bottom = 8.dp, top = 12.dp),
         painter = painterResource(
             if (MaterialTheme.colors.isLight) {
-                SharedResources.drawable.pic_flippper_error_red
+                R.drawable.pic_flippper_error_red
             } else {
-                SharedResources.drawable.pic_flippper_error_red_dark
+                R.drawable.pic_flippper_error_red_dark
             }
         ),
         contentDescription = null

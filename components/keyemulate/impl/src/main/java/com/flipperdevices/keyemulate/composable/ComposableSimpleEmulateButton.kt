@@ -17,7 +17,6 @@ import com.flipperdevices.keyemulate.model.EmulateButtonState
 import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyemulate.viewmodel.SimpleEmulateViewModel
 import tangle.viewmodel.compose.tangleViewModel
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableSimpleEmulateButton(
@@ -40,7 +39,7 @@ fun ComposableSimpleEmulateButton(
         ComposableActionDisable(
             modifier = modifier,
             textId = R.string.keyscreen_emulate,
-            iconId = DesignSystem.drawable.ic_emulate,
+            iconId = R.drawable.ic_emulate,
             reason = DisableButtonReason.NOT_SYNCHRONIZED
         )
         return
@@ -52,7 +51,7 @@ fun ComposableSimpleEmulateButton(
         is EmulateButtonState.Disabled -> ComposableActionDisable(
             modifier = modifier,
             textId = R.string.keyscreen_emulate,
-            iconId = DesignSystem.drawable.ic_emulate,
+            iconId = R.drawable.ic_emulate,
             reason = (emulateButtonState as EmulateButtonState.Disabled).reason
         )
         is EmulateButtonState.Active -> ComposableEmulateButtonWithText(
@@ -63,8 +62,8 @@ fun ComposableSimpleEmulateButton(
             progressColor = LocalPallet.current.actionOnFlipperEnable,
             progress = (emulateButtonState as EmulateButtonState.Active).progress,
             picture = Picture.LottieRes(
-                DesignSystem.raw.ic_emulating,
-                DesignSystem.drawable.ic_emulate
+                R.raw.ic_emulating,
+                R.drawable.ic_emulate
             ),
             textId = R.string.keyscreen_emulating_desc
         )
@@ -73,7 +72,7 @@ fun ComposableSimpleEmulateButton(
             buttonTextId = R.string.keyscreen_emulate,
             buttonModifier = buttonActiveModifier,
             color = LocalPallet.current.actionOnFlipperEnable,
-            picture = Picture.StaticRes(DesignSystem.drawable.ic_emulate)
+            picture = Picture.StaticRes(R.drawable.ic_emulate)
         )
         is EmulateButtonState.Loading -> ComposableActionLoading(
             modifier = modifier,

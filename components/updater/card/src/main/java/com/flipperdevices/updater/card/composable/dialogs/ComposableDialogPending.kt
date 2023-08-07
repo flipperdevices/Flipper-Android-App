@@ -130,9 +130,9 @@ fun FlipperDialogFileExtension(onDismiss: () -> Unit) {
 @Composable
 fun FlipperDialogLowBattery(onDismiss: () -> Unit) {
     val imageId = if (MaterialTheme.colors.isLight) {
-        DesignSystem.drawable.pic_flipper_low_battery
+        R.drawable.pic_flipper_low_battery
     } else {
-        DesignSystem.drawable.pic_flipper_low_battery_dark
+        R.drawable.pic_flipper_low_battery_dark
     }
 
     FlipperDialog(

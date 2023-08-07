@@ -56,14 +56,14 @@ fun ComposableUpdateContent(
             modifier = localModifier,
             accentColor = LocalPallet.current.updateProgressGreen,
             secondColor = LocalPallet.current.updateProgressBackgroundGreen,
-            iconId = DesignSystem.drawable.ic_globe,
+            iconId = R.drawable.ic_globe,
             percent = updaterScreenState.percent
         )
         is UpdaterScreenState.SubGhzProvisioning -> FlipperProgressIndicator(
             modifier = localModifier,
             accentColor = LocalPallet.current.updateProgressGreen,
             secondColor = LocalPallet.current.updateProgressBackgroundGreen,
-            iconId = DesignSystem.drawable.ic_globe,
+            iconId = R.drawable.ic_globe,
             percent = null
         )
         is UpdaterScreenState.UploadOnFlipper -> FlipperProgressIndicator(

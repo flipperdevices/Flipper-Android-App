@@ -20,7 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.ui.ktx.clickableRipple
-import com.flipperdevices.core.ui.res.R
+import com.flipperdevices.filemanager.impl.R
 import com.flipperdevices.filemanager.impl.model.FileItem
 
 @Composable

@@ -20,7 +20,6 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.firstpair.impl.R
 import com.flipperdevices.firstpair.impl.model.SearchingState
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableSearchingStatus(
@@ -87,7 +86,7 @@ private fun ComposableHelpButton(onClick: () -> Unit) {
             modifier = Modifier
                 .size(height = 24.dp, width = 32.dp) // 24 (width) + 8 (padding) = 32
                 .padding(end = 8.dp),
-            painter = painterResource(DesignSystem.drawable.ic_help),
+            painter = painterResource(R.drawable.ic_help),
             contentDescription = stringResource(R.string.firstpair_search_title_help),
             tint = LocalPallet.current.iconTint30
         )

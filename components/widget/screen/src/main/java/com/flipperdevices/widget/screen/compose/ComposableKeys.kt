@@ -35,6 +35,7 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.widget.screen.R
 import com.flipperdevices.widget.screen.viewmodel.WidgetSelectViewModel
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ColumnScope.ComposableKeys(
@@ -142,7 +143,7 @@ private fun ColumnScope.ComposableProgress() {
         )
         Icon(
             modifier = Modifier.rotate(angle),
-            painter = painterResource(com.flipperdevices.core.ui.res.R.drawable.ic_progress),
+            painter = painterResource(DesignSystem.drawable.ic_progress),
             tint = LocalPallet.current.accentSecond,
             contentDescription = stringResource(R.string.widget_options_sync_progress)
         )

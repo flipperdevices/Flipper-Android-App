@@ -83,7 +83,7 @@ fun ComposableFailedDownloadContent(
 ) {
     ComposableUpdateFailedContent(
         modifier = modifier,
-        imageId = DesignSystem.drawable.pic_server_error,
+        imageId = R.drawable.pic_server_error,
         titleId = R.string.update_screen_failed_network_title,
         descriptionId = R.string.update_screen_failed_network_desc
     ) {

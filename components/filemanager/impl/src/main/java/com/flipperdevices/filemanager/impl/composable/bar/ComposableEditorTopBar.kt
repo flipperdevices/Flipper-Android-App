@@ -8,7 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.flipperdevices.filemanager.impl.R
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableEditorTopBar(
@@ -27,7 +26,7 @@ fun ComposableEditorTopBar(
             IconButton(onClick = onClickSaveButton) {
                 Icon(
                     painter = painterResource(
-                        DesignSystem.drawable.ic_ok
+                        R.drawable.ic_ok
                     ),
                     contentDescription = stringResource(
                         R.string.filemanager_save_action

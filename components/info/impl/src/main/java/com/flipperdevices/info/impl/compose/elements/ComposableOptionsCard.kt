@@ -16,7 +16,7 @@ fun ComposableOptionsCard(
     InfoElementCard(modifier) {
         ButtonElementRow(
             titleId = R.string.info_device_options,
-            iconId = DesignSystem.drawable.ic_options,
+            iconId = R.drawable.ic_options,
             color = LocalPallet.current.text80,
             onClick = onOpenOptions,
             actionIconId = DesignSystem.drawable.ic_navigate

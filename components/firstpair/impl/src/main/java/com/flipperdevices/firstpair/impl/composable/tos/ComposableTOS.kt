@@ -22,7 +22,6 @@ import com.flipperdevices.core.ui.ktx.elements.ComposableFlipperButton
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.firstpair.impl.R
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableTOS(onApplyPress: () -> Unit, modifier: Modifier = Modifier) {
@@ -60,7 +59,7 @@ private fun ComposableTutorial(modifier: Modifier = Modifier) {
         ) {
             Image(
                 modifier = Modifier.fillMaxWidth(),
-                painter = painterResource(DesignSystem.drawable.pic_connecting),
+                painter = painterResource(R.drawable.pic_connecting),
                 contentDescription = stringResource(R.string.firstpair_tos_title)
             )
 
@@ -71,7 +70,7 @@ private fun ComposableTutorial(modifier: Modifier = Modifier) {
                         horizontal = 40.dp,
                         vertical = 8.dp
                     ),
-                painter = painterResource(DesignSystem.drawable.pic_flipper_instruction),
+                painter = painterResource(R.drawable.pic_flipper_instruction),
                 contentDescription = stringResource(R.string.firstpair_tos_description)
             )
         }

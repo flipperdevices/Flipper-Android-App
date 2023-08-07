@@ -19,7 +19,6 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.info.shared.InfoElementCard
 import com.flipperdevices.updater.card.R
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableUpdaterReboot(modifier: Modifier = Modifier) {
@@ -30,9 +29,9 @@ fun ComposableUpdaterReboot(modifier: Modifier = Modifier) {
         val title = stringResource(R.string.updater_card_updater_reboot_title) + animatedDots()
 
         val imageId = if (MaterialTheme.colors.isLight) {
-            DesignSystem.drawable.pic_reboot
+            R.drawable.pic_reboot
         } else {
-            DesignSystem.drawable.pic_reboot_dark
+            R.drawable.pic_reboot_dark
         }
 
         Column(horizontalAlignment = Alignment.CenterHorizontally) {

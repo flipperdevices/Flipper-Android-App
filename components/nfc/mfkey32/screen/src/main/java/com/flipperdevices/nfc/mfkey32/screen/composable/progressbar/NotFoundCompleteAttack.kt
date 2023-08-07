@@ -20,7 +20,6 @@ import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.nfc.mfkey32.screen.R
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun NotFoundCompleteAttack(
@@ -40,9 +39,9 @@ fun NotFoundCompleteAttack(
         modifier = Modifier.padding(horizontal = 18.dp),
         painter = painterResource(
             if (MaterialTheme.colors.isLight) {
-                DesignSystem.drawable.pic_shrug_white
+                R.drawable.pic_shrug_white
             } else {
-                DesignSystem.drawable.pic_shrug_black
+                R.drawable.pic_shrug_black
             }
         ),
         contentDescription = stringResource(R.string.mfkey32_complete_not_found_title)

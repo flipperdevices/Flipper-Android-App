@@ -18,7 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPallet
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.info.impl.R
 
 private const val EMPTY_BATTERY = 0f
 private const val FIRST_BATTERY_THRESHOLD = 0.15f
@@ -39,7 +39,7 @@ fun ComposableFlipperBattery(
             BatteryContent(percent)
             if (isCharging) {
                 Icon(
-                    painter = painterResource(DesignSystem.drawable.ic_charging),
+                    painter = painterResource(R.drawable.ic_charging),
                     contentDescription = null,
                     tint = LocalPallet.current.batteryCharging
                 )
@@ -47,7 +47,7 @@ fun ComposableFlipperBattery(
         }
         Icon(
             modifier = Modifier.padding(start = 1.dp),
-            painter = painterResource(DesignSystem.drawable.ic_battery_pin),
+            painter = painterResource(R.drawable.ic_battery_pin),
             contentDescription = null,
             tint = LocalPallet.current.batteryBackground
         )

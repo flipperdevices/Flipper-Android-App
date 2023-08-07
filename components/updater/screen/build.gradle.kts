@@ -18,6 +18,7 @@ dependencies {
     implementation(projects.components.core.activityholder)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.ktx)
+    implementation(projects.components.core.ui.flippermockup)
 
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ui.theme)

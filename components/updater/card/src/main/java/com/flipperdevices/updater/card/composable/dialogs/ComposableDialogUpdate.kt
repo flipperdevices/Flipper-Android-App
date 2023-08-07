@@ -65,7 +65,11 @@ fun ComposableFailedUpdate(
 ) {
     FlipperDialog(
         modifier = modifier,
-        imageId = DesignSystem.drawable.pic_update_failed,
+        imageId = if (MaterialTheme.colors.isLight) {
+            R.drawable.pic_update_failed
+        } else {
+            R.drawable.pic_update_failed_dark
+        },
         titleComposable = {
             Text(
                 text = stringResource(R.string.update_card_dialog_failed_title),

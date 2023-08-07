@@ -29,7 +29,6 @@ import com.flipperdevices.keyemulate.model.EmulateButtonState
 import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyemulate.viewmodel.SubGhzViewModel
 import tangle.viewmodel.compose.tangleViewModel
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableSubGhzSendButton(
@@ -44,7 +43,7 @@ fun ComposableSubGhzSendButton(
         ComposableActionDisable(
             modifier = modifier,
             textId = R.string.keyscreen_send,
-            iconId = DesignSystem.drawable.ic_send,
+            iconId = R.drawable.ic_send,
             reason = DisableButtonReason.NOT_SYNCHRONIZED
         )
         return
@@ -56,7 +55,7 @@ fun ComposableSubGhzSendButton(
         is EmulateButtonState.Disabled -> ComposableActionDisable(
             modifier = modifier,
             textId = R.string.keyscreen_send,
-            iconId = DesignSystem.drawable.ic_send,
+            iconId = R.drawable.ic_send,
             reason = (emulateButtonState as EmulateButtonState.Disabled).reason
         )
         is EmulateButtonState.Active,
@@ -139,11 +138,11 @@ private fun ComposableActiveEmulateInternal(
     val descriptionId = if (isActive) null else R.string.keyscreen_sending_desc
     val picture = if (isActive) {
         Picture.LottieRes(
-            DesignSystem.raw.ic_sending,
-            DesignSystem.drawable.ic_send
+            R.raw.ic_sending,
+            R.drawable.ic_send
         )
     } else {
-        Picture.StaticRes(DesignSystem.drawable.ic_send)
+        Picture.StaticRes(R.drawable.ic_send)
     }
 
     ComposableEmulateButtonWithText(

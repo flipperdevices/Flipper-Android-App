@@ -6,6 +6,7 @@ option java_multiple_files = true;
 enum HardwareColor {
   WHITE = 0;
   BLACK = 1;
+  TRANSPARENT = 2;
 }
 
 message PairSettings {

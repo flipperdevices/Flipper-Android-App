@@ -20,7 +20,6 @@ import com.flipperdevices.core.ui.ktx.elements.animatedDots
 import com.flipperdevices.core.ui.ktx.image.painterResourceByKey
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 private const val ROTATE_DURATION_MS = 3000
 
@@ -30,9 +29,9 @@ internal fun ComposableItemSynchronizationState(
     withText: Boolean
 ) {
     val iconId = when (itemSynchronizationState) {
-        ItemSynchronizationState.SYNCHRONIZED -> DesignSystem.drawable.ic_mini_synced
-        ItemSynchronizationState.IN_PROGRESS -> DesignSystem.drawable.ic_mini_syncing
-        ItemSynchronizationState.NOT_SYNCHRONIZED -> DesignSystem.drawable.ic_mini_sync_failed
+        ItemSynchronizationState.SYNCHRONIZED -> R.drawable.ic_mini_synced
+        ItemSynchronizationState.IN_PROGRESS -> R.drawable.ic_mini_syncing
+        ItemSynchronizationState.NOT_SYNCHRONIZED -> R.drawable.ic_mini_sync_failed
     }
 
     val color = when (itemSynchronizationState) {
