@@ -8,6 +8,8 @@
 - [FIX] Fix build for fdroid
 - [FIX] Fix rpc request/update for 0.64.3 firmware
 
+- [Feature] Add transparent flipper mockup
+
 # 1.6.2
 
 - [FIX] Fix bug with restoreState navigation
