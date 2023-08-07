@@ -32,10 +32,11 @@
 -dontwarn org.bouncycastle.**
 -dontwarn org.openjsse.**
 
-# New retrofit rules
-# Keep generic signature of Call, Response (R8 full mode strips signatures from non-kept items).
--keep,allowobfuscation,allowshrinking interface retrofit2.Call
--keep,allowobfuscation,allowshrinking class retrofit2.Response
+-keep class de.jensklingenberg.ktorfit.** { *; }
+-keepclassmembers class de.jensklingenberg.ktorfit.** { *; }
+
+# Fix for some strange bug with ktorfit
+-keep class io.ktor.http.* { *; }
 
 # With R8 full mode generic signatures are stripped for classes that are not
 # kept. Suspend functions are wrapped in continuations where the type argument

@@ -2,6 +2,7 @@ package com.flipperdevices.updater.impl
 
 import android.content.Context
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
+import com.flipperdevices.bridge.rpc.api.FlipperStorageApi
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.log.LogTagProvider
@@ -14,7 +15,7 @@ import com.flipperdevices.updater.impl.model.UpdateContentException
 import com.flipperdevices.updater.impl.tasks.FlipperUpdateImageHelper
 import com.flipperdevices.updater.impl.tasks.UploadToFlipperHelper
 import com.flipperdevices.updater.impl.tasks.downloader.UpdateContentDownloader
-import com.flipperdevices.updater.impl.utils.FolderCreateHelper
+import com.flipperdevices.updater.model.OfficialFirmware
 import com.flipperdevices.updater.model.SubGhzProvisioningException
 import com.flipperdevices.updater.model.UpdateContent
 import com.flipperdevices.updater.model.UpdateRequest
@@ -38,7 +39,8 @@ class UpdaterTask(
     private val context: Context,
     private val uploadToFlipperHelper: UploadToFlipperHelper,
     private val subGhzProvisioningHelper: SubGhzProvisioningHelper,
-    private val updateContentDownloader: MutableSet<UpdateContentDownloader>
+    private val updateContentDownloader: MutableSet<UpdateContentDownloader>,
+    private val flipperStorageApi: FlipperStorageApi
 ) : OneTimeExecutionBleTask<UpdateRequest, UpdatingState>(serviceProvider),
     LogTagProvider {
     override val TAG = "UpdaterTask"
@@ -59,7 +61,7 @@ class UpdaterTask(
         input: UpdateRequest,
         stateListener: suspend (UpdatingState) -> Unit
     ) = try {
-        startInternalUnwrapped(scope, serviceApi, input) {
+        startInternalUnwrapped(serviceApi, input) {
             if (it.isFinalState) {
                 isStoppedManually = true
             }
@@ -74,7 +76,6 @@ class UpdaterTask(
 
     @Suppress("LongMethod", "ComplexMethod")
     private suspend fun startInternalUnwrapped(
-        scope: CoroutineScope,
         serviceApi: FlipperServiceApi,
         input: UpdateRequest,
         stateListener: suspend (UpdatingState) -> Unit
@@ -90,7 +91,11 @@ class UpdaterTask(
             when (e) {
                 is UpdateContentException -> stateListener(UpdatingState.FailedCustomUpdate)
                 is CancellationException -> {}
-                else -> stateListener(UpdatingState.FailedDownload)
+                else -> if (input.content is OfficialFirmware) {
+                    stateListener(UpdatingState.FailedDownload)
+                } else {
+                    stateListener(UpdatingState.FailedCustomUpdate)
+                }
             }
             return@useTemporaryFolder
         }
@@ -134,7 +139,6 @@ class UpdaterTask(
 
         try {
             uploadToFlipperHelper.uploadToFlipper(
-                scope,
                 flipperPath,
                 updaterFolder,
                 serviceApi.requestApi,
@@ -182,7 +186,7 @@ class UpdaterTask(
 
         val flipperPath = "/ext/update/$updateName"
 
-        FolderCreateHelper.mkdirFolderOnFlipper(requestApi, flipperPath)
+        flipperStorageApi.mkdirs(flipperPath)
         return flipperPath
     }
 }

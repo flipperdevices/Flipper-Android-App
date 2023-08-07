@@ -1,6 +1,7 @@
 package com.flipperdevices.updater.impl.api
 
 import android.content.Context
+import com.flipperdevices.bridge.rpc.api.FlipperStorageApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
@@ -30,6 +31,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
+@Suppress("LongParameterList")
 @ContributesBinding(AppGraph::class, UpdaterApi::class)
 class UpdaterApiImpl @Inject constructor(
     private val serviceProvider: FlipperServiceProvider,
@@ -37,7 +39,8 @@ class UpdaterApiImpl @Inject constructor(
     private val subGhzProvisioningHelper: SubGhzProvisioningHelper,
     private val uploadToFlipperHelper: UploadToFlipperHelper,
     private val context: Context,
-    private val metricApi: MetricApi
+    private val metricApi: MetricApi,
+    private val flipperStorageApi: FlipperStorageApi
 ) : UpdaterApi, LogTagProvider {
     override val TAG = "UpdaterApi"
 
@@ -59,7 +62,8 @@ class UpdaterApiImpl @Inject constructor(
             context,
             uploadToFlipperHelper,
             subGhzProvisioningHelper,
-            updateContentDownloader
+            updateContentDownloader,
+            flipperStorageApi
         )
         currentActiveTask = localActiveTask
 

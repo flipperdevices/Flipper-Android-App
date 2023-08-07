@@ -1,8 +1,10 @@
 package com.flipperdevices.bridge.rpcinfo.impl.stats
 
 import com.flipperdevices.bridge.api.manager.FlipperReadyListener
+import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
+import com.flipperdevices.bridge.api.utils.Constants.API_SUPPORTED_GET_REQUEST
 import com.flipperdevices.bridge.rpcinfo.api.FlipperStorageInformationApi
 import com.flipperdevices.bridge.rpcinfo.impl.shaketoreport.FlipperInformationMapping
 import com.flipperdevices.bridge.rpcinfo.model.FlipperInformationStatus
@@ -54,37 +56,48 @@ class FlipperRpcStatsCollector @Inject constructor(
         val oldJob = statJob
         statJob = scope.launch {
             oldJob?.cancelAndJoin()
-            val forkResponse = serviceApi.requestApi.request(
-                flowOf(
-                    main {
-                        propertyGetRequest = getRequest { key = DEVICE_INFO_FIRMWARE_FORK_KEY }
-                    }.wrapToRequest(FlipperRequestPriority.BACKGROUND)
-                )
-            )
-            val forkValue = if (forkResponse.commandStatus == Flipper.CommandStatus.OK) {
-                forkResponse.propertyGetResponse.value
-            } else {
-                null
-            }
-            val originResponse = serviceApi.requestApi.request(
-                flowOf(
-                    main {
-                        propertyGetRequest = getRequest { key = DEVICE_INFO_FIRMWARE_ORIGIN_KEY }
-                    }.wrapToRequest(FlipperRequestPriority.BACKGROUND)
-                )
-            )
-            val originValue = if (originResponse.commandStatus == Flipper.CommandStatus.OK) {
-                originResponse.propertyGetResponse.value
-            } else {
-                null
-            }
-
-            storageInformationApi.getStorageInformationFlow().collect { storageInformation ->
-                if (storageInformation.externalStorageStatus is FlipperInformationStatus.Ready &&
-                    storageInformation.internalStorageStatus is FlipperInformationStatus.Ready
-                ) {
-                    reportMetric(storageInformation, forkValue, originValue)
+            serviceApi
+                .flipperVersionApi
+                .getVersionInformationFlow()
+                .collect { version ->
+                    if (version != null && version > API_SUPPORTED_GET_REQUEST) {
+                        startRequestApiInformation(serviceApi.requestApi)
+                    }
                 }
+        }
+    }
+
+    private suspend fun startRequestApiInformation(requestApi: FlipperRequestApi) {
+        val forkResponse = requestApi.request(
+            flowOf(
+                main {
+                    propertyGetRequest = getRequest { key = DEVICE_INFO_FIRMWARE_FORK_KEY }
+                }.wrapToRequest(FlipperRequestPriority.BACKGROUND)
+            )
+        )
+        val forkValue = if (forkResponse.commandStatus == Flipper.CommandStatus.OK) {
+            forkResponse.propertyGetResponse.value
+        } else {
+            null
+        }
+        val originResponse = requestApi.request(
+            flowOf(
+                main {
+                    propertyGetRequest = getRequest { key = DEVICE_INFO_FIRMWARE_ORIGIN_KEY }
+                }.wrapToRequest(FlipperRequestPriority.BACKGROUND)
+            )
+        )
+        val originValue = if (originResponse.commandStatus == Flipper.CommandStatus.OK) {
+            originResponse.propertyGetResponse.value
+        } else {
+            null
+        }
+
+        storageInformationApi.getStorageInformationFlow().collect { storageInformation ->
+            if (storageInformation.externalStorageStatus is FlipperInformationStatus.Ready &&
+                storageInformation.internalStorageStatus is FlipperInformationStatus.Ready
+            ) {
+                reportMetric(storageInformation, forkValue, originValue)
             }
         }
     }

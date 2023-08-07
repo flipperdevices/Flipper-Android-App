@@ -1,6 +1,12 @@
 # Changelog
 
-# 1.6.3 - In progress
+# 1.6.4 - In progress
+
+# 1.6.3
+
+- [FIX] Fix 101% issue on update screen
+- [FIX] Fix build for fdroid
+- [FIX] Fix rpc request/update for 0.64.3 firmware
 
 # 1.6.2
 
