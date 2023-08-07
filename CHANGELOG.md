@@ -2,6 +2,8 @@
 
 # 1.6.4 - In progress
 
+- [CI] Add apk artifacts to Pull Requests
+
 # 1.6.3
 
 - [FIX] Fix 101% issue on update screen
