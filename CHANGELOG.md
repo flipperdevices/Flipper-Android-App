@@ -4,6 +4,7 @@
 
 - [Feature] Add transparent flipper mockup
 - [CI] Add apk artifacts to Pull Requests
+- [CI] Fix failed build in merge_group
 
 # 1.6.3
 
