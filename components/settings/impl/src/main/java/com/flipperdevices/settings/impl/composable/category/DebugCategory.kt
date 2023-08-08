@@ -107,4 +107,9 @@ private fun DebugCategoryItems(
         titleId = R.string.debug_application_installall_dev,
         onClick = debugViewModel::installAllApplication
     )
+    GrayDivider()
+    ClickableElement(
+        titleId = R.string.debug_broke_session,
+        onClick = debugViewModel::brokeBytes
+    )
 }

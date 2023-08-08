@@ -130,4 +130,10 @@ class DebugViewModel @VMInject constructor(
             fapInstallationAllApi.installAll()
         }
     }
+
+    fun brokeBytes() {
+        viewModelScope.launch {
+            serviceProvider.getServiceApi().requestApi.sendTrashBytesAndBrokeSession()
+        }
+    }
 }
