@@ -2,6 +2,8 @@ package com.flipperdevices.bridge.rpc.impl.api
 
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.rpc.api.FlipperStorageApi
+import com.flipperdevices.bridge.rpc.api.model.NameWithHash
+import com.flipperdevices.bridge.rpc.impl.delegates.FlipperListingDelegate
 import com.flipperdevices.bridge.rpc.impl.delegates.FlipperUploadDelegate
 import com.flipperdevices.bridge.rpc.impl.delegates.MkDirDelegate
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
@@ -21,28 +23,30 @@ import javax.inject.Inject
 class FlipperStorageApiImpl @Inject constructor(
     private val flipperServiceProvider: FlipperServiceProvider,
     private val mkDirDelegate: MkDirDelegate,
-    private val flipperUploadDelegate: FlipperUploadDelegate
+    private val flipperUploadDelegate: FlipperUploadDelegate,
+    private val listingDelegate: FlipperListingDelegate
 ) : FlipperStorageApi {
     override suspend fun mkdirs(path: String) = withContext(Dispatchers.Default) {
         mkDirDelegate.mkdir(flipperServiceProvider.getServiceApi().requestApi, path)
     }
 
-    override suspend fun delete(path: String, recursive: Boolean) = withContext(Dispatchers.Default) {
-        val requestApi = flipperServiceProvider.getServiceApi().requestApi
-        val response = requestApi.request(
-            main {
-                storageDeleteRequest = deleteRequest {
-                    this.path = path
-                    this.recursive = recursive
-                }
-            }.wrapToRequest()
-        ).first()
-        if (response.commandStatus != Flipper.CommandStatus.OK &&
-            response.commandStatus != Flipper.CommandStatus.ERROR_STORAGE_NOT_EXIST
-        ) {
-            error("Failed delete $path with error ${response.commandStatus}")
+    override suspend fun delete(path: String, recursive: Boolean) =
+        withContext(Dispatchers.Default) {
+            val requestApi = flipperServiceProvider.getServiceApi().requestApi
+            val response = requestApi.request(
+                main {
+                    storageDeleteRequest = deleteRequest {
+                        this.path = path
+                        this.recursive = recursive
+                    }
+                }.wrapToRequest()
+            ).first()
+            if (response.commandStatus != Flipper.CommandStatus.OK &&
+                response.commandStatus != Flipper.CommandStatus.ERROR_STORAGE_NOT_EXIST
+            ) {
+                error("Failed delete $path with error ${response.commandStatus}")
+            }
         }
-    }
 
     override suspend fun upload(
         pathOnFlipper: String,
@@ -55,5 +59,29 @@ class FlipperStorageApiImpl @Inject constructor(
             fileOnAndroid = fileOnAndroid,
             externalProgressListener = progressListener
         )
+    }
+
+    override suspend fun listingDirectory(pathOnFlipper: String): List<String> {
+        return listingDelegate.listing(
+            requestApi = flipperServiceProvider.getServiceApi().requestApi,
+            pathOnFlipper = pathOnFlipper
+        )
+    }
+
+    override suspend fun listingDirectoryWithMd5(pathOnFlipper: String): List<NameWithHash> {
+        val serviceApi = flipperServiceProvider.getServiceApi()
+        //val md5ListingSupported = serviceApi.flipperVersionApi.isSupported(Constants.API_SUPPORTED_MD5_LISTING)
+        val md5ListingSupported = true
+        return if (md5ListingSupported) {
+            listingDelegate.listingWithMd5(
+                requestApi = serviceApi.requestApi,
+                pathOnFlipper = pathOnFlipper
+            )
+        } else {
+            listingDelegate.listingWithMd5Deprecated(
+                requestApi = serviceApi.requestApi,
+                pathOnFlipper = pathOnFlipper
+            )
+        }
     }
 }

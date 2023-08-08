@@ -14,7 +14,6 @@ private const val BIG_INTEGER_POSITIVE_NUMBER = 1
 /**
  * Calculate md5 and _close_ stream
  */
-@Suppress("BlockingMethodInNonBlockingContext")
 suspend fun InputStream.md5(): String = withContext(Dispatchers.IO) {
     use { stream ->
         val encoder = MessageDigest.getInstance(MD5_NAME)
@@ -28,4 +27,12 @@ suspend fun InputStream.md5(): String = withContext(Dispatchers.IO) {
             .toString(MD5_RADIX)
             .padStart(MD5_LENGTH, '0')
     }
+}
+
+fun ByteArray.md5(): String {
+    val encoder = MessageDigest.getInstance(MD5_NAME)
+    encoder.update(this, 0, size)
+    return BigInteger(BIG_INTEGER_POSITIVE_NUMBER, encoder.digest())
+        .toString(MD5_RADIX)
+        .padStart(MD5_LENGTH, '0')
 }

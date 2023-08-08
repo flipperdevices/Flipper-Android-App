@@ -9,6 +9,7 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.faphub.dao.api.FapVersionApi
 import com.flipperdevices.faphub.installation.manifest.api.FapManifestApi
+import com.flipperdevices.faphub.installation.manifest.impl.utils.FapManifestCacheLoader
 import com.flipperdevices.faphub.installation.manifest.impl.utils.FapManifestDeleter
 import com.flipperdevices.faphub.installation.manifest.impl.utils.FapManifestUploader
 import com.flipperdevices.faphub.installation.manifest.impl.utils.FapManifestsLoader
@@ -26,12 +27,14 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
+@Suppress("LongParameterList")
 @ContributesBinding(AppGraph::class, FapManifestApi::class)
 class FapManifestApiImpl @Inject constructor(
     private val loader: FapManifestsLoader,
     private val manifestUploader: FapManifestUploader,
     private val manifestDeleter: FapManifestDeleter,
     private val flipperServiceProvider: FlipperServiceProvider,
+    fapManifestCacheLoader: FapManifestCacheLoader,
     fapVersionApi: FapVersionApi,
     application: Application,
 ) : FapManifestApi, LogTagProvider {
@@ -43,7 +46,8 @@ class FapManifestApiImpl @Inject constructor(
     private val enrichedHelper = FapManifestEnrichedHelper(
         scope = scope,
         versionApi = fapVersionApi,
-        application = application
+        application = application,
+        cacheLoader = fapManifestCacheLoader
     )
 
     init {
