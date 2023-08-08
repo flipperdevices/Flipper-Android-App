@@ -33,7 +33,7 @@ class FapManifestsLoader @Inject constructor(
         }
         info { "Start load manifests" }
         val cacheResult = cacheLoader.loadCache()
-        info { "Cache load result is $cacheResult" }
+        info { "Cache load result is toLoad: ${cacheResult.toLoadNames}, cached: ${cacheResult.cachedNames}" }
         val fapItemsFromFlipper = cacheResult.toLoadNames.pmap { name ->
             val content = loadManifestFile(
                 requestApi = serviceApi.requestApi,
