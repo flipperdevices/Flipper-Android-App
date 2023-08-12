@@ -22,7 +22,7 @@ jobs:
       - name: Unit test
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: testDebug --no-daemon
+          arguments: testDebug
   detekt:
     name: "Check project by detekt"
     runs-on: ubuntu-latest
@@ -54,7 +54,7 @@ jobs:
       - name: Android lint
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: lint --no-daemon
+          arguments: lint
   changelog_changes:
     name: "Checking that changelog has changed"
     runs-on: ubuntu-latest

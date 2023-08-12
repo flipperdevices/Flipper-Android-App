@@ -25,7 +25,7 @@ jobs:
       - name: Build release
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: assembleRelease bundleRelease --no-daemon
+          arguments: assembleRelease bundleRelease
   debug_build:
     name: "Build debug"
     runs-on: ubuntu-latest
@@ -41,7 +41,7 @@ jobs:
       - name: Build debug
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: assembleDebug bundleDebug --no-daemon
+          arguments: assembleDebug bundleDebug
   internal_build:
     name: "Build internal"
     runs-on: ubuntu-latest
@@ -57,4 +57,4 @@ jobs:
       - name: Build internal
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: assembleInternal bundleInternal --no-daemon
+          arguments: assembleInternal bundleInternal
