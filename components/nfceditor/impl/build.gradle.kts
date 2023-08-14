@@ -45,7 +45,6 @@ dependencies {
     implementation(libs.kotlin.serialization.json)
 
     implementation(libs.lifecycle.compose)
-    implementation(libs.ktx.fragment)
 
     implementation(libs.tangle.viewmodel.compose)
     implementation(libs.tangle.viewmodel.api)
