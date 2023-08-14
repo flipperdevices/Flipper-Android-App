@@ -1,5 +1,6 @@
 package com.flipperdevices.updater.subghz.tasks
 
+import android.os.Build
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequest
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
@@ -35,8 +36,10 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.ParameterizedRobolectricTestRunner
+import org.robolectric.annotation.Config
 
 @RunWith(ParameterizedRobolectricTestRunner::class)
+@Config(sdk = [Build.VERSION_CODES.TIRAMISU])
 class SubGhzProvisioningHelperTest(
     private val countryName: String?
 ) {

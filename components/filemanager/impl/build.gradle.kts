@@ -44,7 +44,6 @@ dependencies {
     implementation(libs.kotlin.coroutines)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
-    implementation(libs.ktx.fragment)
 
     implementation(libs.tangle.viewmodel.compose)
     implementation(libs.tangle.viewmodel.api)

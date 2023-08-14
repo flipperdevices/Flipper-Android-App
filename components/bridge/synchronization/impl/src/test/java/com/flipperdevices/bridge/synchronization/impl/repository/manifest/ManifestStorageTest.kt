@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.synchronization.impl.repository.manifest
 
 import android.content.Context
+import android.os.Build
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.synchronization.impl.model.KeyWithHash
@@ -16,9 +17,11 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
 import org.junit.runner.RunWith
+import org.robolectric.annotation.Config
 import java.io.File
 
 @RunWith(AndroidJUnit4::class)
+@Config(sdk = [Build.VERSION_CODES.TIRAMISU])
 class ManifestStorageTest {
     @get:Rule
     var folder = TemporaryFolder()

@@ -1,6 +1,7 @@
 package com.flipperdevices.keyparser.impl.url
 
 import android.net.Uri
+import android.os.Build
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.flipperdevices.keyparser.impl.parsers.url.FFFUrlDecoder
 import org.junit.Assert.assertEquals
@@ -9,8 +10,10 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.annotation.Config
 
 @RunWith(AndroidJUnit4::class)
+@Config(sdk = [Build.VERSION_CODES.TIRAMISU])
 class FFFUrlDecoderTest {
     private val underTest = FFFUrlDecoder()
 

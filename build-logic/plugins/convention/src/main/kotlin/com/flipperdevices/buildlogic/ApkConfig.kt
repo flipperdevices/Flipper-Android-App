@@ -6,8 +6,8 @@ object ApkConfig {
     const val APPLICATION_ID = "com.flipperdevices.app"
 
     const val MIN_SDK_VERSION = 26
-    const val TARGET_SDK_VERSION = 33
-    const val COMPILE_SDK_VERSION = 33
+    const val TARGET_SDK_VERSION = 34
+    const val COMPILE_SDK_VERSION = 34
 
     private const val DEBUG_VERSION = "DEBUG_VERSION"
 

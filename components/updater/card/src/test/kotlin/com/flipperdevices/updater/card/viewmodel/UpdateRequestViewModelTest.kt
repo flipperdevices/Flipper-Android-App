@@ -3,6 +3,7 @@ package com.flipperdevices.updater.card.viewmodel
 import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
+import android.os.Build
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.flipperdevices.bridge.api.model.FlipperGATTInformation
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
@@ -31,8 +32,10 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.annotation.Config
 
 @RunWith(AndroidJUnit4::class)
+@Config(sdk = [Build.VERSION_CODES.TIRAMISU])
 class UpdateRequestViewModelTest {
     private val serviceProvider: FlipperServiceProvider = mockk(relaxUnitFun = true)
     private val serviceApi: FlipperServiceApi = mockk(relaxUnitFun = true)

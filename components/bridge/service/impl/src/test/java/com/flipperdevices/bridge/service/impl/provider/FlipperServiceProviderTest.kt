@@ -2,6 +2,7 @@ package com.flipperdevices.bridge.service.impl.provider
 
 import android.content.Context
 import android.content.ServiceConnection
+import android.os.Build
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -30,8 +31,10 @@ import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
+import org.robolectric.annotation.Config
 
 @RunWith(AndroidJUnit4::class)
+@Config(sdk = [Build.VERSION_CODES.TIRAMISU])
 class FlipperServiceProviderTest {
     private lateinit var applicationContext: Context
     private lateinit var subject: FlipperServiceProviderImpl
@@ -70,7 +73,7 @@ class FlipperServiceProviderTest {
                 component?.className == "com.flipperdevices.bridge.service.impl.FlipperService"
             }
         )
-        verify(applicationContext).bindService(any(), any(), any())
+        verify(applicationContext).bindService(any(), any(), anyInt())
     }
 
     @Test
@@ -80,7 +83,7 @@ class FlipperServiceProviderTest {
         val lifecycleOwner = TestLifecycleOwner()
         subject.provideServiceApi(consumer, lifecycleOwner)
 
-        verify(applicationContext).bindService(any(), any(), any())
+        verify(applicationContext).bindService(any(), any(), anyInt())
 
         lifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
 
@@ -141,7 +144,7 @@ class FlipperServiceProviderTest {
 
         // Starting
         subject.provideServiceApi(firstConsumer, lifecycleOwner)
-        verify(applicationContext).bindService(any(), any(), any())
+        verify(applicationContext).bindService(any(), any(), anyInt())
         serviceConnection?.onServiceConnected(
             mock(),
             FlipperServiceBinder(firstServerApi, mock())
@@ -156,7 +159,7 @@ class FlipperServiceProviderTest {
 
         // Starting...
         subject.provideServiceApi(secondConsumer, lifecycleOwner)
-        verify(applicationContext).bindService(any(), any(), any())
+        verify(applicationContext).bindService(any(), any(), anyInt())
         serviceConnection?.onServiceConnected(
             mock(),
             FlipperServiceBinder(secondServerApi, mock())
@@ -173,7 +176,7 @@ class FlipperServiceProviderTest {
 
         // Starting
         subject.provideServiceApi(consumer, lifecycleOwner)
-        verify(applicationContext).bindService(any(), any(), any())
+        verify(applicationContext).bindService(any(), any(), anyInt())
         serviceConnection?.onServiceConnected(
             mock(),
             FlipperServiceBinder(serverApi, mock())
@@ -183,7 +186,7 @@ class FlipperServiceProviderTest {
         // Notify about service disconnected
         serviceConnection?.onServiceDisconnected(mock())
 
-        verify(applicationContext, times(2)).bindService(any(), any(), any())
+        verify(applicationContext, times(2)).bindService(any(), any(), anyInt())
     }
 
     @Test
@@ -195,7 +198,7 @@ class FlipperServiceProviderTest {
 
         // Starting
         subject.provideServiceApi(consumer, consumerLifecycle)
-        verify(applicationContext).bindService(any(), any(), any())
+        verify(applicationContext).bindService(any(), any(), anyInt())
         serviceConnection?.onServiceConnected(
             mock(),
             serviceBinder
@@ -205,7 +208,7 @@ class FlipperServiceProviderTest {
         // Notify about service destroy
         serviceBinder.listeners.removeAll { it.onInternalStop() }
 
-        verify(applicationContext, times(2)).bindService(any(), any(), any())
+        verify(applicationContext, times(2)).bindService(any(), any(), anyInt())
     }
 
     companion object {
