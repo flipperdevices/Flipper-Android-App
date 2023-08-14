@@ -15,7 +15,6 @@ import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.readRequest
 import kotlinx.coroutines.flow.toList
 import java.io.File
-import java.nio.charset.Charset
 import javax.inject.Inject
 
 class FapManifestsLoader @Inject constructor(

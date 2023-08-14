@@ -3,6 +3,7 @@
 # 1.6.4 - In progress
 
 - [Feature] Add transparent flipper mockup
+- [Feature] Add fap manifest caching
 - [CI] Add apk artifacts to Pull Requests
 
 # 1.6.3

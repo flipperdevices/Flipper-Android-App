@@ -14,5 +14,4 @@ interface FlipperStorageApi {
     suspend fun listingDirectory(pathOnFlipper: String): List<String>
 
     suspend fun listingDirectoryWithMd5(pathOnFlipper: String): List<NameWithHash>
-
 }
