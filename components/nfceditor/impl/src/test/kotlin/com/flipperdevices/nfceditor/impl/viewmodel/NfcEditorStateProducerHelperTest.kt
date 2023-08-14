@@ -1,5 +1,6 @@
 package com.flipperdevices.nfceditor.impl.viewmodel
 
+import android.os.Build
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.flipperdevices.bridge.dao.api.model.FlipperFile
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
@@ -20,8 +21,10 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.annotation.Config
 
 @RunWith(AndroidJUnit4::class)
+@Config(sdk = [Build.VERSION_CODES.TIRAMISU])
 class NfcEditorStateProducerHelperTest {
     @Test
     fun `1k apply color rules for each last line`() {

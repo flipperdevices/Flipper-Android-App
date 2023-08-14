@@ -1,5 +1,6 @@
 package com.flipperdevices.bridge.dao.impl.api.key
 
+import android.os.Build
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.flipperdevices.bridge.dao.api.model.FlipperFile
@@ -11,6 +12,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.annotation.Config
 
 private val EXAMPLE_FLIPPER_KEY = FlipperKey(
     mainFile = FlipperFile(
@@ -35,6 +37,7 @@ private val EXAMPLE_FLIPPER_KEY = FlipperKey(
 )
 
 @RunWith(AndroidJUnit4::class)
+@Config(sdk = [Build.VERSION_CODES.TIRAMISU])
 class ShouldSynchronizeHelperTest {
     @Test
     fun `edit name of key`() = runTest {
