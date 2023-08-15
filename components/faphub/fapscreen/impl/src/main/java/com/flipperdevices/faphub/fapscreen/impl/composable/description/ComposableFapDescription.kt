@@ -50,5 +50,6 @@ fun ComposableFapDescription(
         modifier = fapHideModifier,
         onClick = onHideApp,
         isHidden = isHidden,
+        fapItem = fapItem
     )
 }

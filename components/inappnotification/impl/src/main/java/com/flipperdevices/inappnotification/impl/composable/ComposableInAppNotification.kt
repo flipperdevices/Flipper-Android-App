@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.inappnotification.api.model.InAppNotification
+import com.flipperdevices.inappnotification.impl.composable.type.ComposableInAppNotificationHideApp
 import com.flipperdevices.inappnotification.impl.composable.type.ComposableInAppNotificationReportApp
 import com.flipperdevices.inappnotification.impl.composable.type.ComposableInAppNotificationSavedKey
 import com.flipperdevices.inappnotification.impl.composable.type.ComposableInAppNotificationUpdateReady
@@ -73,10 +74,19 @@ private fun ComposableInAppNotificationCard(
                     ComposableInAppNotificationUpdateReady(notification) {
                         visibleState = false
                         actionClicked = true
+                        onNotificationHidden()
                     }
                 }
 
                 InAppNotification.ReportApp -> ComposableInAppNotificationReportApp()
+                is InAppNotification.HiddenApp -> ComposableInAppNotificationHideApp(
+                    notification = notification,
+                    onClickAction = {
+                        visibleState = false
+                        actionClicked = true
+                        onNotificationHidden()
+                    }
+                )
             }
         }
     }

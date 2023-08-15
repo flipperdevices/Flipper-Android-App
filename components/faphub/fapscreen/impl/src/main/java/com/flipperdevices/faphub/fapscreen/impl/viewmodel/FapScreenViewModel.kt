@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.flipperdevices.bridge.dao.api.FapHubHideItemApi
 import com.flipperdevices.core.ktx.jre.launchWithLock
+import com.flipperdevices.core.ktx.jre.runBlockingWithLog
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.warn
@@ -19,6 +20,8 @@ import com.flipperdevices.faphub.installation.stateprovider.api.api.FapInstallat
 import com.flipperdevices.faphub.installation.stateprovider.api.model.FapState
 import com.flipperdevices.faphub.report.api.FapReportFeatureEntry
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
+import com.flipperdevices.inappnotification.api.InAppNotificationStorage
+import com.flipperdevices.inappnotification.api.model.InAppNotification
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -42,7 +45,8 @@ class FapScreenViewModel @VMInject constructor(
     private val stateManager: FapInstallationStateManager,
     private val targetProviderApi: FlipperTargetProviderApi,
     private val fapReportFeatureEntry: FapReportFeatureEntry,
-    private val fapHubHideApi: FapHubHideItemApi
+    private val fapHubHideApi: FapHubHideItemApi,
+    private val inAppNotificationStorage: InAppNotificationStorage
 ) : ViewModel(), LogTagProvider {
     override val TAG = "FapScreenViewModel"
 
@@ -86,6 +90,9 @@ class FapScreenViewModel @VMInject constructor(
                 fapHubHideApi.unHideItem(loadingState.fapItem.id)
             } else {
                 fapHubHideApi.hideItem(loadingState.fapItem.id)
+                inAppNotificationStorage.addNotification(InAppNotification.HiddenApp(
+                    action = { runBlockingWithLog { fapHubHideApi.unHideItem(loadingState.fapItem.id) } }
+                ))
             }
             fapScreenLoadingStateFlow.update {
                 if (it is FapScreenLoadingState.Loaded) {

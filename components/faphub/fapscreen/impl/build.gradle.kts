@@ -33,6 +33,7 @@ dependencies {
     implementation(libs.compose.navigation)
 
     implementation(projects.components.bottombar.api)
+    implementation(projects.components.inappnotification.api)
 
     implementation(projects.components.faphub.search.api)
     implementation(projects.components.faphub.dao.api)
