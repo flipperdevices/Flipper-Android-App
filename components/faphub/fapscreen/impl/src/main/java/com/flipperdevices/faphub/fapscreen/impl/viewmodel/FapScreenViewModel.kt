@@ -3,6 +3,7 @@ package com.flipperdevices.faphub.fapscreen.impl.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.flipperdevices.bridge.dao.api.FapHubHideItemApi
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
@@ -27,6 +28,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import kotlinx.coroutines.sync.Mutex
@@ -38,9 +40,9 @@ class FapScreenViewModel @VMInject constructor(
     private val fapUniversalId: String,
     private val fapNetworkApi: FapNetworkApi,
     private val stateManager: FapInstallationStateManager,
-    private val fapQueueApi: FapInstallationQueueApi,
     private val targetProviderApi: FlipperTargetProviderApi,
-    private val fapReportFeatureEntry: FapReportFeatureEntry
+    private val fapReportFeatureEntry: FapReportFeatureEntry,
+    private val fapHubHideApi: FapHubHideItemApi
 ) : ViewModel(), LogTagProvider {
     override val TAG = "FapScreenViewModel"
 
@@ -64,15 +66,6 @@ class FapScreenViewModel @VMInject constructor(
 
     fun getControlState() = controlStateFlow.asStateFlow()
 
-    fun onDelete() {
-        val loadingState = fapScreenLoadingStateFlow.value as? FapScreenLoadingState.Loaded
-        if (loadingState == null) {
-            warn { "#onDelete calls when fapScreenLoadingStateFlow is null or not loaded" }
-            return
-        }
-        fapQueueApi.enqueue(FapActionRequest.Delete(loadingState.fapItem.id))
-    }
-
     fun onOpenReportApp(navController: NavController) {
         val loadingState = fapScreenLoadingStateFlow.value as? FapScreenLoadingState.Loaded
         if (loadingState == null) {
@@ -80,6 +73,28 @@ class FapScreenViewModel @VMInject constructor(
             return
         }
         navController.navigate(fapReportFeatureEntry.start(loadingState.fapItem.id))
+    }
+
+    fun onPressHide(isHidden: Boolean) {
+        val loadingState = fapScreenLoadingStateFlow.value as? FapScreenLoadingState.Loaded
+        if (loadingState == null) {
+            warn { "#onPressHide calls when fapScreenLoadingStateFlow is null or not loaded" }
+            return
+        }
+        viewModelScope.launch {
+            if (isHidden) {
+                fapHubHideApi.unHideItem(loadingState.fapItem.id)
+            } else {
+                fapHubHideApi.hideItem(loadingState.fapItem.id)
+            }
+            fapScreenLoadingStateFlow.update {
+                if (it is FapScreenLoadingState.Loaded) {
+                    it.copy(
+                        isHidden = isHidden.not()
+                    )
+                } else it
+            }
+        }
     }
 
     fun onRefresh() = launchWithLock(mutex, viewModelScope, "refresh") {
@@ -98,7 +113,8 @@ class FapScreenViewModel @VMInject constructor(
                     fapScreenLoadingStateFlow.emit(
                         FapScreenLoadingState.Loaded(
                             fapItem = fapItem,
-                            shareUrl = generateUrl(fapItem.applicationAlias)
+                            shareUrl = generateUrl(fapItem.applicationAlias),
+                            isHidden = fapHubHideApi.isHidden(fapItem.id)
                         )
                     )
                     controlStateJob?.cancelAndJoin()

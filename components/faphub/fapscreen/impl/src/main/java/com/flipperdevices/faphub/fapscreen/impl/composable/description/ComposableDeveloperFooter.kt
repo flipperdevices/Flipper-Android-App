@@ -2,6 +2,7 @@ package com.flipperdevices.faphub.fapscreen.impl.composable.description
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,9 +28,9 @@ import com.flipperdevices.faphub.fapscreen.impl.R
 fun ColumnScope.ComposableDeveloperFooter(
     developerInformation: FapDeveloperInformation?,
     modifier: Modifier = Modifier
-) {
+) = Column(modifier = modifier) {
     Text(
-        modifier = modifier.padding(bottom = 8.dp, top = 32.dp),
+        modifier = Modifier.padding(bottom = 8.dp),
         text = stringResource(R.string.fapscreen_developer_title),
         style = LocalTypography.current.titleB18,
         color = LocalPallet.current.text100

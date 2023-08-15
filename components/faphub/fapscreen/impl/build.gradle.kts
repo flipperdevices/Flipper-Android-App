@@ -23,6 +23,8 @@ dependencies {
     implementation(projects.components.core.ui.navigation)
     implementation(projects.components.core.ui.dialog)
 
+    implementation(projects.components.bridge.dao.api)
+
     // Compose
     implementation(libs.compose.ui)
     implementation(libs.compose.tooling)

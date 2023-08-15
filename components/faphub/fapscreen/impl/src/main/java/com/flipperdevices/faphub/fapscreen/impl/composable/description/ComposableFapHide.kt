@@ -12,14 +12,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.core.ktx.jre.then
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.faphub.fapscreen.impl.R
 
 @Composable
-fun ComposableFapReport(
+fun ComposableFapHide(
     onClick: () -> Unit,
+    isHidden: Boolean,
     modifier: Modifier = Modifier,
 ) = Row(
     modifier = Modifier
@@ -28,10 +30,14 @@ fun ComposableFapReport(
         .then(modifier),
     verticalAlignment = Alignment.CenterVertically
 ) {
-    val text = stringResource(R.string.fapscreen_developer_report)
+    val text = if (isHidden) {
+        stringResource(R.string.fapscreen_developer_unhide)
+    } else {
+        stringResource(R.string.fapscreen_developer_hide)
+    }
     Icon(
         modifier = Modifier.size(24.dp),
-        painter = painterResource(R.drawable.ic_report),
+        painter = painterResource(R.drawable.ic_hide),
         contentDescription = text,
         tint = LocalPallet.current.warningColor
     )
