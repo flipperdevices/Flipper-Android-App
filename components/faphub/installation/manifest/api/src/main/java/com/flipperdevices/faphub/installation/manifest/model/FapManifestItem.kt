@@ -9,5 +9,6 @@ data class FapManifestItem(
     val path: String,
     val fullName: String,
     val iconBase64: String?,
-    val sdkApi: SemVer?
+    val sdkApi: SemVer?,
+    val sourceFileHash: String? = null
 )

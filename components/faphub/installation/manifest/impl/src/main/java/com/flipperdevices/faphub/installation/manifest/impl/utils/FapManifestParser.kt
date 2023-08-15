@@ -2,8 +2,10 @@ package com.flipperdevices.faphub.installation.manifest.impl.utils
 
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
 import com.flipperdevices.core.data.SemVer
+import com.flipperdevices.core.ktx.jre.md5
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
 import java.io.File
+import java.nio.charset.Charset
 import javax.inject.Inject
 
 private const val FAP_MANIFEST_FILETYPE_KEY = "Filetype"
@@ -18,7 +20,8 @@ private const val FAP_MANIFEST_ICON_KEY = "Icon"
 private const val FAP_MANIFEST_API_KEY = "Version Build API"
 
 class FapManifestParser @Inject constructor() {
-    fun parse(fff: FlipperFileFormat, name: String): FapManifestItem? {
+    fun parse(fileContent: ByteArray, name: String): FapManifestItem? {
+        val fff = FlipperFileFormat.fromFileContent(fileContent.toString(Charset.forName("UTF-8")))
         val applicationAlias = File(name).nameWithoutExtension
 
         val dict = fff.orderedDict.toMap()
@@ -29,7 +32,8 @@ class FapManifestParser @Inject constructor() {
             path = dict[FAP_MANIFEST_PATH_KEY] ?: return null,
             fullName = dict[FAP_MANIFEST_FULL_NAME_KEY] ?: applicationAlias,
             iconBase64 = dict[FAP_MANIFEST_ICON_KEY],
-            sdkApi = dict[FAP_MANIFEST_API_KEY]?.let { SemVer.fromString(it) }
+            sdkApi = dict[FAP_MANIFEST_API_KEY]?.let { SemVer.fromString(it) },
+            sourceFileHash = fileContent.md5()
         )
     }
 

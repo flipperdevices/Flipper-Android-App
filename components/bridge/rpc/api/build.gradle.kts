@@ -8,5 +8,7 @@ dependencies {
     implementation(projects.components.core.progress)
 
     implementation(projects.components.bridge.api)
+    implementation(projects.components.bridge.pbutils)
+
     implementation(libs.kotlin.coroutines)
 }
