@@ -72,7 +72,7 @@ fun ComposableFapScreen(
             onReportApp = { viewModel.onOpenReportApp(navController) },
             onRefresh = viewModel::onRefresh,
             isHidden = loadingStateLocal.isHidden,
-            onHideApp = { viewModel.onPressHide(loadingStateLocal.isHidden) }
+            onHideApp = { viewModel.onPressHide(loadingStateLocal.isHidden, navController) }
         )
 
         FapScreenLoadingState.Loading -> ComposableFapScreenInternal(

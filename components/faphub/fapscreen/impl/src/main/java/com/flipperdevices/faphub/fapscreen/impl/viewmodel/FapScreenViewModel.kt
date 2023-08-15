@@ -35,6 +35,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.withContext
 import tangle.inject.TangleParam
 import tangle.viewmodel.VMInject
 
@@ -79,13 +80,13 @@ class FapScreenViewModel @VMInject constructor(
         navController.navigate(fapReportFeatureEntry.start(loadingState.fapItem.id))
     }
 
-    fun onPressHide(isHidden: Boolean) {
+    fun onPressHide(isHidden: Boolean, navController: NavController) {
         val loadingState = fapScreenLoadingStateFlow.value as? FapScreenLoadingState.Loaded
         if (loadingState == null) {
             warn { "#onPressHide calls when fapScreenLoadingStateFlow is null or not loaded" }
             return
         }
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Default) {
             if (isHidden) {
                 fapHubHideApi.unHideItem(loadingState.fapItem.id)
             } else {
@@ -93,6 +94,9 @@ class FapScreenViewModel @VMInject constructor(
                 inAppNotificationStorage.addNotification(InAppNotification.HiddenApp(
                     action = { runBlockingWithLog { fapHubHideApi.unHideItem(loadingState.fapItem.id) } }
                 ))
+                withContext(Dispatchers.Main) {
+                    navController.popBackStack()
+                }
             }
             fapScreenLoadingStateFlow.update {
                 if (it is FapScreenLoadingState.Loaded) {

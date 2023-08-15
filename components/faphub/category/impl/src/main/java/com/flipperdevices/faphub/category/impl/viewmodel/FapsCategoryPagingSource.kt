@@ -1,5 +1,6 @@
 package com.flipperdevices.faphub.category.impl.viewmodel
 
+import com.flipperdevices.bridge.dao.api.model.FapHubHiddenItem
 import com.flipperdevices.core.pager.OffsetAndLimitPagingSource
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.dao.api.model.FapCategory
@@ -13,7 +14,8 @@ class FapsCategoryPagingSource(
     private val fapNetworkApi: FapNetworkApi,
     private val fapCategory: FapCategory,
     private val sortType: SortType,
-    private val target: FlipperTarget
+    private val target: FlipperTarget,
+    private val hiddenItems: Set<FapHubHiddenItem>
 ) : OffsetAndLimitPagingSource<FapItemShort>(FAPS_PAGE_SIZE) {
     override val TAG = "FapsCategoryPagingSource"
 
@@ -24,6 +26,6 @@ class FapsCategoryPagingSource(
             sortType = sortType,
             offset = offset,
             limit = limit
-        ).getOrThrow()
+        ).getOrThrow().filterNot { hiddenItems.contains(it.id) }
     }
 }

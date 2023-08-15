@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
+import com.flipperdevices.bridge.dao.api.FapHubHideItemApi
 import com.flipperdevices.core.pager.loadingPagingDataFlow
 import com.flipperdevices.faphub.category.impl.api.CATEGORY_OPEN_PATH_KEY
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
@@ -24,18 +25,23 @@ class FapHubCategoryViewModel @VMInject constructor(
     private val fapNetworkApi: FapNetworkApi,
     @TangleParam(CATEGORY_OPEN_PATH_KEY)
     private val category: FapCategory,
+    fapHubHideItemApi: FapHubHideItemApi,
     targetProviderApi: FlipperTargetProviderApi
 ) : ViewModel() {
     private val sortTypeFlow = MutableStateFlow(SortType.UPDATE_AT_DESC)
 
-    val faps = combine(sortTypeFlow, targetProviderApi.getFlipperTarget()) { sortType, target ->
+    val faps = combine(
+        sortTypeFlow,
+        targetProviderApi.getFlipperTarget(),
+        fapHubHideItemApi.getHiddenItems()
+    ) { sortType, target, hiddenItems ->
         if (target == null) {
             return@combine loadingPagingDataFlow()
         }
         return@combine Pager(
             PagingConfig(pageSize = FAPS_PAGE_SIZE)
         ) {
-            FapsCategoryPagingSource(fapNetworkApi, category, sortType, target)
+            FapsCategoryPagingSource(fapNetworkApi, category, sortType, target, hiddenItems)
         }.flow
     }.flatMapLatest { it }.cachedIn(viewModelScope)
 

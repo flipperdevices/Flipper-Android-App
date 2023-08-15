@@ -1,7 +1,7 @@
 package com.flipperdevices.bridge.dao.impl.api
 
 import com.flipperdevices.bridge.dao.api.FapHubHideItemApi
-import com.flipperdevices.bridge.dao.api.model.FapHubHideItem
+import com.flipperdevices.bridge.dao.api.model.FapHubHiddenItem
 import com.flipperdevices.bridge.dao.impl.model.HideFapHubApp
 import com.flipperdevices.bridge.dao.impl.repository.HideFapHubAppDao
 import com.flipperdevices.core.di.AppGraph
@@ -14,9 +14,9 @@ import kotlinx.coroutines.flow.map
 class FapHubHideItemApiImpl @Inject constructor(
     private val fapHubAppDao: HideFapHubAppDao
 ) : FapHubHideItemApi {
-    override fun getHiddenItems(): Flow<List<FapHubHideItem>> {
+    override fun getHiddenItems(): Flow<Set<FapHubHiddenItem>> {
         return fapHubAppDao.fetchAllHideFapHub()
-            .map { list -> list.map { FapHubHideItem(it.applicationUid) } }
+            .map { list -> list.map { it.applicationUid }.toSet() }
     }
 
     override suspend fun isHidden(applicationUid: String): Boolean {
