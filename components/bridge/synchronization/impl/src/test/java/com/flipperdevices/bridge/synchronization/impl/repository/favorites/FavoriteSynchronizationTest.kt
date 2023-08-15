@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.synchronization.impl.repository.favorites
 
 import android.content.Context
+import android.os.Build
 import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.model.FlipperFile
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
@@ -30,8 +31,10 @@ import org.junit.Test
 import org.junit.rules.TemporaryFolder
 import org.junit.runner.RunWith
 import org.robolectric.ParameterizedRobolectricTestRunner
+import org.robolectric.annotation.Config
 
 @RunWith(ParameterizedRobolectricTestRunner::class)
+@Config(sdk = [Build.VERSION_CODES.TIRAMISU])
 class FavoriteSynchronizationTest(
     val param: FavoriteSynchronizationTestParam
 ) {

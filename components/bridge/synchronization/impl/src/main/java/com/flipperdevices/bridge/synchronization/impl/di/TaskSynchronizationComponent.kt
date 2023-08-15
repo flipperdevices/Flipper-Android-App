@@ -10,6 +10,7 @@ import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UpdateKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
+import com.flipperdevices.bridge.rpc.api.FlipperStorageApi
 import com.flipperdevices.bridge.synchronization.impl.repository.FavoriteSynchronization
 import com.flipperdevices.bridge.synchronization.impl.repository.KeysSynchronization
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestRepository
@@ -31,6 +32,7 @@ interface TaskSynchronizationComponentDependencies {
     val updateKeyApi: UpdateKeyApi
     val context: Context
     val settings: DataStore<Settings>
+    val flipperStorageApi: FlipperStorageApi
 }
 
 @SingleIn(TaskGraph::class)

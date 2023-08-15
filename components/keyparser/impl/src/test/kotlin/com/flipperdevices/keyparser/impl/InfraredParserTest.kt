@@ -1,5 +1,6 @@
 package com.flipperdevices.keyparser.impl
 
+import android.os.Build
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.flipperdevices.bridge.dao.api.model.FlipperFile
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
@@ -14,8 +15,10 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.annotation.Config
 
 @RunWith(AndroidJUnit4::class)
+@Config(sdk = [Build.VERSION_CODES.TIRAMISU])
 class InfraredParserTest {
     private val underTest = InfraredParser()
 

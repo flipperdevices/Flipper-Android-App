@@ -1,5 +1,6 @@
 package com.flipperdevices.faphub.dao.network.helper
 
+import com.flipperdevices.core.ktx.jre.pmap
 import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.dao.api.model.SortType
 import com.flipperdevices.faphub.dao.network.ktorfit.api.KtorfitApplicationApi
@@ -70,7 +71,7 @@ class FapApplicationReceiveHelper @Inject constructor(
                     categoryId = category?.id
                 )
             } else {
-                applicationIds.chunked(MAX_QUERY_ARRAY_SIZE).map {
+                applicationIds.chunked(MAX_QUERY_ARRAY_SIZE).pmap {
                     applicationApi.getAll(
                         offset = offset,
                         limit = limit,
@@ -94,7 +95,7 @@ class FapApplicationReceiveHelper @Inject constructor(
                     applications = applicationIds
                 )
             } else {
-                applicationIds.chunked(MAX_QUERY_ARRAY_SIZE).map {
+                applicationIds.chunked(MAX_QUERY_ARRAY_SIZE).pmap {
                     applicationApi.getAllWithTarget(
                         offset = offset,
                         limit = limit,

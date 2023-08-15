@@ -770,9 +770,11 @@ Compose:
     active: true
   UnstableCollections:
     active: true
-  ViewModelForwarding:
-    active: true
   ViewModelInjection:
     active: true
     # You can optionally add your own ViewModel factories here
     # viewModelFactories: hiltViewModel,potatoViewModel
+  ViewModelForwarding:
+    active: false
+  ModifierNotUsedAtRoot:
+    active: false

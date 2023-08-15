@@ -10,6 +10,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.faphub.dao.api.FapVersionApi
+import com.flipperdevices.faphub.installation.manifest.impl.utils.FapManifestCacheLoader
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestEnrichedItem
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestState
@@ -17,12 +18,15 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.sync.Mutex
 
 class FapManifestEnrichedHelper(
     private val scope: CoroutineScope,
     private val versionApi: FapVersionApi,
-    application: Application
+    application: Application,
+    private val cacheLoader: FapManifestCacheLoader
 ) : LogTagProvider, ConnectivityManager.NetworkCallback() {
     override val TAG = "FapManifestEnrichedHelper"
 
@@ -39,6 +43,15 @@ class FapManifestEnrichedHelper(
         } catch (ex: Exception) {
             error(ex) { "Failed register network callback" }
         }
+        fapManifestState.onEach { state ->
+            when (state) {
+                is FapManifestState.Loaded -> cacheLoader.invalidate(state.items.map { it.fapManifestItem })
+                is FapManifestState.LoadedOffline -> cacheLoader.invalidate(state.items)
+                FapManifestState.Loading,
+                is FapManifestState.NotLoaded -> {
+                }
+            }
+        }.launchIn(scope)
     }
 
     fun getManifestState() = fapManifestState.asStateFlow()

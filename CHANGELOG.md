@@ -4,8 +4,10 @@
 
 - [Feature] Add transparent flipper mockup
 - [Feature] Add broke rpc ble session button to debug settings
+- [Feature] Add fap manifest caching
 - [CI] Add apk artifacts to Pull Requests
 - [CI] Fix failed build in merge_group
+- [CI] Bump deps
 
 # 1.6.3
 

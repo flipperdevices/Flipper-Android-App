@@ -45,5 +45,4 @@ dependencies {
     anvil(libs.tangle.viewmodel.compiler)
 
     implementation(libs.ktx)
-    implementation(libs.ktx.fragment)
 }
