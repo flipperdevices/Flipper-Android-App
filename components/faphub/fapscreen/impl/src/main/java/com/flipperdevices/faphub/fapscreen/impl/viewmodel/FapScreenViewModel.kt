@@ -14,8 +14,6 @@ import com.flipperdevices.faphub.dao.api.model.FapItem
 import com.flipperdevices.faphub.fapscreen.impl.api.FAP_ID_KEY
 import com.flipperdevices.faphub.fapscreen.impl.model.FapDetailedControlState
 import com.flipperdevices.faphub.fapscreen.impl.model.FapScreenLoadingState
-import com.flipperdevices.faphub.installation.queue.api.FapInstallationQueueApi
-import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest
 import com.flipperdevices.faphub.installation.stateprovider.api.api.FapInstallationStateManager
 import com.flipperdevices.faphub.installation.stateprovider.api.model.FapState
 import com.flipperdevices.faphub.report.api.FapReportFeatureEntry
@@ -39,6 +37,7 @@ import kotlinx.coroutines.withContext
 import tangle.inject.TangleParam
 import tangle.viewmodel.VMInject
 
+@Suppress("LongParameterList")
 class FapScreenViewModel @VMInject constructor(
     @TangleParam(FAP_ID_KEY)
     private val fapUniversalId: String,
@@ -91,9 +90,11 @@ class FapScreenViewModel @VMInject constructor(
                 fapHubHideApi.unHideItem(loadingState.fapItem.id)
             } else {
                 fapHubHideApi.hideItem(loadingState.fapItem.id)
-                inAppNotificationStorage.addNotification(InAppNotification.HiddenApp(
-                    action = { runBlockingWithLog { fapHubHideApi.unHideItem(loadingState.fapItem.id) } }
-                ))
+                inAppNotificationStorage.addNotification(
+                    InAppNotification.HiddenApp(
+                        action = { runBlockingWithLog { fapHubHideApi.unHideItem(loadingState.fapItem.id) } }
+                    )
+                )
                 withContext(Dispatchers.Main) {
                     navController.popBackStack()
                 }
@@ -103,7 +104,9 @@ class FapScreenViewModel @VMInject constructor(
                     it.copy(
                         isHidden = isHidden.not()
                     )
-                } else it
+                } else {
+                    it
+                }
             }
         }
     }

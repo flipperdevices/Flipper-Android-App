@@ -42,6 +42,7 @@ fun ComposableInAppNotification(
 }
 
 @Composable
+@Suppress("LongMethod")
 private fun ComposableInAppNotificationCard(
     notification: InAppNotification,
     onNotificationHidden: () -> Unit,

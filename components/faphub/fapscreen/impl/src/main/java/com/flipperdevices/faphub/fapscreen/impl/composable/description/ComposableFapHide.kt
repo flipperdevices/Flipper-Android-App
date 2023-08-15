@@ -39,7 +39,8 @@ fun ComposableFapHide(
             onConfirm = {
                 hideDialogVisible = false
                 onClick()
-            }, onDismiss = {
+            },
+            onDismiss = {
                 hideDialogVisible = false
             }
         )

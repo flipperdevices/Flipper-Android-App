@@ -12,6 +12,7 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Stable
+@Suppress("TooManyFunctions")
 class FlipperMultiChoiceDialogModel private constructor(
     val imageComposable: (@Composable () -> Unit)?,
     val titleComposable: (@Composable () -> Unit)?,

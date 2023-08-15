@@ -6,9 +6,9 @@ import com.flipperdevices.bridge.dao.impl.model.HideFapHubApp
 import com.flipperdevices.bridge.dao.impl.repository.HideFapHubAppDao
 import com.flipperdevices.core.di.AppGraph
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, FapHubHideItemApi::class)
 class FapHubHideItemApiImpl @Inject constructor(
