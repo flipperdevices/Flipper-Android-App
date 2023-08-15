@@ -29,7 +29,8 @@ dagger = "2.47" # https://github.com/google/dagger/releases
 timber = "5.0.1" # https://github.com/JakeWharton/timber/releases
 timber-treessence = "1.0.5" # https://github.com/bastienpaulfr/Treessence/tags
 sentry-runtime = "6.28.0" # https://github.com/getsentry/sentry-java/releases
-sentry-gradle = "3.12.0" # https://github.com/getsentry/sentry-android-gradle-plugin/releases
+# Downgrade from 3.12.0 because we use outdated sentry version on server
+sentry-gradle = "3.11.1" # https://github.com/getsentry/sentry-android-gradle-plugin/releases
 zip4j = "2.11.5" # https://github.com/srikanth-lingala/zip4j/releases
 ktx = "1.10.1" # https://developer.android.com/jetpack/androidx/releases/core
 ktx-activity = "1.7.2" # https://developer.android.com/jetpack/androidx/releases/activity
