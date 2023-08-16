@@ -2,7 +2,7 @@
 
 # 1.6.4 - In progress
 
-- [Feature] Add transparent flipper mockup
+- [Feature] Add transparent flipper mockup with fixed templates
 - [Feature] Add fap manifest caching
 - [CI] Add apk artifacts to Pull Requests
 - [CI] Fix failed build in merge_group
