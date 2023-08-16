@@ -6,7 +6,7 @@
 - [Feature] Add fap manifest caching
 - [CI] Add apk artifacts to Pull Requests
 - [CI] Fix failed build in merge_group
-- [CI] Bump deps
+- [CI] Bump deps except Sentry-gradle
 
 # 1.6.3
 
