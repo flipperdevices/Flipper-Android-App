@@ -7,6 +7,7 @@
 - [CI] Add apk artifacts to Pull Requests
 - [CI] Fix failed build in merge_group
 - [CI] Bump deps except Sentry-gradle
+- [FIX] Canceled process loop and close service for WearOS 
 
 # 1.6.3
 
