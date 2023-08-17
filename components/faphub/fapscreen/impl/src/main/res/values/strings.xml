@@ -11,7 +11,7 @@
     <string name="fapscreen_developer_title">Developer</string>
     <string name="fapscreen_developer_github">View on GitHub</string>
     <string name="fapscreen_developer_manifest">Manifest</string>
-    <string name="fapscreen_developer_report">Report an App</string>
+    <string name="fapscreen_developer_report">Report App</string>
     <string name="fapscreen_building_state_ready_text">Runs on latest firmware Release</string>
     <string name="fapscreen_building_state_building_text">App is rebuilding…</string>
     <string name="fapscreen_building_state_outdated_app_text">Outdated app</string>
