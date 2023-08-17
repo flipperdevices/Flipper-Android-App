@@ -4,6 +4,7 @@
 
 - [Feature] Add transparent flipper mockup with fixed templates
 - [Feature] Add fap manifest caching
+- [Feature] Add hide app button
 - [CI] Add apk artifacts to Pull Requests
 - [CI] Fix failed build in merge_group
 - [CI] Bump deps except Sentry-gradle

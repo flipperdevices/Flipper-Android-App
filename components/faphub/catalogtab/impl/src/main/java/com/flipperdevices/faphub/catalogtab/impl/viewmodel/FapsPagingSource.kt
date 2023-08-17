@@ -1,5 +1,6 @@
 package com.flipperdevices.faphub.catalogtab.impl.viewmodel
 
+import com.flipperdevices.bridge.dao.api.model.FapHubHiddenItem
 import com.flipperdevices.core.pager.OffsetAndLimitPagingSource
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.dao.api.model.FapItemShort
@@ -11,7 +12,8 @@ internal const val FAPS_PAGE_SIZE = 10
 class FapsPagingSource(
     private val fapNetworkApi: FapNetworkApi,
     private val sortType: SortType,
-    private val target: FlipperTarget
+    private val target: FlipperTarget,
+    private val hiddenItems: Set<FapHubHiddenItem>
 ) : OffsetAndLimitPagingSource<FapItemShort>(FAPS_PAGE_SIZE) {
     override val TAG = "FapsPagingSource"
     override suspend fun load(offset: Int, limit: Int): List<FapItemShort> {
@@ -20,6 +22,6 @@ class FapsPagingSource(
             offset = offset,
             limit = limit,
             target = target
-        ).getOrThrow()
+        ).getOrThrow().filterNot { hiddenItems.contains(it.id) }
     }
 }

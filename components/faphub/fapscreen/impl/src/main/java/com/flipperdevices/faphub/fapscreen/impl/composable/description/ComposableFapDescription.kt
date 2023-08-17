@@ -12,6 +12,8 @@ import com.flipperdevices.faphub.dao.api.model.FapItem
 fun ComposableFapDescription(
     fapItem: FapItem?,
     onReportApp: () -> Unit,
+    onHideApp: () -> Unit,
+    isHidden: Boolean,
     modifier: Modifier = Modifier
 ) = Column(modifier) {
     val description = if (fapItem != null) {
@@ -27,13 +29,27 @@ fun ComposableFapDescription(
         description = description,
     )
     ComposableFapChangelogText(fapItem?.changelog)
-    ComposableDeveloperFooter(fapItem?.fapDeveloperInformation)
-    var fapReportManifest = Modifier.padding(top = 32.dp)
+    ComposableDeveloperFooter(
+        fapItem?.fapDeveloperInformation,
+        modifier = Modifier.padding(bottom = 26.dp, top = 32.dp)
+    )
+    var fapReportModifier = Modifier.padding(top = 6.dp, bottom = 6.dp)
     if (fapItem == null) {
-        fapReportManifest = fapReportManifest.placeholderConnecting()
+        fapReportModifier = fapReportModifier.placeholderConnecting()
     }
     ComposableFapReport(
-        modifier = fapReportManifest,
+        modifier = fapReportModifier,
         onClick = onReportApp
+    )
+
+    var fapHideModifier = Modifier.padding(vertical = 6.dp)
+    if (fapItem == null) {
+        fapHideModifier = fapHideModifier.placeholderConnecting()
+    }
+    ComposableFapHide(
+        modifier = fapHideModifier,
+        onClick = onHideApp,
+        isHidden = isHidden,
+        fapItem = fapItem
     )
 }
