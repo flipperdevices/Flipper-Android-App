@@ -30,6 +30,7 @@ class WearRequestForegroundService : LifecycleService(), WearRequestChannelBinde
             NOTIFICATION_ID,
             HandheldWearOSNotificationHelper.buildNotification(applicationContext)
         )
+        wearServiceComponent.commandProcessors.forEach { it.init() }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -55,7 +56,6 @@ class WearRequestForegroundService : LifecycleService(), WearRequestChannelBinde
         info { "#onChannelOpen" }
         wearServiceComponent.commandInputStream.onOpenChannel(lifecycleScope, channel)
         wearServiceComponent.commandOutputStream.onOpenChannel(lifecycleScope, channel)
-        wearServiceComponent.commandProcessors.forEach { it.init() }
     }
 
     override fun onDestroy() {
