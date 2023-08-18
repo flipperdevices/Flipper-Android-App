@@ -9,11 +9,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.flipperdevices.keyedit.impl.model.KeyEditState
 import com.flipperdevices.keyedit.impl.model.SaveButtonState
-import com.flipperdevices.keyedit.impl.viewmodel.KeyEditViewModel
 
 @Composable
 fun ComposableEditScreen(
-    viewModel: KeyEditViewModel,
+    onNameChange: (String) -> Unit,
+    onNoteChange: (String) -> Unit,
     title: String?,
     state: KeyEditState,
     onBack: () -> Unit,
@@ -23,11 +23,12 @@ fun ComposableEditScreen(
         KeyEditState.Loading,
         is KeyEditState.Saving -> ComposableEditScreenLoading()
         is KeyEditState.Editing -> ComposableEditScreenEditing(
-            viewModel,
-            title,
-            state,
-            onBack,
-            onSave
+            onNameChange = onNameChange,
+            onNoteChange = onNoteChange,
+            title = title,
+            state = state,
+            onCancel = onBack,
+            onSave = onSave
         )
         KeyEditState.Failed -> onBack()
     }
@@ -45,7 +46,8 @@ private fun ComposableEditScreenLoading() {
 
 @Composable
 private fun ComposableEditScreenEditing(
-    viewModel: KeyEditViewModel,
+    onNameChange: (String) -> Unit,
+    onNoteChange: (String) -> Unit,
     title: String?,
     state: KeyEditState.Editing,
     onCancel: () -> Unit,
@@ -64,10 +66,11 @@ private fun ComposableEditScreenEditing(
             onSave = onSave
         )
         ComposableEditCard(
-            viewModel,
-            state.name,
-            state.notes,
-            state.parsedKey,
+            onNameChange = onNameChange,
+            onNoteChange = onNoteChange,
+            name = state.name,
+            notes = state.notes,
+            keyParsed = state.parsedKey,
             enabled = true
         )
     }

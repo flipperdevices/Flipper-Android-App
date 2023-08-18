@@ -52,7 +52,10 @@ fun ComposableStressTestScreen(
             debugLog,
             Modifier.weight(weight = 1f)
         )
-        ComposableButton(viewModel)
+        ComposableButton(
+            onStartBruteforce = viewModel::startBruteforce,
+            onStopBruteforce = viewModel::stopBruteforce,
+        )
         ComposableSpeed(speedState)
     }
 }
@@ -103,14 +106,17 @@ private fun ComposableLogLine(line: LogLine) {
 }
 
 @Composable
-private fun ComposableButton(viewModel: StressTestViewModel) {
+private fun ComposableButton(
+    onStartBruteforce: () -> Unit,
+    onStopBruteforce: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         TextButton(
-            onClick = { viewModel.startBruteforce() }
+            onClick = onStartBruteforce
         ) {
             Text(
                 modifier = Modifier.padding(all = 16.dp),
@@ -119,7 +125,7 @@ private fun ComposableButton(viewModel: StressTestViewModel) {
                 color = LocalPallet.current.text100
             )
         }
-        TextButton(onClick = { viewModel.stopBruteforce() }) {
+        TextButton(onClick = onStopBruteforce) {
             Text(
                 modifier = Modifier.padding(all = 16.dp),
                 text = "Stop",

@@ -775,6 +775,6 @@ Compose:
     # You can optionally add your own ViewModel factories here
     # viewModelFactories: hiltViewModel,potatoViewModel
   ViewModelForwarding:
-    active: false
+    active: true
   ModifierNotUsedAtRoot:
-    active: false
+    active: true
