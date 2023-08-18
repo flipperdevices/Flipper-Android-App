@@ -2,12 +2,14 @@
 
 # 1.6.4 - In progress
 
-- [Feature] Add transparent flipper mockup
+- [Feature] Add transparent flipper mockup with fixed templates
 - [Feature] Add fap manifest caching
+- [Feature] Add hide app button
 - [CI] Add apk artifacts to Pull Requests
 - [CI] Fix failed build in merge_group
 - [CI] Bump deps except Sentry-gradle
 - [FIX] Canceled process loop and close service for WearOS 
+- [FIX] Upgrade google appcompanist
 
 # 1.6.3
 

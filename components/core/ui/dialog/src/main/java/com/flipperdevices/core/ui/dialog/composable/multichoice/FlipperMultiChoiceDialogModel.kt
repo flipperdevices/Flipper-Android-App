@@ -12,6 +12,7 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Stable
+@Suppress("TooManyFunctions")
 class FlipperMultiChoiceDialogModel private constructor(
     val imageComposable: (@Composable () -> Unit)?,
     val titleComposable: (@Composable () -> Unit)?,
@@ -55,6 +56,11 @@ class FlipperMultiChoiceDialogModel private constructor(
             return this
         }
 
+        fun setImage(content: @Composable () -> Unit): Builder {
+            imageComposable = content
+            return this
+        }
+
         @Composable
         private fun ComposableDescription(text: AnnotatedString) {
             Text(
@@ -95,6 +101,21 @@ class FlipperMultiChoiceDialogModel private constructor(
                     text,
                     onClick,
                     if (isActive) LocalPallet.current.accentSecond else null
+                )
+            }
+            return this
+        }
+
+        fun addButton(
+            @StringRes textId: Int,
+            onClick: () -> Unit,
+            textColor: Color
+        ): Builder {
+            buttonComposables.add {
+                ComposableFlipperFlatButton(
+                    stringResource(textId),
+                    onClick,
+                    textColor
                 )
             }
             return this
