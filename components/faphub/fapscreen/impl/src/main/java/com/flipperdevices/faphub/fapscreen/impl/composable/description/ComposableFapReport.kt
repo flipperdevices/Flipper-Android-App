@@ -22,9 +22,10 @@ fun ComposableFapReport(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) = Row(
-    modifier = modifier
+    modifier = Modifier
         .fillMaxWidth()
-        .clickableRipple(onClick = onClick),
+        .clickableRipple(onClick = onClick)
+        .then(modifier),
     verticalAlignment = Alignment.CenterVertically
 ) {
     val text = stringResource(R.string.fapscreen_developer_report)

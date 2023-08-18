@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
+import com.flipperdevices.bridge.dao.api.FapHubHideItemApi
 import com.flipperdevices.core.pager.loadingPagingDataFlow
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.dao.api.model.SortType
@@ -21,17 +22,22 @@ import tangle.viewmodel.VMInject
 class FapsListViewModel @VMInject constructor(
     private val fapNetworkApi: FapNetworkApi,
     private val fapManifestApi: FapManifestApi,
+    fapHubHideItemApi: FapHubHideItemApi,
     targetProviderApi: FlipperTargetProviderApi
 ) : ViewModel() {
     private val sortTypeFlow = MutableStateFlow(SortType.NAME_DESC)
-    val faps = combine(sortTypeFlow, targetProviderApi.getFlipperTarget()) { sortType, target ->
+    val faps = combine(
+        sortTypeFlow,
+        targetProviderApi.getFlipperTarget(),
+        fapHubHideItemApi.getHiddenItems()
+    ) { sortType, target, hiddenItems ->
         if (target == null) {
             return@combine loadingPagingDataFlow()
         }
         return@combine Pager(
             PagingConfig(pageSize = FAPS_PAGE_SIZE)
         ) {
-            FapsPagingSource(fapNetworkApi, sortType, target)
+            FapsPagingSource(fapNetworkApi, sortType, target, hiddenItems)
         }.flow
     }.flatMapLatest { it }.cachedIn(viewModelScope)
 
