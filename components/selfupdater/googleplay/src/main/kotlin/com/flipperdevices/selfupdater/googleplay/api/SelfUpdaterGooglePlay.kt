@@ -71,7 +71,7 @@ class SelfUpdaterGooglePlay @Inject constructor(
     }
 
     override fun getInstallSourceName() = "Google Play/" + BuildConfig.BUILD_TYPE
-    override fun isSelfUpdateChecked(): Boolean = false
+    override fun isSelfUpdateCanManualCheck(): Boolean = false
 
     private fun isUpdateAvailable(appUpdateInfo: AppUpdateInfo): Boolean {
         return appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&

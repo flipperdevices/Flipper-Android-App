@@ -40,6 +40,7 @@ class SelfUpdaterDebug @Inject constructor(
         onEndCheck(SelfUpdateResult.SUCCESS)
     }
 
-    override fun getInstallSourceName() = "Debug"
-    override fun isSelfUpdateChecked(): Boolean = true
+    override fun getInstallSourceName() = "Debug Lorem Ipsum"
+
+    override fun isSelfUpdateCanManualCheck(): Boolean = false
 }

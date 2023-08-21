@@ -35,7 +35,7 @@ class SelfUpdaterThirdParty @Inject constructor(
     private val nameParser = updateParser.getName()
     override val TAG: String get() = "SelfUpdaterThirdParty"
     override fun getInstallSourceName() = "$nameParser/${BuildConfig.BUILD_TYPE}"
-    override fun isSelfUpdateChecked(): Boolean = true
+    override fun isSelfUpdateCanManualCheck(): Boolean = true
 
     private var downloadId: Long? = null
     private val manager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager

@@ -11,5 +11,5 @@ class SelfUpdaterUnknown @Inject constructor() : SelfUpdaterApi {
     override suspend fun startCheckUpdate(onEndCheck: suspend (SelfUpdateResult) -> Unit) = Unit
 
     override fun getInstallSourceName() = "Unknown"
-    override fun isSelfUpdateChecked(): Boolean = false
+    override fun isSelfUpdateCanManualCheck(): Boolean = false
 }

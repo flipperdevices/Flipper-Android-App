@@ -30,7 +30,7 @@ class VersionViewModel @VMInject constructor(
     fun versionApp() = applicationParams.version
     fun sourceInstall() = selfUpdaterApi.getInstallSourceName()
 
-    fun isSelfUpdateManualChecked() = selfUpdaterApi.isSelfUpdateChecked()
+    fun isSelfUpdateManualChecked() = selfUpdaterApi.isSelfUpdateCanManualCheck()
 
     fun onCheckUpdates() {
         info { "#onCheckUpdates" }

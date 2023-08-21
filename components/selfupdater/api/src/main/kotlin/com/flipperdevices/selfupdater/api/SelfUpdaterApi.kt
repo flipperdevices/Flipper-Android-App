@@ -9,5 +9,5 @@ interface SelfUpdaterApi {
 
     fun getInstallSourceName(): String
 
-    fun isSelfUpdateChecked(): Boolean
+    fun isSelfUpdateCanManualCheck(): Boolean
 }
