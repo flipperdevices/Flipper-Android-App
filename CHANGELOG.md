@@ -2,6 +2,7 @@
 
 # 1.6.4 - In progress
 
+- [Feature] Check Self Update App in Optiond (only for github)
 - [Feature] Add transparent flipper mockup with fixed templates
 - [Feature] Add fap manifest caching
 - [Feature] Add hide app button

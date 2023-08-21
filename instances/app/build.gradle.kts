@@ -214,8 +214,7 @@ dependencies {
             implementation(projects.components.selfupdater.thirdparty.github)
         }
         SourceInstall.FDROID -> {
-            implementation(projects.components.selfupdater.thirdparty.api)
-            implementation(projects.components.selfupdater.thirdparty.fdroid)
+            implementation(projects.components.selfupdater.unknown)
         }
         SourceInstall.DEBUG -> {
             implementation(projects.components.selfupdater.debug)

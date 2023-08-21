@@ -9,8 +9,7 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.coroutineScope
+import com.flipperdevices.core.activityholder.CurrentActivityHolder
 import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.ApplicationParams
@@ -21,8 +20,8 @@ import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
 import com.flipperdevices.selfupdater.api.BuildConfig
 import com.flipperdevices.selfupdater.api.SelfUpdaterApi
+import com.flipperdevices.selfupdater.models.SelfUpdateResult
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, SelfUpdaterApi::class)
@@ -36,23 +35,30 @@ class SelfUpdaterThirdParty @Inject constructor(
     private val nameParser = updateParser.getName()
     override val TAG: String get() = "SelfUpdaterThirdParty"
     override fun getInstallSourceName() = "$nameParser/${BuildConfig.BUILD_TYPE}"
+    override fun isSelfUpdateChecked(): Boolean = true
 
     private var downloadId: Long? = null
     private val manager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
 
-    override fun startCheckUpdateAsync(activity: Activity) {
-        if (activity !is LifecycleOwner) {
-            error { "Activity must be LifecycleOwner" }
+    override suspend fun startCheckUpdate(onEndCheck: suspend (SelfUpdateResult) -> Unit) {
+        val activity = CurrentActivityHolder.getCurrentActivity()
+        if (activity == null) {
+            error { "Activity is null" }
             return
         }
 
-        (activity as LifecycleOwner).lifecycle.coroutineScope.launch {
-            val lastRelease = processCheckGithubUpdate() ?: return@launch
-            val notification = InAppNotification.UpdateReady(
-                action = { downloadFile(lastRelease, activity) },
-            )
-            inAppNotificationStorage.addNotification(notification)
+        val lastRelease = processCheckGithubUpdate()
+        if (lastRelease == null) {
+            info { "No new updates" }
+            onEndCheck(SelfUpdateResult.NO_UPDATES)
+            return
         }
+
+        val notification = InAppNotification.UpdateReady(
+            action = { downloadFile(lastRelease, activity) },
+        )
+        inAppNotificationStorage.addNotification(notification)
+        onEndCheck(SelfUpdateResult.SUCCESS)
     }
 
     private suspend fun processCheckGithubUpdate(): SelfUpdate? {

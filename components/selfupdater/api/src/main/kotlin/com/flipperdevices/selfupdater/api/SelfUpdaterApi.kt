@@ -1,9 +1,13 @@
 package com.flipperdevices.selfupdater.api
 
-import android.app.Activity
+import com.flipperdevices.selfupdater.models.SelfUpdateResult
 
 interface SelfUpdaterApi {
-    fun startCheckUpdateAsync(activity: Activity)
+    suspend fun startCheckUpdate(
+        onEndCheck: suspend (SelfUpdateResult) -> Unit
+    )
 
     fun getInstallSourceName(): String
+
+    fun isSelfUpdateChecked(): Boolean
 }
