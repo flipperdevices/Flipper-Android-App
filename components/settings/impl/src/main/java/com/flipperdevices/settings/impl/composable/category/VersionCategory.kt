@@ -40,6 +40,7 @@ internal fun VersionCategory(
 
     val version = viewModel.versionApp()
     val sourceInstall = viewModel.sourceInstall()
+    val isSelfUpdateTypeCanCheck = viewModel.isSelfUpdateManualChecked().not()
 
     var howMuchClick by remember { mutableIntStateOf(0) }
 
@@ -68,7 +69,7 @@ internal fun VersionCategory(
                 titleTextStyle = LocalTypography.current.bodyR14
             )
 
-            if (viewModel.isSelfUpdateManualChecked().not()) {
+            if (isSelfUpdateTypeCanCheck) {
                 return@CardCategory
             }
 
