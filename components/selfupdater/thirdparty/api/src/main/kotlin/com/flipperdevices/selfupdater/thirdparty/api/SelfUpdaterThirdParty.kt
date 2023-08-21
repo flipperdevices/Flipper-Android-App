@@ -13,6 +13,7 @@ import com.flipperdevices.core.activityholder.CurrentActivityHolder
 import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.ApplicationParams
+import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
@@ -22,8 +23,15 @@ import com.flipperdevices.selfupdater.api.BuildConfig
 import com.flipperdevices.selfupdater.api.SelfUpdaterApi
 import com.flipperdevices.selfupdater.models.SelfUpdateResult
 import com.squareup.anvil.annotations.ContributesBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.sync.Mutex
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 @ContributesBinding(AppGraph::class, SelfUpdaterApi::class)
 class SelfUpdaterThirdParty @Inject constructor(
     context: Context,
@@ -40,24 +48,35 @@ class SelfUpdaterThirdParty @Inject constructor(
     private var downloadId: Long? = null
     private val manager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
 
-    override suspend fun startCheckUpdate(onEndCheck: suspend (SelfUpdateResult) -> Unit) {
+    private val mutex = Mutex()
+    private val progressState = MutableStateFlow(false)
+    override fun getState(): StateFlow<Boolean> = progressState.asStateFlow()
+
+    override fun startCheckUpdate(
+        scope: CoroutineScope,
+        onEndCheck: suspend (SelfUpdateResult) -> Unit
+    ) = launchWithLock(mutex, scope, "startCheckUpdate") {
+        progressState.emit(true)
         val activity = CurrentActivityHolder.getCurrentActivity()
         if (activity == null) {
             error { "Activity is null" }
-            return
+            progressState.emit(false)
+            return@launchWithLock
         }
 
         val lastRelease = processCheckGithubUpdate()
         if (lastRelease == null) {
             info { "No new updates" }
+            progressState.emit(false)
             onEndCheck(SelfUpdateResult.NO_UPDATES)
-            return
+            return@launchWithLock
         }
 
         val notification = InAppNotification.UpdateReady(
             action = { downloadFile(lastRelease, activity) },
         )
         inAppNotificationStorage.addNotification(notification)
+        progressState.emit(false)
         onEndCheck(SelfUpdateResult.SUCCESS)
     }
 

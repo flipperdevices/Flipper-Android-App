@@ -3,6 +3,7 @@ package com.flipperdevices.selfupdater.googleplay.api
 import android.content.Context
 import com.flipperdevices.core.activityholder.CurrentActivityHolder
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
@@ -18,6 +19,11 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.squareup.anvil.annotations.ContributesBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -46,8 +52,22 @@ class SelfUpdaterGooglePlay @Inject constructor(
         )
     }
 
-    override suspend fun startCheckUpdate(onEndCheck: suspend (SelfUpdateResult) -> Unit) {
-        val activity = CurrentActivityHolder.getCurrentActivity() ?: return
+    private val mutex = Mutex()
+    private val progressState = MutableStateFlow(false)
+    override fun getState(): StateFlow<Boolean> = progressState.asStateFlow()
+
+    override fun startCheckUpdate(
+        scope: CoroutineScope,
+        onEndCheck: suspend (SelfUpdateResult) -> Unit
+    ) = launchWithLock(mutex, scope, "startCheckUpdate") {
+        progressState.emit(true)
+
+        val activity = CurrentActivityHolder.getCurrentActivity()
+        if (activity == null) {
+            info { "Activity is null, skip update" }
+            progressState.emit(false)
+            return@launchWithLock
+        }
 
         info { "Process checkout new update" }
         appUpdateManager.registerListener(updateListener)
@@ -68,6 +88,7 @@ class SelfUpdaterGooglePlay @Inject constructor(
             info { "No update available" }
             onEndCheck(SelfUpdateResult.NO_UPDATES)
         }
+        progressState.emit(false)
     }
 
     override fun getInstallSourceName() = "Google Play/" + BuildConfig.BUILD_TYPE

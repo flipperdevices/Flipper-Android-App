@@ -17,6 +17,8 @@ dependencies {
 
     implementation(libs.lifecycle.runtime.ktx)
 
+    implementation(libs.kotlin.coroutines)
+
     // Ktor deps
     implementation(libs.kotlin.serialization.json)
     implementation(libs.ktor.client)

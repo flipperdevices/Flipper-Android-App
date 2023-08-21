@@ -20,9 +20,7 @@ class VersionViewModel @VMInject constructor(
     private val applicationParams: ApplicationParams
 ) : ViewModel(), LogTagProvider {
     override val TAG: String = "VersionViewModel"
-
-    private val inProgressFlow = MutableStateFlow(false)
-    fun inProgress() = inProgressFlow.asStateFlow()
+    fun inProgress() = selfUpdaterApi.getState()
 
     private val dialogFlow = MutableStateFlow(false)
     fun getDialogState() = dialogFlow.asStateFlow()
@@ -40,15 +38,11 @@ class VersionViewModel @VMInject constructor(
             return
         }
 
-        viewModelScope.launch(Dispatchers.Default) {
-            inProgressFlow.emit(true)
-            selfUpdaterApi.startCheckUpdate { result ->
-                info { "#onCheckUpdates result: $result" }
-                inProgressFlow.emit(false)
+        selfUpdaterApi.startCheckUpdate(scope = viewModelScope) { result ->
+            info { "#onCheckUpdates result: $result" }
 
-                if (result == SelfUpdateResult.NO_UPDATES) {
-                    dialogFlow.emit(true)
-                }
+            if (result == SelfUpdateResult.NO_UPDATES) {
+                dialogFlow.emit(true)
             }
         }
     }

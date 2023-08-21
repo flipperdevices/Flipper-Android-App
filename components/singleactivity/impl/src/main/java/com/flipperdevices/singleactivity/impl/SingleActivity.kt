@@ -27,7 +27,6 @@ import com.flipperdevices.singleactivity.impl.composable.ComposableSingleActivit
 import com.flipperdevices.singleactivity.impl.di.SingleActivityComponent
 import com.flipperdevices.singleactivity.impl.utils.AppOpenMetricReported
 import kotlinx.collections.immutable.toPersistentSet
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -68,9 +67,7 @@ class SingleActivity :
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
-        lifecycleScope.launch(Dispatchers.Default) {
-            selfUpdaterApi.startCheckUpdate(onEndCheck = {})
-        }
+        selfUpdaterApi.startCheckUpdate(lifecycleScope, onEndCheck = {})
 
         val featureEntries = featureEntriesMutable.toPersistentSet()
         val composableEntries = composableEntriesMutable.toPersistentSet()

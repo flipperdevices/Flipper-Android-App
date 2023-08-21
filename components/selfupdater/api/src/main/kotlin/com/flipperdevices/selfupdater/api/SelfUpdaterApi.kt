@@ -1,9 +1,14 @@
 package com.flipperdevices.selfupdater.api
 
 import com.flipperdevices.selfupdater.models.SelfUpdateResult
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.StateFlow
 
 interface SelfUpdaterApi {
-    suspend fun startCheckUpdate(
+    fun getState(): StateFlow<Boolean>
+
+    fun startCheckUpdate(
+        scope: CoroutineScope,
         onEndCheck: suspend (SelfUpdateResult) -> Unit
     )
 

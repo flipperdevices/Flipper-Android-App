@@ -9,4 +9,6 @@ dependencies {
     implementation(projects.components.selfupdater.api)
 
     implementation(projects.components.core.di)
+
+    implementation(libs.kotlin.coroutines)
 }

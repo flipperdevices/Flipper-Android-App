@@ -11,6 +11,7 @@ dependencies {
 
     implementation(projects.components.core.log)
     implementation(projects.components.core.activityholder)
+    implementation(projects.components.core.ktx)
 
     // In-app update
     implementation(libs.app.update)
