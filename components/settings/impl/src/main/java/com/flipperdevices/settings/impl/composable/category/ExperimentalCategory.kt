@@ -9,14 +9,13 @@ import com.flipperdevices.settings.impl.composable.elements.CategoryElement
 import com.flipperdevices.settings.impl.composable.elements.ClickableElement
 import com.flipperdevices.settings.impl.composable.elements.GrayDivider
 import com.flipperdevices.settings.impl.viewmodels.ExperimentalViewModel
-import com.flipperdevices.settings.impl.viewmodels.SettingsViewModel
 import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 fun ExperimentalCategory(
     settings: Settings,
     navController: NavController,
-    settingsViewModel: SettingsViewModel,
+    onSwitchExperimental: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     experimentalViewModel: ExperimentalViewModel = tangleViewModel()
 ) {
@@ -25,7 +24,7 @@ fun ExperimentalCategory(
             titleId = R.string.experimental_options,
             descriptionId = R.string.experimental_options_desc,
             state = settings.enabledExperimentalFunctions,
-            onSwitchState = settingsViewModel::onSwitchExperimental
+            onSwitchState = onSwitchExperimental
         )
         if (settings.enabledExperimentalFunctions) {
             ClickableElement(
