@@ -47,6 +47,9 @@ dependencies {
     implementation(libs.timber)
     implementation(libs.datastore)
 
+    implementation(libs.wear)
+    implementation(libs.wear.gms)
+
     implementation(projects.components.analytics.shake2report.api)
     releaseImplementation(projects.components.analytics.shake2report.noop)
     debugImplementation(projects.components.analytics.shake2report.impl)
