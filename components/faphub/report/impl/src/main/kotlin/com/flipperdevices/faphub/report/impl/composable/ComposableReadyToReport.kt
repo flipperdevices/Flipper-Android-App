@@ -51,7 +51,7 @@ internal fun ComposableReadyToReport(
                 )
             },
             onValueChange = { text = it },
-            modifier = Modifier.height(250.dp)
+            textFieldModifier = Modifier.height(250.dp)
         )
     }
 
