@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -99,9 +100,15 @@ private fun SelfUpdaterNoUpdatesDialog(
 ) {
     if (!state) return
 
+    val imageId = if (MaterialTheme.colors.isLight) {
+        R.drawable.pic_self_updates_not_found
+    } else {
+        R.drawable.pic_self_updates_not_found_dark
+    }
+
     FlipperDialog(
         buttonTextId = R.string.check_no_updates_button,
-        imageId = R.drawable.pic_self_updates_not_found,
+        imageId = imageId,
         titleId = R.string.check_no_updates_title,
         textId = R.string.check_no_updates_text,
         onClickButton = onClose,
