@@ -35,14 +35,15 @@ fun ComposableCatalogTabScreen(
 
     val categoriesViewModel = tangleViewModel<CategoriesViewModel>()
     val categoriesLoadState by categoriesViewModel.getCategoriesLoadState().collectAsState()
-    SwipeRefresh(onRefresh = {
-        fapsListViewModel.refreshManifest()
-        fapsList.refresh()
-        categoriesViewModel.onRefresh()
-    }) {
-        LazyColumn(
-            modifier = modifier
-        ) {
+    SwipeRefresh(
+        modifier = modifier,
+        onRefresh = {
+            fapsListViewModel.refreshManifest()
+            fapsList.refresh()
+            categoriesViewModel.onRefresh()
+        }
+    ) {
+        LazyColumn(modifier = it) {
             ComposableCategories(
                 loadState = categoriesLoadState,
                 onCategoryClick = onCategoryClick,

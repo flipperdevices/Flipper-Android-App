@@ -25,16 +25,15 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.composable.elements.SimpleElement
-import com.flipperdevices.settings.impl.viewmodels.SettingsViewModel
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ThemeCategory(
-    settingsViewModel: SettingsViewModel,
+    theme: SelectedTheme,
+    onSelectTheme: (SelectedTheme) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val themes = SelectedTheme.values().filter { it != SelectedTheme.UNRECOGNIZED }
-    val theme = settingsViewModel.getSelectedTheme()
+    val themes = SelectedTheme.entries.filter { it != SelectedTheme.UNRECOGNIZED }
 
     val nameTheme = stringResource(id = getNameBySelectedTheme(theme))
     var showMenu by remember { mutableStateOf(false) }
@@ -76,7 +75,7 @@ fun ThemeCategory(
                     themes.forEach {
                         DropdownMenuItem(onClick = {
                             showMenu = false
-                            settingsViewModel.onChangeSelectedTheme(it)
+                            onSelectTheme(it)
                         }) {
                             Text(text = stringResource(id = getNameBySelectedTheme(it)))
                         }

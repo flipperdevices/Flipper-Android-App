@@ -18,7 +18,6 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,32 +33,30 @@ import com.flipperdevices.core.ui.ktx.elements.SwipeRefresh
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.widget.screen.R
-import com.flipperdevices.widget.screen.viewmodel.WidgetSelectViewModel
+import kotlinx.collections.immutable.ImmutableList
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ColumnScope.ComposableKeys(
     archiveApi: ArchiveApi,
-    widgetSelectViewModel: WidgetSelectViewModel,
+    keys: ImmutableList<FlipperKey>,
+    favoriteKeys: ImmutableList<FlipperKey>,
+    synchronizationState: SynchronizationState,
+    onRefresh: () -> Unit,
+    onKeyOpen: (FlipperKeyPath) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val keys by widgetSelectViewModel.getKeysFlow().collectAsState()
-    val favoriteKeys by widgetSelectViewModel.getFavoriteKeysFlow().collectAsState()
-    val synchronizationState by widgetSelectViewModel.getSynchronizationFlow().collectAsState()
     val isKeysPresented = favoriteKeys.isNotEmpty() || keys.isNotEmpty()
 
-    SwipeRefresh(onRefresh = widgetSelectViewModel::refresh) {
-        LazyColumn(
-            modifier = modifier
-                .fillMaxWidth()
-        ) {
+    SwipeRefresh(modifier = modifier, onRefresh = onRefresh) {
+        LazyColumn(modifier = it.fillMaxWidth()) {
             if (isKeysPresented) {
                 KeyCatalog(
                     archiveApi = archiveApi,
                     favoriteKeys = favoriteKeys,
                     otherKeys = keys,
                     synchronizationState = synchronizationState,
-                    onKeyOpen = widgetSelectViewModel::onSelectKey
+                    onKeyOpen = onKeyOpen
                 )
             }
         }
@@ -76,8 +73,8 @@ fun ColumnScope.ComposableKeys(
 @Suppress("FunctionName")
 private fun LazyListScope.KeyCatalog(
     archiveApi: ArchiveApi,
-    favoriteKeys: List<FlipperKey>,
-    otherKeys: List<FlipperKey>?,
+    favoriteKeys: ImmutableList<FlipperKey>,
+    otherKeys: ImmutableList<FlipperKey>?,
     synchronizationState: SynchronizationState,
     onKeyOpen: (FlipperKeyPath) -> Unit
 ) {

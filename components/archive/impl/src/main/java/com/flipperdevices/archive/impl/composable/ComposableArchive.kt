@@ -62,15 +62,15 @@ fun ComposableArchive(
         ArchiveProgressScreen(localSynchronizationState, tabViewModel::cancelSynchronization)
     } else {
         ComposableArchiveReady(
-            synchronizationUiApi,
-            keys,
-            favoriteKeys,
-            tabViewModel,
-            synchronizationState,
-            isKeysPresented,
-            onOpenKeyScreen,
-            onOpenSearchScreen,
-            onOpenCategory
+            synchronizationUiApi = synchronizationUiApi,
+            keys = keys,
+            favoriteKeys = favoriteKeys,
+            onRefresh = tabViewModel::refresh,
+            synchronizationState = synchronizationState,
+            isKeysPresented = isKeysPresented,
+            onOpenKeyScreen = onOpenKeyScreen,
+            onOpenSearchScreen = onOpenSearchScreen,
+            onOpenCategory = onOpenCategory
         )
     }
 }
@@ -80,7 +80,7 @@ private fun ComposableArchiveReady(
     synchronizationUiApi: SynchronizationUiApi,
     keys: ImmutableList<FlipperKey>?,
     favoriteKeys: ImmutableList<FlipperKey>,
-    tabViewModel: GeneralTabViewModel,
+    onRefresh: () -> Unit,
     synchronizationState: SynchronizationState,
     isKeysPresented: Boolean,
     onOpenKeyScreen: (FlipperKeyPath) -> Unit,
@@ -97,7 +97,7 @@ private fun ComposableArchiveReady(
             endIconId = DesignSystem.drawable.ic_search,
             onEndClick = onOpenSearchScreen
         )
-        SwipeRefresh(onRefresh = tabViewModel::refresh) {
+        SwipeRefresh(onRefresh = onRefresh) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()

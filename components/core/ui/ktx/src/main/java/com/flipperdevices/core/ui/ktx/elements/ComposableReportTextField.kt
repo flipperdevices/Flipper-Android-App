@@ -29,16 +29,17 @@ fun ComposableReportTextField(
     title: @Composable () -> Unit,
     placeholder: @Composable () -> Unit,
     modifier: Modifier = Modifier,
+    textFieldModifier: Modifier = Modifier,
     maxLines: Int? = null,
     enabled: Boolean = true,
     onValueChange: (String) -> Unit
 ) {
-    Column {
+    Column(modifier = modifier) {
         title()
         BasicTextField(
             value = value,
             onValueChange = onValueChange,
-            modifier = modifier
+            modifier = textFieldModifier
                 .fillMaxWidth()
                 .padding(top = 12.dp)
                 .border(
