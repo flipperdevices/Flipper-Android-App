@@ -117,7 +117,7 @@ private fun ComposableReportPendingFields(
             )
         },
         onValueChange = onChangeDescription,
-        modifier = Modifier.height(250.dp)
+        textFieldModifier = Modifier.height(250.dp)
     )
 
     ComposableReportAddLog(checked = checked, onCheckedChange = onChangeChecked)

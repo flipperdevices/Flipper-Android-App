@@ -29,7 +29,7 @@ sealed class Picture {
         @Composable
         override fun Draw(modifier: Modifier) {
             ComposeLottiePic(
-                modifier = modifier,
+                picModifier = modifier,
                 picResId = picResId,
                 rollBackPicResId = fallBackPicResId
             )

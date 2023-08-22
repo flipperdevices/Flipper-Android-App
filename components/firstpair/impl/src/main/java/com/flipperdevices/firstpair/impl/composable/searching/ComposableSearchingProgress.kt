@@ -38,7 +38,7 @@ fun ComposableSearchingProgress(modifier: Modifier = Modifier) {
                 contentDescription = null
             )
             ComposeLottiePic(
-                modifier = Modifier.size(size = 32.dp),
+                picModifier = Modifier.size(size = 32.dp),
                 picResId = DesignSystem.raw.dots_loader,
                 rollBackPicResId = DesignSystem.drawable.pic_loader
             )

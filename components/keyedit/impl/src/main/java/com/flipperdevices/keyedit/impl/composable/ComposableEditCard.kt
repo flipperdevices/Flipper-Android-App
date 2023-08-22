@@ -15,13 +15,13 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.elements.ComposableKeyType
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyedit.impl.R
-import com.flipperdevices.keyedit.impl.viewmodel.KeyEditViewModel
 import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
 import com.flipperdevices.keyscreen.shared.ComposableKeyContent
 
 @Composable
 fun ComposableEditCard(
-    viewModel: KeyEditViewModel,
+    onNameChange: (String) -> Unit,
+    onNoteChange: (String) -> Unit,
     name: String?,
     notes: String?,
     keyParsed: FlipperKeyParsed,
@@ -35,14 +35,22 @@ fun ComposableEditCard(
             modifier = Modifier.padding(bottom = 21.dp),
             verticalArrangement = Arrangement.spacedBy(space = 18.dp)
         ) {
-            ComposableCardContent(viewModel, name, notes, keyParsed, enabled)
+            ComposableCardContent(
+                onNameChange = onNameChange,
+                onNoteChange = onNoteChange,
+                name = name,
+                notes = notes,
+                keyParsed = keyParsed,
+                enabled = enabled
+            )
         }
     }
 }
 
 @Composable
 private fun ColumnScope.ComposableCardContent(
-    viewModel: KeyEditViewModel,
+    onNameChange: (String) -> Unit,
+    onNoteChange: (String) -> Unit,
     name: String?,
     notes: String?,
     keyParsed: FlipperKeyParsed,
@@ -54,7 +62,7 @@ private fun ColumnScope.ComposableCardContent(
         title = stringResource(R.string.keyedit_name_title),
         label = stringResource(R.string.keyedit_name_hint),
         text = name ?: "",
-        onTextChange = viewModel::onNameChange,
+        onTextChange = onNameChange,
         keyboardType = KeyboardType.Ascii,
         enabled = enabled
     )
@@ -63,7 +71,7 @@ private fun ColumnScope.ComposableCardContent(
         title = stringResource(R.string.keyedit_notes_title),
         label = stringResource(R.string.keyedit_notes_hint),
         text = notes ?: "",
-        onTextChange = viewModel::onNotesChange,
+        onTextChange = onNoteChange,
         keyboardType = KeyboardType.Text,
         enabled = enabled
     )
