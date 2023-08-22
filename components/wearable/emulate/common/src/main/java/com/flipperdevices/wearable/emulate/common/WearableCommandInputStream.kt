@@ -14,8 +14,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
@@ -34,7 +35,7 @@ class WearableCommandInputStream<T : GeneratedMessageLite<*, *>>(
     private val requests = MutableSharedFlow<T>()
     private var parserJob: Job? = null
 
-    fun getRequestsFlow(): Flow<T> = requests
+    fun getRequestsFlow(): SharedFlow<T> = requests.asSharedFlow()
 
     fun onOpenChannel(scope: CoroutineScope, channel: Channel) {
         launchWithLock(mutex, scope, "open_channel") {

@@ -11,6 +11,7 @@ import com.flipperdevices.wearable.emulate.common.WearableCommandInputStream
 import com.flipperdevices.wearable.emulate.common.WearableCommandOutputStream
 import com.flipperdevices.wearable.emulate.common.ipcemulate.Main
 import com.flipperdevices.wearable.emulate.handheld.impl.request.WearableCommandProcessor
+import com.flipperdevices.wearable.emulate.handheld.impl.request.WearableSinglePingProcessor
 import com.squareup.anvil.annotations.ContributesTo
 import com.squareup.anvil.annotations.MergeComponent
 import dagger.BindsInstance
@@ -35,6 +36,7 @@ interface WearServiceComponent : WearServiceComponentDependencies {
     val commandInputStream: WearableCommandInputStream<Main.MainRequest>
     val commandOutputStream: WearableCommandOutputStream<Main.MainResponse>
     val commandProcessors: Set<WearableCommandProcessor>
+    val singlePingProcessor: WearableSinglePingProcessor
 
     @Component.Factory
     interface Factory {

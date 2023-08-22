@@ -56,6 +56,7 @@ class WearRequestForegroundService : LifecycleService(), WearRequestChannelBinde
         info { "#onChannelOpen" }
         wearServiceComponent.commandInputStream.onOpenChannel(lifecycleScope, channel)
         wearServiceComponent.commandOutputStream.onOpenChannel(lifecycleScope, channel)
+        wearServiceComponent.singlePingProcessor.onChannelOpen()
     }
 
     override fun onDestroy() {

@@ -12,6 +12,8 @@ import androidx.wear.compose.navigation.SwipeDismissableNavHost
 import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.di.provideDelegate
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.flipperdevices.core.ui.theme.LocalPallet
@@ -25,7 +27,8 @@ import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toImmutableSet
 import javax.inject.Inject
 
-class MainWearActivity : ComponentActivity() {
+class MainWearActivity : ComponentActivity(), LogTagProvider {
+    override val TAG: String = "MainWearActivity"
 
     @Inject
     lateinit var channelClientHelper: ChannelClientHelper
@@ -39,16 +42,16 @@ class MainWearActivity : ComponentActivity() {
             appSpecificErrorCode: Int
         ) {
             super.onChannelClosed(channel, closeReason, appSpecificErrorCode)
-            channelClientHelper.onChannelCloseFromPhone(lifecycleScope)
+            info { "#channelClientCallback onChannelClosed" }
+            channelClientHelper.onChannelReset(lifecycleScope)
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ComponentHolder.component<WearableComponent>().inject(this)
-        channelClient.registerChannelCallback(channelClientCallback)
-        channelClientHelper.onChannelOpen(lifecycleScope)
+        info { "#onCreate" }
 
+        ComponentHolder.component<WearableComponent>().inject(this)
         val futureEntries by ComponentHolder.component<WearableComponent>().futureEntries
         val composableFutureEntries by ComponentHolder.component<WearableComponent>()
             .composableFutureEntries
@@ -92,10 +95,22 @@ class MainWearActivity : ComponentActivity() {
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        info { "#onStop" }
+        channelClient.unregisterChannelCallback(channelClientCallback)
+        channelClientHelper.onCloseChannel(lifecycleScope)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        info { "#onResume" }
+        channelClient.registerChannelCallback(channelClientCallback)
+        channelClientHelper.onChannelOpen(lifecycleScope)
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-        print("onDestroy")
         channelClient.unregisterChannelCallback(channelClientCallback)
-        channelClientHelper.onDestroy()
     }
 }

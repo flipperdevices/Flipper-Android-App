@@ -18,6 +18,8 @@ android {
 
 dependencies {
     implementation(projects.components.core.di)
+    implementation(projects.components.core.log)
+    implementation(projects.components.core.ktx)
     implementation(projects.components.core.preference)
     implementation(projects.components.core.activityholder)
     implementation(projects.components.core.ui.res)
@@ -28,6 +30,7 @@ dependencies {
     implementation(projects.components.wearable.setup.impl)
     implementation(projects.components.wearable.emulate.wear.api)
     implementation(projects.components.wearable.emulate.wear.impl)
+    implementation(projects.components.wearable.emulate.common)
     implementation(projects.components.wearable.sync.wear.api)
     implementation(projects.components.wearable.sync.wear.impl)
     implementation(projects.components.wearable.theme)

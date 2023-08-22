@@ -5,7 +5,7 @@ import kotlinx.coroutines.CoroutineScope
 interface ChannelClientHelper {
     fun onChannelOpen(scope: CoroutineScope)
 
-    fun onChannelCloseFromPhone(scope: CoroutineScope)
+    fun onChannelReset(scope: CoroutineScope)
 
-    fun onDestroy()
+    fun onCloseChannel(scope: CoroutineScope)
 }

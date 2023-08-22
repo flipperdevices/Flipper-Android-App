@@ -1,10 +1,9 @@
-package com.flipperdevices.wearable.emulate.impl.viewmodel
+package com.flipperdevices.wearable.emulate.impl.helper
 
-import com.flipperdevices.core.di.SingleIn
+import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.wearable.emulate.impl.di.WearGraph
 import com.google.android.gms.wearable.CapabilityClient
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.CancellationException
@@ -17,8 +16,7 @@ interface NodeFindingHelper {
 
 private const val CAPABILITY_PHONE_APP = "emulate_proto_flipper_phone_app"
 
-@SingleIn(WearGraph::class)
-@ContributesBinding(WearGraph::class, NodeFindingHelper::class)
+@ContributesBinding(AppGraph::class, NodeFindingHelper::class)
 class NodeFindingHelperImpl @Inject constructor(
     private val capabilityClient: CapabilityClient
 ) : NodeFindingHelper, LogTagProvider {
