@@ -10,8 +10,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -20,7 +18,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.archive.search.R
 import com.flipperdevices.archive.search.model.SearchState
-import com.flipperdevices.archive.search.viewmodel.SearchViewModel
 import com.flipperdevices.archive.shared.composable.ComposableKeyCard
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
@@ -35,16 +32,14 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 @Composable
 fun ComposableSearchContent(
     synchronizationUiApi: SynchronizationUiApi,
-    searchViewModel: SearchViewModel,
+    state: SearchState,
+    synchronizationState: SynchronizationState,
     modifier: Modifier = Modifier,
     onOpenKeyScreen: (FlipperKeyPath) -> Unit
 ) {
-    val state by searchViewModel.getState().collectAsState()
-    val synchronizationState by searchViewModel.getSynchronizationState().collectAsState()
-    val localState = state
-    when (localState) {
+    when (state) {
         SearchState.Loading -> CategoryLoadingProgress(modifier)
-        is SearchState.Loaded -> if (localState.keys.isEmpty()) {
+        is SearchState.Loaded -> if (state.keys.isEmpty()) {
             CategoryEmpty(modifier)
         } else {
             CategoryList(
@@ -52,7 +47,7 @@ fun ComposableSearchContent(
                 onOpenKeyScreen = onOpenKeyScreen,
                 synchronizationUiApi = synchronizationUiApi,
                 synchronizationState = synchronizationState,
-                keys = localState.keys
+                keys = state.keys
             )
         }
     }

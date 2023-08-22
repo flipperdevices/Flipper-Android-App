@@ -73,7 +73,8 @@ class KeyEditFeatureEntryImpl @Inject constructor() : KeyEditFeatureEntry {
             val viewModel: KeyEditViewModel = tangleViewModel()
             val state by viewModel.getEditState().collectAsState()
             ComposableEditScreen(
-                viewModel,
+                onNameChange = viewModel::onNameChange,
+                onNoteChange = viewModel::onNotesChange,
                 title = title,
                 state = state,
                 onBack = navController::popBackStack,

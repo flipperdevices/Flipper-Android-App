@@ -139,7 +139,7 @@ private fun ComposableLoadingItem() {
         contentAlignment = Alignment.Center
     ) {
         ComposeLottiePic(
-            modifier = Modifier.padding(24.dp),
+            picModifier = Modifier.padding(24.dp),
             picResId = DesignSystem.raw.dots_loader,
             rollBackPicResId = DesignSystem.drawable.pic_loader,
             tint = LocalPallet.current.fapHubDividerColor

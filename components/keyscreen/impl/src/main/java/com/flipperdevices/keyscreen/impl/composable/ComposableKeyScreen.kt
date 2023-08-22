@@ -3,6 +3,7 @@ package com.flipperdevices.keyscreen.impl.composable
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
@@ -27,6 +28,7 @@ fun ComposableKeyScreen(
     onOpenEditScreen: (FlipperKeyPath) -> Unit
 ) {
     val keyScreenState by viewModel.getKeyScreenState().collectAsState()
+    val emulateConfig = remember { viewModel.getEmulateConfig() }
 
     when (val localKeyScreenState = keyScreenState) {
         KeyScreenState.InProgress -> ComposableKeyScreenLoading()
@@ -34,7 +36,6 @@ fun ComposableKeyScreen(
             text = stringResource(id = localKeyScreenState.reason)
         )
         is KeyScreenState.Ready -> ComposableKeyParsed(
-            viewModel,
             localKeyScreenState,
             nfcEditorApi,
             synchronizationUiApi,
@@ -42,7 +43,11 @@ fun ComposableKeyScreen(
             onShare = onShare,
             onBack = onBack,
             onOpenNfcEditor = onOpenNfcEditor,
-            onOpenEditScreen = onOpenEditScreen
+            setFavorite = viewModel::setFavorite,
+            onEdit = { viewModel.onOpenEdit(onOpenEditScreen) },
+            emulateConfig = emulateConfig,
+            onRestore = { viewModel.onRestore(onBack) },
+            onDelete = { viewModel.onDelete(onBack) }
         )
     }
     SetUpNavigationBarColor(color = LocalPallet.current.background)
