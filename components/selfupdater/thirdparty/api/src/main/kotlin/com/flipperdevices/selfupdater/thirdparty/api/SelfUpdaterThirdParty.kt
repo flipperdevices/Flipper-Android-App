@@ -22,8 +22,12 @@ import com.flipperdevices.selfupdater.api.BuildConfig
 import com.flipperdevices.selfupdater.api.SelfUpdaterApi
 import com.flipperdevices.selfupdater.models.SelfUpdateResult
 import com.squareup.anvil.annotations.ContributesBinding
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 @ContributesBinding(AppGraph::class, SelfUpdaterApi::class)
 class SelfUpdaterThirdParty @Inject constructor(
     context: Context,
@@ -40,25 +44,34 @@ class SelfUpdaterThirdParty @Inject constructor(
     private var downloadId: Long? = null
     private val manager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
 
+    private val mutex = Mutex()
+
     override suspend fun startCheckUpdate(onEndCheck: suspend (SelfUpdateResult) -> Unit) {
-        val activity = CurrentActivityHolder.getCurrentActivity()
-        if (activity == null) {
-            error { "Activity is null" }
+        if (mutex.isLocked) {
+            info { "Update already in progress" }
+            onEndCheck(SelfUpdateResult.IN_PROGRESS)
             return
         }
+        mutex.withLock {
+            val activity = CurrentActivityHolder.getCurrentActivity()
+            if (activity == null) {
+                error { "Activity is null" }
+                return
+            }
 
-        val lastRelease = processCheckGithubUpdate()
-        if (lastRelease == null) {
-            info { "No new updates" }
-            onEndCheck(SelfUpdateResult.NO_UPDATES)
-            return
+            val lastRelease = processCheckGithubUpdate()
+            if (lastRelease == null) {
+                info { "No new updates" }
+                onEndCheck(SelfUpdateResult.NO_UPDATES)
+                return
+            }
+
+            val notification = InAppNotification.UpdateReady(
+                action = { downloadFile(lastRelease, activity) },
+            )
+            inAppNotificationStorage.addNotification(notification)
+            onEndCheck(SelfUpdateResult.SUCCESS)
         }
-
-        val notification = InAppNotification.UpdateReady(
-            action = { downloadFile(lastRelease, activity) },
-        )
-        inAppNotificationStorage.addNotification(notification)
-        onEndCheck(SelfUpdateResult.SUCCESS)
     }
 
     private suspend fun processCheckGithubUpdate(): SelfUpdate? {

@@ -18,11 +18,15 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.squareup.anvil.annotations.ContributesBinding
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
+import javax.inject.Singleton
 
 private const val UPDATE_CODE = 228
 
+@Singleton
 @ContributesBinding(AppGraph::class, SelfUpdaterApi::class)
 class SelfUpdaterGooglePlay @Inject constructor(
     private val context: Context,
@@ -34,6 +38,7 @@ class SelfUpdaterGooglePlay @Inject constructor(
     private val appUpdateManager by lazy { AppUpdateManagerFactory.create(context) }
     private val appUpdateInfoTask = appUpdateManager.appUpdateInfo
     private var updateListener = InstallStateUpdatedListener(::processUpdateListener)
+    private val mutex = Mutex()
 
     private fun processUpdateListener(state: InstallState) {
         info { "Current update state $state" }
@@ -47,26 +52,34 @@ class SelfUpdaterGooglePlay @Inject constructor(
     }
 
     override suspend fun startCheckUpdate(onEndCheck: suspend (SelfUpdateResult) -> Unit) {
-        val activity = CurrentActivityHolder.getCurrentActivity() ?: return
+        if (mutex.isLocked) {
+            info { "Update already in progress" }
+            onEndCheck(SelfUpdateResult.IN_PROGRESS)
+            return
+        }
 
-        info { "Process checkout new update" }
-        appUpdateManager.registerListener(updateListener)
+        mutex.withLock {
+            val activity = CurrentActivityHolder.getCurrentActivity() ?: return
 
-        val appUpdateInfo = appUpdateInfoTask.await()
-        info { "Current state update id ${appUpdateInfo.updateAvailability()}" }
+            info { "Process checkout new update" }
+            appUpdateManager.registerListener(updateListener)
 
-        if (isUpdateAvailable(appUpdateInfo)) {
-            info { "New update available, suggest to update" }
-            appUpdateManager.startUpdateFlowForResult(
-                appUpdateInfo,
-                AppUpdateType.FLEXIBLE,
-                activity,
-                UPDATE_CODE
-            )
-            onEndCheck(SelfUpdateResult.SUCCESS)
-        } else {
-            info { "No update available" }
-            onEndCheck(SelfUpdateResult.NO_UPDATES)
+            val appUpdateInfo = appUpdateInfoTask.await()
+            info { "Current state update id ${appUpdateInfo.updateAvailability()}" }
+
+            if (isUpdateAvailable(appUpdateInfo)) {
+                info { "New update available, suggest to update" }
+                appUpdateManager.startUpdateFlowForResult(
+                    appUpdateInfo,
+                    AppUpdateType.FLEXIBLE,
+                    activity,
+                    UPDATE_CODE
+                )
+                onEndCheck(SelfUpdateResult.SUCCESS)
+            } else {
+                info { "No update available" }
+                onEndCheck(SelfUpdateResult.NO_UPDATES)
+            }
         }
     }
 
