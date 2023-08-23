@@ -7,7 +7,9 @@
 - [CI] Add apk artifacts to Pull Requests
 - [CI] Fix failed build in merge_group
 - [CI] Bump deps except Sentry-gradle
-- [FIX] Canceled process loop and close service for WearOS 
+- [CI] Detekt ViewModelForwarding and ModifierNotUsedAtRoot
+- [FIX] Upgrade google appcompanist
+- [FIX] Return empty list, if flipper path not exist
 
 # 1.6.3
 
