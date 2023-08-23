@@ -10,6 +10,7 @@
 - [CI] Bump deps except Sentry-gradle
 - [CI] Detekt ViewModelForwarding and ModifierNotUsedAtRoot
 - [FIX] Upgrade google appcompanist
+- [FIX] Return empty list, if flipper path not exist
 
 # 1.6.3
 
