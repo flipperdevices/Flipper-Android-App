@@ -5,5 +5,5 @@ import kotlinx.coroutines.CoroutineScope
 interface HandheldProcessor {
     fun init(scope: CoroutineScope)
 
-    suspend fun reset()
+    fun reset(scope: CoroutineScope)
 }

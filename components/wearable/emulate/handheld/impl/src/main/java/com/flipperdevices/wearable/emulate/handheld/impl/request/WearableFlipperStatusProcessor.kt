@@ -8,6 +8,7 @@ import com.flipperdevices.wearable.emulate.common.WearableCommandOutputStream
 import com.flipperdevices.wearable.emulate.common.ipcemulate.Main
 import com.flipperdevices.wearable.emulate.common.ipcemulate.mainResponse
 import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.ConnectStatusOuterClass
+import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.Emulate
 import com.flipperdevices.wearable.emulate.handheld.impl.di.WearHandheldGraph
 import com.squareup.anvil.annotations.ContributesMultibinding
 import kotlinx.coroutines.CoroutineScope
@@ -61,6 +62,14 @@ class WearableFlipperStatusProcessor @Inject constructor(
                     ConnectStatusOuterClass.ConnectStatus.UNSUPPORTED
                 }
             }
+        }
+
+        if (connectStatusProto != ConnectStatusOuterClass.ConnectStatus.READY) {
+            commandOutputStream.send(
+                mainResponse {
+                    emulateStatus = Emulate.EmulateStatus.STOPPED
+                }
+            )
         }
 
         commandOutputStream.send(

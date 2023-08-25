@@ -67,6 +67,7 @@ dependencies {
     implementation(libs.compose.wear.material)
 
     implementation(libs.kotlin.immutable.collections)
+    implementation(libs.kotlin.coroutines.play.services)
 
     // Dagger deps
     implementation(libs.dagger)

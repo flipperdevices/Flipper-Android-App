@@ -63,7 +63,11 @@ fun ComposableFindPhone(
 
         when (localFindPhoneModel) {
             FindPhoneState.Loading -> ComposableFindPhoneLoading()
-            is FindPhoneState.Founded -> onFoundPhone()
+            is FindPhoneState.Founded -> {
+                LaunchedEffect(Unit) {
+                    onFoundPhone()
+                }
+            }
             FindPhoneState.NotFound -> ComposableNotFoundedPhone(
                 findPhoneViewModel::openStore,
                 findPhoneViewModel::checkPhone

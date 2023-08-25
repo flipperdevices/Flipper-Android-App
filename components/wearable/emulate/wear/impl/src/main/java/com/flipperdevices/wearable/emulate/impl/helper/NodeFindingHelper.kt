@@ -33,7 +33,6 @@ class NodeFindingHelperImpl @Inject constructor(
             info { "Capability request succeeded" }
 
             val foundedNode = capabilityInfo.nodes.firstOrNull { it.isNearby }
-                ?: capabilityInfo.nodes.firstOrNull()
             info { "Found node $foundedNode" }
             return foundedNode?.id
         } catch (ignored: CancellationException) {

@@ -110,7 +110,8 @@ class FindPhoneViewModel(
     }
 
     override fun onCapabilityChanged(capabilityInfo: CapabilityInfo) {
-        val foundedDevice = capabilityInfo.nodes.firstOrNull()
+        val foundedDevice = capabilityInfo.nodes.firstOrNull { it.isNearby }
+        info { "#onCapabilityChanged $foundedDevice" }
         if (foundedDevice == null) {
             findPhoneStateFlow.update { FindPhoneState.NotFound }
         } else {

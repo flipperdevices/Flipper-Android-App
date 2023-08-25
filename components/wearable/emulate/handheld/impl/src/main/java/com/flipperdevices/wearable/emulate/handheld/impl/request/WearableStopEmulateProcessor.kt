@@ -2,6 +2,7 @@ package com.flipperdevices.wearable.emulate.handheld.impl.request
 
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.keyemulate.api.EmulateHelper
 import com.flipperdevices.wearable.emulate.common.WearableCommandInputStream
 import com.flipperdevices.wearable.emulate.common.WearableCommandOutputStream
@@ -32,11 +33,20 @@ class WearableStopEmulateProcessor @Inject constructor(
     }
 
     private suspend fun stopEmulate(requestApi: FlipperRequestApi) {
-        emulateHelper.stopEmulate(scope, requestApi)
-        commandOutputStream.send(
-            mainResponse {
-                emulateStatus = Emulate.EmulateStatus.STOPPED
-            }
-        )
+        try {
+            emulateHelper.stopEmulate(scope, requestApi)
+            commandOutputStream.send(
+                mainResponse {
+                    emulateStatus = Emulate.EmulateStatus.STOPPED
+                }
+            )
+        } catch (throwable: Throwable) {
+            error(throwable) { "Failed stop emulate" }
+            commandOutputStream.send(
+                mainResponse {
+                    emulateStatus = Emulate.EmulateStatus.FAILED
+                }
+            )
+        }
     }
 }

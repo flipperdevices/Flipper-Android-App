@@ -9,6 +9,8 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.keyemulate.api.EmulateHelper
+import com.flipperdevices.keyemulate.exception.AlreadyOpenedAppException
+import com.flipperdevices.keyemulate.exception.ForbiddenFrequencyException
 import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.wearable.emulate.common.WearableCommandInputStream
 import com.flipperdevices.wearable.emulate.common.WearableCommandOutputStream
@@ -37,7 +39,6 @@ class WearableStartEmulateProcessor @Inject constructor(
     override fun init() {
         info { "#init" }
         commandInputStream.getRequestsFlow().onEach {
-            info { "found request $it" }
             if (it.hasStartEmulate()) {
                 info { "found start request $it" }
                 startEmulate(serviceProvider.getServiceApi(), it.startEmulate.path)
@@ -48,11 +49,6 @@ class WearableStartEmulateProcessor @Inject constructor(
     private suspend fun startEmulate(serviceApi: FlipperServiceApi, path: String) {
         info { "#startEmulate $path" }
         val keyType = FlipperKeyType.getByExtension(File(path).extension) ?: return
-        commandOutputStream.send(
-            mainResponse {
-                emulateStatus = Emulate.EmulateStatus.EMULATING
-            }
-        )
         info { "Key type is $keyType" }
         val keyPath = path.replaceFirstChar { if (it == '/') "" else it.toString() }
         val keyFile = File(keyPath)
@@ -61,17 +57,24 @@ class WearableStartEmulateProcessor @Inject constructor(
                 keyType = keyType,
                 keyPath = FlipperFilePath(keyFile.parent ?: "", keyFile.name)
             )
-            emulateHelper.startEmulate(scope, serviceApi, emulateConfig)
             commandOutputStream.send(
                 mainResponse {
                     emulateStatus = Emulate.EmulateStatus.EMULATING
                 }
             )
+            emulateHelper.startEmulate(scope, serviceApi, emulateConfig)
         } catch (throwable: Throwable) {
             error(throwable) { "Failed start emulate $path" }
+
+            val failedEmulateStatus: Emulate.EmulateStatus = when (throwable) {
+                is AlreadyOpenedAppException -> Emulate.EmulateStatus.ALREADY_OPENED_APP
+                is ForbiddenFrequencyException -> Emulate.EmulateStatus.FORBIDDEN_FREQUENCY
+                else -> Emulate.EmulateStatus.FAILED
+            }
+
             commandOutputStream.send(
                 mainResponse {
-                    emulateStatus = Emulate.EmulateStatus.FAILED
+                    emulateStatus = failedEmulateStatus
                 }
             )
         }

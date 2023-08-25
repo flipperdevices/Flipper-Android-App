@@ -51,8 +51,12 @@ class WearRequestListenerService :
     }
 
     override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+        info { "#onServiceConnected" }
         val serviceBinder = service as? WearRequestBinder ?: return
+        info { "#onServiceConnected binder $serviceBinder" }
+
         val channel = pendingChannel ?: return
+        info { "#onServiceConnected channel $serviceBinder" }
 
         serviceBinder.channelBinder.onChannelOpen(channel)
     }

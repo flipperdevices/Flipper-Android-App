@@ -14,6 +14,7 @@ import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.log.warn
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.flipperdevices.core.ui.theme.LocalPallet
@@ -25,6 +26,10 @@ import com.google.android.gms.wearable.ChannelClient
 import com.google.android.gms.wearable.Wearable
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toImmutableSet
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class MainWearActivity : ComponentActivity(), LogTagProvider {
@@ -32,6 +37,8 @@ class MainWearActivity : ComponentActivity(), LogTagProvider {
 
     @Inject
     lateinit var channelClientHelper: ChannelClientHelper
+
+    private var activeChannel: ChannelClient.Channel? = null
 
     private val channelClient: ChannelClient by lazy { Wearable.getChannelClient(this) }
 
@@ -43,7 +50,9 @@ class MainWearActivity : ComponentActivity(), LogTagProvider {
         ) {
             super.onChannelClosed(channel, closeReason, appSpecificErrorCode)
             info { "#channelClientCallback onChannelClosed" }
-            channelClientHelper.onChannelReset(lifecycleScope)
+            lifecycleScope.launch(Dispatchers.Default) {
+                activeChannel = channelClientHelper.onChannelReset(lifecycleScope)
+            }
         }
     }
 
@@ -52,6 +61,12 @@ class MainWearActivity : ComponentActivity(), LogTagProvider {
         info { "#onCreate" }
 
         ComponentHolder.component<WearableComponent>().inject(this)
+        channelClient.registerChannelCallback(channelClientCallback)
+
+        lifecycleScope.launch(Dispatchers.Default) {
+            activeChannel = channelClientHelper.onChannelOpen(lifecycleScope)
+        }
+
         val futureEntries by ComponentHolder.component<WearableComponent>().futureEntries
         val composableFutureEntries by ComponentHolder.component<WearableComponent>()
             .composableFutureEntries
@@ -95,22 +110,28 @@ class MainWearActivity : ComponentActivity(), LogTagProvider {
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-        info { "#onStop" }
-        channelClient.unregisterChannelCallback(channelClientCallback)
-        channelClientHelper.onCloseChannel(lifecycleScope)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        info { "#onResume" }
-        channelClient.registerChannelCallback(channelClientCallback)
-        channelClientHelper.onChannelOpen(lifecycleScope)
-    }
-
     override fun onDestroy() {
+        info { "#onDestroy" }
+        runBlocking {
+            channelClient.unregisterChannelCallback(channelClientCallback)
+            closeChannel()
+        }
         super.onDestroy()
-        channelClient.unregisterChannelCallback(channelClientCallback)
+    }
+
+    private suspend fun closeChannel() {
+        val currentChannel = activeChannel
+        if (currentChannel == null) {
+            warn { "Active channel was null" }
+            return
+        }
+
+        runCatching {
+            channelClient.close(currentChannel).await()
+        }.onFailure {
+            warn { "Failed to close channel" }
+        }.onSuccess {
+            info { "Channel closed" }
+        }
     }
 }
