@@ -4,10 +4,14 @@
 
 - [Feature] Add transparent flipper mockup
 - [Feature] Add broke rpc ble session button to debug settings
+- [Feature] Add transparent flipper mockup with fixed templates
 - [Feature] Add fap manifest caching
+- [Feature] Add hide app button
 - [CI] Add apk artifacts to Pull Requests
 - [CI] Fix failed build in merge_group
-- [CI] Bump deps
+- [CI] Bump deps except Sentry-gradle
+- [CI] Detekt ViewModelForwarding and ModifierNotUsedAtRoot
+- [FIX] Upgrade google appcompanist
 
 # 1.6.3
 

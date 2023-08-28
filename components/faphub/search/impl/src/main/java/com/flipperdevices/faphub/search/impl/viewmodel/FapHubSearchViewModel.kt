@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
+import com.flipperdevices.bridge.dao.api.FapHubHideItemApi
 import com.flipperdevices.core.pager.loadingPagingDataFlow
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
@@ -18,19 +19,21 @@ import tangle.viewmodel.VMInject
 
 class FapHubSearchViewModel @VMInject constructor(
     private val fapNetworkApi: FapNetworkApi,
+    fapHubHideItemApi: FapHubHideItemApi,
     targetProviderApi: FlipperTargetProviderApi
 ) : ViewModel() {
     private val searchRequestFlow = MutableStateFlow("")
 
     val faps = combine(
         searchRequestFlow,
-        targetProviderApi.getFlipperTarget()
-    ) { searchRequest, target ->
+        targetProviderApi.getFlipperTarget(),
+        fapHubHideItemApi.getHiddenItems()
+    ) { searchRequest, target, hiddenItems ->
         if (target == null) {
             return@combine loadingPagingDataFlow()
         }
         Pager(PagingConfig(pageSize = FAPS_PAGE_SIZE)) {
-            FapsSearchPagingSource(fapNetworkApi, searchRequest, target)
+            FapsSearchPagingSource(fapNetworkApi, searchRequest, target, hiddenItems)
         }.flow
     }.flatMapLatest { it }.cachedIn(viewModelScope)
 

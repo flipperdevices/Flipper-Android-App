@@ -23,6 +23,8 @@ dependencies {
     implementation(projects.components.core.ui.navigation)
     implementation(projects.components.core.ui.dialog)
 
+    implementation(projects.components.bridge.dao.api)
+
     // Compose
     implementation(libs.compose.ui)
     implementation(libs.compose.tooling)
@@ -31,6 +33,7 @@ dependencies {
     implementation(libs.compose.navigation)
 
     implementation(projects.components.bottombar.api)
+    implementation(projects.components.inappnotification.api)
 
     implementation(projects.components.faphub.search.api)
     implementation(projects.components.faphub.dao.api)

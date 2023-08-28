@@ -19,6 +19,9 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.flipperdevices.widget.api.WidgetApi
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -42,8 +45,8 @@ class WidgetSelectViewModel @VMInject constructor(
 ) : ViewModel(), LogTagProvider {
     override val TAG = "WidgetSelectViewModel"
 
-    private val keys = MutableStateFlow<List<FlipperKey>>(emptyList())
-    private val favoriteKeys = MutableStateFlow<List<FlipperKey>>(emptyList())
+    private val keys = MutableStateFlow<ImmutableList<FlipperKey>>(persistentListOf())
+    private val favoriteKeys = MutableStateFlow<ImmutableList<FlipperKey>>(persistentListOf())
     private val synchronizationState =
         MutableStateFlow<SynchronizationState>(SynchronizationState.NotStarted)
 
@@ -56,8 +59,8 @@ class WidgetSelectViewModel @VMInject constructor(
                     val favoriteKeyPaths = favoriteKeysList.map { it.path }.toSet()
                     val keysExceptFavorite =
                         keyList.filterNot { favoriteKeyPaths.contains(it.path) }
-                    keys.emit(keysExceptFavorite)
-                    favoriteKeys.emit(favoriteKeysList)
+                    keys.emit(keysExceptFavorite.toImmutableList())
+                    favoriteKeys.emit(favoriteKeysList.toImmutableList())
                 }.collect()
         }
         synchronizationApi.getSynchronizationState().onEach {
@@ -65,8 +68,8 @@ class WidgetSelectViewModel @VMInject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun getKeysFlow(): StateFlow<List<FlipperKey>> = keys
-    fun getFavoriteKeysFlow(): StateFlow<List<FlipperKey>> = favoriteKeys
+    fun getKeysFlow(): StateFlow<ImmutableList<FlipperKey>> = keys
+    fun getFavoriteKeysFlow(): StateFlow<ImmutableList<FlipperKey>> = favoriteKeys
     fun getSynchronizationFlow(): StateFlow<SynchronizationState> = synchronizationState
 
     fun refresh() {

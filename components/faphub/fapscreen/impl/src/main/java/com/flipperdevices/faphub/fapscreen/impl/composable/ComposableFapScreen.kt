@@ -70,7 +70,9 @@ fun ComposableFapScreen(
             onOpenDeviceTab = onOpenDeviceTab,
             shareUrl = loadingStateLocal.shareUrl,
             onReportApp = { viewModel.onOpenReportApp(navController) },
-            onRefresh = viewModel::onRefresh
+            onRefresh = viewModel::onRefresh,
+            isHidden = loadingStateLocal.isHidden,
+            onHideApp = { viewModel.onPressHide(loadingStateLocal.isHidden, navController) }
         )
 
         FapScreenLoadingState.Loading -> ComposableFapScreenInternal(
@@ -83,7 +85,9 @@ fun ComposableFapScreen(
             onOpenDeviceTab = onOpenDeviceTab,
             shareUrl = null,
             onReportApp = {},
-            onRefresh = viewModel::onRefresh
+            onRefresh = viewModel::onRefresh,
+            isHidden = true,
+            onHideApp = {}
         )
     }
 }
@@ -98,6 +102,8 @@ private fun ComposableFapScreenInternal(
     onOpenDeviceTab: () -> Unit,
     onReportApp: () -> Unit,
     onRefresh: () -> Unit,
+    onHideApp: () -> Unit,
+    isHidden: Boolean,
     installationButton: @Composable (FapItem?, Modifier) -> Unit,
     modifier: Modifier = Modifier
 ) = Column(modifier) {
@@ -129,7 +135,9 @@ private fun ComposableFapScreenInternal(
             ComposableFapDescription(
                 modifier = Modifier.padding(start = 14.dp, end = 14.dp, bottom = 36.dp),
                 fapItem = fapItem,
-                onReportApp = onReportApp
+                onReportApp = onReportApp,
+                onHideApp = onHideApp,
+                isHidden = isHidden
             )
         }
     }

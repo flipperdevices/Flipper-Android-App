@@ -107,7 +107,7 @@ fun ComposableFapInstallingButton(
     modifier: Modifier = Modifier
 ) {
     ComposableInProgressFapButton(
-        modifier = modifier,
+        fapButtonModifier = modifier,
         percent = percent,
         color = LocalPallet.current.accent,
         fapButtonSize = fapButtonSize,
@@ -123,7 +123,7 @@ fun ComposableFapUpdatingButton(
     modifier: Modifier = Modifier
 ) {
     ComposableInProgressFapButton(
-        modifier = modifier,
+        fapButtonModifier = modifier,
         percent = percent,
         color = LocalPallet.current.updateProgressGreen,
         fapButtonSize = fapButtonSize,
