@@ -252,6 +252,10 @@ class FlipperRequestApiImpl @Inject constructor(
         info { "Complete reset and finish $counter tasks" }
     }
 
+    override suspend fun sendTrashBytesAndBrokeSession() {
+        serialApi.sendTrashBytesAndBrokeSession()
+    }
+
     private fun subscribeToAnswers(scope: CoroutineScope) {
         scope.launch(Dispatchers.Default) {
             serialApiUnsafe.receiveBytesFlow().collect {

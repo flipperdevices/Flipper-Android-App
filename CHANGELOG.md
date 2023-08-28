@@ -2,6 +2,8 @@
 
 # 1.6.4 - In progress
 
+- [Feature] Add transparent flipper mockup
+- [Feature] Add broke rpc ble session button to debug settings
 - [Feature] Add transparent flipper mockup with fixed templates
 - [Feature] Add fap manifest caching
 - [Feature] Not send empty report in faphub
