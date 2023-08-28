@@ -6,9 +6,6 @@ on:
       - 'dev'
       - 'ci/bump_deps_08_02'
 
-concurrency:
-  group: "deploy"
-
 jobs:
   invalidate_gradle_cache:
     name: Update gradle cache
