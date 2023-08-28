@@ -65,11 +65,7 @@ fun ComposableWearEmulate(
                 modifier
             )
         }
-        WearEmulateState.NotFoundNode -> {
-            LaunchedEffect(Unit) {
-                onNotFoundNode()
-            }
-        }
+        WearEmulateState.NotFoundNode -> onNotFoundNode()
         is WearEmulateState.Emulating,
         is WearEmulateState.ReadyForEmulate -> {
             EmulateButton(state, keyEmulateUiApi, emulateViewModel, modifier, onBack)

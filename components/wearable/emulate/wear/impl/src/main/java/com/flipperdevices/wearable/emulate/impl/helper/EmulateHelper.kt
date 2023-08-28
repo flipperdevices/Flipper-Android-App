@@ -12,7 +12,7 @@ import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.Emulate
 import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.sendRequest
 import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.startEmulateRequest
 import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.stopEmulateRequest
-import com.flipperdevices.wearable.emulate.impl.model.KeyToEmulate
+import com.flipperdevices.wearable.emulate.impl.viewmodel.KeyToEmulate
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
 import kotlinx.coroutines.CoroutineScope
