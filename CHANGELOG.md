@@ -10,6 +10,7 @@
 - [CI] Bump deps except Sentry-gradle
 - [CI] Detekt ViewModelForwarding and ModifierNotUsedAtRoot
 - [FIX] Upgrade google appcompanist
+- [FIX] Bump deps, remove PR apks and fix wearos track
 
 # 1.6.3
 
