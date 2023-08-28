@@ -123,6 +123,12 @@ class FlipperSerialOverflowThrottler(
         }
     }
 
+    @Suppress("MagicNumber")
+    suspend fun sendTrashBytesAndBrokeSession() {
+        val randomBytes = byteArrayOf(-61, 91, 69, 107, -128, -69, -42, 107, 53, -102)
+        serialApi.sendBytes(randomBytes)
+    }
+
     private fun getPendingBytesSafe(maxLength: Int): ByteArray {
         val pendingBytesInternal = pendingBytes ?: return byteArrayOf()
 

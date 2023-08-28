@@ -37,6 +37,8 @@ class WearRequestForegroundService : LifecycleService(), WearRequestChannelBinde
         info { "Service receive command with action ${intent?.action}" }
 
         if (intent?.action == CLOSE_CHANNEL_ACTION) {
+            wearServiceComponent.commandInputStream.onCloseChannel(lifecycleScope)
+            wearServiceComponent.commandOutputStream.onCloseChannel(lifecycleScope)
             stopForeground(STOP_FOREGROUND_REMOVE)
             stopSelf()
         }
@@ -56,16 +58,9 @@ class WearRequestForegroundService : LifecycleService(), WearRequestChannelBinde
         wearServiceComponent.commandOutputStream.onOpenChannel(lifecycleScope, channel)
     }
 
-    override fun onChannelClose() {
-        info { "#onChannelClose" }
-        wearServiceComponent.commandInputStream.onCloseChannel(lifecycleScope)
-        wearServiceComponent.commandOutputStream.onCloseChannel(lifecycleScope)
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         info { "#onDestroy" }
-        onChannelClose()
     }
 
     companion object {
@@ -76,7 +71,6 @@ class WearRequestForegroundService : LifecycleService(), WearRequestChannelBinde
 
 interface WearRequestChannelBinder {
     fun onChannelOpen(channel: Channel)
-    fun onChannelClose()
 }
 
 class WearRequestBinder internal constructor(
