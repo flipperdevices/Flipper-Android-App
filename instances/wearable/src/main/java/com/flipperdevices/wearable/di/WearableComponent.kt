@@ -5,7 +5,6 @@ import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.flipperdevices.shake2report.api.Shake2ReportApi
 import com.flipperdevices.wearable.MainWearActivity
-import com.flipperdevices.wearable.emulate.api.HandheldProcessor
 import com.flipperdevices.wearable.setup.api.SetupApi
 import com.squareup.anvil.annotations.ContributesTo
 import javax.inject.Provider

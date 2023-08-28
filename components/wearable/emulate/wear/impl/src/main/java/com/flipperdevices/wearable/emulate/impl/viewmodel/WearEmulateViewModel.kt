@@ -1,6 +1,7 @@
 package com.flipperdevices.wearable.emulate.impl.viewmodel
 
 import androidx.lifecycle.viewModelScope
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.wearable.emulate.api.ChannelClientHelper
@@ -9,11 +10,11 @@ import com.flipperdevices.wearable.emulate.impl.helper.ConnectionHelper
 import com.flipperdevices.wearable.emulate.impl.helper.EmulateHelper
 import com.flipperdevices.wearable.emulate.impl.helper.FlipperStatusHelper
 import com.flipperdevices.wearable.emulate.impl.helper.WearStateMachineHelper
-import com.flipperdevices.wearable.emulate.impl.model.KeyToEmulate
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import tangle.inject.TangleParam
 import tangle.viewmodel.VMInject
+import java.io.File
 
 class WearEmulateViewModel @VMInject constructor(
     @TangleParam(EMULATE_PATH_KEY)
@@ -66,4 +67,11 @@ enum class WearLoadingState {
     CONNECTING_PHONE,
     TEST_CONNECTION,
     CONNECTING_FLIPPER
+}
+
+data class KeyToEmulate(
+    val keyPath: String
+) {
+    val keyType: FlipperKeyType?
+        get() = FlipperKeyType.getByExtension(File(keyPath).extension)
 }

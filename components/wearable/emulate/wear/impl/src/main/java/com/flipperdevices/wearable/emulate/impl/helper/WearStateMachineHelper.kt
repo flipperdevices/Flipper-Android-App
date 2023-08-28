@@ -8,7 +8,7 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.keyemulate.model.EmulateProgress
 import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.ConnectStatusOuterClass
 import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.Emulate
-import com.flipperdevices.wearable.emulate.impl.model.KeyToEmulate
+import com.flipperdevices.wearable.emulate.impl.viewmodel.KeyToEmulate
 import com.flipperdevices.wearable.emulate.model.ChannelClientState
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.flow.MutableStateFlow

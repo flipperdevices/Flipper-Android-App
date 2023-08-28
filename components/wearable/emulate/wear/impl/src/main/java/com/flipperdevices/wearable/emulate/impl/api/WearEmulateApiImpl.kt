@@ -47,9 +47,7 @@ class WearEmulateApiImpl @Inject constructor(
                         popUpTo(0)
                     }
                 },
-                onBack = {
-                    navController.popBackStack()
-                }
+                onBack = navController::popBackStack
             )
         }
     }
