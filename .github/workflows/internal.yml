@@ -243,12 +243,26 @@ jobs:
   upload_to_playstore:
     name: Upload to Play Store
     runs-on: ubuntu-latest
-    needs: [ build_internal_release, build_internal_release_gms_wearos ]
+    needs: [ build_internal_release ]
     steps:
       - uses: actions/download-artifact@v3
         id: download-googleplay
         with:
           name: artifacts-googleplay
+      - name: Upload to Play Store
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_PUBLISHER_JSON }}
+          packageName: com.flipperdevices.app
+          releaseFiles: ${{steps.download-googleplay.outputs.download-path}}/flipper-zero-googleplay.aab
+          track: beta
+          mappingFile: ${{steps.download-googleplay.outputs.download-path}}/mapping-googleplay.txt
+          status: draft
+  upload_to_playstore_wearos:
+    name: Upload Wear OS to Play Store
+    runs-on: ubuntu-latest
+    needs: [ build_internal_release_gms_wearos ]
+    steps:
       - uses: actions/download-artifact@v3
         id: download-wearos
         with:
@@ -261,13 +275,4 @@ jobs:
           releaseFiles: ${{steps.download-wearos.outputs.download-path}}/flipper-zero-wearos.aab
           track: wear:beta
           mappingFile: ${{steps.download-wearos.outputs.download-path}}/mapping-wearos.txt
-          status: draft
-      - name: Upload to Play Store
-        uses: r0adkll/upload-google-play@v1
-        with:
-          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_PUBLISHER_JSON }}
-          packageName: com.flipperdevices.app
-          releaseFiles: ${{steps.download-googleplay.outputs.download-path}}/flipper-zero-googleplay.aab
-          track: beta
-          mappingFile: ${{steps.download-googleplay.outputs.download-path}}/mapping-googleplay.txt
           status: draft
