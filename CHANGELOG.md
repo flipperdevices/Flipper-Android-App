@@ -9,6 +9,7 @@
 - [CI] Fix failed build in merge_group
 - [CI] Bump deps except Sentry-gradle
 - [CI] Detekt ViewModelForwarding and ModifierNotUsedAtRoot
+- [FIX] Canceled process loop and close service for WearOS 
 - [FIX] Upgrade google appcompanist
 
 # 1.6.3
