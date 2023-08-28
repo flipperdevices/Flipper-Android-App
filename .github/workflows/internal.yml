@@ -275,4 +275,3 @@ jobs:
           releaseFiles: ${{steps.download-wearos.outputs.download-path}}/flipper-zero-wearos.aab
           track: wear:beta
           mappingFile: ${{steps.download-wearos.outputs.download-path}}/mapping-wearos.txt
-          status: draft
