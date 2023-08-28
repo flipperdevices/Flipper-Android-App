@@ -259,7 +259,7 @@ jobs:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_PUBLISHER_JSON }}
           packageName: com.flipperdevices.app
           releaseFiles: ${{steps.download-wearos.outputs.download-path}}/flipper-zero-wearos.aab
-          track: wearos:beta
+          track: wear:beta
           mappingFile: ${{steps.download-wearos.outputs.download-path}}/mapping-wearos.txt
           status: draft
       - name: Upload to Play Store
