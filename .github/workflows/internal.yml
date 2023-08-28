@@ -4,7 +4,9 @@ on:
   push:
     branches:
       - 'dev'
-      - 'ci/bump_deps_08_02'
+
+concurrency:
+  group: "deploy"
 
 jobs:
   invalidate_gradle_cache:
@@ -257,7 +259,6 @@ jobs:
           releaseFiles: ${{steps.download-googleplay.outputs.download-path}}/flipper-zero-googleplay.aab
           track: beta
           mappingFile: ${{steps.download-googleplay.outputs.download-path}}/mapping-googleplay.txt
-          status: draft
   upload_to_playstore_wearos:
     name: Upload Wear OS to Play Store
     runs-on: ubuntu-latest
