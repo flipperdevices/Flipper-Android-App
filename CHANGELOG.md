@@ -14,6 +14,7 @@
 - [CI] Detekt ViewModelForwarding and ModifierNotUsedAtRoot
 - [FIX] Canceled process loop and close service for WearOS 
 - [FIX] Upgrade google appcompanist
+- [FIX] Bump deps, remove PR apks and fix wearos track
 - [FIX] Return empty list, if flipper path not exist
 
 # 1.6.3
