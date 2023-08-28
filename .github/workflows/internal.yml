@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - 'dev'
+      - 'ci/bump_deps_08_02'
 
 concurrency:
   group: "deploy"
@@ -31,15 +32,9 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       number: ${{ steps.build_out.outputs.number }}
-      number_wearos: ${{ steps.wearos_out.outputs.number_wearos }}
     steps:
       - name: Generate build number
         id: buildnumber
-        uses: onyxmueller/build-tag-number@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Generate build number for WearOS
-        id: buildnumber_wearos
         uses: onyxmueller/build-tag-number@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -47,10 +42,6 @@ jobs:
         id: build_out
         run: |
           echo "number=${{ steps.buildnumber.outputs.build_number }}" >> $GITHUB_OUTPUT
-      - name: 'Set output for WearOS'
-        id: wearos_out
-        run: |
-          echo "number_wearos=${{ steps.buildnumber_wearos.outputs.build_number }}" >> $GITHUB_OUTPUT
   build_internal_release:
     name: Build Internal AAB and APK
     runs-on: ubuntu-latest
@@ -130,7 +121,7 @@ jobs:
         run: |
           export $(cat .github/workflows/version.env | xargs)
           echo "major_version=${MAJOR_VERSION}" >> $GITHUB_OUTPUT
-          echo "minor_version=${{ needs.build_number.outputs.number_wearos }}" >> $GITHUB_OUTPUT
+          echo "minor_version=${{ needs.build_number.outputs.number }}" >> $GITHUB_OUTPUT
       - name: Build internal release
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
@@ -204,7 +195,7 @@ jobs:
           export $(cat .github/workflows/version.env | xargs)
           echo "major_version=${MAJOR_VERSION}" >> $GITHUB_OUTPUT
           echo "minor_version=${{ needs.build_number.outputs.number }}" >> $GITHUB_OUTPUT
-          echo "minor_version_wearos=${{ needs.build_number.outputs.number_wearos }}" >> $GITHUB_OUTPUT
+          echo "minor_version_wearos=${{ needs.build_number.outputs.number }}" >> $GITHUB_OUTPUT
       - name: 'Copy artifacts'
         id: artifacts_copy
         run: |
@@ -265,18 +256,21 @@ jobs:
         id: download-wearos
         with:
           name: artifacts-wearos
-      - name: Copy artifacts
-        id: artifacts_copy
-        run: |
-          mkdir artifacts
-          cp ${{steps.download-googleplay.outputs.download-path}}/flipper-zero-googleplay.aab artifacts
-          cp ${{steps.download-wearos.outputs.download-path}}/flipper-zero-wearos.aab artifacts
-          echo "path=artifacts" >> $GITHUB_OUTPUT
+      - name: Upload to Play Store Wear OS
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_PUBLISHER_JSON }}
+          packageName: com.flipperdevices.app
+          releaseFiles: ${{steps.download-wearos.outputs.download-path}}/flipper-zero-wearos.aab
+          track: wearos:beta
+          mappingFile: ${{steps.download-wearos.outputs.download-path}}/mapping-wearos.txt
+          status: draft
       - name: Upload to Play Store
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_PUBLISHER_JSON }}
           packageName: com.flipperdevices.app
-          releaseFiles: "${{ steps.artifacts_copy.outputs.path }}/*.aab"
+          releaseFiles: ${{steps.download-googleplay.outputs.download-path}}/flipper-zero-googleplay.aab
           track: beta
           mappingFile: ${{steps.download-googleplay.outputs.download-path}}/mapping-googleplay.txt
+          status: draft
