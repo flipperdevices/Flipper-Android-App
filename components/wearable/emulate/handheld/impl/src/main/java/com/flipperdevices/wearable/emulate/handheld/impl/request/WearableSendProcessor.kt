@@ -6,6 +6,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.core.di.SingleIn
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
@@ -29,6 +30,7 @@ import java.io.File
 import javax.inject.Inject
 
 @Suppress("LongParameterList")
+@SingleIn(WearHandheldGraph::class)
 @ContributesMultibinding(WearHandheldGraph::class, WearableCommandProcessor::class)
 class WearableSendProcessor @Inject constructor(
     private val commandInputStream: WearableCommandInputStream<Main.MainRequest>,
@@ -39,12 +41,12 @@ class WearableSendProcessor @Inject constructor(
     private val simpleKeyApi: SimpleKeyApi,
     private val keyParser: KeyParser
 ) : WearableCommandProcessor, LogTagProvider {
-    override val TAG: String = "WearableSendProcessor"
+    override val TAG: String = "WearableSendProcessor-${hashCode()}"
 
     override fun init() {
         commandInputStream.getRequestsFlow().onEach {
             if (it.hasSendRequest()) {
-                info { "found send request $it" }
+                info { "SendRequest: $it" }
                 startSend(serviceProvider.getServiceApi(), it.sendRequest.path)
             }
         }.launchIn(scope)

@@ -3,7 +3,6 @@ package com.flipperdevices.wearable.emulate.impl.composable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -21,7 +20,6 @@ import tangle.viewmodel.compose.tangleViewModel
 @Suppress("LongMethod")
 fun ComposableWearEmulate(
     keyEmulateUiApi: KeyEmulateUiApi,
-    onNotFoundNode: () -> Unit,
     onBack: () -> Unit
 ) {
     val emulateViewModel = tangleViewModel<WearEmulateViewModel>()
@@ -65,7 +63,13 @@ fun ComposableWearEmulate(
                 modifier
             )
         }
-        WearEmulateState.NotFoundNode -> onNotFoundNode()
+        WearEmulateState.NotFoundNode -> {
+            ComposableActionLoading(
+                keyEmulateUiApi,
+                WearLoadingState.NOT_FOUND_PHONE,
+                modifier
+            )
+        }
         is WearEmulateState.Emulating,
         is WearEmulateState.ReadyForEmulate -> {
             EmulateButton(state, keyEmulateUiApi, emulateViewModel, modifier, onBack)

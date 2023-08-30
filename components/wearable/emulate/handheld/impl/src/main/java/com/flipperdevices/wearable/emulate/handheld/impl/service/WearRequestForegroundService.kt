@@ -16,7 +16,7 @@ import kotlinx.coroutines.plus
 private const val NOTIFICATION_ID = 100
 
 class WearRequestForegroundService : LifecycleService(), WearRequestChannelBinder, LogTagProvider {
-    override val TAG = "WearRequestForegroundService"
+    override val TAG = "WearRequestForegroundService-${hashCode()}"
     private val wearServiceComponent = DaggerWearServiceComponent.factory().create(
         ComponentHolder.component(),
         lifecycleScope + Dispatchers.Default

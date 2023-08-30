@@ -1,4 +1,4 @@
-package com.flipperdevices.wearable.theme
+package com.flipperdevices.wearable.core.ui.ktx
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable

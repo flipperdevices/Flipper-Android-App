@@ -38,6 +38,7 @@ fun ComposableActionLoading(
             WearLoadingState.TEST_CONNECTION -> R.string.keyscreen_loading_test_connection
             WearLoadingState.CONNECTING_FLIPPER -> R.string.keyscreen_loading_connecting_flipper
             WearLoadingState.INITIALIZING -> R.string.keyscreen_loading_initializing
+            WearLoadingState.NOT_FOUND_PHONE -> R.string.keyscreen_loading_not_found
         },
         iconId = null,
         picture = null,

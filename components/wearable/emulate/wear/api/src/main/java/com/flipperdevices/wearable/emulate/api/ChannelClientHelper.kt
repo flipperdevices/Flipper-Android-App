@@ -10,5 +10,7 @@ interface ChannelClientHelper {
 
     suspend fun onChannelReset(scope: CoroutineScope): ChannelClient.Channel?
 
+    suspend fun onChannelClose(scope: CoroutineScope)
+
     fun getState(): StateFlow<ChannelClientState>
 }

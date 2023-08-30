@@ -34,13 +34,13 @@ class WearableStartEmulateProcessor @Inject constructor(
     private val serviceProvider: FlipperServiceProvider,
     private val emulateHelper: EmulateHelper
 ) : WearableCommandProcessor, LogTagProvider {
-    override val TAG = "WearableStartEmulateProcessor"
+    override val TAG = "WearableStartEmulateProcessor-${hashCode()}"
 
     override fun init() {
         info { "#init" }
         commandInputStream.getRequestsFlow().onEach {
             if (it.hasStartEmulate()) {
-                info { "found start request $it" }
+                info { "StartEmulate: $it" }
                 startEmulate(serviceProvider.getServiceApi(), it.startEmulate.path)
             }
         }.launchIn(scope)

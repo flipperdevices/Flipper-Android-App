@@ -4,7 +4,8 @@ import androidx.compose.runtime.Stable
 import kotlinx.collections.immutable.ImmutableList
 
 sealed class KeysListState {
-    object Loading : KeysListState()
+    data object Loading : KeysListState()
+    data object PhoneNotFound : KeysListState()
 
     @Stable
     data class Loaded(val keys: ImmutableList<FlipperWearKey>) : KeysListState()

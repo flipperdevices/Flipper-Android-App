@@ -5,7 +5,10 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.wearable.emulate.api.HandheldProcessor
 import com.flipperdevices.wearable.emulate.common.WearableCommandInputStream
+import com.flipperdevices.wearable.emulate.common.WearableCommandOutputStream
 import com.flipperdevices.wearable.emulate.common.ipcemulate.Main
+import com.flipperdevices.wearable.emulate.common.ipcemulate.mainRequest
+import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.pingRequest
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
 import kotlinx.coroutines.CoroutineScope
@@ -21,6 +24,8 @@ import javax.inject.Singleton
 
 interface ConnectionHelper {
     fun getState(): StateFlow<ConnectionTesterState>
+
+    fun testConnection()
 }
 
 @Singleton
@@ -28,6 +33,7 @@ interface ConnectionHelper {
 @ContributesBinding(AppGraph::class, ConnectionHelper::class)
 class ConnectionHelperImpl @Inject constructor(
     private val commandInputStream: WearableCommandInputStream<Main.MainResponse>,
+    private val commandOutputStream: WearableCommandOutputStream<Main.MainRequest>,
 ) : ConnectionHelper, HandheldProcessor, LogTagProvider {
     override val TAG: String = "ConnectionTester-${hashCode()}"
 
@@ -50,6 +56,13 @@ class ConnectionHelperImpl @Inject constructor(
     }
 
     override fun getState(): StateFlow<ConnectionTesterState> = state.asStateFlow()
+    override fun testConnection() {
+        commandOutputStream.send(
+            mainRequest {
+                ping = pingRequest { }
+            }
+        )
+    }
 }
 
 enum class ConnectionTesterState {

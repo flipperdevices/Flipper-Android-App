@@ -24,25 +24,31 @@ fun ComposableWearSubGhzEmulate(
         onLongPressEnd = onStopEmulate
     )
 
-    if (emulateProgress == null) {
-        keyEmulateUiApi.ComposableEmulateButtonRaw(
-            modifier = modifier,
-            buttonContentModifier = buttonActiveModifier,
-            picture = null,
-            textId = R.string.keyscreen_send,
-            color = LocalPallet.current.actionOnFlipperSubGhzEnable,
-            progressColor = Color.Transparent,
-            emulateProgress = null
-        )
+    val color = if (emulateProgress == null) {
+        LocalPallet.current.actionOnFlipperSubGhzEnable
     } else {
-        keyEmulateUiApi.ComposableEmulateButtonRaw(
-            modifier = modifier,
-            buttonContentModifier = buttonActiveModifier,
-            emulateProgress = emulateProgress,
-            picture = null,
-            textId = R.string.keyscreen_sending,
-            color = LocalPallet.current.actionOnFlipperSubGhzProgress,
-            progressColor = LocalPallet.current.actionOnFlipperSubGhzEnable
-        )
+        LocalPallet.current.actionOnFlipperSubGhzProgress
     }
+
+    val progressColor = if (emulateProgress == null) {
+        Color.Transparent
+    } else {
+        LocalPallet.current.actionOnFlipperSubGhzEnable
+    }
+
+    val textId = if (emulateProgress == null) {
+        R.string.keyscreen_send
+    } else {
+        R.string.keyscreen_sending
+    }
+
+    keyEmulateUiApi.ComposableEmulateButtonRaw(
+        modifier = modifier,
+        buttonContentModifier = buttonActiveModifier,
+        picture = null,
+        textId = textId,
+        color = color,
+        progressColor = progressColor,
+        emulateProgress = emulateProgress
+    )
 }

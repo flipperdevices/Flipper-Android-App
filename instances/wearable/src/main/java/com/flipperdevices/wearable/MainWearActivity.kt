@@ -18,10 +18,13 @@ import com.flipperdevices.core.log.warn
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.wearable.core.ui.ktx.WearFlipperTheme
 import com.flipperdevices.wearable.di.WearableComponent
 import com.flipperdevices.wearable.emulate.api.ChannelClientHelper
-import com.flipperdevices.wearable.setup.api.SetupApi
-import com.flipperdevices.wearable.theme.WearFlipperTheme
+import com.flipperdevices.wearable.sync.wear.api.FindPhoneApi
+import com.flipperdevices.wearable.sync.wear.api.KeysListApi
+import com.google.android.gms.wearable.CapabilityClient
+import com.google.android.gms.wearable.CapabilityInfo
 import com.google.android.gms.wearable.ChannelClient
 import com.google.android.gms.wearable.Wearable
 import kotlinx.collections.immutable.ImmutableSet
@@ -32,15 +35,21 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
+private const val CAPABILITY_PHONE_APP = "verify_remote_flipper_phone_app"
+
 class MainWearActivity : ComponentActivity(), LogTagProvider {
     override val TAG: String = "MainWearActivity"
 
     @Inject
     lateinit var channelClientHelper: ChannelClientHelper
 
+    @Inject
+    lateinit var findPhoneApi: FindPhoneApi
+
     private var activeChannel: ChannelClient.Channel? = null
 
     private val channelClient: ChannelClient by lazy { Wearable.getChannelClient(this) }
+    private val capabilityClient: CapabilityClient by lazy { Wearable.getCapabilityClient(this) }
 
     private val channelClientCallback = object : ChannelClient.ChannelCallback() {
         override fun onChannelClosed(
@@ -51,9 +60,32 @@ class MainWearActivity : ComponentActivity(), LogTagProvider {
             super.onChannelClosed(channel, closeReason, appSpecificErrorCode)
             info { "#channelClientCallback onChannelClosed" }
             lifecycleScope.launch(Dispatchers.Default) {
-                activeChannel = channelClientHelper.onChannelReset(lifecycleScope)
+                // Channel close from phone, so close on wear
+                channelClientHelper.onChannelClose(lifecycleScope)
+                activeChannel = null
             }
         }
+    }
+
+    private val capabilityClientCallback =
+        CapabilityClient.OnCapabilityChangedListener { capabilityInfo ->
+            lifecycleScope.launch(Dispatchers.Default) {
+                val successFindNode = capabilityUpdate(capabilityInfo)
+                if (successFindNode) {
+                    // Success find phone, try to reopen channel
+                    activeChannel = channelClientHelper.onChannelOpen(lifecycleScope)
+                }
+            }
+        }
+
+    private suspend fun capabilityUpdate(capabilityInfo: CapabilityInfo): Boolean {
+        val node = capabilityInfo.nodes.firstOrNull { it.isNearby }
+        val nodeId = node?.id
+
+        info { "#processCapabilityInfo $nodeId" }
+        findPhoneApi.update(nodeId)
+
+        return nodeId != null
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,22 +94,28 @@ class MainWearActivity : ComponentActivity(), LogTagProvider {
 
         ComponentHolder.component<WearableComponent>().inject(this)
         channelClient.registerChannelCallback(channelClientCallback)
+        capabilityClient.addListener(capabilityClientCallback, CAPABILITY_PHONE_APP)
 
         lifecycleScope.launch(Dispatchers.Default) {
+            val capabilityInfo = capabilityClient.getCapability(
+                CAPABILITY_PHONE_APP,
+                CapabilityClient.FILTER_ALL
+            ).await()
+            capabilityUpdate(capabilityInfo)
             activeChannel = channelClientHelper.onChannelOpen(lifecycleScope)
         }
 
         val futureEntries by ComponentHolder.component<WearableComponent>().futureEntries
         val composableFutureEntries by ComponentHolder.component<WearableComponent>()
             .composableFutureEntries
-        val setupApi = ComponentHolder.component<WearableComponent>().setupApi
+        val keysListApi = ComponentHolder.component<WearableComponent>().keysListApi
 
         setContent {
             WearFlipperTheme {
                 SetUpNavigation(
                     futureEntries.toImmutableSet(),
                     composableFutureEntries.toImmutableSet(),
-                    setupApi
+                    keysListApi
                 )
             }
         }
@@ -87,12 +125,12 @@ class MainWearActivity : ComponentActivity(), LogTagProvider {
     private fun SetUpNavigation(
         futureEntries: ImmutableSet<AggregateFeatureEntry>,
         composableFutureEntries: ImmutableSet<ComposableFeatureEntry>,
-        setupApi: SetupApi
+        keysListApi: KeysListApi
     ) {
         val navController = rememberSwipeDismissableNavController()
         SwipeDismissableNavHost(
             navController = navController,
-            startDestination = setupApi.ROUTE.name,
+            startDestination = keysListApi.ROUTE.name,
             modifier = Modifier
                 .fillMaxSize()
                 .background(LocalPallet.current.background)
@@ -114,6 +152,7 @@ class MainWearActivity : ComponentActivity(), LogTagProvider {
         info { "#onDestroy" }
         runBlocking {
             channelClient.unregisterChannelCallback(channelClientCallback)
+            capabilityClient.removeListener(capabilityClientCallback, CAPABILITY_PHONE_APP)
             closeChannel()
         }
         super.onDestroy()

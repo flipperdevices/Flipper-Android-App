@@ -26,14 +26,12 @@ dependencies {
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.navigation)
 
-    implementation(projects.components.wearable.setup.api)
-    implementation(projects.components.wearable.setup.impl)
     implementation(projects.components.wearable.emulate.wear.api)
     implementation(projects.components.wearable.emulate.wear.impl)
     implementation(projects.components.wearable.emulate.common)
     implementation(projects.components.wearable.sync.wear.api)
     implementation(projects.components.wearable.sync.wear.impl)
-    implementation(projects.components.wearable.theme)
+    implementation(projects.components.wearable.core.ui.theme)
 
     implementation(projects.components.keyparser.api)
     implementation(projects.components.keyparser.noop)

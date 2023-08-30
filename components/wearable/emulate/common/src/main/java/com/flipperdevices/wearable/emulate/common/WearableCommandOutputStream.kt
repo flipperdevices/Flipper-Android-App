@@ -28,7 +28,7 @@ private const val TIMEOUT_MS = 100L
 class WearableCommandOutputStream<T : GeneratedMessageLite<*, *>>(
     private val channelClient: ChannelClient
 ) : LogTagProvider {
-    override val TAG = "WearableCommandOutputStream"
+    override val TAG = "WearableCommandOutputStream-${hashCode()}"
 
     private val queue = LinkedTransferQueue<T>()
     private val mutex = Mutex()
@@ -46,6 +46,7 @@ class WearableCommandOutputStream<T : GeneratedMessageLite<*, *>>(
     }
 
     fun onCloseChannel(scope: CoroutineScope) {
+        queue.clear()
         launchWithLock(mutex, scope, "close_channel") {
             sendJob?.cancelAndJoin()
         }

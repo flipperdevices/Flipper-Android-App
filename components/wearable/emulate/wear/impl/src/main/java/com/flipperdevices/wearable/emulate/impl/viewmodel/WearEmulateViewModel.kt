@@ -1,9 +1,9 @@
 package com.flipperdevices.wearable.emulate.impl.viewmodel
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.wearable.emulate.api.ChannelClientHelper
 import com.flipperdevices.wearable.emulate.impl.api.EMULATE_PATH_KEY
 import com.flipperdevices.wearable.emulate.impl.helper.ConnectionHelper
@@ -24,7 +24,7 @@ class WearEmulateViewModel @VMInject constructor(
     connectionHelper: ConnectionHelper,
     flipperStatusHelper: FlipperStatusHelper,
     private val emulateHelper: EmulateHelper
-) : LifecycleViewModel(),
+) : ViewModel(),
     LogTagProvider {
     override val TAG = "WearEmulateViewModel"
 
@@ -64,6 +64,7 @@ class WearEmulateViewModel @VMInject constructor(
 enum class WearLoadingState {
     INITIALIZING,
     FINDING_PHONE,
+    NOT_FOUND_PHONE,
     CONNECTING_PHONE,
     TEST_CONNECTION,
     CONNECTING_FLIPPER

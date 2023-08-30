@@ -33,7 +33,7 @@ interface WearStateMachineHelper {
 @ContributesBinding(AppGraph::class, WearStateMachineHelper::class)
 class WearStateMachineHelperImpl @Inject constructor(
     private val flipperStatusHelper: FlipperStatusHelper,
-    private val emulateHelper: EmulateHelper
+    private val connectionHelper: ConnectionHelper
 ) : WearStateMachineHelper, LogTagProvider {
 
     override val TAG: String = "WearStateMachineHelper"
@@ -73,6 +73,7 @@ class WearStateMachineHelperImpl @Inject constructor(
         when (connectionState) {
             ConnectionTesterState.NOT_CONNECTED -> {
                 state.emit(WearEmulateState.TestConnection)
+                connectionHelper.testConnection()
                 return
             }
             ConnectionTesterState.CONNECTED -> {

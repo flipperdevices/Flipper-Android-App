@@ -44,7 +44,7 @@ class EmulateHelperImpl @Inject constructor(
     private val commandInputStream: WearableCommandInputStream<Main.MainResponse>,
     private val commandOutputStream: WearableCommandOutputStream<Main.MainRequest>,
 ) : EmulateHelper, HandheldProcessor, LogTagProvider {
-    override val TAG: String = "EmulateHelper"
+    override val TAG: String = "EmulateHelper-${hashCode()}"
 
     private val state = MutableStateFlow(Emulate.EmulateStatus.UNRECOGNIZED)
 
