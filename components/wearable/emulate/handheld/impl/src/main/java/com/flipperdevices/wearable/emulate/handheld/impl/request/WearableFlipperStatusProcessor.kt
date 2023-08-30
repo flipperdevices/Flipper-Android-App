@@ -53,7 +53,7 @@ class WearableFlipperStatusProcessor @Inject constructor(
         }
     }
 
-    private suspend fun reportConnectionState(connectionState: ConnectionState) {
+    private fun reportConnectionState(connectionState: ConnectionState) {
         val connectStatusProto = when (connectionState) {
             ConnectionState.Connecting -> ConnectStatusOuterClass.ConnectStatus.CONNECTING
             is ConnectionState.Disconnected -> ConnectStatusOuterClass.ConnectStatus.DISCONNECTED

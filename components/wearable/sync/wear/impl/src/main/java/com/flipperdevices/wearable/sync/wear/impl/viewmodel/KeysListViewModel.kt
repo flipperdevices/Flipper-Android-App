@@ -1,5 +1,6 @@
 package com.flipperdevices.wearable.sync.wear.impl.viewmodel
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Intent
 import android.net.Uri
@@ -89,6 +90,7 @@ class KeysListViewModel @VMInject constructor(
         keysListFlow.emit(dataItem.toImmutableList())
     }
 
+    @SuppressLint("VisibleForTests")
     override fun onDataChanged(datas: DataEventBuffer) = keysListFlow.update { keyState ->
         info { "Handle changes $datas" }
         val mapByPath = keyState.associateByTo(HashMap()) { it.path }
