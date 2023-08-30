@@ -6,11 +6,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
@@ -18,28 +15,28 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.composable.elements.SimpleElement
 import com.flipperdevices.settings.impl.model.ExportState
-import com.flipperdevices.settings.impl.viewmodels.SettingsViewModel
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ExportKeysCategory(
-    settingsViewModel: SettingsViewModel
+    exportState: ExportState,
+    onExport: () -> Unit
 ) {
     CardCategory {
-        ExportKeysElement(settingsViewModel)
+        ExportKeysElement(
+            exportState = exportState,
+            onExport = onExport,
+        )
     }
 }
 
 @Composable
 private fun ExportKeysElement(
-    settingsViewModel: SettingsViewModel
+    exportState: ExportState,
+    onExport: () -> Unit
 ) {
-    val context = LocalContext.current
-    val exportState by settingsViewModel.getExportState().collectAsState()
     Row(
-        modifier = Modifier.clickableRipple {
-            settingsViewModel.onMakeExport(context)
-        },
+        modifier = Modifier.clickableRipple(onClick = onExport),
         verticalAlignment = Alignment.CenterVertically
     ) {
         SimpleElement(

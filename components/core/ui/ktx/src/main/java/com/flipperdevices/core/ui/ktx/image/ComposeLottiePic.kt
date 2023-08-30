@@ -26,6 +26,7 @@ fun ComposeLottiePic(
     @RawRes picResId: Int,
     @DrawableRes rollBackPicResId: Int,
     modifier: Modifier = Modifier,
+    picModifier: Modifier = Modifier,
     tint: Color? = null
 ) {
     val compositionResult = rememberLottieComposition(LottieCompositionSpec.RawRes(picResId))
@@ -36,17 +37,17 @@ fun ComposeLottiePic(
     )
     val progress by animateState
 
-    Box {
+    Box(modifier = modifier) {
         if (compositionResult.isLoading) {
             if (tint == null) {
                 Image(
-                    modifier = modifier,
+                    modifier = picModifier,
                     painter = painterResource(rollBackPicResId),
                     contentDescription = null
                 )
             } else {
                 Icon(
-                    modifier = modifier,
+                    modifier = picModifier,
                     painter = painterResource(rollBackPicResId),
                     contentDescription = null,
                     tint = tint
@@ -66,7 +67,7 @@ fun ComposeLottiePic(
             }
 
             LottieAnimation(
-                modifier = modifier,
+                modifier = picModifier,
                 composition = composition,
                 progress = { progress },
                 dynamicProperties = dynamicProperties

@@ -55,7 +55,7 @@ fun ComposableSearchingDevices(
         onRefresh = onRefreshSearching
     ) {
         LazyColumn(
-            modifier = Modifier.padding(vertical = 18.dp),
+            modifier = it.padding(vertical = 18.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             items(

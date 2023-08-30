@@ -6,6 +6,7 @@ import com.flipperdevices.bridge.dao.impl.AppDatabase
 import com.flipperdevices.bridge.dao.impl.converters.DatabaseKeyContentConverter
 import com.flipperdevices.bridge.dao.impl.repository.AdditionalFileDao
 import com.flipperdevices.bridge.dao.impl.repository.FavoriteDao
+import com.flipperdevices.bridge.dao.impl.repository.HideFapHubAppDao
 import com.flipperdevices.bridge.dao.impl.repository.KeyDao
 import com.flipperdevices.bridge.dao.impl.repository.WidgetDataDao
 import com.flipperdevices.bridge.dao.impl.repository.key.DeleteKeyDao
@@ -47,6 +48,11 @@ class RoomDatabaseModule {
     @Provides
     fun provideKeyDao(database: AppDatabase): KeyDao {
         return database.keyDao()
+    }
+
+    @Provides
+    fun provideFapHubHideApp(database: AppDatabase): HideFapHubAppDao {
+        return database.fapHubHideApp()
     }
 
     @Provides

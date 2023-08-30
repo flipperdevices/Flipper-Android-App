@@ -38,9 +38,13 @@ fun ComposableInProgressFapButton(
     fapButtonSize: FapButtonSize,
     color: Color,
     onCancel: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    fapButtonModifier: Modifier = Modifier
 ) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         when (fapButtonSize) {
             FapButtonSize.COMPACTED -> {}
             FapButtonSize.LARGE -> ComposableInProgressFapCancel(
@@ -50,7 +54,12 @@ fun ComposableInProgressFapButton(
                     .clickableRipple(onClick = onCancel)
             )
         }
-        ComposableInProgressFapButtonInternal(percent, fapButtonSize, color, modifier)
+        ComposableInProgressFapButtonInternal(
+            percent = percent,
+            fapButtonSize = fapButtonSize,
+            color = color,
+            modifier = fapButtonModifier
+        )
         when (fapButtonSize) {
             FapButtonSize.COMPACTED -> ComposableInProgressFapCancel(
                 Modifier

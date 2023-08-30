@@ -11,7 +11,13 @@
     <string name="fapscreen_developer_title">Developer</string>
     <string name="fapscreen_developer_github">View on GitHub</string>
     <string name="fapscreen_developer_manifest">Manifest</string>
-    <string name="fapscreen_developer_report">Report an App</string>
+    <string name="fapscreen_developer_report">Report App</string>
+    <string name="fapscreen_developer_hide">Hide App</string>
+    <string name="fapscreen_developer_unhide">Unhide App</string>
+    <string name="fapscreen_developer_dialog_title">Hide App?</string>
+    <string name="fapscreen_developer_dialog_desc">You won’t see this app again</string>
+    <string name="fapscreen_developer_dialog_btn_confirm">Hide</string>
+    <string name="fapscreen_developer_dialog_btn_cancel">Cancel</string>
     <string name="fapscreen_building_state_ready_text">Runs on latest firmware Release</string>
     <string name="fapscreen_building_state_building_text">App is rebuilding…</string>
     <string name="fapscreen_building_state_outdated_app_text">Outdated app</string>

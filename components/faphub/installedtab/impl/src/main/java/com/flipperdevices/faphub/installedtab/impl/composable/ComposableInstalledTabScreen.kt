@@ -65,29 +65,30 @@ fun ComposableInstalledTabScreen(
 
         is FapInstalledScreenState.Loaded,
         FapInstalledScreenState.Loading,
-        is FapInstalledScreenState.LoadedOffline -> SwipeRefresh(onRefresh = {
-            viewModel.refresh(true)
-        }) {
-            LazyColumn(
-                modifier = screenModifier
+        is FapInstalledScreenState.LoadedOffline -> {
+            SwipeRefresh(
+                modifier = screenModifier,
+                onRefresh = { viewModel.refresh(true) }
             ) {
-                item {
-                    ComposableUpdateAllButton(
-                        state = buttonState,
-                        onUpdateAll = viewModel::updateAll,
-                        onCancelAll = viewModel::cancelAll,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 8.dp)
+                LazyColumn(modifier = it) {
+                    item {
+                        ComposableUpdateAllButton(
+                            state = buttonState,
+                            onUpdateAll = viewModel::updateAll,
+                            onCancelAll = viewModel::cancelAll,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 8.dp)
+                        )
+                    }
+                    ComposableInstalledTabScreenState(
+                        screenState = stateLocal,
+                        onOpenFapItem = onOpenFapItem,
+                        installationButton = installationButton,
+                        uninstallButtonOffline = uninstallButtonOffline,
+                        uninstallButtonOnline = uninstallButtonOnline
                     )
                 }
-                ComposableInstalledTabScreenState(
-                    screenState = stateLocal,
-                    onOpenFapItem = onOpenFapItem,
-                    installationButton = installationButton,
-                    uninstallButtonOffline = uninstallButtonOffline,
-                    uninstallButtonOnline = uninstallButtonOnline
-                )
             }
         }
     }

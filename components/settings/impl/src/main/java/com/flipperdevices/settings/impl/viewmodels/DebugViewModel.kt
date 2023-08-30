@@ -12,6 +12,8 @@ import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
 import com.flipperdevices.debug.api.StressTestFeatureEntry
 import com.flipperdevices.faphub.installation.all.api.FapInstallationAllApi
 import com.flipperdevices.settings.impl.R
+import com.flipperdevices.settings.impl.model.DebugSettingAction
+import com.flipperdevices.settings.impl.model.DebugSettingSwitch
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -27,15 +29,36 @@ class DebugViewModel @VMInject constructor(
     private val fapInstallationAllApi: FapInstallationAllApi
 ) : AndroidLifecycleViewModel(application) {
 
-    fun onOpenStressTest(navController: NavController) {
+    fun onAction(action: DebugSettingAction, navController: NavController) {
+        when (action) {
+            DebugSettingAction.InstallAllFap -> installAllApplication()
+            DebugSettingAction.RestartRPC -> restartRpc()
+            DebugSettingAction.StartSynchronization -> onStartSynchronization()
+            DebugSettingAction.StressTest -> onOpenStressTest(navController)
+        }
+    }
+
+    fun onSwitch(switch: DebugSettingSwitch, flag: Boolean) {
+        when (switch) {
+            DebugSettingSwitch.FapHubDev -> onSwitchFapHubDev(flag)
+            DebugSettingSwitch.IgnoreSupportedVersion -> onSwitchIgnoreSupportedVersion(flag)
+            DebugSettingSwitch.IgnoreUpdaterVersion -> onSwitchIgnoreUpdaterVersion(flag)
+            DebugSettingSwitch.NewInfrared -> onSwitchNewInfrared(flag)
+            DebugSettingSwitch.SelfUpdaterDebug -> onSwitchSelfUpdaterDebug(flag)
+            DebugSettingSwitch.SkipAutoSync -> onSwitchSkipAutoSync(flag)
+            DebugSettingSwitch.SkipProvisioning -> onSwitchIgnoreSubGhzProvisioning(flag)
+        }
+    }
+
+    private fun onOpenStressTest(navController: NavController) {
         navController.navigate(stressTestFeatureEntry.ROUTE.name)
     }
 
-    fun onStartSynchronization() {
+    private fun onStartSynchronization() {
         synchronizationApi.startSynchronization(force = true)
     }
 
-    fun onSwitchIgnoreSupportedVersion(ignored: Boolean) {
+    private fun onSwitchIgnoreSupportedVersion(ignored: Boolean) {
         viewModelScope.launch(Dispatchers.Default) {
             settingsDataStore.updateData {
                 it.toBuilder()
@@ -47,7 +70,7 @@ class DebugViewModel @VMInject constructor(
         }
     }
 
-    fun onSwitchIgnoreUpdaterVersion(alwaysUpdate: Boolean) {
+    private fun onSwitchIgnoreUpdaterVersion(alwaysUpdate: Boolean) {
         viewModelScope.launch(Dispatchers.Default) {
             settingsDataStore.updateData {
                 it.toBuilder()
@@ -57,7 +80,7 @@ class DebugViewModel @VMInject constructor(
         }
     }
 
-    fun onSwitchIgnoreSubGhzProvisioning(ignoreSubGhzProvisioningOnZeroRegion: Boolean) {
+    private fun onSwitchIgnoreSubGhzProvisioning(ignoreSubGhzProvisioningOnZeroRegion: Boolean) {
         viewModelScope.launch(Dispatchers.Default) {
             settingsDataStore.updateData {
                 it.toBuilder()
@@ -67,7 +90,7 @@ class DebugViewModel @VMInject constructor(
         }
     }
 
-    fun onSwitchSkipAutoSync(skipAutoSync: Boolean) {
+    private fun onSwitchSkipAutoSync(skipAutoSync: Boolean) {
         viewModelScope.launch(Dispatchers.Default) {
             settingsDataStore.updateData {
                 it.toBuilder()
@@ -77,7 +100,7 @@ class DebugViewModel @VMInject constructor(
         }
     }
 
-    fun restartRpc() {
+    private fun restartRpc() {
         serviceProvider.provideServiceApi(this) {
             viewModelScope.launch {
                 it.restartRPC()
@@ -94,7 +117,7 @@ class DebugViewModel @VMInject constructor(
         ).show()
     }
 
-    fun onSwitchSelfUpdaterDebug(enabled: Boolean) {
+    private fun onSwitchSelfUpdaterDebug(enabled: Boolean) {
         viewModelScope.launch {
             settingsDataStore.updateData {
                 it.toBuilder()
@@ -104,7 +127,7 @@ class DebugViewModel @VMInject constructor(
         }
     }
 
-    fun onSwitchFapHubDev(enabled: Boolean) {
+    private fun onSwitchFapHubDev(enabled: Boolean) {
         viewModelScope.launch {
             settingsDataStore.updateData {
                 it.toBuilder()
@@ -115,7 +138,7 @@ class DebugViewModel @VMInject constructor(
         }
     }
 
-    fun onSwitchNewInfrared(enabled: Boolean) {
+    private fun onSwitchNewInfrared(enabled: Boolean) {
         viewModelScope.launch {
             settingsDataStore.updateData {
                 it.toBuilder()
@@ -125,9 +148,15 @@ class DebugViewModel @VMInject constructor(
         }
     }
 
-    fun installAllApplication() {
+    private fun installAllApplication() {
         viewModelScope.launch {
             fapInstallationAllApi.installAll()
+        }
+    }
+
+    fun brokeBytes() {
+        viewModelScope.launch {
+            serviceProvider.getServiceApi().requestApi.sendTrashBytesAndBrokeSession()
         }
     }
 }

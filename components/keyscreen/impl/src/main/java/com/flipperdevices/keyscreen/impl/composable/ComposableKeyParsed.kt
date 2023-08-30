@@ -6,19 +6,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.keyemulate.api.KeyEmulateApi
+import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyscreen.impl.R
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableDelete
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableNfcEdit
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableRestore
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableShare
 import com.flipperdevices.keyscreen.impl.composable.card.ComposableKeyCard
-import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModel
 import com.flipperdevices.keyscreen.model.DeleteState
 import com.flipperdevices.keyscreen.model.KeyScreenState
 import com.flipperdevices.keyscreen.shared.bar.ComposableBarBackIcon
@@ -29,7 +28,6 @@ import com.flipperdevices.nfceditor.api.NfcEditorApi
 @Composable
 @Suppress("LongParameterList")
 fun ComposableKeyParsed(
-    viewModel: KeyScreenViewModel,
     keyScreenState: KeyScreenState.Ready,
     nfcEditorApi: NfcEditorApi,
     synchronizationUiApi: SynchronizationUiApi,
@@ -37,7 +35,11 @@ fun ComposableKeyParsed(
     onBack: () -> Unit,
     onShare: (FlipperKeyPath) -> Unit,
     onOpenNfcEditor: (FlipperKeyPath) -> Unit,
-    onOpenEditScreen: (FlipperKeyPath) -> Unit,
+    onRestore: () -> Unit,
+    onDelete: () -> Unit,
+    setFavorite: (Boolean) -> Unit,
+    onEdit: () -> Unit,
+    emulateConfig: EmulateConfig?,
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
@@ -58,16 +60,12 @@ fun ComposableKeyParsed(
                 null
             },
             keyScreenState.favoriteState,
-            viewModel::setFavorite,
-            onEditName = {
-                viewModel.onOpenEdit(onOpenEditScreen)
-            }
+            onSwitchFavorites = setFavorite,
+            onEditName = onEdit
         )
 
         if (keyScreenState.deleteState == DeleteState.NOT_DELETED) {
-            val emulateConfig = remember { viewModel.getEmulateConfig() }
             emulateConfig?.let { config ->
-
                 keyEmulateApi.ComposableEmulateButton(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -86,14 +84,10 @@ fun ComposableKeyParsed(
                 onShare(keyScreenState.flipperKey.getKeyPath())
             }
         } else if (keyScreenState.deleteState == DeleteState.DELETED) {
-            ComposableRestore {
-                viewModel.onRestore(onBack)
-            }
+            ComposableRestore(onClick = onRestore)
         }
 
-        ComposableDelete(keyScreenState.deleteState) {
-            viewModel.onDelete(onBack)
-        }
+        ComposableDelete(keyScreenState.deleteState, onClick = onDelete)
     }
 }
 

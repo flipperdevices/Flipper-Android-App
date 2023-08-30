@@ -32,9 +32,12 @@ fun ComposableDeviceInfoScreen(
 ) {
     var refreshRequested: Boolean by remember { mutableStateOf(false) }
 
-    SwipeRefresh(onRefresh = { refreshRequested = true }) {
+    SwipeRefresh(
+        modifier = modifier,
+        onRefresh = { refreshRequested = true }
+    ) {
         Column(
-            modifier = modifier
+            modifier = it
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         ) {

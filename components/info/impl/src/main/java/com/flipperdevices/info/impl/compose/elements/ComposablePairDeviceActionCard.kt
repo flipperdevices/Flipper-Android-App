@@ -26,19 +26,24 @@ fun ComposablePairDeviceActionCard(
     connectViewModel: ConnectViewModel = tangleViewModel(),
     deviceStatusViewModel: DeviceStatusViewModel = tangleViewModel()
 ) {
+    val navController = LocalGlobalNavigationNavStack.current
     val deviceState by deviceStatusViewModel.getState().collectAsState()
     val localDeviceState = deviceState
 
     InfoElementCard(modifier = modifier) {
         when (localDeviceState) {
             is DeviceStatus.Connected ->
-                ComposableDisconnectElement(connectViewModel = connectViewModel)
+                ComposableDisconnectElement(onDisconnect = connectViewModel::onDisconnect)
             DeviceStatus.NoDevice ->
-                ComposableFirstConnectElement(connectViewModel = connectViewModel)
+                ComposableFirstConnectElement(
+                    onGoToConnectScreen = { connectViewModel.goToConnectScreen(navController) }
+                )
             is DeviceStatus.NoDeviceInformation -> if (localDeviceState.connectInProgress) {
-                ComposableDisconnectElement(connectViewModel = connectViewModel)
+                ComposableDisconnectElement(onDisconnect = connectViewModel::onDisconnect)
             } else {
-                ComposableConnectElement(connectViewModel = connectViewModel)
+                ComposableConnectElement(
+                    onConnectAndSynchronize = connectViewModel::connectAndSynchronize
+                )
             }
         }
 
@@ -67,7 +72,7 @@ fun ComposablePairDeviceActionCard(
 
 @Composable
 private fun ComposableDisconnectElement(
-    connectViewModel: ConnectViewModel,
+    onDisconnect: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     ButtonElementRow(
@@ -75,13 +80,13 @@ private fun ComposableDisconnectElement(
         titleId = R.string.info_device_disconnect,
         iconId = DesignSystem.drawable.ic_bluetooth_disable,
         color = LocalPallet.current.accentSecond,
-        onClick = connectViewModel::onDisconnect
+        onClick = onDisconnect
     )
 }
 
 @Composable
 private fun ComposableConnectElement(
-    connectViewModel: ConnectViewModel,
+    onConnectAndSynchronize: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     ButtonElementRow(
@@ -89,21 +94,20 @@ private fun ComposableConnectElement(
         titleId = R.string.info_device_connect,
         iconId = DesignSystem.drawable.ic_bluetooth,
         color = LocalPallet.current.accentSecond,
-        onClick = connectViewModel::connectAndSynchronize
+        onClick = onConnectAndSynchronize
     )
 }
 
 @Composable
 private fun ComposableFirstConnectElement(
-    connectViewModel: ConnectViewModel,
+    onGoToConnectScreen: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val navController = LocalGlobalNavigationNavStack.current
     ButtonElementRow(
         modifier = modifier,
         titleId = R.string.info_device_connect,
         iconId = DesignSystem.drawable.ic_bluetooth,
         color = LocalPallet.current.accentSecond,
-        onClick = { connectViewModel.goToConnectScreen(navController) }
+        onClick = onGoToConnectScreen
     )
 }

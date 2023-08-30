@@ -51,7 +51,7 @@ internal fun ComposableReadyToReport(
                 )
             },
             onValueChange = { text = it },
-            modifier = Modifier.height(250.dp)
+            textFieldModifier = Modifier.height(250.dp)
         )
     }
 
@@ -60,7 +60,18 @@ internal fun ComposableReadyToReport(
             .fillMaxWidth()
             .padding(bottom = 16.dp),
         text = stringResource(R.string.fap_report_field_btn),
-        onClick = { submit(text) },
-        enabled = text.isNotEmpty()
+        onClick = {
+            if (validateReportText(text)) {
+                submit(text)
+            }
+        },
+        enabled = validateReportText(text)
     )
+}
+
+private const val REPORT_TEXT_SIZE_MIN = 5
+
+private fun validateReportText(text: String): Boolean {
+    val trimmedText = text.trim()
+    return trimmedText.length >= REPORT_TEXT_SIZE_MIN
 }
