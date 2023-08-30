@@ -34,7 +34,8 @@ fun DebugCategory(
             DebugCategoryItems(
                 settings = settings,
                 onAction = { debugViewModel.onAction(it, navController) },
-                onSwitch = debugViewModel::onSwitch
+                onSwitch = debugViewModel::onSwitch,
+                onBrokeByte = debugViewModel::brokeBytes
             )
         }
     }
@@ -46,6 +47,7 @@ private fun DebugCategoryItems(
     settings: Settings,
     onAction: (DebugSettingAction) -> Unit,
     onSwitch: (DebugSettingSwitch, Boolean) -> Unit,
+    onBrokeByte: () -> Unit
 ) {
     ClickableElement(
         titleId = R.string.debug_stress_test,
@@ -111,5 +113,10 @@ private fun DebugCategoryItems(
     ClickableElement(
         titleId = R.string.debug_application_installall_dev,
         onClick = { onAction(DebugSettingAction.InstallAllFap) }
+    )
+    GrayDivider()
+    ClickableElement(
+        titleId = R.string.debug_broke_session,
+        onClick = onBrokeByte
     )
 }

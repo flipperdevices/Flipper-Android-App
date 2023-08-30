@@ -4,6 +4,7 @@ import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.rpc.api.model.NameWithHash
 import com.flipperdevices.core.ktx.jre.pmap
+import com.flipperdevices.core.log.info
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.Storage
@@ -33,13 +34,21 @@ class FlipperListingDelegate @Inject constructor() {
                     includeMd5 = includeMd5Flag
                 }
             }.wrapToRequest()
-        ).toList().mapNotNull { response ->
-            if (response.commandStatus != Flipper.CommandStatus.OK) {
-                error("Listing request failed for $pathOnFlipper with $response")
-            } else if (response.hasStorageListResponse()) {
-                response.storageListResponse.fileList
-            } else {
-                error("Can't find storage list response, $response")
+        ).toList().map { response ->
+            return when {
+                response.commandStatus == Flipper.CommandStatus.ERROR_STORAGE_NOT_EXIST -> {
+                    info { "Listing request for $pathOnFlipper with $response was not found" }
+                    listOf()
+                }
+                response.commandStatus != Flipper.CommandStatus.OK -> {
+                    error("Listing request failed for $pathOnFlipper with $response")
+                }
+                response.hasStorageListResponse() -> {
+                    response.storageListResponse.fileList
+                }
+                else -> {
+                    error("Can't find storage list response, $response")
+                }
             }
         }.flatten()
     }

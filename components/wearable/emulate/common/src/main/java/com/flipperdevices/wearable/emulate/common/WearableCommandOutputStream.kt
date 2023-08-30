@@ -39,7 +39,7 @@ class WearableCommandOutputStream<T : GeneratedMessageLite<*, *>>(
             sendJob?.cancelAndJoin()
             sendJob = scope.launch(Dispatchers.Default) {
                 channelClient.getOutputStream(channel).await().use {
-                    sendLoopJob(scope, it)
+                    sendLoopJob(this, it)
                 }
             }
         }

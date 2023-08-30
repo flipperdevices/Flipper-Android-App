@@ -17,7 +17,6 @@ class WearRequestListenerService :
     override val TAG = "WearRequestListenerService-${hashCode()}"
 
     private var pendingChannel: ChannelClient.Channel? = null
-    private var serviceBinder: WearRequestBinder? = null
 
     override fun onChannelOpened(channel: ChannelClient.Channel) {
         super.onChannelOpened(channel)
@@ -45,14 +44,17 @@ class WearRequestListenerService :
     ) {
         super.onChannelClosed(channel, closeReason, appSpecificErrorCode)
         info { "#onChannelClosed $channel Reason: $closeReason AppCode: $appSpecificErrorCode" }
-        serviceBinder?.channelBinder?.onChannelClose()
+
+        val intent = Intent(applicationContext, WearRequestForegroundService::class.java)
+        intent.action = WearRequestForegroundService.CLOSE_CHANNEL_ACTION
+        applicationContext.startService(intent)
     }
 
     override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-        serviceBinder = service as? WearRequestBinder
-        pendingChannel?.let { channel ->
-            serviceBinder?.channelBinder?.onChannelOpen(channel)
-        }
+        val serviceBinder = service as? WearRequestBinder ?: return
+        val channel = pendingChannel ?: return
+
+        serviceBinder.channelBinder.onChannelOpen(channel)
     }
 
     override fun onServiceDisconnected(name: ComponentName?) = Unit

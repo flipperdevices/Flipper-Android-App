@@ -41,7 +41,7 @@ class WearableCommandInputStream<T : GeneratedMessageLite<*, *>>(
             parserJob?.cancelAndJoin()
             parserJob = scope.launch(Dispatchers.Default) {
                 channelClient.getInputStream(channel).await().use {
-                    parseLoopJob(scope, it)
+                    parseLoopJob(this, it)
                 }
             }
         }
