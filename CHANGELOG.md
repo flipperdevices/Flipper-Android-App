@@ -16,7 +16,8 @@
 - [FIX] Upgrade google appcompanist
 - [FIX] Bump deps, remove PR apks and fix wearos track
 - [FIX] Return empty list, if flipper path not exist
-z
+- [FIX] Wearable app
+
 # 1.6.3
 
 - [FIX] Fix 101% issue on update screen
