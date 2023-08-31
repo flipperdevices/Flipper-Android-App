@@ -17,7 +17,6 @@ import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.share.api.CryptoStorageApi
 import com.flipperdevices.share.uploader.R
-import com.flipperdevices.uploader.api.EXTRA_KEY_PATH
 import com.flipperdevices.uploader.models.ShareContent
 import com.flipperdevices.uploader.models.ShareError
 import com.flipperdevices.uploader.models.ShareState
@@ -31,6 +30,7 @@ import java.net.UnknownHostException
 import java.net.UnknownServiceException
 
 private const val SHORT_LINK_SIZE = 256
+private const val EXTRA_KEY_PATH = "flipper_key_path"
 
 class UploaderViewModel @VMInject constructor(
     private val keyParser: KeyParser,
@@ -46,8 +46,11 @@ class UploaderViewModel @VMInject constructor(
     fun getState() = _state.asStateFlow()
     fun getFlipperKeyName() = flipperKeyPath?.path?.nameWithExtension ?: ""
 
-    init {
-        viewModelScope.launch { parseFlipperKeyPath() }
+    fun invalidate() {
+        viewModelScope.launch {
+            _state.emit(ShareState.Initial)
+            parseFlipperKeyPath()
+        }
     }
 
     private suspend fun parseFlipperKeyPath() {
@@ -141,13 +144,6 @@ class UploaderViewModel @VMInject constructor(
         }
     }
 
-    fun retryShare() {
-        viewModelScope.launch {
-            _state.emit(ShareState.Initial)
-            parseFlipperKeyPath()
-        }
-    }
-
     private fun extractKeyContentForShare(flipperKey: FlipperKey): FlipperKeyContent {
         val shadowFile = flipperKey
             .additionalFiles
@@ -157,5 +153,11 @@ class UploaderViewModel @VMInject constructor(
         }
 
         return flipperKey.mainFile.content
+    }
+
+    fun resetState() {
+        viewModelScope.launch {
+            _state.emit(ShareState.Initial)
+        }
     }
 }
