@@ -9,7 +9,9 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.flipperdevices.core.di.ComponentHolder
@@ -69,7 +71,9 @@ class SingleActivity :
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         lifecycleScope.launch(Dispatchers.Default) {
-            selfUpdaterApi.startCheckUpdate()
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                selfUpdaterApi.startCheckUpdate()
+            }
         }
 
         val featureEntries = featureEntriesMutable.toPersistentSet()
