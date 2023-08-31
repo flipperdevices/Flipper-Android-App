@@ -1,6 +1,5 @@
 package com.flipperdevices.uploader.api
 
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
@@ -101,9 +100,6 @@ class ShareBottomUIImpl @Inject constructor() : ShareBottomUIApi {
         val context = LocalContext.current
 
         val state by viewModel.getState().collectAsState()
-        key(state) {
-            Log.i("ShareBottomUIImpl", "$state")
-        }
         val keyName = remember(viewModel::getFlipperKeyName)
 
         ComposableSheetContent(

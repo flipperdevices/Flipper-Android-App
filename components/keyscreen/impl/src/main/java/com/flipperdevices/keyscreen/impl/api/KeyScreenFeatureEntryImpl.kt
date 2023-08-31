@@ -1,9 +1,6 @@
 package com.flipperdevices.keyscreen.impl.api
 
 import android.net.Uri
-import android.util.Log
-import androidx.compose.runtime.key
-import androidx.compose.runtime.remember
 import androidx.datastore.core.DataStore
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -35,7 +32,6 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import tangle.viewmodel.compose.tangleViewModel
-import java.util.Random
 import javax.inject.Inject
 
 internal const val EXTRA_KEY_PATH = "flipper_key_path"
@@ -100,11 +96,6 @@ class KeyScreenFeatureEntryImpl @Inject constructor(
             arguments = keyScreenArguments,
             deepLinks = deeplinkArguments
         ) {
-            val random = remember { Random() }
-            key(random) {
-                Log.i("ShareBottomUIImpl", "random: ${random.hashCode()}")
-            }
-
             val viewModel: KeyScreenViewModel = tangleViewModel()
             val globalNavController = LocalGlobalNavigationNavStack.current
             shareBottomApi.ComposableShareBottomSheet { onShare ->
