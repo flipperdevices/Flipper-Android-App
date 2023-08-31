@@ -7,50 +7,56 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
-import com.flipperdevices.selfupdater.api.SelfUpdaterApi
+import com.flipperdevices.selfupdater.api.SelfUpdaterSourceApi
 import com.flipperdevices.selfupdater.models.SelfUpdateResult
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
-import javax.inject.Singleton
 
-private const val NOTIFICATION_DELAY_MS = 20000L
+private const val NOTIFICATION__DEBUG_DELAY_MS = 15000L
 
-@Singleton
-@ContributesBinding(AppGraph::class, SelfUpdaterApi::class)
+@ContributesBinding(AppGraph::class, SelfUpdaterSourceApi::class)
 class SelfUpdaterDebug @Inject constructor(
     private val dataStoreSettings: DataStore<Settings>,
     private val inAppNotificationStorage: InAppNotificationStorage
-) : SelfUpdaterApi, LogTagProvider {
+) : SelfUpdaterSourceApi, LogTagProvider {
     override val TAG = "SelfUpdaterDebug"
 
-    private val mutex = Mutex()
-
-    override suspend fun startCheckUpdate(onEndCheck: suspend (SelfUpdateResult) -> Unit) {
-        if (mutex.isLocked) {
-            info { "Update already in progress" }
-            onEndCheck(SelfUpdateResult.IN_PROGRESS)
-            return
+    override suspend fun checkUpdate(manual: Boolean): SelfUpdateResult {
+        val isFlagDebug = dataStoreSettings.data.map { it.selfUpdaterDebug }.first()
+        if (!isFlagDebug) {
+            info { "Self Updater in Debug Mode disable" }
+            return SelfUpdateResult.ERROR
         }
-        mutex.withLock {
-            info { "#startCheckUpdate" }
-            val isFlagDebug = dataStoreSettings.data.map { it.selfUpdaterDebug }.first()
-            if (!isFlagDebug) {
-                info { "Self Updater in Debug Mode disable" }
-                return
-            }
 
-            delay(NOTIFICATION_DELAY_MS)
+        delay(NOTIFICATION__DEBUG_DELAY_MS)
+        return debugNoUpdates(manual)
+    }
 
-            val notification = InAppNotification.UpdateReady(
-                action = { info { "Self Updater in Debug Mode action" } }
-            )
-            inAppNotificationStorage.addNotification(notification)
-            onEndCheck(SelfUpdateResult.SUCCESS)
+    @Suppress("UnusedPrivateMember")
+    private fun debugSuccessUpdate(manual: Boolean): SelfUpdateResult {
+        val startUpdateNotification = InAppNotification.SelfUpdateStarted()
+        val readyUpdateNotification = InAppNotification.SelfUpdateReady(
+            action = { inAppNotificationStorage.addNotification(startUpdateNotification) },
+        )
+        inAppNotificationStorage.addNotification(readyUpdateNotification)
+        return SelfUpdateResult.COMPLETE
+    }
+
+    @Suppress("UnusedPrivateMember")
+    private fun debugNoUpdates(manual: Boolean): SelfUpdateResult {
+        return SelfUpdateResult.NO_UPDATES
+    }
+
+    @Suppress("UnusedPrivateMember")
+    private fun debugErrorUpdate(manual: Boolean): SelfUpdateResult {
+        return if (manual) {
+            inAppNotificationStorage.addNotification(InAppNotification.SelfUpdateError())
+            SelfUpdateResult.ERROR
+        } else {
+            SelfUpdateResult.NO_UPDATES
         }
     }
 

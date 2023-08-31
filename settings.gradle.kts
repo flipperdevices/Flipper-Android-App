@@ -219,6 +219,7 @@ include(
     ":components:faphub:errors:impl",
 
     ":components:selfupdater:api",
+    ":components:selfupdater:impl",
     ":components:selfupdater:googleplay",
     ":components:selfupdater:unknown",
     ":components:selfupdater:debug",

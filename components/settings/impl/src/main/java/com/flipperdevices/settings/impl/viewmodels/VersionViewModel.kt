@@ -2,11 +2,9 @@ package com.flipperdevices.settings.impl.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.flipperdevices.core.activityholder.CurrentActivityHolder
 import com.flipperdevices.core.di.ApplicationParams
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.log.warn
 import com.flipperdevices.selfupdater.api.SelfUpdaterApi
 import com.flipperdevices.selfupdater.models.SelfUpdateResult
 import kotlinx.coroutines.Dispatchers
@@ -21,8 +19,7 @@ class VersionViewModel @VMInject constructor(
 ) : ViewModel(), LogTagProvider {
     override val TAG: String = "VersionViewModel"
 
-    private val inProgressFlow = MutableStateFlow(false)
-    fun inProgress() = inProgressFlow.asStateFlow()
+    fun inProgress() = selfUpdaterApi.getInProgressState()
 
     private val dialogFlow = MutableStateFlow(false)
     fun getDialogState() = dialogFlow.asStateFlow()
@@ -34,21 +31,12 @@ class VersionViewModel @VMInject constructor(
 
     fun onCheckUpdates() {
         info { "#onCheckUpdates" }
-        val activity = CurrentActivityHolder.getCurrentActivity()
-        if (activity == null) {
-            warn { "#onCheckUpdates activity null" }
-            return
-        }
-
         viewModelScope.launch(Dispatchers.Default) {
-            inProgressFlow.emit(true)
-            selfUpdaterApi.startCheckUpdate { result ->
-                info { "#onCheckUpdates result: $result" }
-                inProgressFlow.emit(false)
-
-                if (result == SelfUpdateResult.NO_UPDATES) {
-                    dialogFlow.emit(true)
-                }
+            val result = selfUpdaterApi.startCheckUpdate(manual = true)
+            info { "#onCheckUpdates result: $result" }
+            when (result) {
+                SelfUpdateResult.NO_UPDATES -> dialogFlow.emit(true)
+                else -> {}
             }
         }
     }

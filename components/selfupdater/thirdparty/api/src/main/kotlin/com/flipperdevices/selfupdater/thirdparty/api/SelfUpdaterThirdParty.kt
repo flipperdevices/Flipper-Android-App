@@ -19,22 +19,18 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
 import com.flipperdevices.selfupdater.api.BuildConfig
-import com.flipperdevices.selfupdater.api.SelfUpdaterApi
+import com.flipperdevices.selfupdater.api.SelfUpdaterSourceApi
 import com.flipperdevices.selfupdater.models.SelfUpdateResult
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-@ContributesBinding(AppGraph::class, SelfUpdaterApi::class)
+@ContributesBinding(AppGraph::class, SelfUpdaterSourceApi::class)
 class SelfUpdaterThirdParty @Inject constructor(
     context: Context,
     private val updateParser: SelfUpdateParserApi,
     private val inAppNotificationStorage: InAppNotificationStorage,
     private val applicationParams: ApplicationParams
-) : SelfUpdaterApi, LogTagProvider {
+) : SelfUpdaterSourceApi, LogTagProvider {
 
     private val nameParser = updateParser.getName()
     override val TAG: String get() = "SelfUpdaterThirdParty"
@@ -44,34 +40,34 @@ class SelfUpdaterThirdParty @Inject constructor(
     private var downloadId: Long? = null
     private val manager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
 
-    private val mutex = Mutex()
+    override suspend fun checkUpdate(manual: Boolean): SelfUpdateResult {
+        val activity = CurrentActivityHolder.getCurrentActivity() ?: return SelfUpdateResult.ERROR
 
-    override suspend fun startCheckUpdate(onEndCheck: suspend (SelfUpdateResult) -> Unit) {
-        if (mutex.isLocked) {
-            info { "Update already in progress" }
-            onEndCheck(SelfUpdateResult.IN_PROGRESS)
-            return
-        }
-        mutex.withLock {
-            val activity = CurrentActivityHolder.getCurrentActivity()
-            if (activity == null) {
-                error { "Activity is null" }
-                return
+        val lastReleaseResult = runCatching { processCheckGithubUpdate() }
+        val lastReleaseException = lastReleaseResult.exceptionOrNull()
+        if (lastReleaseException != null) {
+            error { "Error while check update $lastReleaseException" }
+            return if (manual) {
+                SelfUpdateResult.ERROR
+            } else {
+                SelfUpdateResult.NO_UPDATES
             }
-
-            val lastRelease = processCheckGithubUpdate()
-            if (lastRelease == null) {
-                info { "No new updates" }
-                onEndCheck(SelfUpdateResult.NO_UPDATES)
-                return
-            }
-
-            val notification = InAppNotification.UpdateReady(
-                action = { downloadFile(lastRelease, activity) },
-            )
-            inAppNotificationStorage.addNotification(notification)
-            onEndCheck(SelfUpdateResult.SUCCESS)
         }
+        val lastRelease = lastReleaseResult.getOrNull()
+
+        if (lastRelease == null) {
+            info { "No new updates" }
+            return SelfUpdateResult.NO_UPDATES
+        }
+
+        val readyUpdateNotification = InAppNotification.SelfUpdateReady(
+            action = {
+                inAppNotificationStorage.addNotification(InAppNotification.SelfUpdateStarted())
+                downloadFile(lastRelease, activity)
+            },
+        )
+        inAppNotificationStorage.addNotification(readyUpdateNotification)
+        return SelfUpdateResult.COMPLETE
     }
 
     private suspend fun processCheckGithubUpdate(): SelfUpdate? {
@@ -83,8 +79,8 @@ class SelfUpdaterThirdParty @Inject constructor(
 
         info { "Last update from Github $lastRelease" }
 
-        val currentVersion = SemVer.fromString(applicationParams.version) ?: return null
-        val newVersion = SemVer.fromString(lastRelease.version) ?: return null
+        val currentVersion = checkNotNull(SemVer.fromString(applicationParams.version))
+        val newVersion = checkNotNull(SemVer.fromString(lastRelease.version))
 
         info { "Current version: $currentVersion && new version $newVersion" }
 

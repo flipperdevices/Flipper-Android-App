@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="ready_update_title">Flipper App Update</string>
-    <string name="ready_update_desc">New version is ready to install</string>
+    <string name="ready_update_title">Flipper Mobile App Update</string>
+    <string name="ready_update_desc">New app version is ready to install</string>
     <string name="ready_update_button">Update</string>
 
     <string name="saved_key_desc">saved to Archive</string>
@@ -11,4 +11,10 @@
     <string name="hide_app_title">App is Hidden</string>
     <string name="hide_app_desc">You won’t see this app again</string>
     <string name="hide_app_btn">Undo</string>
+
+    <string name="started_update_title">Update Started…</string>
+    <string name="started_update_desc">Track progress in your phone`s Notification Bar</string>
+
+    <string name="error_update_title">Unable to Update</string>
+    <string name="error_update_desc">Сheck your internet connection or try again later</string>
 </resources>

@@ -69,7 +69,7 @@ class SingleActivity :
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         lifecycleScope.launch(Dispatchers.Default) {
-            selfUpdaterApi.startCheckUpdate(onEndCheck = {})
+            selfUpdaterApi.startCheckUpdate()
         }
 
         val featureEntries = featureEntriesMutable.toPersistentSet()

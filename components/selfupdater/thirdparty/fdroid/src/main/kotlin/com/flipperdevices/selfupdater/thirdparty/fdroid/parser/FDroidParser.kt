@@ -22,26 +22,24 @@ class FDroidParser @Inject constructor(
     override fun getName(): String = "FDroid"
 
     override suspend fun getLastUpdate(): SelfUpdate? {
-        return runCatching {
-            val releases = client.get(
-                urlString = FDROID_API_ALL_RELEASES
-            ).body<FDroidReleases>()
+        val releases = client.get(
+            urlString = FDROID_API_ALL_RELEASES
+        ).body<FDroidReleases>()
 
-            val lastRelease = releases
-                .packages
-                .firstOrNull()
-                ?: return null
+        val lastRelease = releases
+            .packages
+            .firstOrNull()
+            ?: return null
 
-            val code = lastRelease.versionCode
-            val version = lastRelease.versionName
+        val code = lastRelease.versionCode
+        val version = lastRelease.versionName
 
-            val downloadUrl = "$FDROID_API_DOWNLOAD_RELEASE_PREFIX$code.apk"
+        val downloadUrl = "$FDROID_API_DOWNLOAD_RELEASE_PREFIX$code.apk"
 
-            return SelfUpdate(
-                version = version,
-                downloadUrl = downloadUrl,
-                name = "Flipper App $version",
-            )
-        }.getOrNull()
+        return SelfUpdate(
+            version = version,
+            downloadUrl = downloadUrl,
+            name = "Flipper App $version",
+        )
     }
 }

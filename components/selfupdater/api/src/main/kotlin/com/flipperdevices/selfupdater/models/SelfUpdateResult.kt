@@ -1,7 +1,8 @@
 package com.flipperdevices.selfupdater.models
 
 enum class SelfUpdateResult {
-    SUCCESS,
+    COMPLETE,
     NO_UPDATES,
     IN_PROGRESS,
+    ERROR
 }

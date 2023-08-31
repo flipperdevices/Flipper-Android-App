@@ -8,7 +8,7 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
 import com.flipperdevices.selfupdater.api.BuildConfig
-import com.flipperdevices.selfupdater.api.SelfUpdaterApi
+import com.flipperdevices.selfupdater.api.SelfUpdaterSourceApi
 import com.flipperdevices.selfupdater.models.SelfUpdateResult
 import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
@@ -18,8 +18,6 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -27,59 +25,59 @@ import javax.inject.Singleton
 private const val UPDATE_CODE = 228
 
 @Singleton
-@ContributesBinding(AppGraph::class, SelfUpdaterApi::class)
+@ContributesBinding(AppGraph::class, SelfUpdaterSourceApi::class)
 class SelfUpdaterGooglePlay @Inject constructor(
     private val context: Context,
     private val inAppNotificationStorage: InAppNotificationStorage
-) : SelfUpdaterApi, LogTagProvider {
+) : SelfUpdaterSourceApi, LogTagProvider {
 
     override val TAG: String get() = "SelfUpdaterGooglePlay"
 
     private val appUpdateManager by lazy { AppUpdateManagerFactory.create(context) }
     private val appUpdateInfoTask = appUpdateManager.appUpdateInfo
     private var updateListener = InstallStateUpdatedListener(::processUpdateListener)
-    private val mutex = Mutex()
 
     private fun processUpdateListener(state: InstallState) {
         info { "Current update state $state" }
-        if (state.installStatus() != InstallStatus.DOWNLOADED) return
+        val installStatus = state.installStatus()
+        info { "Current update status $installStatus" }
 
-        inAppNotificationStorage.addNotification(
-            InAppNotification.UpdateReady(
-                action = appUpdateManager::completeUpdate
-            )
-        )
+        when (installStatus) {
+            InstallStatus.DOWNLOADED -> {
+                val notification = InAppNotification.SelfUpdateReady(
+                    action = appUpdateManager::completeUpdate
+                )
+                inAppNotificationStorage.addNotification(notification)
+            }
+            InstallStatus.FAILED, InstallStatus.CANCELED -> {
+                val notification = InAppNotification.SelfUpdateError()
+                inAppNotificationStorage.addNotification(notification)
+            }
+            else -> {}
+        }
     }
 
-    override suspend fun startCheckUpdate(onEndCheck: suspend (SelfUpdateResult) -> Unit) {
-        if (mutex.isLocked) {
-            info { "Update already in progress" }
-            onEndCheck(SelfUpdateResult.IN_PROGRESS)
-            return
-        }
+    override suspend fun checkUpdate(manual: Boolean): SelfUpdateResult {
+        val activity = CurrentActivityHolder.getCurrentActivity()
+            ?: return SelfUpdateResult.ERROR
 
-        mutex.withLock {
-            val activity = CurrentActivityHolder.getCurrentActivity() ?: return
+        info { "Process checkout new update" }
+        appUpdateManager.registerListener(updateListener)
 
-            info { "Process checkout new update" }
-            appUpdateManager.registerListener(updateListener)
+        val appUpdateInfo = appUpdateInfoTask.await()
+        info { "Current state update id ${appUpdateInfo.updateAvailability()}" }
 
-            val appUpdateInfo = appUpdateInfoTask.await()
-            info { "Current state update id ${appUpdateInfo.updateAvailability()}" }
-
-            if (isUpdateAvailable(appUpdateInfo)) {
-                info { "New update available, suggest to update" }
-                appUpdateManager.startUpdateFlowForResult(
-                    appUpdateInfo,
-                    AppUpdateType.FLEXIBLE,
-                    activity,
-                    UPDATE_CODE
-                )
-                onEndCheck(SelfUpdateResult.SUCCESS)
-            } else {
-                info { "No update available" }
-                onEndCheck(SelfUpdateResult.NO_UPDATES)
-            }
+        return if (isUpdateAvailable(appUpdateInfo)) {
+            info { "New update available, suggest to update" }
+            appUpdateManager.startUpdateFlowForResult(
+                appUpdateInfo,
+                AppUpdateType.FLEXIBLE,
+                activity,
+                UPDATE_CODE
+            )
+            SelfUpdateResult.COMPLETE
+        } else {
+            SelfUpdateResult.NO_UPDATES
         }
     }
 

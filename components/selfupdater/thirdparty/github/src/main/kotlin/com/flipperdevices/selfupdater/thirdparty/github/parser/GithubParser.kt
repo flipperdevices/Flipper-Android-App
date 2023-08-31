@@ -30,27 +30,25 @@ class GithubParser @Inject constructor(
     override fun getName(): String = "Github. Google Feature: ${isGooglePlayEnable()}"
 
     override suspend fun getLastUpdate(): SelfUpdate? {
-        return runCatching {
-            val update = if (isDev()) {
-                parseDevUpdate()
-            } else {
-                parseReleaseUpdate()
-            }
+        val update = if (isDev()) {
+            parseDevUpdate()
+        } else {
+            parseReleaseUpdate()
+        }
 
-            info { "Chooser update application $update" }
+        info { "Chooser update application $update" }
 
-            val downloadUrl = update
-                ?.getDownloadUrl(isGooglePlayEnable = isGooglePlayEnable())
-                ?: return null
+        val downloadUrl = update
+            ?.getDownloadUrl(isGooglePlayEnable = isGooglePlayEnable())
+            ?: return null
 
-            info { "Download url for update application $downloadUrl" }
+        info { "Download url for update application $downloadUrl" }
 
-            return SelfUpdate(
-                version = update.tagName,
-                downloadUrl = downloadUrl,
-                name = update.name
-            )
-        }.getOrNull()
+        return SelfUpdate(
+            version = update.tagName,
+            downloadUrl = downloadUrl,
+            name = update.name
+        )
     }
 
     private suspend fun parseReleaseUpdate(): GithubRelease {
