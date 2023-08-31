@@ -1,5 +1,6 @@
 package com.flipperdevices.share.api
 
+import androidx.compose.runtime.Composable
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.ui.navigation.BottomSheetFeatureEntry
 import com.flipperdevices.core.ui.navigation.FeatureScreenRootRoute
@@ -9,4 +10,7 @@ interface ShareBottomFeatureEntry : BottomSheetFeatureEntry {
         get() = FeatureScreenRootRoute.ARCHIVE_SHARE_BOTTOMSHEET
 
     fun shareDestination(path: FlipperKeyPath): String
+
+    @Composable
+    fun ShareComposable(path: FlipperKeyPath, onClose: () -> Unit)
 }

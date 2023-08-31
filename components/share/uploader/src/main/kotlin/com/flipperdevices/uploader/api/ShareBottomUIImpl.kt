@@ -1,8 +1,16 @@
 package com.flipperdevices.uploader.api
 
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
@@ -14,7 +22,6 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.share.api.ShareBottomFeatureEntry
 import com.flipperdevices.share.api.ShareBottomUIApi
-import com.google.accompanist.navigation.material.ModalBottomSheetLayout
 import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
@@ -25,9 +32,11 @@ private const val START_SCREEN = "screen"
 class ShareBottomUIImpl @Inject constructor(
     private val shareBottomFeatureEntry: ShareBottomFeatureEntry,
 ) : ShareBottomUIApi {
+    @OptIn(ExperimentalMaterialApi::class)
     @Composable
     override fun ComposableShareBottomSheet(
-        screenContent: @Composable ((FlipperKeyPath) -> Unit) -> Unit
+        flipperKeyPath: FlipperKeyPath,
+        screenContent: @Composable (() -> Unit) -> Unit
     ) {
         val scrimColor = if (MaterialTheme.colors.isLight) {
             LocalPallet.current.shareSheetScrimColor
@@ -35,32 +44,24 @@ class ShareBottomUIImpl @Inject constructor(
             Color.Transparent
         }
 
-        val navController = rememberNavController()
-        val bottomSheetNavigator = rememberBottomSheetNavigator()
-        navController.navigatorProvider += bottomSheetNavigator
+        var skipHalfExpanded by remember { mutableStateOf(false) }
+        val state = rememberModalBottomSheetState(
+            initialValue = ModalBottomSheetValue.Hidden,
+            skipHalfExpanded = skipHalfExpanded
+        )
+
         ModalBottomSheetLayout(
-            bottomSheetNavigator = bottomSheetNavigator,
             scrimColor = scrimColor,
             sheetBackgroundColor = LocalPallet.current.shareSheetBackground,
-            sheetShape = RoundedCornerShape(topEnd = 30.dp, topStart = 30.dp)
+            sheetShape = RoundedCornerShape(topEnd = 30.dp, topStart = 30.dp),
+            sheetContent = {
+                shareBottomFeatureEntry.ShareComposable(path = flipperKeyPath) {
+                    skipHalfExpanded = false
+                }
+            },
+            sheetState = state
         ) {
-            NavHost(
-                navController = navController,
-                startDestination = START_SCREEN
-            ) {
-                composable(
-                    route = START_SCREEN
-                ) {
-                    screenContent { flipperKeyPath ->
-                        navController.navigate(
-                            shareBottomFeatureEntry.shareDestination(flipperKeyPath)
-                        )
-                    }
-                }
-                with(shareBottomFeatureEntry) {
-                    bottomSheet(navController)
-                }
-            }
+            screenContent { skipHalfExpanded = true }
         }
     }
 }
