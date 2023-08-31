@@ -30,7 +30,9 @@ class GithubParser @Inject constructor(
     override fun getName(): String = "Github. Google Feature: ${isGooglePlayEnable()}"
 
     override suspend fun getLastUpdate(): SelfUpdate? {
-        val update = if (isDev()) {
+        val isDev = isDev()
+
+        val update = if (isDev) {
             parseDevUpdate()
         } else {
             parseReleaseUpdate()
@@ -45,7 +47,7 @@ class GithubParser @Inject constructor(
         info { "Download url for update application $downloadUrl" }
 
         return SelfUpdate(
-            version = update.tagName,
+            version = update.getVersion(isDev),
             downloadUrl = downloadUrl,
             name = update.name
         )
@@ -62,7 +64,7 @@ class GithubParser @Inject constructor(
             urlString = GITHUB_API_ALL_RELEASES
         ).body<List<GithubRelease>>()
 
-        return response.firstOrNull { it.isDev() }
+        return response.firstOrNull { it.preRelease }
     }
 
     private fun isGooglePlayEnable() = BuildConfig.IS_GOOGLE_FEATURE_AVAILABLE

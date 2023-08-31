@@ -52,12 +52,10 @@ class SelfUpdaterDebug @Inject constructor(
 
     @Suppress("UnusedPrivateMember")
     private fun debugErrorUpdate(manual: Boolean): SelfUpdateResult {
-        return if (manual) {
+        if (manual) {
             inAppNotificationStorage.addNotification(InAppNotification.SelfUpdateError())
-            SelfUpdateResult.ERROR
-        } else {
-            SelfUpdateResult.NO_UPDATES
         }
+        return SelfUpdateResult.ERROR
     }
 
     override fun getInstallSourceName() = "Debug Lorem Ipsum"

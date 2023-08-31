@@ -22,6 +22,7 @@ class SelfUpdaterApiImpl @Inject constructor(
     private val inProgressState = MutableStateFlow(false)
 
     override suspend fun startCheckUpdate(manual: Boolean): SelfUpdateResult {
+        info { "Start check update" }
         if (!inProgressState.compareAndSet(expect = false, update = true)) {
             info { "Self update in progress" }
             return SelfUpdateResult.IN_PROGRESS

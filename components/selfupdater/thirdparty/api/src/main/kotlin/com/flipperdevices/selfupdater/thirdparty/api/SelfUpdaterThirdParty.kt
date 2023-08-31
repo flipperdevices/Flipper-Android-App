@@ -41,17 +41,17 @@ class SelfUpdaterThirdParty @Inject constructor(
     private val manager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
 
     override suspend fun checkUpdate(manual: Boolean): SelfUpdateResult {
+        info { "Start check update" }
         val activity = CurrentActivityHolder.getCurrentActivity() ?: return SelfUpdateResult.ERROR
 
-        val lastReleaseResult = runCatching { processCheckGithubUpdate() }
+        val lastReleaseResult = runCatching { processCheckUpdate() }
         val lastReleaseException = lastReleaseResult.exceptionOrNull()
         if (lastReleaseException != null) {
             error { "Error while check update $lastReleaseException" }
-            return if (manual) {
-                SelfUpdateResult.ERROR
-            } else {
-                SelfUpdateResult.NO_UPDATES
+            if (manual) {
+                inAppNotificationStorage.addNotification(InAppNotification.SelfUpdateError())
             }
+            return SelfUpdateResult.ERROR
         }
         val lastRelease = lastReleaseResult.getOrNull()
 
@@ -63,14 +63,14 @@ class SelfUpdaterThirdParty @Inject constructor(
         val readyUpdateNotification = InAppNotification.SelfUpdateReady(
             action = {
                 inAppNotificationStorage.addNotification(InAppNotification.SelfUpdateStarted())
-                downloadFile(lastRelease, activity)
+                downloadFile(lastRelease, activity, manual)
             },
         )
         inAppNotificationStorage.addNotification(readyUpdateNotification)
         return SelfUpdateResult.COMPLETE
     }
 
-    private suspend fun processCheckGithubUpdate(): SelfUpdate? {
+    private suspend fun processCheckUpdate(): SelfUpdate? {
         val lastRelease = updateParser.getLastUpdate()
         if (lastRelease == null) {
             error { "No release found for github update" }
@@ -102,7 +102,7 @@ class SelfUpdaterThirdParty @Inject constructor(
         info { "Register download receiver" }
     }
 
-    private fun downloadFile(githubUpdate: SelfUpdate, activity: Activity) {
+    private fun downloadFile(githubUpdate: SelfUpdate, activity: Activity, manual: Boolean) {
         try {
             val url = githubUpdate.downloadUrl
             val title = githubUpdate.name
@@ -117,6 +117,9 @@ class SelfUpdaterThirdParty @Inject constructor(
             this.downloadId = manager.enqueue(request)
         } catch (e: Exception) {
             error { "Error while download update $e" }
+            if (manual) {
+                inAppNotificationStorage.addNotification(InAppNotification.SelfUpdateError())
+            }
         }
         registerDownloadReceiver(activity)
     }
@@ -126,6 +129,7 @@ class SelfUpdaterThirdParty @Inject constructor(
             try {
                 val currentDownloadId = intents.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
                 if (downloadId != currentDownloadId) {
+                    inAppNotificationStorage.addNotification(InAppNotification.SelfUpdateError())
                     return
                 }
 
@@ -138,6 +142,7 @@ class SelfUpdaterThirdParty @Inject constructor(
                 info { "Start install update" }
                 context.unregisterReceiver(this)
             } catch (e: Exception) {
+                inAppNotificationStorage.addNotification(InAppNotification.SelfUpdateError())
                 error { "Error while receive update $e" }
             }
         }
