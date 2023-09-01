@@ -34,7 +34,7 @@ internal fun ComposableInfraredScreen(
     keyEmulateApi: KeyEmulateApi,
     onEdit: (FlipperKeyPath) -> Unit,
     onRename: (FlipperKeyPath) -> Unit,
-    onShare: (FlipperKeyPath) -> Unit,
+    onShare: () -> Unit,
 ) {
     val state by viewModel.getState().collectAsState()
     var currentTab by remember { mutableStateOf(InfraredTab.REMOTE) }
@@ -58,7 +58,7 @@ internal fun ComposableInfraredScreen(
                     onEdit = { onEdit(localState.flipperKey.getKeyPath()) },
                     onRename = { viewModel.onRename(onEndAction = onRename) },
                     onDelete = { viewModel.onDelete(onEndAction = navController::popBackStack) },
-                    onShare = { onShare(localState.flipperKey.getKeyPath()) },
+                    onShare = onShare,
                     isFavorite = localState.favoriteState == FavoriteState.FAVORITE,
                 )
                 ComposableInfraredScreenReady(
