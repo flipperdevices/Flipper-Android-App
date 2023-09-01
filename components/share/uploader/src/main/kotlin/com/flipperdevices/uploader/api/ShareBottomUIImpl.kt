@@ -5,6 +5,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -16,27 +17,46 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.keyparser.api.KeyParser
+import com.flipperdevices.metric.api.MetricApi
+import com.flipperdevices.share.api.CryptoStorageApi
 import com.flipperdevices.share.api.ShareBottomUIApi
 import com.flipperdevices.uploader.compose.ComposableSheetContent
 import com.flipperdevices.uploader.viewmodel.UploaderViewModel
+import com.flipperdevices.uploader.viewmodel.UploaderViewModelFactory
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.launch
-import tangle.viewmodel.compose.tangleViewModel
 import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, ShareBottomUIApi::class)
-class ShareBottomUIImpl @Inject constructor() : ShareBottomUIApi {
+class ShareBottomUIImpl @Inject constructor(
+    private val keyParser: KeyParser,
+    private val cryptoStorageApi: CryptoStorageApi,
+    private val simpleKeyApi: SimpleKeyApi,
+    private val metricApi: MetricApi,
+) : ShareBottomUIApi {
     @OptIn(ExperimentalMaterialApi::class)
     @Composable
     override fun ComposableShareBottomSheet(
+        flipperKeyPath: FlipperKeyPath,
         screenContent: @Composable (() -> Unit) -> Unit
     ) {
-        val viewModel: UploaderViewModel = tangleViewModel()
+        val viewModel: UploaderViewModel = viewModel(
+            factory = UploaderViewModelFactory(
+                keyParser = keyParser,
+                cryptoStorageApi = cryptoStorageApi,
+                simpleKeyApi = simpleKeyApi,
+                metricApi = metricApi,
+                flipperKeyPath = flipperKeyPath
+            )
+        )
 
-        val systemUIController = rememberSystemUiController()
         val scrimColor = if (MaterialTheme.colors.isLight) {
             LocalPallet.current.shareSheetScrimColor
         } else {
@@ -47,27 +67,6 @@ class ShareBottomUIImpl @Inject constructor() : ShareBottomUIApi {
             initialValue = ModalBottomSheetValue.Hidden,
             skipHalfExpanded = true
         )
-        key(sheetState) {
-            if (sheetState.isVisible) {
-                systemUIController.setNavigationBarColor(
-                    color = LocalPallet.current.shareSheetNavigationBarActiveColor,
-                    darkIcons = false
-                )
-                systemUIController.setStatusBarColor(
-                    color = LocalPallet.current.shareSheetStatusBarActiveColor
-                )
-                viewModel.invalidate()
-            } else {
-                systemUIController.setNavigationBarColor(
-                    color = LocalPallet.current.shareSheetNavigationBarDefaultColor,
-                    darkIcons = true
-                )
-                systemUIController.setStatusBarColor(
-                    color = LocalPallet.current.shareSheetStatusBarDefaultColor
-                )
-                viewModel.resetState()
-            }
-        }
 
         val sheetScope = rememberCoroutineScope()
 
@@ -75,6 +74,7 @@ class ShareBottomUIImpl @Inject constructor() : ShareBottomUIApi {
             sheetScope.launch { sheetState.hide() }
         }
 
+        ProcessSystemBar(sheetState)
         ModalBottomSheetLayout(
             scrimColor = scrimColor,
             sheetBackgroundColor = LocalPallet.current.shareSheetBackground,
@@ -87,7 +87,33 @@ class ShareBottomUIImpl @Inject constructor() : ShareBottomUIApi {
             sheetState = sheetState
         ) {
             screenContent {
+                viewModel.invalidate()
                 sheetScope.launch { sheetState.show() }
+            }
+        }
+    }
+
+    @OptIn(ExperimentalMaterialApi::class)
+    @Composable
+    private fun ProcessSystemBar(sheetState: ModalBottomSheetState) {
+        val systemUIController = rememberSystemUiController()
+        key(sheetState.isVisible) {
+            if (sheetState.isVisible) {
+                systemUIController.setNavigationBarColor(
+                    color = LocalPallet.current.shareSheetNavigationBarActiveColor,
+                    darkIcons = false
+                )
+                systemUIController.setStatusBarColor(
+                    color = LocalPallet.current.shareSheetStatusBarActiveColor
+                )
+            } else {
+                systemUIController.setNavigationBarColor(
+                    color = LocalPallet.current.shareSheetNavigationBarDefaultColor,
+                    darkIcons = true
+                )
+                systemUIController.setStatusBarColor(
+                    color = LocalPallet.current.shareSheetStatusBarDefaultColor
+                )
             }
         }
     }
