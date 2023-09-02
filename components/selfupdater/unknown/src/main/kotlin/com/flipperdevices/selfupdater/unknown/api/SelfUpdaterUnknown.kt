@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, SelfUpdaterSourceApi::class)
 class SelfUpdaterUnknown @Inject constructor() : SelfUpdaterSourceApi {
-    override suspend fun checkUpdate(): SelfUpdateResult {
+    override suspend fun checkUpdate(manual: Boolean): SelfUpdateResult {
         throw NotImplementedError()
     }
 
