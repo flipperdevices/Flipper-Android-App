@@ -45,8 +45,6 @@ fun ComposableSingleActivityNavHost(
             .fillMaxSize()
             .background(MaterialTheme.colors.background),
         graph = graph,
-        navController = navController,
-        enterTransition = { EnterTransition.None },
-        exitTransition = { ExitTransition.None }
+        navController = navController
     )
 }

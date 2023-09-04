@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - 'dev'
-      - 'ci/use_double_number_version'
 
 concurrency:
   group: "deploy"

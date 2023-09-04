@@ -78,9 +78,7 @@ fun ComposableMainScreen(
             }
             NavHost(
                 navController = navController,
-                graph = graph,
-                enterTransition = { EnterTransition.None },
-                exitTransition = { ExitTransition.None }
+                graph = graph
             )
 
             ComposableInAppNotification(
