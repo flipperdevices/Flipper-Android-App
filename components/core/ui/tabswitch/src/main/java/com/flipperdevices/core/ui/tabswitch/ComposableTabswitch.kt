@@ -37,7 +37,7 @@ fun<Tab : Enum<Tab>> ComposableTabSwitch(
     Box(
         modifier = modifier
             .padding(horizontal = 18.dp)
-            .clip(RoundedCornerShape(12.dp))
+            .clip(RoundedCornerShape(10.dp))
             .background(LocalPallet.current.tabSwitchBackgroundColor)
     ) {
         ComposableFapHubSwitchInternal(

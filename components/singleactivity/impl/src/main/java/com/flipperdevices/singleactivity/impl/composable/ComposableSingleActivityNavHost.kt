@@ -41,6 +41,6 @@ fun ComposableSingleActivityNavHost(
             .fillMaxSize()
             .background(MaterialTheme.colors.background),
         graph = graph,
-        navController = navController,
+        navController = navController
     )
 }
