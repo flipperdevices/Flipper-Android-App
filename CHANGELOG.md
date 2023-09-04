@@ -17,6 +17,7 @@
 - [FIX] Upgrade google appcompanist
 - [FIX] Bump deps, remove PR apks and fix wearos track
 - [FIX] Return empty list, if flipper path not exist
+- [FIX] New Bottom Sheet
 
 # 1.6.3
 

@@ -23,7 +23,7 @@ fun ComposableKeyScreen(
     nfcEditorApi: NfcEditorApi,
     keyEmulateApi: KeyEmulateApi,
     onBack: () -> Unit,
-    onShare: (FlipperKeyPath) -> Unit,
+    onShare: () -> Unit,
     onOpenNfcEditor: (FlipperKeyPath) -> Unit,
     onOpenEditScreen: (FlipperKeyPath) -> Unit
 ) {

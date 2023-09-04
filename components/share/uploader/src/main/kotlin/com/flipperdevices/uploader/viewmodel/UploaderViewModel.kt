@@ -17,7 +17,6 @@ import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.share.api.CryptoStorageApi
 import com.flipperdevices.share.uploader.R
-import com.flipperdevices.uploader.api.EXTRA_KEY_PATH
 import com.flipperdevices.uploader.models.ShareContent
 import com.flipperdevices.uploader.models.ShareError
 import com.flipperdevices.uploader.models.ShareState
@@ -25,36 +24,32 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import tangle.inject.TangleParam
-import tangle.viewmodel.VMInject
 import java.net.UnknownHostException
 import java.net.UnknownServiceException
 
 private const val SHORT_LINK_SIZE = 256
 
-class UploaderViewModel @VMInject constructor(
+class UploaderViewModel(
     private val keyParser: KeyParser,
     private val cryptoStorageApi: CryptoStorageApi,
     private val simpleKeyApi: SimpleKeyApi,
     private val metricApi: MetricApi,
-    @TangleParam(EXTRA_KEY_PATH)
-    private val flipperKeyPath: FlipperKeyPath?
+    private val flipperKeyPath: FlipperKeyPath
 ) : LifecycleViewModel(), LogTagProvider {
     override val TAG: String = "UploaderViewModel"
 
     private val _state = MutableStateFlow<ShareState>(ShareState.Initial)
     fun getState() = _state.asStateFlow()
-    fun getFlipperKeyName() = flipperKeyPath?.path?.nameWithExtension ?: ""
+    fun getFlipperKeyName() = flipperKeyPath.path.nameWithExtension
 
-    init {
-        viewModelScope.launch { parseFlipperKeyPath() }
+    fun invalidate() {
+        viewModelScope.launch {
+            _state.emit(ShareState.Initial)
+            parseFlipperKeyPath()
+        }
     }
 
     private suspend fun parseFlipperKeyPath() {
-        if (flipperKeyPath == null) {
-            _state.emit(ShareState.Completed)
-            return
-        }
         simpleKeyApi.getKeyAsFlow(flipperKeyPath).collectLatest { flipperKey ->
             if (flipperKey == null) {
                 _state.emit(ShareState.Error(ShareError.OTHER))
@@ -138,13 +133,6 @@ class UploaderViewModel @VMInject constructor(
                 else -> ShareError.OTHER
             }
             _state.emit(ShareState.Error(typeError = error))
-        }
-    }
-
-    fun retryShare() {
-        viewModelScope.launch {
-            _state.emit(ShareState.Initial)
-            parseFlipperKeyPath()
         }
     }
 

@@ -68,5 +68,10 @@ internal fun FlipperPallet.toAnimatePallet() = FlipperPallet(
     reportBorder = animateColor(reportBorder),
 
     screenStreamingBorderColor = animateColor(screenStreamingBorderColor),
-    screenStreamingNotConnectedColor = animateColor(screenStreamingNotConnectedColor)
+    screenStreamingNotConnectedColor = animateColor(screenStreamingNotConnectedColor),
+
+    shareSheetNavigationBarActiveColor = animateColor(shareSheetNavigationBarActiveColor),
+    shareSheetStatusBarActiveColor = animateColor(shareSheetStatusBarActiveColor),
+    shareSheetNavigationBarDefaultColor = animateColor(shareSheetNavigationBarDefaultColor),
+    shareSheetStatusBarDefaultColor = animateColor(shareSheetStatusBarDefaultColor),
 )
