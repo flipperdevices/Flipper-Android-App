@@ -17,6 +17,7 @@
 - [FIX] Bump deps, remove PR apks and fix wearos track
 - [FIX] Return empty list, if flipper path not exist
 - [FIX] New Bottom Sheet
+- [FIX] Build version conflict on CI/Google Play
 
 # 1.6.3
 

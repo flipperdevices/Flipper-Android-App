@@ -1,5 +1,9 @@
 package com.flipperdevices.singleactivity.impl.composable
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
@@ -42,5 +46,7 @@ fun ComposableSingleActivityNavHost(
             .background(MaterialTheme.colors.background),
         graph = graph,
         navController = navController,
+        enterTransition = { EnterTransition.None },
+        exitTransition = { ExitTransition.None }
     )
 }
