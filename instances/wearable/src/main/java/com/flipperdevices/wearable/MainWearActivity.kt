@@ -64,7 +64,7 @@ class MainWearActivity : ComponentActivity(), LogTagProvider {
                     // Close service only, try reset
                     channelClientHelper.onChannelReset(lifecycleScope)
                 } else {
-                    // Channel close from phone, so close on wear
+                    // Off connection from phone(bt)
                     channelClientHelper.onChannelClose(lifecycleScope)
                     null
                 }
