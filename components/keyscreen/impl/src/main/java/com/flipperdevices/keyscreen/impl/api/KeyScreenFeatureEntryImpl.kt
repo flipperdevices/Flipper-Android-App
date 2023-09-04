@@ -98,7 +98,7 @@ class KeyScreenFeatureEntryImpl @Inject constructor(
         ) {
             val viewModel: KeyScreenViewModel = tangleViewModel()
             val globalNavController = LocalGlobalNavigationNavStack.current
-            shareBottomApi.ComposableShareBottomSheet { onShare ->
+            shareBottomApi.ComposableShareBottomSheet(viewModel.keyPath) { onShare ->
                 ComposableKeyScreen(
                     viewModel = viewModel,
                     synchronizationUiApi = synchronizationUiApi,

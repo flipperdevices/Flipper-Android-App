@@ -19,7 +19,7 @@ import tangle.viewmodel.VMInject
 @Suppress("LongParameterList")
 class KeyScreenViewModel @VMInject constructor(
     @TangleParam(EXTRA_KEY_PATH)
-    keyPath: FlipperKeyPath,
+    val keyPath: FlipperKeyPath, // For get value to bottom sheet
     keyStateHelperApi: KeyStateHelperApi.Builder,
     private val metricApi: MetricApi
 ) : ViewModel(), LogTagProvider {

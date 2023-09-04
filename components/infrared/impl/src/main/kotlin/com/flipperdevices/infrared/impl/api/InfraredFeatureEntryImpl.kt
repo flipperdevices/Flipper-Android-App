@@ -56,10 +56,11 @@ class InfraredFeatureEntryImpl @Inject constructor(
 
             CompositionLocalProvider(
                 LocalPallet provides LocalPallet.current.copy(
-                    shareSheetStatusBarColor = LocalPallet.current.accentShareSheetStatusBarColor
+                    shareSheetStatusBarActiveColor = LocalPallet.current.accentShareSheetStatusBarColor,
+                    shareSheetStatusBarDefaultColor = LocalPallet.current.accent
                 )
             ) {
-                shareBottomUIApi.ComposableShareBottomSheet { onShare ->
+                shareBottomUIApi.ComposableShareBottomSheet(viewModel.keyPath) { onShare ->
                     ComposableInfraredScreen(
                         navController = navController,
                         viewModel = viewModel,

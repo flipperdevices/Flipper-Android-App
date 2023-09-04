@@ -33,7 +33,7 @@ fun ComposableKeyParsed(
     synchronizationUiApi: SynchronizationUiApi,
     keyEmulateApi: KeyEmulateApi,
     onBack: () -> Unit,
-    onShare: (FlipperKeyPath) -> Unit,
+    onShare: () -> Unit,
     onOpenNfcEditor: (FlipperKeyPath) -> Unit,
     onRestore: () -> Unit,
     onDelete: () -> Unit,
@@ -81,7 +81,7 @@ fun ComposableKeyParsed(
                 }
             }
             ComposableShare(keyScreenState.shareState) {
-                onShare(keyScreenState.flipperKey.getKeyPath())
+                onShare()
             }
         } else if (keyScreenState.deleteState == DeleteState.DELETED) {
             ComposableRestore(onClick = onRestore)

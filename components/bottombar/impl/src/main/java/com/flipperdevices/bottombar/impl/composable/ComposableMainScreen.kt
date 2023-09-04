@@ -21,7 +21,9 @@ import com.flipperdevices.bottombar.impl.viewmodel.BottomNavigationViewModel
 import com.flipperdevices.connection.api.ConnectionApi
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
+import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.inappnotification.api.InAppNotificationRenderer
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.collections.immutable.ImmutableSet
 import tangle.viewmodel.compose.tangleViewModel
 
@@ -82,4 +84,8 @@ fun ComposableMainScreen(
             connectionApi.CheckAndShowUnsupportedDialog()
         }
     }
+    val systemUIController = rememberSystemUiController()
+    systemUIController.setNavigationBarColor(
+        color = LocalPallet.current.bottomBarBackground,
+    )
 }

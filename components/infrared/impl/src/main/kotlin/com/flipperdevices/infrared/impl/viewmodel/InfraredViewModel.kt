@@ -10,7 +10,7 @@ import tangle.viewmodel.VMInject
 
 class InfraredViewModel @VMInject constructor(
     @TangleParam(EXTRA_KEY_PATH)
-    private val keyPath: FlipperKeyPath,
+    val keyPath: FlipperKeyPath, // For get value to bottom sheet
     keyStateHelperApi: KeyStateHelperApi.Builder,
 ) : ViewModel() {
 

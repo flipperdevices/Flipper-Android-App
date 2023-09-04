@@ -37,6 +37,7 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.pager)
     implementation(libs.compose.navigation)
+    implementation(libs.compose.systemuicontroller)
     implementation(libs.image.lottie)
 
     implementation(libs.kotlin.coroutines)

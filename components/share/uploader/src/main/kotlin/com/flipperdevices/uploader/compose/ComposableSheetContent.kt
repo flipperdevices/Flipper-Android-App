@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,7 +32,7 @@ internal fun ComposableSheetContent(
     onShareLink: (ShareContent) -> Unit,
     onShareFile: (ShareContent) -> Unit,
     onRetry: () -> Unit,
-    onClose: () -> Unit
+    onClose: () -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -40,7 +41,11 @@ internal fun ComposableSheetContent(
         ComposableSheetFooter(keyName = keyName)
         when (state) {
             is ShareState.Error -> ComposableSheetError(state.typeError, onRetry)
-            ShareState.Completed -> { onClose() }
+            ShareState.Completed -> {
+                LaunchedEffect(key1 = Unit) {
+                    onClose()
+                }
+            }
             ShareState.Prepare -> ComposableSheetPrepare()
             ShareState.Initial -> ComposableSheetInitial()
             is ShareState.PendingShare -> ComposableSheetPending(

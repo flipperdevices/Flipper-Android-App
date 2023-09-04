@@ -46,7 +46,10 @@ data class FlipperPallet(
 
     val shareSheetBackground: Color,
     val shareSheetScrimColor: Color,
-    val shareSheetStatusBarColor: Color = shareSheetScrimColor,
+    val shareSheetStatusBarActiveColor: Color,
+    val shareSheetStatusBarDefaultColor: Color,
+    val shareSheetNavigationBarActiveColor: Color,
+    val shareSheetNavigationBarDefaultColor: Color,
 
     val flipperDisableButton: Color,
     val reportBorder: Color,

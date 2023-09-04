@@ -103,7 +103,12 @@ private val lightPallet = FlipperPallet(
     reportBorder = Color(0xFFD6D6D6),
 
     screenStreamingBorderColor = Color(0xFF000000),
-    screenStreamingNotConnectedColor = Color(0xFFDFDFDF)
+    screenStreamingNotConnectedColor = Color(0xFFDFDFDF),
+
+    shareSheetStatusBarActiveColor = Color(0xFF000000).copy(alpha = 0.15f),
+    shareSheetStatusBarDefaultColor = Color(0xFFFBFBFB),
+    shareSheetNavigationBarActiveColor = Color(0xFFFFFFFF),
+    shareSheetNavigationBarDefaultColor = Color(0xFFFBFBFB),
 )
 
 @Suppress("MagicNumber")
@@ -162,5 +167,10 @@ private val darkPallet = FlipperPallet(
     reportBorder = Color(0xFF616161),
 
     screenStreamingBorderColor = Color(0x7FFF8200),
-    screenStreamingNotConnectedColor = Color(0xFF303030)
+    screenStreamingNotConnectedColor = Color(0xFF303030),
+
+    shareSheetStatusBarActiveColor = Color(0xFF000000),
+    shareSheetStatusBarDefaultColor = Color(0xFF000000),
+    shareSheetNavigationBarActiveColor = Color(0xFF303030),
+    shareSheetNavigationBarDefaultColor = Color(0xFF000000),
 )
