@@ -224,6 +224,5 @@ include(
     ":components:selfupdater:unknown",
     ":components:selfupdater:debug",
     ":components:selfupdater:thirdparty:api",
-    ":components:selfupdater:thirdparty:github",
-    ":components:selfupdater:thirdparty:fdroid",
+    ":components:selfupdater:thirdparty:github"
 )

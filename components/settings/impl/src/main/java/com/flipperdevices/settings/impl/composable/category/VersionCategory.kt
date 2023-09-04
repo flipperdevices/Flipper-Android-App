@@ -47,7 +47,9 @@ internal fun VersionCategory(
 
     SelfUpdaterNoUpdatesDialog(state = dialogState, onClose = viewModel::dismissDialog)
 
-    CardCategory(modifier = modifier) {
+    CardCategory(
+        modifier = modifier.padding(bottom = 14.dp)
+    ) {
         Row(
             modifier = Modifier
                 .clickable {

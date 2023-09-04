@@ -9,7 +9,7 @@ object ApkConfig {
     const val TARGET_SDK_VERSION = 33
     const val COMPILE_SDK_VERSION = 34
 
-    private const val DEBUG_VERSION = "1.6.3.1188"
+    private const val DEBUG_VERSION = "DEBUG_VERSION"
 
     val Project.VERSION_CODE
         get() = prop("version_code", Integer.MAX_VALUE).toInt()
@@ -29,12 +29,10 @@ object ApkConfig {
 
     val Project.SOURCE_INSTALL
         get() = run {
-            return@run SourceInstall.GITHUB
             if (VERSION_NAME == DEBUG_VERSION) {
                 return@run SourceInstall.DEBUG
             }
             return@run when (providers.gradleProperty("source_install").orNull) {
-                "fdroid" -> SourceInstall.FDROID
                 "github" -> SourceInstall.GITHUB
                 "googleplay" -> SourceInstall.GOOGLE_PLAY
                 else -> SourceInstall.UNKNOWN

@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-private const val NOTIFICATION__DEBUG_DELAY_MS = 15000L
+private const val NOTIFICATION_DEBUG_DELAY_MS = 15000L
 
 @ContributesBinding(AppGraph::class, SelfUpdaterSourceApi::class)
 class SelfUpdaterDebug @Inject constructor(
@@ -31,7 +31,7 @@ class SelfUpdaterDebug @Inject constructor(
             return SelfUpdateResult.ERROR
         }
 
-        delay(NOTIFICATION__DEBUG_DELAY_MS)
+        delay(NOTIFICATION_DEBUG_DELAY_MS)
         return debugNoUpdates(manual)
     }
 

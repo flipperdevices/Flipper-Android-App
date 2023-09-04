@@ -27,7 +27,6 @@ class SelfUpdaterApiImpl @Inject constructor(
             info { "Self update in progress" }
             return SelfUpdateResult.IN_PROGRESS
         }
-        inProgressState.emit(true)
         return try {
             selfUpdaterSourceApi.checkUpdate(manual = manual)
         } finally {
