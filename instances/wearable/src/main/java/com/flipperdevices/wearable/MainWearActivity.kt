@@ -58,11 +58,16 @@ class MainWearActivity : ComponentActivity(), LogTagProvider {
             appSpecificErrorCode: Int
         ) {
             super.onChannelClosed(channel, closeReason, appSpecificErrorCode)
-            info { "#channelClientCallback onChannelClosed" }
+            info { "#channelClientCallback onChannelClosed $closeReason" }
             lifecycleScope.launch(Dispatchers.Default) {
-                // Channel close from phone, so close on wear
-                channelClientHelper.onChannelClose(lifecycleScope)
-                activeChannel = null
+                activeChannel = if (closeReason == CLOSE_REASON_REMOTE_CLOSE) {
+                    // Close service only, try reset
+                    channelClientHelper.onChannelReset(lifecycleScope)
+                } else {
+                    // Channel close from phone, so close on wear
+                    channelClientHelper.onChannelClose(lifecycleScope)
+                    null
+                }
             }
         }
     }
