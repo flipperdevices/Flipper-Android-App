@@ -38,7 +38,6 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
-    implementation(libs.compose.insets)
     implementation(libs.compose.navigation)
 
     implementation(libs.kotlin.immutable.collections)
