@@ -36,7 +36,7 @@ class FlipperListingDelegate @Inject constructor() {
                 }
             }.wrapToRequest()
         ).toList().map { response ->
-            return when {
+            return@map when {
                 response.commandStatus == Flipper.CommandStatus.ERROR_STORAGE_NOT_EXIST -> {
                     info { "Listing request for $pathOnFlipper with $response was not found" }
                     listOf()
