@@ -31,20 +31,18 @@ class FapsListViewModel @VMInject constructor(
     targetProviderApi: FlipperTargetProviderApi,
     private val dataStoreSettings: DataStore<Settings>
 ) : ViewModel() {
-    private val settingsState by lazy {
+    private val sortState by lazy {
         dataStoreSettings.data.stateIn(
             viewModelScope,
             SharingStarted.Lazily,
             initialValue = Settings.getDefaultInstance()
-        )
+        ).map(viewModelScope) { it.selectedCatalogSort.toSortType() }
     }
 
-    fun getSortTypeFlow(): StateFlow<SortType> = settingsState.map(viewModelScope) {
-        it.selectedCatalogSort.toSortType()
-    }
+    fun getSortTypeFlow(): StateFlow<SortType> = sortState
 
     val faps = combine(
-        getSortTypeFlow(),
+        sortState,
         targetProviderApi.getFlipperTarget(),
         fapHubHideItemApi.getHiddenItems()
     ) { sortType, target, hiddenItems ->
