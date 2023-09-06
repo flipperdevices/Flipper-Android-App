@@ -23,6 +23,7 @@
 - [FIX] Category GET request
 - [FIX] Downgrade compose navigation for fix transit animation
 - [FIX] Remove compose insets
+- [FIX] Key emulate button
 
 # 1.6.3
 

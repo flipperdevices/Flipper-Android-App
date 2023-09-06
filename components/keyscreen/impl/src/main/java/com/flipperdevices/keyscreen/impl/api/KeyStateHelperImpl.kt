@@ -4,10 +4,14 @@ import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UpdateKeyApi
+import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.warn
+import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyparser.api.KeyParser
+import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
 import com.flipperdevices.keyscreen.api.KeyStateHelperApi
 import com.flipperdevices.keyscreen.impl.R
 import com.flipperdevices.keyscreen.model.DeleteState
@@ -171,9 +175,38 @@ class KeyStateHelperImpl(
                     if (isFavorite) FavoriteState.FAVORITE else FavoriteState.NOT_FAVORITE,
                     ShareState.NOT_SHARING,
                     if (flipperKey.deleted) DeleteState.DELETED else DeleteState.NOT_DELETED,
-                    flipperKey
+                    flipperKey,
+                    emulateConfig = getEmulateConfig(
+                        flipperKey = flipperKey,
+                        parsedKey = parsedKey
+                    )
                 )
             }
         }
+    }
+
+    private fun getEmulateConfig(
+        flipperKey: FlipperKey,
+        parsedKey: FlipperKeyParsed
+    ): EmulateConfig? {
+        val keyType = flipperKey.flipperKeyType
+
+        if (keyType == null || keyType == FlipperKeyType.INFRARED) {
+            return null
+        }
+
+        val timeout = if (parsedKey is FlipperKeyParsed.SubGhz &&
+            parsedKey.totalTimeMs != null
+        ) {
+            parsedKey.totalTimeMs
+        } else {
+            null
+        }
+
+        return EmulateConfig(
+            keyType = keyType,
+            keyPath = flipperKey.path,
+            minEmulateTime = timeout,
+        )
     }
 }
