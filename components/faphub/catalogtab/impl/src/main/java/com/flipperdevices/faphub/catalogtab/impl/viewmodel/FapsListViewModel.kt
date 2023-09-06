@@ -7,7 +7,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.flipperdevices.bridge.dao.api.FapHubHideItemApi
-import com.flipperdevices.core.ktx.jre.map
 import com.flipperdevices.core.pager.loadingPagingDataFlow
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
@@ -20,6 +19,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import tangle.viewmodel.VMInject
@@ -32,11 +32,13 @@ class FapsListViewModel @VMInject constructor(
     private val dataStoreSettings: DataStore<Settings>
 ) : ViewModel() {
     private val sortState by lazy {
-        dataStoreSettings.data.stateIn(
-            viewModelScope,
-            SharingStarted.Lazily,
-            initialValue = Settings.getDefaultInstance()
-        ).map(viewModelScope) { it.selectedCatalogSort.toSortType() }
+        dataStoreSettings.data
+            .map { it.selectedCatalogSort.toSortType() }
+            .stateIn(
+                viewModelScope,
+                SharingStarted.Lazily,
+                initialValue = SortType.UPDATE_AT_DESC
+            )
     }
 
     fun getSortTypeFlow(): StateFlow<SortType> = sortState
