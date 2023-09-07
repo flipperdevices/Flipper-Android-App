@@ -11,6 +11,7 @@ import com.flipperdevices.bridge.dao.api.model.navigation.FlipperKeyPathType
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.infrared.api.InfraredEditorFeatureEntry
 import com.flipperdevices.infrared.api.InfraredFeatureEntry
 import com.flipperdevices.infrared.impl.composable.ComposableInfraredScreen
 import com.flipperdevices.infrared.impl.viewmodel.InfraredViewModel
@@ -33,7 +34,8 @@ class InfraredFeatureEntryImpl @Inject constructor(
     private val keyScreenApi: KeyScreenApi,
     private val keyEmulateApi: KeyEmulateApi,
     private val keyEditFeatureEntry: KeyEditFeatureEntry,
-    private val shareBottomUIApi: ShareBottomUIApi
+    private val shareBottomUIApi: ShareBottomUIApi,
+    private val editorFeatureEntry: InfraredEditorFeatureEntry
 ) : InfraredFeatureEntry {
 
     override fun getInfraredScreen(keyPath: FlipperKeyPath): String {
@@ -66,7 +68,9 @@ class InfraredFeatureEntryImpl @Inject constructor(
                         viewModel = viewModel,
                         keyScreenApi = keyScreenApi,
                         keyEmulateApi = keyEmulateApi,
-                        onEdit = {},
+                        onEdit = {
+                             navController.navigate(editorFeatureEntry.getInfraredEditorScreen(it))
+                        },
                         onRename = {
                             navController.navigate(keyEditFeatureEntry.getKeyEditScreen(it, null))
                         },
