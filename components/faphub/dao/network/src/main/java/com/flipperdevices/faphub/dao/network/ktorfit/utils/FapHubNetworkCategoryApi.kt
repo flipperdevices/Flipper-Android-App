@@ -39,6 +39,11 @@ class FapHubNetworkCategoryApi(
                     is FlipperTarget.Received -> target.sdk.toString()
                     FlipperTarget.Unsupported,
                     FlipperTarget.NotConnected -> null
+                },
+                target = when (target) {
+                    is FlipperTarget.Received -> target.target
+                    FlipperTarget.Unsupported,
+                    FlipperTarget.NotConnected -> null
                 }
             )
         } catch (ex: Exception) {

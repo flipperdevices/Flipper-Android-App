@@ -18,6 +18,13 @@
 - [FIX] Bump deps, remove PR apks and fix wearos track
 - [FIX] Return empty list, if flipper path not exist
 - [FIX] New Bottom Sheet
+- [FIX] Version conflict on CI with Google Play deploy
+- [FIX] Add support for size filter in listing request
+- [FIX] Corner padding radius in switch tab
+- [FIX] Category GET request
+- [FIX] Downgrade compose navigation for fix transit animation
+- [FIX] Remove compose insets
+- [FIX] Key emulate button
 
 # 1.6.3
 

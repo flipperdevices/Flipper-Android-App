@@ -106,7 +106,8 @@ class KeyScreenViewModelTest {
                 favoriteState = mockk(),
                 shareState = mockk(),
                 deleteState = mockk(),
-                flipperKey = flipperKey
+                flipperKey = flipperKey,
+                emulateConfig = mockk()
             )
         )
 
