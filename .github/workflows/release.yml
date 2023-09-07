@@ -259,6 +259,7 @@ jobs:
           status: draft
           whatsNewDirectory: .github/changelog
           mappingFile: ${{steps.download-googleplay.outputs.download-path}}/mapping-googleplay.txt
+          changesNotSentForReview: true
   upload_to_playstore_wearos:
     name: Upload WearOS to Play Store
     runs-on: ubuntu-latest
@@ -282,3 +283,4 @@ jobs:
           status: draft
           whatsNewDirectory: .github/changelog
           mappingFile: ${{steps.download-wearos.outputs.download-path}}/mapping-wearos.txt
+          changesNotSentForReview: true
