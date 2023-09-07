@@ -38,7 +38,7 @@ fun Modifier.onHoldPress(
     }
 }
 
-private const val DELAY_SCROLL = 300L
+private const val DELAY_SCROLL = 200L
 
 fun Modifier.onScrollHoldPress(
     onTap: () -> Unit,
