@@ -1,6 +1,8 @@
 # Changelog
 
-# 1.6.4 - In progress
+# 1.6.5 - In progress
+
+# 1.6.4 
 
 - [Feature] Add transparent flipper mockup
 - [Feature] Add broke rpc ble session button to debug settings
