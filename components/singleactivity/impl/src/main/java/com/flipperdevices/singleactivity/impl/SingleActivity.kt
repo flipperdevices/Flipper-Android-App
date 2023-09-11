@@ -9,7 +9,9 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.flipperdevices.core.di.ComponentHolder
@@ -27,6 +29,7 @@ import com.flipperdevices.singleactivity.impl.composable.ComposableSingleActivit
 import com.flipperdevices.singleactivity.impl.di.SingleActivityComponent
 import com.flipperdevices.singleactivity.impl.utils.AppOpenMetricReported
 import kotlinx.collections.immutable.toPersistentSet
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -67,7 +70,11 @@ class SingleActivity :
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
-        selfUpdaterApi.startCheckUpdateAsync(activity = this@SingleActivity)
+        lifecycleScope.launch(Dispatchers.Default) {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                selfUpdaterApi.startCheckUpdate()
+            }
+        }
 
         val featureEntries = featureEntriesMutable.toPersistentSet()
         val composableEntries = composableEntriesMutable.toPersistentSet()

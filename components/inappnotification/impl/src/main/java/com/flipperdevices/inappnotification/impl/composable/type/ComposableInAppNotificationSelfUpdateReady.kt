@@ -22,8 +22,8 @@ import com.flipperdevices.inappnotification.api.model.InAppNotification
 import com.flipperdevices.inappnotification.impl.R
 
 @Composable
-internal fun ComposableInAppNotificationUpdateReady(
-    notification: InAppNotification.UpdateReady,
+internal fun ComposableInAppNotificationSelfUpdateReady(
+    notification: InAppNotification.SelfUpdateReady,
     onClickAction: () -> Unit,
 ) {
     Row(
@@ -66,8 +66,8 @@ internal fun ComposableInAppNotificationUpdateReady(
 @Composable
 private fun ComposableInAppNotificationUpdateReadyPreviewX2Font() {
     FlipperThemeInternal {
-        ComposableInAppNotificationUpdateReady(
-            notification = InAppNotification.UpdateReady(
+        ComposableInAppNotificationSelfUpdateReady(
+            notification = InAppNotification.SelfUpdateReady(
                 durationMs = 0,
                 action = { },
             ),
@@ -82,8 +82,8 @@ private fun ComposableInAppNotificationUpdateReadyPreviewX2Font() {
 @Composable
 private fun ComposableInAppNotificationUpdateReadyPreviewX15Font() {
     FlipperThemeInternal {
-        ComposableInAppNotificationUpdateReady(
-            notification = InAppNotification.UpdateReady(
+        ComposableInAppNotificationSelfUpdateReady(
+            notification = InAppNotification.SelfUpdateReady(
                 durationMs = 0,
                 action = { },
             ),
@@ -96,8 +96,8 @@ private fun ComposableInAppNotificationUpdateReadyPreviewX15Font() {
 @Composable
 private fun ComposableInAppNotificationUpdateReadyPreview() {
     FlipperThemeInternal {
-        ComposableInAppNotificationUpdateReady(
-            notification = InAppNotification.UpdateReady(
+        ComposableInAppNotificationSelfUpdateReady(
+            notification = InAppNotification.SelfUpdateReady(
                 durationMs = 0,
                 action = { },
             ),

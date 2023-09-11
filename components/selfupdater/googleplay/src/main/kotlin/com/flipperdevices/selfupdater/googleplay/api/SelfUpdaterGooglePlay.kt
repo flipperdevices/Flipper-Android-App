@@ -1,14 +1,15 @@
 package com.flipperdevices.selfupdater.googleplay.api
 
-import android.app.Activity
 import android.content.Context
+import com.flipperdevices.core.activityholder.CurrentActivityHolder
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
 import com.flipperdevices.selfupdater.api.BuildConfig
-import com.flipperdevices.selfupdater.api.SelfUpdaterApi
+import com.flipperdevices.selfupdater.api.SelfUpdaterSourceApi
+import com.flipperdevices.selfupdater.models.SelfUpdateResult
 import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.InstallState
@@ -17,15 +18,18 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.squareup.anvil.annotations.ContributesBinding
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
+import javax.inject.Singleton
 
 private const val UPDATE_CODE = 228
 
-@ContributesBinding(AppGraph::class, SelfUpdaterApi::class)
+@Singleton
+@ContributesBinding(AppGraph::class, SelfUpdaterSourceApi::class)
 class SelfUpdaterGooglePlay @Inject constructor(
     private val context: Context,
     private val inAppNotificationStorage: InAppNotificationStorage
-) : SelfUpdaterApi, LogTagProvider {
+) : SelfUpdaterSourceApi, LogTagProvider {
 
     override val TAG: String get() = "SelfUpdaterGooglePlay"
 
@@ -35,33 +39,50 @@ class SelfUpdaterGooglePlay @Inject constructor(
 
     private fun processUpdateListener(state: InstallState) {
         info { "Current update state $state" }
-        if (state.installStatus() != InstallStatus.DOWNLOADED) return
+        val installStatus = state.installStatus()
+        info { "Current update status $installStatus" }
 
-        inAppNotificationStorage.addNotification(
-            InAppNotification.UpdateReady(
-                action = appUpdateManager::completeUpdate
-            )
-        )
+        when (installStatus) {
+            InstallStatus.DOWNLOADED -> {
+                val notification = InAppNotification.SelfUpdateReady(
+                    action = appUpdateManager::completeUpdate
+                )
+                inAppNotificationStorage.addNotification(notification)
+            }
+            InstallStatus.FAILED, InstallStatus.CANCELED -> {
+                val notification = InAppNotification.SelfUpdateError()
+                inAppNotificationStorage.addNotification(notification)
+            }
+            else -> {}
+        }
     }
 
-    override fun startCheckUpdateAsync(activity: Activity) {
+    override suspend fun checkUpdate(manual: Boolean): SelfUpdateResult {
+        val activity = CurrentActivityHolder.getCurrentActivity()
+            ?: return SelfUpdateResult.ERROR
+
         info { "Process checkout new update" }
         appUpdateManager.registerListener(updateListener)
-        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
-            info { "Current state update id ${appUpdateInfo.updateAvailability()}" }
-            if (isUpdateAvailable(appUpdateInfo)) {
-                info { "New update available, suggest to update" }
-                appUpdateManager.startUpdateFlowForResult(
-                    appUpdateInfo,
-                    AppUpdateType.FLEXIBLE,
-                    activity,
-                    UPDATE_CODE
-                )
-            }
+
+        val appUpdateInfo = appUpdateInfoTask.await()
+        info { "Current state update id ${appUpdateInfo.updateAvailability()}" }
+
+        return if (isUpdateAvailable(appUpdateInfo)) {
+            info { "New update available, suggest to update" }
+            appUpdateManager.startUpdateFlowForResult(
+                appUpdateInfo,
+                AppUpdateType.FLEXIBLE,
+                activity,
+                UPDATE_CODE
+            )
+            SelfUpdateResult.COMPLETE
+        } else {
+            SelfUpdateResult.NO_UPDATES
         }
     }
 
     override fun getInstallSourceName() = "Google Play/" + BuildConfig.BUILD_TYPE
+    override fun isSelfUpdateCanManualCheck(): Boolean = false
 
     private fun isUpdateAvailable(appUpdateInfo: AppUpdateInfo): Boolean {
         return appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&

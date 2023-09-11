@@ -53,7 +53,7 @@ fun OrangeAppBar(
                 modifier = Modifier
                     .padding(top = 11.dp, bottom = 11.dp, start = 16.dp, end = 2.dp)
                     .size(20.dp)
-                    .clickableRipple(onClick = onBack),
+                    .clickableRipple(bounded = false, onClick = onBack),
                 painter = painterResource(DesignSystem.drawable.ic_back),
                 contentDescription = null
             )
