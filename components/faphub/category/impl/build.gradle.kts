@@ -15,6 +15,7 @@ dependencies {
     implementation(projects.components.core.pager)
     implementation(projects.components.core.ui.navigation)
     implementation(projects.components.core.ktx)
+    implementation(projects.components.core.preference)
 
     implementation(projects.components.faphub.search.api)
     implementation(projects.components.faphub.dao.api)

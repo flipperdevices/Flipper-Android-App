@@ -1,51 +1,64 @@
 package com.flipperdevices.selfupdater.debug.api
 
-import android.app.Activity
 import androidx.datastore.core.DataStore
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.coroutineScope
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
-import com.flipperdevices.selfupdater.api.SelfUpdaterApi
+import com.flipperdevices.selfupdater.api.SelfUpdaterSourceApi
+import com.flipperdevices.selfupdater.models.SelfUpdateResult
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-private const val NOTIFICATION_DELAY_MS = 5000L
+private const val NOTIFICATION_DEBUG_DELAY_MS = 15000L
 
-@ContributesBinding(AppGraph::class, SelfUpdaterApi::class)
+@ContributesBinding(AppGraph::class, SelfUpdaterSourceApi::class)
 class SelfUpdaterDebug @Inject constructor(
     private val dataStoreSettings: DataStore<Settings>,
     private val inAppNotificationStorage: InAppNotificationStorage
-) : SelfUpdaterApi, LogTagProvider {
+) : SelfUpdaterSourceApi, LogTagProvider {
     override val TAG = "SelfUpdaterDebug"
 
-    override fun startCheckUpdateAsync(activity: Activity) {
-        val lifecycleOwner = activity as? LifecycleOwner ?: return
-        val scope = lifecycleOwner.lifecycle.coroutineScope
-
-        scope.launch {
-            val isFlagDebug = dataStoreSettings.data.map { it.selfUpdaterDebug }.first()
-            if (!isFlagDebug) {
-                info { "Self Updater in Debug Mode disable" }
-                return@launch
-            }
-
-            delay(NOTIFICATION_DELAY_MS)
-
-            val notification = InAppNotification.UpdateReady(
-                action = { info { "Self Updater in Debug Mode action" } }
-            )
-            inAppNotificationStorage.addNotification(notification)
+    override suspend fun checkUpdate(manual: Boolean): SelfUpdateResult {
+        val isFlagDebug = dataStoreSettings.data.map { it.selfUpdaterDebug }.first()
+        if (!isFlagDebug) {
+            info { "Self Updater in Debug Mode disable" }
+            return SelfUpdateResult.ERROR
         }
+
+        delay(NOTIFICATION_DEBUG_DELAY_MS)
+        return debugNoUpdates(manual)
     }
 
-    override fun getInstallSourceName() = "Debug"
+    @Suppress("UnusedPrivateMember")
+    private fun debugSuccessUpdate(manual: Boolean): SelfUpdateResult {
+        val startUpdateNotification = InAppNotification.SelfUpdateStarted()
+        val readyUpdateNotification = InAppNotification.SelfUpdateReady(
+            action = { inAppNotificationStorage.addNotification(startUpdateNotification) },
+        )
+        inAppNotificationStorage.addNotification(readyUpdateNotification)
+        return SelfUpdateResult.COMPLETE
+    }
+
+    @Suppress("UnusedPrivateMember")
+    private fun debugNoUpdates(manual: Boolean): SelfUpdateResult {
+        return SelfUpdateResult.NO_UPDATES
+    }
+
+    @Suppress("UnusedPrivateMember")
+    private fun debugErrorUpdate(manual: Boolean): SelfUpdateResult {
+        if (manual) {
+            inAppNotificationStorage.addNotification(InAppNotification.SelfUpdateError())
+        }
+        return SelfUpdateResult.ERROR
+    }
+
+    override fun getInstallSourceName() = "Debug Lorem Ipsum"
+
+    override fun isSelfUpdateCanManualCheck(): Boolean = true
 }

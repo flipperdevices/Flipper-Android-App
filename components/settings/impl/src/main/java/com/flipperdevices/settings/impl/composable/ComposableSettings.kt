@@ -3,6 +3,7 @@ package com.flipperdevices.settings.impl.composable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -38,6 +39,7 @@ fun ComposableCommonSettings(
 
     Column(
         modifier = modifier
+            .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .background(LocalPallet.current.background),
         verticalArrangement = Arrangement.spacedBy(14.dp)
@@ -68,9 +70,7 @@ fun ComposableCommonSettings(
             onReportBug = { settingsViewModel.onReportBug(navController) }
         )
         VersionCategory(
-            version = settingsViewModel.versionApp(),
-            sourceInstall = settingsViewModel.sourceInstall(),
-            onActivateExpertMode = settingsViewModel::onExpertModeActivate
+            onActivateExpertMode = settingsViewModel::onExpertModeActivate,
         )
     }
 }
