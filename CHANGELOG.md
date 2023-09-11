@@ -1,6 +1,8 @@
 # Changelog
 
-# 1.6.4 - In progress
+# 1.6.5 - In progress
+
+# 1.6.4 
 
 - [Feature] Add transparent flipper mockup
 - [Feature] Add broke rpc ble session button to debug settings
@@ -24,6 +26,7 @@
 - [FIX] Category GET request
 - [FIX] Downgrade compose navigation for fix transit animation
 - [FIX] Remove compose insets
+- [FIX] Key emulate button
 
 # 1.6.3
 

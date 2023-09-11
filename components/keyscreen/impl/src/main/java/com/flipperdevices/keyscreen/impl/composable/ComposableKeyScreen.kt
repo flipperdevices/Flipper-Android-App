@@ -3,7 +3,6 @@ package com.flipperdevices.keyscreen.impl.composable
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
@@ -28,13 +27,13 @@ fun ComposableKeyScreen(
     onOpenEditScreen: (FlipperKeyPath) -> Unit
 ) {
     val keyScreenState by viewModel.getKeyScreenState().collectAsState()
-    val emulateConfig = remember { viewModel.getEmulateConfig() }
 
     when (val localKeyScreenState = keyScreenState) {
         KeyScreenState.InProgress -> ComposableKeyScreenLoading()
         is KeyScreenState.Error -> ComposableKeyScreenError(
             text = stringResource(id = localKeyScreenState.reason)
         )
+
         is KeyScreenState.Ready -> ComposableKeyParsed(
             localKeyScreenState,
             nfcEditorApi,
@@ -45,7 +44,7 @@ fun ComposableKeyScreen(
             onOpenNfcEditor = onOpenNfcEditor,
             setFavorite = viewModel::setFavorite,
             onEdit = { viewModel.onOpenEdit(onOpenEditScreen) },
-            emulateConfig = emulateConfig,
+            emulateConfig = localKeyScreenState.emulateConfig,
             onRestore = { viewModel.onRestore(onBack) },
             onDelete = { viewModel.onDelete(onBack) }
         )
