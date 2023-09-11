@@ -2,6 +2,8 @@
 
 # 1.6.5 - In progress
 
+- [Feature] Check Self Update App in Optiond (only for github)
+
 # 1.6.4 
 
 - [Feature] Add transparent flipper mockup
