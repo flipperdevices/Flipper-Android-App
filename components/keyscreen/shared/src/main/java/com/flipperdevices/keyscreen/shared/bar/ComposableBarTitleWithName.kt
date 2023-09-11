@@ -13,7 +13,7 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 @Composable
 fun ComposableBarTitleWithName(
     title: String,
-    name: String,
+    name: String?,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -25,11 +25,13 @@ fun ComposableBarTitleWithName(
             color = LocalPallet.current.text88,
             style = LocalTypography.current.titleEB18
         )
-        Text(
-            text = name,
-            color = LocalPallet.current.text88,
-            style = LocalTypography.current.subtitleM12
-        )
+        name?.let {
+            Text(
+                text = it,
+                color = LocalPallet.current.text88,
+                style = LocalTypography.current.subtitleM12
+            )
+        }
     }
 }
 

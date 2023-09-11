@@ -10,6 +10,7 @@ import com.flipperdevices.bridge.dao.api.model.navigation.FlipperKeyPathType
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.flipperdevices.infrared.api.InfraredEditorFeatureEntry
+import com.flipperdevices.infrared.editor.compose.screen.ComposableInfraredEditorScreen
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
 import kotlinx.serialization.encodeToString
@@ -38,6 +39,9 @@ class InfraredFeatureEntryImpl @Inject constructor() : InfraredEditorFeatureEntr
             route = "@${ROUTE.name}?infrared_editor_key_path={$EXTRA_KEY_PATH}",
             arguments = navArguments
         ) {
+            ComposableInfraredEditorScreen(
+                onBack = navController::popBackStack
+            )
         }
     }
 }
