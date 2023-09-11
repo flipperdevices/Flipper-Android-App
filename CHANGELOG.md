@@ -2,6 +2,8 @@
 
 # 1.6.5 - In progress
 
+- [Feature] Fap Catalog save sort
+
 # 1.6.4 
 
 - [Feature] Add transparent flipper mockup
@@ -10,7 +12,6 @@
 - [Feature] Add fap manifest caching
 - [Feature] Not send empty report in faphub
 - [Feature] Add hide app button
-- [Feature] Fap Catalog save sort
 - [CI] Add apk artifacts to Pull Requests
 - [CI] Fix failed build in merge_group
 - [CI] Bump deps except Sentry-gradle
