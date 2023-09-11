@@ -4,6 +4,7 @@
 
 - [Feature] Scroll on Infrared Screen
 - [Feature] Check Self Update App in Options (only for github)
+- [Feature] Fap Catalog save sort
 
 # 1.6.4 
 
