@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -54,7 +53,7 @@ internal fun ComposableInfraredEditorScreenReady(
         ) {
             itemsIndexed(keyState.remotes) { index, remote ->
                 ComposableInfraredEditorItem(
-                    remoteName = remote,
+                    remoteName = remote.name,
                     onTap = { onTapRemote(index) },
                     onDelete = { onDelete(index) }
                 )
