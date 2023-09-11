@@ -2,6 +2,10 @@
 
 # 1.6.5 - In progress
 
+- [FIX] Use by default dark theme in Wear OS
+- [FIX] Use default splashscreen in Wear OS
+- [FIX] Fix compose layout in Wear OS
+
 # 1.6.4 
 
 - [Feature] Add transparent flipper mockup
