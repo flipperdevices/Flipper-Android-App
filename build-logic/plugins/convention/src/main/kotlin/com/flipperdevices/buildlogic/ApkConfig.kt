@@ -33,7 +33,6 @@ object ApkConfig {
                 return@run SourceInstall.DEBUG
             }
             return@run when (providers.gradleProperty("source_install").orNull) {
-                "fdroid" -> SourceInstall.FDROID
                 "github" -> SourceInstall.GITHUB
                 "googleplay" -> SourceInstall.GOOGLE_PLAY
                 else -> SourceInstall.UNKNOWN

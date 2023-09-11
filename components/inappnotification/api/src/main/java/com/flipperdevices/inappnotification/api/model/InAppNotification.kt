@@ -16,8 +16,16 @@ sealed class InAppNotification {
         override val durationMs = NOTIFICATION_REPORT_APP_MS
     }
 
-    data class UpdateReady(
+    data class SelfUpdateReady(
         val action: () -> Unit,
+        override val durationMs: Long = NOTIFICATION_UPDATE_MS
+    ) : InAppNotification()
+
+    data class SelfUpdateStarted(
+        override val durationMs: Long = NOTIFICATION_UPDATE_MS
+    ) : InAppNotification()
+
+    data class SelfUpdateError(
         override val durationMs: Long = NOTIFICATION_UPDATE_MS
     ) : InAppNotification()
 

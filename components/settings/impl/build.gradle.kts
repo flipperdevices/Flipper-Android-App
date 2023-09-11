@@ -13,11 +13,13 @@ dependencies {
     implementation(projects.components.core.preference)
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.share)
+    implementation(projects.components.core.activityholder)
     implementation(projects.components.analytics.shake2report.api)
     implementation(projects.components.analytics.metric.api)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.lifecycle)
+    implementation(projects.components.core.ui.dialog)
 
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.navigation)
@@ -28,6 +30,7 @@ dependencies {
     implementation(projects.components.selfupdater.api)
     implementation(projects.components.nfc.mfkey32.api)
     implementation(projects.components.faphub.installation.all.api)
+    implementation(projects.components.selfupdater.api)
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.dao.api)

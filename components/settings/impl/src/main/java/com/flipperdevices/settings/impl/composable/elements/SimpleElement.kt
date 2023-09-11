@@ -25,17 +25,14 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.settings.impl.R
 
 @Composable
-fun SimpleElement(
+internal fun SimpleElement(
     modifier: Modifier = Modifier,
-    @StringRes titleId: Int? = null,
-    @StringRes descriptionId: Int? = null,
+    title: String? = null,
+    description: String? = null,
     onClick: (() -> Unit)? = null,
     paddings: PaddingValues = PaddingValues(12.dp),
     titleTextStyle: TextStyle = LocalTypography.current.bodyR14
 ) {
-    val title: String? = titleId?.let { stringResource(id = it) }
-    val description = descriptionId?.let { stringResource(id = it) }
-
     var rowModifier = Modifier
         .heightIn(min = 48.dp)
         .padding(paddings)
@@ -70,6 +67,28 @@ fun SimpleElement(
             }
         }
     }
+}
+
+@Composable
+internal fun SimpleElement(
+    modifier: Modifier = Modifier,
+    @StringRes titleId: Int? = null,
+    @StringRes descriptionId: Int? = null,
+    onClick: (() -> Unit)? = null,
+    paddings: PaddingValues = PaddingValues(12.dp),
+    titleTextStyle: TextStyle = LocalTypography.current.bodyR14
+) {
+    val title: String? = titleId?.let { stringResource(id = it) }
+    val description = descriptionId?.let { stringResource(id = it) }
+
+    SimpleElement(
+        modifier = modifier,
+        title = title,
+        description = description,
+        onClick = onClick,
+        paddings = paddings,
+        titleTextStyle = titleTextStyle
+    )
 }
 
 @Preview(
