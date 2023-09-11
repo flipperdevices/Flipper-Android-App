@@ -1,6 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="FlipperTheme" parent="@android:style/Theme.DeviceDefault" />
 
-    <style name="FlipperTheme.SplashTheme" parent="FlipperTheme">
-        <item name="android:windowBackground">@drawable/splash_screen</item>
+    <style name="FlipperTheme.Starting" parent="Theme.SplashScreen.IconBackground">
+        <!-- Set the splash screen background to black -->
+        <item name="windowSplashScreenBackground">@android:color/black</item>
+        <!-- Use windowSplashScreenAnimatedIcon to add a drawable or an animated
+             drawable. -->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_screen</item>
+        <!-- Set the theme of the Activity that follows your splash screen. -->
+        <item name="postSplashScreenTheme">@style/FlipperTheme</item>
+        <!-- Set a white background behind the splash screen icon. -->
+        <item name="windowSplashScreenIconBackgroundColor">@android:color/white</item>
     </style>
 </resources>

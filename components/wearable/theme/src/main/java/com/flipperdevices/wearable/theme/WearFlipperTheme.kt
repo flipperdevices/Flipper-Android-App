@@ -21,7 +21,7 @@ import com.flipperdevices.core.ui.theme.composable.isLight
 fun WearFlipperTheme(
     content: @Composable () -> Unit
 ) {
-    val pallet = getThemedFlipperPallet(isLight())
+    val pallet = getThemedFlipperPallet(isLight = false)
 
     val shapes = Shapes(medium = RoundedCornerShape(size = 10.dp))
 

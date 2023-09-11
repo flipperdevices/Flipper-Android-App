@@ -19,7 +19,7 @@
         <activity
                 android:exported="true"
                 android:name=".MainWearActivity"
-                android:theme="@style/FlipperTheme.SplashTheme"
+                android:theme="@style/FlipperTheme.Starting"
                 android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -4,387 +4,387 @@
         android:viewportWidth="297"
         android:width="128dp">
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M235.657,187.658H231.817H227.977H224.137V191.498H227.977H231.817H235.657H239.497H243.337V187.658H239.497H235.657Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M120.459,187.658H116.619V191.498H120.459H124.299V187.658H120.459Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M47.5,187.658H43.66V191.498H47.5V187.658Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M39.82,187.658H35.98V191.498H39.82V187.658Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M32.14,187.658H28.3V191.498H32.14V187.658Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M251.017,183.818H247.177V179.978H243.337H239.497V183.818H243.337V187.658H247.177H251.017H254.857H258.697V183.818H254.857H251.017Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M116.619,183.818H112.779V187.658H116.619V183.818Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M51.34,183.818H47.5V187.658H51.34V183.818Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M43.66,183.818H39.82V187.658H43.66V183.818Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M35.98,183.818H32.14V187.658H35.98V183.818Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M28.3,183.818H24.46V187.658H28.3V183.818Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M262.537,179.978H258.697V183.818H262.537H266.377H270.216V179.978H266.377H262.537Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M55.18,179.978H51.34V183.818H55.18V179.978Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M47.5,179.978H43.66V183.818H47.5V179.978Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M39.82,179.978H35.98V183.818H39.82V179.978Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M32.14,179.978H28.3V183.818H32.14V179.978Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M24.46,179.978H20.621V183.818H24.46V179.978Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M270.216,176.138V179.978H274.056H277.896V176.138H274.056H270.216Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M235.657,179.978H239.497V176.138H235.657H231.817V179.978H235.657Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M51.34,176.138H47.5V179.978H51.34V176.138Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M43.66,176.138H39.82V179.978H43.66V176.138Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M35.98,176.138H32.14V179.978H35.98V176.138Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M28.3,176.138H24.46V179.978H28.3V176.138Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M20.621,176.138H16.781V179.978H20.621V176.138Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M285.576,172.298V168.458H281.736H277.896H274.056H270.216H266.376H262.537H258.697H254.857H251.017H247.177H243.337H239.497H235.657H231.817H227.977H224.137H220.297V164.618H224.137V160.778H227.977V156.938H231.817V153.098H235.657V149.258H239.497V145.418H243.337V141.579H247.177V137.739H251.017V133.899H254.857V130.059H258.697V126.219H262.537V122.379H266.376V118.539H270.216V114.699H274.056V110.859H277.896V107.019H281.736V103.179V99.339V95.499V91.659H277.896V87.819H274.056H270.216H266.376V83.979H262.537H258.697H254.857H251.017H247.177H243.337H239.497H235.657H231.817V87.819H227.977H224.137V91.659H220.297H216.457V95.499H212.617H208.777V91.659H204.937V87.819V83.979H201.098V80.14V76.3H197.258V72.46H193.418V68.62H189.578V64.78H185.738V60.94H181.898H178.058V57.1H174.218H170.378V53.26H166.538H162.698H158.858V49.42H155.018H151.178H147.338H143.498H139.659V45.58H135.819H131.979H128.139H124.299H120.459H116.619H112.779H108.939H105.099H101.259H97.419H93.579H89.739H85.899H82.06V49.42H78.219H74.38H70.54H66.7V53.26H62.86H59.02H55.18V57.1H51.34V60.94H47.5H43.66V64.78H39.82H35.98V68.62H32.14V72.46H28.3V76.3H24.46V80.14H20.621V83.979H16.781V87.819V91.659H12.941V95.499V99.339H9.101V103.179V107.019V110.859H12.941V107.019V103.179H16.781V99.339V95.499H20.621V91.659V87.819H24.46V83.979H28.3V80.14H32.14V76.3H35.98V72.46H39.82V68.62H43.66H47.5V64.78H51.34H55.18V60.94H59.02H62.86H66.7H70.54H74.38H78.219H82.06H85.899H89.739H93.579H97.419H101.259V57.1H97.419H93.579H89.739H85.899H82.06H78.219H74.38H70.54V53.26H74.38H78.219H82.06H85.899V49.42H89.739H93.579H97.419H101.259H105.099H108.939H112.779H116.619H120.459H124.299H128.139H131.979H135.819V53.26H139.659V57.1H143.498V53.26H147.338V57.1H151.178H155.018H158.858H162.698H166.538V60.94V64.78H170.378H174.218H178.058H181.898V68.62H185.738V72.46H189.578V76.3H193.418V80.14H197.258V83.979V87.819V91.659H193.418V95.499H197.258H201.098H204.937V99.339V103.179H208.777H212.617V99.339H216.457H220.297V95.499H224.137H227.977V91.659H231.817H235.657V87.819H239.497H243.337H247.177H251.017H254.857H258.697H262.537V91.659H266.376H270.216H274.056V95.499H277.896V99.339H274.056H270.216H266.376H262.537V103.179H258.697H254.857H251.017V107.019H247.177H243.337V110.859H239.497H235.657V114.699H231.817V118.539H227.977V122.379H224.137V126.219H220.297V130.059H216.457V133.899H212.617V137.739H208.777V141.579H204.937V145.418H201.098V149.258H197.258V153.098H193.418V156.938H189.578V160.778H185.738V164.618H181.898V168.458H178.058V172.298H174.218V176.138H170.378V179.978H166.538H162.698V183.818H158.858H155.018V187.658H151.178H147.338H143.498V191.498H139.659H135.819H131.979H128.139H124.299V195.338H128.139H131.979H135.819H139.659H143.498H147.338H151.178H155.018H158.858H162.698H166.538H170.378H174.218H178.058H181.898H185.738H189.578H193.418H197.258H201.098H204.937H208.777H212.617H216.457H220.297H224.137V191.498H220.297H216.457H212.617H208.777H204.937H201.098H197.258H193.418H189.578H185.738H181.898H178.058V187.658V183.818H181.898V179.978H185.738V176.138H189.578V172.298H193.418H197.258H201.098H204.937H208.777H212.617H216.457V176.138H220.297H224.137H227.977H231.817V172.298H235.657H239.497H243.337H247.177H251.017H254.857H258.697H262.537H266.376H270.216H274.056H277.896V176.138H281.736H285.576V179.978V183.818V187.658H281.736V191.498H277.896V195.338H274.056V199.178H270.216V203.018H266.376H262.537V206.857H258.697H254.857H251.017V210.697H247.177H243.337H239.497V214.537H235.657H231.817H227.977V218.377H224.137H220.297H216.457H212.617V222.217H208.777H204.937H201.098H197.258V226.057H193.418H189.578H185.738V229.897H181.898V233.737H185.738H189.578H193.418H197.258H201.098H204.937H208.777V229.897H212.617H216.457V226.057V222.217H220.297H224.137H227.977H231.817V218.377H235.657H239.497H243.337V214.537H247.177H251.017H254.857V210.697H258.697H262.537H266.376V206.857H270.216H274.056V203.018H277.896V199.178H281.736V195.338H285.576V191.498H289.416V187.658V183.818V179.978V176.138V172.298H285.576Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M47.5,172.298H43.66V176.138H47.5V172.298Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M39.82,172.298H35.98V176.138H39.82V172.298Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M32.14,172.298H28.3V176.138H32.14V172.298Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M24.46,172.298H20.621V176.138H24.46V172.298Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M43.66,168.458H39.82V172.298H43.66V168.458Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M35.98,168.458H32.14V172.298H35.98V168.458Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M28.3,168.458H24.46V172.298H28.3V168.458Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M20.621,168.458H16.781V172.298H20.621V168.458Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M39.82,164.618H35.98V168.458H39.82V164.618Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M32.14,164.618H28.3V168.458H32.14V164.618Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M24.46,164.618H20.621V168.458H24.46V164.618Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M59.02,160.778H55.18V164.618H59.02V160.778Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M39.82,160.778V164.618H43.66V168.458H47.5V172.298H51.34V176.138H55.18V179.978H59.02V183.818H62.86V179.978V176.138V172.298H66.7V168.458V164.618H62.86H59.02V168.458V172.298H55.18V168.458H51.34V164.618H47.5V160.778V156.938H43.66V160.778H39.82Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M35.98,160.778H32.14V164.618H35.98V160.778Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M28.3,160.778H24.46V164.618H28.3V160.778Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M20.621,160.778H16.781V164.618H20.621V160.778Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M39.82,156.938H35.98V160.778H39.82V156.938Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M32.14,156.938H28.3V160.778H32.14V156.938Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M24.46,156.938H20.621V160.778H24.46V156.938Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M55.18,153.098H51.34V156.938V160.778H55.18V156.938V153.098Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M35.98,153.098H32.14V156.938H35.98V153.098Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M28.3,153.098H24.46V156.938H28.3V153.098Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M108.939,149.258V145.418V141.579V137.739V133.899V130.059H105.099V126.219V122.379H101.259V118.539H97.419H93.579V114.699H89.739H85.899H82.06H78.219H74.38V118.539H70.54H66.7V122.379H62.86V126.219V130.059H59.02V133.899V137.739V141.579V145.418V149.258H62.86V153.098V156.938H66.7V160.778V164.618H70.54V160.778H74.38H78.219V156.938H82.06H85.899H89.739V153.098H93.579H97.419H101.259H105.099H108.939H112.779V149.258H108.939ZM74.38,133.899V130.059H78.219H82.06V133.899V137.739H78.219H74.38V133.899Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M32.14,149.258H28.3V153.098H32.14V149.258Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M128.139,145.418V141.579V137.739V133.899V130.059V126.219V122.379H124.299V126.219V130.059V133.899V137.739V141.579V145.418V149.258H128.139H131.979H135.819V145.418H131.979H128.139Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M51.34,145.418V141.579V137.739V133.899V130.059V126.219H47.5V130.059V133.899V137.739V141.579V145.418V149.258V153.098H51.34V149.258V145.418Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M135.819,141.578V145.418H139.659H143.498V141.578H139.659H135.819Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M143.498,137.739V141.579H147.338H151.178V137.739H147.338H143.498Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M151.178,133.899V137.739H155.018H158.858V133.899H155.018H151.178Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M158.858,130.059V133.899H162.698H166.538V130.059H162.698H158.858Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M116.619,133.899V137.739V141.579V145.418V149.258V153.098H112.779V156.938H116.619H120.459V153.098V149.258V145.418V141.579V137.739V133.899V130.059V126.219H116.619V130.059V133.899Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M170.378,126.219H166.538V130.059H170.378V126.219Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M170.378,122.379V126.219H174.218H178.058V122.379H174.218H170.378Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M112.779,126.219H116.619V122.379V118.539H112.779V122.379V126.219Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M55.18,122.379V118.539H51.34V122.379V126.219H55.18V122.379Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M39.82,126.219V130.059V133.899V137.739V141.579V145.418V149.258H35.98V153.098H39.82V156.938H43.66V153.098V149.258V145.418V141.579V137.739V133.899V130.059V126.219V122.379H39.82V126.219Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M181.898,118.539H178.058V122.379H181.898V118.539Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M181.898,114.699V118.539H185.738H189.578V114.699H185.738H181.898Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M155.018,114.699H151.178H147.338V118.539H151.178H155.018H158.858H162.698V114.699H158.858H155.018Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M124.299,114.699H120.459V118.539V122.379H124.299V118.539V114.699Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M112.779,114.699H108.939V118.539H112.779V114.699Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M59.02,114.699H55.18V118.539H59.02V114.699Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M43.66,118.539V122.379H47.5V118.539V114.699H43.66V118.539Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M193.418,110.859H189.578V114.699H193.418V110.859Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M162.698,110.859V114.699H166.538H170.378V110.859H166.538H162.698Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M147.338,110.859H143.498V114.699H147.338V110.859Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M120.459,110.859H116.619V114.699H120.459V110.859Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M108.939,110.859H105.099V114.699H108.939V110.859Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M62.86,110.859H59.02V114.699H62.86V110.859Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M51.34,110.859H47.5V114.699H51.34V110.859Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M193.418,107.019V110.859H197.258H201.098V107.019H197.258H193.418Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M170.378,107.019V110.859H174.218H178.058V107.019H174.218H170.378Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M143.498,107.019H139.659V110.859H143.498V107.019Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M116.619,107.019H112.779V110.859H116.619V107.019Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M101.259,110.859H105.099V107.019H101.259H97.419V110.859H101.259Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M70.54,110.859V107.019H66.7H62.86V110.859H66.7H70.54Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M55.18,107.019H51.34V110.859H55.18V107.019Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M204.937,103.179H201.098V107.019H204.937V103.179Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M181.898,103.179H178.058V107.019H181.898V103.179Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M78.219,107.019H82.059H85.899H89.739H93.579H97.419V103.179H93.579H89.739H85.899H82.059H78.219H74.38H70.54V107.019H74.38H78.219Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M59.02,103.179H55.18V107.019H59.02V103.179Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M181.898,99.339V103.179H185.738H189.578V99.339H185.738H181.898Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M166.538,99.339H162.698V103.179H166.538V99.339Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M139.659,99.339V95.499H135.819V99.339V103.179V107.019H139.659V103.179V99.339Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M116.619,103.179V99.339V95.499H112.779V99.339H108.939V95.499H105.099V91.659H101.259V95.499H97.419H93.579H89.739H85.899H82.06H78.219H74.38H70.54H66.7V99.339H70.54H74.38H78.219H82.06H85.899H89.739H93.579H97.419H101.259V103.179H105.099H108.939V107.019H112.779V103.179H116.619Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M59.02,99.339V103.179H62.86H66.7V99.339H62.86H59.02Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M193.418,95.499H189.578V99.339H193.418V95.499Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M162.698,95.499H158.858V99.339H162.698V95.499Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M178.058,91.659H174.218V95.499H178.058V91.659Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M158.858,91.659H155.018V95.499H158.858V91.659Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M143.498,91.659V87.819H139.659V91.659V95.499H143.498V91.659Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M112.779,91.659H108.939V95.499H112.779V91.659Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M174.218,87.819H170.378V91.659H174.218V87.819Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M108.939,87.819H105.099V91.659H108.939V87.819Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M189.578,83.979H185.738V87.819H189.578V83.979Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M170.378,83.979H166.538V87.819H170.378V83.979Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M147.338,83.979H143.498V87.819H147.338V83.979Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M112.779,83.979H108.939V87.819H112.779V83.979Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M185.738,80.14H181.898V83.979H185.738V80.14Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M166.538,80.14H162.698V83.979H166.538V80.14Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M151.178,80.14H147.338V83.979H151.178V80.14Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M120.459,83.979H116.619V87.819H112.779V91.659H116.619V95.499H120.459V91.659V87.819H124.299V83.979V80.14H120.459V83.979Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M116.619,80.14H112.779V83.979H116.619V80.14Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M108.939,80.14H105.099V83.979H108.939V80.14Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M181.898,76.3H178.058V80.14H181.898V76.3Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M155.018,76.3H151.178V80.14H155.018V76.3Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M128.139,76.3H124.299V80.14H128.139V76.3Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M120.459,76.3H116.619V80.14H120.459V76.3Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M112.779,76.3H108.939V80.14H112.779V76.3Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M178.058,72.46H174.218V76.3H178.058V72.46Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M158.858,72.46H155.018V76.3H158.858V72.46Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M124.299,72.46H120.459V76.3H124.299V72.46Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M116.619,72.46H112.779V76.3H116.619V72.46Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M162.698,68.62H158.858V72.46H162.698V68.62Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M120.459,68.62H124.299V64.78H120.459H116.619H112.779V68.62H116.619V72.46H120.459V68.62Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M166.538,64.78H162.698V68.62H166.538V64.78Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M139.659,64.78H135.819V68.62H139.659V64.78Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M131.979,64.78H128.139V68.62H124.299V72.46H128.139V76.3H131.979V72.46H135.819V68.62H131.979V64.78Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M143.498,60.94H139.659V64.78H143.498V60.94Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M135.819,60.94H131.979V64.78H135.819V60.94Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M108.939,60.94H105.099H101.259V64.78H105.099H108.939H112.779V60.94H108.939Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M147.338,57.1H143.498V60.94H147.338V57.1Z" />
   <path
-          android:fillColor="@color/iconTint100"
+          android:fillColor="@color/splashscreen_content_color"
           android:pathData="M139.659,57.1H135.819V60.94H139.659V57.1Z" />
 </vector>
