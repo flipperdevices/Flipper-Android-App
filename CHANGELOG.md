@@ -2,6 +2,8 @@
 
 # 1.6.5 - In progress
 
+- [Feature] Scroll on Infrared Screen
+
 # 1.6.4 
 
 - [Feature] Add transparent flipper mockup
@@ -10,7 +12,6 @@
 - [Feature] Add fap manifest caching
 - [Feature] Not send empty report in faphub
 - [Feature] Add hide app button
-- [Feature] Scroll on Infrared Screen
 - [CI] Add apk artifacts to Pull Requests
 - [CI] Fix failed build in merge_group
 - [CI] Bump deps except Sentry-gradle
