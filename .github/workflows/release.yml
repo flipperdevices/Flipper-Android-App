@@ -12,9 +12,15 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       number: ${{ steps.build_out.outputs.number }}
+      number_wearos: ${{ steps.wearos_out.outputs.number_wearos }}
     steps:
       - name: Generate build number
         id: buildnumber
+        uses: onyxmueller/build-tag-number@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Generate build number for WearOS
+        id: buildnumber_wearos
         uses: onyxmueller/build-tag-number@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -22,6 +28,10 @@ jobs:
         id: build_out
         run: |
           echo "number=${{ steps.buildnumber.outputs.build_number }}" >> $GITHUB_OUTPUT
+      - name: 'Set output for WearOS'
+        id: wearos_out
+        run: |
+          echo "number_wearos=${{ steps.buildnumber_wearos.outputs.build_number }}" >> $GITHUB_OUTPUT
   build_release:
     name: Build Release AAB and APK
     runs-on: ubuntu-latest
@@ -103,7 +113,7 @@ jobs:
         run: |
           export $(cat .github/workflows/version.env | xargs)
           echo "major_version=${MAJOR_VERSION}" >> $GITHUB_OUTPUT
-          echo "minor_version=${{ needs.build_number.outputs.number }}" >> $GITHUB_OUTPUT
+          echo "minor_version=${{ needs.build_number.outputs.number_wearos }}" >> $GITHUB_OUTPUT
       - name: Build release
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
@@ -178,7 +188,7 @@ jobs:
           export $(cat .github/workflows/version.env | xargs)
           echo "major_version=${MAJOR_VERSION}" >> $GITHUB_OUTPUT
           echo "minor_version=${{ needs.build_number.outputs.number }}" >> $GITHUB_OUTPUT
-          echo "minor_version_wearos=${{ needs.build_number.outputs.number }}" >> $GITHUB_OUTPUT
+          echo "minor_version_wearos=${{ needs.build_number.outputs.number_wearos }}" >> $GITHUB_OUTPUT
       - name: 'Copy artifacts'
         id: artifacts_copy
         run: |
@@ -249,6 +259,7 @@ jobs:
           status: draft
           whatsNewDirectory: .github/changelog
           mappingFile: ${{steps.download-googleplay.outputs.download-path}}/mapping-googleplay.txt
+          changesNotSentForReview: true
   upload_to_playstore_wearos:
     name: Upload WearOS to Play Store
     runs-on: ubuntu-latest
@@ -272,3 +283,4 @@ jobs:
           status: draft
           whatsNewDirectory: .github/changelog
           mappingFile: ${{steps.download-wearos.outputs.download-path}}/mapping-wearos.txt
+          changesNotSentForReview: true

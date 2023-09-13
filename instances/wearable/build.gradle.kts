@@ -47,6 +47,7 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.timber)
     implementation(libs.datastore)
+    implementation(libs.splashscreen)
 
     implementation(libs.wear)
     implementation(libs.wear.gms)

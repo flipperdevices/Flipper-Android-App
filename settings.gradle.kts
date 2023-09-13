@@ -216,10 +216,10 @@ include(
     ":components:faphub:errors:impl",
 
     ":components:selfupdater:api",
+    ":components:selfupdater:impl",
     ":components:selfupdater:googleplay",
     ":components:selfupdater:unknown",
     ":components:selfupdater:debug",
     ":components:selfupdater:thirdparty:api",
-    ":components:selfupdater:thirdparty:github",
-    ":components:selfupdater:thirdparty:fdroid",
+    ":components:selfupdater:thirdparty:github"
 )

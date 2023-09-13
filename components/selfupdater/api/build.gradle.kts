@@ -4,4 +4,6 @@ plugins {
 
 android.namespace = "com.flipperdevices.selfupdater.api"
 
-dependencies {}
+dependencies {
+    implementation(libs.kotlin.coroutines)
+}

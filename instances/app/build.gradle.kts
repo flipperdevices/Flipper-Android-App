@@ -204,6 +204,7 @@ dependencies {
     implementation(projects.components.faphub.utils)
 
     implementation(projects.components.selfupdater.api)
+    implementation(projects.components.selfupdater.impl)
     when (SOURCE_INSTALL) {
         SourceInstall.GOOGLE_PLAY -> {
             implementation(projects.components.selfupdater.googleplay)
@@ -212,10 +213,6 @@ dependencies {
         SourceInstall.GITHUB -> {
             implementation(projects.components.selfupdater.thirdparty.api)
             implementation(projects.components.selfupdater.thirdparty.github)
-        }
-        SourceInstall.FDROID -> {
-            implementation(projects.components.selfupdater.thirdparty.api)
-            implementation(projects.components.selfupdater.thirdparty.fdroid)
         }
         SourceInstall.DEBUG -> {
             implementation(projects.components.selfupdater.debug)

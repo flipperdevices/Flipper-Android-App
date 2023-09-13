@@ -28,7 +28,7 @@ object Constants {
     )
     val API_SUPPORTED_MD5_LISTING = SemVer(
         majorVersion = 0,
-        minorVersion = 19
+        minorVersion = 20
     )
     val API_SUPPORTED_GET_REQUEST = API_SUPPORTED_FLIPPER_ERROR
     val API_SUPPORTED_VERSION = SemVer(majorVersion = 0, minorVersion = 3)

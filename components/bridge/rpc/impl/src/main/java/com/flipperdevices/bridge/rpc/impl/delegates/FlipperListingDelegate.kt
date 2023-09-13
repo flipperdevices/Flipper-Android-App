@@ -32,20 +32,24 @@ class FlipperListingDelegate @Inject constructor() {
                 storageListRequest = listRequest {
                     path = pathOnFlipper
                     includeMd5 = includeMd5Flag
+                    filterMaxSize = SIZE_BYTES_LIMIT
                 }
             }.wrapToRequest()
         ).toList().map { response ->
-            return when {
+            return@map when {
                 response.commandStatus == Flipper.CommandStatus.ERROR_STORAGE_NOT_EXIST -> {
                     info { "Listing request for $pathOnFlipper with $response was not found" }
                     listOf()
                 }
+
                 response.commandStatus != Flipper.CommandStatus.OK -> {
                     error("Listing request failed for $pathOnFlipper with $response")
                 }
+
                 response.hasStorageListResponse() -> {
                     response.storageListResponse.fileList
                 }
+
                 else -> {
                     error("Can't find storage list response, $response")
                 }

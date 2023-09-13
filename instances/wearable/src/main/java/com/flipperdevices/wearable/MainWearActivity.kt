@@ -94,6 +94,8 @@ class MainWearActivity : ComponentActivity(), LogTagProvider {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
+
         super.onCreate(savedInstanceState)
         info { "#onCreate" }
 

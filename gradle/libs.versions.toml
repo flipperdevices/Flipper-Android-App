@@ -15,8 +15,10 @@ compose-ui = "1.5.0" # https://developer.android.com/jetpack/androidx/releases/c
 compose-wear = "1.2.0" # https://developer.android.com/jetpack/androidx/releases/wear-compose
 compose-compiler = "1.5.1" # https://developer.android.com/jetpack/androidx/releases/compose#versions
 # https://github.com/oleksandrbalan/modalsheet/issues/32
-compose-accompanist = "0.31.5-beta" # https://github.com/google/accompanist/releases
+compose-accompanist = "0.32.0" # https://github.com/google/accompanist/releases
 compose-constraint = "1.0.1" # https://developer.android.com/jetpack/compose/layouts/constraintlayout
+# Use 2.6.0 because 2.7.0+ use new AnimationNavHost with bad animation
+# https://issuetracker.google.com/issues/295536728
 compose-navigation = "2.7.1" # https://developer.android.com/jetpack/compose/navigation
 compose-paging = "3.2.0" # https://developer.android.com/jetpack/androidx/releases/paging
 horologist = "0.4.13" # https://github.com/google/horologist/releases
@@ -42,6 +44,7 @@ ble = "2.6.1" # https://github.com/NordicSemiconductor/Android-BLE-Library/relea
 ble-scan = "1.6.0" # https://github.com/NordicSemiconductor/Android-Scanner-Compat-Library/releases
 lottie = "6.1.0" # https://github.com/airbnb/lottie/blob/master/android-compose.md
 material = "1.9.0" # https://github.com/material-components/material-components-android/releases
+splashscreen = "1.1.0-alpha02" # https://developer.android.com/jetpack/androidx/releases/core
 annotations = "1.6.0" # https://developer.android.com/jetpack/androidx/releases/annotation
 appcompat = "1.6.1" # https://developer.android.com/jetpack/androidx/releases/appcompat
 datastore = "1.0.0" # https://developer.android.com/topic/libraries/architecture/datastore
@@ -106,6 +109,7 @@ detekt-ruleset-ktlint = { module = "io.gitlab.arturbosch.detekt:detekt-formattin
 detekt-ruleset-compose = { module = "io.nlopez.compose.rules:detekt", version.ref = "detekt-ruleset-compose" }
 
 # UI
+splashscreen = { module ="androidx.core:core-splashscreen", version.ref = "splashscreen"}
 compose-activity = { module = "androidx.activity:activity-compose", version.ref = "ktx-activity" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose-ui" }
@@ -120,7 +124,6 @@ horologist-layout = { module = "com.google.android.horologist:horologist-compose
 
 # UI - Compose Extension
 compose-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "compose-accompanist" }
-compose-insets = { module = "com.google.accompanist:accompanist-insets", version.ref = "compose-accompanist" }
 compose-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "compose-accompanist" }
 compose-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "compose-accompanist" }
 compose-placeholder = { module = "com.google.accompanist:accompanist-placeholder", version.ref = "compose-accompanist" }

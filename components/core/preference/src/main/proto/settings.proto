@@ -21,6 +21,15 @@ enum SelectedTheme {
   LIGHT = 2;
 }
 
+enum SelectedCatalogSort {
+  UPDATE_AT_DESC = 0;
+  UPDATE_AT_ASC = 1;
+  CREATED_AT_DESC = 2;
+  CREATED_AT_ASC = 3;
+  NAME_DESC = 4;
+  NAME_ASC = 5;
+}
+
 message Settings {
   reserved 7; // Already unused tags
   reserved 12; // Already unused  first_synchronization_passed
@@ -46,4 +55,5 @@ message Settings {
   bool self_updater_debug = 22;
   bool use_dev_catalog = 23;
   bool use_new_infrared = 24;
+  SelectedCatalogSort selected_catalog_sort = 25;
 }
