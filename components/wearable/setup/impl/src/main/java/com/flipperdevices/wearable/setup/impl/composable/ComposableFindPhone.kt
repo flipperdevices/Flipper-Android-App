@@ -5,6 +5,8 @@ import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -20,11 +22,14 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.rotary.onRotaryScrollEvent
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.wear.compose.material.CircularProgressIndicator
 import androidx.wear.compose.material.Text
 import com.flipperdevices.core.ui.ktx.clickableRipple
+import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.wearable.core.ui.components.ComposableFlipperButton
 import com.flipperdevices.wearable.setup.impl.R
@@ -82,9 +87,18 @@ private fun ColumnScope.ComposableNotFoundedPhone(onInstall: () -> Unit, onCheck
         style = LocalTypography.current.bodyM14
     )
     ComposableFlipperButton(
-        modifier = Modifier.padding(top = 16.dp),
+        modifier = Modifier
+            .padding(
+                top = 6.dp
+            )
+            .fillMaxWidth(),
         text = stringResource(R.string.install_app),
-        onClick = onInstall
+        onClick = onInstall,
+        textPadding = PaddingValues(
+            vertical = 3.dp,
+            horizontal = 3.dp
+        ),
+        cornerRoundSize = 6.dp
     )
     Text(
         modifier = Modifier
@@ -98,4 +112,31 @@ private fun ColumnScope.ComposableNotFoundedPhone(onInstall: () -> Unit, onCheck
 @Composable
 private fun ComposableFindPhoneLoading() {
     CircularProgressIndicator()
+}
+
+@Preview(
+    showSystemUi = true,
+    showBackground = true,
+    device = Devices.WEAR_OS_LARGE_ROUND,
+    fontScale = 2f
+)
+@Composable
+private fun ComposableNotFoundedPhonePreview() {
+    FlipperThemeInternal {
+        val columnScrollState = rememberScrollState()
+
+        Column(
+            Modifier
+                .fillMaxRectangle()
+                .verticalScroll(columnScrollState),
+
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            ComposableNotFoundedPhone(
+                onInstall = {},
+                onCheckAgain = {}
+            )
+        }
+    }
 }

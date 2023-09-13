@@ -1,9 +1,14 @@
 package com.flipperdevices.selfupdater.api
 
-import android.app.Activity
+import com.flipperdevices.selfupdater.models.SelfUpdateResult
+import kotlinx.coroutines.flow.StateFlow
 
 interface SelfUpdaterApi {
-    fun startCheckUpdateAsync(activity: Activity)
+    suspend fun startCheckUpdate(manual: Boolean = false): SelfUpdateResult
+
+    fun getInProgressState(): StateFlow<Boolean>
 
     fun getInstallSourceName(): String
+
+    fun isSelfUpdateCanManualCheck(): Boolean
 }

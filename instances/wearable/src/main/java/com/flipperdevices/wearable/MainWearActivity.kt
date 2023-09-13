@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.wear.compose.navigation.SwipeDismissableNavHost
 import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
 import com.flipperdevices.core.di.ComponentHolder
@@ -22,6 +23,8 @@ import kotlinx.collections.immutable.toImmutableSet
 
 class MainWearActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
+
         super.onCreate(savedInstanceState)
         val futureEntries by ComponentHolder.component<WearableComponent>().futureEntries
         val composableFutureEntries by ComponentHolder.component<WearableComponent>()

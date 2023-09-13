@@ -3,10 +3,9 @@ package com.flipperdevices.keyemulate.composable
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.flipperdevices.core.ui.ktx.onHoldPress
+import com.flipperdevices.core.ui.ktx.onScrollHoldPress
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyemulate.composable.common.ComposableActionDisable
 import com.flipperdevices.keyemulate.composable.common.ComposableActionLoading
@@ -73,7 +72,7 @@ private fun ComposableActiveStateEmulateInternal(
 ) {
     val name = emulateConfig.args ?: return
 
-    val buttonActiveModifier = Modifier.onHoldPress(
+    val buttonActiveModifier = Modifier.onScrollHoldPress(
         onTap = {
             emulateViewModel.onSinglePress(emulateConfig)
         },

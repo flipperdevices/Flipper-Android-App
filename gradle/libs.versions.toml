@@ -44,6 +44,7 @@ ble = "2.6.1" # https://github.com/NordicSemiconductor/Android-BLE-Library/relea
 ble-scan = "1.6.0" # https://github.com/NordicSemiconductor/Android-Scanner-Compat-Library/releases
 lottie = "6.1.0" # https://github.com/airbnb/lottie/blob/master/android-compose.md
 material = "1.9.0" # https://github.com/material-components/material-components-android/releases
+splashscreen = "1.1.0-alpha02" # https://developer.android.com/jetpack/androidx/releases/core
 annotations = "1.6.0" # https://developer.android.com/jetpack/androidx/releases/annotation
 appcompat = "1.6.1" # https://developer.android.com/jetpack/androidx/releases/appcompat
 datastore = "1.0.0" # https://developer.android.com/topic/libraries/architecture/datastore
@@ -108,6 +109,7 @@ detekt-ruleset-ktlint = { module = "io.gitlab.arturbosch.detekt:detekt-formattin
 detekt-ruleset-compose = { module = "io.nlopez.compose.rules:detekt", version.ref = "detekt-ruleset-compose" }
 
 # UI
+splashscreen = { module ="androidx.core:core-splashscreen", version.ref = "splashscreen"}
 compose-activity = { module = "androidx.activity:activity-compose", version.ref = "ktx-activity" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose-ui" }
