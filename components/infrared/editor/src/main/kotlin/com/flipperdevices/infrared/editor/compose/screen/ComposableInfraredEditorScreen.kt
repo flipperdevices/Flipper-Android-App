@@ -30,7 +30,7 @@ internal fun ComposableInfraredEditorScreen(
                 onDoNotSave = onBack,
                 onDismissDialog = viewModel::onDismissDialog,
                 onCancel = viewModel::processCancel,
-                onSave = viewModel::processSave,
+                onSave = { viewModel.processSave(onBack) },
                 onTapRemote = {},
                 onDelete = viewModel::processDeleteRemote,
             )

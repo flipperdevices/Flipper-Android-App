@@ -12,6 +12,7 @@ import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import tangle.inject.TangleParam
 import tangle.viewmodel.VMInject
@@ -58,8 +59,13 @@ class InfraredViewModel @VMInject constructor(
         }
     }
 
-    fun processSave() {
-        TODO("Not yet implemented")
+    fun processSave(onEndAction: () -> Unit) {
+        viewModelScope.launch(Dispatchers.Default) {
+            val currentState = keyStateFlow.first()
+            if (currentState !is InfraredEditorState.Ready) {
+                return@launch
+            }
+        }
     }
 
     fun processCancel() {
