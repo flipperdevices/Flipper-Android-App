@@ -24,7 +24,7 @@ class FirstPairFeatureEntryImpl @Inject constructor(
     private val firstPairStorage: FirstPairStorage,
     private val singleActivityApi: SingleActivityApi
 ) : FirstPairFeatureEntry {
-    override fun start(): String = getFirstPairScreen()
+    override fun start(): String = ROUTE.name
     private fun getDeviceScreen() = "@${ROUTE.name}device"
     private fun getTOSScreen() = "@${ROUTE.name}tos"
     private fun getHelpScreen() = "@${ROUTE.name}help"
