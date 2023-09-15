@@ -10,6 +10,7 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.flipperdevices.keyemulate.api.KeyEmulateUiApi
+import com.flipperdevices.wearable.core.ui.components.ComposableWearOsScrollableColumn
 import com.flipperdevices.wearable.emulate.api.WearEmulateApi
 import com.flipperdevices.wearable.emulate.impl.composable.ComposableWearEmulate
 import com.flipperdevices.wearable.emulate.impl.di.WearEmulateComponent
@@ -37,17 +38,21 @@ class WearEmulateApiImpl @Inject constructor(
 
     override fun NavGraphBuilder.composable(navController: NavHostController) {
         composable(featureRoute, arguments) {
-            ComposableWearEmulate(
-                keyEmulateUiApi,
-                onNotFoundNode = {
-                    navController.navigate(
-                        ComponentHolder.component<WearEmulateComponent>().setupApi.ROUTE.name
-                    ) {
-                        popUpTo(0)
-                    }
-                },
-                onBack = {
-                    navController.popBackStack()
+            ComposableWearOsScrollableColumn(
+                content = {
+                    ComposableWearEmulate(
+                        keyEmulateUiApi,
+                        onNotFoundNode = {
+                            navController.navigate(
+                                ComponentHolder.component<WearEmulateComponent>().setupApi.ROUTE.name
+                            ) {
+                                popUpTo(0)
+                            }
+                        },
+                        onBack = {
+                            navController.popBackStack()
+                        }
+                    )
                 }
             )
         }
