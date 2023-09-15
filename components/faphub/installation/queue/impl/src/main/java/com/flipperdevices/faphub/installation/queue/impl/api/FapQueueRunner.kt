@@ -8,6 +8,8 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest
 import com.flipperdevices.faphub.installation.queue.impl.executor.FapActionExecutor
 import com.flipperdevices.faphub.installation.queue.impl.model.FapInternalQueueState
+import com.flipperdevices.metric.api.MetricApi
+import com.flipperdevices.metric.api.events.SimpleEvent
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -25,7 +27,8 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class FapQueueRunner @Inject constructor(
-    private val fapActionExecutor: FapActionExecutor
+    private val fapActionExecutor: FapActionExecutor,
+    private val metricApi: MetricApi
 ) : LogTagProvider {
     override val TAG = "FapQueueRunner"
 
@@ -51,6 +54,12 @@ class FapQueueRunner @Inject constructor(
     }
 
     suspend fun enqueueSync(actionRequest: FapActionRequest) {
+        if (actionRequest is FapActionRequest.Install) {
+            metricApi.reportSimpleEvent(
+                SimpleEvent.INSTALL_FAPHUB_APP,
+                actionRequest.applicationAlias
+            )
+        }
         if (actionRequest is FapActionRequest.Cancel) {
             cancelTasksForApplicationUid(actionRequest)
         } else {

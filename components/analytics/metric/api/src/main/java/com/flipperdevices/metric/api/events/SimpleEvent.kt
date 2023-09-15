@@ -13,5 +13,11 @@ enum class SimpleEvent(val id: String) {
     SHARE_FILE("share_file"),
     SAVE_DUMP("save_dump"),
     MFKEY32("mfkey32"),
-    OPEN_NFC_DUMP_EDITOR("open_nfc_dump_editor")
+    OPEN_NFC_DUMP_EDITOR("open_nfc_dump_editor"),
+    OPEN_FAPHUB("open_faphub"),
+    OPEN_FAPHUB_CATEGORY("open_faphub_category"),
+    OPEN_FAPHUB_SEARCH("open_faphub_search"),
+    OPEN_FAPHUB_APP("open_faphub_app"),
+    INSTALL_FAPHUB_APP("install_faphub_app"),
+    HIDE_FAPHUB_APP("hide_faphub_app"),
 }

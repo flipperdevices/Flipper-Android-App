@@ -15,6 +15,8 @@ import com.flipperdevices.faphub.main.api.FapHubHandleDeeplink
 import com.flipperdevices.faphub.main.api.FapHubMainScreenApi
 import com.flipperdevices.faphub.search.api.FapHubSearchEntryApi
 import com.flipperdevices.main.impl.composable.ComposableFapHubMainScreen
+import com.flipperdevices.metric.api.MetricApi
+import com.flipperdevices.metric.api.events.SimpleEvent
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
 import javax.inject.Inject
@@ -29,7 +31,8 @@ class FapHubMainScreenApiImpl @Inject constructor(
     private val searchEntryApi: FapHubSearchEntryApi,
     private val categoryEntryApi: FapHubCategoryApi,
     private val fapScreenApi: FapScreenApi,
-    private val installedApi: FapInstalledApi
+    private val installedApi: FapInstalledApi,
+    private val metricApi: MetricApi
 ) : FapHubMainScreenApi, FapHubHandleDeeplink {
     private fun start(): String = "@${ROUTE.name}"
 
@@ -48,19 +51,23 @@ class FapHubMainScreenApiImpl @Inject constructor(
                     catalogTabComposable = {
                         catalogTabApi.ComposableCatalogTab(
                             onOpenFapItem = {
+                                metricApi.reportSimpleEvent(SimpleEvent.OPEN_FAPHUB_APP, it.applicationAlias)
                                 navController.navigate(fapScreenApi.getFapScreen(it.id))
                             },
                             onCategoryClick = {
+                                metricApi.reportSimpleEvent(SimpleEvent.OPEN_FAPHUB_CATEGORY, it.name)
                                 navController.navigate(categoryEntryApi.open(it))
                             }
                         )
                     },
                     installedTabComposable = {
                         installedApi.ComposableInstalledTab(onOpenFapItem = {
+                            metricApi.reportSimpleEvent(SimpleEvent.OPEN_FAPHUB_APP, it)
                             navController.navigate(fapScreenApi.getFapScreen(it))
                         })
                     },
                     onOpenSearch = {
+                        metricApi.reportSimpleEvent(SimpleEvent.OPEN_FAPHUB_SEARCH)
                         navController.navigate(searchEntryApi.start())
                     },
                     installedNotificationCount = readyToUpdateCount
