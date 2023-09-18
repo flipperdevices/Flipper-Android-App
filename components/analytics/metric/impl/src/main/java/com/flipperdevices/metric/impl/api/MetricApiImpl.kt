@@ -25,7 +25,7 @@ class MetricApiImpl @Inject constructor(
             error(e) { "Failed to report to Countly simple event: ${simpleEvent.id}" }
         }
         try {
-            clickhouseApi.reportSimpleEvent(simpleEvent, arg = arg)
+            clickhouseApi.reportSimpleEvent(simpleEvent, simpleEventArg = arg)
         } catch (e: Exception) {
             error(e) { "Failed to report to Clickhouse simple event: ${simpleEvent.id}" }
         }
