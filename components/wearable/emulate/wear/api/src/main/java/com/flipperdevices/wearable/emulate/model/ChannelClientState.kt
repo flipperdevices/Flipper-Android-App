@@ -1,6 +1,5 @@
 package com.flipperdevices.wearable.emulate.model
 
-
 enum class ChannelClientState {
     DISCONNECTED,
     FINDING_NODE,
