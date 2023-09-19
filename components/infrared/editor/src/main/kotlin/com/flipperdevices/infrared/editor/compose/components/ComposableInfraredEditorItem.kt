@@ -30,15 +30,18 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 internal fun ComposableInfraredEditorItem(
     remoteName: String,
     onTap: () -> Unit,
-    onDelete: () -> Unit
+    onDelete: () -> Unit,
+    modifier: Modifier = Modifier,
+    dragModifier: Modifier = Modifier
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
         ComposableInfraredEditorButton(
             modifier = Modifier.weight(1f),
+            dragModifier = dragModifier,
             remoteName = remoteName,
             onTap = onTap
         )
@@ -58,7 +61,8 @@ internal fun ComposableInfraredEditorItem(
 private fun ComposableInfraredEditorButton(
     remoteName: String,
     onTap: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    dragModifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier
@@ -69,7 +73,7 @@ private fun ComposableInfraredEditorButton(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            modifier = Modifier
+            modifier = dragModifier
                 .padding(vertical = 12.dp)
                 .size(size = 24.dp),
             painter = painterResource(R.drawable.pic_infrared_drag),

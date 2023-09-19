@@ -128,4 +128,21 @@ class InfraredViewModel @VMInject constructor(
 
         return currentRemotes != initRemotes
     }
+
+    fun processEditOrder(from: Int, to: Int) {
+        viewModelScope.launch(Dispatchers.Default) {
+            val keyState = keyStateFlow.first()
+            if (keyState !is InfraredEditorState.Ready) return@launch
+
+            val remotes = keyState.remotes.toMutableList()
+            remotes.add(to, remotes.removeAt(from))
+
+            keyStateFlow.emit(
+                InfraredEditorState.Ready(
+                    remotes = remotes.toPersistentList(),
+                    keyName = keyState.keyName
+                )
+            )
+        }
+    }
 }

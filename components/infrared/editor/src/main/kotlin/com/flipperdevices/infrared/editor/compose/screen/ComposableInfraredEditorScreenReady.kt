@@ -16,6 +16,10 @@ import com.flipperdevices.infrared.editor.compose.ComposableInfraredEditorDialog
 import com.flipperdevices.infrared.editor.compose.components.ComposableInfraredEditorAppBar
 import com.flipperdevices.infrared.editor.compose.components.ComposableInfraredEditorItem
 import com.flipperdevices.infrared.editor.model.InfraredEditorState
+import org.burnoutcrew.reorderable.ReorderableItem
+import org.burnoutcrew.reorderable.detectReorderAfterLongPress
+import org.burnoutcrew.reorderable.rememberReorderableLazyListState
+import org.burnoutcrew.reorderable.reorderable
 
 @Composable
 internal fun ComposableInfraredEditorScreenReady(
@@ -27,6 +31,7 @@ internal fun ComposableInfraredEditorScreenReady(
     onSave: () -> Unit,
     onTapRemote: (Int) -> Unit,
     onDelete: (Int) -> Unit,
+    onEditOrder: (Int, Int) -> Unit,
 ) {
     ComposableInfraredEditorDialog(
         isShow = dialogState,
@@ -47,16 +52,32 @@ internal fun ComposableInfraredEditorScreenReady(
             onCancel = onCancel,
             onSave = onSave
         )
+
+        val state = rememberReorderableLazyListState(onMove = { from, to ->
+            onEditOrder(from.index, to.index)
+        })
+
         LazyColumn(
+            state = state.listState,
             contentPadding = PaddingValues(horizontal = 12.dp),
-            verticalArrangement = Arrangement.spacedBy(14.dp)
+            verticalArrangement = Arrangement.spacedBy(14.dp),
+            modifier = Modifier
+                .reorderable(state)
         ) {
-            itemsIndexed(keyState.remotes) { index, remote ->
-                ComposableInfraredEditorItem(
-                    remoteName = remote.name,
-                    onTap = { onTapRemote(index) },
-                    onDelete = { onDelete(index) }
-                )
+            itemsIndexed(items = keyState.remotes) { index, remote ->
+                ReorderableItem(
+                    state = state,
+                    defaultDraggingModifier = Modifier,
+                    key = remote,
+                    index = index,
+                ) {
+                    ComposableInfraredEditorItem(
+                        remoteName = remote.name,
+                        onTap = { onTapRemote(index) },
+                        onDelete = { onDelete(index) },
+                        dragModifier = Modifier.detectReorderAfterLongPress(state)
+                    )
+                }
             }
         }
     }

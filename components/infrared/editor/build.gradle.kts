@@ -31,6 +31,7 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
     implementation(libs.compose.navigation)
+    implementation(libs.compose.drag.drop)
 
     // ViewModel
     implementation(libs.lifecycle.compose)
