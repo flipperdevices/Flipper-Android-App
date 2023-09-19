@@ -40,13 +40,6 @@ class WearEmulateApiImpl @Inject constructor(
                 content = {
                     ComposableWearEmulate(
                         keyEmulateUiApi,
-                        onNotFoundNode = {
-                            navController.navigate(
-                                ComponentHolder.component<WearEmulateComponent>().setupApi.ROUTE.name
-                            ) {
-                                popUpTo(0)
-                            }
-                        },
                         onBack = navController::popBackStack
                     )
                 }

@@ -8,9 +8,9 @@ android.namespace = "com.flipperdevices.wearable.emulate.impl"
 anvil.generateDaggerFactories.set(false) // WearEmulateComponent
 
 dependencies {
-    implementation(projects.components.wearable.setup.api)
     implementation(projects.components.wearable.emulate.common)
     implementation(projects.components.wearable.emulate.wear.api)
+    implementation(projects.components.wearable.sync.wear.api)
 
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)
@@ -22,7 +22,6 @@ dependencies {
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.lifecycle)
-    implementation(projects.components.wearable.core.ui.ktx)
     implementation(projects.components.wearable.core.ui.components)
 
     implementation(projects.components.bridge.dao.api)
