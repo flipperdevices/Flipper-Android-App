@@ -9,6 +9,7 @@
 - [FIX] Use by default dark theme in Wear OS
 - [FIX] Use default splashscreen in Wear OS
 - [FIX] Fix compose layout in Wear OS
+- [FIX] Fix wearos font issue
 
 # 1.6.4 
 
