@@ -69,7 +69,7 @@ class InfraredFeatureEntryImpl @Inject constructor(
                         keyScreenApi = keyScreenApi,
                         keyEmulateApi = keyEmulateApi,
                         onEdit = {
-                             navController.navigate(editorFeatureEntry.getInfraredEditorScreen(it))
+                            navController.navigate(editorFeatureEntry.getInfraredEditorScreen(it))
                         },
                         onRename = {
                             navController.navigate(keyEditFeatureEntry.getKeyEditScreen(it, null))
