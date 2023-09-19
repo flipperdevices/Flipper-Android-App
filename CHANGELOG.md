@@ -5,7 +5,7 @@
 - [Feature] Scroll on Infrared Screen
 - [Feature] Check Self Update App in Options (only for github)
 - [Feature] Fap Catalog save sort
-- [Feature] Check Self Update App in Optiond (only for github)
+- [Feature] Add metrics for faphub
 - [FIX] Use by default dark theme in Wear OS
 - [FIX] Use default splashscreen in Wear OS
 - [FIX] Fix compose layout in Wear OS

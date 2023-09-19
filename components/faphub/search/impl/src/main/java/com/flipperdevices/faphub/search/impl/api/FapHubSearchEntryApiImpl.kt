@@ -14,6 +14,8 @@ import com.flipperdevices.faphub.installation.button.api.FapInstallationUIApi
 import com.flipperdevices.faphub.installation.button.api.toFapButtonConfig
 import com.flipperdevices.faphub.search.api.FapHubSearchEntryApi
 import com.flipperdevices.faphub.search.impl.composable.ComposableSearchScreen
+import com.flipperdevices.metric.api.MetricApi
+import com.flipperdevices.metric.api.events.SimpleEvent
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
 import javax.inject.Inject
@@ -24,7 +26,8 @@ import javax.inject.Provider
 class FapHubSearchEntryApiImpl @Inject constructor(
     fapScreenApiProvider: Provider<FapScreenApi>,
     private val fapInstallationUIApi: FapInstallationUIApi,
-    private val errorsRenderer: FapHubComposableErrorsRenderer
+    private val errorsRenderer: FapHubComposableErrorsRenderer,
+    private val metricApi: MetricApi
 ) : FapHubSearchEntryApi {
     private val fapScreenApi by fapScreenApiProvider
 
@@ -36,6 +39,7 @@ class FapHubSearchEntryApiImpl @Inject constructor(
                 ComposableSearchScreen(
                     onBack = { navController.popBackStack() },
                     onFapItemClick = {
+                        metricApi.reportSimpleEvent(SimpleEvent.OPEN_FAPHUB_APP, it.name)
                         navController.navigate(fapScreenApi.getFapScreen(it.id))
                     },
                     errorsRenderer = errorsRenderer,

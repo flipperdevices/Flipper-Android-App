@@ -78,6 +78,8 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           ORG_GRADLE_PROJECT_version_code: ${{ steps.vars.outputs.minor_version }}
           ORG_GRADLE_PROJECT_version_name: "${{ steps.vars.outputs.major_version }}.${{ steps.vars.outputs.minor_version }}"
+          ORG_GRADLE_PROJECT_countly_url: ${{ secrets.COUNTLY_URL_PROD }}
+          ORG_GRADLE_PROJECT_countly_app_key: ${{ secrets.COUNTLY_APP_KEY_PROD }}
         run: |
           export $(cat .github/workflows/targets/${{ matrix.target }}.env | xargs)
           ./gradlew :instances:app:assembleInternal :instances:app:bundleInternal

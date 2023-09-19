@@ -62,7 +62,8 @@ class ClickhouseApiImpl @Inject constructor(
     private val scope = CoroutineScope(SupervisorJob())
     private val sessionUUID by lazy { UUID.randomUUID() }
 
-    override fun reportSimpleEvent(simpleEvent: SimpleEvent) {
+    @Suppress("CyclomaticComplexMethod")
+    override fun reportSimpleEvent(simpleEvent: SimpleEvent, simpleEventArg: String?) {
         val openTarget = when (simpleEvent) {
             SimpleEvent.APP_OPEN -> OpenOuterClass.Open.OpenTarget.APP
             SimpleEvent.OPEN_SAVE_KEY -> OpenOuterClass.Open.OpenTarget.SAVE_KEY
@@ -79,12 +80,22 @@ class ClickhouseApiImpl @Inject constructor(
             SimpleEvent.SAVE_DUMP -> OpenOuterClass.Open.OpenTarget.SAVE_DUMP
             SimpleEvent.MFKEY32 -> OpenOuterClass.Open.OpenTarget.MFKEY32
             SimpleEvent.OPEN_NFC_DUMP_EDITOR -> OpenOuterClass.Open.OpenTarget.OPEN_NFC_DUMP_EDITOR
+            SimpleEvent.OPEN_FAPHUB -> OpenOuterClass.Open.OpenTarget.OPEN_FAPHUB
+            SimpleEvent.OPEN_FAPHUB_CATEGORY -> OpenOuterClass.Open.OpenTarget.OPEN_FAPHUB_CATEGORY
+            SimpleEvent.OPEN_FAPHUB_SEARCH -> OpenOuterClass.Open.OpenTarget.OPEN_FAPHUB_SEARCH
+            SimpleEvent.OPEN_FAPHUB_APP -> OpenOuterClass.Open.OpenTarget.OPEN_FAPHUB_APP
+            SimpleEvent.INSTALL_FAPHUB_APP -> OpenOuterClass.Open.OpenTarget.INSTALL_FAPHUB_APP
+            SimpleEvent.HIDE_FAPHUB_APP -> OpenOuterClass.Open.OpenTarget.HIDE_FAPHUB_APP
         }
+
         scope.launch(Dispatchers.Default) {
             reportToServerSafe(
                 metricEventsCollection {
                     open = open {
                         target = openTarget
+                        if (simpleEventArg != null) {
+                            this.arg = simpleEventArg
+                        }
                     }
                 }
             )

@@ -16,6 +16,8 @@ import com.flipperdevices.faphub.installation.button.api.FapButtonSize
 import com.flipperdevices.faphub.installation.button.api.FapInstallationUIApi
 import com.flipperdevices.faphub.installation.button.api.toFapButtonConfig
 import com.flipperdevices.faphub.search.api.FapHubSearchEntryApi
+import com.flipperdevices.metric.api.MetricApi
+import com.flipperdevices.metric.api.events.SimpleEvent
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
 import kotlinx.serialization.encodeToString
@@ -30,7 +32,8 @@ class FapHubCategoryApiImpl @Inject constructor(
     private val searchEntryApi: FapHubSearchEntryApi,
     private val fapScreenApi: FapScreenApi,
     private val fapInstallationUIApi: FapInstallationUIApi,
-    private val errorsRenderer: FapHubComposableErrorsRenderer
+    private val errorsRenderer: FapHubComposableErrorsRenderer,
+    private val metricApi: MetricApi
 ) : FapHubCategoryApi {
     private val categoryArguments = listOf(
         navArgument(CATEGORY_OPEN_PATH_KEY) {
@@ -52,6 +55,7 @@ class FapHubCategoryApiImpl @Inject constructor(
                 onBack = navController::popBackStack,
                 onOpenSearch = { navController.navigate(searchEntryApi.start()) },
                 onOpenFapItem = {
+                    metricApi.reportSimpleEvent(SimpleEvent.OPEN_FAPHUB_APP, it.applicationAlias)
                     navController.navigate(fapScreenApi.getFapScreen(it.id))
                 },
                 errorsRenderer = errorsRenderer,

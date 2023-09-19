@@ -17,6 +17,8 @@ import com.flipperdevices.faphub.main.api.FapHubMainScreenApi
 import com.flipperdevices.faphub.maincard.api.MainCardApi
 import com.flipperdevices.hub.api.HubFeatureEntry
 import com.flipperdevices.hub.impl.composable.ComposableHub
+import com.flipperdevices.metric.api.MetricApi
+import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.nfc.attack.api.NFCAttackFeatureEntry
 import com.flipperdevices.screenstreaming.api.ScreenStreamingFeatureEntry
 import com.squareup.anvil.annotations.ContributesBinding
@@ -29,7 +31,8 @@ class HubFeatureEntryImpl @Inject constructor(
     private val nfcAttackFeatureEntry: NFCAttackFeatureEntry,
     private val mainCardApi: MainCardApi,
     private val screenStreamingFeatureEntry: ScreenStreamingFeatureEntry,
-    private val fapHubMainScreenApi: FapHubMainScreenApi
+    private val fapHubMainScreenApi: FapHubMainScreenApi,
+    private val metricApi: MetricApi
 ) : HubFeatureEntry {
     override fun start() = "@${ROUTE.name}"
 
@@ -62,6 +65,7 @@ class HubFeatureEntryImpl @Inject constructor(
                                 top = 14.dp
                             ),
                             onClick = {
+                                metricApi.reportSimpleEvent(SimpleEvent.OPEN_FAPHUB)
                                 navController.navigate(fapHubMainScreenApi.ROUTE.name)
                             }
                         )

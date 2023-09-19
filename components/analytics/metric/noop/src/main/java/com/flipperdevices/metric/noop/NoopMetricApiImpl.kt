@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, MetricApi::class)
 class NoopMetricApiImpl @Inject constructor() : MetricApi {
-    override fun reportSimpleEvent(simpleEvent: SimpleEvent) = Unit
+    override fun reportSimpleEvent(simpleEvent: SimpleEvent, arg: String?) = Unit
 
     override fun reportComplexEvent(complexEvent: ComplexEvent) = Unit
 }
