@@ -19,6 +19,8 @@ dependencies {
     implementation(projects.components.faphub.target.api)
     implementation(projects.components.faphub.installation.manifest.api)
 
+    implementation(projects.components.analytics.metric.api)
+
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.pbutils)
     implementation(projects.components.bridge.service.api)

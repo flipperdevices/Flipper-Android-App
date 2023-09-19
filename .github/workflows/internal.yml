@@ -78,6 +78,8 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           ORG_GRADLE_PROJECT_version_code: ${{ steps.vars.outputs.minor_version }}
           ORG_GRADLE_PROJECT_version_name: "${{ steps.vars.outputs.major_version }}.${{ steps.vars.outputs.minor_version }}"
+          ORG_GRADLE_PROJECT_countly_url: ${{ secrets.COUNTLY_URL_PROD }}
+          ORG_GRADLE_PROJECT_countly_app_key: ${{ secrets.COUNTLY_APP_KEY_PROD }}
         run: |
           export $(cat .github/workflows/targets/${{ matrix.target }}.env | xargs)
           ./gradlew :instances:app:assembleInternal :instances:app:bundleInternal
@@ -261,14 +263,13 @@ jobs:
         with:
           name: artifacts-googleplay
       - name: Upload to Play Store
-        uses: r0adkll/upload-google-play@v1
+        uses: r0adkll/upload-google-play@v1.1.2
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_PUBLISHER_JSON }}
           packageName: com.flipperdevices.app
           releaseFiles: ${{steps.download-googleplay.outputs.download-path}}/flipper-zero-googleplay.aab
           track: beta
           mappingFile: ${{steps.download-googleplay.outputs.download-path}}/mapping-googleplay.txt
-          changesNotSentForReview: true
   upload_to_playstore_wearos:
     name: Upload Wear OS to Play Store
     runs-on: ubuntu-latest
@@ -279,11 +280,10 @@ jobs:
         with:
           name: artifacts-wearos
       - name: Upload to Play Store Wear OS
-        uses: r0adkll/upload-google-play@v1.1.1
+        uses: r0adkll/upload-google-play@v1.1.2
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_PUBLISHER_JSON }}
           packageName: com.flipperdevices.app
           releaseFiles: ${{steps.download-wearos.outputs.download-path}}/flipper-zero-wearos.aab
           track: wear:beta
           mappingFile: ${{steps.download-wearos.outputs.download-path}}/mapping-wearos.txt
-          changesNotSentForReview: true
