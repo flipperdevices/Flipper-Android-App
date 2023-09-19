@@ -54,12 +54,7 @@ class FapQueueRunner @Inject constructor(
     }
 
     suspend fun enqueueSync(actionRequest: FapActionRequest) {
-        if (actionRequest is FapActionRequest.Install) {
-            metricApi.reportSimpleEvent(
-                SimpleEvent.INSTALL_FAPHUB_APP,
-                actionRequest.applicationAlias
-            )
-        }
+        reportMetric(actionRequest)
         if (actionRequest is FapActionRequest.Cancel) {
             cancelTasksForApplicationUid(actionRequest)
         } else {
@@ -69,6 +64,18 @@ class FapQueueRunner @Inject constructor(
                         .plus(actionRequest).toImmutableList()
                 }
             }
+        }
+    }
+
+    private fun reportMetric(actionRequest: FapActionRequest) {
+        when (actionRequest) {
+            is FapActionRequest.Cancel,
+            is FapActionRequest.Delete,
+            is FapActionRequest.Update -> {}
+            is FapActionRequest.Install -> metricApi.reportSimpleEvent(
+                SimpleEvent.INSTALL_FAPHUB_APP,
+                actionRequest.applicationAlias
+            )
         }
     }
 
