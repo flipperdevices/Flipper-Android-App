@@ -27,7 +27,7 @@ private val allFields = listOf(
     KEY_DATA
 )
 
-object InfraredEditorParser {
+object InfraredKeyParser {
     fun mapParsedKeyToInfraredRemotes(
         fff: FlipperFileFormat
     ): List<InfraredRemote> {

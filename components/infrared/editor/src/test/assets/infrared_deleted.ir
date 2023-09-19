@@ -9,19 +9,6 @@ frequency: 38000
 duty_cycle: 0.330000
 data: 123 456
 #
-# Model: Electrolux ESV09CRO-B21. Doesn't have heat function.
-name: Dh
-type: raw
-frequency: 38000
-duty_cycle: 0.330000
-data: 456 123
-#
-name: Mute
-type: parsed
-protocol: NEC
-address: 77 00 00 00
-command: F3 00 00 00
-#
 name: Vol_up
 type: parsed
 protocol: NEC
