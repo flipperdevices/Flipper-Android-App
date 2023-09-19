@@ -16,8 +16,10 @@ import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.tabswitch.ComposableTabSwitch
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.main.impl.model.FapHubTabEnum
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import java.lang.Integer.max
+import com.flipperdevices.core.ui.res.R as DesignSystem
+
+private const val MAX_INSTALLED_NUMBER = 99
 
 @Composable
 fun ComposableFapHubNewSwitch(
@@ -53,7 +55,7 @@ fun ComposableFapHubNewSwitch(
                 hubTabEnum = it,
                 onSelectFapHubTabEnum = onSelect,
                 if (it == FapHubTabEnum.INSTALLED) {
-                    max(99, installedNotificationCount)
+                    max(MAX_INSTALLED_NUMBER, installedNotificationCount)
                 } else {
                     0
                 }
