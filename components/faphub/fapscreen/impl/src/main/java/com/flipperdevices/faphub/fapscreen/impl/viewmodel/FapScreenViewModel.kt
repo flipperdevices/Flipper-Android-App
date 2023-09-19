@@ -20,6 +20,8 @@ import com.flipperdevices.faphub.report.api.FapReportFeatureEntry
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
+import com.flipperdevices.metric.api.MetricApi
+import com.flipperdevices.metric.api.events.SimpleEvent
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -46,7 +48,8 @@ class FapScreenViewModel @VMInject constructor(
     private val targetProviderApi: FlipperTargetProviderApi,
     private val fapReportFeatureEntry: FapReportFeatureEntry,
     private val fapHubHideApi: FapHubHideItemApi,
-    private val inAppNotificationStorage: InAppNotificationStorage
+    private val inAppNotificationStorage: InAppNotificationStorage,
+    private val metricApi: MetricApi
 ) : ViewModel(), LogTagProvider {
     override val TAG = "FapScreenViewModel"
 
@@ -85,6 +88,10 @@ class FapScreenViewModel @VMInject constructor(
             warn { "#onPressHide calls when fapScreenLoadingStateFlow is null or not loaded" }
             return
         }
+        metricApi.reportSimpleEvent(
+            SimpleEvent.HIDE_FAPHUB_APP,
+            loadingState.fapItem.applicationAlias
+        )
         viewModelScope.launch(Dispatchers.Default) {
             if (isHidden) {
                 fapHubHideApi.unHideItem(loadingState.fapItem.id)

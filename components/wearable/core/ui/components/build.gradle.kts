@@ -12,4 +12,5 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.wear.foundation)
     implementation(libs.compose.wear.material)
+    implementation(libs.horologist.layout)
 }

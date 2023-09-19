@@ -23,6 +23,7 @@ dependencies {
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.wearable.core.ui.ktx)
+    implementation(projects.components.wearable.core.ui.components)
 
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.keyscreen.api)
