@@ -34,7 +34,7 @@ fun LazyListScope.ComposableFapsList(
 ) {
     val elementModifier = Modifier
         .fillMaxWidth()
-        .padding(horizontal = 14.dp, vertical = 12.dp)
+        .padding(horizontal = 14.dp, vertical = 24.dp)
     if (faps.loadState.refresh is LoadState.Loading) {
         items(DEFAULT_FAP_COUNT) {
             AppCard(
@@ -110,7 +110,7 @@ private fun LazyListScope.ComposableLoadedFapsList(
                     .clickable(
                         onClick = { onOpenFapItem(it) }
                     )
-                    .padding(horizontal = 14.dp, vertical = 12.dp),
+                    .padding(horizontal = 14.dp, vertical = 24.dp),
                 fapItem = it,
                 installationButton = { modifier ->
                     installationButton(item, modifier)

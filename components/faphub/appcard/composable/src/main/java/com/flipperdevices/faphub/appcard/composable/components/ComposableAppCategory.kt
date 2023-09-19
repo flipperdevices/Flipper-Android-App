@@ -48,12 +48,6 @@ fun ComposableAppCategory(
     var textModifier = Modifier
         .padding(start = 4.dp)
 
-    textModifier = if (isSmall) {
-        textModifier.height(12.dp)
-    } else {
-        textModifier.height(14.dp)
-    }
-
     if (category == null) {
         textModifier = textModifier.placeholderConnecting()
     }

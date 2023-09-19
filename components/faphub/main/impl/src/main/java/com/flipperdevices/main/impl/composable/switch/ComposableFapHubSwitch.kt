@@ -17,6 +17,7 @@ import com.flipperdevices.core.ui.tabswitch.ComposableTabSwitch
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.main.impl.model.FapHubTabEnum
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import java.lang.Integer.max
 
 @Composable
 fun ComposableFapHubNewSwitch(
@@ -52,7 +53,7 @@ fun ComposableFapHubNewSwitch(
                 hubTabEnum = it,
                 onSelectFapHubTabEnum = onSelect,
                 if (it == FapHubTabEnum.INSTALLED) {
-                    installedNotificationCount
+                    max(99, installedNotificationCount)
                 } else {
                     0
                 }

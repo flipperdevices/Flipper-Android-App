@@ -1,6 +1,5 @@
 package com.flipperdevices.faphub.appcard.composable.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,7 +11,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.unit.dp
@@ -27,13 +25,11 @@ fun ComposableAppIcon(
     modifier: Modifier = Modifier
 ) {
     var isPlaceholderActive by remember { mutableStateOf(true) }
-    val modifierWithClip = modifier
-        .border(1.dp, LocalPallet.current.text16, RoundedCornerShape(6.dp))
 
     val modifierWithPlaceholder = if (isPlaceholderActive) {
-        modifierWithClip.placeholderConnecting()
+        modifier.placeholderConnecting()
     } else {
-        modifierWithClip
+        modifier.border(1.dp, LocalPallet.current.text16, RoundedCornerShape(6.dp))
     }
     Box(
         modifier = modifierWithPlaceholder
