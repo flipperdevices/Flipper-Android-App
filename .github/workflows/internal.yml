@@ -263,7 +263,7 @@ jobs:
         with:
           name: artifacts-googleplay
       - name: Upload to Play Store
-        uses: r0adkll/upload-google-play@v1
+        uses: r0adkll/upload-google-play@v1.1.2
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_PUBLISHER_JSON }}
           packageName: com.flipperdevices.app
@@ -281,7 +281,7 @@ jobs:
         with:
           name: artifacts-wearos
       - name: Upload to Play Store Wear OS
-        uses: r0adkll/upload-google-play@v1.1.1
+        uses: r0adkll/upload-google-play@v1.1.2
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_PUBLISHER_JSON }}
           packageName: com.flipperdevices.app
