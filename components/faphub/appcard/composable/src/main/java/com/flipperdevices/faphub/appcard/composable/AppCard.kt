@@ -88,7 +88,9 @@ private fun AppCardTop(
                 style = LocalTypography.current.bodyM14,
                 color = LocalPallet.current.text100
             )
-            ComposableAppCategory(category = fapItem?.category)
+            ComposableAppCategory(
+                category = fapItem?.category
+            )
         }
         installationButton(
             modifier = Modifier
