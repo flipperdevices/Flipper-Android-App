@@ -18,14 +18,14 @@ class MetricApiImpl @Inject constructor(
 ) : MetricApi, LogTagProvider {
     override val TAG = "MetricApi"
 
-    override fun reportSimpleEvent(simpleEvent: SimpleEvent) {
+    override fun reportSimpleEvent(simpleEvent: SimpleEvent, arg: String?) {
         try {
-            countlyApi.reportEvent(simpleEvent.id)
+            countlyApi.reportEvent(simpleEvent.id, params = mapOf("arg" to arg))
         } catch (e: Exception) {
             error(e) { "Failed to report to Countly simple event: ${simpleEvent.id}" }
         }
         try {
-            clickhouseApi.reportSimpleEvent(simpleEvent)
+            clickhouseApi.reportSimpleEvent(simpleEvent, simpleEventArg = arg)
         } catch (e: Exception) {
             error(e) { "Failed to report to Clickhouse simple event: ${simpleEvent.id}" }
         }

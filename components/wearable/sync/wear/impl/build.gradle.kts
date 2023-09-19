@@ -20,6 +20,7 @@ dependencies {
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.wearable.emulate.wear.api)
     implementation(projects.components.wearable.core.ui.components)
+    implementation(projects.components.wearable.core.ui.ktx)
 
     implementation(libs.wear)
     implementation(libs.wear.gms)

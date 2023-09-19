@@ -9,6 +9,7 @@ import androidx.wear.compose.navigation.composable
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.flipperdevices.keyemulate.api.KeyEmulateUiApi
+import com.flipperdevices.wearable.core.ui.components.ComposableWearOsScrollableColumn
 import com.flipperdevices.wearable.emulate.api.WearEmulateApi
 import com.flipperdevices.wearable.emulate.impl.composable.ComposableWearEmulate
 import com.squareup.anvil.annotations.ContributesBinding
@@ -20,7 +21,7 @@ const val EMULATE_PATH_KEY = "path"
 @ContributesBinding(AppGraph::class, WearEmulateApi::class)
 @ContributesMultibinding(AppGraph::class, ComposableFeatureEntry::class)
 class WearEmulateApiImpl @Inject constructor(
-    private val keyEmulateUiApi: KeyEmulateUiApi,
+    private val keyEmulateUiApi: KeyEmulateUiApi
 ) : WearEmulateApi {
     private val featureRoute = "@$ROUTE?path={$EMULATE_PATH_KEY}"
 
@@ -35,9 +36,20 @@ class WearEmulateApiImpl @Inject constructor(
 
     override fun NavGraphBuilder.composable(navController: NavHostController) {
         composable(featureRoute, arguments) {
-            ComposableWearEmulate(
-                keyEmulateUiApi,
-                onBack = navController::popBackStack
+            ComposableWearOsScrollableColumn(
+                content = {
+                    ComposableWearEmulate(
+                        keyEmulateUiApi,
+                        onNotFoundNode = {
+                            navController.navigate(
+                                ComponentHolder.component<WearEmulateComponent>().setupApi.ROUTE.name
+                            ) {
+                                popUpTo(0)
+                            }
+                        },
+                        onBack = navController::popBackStack
+                    )
+                }
             )
         }
     }

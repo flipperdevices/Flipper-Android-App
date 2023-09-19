@@ -23,6 +23,8 @@ dependencies {
     implementation(projects.components.faphub.category.api)
     implementation(projects.components.faphub.fapscreen.api)
 
+    implementation(projects.components.analytics.metric.api)
+
     // Compose
     implementation(libs.compose.ui)
     implementation(libs.compose.tooling)

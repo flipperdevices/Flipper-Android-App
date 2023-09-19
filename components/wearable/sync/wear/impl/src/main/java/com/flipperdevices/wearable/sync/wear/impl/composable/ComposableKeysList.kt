@@ -3,9 +3,7 @@ package com.flipperdevices.wearable.sync.wear.impl.composable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.scrollBy
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
@@ -25,17 +23,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.wear.compose.material.CircularProgressIndicator
 import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
 import androidx.wear.compose.foundation.lazy.items
 import androidx.wear.compose.foundation.lazy.rememberScalingLazyListState
-import androidx.wear.compose.material.CircularProgressIndicator
 import androidx.wear.compose.material.Text
 import com.flipperdevices.core.ui.theme.LocalTypography
+import com.flipperdevices.wearable.core.ui.components.ComposableWearOsScrollableColumn
 import com.flipperdevices.wearable.sync.wear.impl.R
 import com.flipperdevices.wearable.sync.wear.impl.model.FlipperWearKey
 import com.flipperdevices.wearable.sync.wear.impl.model.KeysListState
 import com.flipperdevices.wearable.sync.wear.impl.viewmodel.KeysListViewModel
-import com.google.android.horologist.compose.layout.fillMaxRectangle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
 import tangle.viewmodel.compose.tangleViewModel
@@ -53,6 +51,7 @@ fun ComposableKeysList(
         } else {
             ComposableKeysListInternal(localState.keys, onKeyOpen)
         }
+
         KeysListState.Loading -> ComposableKeysListLoading()
         KeysListState.PhoneNotFound -> ComposableFindPhone(keysListViewModel::openStore)
     }
@@ -75,11 +74,7 @@ private fun ComposableKeysListLoading() {
     device = Devices.WEAR_OS_LARGE_ROUND
 )
 private fun ComposableKeysListEmpty() {
-    Column(
-        Modifier.fillMaxRectangle(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
+    ComposableWearOsScrollableColumn {
         Image(
             modifier = Modifier.size(48.dp),
             painter = painterResource(DesignSystem.drawable.ic_not_found),
