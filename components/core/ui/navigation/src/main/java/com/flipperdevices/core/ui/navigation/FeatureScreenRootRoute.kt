@@ -30,5 +30,6 @@ enum class FeatureScreenRootRoute {
     UPDATER,
     KEY_RECEIVE,
     SHAKE2REPORT,
-    INFRARED
+    INFRARED,
+    INFRARED_EDITOR
 }

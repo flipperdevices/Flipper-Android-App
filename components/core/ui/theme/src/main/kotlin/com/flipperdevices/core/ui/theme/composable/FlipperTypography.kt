@@ -191,6 +191,11 @@ data class FlipperTypography(
         fontFamily = FontFamily(Font(R.font.flipper)),
         fontWeight = FontWeight.W500
     ),
+    val infraredEditButton: TextStyle = TextStyle(
+        fontSize = 32.sp,
+        fontFamily = FontFamily(Font(R.font.flipper)),
+        fontWeight = FontWeight.W400
+    ),
 )
 
 fun getTypography(): FlipperTypography {

@@ -1,0 +1,17 @@
+Filetype: IR signals file
+Version: 1
+# Last Updated 16th Aug, 2023
+# Last Checked 16th Aug, 2023
+#
+name: Heat_lo
+type: raw
+frequency: 38000
+duty_cycle: 0.330000
+data: 123 456
+#
+name: Vol_up
+type: parsed
+protocol: NEC
+address: 77 00 00 00
+command: FB 00 00 00
+#

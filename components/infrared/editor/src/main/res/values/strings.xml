@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="infrared_editor_cancel">Cancel</string>
+    <string name="infrared_editor_save">Save</string>
+    <string name="infrared_editor_dialog_title">Save Changes?</string>
+    <string name="infrared_editor_dialog_desc">All unsaved changes will be lost</string>
+    <string name="infrared_editor_dialog_save">Save</string>
+    <string name="infrared_editor_dialog_do_not_save">Don\'t Save</string>
+    <string name="infrared_editor_not_found_key">Can not find key</string>
+    <string name="infrared_editor_not_support_type">Can not parse this key type</string>
+</resources>

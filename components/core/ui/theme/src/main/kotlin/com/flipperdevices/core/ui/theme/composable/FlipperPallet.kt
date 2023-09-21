@@ -168,6 +168,9 @@ data class FlipperPallet(
     val tabSwitchBackgroundColor: Color = Color(0xFFFFFFFF).copy(alpha = 0.5f)
 
     val accentShareSheetStatusBarColor = Color(0xFFD96F00)
+
+    val infraredEditorDrag = Color(0xFFFFFFFF).copy(alpha = 0.5f)
+    val infraredEditorKeyName = Color(0xFFFFFFFF)
 }
 
 internal fun FlipperPallet.toMaterialColors(isLight: Boolean) = Colors(

@@ -2,6 +2,7 @@
 
 # 1.6.5 - In progress
 
+- [Feature] Infrared Editor
 - [Feature] Scroll on Infrared Screen
 - [Feature] Redesign for FapHub
 - [Feature] Check Self Update App in Options (only for github)
