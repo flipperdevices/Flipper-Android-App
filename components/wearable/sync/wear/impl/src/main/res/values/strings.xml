@@ -3,4 +3,9 @@
     <string name="keys_category_favorites">Favorites</string>
     <string name="keys_category_others">Others</string>
     <string name="keys_not_found">No key was found. Start a sync in the mobile app first and wait for it to finish</string>
+
+    <string name="phone_missing">You are missing the required phone app, please click on the button below to install it on your phone</string>
+    <string name="install_app">Install</string>
+    <string name="install_app_done">Look at your phone</string>
+    <string name="install_app_fail">Can\'t find the phone</string>
 </resources>

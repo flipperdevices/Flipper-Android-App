@@ -19,4 +19,6 @@ enum EmulateStatus {
   EMULATING = 0;
   STOPPED = 1;
   FAILED = 2;
+  ALREADY_OPENED_APP = 3;
+  FORBIDDEN_FREQUENCY = 4;
 }

@@ -23,7 +23,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
 import androidx.wear.compose.foundation.lazy.items
 import androidx.wear.compose.foundation.lazy.rememberScalingLazyListState
@@ -37,16 +36,16 @@ import com.flipperdevices.wearable.sync.wear.impl.model.KeysListState
 import com.flipperdevices.wearable.sync.wear.impl.viewmodel.KeysListViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
+import tangle.viewmodel.compose.tangleViewModel
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableKeysList(
     onKeyOpen: (FlipperWearKey) -> Unit = {},
-    keysListViewModel: KeysListViewModel = viewModel()
+    keysListViewModel: KeysListViewModel = tangleViewModel()
 ) {
     val state by keysListViewModel.getKeysListFlow().collectAsState()
-    val localState = state
-    when (localState) {
+    when (val localState = state) {
         is KeysListState.Loaded -> if (localState.keys.isEmpty()) {
             ComposableKeysListEmpty()
         } else {
@@ -54,6 +53,7 @@ fun ComposableKeysList(
         }
 
         KeysListState.Loading -> ComposableKeysListLoading()
+        KeysListState.PhoneNotFound -> ComposableFindPhone(keysListViewModel::openStore)
     }
 }
 

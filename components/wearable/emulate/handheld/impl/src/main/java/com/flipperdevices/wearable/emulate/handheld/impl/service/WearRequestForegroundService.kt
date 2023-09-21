@@ -16,7 +16,7 @@ import kotlinx.coroutines.plus
 private const val NOTIFICATION_ID = 100
 
 class WearRequestForegroundService : LifecycleService(), WearRequestChannelBinder, LogTagProvider {
-    override val TAG = "WearRequestForegroundService"
+    override val TAG = "WearRequestForegroundService-${hashCode()}"
     private val wearServiceComponent = DaggerWearServiceComponent.factory().create(
         ComponentHolder.component(),
         lifecycleScope + Dispatchers.Default
@@ -30,7 +30,6 @@ class WearRequestForegroundService : LifecycleService(), WearRequestChannelBinde
             NOTIFICATION_ID,
             HandheldWearOSNotificationHelper.buildNotification(applicationContext)
         )
-        wearServiceComponent.commandProcessors.forEach { it.init() }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -56,6 +55,7 @@ class WearRequestForegroundService : LifecycleService(), WearRequestChannelBinde
         info { "#onChannelOpen" }
         wearServiceComponent.commandInputStream.onOpenChannel(lifecycleScope, channel)
         wearServiceComponent.commandOutputStream.onOpenChannel(lifecycleScope, channel)
+        wearServiceComponent.commandProcessors.forEach { it.init() }
     }
 
     override fun onDestroy() {

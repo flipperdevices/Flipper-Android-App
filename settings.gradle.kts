@@ -147,11 +147,8 @@ include(
     ":components:nfceditor:impl",
     ":components:nfceditor:sample",
 
-    ":components:wearable:theme",
     ":components:wearable:core:ui:components",
-    ":components:wearable:core:ui:ktx",
-    ":components:wearable:setup:api",
-    ":components:wearable:setup:impl",
+    ":components:wearable:core:ui:theme",
 
     ":components:wearable:sync:common",
     ":components:wearable:sync:wear:api",

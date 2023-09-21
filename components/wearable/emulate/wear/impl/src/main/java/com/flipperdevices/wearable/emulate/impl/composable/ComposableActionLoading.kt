@@ -8,7 +8,7 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyemulate.api.KeyEmulateUiApi
 import com.flipperdevices.wearable.emulate.impl.R
-import com.flipperdevices.wearable.emulate.impl.model.WearLoadingState
+import com.flipperdevices.wearable.emulate.impl.viewmodel.WearLoadingState
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.placeholder
 import com.google.accompanist.placeholder.shimmer
@@ -38,6 +38,7 @@ fun ComposableActionLoading(
             WearLoadingState.TEST_CONNECTION -> R.string.keyscreen_loading_test_connection
             WearLoadingState.CONNECTING_FLIPPER -> R.string.keyscreen_loading_connecting_flipper
             WearLoadingState.INITIALIZING -> R.string.keyscreen_loading_initializing
+            WearLoadingState.NOT_FOUND_PHONE -> R.string.keyscreen_loading_not_found
         },
         iconId = null,
         picture = null,

@@ -14,8 +14,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
@@ -28,15 +31,19 @@ class WearableCommandInputStream<T : GeneratedMessageLite<*, *>>(
     private val channelClient: ChannelClient,
     private val parser: (InputStream) -> T?
 ) : LogTagProvider {
-    override val TAG = "WearableCommandInputStream"
+    override val TAG = "WearableCommandInputStream-${hashCode()}"
 
     private val mutex = Mutex()
     private val requests = MutableSharedFlow<T>()
     private var parserJob: Job? = null
 
-    fun getRequestsFlow(): Flow<T> = requests
+    fun getRequestsFlow(): SharedFlow<T> = requests.asSharedFlow()
 
     fun onOpenChannel(scope: CoroutineScope, channel: Channel) {
+        requests.onEach {
+            info { "onEach $it" }
+        }.launchIn(scope)
+
         launchWithLock(mutex, scope, "open_channel") {
             parserJob?.cancelAndJoin()
             parserJob = scope.launch(Dispatchers.Default) {
@@ -62,9 +69,7 @@ class WearableCommandInputStream<T : GeneratedMessageLite<*, *>>(
                     continue
                 }
                 info { "Receive $main response" }
-                scope.launch(Dispatchers.Default) {
-                    requests.emit(main)
-                }
+                requests.emit(main)
             } catch (ignored: CancellationException) {
                 // ignore
             } catch (ignored: java.util.concurrent.CancellationException) {

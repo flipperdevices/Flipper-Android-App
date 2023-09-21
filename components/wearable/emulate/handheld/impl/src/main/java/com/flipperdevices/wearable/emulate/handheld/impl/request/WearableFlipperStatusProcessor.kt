@@ -3,6 +3,9 @@ package com.flipperdevices.wearable.emulate.handheld.impl.request
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.core.di.SingleIn
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import com.flipperdevices.wearable.emulate.common.WearableCommandInputStream
 import com.flipperdevices.wearable.emulate.common.WearableCommandOutputStream
 import com.flipperdevices.wearable.emulate.common.ipcemulate.Main
@@ -18,16 +21,20 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@SingleIn(WearHandheldGraph::class)
 @ContributesMultibinding(WearHandheldGraph::class, WearableCommandProcessor::class)
 class WearableFlipperStatusProcessor @Inject constructor(
     private val commandInputStream: WearableCommandInputStream<Main.MainRequest>,
     private val commandOutputStream: WearableCommandOutputStream<Main.MainResponse>,
     private val scope: CoroutineScope,
     private val flipperServiceProvider: FlipperServiceProvider
-) : WearableCommandProcessor {
+) : WearableCommandProcessor, LogTagProvider {
+    override val TAG: String = "WearableFlipperStatusProcessor-${hashCode()}"
+
     override fun init() {
         commandInputStream.getRequestsFlow().onEach {
             if (it.hasSubscribeOnConnectStatus()) {
+                info { "SubscribeOnConnectStatus: ${it.subscribeOnConnectStatus}" }
                 val connectionState = flipperServiceProvider.getServiceApi()
                     .connectionInformationApi
                     .getConnectionStateFlow().first()
@@ -46,7 +53,7 @@ class WearableFlipperStatusProcessor @Inject constructor(
         }
     }
 
-    private suspend fun reportConnectionState(connectionState: ConnectionState) {
+    private fun reportConnectionState(connectionState: ConnectionState) {
         val connectStatusProto = when (connectionState) {
             ConnectionState.Connecting -> ConnectStatusOuterClass.ConnectStatus.CONNECTING
             is ConnectionState.Disconnected -> ConnectStatusOuterClass.ConnectStatus.DISCONNECTED

@@ -10,9 +10,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.keyemulate.api.KeyEmulateUiApi
-import com.flipperdevices.wearable.emulate.impl.model.WearEmulateState
-import com.flipperdevices.wearable.emulate.impl.model.WearLoadingState
+import com.flipperdevices.wearable.emulate.impl.helper.WearEmulateState
 import com.flipperdevices.wearable.emulate.impl.viewmodel.WearEmulateViewModel
+import com.flipperdevices.wearable.emulate.impl.viewmodel.WearLoadingState
 import com.google.android.horologist.compose.layout.fillMaxRectangle
 import tangle.viewmodel.compose.tangleViewModel
 
@@ -20,7 +20,6 @@ import tangle.viewmodel.compose.tangleViewModel
 @Suppress("LongMethod")
 fun ComposableWearEmulate(
     keyEmulateUiApi: KeyEmulateUiApi,
-    onNotFoundNode: () -> Unit,
     onBack: () -> Unit
 ) {
     val emulateViewModel = tangleViewModel<WearEmulateViewModel>()
@@ -28,7 +27,6 @@ fun ComposableWearEmulate(
     val modifier = Modifier
         .fillMaxRectangle()
         .padding(horizontal = 10.dp, vertical = 10.dp)
-
     when (state) {
         WearEmulateState.NotInitialized -> {
             ComposableActionLoading(
@@ -36,7 +34,6 @@ fun ComposableWearEmulate(
                 WearLoadingState.INITIALIZING,
                 modifier
             )
-            return
         }
         WearEmulateState.ConnectingToFlipper -> {
             ComposableActionLoading(
@@ -44,15 +41,6 @@ fun ComposableWearEmulate(
                 WearLoadingState.CONNECTING_FLIPPER,
                 modifier
             )
-            return
-        }
-        is WearEmulateState.EstablishConnection -> {
-            ComposableActionLoading(
-                keyEmulateUiApi,
-                WearLoadingState.CONNECTING_PHONE,
-                modifier
-            )
-            return
         }
         WearEmulateState.NodeFinding -> {
             ComposableActionLoading(
@@ -60,7 +48,6 @@ fun ComposableWearEmulate(
                 WearLoadingState.FINDING_PHONE,
                 modifier
             )
-            return
         }
         WearEmulateState.TestConnection -> {
             ComposableActionLoading(
@@ -68,25 +55,26 @@ fun ComposableWearEmulate(
                 WearLoadingState.TEST_CONNECTION,
                 modifier
             )
-            return
         }
         WearEmulateState.UnsupportedFlipper -> {
             ComposableActionDisable(
                 keyEmulateUiApi,
-                state.keyType,
+                null,
                 modifier
             )
-            return
         }
         WearEmulateState.NotFoundNode -> {
-            onNotFoundNode()
-            return
+            ComposableActionLoading(
+                keyEmulateUiApi,
+                WearLoadingState.NOT_FOUND_PHONE,
+                modifier
+            )
         }
         is WearEmulateState.Emulating,
         is WearEmulateState.ReadyForEmulate -> {
-        } // Ignore
+            EmulateButton(state, keyEmulateUiApi, emulateViewModel, modifier, onBack)
+        }
     }
-    EmulateButton(state, keyEmulateUiApi, emulateViewModel, modifier, onBack)
 }
 
 @Composable
