@@ -100,11 +100,10 @@ private fun ComposableInProgressFapButtonInternal(
         modifier = buttonModifier
             .height(fapButtonSize.heightDp.dp)
             .clip(RoundedCornerShape(6.dp))
-            .background(color.copy(alpha = 0.5f))
-            .border(3.dp, color, RoundedCornerShape(6.dp)),
+            .border(2.dp, color, RoundedCornerShape(6.dp)),
         contentAlignment = Alignment.Center
     ) {
-        ComposableProgressRow(percent, color)
+        ComposableProgressRow(percent, accentColor = color.copy(alpha = 0.3f))
         Text(
             modifier = Modifier.padding(vertical = 4.dp),
             text = percent.roundPercentToString(),
@@ -113,7 +112,7 @@ private fun ComposableInProgressFapButtonInternal(
                 fontSize = fapButtonSize.textSizeSp.sp
             ),
             maxLines = 1,
-            color = LocalPallet.current.onFapHubInstallButton
+            color = color
         )
     }
 }

@@ -39,14 +39,8 @@ fun AppCard(
     Column(modifier) {
         AppCardTop(
             fapItem = fapItem,
-            installationButton = installationButton
-        )
-        AppCardScreenshots(
-            screenshots = fapItem?.screenshots,
-            modifier = Modifier.padding(vertical = 12.dp),
-            screenshotModifier = Modifier
-                .padding(end = 6.dp)
-                .size(width = 170.dp, height = 84.dp),
+            installationButton = installationButton,
+            modifier = Modifier.padding(bottom = 12.dp)
         )
         Text(
             modifier = if (fapItem == null) Modifier.placeholderConnecting() else Modifier,
@@ -55,6 +49,13 @@ fun AppCard(
             style = LocalTypography.current.subtitleR12,
             overflow = TextOverflow.Ellipsis,
             color = LocalPallet.current.text100
+        )
+        AppCardScreenshots(
+            screenshots = fapItem?.screenshots,
+            modifier = Modifier.padding(top = 12.dp),
+            screenshotModifier = Modifier
+                .padding(end = 6.dp)
+                .size(width = 170.dp, height = 84.dp),
         )
     }
 }
@@ -85,10 +86,13 @@ private fun AppCardTop(
             Text(
                 modifier = if (fapItem == null) Modifier.placeholderConnecting() else Modifier,
                 text = fapItem?.name ?: DEFAULT_NAME,
-                style = LocalTypography.current.bodyM14,
+                style = LocalTypography.current.buttonM16,
                 color = LocalPallet.current.text100
             )
-            ComposableAppCategory(category = fapItem?.category)
+            ComposableAppCategory(
+                category = fapItem?.category,
+                modifier = Modifier.padding(top = 4.dp)
+            )
         }
         installationButton(
             modifier = Modifier

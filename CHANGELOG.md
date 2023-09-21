@@ -3,6 +3,7 @@
 # 1.6.5 - In progress
 
 - [Feature] Scroll on Infrared Screen
+- [Feature] Redesign for FapHub
 - [Feature] Check Self Update App in Options (only for github)
 - [Feature] Fap Catalog save sort
 - [Feature] Add metrics for faphub

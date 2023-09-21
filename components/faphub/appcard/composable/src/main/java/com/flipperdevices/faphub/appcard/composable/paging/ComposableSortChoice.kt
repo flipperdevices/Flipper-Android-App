@@ -67,7 +67,7 @@ private fun ComposableFapsChoice(
         modifier = Modifier
             .clip(RoundedCornerShape(16.dp))
             .border(
-                BorderStroke(1.dp, LocalPallet.current.fapHubDividerColor),
+                BorderStroke(1.dp, LocalPallet.current.text8),
                 RoundedCornerShape(16.dp)
             )
             .clickableRipple { choiceDialogOpen = true },

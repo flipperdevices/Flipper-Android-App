@@ -3,7 +3,6 @@ package com.flipperdevices.faphub.appcard.composable.components
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
@@ -18,6 +17,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.style.LineHeightStyle
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.image.FlipperAsyncImage
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
@@ -30,23 +30,36 @@ private const val DEFAULT_CATEGORY_NAME = "Loading"
 @Composable
 fun ComposableAppCategory(
     category: FapCategory?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isSmall: Boolean = false
 ) = Row(
     modifier = modifier,
     verticalAlignment = Alignment.CenterVertically
 ) {
-    ComposableAppCategoryIcon(category)
+    ComposableAppCategoryIcon(
+        category = category,
+        size = if (isSmall) {
+            12.dp
+        } else {
+            14.dp
+        }
+    )
     var textModifier = Modifier
         .padding(start = 4.dp)
-        .height(14.dp)
 
     if (category == null) {
         textModifier = textModifier.placeholderConnecting()
     }
+    val baseStyle = if (isSmall) {
+        LocalTypography.current.subtitleR12
+    } else {
+        LocalTypography.current.bodyR14
+    }
+
     Text(
         modifier = textModifier,
         text = category?.name ?: DEFAULT_CATEGORY_NAME,
-        style = LocalTypography.current.subtitleR12.copy(
+        style = baseStyle.copy(
             platformStyle = PlatformTextStyle(
                 includeFontPadding = false
             ),
@@ -61,9 +74,10 @@ fun ComposableAppCategory(
 
 @Composable
 private fun ComposableAppCategoryIcon(
-    category: FapCategory?
+    category: FapCategory?,
+    size: Dp
 ) {
-    val modifierWithClip = Modifier.size(14.dp)
+    val modifierWithClip = Modifier.size(size)
     var isPlaceholderActive by remember { mutableStateOf(true) }
     val modifierWithPlaceholder = if (isPlaceholderActive) {
         modifierWithClip.placeholderConnecting()

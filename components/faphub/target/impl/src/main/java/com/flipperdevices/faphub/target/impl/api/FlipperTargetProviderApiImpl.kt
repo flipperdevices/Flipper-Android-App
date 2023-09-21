@@ -1,5 +1,6 @@
 package com.flipperdevices.faphub.target.impl.api
 
+import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
@@ -47,9 +48,13 @@ class FlipperTargetProviderApiImpl @Inject constructor(
             serviceApi.flipperVersionApi.getVersionInformationFlow()
         ) { connectionState, version ->
             if (!connectionState.isConnected) {
-                targetFlow.emit(FlipperTarget.NotConnected)
+                when (connectionState) {
+                    is ConnectionState.Disconnected -> targetFlow.emit(FlipperTarget.NotConnected)
+                    else -> targetFlow.emit(null)
+                }
                 return@combine
             }
+            targetFlow.emit(null)
             info { "Receive version $version" }
             val sdkVersion = fetcher.getSdkApi(serviceApi.requestApi, version)
             info { "Sdk version is $sdkVersion" }

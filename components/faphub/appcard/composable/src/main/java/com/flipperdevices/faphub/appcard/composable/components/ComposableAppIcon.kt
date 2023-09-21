@@ -1,6 +1,6 @@
 package com.flipperdevices.faphub.appcard.composable.components
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -11,7 +11,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.image.FlipperAsyncImage
@@ -25,17 +25,11 @@ fun ComposableAppIcon(
     modifier: Modifier = Modifier
 ) {
     var isPlaceholderActive by remember { mutableStateOf(true) }
-    var modifierWithClip = modifier
-        .clip(RoundedCornerShape(6.dp))
-
-    if (url != null) {
-        modifierWithClip = modifierWithClip.background(LocalPallet.current.accent)
-    }
 
     val modifierWithPlaceholder = if (isPlaceholderActive) {
-        modifierWithClip.placeholderConnecting()
+        modifier.placeholderConnecting()
     } else {
-        modifierWithClip
+        modifier.border(1.dp, LocalPallet.current.text16, RoundedCornerShape(6.dp))
     }
     Box(
         modifier = modifierWithPlaceholder
@@ -48,7 +42,8 @@ fun ComposableAppIcon(
                 url = url,
                 contentDescription = description,
                 onLoading = { isPlaceholderActive = it },
-                filterQuality = FilterQuality.None
+                filterQuality = FilterQuality.None,
+                colorFilter = ColorFilter.tint(LocalPallet.current.text100)
             )
         }
     }

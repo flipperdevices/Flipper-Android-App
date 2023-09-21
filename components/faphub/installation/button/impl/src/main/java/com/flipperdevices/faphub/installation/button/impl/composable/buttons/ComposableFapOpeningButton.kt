@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.flipperdevices.core.ui.ktx.elements.animatedDots
 import com.flipperdevices.core.ui.ktx.sweep.animatedRotatableBrush
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
@@ -24,18 +25,13 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.faphub.installation.button.api.FapButtonSize
 import com.flipperdevices.faphub.installation.button.impl.R
 
-private const val PROGRESS_BAR_SIZE = 4
+private const val PROGRESS_BAR_SIZE = 3
 
 @Composable
 internal fun ComposableFapOpeningButton(
     fapButtonSize: FapButtonSize,
     modifier: Modifier = Modifier,
 ) {
-    val text = when (fapButtonSize) {
-        FapButtonSize.COMPACTED -> stringResource(R.string.faphub_installation_open)
-        FapButtonSize.LARGE -> stringResource(R.string.faphub_installation_open_long)
-    }
-
     val progressColor = LocalPallet.current.fapHubOpenAppProgress
     val buttonColor = LocalPallet.current.fapHubOpenAppEnable
 
@@ -59,18 +55,18 @@ internal fun ComposableFapOpeningButton(
             .background(buttonProgressBackground)
             .padding(PROGRESS_BAR_SIZE.dp)
             .clip(buttonClip)
-            .background(buttonColor),
+            .background(LocalPallet.current.background),
         contentAlignment = Alignment.Center
     ) {
         Text(
             modifier = Modifier.padding(vertical = 4.dp),
-            text = text,
+            text = stringResource(R.string.faphub_installation_opening) + animatedDots(),
             textAlign = TextAlign.Center,
             style = LocalTypography.current.fapHubButtonText.copy(
                 fontSize = fapButtonSize.textSizeSp.sp
             ),
             maxLines = 1,
-            color = LocalPallet.current.onFapHubInstallButton
+            color = buttonColor
         )
     }
 }

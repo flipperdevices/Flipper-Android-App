@@ -3,7 +3,7 @@
     <string name="faphub_installation_install">INSTALL</string>
     <string name="faphub_installation_installed">INSTALLED</string>
     <string name="faphub_installation_open">OPEN</string>
-    <string name="faphub_installation_open_long">OPEN ON FLIPPER</string>
+    <string name="faphub_installation_opening">OPENING</string>
     <string name="faphub_installation_update">UPDATE</string>
     <string name="faphub_installation_canceling">Canceling</string>
     <string name="faphub_installation_cancel_desc">Cancel</string>

@@ -1,6 +1,5 @@
 package com.flipperdevices.faphub.appcard.composable
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -42,13 +41,16 @@ fun SmallHorizontalAppCard(
 private fun SmallHorizontalAppCardText(
     fapItem: FapItemShort,
     modifier: Modifier = Modifier
-) = Column(modifier, verticalArrangement = Arrangement.spacedBy(1.dp, Alignment.CenterVertically)) {
+) = Column(modifier) {
     Text(
         text = fapItem.name,
         style = LocalTypography.current.subtitleM12,
         color = LocalPallet.current.text100
     )
-    ComposableAppCategory(category = fapItem.category)
+    ComposableAppCategory(
+        category = fapItem.category,
+        isSmall = true
+    )
     Text(
         text = fapItem.shortDescription,
         style = LocalTypography.current.subtitleR12,
