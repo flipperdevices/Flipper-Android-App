@@ -13,6 +13,7 @@
 - [FIX] Fix compose layout in Wear OS
 - [FIX] Fix wearos font issue
 - [FIX] New mehanism emulate in Wear OS
+- [FIX] New button texts on fap errors dialog
 
 # 1.6.4 
 
