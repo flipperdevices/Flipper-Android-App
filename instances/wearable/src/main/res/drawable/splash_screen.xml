@@ -3,6 +3,6 @@
     <item
             android:drawable="@drawable/pic_splashscreen_dolphin"
             android:gravity="center"
-            android:height="36dp"
-            android:width="36dp" />
+            android:height="@dimen/splash_screen_icon_size"
+            android:width="@dimen/splash_screen_icon_size" />
 </layer-list>
