@@ -3,10 +3,6 @@ package com.flipperdevices.wearable.core.ui.components
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -16,33 +12,52 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.rotary.onRotaryScrollEvent
-import com.google.android.horologist.compose.layout.fillMaxRectangle
+import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
+import androidx.wear.compose.foundation.lazy.ScalingLazyListItemScope
+import androidx.wear.compose.foundation.lazy.ScalingLazyListScope
+import androidx.wear.compose.foundation.lazy.rememberScalingLazyListState
+import androidx.wear.compose.material.PositionIndicator
+import androidx.wear.compose.material.Scaffold
 import kotlinx.coroutines.launch
 
 @Composable
 fun ComposableWearOsScrollableColumn(
     modifier: Modifier = Modifier,
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ScalingLazyListItemScope.() -> Unit
 ) {
-    val columnScrollState = rememberScrollState()
+    ComposableWearOsScalingLazyColumn(modifier = modifier) {
+        item(content = content)
+    }
+}
+
+@Composable
+fun ComposableWearOsScalingLazyColumn(
+    modifier: Modifier = Modifier,
+    content: ScalingLazyListScope.() -> Unit
+) {
+    val scalingLazyListState = rememberScalingLazyListState()
     val coroutineScope = rememberCoroutineScope()
     val focusRequester = remember { FocusRequester() }
-    Column(
-        modifier
-            .verticalScroll(columnScrollState)
-            .fillMaxRectangle()
-            .onRotaryScrollEvent {
-                coroutineScope.launch {
-                    columnScrollState.scrollBy(it.verticalScrollPixels)
+
+    Scaffold(
+        positionIndicator = { PositionIndicator(scalingLazyListState = scalingLazyListState) }
+    ) {
+        ScalingLazyColumn(
+            modifier = modifier
+                .onRotaryScrollEvent {
+                    coroutineScope.launch {
+                        scalingLazyListState.scrollBy(it.verticalScrollPixels)
+                    }
+                    true
                 }
-                true
-            }
-            .focusRequester(focusRequester)
-            .focusable(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        content = content
-    )
+                .focusRequester(focusRequester)
+                .focusable(),
+            state = scalingLazyListState,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            content = content
+        )
+    }
 
     LaunchedEffect(Unit) {
         focusRequester.requestFocus()

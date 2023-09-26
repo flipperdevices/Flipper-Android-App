@@ -14,6 +14,7 @@
 - [FIX] Fix wearos font issue
 - [FIX] New mehanism emulate in Wear OS
 - [FIX] New button texts on fap errors dialog
+- [FIX] Scroll progress on wear OS app
 
 # 1.6.4 
 
