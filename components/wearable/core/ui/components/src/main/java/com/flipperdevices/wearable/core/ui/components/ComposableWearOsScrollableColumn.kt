@@ -40,10 +40,11 @@ fun ComposableWearOsScalingLazyColumn(
     val focusRequester = remember { FocusRequester() }
 
     Scaffold(
+        modifier = modifier,
         positionIndicator = { PositionIndicator(scalingLazyListState = scalingLazyListState) }
     ) {
         ScalingLazyColumn(
-            modifier = modifier
+            modifier = Modifier
                 .onRotaryScrollEvent {
                     coroutineScope.launch {
                         scalingLazyListState.scrollBy(it.verticalScrollPixels)
