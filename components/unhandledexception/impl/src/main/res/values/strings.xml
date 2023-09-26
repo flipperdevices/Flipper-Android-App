@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="unhandledexception_dialog_title">Ваш телефон разъебало</string>
+    <string name="unhandledexception_dialog_desc">Попробуйте следующие действия:\n- Включить и выключить Bluetooth на телефоне\n-Перезагрузить устройство\n-Забыть устройство из настроек Bluetooth, выбрать Forget All Pair Devices во Флиппере, перезагрузить телефон и подключить флиппер заново</string>
+    <string name="unhandledexception_dialog_btn_continue">Continue</string>
+    <string name="unhandledexception_dialog_btn_go_to_settings">Go to bluetooth settings</string>
+    <string name="unhandledexception_dialog_btn_cancel">Close</string>
+</resources>

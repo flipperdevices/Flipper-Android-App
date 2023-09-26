@@ -19,7 +19,7 @@ compose-accompanist = "0.32.0" # https://github.com/google/accompanist/releases
 compose-constraint = "1.0.1" # https://developer.android.com/jetpack/compose/layouts/constraintlayout
 # Use 2.6.0 because 2.7.0+ use new AnimationNavHost with bad animation
 # https://issuetracker.google.com/issues/295536728
-compose-navigation = "2.7.1" # https://developer.android.com/jetpack/compose/navigation
+compose-navigation = "2.6.0" # https://developer.android.com/jetpack/compose/navigation
 compose-paging = "3.2.0" # https://developer.android.com/jetpack/androidx/releases/paging
 compose-drag-drop = "0.9.6" #https://github.com/aclassen/ComposeReorderable/releases
 horologist = "0.4.13" # https://github.com/google/horologist/releases
