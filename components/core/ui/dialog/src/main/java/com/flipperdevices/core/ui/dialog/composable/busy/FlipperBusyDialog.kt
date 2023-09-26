@@ -17,6 +17,9 @@ fun ComposableFlipperBusy(onDismiss: () -> Unit) {
         textId = R.string.core_ui_dialog_flipper_busy_desc,
         buttonTextId = R.string.core_ui_dialog_flipper_busy_action,
         onDismissRequest = onDismiss,
-        onClickButton = { navController.navigate(route = route) }
+        onClickButton = {
+            onDismiss()
+            navController.navigate(route = route)
+        }
     )
 }
