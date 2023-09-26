@@ -12,8 +12,7 @@ import javax.inject.Provider
 
 class ExperimentalViewModel @VMInject constructor(
     fileManagerEntryProvider: Provider<FileManagerEntry>,
-    metricApiProvider: Provider<MetricApi>,
-    private val settingsFeatureEntry: SettingsFeatureEntry
+    metricApiProvider: Provider<MetricApi>
 ) : LifecycleViewModel() {
     private val fileManagerEntry by fileManagerEntryProvider
     private val metricApi by metricApiProvider
@@ -21,10 +20,5 @@ class ExperimentalViewModel @VMInject constructor(
     fun onOpenFileManager(navController: NavController) {
         metricApi.reportSimpleEvent(SimpleEvent.EXPERIMENTAL_OPEN_FM)
         navController.navigate(fileManagerEntry.fileManagerDestination())
-    }
-
-    fun onOpenScreenStreaming(navController: NavController) {
-        metricApi.reportSimpleEvent(SimpleEvent.EXPERIMENTAL_OPEN_SCREEN_STREAMING)
-        navController.navigate(settingsFeatureEntry.remoteControlStub())
     }
 }
