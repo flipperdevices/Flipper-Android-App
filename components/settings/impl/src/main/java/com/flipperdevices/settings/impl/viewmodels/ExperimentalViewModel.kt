@@ -6,7 +6,6 @@ import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.filemanager.api.navigation.FileManagerEntry
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
-import com.flipperdevices.settings.api.SettingsFeatureEntry
 import tangle.viewmodel.VMInject
 import javax.inject.Provider
 
