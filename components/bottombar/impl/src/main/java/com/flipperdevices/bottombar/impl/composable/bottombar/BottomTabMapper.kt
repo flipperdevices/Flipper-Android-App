@@ -15,9 +15,7 @@ fun getTabStateFromFlipperBottomTab(
     hubHasNotification: Boolean
 ): TabState {
     return when (bottomTab) {
-        FlipperBottomTab.DEVICE -> {
-            connectionApi.getConnectionTabState()
-        }
+        FlipperBottomTab.DEVICE -> connectionApi.getConnectionTabState()
         FlipperBottomTab.ARCHIVE -> TabState.Static(
             selectedIcon = R.drawable.ic_archive_selected,
             notSelectedIcon = R.drawable.ic_archive_unselected,

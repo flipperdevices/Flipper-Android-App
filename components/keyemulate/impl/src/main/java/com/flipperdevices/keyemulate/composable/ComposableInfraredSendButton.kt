@@ -48,14 +48,13 @@ internal fun ComposableInfraredSendButton(
             reason = null
         )
         is EmulateButtonState.Active,
-        is EmulateButtonState.Inactive -> {
+        is EmulateButtonState.Inactive ->
             ComposableActiveStateEmulateInternal(
                 modifier = modifier,
                 emulateButtonState = emulateButtonState,
                 emulateViewModel = emulateViewModel,
                 emulateConfig = emulateConfig
             )
-        }
         is EmulateButtonState.Loading -> ComposableActionLoading(
             modifier = modifier,
             loadingState = null
