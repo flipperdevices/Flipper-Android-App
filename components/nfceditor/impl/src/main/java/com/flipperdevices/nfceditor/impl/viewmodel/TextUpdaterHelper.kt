@@ -79,7 +79,7 @@ class TextUpdaterHelper {
                 nfcEditorState.nfcEditorCardInfo?.fieldsAsSectors
                     ?.let { location.decrement(it) }
 
-            EditorField.DATA -> null
+            EditorField.DATA -> location.decrement(nfcEditorState.sectors)
         }
         onSelectCell(newLocation)
     }
