@@ -55,7 +55,7 @@ class MfKey32ViewModel @VMInject constructor(
         Runtime.getRuntime().availableProcessors()
     ).asCoroutineDispatcher()
     private val mfKey32StateFlow = MutableStateFlow<MfKey32State>(
-        MfKey32State.DownloadingRawFile(null)
+        MfKey32State.Error(ErrorType.FLIPPER_CONNECTION)
     )
 
     private val existedKeysStorage = ExistedKeysStorage(context)
@@ -102,7 +102,10 @@ class MfKey32ViewModel @VMInject constructor(
     }
 
     private suspend fun prepare(serviceApi: FlipperServiceApi): Boolean {
-        val connectionState = serviceApi.connectionInformationApi.getConnectionStateFlow().first()
+        val connectionState = serviceApi
+            .connectionInformationApi
+            .getConnectionStateFlow()
+            .first { it is ConnectionState.Ready }
 
         if (connectionState !is ConnectionState.Ready ||
             connectionState.supportedState != FlipperSupportedState.READY
@@ -110,6 +113,9 @@ class MfKey32ViewModel @VMInject constructor(
             error { "Flipper not connected" }
             mfKey32StateFlow.emit(MfKey32State.Error(ErrorType.FLIPPER_CONNECTION))
             return false
+        } else {
+            info { "Flipper connected" }
+            MfKey32State.DownloadingRawFile(null)
         }
 
         try {
