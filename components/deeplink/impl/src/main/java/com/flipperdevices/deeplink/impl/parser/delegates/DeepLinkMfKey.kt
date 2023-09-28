@@ -11,7 +11,7 @@ import com.flipperdevices.deeplink.model.Deeplink
 import com.squareup.anvil.annotations.ContributesMultibinding
 import javax.inject.Inject
 
-private val PATHS = listOf("o", "mfkey")
+private val PATHS = listOf("o", "mfkey32")
 
 @ContributesMultibinding(AppGraph::class, DeepLinkParserDelegate::class)
 class DeepLinkMfKey @Inject constructor() : DeepLinkParserDelegate, LogTagProvider {
@@ -32,7 +32,5 @@ class DeepLinkMfKey @Inject constructor() : DeepLinkParserDelegate, LogTagProvid
         }
     }
 
-    override suspend fun fromIntent(context: Context, intent: Intent): Deeplink {
-        return Deeplink.OpenMfKey
-    }
+    override suspend fun fromIntent(context: Context, intent: Intent) = Deeplink.OpenMfKey
 }

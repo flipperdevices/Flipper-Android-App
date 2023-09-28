@@ -32,7 +32,5 @@ class DeepLinkUpdate @Inject constructor() : DeepLinkParserDelegate, LogTagProvi
         }
     }
 
-    override suspend fun fromIntent(context: Context, intent: Intent): Deeplink {
-        return Deeplink.OpenMfKey
-    }
+    override suspend fun fromIntent(context: Context, intent: Intent) = Deeplink.OpenUpdate
 }

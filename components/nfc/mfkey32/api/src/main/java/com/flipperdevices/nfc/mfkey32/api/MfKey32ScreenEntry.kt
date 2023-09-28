@@ -8,4 +8,6 @@ interface MfKey32ScreenEntry : AggregateFeatureEntry {
         get() = FeatureScreenRootRoute.MFKEY32
 
     fun startDestination(): String
+
+    fun getMfKeyScreenByDeeplink(): String
 }
