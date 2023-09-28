@@ -41,6 +41,10 @@ class OpenFapViewModel @VMInject constructor(
         }
     }
 
+    fun goToRemote(navController: NavHostController) {
+        navController.navigate(screenStreamingFeatureEntry.ROUTE.name)
+    }
+
     private fun processOpenFapResult(openFapResult: OpenFapResult, navController: NavHostController) {
         viewModelScope.launch {
             when (openFapResult) {

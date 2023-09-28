@@ -33,7 +33,10 @@ internal fun ComposableInstalledButton(
     val dialogState by viewModel.getDialogState().collectAsState()
 
     if (dialogState) {
-        ComposableFlipperBusy(viewModel::closeDialog)
+        ComposableFlipperBusy(
+            onDismiss = viewModel::closeDialog,
+            goToRemote = { viewModel.goToRemote(navController) }
+        )
     }
 
     when (val localState = state) {

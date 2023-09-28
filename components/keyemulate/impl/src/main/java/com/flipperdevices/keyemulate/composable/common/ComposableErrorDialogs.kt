@@ -14,9 +14,13 @@ import com.flipperdevices.keyemulate.impl.R
 import com.flipperdevices.keyemulate.model.EmulateButtonState
 
 @Composable
-fun ComposableErrorDialogs(state: EmulateButtonState, onCloseDialog: () -> Unit) {
+fun ComposableErrorDialogs(
+    state: EmulateButtonState,
+    onCloseDialog: () -> Unit,
+    onOpenRemote: () -> Unit,
+) {
     if (state == EmulateButtonState.AppAlreadyOpenDialog) {
-        ComposableFlipperBusy(onCloseDialog)
+        ComposableFlipperBusy(onCloseDialog, onOpenRemote)
     } else if (state == EmulateButtonState.ForbiddenFrequencyDialog) {
         ComposableForbiddenFrequencyDialog(onCloseDialog)
     }
