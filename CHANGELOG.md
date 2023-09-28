@@ -15,6 +15,7 @@
 - [FIX] New mehanism emulate in Wear OS
 - [FIX] New button texts on fap errors dialog
 - [FIX] Deprecated detekt rules
+- [FIX] Fix apostrophe in text "What’s New"
 
 # 1.6.4 
 
