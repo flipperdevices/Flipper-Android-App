@@ -51,9 +51,8 @@ class WidgetBroadcastReceiver : BroadcastReceiver(), LogTagProvider {
 
                 StartChainBuilder.getStartChain(context, keyPath.path, widgetId).enqueue()
             }
-            FLIPPER_KEY_STOP_ACTION -> {
+            FLIPPER_KEY_STOP_ACTION ->
                 StopChainBuilder.getStopChain(context, widgetId).enqueue()
-            }
         }
     }
 

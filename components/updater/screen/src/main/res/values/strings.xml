@@ -38,5 +38,5 @@
     <string name="update_screen_failed_int_desc">Flipper’s **internal flash storage is full or broken**. Free up space or try factory resetting to restore the internal flash storage.</string>
     <string name="update_screen_failed_int_link">[How to do Factory Reset](https://flipp.dev/storage-repair)</string>
     <string name="update_screen_failed_int_update_dec">Something wrong with custom update</string>
-    <string name="update_screen_whats_new">What`s new</string>
+    <string name="update_screen_whats_new">What’s New</string>
 </resources>

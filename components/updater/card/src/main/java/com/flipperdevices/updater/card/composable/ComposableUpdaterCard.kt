@@ -86,12 +86,10 @@ private fun ComposableUpdaterCard(
         titleId = R.string.updater_card_updater_title
     ) {
         when (cardStateLocal) {
-            is UpdateCardState.Error -> {
-                ComposableFirmwareUpdaterError(
-                    typeError = cardStateLocal.type,
-                    retryUpdate = retryUpdate
-                )
-            }
+            is UpdateCardState.Error -> ComposableFirmwareUpdaterError(
+                typeError = cardStateLocal.type,
+                retryUpdate = retryUpdate
+            )
 
             UpdateCardState.InProgress -> ComposableFirmwareUpdaterContent(
                 version = null,

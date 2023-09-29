@@ -76,9 +76,7 @@ class WearStateMachineHelperImpl @Inject constructor(
                 connectionHelper.testConnection()
                 return
             }
-            ConnectionTesterState.CONNECTED -> {
-                flipperStatusHelper.onSubscribe()
-            }
+            ConnectionTesterState.CONNECTED -> flipperStatusHelper.onSubscribe()
         }
 
         when (flipperState) {
@@ -86,9 +84,8 @@ class WearStateMachineHelperImpl @Inject constructor(
                 state.emit(WearEmulateState.UnsupportedFlipper)
                 return
             }
-            ConnectStatusOuterClass.ConnectStatus.READY -> {
+            ConnectStatusOuterClass.ConnectStatus.READY ->
                 state.emit(WearEmulateState.ReadyForEmulate(keyToEmulate.keyType))
-            }
             else -> {
                 state.emit(WearEmulateState.ConnectingToFlipper)
                 return
@@ -100,9 +97,7 @@ class WearStateMachineHelperImpl @Inject constructor(
                 state.emit(WearEmulateState.Emulating(keyToEmulate.keyType, EmulateProgress.Infinite))
                 return
             }
-            else -> {
-                return
-            }
+            else -> return
         }
     }
 }

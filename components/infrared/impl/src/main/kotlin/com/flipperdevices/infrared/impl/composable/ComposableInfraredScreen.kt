@@ -40,13 +40,10 @@ internal fun ComposableInfraredScreen(
     var currentTab by remember { mutableStateOf(InfraredTab.REMOTE) }
 
     when (val localState = state) {
-        is KeyScreenState.Error -> {
+        is KeyScreenState.Error ->
             ComposableKeyScreenError(text = stringResource(id = localState.reason))
-        }
-        KeyScreenState.InProgress -> {
-            ComposableKeyScreenLoading()
-        }
-        is KeyScreenState.Ready -> {
+        KeyScreenState.InProgress -> ComposableKeyScreenLoading()
+        is KeyScreenState.Ready ->
             Column(modifier = Modifier.fillMaxSize()) {
                 ComposableInfraredAppBar(
                     onBack = navController::popBackStack,
@@ -83,7 +80,6 @@ internal fun ComposableInfraredScreen(
                     }
                 )
             }
-        }
     }
 
     SetUpNavigationBarColor(color = LocalPallet.current.background)

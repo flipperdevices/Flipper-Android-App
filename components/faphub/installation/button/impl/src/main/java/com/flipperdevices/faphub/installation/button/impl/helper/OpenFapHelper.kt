@@ -54,18 +54,13 @@ class OpenFapHelperImpl @Inject constructor(
             rpcVersionFlow,
         ) { currentApp, rpcVersion ->
             return@combine when {
-                fapButtonConfig == null -> {
+                fapButtonConfig == null -> OpenFapState.NotSupported
+                rpcVersion == null || rpcVersion < Constants.API_SUPPORTED_LOAD_FAP ->
                     OpenFapState.NotSupported
-                }
-                rpcVersion == null || rpcVersion < Constants.API_SUPPORTED_LOAD_FAP -> {
+                fapButtonConfig.version.buildState != FapBuildState.READY ->
                     OpenFapState.NotSupported
-                }
-                fapButtonConfig.version.buildState != FapBuildState.READY -> {
-                    OpenFapState.NotSupported
-                }
-                currentApp != null -> {
+                currentApp != null ->
                     OpenFapState.InProgress(fapButtonConfig)
-                }
                 else -> OpenFapState.Ready
             }
         }

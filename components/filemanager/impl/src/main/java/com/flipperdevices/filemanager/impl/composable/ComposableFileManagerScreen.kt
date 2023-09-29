@@ -56,12 +56,8 @@ fun ComposableFileManagerScreen(
         }
         ComposableSelectDialog(chooseOptions, onSelected = {
             when (it) {
-                R.string.filemanager_open_dialog_edit -> {
-                    onOpenEditor(localFileItem)
-                }
-                R.string.filemanager_open_dialog_download -> {
-                    onDownloadAndShareFile(localFileItem)
-                }
+                R.string.filemanager_open_dialog_edit -> onOpenEditor(localFileItem)
+                R.string.filemanager_open_dialog_download -> onDownloadAndShareFile(localFileItem)
                 R.string.filemanager_open_dialog_delete -> {
                     fileManagerViewModel.onDeleteAction(localFileItem)
                     pendingDialogItem = null
@@ -128,12 +124,10 @@ private fun ComposableCreateActionDialog(
         ),
         onSelected = {
             when (it) {
-                R.string.filemanager_add_dialog_file -> {
+                R.string.filemanager_add_dialog_file ->
                     createFileManagerAction = CreateFileManagerAction.FILE
-                }
-                R.string.filemanager_add_dialog_folder -> {
+                R.string.filemanager_add_dialog_folder ->
                     createFileManagerAction = CreateFileManagerAction.FOLDER
-                }
                 else -> onDismiss()
             }
         }

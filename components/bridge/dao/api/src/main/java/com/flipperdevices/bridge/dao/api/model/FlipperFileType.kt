@@ -14,12 +14,10 @@ enum class FlipperFileType {
         fun getByExtension(extension: String): FlipperFileType {
             return when (extension) {
                 SHADOW_FILE_EXTENSION -> SHADOW_NFC
-                else -> {
-                    if (FlipperKeyType.getByExtension(extension) != null) {
-                        KEY
-                    } else {
-                        OTHER
-                    }
+                else -> if (FlipperKeyType.getByExtension(extension) != null) {
+                    KEY
+                } else {
+                    OTHER
                 }
             }
         }
