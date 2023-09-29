@@ -28,7 +28,7 @@ fun ComposableFileManagerContent(
         contentAlignment = Alignment.Center
     ) {
         when {
-            fileManagerState.filesInDirectory.isNotEmpty() -> {
+            fileManagerState.filesInDirectory.isNotEmpty() ->
                 LazyColumn(
                     modifier = Modifier.fillMaxSize()
                 ) {
@@ -36,15 +36,9 @@ fun ComposableFileManagerContent(
                         ComposableFileItem(file, onFileClick)
                     }
                 }
-            }
-            fileManagerState.inProgress -> {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(size = 48.dp)
-                )
-            }
-            else -> {
-                Text(text = stringResource(id = R.string.filemanager_empty_folder))
-            }
+            fileManagerState.inProgress ->
+                CircularProgressIndicator(modifier = Modifier.size(size = 48.dp))
+            else -> Text(text = stringResource(id = R.string.filemanager_empty_folder))
         }
     }
 }

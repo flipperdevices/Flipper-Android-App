@@ -35,13 +35,12 @@ internal fun ComposableFapButton(
             onCancel = { statusViewModel.cancel(config) }
         )
 
-        FapState.Installed -> {
+        FapState.Installed ->
             ComposableInstalledButton(
                 config = config,
                 fapButtonSize = fapButtonSize,
                 modifier = modifier
             )
-        }
 
         FapState.ReadyToInstall -> ComposableFapInstallButton(
             modifier = modifier,

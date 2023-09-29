@@ -36,7 +36,7 @@ internal fun ComposableInstalledButton(
     }
 
     when (val localState = state) {
-        is OpenFapState.InProgress -> {
+        is OpenFapState.InProgress ->
             if (localState.config == config) {
                 ComposableFapOpeningButton(
                     modifier = modifier,
@@ -49,25 +49,21 @@ internal fun ComposableInstalledButton(
                     onClick = { viewModel.open(config, navController) }
                 )
             }
-        }
-        OpenFapState.NotSupported -> {
+        OpenFapState.NotSupported ->
             ComposableFapInstalledButton(
                 modifier = modifier,
                 fapButtonSize = fapButtonSize
             )
-        }
-        OpenFapState.Loading -> {
+        OpenFapState.Loading ->
             ComposableFapInstalledButton(
                 modifier = modifier.placeholderConnecting(),
                 fapButtonSize = fapButtonSize
             )
-        }
-        OpenFapState.Ready -> {
+        OpenFapState.Ready ->
             ComposableFapOpenButton(
                 modifier = modifier,
                 fapButtonSize = fapButtonSize,
                 onClick = { viewModel.open(config, navController) }
             )
-        }
     }
 }

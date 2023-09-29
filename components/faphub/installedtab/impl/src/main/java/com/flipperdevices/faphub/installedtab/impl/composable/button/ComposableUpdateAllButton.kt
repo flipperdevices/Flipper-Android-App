@@ -14,29 +14,23 @@ fun ComposableUpdateAllButton(
     modifier: Modifier = Modifier
 ) {
     when (state) {
-        FapBatchUpdateButtonState.Offline -> {
-            ComposableOfflineButtonText(modifier)
-        }
+        FapBatchUpdateButtonState.Offline -> ComposableOfflineButtonText(modifier)
 
         FapBatchUpdateButtonState.NoUpdates -> {}
 
-        FapBatchUpdateButtonState.Loading -> {
-            ComposableCancelAllButton(
-                modifier.placeholderConnecting()
-            )
-        }
+        FapBatchUpdateButtonState.Loading -> ComposableCancelAllButton(
+            modifier.placeholderConnecting()
+        )
 
-        is FapBatchUpdateButtonState.ReadyToUpdate -> {
+        is FapBatchUpdateButtonState.ReadyToUpdate ->
             ComposableUpdateAllButtonPending(
                 pendingCount = state.count,
                 modifier = modifier.clickableRipple(onClick = onUpdateAll)
             )
-        }
 
-        FapBatchUpdateButtonState.UpdatingInProgress -> {
+        FapBatchUpdateButtonState.UpdatingInProgress ->
             ComposableCancelAllButton(
                 modifier = modifier.clickableRipple(onClick = onCancelAll)
             )
-        }
     }
 }
