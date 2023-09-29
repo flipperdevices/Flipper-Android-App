@@ -41,11 +41,10 @@ internal fun ComposableSheetContent(
         ComposableSheetFooter(keyName = keyName)
         when (state) {
             is ShareState.Error -> ComposableSheetError(state.typeError, onRetry)
-            ShareState.Completed -> {
+            ShareState.Completed ->
                 LaunchedEffect(key1 = Unit) {
                     onClose()
                 }
-            }
             ShareState.Prepare -> ComposableSheetPrepare()
             ShareState.Initial -> ComposableSheetInitial()
             is ShareState.PendingShare -> ComposableSheetPending(

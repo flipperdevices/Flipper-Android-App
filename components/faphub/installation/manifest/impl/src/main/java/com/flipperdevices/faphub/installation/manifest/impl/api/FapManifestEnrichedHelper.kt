@@ -83,7 +83,7 @@ class FapManifestEnrichedHelper(
                 return@withLock
             }
 
-            is FapManifestState.Loaded -> {
+            is FapManifestState.Loaded ->
                 fapManifestState.emit(
                     FapManifestState.Loaded(
                         manifestState.items
@@ -93,7 +93,6 @@ class FapManifestEnrichedHelper(
                             ).toImmutableList()
                     )
                 )
-            }
         }
     }
 
