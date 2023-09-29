@@ -35,18 +35,14 @@ fun FlipperStorageInformation.isExtStorageEnding(): Boolean = isStorageEnding(fl
 private fun isStorageEnding(flash: StorageStats?): Boolean {
     return when (flash) {
         StorageStats.Error -> false
-        is StorageStats.Loaded -> {
-            flash.free <= ENDING
-        }
+        is StorageStats.Loaded -> flash.free <= ENDING
         null -> false
     }
 }
 
 fun StorageStats.toString(context: Context): String {
     return when (this) {
-        StorageStats.Error -> {
-            context.getString(R.string.info_device_info_flash_not_found)
-        }
+        StorageStats.Error -> context.getString(R.string.info_device_info_flash_not_found)
         is StorageStats.Loaded -> {
             val usedHumanReadable = max(0L, total - free).toFormattedSize()
             val totalHumanReadable = total.toFormattedSize()

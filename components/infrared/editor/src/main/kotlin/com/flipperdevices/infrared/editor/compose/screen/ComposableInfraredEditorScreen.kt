@@ -23,7 +23,7 @@ internal fun ComposableInfraredEditorScreen(
         is InfraredEditorState.Error -> ComposableKeyScreenError(
             text = stringResource(id = localState.reason)
         )
-        is InfraredEditorState.Ready -> {
+        is InfraredEditorState.Ready ->
             ComposableInfraredEditorScreenReady(
                 keyState = localState,
                 dialogState = dialogState,
@@ -35,6 +35,5 @@ internal fun ComposableInfraredEditorScreen(
                 onDelete = viewModel::processDeleteRemote,
                 onEditOrder = viewModel::processEditOrder
             )
-        }
     }
 }

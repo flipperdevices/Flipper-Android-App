@@ -69,25 +69,20 @@ private fun ComposableInAppNotificationCard(
             backgroundColor = LocalPallet.current.notificationCard
         ) {
             when (notification) {
-                is InAppNotification.SavedKey -> {
-                    ComposableInAppNotificationSavedKey(notification)
-                }
+                is InAppNotification.SavedKey -> ComposableInAppNotificationSavedKey(notification)
 
-                is InAppNotification.SelfUpdateReady -> {
+                is InAppNotification.SelfUpdateReady ->
                     ComposableInAppNotificationSelfUpdateReady(notification) {
                         visibleState = false
                         actionClicked = true
                         onNotificationHidden()
                     }
-                }
 
-                is InAppNotification.SelfUpdateError -> {
+                is InAppNotification.SelfUpdateError ->
                     ComposableInAppNotificationSelfUpdateError()
-                }
 
-                is InAppNotification.SelfUpdateStarted -> {
+                is InAppNotification.SelfUpdateStarted ->
                     ComposableInAppNotificationSelfUpdateStarted()
-                }
 
                 InAppNotification.ReportApp -> ComposableInAppNotificationReportApp()
                 is InAppNotification.HiddenApp -> ComposableInAppNotificationHideApp(

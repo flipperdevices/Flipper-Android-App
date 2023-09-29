@@ -207,20 +207,17 @@ dependencies {
     implementation(projects.components.selfupdater.api)
     implementation(projects.components.selfupdater.impl)
     when (SOURCE_INSTALL) {
-        SourceInstall.GOOGLE_PLAY -> {
+        SourceInstall.GOOGLE_PLAY ->
             implementation(projects.components.selfupdater.googleplay)
-        }
 
         SourceInstall.GITHUB -> {
             implementation(projects.components.selfupdater.thirdparty.api)
             implementation(projects.components.selfupdater.thirdparty.github)
         }
-        SourceInstall.DEBUG -> {
+        SourceInstall.DEBUG ->
             implementation(projects.components.selfupdater.debug)
-        }
-        else -> {
+        else ->
             implementation(projects.components.selfupdater.unknown)
-        }
     }
 
     implementation(libs.ktor.client)

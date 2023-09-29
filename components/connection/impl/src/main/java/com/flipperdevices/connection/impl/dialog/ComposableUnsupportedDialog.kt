@@ -36,16 +36,14 @@ fun ComposableUnsupportedDialog(
     }
 
     when (supportedState) {
-        FlipperSupportedState.DEPRECATED_FLIPPER -> {
-            FlipperDialog(
-                imageId = DesignSystem.drawable.ic_firmware_flipper_deprecated,
-                titleId = R.string.dialog_unsupported_title,
-                textId = R.string.dialog_unsupported_description,
-                buttonTextId = R.string.dialog_unsupported_btn,
-                onDismissRequest = { showDialog = false },
-                onClickButton = { showDialog = false }
-            )
-        }
+        FlipperSupportedState.DEPRECATED_FLIPPER -> FlipperDialog(
+            imageId = DesignSystem.drawable.ic_firmware_flipper_deprecated,
+            titleId = R.string.dialog_unsupported_title,
+            textId = R.string.dialog_unsupported_description,
+            buttonTextId = R.string.dialog_unsupported_btn,
+            onDismissRequest = { showDialog = false },
+            onClickButton = { showDialog = false }
+        )
         FlipperSupportedState.DEPRECATED_APPLICATION -> {
             val url = stringResource(R.string.dialog_unsupported_application_link)
             val context = LocalContext.current

@@ -7,13 +7,11 @@ import android.os.Build
 // https://developer.android.com/reference/android/bluetooth/BluetoothAdapter#getDefaultAdapter()
 fun BluetoothManager?.getBluetoothAdapter(): BluetoothAdapter {
     return when {
-        Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ->
             @Suppress("DEPRECATION")
             this?.adapter ?: BluetoothAdapter.getDefaultAdapter()
-        }
-        else -> {
+        else ->
             @Suppress("DEPRECATION")
             BluetoothAdapter.getDefaultAdapter()
-        }
     }
 }

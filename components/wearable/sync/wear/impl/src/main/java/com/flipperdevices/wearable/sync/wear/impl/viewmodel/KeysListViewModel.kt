@@ -65,15 +65,9 @@ class KeysListViewModel @VMInject constructor(
         ) { keys, phoneState ->
             info { "Combine $keys $phoneState" }
             when (phoneState) {
-                is FindPhoneState.Founded -> {
-                    keysListStateFlow.emit(KeysListState.Loaded(keys))
-                }
-                FindPhoneState.Loading -> {
-                    keysListStateFlow.emit(KeysListState.Loading)
-                }
-                FindPhoneState.NotFound -> {
-                    keysListStateFlow.emit(KeysListState.PhoneNotFound)
-                }
+                is FindPhoneState.Founded -> keysListStateFlow.emit(KeysListState.Loaded(keys))
+                FindPhoneState.Loading -> keysListStateFlow.emit(KeysListState.Loading)
+                FindPhoneState.NotFound -> keysListStateFlow.emit(KeysListState.PhoneNotFound)
             }
         }.launchIn(viewModelScope)
 
