@@ -14,6 +14,7 @@
 - [FIX] Fix wearos font issue
 - [FIX] New mehanism emulate in Wear OS
 - [FIX] New button texts on fap errors dialog
+- [FIX] Remove Control from Options
 - [FIX] Deprecated detekt rules
 - [FIX] Fix apostrophe in text "What’s New"
 
