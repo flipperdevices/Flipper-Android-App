@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="unhandledexception_dialog_title">Ваш телефон разъебало</string>
-    <string name="unhandledexception_dialog_desc">Попробуйте следующие действия:\n- Включить и выключить Bluetooth на телефоне\n-Перезагрузить устройство\n-Забыть устройство из настроек Bluetooth, выбрать Forget All Pair Devices во Флиппере, перезагрузить телефон и подключить флиппер заново</string>
-    <string name="unhandledexception_dialog_btn_continue">Continue</string>
-    <string name="unhandledexception_dialog_btn_go_to_settings">Go to bluetooth settings</string>
-    <string name="unhandledexception_dialog_btn_cancel">Close</string>
+    <string name="unhandledexception_dialog_title">System Android error caused by using Flipper BLE-remote mode</string>
+    <string name="unhandledexception_dialog_btn_close">Got It</string>
+    <string name="unhandledexception_dialog_btn_go_to_settings">Go to Bluetooth Settings</string>
+    <string name="unhandledexception_dialog_desc_0">To fix it, try the following solutions:</string>
+    <string name="unhandledexception_dialog_desc_1">Turn your phone’s Bluetooth off and then back on</string>
+    <string name="unhandledexception_dialog_desc_2">Unpair your Flipper with the phone:</string>
+    <string name="unhandledexception_dialog_desc_2_1">Go to the phone’s Bluetooth Settings and remove your Flipper from paired devices</string>
+    <string name="unhandledexception_dialog_desc_2_2">Go on your Flipper to: Settings→Bluetooth→press Forget All Paired Devices</string>
+    <string name="unhandledexception_dialog_desc_3">Reboot your phone and reconnect Flipper</string>
 </resources>

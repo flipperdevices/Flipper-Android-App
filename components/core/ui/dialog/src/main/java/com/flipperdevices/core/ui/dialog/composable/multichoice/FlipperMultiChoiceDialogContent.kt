@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
@@ -21,7 +23,10 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 @Composable
 internal fun FlipperMultiChoiceDialogContent(
     model: FlipperMultiChoiceDialogModel
-) = Column(Modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+) = Column(
+    modifier = Modifier.verticalScroll(rememberScrollState()),
+    horizontalAlignment = Alignment.CenterHorizontally
+) {
     if (model.onDismissRequest != null) {
         Box(
             Modifier.fillMaxWidth(),

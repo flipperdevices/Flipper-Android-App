@@ -18,8 +18,8 @@ import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import java.util.concurrent.atomic.AtomicBoolean
@@ -61,14 +61,11 @@ class FlipperServiceApiImpl @Inject constructor(
 
         var previousDeviceId: String? = null
         scope.launch(Dispatchers.Default) {
-            combine(
-                unhandledExceptionApi.isBleConnectionForbiddenFlow(),
-                pairSettingsStore.data
-            ) { isConnectionForbidden, pairSettings ->
-                isConnectionForbidden to pairSettings.deviceId
-            }.collectLatest { (isConnectionForbidden, deviceId) ->
+            pairSettingsStore.data.map { it.deviceId }.collectLatest { deviceId ->
                 withLock(mutex, "connect") {
-                    if (!isConnectionForbidden && deviceId != previousDeviceId) {
+                    if (!unhandledExceptionApi.isBleConnectionForbiddenFlow().first() &&
+                        deviceId != previousDeviceId
+                    ) {
                         previousDeviceId = deviceId
                         flipperSafeConnectWrapper.onActiveDeviceUpdate(deviceId)
                     }
