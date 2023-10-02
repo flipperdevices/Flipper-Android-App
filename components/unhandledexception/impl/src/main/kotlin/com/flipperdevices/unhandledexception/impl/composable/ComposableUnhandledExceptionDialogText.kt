@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -40,7 +40,7 @@ fun ComposableUnhandledExceptionDialogText(modifier: Modifier = Modifier) {
         )
     }
 
-    var columnWidth by remember { mutableStateOf(0) }
+    var columnWidth by remember { mutableIntStateOf(0) }
     val textStyle = LocalTypography.current.bodyR14.copy(
         color = LocalPallet.current.text40,
         lineHeight = 19.6.sp,
