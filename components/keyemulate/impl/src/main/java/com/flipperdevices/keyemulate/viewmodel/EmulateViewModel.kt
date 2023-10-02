@@ -184,7 +184,7 @@ abstract class EmulateViewModel(
     }
 
     fun goToRemoteScreen(navController: NavController) {
-        navController.navigate(screenStreamingFeatureEntry.ROUTE.name)
+        navController.navigate(screenStreamingFeatureEntry.start())
     }
 
     override fun onCleared() {

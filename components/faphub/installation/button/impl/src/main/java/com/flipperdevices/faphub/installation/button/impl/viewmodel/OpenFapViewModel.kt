@@ -42,7 +42,7 @@ class OpenFapViewModel @VMInject constructor(
     }
 
     fun goToRemote(navController: NavHostController) {
-        navController.navigate(screenStreamingFeatureEntry.ROUTE.name)
+        navController.navigate(screenStreamingFeatureEntry.start())
     }
 
     private fun processOpenFapResult(openFapResult: OpenFapResult, navController: NavHostController) {
@@ -51,7 +51,7 @@ class OpenFapViewModel @VMInject constructor(
                 OpenFapResult.AllGood -> {
                     info { "Success open app, then go to screen streaming" }
                     withContext(Dispatchers.Main) {
-                        navController.navigate(screenStreamingFeatureEntry.ROUTE.name)
+                        navController.navigate(screenStreamingFeatureEntry.start())
                     }
                 }
                 OpenFapResult.Error -> {
