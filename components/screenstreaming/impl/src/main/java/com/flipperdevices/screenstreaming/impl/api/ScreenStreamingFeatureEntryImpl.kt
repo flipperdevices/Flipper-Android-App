@@ -21,7 +21,7 @@ import javax.inject.Inject
 @ContributesBinding(AppGraph::class, ScreenStreamingFeatureEntry::class)
 @ContributesMultibinding(AppGraph::class, AggregateFeatureEntry::class)
 class ScreenStreamingFeatureEntryImpl @Inject constructor() : ScreenStreamingFeatureEntry {
-    private fun start() = "@${ROUTE.name}"
+    override fun start() = "@${ROUTE.name}"
 
     override fun NavGraphBuilder.navigation(navController: NavHostController) {
         navigation(startDestination = start(), route = ROUTE.name) {

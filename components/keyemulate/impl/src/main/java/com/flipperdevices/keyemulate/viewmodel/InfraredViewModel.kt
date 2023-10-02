@@ -15,6 +15,7 @@ import com.flipperdevices.keyemulate.exception.ForbiddenFrequencyException
 import com.flipperdevices.keyemulate.model.EmulateButtonState
 import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyemulate.model.EmulateProgress
+import com.flipperdevices.screenstreaming.api.ScreenStreamingFeatureEntry
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.filter
@@ -26,9 +27,10 @@ import tangle.viewmodel.VMInject
 class InfraredViewModel @VMInject constructor(
     private val serviceProvider: FlipperServiceProvider,
     private val emulateHelper: EmulateHelper,
+    screenStreamingEntry: ScreenStreamingFeatureEntry,
     synchronizationApi: SynchronizationApi,
     application: Application
-) : EmulateViewModel(serviceProvider, emulateHelper, synchronizationApi, application) {
+) : EmulateViewModel(serviceProvider, emulateHelper, synchronizationApi, screenStreamingEntry, application) {
     override val TAG = "InfraredViewModel"
 
     override suspend fun onStartEmulateInternal(

@@ -71,7 +71,7 @@ class HubFeatureEntryImpl @Inject constructor(
                         )
                     },
                     onOpenRemoteControl = {
-                        globalNavController.navigate(screenStreamingFeatureEntry.ROUTE.name)
+                        globalNavController.navigate(screenStreamingFeatureEntry.start())
                     }
                 )
             }
