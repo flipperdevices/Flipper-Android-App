@@ -63,14 +63,13 @@ fun ComposableSubGhzSendButton(
             reason = (emulateButtonState as EmulateButtonState.Disabled).reason
         )
         is EmulateButtonState.Active,
-        is EmulateButtonState.Inactive -> {
+        is EmulateButtonState.Inactive ->
             ComposableActiveStateEmulateInternal(
                 modifier = modifier,
                 emulateButtonState = emulateButtonState,
                 emulateViewModel = emulateViewModel,
                 emulateConfig = emulateConfig
             )
-        }
         is EmulateButtonState.Loading -> ComposableActionLoading(
             modifier = modifier,
             loadingState = (emulateButtonState as EmulateButtonState.Loading).state
