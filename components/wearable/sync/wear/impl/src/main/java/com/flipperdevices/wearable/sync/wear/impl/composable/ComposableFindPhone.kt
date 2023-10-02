@@ -1,6 +1,7 @@
 package com.flipperdevices.wearable.sync.wear.impl.composable
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -23,7 +24,7 @@ fun ComposableFindPhone(
             style = LocalTypography.current.bodyM14
         )
         ComposableFlipperButton(
-            modifier = Modifier.padding(all = 16.dp),
+            modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
             textPadding = PaddingValues(
                 vertical = 12.dp,
                 horizontal = 20.dp

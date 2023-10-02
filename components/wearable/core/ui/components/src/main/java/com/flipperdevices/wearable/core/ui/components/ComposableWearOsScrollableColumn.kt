@@ -14,11 +14,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.rotary.onRotaryScrollEvent
+import androidx.wear.compose.foundation.lazy.AutoCenteringParams
 import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
 import androidx.wear.compose.foundation.lazy.ScalingLazyListScope
 import androidx.wear.compose.foundation.lazy.rememberScalingLazyListState
 import androidx.wear.compose.material.PositionIndicator
 import androidx.wear.compose.material.Scaffold
+import com.google.android.horologist.compose.layout.fillMaxRectangle
 import kotlinx.coroutines.launch
 
 @Composable
@@ -26,9 +28,13 @@ fun ComposableWearOsScrollableColumn(
     modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit
 ) {
-    ComposableWearOsScalingLazyColumn(modifier = modifier) {
+    ComposableWearOsScalingLazyColumn(
+        modifier = modifier,
+        autoCentering = null
+    ) {
         item(content = {
             Column(
+                modifier = Modifier.fillMaxRectangle(),
                 content = content,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
@@ -40,6 +46,7 @@ fun ComposableWearOsScrollableColumn(
 @Composable
 fun ComposableWearOsScalingLazyColumn(
     modifier: Modifier = Modifier,
+    autoCentering: AutoCenteringParams? = AutoCenteringParams(),
     content: ScalingLazyListScope.() -> Unit
 ) {
     val scalingLazyListState = rememberScalingLazyListState()
@@ -63,7 +70,8 @@ fun ComposableWearOsScalingLazyColumn(
             state = scalingLazyListState,
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Center,
-            content = content
+            content = content,
+            autoCentering = autoCentering
         )
     }
 
