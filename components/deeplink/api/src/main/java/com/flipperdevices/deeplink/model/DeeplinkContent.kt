@@ -67,12 +67,8 @@ sealed class DeeplinkContent : Parcelable {
 
     fun openStream(contentResolver: ContentResolver): InputStream? {
         return when (this) {
-            is ExternalUri -> {
-                contentResolver.openInputStream(uri)
-            }
-            is InternalStorageFile -> {
-                file.inputStream()
-            }
+            is ExternalUri -> contentResolver.openInputStream(uri)
+            is InternalStorageFile -> file.inputStream()
             is FFFContent -> flipperFileFormat.openStream()
             is FFFCryptoContent -> null
         }
@@ -80,15 +76,12 @@ sealed class DeeplinkContent : Parcelable {
 
     fun cleanUp(contentResolver: ContentResolver) {
         when (this) {
-            is ExternalUri -> {
+            is ExternalUri ->
                 contentResolver.releasePersistableUriPermission(
                     uri,
                     Intent.FLAG_GRANT_READ_URI_PERMISSION
                 )
-            }
-            is InternalStorageFile -> {
-                file.delete()
-            }
+            is InternalStorageFile -> file.delete()
             is FFFContent -> {} // Noting
             is FFFCryptoContent -> {} // Noting
         }

@@ -7,7 +7,6 @@ import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.composable.elements.CategoryElement
 import com.flipperdevices.settings.impl.composable.elements.ClickableElement
-import com.flipperdevices.settings.impl.composable.elements.GrayDivider
 import com.flipperdevices.settings.impl.viewmodels.ExperimentalViewModel
 import tangle.viewmodel.compose.tangleViewModel
 
@@ -31,14 +30,6 @@ fun ExperimentalCategory(
                 titleId = R.string.experimental_file_manager,
                 descriptionId = R.string.experimental_file_manager_desc,
                 onClick = { experimentalViewModel.onOpenFileManager(navController) }
-            )
-            GrayDivider()
-            ClickableElement(
-                titleId = R.string.experimental_screen_streaming,
-                descriptionId = R.string.experimental_screen_streaming_desc,
-                onClick = {
-                    experimentalViewModel.onOpenScreenStreaming(navController)
-                }
             )
         }
     }

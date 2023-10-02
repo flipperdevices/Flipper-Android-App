@@ -78,7 +78,7 @@ class PairDeviceViewModel @VMInject constructor(
         connectionStateUpdateJob?.cancelAndJoin()
         connectionStateUpdateJob = firstPairBleManager.stateAsFlow().onEach {
             when (it) {
-                is ConnectionState.Disconnected -> {
+                is ConnectionState.Disconnected ->
                     pairState.update { localPairState ->
                         when (localPairState) {
                             is DevicePairState.Connecting -> DevicePairState.TimeoutPairing(device)
@@ -89,36 +89,32 @@ class PairDeviceViewModel @VMInject constructor(
                             is DevicePairState.TimeoutPairing -> localPairState
                         }
                     }
-                }
 
                 ConnectionState.Connecting,
                 ConnectionState.Initializing,
-                ConnectionState.Disconnecting -> {
+                ConnectionState.Disconnecting ->
                     pairState.emit(
                         DevicePairState.Connecting(
                             firstPairBleManager.bluetoothDevice?.address,
                             firstPairBleManager.bluetoothDevice?.name
                         )
                     )
-                }
 
-                ConnectionState.RetrievingInformation -> {
+                ConnectionState.RetrievingInformation ->
                     pairState.emit(
                         DevicePairState.Connecting(
                             firstPairBleManager.bluetoothDevice?.address,
                             firstPairBleManager.bluetoothDevice?.name
                         )
                     )
-                }
 
-                is ConnectionState.Ready -> {
+                is ConnectionState.Ready ->
                     pairState.emit(
                         DevicePairState.Connected(
                             firstPairBleManager.bluetoothDevice?.address,
                             firstPairBleManager.bluetoothDevice?.name
                         )
                     )
-                }
             }
         }.launchIn(viewModelScope)
     }

@@ -144,9 +144,7 @@ class UpdaterViewModel @VMInject constructor(
                     UpdaterScreenState.Failed(FailedReason.DOWNLOAD_FROM_NETWORK)
 
                 UpdatingState.Complete,
-                UpdatingState.Failed -> {
-                    UpdaterScreenState.Finish
-                }
+                UpdatingState.Failed -> UpdaterScreenState.Finish
 
                 UpdatingState.Rebooting ->
                     if (connectionState !is ConnectionState.Ready) {

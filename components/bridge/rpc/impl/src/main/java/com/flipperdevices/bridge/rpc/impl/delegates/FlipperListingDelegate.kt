@@ -41,18 +41,10 @@ class FlipperListingDelegate @Inject constructor() {
                     info { "Listing request for $pathOnFlipper with $response was not found" }
                     listOf()
                 }
-
-                response.commandStatus != Flipper.CommandStatus.OK -> {
+                response.commandStatus != Flipper.CommandStatus.OK ->
                     error("Listing request failed for $pathOnFlipper with $response")
-                }
-
-                response.hasStorageListResponse() -> {
-                    response.storageListResponse.fileList
-                }
-
-                else -> {
-                    error("Can't find storage list response, $response")
-                }
+                response.hasStorageListResponse() -> response.storageListResponse.fileList
+                else -> error("Can't find storage list response, $response")
             }
         }.flatten()
     }

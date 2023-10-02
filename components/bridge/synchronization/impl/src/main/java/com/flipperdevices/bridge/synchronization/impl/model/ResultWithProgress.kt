@@ -18,12 +18,8 @@ suspend fun <T> Flow<ResultWithProgress<T>>.trackProgressAndReturn(
     var resultObject: T? = null
     collect { result ->
         when (result) {
-            is ResultWithProgress.InProgress -> {
-                onProgressUpdate(result)
-            }
-            is ResultWithProgress.Completed -> {
-                resultObject = result.result
-            }
+            is ResultWithProgress.InProgress -> onProgressUpdate(result)
+            is ResultWithProgress.Completed -> resultObject = result.result
         }
     }
     return resultObject ?: error("Result for flow with progress can't be null")

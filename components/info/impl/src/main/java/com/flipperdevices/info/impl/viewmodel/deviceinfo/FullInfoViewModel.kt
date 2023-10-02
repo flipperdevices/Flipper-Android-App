@@ -67,9 +67,7 @@ class FullInfoViewModel @VMInject constructor(
                         force = true
                     )
                 }
-                else -> {
-                    flipperRpcInformationApi.reset()
-                }
+                else -> flipperRpcInformationApi.reset()
             }
         }.launchIn(viewModelScope)
 

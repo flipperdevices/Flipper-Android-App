@@ -54,9 +54,7 @@ class OpenFapViewModel @VMInject constructor(
                         navController.navigate(screenStreamingFeatureEntry.start())
                     }
                 }
-                OpenFapResult.Error -> {
-                    info { "Error on open app" }
-                }
+                OpenFapResult.Error -> info { "Error on open app" }
                 OpenFapResult.FlipperIsBusy -> {
                     info { "Flipper is busy" }
                     busyDialogState.emit(true)
