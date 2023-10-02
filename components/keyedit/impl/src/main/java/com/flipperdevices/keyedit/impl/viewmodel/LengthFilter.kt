@@ -5,7 +5,7 @@ import android.os.Vibrator
 import androidx.core.content.ContextCompat
 import com.flipperdevices.core.ktx.android.vibrateCompat
 
-private const val MAX_NAME_LENGTH = 22
+private const val MAX_NAME_LENGTH = 21
 private const val MAX_NOTE_LENGTH = 1024
 private const val VIBRATOR_TIME_MS = 500L
 

@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -32,7 +33,7 @@ fun ComposableKeysListCategory(
     @DrawableRes iconId: Int? = null
 ) {
     Row(
-        modifier = modifier,
+        modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         val iconModifier = Modifier
@@ -65,9 +66,11 @@ fun ComposableKeysListElement(
     val type = flipperWearKey.path.path.keyType
     val icon = type?.icon ?: DesignSystem.drawable.ic_fileformat_unknown
     Row(
-        modifier = modifier.clickable(
-            onClick = onClick
-        ),
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable(
+                onClick = onClick
+            ),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
