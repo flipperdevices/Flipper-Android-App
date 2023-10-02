@@ -2,6 +2,7 @@
 
 # 1.6.5 - In progress
 
+- [Feature] Flipper Busy Dialog with remote
 - [Feature] Infrared Editor
 - [Feature] Scroll on Infrared Screen
 - [Feature] Redesign for FapHub

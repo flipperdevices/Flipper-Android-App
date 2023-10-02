@@ -85,6 +85,7 @@ include(
 
     ":components:screenstreaming:impl",
     ":components:screenstreaming:api",
+    ":components:screenstreaming:noop",
 
     ":components:share:api",
     ":components:share:receive",

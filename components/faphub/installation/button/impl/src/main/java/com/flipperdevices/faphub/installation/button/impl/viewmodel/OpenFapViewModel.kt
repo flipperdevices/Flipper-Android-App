@@ -41,13 +41,17 @@ class OpenFapViewModel @VMInject constructor(
         }
     }
 
+    fun goToRemote(navController: NavHostController) {
+        navController.navigate(screenStreamingFeatureEntry.start())
+    }
+
     private fun processOpenFapResult(openFapResult: OpenFapResult, navController: NavHostController) {
         viewModelScope.launch {
             when (openFapResult) {
                 OpenFapResult.AllGood -> {
                     info { "Success open app, then go to screen streaming" }
                     withContext(Dispatchers.Main) {
-                        navController.navigate(screenStreamingFeatureEntry.ROUTE.name)
+                        navController.navigate(screenStreamingFeatureEntry.start())
                     }
                 }
                 OpenFapResult.Error -> info { "Error on open app" }
