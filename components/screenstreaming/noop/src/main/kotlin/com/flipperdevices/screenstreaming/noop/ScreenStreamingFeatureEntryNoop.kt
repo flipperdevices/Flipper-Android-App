@@ -9,6 +9,9 @@ import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, ScreenStreamingFeatureEntry::class)
 class ScreenStreamingFeatureEntryNoop @Inject constructor() : ScreenStreamingFeatureEntry {
+    override fun start(): String {
+        throw NotImplementedError("Not implemented")
+    }
 
     override fun NavGraphBuilder.navigation(navController: NavHostController) = Unit
 }
