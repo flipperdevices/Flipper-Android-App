@@ -30,9 +30,7 @@ fun getEmulateProgressBrush(
     cursorColor: Color
 ): Brush {
     return when (emulateProgress) {
-        null -> {
-            SolidColor(cursorColor)
-        }
+        null -> SolidColor(cursorColor)
         is EmulateProgress.Growing -> growingBrush(
             backgroundColor,
             cursorColor,

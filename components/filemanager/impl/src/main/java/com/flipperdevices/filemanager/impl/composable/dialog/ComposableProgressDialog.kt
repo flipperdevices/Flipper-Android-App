@@ -48,12 +48,8 @@ fun ComposableProgressDialog(
         },
         text = {
             when (downloadProgress) {
-                is DownloadProgress.Fixed -> {
-                    ComposableFixedProgress(downloadProgress)
-                }
-                is DownloadProgress.Infinite -> {
-                    ComposableInfiniteProgress(downloadProgress)
-                }
+                is DownloadProgress.Fixed -> ComposableFixedProgress(downloadProgress)
+                is DownloadProgress.Infinite -> ComposableInfiniteProgress(downloadProgress)
             }
         }
     )

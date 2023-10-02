@@ -86,7 +86,7 @@ private fun ComposableGithubLink(
             modifier = Modifier
                 .padding(start = 8.dp),
             text = text,
-            style = LocalTypography.current.bodyR14.copy(
+            style = LocalTypography.current.bodyM14.copy(
                 textDecoration = TextDecoration.Underline
             ),
             color = LocalPallet.current.text100

@@ -43,15 +43,12 @@ fun ComposableFullDeviceInfoScreen(
     val basicInfo by basicInfoViewModel.getDeviceInfo().collectAsState()
 
     val inProgress = when (localDeviceStatus) {
-        is DeviceStatus.NoDeviceInformation -> {
-            localDeviceStatus.connectInProgress
-        }
-        is DeviceStatus.Connected -> {
+        is DeviceStatus.NoDeviceInformation -> localDeviceStatus.connectInProgress
+        is DeviceStatus.Connected ->
             flipperRpcInformation !is FlipperInformationStatus.Ready ||
                 basicInfo.storageInfo.externalStorageStatus !is FlipperInformationStatus.Ready ||
                 basicInfo.storageInfo.internalStorageStatus !is FlipperInformationStatus.Ready ||
                 basicInfo.firmwareVersion !is FlipperInformationStatus.Ready
-        }
         else -> false
     }
 

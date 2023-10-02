@@ -39,7 +39,7 @@ fun ComposableFapReport(
         modifier = Modifier
             .padding(start = 8.dp),
         text = text,
-        style = LocalTypography.current.bodyR14,
+        style = LocalTypography.current.bodyM14,
         color = LocalPallet.current.warningColor
     )
 }
