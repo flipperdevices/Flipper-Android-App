@@ -43,7 +43,7 @@ fun ComposableCatalogTabScreen(
             categoriesViewModel.onRefresh()
         }
     ) {
-        LazyColumn(modifier = it) {
+        LazyColumn {
             ComposableCategories(
                 loadState = categoriesLoadState,
                 onCategoryClick = onCategoryClick,

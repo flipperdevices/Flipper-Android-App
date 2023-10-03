@@ -15,13 +15,17 @@
 - [FIX] Use default splashscreen in Wear OS
 - [FIX] Fix compose layout in Wear OS
 - [FIX] Fix wearos font issue
-- [FIX] New mehanism emulate in Wear OS
+- [FIX] New mechanism emulate in Wear OS
 - [FIX] New button texts on fap errors dialog
 - [FIX] Scroll progress on wear OS app
 - [FIX] Bold Text in github link and app action
 - [FIX] Remove Control from Options
 - [FIX] Deprecated detekt rules
 - [FIX] Fix apostrophe in text "What’s New"
+- [FIX] Installed tab "need to update" count
+- [FIX] Fap app icon size in large app card
+- [FIX] Openning animation
+- [FIX] Swipe refresh modifier use in root level
 - [FIX] Fix overflow in key small
 
 # 1.6.4 

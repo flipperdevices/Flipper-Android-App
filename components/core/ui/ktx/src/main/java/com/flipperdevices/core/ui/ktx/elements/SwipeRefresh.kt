@@ -15,11 +15,11 @@ import androidx.compose.ui.draw.clipToBounds
 fun SwipeRefresh(
     onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
-    content: @Composable (Modifier) -> Unit,
+    content: @Composable () -> Unit,
 ) {
     val pullRefreshState = rememberPullRefreshState(false, onRefresh)
-    Box(Modifier.clipToBounds().pullRefresh(pullRefreshState)) {
-        content(modifier)
+    Box(modifier.clipToBounds().pullRefresh(pullRefreshState)) {
+        content()
         PullRefreshIndicator(false, pullRefreshState, Modifier.align(Alignment.TopCenter))
     }
 }

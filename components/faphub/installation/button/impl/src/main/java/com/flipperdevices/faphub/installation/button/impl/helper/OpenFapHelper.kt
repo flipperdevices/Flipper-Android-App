@@ -57,10 +57,13 @@ class OpenFapHelperImpl @Inject constructor(
                 fapButtonConfig == null -> OpenFapState.NotSupported
                 rpcVersion == null || rpcVersion < Constants.API_SUPPORTED_LOAD_FAP ->
                     OpenFapState.NotSupported
+
                 fapButtonConfig.version.buildState != FapBuildState.READY ->
                     OpenFapState.NotSupported
+
                 currentApp != null ->
-                    OpenFapState.InProgress(fapButtonConfig)
+                    OpenFapState.InProgress(currentApp)
+
                 else -> OpenFapState.Ready
             }
         }
