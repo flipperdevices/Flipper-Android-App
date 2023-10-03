@@ -45,7 +45,8 @@ fun ComposableKeySmall(
                 ),
                 text = keyPath.path.nameWithoutExtension,
                 style = LocalTypography.current.bodyR14,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1
             )
         }
     }
