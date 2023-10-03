@@ -23,15 +23,15 @@ class UnhandledExceptionImpl @Inject constructor(
 ) : UnhandledExceptionApi, Thread.UncaughtExceptionHandler, LogTagProvider {
     override val TAG = "UnhandledException"
     private var previousExceptionHandler: Thread.UncaughtExceptionHandler? = null
+    private var initialized = false
 
     override fun initExceptionHandler() {
-        val currentDefaultExceptionHandler = Thread.getDefaultUncaughtExceptionHandler()
-        if (currentDefaultExceptionHandler != this &&
-            currentDefaultExceptionHandler != null
-        ) {
-            previousExceptionHandler = currentDefaultExceptionHandler
+        if (initialized) {
+            return
         }
+        previousExceptionHandler = Thread.getDefaultUncaughtExceptionHandler()
         Thread.setDefaultUncaughtExceptionHandler(this)
+        initialized = true
     }
 
     override fun isBleConnectionForbiddenFlow(): Flow<Boolean> {
