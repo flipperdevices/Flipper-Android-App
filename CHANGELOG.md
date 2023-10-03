@@ -21,6 +21,7 @@
 - [FIX] Remove Control from Options
 - [FIX] Deprecated detekt rules
 - [FIX] Fix apostrophe in text "What’s New"
+- [FIX] Fix overflow in key small
 
 # 1.6.4 
 
