@@ -25,6 +25,7 @@
 - [FIX] Fap app icon size in large app card
 - [FIX] Openning animation
 - [FIX] Swipe refresh modifier use in root level
+- [FIX] Fix overflow in key small
 
 # 1.6.4 
 
