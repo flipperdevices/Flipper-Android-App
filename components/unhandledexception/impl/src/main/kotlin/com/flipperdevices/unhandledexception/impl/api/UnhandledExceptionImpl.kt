@@ -26,7 +26,7 @@ class UnhandledExceptionImpl @Inject constructor(
 
     override fun initExceptionHandler() {
         val currentDefaultExceptionHandler = Thread.getDefaultUncaughtExceptionHandler()
-        if (currentDefaultExceptionHandler !is UnhandledExceptionImpl &&
+        if (currentDefaultExceptionHandler != this &&
             currentDefaultExceptionHandler != null
         ) {
             previousExceptionHandler = currentDefaultExceptionHandler
