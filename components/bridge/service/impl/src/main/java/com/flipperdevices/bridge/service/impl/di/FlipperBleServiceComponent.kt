@@ -14,6 +14,7 @@ import com.flipperdevices.core.preference.pb.PairSettings
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.shake2report.api.Shake2ReportApi
+import com.flipperdevices.unhandledexception.api.UnhandledExceptionApi
 import com.squareup.anvil.annotations.ContributesTo
 import com.squareup.anvil.annotations.MergeComponent
 import dagger.BindsInstance
@@ -30,6 +31,7 @@ interface FlipperBleServiceComponentDependencies {
     val bluetoothScanner: FlipperScanner
     val bluetoothAdapter: BluetoothAdapter
     val flipperReadyListeners: Set<FlipperReadyListener>
+    val unhandledExceptionApi: UnhandledExceptionApi
 }
 
 @SingleIn(FlipperBleServiceGraph::class)

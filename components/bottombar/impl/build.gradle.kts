@@ -23,6 +23,7 @@ dependencies {
     implementation(projects.components.inappnotification.api)
     implementation(projects.components.hub.api)
     implementation(projects.components.deeplink.api)
+    implementation(projects.components.unhandledexception.api)
 
     implementation(libs.kotlin.serialization.json)
 

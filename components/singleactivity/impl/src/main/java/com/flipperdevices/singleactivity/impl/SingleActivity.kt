@@ -31,6 +31,7 @@ import com.flipperdevices.selfupdater.api.SelfUpdaterApi
 import com.flipperdevices.singleactivity.impl.composable.ComposableSingleActivityNavHost
 import com.flipperdevices.singleactivity.impl.di.SingleActivityComponent
 import com.flipperdevices.singleactivity.impl.utils.AppOpenMetricReported
+import com.flipperdevices.unhandledexception.api.UnhandledExceptionApi
 import kotlinx.collections.immutable.toPersistentSet
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -59,6 +60,9 @@ class SingleActivity :
     lateinit var appOpenMetricReported: AppOpenMetricReported
 
     @Inject
+    lateinit var unhandledExceptionApi: UnhandledExceptionApi
+
+    @Inject
     lateinit var metricApi: MetricApi
 
     private var globalNavController: NavHostController? = null
@@ -66,6 +70,8 @@ class SingleActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ComponentHolder.component<SingleActivityComponent>().inject(this)
+
+        unhandledExceptionApi.initExceptionHandler()
 
         info {
             "Create new activity with hashcode: ${this.hashCode()} " +

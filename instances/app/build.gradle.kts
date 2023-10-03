@@ -220,6 +220,9 @@ dependencies {
             implementation(projects.components.selfupdater.unknown)
     }
 
+    implementation(projects.components.unhandledexception.api)
+    implementation(projects.components.unhandledexception.impl)
+
     implementation(libs.ktor.client)
 
     implementation(libs.annotations)

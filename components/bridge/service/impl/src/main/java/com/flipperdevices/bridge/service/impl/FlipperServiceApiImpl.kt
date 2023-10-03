@@ -13,11 +13,13 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.PairSettings
+import com.flipperdevices.unhandledexception.api.UnhandledExceptionApi
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import java.util.concurrent.atomic.AtomicBoolean
@@ -30,7 +32,8 @@ class FlipperServiceApiImpl @Inject constructor(
     scopeProvider: Provider<CoroutineScope>,
     pairSettingsStoreProvider: Provider<DataStore<PairSettings>>,
     bleManagerProvider: Provider<FlipperBleManager>,
-    flipperSafeConnectWrapperProvider: Provider<FlipperSafeConnectWrapper>
+    flipperSafeConnectWrapperProvider: Provider<FlipperSafeConnectWrapper>,
+    unhandledExceptionApiProvider: Provider<UnhandledExceptionApi>
 ) : FlipperServiceApi, LogTagProvider {
     override val TAG = "FlipperServiceApi"
 
@@ -38,6 +41,7 @@ class FlipperServiceApiImpl @Inject constructor(
     private val pairSettingsStore by pairSettingsStoreProvider
     private val bleManager by bleManagerProvider
     private val flipperSafeConnectWrapper by flipperSafeConnectWrapperProvider
+    private val unhandledExceptionApi by unhandledExceptionApiProvider
 
     private val inited = AtomicBoolean(false)
     private val mutex = Mutex()
@@ -55,12 +59,14 @@ class FlipperServiceApiImpl @Inject constructor(
         }
         info { "Internal init and try connect" }
 
-        var deviceId: String? = null
+        var previousDeviceId: String? = null
         scope.launch(Dispatchers.Default) {
-            pairSettingsStore.data.collectLatest {
+            pairSettingsStore.data.map { it.deviceId }.collectLatest { deviceId ->
                 withLock(mutex, "connect") {
-                    if (it.deviceId != deviceId) {
-                        deviceId = it.deviceId
+                    if (!unhandledExceptionApi.isBleConnectionForbiddenFlow().first() &&
+                        deviceId != previousDeviceId
+                    ) {
+                        previousDeviceId = deviceId
                         flipperSafeConnectWrapper.onActiveDeviceUpdate(deviceId)
                     }
                 }
@@ -70,6 +76,10 @@ class FlipperServiceApiImpl @Inject constructor(
 
     override fun connectIfNotForceDisconnect() = launchWithLock(mutex, scope, "connect_soft") {
         if (disconnectForced) {
+            return@launchWithLock
+        }
+        if (unhandledExceptionApi.isBleConnectionForbiddenFlow().first()) {
+            info { "Failed soft connect, because ble connection forbidden" }
             return@launchWithLock
         }
         if (bleManager.isConnected() || flipperSafeConnectWrapper.isTryingConnected()) {

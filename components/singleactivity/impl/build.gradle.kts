@@ -19,6 +19,7 @@ dependencies {
     implementation(projects.components.firstpair.api)
     implementation(projects.components.updater.api)
     implementation(projects.components.selfupdater.api)
+    implementation(projects.components.unhandledexception.api)
 
     implementation(projects.components.analytics.metric.api)
     implementation(projects.components.bridge.synchronization.api)

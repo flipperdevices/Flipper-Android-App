@@ -3,6 +3,7 @@ package com.flipperdevices.bridge.impl.manager
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothGatt
 import android.content.Context
+import android.util.Log
 import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.BuildConfig
 import com.flipperdevices.bridge.api.di.FlipperBleServiceGraph
@@ -33,6 +34,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.debug
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.log.warn
 import com.flipperdevices.core.preference.pb.Settings
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
@@ -117,6 +119,8 @@ class FlipperBleManagerImpl @Inject constructor(
         flipperActionNotifier.notifyAboutAction()
         if (BLE_VLOG) {
             info { "From BleManager: $message" }
+        } else if (priority >= Log.WARN) {
+            warn { "From BleManager: $message" }
         }
     }
 
