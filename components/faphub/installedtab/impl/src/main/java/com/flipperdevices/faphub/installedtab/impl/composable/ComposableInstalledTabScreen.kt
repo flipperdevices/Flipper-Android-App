@@ -70,7 +70,7 @@ fun ComposableInstalledTabScreen(
                 modifier = screenModifier,
                 onRefresh = { viewModel.refresh(true) }
             ) {
-                LazyColumn(modifier = it) {
+                LazyColumn {
                     item {
                         ComposableUpdateAllButton(
                             state = buttonState,

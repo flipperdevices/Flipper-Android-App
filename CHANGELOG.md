@@ -24,6 +24,7 @@
 - [FIX] Installed tab "need to update" count
 - [FIX] Fap app icon size in large app card
 - [FIX] Openning animation
+- [FIX] Swipe refresh modifier use in root level
 
 # 1.6.4 
 
