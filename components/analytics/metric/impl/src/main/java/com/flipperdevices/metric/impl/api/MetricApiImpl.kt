@@ -5,6 +5,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.ComplexEvent
+import com.flipperdevices.metric.api.events.SessionState
 import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.metric.impl.clickhouse.ClickhouseApi
 import com.flipperdevices.metric.impl.countly.CountlyApi
@@ -42,5 +43,9 @@ class MetricApiImpl @Inject constructor(
         } catch (e: Exception) {
             error(e) { "Failed to report to Clickhouse simple event: $complexEvent" }
         }
+    }
+
+    override fun reportSessionState(state: SessionState) {
+        countlyApi.reportSessionState(state)
     }
 }
