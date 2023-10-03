@@ -61,7 +61,7 @@ class SingleActivity :
 
     @Inject
     lateinit var unhandledExceptionApi: UnhandledExceptionApi
-      
+
     @Inject
     lateinit var metricApi: MetricApi
 
