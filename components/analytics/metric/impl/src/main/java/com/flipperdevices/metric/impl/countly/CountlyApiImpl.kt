@@ -9,6 +9,7 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.preference.pb.Settings
+import com.flipperdevices.metric.api.events.SessionState
 import com.flipperdevices.metric.impl.BuildConfig
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
@@ -44,6 +45,14 @@ class CountlyApiImpl @Inject constructor(
             } catch (e: Exception) {
                 error(e) { "Failed report event $id with $params" }
             }
+        }
+    }
+
+    override fun reportSessionState(state: SessionState) {
+        when (state) {
+            is SessionState.ConfigurationChanged -> countly.onConfigurationChanged(state.configuration)
+            is SessionState.StartSession -> countly.onStart(state.activity)
+            SessionState.StopSession -> countly.onStop()
         }
     }
 
@@ -91,6 +100,7 @@ private fun filterParams(params: Map<String, Any?>): Map<String, Any?> {
             is Int,
             is Double,
             is Boolean -> mapValue
+
             is Long -> mapValue.toIntSafe()
             null -> null
             else -> mapValue.toString()

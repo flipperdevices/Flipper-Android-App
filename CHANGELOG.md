@@ -10,6 +10,7 @@
 - [Feature] Fap Catalog save sort
 - [Feature] Add metrics for faphub
 - [Feature] Add dialog about failed BLE HID connection
+- [Feature] Add countly sessions 
 - [FIX] Use by default dark theme in Wear OS
 - [FIX] Use default splashscreen in Wear OS
 - [FIX] Fix compose layout in Wear OS

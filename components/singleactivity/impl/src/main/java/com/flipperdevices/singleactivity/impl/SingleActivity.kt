@@ -1,6 +1,7 @@
 package com.flipperdevices.singleactivity.impl
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +25,8 @@ import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.flipperdevices.core.ui.navigation.LocalGlobalNavigationNavStack
 import com.flipperdevices.core.ui.theme.FlipperTheme
 import com.flipperdevices.deeplink.model.Deeplink
+import com.flipperdevices.metric.api.MetricApi
+import com.flipperdevices.metric.api.events.SessionState
 import com.flipperdevices.selfupdater.api.SelfUpdaterApi
 import com.flipperdevices.singleactivity.impl.composable.ComposableSingleActivityNavHost
 import com.flipperdevices.singleactivity.impl.di.SingleActivityComponent
@@ -58,6 +61,9 @@ class SingleActivity :
 
     @Inject
     lateinit var unhandledExceptionApi: UnhandledExceptionApi
+      
+    @Inject
+    lateinit var metricApi: MetricApi
 
     private var globalNavController: NavHostController? = null
 
@@ -131,5 +137,19 @@ class SingleActivity :
                 deepLinkHelper.onNewIntent(this@SingleActivity, navController, intent)
             }
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        metricApi.reportSessionState(SessionState.StartSession(this))
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        metricApi.reportSessionState(SessionState.ConfigurationChanged(newConfig))
+    }
+    override fun onStop() {
+        super.onStop()
+        metricApi.reportSessionState(SessionState.StopSession)
     }
 }
