@@ -23,7 +23,7 @@
 - [FIX] Fix apostrophe in text "What’s New"
 - [FIX] Installed tab "need to update" count
 - [FIX] Fap app icon size in large app card
-- [FIX] Openening animation
+- [FIX] Openning animation
 
 # 1.6.4 
 
