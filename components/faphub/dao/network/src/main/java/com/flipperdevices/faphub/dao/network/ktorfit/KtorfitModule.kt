@@ -25,7 +25,7 @@ class KtorfitModule {
         hostUrlBuilder: HostUrlBuilder
     ): Ktorfit {
         val hostUrl = runBlocking { hostUrlBuilder.getHostUrl() }
-        val url = "$hostUrl/api/v0/"
+        val url = "$hostUrl/api/"
         return Ktorfit.Builder()
             .baseUrl(url)
             .httpClient(httpClient)

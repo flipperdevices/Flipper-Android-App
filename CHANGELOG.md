@@ -11,6 +11,7 @@
 - [Feature] Add metrics for faphub
 - [Feature] Add dialog about failed BLE HID connection
 - [Feature] Add countly sessions 
+- [Feature] Add new connection scheme to FapHub
 - [FIX] Use by default dark theme in Wear OS
 - [FIX] Use default splashscreen in Wear OS
 - [FIX] Fix compose layout in Wear OS
@@ -36,7 +37,7 @@
 - [Feature] Add fap manifest caching
 - [Feature] Not send empty report in faphub
 - [Feature] Add hide app button
-- [Feature] Check Self Update App in Optiond (only for github)
+- [Feature] Check Self Update App in Option (only for github)
 - [CI] Add apk artifacts to Pull Requests
 - [CI] Fix failed build in merge_group
 - [CI] Bump deps except Sentry-gradle
