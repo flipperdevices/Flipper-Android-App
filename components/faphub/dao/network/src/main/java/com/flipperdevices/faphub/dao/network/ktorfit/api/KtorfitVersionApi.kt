@@ -1,12 +1,13 @@
 package com.flipperdevices.faphub.dao.network.ktorfit.api
 
 import com.flipperdevices.faphub.dao.network.ktorfit.model.KtorfitDetailedVersion
-import de.jensklingenberg.ktorfit.http.GET
-import de.jensklingenberg.ktorfit.http.Query
+import com.flipperdevices.faphub.dao.network.ktorfit.model.requests.KtorfitDetailedVersionRequest
+import de.jensklingenberg.ktorfit.http.Body
+import de.jensklingenberg.ktorfit.http.POST
 
 interface KtorfitVersionApi {
-    @GET("application/versions")
+    @POST("v0/1/application/versions")
     suspend fun getVersions(
-        @Query("uid") ids: List<String>
+        @Body versionRequest: KtorfitDetailedVersionRequest
     ): List<KtorfitDetailedVersion>
 }
