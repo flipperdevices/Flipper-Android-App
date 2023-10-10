@@ -27,6 +27,7 @@
 - [FIX] Openning animation
 - [FIX] Swipe refresh modifier use in root level
 - [FIX] Fix overflow in key small
+- [FIX] Try fix "The firmware update button is constantly active until the application is restarted"
 
 # 1.6.4 
 
