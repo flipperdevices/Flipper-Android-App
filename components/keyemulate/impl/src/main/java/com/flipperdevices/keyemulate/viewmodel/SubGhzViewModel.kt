@@ -15,6 +15,7 @@ import com.flipperdevices.keyemulate.exception.ForbiddenFrequencyException
 import com.flipperdevices.keyemulate.model.EmulateButtonState
 import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyemulate.model.EmulateProgress
+import com.flipperdevices.screenstreaming.api.ScreenStreamingFeatureEntry
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.update
@@ -25,8 +26,9 @@ class SubGhzViewModel @VMInject constructor(
     private val serviceProvider: FlipperServiceProvider,
     private val emulateHelper: EmulateHelper,
     synchronizationApi: SynchronizationApi,
-    application: Application
-) : EmulateViewModel(serviceProvider, emulateHelper, synchronizationApi, application) {
+    application: Application,
+    screenStreamingEntry: ScreenStreamingFeatureEntry
+) : EmulateViewModel(serviceProvider, emulateHelper, synchronizationApi, screenStreamingEntry, application) {
     override val TAG = "SubGhzViewModel"
 
     override suspend fun onStartEmulateInternal(

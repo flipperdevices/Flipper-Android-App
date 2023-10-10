@@ -65,12 +65,12 @@ fun ComposableInstalledTabScreen(
 
         is FapInstalledScreenState.Loaded,
         FapInstalledScreenState.Loading,
-        is FapInstalledScreenState.LoadedOffline -> {
+        is FapInstalledScreenState.LoadedOffline ->
             SwipeRefresh(
                 modifier = screenModifier,
                 onRefresh = { viewModel.refresh(true) }
             ) {
-                LazyColumn(modifier = it) {
+                LazyColumn {
                     item {
                         ComposableUpdateAllButton(
                             state = buttonState,
@@ -90,7 +90,6 @@ fun ComposableInstalledTabScreen(
                     )
                 }
             }
-        }
     }
 }
 

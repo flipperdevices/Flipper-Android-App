@@ -1,9 +1,11 @@
 package com.flipperdevices.core.ui.dialog.composable.multichoice
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -41,6 +43,11 @@ class FlipperMultiChoiceDialogModel private constructor(
             return this
         }
 
+        fun setCloseOnClickOutside(closeOnClickOutside: Boolean): Builder {
+            this.closeOnClickOutside = closeOnClickOutside
+            return this
+        }
+
         fun setDescription(@StringRes textId: Int): Builder {
             textComposable = { ComposableDescription(AnnotatedString(stringResource(textId))) }
             return this
@@ -64,6 +71,7 @@ class FlipperMultiChoiceDialogModel private constructor(
         @Composable
         private fun ComposableDescription(text: AnnotatedString) {
             Text(
+                modifier = Modifier.fillMaxWidth(),
                 text = text,
                 style = LocalTypography.current.bodyR14,
                 textAlign = TextAlign.Center,

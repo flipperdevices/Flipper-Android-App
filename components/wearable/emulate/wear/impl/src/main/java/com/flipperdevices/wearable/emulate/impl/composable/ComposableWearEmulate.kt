@@ -28,52 +28,45 @@ fun ComposableWearEmulate(
         .fillMaxRectangle()
         .padding(horizontal = 10.dp, vertical = 10.dp)
     when (state) {
-        WearEmulateState.NotInitialized -> {
+        WearEmulateState.NotInitialized ->
             ComposableActionLoading(
                 keyEmulateUiApi,
                 WearLoadingState.INITIALIZING,
                 modifier
             )
-        }
-        WearEmulateState.ConnectingToFlipper -> {
+        WearEmulateState.ConnectingToFlipper ->
             ComposableActionLoading(
                 keyEmulateUiApi,
                 WearLoadingState.CONNECTING_FLIPPER,
                 modifier
             )
-        }
-        WearEmulateState.NodeFinding -> {
+        WearEmulateState.NodeFinding ->
             ComposableActionLoading(
                 keyEmulateUiApi,
                 WearLoadingState.FINDING_PHONE,
                 modifier
             )
-        }
-        WearEmulateState.TestConnection -> {
+        WearEmulateState.TestConnection ->
             ComposableActionLoading(
                 keyEmulateUiApi,
                 WearLoadingState.TEST_CONNECTION,
                 modifier
             )
-        }
-        WearEmulateState.UnsupportedFlipper -> {
+        WearEmulateState.UnsupportedFlipper ->
             ComposableActionDisable(
                 keyEmulateUiApi,
                 null,
                 modifier
             )
-        }
-        WearEmulateState.NotFoundNode -> {
+        WearEmulateState.NotFoundNode ->
             ComposableActionLoading(
                 keyEmulateUiApi,
                 WearLoadingState.NOT_FOUND_PHONE,
                 modifier
             )
-        }
         is WearEmulateState.Emulating,
-        is WearEmulateState.ReadyForEmulate -> {
+        is WearEmulateState.ReadyForEmulate ->
             EmulateButton(state, keyEmulateUiApi, emulateViewModel, modifier, onBack)
-        }
     }
 }
 

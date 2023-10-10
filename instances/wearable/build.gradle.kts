@@ -36,6 +36,9 @@ dependencies {
     implementation(projects.components.keyparser.api)
     implementation(projects.components.keyparser.noop)
 
+    implementation(projects.components.screenstreaming.api)
+    implementation(projects.components.screenstreaming.noop)
+
     implementation(projects.components.keyemulate.api)
     implementation(projects.components.keyemulate.impl)
     implementation(projects.components.bridge.service.api)

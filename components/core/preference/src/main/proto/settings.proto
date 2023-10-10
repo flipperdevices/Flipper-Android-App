@@ -56,4 +56,5 @@ message Settings {
   bool use_dev_catalog = 23;
   bool use_new_infrared = 24;
   SelectedCatalogSort selected_catalog_sort = 25;
+  bool fatal_ble_security_exception_happens = 26;
 }

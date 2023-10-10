@@ -9,7 +9,7 @@
     <string name="fapscreen_changelog_title">Changelog</string>
     <string name="fapscreen_changelog_more">More</string>
     <string name="fapscreen_developer_title">Developer</string>
-    <string name="fapscreen_developer_github">View on GitHub</string>
+    <string name="fapscreen_developer_github">Repository</string>
     <string name="fapscreen_developer_manifest">Manifest</string>
     <string name="fapscreen_developer_report">Report App</string>
     <string name="fapscreen_developer_hide">Hide App</string>

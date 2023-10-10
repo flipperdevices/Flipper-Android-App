@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.ktx.image.Picture
+import com.flipperdevices.core.ui.navigation.LocalGlobalNavigationNavStack
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyemulate.composable.common.ComposableActionDisable
 import com.flipperdevices.keyemulate.composable.common.ComposableActionLoading
@@ -24,6 +25,7 @@ fun ComposableSimpleEmulateButton(
     isSynchronized: Boolean,
     modifier: Modifier = Modifier
 ) {
+    val rootNavController = LocalGlobalNavigationNavStack.current
     val emulateViewModel = tangleViewModel<SimpleEmulateViewModel>()
     val emulateButtonState by emulateViewModel.getEmulateButtonStateFlow().collectAsState()
 
@@ -45,7 +47,9 @@ fun ComposableSimpleEmulateButton(
         return
     }
 
-    ComposableErrorDialogs(emulateButtonState, emulateViewModel::closeDialog)
+    ComposableErrorDialogs(emulateButtonState, emulateViewModel::closeDialog) {
+        emulateViewModel.goToRemoteScreen(rootNavController)
+    }
 
     when (emulateButtonState) {
         is EmulateButtonState.Disabled -> ComposableActionDisable(

@@ -61,9 +61,7 @@ class BasicInfoViewModel @VMInject constructor(
                         force = true
                     )
                 }
-                else -> {
-                    flipperStorageInformationApi.reset()
-                }
+                else -> flipperStorageInformationApi.reset()
             }
         }.launchIn(viewModelScope)
 

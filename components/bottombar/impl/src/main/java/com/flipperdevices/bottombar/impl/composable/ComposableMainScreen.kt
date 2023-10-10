@@ -23,6 +23,7 @@ import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.inappnotification.api.InAppNotificationRenderer
+import com.flipperdevices.unhandledexception.api.UnhandledExceptionRenderApi
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.collections.immutable.ImmutableSet
 import tangle.viewmodel.compose.tangleViewModel
@@ -31,6 +32,7 @@ import tangle.viewmodel.compose.tangleViewModel
 fun ComposableMainScreen(
     connectionApi: ConnectionApi,
     notificationRenderer: InAppNotificationRenderer,
+    unhandledExceptionRendererApi: UnhandledExceptionRenderApi,
     featureEntries: ImmutableSet<AggregateFeatureEntry>,
     composableEntries: ImmutableSet<ComposableFeatureEntry>,
     navController: NavHostController,
@@ -57,7 +59,11 @@ fun ComposableMainScreen(
             )
         }
     ) {
-        Box(modifier = Modifier.padding(it).fillMaxSize()) {
+        Box(
+            modifier = Modifier
+                .padding(it)
+                .fillMaxSize()
+        ) {
             val graph = remember(startDestination, featureEntries, composableEntries) {
                 navController.createGraph(startDestination, null) {
                     featureEntries.forEach {
@@ -82,6 +88,7 @@ fun ComposableMainScreen(
                 notificationRenderer = notificationRenderer
             )
             connectionApi.CheckAndShowUnsupportedDialog()
+            unhandledExceptionRendererApi.ComposableUnhandledExceptionRender(Modifier)
         }
     }
     val systemUIController = rememberSystemUiController()

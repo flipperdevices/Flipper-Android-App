@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.flipperdevices.core.ui.ktx.onScrollHoldPress
+import com.flipperdevices.core.ui.navigation.LocalGlobalNavigationNavStack
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyemulate.composable.common.ComposableActionDisable
 import com.flipperdevices.keyemulate.composable.common.ComposableActionLoading
@@ -23,6 +24,7 @@ internal fun ComposableInfraredSendButton(
     isSynchronized: Boolean,
     modifier: Modifier = Modifier,
 ) {
+    val rootNavController = LocalGlobalNavigationNavStack.current
     val emulateViewModel = tangleViewModel<InfraredViewModel>()
     val name = emulateConfig.args ?: return
 
@@ -38,7 +40,9 @@ internal fun ComposableInfraredSendButton(
         return
     }
 
-    ComposableErrorDialogs(emulateButtonState, emulateViewModel::closeDialog)
+    ComposableErrorDialogs(emulateButtonState, emulateViewModel::closeDialog) {
+        emulateViewModel.goToRemoteScreen(rootNavController)
+    }
 
     when (emulateButtonState) {
         is EmulateButtonState.Disabled -> ComposableActionDisable(
@@ -48,14 +52,13 @@ internal fun ComposableInfraredSendButton(
             reason = null
         )
         is EmulateButtonState.Active,
-        is EmulateButtonState.Inactive -> {
+        is EmulateButtonState.Inactive ->
             ComposableActiveStateEmulateInternal(
                 modifier = modifier,
                 emulateButtonState = emulateButtonState,
                 emulateViewModel = emulateViewModel,
                 emulateConfig = emulateConfig
             )
-        }
         is EmulateButtonState.Loading -> ComposableActionLoading(
             modifier = modifier,
             loadingState = null

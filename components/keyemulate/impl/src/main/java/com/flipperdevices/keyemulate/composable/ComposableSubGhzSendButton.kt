@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.image.Picture
 import com.flipperdevices.core.ui.ktx.onHoldPress
+import com.flipperdevices.core.ui.navigation.LocalGlobalNavigationNavStack
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyemulate.composable.common.ComposableActionDisable
@@ -36,6 +37,7 @@ fun ComposableSubGhzSendButton(
     isSynchronized: Boolean,
     modifier: Modifier = Modifier
 ) {
+    val rootNavController = LocalGlobalNavigationNavStack.current
     val emulateViewModel = tangleViewModel<SubGhzViewModel>()
     val emulateButtonState by emulateViewModel.getEmulateButtonStateFlow().collectAsState()
 
@@ -49,7 +51,9 @@ fun ComposableSubGhzSendButton(
         return
     }
 
-    ComposableErrorDialogs(emulateButtonState, emulateViewModel::closeDialog)
+    ComposableErrorDialogs(emulateButtonState, emulateViewModel::closeDialog) {
+        emulateViewModel.goToRemoteScreen(rootNavController)
+    }
 
     when (emulateButtonState) {
         is EmulateButtonState.Disabled -> ComposableActionDisable(
@@ -59,14 +63,13 @@ fun ComposableSubGhzSendButton(
             reason = (emulateButtonState as EmulateButtonState.Disabled).reason
         )
         is EmulateButtonState.Active,
-        is EmulateButtonState.Inactive -> {
+        is EmulateButtonState.Inactive ->
             ComposableActiveStateEmulateInternal(
                 modifier = modifier,
                 emulateButtonState = emulateButtonState,
                 emulateViewModel = emulateViewModel,
                 emulateConfig = emulateConfig
             )
-        }
         is EmulateButtonState.Loading -> ComposableActionLoading(
             modifier = modifier,
             loadingState = (emulateButtonState as EmulateButtonState.Loading).state
