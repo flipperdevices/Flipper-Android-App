@@ -8,11 +8,12 @@
 - [Feature] Check Self Update App in Options (only for github)
 - [Feature] Fap Catalog save sort
 - [Feature] Add metrics for faphub
+- [Feature] Add open mfkey32 deeplink
 - [FIX] Use by default dark theme in Wear OS
 - [FIX] Use default splashscreen in Wear OS
 - [FIX] Fix compose layout in Wear OS
 - [FIX] Fix wearos font issue
-- [FIX] New mehanism emulate in Wear OS
+- [FIX] New mechanism emulate in Wear OS
 - [FIX] New button texts on fap errors dialog
 
 # 1.6.4 

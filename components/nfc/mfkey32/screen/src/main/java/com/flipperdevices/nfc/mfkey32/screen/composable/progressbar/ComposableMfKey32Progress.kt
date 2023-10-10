@@ -30,13 +30,15 @@ import com.flipperdevices.nfc.mfkey32.screen.model.MfKey32State
 @Composable
 fun ComposableMfKey32Progress(navController: NavController, state: MfKey32State) {
     when (state) {
+        MfKey32State.WaitingForFlipper -> ComposableWaitingFlipperConnection()
+
         is MfKey32State.Calculating -> ComposableMfKey32ProgressInternal(
             titleId = R.string.mfkey32_calculation_title,
             descriptionId = R.string.mfkey32_calculation_desc,
             iconId = R.drawable.pic_key,
             percent = state.percent,
             accentColor = LocalPallet.current.calculationMfKey32,
-            secondColor = LocalPallet.current.calculationMfKey32Background
+            secondColor = LocalPallet.current.calculationMfKey32Background,
         )
         is MfKey32State.DownloadingRawFile -> ComposableMfKey32ProgressInternal(
             titleId = R.string.mfkey32_downloading_title,
@@ -99,7 +101,8 @@ private fun ComposableMfKey32ProgressInternal(
         if (percent != null) {
             val animatedProgress by animateFloatAsState(
                 targetValue = percent,
-                animationSpec = tween(durationMillis = 500, easing = LinearEasing)
+                animationSpec = tween(durationMillis = 500, easing = LinearEasing),
+                label = "Progress"
             )
 
             FlipperProgressIndicator(

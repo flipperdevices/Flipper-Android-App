@@ -41,6 +41,7 @@ fun ComposableMfKey32Screen(
             { isDisplayDialog = true }
         }
         is MfKey32State.Error,
+        MfKey32State.WaitingForFlipper,
         is MfKey32State.Saved -> {
             { navController.popBackStack() }
         }
