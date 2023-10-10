@@ -1,4 +1,4 @@
-package com.flipperdevices.core.ui.flippermockup
+package com.flipperdevices.core.ui.flippermockup.internal
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
@@ -13,11 +13,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.flipperdevices.core.ui.flippermockup.R
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 
-private const val FLIPPER_DEFAULT_HEIGHT = 100f
-private const val FLIPPER_DEFAULT_WIDTH = 238f
-private const val FLIPPER_RATIO = FLIPPER_DEFAULT_WIDTH / FLIPPER_DEFAULT_HEIGHT
+internal const val FLIPPER_DEFAULT_HEIGHT = 100f
+internal const val FLIPPER_DEFAULT_WIDTH = 238f
+internal const val FLIPPER_RATIO = FLIPPER_DEFAULT_WIDTH / FLIPPER_DEFAULT_HEIGHT
 
 @Composable
 internal fun ComposableFlipperMockupInternal(

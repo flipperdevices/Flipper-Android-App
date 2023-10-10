@@ -9,6 +9,7 @@
 - [Feature] Check Self Update App in Options (only for github)
 - [Feature] Fap Catalog save sort
 - [Feature] Add metrics for faphub
+- [Feature] Add open mfkey32 deeplink
 - [Feature] Add dialog about failed BLE HID connection
 - [Feature] Add countly sessions 
 - [FIX] Use by default dark theme in Wear OS
