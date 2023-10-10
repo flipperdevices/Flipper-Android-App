@@ -44,7 +44,7 @@ class UpdaterApiImpl @Inject constructor(
 ) : UpdaterApi, LogTagProvider {
     override val TAG = "UpdaterApi"
 
-    private val updatingState = MutableStateFlow<UpdatingStateWithRequest>(
+    private val updatingState = MutableStateFlow(
         UpdatingStateWithRequest(UpdatingState.NotStarted, request = null)
     )
 
