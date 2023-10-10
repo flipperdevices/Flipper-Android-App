@@ -27,8 +27,6 @@ data class KtorfitApplicationApiRequest(
     val target: String?,
     @SerialName("api")
     val api: String?,
-    @SerialName("has_version")
-    val hasVersion: Boolean? = null,
     @SerialName("is_latest_release_version")
     val isLatestReleaseVersion: Boolean? = null
 ) {
@@ -76,7 +74,6 @@ data class KtorfitApplicationApiRequest(
         applications = applications,
         target = null,
         api = null,
-        hasVersion = true,
         isLatestReleaseVersion = true
     )
 }
