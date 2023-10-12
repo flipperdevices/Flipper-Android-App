@@ -13,4 +13,8 @@
     <string name="infrared_dialog_how_to_use_title">How To Use</string>
     <string name="infrared_dialog_how_to_use_text">Point Flipper Zero at the device. Tap or hold the button from your phone to send the signal remotely</string>
     <string name="infrared_dialog_how_to_use_btn">Got It</string>
+    <string name="infrared_title">Key Info</string>
+    <string name="infrared_loading_emulate">Loading</string>
+    <string name="infrared_update_flipper">Update firmware to use this feature</string>
+    <string name="infrared_connect_flipper">Flipper not connected</string>
 </resources>
