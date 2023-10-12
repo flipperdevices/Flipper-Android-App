@@ -5,7 +5,7 @@ import de.jensklingenberg.ktorfit.http.GET
 import de.jensklingenberg.ktorfit.http.Query
 
 interface KtorfitCategoryApi {
-    @GET("category")
+    @GET("v0/0/category")
     suspend fun getAll(
         @Query("api") sdkApi: String?,
         @Query("target") target: String?

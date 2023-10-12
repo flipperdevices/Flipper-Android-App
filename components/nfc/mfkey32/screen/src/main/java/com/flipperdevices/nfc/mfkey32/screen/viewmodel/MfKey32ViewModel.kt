@@ -4,11 +4,11 @@ import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
-import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.core.ktx.jre.pmap
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
@@ -27,14 +27,17 @@ import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.deleteRequest
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.asCoroutineDispatcher
-import kotlinx.coroutines.async
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import tangle.viewmodel.VMInject
 import java.io.FileNotFoundException
 import java.math.BigInteger
@@ -55,13 +58,15 @@ class MfKey32ViewModel @VMInject constructor(
         Runtime.getRuntime().availableProcessors()
     ).asCoroutineDispatcher()
     private val mfKey32StateFlow = MutableStateFlow<MfKey32State>(
-        MfKey32State.DownloadingRawFile(null)
+        MfKey32State.Error(ErrorType.FLIPPER_CONNECTION)
     )
 
     private val existedKeysStorage = ExistedKeysStorage(context)
     private val fileWithNonce by lazy {
         FlipperStorageProvider.getTemporaryFile(context)
     }
+    private var stateJob: Job? = null
+    private val mutex = Mutex()
 
     init {
         flipperServiceProvider.provideServiceApi(this, this)
@@ -72,45 +77,71 @@ class MfKey32ViewModel @VMInject constructor(
         existedKeysStorage.getFoundedInformation()
 
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
-        viewModelScope.launch(Dispatchers.Default) {
-            if (!prepare(serviceApi)) {
-                return@launch
-            }
-
-            val nonces = KeyNonceParser.parse(fileWithNonce.readText())
-            mfKey32StateFlow.emit(MfKey32State.Calculating(0f))
-            nonces.map { nonce ->
-                async(bruteforceDispatcher) {
-                    val key = nfcToolsApi.bruteforceKey(nonce)
-                    info { "Key for nonce $nonce = $key" }
-                    onFoundKey(nonce, key, nonces.size)
+        viewModelScope.launch {
+            mutex.withLock {
+                val localJob = stateJob
+                stateJob = viewModelScope.launch(Dispatchers.Default) {
+                    localJob?.cancelAndJoin()
+                    serviceApi
+                        .connectionInformationApi
+                        .getConnectionStateFlow()
+                        .collectLatest { connectionState ->
+                            startCalculation(serviceApi, connectionState)
+                        }
                 }
-            }.forEach {
-                it.await()
             }
-            mfKey32StateFlow.emit(MfKey32State.Uploading)
-            val addedKeys = try {
-                existedKeysStorage.upload(serviceApi.requestApi)
-            } catch (exception: Throwable) {
-                error(exception) { "When save keys" }
-                mfKey32StateFlow.emit(MfKey32State.Error(ErrorType.READ_WRITE))
-                return@launch
-            }
-            deleteBruteforceApp(serviceApi.requestApi)
-            mfKey32StateFlow.emit(MfKey32State.Saved(addedKeys.toImmutableList()))
         }
     }
 
-    private suspend fun prepare(serviceApi: FlipperServiceApi): Boolean {
-        val connectionState = serviceApi.connectionInformationApi.getConnectionStateFlow().first()
+    private suspend fun startCalculation(
+        serviceApi: FlipperServiceApi,
+        connectionState: ConnectionState
+    ) {
+        info { "Start calculation on $connectionState" }
+        when (connectionState) {
+            ConnectionState.Connecting,
+            ConnectionState.Disconnecting,
+            ConnectionState.RetrievingInformation,
+            ConnectionState.Initializing -> {
+                mfKey32StateFlow.emit(MfKey32State.WaitingForFlipper)
+                return
+            }
 
-        if (connectionState !is ConnectionState.Ready ||
-            connectionState.supportedState != FlipperSupportedState.READY
-        ) {
-            error { "Flipper not connected" }
-            mfKey32StateFlow.emit(MfKey32State.Error(ErrorType.FLIPPER_CONNECTION))
-            return false
+            is ConnectionState.Disconnected -> {
+                mfKey32StateFlow.emit(MfKey32State.Error(ErrorType.FLIPPER_CONNECTION))
+                return
+            }
+
+            is ConnectionState.Ready -> {}
         }
+
+        if (!prepare(serviceApi)) {
+            info { "Failed prepare" }
+            return
+        }
+
+        val nonces = KeyNonceParser.parse(fileWithNonce.readText())
+        mfKey32StateFlow.emit(MfKey32State.Calculating(0f))
+        nonces.pmap(bruteforceDispatcher) { nonce ->
+            val key = nfcToolsApi.bruteforceKey(nonce)
+            info { "Key for nonce $nonce = $key" }
+            onFoundKey(nonce, key, nonces.size)
+        }
+        mfKey32StateFlow.emit(MfKey32State.Uploading)
+        val addedKeys = try {
+            existedKeysStorage.upload(serviceApi.requestApi)
+        } catch (exception: Throwable) {
+            error(exception) { "When save keys" }
+            mfKey32StateFlow.emit(MfKey32State.Error(ErrorType.READ_WRITE))
+            return
+        }
+        deleteBruteforceApp(serviceApi.requestApi)
+        mfKey32StateFlow.emit(MfKey32State.Saved(addedKeys.toImmutableList()))
+    }
+
+    private suspend fun prepare(serviceApi: FlipperServiceApi): Boolean {
+        info { "Flipper connected" }
+        MfKey32State.DownloadingRawFile(null)
 
         try {
             DownloadFileHelper.downloadFile(

@@ -6,6 +6,7 @@ import com.flipperdevices.updater.card.helpers.delegates.UpdateOfferDelegate
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
 import javax.inject.Inject
 
 interface UpdateOfferProviderApi {
@@ -18,10 +19,12 @@ class UpdateOfferProvider @Inject constructor(
 ) : UpdateOfferProviderApi {
 
     override fun isUpdateRequire(serviceApi: FlipperServiceApi): Flow<Boolean> {
-        return combine(
-            delegates.map { it.isRequire(serviceApi) }
-        ) { delegate ->
-            return@combine delegate.any { it }
+        return serviceApi.connectionInformationApi.getConnectionStateFlow().flatMapLatest {
+            combine(
+                delegates.map { it.isRequire(serviceApi) }
+            ) { delegate ->
+                return@combine delegate.any { it }
+            }
         }
     }
 }

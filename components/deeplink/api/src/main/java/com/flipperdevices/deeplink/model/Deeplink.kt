@@ -45,4 +45,12 @@ sealed class Deeplink : Parcelable {
     data class Fap(
         val appId: String,
     ) : Deeplink()
+
+    @Parcelize
+    @Serializable
+    data object OpenMfKey : Deeplink()
+
+    @Parcelize
+    @Serializable
+    data object OpenUpdate : Deeplink()
 }

@@ -9,7 +9,7 @@ import io.ktor.client.statement.HttpStatement
 interface KtorfitBundleApi {
 
     @Streaming
-    @GET("application/version/{uid}/build/compatible")
+    @GET("v0/0/application/version/{uid}/build/compatible")
     suspend fun downloadBundle(
         @Path("uid") versionUid: String,
         @Query("target") target: String,
