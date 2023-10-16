@@ -1,6 +1,8 @@
 # Changelog
 
-# 1.6.5 - In progress
+# 1.6.6 - In progress
+
+# 1.6.5
 
 - [Feature] Infrared Screen with old style
 - [Feature] Flipper Busy Dialog with remote
