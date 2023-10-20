@@ -34,7 +34,7 @@ class SelfUpdaterGooglePlay @Inject constructor(
     override val TAG: String get() = "SelfUpdaterGooglePlay"
 
     private val appUpdateManager by lazy { AppUpdateManagerFactory.create(context) }
-    private val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+    private val appUpdateInfoTask by lazy { appUpdateManager.appUpdateInfo }
     private var updateListener = InstallStateUpdatedListener(::processUpdateListener)
 
     private fun processUpdateListener(state: InstallState) {
