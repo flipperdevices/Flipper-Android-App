@@ -1,6 +1,7 @@
 # Changelog
 
 # 1.6.6 - In progress
+- [FIX] Fix crash gms version on nogms environment
 
 # 1.6.5
 
