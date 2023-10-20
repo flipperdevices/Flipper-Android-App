@@ -2,6 +2,8 @@
 
 # 1.6.6 - In progress
 
+- [Feature] Bump deps
+
 # 1.6.5
 
 - [Feature] Infrared Screen with old style
