@@ -29,9 +29,10 @@ internal fun ComposableInfraredEditorScreenReady(
     onDismissDialog: () -> Unit,
     onCancel: () -> Unit,
     onSave: () -> Unit,
-    onTapRemote: (Int) -> Unit,
+    onChangeName: (Int, String) -> Unit,
     onDelete: (Int) -> Unit,
     onEditOrder: (Int, Int) -> Unit,
+    onChangeIndexEditor: (Int) -> Unit,
 ) {
     ComposableInfraredEditorDialog(
         isShow = dialogState,
@@ -59,7 +60,7 @@ internal fun ComposableInfraredEditorScreenReady(
 
         LazyColumn(
             state = state.listState,
-            contentPadding = PaddingValues(horizontal = 12.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp),
             modifier = Modifier
                 .reorderable(state)
@@ -73,9 +74,12 @@ internal fun ComposableInfraredEditorScreenReady(
                 ) {
                     ComposableInfraredEditorItem(
                         remoteName = remote.name,
-                        onTap = { onTapRemote(index) },
+                        onChangeName = { onChangeName(index, it) },
                         onDelete = { onDelete(index) },
-                        dragModifier = Modifier.detectReorderAfterLongPress(state)
+                        dragModifier = Modifier.detectReorderAfterLongPress(state),
+                        onChangeIndexEditor = { onChangeIndexEditor(index) },
+                        isActive = keyState.activeRemote == index,
+                        isError = index in keyState.errorRemotes
                     )
                 }
             }

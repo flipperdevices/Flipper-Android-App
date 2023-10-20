@@ -1,13 +1,20 @@
 package com.flipperdevices.infrared.editor.viewmodel
 
+import android.content.Context
+import android.os.Vibrator
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.flipperdevices.bridge.api.utils.FlipperSymbolFilter
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UpdateKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
+import com.flipperdevices.core.ktx.android.vibrateCompat
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import com.flipperdevices.infrared.editor.R
 import com.flipperdevices.infrared.editor.api.EXTRA_KEY_PATH
 import com.flipperdevices.infrared.editor.model.InfraredEditorState
@@ -24,17 +31,26 @@ import tangle.inject.TangleParam
 import tangle.viewmodel.VMInject
 import java.nio.charset.Charset
 
+private const val MAX_SIZE_REMOTE_LENGTH = 21
+private const val VIBRATOR_TIME_MS = 500L
+
+@Suppress("TooManyFunctions")
 class InfraredViewModel @VMInject constructor(
     @TangleParam(EXTRA_KEY_PATH)
     private val keyPath: FlipperKeyPath,
     private val simpleKeyApi: SimpleKeyApi,
     private val updateKeyApi: UpdateKeyApi,
-    private val synchronizationApi: SynchronizationApi
-) : ViewModel() {
-    private val keyStateFlow = MutableStateFlow<InfraredEditorState>(InfraredEditorState.InProgress)
+    private val synchronizationApi: SynchronizationApi,
+    context: Context
+) : ViewModel(), LogTagProvider {
+    override val TAG: String = "InfraredViewModel"
+
+    private var vibrator = ContextCompat.getSystemService(context, Vibrator::class.java)
+
     private val flipperKeyFlow = MutableStateFlow<FlipperKey?>(null)
     private val flipperParsedKeyFlow = MutableStateFlow<ImmutableList<InfraredRemote>?>(null)
 
+    private val keyStateFlow = MutableStateFlow<InfraredEditorState>(InfraredEditorState.InProgress)
     fun getKeyState() = keyStateFlow.asStateFlow()
 
     private val dialogStateFlow = MutableStateFlow(false)
@@ -77,10 +93,27 @@ class InfraredViewModel @VMInject constructor(
     fun processSave(onEndAction: () -> Unit) {
         viewModelScope.launch(Dispatchers.Default) {
             if (isDirtyKey().not()) {
-                onEndAction()
+                withContext(Dispatchers.Main) {
+                    onEndAction()
+                    return@withContext
+                }
+            }
+            val keyState = keyStateFlow.first()
+            val remotes = keyState as? InfraredEditorState.Ready ?: return@launch
+            val errorRemotes = getErrorRemotes(remotes)
+            info { "Errors remote: $errorRemotes count ${errorRemotes.size}" }
+
+            if (errorRemotes.isNotEmpty()) {
+                vibrator?.vibrateCompat(VIBRATOR_TIME_MS)
+                keyStateFlow.emit(
+                    InfraredEditorState.Ready(
+                        remotes = keyState.remotes,
+                        keyName = keyState.keyName,
+                        errorRemotes = errorRemotes
+                    )
+                )
                 return@launch
             }
-            val remotes = keyStateFlow.first() as? InfraredEditorState.Ready ?: return@launch
             val flipperKey = flipperKeyFlow.first() ?: return@launch
             val newFlipperKey = InfraredStateParser.mapStateToFlipperKey(flipperKey, remotes)
 
@@ -91,6 +124,20 @@ class InfraredViewModel @VMInject constructor(
                 onEndAction()
             }
         }
+    }
+
+    private fun getErrorRemotes(state: InfraredEditorState.Ready): ImmutableList<Int> {
+        val remotes = state.remotes
+        val errorRemotes = mutableListOf<Int>()
+
+        remotes.forEachIndexed { index, remote ->
+            val countRepeat = remotes.count { it.name == remote.name }
+            if (remote.name.isEmpty() || countRepeat > 1) {
+                errorRemotes.add(index)
+            }
+        }
+
+        return errorRemotes.toPersistentList()
     }
 
     fun processCancel(onEndAction: () -> Unit) {
@@ -140,7 +187,46 @@ class InfraredViewModel @VMInject constructor(
             keyStateFlow.emit(
                 InfraredEditorState.Ready(
                     remotes = remotes.toPersistentList(),
-                    keyName = keyState.keyName
+                    keyName = keyState.keyName,
+                    activeRemote = null
+                )
+            )
+        }
+    }
+
+    fun editRemoteName(index: Int, source: String) {
+        var value = FlipperSymbolFilter.filterUnacceptableSymbol(source)
+        if (value.length > MAX_SIZE_REMOTE_LENGTH) {
+            value = value.substring(0, MAX_SIZE_REMOTE_LENGTH)
+            vibrator?.vibrateCompat(VIBRATOR_TIME_MS)
+        }
+        viewModelScope.launch(Dispatchers.Default) {
+            val keyState = keyStateFlow.first()
+            if (keyState !is InfraredEditorState.Ready) return@launch
+
+            val remotes = keyState.remotes.toMutableList()
+            remotes[index] = remotes[index].copy(name = value)
+
+            keyStateFlow.emit(
+                InfraredEditorState.Ready(
+                    remotes = remotes.toPersistentList(),
+                    keyName = keyState.keyName,
+                    activeRemote = keyState.activeRemote
+                )
+            )
+        }
+    }
+
+    fun processChangeIndexEditor(index: Int) {
+        viewModelScope.launch(Dispatchers.Default) {
+            val keyState = keyStateFlow.first()
+            if (keyState !is InfraredEditorState.Ready) return@launch
+
+            keyStateFlow.emit(
+                InfraredEditorState.Ready(
+                    remotes = keyState.remotes,
+                    keyName = keyState.keyName,
+                    activeRemote = index
                 )
             )
         }

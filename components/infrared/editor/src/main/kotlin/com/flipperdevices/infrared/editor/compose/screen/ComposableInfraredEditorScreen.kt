@@ -1,5 +1,6 @@
 package com.flipperdevices.infrared.editor.compose.screen
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -18,6 +19,10 @@ internal fun ComposableInfraredEditorScreen(
     val keyState by viewModel.getKeyState().collectAsState()
     val dialogState by viewModel.getDialogState().collectAsState()
 
+    BackHandler {
+        viewModel.processCancel(onBack)
+    }
+
     when (val localState = keyState) {
         InfraredEditorState.InProgress -> ComposableKeyScreenLoading()
         is InfraredEditorState.Error -> ComposableKeyScreenError(
@@ -31,9 +36,12 @@ internal fun ComposableInfraredEditorScreen(
                 onDismissDialog = viewModel::onDismissDialog,
                 onCancel = { viewModel.processCancel(onBack) },
                 onSave = { viewModel.processSave(onBack) },
-                onTapRemote = {},
+                onChangeName = { index, value ->
+                    viewModel.editRemoteName(index, value)
+                },
                 onDelete = viewModel::processDeleteRemote,
-                onEditOrder = viewModel::processEditOrder
+                onEditOrder = viewModel::processEditOrder,
+                onChangeIndexEditor = viewModel::processChangeIndexEditor
             )
     }
 }
