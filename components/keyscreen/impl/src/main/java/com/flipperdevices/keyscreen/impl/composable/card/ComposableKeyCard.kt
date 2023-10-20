@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.Card
-import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -98,18 +97,7 @@ fun ComposableKeyCard(
                     style = LocalTypography.current.bodyR14
                 )
             }
-
-            Divider(
-                modifier = Modifier.fillMaxWidth(),
-                color = LocalPallet.current.divider12
-            )
-
-            Column(
-                modifier = Modifier.padding(vertical = 18.dp),
-                verticalArrangement = Arrangement.spacedBy(18.dp)
-            ) {
-                ComposableKeyContent(parsedKey)
-            }
+            ComposableKeyContent(parsedKey)
         }
     }
 }

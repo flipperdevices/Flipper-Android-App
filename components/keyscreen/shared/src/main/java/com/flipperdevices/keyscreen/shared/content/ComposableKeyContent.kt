@@ -2,7 +2,9 @@ package com.flipperdevices.keyscreen.shared.content
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -36,8 +38,22 @@ private fun ComposableKeyItem(name: String, value: String) {
 }
 
 @Composable
-internal fun ComposableKeyContent(lines: ImmutableList<Pair<String, String?>>) {
-    lines.filter { it.second != null }.map { it.first to it.second!! }.forEach {
-        ComposableKeyItem(it.first, it.second)
+internal fun ComposableKeyContent(
+    lines: ImmutableList<Pair<String, String?>>
+) {
+    if (lines.isNotEmpty()) {
+        Divider(
+            modifier = Modifier.fillMaxWidth(),
+            color = LocalPallet.current.divider12
+        )
+
+        Column(
+            modifier = Modifier.padding(vertical = 18.dp),
+            verticalArrangement = Arrangement.spacedBy(18.dp)
+        ) {
+            lines.filter { it.second != null }.map { it.first to it.second!! }.forEach {
+                ComposableKeyItem(it.first, it.second)
+            }
+        }
     }
 }
