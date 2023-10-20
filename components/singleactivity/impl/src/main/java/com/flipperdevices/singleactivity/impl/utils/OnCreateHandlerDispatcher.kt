@@ -10,10 +10,10 @@ import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.selfupdater.api.SelfUpdaterApi
 import com.flipperdevices.unhandledexception.api.UnhandledExceptionApi
-import javax.inject.Inject
-import javax.inject.Provider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+import javax.inject.Provider
 
 private var appOpenReported = false
 
