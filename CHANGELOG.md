@@ -1,6 +1,7 @@
 # Changelog
 
 # 1.6.6 - In progress
+- [FIX] Fix crash gms version on nogms environment
 
 - [Feature] Bump deps
 - [FIX] Fix crash on appication from unknown source

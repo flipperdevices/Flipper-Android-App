@@ -10,9 +10,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.flipperdevices.core.di.ComponentHolder
@@ -27,13 +25,10 @@ import com.flipperdevices.core.ui.theme.FlipperTheme
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SessionState
-import com.flipperdevices.selfupdater.api.SelfUpdaterApi
 import com.flipperdevices.singleactivity.impl.composable.ComposableSingleActivityNavHost
 import com.flipperdevices.singleactivity.impl.di.SingleActivityComponent
-import com.flipperdevices.singleactivity.impl.utils.AppOpenMetricReported
-import com.flipperdevices.unhandledexception.api.UnhandledExceptionApi
+import com.flipperdevices.singleactivity.impl.utils.OnCreateHandlerDispatcher
 import kotlinx.collections.immutable.toPersistentSet
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -54,16 +49,10 @@ class SingleActivity :
     lateinit var composableEntriesMutable: MutableSet<ComposableFeatureEntry>
 
     @Inject
-    lateinit var selfUpdaterApi: SelfUpdaterApi
-
-    @Inject
-    lateinit var appOpenMetricReported: AppOpenMetricReported
-
-    @Inject
-    lateinit var unhandledExceptionApi: UnhandledExceptionApi
-
-    @Inject
     lateinit var metricApi: MetricApi
+
+    @Inject
+    lateinit var onCreateHandlerDispatcher: OnCreateHandlerDispatcher
 
     private var globalNavController: NavHostController? = null
 
@@ -71,22 +60,14 @@ class SingleActivity :
         super.onCreate(savedInstanceState)
         ComponentHolder.component<SingleActivityComponent>().inject(this)
 
-        unhandledExceptionApi.initExceptionHandler()
+        onCreateHandlerDispatcher.onCreate(this)
 
         info {
             "Create new activity with hashcode: ${this.hashCode()} " +
                 "and intent ${intent.toFullString()}"
         }
 
-        appOpenMetricReported.report()
-
         WindowCompat.setDecorFitsSystemWindows(window, false)
-
-        lifecycleScope.launch(Dispatchers.Default) {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                selfUpdaterApi.startCheckUpdate()
-            }
-        }
 
         val featureEntries = featureEntriesMutable.toPersistentSet()
         val composableEntries = composableEntriesMutable.toPersistentSet()
