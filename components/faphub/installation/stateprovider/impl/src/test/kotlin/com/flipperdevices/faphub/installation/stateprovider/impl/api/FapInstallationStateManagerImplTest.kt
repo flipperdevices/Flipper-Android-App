@@ -25,7 +25,6 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
-
 private val fapTestVersion = FapItemVersion(
     id = "",
     version = SemVer(0, 0),

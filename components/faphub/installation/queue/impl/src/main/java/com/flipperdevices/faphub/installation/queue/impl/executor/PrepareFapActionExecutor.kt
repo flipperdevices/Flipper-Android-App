@@ -46,7 +46,6 @@ abstract class PrepareFapActionExecutor(
         return path
     }
 
-
     protected suspend fun getSdkApi(appId: String, fapVersion: FapItemVersion): SemVer? {
         if (fapVersion.sdkApi != null) {
             return fapVersion.sdkApi

@@ -3,6 +3,9 @@
 # 1.6.6 - In progress
 
 - [Feature] Bump deps
+- [FIX] Fix faphub minor version supported suggest to update
+- [FIX] Fix faphub manifest minor api version
+- [FIX] Fix faphub manifest image base64
 
 # 1.6.5
 

@@ -46,7 +46,7 @@ class FapInstallationAllImpl @Inject constructor(
         info { "Received target $target" }
         val allApps = mutableListOf<FapItemShort>()
         var currentOffset = 0
-        var receivedAppsCount = 0
+        var receivedAppsCount: Int
         do {
             val receivedApps = fapNetworkApi.getAllItem(
                 target = target,
