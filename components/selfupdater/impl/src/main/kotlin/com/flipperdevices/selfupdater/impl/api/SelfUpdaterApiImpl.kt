@@ -29,6 +29,9 @@ class SelfUpdaterApiImpl @Inject constructor(
         }
         return try {
             selfUpdaterSourceApi.checkUpdate(manual = manual)
+        } catch (e: Exception) {
+            info { "Self update error: $e" }
+            return SelfUpdateResult.ERROR
         } finally {
             inProgressState.emit(false)
         }
