@@ -3,6 +3,8 @@
 # 1.6.6 - In progress
 - [FIX] Fix crash gms version on nogms environment
 
+- [Feature] Bump deps
+
 # 1.6.5
 
 - [Feature] Infrared Screen with old style
