@@ -55,7 +55,7 @@ abstract class PrepareFapActionExecutor(
             .getOrNull()
 
         if (fapItem?.upToDateVersion?.sdkApi != null) {
-             return fapItem.upToDateVersion.sdkApi
+            return fapItem.upToDateVersion.sdkApi
         }
 
         return (fapVersion.target as? FlipperTarget.Received)?.sdk
