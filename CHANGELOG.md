@@ -3,6 +3,7 @@
 # 1.6.6 - In progress
 
 - [Feature] Bump deps
+- [FIX] Fix crash on appication from unknown source
 
 # 1.6.5
 
