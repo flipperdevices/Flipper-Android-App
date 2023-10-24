@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -57,6 +58,11 @@ internal fun ComposableInfraredEditorScreenReady(
         val state = rememberReorderableLazyListState(onMove = { from, to ->
             onEditOrder(from.index, to.index)
         })
+
+        LaunchedEffect(key1 = keyState) {
+            val firstErrorRemote = keyState.errorRemotes.firstOrNull() ?: return@LaunchedEffect
+            state.listState.scrollToItem(firstErrorRemote)
+        }
 
         LazyColumn(
             state = state.listState,
