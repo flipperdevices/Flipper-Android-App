@@ -1,9 +1,12 @@
 # Changelog
 
 # 1.6.6 - In progress
-- [FIX] Fix crash gms version on nogms environment
 
+- [FIX] Fix crash gms version on nogms environment
 - [Feature] Bump deps
+- [FIX] Fix faphub minor version supported suggest to update
+- [FIX] Fix faphub manifest minor api version
+- [FIX] Fix faphub manifest image base64
 - [FIX] Fix crash on appication from unknown source
 
 # 1.6.5

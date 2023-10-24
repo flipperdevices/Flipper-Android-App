@@ -27,6 +27,7 @@ dependencies {
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.kotlin.immutable.collections)
+    implementation(libs.ktor.client)
 
     implementation(libs.coil)
 }

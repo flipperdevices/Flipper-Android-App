@@ -5,6 +5,7 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.progress.ProgressListener
 import com.flipperdevices.faphub.dao.api.FapDownloadApi
+import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.installation.manifest.api.FapManifestApi
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestEnrichedItem
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
@@ -19,9 +20,10 @@ import javax.inject.Inject
 class InstallationActionExecutor @Inject constructor(
     fapDownloadApi: FapDownloadApi,
     fapUploadAction: FapActionUpload,
+    fapNetworkApi: FapNetworkApi,
     private val fapManifestApi: FapManifestApi,
     private val fapIconDownloader: FapIconDownloader
-) : PrepareFapActionExecutor(fapDownloadApi, fapUploadAction), LogTagProvider {
+) : PrepareFapActionExecutor(fapDownloadApi, fapUploadAction, fapNetworkApi), LogTagProvider {
     override val TAG = "InstallationActionExecutor"
 
     suspend fun install(
@@ -48,7 +50,7 @@ class InstallationActionExecutor @Inject constructor(
                     path = finalFapPath,
                     fullName = request.applicationName,
                     iconBase64 = iconBase64Request.getOrNull(),
-                    sdkApi = (request.toVersion.target as? FlipperTarget.Received)?.sdk
+                    sdkApi = getSdkApi(request.applicationUid, request.toVersion)
                 ),
                 numberVersion = request.toVersion.version
             )
