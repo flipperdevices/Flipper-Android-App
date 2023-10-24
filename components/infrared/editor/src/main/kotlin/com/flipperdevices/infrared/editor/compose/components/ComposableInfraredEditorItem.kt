@@ -6,7 +6,6 @@ import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -53,7 +52,7 @@ import com.flipperdevices.infrared.editor.R
 import kotlin.math.roundToInt
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
-internal const val BUTTON_HEIGHT = 55
+private const val BUTTON_HEIGHT = 55
 
 @Composable
 internal fun ComposableInfraredEditorItem(
@@ -213,32 +212,6 @@ private fun RowScope.ComposableInfraredEditorText(remoteName: String, onClick: (
         maxLines = 1,
         overflow = TextOverflow.Ellipsis
     )
-}
-
-@Composable
-fun Shaker() {
-    val shake = remember { Animatable(0f) }
-    var trigger by remember { mutableStateOf(0L) }
-    LaunchedEffect(trigger) {
-        if (trigger != 0L) {
-            for (i in 0..10) {
-                when (i % 2) {
-                    0 -> shake.animateTo(5f, spring(stiffness = 100_000f))
-                    else -> shake.animateTo(-5f, spring(stiffness = 100_000f))
-                }
-            }
-            shake.animateTo(0f)
-        }
-    }
-
-    Box(
-        modifier = Modifier
-            .clickable { trigger = System.currentTimeMillis() }
-            .offset { IntOffset(shake.value.roundToInt(), y = 0) }
-            .padding(horizontal = 24.dp, vertical = 8.dp)
-    ) {
-        Text(text = "Shake me")
-    }
 }
 
 @Preview
