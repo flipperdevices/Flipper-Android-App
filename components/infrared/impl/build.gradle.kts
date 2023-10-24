@@ -14,15 +14,22 @@ dependencies {
     implementation(projects.components.keyedit.api)
     implementation(projects.components.share.api)
 
+    implementation(projects.components.bridge.api)
+    implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.dao.api)
+    implementation(projects.components.bridge.pbutils)
+    implementation(projects.components.bridge.synchronization.api)
 
     implementation(projects.components.core.di)
+    implementation(projects.components.core.log)
+    implementation(projects.components.core.data)
     implementation(projects.components.core.ui.navigation)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.tabswitch)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.dialog)
+    implementation(projects.components.core.ui.lifecycle)
 
     // Compose
     implementation(libs.compose.ui)
@@ -30,10 +37,12 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
     implementation(libs.compose.navigation)
+    implementation(libs.compose.placeholder)
 
     // ViewModel
     implementation(libs.lifecycle.compose)
     implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.tangle.viewmodel.compose)
     implementation(libs.tangle.viewmodel.api)
     anvil(libs.tangle.viewmodel.compiler)

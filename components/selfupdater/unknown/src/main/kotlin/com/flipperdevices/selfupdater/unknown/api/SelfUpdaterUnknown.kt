@@ -9,7 +9,7 @@ import javax.inject.Inject
 @ContributesBinding(AppGraph::class, SelfUpdaterSourceApi::class)
 class SelfUpdaterUnknown @Inject constructor() : SelfUpdaterSourceApi {
     override suspend fun checkUpdate(manual: Boolean): SelfUpdateResult {
-        throw NotImplementedError()
+        return SelfUpdateResult.NO_UPDATES
     }
 
     override fun getInstallSourceName() = "Unknown"

@@ -1,10 +1,9 @@
 @file:Suppress("CompositionLocalAllowlist")
 
-package com.flipperdevices.infrared.impl.composable.components.bar
+package com.flipperdevices.infrared.impl.composable.components
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -33,7 +32,6 @@ import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.infrared.impl.R
-import com.flipperdevices.infrared.impl.composable.components.ComposableInfraredDialogHowToUse
 import com.flipperdevices.core.ui.res.R as SharedRes
 
 private val LocalOnChangeState = compositionLocalOf<() -> Unit> { error("Not realization") }
@@ -43,10 +41,7 @@ private val LocalOnChangeState = compositionLocalOf<() -> Unit> { error("Not rea
 internal fun ComposableInfraredDropDown(
     onEdit: () -> Unit,
     onDelete: () -> Unit,
-    onRename: () -> Unit,
-    onFavorite: () -> Unit,
     onShare: () -> Unit,
-    isFavorite: Boolean,
     modifier: Modifier = Modifier,
 ) {
     var isShowHowToUseDialog by remember { mutableStateOf(false) }
@@ -60,10 +55,11 @@ internal fun ComposableInfraredDropDown(
             modifier = modifier,
             horizontalArrangement = Arrangement.End
         ) {
-            Image(
+            Icon(
                 modifier = Modifier
                     .clickableRipple(bounded = false, onClick = onChangeState)
                     .size(24.dp),
+                tint = LocalPallet.current.text100,
                 painter = painterResource(SharedRes.drawable.ic_more_points),
                 contentDescription = null
             )
@@ -71,34 +67,10 @@ internal fun ComposableInfraredDropDown(
                 expanded = isShowMoreOptions,
                 onDismissRequest = { isShowMoreOptions = false }
             ) {
-                val isFavoriteIcon = if (isFavorite) {
-                    SharedRes.drawable.ic_star_enabled
-                } else {
-                    SharedRes.drawable.ic_star_disabled
-                }
-                val isFavoriteText = if (isFavorite) {
-                    R.string.infrared_options_favorite_remove
-                } else {
-                    R.string.infrared_options_favorite_add
-                }
-
-                ComposableInfraredDropDownItem(
-                    textId = isFavoriteText,
-                    iconId = isFavoriteIcon,
-                    colorIcon = LocalPallet.current.keyFavorite,
-                    onClick = onFavorite
-                )
-                Divider(modifier = Modifier.padding(horizontal = 8.dp))
                 ComposableInfraredDropDownItem(
                     textId = R.string.infrared_options_edit,
                     iconId = R.drawable.ic_edit,
                     onClick = onEdit
-                )
-                Divider(modifier = Modifier.padding(horizontal = 8.dp))
-                ComposableInfraredDropDownItem(
-                    textId = R.string.infrared_options_rename,
-                    iconId = SharedRes.drawable.ic_edit_icon,
-                    onClick = onRename
                 )
                 Divider(modifier = Modifier.padding(horizontal = 8.dp))
                 ComposableInfraredDropDownItem(
