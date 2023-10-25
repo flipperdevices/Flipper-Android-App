@@ -11,6 +11,7 @@ import com.flipperdevices.core.ui.errors.impl.composable.ComposableWrongRequestE
 import com.flipperdevices.faphub.errors.api.FapErrorSize
 import com.flipperdevices.faphub.errors.api.throwable.FirmwareNotSupported
 import com.flipperdevices.faphub.errors.api.throwable.FlipperNotConnected
+import com.flipperdevices.faphub.errors.api.throwable.StableThrowable
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ServerResponseException
 import io.ktor.serialization.JsonConvertException
@@ -18,13 +19,13 @@ import java.net.UnknownHostException
 
 @Composable
 fun ComposableThrowableErrorInternal(
-    throwable: Throwable,
+    throwable: StableThrowable,
     onRetry: () -> Unit,
     onOpenDeviceScreen: () -> Unit,
     fapErrorSize: FapErrorSize,
     modifier: Modifier = Modifier
 ) {
-    when (throwable) {
+    when (throwable.origin) {
         is UnknownHostException -> ComposableNoNetworkError(
             modifier = modifier,
             onRetry = onRetry,

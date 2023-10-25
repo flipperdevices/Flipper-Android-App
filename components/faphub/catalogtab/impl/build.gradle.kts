@@ -5,19 +5,6 @@ plugins {
 
 android.namespace = "com.flipperdevices.faphub.catalogtab.impl"
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    kotlinOptions {
-        freeCompilerArgs += listOf(
-            "-P",
-            "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=${project.buildDir.absolutePath}/compose_compiler"
-        )
-        freeCompilerArgs += listOf(
-            "-P",
-            "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=${project.buildDir.absolutePath}/compose_compiler"
-        )
-    }
-}
-
 dependencies {
     implementation(projects.components.faphub.catalogtab.api)
 

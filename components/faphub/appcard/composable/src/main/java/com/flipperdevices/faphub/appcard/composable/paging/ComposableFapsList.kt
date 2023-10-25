@@ -20,6 +20,7 @@ import com.flipperdevices.faphub.appcard.composable.AppCard
 import com.flipperdevices.faphub.dao.api.model.FapItemShort
 import com.flipperdevices.faphub.errors.api.FapErrorSize
 import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
+import com.flipperdevices.faphub.errors.api.throwable.toStable
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 private const val DEFAULT_FAP_COUNT = 20
@@ -51,7 +52,7 @@ fun LazyListScope.ComposableFapsList(
         with(errorsRenderer) {
             ComposableThrowableErrorListItem(
                 modifier = elementModifier,
-                throwable = loadState.error,
+                throwable = loadState.error.toStable(),
                 onRetry = faps::retry,
                 fapErrorSize = defaultFapErrorSize
             )
@@ -79,7 +80,7 @@ fun LazyListScope.ComposableFapsList(
 
             is LoadState.Error -> with(errorsRenderer) {
                 ComposableThrowableErrorListItem(
-                    throwable = loadState.error,
+                    throwable = loadState.error.toStable(),
                     onRetry = faps::retry,
                     modifier = elementModifier,
                     fapErrorSize = FapErrorSize.IN_LIST

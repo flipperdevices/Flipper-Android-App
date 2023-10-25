@@ -1,9 +1,11 @@
 package com.flipperdevices.faphub.installation.button.api
 
+import androidx.compose.runtime.Stable
 import com.flipperdevices.faphub.dao.api.model.FapItem
 import com.flipperdevices.faphub.dao.api.model.FapItemShort
 import com.flipperdevices.faphub.dao.api.model.FapItemVersion
 
+@Stable
 data class FapButtonConfig(
     val applicationUid: String,
     val applicationAlias: String,
