@@ -4,6 +4,7 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.progress.ProgressListener
 import com.flipperdevices.faphub.dao.api.FapDownloadApi
+import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.installation.manifest.api.FapManifestApi
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestEnrichedItem
 import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest
@@ -15,9 +16,10 @@ import javax.inject.Inject
 class UpdateActionExecutor @Inject constructor(
     fapDownloadApi: FapDownloadApi,
     fapUploadAction: FapActionUpload,
+    fapNetworkApi: FapNetworkApi,
     private val fapManifestApi: FapManifestApi,
     private val fapIconDownloader: FapIconDownloader
-) : PrepareFapActionExecutor(fapDownloadApi, fapUploadAction) {
+) : PrepareFapActionExecutor(fapDownloadApi, fapUploadAction, fapNetworkApi) {
     override val TAG = "UpdateActionExecutor"
 
     suspend fun update(
@@ -39,7 +41,7 @@ class UpdateActionExecutor @Inject constructor(
                     fullName = request.applicationName,
                     versionUid = request.toVersion.id,
                     iconBase64 = iconBase64Request.getOrNull() ?: request.from.iconBase64,
-                    sdkApi = (request.toVersion.target as? FlipperTarget.Received)?.sdk
+                    sdkApi = getSdkApi(request.applicationUid, request.toVersion)
                 ),
                 numberVersion = request.toVersion.version
             )

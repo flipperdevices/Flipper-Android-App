@@ -13,7 +13,7 @@ sealed class FapState {
     object ReadyToInstall : FapState()
     object ConnectFlipper : FapState()
 
-    class NotAvailableForInstall(val reason: NotAvailableReason) : FapState()
+    data class NotAvailableForInstall(val reason: NotAvailableReason) : FapState()
 
     data class ReadyToUpdate(val from: FapManifestItem) : FapState()
 
