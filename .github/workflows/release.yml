@@ -213,6 +213,7 @@ jobs:
         run: |
           mkdir other
           mv "${{ steps.artifacts_copy.outputs.path }}/flipper-zero-googleplay.apk" other/
+          mv "${{ steps.artifacts_copy.outputs.path }}/flipper-zero-wearos.apk" other/
           mv ${{ steps.artifacts_copy.outputs.path }}/*.aab other/
           zip -qq -r other.zip other
           echo "archive=other.zip" >> $GITHUB_OUTPUT
