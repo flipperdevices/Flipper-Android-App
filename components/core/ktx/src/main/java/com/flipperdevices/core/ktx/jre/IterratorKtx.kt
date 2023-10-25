@@ -10,12 +10,17 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.plus
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
 
 /**
  * Parallel map
  */
-suspend fun <A, B> Iterable<A>.pmap(block: suspend (A) -> B): List<B> = coroutineScope {
-    map { async { block(it) } }.awaitAll()
+suspend fun <A, B> Iterable<A>.pmap(
+    context: CoroutineContext = EmptyCoroutineContext,
+    block: suspend (A) -> B
+): List<B> = coroutineScope {
+    map { async(context) { block(it) } }.awaitAll()
 }
 
 fun <T, M> StateFlow<T>.map(

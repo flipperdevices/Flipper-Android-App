@@ -9,6 +9,7 @@ import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.dao.api.model.SortType
 import com.flipperdevices.faphub.dao.network.helper.FapApplicationReceiveHelper
 import com.flipperdevices.faphub.dao.network.ktorfit.api.KtorfitApplicationApi
+import com.flipperdevices.faphub.dao.network.ktorfit.model.requests.KtorfitApplicationApiRequest
 import com.flipperdevices.faphub.dao.network.ktorfit.utils.FapHubNetworkCategoryApi
 import com.flipperdevices.faphub.dao.network.ktorfit.utils.HostUrlBuilder
 import com.flipperdevices.faphub.errors.api.throwable.FirmwareNotSupported
@@ -90,17 +91,21 @@ class FapNetworkApiImpl @Inject constructor(
         val response = when (target) {
             FlipperTarget.Unsupported -> throw FirmwareNotSupported()
             FlipperTarget.NotConnected -> applicationApi.getAll(
-                limit = limit,
-                offset = offset,
-                query = queryToServer
+                KtorfitApplicationApiRequest(
+                    limit = limit,
+                    offset = offset,
+                    query = queryToServer
+                )
             )
 
-            is FlipperTarget.Received -> applicationApi.getAllWithTarget(
-                limit = limit,
-                offset = offset,
-                query = queryToServer,
-                target = target.target,
-                sdkApiVersion = target.sdk.toString()
+            is FlipperTarget.Received -> applicationApi.getAll(
+                KtorfitApplicationApiRequest(
+                    limit = limit,
+                    offset = offset,
+                    query = queryToServer,
+                    target = target.target,
+                    sdkApiVersion = target.sdk.toString()
+                )
             )
         }
 

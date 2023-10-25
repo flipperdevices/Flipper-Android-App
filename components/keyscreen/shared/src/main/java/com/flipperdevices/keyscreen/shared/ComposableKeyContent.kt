@@ -15,7 +15,7 @@ fun ColumnScope.ComposableKeyContent(keyParsed: FlipperKeyParsed) {
     when (keyParsed) {
         is FlipperKeyParsed.RFID -> ComposableRFIDContent(keyParsed)
         is FlipperKeyParsed.IButton -> ComposableIButtonContent(keyParsed)
-        is FlipperKeyParsed.Infrared -> ComposableInfraredContent(keyParsed)
+        is FlipperKeyParsed.Infrared -> ComposableInfraredContent()
         is FlipperKeyParsed.NFC -> ComposableNFCContent(keyParsed)
         is FlipperKeyParsed.SubGhz -> ComposableSubGhzContent(keyParsed)
         is FlipperKeyParsed.Unrecognized -> ComposableUnrecognizedContent(keyParsed)

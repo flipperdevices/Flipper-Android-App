@@ -15,7 +15,7 @@ sealed class FapState {
     data object ReadyToInstall : FapState()
     data object ConnectFlipper : FapState()
 
-    class NotAvailableForInstall(val reason: NotAvailableReason) : FapState()
+    data class NotAvailableForInstall(val reason: NotAvailableReason) : FapState()
 
     data class ReadyToUpdate(val from: FapManifestItem) : FapState()
 

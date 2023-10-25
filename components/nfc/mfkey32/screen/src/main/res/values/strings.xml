@@ -8,6 +8,7 @@
     <string name="mfkey32_calculation_desc">Calculating…</string>
     <string name="mfkey32_uploading_title">Calculation Completed</string>
     <string name="mfkey32_uploading_desc">Syncing with Flipper…</string>
+    <string name="mfkey32_connecting">Connecting Flipper…</string>
     <string name="mfkey32_complete_title">1 New Key added to User Dict.</string>
     <string name="mfkey32_complete_multiple_title">%1$s New Keys added to User Dict.</string>
     <string name="mfkey32_complete_not_found_title">New Keys Not Found</string>

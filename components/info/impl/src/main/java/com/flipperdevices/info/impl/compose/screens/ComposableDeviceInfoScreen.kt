@@ -37,7 +37,7 @@ fun ComposableDeviceInfoScreen(
         onRefresh = { refreshRequested = true }
     ) {
         Column(
-            modifier = it
+            modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         ) {

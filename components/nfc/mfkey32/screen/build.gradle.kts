@@ -28,6 +28,8 @@ dependencies {
     implementation(projects.components.bridge.pbutils)
 
     implementation(projects.components.analytics.metric.api)
+    implementation(projects.components.deeplink.api)
+    implementation(projects.components.bottombar.api)
 
     // Compose
     implementation(libs.compose.ui)

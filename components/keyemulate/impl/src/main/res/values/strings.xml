@@ -5,9 +5,6 @@
     <string name="emulate_disabled_not_synchronized">Synchronize the file</string>
     <string name="emulate_loading_syncing">Syncing</string>
     <string name="emulate_loading_connecting">Connecting</string>
-    <string name="already_open_dialog_title">Flipper is Busy</string>
-    <string name="already_open_dialog_desc">Exit the current app on Flipper to use this feature</string>
-    <string name="already_open_dialog_btn">Got It</string>
     <string name="forbidden_dialog_title">Transmission is Blocked</string>
     <string name="forbidden_dialog_desc">Transmission on this frequency is restricted in your region</string>
     <string name="forbidden_dialog_btn">Got It</string>

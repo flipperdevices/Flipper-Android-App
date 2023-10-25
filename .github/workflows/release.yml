@@ -213,6 +213,7 @@ jobs:
         run: |
           mkdir other
           mv "${{ steps.artifacts_copy.outputs.path }}/flipper-zero-googleplay.apk" other/
+          mv "${{ steps.artifacts_copy.outputs.path }}/flipper-zero-wearos.apk" other/
           mv ${{ steps.artifacts_copy.outputs.path }}/*.aab other/
           zip -qq -r other.zip other
           echo "archive=other.zip" >> $GITHUB_OUTPUT
@@ -279,7 +280,7 @@ jobs:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_PUBLISHER_JSON }}
           packageName: com.flipperdevices.app
           releaseFiles: ${{steps.download-wearos.outputs.download-path}}/flipper-zero-wearos.aab
-          track: wear:production
+          track: wear:beta
           status: draft
           whatsNewDirectory: .github/changelog
           mappingFile: ${{steps.download-wearos.outputs.download-path}}/mapping-wearos.txt

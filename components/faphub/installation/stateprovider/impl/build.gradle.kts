@@ -22,4 +22,10 @@ dependencies {
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.kotlin.immutable.collections)
+
+    // Testing
+    testImplementation(projects.components.core.test)
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlin.coroutines.test)
 }

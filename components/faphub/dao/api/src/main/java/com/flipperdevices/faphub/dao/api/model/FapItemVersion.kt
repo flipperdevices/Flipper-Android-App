@@ -9,5 +9,6 @@ data class FapItemVersion(
     val id: String,
     val version: SemVer,
     val target: FlipperTarget,
-    val buildState: FapBuildState
+    val buildState: FapBuildState,
+    val sdkApi: SemVer?
 )

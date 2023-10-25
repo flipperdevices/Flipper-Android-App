@@ -85,6 +85,7 @@ include(
 
     ":components:screenstreaming:impl",
     ":components:screenstreaming:api",
+    ":components:screenstreaming:noop",
 
     ":components:share:api",
     ":components:share:receive",
@@ -222,5 +223,8 @@ include(
     ":components:selfupdater:unknown",
     ":components:selfupdater:debug",
     ":components:selfupdater:thirdparty:api",
-    ":components:selfupdater:thirdparty:github"
+    ":components:selfupdater:thirdparty:github",
+
+    ":components:unhandledexception:api",
+    ":components:unhandledexception:impl"
 )

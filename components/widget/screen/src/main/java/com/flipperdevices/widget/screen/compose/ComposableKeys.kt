@@ -37,6 +37,7 @@ import kotlinx.collections.immutable.ImmutableList
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
+@Suppress("LongParameterList")
 fun ColumnScope.ComposableKeys(
     archiveApi: ArchiveApi,
     keys: ImmutableList<FlipperKey>,
@@ -49,7 +50,7 @@ fun ColumnScope.ComposableKeys(
     val isKeysPresented = favoriteKeys.isNotEmpty() || keys.isNotEmpty()
 
     SwipeRefresh(modifier = modifier, onRefresh = onRefresh) {
-        LazyColumn(modifier = it.fillMaxWidth()) {
+        LazyColumn(modifier = Modifier.fillMaxWidth()) {
             if (isKeysPresented) {
                 KeyCatalog(
                     archiveApi = archiveApi,

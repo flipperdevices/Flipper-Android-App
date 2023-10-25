@@ -1,5 +1,8 @@
 package com.flipperdevices.updater.card.helpers
 
+import com.flipperdevices.bridge.api.manager.delegates.FlipperConnectionInformationApi
+import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
+import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.updater.card.helpers.delegates.UpdateOfferDebugFlagAlways
 import com.flipperdevices.updater.card.helpers.delegates.UpdateOfferFlipperManifest
@@ -34,6 +37,11 @@ class UpdateOfferProviderTest {
         every { delegateFlagAlways.isRequire(serviceApi) } returns flowOf(false)
         every { delegateManifest.isRequire(serviceApi) } returns flowOf(false)
         every { delegateRegionFile.isRequire(serviceApi) } returns flowOf(false)
+        val connectionInformationApi: FlipperConnectionInformationApi = mockk {
+            every { getConnectionStateFlow() } returns
+                flowOf(ConnectionState.Ready(supportedState = FlipperSupportedState.READY))
+        }
+        every { serviceApi.connectionInformationApi } returns connectionInformationApi
     }
 
     @Test

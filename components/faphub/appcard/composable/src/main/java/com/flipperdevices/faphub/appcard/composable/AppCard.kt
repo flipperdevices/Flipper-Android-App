@@ -73,7 +73,7 @@ private fun AppCardTop(
         verticalAlignment = Alignment.CenterVertically
     ) {
         ComposableAppIcon(
-            modifier = Modifier.size(42.dp),
+            modifier = Modifier.size(48.dp),
             url = fapItem?.picUrl,
             description = fapItem?.name
         )

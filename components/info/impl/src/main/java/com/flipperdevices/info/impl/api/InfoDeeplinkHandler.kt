@@ -20,6 +20,7 @@ class InfoDeeplinkHandler @Inject constructor(
     override fun isSupportLink(link: Deeplink): DispatcherPriority? {
         return when (link) {
             is Deeplink.WebUpdate -> DispatcherPriority.DEFAULT
+            is Deeplink.OpenUpdate -> DispatcherPriority.DEFAULT
             else -> null
         }
     }

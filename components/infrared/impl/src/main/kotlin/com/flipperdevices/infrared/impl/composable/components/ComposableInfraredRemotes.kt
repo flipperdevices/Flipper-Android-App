@@ -21,7 +21,6 @@ internal fun ComposableInfraredRemotes(
 ) {
     val remoteConfigs = remember(state) { state.toEmulateConfigs() }
 
-    ComposableInfraredName(keyName = state.flipperKey.path.nameWithoutExtension)
     LazyColumn(verticalArrangement = Arrangement.spacedBy(20.dp)) {
         items(
             items = remoteConfigs,

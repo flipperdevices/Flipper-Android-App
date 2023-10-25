@@ -1,19 +1,45 @@
 # Changelog
 
-# 1.6.5 - In progress
+# 1.6.6 - In progress
 
+- [FIX] Fix crash gms version on nogms environment
+- [Feature] Bump deps
+- [FIX] Fix faphub minor version supported suggest to update
+- [FIX] Fix faphub manifest minor api version
+- [FIX] Fix faphub manifest image base64
+- [FIX] Fix crash on appication from unknown source
+
+# 1.6.5
+
+- [Feature] Infrared Screen with old style
+- [Feature] Flipper Busy Dialog with remote
 - [Feature] Infrared Editor
 - [Feature] Scroll on Infrared Screen
 - [Feature] Redesign for FapHub
 - [Feature] Check Self Update App in Options (only for github)
 - [Feature] Fap Catalog save sort
 - [Feature] Add metrics for faphub
+- [Feature] Add open mfkey32 deeplink
+- [Feature] Add dialog about failed BLE HID connection
+- [Feature] Add countly sessions 
+- [Feature] New connection REST scheme to FapHub
 - [FIX] Use by default dark theme in Wear OS
 - [FIX] Use default splashscreen in Wear OS
 - [FIX] Fix compose layout in Wear OS
 - [FIX] Fix wearos font issue
-- [FIX] New mehanism emulate in Wear OS
+- [FIX] New mechanism emulate in Wear OS
 - [FIX] New button texts on fap errors dialog
+- [FIX] Scroll progress on wear OS app
+- [FIX] Bold Text in github link and app action
+- [FIX] Remove Control from Options
+- [FIX] Deprecated detekt rules
+- [FIX] Fix apostrophe in text "What’s New"
+- [FIX] Installed tab "need to update" count
+- [FIX] Fap app icon size in large app card
+- [FIX] Openning animation
+- [FIX] Swipe refresh modifier use in root level
+- [FIX] Fix overflow in key small
+- [FIX] Try fix "The firmware update button is constantly active until the application is restarted"
 
 # 1.6.4 
 
@@ -23,7 +49,7 @@
 - [Feature] Add fap manifest caching
 - [Feature] Not send empty report in faphub
 - [Feature] Add hide app button
-- [Feature] Check Self Update App in Optiond (only for github)
+- [Feature] Check Self Update App in Option (only for github)
 - [CI] Add apk artifacts to Pull Requests
 - [CI] Fix failed build in merge_group
 - [CI] Bump deps except Sentry-gradle

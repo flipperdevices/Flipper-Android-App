@@ -4,6 +4,8 @@ import androidx.compose.runtime.Stable
 import kotlinx.collections.immutable.ImmutableList
 
 sealed class MfKey32State {
+    data object WaitingForFlipper : MfKey32State()
+
     data class DownloadingRawFile(
         val percent: Float?
     ) : MfKey32State()
@@ -12,7 +14,7 @@ sealed class MfKey32State {
         val percent: Float
     ) : MfKey32State()
 
-    object Uploading : MfKey32State()
+    data object Uploading : MfKey32State()
     data class Saved(val keys: ImmutableList<String>) : MfKey32State()
 
     data class Error(val errorType: ErrorType) : MfKey32State()

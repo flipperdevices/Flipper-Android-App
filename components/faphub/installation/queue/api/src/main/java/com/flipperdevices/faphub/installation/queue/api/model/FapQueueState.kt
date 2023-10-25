@@ -1,7 +1,7 @@
 package com.flipperdevices.faphub.installation.queue.api.model
 
 sealed class FapQueueState {
-    object NotFound : FapQueueState()
+    data object NotFound : FapQueueState()
 
     data class Pending(
         val request: FapActionRequest
