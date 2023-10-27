@@ -22,10 +22,12 @@ dependencies {
     implementation(projects.components.core.ui.flippermockup)
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.markdown)
+    implementation(projects.components.core.progress)
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.pbutils)
+    implementation(projects.components.bridge.rpc.api)
 
     implementation(projects.components.analytics.metric.api)
     implementation(projects.components.deeplink.api)

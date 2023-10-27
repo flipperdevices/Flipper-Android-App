@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.model.wrapToRequest
+import com.flipperdevices.bridge.rpc.api.FlipperStorageApi
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
@@ -39,7 +40,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import tangle.viewmodel.VMInject
-import java.io.FileNotFoundException
 import java.math.BigInteger
 import java.util.concurrent.Executors
 
@@ -51,7 +51,8 @@ class MfKey32ViewModel @VMInject constructor(
     private val nfcToolsApi: NfcToolsApi,
     private val mfKey32Api: MfKey32Api,
     private val metricApi: MetricApi,
-    flipperServiceProvider: FlipperServiceProvider
+    flipperServiceProvider: FlipperServiceProvider,
+    private val flipperStorageApi: FlipperStorageApi
 ) : LifecycleViewModel(), LogTagProvider, FlipperBleServiceConsumer {
     override val TAG = "MfKey32ViewModel"
     private val bruteforceDispatcher = Executors.newFixedThreadPool(
@@ -61,7 +62,7 @@ class MfKey32ViewModel @VMInject constructor(
         MfKey32State.Error(ErrorType.FLIPPER_CONNECTION)
     )
 
-    private val existedKeysStorage = ExistedKeysStorage(context)
+    private val existedKeysStorage = ExistedKeysStorage(context, flipperStorageApi)
     private val fileWithNonce by lazy {
         FlipperStorageProvider.getTemporaryFile(context)
     }
@@ -98,6 +99,7 @@ class MfKey32ViewModel @VMInject constructor(
         connectionState: ConnectionState
     ) {
         info { "Start calculation on $connectionState" }
+
         when (connectionState) {
             ConnectionState.Connecting,
             ConnectionState.Disconnecting,
@@ -115,7 +117,7 @@ class MfKey32ViewModel @VMInject constructor(
             is ConnectionState.Ready -> {}
         }
 
-        if (!prepare(serviceApi)) {
+        if (!prepare()) {
             info { "Failed prepare" }
             return
         }
@@ -139,26 +141,27 @@ class MfKey32ViewModel @VMInject constructor(
         mfKey32StateFlow.emit(MfKey32State.Saved(addedKeys.toImmutableList()))
     }
 
-    private suspend fun prepare(serviceApi: FlipperServiceApi): Boolean {
+    private suspend fun prepare(): Boolean {
         info { "Flipper connected" }
-        MfKey32State.DownloadingRawFile(null)
+        mfKey32StateFlow.emit(MfKey32State.DownloadingRawFile(null))
 
         try {
-            DownloadFileHelper.downloadFile(
-                serviceApi.requestApi,
-                PATH_NONCE_LOG,
-                fileWithNonce
-            ) {
-                info { "Download file progress $it" }
-            }
-        } catch (notFoundException: FileNotFoundException) {
-            error(notFoundException) { "Not found $PATH_NONCE_LOG" }
+            flipperStorageApi.download(
+                pathOnFlipper = PATH_NONCE_LOG,
+                fileOnAndroid = fileWithNonce,
+                progressListener = {
+                    info { "Download file progress $it" }
+                    mfKey32StateFlow.emit(MfKey32State.DownloadingRawFile(it))
+                }
+            )
+        } catch (error: Throwable) {
+            error(error) { "Not found $PATH_NONCE_LOG" }
             mfKey32StateFlow.emit(MfKey32State.Error(ErrorType.NOT_FOUND_FILE))
             return false
         }
         metricApi.reportSimpleEvent(SimpleEvent.MFKEY32)
         try {
-            existedKeysStorage.load(serviceApi.requestApi)
+            existedKeysStorage.load()
         } catch (exception: Throwable) {
             error(exception) { "When load keys" }
             mfKey32StateFlow.emit(MfKey32State.Error(ErrorType.READ_WRITE))
