@@ -9,7 +9,17 @@ interface FlipperStorageApi {
 
     suspend fun delete(path: String, recursive: Boolean = false)
 
-    suspend fun upload(pathOnFlipper: String, fileOnAndroid: File, progressListener: ProgressListener)
+    suspend fun download(
+        pathOnFlipper: String,
+        fileOnAndroid: File,
+        progressListener: ProgressListener
+    )
+
+    suspend fun upload(
+        pathOnFlipper: String,
+        fileOnAndroid: File,
+        progressListener: ProgressListener
+    )
 
     suspend fun listingDirectory(pathOnFlipper: String): List<String>
 

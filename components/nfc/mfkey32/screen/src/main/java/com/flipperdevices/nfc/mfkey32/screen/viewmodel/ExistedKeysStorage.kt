@@ -4,9 +4,11 @@ import android.content.Context
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.protobuf.streamToCommandFlow
+import com.flipperdevices.bridge.rpc.api.FlipperStorageApi
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
+import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.nfc.mfkey32.screen.model.DuplicatedSource
 import com.flipperdevices.nfc.mfkey32.screen.model.FoundedInformation
@@ -26,7 +28,8 @@ private const val FLIPPER_DICT_USER_PATH = "/ext/nfc/assets/mf_classic_dict_user
 private const val FLIPPER_DICT_PATH = "/ext/nfc/assets/mf_classic_dict.nfc"
 
 class ExistedKeysStorage(
-    private val context: Context
+    private val context: Context,
+    private val flipperStorageApi: FlipperStorageApi
 ) : LogTagProvider {
     override val TAG = "ExistedKeysStorage"
     private val foundedInformationStateFlow = MutableStateFlow(FoundedInformation())
@@ -38,11 +41,11 @@ class ExistedKeysStorage(
 
     fun getFoundedInformation(): StateFlow<FoundedInformation> = foundedInformationStateFlow
 
-    suspend fun load(requestApi: FlipperRequestApi) {
-        val foundedUserDict = loadDict(requestApi, FLIPPER_DICT_USER_PATH)
+    suspend fun load() {
+        val foundedUserDict = loadDict(FLIPPER_DICT_USER_PATH)
         userDict.addAll(foundedUserDict)
         userKeys.addAll(foundedUserDict)
-        val foundedDict = loadDict(requestApi, FLIPPER_DICT_PATH)
+        val foundedDict = loadDict(FLIPPER_DICT_PATH)
         flipperKeys.addAll(foundedDict)
     }
 
@@ -93,14 +96,20 @@ class ExistedKeysStorage(
         }
     }
 
-    private suspend fun loadDict(requestApi: FlipperRequestApi, path: String): List<String> {
+    private suspend fun loadDict(path: String): List<String> {
         return try {
             FlipperStorageProvider.useTemporaryFile(context) { tmpFile ->
-                DownloadFileHelper.downloadFile(requestApi, path, tmpFile)
+                flipperStorageApi.download(
+                    pathOnFlipper = path,
+                    fileOnAndroid = tmpFile,
+                    progressListener = {
+                        info { "Download dict with progress $it" }
+                    }
+                )
                 tmpFile.readLines()
                     .filterNot { it.startsWith("/") || it.isEmpty() }
             }
-        } catch (e: FileNotFoundException) {
+        } catch (e: Throwable) {
             error(e) { "Failed load dict $path" }
             emptyList()
         }

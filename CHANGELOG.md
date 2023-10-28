@@ -8,6 +8,7 @@
 - [FIX] Fix faphub manifest minor api version
 - [FIX] Fix faphub manifest image base64
 - [FIX] Fix crash on appication from unknown source
+- [FIX] Fix mfkey32 download process
 
 # 1.6.5
 
