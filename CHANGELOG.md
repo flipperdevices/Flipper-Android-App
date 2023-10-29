@@ -1,6 +1,8 @@
 # Changelog
 
-# 1.6.6 - In progress
+# 1.6.7 - In progress
+
+# 1.6.6
 
 - [FIX] Fix crash gms version on nogms environment
 - [Feature] Bump deps
