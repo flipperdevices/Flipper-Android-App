@@ -24,7 +24,7 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.faphub.dao.api.model.FapItemShort
 import com.flipperdevices.faphub.errors.api.FapErrorSize
 import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
-import com.flipperdevices.faphub.errors.api.throwable.toStable
+import com.flipperdevices.faphub.errors.api.throwable.toFapHubError
 import com.flipperdevices.faphub.installedtab.impl.R
 import com.flipperdevices.faphub.installedtab.impl.composable.button.ComposableUpdateAllButton
 import com.flipperdevices.faphub.installedtab.impl.composable.common.ComposableLoadingItemDivider
@@ -57,7 +57,7 @@ fun ComposableInstalledTabScreen(
 
     when (val stateLocal = state) {
         is FapInstalledScreenState.Error -> errorsRenderer.ComposableThrowableError(
-            throwable = stateLocal.throwable.toStable(),
+            throwable = stateLocal.throwable.toFapHubError(),
             onRetry = { viewModel.refresh(true) },
             modifier = screenModifier
                 .fillMaxSize(),

@@ -3,9 +3,9 @@ package com.flipperdevices.faphub.target.model
 import com.flipperdevices.core.data.SemVer
 
 sealed class FlipperTarget {
-    object Unsupported : FlipperTarget()
+    data object Unsupported : FlipperTarget()
 
-    object NotConnected : FlipperTarget()
+    data object NotConnected : FlipperTarget()
 
     data class Received(
         val target: String,

@@ -12,7 +12,7 @@ import com.flipperdevices.faphub.catalogtab.impl.model.CategoriesLoadState
 import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.errors.api.FapErrorSize
 import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
-import com.flipperdevices.faphub.errors.api.throwable.toStable
+import com.flipperdevices.faphub.errors.api.throwable.toFapHubError
 
 private const val DEFAULT_CATEGORIES_SIZE = 12
 private const val COLUMN_COUNT = 3
@@ -43,7 +43,7 @@ fun LazyListScope.ComposableCategories(
                     .fillMaxWidth()
                     .padding(horizontal = 14.dp)
                     .height(height = 250.dp),
-                throwable = loadState.throwable.toStable(),
+                throwable = loadState.throwable.toFapHubError(),
                 onRetry = onRetry,
                 fapErrorSize = FapErrorSize.IN_LIST
             )

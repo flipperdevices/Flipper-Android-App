@@ -9,7 +9,7 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.errors.impl.ComposableThrowableErrorInternal
 import com.flipperdevices.faphub.errors.api.FapErrorSize
 import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
-import com.flipperdevices.faphub.errors.api.throwable.StableThrowable
+import com.flipperdevices.faphub.errors.api.throwable.FapHubError
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
@@ -19,7 +19,7 @@ class FapHubComposableErrorsRendererImpl @Inject constructor(
 ) : FapHubComposableErrorsRenderer {
 
     override fun LazyListScope.ComposableThrowableErrorListItem(
-        throwable: StableThrowable,
+        throwable: FapHubError,
         onRetry: () -> Unit,
         modifier: Modifier,
         fapErrorSize: FapErrorSize
@@ -42,7 +42,7 @@ class FapHubComposableErrorsRendererImpl @Inject constructor(
 
     @Composable
     override fun ComposableThrowableError(
-        throwable: StableThrowable,
+        throwable: FapHubError,
         onRetry: () -> Unit,
         modifier: Modifier,
         fapErrorSize: FapErrorSize

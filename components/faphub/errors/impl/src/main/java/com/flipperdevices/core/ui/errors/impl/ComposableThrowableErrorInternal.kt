@@ -9,54 +9,43 @@ import com.flipperdevices.core.ui.errors.impl.composable.ComposableNoNetworkErro
 import com.flipperdevices.core.ui.errors.impl.composable.ComposableNoServerError
 import com.flipperdevices.core.ui.errors.impl.composable.ComposableWrongRequestError
 import com.flipperdevices.faphub.errors.api.FapErrorSize
-import com.flipperdevices.faphub.errors.api.throwable.FirmwareNotSupported
-import com.flipperdevices.faphub.errors.api.throwable.FlipperNotConnected
-import com.flipperdevices.faphub.errors.api.throwable.StableThrowable
-import io.ktor.client.plugins.ClientRequestException
-import io.ktor.client.plugins.ServerResponseException
-import io.ktor.serialization.JsonConvertException
-import java.net.UnknownHostException
+import com.flipperdevices.faphub.errors.api.throwable.FapHubError
 
 @Composable
 fun ComposableThrowableErrorInternal(
-    throwable: StableThrowable,
+    throwable: FapHubError,
     onRetry: () -> Unit,
     onOpenDeviceScreen: () -> Unit,
     fapErrorSize: FapErrorSize,
     modifier: Modifier = Modifier
 ) {
-    when (throwable.origin) {
-        is UnknownHostException -> ComposableNoNetworkError(
+    when (throwable) {
+        FapHubError.NO_NETWORK -> ComposableNoNetworkError(
             modifier = modifier,
             onRetry = onRetry,
             fapErrorSize = fapErrorSize
         )
-
-        is FirmwareNotSupported -> ComposableFlipperFirmwareNotSupported(
+        FapHubError.FIRMWARE_NOT_SUPPORTED -> ComposableFlipperFirmwareNotSupported(
             modifier = modifier,
             onOpenDeviceScreen = onOpenDeviceScreen
         )
-
-        is JsonConvertException,
-        is ClientRequestException -> ComposableWrongRequestError(
+        FapHubError.WRONG_REQUEST -> ComposableWrongRequestError(
+            modifier = modifier,
+            onRetry = onRetry,
+            fapErrorSize = fapErrorSize
+        )
+        FapHubError.FLIPPER_NOT_CONNECTED -> ComposableFlipperNotConnectedError(
             modifier = modifier,
             onRetry = onRetry,
             fapErrorSize = fapErrorSize
         )
 
-        is FlipperNotConnected -> ComposableFlipperNotConnectedError(
+        FapHubError.NO_SERVER -> ComposableNoServerError(
             modifier = modifier,
             onRetry = onRetry,
             fapErrorSize = fapErrorSize
         )
-
-        is ServerResponseException -> ComposableNoServerError(
-            modifier = modifier,
-            onRetry = onRetry,
-            fapErrorSize = fapErrorSize
-        )
-
-        else -> ComposableGeneralError(
+        FapHubError.GENERAL -> ComposableGeneralError(
             modifier = modifier,
             onRetry = onRetry,
             fapErrorSize = fapErrorSize
