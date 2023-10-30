@@ -1,14 +1,17 @@
 # Changelog
 
-# 1.6.6 - In progress
+# 1.6.7 - In progress
 
-- [FIX] Fix crash gms version on nogms environment
+# 1.6.6
+
 - [Feature] Bump deps
+- [Feature] Optimization FapHub by compose metrics
 - [FIX] Fix faphub minor version supported suggest to update
 - [FIX] Fix faphub manifest minor api version
 - [FIX] Fix faphub manifest image base64
 - [FIX] Fix crash on appication from unknown source
-- [Feature] Optimization FapHub by compose metrics
+- [FIX] Fix mfkey32 download process
+- [FIX] Fix crash gms version on nogms environment
 
 # 1.6.5
 

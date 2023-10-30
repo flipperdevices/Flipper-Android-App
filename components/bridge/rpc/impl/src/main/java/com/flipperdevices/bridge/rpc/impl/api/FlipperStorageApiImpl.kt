@@ -4,6 +4,7 @@ import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.rpc.api.FlipperStorageApi
 import com.flipperdevices.bridge.rpc.api.model.NameWithHash
+import com.flipperdevices.bridge.rpc.impl.delegates.FlipperDownloadDelegate
 import com.flipperdevices.bridge.rpc.impl.delegates.FlipperListingDelegate
 import com.flipperdevices.bridge.rpc.impl.delegates.FlipperUploadDelegate
 import com.flipperdevices.bridge.rpc.impl.delegates.MkDirDelegate
@@ -27,7 +28,8 @@ class FlipperStorageApiImpl @Inject constructor(
     private val flipperServiceProvider: FlipperServiceProvider,
     private val mkDirDelegate: MkDirDelegate,
     private val flipperUploadDelegate: FlipperUploadDelegate,
-    private val listingDelegate: FlipperListingDelegate
+    private val listingDelegate: FlipperListingDelegate,
+    private val flipperDownloadDelegate: FlipperDownloadDelegate
 ) : FlipperStorageApi, LogTagProvider {
     override val TAG = "FlipperStorageApi"
 
@@ -53,6 +55,19 @@ class FlipperStorageApiImpl @Inject constructor(
             }
         }
 
+    override suspend fun download(
+        pathOnFlipper: String,
+        fileOnAndroid: File,
+        progressListener: ProgressListener
+    ) = withContext(Dispatchers.Default) {
+        flipperDownloadDelegate.download(
+            requestApi = flipperServiceProvider.getServiceApi().requestApi,
+            pathOnFlipper = pathOnFlipper,
+            fileOnAndroid = fileOnAndroid,
+            externalProgressListener = progressListener
+        )
+    }
+
     override suspend fun upload(
         pathOnFlipper: String,
         fileOnAndroid: File,
@@ -75,7 +90,8 @@ class FlipperStorageApiImpl @Inject constructor(
 
     override suspend fun listingDirectoryWithMd5(pathOnFlipper: String): List<NameWithHash> {
         val serviceApi = flipperServiceProvider.getServiceApi()
-        val md5ListingSupported = serviceApi.flipperVersionApi.isSupported(Constants.API_SUPPORTED_MD5_LISTING)
+        val md5ListingSupported =
+            serviceApi.flipperVersionApi.isSupported(Constants.API_SUPPORTED_MD5_LISTING)
         return if (md5ListingSupported) {
             info { "Use new md5 request api" }
             listingDelegate.listingWithMd5(
