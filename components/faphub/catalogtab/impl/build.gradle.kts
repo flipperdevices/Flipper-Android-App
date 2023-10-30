@@ -25,8 +25,6 @@ dependencies {
     implementation(projects.components.faphub.target.api)
 
     implementation(projects.components.bridge.dao.api)
-    implementation("io.reactivex.rxjava3:rxjava:3.1.7")
-    implementation("io.reactivex.rxjava3:rxandroid:3.0.2")
 
     // Compose
     implementation(libs.compose.ui)
