@@ -1,7 +1,6 @@
 package com.flipperdevices.faphub.installation.stateprovider.api.model
 
 import androidx.annotation.FloatRange
-import androidx.compose.runtime.Stable
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
 
 sealed class FapState {
