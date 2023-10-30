@@ -1,9 +1,7 @@
 package com.flipperdevices.faphub.dao.api.model
 
-import androidx.compose.runtime.Stable
 import kotlinx.collections.immutable.ImmutableList
 
-@Stable
 data class FapItem(
     val id: String,
     val picUrl: String,
