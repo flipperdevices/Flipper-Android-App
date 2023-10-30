@@ -4,7 +4,6 @@ import androidx.annotation.FloatRange
 import androidx.compose.runtime.Stable
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
 
-@Stable
 sealed class FapState {
     data object NotInitialized : FapState()
 
