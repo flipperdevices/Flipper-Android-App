@@ -17,6 +17,4 @@ dependencies {
     implementation(projects.components.faphub.target.api)
 
     implementation(libs.annotations)
-
-    implementation(libs.compose.ui)
 }
