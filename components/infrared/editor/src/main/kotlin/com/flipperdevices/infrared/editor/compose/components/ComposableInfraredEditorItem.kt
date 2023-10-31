@@ -53,6 +53,9 @@ import kotlin.math.roundToInt
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 private const val BUTTON_HEIGHT = 55
+private const val COUNT_OF_SHAKE = 10
+private const val TARGET_SHAKE = 5f
+private const val DELTA_SHAKE = 100_000f
 
 @Composable
 internal fun ComposableInfraredEditorItem(
@@ -65,27 +68,11 @@ internal fun ComposableInfraredEditorItem(
     modifier: Modifier = Modifier,
     dragModifier: Modifier = Modifier,
 ) {
-    val shake = remember { Animatable(0f) }
-    var trigger by remember { mutableStateOf(0L) }
-    LaunchedEffect(trigger) {
-        if (trigger != 0L) {
-            for (i in 0..10) {
-                when (i % 2) {
-                    0 -> shake.animateTo(5f, spring(stiffness = 100_000f))
-                    else -> shake.animateTo(-5f, spring(stiffness = 100_000f))
-                }
-            }
-            shake.animateTo(0f)
-        }
-    }
-    LaunchedEffect(key1 = isError) {
-        if (isError) { trigger = System.currentTimeMillis() }
-    }
-
+    val shake = getShakeAnimation(isError)
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .offset { IntOffset(shake.value.roundToInt(), y = 0) },
+            .offset { IntOffset(shake, y = 0) },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
@@ -107,6 +94,29 @@ internal fun ComposableInfraredEditorItem(
             tint = LocalPallet.current.keyDelete
         )
     }
+}
+
+@Composable
+private fun getShakeAnimation(isError: Boolean): Int {
+    val shake = remember { Animatable(0f) }
+    var trigger by remember { mutableStateOf(false) }
+
+    LaunchedEffect(isError) {
+        if (isError) { trigger = true }
+    }
+
+    LaunchedEffect(trigger) {
+        if (trigger.not()) return@LaunchedEffect
+        for (i in 0..COUNT_OF_SHAKE) {
+            when (i % 2) {
+                0 -> shake.animateTo(TARGET_SHAKE, spring(stiffness = DELTA_SHAKE))
+                else -> shake.animateTo(-TARGET_SHAKE, spring(stiffness = DELTA_SHAKE))
+            }
+        }
+        shake.animateTo(0f)
+    }
+
+    return shake.value.roundToInt()
 }
 
 @Composable

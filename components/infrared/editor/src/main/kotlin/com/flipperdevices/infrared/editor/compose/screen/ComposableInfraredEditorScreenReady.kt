@@ -59,7 +59,7 @@ internal fun ComposableInfraredEditorScreenReady(
             onEditOrder(from.index, to.index)
         })
 
-        LaunchedEffect(key1 = keyState) {
+        LaunchedEffect(keyState) {
             val firstErrorRemote = keyState.errorRemotes.firstOrNull() ?: return@LaunchedEffect
             state.listState.scrollToItem(firstErrorRemote)
         }
@@ -85,7 +85,7 @@ internal fun ComposableInfraredEditorScreenReady(
                         dragModifier = Modifier.detectReorderAfterLongPress(state),
                         onChangeIndexEditor = { onChangeIndexEditor(index) },
                         isActive = keyState.activeRemote == index,
-                        isError = index in keyState.errorRemotes
+                        isError = index in keyState.errorRemotes,
                     )
                 }
             }

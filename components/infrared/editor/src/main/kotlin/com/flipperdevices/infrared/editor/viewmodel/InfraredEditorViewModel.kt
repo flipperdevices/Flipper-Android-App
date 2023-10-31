@@ -35,7 +35,7 @@ private const val MAX_SIZE_REMOTE_LENGTH = 21
 private const val VIBRATOR_TIME_MS = 500L
 
 @Suppress("TooManyFunctions")
-class InfraredViewModel @VMInject constructor(
+class InfraredEditorViewModel @VMInject constructor(
     @TangleParam(EXTRA_KEY_PATH)
     private val keyPath: FlipperKeyPath,
     private val simpleKeyApi: SimpleKeyApi,
@@ -43,7 +43,7 @@ class InfraredViewModel @VMInject constructor(
     private val synchronizationApi: SynchronizationApi,
     context: Context
 ) : ViewModel(), LogTagProvider {
-    override val TAG: String = "InfraredViewModel"
+    override val TAG: String = "InfraredEditorViewModel"
 
     private var vibrator = ContextCompat.getSystemService(context, Vibrator::class.java)
 
@@ -90,39 +90,38 @@ class InfraredViewModel @VMInject constructor(
         }
     }
 
-    fun processSave(onEndAction: () -> Unit) {
-        viewModelScope.launch(Dispatchers.Default) {
-            if (isDirtyKey().not()) {
-                withContext(Dispatchers.Main) {
-                    onEndAction()
-                    return@withContext
-                }
-            }
-            val keyState = keyStateFlow.first()
-            val remotes = keyState as? InfraredEditorState.Ready ?: return@launch
-            val errorRemotes = getErrorRemotes(remotes)
-            info { "Errors remote: $errorRemotes count ${errorRemotes.size}" }
-
-            if (errorRemotes.isNotEmpty()) {
-                vibrator?.vibrateCompat(VIBRATOR_TIME_MS)
-                keyStateFlow.emit(
-                    InfraredEditorState.Ready(
-                        remotes = keyState.remotes,
-                        keyName = keyState.keyName,
-                        errorRemotes = errorRemotes
-                    )
-                )
-                return@launch
-            }
-            val flipperKey = flipperKeyFlow.first() ?: return@launch
-            val newFlipperKey = InfraredStateParser.mapStateToFlipperKey(flipperKey, remotes)
-
-            updateKeyApi.updateKey(flipperKey, newFlipperKey)
-            synchronizationApi.startSynchronization(force = true)
-
+    fun processSave(
+        currentState: InfraredEditorState.Ready,
+        onExitScreen: () -> Unit
+    ) = viewModelScope.launch(Dispatchers.Default) {
+        if (isDirtyKey().not()) {
             withContext(Dispatchers.Main) {
-                onEndAction()
+                onExitScreen()
             }
+            return@launch
+        }
+        val errorRemotes = getErrorRemotes(currentState)
+        info { "Errors remote: $errorRemotes count ${errorRemotes.size}" }
+
+        if (errorRemotes.isNotEmpty()) {
+            vibrator?.vibrateCompat(VIBRATOR_TIME_MS)
+            keyStateFlow.emit(
+                InfraredEditorState.Ready(
+                    remotes = currentState.remotes,
+                    keyName = currentState.keyName,
+                    errorRemotes = errorRemotes
+                )
+            )
+            return@launch
+        }
+        val flipperKey = flipperKeyFlow.first() ?: return@launch
+        val newFlipperKey = InfraredStateParser.mapStateToFlipperKey(flipperKey, currentState)
+
+        updateKeyApi.updateKey(flipperKey, newFlipperKey)
+        synchronizationApi.startSynchronization(force = true)
+
+        withContext(Dispatchers.Main) {
+            onExitScreen()
         }
     }
 
@@ -140,31 +139,29 @@ class InfraredViewModel @VMInject constructor(
         return errorRemotes.toPersistentList()
     }
 
-    fun processCancel(onEndAction: () -> Unit) {
-        viewModelScope.launch {
-            if (isDirtyKey()) {
-                dialogStateFlow.emit(true)
-            } else {
-                withContext(Dispatchers.Main) {
-                    onEndAction()
-                }
+    fun processCancel(onExitScreen: () -> Unit) = viewModelScope.launch(Dispatchers.Default) {
+        if (isDirtyKey()) {
+            dialogStateFlow.emit(true)
+        } else {
+            withContext(Dispatchers.Main) {
+                onExitScreen()
             }
         }
     }
 
-    fun processDeleteRemote(index: Int) {
-        viewModelScope.launch(Dispatchers.Default) {
-            val keyState = keyStateFlow.first() as? InfraredEditorState.Ready ?: return@launch
-            val remotes = keyState.remotes.toMutableList()
-            remotes.removeAt(index)
+    fun processDeleteRemote(
+        currentState: InfraredEditorState.Ready,
+        index: Int
+    ) = viewModelScope.launch(Dispatchers.Default) {
+        val remotes = currentState.remotes.toMutableList()
+        remotes.removeAt(index)
 
-            keyStateFlow.emit(
-                InfraredEditorState.Ready(
-                    remotes = remotes.toPersistentList(),
-                    keyName = keyState.keyName
-                )
+        keyStateFlow.emit(
+            InfraredEditorState.Ready(
+                remotes = remotes.toPersistentList(),
+                keyName = currentState.keyName
             )
-        }
+        )
     }
 
     private suspend fun isDirtyKey(): Boolean {
@@ -176,59 +173,56 @@ class InfraredViewModel @VMInject constructor(
         return currentRemotes != initRemotes
     }
 
-    fun processEditOrder(from: Int, to: Int) {
-        viewModelScope.launch(Dispatchers.Default) {
-            val keyState = keyStateFlow.first()
-            if (keyState !is InfraredEditorState.Ready) return@launch
+    fun processEditOrder(
+        currentState: InfraredEditorState.Ready,
+        from: Int,
+        to: Int
+    ) = viewModelScope.launch(Dispatchers.Default) {
+        val remotes = currentState.remotes.toMutableList()
+        remotes.add(to, remotes.removeAt(from))
 
-            val remotes = keyState.remotes.toMutableList()
-            remotes.add(to, remotes.removeAt(from))
-
-            keyStateFlow.emit(
-                InfraredEditorState.Ready(
-                    remotes = remotes.toPersistentList(),
-                    keyName = keyState.keyName,
-                    activeRemote = null
-                )
+        keyStateFlow.emit(
+            InfraredEditorState.Ready(
+                remotes = remotes.toPersistentList(),
+                keyName = currentState.keyName
             )
-        }
+        )
     }
 
-    fun editRemoteName(index: Int, source: String) {
+    fun editRemoteName(
+        currentState: InfraredEditorState.Ready,
+        index: Int,
+        source: String
+    ) {
         var value = FlipperSymbolFilter.filterUnacceptableSymbol(source)
         if (value.length > MAX_SIZE_REMOTE_LENGTH) {
             value = value.substring(0, MAX_SIZE_REMOTE_LENGTH)
             vibrator?.vibrateCompat(VIBRATOR_TIME_MS)
         }
         viewModelScope.launch(Dispatchers.Default) {
-            val keyState = keyStateFlow.first()
-            if (keyState !is InfraredEditorState.Ready) return@launch
-
-            val remotes = keyState.remotes.toMutableList()
+            val remotes = currentState.remotes.toMutableList()
             remotes[index] = remotes[index].copy(name = value)
 
             keyStateFlow.emit(
                 InfraredEditorState.Ready(
                     remotes = remotes.toPersistentList(),
-                    keyName = keyState.keyName,
-                    activeRemote = keyState.activeRemote
+                    keyName = currentState.keyName,
+                    activeRemote = currentState.activeRemote
                 )
             )
         }
     }
 
-    fun processChangeIndexEditor(index: Int) {
-        viewModelScope.launch(Dispatchers.Default) {
-            val keyState = keyStateFlow.first()
-            if (keyState !is InfraredEditorState.Ready) return@launch
-
-            keyStateFlow.emit(
-                InfraredEditorState.Ready(
-                    remotes = keyState.remotes,
-                    keyName = keyState.keyName,
-                    activeRemote = index
-                )
+    fun processChangeIndexEditor(
+        currentState: InfraredEditorState.Ready,
+        index: Int
+    ) = viewModelScope.launch(Dispatchers.Default) {
+        keyStateFlow.emit(
+            InfraredEditorState.Ready(
+                remotes = currentState.remotes,
+                keyName = currentState.keyName,
+                activeRemote = index
             )
-        }
+        )
     }
 }
