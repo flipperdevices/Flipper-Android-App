@@ -48,6 +48,8 @@ class FlipperApplication : Application(), ImageLoaderFactory {
         val component = ComponentHolder.component<MainComponent>()
         val synchronizationApi by component.synchronizationApi
         synchronizationApi.startSynchronization()
+        val notificationApi by component.notificationApi
+        notificationApi.init()
     }
 
     override fun newImageLoader(): ImageLoader {

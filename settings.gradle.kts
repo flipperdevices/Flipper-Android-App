@@ -226,5 +226,9 @@ include(
     ":components:selfupdater:thirdparty:github",
 
     ":components:unhandledexception:api",
-    ":components:unhandledexception:impl"
+    ":components:unhandledexception:impl",
+
+    ":components:notification:api",
+    ":components:notification:impl",
+    ":components:notification:noop",
 )
