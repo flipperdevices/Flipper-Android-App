@@ -26,6 +26,8 @@ dependencies {
     implementation(projects.components.analytics.metric.api)
 
     implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.work.ktx)
+    implementation(libs.ktx)
 
     // Testing
     testImplementation(projects.components.core.test)

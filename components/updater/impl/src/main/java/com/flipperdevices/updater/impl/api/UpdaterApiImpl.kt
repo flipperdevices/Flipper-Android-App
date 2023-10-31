@@ -40,7 +40,7 @@ class UpdaterApiImpl @Inject constructor(
     private val uploadToFlipperHelper: UploadToFlipperHelper,
     private val context: Context,
     private val metricApi: MetricApi,
-    private val flipperStorageApi: FlipperStorageApi
+    private val flipperStorageApi: FlipperStorageApi,
 ) : UpdaterApi, LogTagProvider {
     override val TAG = "UpdaterApi"
 
