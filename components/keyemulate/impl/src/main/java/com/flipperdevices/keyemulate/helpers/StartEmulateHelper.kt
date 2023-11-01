@@ -181,7 +181,7 @@ class StartEmulateHelperImpl @Inject constructor(
                     }
                 }
             }
-            else -> error("Unknown key type for get min emulate time ${config.keyType}")
+            else -> error("Unknown button press request with config $config")
         }
     }
 
