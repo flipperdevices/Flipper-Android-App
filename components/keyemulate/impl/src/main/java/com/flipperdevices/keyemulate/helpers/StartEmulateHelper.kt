@@ -168,8 +168,7 @@ class StartEmulateHelperImpl @Inject constructor(
     ): Application.AppButtonPressRequest {
         return when (config.keyType) {
             FlipperKeyType.SUB_GHZ -> appButtonPressRequest {}
-            FlipperKeyType.INFRARED -> {
-                if (isIndexEmulateSupport) {
+            FlipperKeyType.INFRARED -> if (isIndexEmulateSupport) {
                     val indexArgs = config.index ?: error("Index args is null")
                     appButtonPressRequest {
                         index = indexArgs
@@ -180,7 +179,6 @@ class StartEmulateHelperImpl @Inject constructor(
                         args = configArgs
                     }
                 }
-            }
             else -> error("Unknown button press request with config $config")
         }
     }
