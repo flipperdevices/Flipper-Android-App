@@ -10,7 +10,8 @@ data class EmulateConfig(
     val keyType: FlipperKeyType,
     val keyPath: FlipperFilePath,
     val minEmulateTime: Long? = null,
-    val args: String? = null
+    val args: String? = null,
+    val index: Int? = null
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -21,6 +22,7 @@ data class EmulateConfig(
         if (keyType != other.keyType) return false
         if (keyPath != other.keyPath) return false
         if (args != other.args) return false
+        if (index != other.index) return false
 
         return true
     }
@@ -29,6 +31,7 @@ data class EmulateConfig(
         var result = keyType.hashCode()
         result = 31 * result + keyPath.hashCode()
         result = 31 * result + (args?.hashCode() ?: 0)
+        result = 31 * result + (index?.hashCode() ?: 0)
         return result
     }
 }

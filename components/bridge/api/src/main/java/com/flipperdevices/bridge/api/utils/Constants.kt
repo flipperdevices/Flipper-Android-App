@@ -30,6 +30,10 @@ object Constants {
         majorVersion = 0,
         minorVersion = 20
     )
+    val API_SUPPORTED_EMULATE_BY_INDEX = SemVer(
+        majorVersion = 0,
+        minorVersion = 21
+    )
     val API_SUPPORTED_GET_REQUEST = API_SUPPORTED_FLIPPER_ERROR
     val API_SUPPORTED_VERSION = SemVer(majorVersion = 0, minorVersion = 3)
     const val LAGS_FLIPPER_DETECT_TIMEOUT_MS = 10 * 1000L // 10 seconds

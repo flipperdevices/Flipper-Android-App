@@ -33,11 +33,12 @@ internal fun ComposableInfraredRemotes(
 private fun KeyScreenState.Ready.toEmulateConfigs(): ImmutableList<EmulateConfig> {
     val infraredParsed = this.parsedKey as? FlipperKeyParsed.Infrared ?: return persistentListOf()
 
-    return infraredParsed.remotes.map { name ->
+    return infraredParsed.remotes.mapIndexed { index, name ->
         EmulateConfig(
             keyType = FlipperKeyType.INFRARED,
             keyPath = this.flipperKey.path,
-            args = name
+            args = name,
+            index = index
         )
     }.toImmutableList()
 }
