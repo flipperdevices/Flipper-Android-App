@@ -11,6 +11,7 @@ dependencies {
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)
+    implementation(projects.components.core.preference)
 
     // Compose
     implementation(libs.compose.ui)

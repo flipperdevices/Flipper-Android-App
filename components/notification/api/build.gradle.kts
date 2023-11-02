@@ -5,5 +5,5 @@ plugins {
 android.namespace = "com.flipperdevices.notification.api"
 
 dependencies {
-
+    implementation(libs.kotlin.coroutines)
 }
