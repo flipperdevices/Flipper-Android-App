@@ -11,6 +11,7 @@ dependencies {
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)
+    implementation(projects.components.core.ktx)
     implementation(projects.components.core.preference)
 
     // Compose
@@ -21,4 +22,5 @@ dependencies {
     implementation(libs.compose.navigation)
 
     implementation(libs.gms.firebase)
+    implementation(libs.kotlin.coroutines.play.services)
 }

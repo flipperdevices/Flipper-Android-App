@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.inappnotification.api.model.InAppNotification
+import com.flipperdevices.inappnotification.impl.composable.type.ComposableInAppNotificationError
 import com.flipperdevices.inappnotification.impl.composable.type.ComposableInAppNotificationHideApp
 import com.flipperdevices.inappnotification.impl.composable.type.ComposableInAppNotificationReportApp
 import com.flipperdevices.inappnotification.impl.composable.type.ComposableInAppNotificationSavedKey
@@ -92,6 +93,10 @@ private fun ComposableInAppNotificationCard(
                         actionClicked = true
                         onNotificationHidden()
                     }
+                )
+
+                is InAppNotification.Error -> ComposableInAppNotificationError(
+                    notification
                 )
             }
         }

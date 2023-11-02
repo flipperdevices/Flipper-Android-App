@@ -5,7 +5,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 
 interface FlipperAppNotificationApi {
+    fun init()
+
     fun isSubscribedToUpdateNotificationTopic(scope: CoroutineScope): StateFlow<UpdateNotificationState>
 
-    fun init()
+    suspend fun setSubscribeToUpdate(isSubscribe: Boolean)
 }
