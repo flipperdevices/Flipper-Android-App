@@ -1,6 +1,10 @@
 package com.flipperdevices.updater.impl.api
 
 import android.content.Context
+import androidx.work.Data
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.OutOfQuotaPolicy
+import androidx.work.WorkManager
 import com.flipperdevices.bridge.rpc.api.FlipperStorageApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.AppGraph
@@ -12,6 +16,7 @@ import com.flipperdevices.metric.api.events.complex.UpdateFlipperStart
 import com.flipperdevices.metric.api.events.complex.UpdateStatus
 import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.impl.UpdaterTask
+import com.flipperdevices.updater.impl.service.StartUpdateWorker
 import com.flipperdevices.updater.impl.tasks.UploadToFlipperHelper
 import com.flipperdevices.updater.impl.tasks.downloader.UpdateContentDownloader
 import com.flipperdevices.updater.model.FirmwareChannel
@@ -21,6 +26,7 @@ import com.flipperdevices.updater.model.UpdatingState
 import com.flipperdevices.updater.model.UpdatingStateWithRequest
 import com.flipperdevices.updater.subghz.helpers.SubGhzProvisioningHelper
 import com.squareup.anvil.annotations.ContributesBinding
+import java.util.UUID
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -48,7 +54,10 @@ class UpdaterApiImpl @Inject constructor(
         UpdatingStateWithRequest(UpdatingState.NotStarted, request = null)
     )
 
+    private val workManager by lazy { WorkManager.getInstance(context) }
+
     private var currentActiveTask: UpdaterTask? = null
+    private var currentActiveWorker: UUID? = null
     private val isLaunched = AtomicBoolean(false)
 
     override fun start(updateRequest: UpdateRequest) {
@@ -57,6 +66,18 @@ class UpdaterApiImpl @Inject constructor(
             info { "Update skipped, because we already in update" }
             return
         }
+
+        val workerUpdateRequest = OneTimeWorkRequestBuilder<StartUpdateWorker>()
+            .setInputData(
+                Data.Builder()
+                    .putString(StartUpdateWorker.UPDATE_REQUEST_KEY, updateRequest.toSerializable())
+                    .build()
+            )
+            .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+            .build()
+        currentActiveWorker = workerUpdateRequest.id
+        workManager.enqueue(workerUpdateRequest)
+
         val localActiveTask = UpdaterTask(
             serviceProvider,
             context,
@@ -118,6 +139,7 @@ class UpdaterApiImpl @Inject constructor(
                 )
             )
         }
+        val cancelWorker = workManager.cancelWorkById(currentActiveWorker ?: return)
         currentActiveTask?.onStop()
     }
 
