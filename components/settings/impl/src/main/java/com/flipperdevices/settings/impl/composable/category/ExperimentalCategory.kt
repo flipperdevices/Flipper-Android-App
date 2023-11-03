@@ -5,8 +5,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.settings.impl.R
-import com.flipperdevices.settings.impl.composable.elements.CategoryElement
-import com.flipperdevices.settings.impl.composable.elements.ClickableElement
+import com.flipperdevices.settings.impl.composable.components.CategoryElement
+import com.flipperdevices.settings.impl.composable.components.ClickableElement
 import com.flipperdevices.settings.impl.viewmodels.ExperimentalViewModel
 import tangle.viewmodel.compose.tangleViewModel
 
