@@ -2,6 +2,8 @@
 
 # 1.6.7 - In progress
 
+- [FIX] Splashscreen WearOS icon
+
 # 1.6.6
 
 - [FIX] Fix crash gms version on nogms environment

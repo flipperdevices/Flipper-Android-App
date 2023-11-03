@@ -11,6 +11,6 @@
         <!-- Set the theme of the Activity that follows your splash screen. -->
         <item name="postSplashScreenTheme">@style/FlipperTheme</item>
         <!-- Set a white background behind the splash screen icon. -->
-        <item name="windowSplashScreenIconBackgroundColor">@android:color/white</item>
+        <item name="windowSplashScreenIconBackgroundColor">@color/ic_launcher_background</item>
     </style>
 </resources>

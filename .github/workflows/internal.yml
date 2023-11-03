@@ -289,3 +289,4 @@ jobs:
           releaseFiles: ${{steps.download-wearos.outputs.download-path}}/flipper-zero-wearos.aab
           track: wear:production
           mappingFile: ${{steps.download-wearos.outputs.download-path}}/mapping-wearos.txt
+          changesNotSentForReview: true
