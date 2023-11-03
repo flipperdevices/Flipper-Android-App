@@ -57,7 +57,8 @@ fun AnimatedSwitch(
             modifier = Modifier
                 .padding(12.dp)
                 .size(24.dp),
-            color = LocalPallet.current.accentSecond
+            color = LocalPallet.current.accent,
+            strokeWidth = 2.dp
         )
     }
 }
