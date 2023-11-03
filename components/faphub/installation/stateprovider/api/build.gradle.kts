@@ -12,4 +12,6 @@ dependencies {
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.annotations)
+
+    implementation(libs.compose.ui)
 }

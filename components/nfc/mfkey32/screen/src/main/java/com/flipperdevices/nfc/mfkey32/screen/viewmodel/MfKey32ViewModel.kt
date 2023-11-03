@@ -14,6 +14,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.FlipperStorageProvider
+import com.flipperdevices.core.progress.ProgressWrapperTracker
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
@@ -143,16 +144,19 @@ class MfKey32ViewModel @VMInject constructor(
 
     private suspend fun prepare(): Boolean {
         info { "Flipper connected" }
-        mfKey32StateFlow.emit(MfKey32State.DownloadingRawFile(null))
+        mfKey32StateFlow.emit(MfKey32State.DownloadingRawFile(0f))
 
         try {
             flipperStorageApi.download(
                 pathOnFlipper = PATH_NONCE_LOG,
                 fileOnAndroid = fileWithNonce,
-                progressListener = {
-                    info { "Download file progress $it" }
-                    mfKey32StateFlow.emit(MfKey32State.DownloadingRawFile(it))
-                }
+                progressListener = ProgressWrapperTracker(
+                    progressListener = {
+                        info { "Download file progress $it" }
+                        mfKey32StateFlow.emit(MfKey32State.DownloadingRawFile(it))
+                    },
+                    max = 0.99f
+                )
             )
         } catch (error: Throwable) {
             error(error) { "Not found $PATH_NONCE_LOG" }
