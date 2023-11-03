@@ -2,6 +2,7 @@ package com.flipperdevices.settings.impl.composable.elements
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Switch
 import androidx.compose.material.SwitchDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -11,12 +12,12 @@ import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 
 @Composable
-fun Switch(
+fun FlipperSwitch(
     state: Boolean,
     modifier: Modifier = Modifier,
     onSwitchState: (Boolean) -> Unit
 ) {
-    androidx.compose.material.Switch(
+    Switch(
         modifier = modifier.padding(horizontal = 12.dp),
         checked = state,
         onCheckedChange = onSwitchState,
@@ -36,12 +37,12 @@ fun Switch(
 private fun SwitchPreview() {
     FlipperThemeInternal {
         Column {
-            Switch(
+            FlipperSwitch(
                 state = true,
                 onSwitchState = {}
             )
 
-            Switch(
+            FlipperSwitch(
                 state = false,
                 onSwitchState = {}
             )

@@ -24,6 +24,6 @@ fun SwitchableElement(
             titleId,
             descriptionId
         )
-        Switch(state = state, onSwitchState = onSwitchState)
+        FlipperSwitch(state = state, onSwitchState = onSwitchState)
     }
 }

@@ -26,6 +26,6 @@ fun CategoryElement(
             descriptionId,
             titleTextStyle = LocalTypography.current.buttonB16
         )
-        Switch(state = state, onSwitchState = onSwitchState)
+        FlipperSwitch(state = state, onSwitchState = onSwitchState)
     }
 }
