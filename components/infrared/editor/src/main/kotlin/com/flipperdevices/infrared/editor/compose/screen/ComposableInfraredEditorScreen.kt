@@ -20,7 +20,7 @@ internal fun ComposableInfraredEditorScreen(
     val dialogState by viewModel.getDialogState().collectAsState()
 
     BackHandler {
-        viewModel.processCancel(onBack)
+        viewModel.processCancel(keyState, onBack)
     }
 
     when (val localState = keyState) {
@@ -35,7 +35,7 @@ internal fun ComposableInfraredEditorScreen(
                 onDoNotSave = onBack,
                 onDismissDialog = viewModel::onDismissDialog,
                 onCancel = {
-                    viewModel.processCancel(onBack)
+                    viewModel.processCancel(keyState, onBack)
                 },
                 onSave = {
                     viewModel.processSave(currentState = localState, onBack)

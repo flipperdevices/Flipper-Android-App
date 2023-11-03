@@ -94,7 +94,7 @@ class InfraredEditorViewModel @VMInject constructor(
         currentState: InfraredEditorState.Ready,
         onExitScreen: () -> Unit
     ) = viewModelScope.launch(Dispatchers.Default) {
-        if (isDirtyKey().not()) {
+        if (isDirtyKey(currentState).not()) {
             withContext(Dispatchers.Main) {
                 onExitScreen()
             }
@@ -139,8 +139,11 @@ class InfraredEditorViewModel @VMInject constructor(
         return errorRemotes.toPersistentList()
     }
 
-    fun processCancel(onExitScreen: () -> Unit) = viewModelScope.launch(Dispatchers.Default) {
-        if (isDirtyKey()) {
+    fun processCancel(
+        currentState: InfraredEditorState,
+        onExitScreen: () -> Unit
+    ) = viewModelScope.launch(Dispatchers.Default) {
+        if (isDirtyKey(currentState)) {
             dialogStateFlow.emit(true)
         } else {
             withContext(Dispatchers.Main) {
@@ -164,10 +167,9 @@ class InfraredEditorViewModel @VMInject constructor(
         )
     }
 
-    private suspend fun isDirtyKey(): Boolean {
-        val keyState = keyStateFlow.first()
-        if (keyState !is InfraredEditorState.Ready) return false
-        val currentRemotes = keyState.remotes
+    private suspend fun isDirtyKey(currentState: InfraredEditorState): Boolean {
+        if (currentState !is InfraredEditorState.Ready) return false
+        val currentRemotes = currentState.remotes
         val initRemotes = flipperParsedKeyFlow.first() ?: return false
 
         return currentRemotes != initRemotes
