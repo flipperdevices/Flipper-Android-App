@@ -2,12 +2,12 @@
 
 # 1.6.7 - In progress
 
+- [Feature] Infrared Editor process error
 - [FIX] Splashscreen WearOS icon
 
 # 1.6.6
 
 - [Feature] Bump deps
-- [Feature] Infrared Editor procss error
 - [Feature] Optimization FapHub by compose metrics
 - [FIX] Fix faphub minor version supported suggest to update
 - [FIX] Fix faphub manifest minor api version
