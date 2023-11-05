@@ -271,7 +271,6 @@ jobs:
           releaseFiles: ${{steps.download-googleplay.outputs.download-path}}/flipper-zero-googleplay.aab
           track: beta
           mappingFile: ${{steps.download-googleplay.outputs.download-path}}/mapping-googleplay.txt
-          changesNotSentForReview: true
   upload_to_playstore_wearos:
     name: Upload Wear OS to Play Store
     runs-on: ubuntu-latest
@@ -287,6 +286,5 @@ jobs:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_PUBLISHER_JSON }}
           packageName: com.flipperdevices.app
           releaseFiles: ${{steps.download-wearos.outputs.download-path}}/flipper-zero-wearos.aab
-          track: wear:production
+          track: wear:beta
           mappingFile: ${{steps.download-wearos.outputs.download-path}}/mapping-wearos.txt
-          changesNotSentForReview: true
