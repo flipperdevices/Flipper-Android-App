@@ -2,9 +2,12 @@
 
 # 1.6.7 - In progress
 
+- [Feature] Infrared Editor process error
+- [Feature] Optimization FapHub by compose metrics
+- [FIX] Splashscreen WearOS icon
+
 # 1.6.6
 
-- [FIX] Fix crash gms version on nogms environment
 - [Feature] Bump deps
 - [Feature] New Infrared Emulate Api
 - [FIX] Fix faphub minor version supported suggest to update
@@ -12,6 +15,7 @@
 - [FIX] Fix faphub manifest image base64
 - [FIX] Fix crash on appication from unknown source
 - [FIX] Fix mfkey32 download process
+- [FIX] Fix crash gms version on nogms environment
 
 # 1.6.5
 
