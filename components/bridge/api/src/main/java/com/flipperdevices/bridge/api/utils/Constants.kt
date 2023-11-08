@@ -30,7 +30,7 @@ object Constants {
         majorVersion = 0,
         minorVersion = 20
     )
-    val API_SUPPORTED_EMULATE_BY_INDEX = SemVer(
+    val API_SUPPORTED_INFRARED_EMULATE = SemVer(
         majorVersion = 0,
         minorVersion = 21
     )

@@ -95,7 +95,9 @@ class StartEmulateHelperImpl @Inject constructor(
         }
 
         val indexEmulateSupported =
-            serviceApi.flipperVersionApi.isSupported(Constants.API_SUPPORTED_EMULATE_BY_INDEX)
+            serviceApi.flipperVersionApi.isSupported(Constants.API_SUPPORTED_INFRARED_EMULATE)
+
+        info { "Support emulate by index: $indexEmulateSupported" }
 
         return processButtonPress(
             config = config,
@@ -169,16 +171,18 @@ class StartEmulateHelperImpl @Inject constructor(
         return when (config.keyType) {
             FlipperKeyType.SUB_GHZ -> appButtonPressRequest {}
             FlipperKeyType.INFRARED -> if (isIndexEmulateSupport) {
-                    val indexArgs = config.index ?: error("Index args is null")
-                    appButtonPressRequest {
-                        index = indexArgs
-                    }
-                } else {
-                    val configArgs = config.args ?: error("Config args is null")
-                    appButtonPressRequest {
-                        args = configArgs
-                    }
+                val indexArgs = config.index ?: error("Index args is null")
+                info { "#getAppButtonPressRequest by index with $config" }
+                appButtonPressRequest {
+                    index = indexArgs
                 }
+            } else {
+                val configArgs = config.args ?: error("Config args is null")
+                info { "#getAppButtonPressRequest by args with $config" }
+                appButtonPressRequest {
+                    args = configArgs
+                }
+            }
             else -> error("Unknown button press request with config $config")
         }
     }

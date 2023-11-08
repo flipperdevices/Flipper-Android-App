@@ -130,8 +130,7 @@ class InfraredEditorViewModel @VMInject constructor(
         val errorRemotes = mutableListOf<Int>()
 
         remotes.forEachIndexed { index, remote ->
-            val countRepeat = remotes.count { it.name == remote.name }
-            if (remote.name.isEmpty() || countRepeat > 1) {
+            if (remote.name.isEmpty()) {
                 errorRemotes.add(index)
             }
         }
