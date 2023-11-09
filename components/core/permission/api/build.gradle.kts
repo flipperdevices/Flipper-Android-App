@@ -5,5 +5,4 @@ plugins {
 android.namespace = "com.flipperdevices.core.permission.api"
 
 dependencies {
-
 }

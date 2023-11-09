@@ -24,12 +24,13 @@ import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.settings.impl.R
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.settings.impl.composable.components.SimpleElement
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ThemeChangerElement(
     theme: SelectedTheme,
+    modifier: Modifier = Modifier,
     onSelectTheme: (SelectedTheme) -> Unit,
 ) {
     val themes = SelectedTheme.entries.filter { it != SelectedTheme.UNRECOGNIZED }
@@ -38,7 +39,7 @@ fun ThemeChangerElement(
     var showMenu by remember { mutableStateOf(false) }
 
     Row(
-        modifier = Modifier.clickableRipple { showMenu = true },
+        modifier = modifier.clickableRipple { showMenu = true },
         verticalAlignment = Alignment.CenterVertically
     ) {
         SimpleElement(

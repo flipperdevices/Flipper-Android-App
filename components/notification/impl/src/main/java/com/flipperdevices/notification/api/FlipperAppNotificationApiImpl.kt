@@ -10,17 +10,13 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
+import com.flipperdevices.notification.impl.R
 import com.flipperdevices.notification.model.UpdateNotificationState
 import com.flipperdevices.notification.model.UpdateNotificationStateInternal
 import com.flipperdevices.notification.utils.NotificationPermissionHelper
 import com.google.firebase.Firebase
 import com.google.firebase.messaging.messaging
 import com.squareup.anvil.annotations.ContributesBinding
-import java.io.IOException
-import java.net.UnknownHostException
-import javax.inject.Inject
-import javax.inject.Provider
-import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,7 +27,11 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import com.flipperdevices.notification.impl.R
+import java.io.IOException
+import java.net.UnknownHostException
+import javax.inject.Inject
+import javax.inject.Provider
+import javax.inject.Singleton
 
 private const val TOPIC_UPDATE_FIRMWARE = "flipper_update_firmware_release"
 

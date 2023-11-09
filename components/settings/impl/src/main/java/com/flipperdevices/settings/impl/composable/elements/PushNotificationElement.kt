@@ -16,10 +16,11 @@ import com.flipperdevices.settings.impl.composable.components.SimpleElement
 @Composable
 fun PushNotificationElement(
     notificationState: UpdateNotificationState,
+    modifier: Modifier = Modifier,
     onChangeNotificationState: (Boolean) -> Unit
 ) {
     Row(
-        modifier = Modifier.clickableRipple {
+        modifier = modifier.clickableRipple {
             when (notificationState) {
                 UpdateNotificationState.ENABLED -> onChangeNotificationState(false)
                 UpdateNotificationState.DISABLED -> onChangeNotificationState(true)

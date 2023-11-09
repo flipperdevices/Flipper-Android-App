@@ -14,7 +14,6 @@ import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 import javax.inject.Singleton
 
-
 @Singleton
 @ContributesBinding(AppGraph::class, PermissionRequestHandler::class)
 class PermissionRequestHandlerImpl @Inject constructor() :
