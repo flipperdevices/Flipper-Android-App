@@ -13,6 +13,9 @@ dependencies {
     implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.preference)
+    implementation(projects.components.core.permission.api)
+
+    implementation(projects.components.inappnotification.api)
 
     // Compose
     implementation(libs.compose.ui)
@@ -23,4 +26,7 @@ dependencies {
 
     implementation(libs.gms.firebase)
     implementation(libs.kotlin.coroutines.play.services)
+    implementation(libs.kotlin.coroutines)
+
+    implementation(libs.appcompat)
 }

@@ -19,6 +19,8 @@ dependencies {
     implementation(projects.components.core.log)
     implementation(projects.components.core.preference)
     implementation(projects.components.core.activityholder)
+    implementation(projects.components.core.permission.api)
+    implementation(projects.components.core.permission.impl)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.lifecycle)

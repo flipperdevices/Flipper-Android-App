@@ -55,8 +55,9 @@ class FlipperApplication : Application(), ImageLoaderFactory, LogTagProvider {
             val notificationApi by component.notificationApi
             notificationApi.init()
         } catch (e: Exception) {
-            error(e) {"Failed init notification api"}
+            error(e) { "Failed init notification api" }
         }
+        component.permissionRequestHandlerImpl.get().register(this)
     }
 
     override fun newImageLoader(): ImageLoader {

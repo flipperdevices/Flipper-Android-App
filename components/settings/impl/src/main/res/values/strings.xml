@@ -11,13 +11,6 @@
     <string name="app_title">App</string>
     <string name="app_notification_title">Push Notifications</string>
     <string name="app_notification_desc">Notify about new firmware releases</string>
-    <string name="app_notification_error_internet_title">No Internet Connection</string>
-    <string name="app_notification_error_internet_desc">Check your internet connection and try again</string>
-    <string name="app_notification_error_server_title">Can\'t Connect to the Server</string>
-    <string name="app_notification_error_server_desc">Unable to change this setting. Try again later.</string>
-    <string name="app_notification_error_general_title">Something Went Wrong</string>
-    <string name="app_notification_error_general_desc">Try again later</string>
-
 
     <string name="debug_options">Debug Options</string>
     <string name="debug_options_desc">Features for developers and testing</string>

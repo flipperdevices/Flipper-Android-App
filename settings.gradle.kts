@@ -67,6 +67,8 @@ include(
     ":components:core:share",
     ":components:core:pager",
     ":components:core:progress",
+    ":components:core:permission:api",
+    ":components:core:permission:impl",
 
     ":components:bottombar:api",
     ":components:bottombar:impl",

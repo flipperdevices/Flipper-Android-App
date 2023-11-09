@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_error_internet_title">No Internet Connection</string>
+    <string name="notification_error_internet_desc">Check your internet connection and try again</string>
+    <string name="notification_error_server_title">Can\'t Connect to the Server</string>
+    <string name="notification_error_server_desc">Unable to change this setting. Try again later.</string>
+    <string name="notification_error_general_title">Something Went Wrong</string>
+    <string name="notification_error_general_desc">Try again later</string>
+</resources>
