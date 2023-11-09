@@ -72,7 +72,8 @@ class KeyReceiveViewModel @VMInject constructor(
             is UnknownHostException -> ReceiverError.NO_INTERNET_CONNECTION
             is UnknownServiceException -> ReceiverError.CANT_CONNECT_TO_SERVER
             is ClientRequestException -> {
-                if (exception.response.status == HttpStatusCode.NotFound) {
+                val exceptionStatus = exception.response.status
+                if (exceptionStatus == HttpStatusCode.NotFound) {
                     ReceiverError.EXPIRED_LINK
                 } else {
                     ReceiverError.CANT_CONNECT_TO_SERVER
