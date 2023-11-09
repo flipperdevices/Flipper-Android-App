@@ -10,4 +10,6 @@
     <string name="notification_error_action_go_to_settings">Go to Settings</string>
     <string name="notification_error_permission_title">No permissions to use</string>
     <string name="notification_error_permission_desc">Unable to get access to notification</string>
+    <string name="notification_channel_title">Firmware update</string>
+    <string name="notification_channel_desc">Firmware update description</string>
 </resources>
