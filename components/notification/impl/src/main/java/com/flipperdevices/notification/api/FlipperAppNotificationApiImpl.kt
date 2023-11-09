@@ -177,6 +177,13 @@ class FlipperAppNotificationApiImpl @Inject constructor(
     private suspend fun setSubscribeToUpdateInternal(isSubscribe: Boolean) {
         updateNotificationStateInternalFlow.emit(UpdateNotificationStateInternal.IN_PROGRESS)
 
+        val task = if (isSubscribe) {
+            Firebase.messaging.subscribeToTopic(TOPIC_UPDATE_FIRMWARE)
+        } else {
+            Firebase.messaging.unsubscribeFromTopic(TOPIC_UPDATE_FIRMWARE)
+        }
+        task.await()
+
         if (isSubscribe) {
             when (permissionHelper.isPermissionGranted(UPDATE_TOPIC_NOTIFICATION_CHANNEL)) {
                 NotificationPermissionState.GRANTED -> {}
@@ -188,12 +195,6 @@ class FlipperAppNotificationApiImpl @Inject constructor(
             }
         }
 
-        val task = if (isSubscribe) {
-            Firebase.messaging.subscribeToTopic(TOPIC_UPDATE_FIRMWARE)
-        } else {
-            Firebase.messaging.unsubscribeFromTopic(TOPIC_UPDATE_FIRMWARE)
-        }
-        task.await()
         settingsDataStore.updateData {
             it.toBuilder()
                 .setNotificationTopicUpdateEnabled(isSubscribe)
