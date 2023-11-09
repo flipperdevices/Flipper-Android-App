@@ -37,6 +37,9 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.compose.navigation)
 
+    implementation(libs.ktor.serialization)
+    implementation(libs.ktor.client)
+
     implementation(libs.kotlin.coroutines)
     implementation(libs.kotlin.immutable.collections)
     implementation(libs.kotlin.serialization.json)

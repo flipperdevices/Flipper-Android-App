@@ -16,6 +16,8 @@ import com.flipperdevices.share.receive.helpers.FlipperKeyParserHelper
 import com.flipperdevices.share.receive.helpers.ReceiveKeyActionHelper
 import com.flipperdevices.share.receive.models.ReceiveState
 import com.flipperdevices.share.receive.models.ReceiverError
+import io.ktor.client.plugins.ClientRequestException
+import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -23,7 +25,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import tangle.inject.TangleParam
 import tangle.viewmodel.VMInject
-import java.io.FileNotFoundException
 import java.net.UnknownHostException
 import java.net.UnknownServiceException
 
@@ -67,18 +68,19 @@ class KeyReceiveViewModel @VMInject constructor(
 
     private suspend fun processFailureParseKey(exception: Throwable) {
         error(exception) { "Error on parse flipperKey" }
-        when (exception) {
-            is UnknownHostException -> state.emit(
-                ReceiveState.Error(ReceiverError.NO_INTERNET_CONNECTION)
-            )
-            is UnknownServiceException -> state.emit(
-                ReceiveState.Error(ReceiverError.CANT_CONNECT_TO_SERVER)
-            )
-            is FileNotFoundException -> state.emit(
-                ReceiveState.Error(ReceiverError.EXPIRED_LINK)
-            )
-            else -> ReceiveState.Error(ReceiverError.INVALID_FILE_FORMAT)
+        val errorType = when (exception) {
+            is UnknownHostException -> ReceiverError.NO_INTERNET_CONNECTION
+            is UnknownServiceException -> ReceiverError.CANT_CONNECT_TO_SERVER
+            is ClientRequestException -> {
+                if (exception.response.status == HttpStatusCode.NotFound) {
+                    ReceiverError.EXPIRED_LINK
+                } else {
+                    ReceiverError.CANT_CONNECT_TO_SERVER
+                }
+            }
+            else -> ReceiverError.INVALID_FILE_FORMAT
         }
+        state.emit(ReceiveState.Error(errorType))
     }
 
     fun onRetry() {
