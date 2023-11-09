@@ -34,8 +34,8 @@ fun AppCategory(
         )
         GrayDivider()
         PushNotificationElement(
-            notificationState,
-            onChangeNotificationState
+            notificationState = notificationState,
+            onChangeNotificationState = onChangeNotificationState
         )
     }
 }

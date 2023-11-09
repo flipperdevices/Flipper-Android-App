@@ -6,4 +6,8 @@
     <string name="notification_error_server_desc">Unable to change this setting. Try again later.</string>
     <string name="notification_error_general_title">Something Went Wrong</string>
     <string name="notification_error_general_desc">Try again later</string>
+    <string name="notification_error_action_retry">Retry</string>
+    <string name="notification_error_action_go_to_settings">Go to Settings</string>
+    <string name="notification_error_permission_title">No permissions to use</string>
+    <string name="notification_error_permission_desc">Unable to get access to notification</string>
 </resources>

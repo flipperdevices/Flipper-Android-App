@@ -9,5 +9,5 @@ interface FlipperAppNotificationApi {
 
     fun isSubscribedToUpdateNotificationTopic(scope: CoroutineScope): StateFlow<UpdateNotificationState>
 
-    suspend fun setSubscribeToUpdate(isSubscribe: Boolean)
+    fun setSubscribeToUpdateAsync(isSubscribe: Boolean, scope: CoroutineScope)
 }

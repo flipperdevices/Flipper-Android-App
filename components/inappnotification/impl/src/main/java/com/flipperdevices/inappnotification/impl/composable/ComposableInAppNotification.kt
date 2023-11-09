@@ -56,6 +56,14 @@ private fun ComposableInAppNotificationCard(
     LaunchedEffect(notification) {
         visibleState = true
     }
+
+    val onClickAction = remember(onNotificationHidden) {
+        {
+            visibleState = false
+            actionClicked = true
+            onNotificationHidden()
+        }
+    }
     AnimatedVisibility(
         modifier = modifier,
         visible = visibleState,
@@ -73,11 +81,7 @@ private fun ComposableInAppNotificationCard(
                 is InAppNotification.SavedKey -> ComposableInAppNotificationSavedKey(notification)
 
                 is InAppNotification.SelfUpdateReady ->
-                    ComposableInAppNotificationSelfUpdateReady(notification) {
-                        visibleState = false
-                        actionClicked = true
-                        onNotificationHidden()
-                    }
+                    ComposableInAppNotificationSelfUpdateReady(notification, onClickAction)
 
                 is InAppNotification.SelfUpdateError ->
                     ComposableInAppNotificationSelfUpdateError()
@@ -88,15 +92,11 @@ private fun ComposableInAppNotificationCard(
                 InAppNotification.ReportApp -> ComposableInAppNotificationReportApp()
                 is InAppNotification.HiddenApp -> ComposableInAppNotificationHideApp(
                     notification = notification,
-                    onClickAction = {
-                        visibleState = false
-                        actionClicked = true
-                        onNotificationHidden()
-                    }
+                    onClickAction = onClickAction
                 )
 
                 is InAppNotification.Error -> ComposableInAppNotificationError(
-                    notification
+                    notification, onClickAction
                 )
             }
         }

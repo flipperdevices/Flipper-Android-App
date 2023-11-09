@@ -16,8 +16,6 @@ class NotificationViewModel @VMInject constructor(
         .isSubscribedToUpdateNotificationTopic(viewModelScope)
 
     fun switchToggle(newState: Boolean) {
-        viewModelScope.launch {
-            notificationApi.setSubscribeToUpdate(newState)
-        }
+        notificationApi.setSubscribeToUpdateAsync(newState, viewModelScope)
     }
 }

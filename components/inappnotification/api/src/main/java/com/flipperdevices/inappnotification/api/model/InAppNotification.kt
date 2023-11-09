@@ -39,6 +39,8 @@ sealed class InAppNotification {
     data class Error(
         @StringRes val titleId: Int,
         @StringRes val descId: Int,
+        @StringRes val actionTextId: Int?,
+        val action: (() -> Unit)?,
         override val durationMs: Long = NOTIFICATION_REPORT_APP_MS
     ) : InAppNotification()
 }
