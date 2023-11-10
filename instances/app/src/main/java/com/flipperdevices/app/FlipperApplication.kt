@@ -14,11 +14,17 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.singleactivity.impl.SingleActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.SupervisorJob
 import tangle.inject.TangleGraph
 import timber.log.Timber
 
 class FlipperApplication : Application(), ImageLoaderFactory, LogTagProvider {
     override val TAG = "FlipperApplication"
+
+    private val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
     override fun onCreate() {
         super.onCreate()
 
@@ -28,6 +34,7 @@ class FlipperApplication : Application(), ImageLoaderFactory, LogTagProvider {
             .create(
                 context = this,
                 application = this,
+                scope = applicationScope,
                 ApplicationParams(
                     startApplicationClass = SingleActivity::class,
                     version = BuildConfig.VERSION_NAME

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="notification_sucs_title">Notifications enabled</string>
+    <string name="notification_sucs_desc">You will be notified about firmware releases</string>
     <string name="notification_error_internet_title">No Internet Connection</string>
     <string name="notification_error_internet_desc">Check your internet connection and try again</string>
     <string name="notification_error_server_title">Can\'t Connect to the Server</string>
@@ -8,8 +10,12 @@
     <string name="notification_error_general_desc">Try again later</string>
     <string name="notification_error_action_retry">Retry</string>
     <string name="notification_error_action_go_to_settings">Go to Settings</string>
-    <string name="notification_error_permission_title">No permissions to use</string>
-    <string name="notification_error_permission_desc">Unable to get access to notification</string>
+    <string name="notification_error_permission_title">Notifications not enabled</string>
+    <string name="notification_error_permission_desc">You should provide permission for notifications</string>
     <string name="notification_channel_title">Firmware update</string>
     <string name="notification_channel_desc">Firmware update description</string>
+    <string name="notification_dialog_title">Enable Push Notifications</string>
+    <string name="notification_dialog_desc">App will notify you about new firmware releases</string>
+    <string name="notification_dialog_btn_enable">Enable</string>
+    <string name="notification_dialog_btn_skip">Skip</string>
 </resources>

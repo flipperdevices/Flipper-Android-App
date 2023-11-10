@@ -8,6 +8,7 @@ import com.squareup.anvil.annotations.MergeComponent
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
+import kotlinx.coroutines.CoroutineScope
 
 /**
  * This component is meta-component.
@@ -23,6 +24,7 @@ interface AppComponent {
         fun create(
             @BindsInstance context: Context,
             @BindsInstance application: Application,
+            @BindsInstance scope: CoroutineScope,
             @BindsInstance applicationParams: ApplicationParams
         ): AppComponent
     }

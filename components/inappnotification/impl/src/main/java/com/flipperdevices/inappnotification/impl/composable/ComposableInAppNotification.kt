@@ -78,7 +78,7 @@ private fun ComposableInAppNotificationCard(
             backgroundColor = LocalPallet.current.notificationCard
         ) {
             when (notification) {
-                is InAppNotification.SavedKey -> ComposableInAppNotificationSavedKey(notification)
+                is InAppNotification.Successful -> ComposableInAppNotificationSavedKey(notification)
 
                 is InAppNotification.SelfUpdateReady ->
                     ComposableInAppNotificationSelfUpdateReady(notification, onClickAction)

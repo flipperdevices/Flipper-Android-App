@@ -90,22 +90,32 @@ class FlipperAppNotificationApiImpl @Inject constructor(
 
     override fun setSubscribeToUpdateAsync(
         isSubscribe: Boolean,
-        scope: CoroutineScope
+        scope: CoroutineScope,
+        withNotificationSuccess: Boolean
     ) {
         scope.launch(Dispatchers.Default) {
             setSubscribeToUpdate(isSubscribe, onRetry = {
                 setSubscribeToUpdateAsync(isSubscribe, scope)
-            })
+            }, withNotificationSuccess)
         }
     }
 
     private suspend fun setSubscribeToUpdate(
         isSubscribe: Boolean,
-        onRetry: () -> Unit
+        onRetry: () -> Unit,
+        withNotificationSuccess: Boolean
     ) = withLock(mutex, "set_update") {
         try {
             createNotificationChannel()
             setSubscribeToUpdateInternal(isSubscribe)
+            if (withNotificationSuccess) {
+                inAppNotification.addNotification(
+                    InAppNotification.Successful(
+                        titleId = R.string.notification_sucs_title,
+                        descId = R.string.notification_sucs_desc
+                    )
+                )
+            }
         } catch (uhe: UnknownHostException) {
             error(uhe) { "Failed subscribe to topic" }
             inAppNotification.addNotification(

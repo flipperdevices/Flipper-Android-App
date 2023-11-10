@@ -8,9 +8,9 @@ import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
 import com.flipperdevices.keyparser.api.KeyParser
 import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
+import com.flipperdevices.share.receive.R
 import javax.inject.Inject
 
-private const val NOTIFICATION_DURATION_MS = 3 * 1000L
 
 class ReceiveKeyActionHelper @Inject constructor(
     private val notificationStorage: InAppNotificationStorage,
@@ -21,9 +21,9 @@ class ReceiveKeyActionHelper @Inject constructor(
     suspend fun saveKey(key: FlipperKey): Result<Unit> = runCatching {
         simpleKeyApi.insertKey(key)
         notificationStorage.addNotification(
-            InAppNotification.SavedKey(
+            InAppNotification.Successful(
                 title = key.path.nameWithoutExtension,
-                durationMs = NOTIFICATION_DURATION_MS
+                descId = R.string.saved_key_desc
             )
         )
     }

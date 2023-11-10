@@ -20,19 +20,25 @@ import com.flipperdevices.inappnotification.impl.R
 
 @Composable
 internal fun ComposableInAppNotificationSavedKey(
-    notification: InAppNotification.SavedKey
+    notification: InAppNotification.Successful
 ) {
     Row {
         ComposableSaveIcon()
         Column(modifier = Modifier.padding(top = 9.dp, bottom = 9.dp, end = 12.dp)) {
-            Text(
-                text = notification.title,
-                style = LocalTypography.current.subtitleB12
-            )
-            Text(
-                text = stringResource(R.string.saved_key_desc),
-                style = LocalTypography.current.subtitleR12
-            )
+            val title = notification.title ?: notification.titleId?.let { stringResource(it) }
+            if (title != null) {
+                Text(
+                    text = title,
+                    style = LocalTypography.current.subtitleB12
+                )
+            }
+            val desc = notification.desc ?: notification.descId?.let { stringResource(it) }
+            if (desc != null) {
+                Text(
+                    text = desc,
+                    style = LocalTypography.current.subtitleR12
+                )
+            }
         }
     }
 }
