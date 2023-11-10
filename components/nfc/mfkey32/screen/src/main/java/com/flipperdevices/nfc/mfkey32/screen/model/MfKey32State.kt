@@ -7,7 +7,7 @@ sealed class MfKey32State {
     data object WaitingForFlipper : MfKey32State()
 
     data class DownloadingRawFile(
-        val percent: Float?
+        val percent: Float
     ) : MfKey32State()
 
     data class Calculating(

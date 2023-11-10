@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -29,9 +30,10 @@ internal fun ComposableInfraredEditorScreenReady(
     onDismissDialog: () -> Unit,
     onCancel: () -> Unit,
     onSave: () -> Unit,
-    onTapRemote: (Int) -> Unit,
+    onChangeName: (Int, String) -> Unit,
     onDelete: (Int) -> Unit,
     onEditOrder: (Int, Int) -> Unit,
+    onChangeIndexEditor: (Int) -> Unit,
 ) {
     ComposableInfraredEditorDialog(
         isShow = dialogState,
@@ -57,9 +59,14 @@ internal fun ComposableInfraredEditorScreenReady(
             onEditOrder(from.index, to.index)
         })
 
+        LaunchedEffect(keyState) {
+            val firstErrorRemote = keyState.errorRemotes.firstOrNull() ?: return@LaunchedEffect
+            state.listState.scrollToItem(firstErrorRemote)
+        }
+
         LazyColumn(
             state = state.listState,
-            contentPadding = PaddingValues(horizontal = 12.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp),
             modifier = Modifier
                 .reorderable(state)
@@ -73,9 +80,12 @@ internal fun ComposableInfraredEditorScreenReady(
                 ) {
                     ComposableInfraredEditorItem(
                         remoteName = remote.name,
-                        onTap = { onTapRemote(index) },
+                        onChangeName = { onChangeName(index, it) },
                         onDelete = { onDelete(index) },
-                        dragModifier = Modifier.detectReorderAfterLongPress(state)
+                        dragModifier = Modifier.detectReorderAfterLongPress(state),
+                        onChangeIndexEditor = { onChangeIndexEditor(index) },
+                        isActive = keyState.activeRemote == index,
+                        isError = index in keyState.errorRemotes,
                     )
                 }
             }

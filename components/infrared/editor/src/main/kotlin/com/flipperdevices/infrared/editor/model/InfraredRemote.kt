@@ -19,4 +19,11 @@ sealed class InfraredRemote(
         val dutyCycle: String,
         val data: String,
     ) : InfraredRemote(nameInternal, typeInternal)
+
+    fun copy(name: String): InfraredRemote {
+        return when (this) {
+            is Parsed -> copy(nameInternal = name)
+            is Raw -> copy(nameInternal = name)
+        }
+    }
 }

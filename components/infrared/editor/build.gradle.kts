@@ -16,8 +16,11 @@ dependencies {
 
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.synchronization.api)
+    implementation(projects.components.bridge.api)
 
     implementation(projects.components.core.di)
+    implementation(projects.components.core.ktx)
+    implementation(projects.components.core.log)
     implementation(projects.components.core.ui.navigation)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.tabswitch)

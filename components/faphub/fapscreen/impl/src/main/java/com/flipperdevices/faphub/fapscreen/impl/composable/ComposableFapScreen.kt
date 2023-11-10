@@ -28,6 +28,7 @@ import com.flipperdevices.faphub.appcard.composable.components.AppCardScreenshot
 import com.flipperdevices.faphub.dao.api.model.FapItem
 import com.flipperdevices.faphub.errors.api.FapErrorSize
 import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
+import com.flipperdevices.faphub.errors.api.throwable.toFapHubError
 import com.flipperdevices.faphub.fapscreen.impl.R
 import com.flipperdevices.faphub.fapscreen.impl.composable.description.ComposableFapDescription
 import com.flipperdevices.faphub.fapscreen.impl.composable.header.ComposableFapHeader
@@ -52,7 +53,7 @@ fun ComposableFapScreen(
 
     when (val loadingStateLocal = loadingState) {
         is FapScreenLoadingState.Error -> errorsRenderer.ComposableThrowableError(
-            throwable = loadingStateLocal.throwable,
+            throwable = loadingStateLocal.throwable.toFapHubError(),
             onRetry = viewModel::onRefresh,
             modifier = modifier
                 .fillMaxSize()

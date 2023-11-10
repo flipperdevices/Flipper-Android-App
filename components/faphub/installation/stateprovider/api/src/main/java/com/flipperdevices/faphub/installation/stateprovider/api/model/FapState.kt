@@ -4,14 +4,14 @@ import androidx.annotation.FloatRange
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
 
 sealed class FapState {
-    object NotInitialized : FapState()
+    data object NotInitialized : FapState()
 
-    object RetrievingManifest : FapState()
+    data object RetrievingManifest : FapState()
 
-    object Installed : FapState()
+    data object Installed : FapState()
 
-    object ReadyToInstall : FapState()
-    object ConnectFlipper : FapState()
+    data object ReadyToInstall : FapState()
+    data object ConnectFlipper : FapState()
 
     data class NotAvailableForInstall(val reason: NotAvailableReason) : FapState()
 
@@ -29,9 +29,9 @@ sealed class FapState {
         val progress: Float
     ) : FapState()
 
-    object Deleting : FapState()
+    data object Deleting : FapState()
 
-    object Canceling : FapState()
+    data object Canceling : FapState()
 }
 
 enum class NotAvailableReason {
