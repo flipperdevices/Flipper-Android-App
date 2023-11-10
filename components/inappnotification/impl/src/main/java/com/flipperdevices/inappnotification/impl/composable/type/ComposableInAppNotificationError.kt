@@ -24,7 +24,8 @@ import com.flipperdevices.inappnotification.impl.R
 
 @Composable
 internal fun ComposableInAppNotificationError(
-    error: InAppNotification.Error, onClickAction: () -> Unit
+    error: InAppNotification.Error,
+    onClickAction: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -40,10 +41,12 @@ internal fun ComposableInAppNotificationError(
         )
         Column(Modifier.weight(1f)) {
             Text(
-                text = stringResource(error.titleId), style = LocalTypography.current.subtitleB12
+                text = stringResource(error.titleId),
+                style = LocalTypography.current.subtitleB12
             )
             Text(
-                text = stringResource(error.descId), style = LocalTypography.current.subtitleR12
+                text = stringResource(error.descId),
+                style = LocalTypography.current.subtitleR12
             )
         }
         val actionTextId = error.actionTextId
@@ -61,7 +64,6 @@ internal fun ComposableInAppNotificationError(
                 color = LocalPallet.current.accentSecond
             )
         }
-
     }
 }
 

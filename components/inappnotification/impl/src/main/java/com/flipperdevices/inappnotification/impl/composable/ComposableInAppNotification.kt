@@ -96,7 +96,8 @@ private fun ComposableInAppNotificationCard(
                 )
 
                 is InAppNotification.Error -> ComposableInAppNotificationError(
-                    notification, onClickAction
+                    notification,
+                    onClickAction
                 )
             }
         }

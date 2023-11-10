@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.notification.api.FlipperAppNotificationApi
-import kotlinx.coroutines.launch
 import tangle.viewmodel.VMInject
 
 class NotificationViewModel @VMInject constructor(

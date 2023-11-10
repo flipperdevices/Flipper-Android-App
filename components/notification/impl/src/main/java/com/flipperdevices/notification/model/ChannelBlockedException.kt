@@ -1,4 +1,3 @@
 package com.flipperdevices.notification.model
 
-class ChannelBlockedException : Throwable() {
-}
+class ChannelBlockedException : Throwable()

@@ -11,7 +11,6 @@ import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
 import com.flipperdevices.share.receive.R
 import javax.inject.Inject
 
-
 class ReceiveKeyActionHelper @Inject constructor(
     private val notificationStorage: InAppNotificationStorage,
     private val simpleKeyApi: SimpleKeyApi,

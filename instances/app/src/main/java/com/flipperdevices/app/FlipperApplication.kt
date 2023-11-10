@@ -16,7 +16,6 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.singleactivity.impl.SingleActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.SupervisorJob
 import tangle.inject.TangleGraph
 import timber.log.Timber

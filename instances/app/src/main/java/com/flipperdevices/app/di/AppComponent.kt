@@ -7,8 +7,8 @@ import com.flipperdevices.core.di.ApplicationParams
 import com.squareup.anvil.annotations.MergeComponent
 import dagger.BindsInstance
 import dagger.Component
-import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
+import javax.inject.Singleton
 
 /**
  * This component is meta-component.

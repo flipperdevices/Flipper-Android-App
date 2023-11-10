@@ -100,6 +100,7 @@ class FlipperAppNotificationApiImpl @Inject constructor(
         }
     }
 
+    @Suppress("LongMethod")
     private suspend fun setSubscribeToUpdate(
         isSubscribe: Boolean,
         onRetry: () -> Unit,

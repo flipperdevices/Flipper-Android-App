@@ -7,7 +7,6 @@ private const val NOTIFICATION_REPORT_APP_MS = 3000L
 private const val NOTIFICATION_HIDE_APP_MS = 5000L
 private const val NOTIFICATION_DURATION_MS = 3 * 1000L
 
-
 sealed class InAppNotification {
     abstract val durationMs: Long
 
