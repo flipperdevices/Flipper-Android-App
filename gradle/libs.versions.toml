@@ -76,6 +76,10 @@ detekt-ruleset-compiler = "0.0.2" # https://github.com/BraisGabin/detekt-compile
 detekt-ruleset-ktlint = "0.50.0" # https://github.com/pinterest/ktlint/releases
 detekt-ruleset-compose = "0.3.0" # https://github.com/mrmans0n/compose-rules/releases
 
+# Firebase
+google-gms-gradle = "4.4.0" # https://developers.google.com/android/guides/google-services-plugin
+google-gms-firebase = "23.3.1" # https://firebase.google.com/docs/android/setup#kotlin:~:text=com.google.firebase%3Afirebase%2Dmessaging
+
 [libraries]
 # Gradle - Core
 android-gradle = { module = "com.android.tools.build:gradle", version.ref = "android-gradle" }
@@ -110,7 +114,7 @@ detekt-ruleset-ktlint = { module = "io.gitlab.arturbosch.detekt:detekt-formattin
 detekt-ruleset-compose = { module = "io.nlopez.compose.rules:detekt", version.ref = "detekt-ruleset-compose" }
 
 # UI
-splashscreen = { module ="androidx.core:core-splashscreen", version.ref = "splashscreen"}
+splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "splashscreen" }
 compose-activity = { module = "androidx.activity:activity-compose", version.ref = "ktx-activity" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose-ui" }
@@ -243,7 +247,7 @@ work-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "work" }
 # Google play core
 app-update = { module = "com.google.android.play:app-update", version.ref = "play-core" }
 app-update-ktx = { module = "com.google.android.play:app-update-ktx", version.ref = "play-core" }
-
+gms-firebase = { module = "com.google.firebase:firebase-messaging", version.ref = "google-gms-firebase" }
 
 
 [plugins]
@@ -255,3 +259,4 @@ kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-general" }
 protobuf = { id = "com.google.protobuf", version.ref = "protobuf-gradle" }
 square-anvil = { id = "com.squareup.anvil", version.ref = "anvil" }
+google-gms = { id = "com.google.gms.google-services", version.ref = "google-gms-gradle" }

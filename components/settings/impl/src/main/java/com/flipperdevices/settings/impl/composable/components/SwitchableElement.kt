@@ -1,4 +1,4 @@
-package com.flipperdevices.settings.impl.composable.elements
+package com.flipperdevices.settings.impl.composable.components
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Row
@@ -24,6 +24,6 @@ fun SwitchableElement(
             titleId,
             descriptionId
         )
-        Switch(state = state, onSwitchState = onSwitchState)
+        FlipperSwitch(state = state, onSwitchState = onSwitchState)
     }
 }

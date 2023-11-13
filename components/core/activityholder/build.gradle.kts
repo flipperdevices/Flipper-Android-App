@@ -5,4 +5,5 @@ plugins {
 android.namespace = "com.flipperdevices.core.activityholder"
 
 dependencies {
+    implementation(libs.appcompat)
 }

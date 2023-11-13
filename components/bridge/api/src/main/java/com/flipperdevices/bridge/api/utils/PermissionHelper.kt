@@ -21,7 +21,7 @@ object PermissionHelper {
     }
 
     /**
-     * @return true if all permissions granted
+     * @return empty if all permissions granted
      */
     fun getUngrantedPermission(context: Context, permissions: Array<String>): List<String> {
         val ungrantedPermission = mutableListOf<String>()

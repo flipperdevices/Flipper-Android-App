@@ -16,12 +16,13 @@ import androidx.navigation.NavController
 import com.flipperdevices.core.ui.ktx.OrangeAppBar
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.settings.impl.R
+import com.flipperdevices.settings.impl.composable.category.AppCategory
 import com.flipperdevices.settings.impl.composable.category.DebugCategory
 import com.flipperdevices.settings.impl.composable.category.ExperimentalCategory
 import com.flipperdevices.settings.impl.composable.category.ExportKeysCategory
 import com.flipperdevices.settings.impl.composable.category.OtherSettingsCategory
-import com.flipperdevices.settings.impl.composable.category.ThemeCategory
 import com.flipperdevices.settings.impl.composable.category.VersionCategory
+import com.flipperdevices.settings.impl.viewmodels.NotificationViewModel
 import com.flipperdevices.settings.impl.viewmodels.SettingsViewModel
 import tangle.viewmodel.compose.tangleViewModel
 
@@ -29,13 +30,15 @@ import tangle.viewmodel.compose.tangleViewModel
 fun ComposableCommonSettings(
     navController: NavController,
     modifier: Modifier = Modifier,
-    settingsViewModel: SettingsViewModel = tangleViewModel()
+    settingsViewModel: SettingsViewModel = tangleViewModel(),
+    notificationViewModel: NotificationViewModel = tangleViewModel()
 ) {
     val context = LocalContext.current
 
     val settings by settingsViewModel.getState().collectAsState()
     val s2rInitialized by settingsViewModel.getShake2ReportInitializationState().collectAsState()
     val exportState by settingsViewModel.getExportState().collectAsState()
+    val notificationState by notificationViewModel.getNotificationToggleState().collectAsState()
 
     Column(
         modifier = modifier
@@ -45,9 +48,11 @@ fun ComposableCommonSettings(
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
         OrangeAppBar(R.string.options, onBack = navController::popBackStack)
-        ThemeCategory(
+        AppCategory(
             theme = settings.selectedTheme,
-            onSelectTheme = settingsViewModel::onChangeSelectedTheme
+            onSelectTheme = settingsViewModel::onChangeSelectedTheme,
+            notificationState = notificationState,
+            onChangeNotificationState = notificationViewModel::switchToggle
         )
         if (settings.expertMode) {
             DebugCategory(

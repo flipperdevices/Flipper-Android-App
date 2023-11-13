@@ -67,6 +67,8 @@ include(
     ":components:core:share",
     ":components:core:pager",
     ":components:core:progress",
+    ":components:core:permission:api",
+    ":components:core:permission:impl",
 
     ":components:bottombar:api",
     ":components:bottombar:impl",
@@ -226,5 +228,9 @@ include(
     ":components:selfupdater:thirdparty:github",
 
     ":components:unhandledexception:api",
-    ":components:unhandledexception:impl"
+    ":components:unhandledexception:impl",
+
+    ":components:notification:api",
+    ":components:notification:impl",
+    ":components:notification:noop",
 )

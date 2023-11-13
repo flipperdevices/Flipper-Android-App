@@ -24,10 +24,12 @@ dependencies {
     implementation(projects.components.hub.api)
     implementation(projects.components.deeplink.api)
     implementation(projects.components.unhandledexception.api)
+    implementation(projects.components.notification.api)
 
     implementation(libs.kotlin.serialization.json)
 
     implementation(libs.appcompat)
+
     implementation(libs.tangle.viewmodel.compose)
     implementation(libs.tangle.viewmodel.api)
     anvil(libs.tangle.viewmodel.compiler)

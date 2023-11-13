@@ -3,9 +3,9 @@ package com.flipperdevices.settings.impl.composable.category
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.flipperdevices.settings.impl.R
-import com.flipperdevices.settings.impl.composable.elements.ClickableElement
-import com.flipperdevices.settings.impl.composable.elements.GrayDivider
-import com.flipperdevices.settings.impl.composable.elements.UrlElement
+import com.flipperdevices.settings.impl.composable.components.ClickableElement
+import com.flipperdevices.settings.impl.composable.components.GrayDivider
+import com.flipperdevices.settings.impl.composable.components.UrlElement
 
 @Composable
 fun OtherSettingsCategory(
