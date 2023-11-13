@@ -9,6 +9,7 @@
 # 1.6.6
 
 - [Feature] Bump deps
+- [Feature] New Infrared Emulate Api
 - [FIX] Fix faphub minor version supported suggest to update
 - [FIX] Fix faphub manifest minor api version
 - [FIX] Fix faphub manifest image base64

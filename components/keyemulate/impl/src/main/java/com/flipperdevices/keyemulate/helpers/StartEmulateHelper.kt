@@ -3,6 +3,7 @@ package com.flipperdevices.keyemulate.helpers
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
+import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.core.di.AppGraph
@@ -93,10 +94,16 @@ class StartEmulateHelperImpl @Inject constructor(
             return true
         }
 
+        val indexEmulateSupported =
+            serviceApi.flipperVersionApi.isSupported(Constants.API_SUPPORTED_INFRARED_EMULATE)
+
+        info { "Support emulate by index: $indexEmulateSupported" }
+
         return processButtonPress(
             config = config,
             onResultTime = onResultTime,
-            serviceApi = serviceApi
+            serviceApi = serviceApi,
+            isIndexEmulateSupport = indexEmulateSupported
         )
     }
 
@@ -107,6 +114,7 @@ class StartEmulateHelperImpl @Inject constructor(
 
     private suspend fun processButtonPress(
         config: EmulateConfig,
+        isIndexEmulateSupport: Boolean,
         onResultTime: (Long) -> Unit,
         serviceApi: FlipperServiceApi
     ): Boolean {
@@ -117,7 +125,7 @@ class StartEmulateHelperImpl @Inject constructor(
         val appButtonPressResponse = serviceApi.requestApi.request(
             flowOf(
                 main {
-                    appButtonPressRequest = getAppButtonPressRequest(config)
+                    appButtonPressRequest = getAppButtonPressRequest(config, isIndexEmulateSupport)
                 }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
             )
         )
@@ -156,14 +164,24 @@ class StartEmulateHelperImpl @Inject constructor(
         }
     }
 
-    private fun getAppButtonPressRequest(config: EmulateConfig): Application.AppButtonPressRequest {
-        val configArgs = config.args
-        val keyType = config.keyType
-
-        return when {
-            keyType == FlipperKeyType.SUB_GHZ -> appButtonPressRequest {}
-            configArgs != null && keyType == FlipperKeyType.INFRARED -> appButtonPressRequest {
-                args = configArgs
+    private fun getAppButtonPressRequest(
+        config: EmulateConfig,
+        isIndexEmulateSupport: Boolean,
+    ): Application.AppButtonPressRequest {
+        return when (config.keyType) {
+            FlipperKeyType.SUB_GHZ -> appButtonPressRequest {}
+            FlipperKeyType.INFRARED -> if (isIndexEmulateSupport) {
+                val indexArgs = config.index ?: error("Index args is null")
+                info { "#getAppButtonPressRequest by index with $config" }
+                appButtonPressRequest {
+                    index = indexArgs
+                }
+            } else {
+                val configArgs = config.args ?: error("Config args is null")
+                info { "#getAppButtonPressRequest by args with $config" }
+                appButtonPressRequest {
+                    args = configArgs
+                }
             }
             else -> error("Unknown button press request with config $config")
         }

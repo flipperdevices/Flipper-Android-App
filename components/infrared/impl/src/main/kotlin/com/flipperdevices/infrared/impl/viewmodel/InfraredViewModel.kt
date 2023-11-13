@@ -3,7 +3,7 @@ package com.flipperdevices.infrared.impl.viewmodel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
-import com.flipperdevices.bridge.api.utils.Constants.API_SUPPORTED_REMOTE_EMULATE
+import com.flipperdevices.bridge.api.utils.Constants.API_SUPPORTED_INFRARED_EMULATE
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
@@ -62,7 +62,7 @@ class InfraredViewModel @VMInject constructor(
             } else if (synchronizationState is SynchronizationState.InProgress) {
                 InfraredEmulateState.SYNCING
             } else if (versionInformation == null ||
-                versionInformation < API_SUPPORTED_REMOTE_EMULATE
+                versionInformation < API_SUPPORTED_INFRARED_EMULATE
             ) {
                 InfraredEmulateState.UPDATE_FLIPPER
             } else {
