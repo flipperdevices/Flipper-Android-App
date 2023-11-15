@@ -23,6 +23,7 @@ import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.inappnotification.api.InAppNotificationRenderer
+import com.flipperdevices.notification.api.FlipperAppNotificationDialogApi
 import com.flipperdevices.unhandledexception.api.UnhandledExceptionRenderApi
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.collections.immutable.ImmutableSet
@@ -33,6 +34,7 @@ fun ComposableMainScreen(
     connectionApi: ConnectionApi,
     notificationRenderer: InAppNotificationRenderer,
     unhandledExceptionRendererApi: UnhandledExceptionRenderApi,
+    appNotificationApi: FlipperAppNotificationDialogApi,
     featureEntries: ImmutableSet<AggregateFeatureEntry>,
     composableEntries: ImmutableSet<ComposableFeatureEntry>,
     navController: NavHostController,
@@ -88,6 +90,7 @@ fun ComposableMainScreen(
                 notificationRenderer = notificationRenderer
             )
             connectionApi.CheckAndShowUnsupportedDialog()
+            appNotificationApi.NotificationDialog()
             unhandledExceptionRendererApi.ComposableUnhandledExceptionRender(Modifier)
         }
     }

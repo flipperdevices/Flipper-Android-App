@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "25283638650",
+    "project_id": "flipper-zero-app",
+    "storage_bucket": "flipper-zero-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:25283638650:android:442ac89403612b0f7812c3",
+        "android_client_info": {
+          "package_name": "com.flipperdevices.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "25283638650-dpff71677fpd6hq2t9k09qmr6gdeotj9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCs_esXinP9RYOCaHIcJXe_MTRxC2BjgZ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "25283638650-dpff71677fpd6hq2t9k09qmr6gdeotj9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

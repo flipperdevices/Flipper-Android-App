@@ -1,4 +1,4 @@
-package com.flipperdevices.settings.impl.composable.elements
+package com.flipperdevices.settings.impl.composable.components
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Row
@@ -26,6 +26,6 @@ fun CategoryElement(
             descriptionId,
             titleTextStyle = LocalTypography.current.buttonB16
         )
-        Switch(state = state, onSwitchState = onSwitchState)
+        FlipperSwitch(state = state, onSwitchState = onSwitchState)
     }
 }

@@ -1,4 +1,4 @@
-package com.flipperdevices.settings.impl.composable.elements
+package com.flipperdevices.settings.impl.composable.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Divider

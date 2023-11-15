@@ -1,15 +1,21 @@
 package com.flipperdevices.inappnotification.api.model
 
+import androidx.annotation.StringRes
+
 private const val NOTIFICATION_UPDATE_MS = 5000L
 private const val NOTIFICATION_REPORT_APP_MS = 3000L
 private const val NOTIFICATION_HIDE_APP_MS = 5000L
+private const val NOTIFICATION_DURATION_MS = 3 * 1000L
 
 sealed class InAppNotification {
     abstract val durationMs: Long
 
-    data class SavedKey(
-        val title: String,
-        override val durationMs: Long
+    data class Successful(
+        val title: String? = null,
+        @StringRes val titleId: Int? = null,
+        val desc: String? = null,
+        @StringRes val descId: Int? = null,
+        override val durationMs: Long = NOTIFICATION_DURATION_MS
     ) : InAppNotification()
 
     data object ReportApp : InAppNotification() {
@@ -31,6 +37,14 @@ sealed class InAppNotification {
 
     data class HiddenApp(
         val action: () -> Unit,
+        override val durationMs: Long = NOTIFICATION_HIDE_APP_MS
+    ) : InAppNotification()
+
+    data class Error(
+        @StringRes val titleId: Int,
+        @StringRes val descId: Int,
+        @StringRes val actionTextId: Int?,
+        val action: (() -> Unit)?,
         override val durationMs: Long = NOTIFICATION_HIDE_APP_MS
     ) : InAppNotification()
 }

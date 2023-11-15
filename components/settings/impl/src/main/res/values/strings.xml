@@ -2,12 +2,15 @@
 <resources>
     <string name="options">Options</string>
 
-    <string name="theme_options">Color Theme</string>
-    <string name="theme_options_desc">System/Light/Dark</string>
-    <string name="theme_options_system">System</string>
-    <string name="theme_options_light">Light</string>
-    <string name="theme_options_dark">Dark</string>
-    <string name="theme_options_unknown">Unknown</string>
+    <string name="app_theme_options">Color Theme</string>
+    <string name="app_theme_options_desc">System/Light/Dark</string>
+    <string name="app_theme_options_system">System</string>
+    <string name="app_theme_options_light">Light</string>
+    <string name="app_theme_options_dark">Dark</string>
+    <string name="app_theme_options_unknown">Unknown</string>
+    <string name="app_title">App</string>
+    <string name="app_notification_title">Push Notifications</string>
+    <string name="app_notification_desc">Notify about new firmware releases</string>
 
     <string name="debug_options">Debug Options</string>
     <string name="debug_options_desc">Features for developers and testing</string>

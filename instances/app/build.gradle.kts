@@ -8,6 +8,7 @@ plugins {
     id("flipper.android-app")
     id("com.squareup.anvil")
     id("kotlin-kapt")
+    alias(libs.plugins.google.gms)
 }
 
 android.namespace = "com.flipperdevices.app"
@@ -18,6 +19,8 @@ dependencies {
     implementation(projects.components.core.log)
     implementation(projects.components.core.preference)
     implementation(projects.components.core.activityholder)
+    implementation(projects.components.core.permission.api)
+    implementation(projects.components.core.permission.impl)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.lifecycle)
@@ -214,14 +217,23 @@ dependencies {
             implementation(projects.components.selfupdater.thirdparty.api)
             implementation(projects.components.selfupdater.thirdparty.github)
         }
+
         SourceInstall.DEBUG ->
             implementation(projects.components.selfupdater.debug)
+
         else ->
             implementation(projects.components.selfupdater.unknown)
     }
 
     implementation(projects.components.unhandledexception.api)
     implementation(projects.components.unhandledexception.impl)
+
+    implementation(projects.components.notification.api)
+    if (IS_GOOGLE_FEATURE_AVAILABLE) {
+        implementation(projects.components.notification.impl)
+    } else {
+        implementation(projects.components.notification.noop)
+    }
 
     implementation(libs.ktor.client)
 

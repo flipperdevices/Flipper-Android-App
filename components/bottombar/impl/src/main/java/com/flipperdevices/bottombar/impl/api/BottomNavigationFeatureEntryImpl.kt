@@ -18,6 +18,7 @@ import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.flipperdevices.inappnotification.api.InAppNotificationRenderer
+import com.flipperdevices.notification.api.FlipperAppNotificationDialogApi
 import com.flipperdevices.unhandledexception.api.UnhandledExceptionRenderApi
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
@@ -35,7 +36,8 @@ class BottomNavigationFeatureEntryImpl @Inject constructor(
     composableEntriesProvider: Provider<MutableSet<ComposableFeatureEntry>>,
     private val connectionApi: ConnectionApi,
     private val notificationRenderer: InAppNotificationRenderer,
-    private val unhandledExceptionRendererApi: UnhandledExceptionRenderApi
+    private val unhandledExceptionRendererApi: UnhandledExceptionRenderApi,
+    private val appNotificationApi: FlipperAppNotificationDialogApi
 ) : BottomNavigationFeatureEntry, BottomNavigationHandleDeeplink {
     private val featureEntriesMutable by featureEntriesProvider
     private val composableEntriesMutable by composableEntriesProvider
@@ -53,6 +55,7 @@ class BottomNavigationFeatureEntryImpl @Inject constructor(
                 featureEntries = featureEntriesMutable.toPersistentSet(),
                 composableEntries = composableEntriesMutable.toPersistentSet(),
                 notificationRenderer = notificationRenderer,
+                appNotificationApi = appNotificationApi,
                 unhandledExceptionRendererApi = unhandledExceptionRendererApi,
                 navController = childNavController,
                 onTabClick = { tab, force -> onChangeTab(tab, force) }
