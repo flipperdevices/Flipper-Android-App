@@ -5,7 +5,8 @@
 - [Feature] Infrared Editor process error
 - [Feature] Optimization FapHub by compose metrics
 - [FIX] Splashscreen WearOS icon
-- [FIX] Handle expired link 
+- [FIX] Handle expired link
+- [FIX] Progress wrapper division by zero
 
 # 1.6.6
 
