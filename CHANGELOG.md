@@ -6,7 +6,8 @@
 - [Feature] Optimization FapHub by compose metrics
 - [Feature] Firmware update notification
 - [FIX] Splashscreen WearOS icon
-- [FIX] Handle expired link 
+- [FIX] Handle expired link
+- [FIX] Progress wrapper division by zero
 
 # 1.6.6
 
