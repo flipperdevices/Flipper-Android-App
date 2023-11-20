@@ -10,7 +10,7 @@
     <string name="info_device_firmware_version_release_full">Release</string>
     <string name="info_device_firmware_version_release_desc">Stable release (recommended)</string>
     <string name="info_device_firmware_version_custom">Custom</string>
-    <string name="info_device_firmware_version_custom_desc">Choose update from storage</string>
+    <string name="info_device_firmware_version_custom_desc">Upload file with custom firmware</string>
 
     <string name="info_device_firmware_version_unknown_empty" />
 

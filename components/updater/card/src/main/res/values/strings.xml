@@ -6,14 +6,14 @@
     <string name="updater_card_updater_button_no_updates">NO UPDATES</string>
     <string name="updater_card_updater_button_no_updates_desc">There are no updates in the selected channel</string>
     <string name="updater_card_updater_button_choose_file">CHOOSE FILE</string>
-    <string name="updater_card_updater_button_choose_file_desc">Open file picker for choose update</string>
+    <string name="updater_card_updater_button_choose_file_desc">Use the firmware from .tgz files to update</string>
     <string name="updater_card_updater_button_install">INSTALL</string>
     <string name="updater_card_updater_button_install_desc">Firmware on Flipper doesn’t match the selected update channel. Selected version will be installed.</string>
     <string name="updater_card_updater_button_update">UPDATE</string>
     <string name="updater_card_updater_button_update_desc">Update Flipper to the latest version</string>
     <string name="updater_card_updater_progress">Checking for updates…</string>
     <string name="updater_card_updater_reboot_title">Update started</string>
-    <string name="updater_card_updater_reboot_desc">Flipper is updating in offline mode. Look at the device screen for info and wait for reconnection.</string>
+    <string name="updater_card_updater_reboot_desc">Flipper is updating in offline mode. Check the device screen for info and wait for reconnect.</string>
     <string name="updater_card_firmware_version_choice">Choice version</string>
 
     <string name="update_card_error_no_internet_title">No internet connection</string>
@@ -21,16 +21,16 @@
     <string name="update_card_error_server_request_title">Unable to download firmware </string>
     <string name="update_card_error_server_request_desc">Can\'t connect to update server</string>
     <string name="update_card_error_no_sd_title">No SD card</string>
-    <string name="update_card_error_no_sd_desc">Install SD card in Flipper to update firmware</string>
+    <string name="update_card_error_no_sd_desc">Insert a microSD card into Flipper to install this app</string>
 
     <string name="update_card_dialog_battery_title">Low Battery on Flipper</string>
     <string name="update_card_dialog_battery_desc" formatted="false">Charge Flipper to 10% before installing the update</string>
 
-    <string name="update_card_dialog_extension_title">Not supported updater file</string>
-    <string name="update_card_dialog_extension_desc">Try use updater file with tgz extension</string>
+    <string name="update_card_dialog_extension_title">Unsupported File Format</string>
+    <string name="update_card_dialog_extension_desc">Use the file with .tgz extension</string>
 
-    <string name="update_card_dialog_file_big_title">Biggest file</string>
-    <string name="update_card_dialog_file_big_desc">Are you sure for upload biggest file on Flipper?</string>
+    <string name="update_card_dialog_file_big_title">File Size is Too Large</string>
+    <string name="update_card_dialog_file_big_desc">Unable to upload this file</string>
 
     <string name="update_card_dialog_pause_sync_title">Pause Synchronization?</string>
     <string name="update_card_dialog_pause_sync_update">Pause &amp; Update</string>

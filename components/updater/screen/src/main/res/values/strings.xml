@@ -18,9 +18,9 @@
     <string name="update_dialog_sync_no">Continue</string>
     <string name="update_dialog_yes">Update</string>
     <string name="update_dialog_no">Cancel</string>
-    <string name="update_cancel_dialog_title">Abort Update?</string>
-    <string name="update_cancel_dialog_desc">Updating will be interrupted. Flipper will still have the previous firmware version.</string>
-    <string name="update_cancel_dialog_yes">Abort</string>
+    <string name="update_cancel_dialog_title">Stop Update?</string>
+    <string name="update_cancel_dialog_desc">Flipper will still have the previous firmware version</string>
+    <string name="update_cancel_dialog_yes">Stop</string>
     <string name="update_cancel_dialog_no">Continue</string>
 
     <string name="update_screen_title">Updating your Flipper</string>
