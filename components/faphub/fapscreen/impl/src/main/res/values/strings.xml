@@ -23,8 +23,10 @@
     <string name="fapscreen_building_state_outdated_app_text">Outdated app</string>
     <string name="fapscreen_building_state_outdated_flipper_text">To install, update firmware from Release Channel</string>
     <string name="fapscreen_building_dialog_not_connected_title">Runs on Latest Firmware Release</string>
-    <string name="fapscreen_building_dialog_not_connected_desc">Connect your Flipper with latest firmware Release version to install this app</string>
-    <string name="fapscreen_building_dialog_not_connected_btn">Go to Connecting</string>
+    <string name="fapscreen_building_dialog_not_connected_desc_pre">Connect your Flipper with the latest</string>
+    <string name="fapscreen_building_dialog_not_connected_desc_channel">Release</string>
+    <string name="fapscreen_building_dialog_not_connected_desc_post">firmware version to install this app</string>
+    <string name="fapscreen_building_dialog_not_connected_btn">Go to Connection</string>
     <string name="fapscreen_building_dialog_running_title">App is Rebuilding</string>
     <string name="fapscreen_building_dialog_running_desc">A new app version is rebuilding on the server. Please wait, it can take some time.</string>
     <string name="fapscreen_building_dialog_running_btn">Got It</string>

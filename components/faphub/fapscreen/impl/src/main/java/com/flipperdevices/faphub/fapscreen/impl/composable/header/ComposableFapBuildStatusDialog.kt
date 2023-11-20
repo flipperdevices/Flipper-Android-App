@@ -30,6 +30,10 @@ import com.flipperdevices.faphub.dao.api.model.FapBuildState
 import com.flipperdevices.faphub.dao.api.model.FapItem
 import com.flipperdevices.faphub.fapscreen.impl.R
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import androidx.compose.material.LocalTextStyle
+import androidx.compose.runtime.remember
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 
 @Composable
 fun ComposableFapBuildStatusDialog(
@@ -72,7 +76,39 @@ private fun ComposableFapBuildStatusReadyToReleaseDialog(
 ) {
     FlipperDialog(
         titleId = R.string.fapscreen_building_dialog_not_connected_title,
-        textId = R.string.fapscreen_building_dialog_not_connected_desc,
+        textComposable = {
+            val preText = stringResource(R.string.fapscreen_building_dialog_not_connected_desc_pre)
+            val channelText = stringResource(
+                R.string.fapscreen_building_dialog_not_connected_desc_channel
+            )
+            val postText = stringResource(
+                R.string.fapscreen_building_dialog_not_connected_desc_post
+            )
+            val style = LocalTypography.current.bodyR14
+            val releaseColor = LocalPallet.current.channelFirmwareRelease
+
+            Text(
+                text = remember(preText, channelText, postText, style, releaseColor) {
+                    buildAnnotatedString {
+                        append(preText)
+                        append(' ')
+                        withStyle(
+                            style = style.toSpanStyle()
+                                .copy(
+                                    color = releaseColor
+                                )
+                        ) {
+                            append(channelText)
+                        }
+                        append(' ')
+                        append(postText)
+                    }
+                },
+                color = LocalPallet.current.text40,
+                style = LocalTypography.current.bodyR14,
+                textAlign = TextAlign.Center
+            )
+        },
         buttonTextId = R.string.fapscreen_building_dialog_not_connected_btn,
         onDismissRequest = onDismiss,
         onClickButton = {
