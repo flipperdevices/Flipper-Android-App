@@ -1,14 +1,32 @@
 package com.flipperdevices.filemanager.impl.api
 
-import android.net.Uri
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.platform.LocalSavedStateRegistryOwner
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
+import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.DefaultComponentContext
+import com.arkivanov.decompose.defaultComponentContext
+import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
+import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.fade
+import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.isFront
+import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.plus
+import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.scale
+import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.slide
+import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.stackAnimation
+import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
+import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.flipperdevices.deeplink.api.DeepLinkParser
 import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.filemanager.api.navigation.FileManagerEntry
@@ -23,111 +41,59 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.File
 import javax.inject.Inject
+import tangle.viewmodel.compose.tangleViewModel
 
 internal const val PATH_KEY = "path"
 internal const val CONTENT_KEY = "content"
 internal const val FILE_PATH_KEY = "file_path"
 
 @ContributesBinding(AppGraph::class, FileManagerEntry::class)
-@ContributesMultibinding(AppGraph::class, AggregateFeatureEntry::class)
+@ContributesMultibinding(AppGraph::class, ComposableFeatureEntry::class)
 class FileManagerEntryImpl @Inject constructor(
-    private val deepLinkParser: DeepLinkParser
+    private val fileManagerFactory: FileManagerDecomposeComponent.Factory
 ) : FileManagerEntry {
-    private val fileManagerArguments = listOf(
-        navArgument(PATH_KEY) {
-            type = NavType.StringType
-            nullable = false
-        }
-    )
-    private val uploadArguments = fileManagerArguments.plus(
-        navArgument(CONTENT_KEY) {
-            type = DeeplinkContentType()
-            nullable = false
-        }
-    )
-    private val downloadArguments = fileManagerArguments.plus(
-        navArgument(FILE_PATH_KEY) {
-            type = ShareFileType()
-            nullable = false
-        }
-    )
-    private val editorArguments = listOf(
-        navArgument(FILE_PATH_KEY) {
-            type = ShareFileType()
-            nullable = false
-        }
-    )
 
-    override fun fileManagerDestination(
-        path: String
-    ) = "@${ROUTE.name}?path=${Uri.encode(path)}"
+    override fun fileManagerDestination() = "@${ROUTE.name}"
 
-    private fun uploadFileDestination(
-        path: String,
-        deeplinkContent: DeeplinkContent
-    ) = "@${ROUTE.name}upload?path=${Uri.encode(path)}" +
-        "&content=${Uri.encode(Json.encodeToString(deeplinkContent))}"
-
-    private fun downloadFileDestination(
-        file: ShareFile,
-        pathToDirectory: String = File(file.flipperFilePath).absoluteFile.parent ?: "/"
-    ) = "@${ROUTE.name}download?path=${Uri.encode(pathToDirectory)}" +
-        "&filepath=${Uri.encode(Json.encodeToString(file))}"
-
-    private fun editorFileDestination(
-        file: ShareFile
-    ) = "@${ROUTE.name}editor?filepath=${Uri.encode(Json.encodeToString(file))}"
-
-    override fun NavGraphBuilder.navigation(navController: NavHostController) {
-        navigation(
-            startDestination = fileManagerDestination(),
-            route = ROUTE.name
+    override fun NavGraphBuilder.composable(navController: NavHostController) {
+        composable(
+            route = "@${ROUTE.name}"
         ) {
-            composable(
-                route = "@${ROUTE.name}?path={$PATH_KEY}",
-                fileManagerArguments
-            ) {
-                ComposableFileManagerScreen(
-                    deepLinkParser,
-                    onOpenFolder = {
-                        navController.navigate(fileManagerDestination(it.path))
-                    },
-                    onDownloadAndShareFile = {
-                        navController.navigate(downloadFileDestination(ShareFile(it)))
-                    },
-                    onOpenEditor = {
-                        navController.navigate(editorFileDestination(ShareFile(it)))
-                    },
-                    onUploadFile = { path, content ->
-                        navController.navigate(
-                            uploadFileDestination(
-                                path,
-                                content
-                            )
-                        )
+            val componentContext = rememberComponentContext()
+            val fileManagerComponent = remember(componentContext) {
+                fileManagerFactory(componentContext)
+            }
+            val childStack by fileManagerComponent.stack.subscribeAsState()
+
+            Children(
+                stack = childStack,
+                animation = stackAnimation { _, _, direction ->
+                    if (direction.isFront) {
+                        slide() + fade()
+                    } else {
+                        scale(frontFactor = 1F, backFactor = 0.7F) + fade()
                     }
-                )
-            }
-            composable(
-                route = "@${ROUTE.name}upload" +
-                    "?path={$PATH_KEY}&content={$CONTENT_KEY}",
-                uploadArguments
+                }
             ) {
-                ComposableFileManagerUploadedScreen(navController)
-            }
-            composable(
-                "@${ROUTE.name}download" +
-                    "?path={$PATH_KEY}&filepath={$FILE_PATH_KEY}",
-                downloadArguments
-            ) {
-                ComposableFileManagerDownloadScreen(navController)
-            }
-            composable(
-                "@${ROUTE.name}editor?filepath={$FILE_PATH_KEY}",
-                editorArguments
-            ) {
-                ComposableFileManagerEditorScreen(navController)
+                it.instance.Render()
             }
         }
+    }
+}
+
+@Composable
+fun rememberComponentContext(): ComponentContext {
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
+    val savedStateRegistry = LocalSavedStateRegistryOwner.current.savedStateRegistry
+    val viewModelStore = LocalViewModelStoreOwner.current?.viewModelStore
+    val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+
+    return remember(lifecycle, savedStateRegistry, viewModelStore, onBackPressedDispatcher) {
+        DefaultComponentContext(
+            lifecycle = lifecycle,
+            savedStateRegistry = savedStateRegistry,
+            viewModelStore = viewModelStore,
+            onBackPressedDispatcher = onBackPressedDispatcher
+        )
     }
 }

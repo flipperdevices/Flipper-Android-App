@@ -244,6 +244,8 @@ dependencies {
     implementation(libs.work.ktx)
     implementation(libs.ktorfit.lib)
 
+    implementation(libs.bundles.decompose)
+
     implementation(libs.coil.svg)
     implementation(libs.coil.compose)
     implementation(libs.compose.pager)

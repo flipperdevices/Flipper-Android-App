@@ -22,19 +22,20 @@ import com.flipperdevices.protobuf.storage.listRequest
 import com.flipperdevices.protobuf.storage.mkdirRequest
 import com.flipperdevices.protobuf.storage.writeRequest
 import com.google.protobuf.ByteString
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.sync.Mutex
-import tangle.inject.TangleParam
-import tangle.viewmodel.VMInject
 import java.io.File
 
-class FileManagerViewModel @VMInject constructor(
+class FileManagerViewModel @AssistedInject constructor(
     private val serviceProvider: FlipperServiceProvider,
-    @TangleParam(PATH_KEY)
+    @Assisted
     private val directory: String
 ) : LifecycleViewModel(), LogTagProvider {
     override val TAG = "FileManagerViewModel"
@@ -127,10 +128,18 @@ class FileManagerViewModel @VMInject constructor(
                     path = absolutePath
                     file = file { data = ByteString.EMPTY }
                 }
+
                 CreateFileManagerAction.FOLDER -> storageMkdirRequest = mkdirRequest {
                     path = absolutePath
                 }
             }
         }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
+    }
+
+    @AssistedFactory
+    fun interface Factory {
+        operator fun invoke(
+            directory: String
+        ): FileManagerViewModel
     }
 }
