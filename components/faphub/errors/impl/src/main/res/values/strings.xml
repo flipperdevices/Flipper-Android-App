@@ -17,5 +17,6 @@
     <string name="common_error_firmware_wrong_desc_2_green">Release</string>
     <string name="common_error_firmware_wrong_desc_3">Channel on your Flipper</string>
     <string name="common_error_firmware_wrong_btn">Go to Firmware Update</string>
-
+    <string name="common_error_no_sd_card_title">No SD Card</string>
+    <string name="common_error_no_sd_card_desc">MicroSD card is missing or there’s something wrong with it. Try to reinsert it.</string>
 </resources>

@@ -1,8 +1,13 @@
 package com.flipperdevices.faphub.installation.manifest.impl.utils
 
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
+import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
+import com.flipperdevices.bridge.rpc.api.model.exceptions.NoSdCardException
+import com.flipperdevices.bridge.rpcinfo.model.FlipperInformationStatus
+import com.flipperdevices.bridge.rpcinfo.model.FlipperStorageInformation
+import com.flipperdevices.bridge.rpcinfo.model.StorageStats
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.ktx.jre.flatten
 import com.flipperdevices.core.ktx.jre.pmap
@@ -25,10 +30,18 @@ class FapManifestsLoader @Inject constructor(
 
     override val TAG = "FapManifestsLoader"
 
-    suspend fun load(): List<FapManifestItem> {
+    suspend fun load(
+        connectionState: ConnectionState,
+        storageInformation: FlipperStorageInformation
+    ): List<FapManifestItem> {
         val serviceApi = flipperServiceProvider.getServiceApi()
-        if (!serviceApi.connectionInformationApi.isDeviceConnected()) {
+        if (!connectionState.isReady) {
             throw FlipperNotConnected()
+        }
+        val externalStorageStatus = storageInformation.externalStorageStatus
+            as? FlipperInformationStatus.Ready<StorageStats?>
+        if (externalStorageStatus == null || externalStorageStatus.data !is StorageStats.Loaded) {
+            throw NoSdCardException()
         }
         info { "Start load manifests" }
         val cacheResult = cacheLoader.loadCache()

@@ -70,6 +70,9 @@ class CountlyApiImpl @Inject constructor(
 
     private fun initCountly(): Countly {
         val sharedInstance = Countly.sharedInstance()
+        if (BuildConfig.COUNTLY_URL.isBlank()) {
+            return sharedInstance
+        }
         val config = CountlyConfig(
             application,
             BuildConfig.COUNTLY_APP_KEY,

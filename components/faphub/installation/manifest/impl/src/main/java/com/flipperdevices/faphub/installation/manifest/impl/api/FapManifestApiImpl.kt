@@ -1,6 +1,9 @@
 package com.flipperdevices.faphub.installation.manifest.impl.api
 
 import android.app.Application
+import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
+import com.flipperdevices.bridge.rpcinfo.api.FlipperStorageInformationApi
+import com.flipperdevices.bridge.rpcinfo.model.FlipperStorageInformation
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.withLock
@@ -21,6 +24,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import javax.inject.Inject
@@ -34,6 +39,7 @@ class FapManifestApiImpl @Inject constructor(
     private val manifestUploader: FapManifestUploader,
     private val manifestDeleter: FapManifestDeleter,
     private val flipperServiceProvider: FlipperServiceProvider,
+    private val flipperStorageInformationApi: FlipperStorageInformationApi,
     fapManifestCacheLoader: FapManifestCacheLoader,
     fapVersionApi: FapVersionApi,
     application: Application,
@@ -52,13 +58,18 @@ class FapManifestApiImpl @Inject constructor(
 
     init {
         scope.launch(Dispatchers.Default) {
-            flipperServiceProvider
+            val serviceApi = flipperServiceProvider
                 .getServiceApi()
-                .connectionInformationApi
-                .getConnectionStateFlow()
-                .collectLatest {
-                    invalidate()
-                }
+            flipperStorageInformationApi.invalidate(this, serviceApi)
+            combine(
+                flipperStorageInformationApi.getStorageInformationFlow(),
+                serviceApi.connectionInformationApi
+                    .getConnectionStateFlow()
+            ) { storageInformation, connectionState ->
+                storageInformation to connectionState
+            }.collectLatest { (storageStatus, connectionState) ->
+                invalidate(connectionState, storageStatus)
+            }
         }
     }
 
@@ -85,13 +96,28 @@ class FapManifestApiImpl @Inject constructor(
     }
 
     override fun invalidateAsync() {
-        scope.launch(Dispatchers.Default) { invalidate() }
+        scope.launch(Dispatchers.Default) {
+            val serviceApi = flipperServiceProvider
+                .getServiceApi()
+            invalidate(
+                connectionState = serviceApi.connectionInformationApi.getConnectionStateFlow()
+                    .first(),
+                storageInformation = flipperStorageInformationApi.getStorageInformationFlow()
+                    .first()
+            )
+        }
     }
 
-    private suspend fun invalidate() = withLock(mutex, "invalidate") {
+    private suspend fun invalidate(
+        connectionState: ConnectionState,
+        storageInformation: FlipperStorageInformation
+    ) = withLock(mutex, "invalidate") {
         runCatching {
             enrichedHelper.onLoadFresh()
-            loader.load()
+            loader.load(
+                connectionState = connectionState,
+                storageInformation = storageInformation
+            )
         }.onFailure {
             error(it) { "Failed load manifests" }
             enrichedHelper.onError(it)

@@ -20,6 +20,7 @@ dependencies {
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.rpc.api)
+    implementation(projects.components.bridge.rpcinfo.api)
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.pbutils)
 

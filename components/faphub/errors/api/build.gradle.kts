@@ -15,4 +15,5 @@ dependencies {
 
     implementation(libs.ktor.serialization)
     implementation(libs.ktor.client)
+    implementation(projects.components.bridge.rpc.api)
 }

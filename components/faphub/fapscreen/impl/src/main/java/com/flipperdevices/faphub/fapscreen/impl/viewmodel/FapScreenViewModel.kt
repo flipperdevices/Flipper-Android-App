@@ -163,7 +163,6 @@ class FapScreenViewModel @VMInject constructor(
 
         is FapState.InstallationInProgress,
         is FapState.UpdatingInProgress,
-        FapState.ConnectFlipper,
         is FapState.NotAvailableForInstall,
         FapState.ReadyToInstall -> FapDetailedControlState.InProgressOrNotInstalled(
             fapItem
