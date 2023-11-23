@@ -93,14 +93,8 @@ fun FlipperDialogSynchronization(
 
 @Composable
 fun FlipperDialogFileVeryBig(onDismiss: () -> Unit) {
-    val imageId = if (MaterialTheme.colors.isLight) {
-        DesignSystem.drawable.ic_firmware_application_deprecated
-    } else {
-        DesignSystem.drawable.ic_firmware_application_deprecated_dark
-    }
-
     FlipperDialog(
-        imageId = imageId,
+        imageId = R.drawable.pic_wrong_file,
         titleId = R.string.update_card_dialog_file_big_title,
         textId = R.string.update_card_dialog_file_big_desc,
         buttonTextId = R.string.update_card_dialog_battery_btn,
@@ -111,14 +105,8 @@ fun FlipperDialogFileVeryBig(onDismiss: () -> Unit) {
 
 @Composable
 fun FlipperDialogFileExtension(onDismiss: () -> Unit) {
-    val imageId = if (MaterialTheme.colors.isLight) {
-        DesignSystem.drawable.ic_firmware_application_deprecated
-    } else {
-        DesignSystem.drawable.ic_firmware_application_deprecated_dark
-    }
-
     FlipperDialog(
-        imageId = imageId,
+        imageId = R.drawable.pic_wrong_file,
         titleId = R.string.update_card_dialog_extension_title,
         textId = R.string.update_card_dialog_extension_desc,
         buttonTextId = R.string.update_card_dialog_battery_btn,
