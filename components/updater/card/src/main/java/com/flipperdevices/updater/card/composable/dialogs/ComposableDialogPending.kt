@@ -10,7 +10,6 @@ import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoi
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialogModel
 import com.flipperdevices.updater.card.R
 import com.flipperdevices.updater.model.FirmwareVersion
-import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun FlipperDialogReadyUpdate(
