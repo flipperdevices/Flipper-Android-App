@@ -1,5 +1,6 @@
 package com.flipperdevices.faphub.errors.api.throwable
 
+import com.flipperdevices.bridge.rpc.api.model.exceptions.NoSdCardException
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ServerResponseException
 import io.ktor.serialization.JsonConvertException
@@ -11,7 +12,8 @@ enum class FapHubError {
     FLIPPER_NOT_CONNECTED,
     NO_SERVER,
     GENERAL,
-    FIRMWARE_NOT_SUPPORTED
+    FIRMWARE_NOT_SUPPORTED,
+    NO_SD_CARD
 }
 
 fun Throwable.toFapHubError(): FapHubError {
@@ -21,6 +23,7 @@ fun Throwable.toFapHubError(): FapHubError {
         is JsonConvertException, is ClientRequestException -> FapHubError.WRONG_REQUEST
         is FlipperNotConnected -> FapHubError.FLIPPER_NOT_CONNECTED
         is ServerResponseException -> FapHubError.NO_SERVER
+        is NoSdCardException -> FapHubError.NO_SD_CARD
         else -> FapHubError.GENERAL
     }
 }

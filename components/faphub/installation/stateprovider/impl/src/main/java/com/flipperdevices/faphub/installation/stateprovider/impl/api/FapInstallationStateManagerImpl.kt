@@ -1,5 +1,6 @@
 package com.flipperdevices.faphub.installation.stateprovider.impl.api
 
+import com.flipperdevices.bridge.rpc.api.model.exceptions.NoSdCardException
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.faphub.dao.api.model.FapBuildState
@@ -55,7 +56,10 @@ class FapInstallationStateManagerImpl @Inject constructor(
         }
 
         when (target) {
-            FlipperTarget.NotConnected -> return FapState.ConnectFlipper
+            FlipperTarget.NotConnected -> return FapState.NotAvailableForInstall(
+                NotAvailableReason.FLIPPER_NOT_CONNECTED
+            )
+
             FlipperTarget.Unsupported -> return FapState.NotAvailableForInstall(
                 NotAvailableReason.FLIPPER_OUTDATED
             )
@@ -125,7 +129,11 @@ class FapInstallationStateManagerImpl @Inject constructor(
             null
         }
 
-        FapManifestState.Loading, is FapManifestState.NotLoaded -> FapState.RetrievingManifest
+        FapManifestState.Loading -> FapState.RetrievingManifest
+        is FapManifestState.NotLoaded -> when (manifest.throwable) {
+            is NoSdCardException -> FapState.NotAvailableForInstall(NotAvailableReason.NO_SD_CARD)
+            else -> FapState.NotAvailableForInstall(NotAvailableReason.FLIPPER_OUTDATED)
+        }
     }
 
     private fun queueStateToFapState(queueState: FapQueueState) = when (queueState) {

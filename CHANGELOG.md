@@ -9,6 +9,7 @@
 - [FIX] Splashscreen WearOS icon
 - [FIX] Handle expired link
 - [FIX] Progress wrapper division by zero
+- [FIX] No SDCard error in FapHub
 
 # 1.6.6
 

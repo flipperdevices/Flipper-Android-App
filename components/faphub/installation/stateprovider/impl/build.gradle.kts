@@ -20,6 +20,8 @@ dependencies {
     implementation(projects.components.faphub.installation.queue.api)
     implementation(projects.components.faphub.target.api)
 
+    implementation(projects.components.bridge.rpc.api)
+
     implementation(libs.kotlin.coroutines)
     implementation(libs.kotlin.immutable.collections)
 

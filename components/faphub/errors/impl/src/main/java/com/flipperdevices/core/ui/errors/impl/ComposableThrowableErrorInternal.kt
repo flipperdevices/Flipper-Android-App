@@ -6,6 +6,7 @@ import com.flipperdevices.core.ui.errors.impl.composable.ComposableFlipperFirmwa
 import com.flipperdevices.core.ui.errors.impl.composable.ComposableFlipperNotConnectedError
 import com.flipperdevices.core.ui.errors.impl.composable.ComposableGeneralError
 import com.flipperdevices.core.ui.errors.impl.composable.ComposableNoNetworkError
+import com.flipperdevices.core.ui.errors.impl.composable.ComposableNoSdCard
 import com.flipperdevices.core.ui.errors.impl.composable.ComposableNoServerError
 import com.flipperdevices.core.ui.errors.impl.composable.ComposableWrongRequestError
 import com.flipperdevices.faphub.errors.api.FapErrorSize
@@ -25,15 +26,18 @@ fun ComposableThrowableErrorInternal(
             onRetry = onRetry,
             fapErrorSize = fapErrorSize
         )
+
         FapHubError.FIRMWARE_NOT_SUPPORTED -> ComposableFlipperFirmwareNotSupported(
             modifier = modifier,
             onOpenDeviceScreen = onOpenDeviceScreen
         )
+
         FapHubError.WRONG_REQUEST -> ComposableWrongRequestError(
             modifier = modifier,
             onRetry = onRetry,
             fapErrorSize = fapErrorSize
         )
+
         FapHubError.FLIPPER_NOT_CONNECTED -> ComposableFlipperNotConnectedError(
             modifier = modifier,
             onRetry = onRetry,
@@ -45,7 +49,14 @@ fun ComposableThrowableErrorInternal(
             onRetry = onRetry,
             fapErrorSize = fapErrorSize
         )
+
         FapHubError.GENERAL -> ComposableGeneralError(
+            modifier = modifier,
+            onRetry = onRetry,
+            fapErrorSize = fapErrorSize
+        )
+
+        FapHubError.NO_SD_CARD -> ComposableNoSdCard(
             modifier = modifier,
             onRetry = onRetry,
             fapErrorSize = fapErrorSize

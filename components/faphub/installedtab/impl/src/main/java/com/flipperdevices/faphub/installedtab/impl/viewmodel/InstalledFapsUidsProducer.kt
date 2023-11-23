@@ -78,7 +78,7 @@ class InstalledFapsUidsProducer @Inject constructor(
 }
 
 internal sealed class FapInstalledUidsState {
-    object Loading : FapInstalledUidsState()
+    data object Loading : FapInstalledUidsState()
 
     data class LoadedOffline(
         val faps: ImmutableList<OfflineFapApp>

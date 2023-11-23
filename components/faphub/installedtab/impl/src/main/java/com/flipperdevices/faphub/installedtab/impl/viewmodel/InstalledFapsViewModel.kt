@@ -149,7 +149,7 @@ class InstalledFapsViewModel @VMInject constructor(
 }
 
 sealed class FapInstalledInternalLoadingState {
-    object Loading : FapInstalledInternalLoadingState()
+    data object Loading : FapInstalledInternalLoadingState()
 
     data class LoadedOffline(
         val faps: ImmutableList<OfflineFapApp>
