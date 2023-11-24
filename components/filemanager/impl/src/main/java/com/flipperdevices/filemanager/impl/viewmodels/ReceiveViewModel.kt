@@ -26,7 +26,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import kotlinx.coroutines.withContext
 import java.io.File
-import java.net.URLDecoder
 import java.util.concurrent.atomic.AtomicBoolean
 
 class ReceiveViewModel @AssistedInject constructor(

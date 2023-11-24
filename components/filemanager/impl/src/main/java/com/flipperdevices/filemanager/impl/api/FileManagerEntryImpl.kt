@@ -9,13 +9,9 @@ import androidx.compose.ui.platform.LocalSavedStateRegistryOwner
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigation
-import androidx.navigation.navArgument
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.DefaultComponentContext
-import com.arkivanov.decompose.defaultComponentContext
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.fade
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.isFront
@@ -25,23 +21,11 @@ import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.slide
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.stackAnimation
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
-import com.flipperdevices.deeplink.api.DeepLinkParser
-import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.filemanager.api.navigation.FileManagerEntry
-import com.flipperdevices.filemanager.impl.composable.ComposableFileManagerDownloadScreen
-import com.flipperdevices.filemanager.impl.composable.ComposableFileManagerEditorScreen
-import com.flipperdevices.filemanager.impl.composable.ComposableFileManagerScreen
-import com.flipperdevices.filemanager.impl.composable.ComposableFileManagerUploadedScreen
-import com.flipperdevices.filemanager.impl.model.ShareFile
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import java.io.File
 import javax.inject.Inject
-import tangle.viewmodel.compose.tangleViewModel
 
 @ContributesBinding(AppGraph::class, FileManagerEntry::class)
 @ContributesMultibinding(AppGraph::class, ComposableFeatureEntry::class)

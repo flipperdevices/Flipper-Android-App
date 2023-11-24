@@ -12,8 +12,6 @@ import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import javax.inject.Inject
-
 
 interface FileManagerDecomposeComponent {
     val stack: Value<ChildStack<*, DecomposeComponent>>
@@ -48,21 +46,30 @@ class FileManagerDecomposeComponentImpl @AssistedInject constructor(
     )
 
     private fun child(
-        config: FileManagerNavigationConfig, componentContext: ComponentContext
+        config: FileManagerNavigationConfig,
+        componentContext: ComponentContext
     ): DecomposeComponent = when (config) {
         is FileManagerNavigationConfig.Screen -> fileManagerListingFactory(
-            componentContext, config, navigation
+            componentContext,
+            config,
+            navigation
         )
 
         is FileManagerNavigationConfig.Uploading -> fileManagerUploadingFactory(
-            componentContext, config, navigation
+            componentContext,
+            config,
+            navigation
         )
 
         is FileManagerNavigationConfig.Editing -> fileManagerEditingFactory(
-            componentContext, config, navigation
+            componentContext,
+            config,
+            navigation
         )
         is FileManagerNavigationConfig.Download -> fileManagerDownloadFactory(
-            componentContext, config, navigation
+            componentContext,
+            config,
+            navigation
         )
     }
 

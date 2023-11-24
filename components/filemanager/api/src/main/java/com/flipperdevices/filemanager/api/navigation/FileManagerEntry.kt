@@ -1,8 +1,6 @@
 package com.flipperdevices.filemanager.api.navigation
 
-import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
-import com.flipperdevices.core.ui.navigation.FeatureEntry
 import com.flipperdevices.core.ui.navigation.FeatureScreenRootRoute
 
 interface FileManagerEntry : ComposableFeatureEntry {

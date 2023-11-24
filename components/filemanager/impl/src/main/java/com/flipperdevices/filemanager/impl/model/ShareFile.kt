@@ -1,6 +1,5 @@
 package com.flipperdevices.filemanager.impl.model
 
-import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 
 @Serializable
