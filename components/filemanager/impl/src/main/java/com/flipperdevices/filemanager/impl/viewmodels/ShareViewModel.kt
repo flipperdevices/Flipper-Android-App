@@ -109,7 +109,7 @@ class ShareViewModel @AssistedInject constructor(
 
     private suspend fun onCompleteDownload() = withContext(Dispatchers.Main) {
         ShareHelper.shareFile(
-            context = getApplication<Application>(),
+            context = getApplication(),
             file = fileInSharedDir,
             resId = R.string.share_picker_title
         )

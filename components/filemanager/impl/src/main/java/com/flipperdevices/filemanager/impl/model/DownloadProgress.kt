@@ -1,10 +1,6 @@
 package com.flipperdevices.filemanager.impl.model
 
-import androidx.compose.runtime.Stable
-
-@Stable
 sealed class DownloadProgress {
-    @Stable
     data class Fixed(
         val progressInternal: Long = 0,
         val totalSize: Long,
@@ -17,7 +13,6 @@ sealed class DownloadProgress {
         }
     }
 
-    @Stable
     data class Infinite(
         val progressInternal: Long = 0,
         val speedBytesInSecondInternal: Long = 0
