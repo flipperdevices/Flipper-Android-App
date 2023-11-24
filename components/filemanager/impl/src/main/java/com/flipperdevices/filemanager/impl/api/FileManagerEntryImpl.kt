@@ -43,10 +43,6 @@ import java.io.File
 import javax.inject.Inject
 import tangle.viewmodel.compose.tangleViewModel
 
-internal const val PATH_KEY = "path"
-internal const val CONTENT_KEY = "content"
-internal const val FILE_PATH_KEY = "file_path"
-
 @ContributesBinding(AppGraph::class, FileManagerEntry::class)
 @ContributesMultibinding(AppGraph::class, ComposableFeatureEntry::class)
 class FileManagerEntryImpl @Inject constructor(

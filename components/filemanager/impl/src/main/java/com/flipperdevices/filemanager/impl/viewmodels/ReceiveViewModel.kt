@@ -10,11 +10,12 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.deeplink.model.DeeplinkContent
-import com.flipperdevices.filemanager.impl.api.CONTENT_KEY
-import com.flipperdevices.filemanager.impl.api.PATH_KEY
 import com.flipperdevices.filemanager.impl.model.DownloadProgress
 import com.flipperdevices.filemanager.impl.model.ShareState
 import com.flipperdevices.filemanager.impl.viewmodels.helpers.UploadFileHelper
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,25 +25,19 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import kotlinx.coroutines.withContext
-import tangle.inject.TangleParam
-import tangle.viewmodel.VMInject
 import java.io.File
 import java.net.URLDecoder
 import java.util.concurrent.atomic.AtomicBoolean
 
-class ReceiveViewModel @VMInject constructor(
-    @TangleParam(PATH_KEY)
-    encodedPath: String,
-    @TangleParam(CONTENT_KEY)
-    private val deeplinkContent: DeeplinkContent,
+class ReceiveViewModel @AssistedInject constructor(
+    @Assisted private val path: String,
+    @Assisted private val deeplinkContent: DeeplinkContent,
     context: Context,
     serviceProvider: FlipperServiceProvider
 ) : LifecycleViewModel(),
     FlipperBleServiceConsumer,
     LogTagProvider {
     override val TAG = "ReceiveViewModel"
-
-    private val path = URLDecoder.decode(encodedPath, "UTF-8")
 
     private val fileName by lazy { deeplinkContent.filename() ?: "Unknown" }
     private val uploadStarted = AtomicBoolean(false)
@@ -112,5 +107,13 @@ class ReceiveViewModel @VMInject constructor(
         if (exception != null) {
             error(exception) { "Can't upload $deeplinkContent" }
         }
+    }
+
+    @AssistedFactory
+    fun interface Factory {
+        operator fun invoke(
+            deeplinkContent: DeeplinkContent,
+            path: String
+        ): ReceiveViewModel
     }
 }

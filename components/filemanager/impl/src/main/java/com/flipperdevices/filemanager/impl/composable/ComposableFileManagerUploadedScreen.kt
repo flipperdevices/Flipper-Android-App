@@ -17,25 +17,22 @@ import com.flipperdevices.filemanager.impl.viewmodels.ReceiveViewModel
 import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
-fun ComposableFileManagerUploadedScreen(navController: NavController) {
-    val fileManagerViewModel: FileManagerViewModel = tangleViewModel()
-    val fileManagerState by fileManagerViewModel.getFileManagerState().collectAsState()
-
-    val receiveViewModel: ReceiveViewModel = tangleViewModel()
-    val shareState by receiveViewModel.getReceiveState().collectAsState()
-
+fun ComposableFileManagerUploadedScreen(
+    fileManagerState: FileManagerState,
+    shareState: ShareState,
+    onBack: () -> Unit
+) {
     if (shareState.processCompleted) {
         LaunchedEffect(Unit) {
-            navController.popBackStack()
+            onBack()
         }
     }
 
     ComposableFileManagerUploadedScreenInternal(
         fileManagerState,
-        shareState
-    ) {
-        navController.popBackStack()
-    }
+        shareState,
+        onCancel = onBack
+    )
 }
 
 @Composable

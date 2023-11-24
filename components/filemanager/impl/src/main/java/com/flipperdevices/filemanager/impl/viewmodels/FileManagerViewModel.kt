@@ -10,7 +10,6 @@ import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
-import com.flipperdevices.filemanager.impl.api.PATH_KEY
 import com.flipperdevices.filemanager.impl.model.CreateFileManagerAction
 import com.flipperdevices.filemanager.impl.model.FileItem
 import com.flipperdevices.filemanager.impl.model.FileManagerState
@@ -32,6 +31,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.sync.Mutex
 import java.io.File
+import kotlinx.collections.immutable.toImmutableSet
 
 class FileManagerViewModel @AssistedInject constructor(
     private val serviceProvider: FlipperServiceProvider,
@@ -108,7 +108,7 @@ class FileManagerViewModel @AssistedInject constructor(
         }.collect { fileList ->
             fileManagerStateFlow.update { oldState ->
                 val newSet = oldState.filesInDirectory.plus(fileList)
-                oldState.copy(filesInDirectory = newSet)
+                oldState.copy(filesInDirectory = newSet.toImmutableSet())
             }
         }
         fileManagerStateFlow.update {

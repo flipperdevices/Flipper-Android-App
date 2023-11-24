@@ -9,10 +9,12 @@ import com.flipperdevices.core.ui.ktx.viewModelWithFactory
 import com.flipperdevices.deeplink.api.DeepLinkParser
 import com.flipperdevices.filemanager.impl.composable.ComposableFileManagerScreen
 import com.flipperdevices.filemanager.impl.model.FileManagerNavigationConfig
+import com.flipperdevices.filemanager.impl.model.ShareFile
 import com.flipperdevices.filemanager.impl.viewmodels.FileManagerViewModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import java.io.File
 
 class FileManagerListingComponent @AssistedInject constructor(
     private val deepLinkParser: DeepLinkParser,
@@ -22,6 +24,7 @@ class FileManagerListingComponent @AssistedInject constructor(
     @Assisted val navigation: StackNavigation<FileManagerNavigationConfig>
 ) : DecomposeComponent, ComponentContext by componentContext {
     @Composable
+    @Suppress("NonSkippableComposable")
     override fun Render() {
         ComposableFileManagerScreen(
             fileManagerViewModel = viewModelWithFactory(config.path) {
@@ -31,9 +34,26 @@ class FileManagerListingComponent @AssistedInject constructor(
             onOpenFolder = {
                 navigation.push(FileManagerNavigationConfig.Screen(it.path))
             },
-            onOpenEditor = {},
-            onDownloadAndShareFile = {},
-            onUploadFile = { _, _ -> }
+            onOpenEditor = {
+                navigation.push(FileManagerNavigationConfig.Editing(ShareFile(it)))
+            },
+            onDownloadAndShareFile = {
+                val shareFile = ShareFile(it)
+                navigation.push(
+                    FileManagerNavigationConfig.Download(
+                        path = File(shareFile.flipperFilePath).absoluteFile.parent ?: "/",
+                        shareFile = shareFile
+                    )
+                )
+            },
+            onUploadFile = { path, content ->
+                navigation.push(
+                    FileManagerNavigationConfig.Uploading(
+                        path = path,
+                        deeplinkContent = content
+                    )
+                )
+            }
         )
     }
 

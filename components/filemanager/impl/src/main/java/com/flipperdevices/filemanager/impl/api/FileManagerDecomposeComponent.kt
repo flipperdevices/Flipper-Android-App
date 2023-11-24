@@ -32,27 +32,37 @@ interface DecomposeComponent {
 
 class FileManagerDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
-    private val fileManagerListingFactory: FileManagerListingComponent.Factory
+    private val fileManagerListingFactory: FileManagerListingComponent.Factory,
+    private val fileManagerUploadingFactory: FileManagerUploadingComponent.Factory,
+    private val fileManagerEditingFactory: FileManagerEditingComponent.Factory,
+    private val fileManagerDownloadFactory: FileManagerDownloadComponent.Factory
 ) : FileManagerDecomposeComponent, ComponentContext by componentContext {
     private val navigation = StackNavigation<FileManagerNavigationConfig>()
 
-    override val stack: Value<ChildStack<*, DecomposeComponent>> =
-        childStack(
-            source = navigation,
-            serializer = FileManagerNavigationConfig.serializer(),
-            initialConfiguration = FileManagerNavigationConfig.Screen("/"), // The initial child component is List
-            handleBackButton = true, // Automatically pop from the stack on back button presses
-            childFactory = ::child,
-        )
+    override val stack: Value<ChildStack<*, DecomposeComponent>> = childStack(
+        source = navigation,
+        serializer = FileManagerNavigationConfig.serializer(),
+        initialConfiguration = FileManagerNavigationConfig.Screen("/"),
+        handleBackButton = true,
+        childFactory = ::child,
+    )
 
     private fun child(
-        config: FileManagerNavigationConfig,
-        componentContext: ComponentContext
+        config: FileManagerNavigationConfig, componentContext: ComponentContext
     ): DecomposeComponent = when (config) {
         is FileManagerNavigationConfig.Screen -> fileManagerListingFactory(
-            componentContext,
-            config,
-            navigation
+            componentContext, config, navigation
+        )
+
+        is FileManagerNavigationConfig.Uploading -> fileManagerUploadingFactory(
+            componentContext, config, navigation
+        )
+
+        is FileManagerNavigationConfig.Editing -> fileManagerEditingFactory(
+            componentContext, config, navigation
+        )
+        is FileManagerNavigationConfig.Download -> fileManagerDownloadFactory(
+            componentContext, config, navigation
         )
     }
 

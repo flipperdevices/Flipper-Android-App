@@ -36,19 +36,20 @@ import com.flipperdevices.filemanager.impl.viewmodels.EditorViewModel
 import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
-fun ComposableFileManagerEditorScreen(navController: NavController) {
-    val editorViewModel: EditorViewModel = tangleViewModel()
-    val editorState by editorViewModel.getEditorState().collectAsState()
-
+fun ComposableFileManagerEditorScreen(
+    editorState: EditorState,
+    onClickSaveButton: (String) -> Unit,
+    onBack: () -> Unit
+) {
     if (editorState is EditorState.Saved) {
         LaunchedEffect(Unit) {
-            navController.popBackStack()
+            onBack()
         }
     }
 
     ComposableFileManagerEditorScreenInternal(
         editorState = editorState,
-        onClickSaveButton = editorViewModel::onSaveFile
+        onClickSaveButton = onClickSaveButton
     )
 }
 
@@ -62,14 +63,17 @@ private fun ComposableFileManagerEditorScreenInternal(
             editorState,
             onClickSaveButton
         )
+
         is EditorState.Loading -> ComposableFileManagerInProgress(
             textId = R.string.filemanager_editor_loading_title,
             progress = editorState.progress
         )
+
         is EditorState.Saving -> ComposableFileManagerInProgress(
             textId = R.string.filemanager_editor_saving_title,
             progress = editorState.progress
         )
+
         EditorState.Saved -> return
     }
 }

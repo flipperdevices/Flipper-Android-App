@@ -14,25 +14,24 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.deeplink.model.DeeplinkContent
-import com.flipperdevices.filemanager.impl.api.FILE_PATH_KEY
 import com.flipperdevices.filemanager.impl.model.DownloadProgress
 import com.flipperdevices.filemanager.impl.model.EditorState
 import com.flipperdevices.filemanager.impl.model.ShareFile
 import com.flipperdevices.filemanager.impl.viewmodels.helpers.DownloadFileHelper
 import com.flipperdevices.filemanager.impl.viewmodels.helpers.UploadFileHelper
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.sync.Mutex
-import tangle.inject.TangleParam
-import tangle.viewmodel.VMInject
 import java.util.concurrent.atomic.AtomicBoolean
 
 private const val LIMITED_SIZE_BYTES = 1024L * 1024L // 1MB
 
-class EditorViewModel @VMInject constructor(
-    @TangleParam(FILE_PATH_KEY)
-    private val shareFile: ShareFile,
+class EditorViewModel @AssistedInject constructor(
+    @Assisted private val shareFile: ShareFile,
     context: Context,
     private val serviceProvider: FlipperServiceProvider
 ) : LifecycleViewModel(), FlipperBleServiceConsumer, LogTagProvider {
@@ -156,5 +155,12 @@ class EditorViewModel @VMInject constructor(
     override fun onCleared() {
         super.onCleared()
         editorFile.delete()
+    }
+
+    @AssistedFactory
+    fun interface Factory {
+        operator fun invoke(
+            shareFile: ShareFile
+        ): EditorViewModel
     }
 }
