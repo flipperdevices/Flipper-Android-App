@@ -1,6 +1,9 @@
 # Changelog
 
-# 1.6.7 - In progress
+# 1.6.8 - In progress
+
+
+# 1.6.7
 
 - [Feature] Infrared Editor process error
 - [Feature] Optimization FapHub by compose metrics
