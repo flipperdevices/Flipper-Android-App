@@ -10,6 +10,7 @@ import com.flipperdevices.core.ui.ktx.viewModelWithFactory
 import com.flipperdevices.filemanager.impl.composable.ComposableFileManagerEditorScreen
 import com.flipperdevices.filemanager.impl.model.FileManagerNavigationConfig
 import com.flipperdevices.filemanager.impl.viewmodels.EditorViewModel
+import com.flipperdevices.ui.decompose.DecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

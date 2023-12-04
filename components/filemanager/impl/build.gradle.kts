@@ -16,6 +16,7 @@ dependencies {
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.ktx)
+    implementation(projects.components.core.ui.decompose)
     implementation(projects.components.core.share)
 
     implementation(projects.components.bridge.service.api)

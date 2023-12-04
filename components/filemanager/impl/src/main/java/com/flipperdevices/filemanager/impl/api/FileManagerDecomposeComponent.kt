@@ -8,12 +8,13 @@ import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.filemanager.impl.model.FileManagerNavigationConfig
+import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 
-interface FileManagerDecomposeComponent {
+interface FileManagerDecomposeComponent  {
     val stack: Value<ChildStack<*, DecomposeComponent>>
 
     fun interface Factory {
@@ -21,11 +22,6 @@ interface FileManagerDecomposeComponent {
             componentContext: ComponentContext,
         ): FileManagerDecomposeComponent
     }
-}
-
-interface DecomposeComponent {
-    @Composable
-    fun Render()
 }
 
 class FileManagerDecomposeComponentImpl @AssistedInject constructor(

@@ -11,6 +11,7 @@ import com.flipperdevices.filemanager.impl.composable.ComposableFileManagerUploa
 import com.flipperdevices.filemanager.impl.model.FileManagerNavigationConfig
 import com.flipperdevices.filemanager.impl.viewmodels.FileManagerViewModel
 import com.flipperdevices.filemanager.impl.viewmodels.ReceiveViewModel
+import com.flipperdevices.ui.decompose.DecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
