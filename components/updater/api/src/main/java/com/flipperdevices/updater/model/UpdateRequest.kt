@@ -17,14 +17,7 @@ data class UpdateRequest(
     val content: UpdateContent,
     val requestId: Long = System.currentTimeMillis()
 ) : Parcelable {
-    fun toSerializable(): String {
-        return Json.encodeToString(serializer(), this)
-    }
-
-    companion object {
-        fun fromSerializable(serializable: String): UpdateRequest {
-            return Json.decodeFromString(serializer(), serializable)
-        }
+    fun encode(): String = Json.encodeToString(serializer(), this)
 }
 
 @Parcelize

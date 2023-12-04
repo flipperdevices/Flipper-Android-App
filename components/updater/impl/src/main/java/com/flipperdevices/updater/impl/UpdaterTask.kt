@@ -15,13 +15,13 @@ import com.flipperdevices.updater.impl.model.UpdateContentException
 import com.flipperdevices.updater.impl.tasks.FlipperUpdateImageHelper
 import com.flipperdevices.updater.impl.tasks.UploadToFlipperHelper
 import com.flipperdevices.updater.impl.tasks.downloader.UpdateContentDownloader
+import com.flipperdevices.updater.model.OfficialFirmware
 import com.flipperdevices.updater.model.SubGhzProvisioningException
+import com.flipperdevices.updater.model.UpdateContent
 import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.model.UpdatingState
 import com.flipperdevices.updater.subghz.helpers.SubGhzProvisioningHelper
 import com.flipperdevices.updater.subghz.model.FailedUploadSubGhzException
-import java.io.File
-import java.net.UnknownHostException
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.NonCancellable
@@ -29,6 +29,8 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
+import java.io.File
+import java.net.UnknownHostException
 
 private const val DISCONNECT_WAIT_TIMEOUT_MS = 30 * 1000L
 
@@ -89,7 +91,7 @@ class UpdaterTask(
             when (e) {
                 is UpdateContentException -> stateListener(UpdatingState.FailedCustomUpdate)
                 is CancellationException -> {}
-                else -> if (input.content is UpdateRequest.OfficialFirmware) {
+                else -> if (input.content is OfficialFirmware) {
                     stateListener(UpdatingState.FailedDownload)
                 } else {
                     stateListener(UpdatingState.FailedCustomUpdate)
@@ -160,7 +162,7 @@ class UpdaterTask(
     }
 
     private suspend fun downloadFirmwareLocal(
-        content: UpdateRequest.UpdateContent,
+        content: UpdateContent,
         updaterFolder: File,
         stateListener: suspend (UpdatingState) -> Unit
     ) {
