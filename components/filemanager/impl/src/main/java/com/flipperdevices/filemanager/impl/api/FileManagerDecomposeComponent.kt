@@ -1,6 +1,5 @@
 package com.flipperdevices.filemanager.impl.api
 
-import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
@@ -14,7 +13,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 
-interface FileManagerDecomposeComponent  {
+interface FileManagerDecomposeComponent {
     val stack: Value<ChildStack<*, DecomposeComponent>>
 
     fun interface Factory {
