@@ -26,6 +26,8 @@ dependencies {
     implementation(projects.components.faphub.target.api)
     implementation(projects.components.faphub.errors.api)
 
+    implementation(projects.components.bridge.rpc.api)
+
     // Compose
     implementation(libs.compose.ui)
     implementation(libs.compose.tooling)

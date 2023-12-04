@@ -14,11 +14,14 @@ import com.flipperdevices.faphub.installation.button.impl.composable.ComposableF
 import com.flipperdevices.faphub.installation.button.impl.composable.ComposableFapNoInstallButton
 import com.flipperdevices.faphub.installation.button.impl.composable.ComposableFapUpdateButton
 import com.flipperdevices.faphub.installation.button.impl.composable.ComposableFapUpdatingButton
+import com.flipperdevices.faphub.installation.button.impl.composable.ComposableFlipperNoSdCardButton
 import com.flipperdevices.faphub.installation.button.impl.composable.ComposableFlipperNotConnectedButton
 import com.flipperdevices.faphub.installation.button.impl.viewmodel.FapStatusViewModel
 import com.flipperdevices.faphub.installation.stateprovider.api.model.FapState
+import com.flipperdevices.faphub.installation.stateprovider.api.model.NotAvailableReason
 
 @Composable
+@Suppress("LongMethod")
 internal fun ComposableFapButton(
     localState: FapState,
     fapButtonSize: FapButtonSize,
@@ -73,20 +76,28 @@ internal fun ComposableFapButton(
             modifier = modifier
         )
 
-        FapState.ConnectFlipper -> ComposableFlipperNotConnectedButton(
-            modifier = modifier,
-            fapButtonSize = fapButtonSize,
-            onOpenDeviceTab = {
-                bottomBarApi.onChangeTab(
-                    tab = BottomBarTab.DEVICE,
-                    force = true
-                )
-            }
-        )
-
-        is FapState.NotAvailableForInstall -> ComposableFapNoInstallButton(
-            modifier = modifier,
-            fapButtonSize = fapButtonSize
-        )
+        is FapState.NotAvailableForInstall -> when (localState.reason) {
+            NotAvailableReason.BUILD_RUNNING,
+            NotAvailableReason.UNSUPPORTED_APP,
+            NotAvailableReason.FLIPPER_OUTDATED,
+            NotAvailableReason.UNSUPPORTED_SDK -> ComposableFapNoInstallButton(
+                modifier = modifier,
+                fapButtonSize = fapButtonSize
+            )
+            NotAvailableReason.NO_SD_CARD -> ComposableFlipperNoSdCardButton(
+                modifier = modifier,
+                fapButtonSize = fapButtonSize,
+            )
+            NotAvailableReason.FLIPPER_NOT_CONNECTED -> ComposableFlipperNotConnectedButton(
+                modifier = modifier,
+                fapButtonSize = fapButtonSize,
+                onOpenDeviceTab = {
+                    bottomBarApi.onChangeTab(
+                        tab = BottomBarTab.DEVICE,
+                        force = true
+                    )
+                }
+            )
+        }
     }
 }

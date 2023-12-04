@@ -27,10 +27,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import javax.inject.Inject
+import javax.inject.Singleton
 
 private const val FLIPPER_PATH_INTERNAL_STORAGE = "/int/"
 private const val FLIPPER_PATH_EXTERNAL_STORAGE = "/ext/"
 
+@Singleton
 @ContributesBinding(AppGraph::class, FlipperStorageInformationApi::class)
 class FlipperStorageInformationApiImpl @Inject constructor() :
     FlipperStorageInformationApi,
