@@ -4,4 +4,9 @@
     <string name="fap_report_field_title">Description</string>
     <string name="fap_report_field_desc">Describe why are you reporting this app (enter at least 5 characters)</string>
     <string name="fap_report_field_btn">Submit</string>
+    <string name="fap_report_main_report_bug">Report Bug</string>
+    <string name="fap_report_main_report_concern">Report Concern</string>
+    <string name="fap_report_instruction_title">To report a bug, create an issue on GitHub or contact the developer</string>
+    <string name="fap_report_instruction_desc">1. Go to **Issues** on the main page of app repository.\n\n2. Create your issue with **New issue** button.\n\n(Try to describe the bug in detail with the playback steps. This will help the developer to fix it faster).</string>
+    <string name="fap_report_instruction_btn">Go to Repository</string>
 </resources>
