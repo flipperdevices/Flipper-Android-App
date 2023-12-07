@@ -38,7 +38,6 @@ fun ComposableReportBugInformation(
     ComposableReportBugInformationContent(
         onClick = onClick
     )
-
 }
 
 @Composable

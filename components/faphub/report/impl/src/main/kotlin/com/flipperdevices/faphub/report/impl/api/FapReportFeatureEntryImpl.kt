@@ -21,9 +21,6 @@ import com.flipperdevices.faphub.report.impl.composable.main.ComposableMainRepor
 import com.flipperdevices.faphub.report.impl.viewmodel.ReportViewModel
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
-import java.net.URLDecoder
-import java.net.URLEncoder
-import java.nio.charset.Charset
 import tangle.viewmodel.compose.tangleViewModel
 import javax.inject.Inject
 
@@ -52,6 +49,7 @@ class FapReportFeatureEntryImpl @Inject constructor() : FapReportFeatureEntry {
     private fun concernReport(applicationUid: String) = "@${ROUTE.name}concern?uid=$applicationUid"
     private fun bugReport(urlEncoded: String) = "@${ROUTE.name}report?url=$urlEncoded"
 
+    @Suppress("LongMethod")
     override fun NavGraphBuilder.navigation(navController: NavHostController) {
         navigation(startDestination = "@${ROUTE.name}", route = ROUTE.name) {
             composable(
