@@ -1,7 +1,7 @@
 # Changelog
 
 # 1.6.8 - In progress
-
+- [Refactor] Migrate file manager to decompose
 
 # 1.6.7
 

@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.filemanager.impl.R
 import com.flipperdevices.filemanager.impl.model.FileItem
 import com.flipperdevices.filemanager.impl.model.FileManagerState
+import kotlinx.collections.immutable.persistentSetOf
 
 @Composable
 fun ComposableFileManagerContent(
@@ -52,7 +53,7 @@ private fun ComposableFileManagerPreview() {
     ComposableFileManagerContent(
         fileManagerState = FileManagerState(
             "/",
-            setOf(
+            persistentSetOf(
                 FileItem.DUMMY_FOLDER,
                 FileItem.DUMMY_FILE
             )
