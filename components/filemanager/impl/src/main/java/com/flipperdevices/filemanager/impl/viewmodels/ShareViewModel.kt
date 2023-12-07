@@ -13,25 +13,24 @@ import com.flipperdevices.core.share.SharableFile
 import com.flipperdevices.core.share.ShareHelper
 import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
 import com.flipperdevices.filemanager.impl.R
-import com.flipperdevices.filemanager.impl.api.FILE_PATH_KEY
 import com.flipperdevices.filemanager.impl.model.DownloadProgress
 import com.flipperdevices.filemanager.impl.model.ShareFile
 import com.flipperdevices.filemanager.impl.model.ShareState
 import com.flipperdevices.filemanager.impl.viewmodels.helpers.DownloadFileHelper
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import tangle.inject.TangleParam
-import tangle.viewmodel.VMInject
 import java.util.concurrent.atomic.AtomicBoolean
 
-class ShareViewModel @VMInject constructor(
+class ShareViewModel @AssistedInject constructor(
     flipperServiceProvider: FlipperServiceProvider,
-    @TangleParam(FILE_PATH_KEY)
-    private val shareFile: ShareFile,
+    @Assisted private val shareFile: ShareFile,
     application: Application
 ) : AndroidLifecycleViewModel(application),
     FlipperBleServiceConsumer,
@@ -110,7 +109,7 @@ class ShareViewModel @VMInject constructor(
 
     private suspend fun onCompleteDownload() = withContext(Dispatchers.Main) {
         ShareHelper.shareFile(
-            context = getApplication<Application>(),
+            context = getApplication(),
             file = fileInSharedDir,
             resId = R.string.share_picker_title
         )
@@ -119,5 +118,12 @@ class ShareViewModel @VMInject constructor(
                 processCompleted = true
             )
         }
+    }
+
+    @AssistedFactory
+    fun interface Factory {
+        operator fun invoke(
+            shareFile: ShareFile
+        ): ShareViewModel
     }
 }

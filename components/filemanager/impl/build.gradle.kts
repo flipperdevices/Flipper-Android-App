@@ -1,7 +1,6 @@
 plugins {
     id("flipper.android-compose")
     id("flipper.anvil")
-    id("kotlin-parcelize")
     id("kotlinx-serialization")
 }
 
@@ -17,6 +16,7 @@ dependencies {
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.ktx)
+    implementation(projects.components.core.ui.decompose)
     implementation(projects.components.core.share)
 
     implementation(projects.components.bridge.service.api)
@@ -40,12 +40,10 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
     implementation(libs.compose.navigation)
+    implementation(libs.bundles.decompose)
 
     implementation(libs.kotlin.coroutines)
+    implementation(libs.kotlin.immutable.collections)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
-
-    implementation(libs.tangle.viewmodel.compose)
-    implementation(libs.tangle.viewmodel.api)
-    anvil(libs.tangle.viewmodel.compiler)
 }

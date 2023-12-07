@@ -63,6 +63,7 @@ coil = "2.4.0" # https://github.com/coil-kt/coil/releases
 play-core = "2.1.0" # https://developer.android.com/guide/playcore#java-kotlin-in-app-update
 ktorfit = "1.5.0" # https://github.com/Foso/Ktorfit/releases
 ktorfit-gradle = "1.0.0" # https://plugins.gradle.org/plugin/de.jensklingenberg.ktorfit
+decompose = "2.2.0-alpha05" # https://github.com/arkivanov/Decompose/releases
 
 # Testing
 junit = "4.13.2" # https://github.com/junit-team/junit4/releases
@@ -249,6 +250,11 @@ app-update = { module = "com.google.android.play:app-update", version.ref = "pla
 app-update-ktx = { module = "com.google.android.play:app-update-ktx", version.ref = "play-core" }
 gms-firebase = { module = "com.google.firebase:firebase-messaging", version.ref = "google-gms-firebase" }
 
+decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
+decompose-jetpack = { module = "com.arkivanov.decompose:extensions-compose-jetpack", version.ref = "decompose" }
+
+[bundles]
+decompose = ["decompose", "decompose-jetpack"]
 
 [plugins]
 android-app = { id = "com.android.application", version.ref = "android-gradle" }
