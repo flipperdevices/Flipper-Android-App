@@ -3,6 +3,7 @@ package com.flipperdevices.updater.impl.service
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
+import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.flipperdevices.bridge.rpc.api.FlipperStorageApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
@@ -23,14 +24,15 @@ import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.model.UpdatingState
 import com.flipperdevices.updater.model.UpdatingStateWithRequest
 import com.flipperdevices.updater.subghz.helpers.SubGhzProvisioningHelper
+import javax.inject.Inject
 import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json.Default.decodeFromString
-import javax.inject.Inject
 
 class UpdaterWorkManager(
-    val context: Context,
-    val params: WorkerParameters
+    private val context: Context,
+    params: WorkerParameters
 ) : CoroutineWorker(context, params), LogTagProvider {
     override val TAG: String = "UpdaterWorkManager"
 
@@ -66,8 +68,20 @@ class UpdaterWorkManager(
     private var currentActiveTask: UpdaterTask? = null
 
     override suspend fun doWork(): Result {
-        val updateRequestJson = inputData.getString(UPDATE_REQUEST_KEY) ?: return Result.failure()
+        return try {
+            doWorkUnSafe()
+            Result.success()
+        } catch (exception: Exception) {
+            Result.failure()
+        }
+    }
+
+    private fun doWorkUnSafe() {
+        val updateRequestJson = inputData.getString(UPDATE_REQUEST_KEY)
+            ?: throw Exception("Not exist data by $UPDATE_REQUEST_KEY")
         verbose { "Update request in string: $updateRequestJson" }
+
+        // setForeground(getForegroundInfo())
 
         val updateRequest: UpdateRequest = decodeFromString(updateRequestJson)
 
@@ -89,13 +103,14 @@ class UpdaterWorkManager(
             )
         )
 
-        localActiveTask.start(updateRequest) {
-            info { "Updater state update to $it" }
+        localActiveTask.start(updateRequest) { updateState ->
+            info { "Updater state update to $updateState" }
+            // createForegroundInfoSafe(updateState)
 
             withContext(NonCancellable) {
-                updaterStateHolder.updateState(UpdatingStateWithRequest(it, request = updateRequest))
+                updaterStateHolder.updateState(UpdatingStateWithRequest(updateState, request = updateRequest))
 
-                val endReason: UpdateStatus? = when (it) {
+                val endReason: UpdateStatus? = when (updateState) {
                     UpdatingState.FailedDownload -> UpdateStatus.FAILED_DOWNLOAD
                     UpdatingState.FailedPrepare -> UpdateStatus.FAILED_PREPARE
                     UpdatingState.FailedUpload -> UpdateStatus.FAILED_UPLOAD
@@ -112,7 +127,7 @@ class UpdaterWorkManager(
                     )
                 }
 
-                if (it.isFinalState) {
+                if (updateState.isFinalState) {
                     info { "Updater state is final, stopping" }
                     currentActiveTask?.onStop()
                     currentActiveTask = null
@@ -120,27 +135,18 @@ class UpdaterWorkManager(
                 }
             }
         }
-
-        info { "Updater task returned" }
-        return Result.success()
     }
+//
+//    private fun createForegroundInfoSafe(state: UpdatingState) {
+//        runCatching {
+//            val foregroundInfo = UpdaterNotification.getForegroundStatusInfo(this.id, context, state)
+//            setForeground(foregroundInfo)
+//        }.onFailure {
+//            error { "Error on setup foreground $it" }
+//        }
+//    }
 
     override suspend fun getForegroundInfo(): ForegroundInfo {
         return UpdaterNotification.getForegroundInfo(this.id, context)
-    }
-
-    suspend fun cancel(silent: Boolean) {
-        val updateRequest = updaterStateHolder.getState().value.request
-        if (updateRequest != null && !silent) {
-            metricApi.reportComplexEvent(
-                UpdateFlipperEnd(
-                    updateFrom = updateRequest.updateFrom.version,
-                    updateTo = updateRequest.updateTo.version,
-                    updateId = updateRequest.requestId,
-                    updateStatus = UpdateStatus.CANCELED
-                )
-            )
-        }
-        currentActiveTask?.onStop()
     }
 }
