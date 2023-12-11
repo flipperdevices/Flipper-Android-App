@@ -79,7 +79,12 @@ class FapScreenViewModel @VMInject constructor(
             warn { "#onOpenReportApp calls when fapScreenLoadingStateFlow is null or not loaded" }
             return
         }
-        navController.navigate(fapReportFeatureEntry.start(loadingState.fapItem.id))
+        navController.navigate(
+            fapReportFeatureEntry.start(
+                loadingState.fapItem.id,
+                loadingState.fapItem.fapDeveloperInformation.githubRepositoryLink
+            )
+        )
     }
 
     fun onPressHide(isHidden: Boolean, navController: NavController) {

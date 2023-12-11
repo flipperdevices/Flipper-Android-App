@@ -1,4 +1,4 @@
-package com.flipperdevices.faphub.report.impl.composable
+package com.flipperdevices.faphub.report.impl.composable.concern
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
