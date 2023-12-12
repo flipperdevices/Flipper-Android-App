@@ -5,10 +5,14 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.shake2report.api.Shake2ReportDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.squareup.anvil.annotations.ContributesBinding
+import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
-import javax.inject.Inject
+import dagger.assisted.AssistedInject
 
-class Shake2ReportDecomposeComponentStub @Inject constructor() : Shake2ReportDecomposeComponent {
+@Suppress("UnusedPrivateProperty")
+class Shake2ReportDecomposeComponentStub @AssistedInject constructor(
+    @Assisted onBack: DecomposeOnBackParameter
+) : Shake2ReportDecomposeComponent {
     @Composable
     override fun Render() = Unit
 
