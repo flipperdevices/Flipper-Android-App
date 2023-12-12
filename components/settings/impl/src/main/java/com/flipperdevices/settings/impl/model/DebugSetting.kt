@@ -15,4 +15,5 @@ sealed interface DebugSettingAction {
     data object StartSynchronization : DebugSettingAction
     data object RestartRPC : DebugSettingAction
     data object InstallAllFap : DebugSettingAction
+    data object BrokeBytes : DebugSettingAction
 }

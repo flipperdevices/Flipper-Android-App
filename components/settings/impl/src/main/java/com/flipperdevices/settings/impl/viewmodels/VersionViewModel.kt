@@ -11,9 +11,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
-class VersionViewModel @VMInject constructor(
+class VersionViewModel @Inject constructor(
     private val selfUpdaterApi: SelfUpdaterApi,
     private val applicationParams: ApplicationParams
 ) : ViewModel(), LogTagProvider {

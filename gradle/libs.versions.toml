@@ -6,7 +6,7 @@ kotlin-datetime = "0.4.0" # https://github.com/Kotlin/kotlinx-datetime/releases
 kotlinx = "1.7.2" # https://github.com/Kotlin/kotlinx.coroutines/releases
 ksp = "1.9.10-1.0.13" # https://github.com/google/ksp/releases
 anvil = "2.4.8" # https://github.com/square/anvil/releases
-android-gradle = "8.1.2" # https://developer.android.com/studio/releases/gradle-plugin
+android-gradle = "8.2.0" # https://developer.android.com/studio/releases/gradle-plugin
 protobuf = "3.24.0" # https://github.com/protocolbuffers/protobuf/releases
 protobuf-gradle = "0.9.4" # https://github.com/google/protobuf-gradle-plugin/releases
 compose-material = "1.5.4" # https://developer.android.com/jetpack/androidx/releases/compose#versions
@@ -19,7 +19,7 @@ compose-accompanist = "0.32.0" # https://github.com/google/accompanist/releases
 compose-constraint = "1.0.1" # https://developer.android.com/jetpack/compose/layouts/constraintlayout
 # Use 2.6.0 because 2.7.0+ use new AnimationNavHost with bad animation
 # https://issuetracker.google.com/issues/295536728
-compose-navigation = "2.6.0" # https://developer.android.com/jetpack/compose/navigation
+compose-navigation = "2.7.5" # https://developer.android.com/jetpack/compose/navigation
 compose-paging = "3.2.1" # https://developer.android.com/jetpack/androidx/releases/paging
 compose-drag-drop = "0.9.6" #https://github.com/aclassen/ComposeReorderable/releases
 horologist = "0.4.13" # https://github.com/google/horologist/releases
@@ -63,7 +63,7 @@ coil = "2.4.0" # https://github.com/coil-kt/coil/releases
 play-core = "2.1.0" # https://developer.android.com/guide/playcore#java-kotlin-in-app-update
 ktorfit = "1.5.0" # https://github.com/Foso/Ktorfit/releases
 ktorfit-gradle = "1.0.0" # https://plugins.gradle.org/plugin/de.jensklingenberg.ktorfit
-decompose = "2.2.0-alpha05" # https://github.com/arkivanov/Decompose/releases
+decompose = "3.0.0-alpha01" # https://github.com/arkivanov/Decompose/releases
 
 # Testing
 junit = "4.13.2" # https://github.com/junit-team/junit4/releases
@@ -251,7 +251,7 @@ app-update-ktx = { module = "com.google.android.play:app-update-ktx", version.re
 gms-firebase = { module = "com.google.firebase:firebase-messaging", version.ref = "google-gms-firebase" }
 
 decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
-decompose-jetpack = { module = "com.arkivanov.decompose:extensions-compose-jetpack", version.ref = "decompose" }
+decompose-jetpack = { module = "com.arkivanov.decompose:extensions-compose", version.ref = "decompose" }
 
 [bundles]
 decompose = ["decompose", "decompose-jetpack"]

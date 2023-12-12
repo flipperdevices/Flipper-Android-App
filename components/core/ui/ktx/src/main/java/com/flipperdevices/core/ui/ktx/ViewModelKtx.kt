@@ -7,7 +7,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 inline fun <reified VM : ViewModel> viewModelWithFactory(
-    key: String,
+    key: String?,
     crossinline factory: () -> VM
 ): VM {
     return viewModel(

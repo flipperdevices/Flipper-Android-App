@@ -26,26 +26,25 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.composable.components.SimpleElement
 import com.flipperdevices.settings.impl.viewmodels.VersionViewModel
-import tangle.viewmodel.compose.tangleViewModel
 
 private const val EXPERT_MODE_CLICK_COUNT = 10
 
 @Composable
 internal fun VersionCategory(
+    versionViewModel: VersionViewModel,
     modifier: Modifier = Modifier,
     onActivateExpertMode: () -> Unit
 ) {
-    val viewModel = tangleViewModel<VersionViewModel>()
-    val inProgress by viewModel.inProgress().collectAsState()
-    val dialogState by viewModel.getDialogState().collectAsState()
+    val inProgress by versionViewModel.inProgress().collectAsState()
+    val dialogState by versionViewModel.getDialogState().collectAsState()
 
-    val version = viewModel.versionApp()
-    val sourceInstall = viewModel.sourceInstall()
-    val isSelfUpdateTypeCanCheck = viewModel.isSelfUpdateManualChecked().not()
+    val version = versionViewModel.versionApp()
+    val sourceInstall = versionViewModel.sourceInstall()
+    val isSelfUpdateTypeCanCheck = versionViewModel.isSelfUpdateManualChecked().not()
 
     var howMuchClick by remember { mutableIntStateOf(0) }
 
-    SelfUpdaterNoUpdatesDialog(state = dialogState, onClose = viewModel::dismissDialog)
+    SelfUpdaterNoUpdatesDialog(state = dialogState, onClose = versionViewModel::dismissDialog)
 
     CardCategory(
         modifier = modifier.padding(bottom = 14.dp)
@@ -85,7 +84,7 @@ internal fun VersionCategory(
             } else {
                 Text(
                     modifier = Modifier
-                        .clickableRipple(onClick = viewModel::onCheckUpdates),
+                        .clickableRipple(onClick = versionViewModel::onCheckUpdates),
                     text = stringResource(id = R.string.check_updates_button),
                     style = LocalTypography.current.subtitleM12,
                     color = LocalPallet.current.accentSecond

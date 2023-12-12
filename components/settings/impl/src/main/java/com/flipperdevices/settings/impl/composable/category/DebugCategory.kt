@@ -2,7 +2,6 @@ package com.flipperdevices.settings.impl.composable.category
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.composable.components.CategoryElement
@@ -12,16 +11,14 @@ import com.flipperdevices.settings.impl.composable.components.SimpleElement
 import com.flipperdevices.settings.impl.composable.components.SwitchableElement
 import com.flipperdevices.settings.impl.model.DebugSettingAction
 import com.flipperdevices.settings.impl.model.DebugSettingSwitch
-import com.flipperdevices.settings.impl.viewmodels.DebugViewModel
-import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 fun DebugCategory(
     settings: Settings,
-    navController: NavController,
+    onAction: (DebugSettingAction) -> Unit,
+    onDebugSettingSwitch: (DebugSettingSwitch, Boolean) -> Unit,
     onSwitchDebug: (Boolean) -> Unit,
-    modifier: Modifier = Modifier,
-    debugViewModel: DebugViewModel = tangleViewModel()
+    modifier: Modifier = Modifier
 ) {
     CardCategory(modifier = modifier) {
         CategoryElement(
@@ -33,9 +30,8 @@ fun DebugCategory(
         if (settings.enabledDebugSettings) {
             DebugCategoryItems(
                 settings = settings,
-                onAction = { debugViewModel.onAction(it, navController) },
-                onSwitch = debugViewModel::onSwitch,
-                onBrokeByte = debugViewModel::brokeBytes
+                onAction = { onAction(it) },
+                onSwitch = onDebugSettingSwitch
             )
         }
     }
@@ -47,7 +43,6 @@ private fun DebugCategoryItems(
     settings: Settings,
     onAction: (DebugSettingAction) -> Unit,
     onSwitch: (DebugSettingSwitch, Boolean) -> Unit,
-    onBrokeByte: () -> Unit
 ) {
     ClickableElement(
         titleId = R.string.debug_stress_test,
@@ -117,6 +112,6 @@ private fun DebugCategoryItems(
     GrayDivider()
     ClickableElement(
         titleId = R.string.debug_broke_session,
-        onClick = onBrokeByte
+        onClick = { onAction(DebugSettingAction.BrokeBytes) }
     )
 }

@@ -4,37 +4,41 @@ import android.app.Application
 import android.widget.Toast
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
+import com.arkivanov.decompose.router.stack.StackNavigation
+import com.arkivanov.decompose.router.stack.push
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
-import com.flipperdevices.debug.api.StressTestFeatureEntry
 import com.flipperdevices.faphub.installation.all.api.FapInstallationAllApi
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.model.DebugSettingAction
 import com.flipperdevices.settings.impl.model.DebugSettingSwitch
+import com.flipperdevices.settings.impl.model.SettingsNavigationConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
-class DebugViewModel @VMInject constructor(
+class DebugViewModel @Inject constructor(
     application: Application,
     private val synchronizationApi: SynchronizationApi,
     private val settingsDataStore: DataStore<Settings>,
     private val serviceProvider: FlipperServiceProvider,
-    private val stressTestFeatureEntry: StressTestFeatureEntry,
     private val fapInstallationAllApi: FapInstallationAllApi
 ) : AndroidLifecycleViewModel(application) {
 
-    fun onAction(action: DebugSettingAction, navController: NavController) {
+    fun onAction(
+        action: DebugSettingAction,
+        navigation: StackNavigation<SettingsNavigationConfig>
+    ) {
         when (action) {
             DebugSettingAction.InstallAllFap -> installAllApplication()
             DebugSettingAction.RestartRPC -> restartRpc()
             DebugSettingAction.StartSynchronization -> onStartSynchronization()
-            DebugSettingAction.StressTest -> onOpenStressTest(navController)
+            DebugSettingAction.StressTest -> onOpenStressTest(navigation)
+            DebugSettingAction.BrokeBytes -> brokeBytes()
         }
     }
 
@@ -50,8 +54,8 @@ class DebugViewModel @VMInject constructor(
         }
     }
 
-    private fun onOpenStressTest(navController: NavController) {
-        navController.navigate(stressTestFeatureEntry.ROUTE.name)
+    private fun onOpenStressTest(navigation: StackNavigation<SettingsNavigationConfig>) {
+        navigation.push(SettingsNavigationConfig.StressTest)
     }
 
     private fun onStartSynchronization() {
@@ -154,7 +158,7 @@ class DebugViewModel @VMInject constructor(
         }
     }
 
-    fun brokeBytes() {
+    private fun brokeBytes() {
         viewModelScope.launch {
             serviceProvider.getServiceApi().requestApi.sendTrashBytesAndBrokeSession()
         }

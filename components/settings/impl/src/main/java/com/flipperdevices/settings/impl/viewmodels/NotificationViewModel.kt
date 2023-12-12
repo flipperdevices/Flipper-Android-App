@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.notification.api.FlipperAppNotificationApi
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
-class NotificationViewModel @VMInject constructor(
+class NotificationViewModel @Inject constructor(
     private val notificationApi: FlipperAppNotificationApi
 ) : ViewModel(), LogTagProvider {
     override val TAG = "NotificationViewModel"

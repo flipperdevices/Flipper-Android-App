@@ -1,27 +1,22 @@
 package com.flipperdevices.filemanager.impl.api
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.extensions.compose.stack.Children
+import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.filemanager.api.navigation.FileManagerDecomposeComponent
 import com.flipperdevices.filemanager.impl.model.FileManagerNavigationConfig
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-
-interface FileManagerDecomposeComponent {
-    val stack: Value<ChildStack<*, DecomposeComponent>>
-
-    fun interface Factory {
-        operator fun invoke(
-            componentContext: ComponentContext,
-        ): FileManagerDecomposeComponent
-    }
-}
 
 class FileManagerDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
@@ -32,7 +27,7 @@ class FileManagerDecomposeComponentImpl @AssistedInject constructor(
 ) : FileManagerDecomposeComponent, ComponentContext by componentContext {
     private val navigation = StackNavigation<FileManagerNavigationConfig>()
 
-    override val stack: Value<ChildStack<*, DecomposeComponent>> = childStack(
+    private val stack: Value<ChildStack<*, DecomposeComponent>> = childStack(
         source = navigation,
         serializer = FileManagerNavigationConfig.serializer(),
         initialConfiguration = FileManagerNavigationConfig.Screen("/"),
@@ -61,6 +56,7 @@ class FileManagerDecomposeComponentImpl @AssistedInject constructor(
             config,
             navigation
         )
+
         is FileManagerNavigationConfig.Download -> fileManagerDownloadFactory(
             componentContext,
             config,
@@ -74,5 +70,17 @@ class FileManagerDecomposeComponentImpl @AssistedInject constructor(
         override operator fun invoke(
             componentContext: ComponentContext,
         ): FileManagerDecomposeComponentImpl
+    }
+
+    @Composable
+    @Suppress("NonSkippableComposable")
+    override fun Render() {
+        val childStack by stack.subscribeAsState()
+
+        Children(
+            stack = childStack,
+        ) {
+            it.instance.Render()
+        }
     }
 }

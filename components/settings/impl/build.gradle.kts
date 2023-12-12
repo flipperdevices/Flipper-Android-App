@@ -1,6 +1,7 @@
 plugins {
     id("flipper.android-compose")
     id("flipper.anvil")
+    id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.settings.impl"
@@ -20,6 +21,7 @@ dependencies {
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ui.dialog)
+    implementation(projects.components.core.ui.decompose)
 
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.navigation)
@@ -49,11 +51,10 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
     implementation(libs.compose.navigation)
+    implementation(libs.bundles.decompose)
 
     implementation(libs.lifecycle.compose)
     implementation(libs.lifecycle.viewmodel.ktx)
 
-    implementation(libs.tangle.viewmodel.compose)
-    implementation(libs.tangle.viewmodel.api)
-    anvil(libs.tangle.viewmodel.compiler)
+    implementation(libs.kotlin.serialization.json)
 }

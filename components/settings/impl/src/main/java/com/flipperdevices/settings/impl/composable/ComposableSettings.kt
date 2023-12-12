@@ -12,7 +12,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.flipperdevices.core.ui.ktx.OrangeAppBar
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.settings.impl.R
@@ -22,16 +21,24 @@ import com.flipperdevices.settings.impl.composable.category.ExperimentalCategory
 import com.flipperdevices.settings.impl.composable.category.ExportKeysCategory
 import com.flipperdevices.settings.impl.composable.category.OtherSettingsCategory
 import com.flipperdevices.settings.impl.composable.category.VersionCategory
+import com.flipperdevices.settings.impl.model.DebugSettingAction
+import com.flipperdevices.settings.impl.model.SettingsNavigationConfig
+import com.flipperdevices.settings.impl.viewmodels.DebugViewModel
 import com.flipperdevices.settings.impl.viewmodels.NotificationViewModel
 import com.flipperdevices.settings.impl.viewmodels.SettingsViewModel
-import tangle.viewmodel.compose.tangleViewModel
+import com.flipperdevices.settings.impl.viewmodels.VersionViewModel
 
 @Composable
-fun ComposableCommonSettings(
-    navController: NavController,
+@Suppress("NonSkippableComposable")
+fun ComposableSettings(
+    settingsViewModel: SettingsViewModel,
+    notificationViewModel: NotificationViewModel,
+    debugViewModel: DebugViewModel,
+    versionViewModel: VersionViewModel,
+    onOpen: (SettingsNavigationConfig) -> Unit,
+    onDebugAction: (DebugSettingAction) -> Unit,
     modifier: Modifier = Modifier,
-    settingsViewModel: SettingsViewModel = tangleViewModel(),
-    notificationViewModel: NotificationViewModel = tangleViewModel()
+    onBack: () -> Unit
 ) {
     val context = LocalContext.current
 
@@ -47,7 +54,7 @@ fun ComposableCommonSettings(
             .background(LocalPallet.current.background),
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
-        OrangeAppBar(R.string.options, onBack = navController::popBackStack)
+        OrangeAppBar(R.string.options, onBack = onBack)
         AppCategory(
             theme = settings.selectedTheme,
             onSelectTheme = settingsViewModel::onChangeSelectedTheme,
@@ -57,14 +64,15 @@ fun ComposableCommonSettings(
         if (settings.expertMode) {
             DebugCategory(
                 settings = settings,
-                navController = navController,
-                onSwitchDebug = settingsViewModel::onSwitchDebug
+                onSwitchDebug = settingsViewModel::onSwitchDebug,
+                onAction = onDebugAction,
+                onDebugSettingSwitch = debugViewModel::onSwitch
             )
         }
         ExperimentalCategory(
             settings = settings,
-            navController = navController,
-            onSwitchExperimental = settingsViewModel::onSwitchExperimental
+            onSwitchExperimental = settingsViewModel::onSwitchExperimental,
+            onOpenFM = { onOpen(SettingsNavigationConfig.FileManager) }
         )
         ExportKeysCategory(
             exportState = exportState,
@@ -72,10 +80,12 @@ fun ComposableCommonSettings(
         )
         OtherSettingsCategory(
             s2rInitialized = s2rInitialized,
-            onReportBug = { settingsViewModel.onReportBug(navController) }
+            onReportBug = { onOpen(SettingsNavigationConfig.Shake2Report) }
         )
+        @Suppress("ViewModelForwarding")
         VersionCategory(
             onActivateExpertMode = settingsViewModel::onExpertModeActivate,
+            versionViewModel = versionViewModel
         )
     }
 }
