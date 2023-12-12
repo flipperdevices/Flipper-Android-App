@@ -21,7 +21,7 @@ class Shake2ReportDecomposeComponentImpl @AssistedInject constructor(
     @Suppress("NonSkippableComposable")
     override fun Render() {
         Shake2ReportScreen(
-            onBack = { onBack() },
+            onBack = onBack::invoke,
             viewModel = viewModelWithFactory(key = null) {
                 viewModelProvider.get()
             }
