@@ -36,8 +36,8 @@ import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun ComposableStressTestScreen(
+    viewModel: StressTestViewModel,
     modifier: Modifier = Modifier,
-    viewModel: StressTestViewModel = viewModel(),
 ) {
     val debugLog by viewModel.getDebugLog().collectAsState()
     val stressTestState by viewModel.getStressTestState().collectAsState()

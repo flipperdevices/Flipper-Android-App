@@ -12,7 +12,8 @@ dependencies {
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ui.theme)
-    implementation(projects.components.core.ui.navigation)
+    implementation(projects.components.core.ui.decompose)
+    implementation(projects.components.core.ui.ktx)
 
     implementation(libs.appcompat)
 
@@ -32,4 +33,6 @@ dependencies {
 
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.compose)
+
+    implementation(libs.bundles.decompose)
 }

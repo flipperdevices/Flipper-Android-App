@@ -25,14 +25,14 @@ import net.lingala.zip4j.ZipFile
 import net.lingala.zip4j.model.ZipParameters
 import net.lingala.zip4j.model.enums.CompressionLevel
 import net.lingala.zip4j.model.enums.CompressionMethod
-import tangle.viewmodel.VMInject
 import java.io.File
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 @Suppress("MagicNumber")
 private val SENTRY_TIMEOUT_MS = TimeUnit.MILLISECONDS.convert(5, TimeUnit.MINUTES)
 
-class Shake2ReportViewModel @VMInject constructor(
+class Shake2ReportViewModel @Inject constructor(
     application: Application,
     private val internalShake2Report: InternalShake2Report
 ) : AndroidViewModel(application) {

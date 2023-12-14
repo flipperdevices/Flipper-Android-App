@@ -2,21 +2,17 @@ package com.flipperdevices.settings.impl.composable.category
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.composable.components.CategoryElement
 import com.flipperdevices.settings.impl.composable.components.ClickableElement
-import com.flipperdevices.settings.impl.viewmodels.ExperimentalViewModel
-import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 fun ExperimentalCategory(
     settings: Settings,
-    navController: NavController,
+    onOpenFM: () -> Unit,
     onSwitchExperimental: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
-    experimentalViewModel: ExperimentalViewModel = tangleViewModel()
 ) {
     CardCategory(modifier = modifier) {
         CategoryElement(
@@ -29,7 +25,7 @@ fun ExperimentalCategory(
             ClickableElement(
                 titleId = R.string.experimental_file_manager,
                 descriptionId = R.string.experimental_file_manager_desc,
-                onClick = { experimentalViewModel.onOpenFileManager(navController) }
+                onClick = onOpenFM
             )
         }
     }

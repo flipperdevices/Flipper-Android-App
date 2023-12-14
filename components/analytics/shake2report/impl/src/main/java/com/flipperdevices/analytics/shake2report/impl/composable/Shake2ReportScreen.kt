@@ -15,13 +15,13 @@ import com.flipperdevices.analytics.shake2report.impl.composable.states.Composab
 import com.flipperdevices.analytics.shake2report.impl.model.Shake2ReportState
 import com.flipperdevices.analytics.shake2report.impl.viewmodel.Shake2ReportViewModel
 import com.flipperdevices.core.ui.ktx.OrangeAppBar
-import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
+@Suppress("NonSkippableComposable")
 fun Shake2ReportScreen(
     onBack: () -> Unit,
+    viewModel: Shake2ReportViewModel,
     modifier: Modifier = Modifier,
-    viewModel: Shake2ReportViewModel = tangleViewModel()
 ) = Column(
     modifier = modifier,
     verticalArrangement = Arrangement.spacedBy(16.dp)

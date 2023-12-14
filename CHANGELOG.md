@@ -3,6 +3,7 @@
 # 1.6.8 - In progress
 
 - [Refactor] Migrate file manager to decompose
+- [Refactor] Migrate options screen to decompose
 - [Feature] New report bug
 
 # 1.6.7

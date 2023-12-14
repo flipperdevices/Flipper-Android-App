@@ -11,7 +11,6 @@ dependencies {
     implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.preference)
-    implementation(projects.components.core.ui.navigation)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ui.res)
@@ -39,7 +38,7 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
-    implementation(libs.compose.navigation)
+    implementation(libs.compose.activity)
     implementation(libs.bundles.decompose)
 
     implementation(libs.kotlin.coroutines)
