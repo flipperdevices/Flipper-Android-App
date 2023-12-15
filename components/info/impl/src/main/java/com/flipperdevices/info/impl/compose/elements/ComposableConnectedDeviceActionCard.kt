@@ -1,50 +1,50 @@
 package com.flipperdevices.info.impl.compose.elements
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.model.DeviceStatus
-import com.flipperdevices.info.impl.viewmodel.AlarmViewModel
-import com.flipperdevices.info.impl.viewmodel.ConnectViewModel
-import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
-import com.flipperdevices.info.impl.viewmodel.FirmwareUpdateViewModel
 import com.flipperdevices.info.shared.ButtonElementRow
 import com.flipperdevices.info.shared.ComposableInfoDivider
 import com.flipperdevices.info.shared.InfoElementCard
-import tangle.viewmodel.compose.tangleViewModel
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableConnectedDeviceActionCard(
+    deviceStatus: DeviceStatus,
+    supportedState: FlipperSupportedState,
+    requestSynchronize: () -> Unit,
+    alarmOnFlipper: () -> Unit,
     modifier: Modifier = Modifier,
-    deviceStatusViewModel: DeviceStatusViewModel = tangleViewModel(),
-    firmwareUpdateViewModel: FirmwareUpdateViewModel = tangleViewModel()
 ) {
-    val deviceState by deviceStatusViewModel.getState().collectAsState()
-    val firmwareUpdateStatus by firmwareUpdateViewModel.getState().collectAsState()
-    if (deviceState is DeviceStatus.NoDevice) {
+    if (deviceStatus is DeviceStatus.NoDevice) {
         return
     }
 
-    val enabled = deviceState is DeviceStatus.Connected &&
-        firmwareUpdateStatus == FlipperSupportedState.READY
+    val enabled = deviceStatus is DeviceStatus.Connected &&
+        supportedState == FlipperSupportedState.READY
 
     InfoElementCard(modifier = modifier) {
-        ComposableSynchronize(enabled = enabled)
+        ComposableSynchronize(
+            enabled = enabled,
+            requestSynchronize = requestSynchronize
+        )
         ComposableInfoDivider()
-        ComposableAlarmElement(enabled = enabled)
+        ComposableAlarmElement(
+            enabled = enabled,
+            alarmOnFlipper = alarmOnFlipper
+        )
     }
 }
 
 @Composable
 private fun ComposableSynchronize(
+    requestSynchronize: () -> Unit,
     enabled: Boolean,
-    modifier: Modifier = Modifier,
-    connectViewModel: ConnectViewModel = tangleViewModel()
+    modifier: Modifier = Modifier
 ) {
     val color = if (enabled) {
         LocalPallet.current.accentSecond
@@ -58,7 +58,7 @@ private fun ComposableSynchronize(
         iconId = DesignSystem.drawable.ic_syncing,
         color = color,
         onClick = if (enabled) {
-            connectViewModel::requestSynchronize
+            requestSynchronize
         } else {
             null
         }
@@ -68,8 +68,8 @@ private fun ComposableSynchronize(
 @Composable
 private fun ComposableAlarmElement(
     enabled: Boolean,
-    modifier: Modifier = Modifier,
-    alarmViewModel: AlarmViewModel = tangleViewModel()
+    alarmOnFlipper: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val colorId = if (enabled) {
         LocalPallet.current.accentSecond
@@ -83,7 +83,7 @@ private fun ComposableAlarmElement(
         iconId = R.drawable.ic_ring,
         color = colorId,
         onClick = if (enabled) {
-            alarmViewModel::alarmOnFlipper
+            alarmOnFlipper
         } else {
             null
         }

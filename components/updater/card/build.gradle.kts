@@ -18,6 +18,7 @@ dependencies {
     implementation(projects.components.deeplink.api)
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.synchronization.api)
+    implementation(projects.components.core.ui.decompose)
 
     implementation(projects.components.updater.api)
     implementation(projects.components.updater.subghz)
@@ -43,10 +44,6 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
     implementation(libs.compose.activity)
-
-    implementation(libs.tangle.viewmodel.compose)
-    implementation(libs.tangle.viewmodel.api)
-    anvil(libs.tangle.viewmodel.compiler)
 
     // Testing
     testImplementation(libs.junit)

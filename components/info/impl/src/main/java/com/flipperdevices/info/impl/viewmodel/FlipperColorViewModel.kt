@@ -18,11 +18,11 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
 private const val RPC_KEY_HARDWARE_COLOR = "hardware.color"
 
-class FlipperColorViewModel @VMInject constructor(
+class FlipperColorViewModel @Inject constructor(
     private val settings: DataStore<PairSettings>
 ) : ViewModel(), FlipperBleServiceConsumer {
     private val colorFlipperState = MutableStateFlow(HardwareColor.UNRECOGNIZED)

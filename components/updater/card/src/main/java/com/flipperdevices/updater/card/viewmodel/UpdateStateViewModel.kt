@@ -16,9 +16,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
-class UpdateStateViewModel @VMInject constructor(
+class UpdateStateViewModel @Inject constructor(
     serviceProvider: FlipperServiceProvider,
     private val updaterApi: UpdaterApi,
     private val metricApi: MetricApi,

@@ -22,9 +22,9 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
-class BasicInfoViewModel @VMInject constructor(
+class BasicInfoViewModel @Inject constructor(
     serviceProvider: FlipperServiceProvider,
     private val flipperVersionProviderApi: FlipperVersionProviderApi,
     private val flipperStorageInformationApi: FlipperStorageInformationApi

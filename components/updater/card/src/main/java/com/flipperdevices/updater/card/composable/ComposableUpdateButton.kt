@@ -28,11 +28,13 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.updater.card.R
 import com.flipperdevices.updater.card.composable.dialogs.ComposableUpdateRequest
 import com.flipperdevices.updater.card.model.UpdatePending
+import com.flipperdevices.updater.card.viewmodel.UpdateRequestViewModel
 import com.flipperdevices.updater.model.UpdateCardState
 import com.flipperdevices.updater.model.UpdateRequest
 
 @Composable
 fun ComposableUpdateButton(
+    updateRequestViewModel: UpdateRequestViewModel,
     updateCardState: UpdateCardState,
     inProgress: Boolean,
     modifier: Modifier = Modifier,
@@ -46,7 +48,11 @@ fun ComposableUpdateButton(
     var pendingUpdateRequest by remember { mutableStateOf<UpdatePending?>(null) }
     val localUpdaterRequest = pendingUpdateRequest
     if (localUpdaterRequest != null) {
-        ComposableUpdateRequest(pendingUpdateRequest = localUpdaterRequest, onStartUpdateRequest) {
+        ComposableUpdateRequest(
+            pendingUpdateRequest = localUpdaterRequest,
+            onStartUpdateRequest = onStartUpdateRequest,
+            updateRequestViewModel = updateRequestViewModel
+        ) {
             pendingUpdateRequest = null
         }
     }
@@ -60,11 +66,13 @@ fun ComposableUpdateButton(
             descriptionId = R.string.updater_card_updater_button_no_updates_desc,
             color = LocalPallet.current.text20
         )
+
         is UpdateCardState.UpdateFromFile -> ComposableUpdateButtonContentChooseFile(
             modifier = buttonModifier,
             updateCardState = updateCardState,
             onChoose = { pendingUpdateRequest = it }
         )
+
         is UpdateCardState.UpdateAvailable -> {
             buttonModifier = buttonModifier.clickableRipple {
                 pendingUpdateRequest = UpdatePending.Request(updateCardState.update)

@@ -12,7 +12,6 @@ import com.flipperdevices.core.preference.pb.SelectedChannel
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.deeplink.model.Deeplink
-import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.api.FlipperVersionProviderApi
 import com.flipperdevices.updater.card.helpers.StorageExistHelper
@@ -20,6 +19,9 @@ import com.flipperdevices.updater.card.helpers.UpdateCardHelper
 import com.flipperdevices.updater.card.helpers.UpdateOfferProviderApi
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.UpdateCardState
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
@@ -30,19 +32,16 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
-import tangle.inject.TangleParam
-import tangle.viewmodel.VMInject
 
 @Suppress("LongParameterList")
-class UpdateCardViewModel @VMInject constructor(
+class UpdateCardViewModel @AssistedInject constructor(
     private val downloaderApi: DownloaderApi,
     private val flipperVersionProviderApi: FlipperVersionProviderApi,
     private val serviceProvider: FlipperServiceProvider,
     private val dataStoreSettings: DataStore<Settings>,
     private val updateOfferHelper: UpdateOfferProviderApi,
     private val storageExistHelper: StorageExistHelper,
-    @TangleParam(DeeplinkConstants.KEY)
-    private val deeplink: Deeplink?
+    @Assisted private val deeplink: Deeplink?
 ) : LifecycleViewModel(),
     FlipperBleServiceConsumer,
     LogTagProvider {
@@ -81,6 +80,7 @@ class UpdateCardViewModel @VMInject constructor(
                         .setSelectedChannel(channel.toSelectedChannel())
                         .build()
                 }
+
                 else -> {}
             }
         }
@@ -146,6 +146,13 @@ class UpdateCardViewModel @VMInject constructor(
             }
         }
     }
+
+    @AssistedFactory
+    fun interface Factory {
+        operator fun invoke(
+            deeplink: Deeplink?
+        ): UpdateCardViewModel
+    }
 }
 
 private fun SelectedChannel.toFirmwareChannel(): FirmwareChannel? = when (this) {
@@ -161,5 +168,6 @@ private fun FirmwareChannel?.toSelectedChannel(): SelectedChannel = when (this) 
     FirmwareChannel.DEV -> SelectedChannel.DEV
     FirmwareChannel.UNKNOWN,
     FirmwareChannel.CUSTOM -> error("Can`t convert unknown firmware channel to internal channel")
+
     null -> SelectedChannel.UNRECOGNIZED
 }

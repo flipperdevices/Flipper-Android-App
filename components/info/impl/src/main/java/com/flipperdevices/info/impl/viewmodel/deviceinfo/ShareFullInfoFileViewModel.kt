@@ -16,8 +16,9 @@ import com.flipperdevices.info.impl.model.FlipperBasicInfo
 import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import javax.inject.Inject
 
-class ShareFullInfoFileViewModel(
+class ShareFullInfoFileViewModel @Inject constructor(
     application: Application,
 ) : AndroidViewModel(application) {
     fun shareDeviceInfo(

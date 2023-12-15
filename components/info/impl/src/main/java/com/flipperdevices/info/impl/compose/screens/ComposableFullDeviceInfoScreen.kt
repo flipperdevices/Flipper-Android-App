@@ -10,8 +10,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
 import com.flipperdevices.bridge.rpcinfo.model.FlipperInformationStatus
 import com.flipperdevices.bridge.rpcinfo.model.FlipperRpcInformation
 import com.flipperdevices.bridge.rpcinfo.model.dataOrNull
@@ -25,17 +23,16 @@ import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
 import com.flipperdevices.info.impl.viewmodel.deviceinfo.BasicInfoViewModel
 import com.flipperdevices.info.impl.viewmodel.deviceinfo.FullInfoViewModel
 import com.flipperdevices.info.impl.viewmodel.deviceinfo.ShareFullInfoFileViewModel
-import tangle.viewmodel.compose.tangleViewModel
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableFullDeviceInfoScreen(
-    navController: NavHostController,
+    onBack: () -> Unit,
+    shareViewModel: ShareFullInfoFileViewModel,
+    basicInfoViewModel: BasicInfoViewModel,
+    fullInfoViewModel: FullInfoViewModel,
+    deviceStatusViewModel: DeviceStatusViewModel,
     modifier: Modifier = Modifier,
-    shareViewModel: ShareFullInfoFileViewModel = viewModel(),
-    basicInfoViewModel: BasicInfoViewModel = tangleViewModel(),
-    fullInfoViewModel: FullInfoViewModel = tangleViewModel(),
-    deviceStatusViewModel: DeviceStatusViewModel = tangleViewModel()
 ) {
     val deviceStatus by deviceStatusViewModel.getState().collectAsState()
     val localDeviceStatus = deviceStatus
@@ -49,12 +46,13 @@ fun ComposableFullDeviceInfoScreen(
                 basicInfo.storageInfo.externalStorageStatus !is FlipperInformationStatus.Ready ||
                 basicInfo.storageInfo.internalStorageStatus !is FlipperInformationStatus.Ready ||
                 basicInfo.firmwareVersion !is FlipperInformationStatus.Ready
+
         else -> false
     }
 
     Column(modifier = modifier) {
         ComposableFullDeviceInfoScreenBar(
-            onBack = navController::popBackStack,
+            onBack = onBack,
             onShare = {
                 shareViewModel.shareDeviceInfo(flipperRpcInformation.dataOrNull(), basicInfo)
             },

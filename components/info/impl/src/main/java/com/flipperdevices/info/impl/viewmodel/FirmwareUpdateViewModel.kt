@@ -13,9 +13,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
-class FirmwareUpdateViewModel @VMInject constructor(
+class FirmwareUpdateViewModel @Inject constructor(
     serviceProvider: FlipperServiceProvider
 ) : LifecycleViewModel(), FlipperBleServiceConsumer, LogTagProvider {
     override val TAG = "FirmwareUpdateViewModel"

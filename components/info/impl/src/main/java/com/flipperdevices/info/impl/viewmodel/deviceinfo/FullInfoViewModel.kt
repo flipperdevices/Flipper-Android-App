@@ -23,9 +23,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
-class FullInfoViewModel @VMInject constructor(
+class FullInfoViewModel @Inject constructor(
     private val serviceProvider: FlipperServiceProvider,
     private val flipperRpcInformationApi: FlipperRpcInformationApi,
     private val firmwareVersionBuilderApi: FirmwareVersionBuilderApi,

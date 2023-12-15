@@ -24,7 +24,6 @@ dependencies {
     implementation(projects.components.core.ui.decompose)
 
     implementation(projects.components.core.ui.theme)
-    implementation(projects.components.core.ui.navigation)
 
     implementation(projects.components.debug.api)
     implementation(projects.components.firstpair.api)
@@ -50,7 +49,6 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
-    implementation(libs.compose.navigation)
     implementation(libs.bundles.decompose)
 
     implementation(libs.lifecycle.compose)

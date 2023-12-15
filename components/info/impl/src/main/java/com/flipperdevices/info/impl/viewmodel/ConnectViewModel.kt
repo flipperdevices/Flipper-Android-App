@@ -12,10 +12,10 @@ import com.flipperdevices.info.impl.model.ConnectRequestState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import tangle.viewmodel.VMInject
 import java.util.concurrent.atomic.AtomicBoolean
+import javax.inject.Inject
 
-class ConnectViewModel @VMInject constructor(
+class ConnectViewModel @Inject constructor(
     private val serviceProvider: FlipperServiceProvider,
     private val synchronizationApi: SynchronizationApi,
     private val dataStoreFirstPair: DataStore<PairSettings>,
