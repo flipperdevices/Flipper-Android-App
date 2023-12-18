@@ -22,11 +22,11 @@ import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import javax.inject.Provider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
+import javax.inject.Provider
 
 class MfKey32DecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
@@ -40,7 +40,6 @@ class MfKey32DecomposeComponentImpl @AssistedInject constructor(
     init {
         backHandler.register(backCallback)
     }
-
 
     @Composable
     @Suppress("NonSkippableComposable")
@@ -75,10 +74,8 @@ class MfKey32DecomposeComponentImpl @AssistedInject constructor(
 
                     is MfKey32State.Error,
                     MfKey32State.WaitingForFlipper,
-                    is MfKey32State.Saved -> {
-                        withContext(Dispatchers.Main) {
-                            onBack()
-                        }
+                    is MfKey32State.Saved -> withContext(Dispatchers.Main) {
+                        onBack()
                     }
                 }
             }
@@ -105,5 +102,4 @@ class MfKey32DecomposeComponentImpl @AssistedInject constructor(
             onBack: DecomposeOnBackParameter
         ): MfKey32DecomposeComponentImpl
     }
-
 }

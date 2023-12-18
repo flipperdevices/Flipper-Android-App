@@ -11,5 +11,4 @@ dependencies {
     implementation(libs.decompose)
 
     implementation(libs.kotlin.serialization.json)
-
 }

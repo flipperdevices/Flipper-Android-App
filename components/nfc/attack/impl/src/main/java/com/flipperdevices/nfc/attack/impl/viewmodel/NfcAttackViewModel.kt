@@ -3,12 +3,12 @@ package com.flipperdevices.nfc.attack.impl.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.nfc.mfkey32.api.MfKey32Api
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.plus
+import javax.inject.Inject
 
 class NfcAttackViewModel @Inject constructor(
     private val mfKey32Api: MfKey32Api

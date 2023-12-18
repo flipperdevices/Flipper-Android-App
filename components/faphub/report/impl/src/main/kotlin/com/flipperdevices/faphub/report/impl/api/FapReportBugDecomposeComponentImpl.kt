@@ -38,5 +38,4 @@ class FapReportBugDecomposeComponentImpl @AssistedInject constructor(
             onBack: DecomposeOnBackParameter
         ): FapReportBugDecomposeComponentImpl
     }
-
 }

@@ -14,7 +14,6 @@ import com.flipperdevices.faphub.fapscreen.api.FapScreenDecomposeComponent
 import com.flipperdevices.faphub.fapscreen.impl.model.FapScreenNavigationConfig
 import com.flipperdevices.faphub.report.api.FapReportDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
-import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -52,7 +51,6 @@ class FapScreenDecomposeComponentImpl @AssistedInject constructor(
             fapReportArgument = config.fapReportArgument
         )
     }
-
 
     @Composable
     @Suppress("NonSkippableComposable")

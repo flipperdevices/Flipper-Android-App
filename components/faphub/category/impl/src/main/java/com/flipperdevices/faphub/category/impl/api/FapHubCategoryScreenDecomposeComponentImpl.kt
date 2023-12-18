@@ -24,6 +24,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 
+@Suppress("LongParameterList")
 class FapHubCategoryScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val fapCategory: FapCategory,
@@ -75,5 +76,4 @@ class FapHubCategoryScreenDecomposeComponentImpl @AssistedInject constructor(
             navigation: StackNavigation<FapCategoryNavigationConfig>
         ): FapHubCategoryScreenDecomposeComponentImpl
     }
-
 }

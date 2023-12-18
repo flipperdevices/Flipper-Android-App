@@ -5,16 +5,16 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
 import com.flipperdevices.core.ui.ktx.OrangeAppBarWithIcon
 import com.flipperdevices.core.ui.ktx.elements.SwipeRefresh
 import com.flipperdevices.faphub.appcard.composable.paging.ComposableFapsList
 import com.flipperdevices.faphub.appcard.composable.paging.ComposableSortChoice
 import com.flipperdevices.faphub.dao.api.model.FapItemShort
+import com.flipperdevices.faphub.dao.api.model.SortType
 import com.flipperdevices.faphub.errors.api.FapErrorSize
 import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
 import com.flipperdevices.core.ui.res.R as DesignSystem
-import androidx.paging.compose.LazyPagingItems
-import com.flipperdevices.faphub.dao.api.model.SortType
 
 @Composable
 fun ComposableFapHubCategory(

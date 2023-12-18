@@ -80,5 +80,4 @@ class FapReportDecomposeComponentImpl @AssistedInject constructor(
             fapReportArgument: FapReportArgument
         ): FapReportDecomposeComponentImpl
     }
-
 }

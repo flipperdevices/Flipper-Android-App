@@ -11,5 +11,4 @@ dependencies {
 
     implementation(libs.compose.ui)
     implementation(libs.decompose)
-
 }

@@ -7,6 +7,6 @@ interface NFCAttackDecomposeComponent : DecomposeComponent {
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext
-        ) : NFCAttackDecomposeComponent
+        ): NFCAttackDecomposeComponent
     }
 }

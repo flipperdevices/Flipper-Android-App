@@ -58,7 +58,6 @@ class FapHubCategoryDecomposeComponentImpl @AssistedInject constructor(
         )
     }
 
-
     @Composable
     @Suppress("NonSkippableComposable")
     override fun Render() {

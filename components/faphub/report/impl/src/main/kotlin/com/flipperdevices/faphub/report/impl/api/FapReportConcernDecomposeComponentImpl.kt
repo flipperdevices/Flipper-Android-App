@@ -1,14 +1,10 @@
 package com.flipperdevices.faphub.report.impl.api
 
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.platform.LocalContext
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.core.ui.ktx.viewModelWithFactory
-import com.flipperdevices.faphub.report.impl.composable.bug.ComposableReportBugInformation
 import com.flipperdevices.faphub.report.impl.composable.concern.ComposableReport
 import com.flipperdevices.faphub.report.impl.viewmodel.ReportViewModel
 import com.flipperdevices.ui.decompose.DecomposeComponent
@@ -45,5 +41,4 @@ class FapReportConcernDecomposeComponentImpl @AssistedInject constructor(
             onBack: DecomposeOnBackParameter
         ): FapReportConcernDecomposeComponentImpl
     }
-
 }

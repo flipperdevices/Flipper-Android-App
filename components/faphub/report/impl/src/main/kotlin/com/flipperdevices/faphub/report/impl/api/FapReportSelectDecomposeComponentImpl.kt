@@ -9,7 +9,6 @@ import com.flipperdevices.faphub.report.api.FapReportArgument
 import com.flipperdevices.faphub.report.impl.composable.main.ComposableMainReport
 import com.flipperdevices.faphub.report.impl.model.FapReportNavigationConfig
 import com.flipperdevices.ui.decompose.DecomposeComponent
-import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -49,5 +48,4 @@ class FapReportSelectDecomposeComponentImpl @AssistedInject constructor(
             navigation: StackNavigation<FapReportNavigationConfig>
         ): FapReportSelectDecomposeComponentImpl
     }
-
 }

@@ -78,5 +78,4 @@ class ScreenDecomposeComponentImpl @AssistedInject constructor(
             navigation: StackNavigation<FapScreenNavigationConfig>
         ): ScreenDecomposeComponentImpl
     }
-
 }

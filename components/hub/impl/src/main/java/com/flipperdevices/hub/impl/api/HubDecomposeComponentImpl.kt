@@ -20,7 +20,6 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 
-
 class HubDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     private val fapHubFactory: FapHubDecomposeComponent.Factory,
@@ -51,7 +50,6 @@ class HubDecomposeComponentImpl @AssistedInject constructor(
             componentContext = componentContext
         )
     }
-
 
     @Composable
     @Suppress("NonSkippableComposable")
