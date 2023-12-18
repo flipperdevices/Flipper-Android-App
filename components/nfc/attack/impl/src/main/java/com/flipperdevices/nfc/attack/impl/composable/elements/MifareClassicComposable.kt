@@ -31,7 +31,7 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun MifareClassicComposable(
-    nfcAttackViewModel: NfcAttackViewModel,
+    hasMfKey32Notification: Boolean,
     onOpenMfKey32: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -41,8 +41,6 @@ fun MifareClassicComposable(
     ) {
         Column {
             MifareClassicTitle()
-            val hasMfKey32Notification by nfcAttackViewModel.hasMfKey32Notification()
-                .collectAsState()
             MifareClassicMfKey32(
                 modifier = Modifier.clickableRipple(onClick = onOpenMfKey32),
                 hasNotification = hasMfKey32Notification

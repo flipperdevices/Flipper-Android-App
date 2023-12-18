@@ -17,7 +17,6 @@ import com.flipperdevices.hub.impl.model.HubNavigationConfig
 import com.flipperdevices.hub.impl.viewmodel.NfcAttackViewModel
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
-import com.flipperdevices.nfc.attack.api.NFCAttackFeatureEntry
 import com.flipperdevices.screenstreaming.api.ScreenStreamingFeatureEntry
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import dagger.assisted.Assisted
