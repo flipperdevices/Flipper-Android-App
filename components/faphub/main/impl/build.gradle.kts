@@ -1,6 +1,7 @@
 plugins {
     id("flipper.android-compose")
     id("flipper.anvil")
+    id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.main.impl"
@@ -15,6 +16,7 @@ dependencies {
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.navigation)
     implementation(projects.components.core.ui.tabswitch)
+    implementation(projects.components.core.ui.decompose)
 
     implementation(projects.components.faphub.dao.api)
     implementation(projects.components.faphub.search.api)
@@ -31,6 +33,7 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
     implementation(libs.compose.navigation)
+    implementation(libs.bundles.decompose)
 
     implementation(libs.tangle.viewmodel.compose)
     implementation(libs.tangle.viewmodel.api)

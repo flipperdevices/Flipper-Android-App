@@ -13,7 +13,6 @@ import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.flipperdevices.core.ui.navigation.LocalGlobalNavigationNavStack
 import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.flipperdevices.deeplink.model.DeeplinkNavType
-import com.flipperdevices.faphub.main.api.FapHubMainScreenApi
 import com.flipperdevices.faphub.maincard.api.MainCardApi
 import com.flipperdevices.hub.api.HubFeatureEntry
 import com.flipperdevices.hub.impl.composable.ComposableHub

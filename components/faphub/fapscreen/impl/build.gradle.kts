@@ -1,6 +1,7 @@
 plugins {
     id("flipper.android-compose")
     id("flipper.anvil")
+    id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.faphub.fapscreen.impl"
@@ -20,8 +21,8 @@ dependencies {
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.ktx)
-    implementation(projects.components.core.ui.navigation)
     implementation(projects.components.core.ui.dialog)
+    implementation(projects.components.core.ui.decompose)
 
     implementation(projects.components.analytics.metric.api)
 
@@ -32,7 +33,9 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
-    implementation(libs.compose.navigation)
+    implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.lifecycle.compose)
+    implementation(libs.bundles.decompose)
 
     implementation(projects.components.bottombar.api)
     implementation(projects.components.inappnotification.api)
@@ -49,8 +52,4 @@ dependencies {
     implementation(projects.components.faphub.uninstallbutton.api)
 
     implementation(libs.kotlin.immutable.collections)
-
-    implementation(libs.tangle.viewmodel.compose)
-    implementation(libs.tangle.viewmodel.api)
-    anvil(libs.tangle.viewmodel.compiler)
 }
