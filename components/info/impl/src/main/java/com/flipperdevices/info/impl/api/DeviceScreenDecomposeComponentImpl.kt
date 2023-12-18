@@ -8,6 +8,7 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
+import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.info.api.screen.DeviceScreenDecomposeComponent
@@ -22,11 +23,12 @@ import dagger.assisted.AssistedInject
 class DeviceScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     private val settingsFactory: SettingsDecomposeComponent.Factory,
-    private val updateFactory: UpdateScreenDecomposeComponent.Factory
+    private val updateFactory: UpdateScreenDecomposeComponent.Factory,
+    private val fullInfoDecomposeComponentFactory: FullInfoDecomposeComponent.Factory
 ) : DeviceScreenDecomposeComponent, ComponentContext by componentContext {
     private val navigation = StackNavigation<DeviceScreenNavigationConfig>()
 
-    val stack: Value<ChildStack<*, DecomposeComponent>> = childStack(
+    val stack: Value<ChildStack<DeviceScreenNavigationConfig, DecomposeComponent>> = childStack(
         source = navigation,
         serializer = DeviceScreenNavigationConfig.serializer(),
         initialConfiguration = DeviceScreenNavigationConfig.Update(),
@@ -44,7 +46,11 @@ class DeviceScreenDecomposeComponentImpl @AssistedInject constructor(
             navigation
         )
 
-        DeviceScreenNavigationConfig.FullInfo -> TODO()
+        DeviceScreenNavigationConfig.FullInfo -> fullInfoDecomposeComponentFactory(
+            componentContext = componentContext,
+            onBack = navigation::pop
+        )
+
         DeviceScreenNavigationConfig.Options -> settingsFactory(componentContext)
     }
 
