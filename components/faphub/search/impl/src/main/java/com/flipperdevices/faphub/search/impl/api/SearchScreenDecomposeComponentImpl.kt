@@ -19,7 +19,6 @@ import com.flipperdevices.faphub.search.impl.viewmodel.FapHubSearchViewModel
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.ui.decompose.DecomposeComponent
-import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -70,5 +69,4 @@ class SearchScreenDecomposeComponentImpl @AssistedInject constructor(
             navigation: StackNavigation<FapHubSearchNavigationConfig>
         ): SearchScreenDecomposeComponentImpl
     }
-
 }

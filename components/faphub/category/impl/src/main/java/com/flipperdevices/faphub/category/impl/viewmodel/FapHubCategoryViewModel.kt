@@ -9,7 +9,6 @@ import androidx.paging.cachedIn
 import com.flipperdevices.bridge.dao.api.FapHubHideItemApi
 import com.flipperdevices.core.pager.loadingPagingDataFlow
 import com.flipperdevices.core.preference.pb.Settings
-import com.flipperdevices.faphub.category.impl.api.CATEGORY_OPEN_PATH_KEY
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.dao.api.model.SortType

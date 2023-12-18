@@ -15,6 +15,7 @@ import com.flipperdevices.faphub.fapscreen.impl.model.FapScreenLoadingState
 import com.flipperdevices.faphub.fapscreen.impl.model.FapScreenNavigationConfig
 import com.flipperdevices.faphub.installation.stateprovider.api.api.FapInstallationStateManager
 import com.flipperdevices.faphub.installation.stateprovider.api.model.FapState
+import com.flipperdevices.faphub.report.api.FapReportArgument
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
@@ -44,7 +45,6 @@ class FapScreenViewModel @AssistedInject constructor(
     private val fapNetworkApi: FapNetworkApi,
     private val stateManager: FapInstallationStateManager,
     private val targetProviderApi: FlipperTargetProviderApi,
-    private val fapReportFeatureEntry: FapReportFeatureEntry,
     private val fapHubHideApi: FapHubHideItemApi,
     private val inAppNotificationStorage: InAppNotificationStorage,
     private val metricApi: MetricApi
@@ -73,8 +73,10 @@ class FapScreenViewModel @AssistedInject constructor(
 
     fun getReportAppNavigationConfig(loadedState: FapScreenLoadingState.Loaded): FapScreenNavigationConfig.FapReport {
         return FapScreenNavigationConfig.FapReport(
-            applicationUid = loadedState.fapItem.id,
-            reportUrl = loadedState.fapItem.fapDeveloperInformation.githubRepositoryLink
+            FapReportArgument(
+                applicationUid = loadedState.fapItem.id,
+                reportUrl = loadedState.fapItem.fapDeveloperInformation.githubRepositoryLink
+            )
         )
     }
 

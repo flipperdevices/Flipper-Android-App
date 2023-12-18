@@ -18,7 +18,7 @@ import dagger.assisted.AssistedInject
 
 class MainScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
-    private val navigation: StackNavigation<FapHubNavigationConfig>,
+    @Assisted private val navigation: StackNavigation<FapHubNavigationConfig>,
     private val catalogTabApi: CatalogTabApi,
     private val installedApi: FapInstalledApi,
     private val metricApi: MetricApi
@@ -62,7 +62,8 @@ class MainScreenDecomposeComponentImpl @AssistedInject constructor(
     @AssistedFactory
     fun interface Factory {
         operator fun invoke(
-            componentContext: ComponentContext
+            componentContext: ComponentContext,
+            navigation: StackNavigation<FapHubNavigationConfig>
         ): MainScreenDecomposeComponentImpl
     }
 }

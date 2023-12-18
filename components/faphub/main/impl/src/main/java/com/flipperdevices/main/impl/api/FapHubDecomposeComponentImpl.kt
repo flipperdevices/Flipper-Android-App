@@ -9,12 +9,14 @@ import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
+import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.faphub.category.api.FapHubCategoryDecomposeComponent
 import com.flipperdevices.faphub.fapscreen.api.FapScreenDecomposeComponent
 import com.flipperdevices.faphub.main.api.FapHubDecomposeComponent
 import com.flipperdevices.faphub.search.api.FapHubSearchDecomposeComponent
 import com.flipperdevices.main.impl.model.FapHubNavigationConfig
 import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -23,7 +25,8 @@ class FapHubDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     private val fapScreenFactory: FapScreenDecomposeComponent.Factory,
     private val fapSearchFactory: FapHubSearchDecomposeComponent.Factory,
-    private val fapCategoryFactory: FapHubCategoryDecomposeComponent.Factory
+    private val fapCategoryFactory: FapHubCategoryDecomposeComponent.Factory,
+    private val mainScreenFactory: MainScreenDecomposeComponentImpl.Factory
 ) : FapHubDecomposeComponent, ComponentContext by componentContext {
     private val navigation = StackNavigation<FapHubNavigationConfig>()
 
@@ -39,7 +42,11 @@ class FapHubDecomposeComponentImpl @AssistedInject constructor(
         config: FapHubNavigationConfig,
         componentContext: ComponentContext
     ): DecomposeComponent = when (config) {
-        FapHubNavigationConfig.Main -> TODO()
+        FapHubNavigationConfig.Main -> mainScreenFactory(
+            componentContext = componentContext,
+            navigation = navigation
+        )
+
         is FapHubNavigationConfig.FapScreen -> fapScreenFactory(
             componentContext = componentContext,
             id = config.id
@@ -68,6 +75,7 @@ class FapHubDecomposeComponentImpl @AssistedInject constructor(
     }
 
     @AssistedFactory
+    @ContributesBinding(AppGraph::class, FapHubDecomposeComponent.Factory::class)
     interface Factory : FapHubDecomposeComponent.Factory {
         override fun invoke(
             componentContext: ComponentContext
