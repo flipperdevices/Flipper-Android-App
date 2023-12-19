@@ -8,20 +8,20 @@ import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.system.playAudiovisualAlertRequest
 import kotlinx.coroutines.launch
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
-class AlarmViewModel @VMInject constructor(
+class AlarmViewModel @Inject constructor(
     private val serviceProvider: FlipperServiceProvider
 ) : LifecycleViewModel() {
     fun alarmOnFlipper() {
         serviceProvider.provideServiceApi(this) { serviceApi ->
             viewModelScope.launch {
-                alarmOnFlipper(serviceApi)
+                alarmOnFlipperInternal(serviceApi)
             }
         }
     }
 
-    private suspend fun alarmOnFlipper(serviceApi: FlipperServiceApi) {
+    private suspend fun alarmOnFlipperInternal(serviceApi: FlipperServiceApi) {
         serviceApi.requestApi.requestWithoutAnswer(
             main {
                 systemPlayAudiovisualAlertRequest = playAudiovisualAlertRequest { }

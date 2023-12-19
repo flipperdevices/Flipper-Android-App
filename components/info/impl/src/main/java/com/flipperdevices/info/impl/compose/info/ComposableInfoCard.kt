@@ -11,8 +11,8 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -27,31 +27,34 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.compose.elements.ComposableInfoCardContent
 import com.flipperdevices.info.impl.model.DeviceStatus
-import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
-import com.flipperdevices.info.impl.viewmodel.FirmwareUpdateViewModel
+import com.flipperdevices.info.impl.model.FlipperBasicInfo
 import com.flipperdevices.info.shared.InfoElementCard
 import com.flipperdevices.updater.model.FlipperUpdateState
-import tangle.viewmodel.compose.tangleViewModel
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableInfoCard(
+    deviceStatus: DeviceStatus,
+    updateState: FlipperUpdateState,
+    firmwareUpdateState: FlipperSupportedState,
+    deviceInfo: FlipperBasicInfo,
     onOpenFullDeviceInfo: () -> Unit,
     modifier: Modifier = Modifier,
-    deviceStatusViewModel: DeviceStatusViewModel = tangleViewModel(),
-    firmwareUpdateViewModel: FirmwareUpdateViewModel = tangleViewModel()
 ) {
-    val deviceStatus by deviceStatusViewModel.getState().collectAsState()
-    val updateStatus by deviceStatusViewModel.getUpdateState().collectAsState()
-    val firmwareUpdateStatus by firmwareUpdateViewModel.getState().collectAsState()
-    val isUnsupported = firmwareUpdateStatus != FlipperSupportedState.READY
+    val isUnsupported = remember(firmwareUpdateState) {
+        firmwareUpdateState != FlipperSupportedState.READY
+    }
 
     InfoElementCard(modifier, isSelectionArea = true, titleId = R.string.info_device_info_title) {
-        if (updateStatus is FlipperUpdateState.Updating) {
+        if (updateState is FlipperUpdateState.Updating) {
             ComposableWaitingFlipper()
             return@InfoElementCard
         }
-        ComposableInfoCardContent(isUnsupported)
+        ComposableInfoCardContent(
+            isUnsupported = isUnsupported,
+            deviceStatus = deviceStatus,
+            deviceInfo = deviceInfo
+        )
         if (deviceStatus is DeviceStatus.Connected && !isUnsupported) {
             ComposableFullInfoButton(onOpenFullDeviceInfo)
         }

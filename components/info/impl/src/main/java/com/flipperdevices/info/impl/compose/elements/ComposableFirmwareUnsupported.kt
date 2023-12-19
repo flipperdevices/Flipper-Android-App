@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,18 +21,15 @@ import com.flipperdevices.core.markdown.ClickableUrlText
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.info.impl.R
-import com.flipperdevices.info.impl.viewmodel.FirmwareUpdateViewModel
 import com.flipperdevices.info.shared.InfoElementCard
-import tangle.viewmodel.compose.tangleViewModel
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableFirmwareUpdate(
-    modifier: Modifier = Modifier,
-    firmwareViewModel: FirmwareUpdateViewModel = tangleViewModel()
+    supportedState: FlipperSupportedState,
+    modifier: Modifier = Modifier
 ) {
-    val updateStatus by firmwareViewModel.getState().collectAsState()
-    when (updateStatus) {
+    when (supportedState) {
         FlipperSupportedState.DEPRECATED_FLIPPER -> InfoElementCard(
             modifier = modifier,
             titleId = R.string.info_firmware_update_title

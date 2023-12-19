@@ -1,30 +1,19 @@
 package com.flipperdevices.updater.card.composable
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.info.shared.InfoElementCard
 import com.flipperdevices.updater.card.R
 import com.flipperdevices.updater.card.composable.dialogs.ComposableFailedUpdate
 import com.flipperdevices.updater.card.composable.dialogs.ComposableSuccessfulUpdate
 import com.flipperdevices.updater.card.viewmodel.UpdateCardViewModel
+import com.flipperdevices.updater.card.viewmodel.UpdateRequestViewModel
 import com.flipperdevices.updater.card.viewmodel.UpdateStateViewModel
-import com.flipperdevices.updater.model.DistributionFile
 import com.flipperdevices.updater.model.FirmwareChannel
-import com.flipperdevices.updater.model.FirmwareVersion
 import com.flipperdevices.updater.model.FlipperUpdateState
-import com.flipperdevices.updater.model.OfficialFirmware
 import com.flipperdevices.updater.model.UpdateCardState
-import com.flipperdevices.updater.model.UpdateErrorType
 import com.flipperdevices.updater.model.UpdateRequest
 
 @Composable
@@ -32,6 +21,7 @@ import com.flipperdevices.updater.model.UpdateRequest
 internal fun ComposableUpdaterCardInternal(
     updateStateViewModel: UpdateStateViewModel,
     updateCardViewModel: UpdateCardViewModel,
+    updateRequestViewModel: UpdateRequestViewModel,
     modifier: Modifier = Modifier,
     onStartUpdateRequest: (UpdateRequest) -> Unit = {},
 ) {
@@ -70,11 +60,13 @@ internal fun ComposableUpdaterCardInternal(
         onSelectChannel = updateCardViewModel::onSelectChannel,
         retryUpdate = updateCardViewModel::refresh,
         onStartUpdateRequest = onStartUpdateRequest,
+        updateRequestViewModel = updateRequestViewModel
     )
 }
 
 @Composable
 private fun ComposableUpdaterCard(
+    updateRequestViewModel: UpdateRequestViewModel,
     cardStateLocal: UpdateCardState,
     modifier: Modifier = Modifier,
     onSelectChannel: (FirmwareChannel) -> Unit = {},
@@ -95,71 +87,34 @@ private fun ComposableUpdaterCard(
                 version = null,
                 updateCardState = cardStateLocal,
                 onSelectFirmwareChannel = onSelectChannel,
-                onStartUpdateRequest = onStartUpdateRequest
+                onStartUpdateRequest = onStartUpdateRequest,
+                updateRequestViewModel = updateRequestViewModel
+
             )
 
             is UpdateCardState.NoUpdate -> ComposableFirmwareUpdaterContent(
                 version = cardStateLocal.flipperVersion,
                 updateCardState = cardStateLocal,
                 onSelectFirmwareChannel = onSelectChannel,
-                onStartUpdateRequest = onStartUpdateRequest
+                onStartUpdateRequest = onStartUpdateRequest,
+                updateRequestViewModel = updateRequestViewModel
             )
 
             is UpdateCardState.UpdateAvailable -> ComposableFirmwareUpdaterContent(
                 version = cardStateLocal.update.updateTo,
                 updateCardState = cardStateLocal,
                 onSelectFirmwareChannel = onSelectChannel,
-                onStartUpdateRequest = onStartUpdateRequest
+                onStartUpdateRequest = onStartUpdateRequest,
+                updateRequestViewModel = updateRequestViewModel
             )
 
             is UpdateCardState.UpdateFromFile -> ComposableFirmwareUpdaterContent(
                 version = cardStateLocal.updateVersion,
                 updateCardState = cardStateLocal,
                 onSelectFirmwareChannel = onSelectChannel,
-                onStartUpdateRequest = onStartUpdateRequest
+                onStartUpdateRequest = onStartUpdateRequest,
+                updateRequestViewModel = updateRequestViewModel
             )
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun ComposableUpdaterCardPreview() {
-    FlipperThemeInternal {
-        val lastVersion = FirmwareVersion(
-            channel = FirmwareChannel.DEV,
-            version = "1.4.5"
-        )
-        val cardStates = listOf(
-            UpdateCardState.InProgress,
-            UpdateCardState.NoUpdate(lastVersion),
-            UpdateCardState.UpdateAvailable(
-                update = UpdateRequest(
-                    updateFrom = lastVersion,
-                    updateTo = lastVersion,
-                    content = OfficialFirmware(DistributionFile(url = "", sha256 = "")),
-                    changelog = null
-                ),
-                isOtherChannel = false
-            ),
-            UpdateCardState.UpdateAvailable(
-                update = UpdateRequest(
-                    updateFrom = lastVersion,
-                    updateTo = lastVersion,
-                    content = OfficialFirmware(DistributionFile(url = "", sha256 = "")),
-                    changelog = null
-                ),
-                isOtherChannel = true
-            ),
-            UpdateCardState.Error(UpdateErrorType.NO_SD_CARD),
-            UpdateCardState.Error(UpdateErrorType.NO_INTERNET),
-            UpdateCardState.Error(UpdateErrorType.UNABLE_TO_SERVER)
-        )
-        Column(Modifier.verticalScroll(rememberScrollState())) {
-            cardStates.forEach {
-                ComposableUpdaterCard(it)
-                Spacer(modifier = Modifier.height(2.dp))
-            }
         }
     }
 }

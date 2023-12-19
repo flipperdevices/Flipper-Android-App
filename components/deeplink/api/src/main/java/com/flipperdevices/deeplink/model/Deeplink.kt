@@ -1,12 +1,14 @@
 package com.flipperdevices.deeplink.model
 
 import android.os.Parcelable
+import androidx.compose.runtime.Immutable
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 
 @Serializable
+@Immutable
 sealed class Deeplink : Parcelable {
     @Parcelize
     @Serializable

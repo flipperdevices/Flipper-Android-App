@@ -16,9 +16,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
-class DeviceStatusViewModel @VMInject constructor(
+class DeviceStatusViewModel @Inject constructor(
     serviceProvider: FlipperServiceProvider,
     private val dataStorePair: DataStore<PairSettings>,
     private val updateStateApi: UpdateStateApi

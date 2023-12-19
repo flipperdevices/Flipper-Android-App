@@ -1,7 +1,6 @@
 package com.flipperdevices.info.impl.compose.elements
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -24,24 +23,18 @@ import com.flipperdevices.info.impl.compose.info.ComposableFirmwareBuildDate
 import com.flipperdevices.info.impl.compose.info.ComposableFirmwareVersion
 import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.model.FlipperBasicInfo
-import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
-import com.flipperdevices.info.impl.viewmodel.deviceinfo.BasicInfoViewModel
 import com.flipperdevices.info.shared.ComposableDeviceInfoRowWithText
 import com.flipperdevices.info.shared.ComposableInfoDivider
 import com.flipperdevices.info.shared.InfoElementCard
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
-import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 fun ComposableInfoCardContent(
     isUnsupported: Boolean,
-    basicInfoViewModel: BasicInfoViewModel = tangleViewModel(),
-    deviceStatusViewModel: DeviceStatusViewModel = tangleViewModel()
+    deviceStatus: DeviceStatus,
+    deviceInfo: FlipperBasicInfo
 ) {
-    val deviceInfo by basicInfoViewModel.getDeviceInfo().collectAsState()
-    val deviceStatus by deviceStatusViewModel.getState().collectAsState()
-
     ComposableInfoCardContentInternal(
         isUnsupported = isUnsupported,
         flipperBasicInfo = deviceInfo,

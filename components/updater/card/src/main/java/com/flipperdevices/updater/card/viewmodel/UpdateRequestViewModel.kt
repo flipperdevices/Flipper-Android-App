@@ -24,13 +24,13 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import tangle.viewmodel.VMInject
 import java.io.File
+import javax.inject.Inject
 
 private const val EXT_UPDATER_FILE = "tgz"
 private const val SIZE_FOLDER_UPDATE_MAX = 1024L * 1024L * 1024L * 10 // 10Mb
 
-class UpdateRequestViewModel @VMInject constructor(
+class UpdateRequestViewModel @Inject constructor(
     serviceProvider: FlipperServiceProvider,
     private val synchronizationApi: SynchronizationApi
 ) : LifecycleViewModel(), FlipperBleServiceConsumer {
