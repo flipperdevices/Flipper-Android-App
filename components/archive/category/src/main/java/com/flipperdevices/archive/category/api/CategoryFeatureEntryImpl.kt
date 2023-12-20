@@ -15,7 +15,6 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.android.parcelable
 import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
-import com.flipperdevices.keyscreen.api.KeyScreenFeatureEntry
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
 import kotlinx.serialization.encodeToString

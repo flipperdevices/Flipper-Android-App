@@ -24,7 +24,7 @@ dependencies {
     implementation(projects.components.core.preference)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.lifecycle)
-    implementation(projects.components.core.ui.navigation)
+    implementation(projects.components.core.ui.decompose)
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)
 
@@ -55,10 +55,6 @@ dependencies {
     // Dagger deps
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
-    implementation(libs.tangle.viewmodel.api)
-    anvil(libs.tangle.viewmodel.compiler)
-    implementation(libs.tangle.fragment.api)
-    anvil(libs.tangle.fragment.compiler)
 
     implementation(libs.timber)
 
@@ -66,7 +62,7 @@ dependencies {
     implementation(libs.compose.activity)
     implementation(libs.compose.ui)
     implementation(libs.compose.tooling)
-    implementation(libs.compose.navigation)
+    implementation(libs.bundles.decompose)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
 }

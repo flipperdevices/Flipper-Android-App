@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.ui.ktx.SetUpNavigationBarColor
 import com.flipperdevices.core.ui.theme.LocalPallet
@@ -31,8 +30,8 @@ import com.google.accompanist.placeholder.shimmer
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
+@Suppress("NonSkippableComposable")
 internal fun ComposableInfraredScreen(
-    navController: NavController,
     viewModel: InfraredViewModel,
     keyScreenApi: KeyScreenApi,
     keyEmulateApi: KeyEmulateApi,
@@ -40,6 +39,7 @@ internal fun ComposableInfraredScreen(
     onEdit: (FlipperKeyPath) -> Unit,
     onRename: (FlipperKeyPath) -> Unit,
     onShare: () -> Unit,
+    onBack: () -> Unit
 ) {
     val state by viewModel.getState().collectAsState()
     val emulateState by viewModel.getEmulateState().collectAsState()
@@ -49,9 +49,9 @@ internal fun ComposableInfraredScreen(
         is KeyScreenState.Ready ->
             Column(modifier = Modifier.fillMaxSize()) {
                 ComposableInfraredAppBar(
-                    onBack = navController::popBackStack,
+                    onBack = onBack,
                     onEdit = { onEdit(localState.flipperKey.getKeyPath()) },
-                    onDelete = { viewModel.onDelete(onEndAction = navController::popBackStack) },
+                    onDelete = { viewModel.onDelete(onEndAction = onBack) },
                     onShare = onShare,
                     keyName = localState.flipperKey.path.nameWithoutExtension,
                 )

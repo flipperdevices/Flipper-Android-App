@@ -21,7 +21,7 @@ dependencies {
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.ktx)
-    implementation(projects.components.core.ui.navigation)
+    implementation(projects.components.core.ui.decompose)
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.preference)
 
@@ -45,12 +45,8 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
-    implementation(libs.compose.navigation)
+    implementation(libs.bundles.decompose)
     implementation(libs.image.lottie)
-
-    implementation(libs.tangle.viewmodel.compose)
-    implementation(libs.tangle.viewmodel.api)
-    anvil(libs.tangle.viewmodel.compiler)
 
     implementation(libs.appcompat)
 

@@ -16,22 +16,21 @@ import com.flipperdevices.keyparser.api.KeyParser
 import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
-import com.flipperdevices.nfceditor.impl.api.EXTRA_KEY_PATH
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCellLocation
 import com.flipperdevices.nfceditor.impl.model.NfcEditorState
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import tangle.inject.TangleParam
-import tangle.viewmodel.VMInject
 
 @Suppress("LongParameterList")
-class NfcEditorViewModel @VMInject constructor(
-    @TangleParam(EXTRA_KEY_PATH)
-    private val flipperKeyPath: FlipperKeyPath,
+class NfcEditorViewModel @AssistedInject constructor(
+    @Assisted private val flipperKeyPath: FlipperKeyPath,
     application: Application,
     private val keyParser: KeyParser,
     private val updateKeyApi: UpdateKeyApi,
@@ -132,5 +131,10 @@ class NfcEditorViewModel @VMInject constructor(
             metricApi.reportSimpleEvent(SimpleEvent.SAVE_DUMP)
             onEndAction(notSavedKey)
         }
+    }
+
+    @AssistedFactory
+    fun interface Factory {
+        operator fun invoke(flipperKeyPath: FlipperKeyPath): NfcEditorViewModel
     }
 }

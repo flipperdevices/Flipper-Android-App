@@ -15,7 +15,7 @@ dependencies {
     implementation(projects.components.core.ui.dialog)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.ktx)
-    implementation(projects.components.core.ui.navigation)
+    implementation(projects.components.core.ui.decompose)
     implementation(projects.components.core.ui.hexkeyboard)
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.log)
@@ -38,16 +38,12 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
-    implementation(libs.compose.navigation)
+    implementation(libs.bundles.decompose)
 
     implementation(libs.kotlin.immutable.collections)
     implementation(libs.kotlin.serialization.json)
 
     implementation(libs.lifecycle.compose)
-
-    implementation(libs.tangle.viewmodel.compose)
-    implementation(libs.tangle.viewmodel.api)
-    anvil(libs.tangle.viewmodel.compiler)
 
     // Testing
     testImplementation(projects.components.core.test)

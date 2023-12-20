@@ -1,10 +1,12 @@
 package com.flipperdevices.keyscreen.model
 
 import androidx.annotation.StringRes
+import androidx.compose.runtime.Immutable
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
 
+@Immutable
 sealed class KeyScreenState {
     data object InProgress : KeyScreenState()
     class Error(@StringRes val reason: Int) : KeyScreenState()

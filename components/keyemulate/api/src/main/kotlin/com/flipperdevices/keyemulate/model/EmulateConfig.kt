@@ -1,11 +1,13 @@
 package com.flipperdevices.keyemulate.model
 
+import androidx.compose.runtime.Immutable
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 
 /*
     Override equals and hashCode to compare emulate key, because emulate time not important
  */
+@Immutable
 data class EmulateConfig(
     val keyType: FlipperKeyType,
     val keyPath: FlipperFilePath,

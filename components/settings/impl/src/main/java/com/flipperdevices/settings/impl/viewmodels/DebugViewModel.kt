@@ -47,7 +47,6 @@ class DebugViewModel @Inject constructor(
             DebugSettingSwitch.FapHubDev -> onSwitchFapHubDev(flag)
             DebugSettingSwitch.IgnoreSupportedVersion -> onSwitchIgnoreSupportedVersion(flag)
             DebugSettingSwitch.IgnoreUpdaterVersion -> onSwitchIgnoreUpdaterVersion(flag)
-            DebugSettingSwitch.NewInfrared -> onSwitchNewInfrared(flag)
             DebugSettingSwitch.SelfUpdaterDebug -> onSwitchSelfUpdaterDebug(flag)
             DebugSettingSwitch.SkipAutoSync -> onSwitchSkipAutoSync(flag)
             DebugSettingSwitch.SkipProvisioning -> onSwitchIgnoreSubGhzProvisioning(flag)
@@ -139,16 +138,6 @@ class DebugViewModel @Inject constructor(
                     .build()
             }
             askRestartApp()
-        }
-    }
-
-    private fun onSwitchNewInfrared(enabled: Boolean) {
-        viewModelScope.launch {
-            settingsDataStore.updateData {
-                it.toBuilder()
-                    .setUseNewInfrared(enabled)
-                    .build()
-            }
         }
     }
 

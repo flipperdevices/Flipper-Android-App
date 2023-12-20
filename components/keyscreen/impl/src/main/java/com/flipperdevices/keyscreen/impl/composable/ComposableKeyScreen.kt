@@ -16,6 +16,7 @@ import com.flipperdevices.keyscreen.shared.screen.ComposableKeyScreenLoading
 import com.flipperdevices.nfceditor.api.NfcEditorApi
 
 @Composable
+@Suppress("NonSkippableComposable")
 fun ComposableKeyScreen(
     viewModel: KeyScreenViewModel,
     synchronizationUiApi: SynchronizationUiApi,
