@@ -8,9 +8,9 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.plus
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
-class NfcAttackViewModel @VMInject constructor(
+class NfcAttackViewModel @Inject constructor(
     private val mfKey32Api: MfKey32Api
 ) : ViewModel() {
     fun hasMfKey32Notification(): StateFlow<Boolean> = mfKey32Api.hasNotification()

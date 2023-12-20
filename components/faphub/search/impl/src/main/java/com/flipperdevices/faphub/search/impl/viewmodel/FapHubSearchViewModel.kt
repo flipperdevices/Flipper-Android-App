@@ -15,9 +15,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
-class FapHubSearchViewModel @VMInject constructor(
+class FapHubSearchViewModel @Inject constructor(
     private val fapNetworkApi: FapNetworkApi,
     fapHubHideItemApi: FapHubHideItemApi,
     targetProviderApi: FlipperTargetProviderApi

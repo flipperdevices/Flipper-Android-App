@@ -9,12 +9,14 @@ import androidx.paging.cachedIn
 import com.flipperdevices.bridge.dao.api.FapHubHideItemApi
 import com.flipperdevices.core.pager.loadingPagingDataFlow
 import com.flipperdevices.core.preference.pb.Settings
-import com.flipperdevices.faphub.category.impl.api.CATEGORY_OPEN_PATH_KEY
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.dao.api.model.SortType
 import com.flipperdevices.faphub.dao.api.model.SortType.Companion.toSortType
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -23,13 +25,10 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import tangle.inject.TangleParam
-import tangle.viewmodel.VMInject
 
-class FapHubCategoryViewModel @VMInject constructor(
+class FapHubCategoryViewModel @AssistedInject constructor(
     private val fapNetworkApi: FapNetworkApi,
-    @TangleParam(CATEGORY_OPEN_PATH_KEY)
-    private val category: FapCategory,
+    @Assisted private val category: FapCategory,
     fapHubHideItemApi: FapHubHideItemApi,
     targetProviderApi: FlipperTargetProviderApi,
     private val dataStoreSettings: DataStore<Settings>
@@ -61,8 +60,6 @@ class FapHubCategoryViewModel @VMInject constructor(
         }.flow
     }.flatMapLatest { it }.cachedIn(viewModelScope)
 
-    fun getCategoryName() = category.name
-
     fun onSelectSortType(sortType: SortType) {
         viewModelScope.launch(Dispatchers.Default) {
             dataStoreSettings.updateData {
@@ -71,5 +68,12 @@ class FapHubCategoryViewModel @VMInject constructor(
                     .build()
             }
         }
+    }
+
+    @AssistedFactory
+    fun interface Factory {
+        operator fun invoke(
+            category: FapCategory
+        ): FapHubCategoryViewModel
     }
 }

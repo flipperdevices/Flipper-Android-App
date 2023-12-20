@@ -11,7 +11,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -19,7 +18,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
-import androidx.navigation.NavController
 import com.flipperdevices.core.ui.ktx.OrangeAppBar
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.ktx.elements.SwipeRefresh
@@ -34,27 +32,25 @@ import com.flipperdevices.faphub.fapscreen.impl.composable.description.Composabl
 import com.flipperdevices.faphub.fapscreen.impl.composable.header.ComposableFapHeader
 import com.flipperdevices.faphub.fapscreen.impl.model.FapDetailedControlState
 import com.flipperdevices.faphub.fapscreen.impl.model.FapScreenLoadingState
-import com.flipperdevices.faphub.fapscreen.impl.viewmodel.FapScreenViewModel
-import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 fun ComposableFapScreen(
-    navController: NavController,
     onBack: () -> Unit,
     onOpenDeviceTab: () -> Unit,
+    onRefresh: () -> Unit,
+    onPressHide: (FapScreenLoadingState.Loaded) -> Unit,
+    onOpenReport: (FapScreenLoadingState.Loaded) -> Unit,
+    loadingState: FapScreenLoadingState,
+    controlState: FapDetailedControlState,
     uninstallButton: @Composable (Modifier, FapItem) -> Unit,
     installationButton: @Composable (FapItem?, Modifier) -> Unit,
     errorsRenderer: FapHubComposableErrorsRenderer,
     modifier: Modifier = Modifier
 ) {
-    val viewModel = tangleViewModel<FapScreenViewModel>()
-    val loadingState by viewModel.getLoadingState().collectAsState()
-    val controlState by viewModel.getControlState().collectAsState()
-
-    when (val loadingStateLocal = loadingState) {
+    when (loadingState) {
         is FapScreenLoadingState.Error -> errorsRenderer.ComposableThrowableError(
-            throwable = loadingStateLocal.throwable.toFapHubError(),
-            onRetry = viewModel::onRefresh,
+            throwable = loadingState.throwable.toFapHubError(),
+            onRetry = onRefresh,
             modifier = modifier
                 .fillMaxSize()
                 .padding(horizontal = 14.dp),
@@ -62,18 +58,18 @@ fun ComposableFapScreen(
         )
 
         is FapScreenLoadingState.Loaded -> ComposableFapScreenInternal(
-            fapItem = loadingStateLocal.fapItem,
+            fapItem = loadingState.fapItem,
             onBack = onBack,
             installationButton = installationButton,
             modifier = modifier,
             controlState = controlState,
-            uninstallButton = { uninstallButton(it, loadingStateLocal.fapItem) },
+            uninstallButton = { uninstallButton(it, loadingState.fapItem) },
             onOpenDeviceTab = onOpenDeviceTab,
-            shareUrl = loadingStateLocal.shareUrl,
-            onReportApp = { viewModel.onOpenReportApp(navController) },
-            onRefresh = viewModel::onRefresh,
-            isHidden = loadingStateLocal.isHidden,
-            onHideApp = { viewModel.onPressHide(loadingStateLocal.isHidden, navController) }
+            shareUrl = loadingState.shareUrl,
+            onReportApp = { onOpenReport(loadingState) },
+            onRefresh = onRefresh,
+            isHidden = loadingState.isHidden,
+            onHideApp = { onPressHide(loadingState) }
         )
 
         FapScreenLoadingState.Loading -> ComposableFapScreenInternal(
@@ -86,7 +82,7 @@ fun ComposableFapScreen(
             onOpenDeviceTab = onOpenDeviceTab,
             shareUrl = null,
             onReportApp = {},
-            onRefresh = viewModel::onRefresh,
+            onRefresh = onRefresh,
             isHidden = true,
             onHideApp = {}
         )

@@ -18,6 +18,7 @@ import com.flipperdevices.hub.impl.composable.elements.NfcAttack
 
 @Composable
 fun ComposableHub(
+    notificationCount: Int,
     mainCardComposable: @Composable () -> Unit,
     onOpenAttack: () -> Unit,
     onOpenRemoteControl: () -> Unit,
@@ -45,7 +46,8 @@ fun ComposableHub(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxHeight(),
-                onOpenAttack = onOpenAttack
+                onOpenAttack = onOpenAttack,
+                notificationCount = notificationCount
             )
         }
     }

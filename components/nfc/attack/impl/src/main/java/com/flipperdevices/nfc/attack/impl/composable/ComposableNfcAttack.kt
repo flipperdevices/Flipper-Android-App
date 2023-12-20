@@ -6,21 +6,19 @@ import androidx.compose.ui.Modifier
 import com.flipperdevices.core.ui.ktx.OrangeAppBar
 import com.flipperdevices.nfc.attack.impl.R
 import com.flipperdevices.nfc.attack.impl.composable.elements.MifareClassicComposable
-import com.flipperdevices.nfc.attack.impl.viewmodel.NfcAttackViewModel
-import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 fun ComposableNfcAttack(
     onOpenMfKey32: () -> Unit,
+    hasMfKey32Notification: Boolean,
     modifier: Modifier = Modifier,
     onBack: () -> Unit
 ) {
-    val viewModel: NfcAttackViewModel = tangleViewModel()
     Column(modifier = modifier) {
         OrangeAppBar(
             titleId = R.string.nfcattack_title,
             onBack = onBack
         )
-        MifareClassicComposable(viewModel, onOpenMfKey32)
+        MifareClassicComposable(hasMfKey32Notification, onOpenMfKey32)
     }
 }

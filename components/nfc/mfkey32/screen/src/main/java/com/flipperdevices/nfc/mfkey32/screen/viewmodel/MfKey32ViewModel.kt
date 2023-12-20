@@ -40,14 +40,14 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import tangle.viewmodel.VMInject
 import java.math.BigInteger
 import java.util.concurrent.Executors
+import javax.inject.Inject
 
 const val PATH_NONCE_LOG = "/ext/nfc/.mfkey32.log"
 private const val TOTAL_PERCENT = 1.0f
 
-class MfKey32ViewModel @VMInject constructor(
+class MfKey32ViewModel @Inject constructor(
     context: Context,
     private val nfcToolsApi: NfcToolsApi,
     private val mfKey32Api: MfKey32Api,

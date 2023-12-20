@@ -5,6 +5,7 @@
 - [Refactor] Migrate file manager to decompose
 - [Refactor] Migrate options screen to decompose
 - [Refactor] Migrate device screen to decompose
+- [Refactor] Migrate hub screen to decompose
 - [Feature] New report bug
 
 # 1.6.7

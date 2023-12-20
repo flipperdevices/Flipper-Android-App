@@ -2,7 +2,6 @@ package com.flipperdevices.faphub.fapscreen.impl.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.flipperdevices.bridge.dao.api.FapHubHideItemApi
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.ktx.jre.runBlockingWithLog
@@ -11,17 +10,20 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.warn
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.dao.api.model.FapItem
-import com.flipperdevices.faphub.fapscreen.impl.api.FAP_ID_KEY
 import com.flipperdevices.faphub.fapscreen.impl.model.FapDetailedControlState
 import com.flipperdevices.faphub.fapscreen.impl.model.FapScreenLoadingState
+import com.flipperdevices.faphub.fapscreen.impl.model.FapScreenNavigationConfig
 import com.flipperdevices.faphub.installation.stateprovider.api.api.FapInstallationStateManager
 import com.flipperdevices.faphub.installation.stateprovider.api.model.FapState
-import com.flipperdevices.faphub.report.api.FapReportFeatureEntry
+import com.flipperdevices.faphub.report.api.FapReportArgument
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -36,17 +38,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
-import tangle.inject.TangleParam
-import tangle.viewmodel.VMInject
 
 @Suppress("LongParameterList")
-class FapScreenViewModel @VMInject constructor(
-    @TangleParam(FAP_ID_KEY)
-    private val fapUniversalId: String,
+class FapScreenViewModel @AssistedInject constructor(
+    @Assisted private val fapUniversalId: String,
     private val fapNetworkApi: FapNetworkApi,
     private val stateManager: FapInstallationStateManager,
     private val targetProviderApi: FlipperTargetProviderApi,
-    private val fapReportFeatureEntry: FapReportFeatureEntry,
     private val fapHubHideApi: FapHubHideItemApi,
     private val inAppNotificationStorage: InAppNotificationStorage,
     private val metricApi: MetricApi
@@ -73,21 +71,16 @@ class FapScreenViewModel @VMInject constructor(
 
     fun getControlState() = controlStateFlow.asStateFlow()
 
-    fun onOpenReportApp(navController: NavController) {
-        val loadingState = fapScreenLoadingStateFlow.value as? FapScreenLoadingState.Loaded
-        if (loadingState == null) {
-            warn { "#onOpenReportApp calls when fapScreenLoadingStateFlow is null or not loaded" }
-            return
-        }
-        navController.navigate(
-            fapReportFeatureEntry.start(
-                loadingState.fapItem.id,
-                loadingState.fapItem.fapDeveloperInformation.githubRepositoryLink
+    fun getReportAppNavigationConfig(loadedState: FapScreenLoadingState.Loaded): FapScreenNavigationConfig.FapReport {
+        return FapScreenNavigationConfig.FapReport(
+            FapReportArgument(
+                applicationUid = loadedState.fapItem.id,
+                reportUrl = loadedState.fapItem.fapDeveloperInformation.githubRepositoryLink
             )
         )
     }
 
-    fun onPressHide(isHidden: Boolean, navController: NavController) {
+    fun onPressHide(isHidden: Boolean, onBack: () -> Unit) {
         val loadingState = fapScreenLoadingStateFlow.value as? FapScreenLoadingState.Loaded
         if (loadingState == null) {
             warn { "#onPressHide calls when fapScreenLoadingStateFlow is null or not loaded" }
@@ -108,7 +101,7 @@ class FapScreenViewModel @VMInject constructor(
                     )
                 )
                 withContext(Dispatchers.Main) {
-                    navController.popBackStack()
+                    onBack()
                 }
             }
             fapScreenLoadingStateFlow.update {
@@ -180,4 +173,11 @@ class FapScreenViewModel @VMInject constructor(
     }
 
     private fun generateUrl(alias: String) = "https://lab.flipper.net/apps/$alias"
+
+    @AssistedFactory
+    fun interface Factory {
+        operator fun invoke(
+            fapUniversalId: String
+        ): FapScreenViewModel
+    }
 }

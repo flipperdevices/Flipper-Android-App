@@ -1,26 +1,21 @@
 package com.flipperdevices.hub.impl.api
 
-import androidx.compose.foundation.layout.padding
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.arkivanov.decompose.extensions.compose.stack.Children
+import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
-import com.flipperdevices.core.ui.navigation.LocalGlobalNavigationNavStack
 import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.flipperdevices.deeplink.model.DeeplinkNavType
-import com.flipperdevices.faphub.main.api.FapHubMainScreenApi
-import com.flipperdevices.faphub.maincard.api.MainCardApi
+import com.flipperdevices.hub.api.HubDecomposeComponent
 import com.flipperdevices.hub.api.HubFeatureEntry
-import com.flipperdevices.hub.impl.composable.ComposableHub
-import com.flipperdevices.metric.api.MetricApi
-import com.flipperdevices.metric.api.events.SimpleEvent
-import com.flipperdevices.nfc.attack.api.NFCAttackFeatureEntry
-import com.flipperdevices.screenstreaming.api.ScreenStreamingFeatureEntry
+import com.flipperdevices.ui.decompose.rememberComponentContext
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
 import javax.inject.Inject
@@ -28,11 +23,7 @@ import javax.inject.Inject
 @ContributesBinding(AppGraph::class, HubFeatureEntry::class)
 @ContributesMultibinding(AppGraph::class, AggregateFeatureEntry::class)
 class HubFeatureEntryImpl @Inject constructor(
-    private val nfcAttackFeatureEntry: NFCAttackFeatureEntry,
-    private val mainCardApi: MainCardApi,
-    private val screenStreamingFeatureEntry: ScreenStreamingFeatureEntry,
-    private val fapHubMainScreenApi: FapHubMainScreenApi,
-    private val metricApi: MetricApi
+    private val hubDecomposeComponentFactory: HubDecomposeComponent.Factory
 ) : HubFeatureEntry {
     override fun start() = "@${ROUTE.name}"
 
@@ -52,28 +43,17 @@ class HubFeatureEntryImpl @Inject constructor(
                 route = start(),
                 arguments = hubArguments
             ) {
-                val globalNavController = LocalGlobalNavigationNavStack.current
-                ComposableHub(
-                    onOpenAttack = {
-                        navController.navigate(nfcAttackFeatureEntry.ROUTE.name)
-                    },
-                    mainCardComposable = {
-                        mainCardApi.ComposableMainCard(
-                            modifier = Modifier.padding(
-                                start = 14.dp,
-                                end = 14.dp,
-                                top = 14.dp
-                            ),
-                            onClick = {
-                                metricApi.reportSimpleEvent(SimpleEvent.OPEN_FAPHUB)
-                                navController.navigate(fapHubMainScreenApi.ROUTE.name)
-                            }
-                        )
-                    },
-                    onOpenRemoteControl = {
-                        globalNavController.navigate(screenStreamingFeatureEntry.start())
-                    }
-                )
+                val componentContext = rememberComponentContext()
+                val fileManagerComponent = remember(componentContext) {
+                    hubDecomposeComponentFactory(componentContext) as HubDecomposeComponentImpl
+                }
+                val childStack by fileManagerComponent.stack.subscribeAsState()
+
+                Children(
+                    stack = childStack
+                ) {
+                    it.instance.Render()
+                }
             }
         }
     }

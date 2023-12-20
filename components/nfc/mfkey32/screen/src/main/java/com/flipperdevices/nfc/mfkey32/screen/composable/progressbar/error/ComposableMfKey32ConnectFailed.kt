@@ -9,6 +9,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.markdown.annotatedStringFromMarkdown
+import com.flipperdevices.core.preference.pb.HardwareColor
 import com.flipperdevices.core.ui.flippermockup.ComposableFlipperMockupImage
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
@@ -17,6 +18,7 @@ import com.flipperdevices.nfc.mfkey32.screen.R
 
 @Composable
 fun ComposableMfKey32ConnectFailed(
+    flipperColor: HardwareColor,
     modifier: Modifier = Modifier
 ) = ComposableMfKey32ErrorContent(
     modifier = modifier,
@@ -40,7 +42,8 @@ fun ComposableMfKey32ConnectFailed(
                 color = LocalPallet.current.text40
             )
         }
-    }
+    },
+    flipperColor = flipperColor
 )
 
 @Preview(
@@ -50,6 +53,6 @@ fun ComposableMfKey32ConnectFailed(
 @Composable
 private fun ComposableMfKey32ReadWritePreview() {
     FlipperThemeInternal {
-        ComposableMfKey32ConnectFailed()
+        ComposableMfKey32ConnectFailed(HardwareColor.BLACK)
     }
 }

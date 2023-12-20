@@ -5,7 +5,8 @@ plugins {
 android.namespace = "com.flipperdevices.nfc.mfkey32.api"
 
 dependencies {
-    implementation(projects.components.core.ui.navigation)
+    implementation(projects.components.core.ui.decompose)
+    implementation(libs.bundles.decompose)
 
     implementation(projects.components.bridge.api)
 
