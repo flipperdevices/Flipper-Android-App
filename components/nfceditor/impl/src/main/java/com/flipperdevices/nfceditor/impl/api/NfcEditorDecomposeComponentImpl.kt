@@ -16,6 +16,7 @@ import com.flipperdevices.keyedit.api.KeyEditDecomposeComponent
 import com.flipperdevices.nfceditor.api.NfcEditorDecomposeComponent
 import com.flipperdevices.nfceditor.impl.model.NfcEditorNavigationConfig
 import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -24,6 +25,7 @@ import dagger.assisted.AssistedInject
 class NfcEditorDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val flipperKeyPath: FlipperKeyPath,
+    @Assisted private val onBack: DecomposeOnBackParameter,
     private val saveDecomposeComponentFactory: KeyEditDecomposeComponent.Factory,
     private val nfcEditorDecomposeComponentFactory: NfcEditorScreenDecomposeComponentImpl.Factory
 ) : NfcEditorDecomposeComponent, ComponentContext by componentContext {
@@ -44,7 +46,8 @@ class NfcEditorDecomposeComponentImpl @AssistedInject constructor(
         is NfcEditorNavigationConfig.NfcEditor -> nfcEditorDecomposeComponentFactory(
             componentContext = componentContext,
             flipperKeyPath = config.flipperKeyPath,
-            navigation = navigation
+            navigation = navigation,
+            onBack = onBack
         )
 
         is NfcEditorNavigationConfig.Save -> saveDecomposeComponentFactory(
@@ -72,7 +75,8 @@ class NfcEditorDecomposeComponentImpl @AssistedInject constructor(
     interface Factory : NfcEditorDecomposeComponent.Factory {
         override fun invoke(
             componentContext: ComponentContext,
-            flipperKeyPath: FlipperKeyPath
+            flipperKeyPath: FlipperKeyPath,
+            onBack: DecomposeOnBackParameter
         ): NfcEditorDecomposeComponentImpl
     }
 }

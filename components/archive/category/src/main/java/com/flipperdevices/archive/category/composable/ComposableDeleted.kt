@@ -18,34 +18,45 @@ import androidx.compose.ui.res.stringResource
 import com.flipperdevices.archive.category.R
 import com.flipperdevices.archive.category.composable.dialogs.ComposableDeleteAllDialog
 import com.flipperdevices.archive.category.composable.dialogs.ComposableRestoreAllDialog
-import com.flipperdevices.archive.category.viewmodels.DeleteViewModel
+import com.flipperdevices.archive.category.model.CategoryState
 import com.flipperdevices.archive.model.CategoryType
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
+import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.core.ui.ktx.OrangeAppBar
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
-import tangle.viewmodel.compose.tangleViewModel
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableDeleted(
     onBack: () -> Unit,
+    onDeleteAll: () -> Unit,
+    onRestoreAll: () -> Unit,
+    categoryState: CategoryState,
+    synchronizationState: SynchronizationState,
     modifier: Modifier = Modifier,
     onOpenKeyScreen: (FlipperKeyPath) -> Unit
 ) {
     Column(modifier = modifier) {
-        ComposableDeletedAppBar(onBack = onBack)
+        ComposableDeletedAppBar(
+            onBack = onBack,
+            onDeleteAll = onDeleteAll,
+            onRestoreAll = onRestoreAll
+        )
         ComposableCategoryContent(
             categoryType = CategoryType.Deleted,
             synchronizationUiApi = null,
-            onOpenKeyScreen = onOpenKeyScreen
+            onOpenKeyScreen = onOpenKeyScreen,
+            categoryState = categoryState,
+            synchronizationState = synchronizationState,
         )
     }
 }
 
 @Composable
 private fun ComposableDeletedAppBar(
-    deleteViewModel: DeleteViewModel = tangleViewModel(),
+    onDeleteAll: () -> Unit,
+    onRestoreAll: () -> Unit,
     onBack: () -> Unit
 ) {
     var isDeleteAllDialog by remember { mutableStateOf(false) }
@@ -53,7 +64,7 @@ private fun ComposableDeletedAppBar(
         ComposableDeleteAllDialog(
             onAction = {
                 isDeleteAllDialog = false
-                deleteViewModel.onDeleteAll()
+                onDeleteAll()
             },
             onCancel = { isDeleteAllDialog = false }
         )
@@ -64,7 +75,7 @@ private fun ComposableDeletedAppBar(
         ComposableRestoreAllDialog(
             onAction = {
                 isRestoreAllDialog = false
-                deleteViewModel.onRestoreAll()
+                onRestoreAll()
             },
             onCancel = { isRestoreAllDialog = false }
         )

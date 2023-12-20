@@ -10,6 +10,8 @@ import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.ktx.jre.map
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,10 +20,10 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
-import tangle.viewmodel.VMInject
 import java.util.TreeMap
+import javax.inject.Inject
 
-class CategoryViewModel @VMInject constructor(
+class CategoryViewModel @Inject constructor(
     application: Application,
     private val simpleKeyApi: SimpleKeyApi,
     private val deleteKeyApi: DeleteKeyApi,
@@ -29,7 +31,7 @@ class CategoryViewModel @VMInject constructor(
     private val deletedCategoryName = application.getString(R.string.archive_tab_deleted)
 
     private val categoriesFlow = MutableStateFlow<Map<FlipperKeyType, CategoryItem>>(
-        FlipperKeyType.values().map {
+        FlipperKeyType.entries.map {
             it to CategoryItem(it.icon, it.humanReadableName, null, CategoryType.ByFileType(it))
         }.toMap(TreeMap())
     )
@@ -45,8 +47,8 @@ class CategoryViewModel @VMInject constructor(
 
     fun getDeletedFlow(): StateFlow<CategoryItem> = deletedCategoryFlow
 
-    fun getCategoriesFlow(): StateFlow<List<CategoryItem>> = categoriesFlow.map(viewModelScope) {
-        it.values.toList()
+    fun getCategoriesFlow(): StateFlow<ImmutableList<CategoryItem>> = categoriesFlow.map(viewModelScope) {
+        it.values.toPersistentList()
     }
 
     private suspend fun subscribeOnCategoriesCount() {
@@ -61,7 +63,7 @@ class CategoryViewModel @VMInject constructor(
             )
         }.launchIn(viewModelScope + Dispatchers.Default)
 
-        FlipperKeyType.values().forEach { fileType ->
+        FlipperKeyType.entries.forEach { fileType ->
             simpleKeyApi.getExistKeysAsFlow(fileType).onEach { keys ->
                 categoriesFlow.update {
                     val mutableMap = TreeMap(it)

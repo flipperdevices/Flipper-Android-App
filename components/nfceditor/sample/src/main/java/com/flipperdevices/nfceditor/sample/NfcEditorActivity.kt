@@ -43,7 +43,8 @@ class NfcEditorActivity : AppCompatActivity() {
         }
         val root = featureEntryFactory(
             componentContext = defaultComponentContext(),
-            flipperKeyPath = flipperKey.getKeyPath()
+            flipperKeyPath = flipperKey.getKeyPath(),
+            onBack = {}
         )
 
         setContent {

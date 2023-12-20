@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.essenty.backhandler.BackCallback
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
@@ -22,6 +21,7 @@ import com.flipperdevices.nfceditor.impl.composable.ComposableNfcEditorScreen
 import com.flipperdevices.nfceditor.impl.model.NfcEditorNavigationConfig
 import com.flipperdevices.nfceditor.impl.viewmodel.NfcEditorViewModel
 import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -34,6 +34,7 @@ class NfcEditorScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val flipperKeyPath: FlipperKeyPath,
     @Assisted private val navigation: StackNavigation<NfcEditorNavigationConfig>,
+    @Assisted private val onBack: DecomposeOnBackParameter,
     private val nfcEditorViewModelFactory: NfcEditorViewModel.Factory
 ) : DecomposeComponent, ComponentContext by componentContext {
     private val isBackPressHandledFlow = MutableStateFlow(false)
@@ -59,13 +60,13 @@ class NfcEditorScreenDecomposeComponentImpl @AssistedInject constructor(
             LaunchedEffect(isBackPressHandled) {
                 if (isBackPressHandled) {
                     withContext(Dispatchers.Main) {
-                        nfcEditorViewModel.onProcessBack(navigation::pop)
+                        nfcEditorViewModel.onProcessBack(onBack::invoke)
                     }
                 }
             }
             ComposableNfcEditorScreen(
-                onBack = navigation::pop,
-                onSaveEndAction = navigation::pop,
+                onBack = onBack::invoke,
+                onSaveEndAction = onBack::invoke,
                 onSaveAsEndAction = { notSavedFlipperKey ->
                     navigation.push(NfcEditorNavigationConfig.Save(notSavedFlipperKey, saveAsTitle))
                 },
@@ -79,7 +80,8 @@ class NfcEditorScreenDecomposeComponentImpl @AssistedInject constructor(
         operator fun invoke(
             componentContext: ComponentContext,
             flipperKeyPath: FlipperKeyPath,
-            navigation: StackNavigation<NfcEditorNavigationConfig>
+            navigation: StackNavigation<NfcEditorNavigationConfig>,
+            onBack: DecomposeOnBackParameter
         ): NfcEditorScreenDecomposeComponentImpl
     }
 }

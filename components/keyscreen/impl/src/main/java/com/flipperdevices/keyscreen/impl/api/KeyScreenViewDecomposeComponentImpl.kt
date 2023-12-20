@@ -19,6 +19,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 
+@Suppress("LongParameterList")
 class KeyScreenViewDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val keyPath: FlipperKeyPath,

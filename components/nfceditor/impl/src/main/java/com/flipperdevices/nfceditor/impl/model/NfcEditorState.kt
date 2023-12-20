@@ -57,8 +57,17 @@ data class NfcEditorState(
         val uidSize = nfcEditorCardInfo?.fields?.get(CardFieldInfo.UID)?.size ?: return this
         val uidCells = sectors.firstOrNull()?.lines?.firstOrNull()?.cells?.take(uidSize)
             ?: return this
-        val bcc = uidCells.map { if (it.content.length == 1) "${it.content}0" else it.content }
-            .map { it.toInt(radix = 16) }.reduce { acc, i -> acc xor i }
+
+        val cells = uidCells.map { if (it.content.length == 1) "${it.content}0" else it.content }
+            .map { it.toIntOrNull(radix = 16) }
+
+        for (cell in cells) {
+            if (cell == null) {
+                return this
+            }
+        }
+
+        val bcc = cells.filterNotNull().reduce { acc, i -> acc xor i }
         var bccCellContent = bcc.toString(radix = 16).uppercase()
         if (bccCellContent.length < 2) {
             bccCellContent = "0$bccCellContent"

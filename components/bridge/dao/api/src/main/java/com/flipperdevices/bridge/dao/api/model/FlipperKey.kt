@@ -10,6 +10,7 @@ import kotlinx.serialization.Serializable
  * The most complete description of the key
  */
 @Parcelize
+@Immutable
 data class FlipperKey(
     val mainFile: FlipperFile,
     val additionalFiles: List<FlipperFile> = emptyList(),

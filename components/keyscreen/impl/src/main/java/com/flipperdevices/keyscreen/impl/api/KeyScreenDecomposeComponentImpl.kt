@@ -13,6 +13,7 @@ import com.arkivanov.decompose.value.Value
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.infrared.api.InfraredDecomposeComponent
 import com.flipperdevices.keyedit.api.KeyEditDecomposeComponent
 import com.flipperdevices.keyscreen.api.KeyScreenDecomposeComponent
 import com.flipperdevices.keyscreen.impl.model.KeyScreenNavigationConfig
@@ -26,7 +27,7 @@ import dagger.assisted.AssistedInject
 class KeyScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted keyPath: FlipperKeyPath,
-    private val infraredKeyScreenFactory: KeyScreenDecomposeComponent.Factory,
+    private val infraredKeyScreenFactory: InfraredDecomposeComponent.Factory,
     private val keyScreenViewFactory: KeyScreenViewDecomposeComponentImpl.Factory,
     private val keyEditFactory: KeyEditDecomposeComponent.Factory,
     private val nfcEditFactory: NfcEditorDecomposeComponent.Factory
@@ -69,7 +70,8 @@ class KeyScreenDecomposeComponentImpl @AssistedInject constructor(
 
         is KeyScreenNavigationConfig.NfcEdit -> nfcEditFactory(
             componentContext = componentContext,
-            flipperKeyPath = config.keyPath
+            flipperKeyPath = config.keyPath,
+            onBack = navigation::pop
         )
     }
 

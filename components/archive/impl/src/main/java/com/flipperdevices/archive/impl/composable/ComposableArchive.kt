@@ -16,7 +16,6 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,7 +29,7 @@ import com.flipperdevices.archive.impl.composable.page.ArchiveProgressScreen
 import com.flipperdevices.archive.impl.composable.page.ComposableAllKeysTitle
 import com.flipperdevices.archive.impl.composable.page.ComposableFavoriteKeysTitle
 import com.flipperdevices.archive.impl.composable.page.ComposableKeysGrid
-import com.flipperdevices.archive.impl.viewmodel.GeneralTabViewModel
+import com.flipperdevices.archive.impl.model.CategoryItem
 import com.flipperdevices.archive.model.CategoryType
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
@@ -41,7 +40,6 @@ import com.flipperdevices.core.ui.ktx.elements.SwipeRefresh
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import kotlinx.collections.immutable.ImmutableList
-import tangle.viewmodel.compose.tangleViewModel
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
@@ -49,28 +47,32 @@ fun ComposableArchive(
     synchronizationUiApi: SynchronizationUiApi,
     onOpenSearchScreen: () -> Unit,
     onOpenKeyScreen: (FlipperKeyPath) -> Unit,
-    tabViewModel: GeneralTabViewModel = tangleViewModel(),
-    onOpenCategory: (CategoryType) -> Unit
+    onOpenCategory: (CategoryType) -> Unit,
+    keys: ImmutableList<FlipperKey>?,
+    synchronizationState: SynchronizationState,
+    favoriteKeys: ImmutableList<FlipperKey>,
+    categories: ImmutableList<CategoryItem>,
+    deletedCategory: CategoryItem,
+    onRefresh: () -> Unit,
+    cancelSynchronization: () -> Unit
 ) {
-    val keys by tabViewModel.getKeys().collectAsState()
-    val favoriteKeys by tabViewModel.getFavoriteKeys().collectAsState()
-    val synchronizationState by tabViewModel.getSynchronizationState().collectAsState()
-    val localSynchronizationState = synchronizationState
     val isKeysPresented = favoriteKeys.isNotEmpty() || !keys.isNullOrEmpty()
 
-    if (localSynchronizationState is SynchronizationState.InProgress) {
-        ArchiveProgressScreen(localSynchronizationState, tabViewModel::cancelSynchronization)
+    if (synchronizationState is SynchronizationState.InProgress) {
+        ArchiveProgressScreen(synchronizationState, cancelSynchronization)
     } else {
         ComposableArchiveReady(
             synchronizationUiApi = synchronizationUiApi,
             keys = keys,
             favoriteKeys = favoriteKeys,
-            onRefresh = tabViewModel::refresh,
+            onRefresh = onRefresh,
             synchronizationState = synchronizationState,
             isKeysPresented = isKeysPresented,
             onOpenKeyScreen = onOpenKeyScreen,
             onOpenSearchScreen = onOpenSearchScreen,
-            onOpenCategory = onOpenCategory
+            onOpenCategory = onOpenCategory,
+            categories = categories,
+            deletedCategory = deletedCategory
         )
     }
 }
@@ -83,6 +85,8 @@ private fun ComposableArchiveReady(
     onRefresh: () -> Unit,
     synchronizationState: SynchronizationState,
     isKeysPresented: Boolean,
+    categories: ImmutableList<CategoryItem>,
+    deletedCategory: CategoryItem,
     onOpenKeyScreen: (FlipperKeyPath) -> Unit,
     onOpenSearchScreen: () -> Unit,
     onOpenCategory: (CategoryType) -> Unit,
@@ -103,7 +107,11 @@ private fun ComposableArchiveReady(
                     .fillMaxWidth()
             ) {
                 item {
-                    ComposableCategoryCard(onOpenCategory = onOpenCategory)
+                    ComposableCategoryCard(
+                        onOpenCategory = onOpenCategory,
+                        categories = categories,
+                        deletedCategory = deletedCategory
+                    )
                 }
                 if (isKeysPresented) {
                     KeyCatalog(
