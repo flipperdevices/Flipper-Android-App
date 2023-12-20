@@ -13,9 +13,7 @@ import javax.inject.Inject
 class KeyEditDecomposeComponentNoop : KeyEditDecomposeComponent {
 
     @Composable
-    override fun Render() {
-
-    }
+    override fun Render() = Unit
 
     @ContributesBinding(AppGraph::class, KeyEditDecomposeComponent.Factory::class)
     class Factory @Inject constructor() : KeyEditDecomposeComponent.Factory {
