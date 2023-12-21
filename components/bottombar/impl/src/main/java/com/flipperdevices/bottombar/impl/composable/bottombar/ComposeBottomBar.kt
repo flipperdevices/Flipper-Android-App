@@ -27,7 +27,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.bottombar.impl.model.BottomBarNavigationConfig
+import com.flipperdevices.bottombar.impl.model.BottomBarTabEnum
 import com.flipperdevices.bottombar.model.TabState
 import com.flipperdevices.core.ui.ktx.SetUpNavigationBarColor
 import com.flipperdevices.core.ui.ktx.tab.tabIndicatorOffset
@@ -36,9 +36,9 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 @Composable
 fun ComposeBottomBar(
     connectionTabState: TabState,
-    selectedItem: BottomBarNavigationConfig,
+    selectedItem: BottomBarTabEnum,
     hubHasNotification: Boolean,
-    onBottomBarClick: (BottomBarNavigationConfig) -> Unit,
+    onBottomBarClick: (BottomBarTabEnum) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     AnimatedVisibility(
@@ -59,12 +59,12 @@ fun ComposeBottomBar(
 @Composable
 private fun ComposeBottomBarInternal(
     connectionTabState: TabState,
-    selectedItem: BottomBarNavigationConfig,
+    selectedItem: BottomBarTabEnum,
     hubHasNotification: Boolean,
-    onBottomBarClick: (BottomBarNavigationConfig) -> Unit,
+    onBottomBarClick: (BottomBarTabEnum) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val tabs = remember { BottomBarNavigationConfig.entries.toTypedArray() }
+    val tabs = remember { BottomBarTabEnum.entries.toTypedArray() }
     var selectedIndex by remember(selectedItem) {
         mutableIntStateOf(tabs.indexOf(selectedItem))
     }

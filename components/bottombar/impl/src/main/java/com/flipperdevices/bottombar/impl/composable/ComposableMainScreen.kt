@@ -8,6 +8,7 @@ import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.flipperdevices.bottombar.impl.composable.bottombar.ComposeBottomBar
 import com.flipperdevices.bottombar.impl.model.BottomBarNavigationConfig
+import com.flipperdevices.bottombar.impl.model.BottomBarTabEnum
 import com.flipperdevices.bottombar.model.TabState
 import com.flipperdevices.core.ui.ktx.SetUpNavigationBarColor
 import com.flipperdevices.core.ui.theme.LocalPallet
@@ -19,7 +20,7 @@ fun ComposableMainScreen(
     childStack: ChildStack<BottomBarNavigationConfig, DecomposeComponent>,
     connectionTabState: TabState,
     hubHasNotification: Boolean,
-    onTabClick: (tab: BottomBarNavigationConfig, force: Boolean) -> Unit,
+    onTabClick: (tab: BottomBarTabEnum, force: Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val selectedTab = childStack.active.configuration
@@ -28,10 +29,10 @@ fun ComposableMainScreen(
         bottomBar = {
             ComposeBottomBar(
                 connectionTabState = connectionTabState,
-                selectedItem = selectedTab,
+                selectedItem = selectedTab.enum,
                 hubHasNotification = hubHasNotification,
                 onBottomBarClick = {
-                    onTabClick(it, selectedTab == it)
+                    onTabClick(it, selectedTab.enum == it)
                 }
             )
             SetUpNavigationBarColor(color = LocalPallet.current.bottomBarBackground)

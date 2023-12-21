@@ -31,7 +31,7 @@ sealed interface TabState {
 
     @Immutable
     @Suppress("LongParameterList")
-    class Animated(
+    data class Animated(
         @DrawableRes val selectedIcon: Int,
         @DrawableRes val selectedBackground: Int,
         @DrawableRes val notSelectedIcon: Int,

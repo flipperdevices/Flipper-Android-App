@@ -12,7 +12,6 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.value.Value
@@ -21,6 +20,8 @@ import com.flipperdevices.archive.api.ArchiveDecomposeComponent
 import com.flipperdevices.bottombar.impl.composable.ComposableInAppNotification
 import com.flipperdevices.bottombar.impl.composable.ComposableMainScreen
 import com.flipperdevices.bottombar.impl.model.BottomBarNavigationConfig
+import com.flipperdevices.bottombar.impl.model.BottomBarTabEnum
+import com.flipperdevices.bottombar.impl.model.toConfig
 import com.flipperdevices.bottombar.impl.viewmodel.BottomBarViewModel
 import com.flipperdevices.bottombar.impl.viewmodel.InAppNotificationViewModel
 import com.flipperdevices.connection.api.ConnectionApi
@@ -118,27 +119,38 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
         config: BottomBarNavigationConfig,
         componentContext: ComponentContext
     ): DecomposeComponent = when (config) {
-        BottomBarNavigationConfig.Archive -> archiveScreenFactory(
+        is BottomBarNavigationConfig.Archive -> archiveScreenFactory(
             componentContext = componentContext
         )
 
-        BottomBarNavigationConfig.Device -> deviceScreenFactory(
+        is BottomBarNavigationConfig.Device -> deviceScreenFactory(
             componentContext = componentContext
         )
 
-        BottomBarNavigationConfig.Hub -> hubScreenFactory(
+        is BottomBarNavigationConfig.Hub -> hubScreenFactory(
             componentContext = componentContext
         )
     }
 
     @Suppress("UnusedParameter")
-    private fun goToTab(barNavigationConfig: BottomBarNavigationConfig, force: Boolean) {
-        navigation.bringToFront(barNavigationConfig)
+    private fun goToTab(bottomBarTabEnum: BottomBarTabEnum, force: Boolean) {
+        navigation.navigate(
+            transformer = { stack ->
+                var newConfiguration = stack.findLast { it.enum == bottomBarTabEnum }
+                    ?: bottomBarTabEnum.toConfig()
+                if (force) {
+                    newConfiguration = bottomBarTabEnum.toConfig(newConfiguration.uniqueId + 1)
+                }
+
+                stack.filterNot { it.enum == bottomBarTabEnum } + newConfiguration
+            },
+            onComplete = { _, _ -> },
+        )
 
         runBlocking {
             settingsDataStore.updateData {
                 it.toBuilder()
-                    .setSelectedTab(barNavigationConfig.protobufRepresentation)
+                    .setSelectedTab(bottomBarTabEnum.toConfig().protobufRepresentation)
                     .build()
             }
         }
