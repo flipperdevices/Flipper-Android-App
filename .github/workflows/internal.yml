@@ -242,6 +242,7 @@ jobs:
       - name: Create internal Release
         id: create_internal_release
         uses: softprops/action-gh-release@v1
+        if: ${{ false }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -265,8 +266,8 @@ jobs:
           name: artifacts-googleplay
       - name: Upload to Play Store
         uses: r0adkll/upload-google-play@v1.1.2
+        if: ${{ false }}
         with:
-          if: false
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_PUBLISHER_JSON }}
           packageName: com.flipperdevices.app
           releaseFiles: ${{steps.download-googleplay.outputs.download-path}}/flipper-zero-googleplay.aab
@@ -283,8 +284,8 @@ jobs:
           name: artifacts-wearos
       - name: Upload to Play Store Wear OS
         uses: r0adkll/upload-google-play@v1.1.2
+        if: ${{ false }}
         with:
-          if: false
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_PUBLISHER_JSON }}
           packageName: com.flipperdevices.app
           releaseFiles: ${{steps.download-wearos.outputs.download-path}}/flipper-zero-wearos.aab
