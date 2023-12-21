@@ -2,6 +2,7 @@ plugins {
     id("flipper.android-compose")
     id("kotlin-parcelize")
     id("flipper.anvil")
+    id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.archive.impl"
@@ -16,6 +17,7 @@ dependencies {
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.navigation)
+    implementation(projects.components.core.ui.decompose)
 
     implementation(projects.components.connection.api)
     implementation(projects.components.keyscreen.api)
@@ -37,11 +39,7 @@ dependencies {
     implementation(libs.compose.pager.indicators)
     implementation(libs.compose.swipetorefresh)
     implementation(libs.compose.navigation)
-
-    // Dagger deps
-    implementation(libs.tangle.viewmodel.compose)
-    implementation(libs.tangle.viewmodel.api)
-    anvil(libs.tangle.viewmodel.compiler)
+    implementation(libs.bundles.decompose)
 
     implementation(libs.kotlin.immutable.collections)
 

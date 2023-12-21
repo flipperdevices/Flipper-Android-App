@@ -14,6 +14,7 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.ui.searchbar.ComposableSearchBar
 
 @Composable
+@Suppress("NonSkippableComposable")
 fun ComposableSearch(
     synchronizationUiApi: SynchronizationUiApi,
     searchViewModel: SearchViewModel,

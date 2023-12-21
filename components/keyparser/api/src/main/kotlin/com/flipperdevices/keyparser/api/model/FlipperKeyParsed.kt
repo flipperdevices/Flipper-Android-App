@@ -1,24 +1,28 @@
 package com.flipperdevices.keyparser.api.model
 
+import androidx.compose.runtime.Immutable
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import kotlinx.collections.immutable.ImmutableList
 
-sealed class FlipperKeyParsed(
-    val keyName: String,
-    val notes: String?,
+@Immutable
+sealed interface FlipperKeyParsed {
+    val keyName: String
+    val notes: String?
     val fileType: FlipperKeyType?
-) {
-    class Infrared(
-        keyName: String,
-        notes: String?,
+
+    data class Infrared(
+        override val keyName: String,
+        override val notes: String?,
         val protocol: String?,
         val remotes: List<String>
-    ) : FlipperKeyParsed(keyName, notes, FlipperKeyType.INFRARED)
+    ) : FlipperKeyParsed {
+        override val fileType: FlipperKeyType = FlipperKeyType.INFRARED
+    }
 
     @Suppress("LongParameterList")
-    class NFC(
-        keyName: String,
-        notes: String?,
+    data class NFC(
+        override val keyName: String,
+        override val notes: String?,
         val deviceType: String?,
         val uid: String?,
         val version: Int,
@@ -27,34 +31,42 @@ sealed class FlipperKeyParsed(
         val mifareClassicType: String?,
         val dataFormatVersion: Int,
         val lines: List<Pair<Int, String>>
-    ) : FlipperKeyParsed(keyName, notes, FlipperKeyType.NFC)
+    ) : FlipperKeyParsed {
+        override val fileType: FlipperKeyType = FlipperKeyType.NFC
+    }
 
-    class SubGhz(
-        keyName: String,
-        notes: String?,
+    data class SubGhz(
+        override val keyName: String,
+        override val notes: String?,
         val protocol: String?,
         val key: String?,
         val totalTimeMs: Long? = null
-    ) : FlipperKeyParsed(keyName, notes, FlipperKeyType.SUB_GHZ)
+    ) : FlipperKeyParsed {
+        override val fileType: FlipperKeyType = FlipperKeyType.SUB_GHZ
+    }
 
-    class IButton(
-        keyName: String,
-        notes: String?,
+    data class IButton(
+        override val keyName: String,
+        override val notes: String?,
         val keyType: String?,
         val data: String?
-    ) : FlipperKeyParsed(keyName, notes, FlipperKeyType.I_BUTTON)
+    ) : FlipperKeyParsed {
+        override val fileType: FlipperKeyType = FlipperKeyType.I_BUTTON
+    }
 
-    class RFID(
-        keyName: String,
-        notes: String?,
+    data class RFID(
+        override val keyName: String,
+        override val notes: String?,
         val data: String?,
         val keyType: String?
-    ) : FlipperKeyParsed(keyName, notes, FlipperKeyType.RFID)
+    ) : FlipperKeyParsed {
+        override val fileType = FlipperKeyType.RFID
+    }
 
     class Unrecognized(
-        keyName: String,
-        notes: String?,
-        fileType: FlipperKeyType?,
+        override val keyName: String,
+        override val notes: String?,
+        override val fileType: FlipperKeyType?,
         val orderedDict: ImmutableList<Pair<String, String>>
-    ) : FlipperKeyParsed(keyName, notes, fileType)
+    ) : FlipperKeyParsed
 }

@@ -18,9 +18,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
-class GeneralTabViewModel @VMInject constructor(
+class GeneralTabViewModel @Inject constructor(
     private val simpleKeyApi: SimpleKeyApi,
     private val favoriteApi: FavoriteApi,
     private val synchronizationApi: SynchronizationApi,

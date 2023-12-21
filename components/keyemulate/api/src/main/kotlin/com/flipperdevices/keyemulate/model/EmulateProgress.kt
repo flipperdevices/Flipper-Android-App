@@ -1,15 +1,15 @@
 package com.flipperdevices.keyemulate.model
 
-import androidx.compose.runtime.Stable
+import androidx.compose.runtime.Immutable
 
-@Stable
+@Immutable
 sealed class EmulateProgress {
-    @Stable
-    object Infinite : EmulateProgress()
+    @Immutable
+    data object Infinite : EmulateProgress()
 
-    @Stable
+    @Immutable
     data class Growing(val duration: Long) : EmulateProgress()
 
-    @Stable
+    @Immutable
     data class GrowingAndStop(val duration: Long) : EmulateProgress()
 }

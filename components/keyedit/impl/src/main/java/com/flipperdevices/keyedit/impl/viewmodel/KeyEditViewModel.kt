@@ -10,24 +10,23 @@ import com.flipperdevices.core.ktx.android.vibrateCompat
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.wtf
-import com.flipperdevices.keyedit.impl.api.EXTRA_EDITABLE_KEY
 import com.flipperdevices.keyedit.impl.model.EditableKey
 import com.flipperdevices.keyedit.impl.model.KeyEditState
 import com.flipperdevices.keyedit.impl.viewmodel.processors.EditableKeyProcessor
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
-import tangle.inject.TangleParam
-import tangle.viewmodel.VMInject
 
 private const val VIBRATOR_TIME_MS = 500L
 
-class KeyEditViewModel @VMInject constructor(
+class KeyEditViewModel @AssistedInject constructor(
     context: Context,
-    @TangleParam(EXTRA_EDITABLE_KEY)
-    private val editableKey: EditableKey,
+    @Assisted private val editableKey: EditableKey,
     private val existedKeyProcessor: EditableKeyProcessor<EditableKey.Existed>,
     private val limbKeyProcessor: EditableKeyProcessor<EditableKey.Limb>
 ) : ViewModel(), LogTagProvider {
@@ -44,6 +43,7 @@ class KeyEditViewModel @VMInject constructor(
                 is EditableKey.Existed -> existedKeyProcessor.loadKey(editableKey) {
                     keyEditState.emit(it)
                 }
+
                 is EditableKey.Limb -> limbKeyProcessor.loadKey(editableKey) {
                     keyEditState.emit(it)
                 }
@@ -109,6 +109,7 @@ class KeyEditViewModel @VMInject constructor(
                         savingState.editState,
                         onEndAction
                     )
+
                     is EditableKey.Limb -> limbKeyProcessor.onSave(
                         editableKey,
                         savingState.editState,
@@ -119,5 +120,12 @@ class KeyEditViewModel @VMInject constructor(
                 error(throwable) { "When save key $editableKey" }
             }
         }
+    }
+
+    @AssistedFactory
+    interface Factory {
+        operator fun invoke(
+            editableKey: EditableKey
+        ): KeyEditViewModel
     }
 }

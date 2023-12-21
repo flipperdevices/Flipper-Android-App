@@ -39,6 +39,7 @@ message Settings {
   reserved 19; // Already unused application_catalog
   reserved 20; // Already unused faphub_new_switch
   reserved 21; // Already unused application_catalog
+  reserved 24; // Already unused use_new_infrared
 
   bool used_foreground_service = 2;
   bool enabled_debug_settings = 3;
@@ -54,7 +55,6 @@ message Settings {
   bool skip_auto_sync_in_debug = 17;
   bool self_updater_debug = 22;
   bool use_dev_catalog = 23;
-  bool use_new_infrared = 24;
   SelectedCatalogSort selected_catalog_sort = 25;
   bool fatal_ble_security_exception_happens = 26;
   bool notification_topic_update_enabled = 27;

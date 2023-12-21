@@ -16,9 +16,9 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
-class SearchViewModel @VMInject constructor(
+class SearchViewModel @Inject constructor(
     private val utilsKeyApi: UtilsKeyApi,
     private val keyParser: KeyParser,
     private val synchronizationApi: SynchronizationApi

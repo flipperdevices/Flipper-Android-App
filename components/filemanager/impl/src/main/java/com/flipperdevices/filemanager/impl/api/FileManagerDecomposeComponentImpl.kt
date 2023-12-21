@@ -64,14 +64,6 @@ class FileManagerDecomposeComponentImpl @AssistedInject constructor(
         )
     }
 
-    @AssistedFactory
-    @ContributesBinding(AppGraph::class, FileManagerDecomposeComponent.Factory::class)
-    interface Factory : FileManagerDecomposeComponent.Factory {
-        override operator fun invoke(
-            componentContext: ComponentContext,
-        ): FileManagerDecomposeComponentImpl
-    }
-
     @Composable
     @Suppress("NonSkippableComposable")
     override fun Render() {
@@ -82,5 +74,13 @@ class FileManagerDecomposeComponentImpl @AssistedInject constructor(
         ) {
             it.instance.Render()
         }
+    }
+
+    @AssistedFactory
+    @ContributesBinding(AppGraph::class, FileManagerDecomposeComponent.Factory::class)
+    interface Factory : FileManagerDecomposeComponent.Factory {
+        override operator fun invoke(
+            componentContext: ComponentContext,
+        ): FileManagerDecomposeComponentImpl
     }
 }

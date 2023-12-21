@@ -99,12 +99,6 @@ private fun DebugCategoryItems(
         onSwitchState = { onSwitch(DebugSettingSwitch.SelfUpdaterDebug, it) }
     )
     GrayDivider()
-    SwitchableElement(
-        titleId = R.string.experimental_new_infrared,
-        state = settings.useNewInfrared,
-        onSwitchState = { onSwitch(DebugSettingSwitch.NewInfrared, it) }
-    )
-    GrayDivider()
     ClickableElement(
         titleId = R.string.debug_application_installall_dev,
         onClick = { onAction(DebugSettingAction.InstallAllFap) }

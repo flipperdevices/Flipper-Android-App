@@ -7,9 +7,9 @@ import com.flipperdevices.core.ktx.jre.forEachIterable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
-class DeleteViewModel @VMInject constructor(
+class DeleteViewModel @Inject constructor(
     private val deleteKeyApi: DeleteKeyApi
 ) : ViewModel() {
     fun onDeleteAll() {

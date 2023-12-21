@@ -16,9 +16,10 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.core.activityholder.CurrentActivityHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.flipperdevices.deeplink.model.Deeplink
-import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.flipperdevices.widget.api.WidgetApi
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -30,18 +31,15 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import tangle.inject.TangleParam
-import tangle.viewmodel.VMInject
 
 @Suppress("LongParameterList")
-class WidgetSelectViewModel @VMInject constructor(
+class WidgetSelectViewModel @AssistedInject constructor(
     private val simpleKeyApi: SimpleKeyApi,
     private val favoriteApi: FavoriteApi,
     private val synchronizationApi: SynchronizationApi,
     private val widgetDataApi: WidgetDataApi,
     private val widgetApi: WidgetApi,
-    @TangleParam(DeeplinkConstants.KEY)
-    private val deeplink: Deeplink
+    @Assisted private val widgetId: Int
 ) : ViewModel(), LogTagProvider {
     override val TAG = "WidgetSelectViewModel"
 
@@ -49,8 +47,6 @@ class WidgetSelectViewModel @VMInject constructor(
     private val favoriteKeys = MutableStateFlow<ImmutableList<FlipperKey>>(persistentListOf())
     private val synchronizationState =
         MutableStateFlow<SynchronizationState>(SynchronizationState.NotStarted)
-
-    private val widgetId = (deeplink as Deeplink.WidgetOptions).appWidgetId
 
     init {
         viewModelScope.launch(Dispatchers.Default) {
@@ -97,5 +93,10 @@ class WidgetSelectViewModel @VMInject constructor(
                 putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
             }
         )
+    }
+
+    @AssistedFactory
+    fun interface Factory {
+        operator fun invoke(widgetId: Int): WidgetSelectViewModel
     }
 }
