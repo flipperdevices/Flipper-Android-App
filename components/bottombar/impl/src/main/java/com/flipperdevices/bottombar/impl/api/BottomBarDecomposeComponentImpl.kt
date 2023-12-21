@@ -132,7 +132,6 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
         )
     }
 
-    @Suppress("UnusedParameter")
     private fun goToTab(bottomBarTabEnum: BottomBarTabEnum, force: Boolean) {
         navigation.navigate(
             transformer = { stack ->
