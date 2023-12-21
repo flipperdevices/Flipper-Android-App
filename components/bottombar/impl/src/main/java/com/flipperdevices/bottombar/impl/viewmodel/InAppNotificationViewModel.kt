@@ -11,10 +11,10 @@ import com.flipperdevices.inappnotification.api.model.InAppNotification
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 import javax.inject.Provider
 
-class InAppNotificationViewModel @VMInject constructor(
+class InAppNotificationViewModel @Inject constructor(
     notificationStorageProvider: Provider<InAppNotificationStorage>
 ) : ViewModel(), InAppNotificationListener, LogTagProvider {
     override val TAG = "InAppNotificationViewModel"

@@ -16,7 +16,6 @@ dependencies {
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.theme)
-    implementation(projects.components.core.ui.navigation)
     implementation(projects.components.core.ui.decompose)
 
     implementation(projects.components.connection.api)
@@ -38,7 +37,6 @@ dependencies {
     implementation(libs.compose.pager)
     implementation(libs.compose.pager.indicators)
     implementation(libs.compose.swipetorefresh)
-    implementation(libs.compose.navigation)
     implementation(libs.bundles.decompose)
 
     implementation(libs.kotlin.immutable.collections)

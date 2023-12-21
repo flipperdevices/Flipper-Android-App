@@ -15,8 +15,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.TabPosition
 import androidx.compose.material.TabRow
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -27,20 +27,19 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.bottombar.impl.model.FlipperBottomTab
-import com.flipperdevices.bottombar.impl.viewmodel.BottomBarViewModel
-import com.flipperdevices.connection.api.ConnectionApi
+import com.flipperdevices.bottombar.impl.model.BottomBarNavigationConfig
+import com.flipperdevices.bottombar.model.TabState
 import com.flipperdevices.core.ui.ktx.SetUpNavigationBarColor
 import com.flipperdevices.core.ui.ktx.tab.tabIndicatorOffset
 import com.flipperdevices.core.ui.theme.LocalPallet
-import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 fun ComposeBottomBar(
-    connectionApi: ConnectionApi,
+    connectionTabState: TabState,
+    selectedItem: BottomBarNavigationConfig,
+    hubHasNotification: Boolean,
+    onBottomBarClick: (BottomBarNavigationConfig) -> Unit,
     modifier: Modifier = Modifier,
-    selectedItem: FlipperBottomTab = FlipperBottomTab.ARCHIVE,
-    onBottomBarClick: (FlipperBottomTab) -> Unit = {}
 ) {
     AnimatedVisibility(
         visible = !WindowInsets.isImeVisible,
@@ -48,31 +47,31 @@ fun ComposeBottomBar(
         exit = fadeOut()
     ) {
         ComposeBottomBarInternal(
-            connectionApi = connectionApi,
+            connectionTabState = connectionTabState,
             modifier = modifier,
             selectedItem = selectedItem,
-            onBottomBarClick = onBottomBarClick
+            onBottomBarClick = onBottomBarClick,
+            hubHasNotification = hubHasNotification
         )
     }
 }
 
 @Composable
 private fun ComposeBottomBarInternal(
-    connectionApi: ConnectionApi,
-    selectedItem: FlipperBottomTab,
-    onBottomBarClick: (FlipperBottomTab) -> Unit,
+    connectionTabState: TabState,
+    selectedItem: BottomBarNavigationConfig,
+    hubHasNotification: Boolean,
+    onBottomBarClick: (BottomBarNavigationConfig) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val tabs = remember { FlipperBottomTab.values() }
+    val tabs = remember { BottomBarNavigationConfig.entries.toTypedArray() }
     var selectedIndex by remember(selectedItem) {
-        mutableStateOf(tabs.indexOf(selectedItem))
+        mutableIntStateOf(tabs.indexOf(selectedItem))
     }
     var tabPositions by remember {
         mutableStateOf(emptyList<TabPosition>())
     }
     var tabHeightPx by remember { mutableStateOf(0) }
-    val bottomBarViewModel: BottomBarViewModel = tangleViewModel()
-    val hubHasNotification by bottomBarViewModel.hasNotificationHubState().collectAsState()
     Box(
         modifier = modifier.background(LocalPallet.current.bottomBarBackground)
     ) {
@@ -96,8 +95,8 @@ private fun ComposeBottomBarInternal(
         ) {
             tabs.forEachIndexed { index, flipperBottomTab ->
                 ComposeMaterialYouTab(
-                    getTabStateFromFlipperBottomTab(
-                        connectionApi,
+                    tabState = getTabStateFromFlipperBottomTab(
+                        connectionTabState,
                         flipperBottomTab,
                         hubHasNotification
                     ),
@@ -111,8 +110,6 @@ private fun ComposeBottomBarInternal(
         }
     }
     SetUpNavigationBarColor(LocalPallet.current.bottomBarBackground)
-
-    connectionApi.CheckAndShowUnsupportedDialog()
 }
 
 @Composable
