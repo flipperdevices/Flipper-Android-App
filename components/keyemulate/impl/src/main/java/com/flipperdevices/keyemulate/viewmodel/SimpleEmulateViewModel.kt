@@ -4,7 +4,6 @@ import android.app.Application
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.keyemulate.api.EmulateHelper
-import com.flipperdevices.screenstreaming.api.ScreenStreamingFeatureEntry
 import tangle.viewmodel.VMInject
 
 class SimpleEmulateViewModel @VMInject constructor(

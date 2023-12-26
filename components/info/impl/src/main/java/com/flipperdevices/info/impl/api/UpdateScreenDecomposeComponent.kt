@@ -22,7 +22,6 @@ import com.flipperdevices.info.impl.viewmodel.FlipperColorViewModel
 import com.flipperdevices.info.impl.viewmodel.deviceinfo.BasicInfoViewModel
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.updater.api.UpdaterCardApi
-import com.flipperdevices.updater.api.UpdaterFeatureEntry
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

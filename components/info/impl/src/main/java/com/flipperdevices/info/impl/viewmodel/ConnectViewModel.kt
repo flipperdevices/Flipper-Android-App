@@ -7,7 +7,6 @@ import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.preference.pb.PairSettings
 import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
-import com.flipperdevices.firstpair.api.FirstPairFeatureEntry
 import com.flipperdevices.info.impl.model.ConnectRequestState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update

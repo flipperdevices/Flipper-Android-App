@@ -20,7 +20,7 @@ dependencies {
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.dialog)
     implementation(projects.components.core.ui.ktx)
-    implementation(projects.components.core.ui.navigation)
+    implementation(projects.components.core.ui.decompose)
     implementation(projects.components.core.ui.res)
 
     implementation(libs.annotations)
@@ -34,14 +34,10 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
     implementation(libs.compose.constraint)
-    implementation(libs.compose.navigation)
+    implementation(libs.bundles.decompose)
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.compose)
-
-    implementation(libs.tangle.viewmodel.compose)
-    implementation(libs.tangle.viewmodel.api)
-    anvil(libs.tangle.viewmodel.compiler)
 }

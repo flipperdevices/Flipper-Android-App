@@ -8,7 +8,6 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.faphub.installation.button.api.FapButtonConfig
 import com.flipperdevices.faphub.installation.button.impl.helper.OpenFapHelper
 import com.flipperdevices.faphub.installation.button.impl.model.OpenFapResult
-import com.flipperdevices.screenstreaming.api.ScreenStreamingFeatureEntry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

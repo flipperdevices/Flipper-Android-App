@@ -13,6 +13,7 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.firstpair.impl.model.DevicePairState
 import com.flipperdevices.firstpair.impl.storage.FirstPairStorage
+import javax.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.cancelAndJoin
@@ -28,7 +29,7 @@ import tangle.viewmodel.VMInject
 
 private const val TIMEOUT_MS = 30L * 1000
 
-class PairDeviceViewModel @VMInject constructor(
+class PairDeviceViewModel @Inject constructor(
     application: Application,
     private val firstPairStorage: FirstPairStorage,
     private val deviceColorSaver: DeviceColorSaver

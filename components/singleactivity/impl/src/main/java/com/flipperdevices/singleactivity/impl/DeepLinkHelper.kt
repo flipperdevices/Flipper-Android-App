@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import androidx.navigation.NavController
 import androidx.navigation.navOptions
-import com.flipperdevices.bottombar.api.BottomNavigationFeatureEntry
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.android.toFullString
 import com.flipperdevices.core.ktx.jre.withLock
@@ -15,9 +14,7 @@ import com.flipperdevices.deeplink.api.DeepLinkDispatcher
 import com.flipperdevices.deeplink.api.DeepLinkParser
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.firstpair.api.FirstPairApi
-import com.flipperdevices.firstpair.api.FirstPairFeatureEntry
 import com.flipperdevices.updater.api.UpdaterApi
-import com.flipperdevices.updater.api.UpdaterFeatureEntry
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex

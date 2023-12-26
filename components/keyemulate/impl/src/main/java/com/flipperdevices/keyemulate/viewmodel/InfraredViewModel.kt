@@ -15,7 +15,6 @@ import com.flipperdevices.keyemulate.exception.ForbiddenFrequencyException
 import com.flipperdevices.keyemulate.model.EmulateButtonState
 import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyemulate.model.EmulateProgress
-import com.flipperdevices.screenstreaming.api.ScreenStreamingFeatureEntry
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.filter

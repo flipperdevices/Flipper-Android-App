@@ -3,7 +3,6 @@ package com.flipperdevices.screenstreaming.noop
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.screenstreaming.api.ScreenStreamingFeatureEntry
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 

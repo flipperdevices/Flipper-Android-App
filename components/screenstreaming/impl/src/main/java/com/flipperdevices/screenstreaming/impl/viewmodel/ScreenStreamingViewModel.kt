@@ -11,10 +11,10 @@ import com.flipperdevices.screenstreaming.impl.viewmodel.repository.ButtonStackR
 import com.flipperdevices.screenstreaming.impl.viewmodel.repository.FlipperButtonRepository
 import com.flipperdevices.screenstreaming.impl.viewmodel.repository.LockRepository
 import com.flipperdevices.screenstreaming.impl.viewmodel.repository.StreamingRepository
+import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
-import tangle.viewmodel.VMInject
 
-class ScreenStreamingViewModel @VMInject constructor(
+class ScreenStreamingViewModel @Inject constructor(
     serviceProvider: FlipperServiceProvider,
     application: Application,
     private val flipperButtonRepository: FlipperButtonRepository,

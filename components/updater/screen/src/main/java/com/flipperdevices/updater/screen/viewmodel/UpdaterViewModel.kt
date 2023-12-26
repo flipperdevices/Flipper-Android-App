@@ -18,6 +18,7 @@ import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.model.UpdatingState
 import com.flipperdevices.updater.screen.model.FailedReason
 import com.flipperdevices.updater.screen.model.UpdaterScreenState
+import javax.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
@@ -28,11 +29,10 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.sync.Mutex
-import tangle.viewmodel.VMInject
 
 private const val CHECK_CANCEL_DELAY = 100L
 
-class UpdaterViewModel @VMInject constructor(
+class UpdaterViewModel @Inject constructor(
     private val updaterApi: UpdaterApi,
     private val synchronizationApi: SynchronizationApi,
     serviceProvider: FlipperServiceProvider,
