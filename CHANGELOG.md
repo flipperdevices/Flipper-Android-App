@@ -8,7 +8,8 @@
 - [Refactor] Migrate hub screen to decompose
 - [Refactor] Migrate archive screen to decompose
 - [Refactor] Migrate bottombar to decompose
-- [Feature] New report bug
+- [Feature] New report bug for Apps Catalog
+- [Feature] Button vibration in ScreenStreaming
 
 # 1.6.7
 
