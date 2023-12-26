@@ -9,12 +9,14 @@ import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
+import com.flipperdevices.bottombar.handlers.ResetTabDecomposeHandler
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.faphub.main.api.FapHubDecomposeComponent
 import com.flipperdevices.hub.api.HubDecomposeComponent
 import com.flipperdevices.hub.impl.model.HubNavigationConfig
 import com.flipperdevices.nfc.attack.api.NFCAttackDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.popToRoot
 import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -25,10 +27,10 @@ class HubDecomposeComponentImpl @AssistedInject constructor(
     private val fapHubFactory: FapHubDecomposeComponent.Factory,
     private val hubMainFactory: HubMainScreenDecomposeComponentImpl.Factory,
     private val nfcAttackFactory: NFCAttackDecomposeComponent.Factory
-) : HubDecomposeComponent, ComponentContext by componentContext {
+) : HubDecomposeComponent, ComponentContext by componentContext, ResetTabDecomposeHandler {
     private val navigation = StackNavigation<HubNavigationConfig>()
 
-    val stack: Value<ChildStack<*, DecomposeComponent>> = childStack(
+    private val stack: Value<ChildStack<*, DecomposeComponent>> = childStack(
         source = navigation,
         serializer = HubNavigationConfig.serializer(),
         initialConfiguration = HubNavigationConfig.Main,
@@ -49,6 +51,10 @@ class HubDecomposeComponentImpl @AssistedInject constructor(
         HubNavigationConfig.NfcAttack -> nfcAttackFactory(
             componentContext = componentContext
         )
+    }
+
+    override fun onResetTab() {
+        navigation.popToRoot()
     }
 
     @Composable

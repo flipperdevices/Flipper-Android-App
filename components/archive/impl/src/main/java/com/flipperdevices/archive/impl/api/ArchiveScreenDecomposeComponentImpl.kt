@@ -1,6 +1,8 @@
 package com.flipperdevices.archive.impl.api
 
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
@@ -10,12 +12,15 @@ import com.flipperdevices.archive.impl.composable.ComposableArchive
 import com.flipperdevices.archive.impl.model.ArchiveNavigationConfig
 import com.flipperdevices.archive.impl.viewmodel.CategoryViewModel
 import com.flipperdevices.archive.impl.viewmodel.GeneralTabViewModel
+import com.flipperdevices.bottombar.handlers.ResetTabDecomposeHandler
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.ui.ktx.viewModelWithFactory
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import javax.inject.Provider
 
 class ArchiveScreenDecomposeComponentImpl @AssistedInject constructor(
@@ -24,7 +29,8 @@ class ArchiveScreenDecomposeComponentImpl @AssistedInject constructor(
     private val synchronizationUiApi: SynchronizationUiApi,
     private val generalTabviewModelProvider: Provider<GeneralTabViewModel>,
     private val categoryViewModelProvider: Provider<CategoryViewModel>
-) : DecomposeComponent, ComponentContext by componentContext {
+) : DecomposeComponent, ComponentContext by componentContext, ResetTabDecomposeHandler {
+    private val requestScrollToTopFlow = MutableStateFlow(false)
 
     @Composable
     @Suppress("NonSkippableComposable")
@@ -44,6 +50,15 @@ class ArchiveScreenDecomposeComponentImpl @AssistedInject constructor(
         val categories by categoryViewModel.getCategoriesFlow().collectAsState()
         val deletedCategory by categoryViewModel.getDeletedFlow().collectAsState()
 
+        val lazyListState = rememberLazyListState()
+        val requestScrollToTop by requestScrollToTopFlow.collectAsState()
+        LaunchedEffect(requestScrollToTop) {
+            if (requestScrollToTop) {
+                lazyListState.animateScrollToItem(0)
+                requestScrollToTopFlow.emit(false)
+            }
+        }
+
         ComposableArchive(
             synchronizationUiApi = synchronizationUiApi,
             onOpenSearchScreen = {
@@ -61,8 +76,13 @@ class ArchiveScreenDecomposeComponentImpl @AssistedInject constructor(
             onRefresh = tabViewModel::refresh,
             cancelSynchronization = tabViewModel::cancelSynchronization,
             categories = categories,
-            deletedCategory = deletedCategory
+            deletedCategory = deletedCategory,
+            lazyListState = lazyListState
         )
+    }
+
+    override fun onResetTab() {
+        requestScrollToTopFlow.update { true }
     }
 
     @AssistedFactory

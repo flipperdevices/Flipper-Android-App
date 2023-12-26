@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -53,6 +54,7 @@ fun ComposableArchive(
     favoriteKeys: ImmutableList<FlipperKey>,
     categories: ImmutableList<CategoryItem>,
     deletedCategory: CategoryItem,
+    lazyListState: LazyListState,
     onRefresh: () -> Unit,
     cancelSynchronization: () -> Unit
 ) {
@@ -72,7 +74,8 @@ fun ComposableArchive(
             onOpenSearchScreen = onOpenSearchScreen,
             onOpenCategory = onOpenCategory,
             categories = categories,
-            deletedCategory = deletedCategory
+            deletedCategory = deletedCategory,
+            lazyListState = lazyListState
         )
     }
 }
@@ -82,6 +85,7 @@ private fun ComposableArchiveReady(
     synchronizationUiApi: SynchronizationUiApi,
     keys: ImmutableList<FlipperKey>?,
     favoriteKeys: ImmutableList<FlipperKey>,
+    lazyListState: LazyListState,
     onRefresh: () -> Unit,
     synchronizationState: SynchronizationState,
     isKeysPresented: Boolean,
@@ -104,7 +108,8 @@ private fun ComposableArchiveReady(
         SwipeRefresh(onRefresh = onRefresh) {
             LazyColumn(
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
+                state = lazyListState
             ) {
                 item {
                     ComposableCategoryCard(

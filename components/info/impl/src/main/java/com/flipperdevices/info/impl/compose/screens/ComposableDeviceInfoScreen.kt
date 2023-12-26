@@ -1,9 +1,9 @@
 package com.flipperdevices.info.impl.compose.screens
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -34,6 +34,7 @@ fun ComposableDeviceInfoScreen(
     updaterCardApi: UpdaterCardApi,
     deeplink: Deeplink?,
     deviceStatus: DeviceStatus,
+    scrollState: ScrollState,
     connectViewModel: ConnectViewModel,
     hardwareColor: HardwareColor,
     supportedState: FlipperSupportedState,
@@ -54,7 +55,7 @@ fun ComposableDeviceInfoScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(scrollState)
         ) {
             ComposableDeviceBar(deviceStatus, hardwareColor)
             updaterCardApi.ComposableUpdaterCard(

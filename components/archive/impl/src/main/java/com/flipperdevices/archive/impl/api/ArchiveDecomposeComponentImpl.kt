@@ -13,9 +13,12 @@ import com.flipperdevices.archive.api.ArchiveDecomposeComponent
 import com.flipperdevices.archive.api.CategoryDecomposeComponent
 import com.flipperdevices.archive.api.SearchDecomposeComponent
 import com.flipperdevices.archive.impl.model.ArchiveNavigationConfig
+import com.flipperdevices.bottombar.handlers.ResetTabDecomposeHandler
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.keyscreen.api.KeyScreenDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.findComponentByConfig
+import com.flipperdevices.ui.decompose.popToRoot
 import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -27,7 +30,7 @@ class ArchiveDecomposeComponentImpl @AssistedInject constructor(
     private val keyScreenFactory: KeyScreenDecomposeComponent.Factory,
     private val searchFactory: SearchDecomposeComponent.Factory,
     private val archiveScreenFactory: ArchiveScreenDecomposeComponentImpl.Factory
-) : ArchiveDecomposeComponent, ComponentContext by componentContext {
+) : ArchiveDecomposeComponent, ComponentContext by componentContext, ResetTabDecomposeHandler {
     private val navigation = StackNavigation<ArchiveNavigationConfig>()
 
     val stack: Value<ChildStack<*, DecomposeComponent>> = childStack(
@@ -61,6 +64,14 @@ class ArchiveDecomposeComponentImpl @AssistedInject constructor(
             componentContext = componentContext,
             onItemSelected = null
         )
+    }
+
+    override fun onResetTab() {
+        navigation.popToRoot()
+        val instance = stack.findComponentByConfig(ArchiveNavigationConfig.ArchiveObject::class)
+        if (instance is ResetTabDecomposeHandler) {
+            instance.onResetTab()
+        }
     }
 
     @Composable

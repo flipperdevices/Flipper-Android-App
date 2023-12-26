@@ -10,11 +10,14 @@ import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.value.Value
+import com.flipperdevices.bottombar.handlers.ResetTabDecomposeHandler
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.info.api.screen.DeviceScreenDecomposeComponent
 import com.flipperdevices.info.impl.model.DeviceScreenNavigationConfig
 import com.flipperdevices.settings.api.SettingsDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.findComponentByConfig
+import com.flipperdevices.ui.decompose.popToRoot
 import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -25,16 +28,17 @@ class DeviceScreenDecomposeComponentImpl @AssistedInject constructor(
     private val settingsFactory: SettingsDecomposeComponent.Factory,
     private val updateFactory: UpdateScreenDecomposeComponent.Factory,
     private val fullInfoDecomposeComponentFactory: FullInfoDecomposeComponent.Factory
-) : DeviceScreenDecomposeComponent, ComponentContext by componentContext {
+) : DeviceScreenDecomposeComponent, ComponentContext by componentContext, ResetTabDecomposeHandler {
     private val navigation = StackNavigation<DeviceScreenNavigationConfig>()
 
-    val stack: Value<ChildStack<DeviceScreenNavigationConfig, DecomposeComponent>> = childStack(
-        source = navigation,
-        serializer = DeviceScreenNavigationConfig.serializer(),
-        initialConfiguration = DeviceScreenNavigationConfig.Update(),
-        handleBackButton = true,
-        childFactory = ::child,
-    )
+    private val stack: Value<ChildStack<DeviceScreenNavigationConfig, DecomposeComponent>> =
+        childStack(
+            source = navigation,
+            serializer = DeviceScreenNavigationConfig.serializer(),
+            initialConfiguration = DeviceScreenNavigationConfig.Update(),
+            handleBackButton = true,
+            childFactory = ::child,
+        )
 
     private fun child(
         config: DeviceScreenNavigationConfig,
@@ -52,6 +56,14 @@ class DeviceScreenDecomposeComponentImpl @AssistedInject constructor(
         )
 
         DeviceScreenNavigationConfig.Options -> settingsFactory(componentContext)
+    }
+
+    override fun onResetTab() {
+        navigation.popToRoot()
+        val instance = stack.findComponentByConfig(DeviceScreenNavigationConfig.Update::class)
+        if (instance is ResetTabDecomposeHandler) {
+            instance.onResetTab()
+        }
     }
 
     @Composable
