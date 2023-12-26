@@ -12,16 +12,16 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
+import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.backhandler.BackCallback
 import com.flipperdevices.archive.api.ArchiveDecomposeComponent
+import com.flipperdevices.bottombar.handlers.ResetTabDecomposeHandler
 import com.flipperdevices.bottombar.impl.composable.ComposableInAppNotification
 import com.flipperdevices.bottombar.impl.composable.ComposableMainScreen
-import com.flipperdevices.bottombar.impl.model.BottomBarNavigationConfig
 import com.flipperdevices.bottombar.impl.model.BottomBarTabEnum
-import com.flipperdevices.bottombar.impl.model.toConfig
 import com.flipperdevices.bottombar.impl.viewmodel.BottomBarViewModel
 import com.flipperdevices.bottombar.impl.viewmodel.InAppNotificationViewModel
 import com.flipperdevices.connection.api.ConnectionApi
@@ -56,13 +56,13 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
     private val bottomBarViewModelProvider: Provider<BottomBarViewModel>,
     private val inAppNotificationViewModelProvider: Provider<InAppNotificationViewModel>
 ) : DecomposeComponent, ComponentContext by componentContext {
-    private val navigation = StackNavigation<BottomBarNavigationConfig>()
+    private val navigation = StackNavigation<BottomBarTabEnum>()
 
-    private val stack: Value<ChildStack<BottomBarNavigationConfig, DecomposeComponent>> =
+    private val stack: Value<ChildStack<BottomBarTabEnum, DecomposeComponent>> =
         childStack(
             source = navigation,
-            serializer = BottomBarNavigationConfig.serializer(),
-            initialConfiguration = BottomBarNavigationConfig.getInitialSync(settingsDataStore),
+            serializer = BottomBarTabEnum.serializer(),
+            initialConfiguration = BottomBarTabEnum.getInitialSync(settingsDataStore),
             childFactory = ::child,
         )
 
@@ -116,40 +116,38 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
     }
 
     private fun child(
-        config: BottomBarNavigationConfig,
+        config: BottomBarTabEnum,
         componentContext: ComponentContext
     ): DecomposeComponent = when (config) {
-        is BottomBarNavigationConfig.Archive -> archiveScreenFactory(
+        BottomBarTabEnum.ARCHIVE -> archiveScreenFactory(
             componentContext = componentContext
         )
 
-        is BottomBarNavigationConfig.Device -> deviceScreenFactory(
+        BottomBarTabEnum.DEVICE -> deviceScreenFactory(
             componentContext = componentContext
         )
 
-        is BottomBarNavigationConfig.Hub -> hubScreenFactory(
+        BottomBarTabEnum.HUB -> hubScreenFactory(
             componentContext = componentContext
         )
     }
 
     private fun goToTab(bottomBarTabEnum: BottomBarTabEnum, force: Boolean) {
-        navigation.navigate(
-            transformer = { stack ->
-                var newConfiguration = stack.findLast { it.enum == bottomBarTabEnum }
-                    ?: bottomBarTabEnum.toConfig()
-                if (force) {
-                    newConfiguration = bottomBarTabEnum.toConfig(newConfiguration.uniqueId + 1)
-                }
+        navigation.bringToFront(bottomBarTabEnum)
 
-                stack.filterNot { it.enum == bottomBarTabEnum } + newConfiguration
-            },
-            onComplete = { _, _ -> },
-        )
+        if (force) {
+            val component = stack.value.items.find { (config, _) ->
+                config == bottomBarTabEnum
+            }?.instance
+            if (component is ResetTabDecomposeHandler) {
+                component.onResetTab()
+            }
+        }
 
         runBlocking {
             settingsDataStore.updateData {
                 it.toBuilder()
-                    .setSelectedTab(bottomBarTabEnum.toConfig().protobufRepresentation)
+                    .setSelectedTab(bottomBarTabEnum.protobufRepresentation)
                     .build()
             }
         }

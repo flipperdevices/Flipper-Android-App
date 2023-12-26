@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.navigation)
     implementation(libs.bundles.decompose)
+    implementation(libs.bundles.essenty)
 
     implementation(libs.kotlin.serialization.json)
     implementation(libs.kotlin.coroutines)

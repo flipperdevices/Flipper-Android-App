@@ -25,6 +25,7 @@ dependencies {
     implementation(projects.components.nfc.attack.api)
     implementation(projects.components.screenstreaming.api)
     implementation(projects.components.deeplink.api)
+    implementation(projects.components.bottombar.api)
 
     // Compose
     implementation(libs.compose.ui)

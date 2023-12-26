@@ -63,7 +63,8 @@ coil = "2.4.0" # https://github.com/coil-kt/coil/releases
 play-core = "2.1.0" # https://developer.android.com/guide/playcore#java-kotlin-in-app-update
 ktorfit = "1.5.0" # https://github.com/Foso/Ktorfit/releases
 ktorfit-gradle = "1.0.0" # https://plugins.gradle.org/plugin/de.jensklingenberg.ktorfit
-decompose = "3.0.0-alpha01" # https://github.com/arkivanov/Decompose/releases
+decompose = "3.0.0-alpha04" # https://github.com/arkivanov/Decompose/releases
+essenty = "2.0.0-alpha02" # https://github.com/arkivanov/Essenty/releases
 
 # Testing
 junit = "4.13.2" # https://github.com/junit-team/junit4/releases
@@ -253,8 +254,12 @@ gms-firebase = { module = "com.google.firebase:firebase-messaging", version.ref 
 decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
 decompose-jetpack = { module = "com.arkivanov.decompose:extensions-compose", version.ref = "decompose" }
 
+essenty-lifecycle = { module = "com.arkivanov.essenty:lifecycle", version.ref = "essenty" }
+essenty-lifecycle-coroutines = { module = "com.arkivanov.essenty:lifecycle-coroutines", version.ref = "essenty" }
+
 [bundles]
 decompose = ["decompose", "decompose-jetpack"]
+essenty = ["essenty-lifecycle", "essenty-lifecycle-coroutines"]
 
 [plugins]
 android-app = { id = "com.android.application", version.ref = "android-gradle" }

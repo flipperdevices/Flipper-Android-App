@@ -1,11 +1,14 @@
 package com.flipperdevices.info.impl.api
 
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigator
 import com.arkivanov.decompose.router.stack.push
+import com.flipperdevices.bottombar.handlers.ResetTabDecomposeHandler
 import com.flipperdevices.core.ui.ktx.viewModelWithFactory
 import com.flipperdevices.core.ui.navigation.LocalGlobalNavigationNavStack
 import com.flipperdevices.deeplink.model.Deeplink
@@ -23,6 +26,8 @@ import com.flipperdevices.updater.api.UpdaterFeatureEntry
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import javax.inject.Provider
 
 @Suppress("LongParameterList")
@@ -38,7 +43,8 @@ class UpdateScreenDecomposeComponent @AssistedInject constructor(
     private val firmwareUpdateViewModelProvider: Provider<FirmwareUpdateViewModel>,
     private val alarmViewModelProvider: Provider<AlarmViewModel>,
     private val basicInfoViewModelProvider: Provider<BasicInfoViewModel>
-) : DecomposeComponent, ComponentContext by componentContext {
+) : DecomposeComponent, ComponentContext by componentContext, ResetTabDecomposeHandler {
+    private val requestScrollToTopFlow = MutableStateFlow(false)
 
     @Suppress("NonSkippableComposable")
     @Composable
@@ -68,6 +74,15 @@ class UpdateScreenDecomposeComponent @AssistedInject constructor(
         }
         val basicInfo by basicInfoViewModel.getDeviceInfo().collectAsState()
 
+        val scrollState = rememberScrollState()
+        val requestScrollToTop by requestScrollToTopFlow.collectAsState()
+        LaunchedEffect(requestScrollToTop) {
+            if (requestScrollToTop) {
+                scrollState.animateScrollTo(0)
+                requestScrollToTopFlow.emit(false)
+            }
+        }
+
         ComposableDeviceInfoScreen(
             updaterCardApi = updaterCardApi,
             onOpenFullDeviceInfo = {
@@ -86,8 +101,13 @@ class UpdateScreenDecomposeComponent @AssistedInject constructor(
             supportedState = supportState,
             updateState = updateState,
             alarmOnFlipper = alarmViewModel::alarmOnFlipper,
-            deviceInfo = basicInfo
+            deviceInfo = basicInfo,
+            scrollState = scrollState
         )
+    }
+
+    override fun onResetTab() {
+        requestScrollToTopFlow.update { true }
     }
 
     @AssistedFactory
