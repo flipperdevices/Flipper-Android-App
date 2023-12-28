@@ -8,13 +8,16 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
+import com.arkivanov.decompose.router.stack.navigate
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.archive.api.ArchiveDecomposeComponent
 import com.flipperdevices.archive.api.CategoryDecomposeComponent
 import com.flipperdevices.archive.api.SearchDecomposeComponent
 import com.flipperdevices.archive.impl.model.ArchiveNavigationConfig
+import com.flipperdevices.archive.impl.model.toArchiveNavigationStack
 import com.flipperdevices.bottombar.handlers.ResetTabDecomposeHandler
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.keyscreen.api.KeyScreenDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.findComponentByConfig
@@ -26,6 +29,7 @@ import dagger.assisted.AssistedInject
 
 class ArchiveDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
+    @Assisted deeplink: Deeplink.BottomBar.ArchiveTab?,
     private val openCategoryFactory: CategoryDecomposeComponent.Factory,
     private val keyScreenFactory: KeyScreenDecomposeComponent.Factory,
     private val searchFactory: SearchDecomposeComponent.Factory,
@@ -36,7 +40,9 @@ class ArchiveDecomposeComponentImpl @AssistedInject constructor(
     val stack: Value<ChildStack<*, DecomposeComponent>> = childStack(
         source = navigation,
         serializer = ArchiveNavigationConfig.serializer(),
-        initialConfiguration = ArchiveNavigationConfig.ArchiveObject,
+        initialStack = {
+            deeplink.toArchiveNavigationStack()
+        },
         handleBackButton = true,
         childFactory = ::child,
     )
@@ -52,7 +58,8 @@ class ArchiveDecomposeComponentImpl @AssistedInject constructor(
 
         is ArchiveNavigationConfig.OpenCategory -> openCategoryFactory(
             componentContext = componentContext,
-            categoryType = config.categoryType
+            categoryType = config.categoryType,
+            deeplink = config.deeplink
         )
 
         is ArchiveNavigationConfig.OpenKey -> keyScreenFactory(
@@ -64,6 +71,10 @@ class ArchiveDecomposeComponentImpl @AssistedInject constructor(
             componentContext = componentContext,
             onItemSelected = null
         )
+    }
+
+    override fun handleDeeplink(deeplink: Deeplink.BottomBar.ArchiveTab) {
+        navigation.navigate { deeplink.toArchiveNavigationStack() }
     }
 
     override fun onResetTab() {
@@ -90,7 +101,8 @@ class ArchiveDecomposeComponentImpl @AssistedInject constructor(
     @ContributesBinding(AppGraph::class, ArchiveDecomposeComponent.Factory::class)
     interface Factory : ArchiveDecomposeComponent.Factory {
         override fun invoke(
-            componentContext: ComponentContext
+            componentContext: ComponentContext,
+            deeplink: Deeplink.BottomBar.ArchiveTab?
         ): ArchiveDecomposeComponentImpl
     }
 }

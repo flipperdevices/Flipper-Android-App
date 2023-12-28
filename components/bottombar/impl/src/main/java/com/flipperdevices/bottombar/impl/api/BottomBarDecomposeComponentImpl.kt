@@ -22,7 +22,10 @@ import com.flipperdevices.bottombar.api.BottomBarDecomposeComponent
 import com.flipperdevices.bottombar.handlers.ResetTabDecomposeHandler
 import com.flipperdevices.bottombar.impl.composable.ComposableInAppNotification
 import com.flipperdevices.bottombar.impl.composable.ComposableMainScreen
+import com.flipperdevices.bottombar.impl.model.BottomBarTabConfig
 import com.flipperdevices.bottombar.impl.model.BottomBarTabEnum
+import com.flipperdevices.bottombar.impl.model.toBottomBarTabEnum
+import com.flipperdevices.bottombar.impl.model.toConfig
 import com.flipperdevices.bottombar.impl.viewmodel.BottomBarViewModel
 import com.flipperdevices.bottombar.impl.viewmodel.InAppNotificationViewModel
 import com.flipperdevices.connection.api.ConnectionApi
@@ -37,6 +40,7 @@ import com.flipperdevices.info.api.screen.DeviceScreenDecomposeComponent
 import com.flipperdevices.notification.api.FlipperAppNotificationDialogApi
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.findComponentByConfig
 import com.flipperdevices.unhandledexception.api.UnhandledExceptionRenderApi
 import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
@@ -61,13 +65,13 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
     private val bottomBarViewModelProvider: Provider<BottomBarViewModel>,
     private val inAppNotificationViewModelProvider: Provider<InAppNotificationViewModel>
 ) : DecomposeComponent, BottomBarDecomposeComponent, ComponentContext by componentContext {
-    private val navigation = StackNavigation<BottomBarTabEnum>()
+    private val navigation = StackNavigation<BottomBarTabConfig>()
 
-    private val stack: Value<ChildStack<BottomBarTabEnum, DecomposeComponent>> =
+    private val stack: Value<ChildStack<BottomBarTabConfig, DecomposeComponent>> =
         childStack(
             source = navigation,
-            serializer = BottomBarTabEnum.serializer(),
-            initialConfiguration = BottomBarTabEnum.getInitialSync(settingsDataStore),
+            serializer = BottomBarTabConfig.serializer(),
+            initialConfiguration = BottomBarTabConfig.getInitialConfig(settingsDataStore, deeplink),
             childFactory = ::child,
         )
 
@@ -81,10 +85,6 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
 
     init {
         backHandler.register(backCallback)
-    }
-
-    override fun handleDeeplink(deeplink: Deeplink.BottomBar) {
-        //
     }
 
     @Composable
@@ -125,31 +125,37 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
     }
 
     private fun child(
-        config: BottomBarTabEnum,
+        config: BottomBarTabConfig,
         componentContext: ComponentContext
     ): DecomposeComponent = when (config) {
-        BottomBarTabEnum.ARCHIVE -> archiveScreenFactory(
-            componentContext = componentContext
+        is BottomBarTabConfig.Archive -> archiveScreenFactory(
+            componentContext = componentContext,
+            deeplink = config.deeplink
         )
 
-        BottomBarTabEnum.DEVICE -> deviceScreenFactory(
-            componentContext = componentContext
+        is BottomBarTabConfig.Device -> deviceScreenFactory(
+            componentContext = componentContext,
+            deeplink = config.deeplink
         )
 
-        BottomBarTabEnum.HUB -> hubScreenFactory(
-            componentContext = componentContext
+        is BottomBarTabConfig.Hub -> hubScreenFactory(
+            componentContext = componentContext,
+            deeplink = config.deeplink
         )
     }
 
     private fun goToTab(bottomBarTabEnum: BottomBarTabEnum, force: Boolean) {
-        navigation.bringToFront(bottomBarTabEnum)
+        val existedPair = stack.value.items.find { it.configuration.enum == bottomBarTabEnum }
+        if (existedPair == null) {
+            navigation.bringToFront(bottomBarTabEnum.toConfig())
+            return
+        }
+        navigation.bringToFront(existedPair.configuration)
 
         if (force) {
-            val component = stack.value.items.find { (config, _) ->
-                config == bottomBarTabEnum
-            }?.instance
-            if (component is ResetTabDecomposeHandler) {
-                component.onResetTab()
+            val instance = existedPair.instance
+            if (instance is ResetTabDecomposeHandler) {
+                instance.onResetTab()
             }
         }
 
@@ -159,6 +165,42 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
                     .setSelectedTab(bottomBarTabEnum.protobufRepresentation)
                     .build()
             }
+        }
+    }
+
+    override fun handleDeeplink(deeplink: Deeplink.BottomBar) {
+        when (deeplink) {
+            is Deeplink.BottomBar.ArchiveTab -> {
+                val instance = stack.findComponentByConfig(BottomBarTabConfig.Archive::class)
+                if (instance == null || instance !is ArchiveDecomposeComponent) {
+                    navigation.bringToFront(BottomBarTabConfig.Archive(deeplink))
+                } else {
+                    instance.handleDeeplink(deeplink)
+                }
+            }
+
+            is Deeplink.BottomBar.DeviceTab -> {
+                val instance = stack.findComponentByConfig(BottomBarTabConfig.Hub::class)
+                if (instance == null || instance !is DeviceScreenDecomposeComponent) {
+                    navigation.bringToFront(BottomBarTabConfig.Device(deeplink))
+                } else {
+                    instance.handleDeeplink(deeplink)
+                }
+            }
+
+            is Deeplink.BottomBar.HubTab -> {
+                val instance = stack.findComponentByConfig(BottomBarTabConfig.Hub::class)
+                if (instance == null || instance !is HubDecomposeComponent) {
+                    navigation.bringToFront(BottomBarTabConfig.Hub(deeplink))
+                } else {
+                    instance.handleDeeplink(deeplink)
+                }
+            }
+
+            is Deeplink.BottomBar.OpenTab -> goToTab(
+                deeplink.bottomTab.toBottomBarTabEnum(),
+                force = true
+            )
         }
     }
 

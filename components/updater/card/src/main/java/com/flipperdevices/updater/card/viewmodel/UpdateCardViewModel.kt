@@ -41,7 +41,7 @@ class UpdateCardViewModel @AssistedInject constructor(
     private val dataStoreSettings: DataStore<Settings>,
     private val updateOfferHelper: UpdateOfferProviderApi,
     private val storageExistHelper: StorageExistHelper,
-    @Assisted private val deeplink: Deeplink?
+    @Assisted private val deeplink: Deeplink.BottomBar.DeviceTab.WebUpdate?
 ) : LifecycleViewModel(),
     FlipperBleServiceConsumer,
     LogTagProvider {
@@ -130,14 +130,12 @@ class UpdateCardViewModel @AssistedInject constructor(
                     updateChannel
                 }
 
-                val deeplinkWebUpdater = deeplink as? Deeplink.BottomBar.DeviceTab.WebUpdate
-
                 return@combine UpdateCardHelper(
                     newUpdateChannel,
                     isFlashExist,
                     flipperFirmwareVersion,
                     isAlwaysUpdate,
-                    deeplinkWebUpdater,
+                    deeplink,
                     latestVersionAsync
                 )
             }.collectLatest {
@@ -150,7 +148,7 @@ class UpdateCardViewModel @AssistedInject constructor(
     @AssistedFactory
     fun interface Factory {
         operator fun invoke(
-            deeplink: Deeplink?
+            deeplink: Deeplink.BottomBar.DeviceTab.WebUpdate?
         ): UpdateCardViewModel
     }
 }

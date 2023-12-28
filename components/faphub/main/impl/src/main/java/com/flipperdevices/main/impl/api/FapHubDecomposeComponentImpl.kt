@@ -10,6 +10,7 @@ import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.faphub.category.api.FapHubCategoryDecomposeComponent
 import com.flipperdevices.faphub.fapscreen.api.FapScreenDecomposeComponent
 import com.flipperdevices.faphub.main.api.FapHubDecomposeComponent
@@ -23,6 +24,7 @@ import dagger.assisted.AssistedInject
 
 class FapHubDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
+    @Assisted deeplink: Deeplink.BottomBar.HubTab.FapHub?,
     private val fapScreenFactory: FapScreenDecomposeComponent.Factory,
     private val fapSearchFactory: FapHubSearchDecomposeComponent.Factory,
     private val fapCategoryFactory: FapHubCategoryDecomposeComponent.Factory,
@@ -33,7 +35,16 @@ class FapHubDecomposeComponentImpl @AssistedInject constructor(
     private val stack: Value<ChildStack<*, DecomposeComponent>> = childStack(
         source = navigation,
         serializer = FapHubNavigationConfig.serializer(),
-        initialConfiguration = FapHubNavigationConfig.Main,
+        initialStack = {
+            if (deeplink is Deeplink.BottomBar.HubTab.FapHub.Fap) {
+                listOf(
+                    FapHubNavigationConfig.Main,
+                    FapHubNavigationConfig.FapScreen(deeplink.appId)
+                )
+            } else {
+                listOf(FapHubNavigationConfig.Main)
+            }
+        },
         handleBackButton = true,
         childFactory = ::child,
     )
@@ -78,7 +89,8 @@ class FapHubDecomposeComponentImpl @AssistedInject constructor(
     @ContributesBinding(AppGraph::class, FapHubDecomposeComponent.Factory::class)
     interface Factory : FapHubDecomposeComponent.Factory {
         override fun invoke(
-            componentContext: ComponentContext
+            componentContext: ComponentContext,
+            deeplink: Deeplink.BottomBar.HubTab.FapHub?
         ): FapHubDecomposeComponentImpl
     }
 }

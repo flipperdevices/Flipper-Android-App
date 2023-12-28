@@ -37,6 +37,7 @@ class FlipperKeyParserHelperTest {
         // Assertions
         Assert.assertTrue(resultParse.isFailure)
     }
+
     @Test
     fun `Flipper key deeplink with null content`() = runTest {
         // Initialize

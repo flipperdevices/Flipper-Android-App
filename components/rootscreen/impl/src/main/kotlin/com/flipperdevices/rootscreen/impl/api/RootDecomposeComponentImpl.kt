@@ -9,9 +9,9 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
+import com.arkivanov.decompose.router.stack.navigate
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
-import com.arkivanov.decompose.router.stack.replaceAll
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.flipperdevices.bottombar.api.BottomBarDecomposeComponent
@@ -76,8 +76,7 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
             componentContext = componentContext,
             onBack = this::internalOnBack,
             invalidate = {
-                @Suppress("SpreadOperator")
-                navigation.replaceAll(*getInitialConfiguration(config.pendingDeeplink).toTypedArray())
+                navigation.navigate { getInitialConfiguration(config.pendingDeeplink) }
             }
         )
 

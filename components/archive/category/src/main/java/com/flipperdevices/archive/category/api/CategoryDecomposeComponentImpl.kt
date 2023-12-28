@@ -13,6 +13,7 @@ import com.flipperdevices.archive.api.CategoryDecomposeComponent
 import com.flipperdevices.archive.category.model.CategoryNavigationConfig
 import com.flipperdevices.archive.model.CategoryType
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.keyscreen.api.KeyScreenDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.squareup.anvil.annotations.ContributesBinding
@@ -23,6 +24,7 @@ import dagger.assisted.AssistedInject
 class CategoryDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted categoryType: CategoryType,
+    @Assisted deeplink: Deeplink.BottomBar.ArchiveTab.ArchiveCategory?,
     private val openKeyFactory: KeyScreenDecomposeComponent.Factory,
     private val categoryFactory: CategoryScreenDecomposeComponentImpl.Factory
 ) : CategoryDecomposeComponent, ComponentContext by componentContext {
@@ -31,7 +33,16 @@ class CategoryDecomposeComponentImpl @AssistedInject constructor(
     private val stack: Value<ChildStack<*, DecomposeComponent>> = childStack(
         source = navigation,
         serializer = CategoryNavigationConfig.serializer(),
-        initialConfiguration = CategoryNavigationConfig.Category(categoryType),
+        initialStack = {
+            if (deeplink is Deeplink.BottomBar.ArchiveTab.ArchiveCategory.OpenKey) {
+                listOf(
+                    CategoryNavigationConfig.Category(categoryType),
+                    CategoryNavigationConfig.OpenKey(deeplink.keyPath)
+                )
+            } else {
+                listOf(CategoryNavigationConfig.Category(categoryType))
+            }
+        },
         handleBackButton = true,
         childFactory = ::child,
     )
@@ -69,7 +80,8 @@ class CategoryDecomposeComponentImpl @AssistedInject constructor(
     interface Factory : CategoryDecomposeComponent.Factory {
         override fun invoke(
             componentContext: ComponentContext,
-            categoryType: CategoryType
+            categoryType: CategoryType,
+            deeplink: Deeplink.BottomBar.ArchiveTab.ArchiveCategory?
         ): CategoryDecomposeComponentImpl
     }
 }

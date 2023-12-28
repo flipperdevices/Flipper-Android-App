@@ -32,11 +32,10 @@ import com.flipperdevices.rootscreen.api.RootDecomposeComponent
 import com.flipperdevices.singleactivity.impl.di.SingleActivityComponent
 import com.flipperdevices.singleactivity.impl.utils.FlipperStackAnimationProvider
 import com.flipperdevices.singleactivity.impl.utils.OnCreateHandlerDispatcher
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 class SingleActivity : AppCompatActivity(), LogTagProvider {
     override val TAG = "SingleActivity"
@@ -130,5 +129,3 @@ class SingleActivity : AppCompatActivity(), LogTagProvider {
         }
     }
 }
-
-

@@ -20,18 +20,18 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.http.HttpStatusCode
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
-import java.net.UnknownHostException
-import java.net.UnknownServiceException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
+import java.net.UnknownHostException
+import java.net.UnknownServiceException
 
 class KeyReceiveViewModel @AssistedInject constructor(
     @Assisted initialDeeplink: Deeplink.RootLevel.SaveKey,
@@ -97,7 +97,6 @@ class KeyReceiveViewModel @AssistedInject constructor(
                 parseFlipperKey(it)
             }
         }
-
     }
 
     fun onSave() {

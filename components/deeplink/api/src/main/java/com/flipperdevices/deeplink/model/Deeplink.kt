@@ -3,62 +3,71 @@ package com.flipperdevices.deeplink.model
 import androidx.compose.runtime.Immutable
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import kotlinx.serialization.Serializable
 
 @Serializable
 @Immutable
-sealed class Deeplink {
+sealed interface Deeplink {
 
     @Serializable
-    sealed class RootLevel : Deeplink() {
+    sealed interface RootLevel : Deeplink {
         @Serializable
-        sealed class SaveKey : RootLevel() {
+        sealed interface SaveKey : RootLevel {
             @Serializable
             data class ExternalContent(
                 val content: DeeplinkContent? = null
-            ) : SaveKey()
+            ) : SaveKey
 
             @Serializable
             data class FlipperKey(
                 val path: FlipperFilePath,
                 val content: DeeplinkContent? = null
-            ) : SaveKey()
+            ) : SaveKey
         }
 
         @Serializable
         data class WidgetOptions(
             val appWidgetId: Int
-        ) : RootLevel()
+        ) : RootLevel
     }
 
     @Serializable
-    sealed class BottomBar : Deeplink() {
+    sealed interface BottomBar : Deeplink {
         @Serializable
-        data class OpenTab(val bottomTab: DeeplinkBottomBarTab) : BottomBar()
+        data class OpenTab(val bottomTab: DeeplinkBottomBarTab) : BottomBar
 
         @Serializable
-        sealed class DeviceTab : BottomBar() {
+        sealed interface DeviceTab : BottomBar {
             @Serializable
             data class WebUpdate(
                 val url: String,
                 val name: String,
-            ) : DeviceTab()
+            ) : DeviceTab
 
             @Serializable
-            data object OpenUpdate : DeviceTab()
+            data object OpenUpdate : DeviceTab
         }
 
         @Serializable
-        sealed class ArchiveTab : BottomBar() {
+        sealed interface ArchiveTab : BottomBar {
             @Serializable
-            data class OpenKey(
-                val keyPath: FlipperKeyPath
-            ) : ArchiveTab()
+            sealed interface ArchiveCategory : ArchiveTab {
+                val category: FlipperKeyType?
+
+                @Serializable
+                data class OpenKey(
+                    val keyPath: FlipperKeyPath
+                ) : ArchiveCategory {
+                    override val category = keyPath.path.keyType
+                }
+            }
         }
 
         @Serializable
-        sealed class HubTab : BottomBar() {
-            sealed class FapHub : HubTab() {
+        sealed interface HubTab : BottomBar {
+            @Serializable
+            sealed class FapHub : HubTab {
                 @Serializable
                 data class Fap(
                     val appId: String,
@@ -66,7 +75,7 @@ sealed class Deeplink {
             }
 
             @Serializable
-            data object OpenMfKey : HubTab()
+            data object OpenMfKey : HubTab
         }
     }
 }

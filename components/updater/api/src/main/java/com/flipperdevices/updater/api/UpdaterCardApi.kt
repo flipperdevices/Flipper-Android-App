@@ -12,7 +12,7 @@ interface UpdaterCardApi {
     @Composable
     fun ComposableUpdaterCard(
         modifier: Modifier,
-        deeplink: Deeplink?,
+        deeplink: Deeplink.BottomBar.DeviceTab.WebUpdate?,
         onStartUpdateRequest: (UpdateRequest) -> Unit,
         requestRefresh: Boolean,
         onRefreshRequestExecuted: () -> Unit

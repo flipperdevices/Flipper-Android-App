@@ -1,9 +1,6 @@
 package com.flipperdevices.core.ktx.android
 
 import android.content.Intent
-import android.os.Build
-import android.os.Build.VERSION.SDK_INT
-import android.os.Parcelable
 
 fun Intent.toFullString(): String {
     val sb = StringBuilder()

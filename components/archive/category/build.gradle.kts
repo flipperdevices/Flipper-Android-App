@@ -23,6 +23,7 @@ dependencies {
     implementation(projects.components.bridge.synchronization.api)
     implementation(projects.components.keyscreen.api)
     implementation(projects.components.keyparser.api)
+    implementation(projects.components.deeplink.api)
 
     implementation(libs.appcompat)
 

@@ -32,7 +32,7 @@ import com.flipperdevices.updater.model.UpdateRequest
 @Composable
 fun ComposableDeviceInfoScreen(
     updaterCardApi: UpdaterCardApi,
-    deeplink: Deeplink?,
+    deeplink: Deeplink.BottomBar.DeviceTab.WebUpdate?,
     deviceStatus: DeviceStatus,
     scrollState: ScrollState,
     connectViewModel: ConnectViewModel,

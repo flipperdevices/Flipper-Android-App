@@ -18,9 +18,7 @@ class FlipperKeyParserHelper @Inject constructor(
         var content: DeeplinkContent? = null
         var path: FlipperFilePath? = null
         when (link) {
-            is Deeplink.RootLevel.SaveKey.ExternalContent -> {
-                content = link.content
-            }
+            is Deeplink.RootLevel.SaveKey.ExternalContent -> content = link.content
 
             is Deeplink.RootLevel.SaveKey.FlipperKey -> {
                 path = link.path

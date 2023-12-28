@@ -15,8 +15,7 @@ import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, FapHubComposableErrorsRenderer::class)
-class FapHubComposableErrorsRendererImpl @Inject constructor(
-) : FapHubComposableErrorsRenderer {
+class FapHubComposableErrorsRendererImpl @Inject constructor() : FapHubComposableErrorsRenderer {
 
     override fun LazyListScope.ComposableThrowableErrorListItem(
         throwable: FapHubError,

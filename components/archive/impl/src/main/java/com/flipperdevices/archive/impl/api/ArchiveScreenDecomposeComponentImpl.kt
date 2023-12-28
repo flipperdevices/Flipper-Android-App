@@ -68,7 +68,7 @@ class ArchiveScreenDecomposeComponentImpl @AssistedInject constructor(
                 navigation.push(ArchiveNavigationConfig.OpenKey(flipperKeyPath))
             },
             onOpenCategory = { categoryType ->
-                navigation.push(ArchiveNavigationConfig.OpenCategory(categoryType))
+                navigation.push(ArchiveNavigationConfig.OpenCategory(categoryType, null))
             },
             keys = keys,
             synchronizationState = synchronizationState,
