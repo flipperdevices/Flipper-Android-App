@@ -1,9 +1,7 @@
 package com.flipperdevices.firstpair.impl.api
 
 import ComposableSearchingView
-import android.app.Activity
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.core.ui.ktx.viewModelWithFactory
 import com.flipperdevices.firstpair.impl.viewmodels.connecting.PairDeviceViewModel
@@ -14,13 +12,16 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import javax.inject.Provider
-import tangle.viewmodel.compose.tangleViewModel
+
+fun interface OnClickHelp {
+    operator fun invoke()
+}
 
 class DeviceScreenDecomposeComponent @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val onBack: DecomposeOnBackParameter,
     @Assisted private val onFinishConnect: () -> Unit,
-    @Assisted private val onHelpClick: () -> Unit,
+    @Assisted private val onHelpClick: OnClickHelp,
     private val bleDeviceViewModelProvider: Provider<BLEDeviceViewModel>,
     private val pairDeviceViewModelProvider: Provider<PairDeviceViewModel>
 ) : ComponentContext by componentContext, DecomposeComponent {
@@ -35,7 +36,7 @@ class DeviceScreenDecomposeComponent @AssistedInject constructor(
             bleDeviceViewModelProvider.get()
         }
         ComposableSearchingView(
-            onHelpClicking = onHelpClick,
+            onHelpClicking = onHelpClick::invoke,
             onFinishConnection = onFinishConnect,
             onBack = onBack::invoke,
             bleDeviceViewModel = bleDeviceViewModel,
@@ -49,7 +50,7 @@ class DeviceScreenDecomposeComponent @AssistedInject constructor(
             componentContext: ComponentContext,
             onBack: DecomposeOnBackParameter,
             onFinishConnect: () -> Unit,
-            onHelpClick: () -> Unit
+            onHelpClick: OnClickHelp
         ): DeviceScreenDecomposeComponent
     }
 }

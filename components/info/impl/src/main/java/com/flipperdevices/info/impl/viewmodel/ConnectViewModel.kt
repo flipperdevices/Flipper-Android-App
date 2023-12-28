@@ -2,7 +2,6 @@ package com.flipperdevices.info.impl.viewmodel
 
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.preference.pb.PairSettings
@@ -17,17 +16,12 @@ import javax.inject.Inject
 class ConnectViewModel @Inject constructor(
     private val serviceProvider: FlipperServiceProvider,
     private val synchronizationApi: SynchronizationApi,
-    private val dataStoreFirstPair: DataStore<PairSettings>,
-    private val firstPairFeatureEntry: FirstPairFeatureEntry
+    private val dataStoreFirstPair: DataStore<PairSettings>
 ) : LifecycleViewModel() {
     private val connectRequestState = MutableStateFlow(
         ConnectRequestState.NOT_REQUESTED
     )
     private val alreadyRequestConnect = AtomicBoolean(false)
-
-    fun goToConnectScreen(navController: NavController) {
-        navController.navigate(firstPairFeatureEntry.start())
-    }
 
     fun connectAndSynchronize() {
         if (!alreadyRequestConnect.compareAndSet(false, true)) {

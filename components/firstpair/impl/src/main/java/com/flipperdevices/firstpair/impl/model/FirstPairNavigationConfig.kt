@@ -8,7 +8,6 @@ sealed class FirstPairNavigationConfig {
     data object TOSScreen : FirstPairNavigationConfig()
 
     @Serializable
-
     data object DeviceScreen : FirstPairNavigationConfig()
 
     @Serializable

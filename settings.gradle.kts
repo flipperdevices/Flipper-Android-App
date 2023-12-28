@@ -234,4 +234,7 @@ include(
     ":components:notification:api",
     ":components:notification:impl",
     ":components:notification:noop",
+
+    ":components:rootscreen:api",
+    ":components:rootscreen:impl",
 )

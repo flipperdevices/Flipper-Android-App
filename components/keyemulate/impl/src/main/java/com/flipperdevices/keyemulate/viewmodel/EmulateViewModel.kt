@@ -3,7 +3,6 @@ package com.flipperdevices.keyemulate.viewmodel
 import android.os.Vibrator
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.api.utils.Constants.API_SUPPORTED_REMOTE_EMULATE
@@ -44,7 +43,6 @@ abstract class EmulateViewModel(
     private val serviceProvider: FlipperServiceProvider,
     private val emulateHelper: EmulateHelper,
     private val synchronizationApi: SynchronizationApi,
-    private val screenStreamingFeatureEntry: ScreenStreamingFeatureEntry,
     application: FlipperApp
 ) : LifecycleViewModel(), LogTagProvider, FlipperBleServiceConsumer {
 
@@ -180,10 +178,6 @@ abstract class EmulateViewModel(
                 }
             }
         }.launchIn(viewModelScope)
-    }
-
-    fun goToRemoteScreen(navController: NavController) {
-        navController.navigate(screenStreamingFeatureEntry.start())
     }
 
     override fun onCleared() {

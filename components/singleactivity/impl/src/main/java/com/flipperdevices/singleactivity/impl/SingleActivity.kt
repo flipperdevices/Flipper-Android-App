@@ -5,48 +5,42 @@ import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import com.arkivanov.decompose.defaultComponentContext
+import com.arkivanov.decompose.extensions.compose.stack.animation.LocalStackAnimationProvider
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.parcelableExtra
 import com.flipperdevices.core.ktx.android.toFullString
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
-import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
-import com.flipperdevices.core.ui.navigation.LocalGlobalNavigationNavStack
 import com.flipperdevices.core.ui.theme.FlipperTheme
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SessionState
-import com.flipperdevices.singleactivity.impl.composable.ComposableSingleActivityNavHost
+import com.flipperdevices.rootscreen.api.LocalRootNavigation
+import com.flipperdevices.rootscreen.api.RootDecomposeComponent
 import com.flipperdevices.singleactivity.impl.di.SingleActivityComponent
+import com.flipperdevices.singleactivity.impl.utils.FlipperStackAnimationProvider
 import com.flipperdevices.singleactivity.impl.utils.OnCreateHandlerDispatcher
-import kotlinx.collections.immutable.toPersistentSet
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 const val LAUNCH_PARAMS_INTENT = "launch_params_intent"
 
-class SingleActivity :
-    AppCompatActivity(),
-    LogTagProvider {
+@Suppress("ForbiddenComment")
+class SingleActivity : AppCompatActivity(), LogTagProvider {
     override val TAG = "SingleActivity"
 
     @Inject
-    lateinit var deepLinkHelper: DeepLinkHelper
-
-    @Inject
-    lateinit var featureEntriesMutable: MutableSet<AggregateFeatureEntry>
-
-    @Inject
-    lateinit var composableEntriesMutable: MutableSet<ComposableFeatureEntry>
+    lateinit var rootComponentFactory: RootDecomposeComponent.Factory
 
     @Inject
     lateinit var metricApi: MetricApi
@@ -54,7 +48,7 @@ class SingleActivity :
     @Inject
     lateinit var onCreateHandlerDispatcher: OnCreateHandlerDispatcher
 
-    private var globalNavController: NavHostController? = null
+    private var rootDecomposeComponent: RootDecomposeComponent? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,35 +57,31 @@ class SingleActivity :
         onCreateHandlerDispatcher.onCreate(this)
 
         info {
-            "Create new activity with hashcode: ${this.hashCode()} " +
-                "and intent ${intent.toFullString()}"
+            "Create new activity with hashcode: ${this.hashCode()} " + "and intent ${intent.toFullString()}"
         }
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
-        val featureEntries = featureEntriesMutable.toPersistentSet()
-        val composableEntries = composableEntriesMutable.toPersistentSet()
-        val startDestination = deepLinkHelper.getStartDestination()
+        val root = rootComponentFactory(
+            componentContext = defaultComponentContext(),
+            onBack = this::finish
+        ).also { rootDecomposeComponent = it }
 
         setContent {
-            val navControllerLocal = rememberNavController().also {
-                globalNavController = it
-            }
             LaunchedEffect(Unit) {
                 // Open deeplink
-                deepLinkHelper.onNewIntent(this@SingleActivity, navControllerLocal, intent)
+                // TODO: Process deeplink
             }
             FlipperTheme(content = {
                 CompositionLocalProvider(
-                    LocalGlobalNavigationNavStack provides navControllerLocal
+                    LocalRootNavigation provides root,
+                    LocalStackAnimationProvider provides FlipperStackAnimationProvider
                 ) {
-                    ComposableSingleActivityNavHost(
-                        navController = navControllerLocal,
-                        startDestination = startDestination,
-                        featureEntries = featureEntries,
-                        composableEntries = composableEntries,
+                    root.Render(
                         modifier = Modifier
                             .safeDrawingPadding()
+                            .fillMaxSize()
+                            .background(MaterialTheme.colors.background)
                     )
                 }
             })
@@ -107,16 +97,12 @@ class SingleActivity :
         val deeplink = intent.parcelableExtra<Deeplink>(LAUNCH_PARAMS_INTENT)
         if (deeplink != null) {
             lifecycleScope.launch {
-                globalNavController?.let { navController ->
-                    deepLinkHelper.onNewDeeplink(navController, deeplink)
-                }
+                // TODO: Process deeplink
             }
             return
         }
         lifecycleScope.launch {
-            globalNavController?.let { navController ->
-                deepLinkHelper.onNewIntent(this@SingleActivity, navController, intent)
-            }
+            // TODO: Process deeplink
         }
     }
 
@@ -129,6 +115,7 @@ class SingleActivity :
         super.onConfigurationChanged(newConfig)
         metricApi.reportSessionState(SessionState.ConfigurationChanged(newConfig))
     }
+
     override fun onStop() {
         super.onStop()
         metricApi.reportSessionState(SessionState.StopSession)

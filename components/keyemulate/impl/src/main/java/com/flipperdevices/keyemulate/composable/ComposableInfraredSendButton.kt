@@ -6,7 +6,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.flipperdevices.core.ui.ktx.onScrollHoldPress
-import com.flipperdevices.core.ui.navigation.LocalGlobalNavigationNavStack
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyemulate.composable.common.ComposableActionDisable
 import com.flipperdevices.keyemulate.composable.common.ComposableActionLoading
@@ -16,16 +15,17 @@ import com.flipperdevices.keyemulate.model.EmulateButtonState
 import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyemulate.model.EmulateProgress
 import com.flipperdevices.keyemulate.viewmodel.InfraredViewModel
-import tangle.viewmodel.compose.tangleViewModel
+import com.flipperdevices.rootscreen.api.LocalRootNavigation
+import com.flipperdevices.rootscreen.model.RootScreenConfig
 
 @Composable
 internal fun ComposableInfraredSendButton(
     emulateConfig: EmulateConfig,
     isSynchronized: Boolean,
+    emulateViewModel: InfraredViewModel,
     modifier: Modifier = Modifier,
 ) {
-    val rootNavController = LocalGlobalNavigationNavStack.current
-    val emulateViewModel = tangleViewModel<InfraredViewModel>()
+    val rootNavigation = LocalRootNavigation.current
     val name = emulateConfig.args ?: return
 
     val emulateButtonState by emulateViewModel.getEmulateButtonStateFlow().collectAsState()
@@ -41,7 +41,7 @@ internal fun ComposableInfraredSendButton(
     }
 
     ComposableErrorDialogs(emulateButtonState, emulateViewModel::closeDialog) {
-        emulateViewModel.goToRemoteScreen(rootNavController)
+        rootNavigation.push(RootScreenConfig.ScreenStreaming)
     }
 
     when (emulateButtonState) {
@@ -51,6 +51,7 @@ internal fun ComposableInfraredSendButton(
             iconId = null,
             reason = null
         )
+
         is EmulateButtonState.Active,
         is EmulateButtonState.Inactive ->
             ComposableActiveStateEmulateInternal(
@@ -59,6 +60,7 @@ internal fun ComposableInfraredSendButton(
                 emulateViewModel = emulateViewModel,
                 emulateConfig = emulateConfig
             )
+
         is EmulateButtonState.Loading -> ComposableActionLoading(
             modifier = modifier,
             loadingState = null

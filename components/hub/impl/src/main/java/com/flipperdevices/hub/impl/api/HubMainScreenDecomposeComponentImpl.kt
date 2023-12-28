@@ -10,13 +10,14 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.push
 import com.flipperdevices.core.ui.ktx.viewModelWithFactory
-import com.flipperdevices.core.ui.navigation.LocalGlobalNavigationNavStack
 import com.flipperdevices.faphub.maincard.api.MainCardApi
 import com.flipperdevices.hub.impl.composable.ComposableHub
 import com.flipperdevices.hub.impl.model.HubNavigationConfig
 import com.flipperdevices.hub.impl.viewmodel.NfcAttackViewModel
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
+import com.flipperdevices.rootscreen.api.LocalRootNavigation
+import com.flipperdevices.rootscreen.model.RootScreenConfig
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -27,20 +28,18 @@ class HubMainScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val navigation: StackNavigation<HubNavigationConfig>,
     private val mainCardApi: MainCardApi,
-    private val screenStreamingFeatureEntry: ScreenStreamingFeatureEntry,
     private val metricApi: MetricApi,
     private val nfcAttackViewModelProvider: Provider<NfcAttackViewModel>
 ) : DecomposeComponent, ComponentContext by componentContext {
     @Composable
     @Suppress("NonSkippableComposable")
     override fun Render() {
-        val globalNavController = LocalGlobalNavigationNavStack.current
-
         val nfcAttackViewModel = viewModelWithFactory(key = null) {
             nfcAttackViewModelProvider.get()
         }
         val notificationCount by nfcAttackViewModel.getNfcAttackNotificationCountState()
             .collectAsState()
+        val rootNavigation = LocalRootNavigation.current
 
         ComposableHub(
             notificationCount = notificationCount,
@@ -61,7 +60,7 @@ class HubMainScreenDecomposeComponentImpl @AssistedInject constructor(
                 )
             },
             onOpenRemoteControl = {
-                globalNavController.navigate(screenStreamingFeatureEntry.start())
+                rootNavigation.push(RootScreenConfig.ScreenStreaming)
             }
         )
     }

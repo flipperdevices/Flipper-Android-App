@@ -2,7 +2,6 @@ package com.flipperdevices.faphub.installation.button.impl.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavHostController
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.faphub.installation.button.api.FapButtonConfig
@@ -13,11 +12,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
-class OpenFapViewModel @VMInject constructor(
-    private val openFapHelper: OpenFapHelper,
-    private val screenStreamingFeatureEntry: ScreenStreamingFeatureEntry,
+class OpenFapViewModel @Inject constructor(
+    private val openFapHelper: OpenFapHelper
 ) : ViewModel(), LogTagProvider {
     override val TAG: String = "OpenFapViewModel"
 
@@ -26,7 +24,7 @@ class OpenFapViewModel @VMInject constructor(
     fun getOpenFapState(fapButtonConfig: FapButtonConfig?) =
         openFapHelper.getOpenFapState(fapButtonConfig)
 
-    fun open(config: FapButtonConfig?, navController: NavHostController) {
+    fun open(config: FapButtonConfig?, onOpenScreenStreaming: () -> Unit) {
         if (config == null) {
             info { "Cannot open because config in null" }
             return
@@ -35,22 +33,18 @@ class OpenFapViewModel @VMInject constructor(
         viewModelScope.launch(Dispatchers.Default) {
             openFapHelper.loadFap(
                 config = config,
-                onResult = { processOpenFapResult(it, navController) }
+                onResult = { processOpenFapResult(it, onOpenScreenStreaming) }
             )
         }
     }
 
-    fun goToRemote(navController: NavHostController) {
-        navController.navigate(screenStreamingFeatureEntry.start())
-    }
-
-    private fun processOpenFapResult(openFapResult: OpenFapResult, navController: NavHostController) {
+    private fun processOpenFapResult(openFapResult: OpenFapResult, onOpenScreenStreaming: () -> Unit) {
         viewModelScope.launch {
             when (openFapResult) {
                 OpenFapResult.AllGood -> {
                     info { "Success open app, then go to screen streaming" }
                     withContext(Dispatchers.Main) {
-                        navController.navigate(screenStreamingFeatureEntry.start())
+                        onOpenScreenStreaming()
                     }
                 }
                 OpenFapResult.Error -> info { "Error on open app" }

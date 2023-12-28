@@ -6,7 +6,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.ktx.image.Picture
-import com.flipperdevices.core.ui.navigation.LocalGlobalNavigationNavStack
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyemulate.composable.common.ComposableActionDisable
 import com.flipperdevices.keyemulate.composable.common.ComposableActionLoading
@@ -17,16 +16,17 @@ import com.flipperdevices.keyemulate.model.DisableButtonReason
 import com.flipperdevices.keyemulate.model.EmulateButtonState
 import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyemulate.viewmodel.SimpleEmulateViewModel
-import tangle.viewmodel.compose.tangleViewModel
+import com.flipperdevices.rootscreen.api.LocalRootNavigation
+import com.flipperdevices.rootscreen.model.RootScreenConfig
 
 @Composable
 fun ComposableSimpleEmulateButton(
     emulateConfig: EmulateConfig,
     isSynchronized: Boolean,
+    emulateViewModel: SimpleEmulateViewModel,
     modifier: Modifier = Modifier
 ) {
-    val rootNavController = LocalGlobalNavigationNavStack.current
-    val emulateViewModel = tangleViewModel<SimpleEmulateViewModel>()
+    val rootNavigation = LocalRootNavigation.current
     val emulateButtonState by emulateViewModel.getEmulateButtonStateFlow().collectAsState()
 
     val buttonActiveModifier = Modifier.clickableRipple {
@@ -48,7 +48,7 @@ fun ComposableSimpleEmulateButton(
     }
 
     ComposableErrorDialogs(emulateButtonState, emulateViewModel::closeDialog) {
-        emulateViewModel.goToRemoteScreen(rootNavController)
+        rootNavigation.push(RootScreenConfig.ScreenStreaming)
     }
 
     when (emulateButtonState) {
@@ -58,6 +58,7 @@ fun ComposableSimpleEmulateButton(
             iconId = R.drawable.ic_emulate,
             reason = (emulateButtonState as EmulateButtonState.Disabled).reason
         )
+
         is EmulateButtonState.Active -> ComposableEmulateButtonWithText(
             modifier = modifier,
             buttonModifier = buttonActiveModifier,
@@ -71,6 +72,7 @@ fun ComposableSimpleEmulateButton(
             ),
             textId = R.string.keyscreen_emulating_desc
         )
+
         is EmulateButtonState.Inactive -> ComposableEmulateButtonWithText(
             modifier = modifier,
             buttonTextId = R.string.keyscreen_emulate,
@@ -78,6 +80,7 @@ fun ComposableSimpleEmulateButton(
             color = LocalPallet.current.actionOnFlipperEnable,
             picture = Picture.StaticRes(R.drawable.ic_emulate)
         )
+
         is EmulateButtonState.Loading -> ComposableActionLoading(
             modifier = modifier,
             loadingState = (emulateButtonState as EmulateButtonState.Loading).state

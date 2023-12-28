@@ -8,6 +8,7 @@
 - [Refactor] Migrate hub screen to decompose
 - [Refactor] Migrate archive screen to decompose
 - [Refactor] Migrate bottombar to decompose
+- [Refactor] Migrate root screens to decompose
 - [Feature] New report bug
 
 # 1.6.7

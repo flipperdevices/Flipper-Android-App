@@ -18,7 +18,6 @@ fun ComposableKeyReceive(
     onRetry: () -> Unit,
     onCancel: () -> Unit
 ) {
-
     when (state) {
         is ReceiveState.Pending -> ComposableKeySaveScreen(
             keyScreenApi = keyScreenApi,

@@ -8,9 +8,9 @@ import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest
 import com.flipperdevices.faphub.installation.stateprovider.api.api.FapInstallationStateManager
 import com.flipperdevices.faphub.installation.stateprovider.api.model.FapState
 import kotlinx.coroutines.flow.MutableStateFlow
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
-class FapStatusViewModel @VMInject constructor(
+class FapStatusViewModel @Inject constructor(
     private val stateManager: FapInstallationStateManager,
     private val queueApi: FapInstallationQueueApi,
 ) : LifecycleViewModel() {

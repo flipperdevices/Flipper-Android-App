@@ -1,8 +1,10 @@
 package com.flipperdevices.faphub.installation.stateprovider.api.model
 
 import androidx.annotation.FloatRange
+import androidx.compose.runtime.Immutable
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
 
+@Immutable
 sealed class FapState {
     data object NotInitialized : FapState()
 

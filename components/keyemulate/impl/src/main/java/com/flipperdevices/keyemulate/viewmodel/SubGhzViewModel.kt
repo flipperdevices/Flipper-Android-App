@@ -19,15 +19,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
-class SubGhzViewModel @VMInject constructor(
+class SubGhzViewModel @Inject constructor(
     private val serviceProvider: FlipperServiceProvider,
     private val emulateHelper: EmulateHelper,
     synchronizationApi: SynchronizationApi,
     application: Application,
-    screenStreamingEntry: ScreenStreamingFeatureEntry
-) : EmulateViewModel(serviceProvider, emulateHelper, synchronizationApi, screenStreamingEntry, application) {
+) : EmulateViewModel(serviceProvider, emulateHelper, synchronizationApi, application) {
     override val TAG = "SubGhzViewModel"
 
     override suspend fun onStartEmulateInternal(
@@ -58,10 +57,12 @@ class SubGhzViewModel @VMInject constructor(
             when (it) {
                 is EmulateButtonState.Disabled,
                 is EmulateButtonState.Loading -> it
+
                 is EmulateButtonState.Inactive -> EmulateButtonState.Active(
                     progress = EmulateProgress.Infinite,
                     config = config
                 )
+
                 is EmulateButtonState.Active -> {
                     super.onStopEmulate(force = true)
                     return

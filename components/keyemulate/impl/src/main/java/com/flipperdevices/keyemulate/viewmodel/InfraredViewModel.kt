@@ -21,15 +21,14 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
-class InfraredViewModel @VMInject constructor(
+class InfraredViewModel @Inject constructor(
     private val serviceProvider: FlipperServiceProvider,
     private val emulateHelper: EmulateHelper,
-    screenStreamingEntry: ScreenStreamingFeatureEntry,
     synchronizationApi: SynchronizationApi,
     application: Application
-) : EmulateViewModel(serviceProvider, emulateHelper, synchronizationApi, screenStreamingEntry, application) {
+) : EmulateViewModel(serviceProvider, emulateHelper, synchronizationApi, application) {
     override val TAG = "InfraredViewModel"
 
     override suspend fun onStartEmulateInternal(

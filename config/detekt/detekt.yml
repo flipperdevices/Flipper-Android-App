@@ -735,7 +735,7 @@ Compose:
     active: true
     # You can optionally define a list of CompositionLocals that are allowed here
     # allowedCompositionLocals: LocalSomething,LocalSomethingElse
-    allowedCompositionLocals: LocalRouter,LocalPlaceholderEnable,LocalPallet,LocalTypography,LocalGlobalNavigationNavStack
+    allowedCompositionLocals: LocalRootNavigation,LocalPlaceholderEnable,LocalPallet,LocalTypography,LocalGlobalNavigationNavStack
   ContentEmitterReturningValues:
     active: true
     # You can optionally add your own composables here
