@@ -17,6 +17,7 @@ import com.flipperdevices.faphub.installation.button.impl.composable.ComposableF
 import com.flipperdevices.faphub.installation.button.impl.composable.ComposableFlipperNoSdCardButton
 import com.flipperdevices.faphub.installation.button.impl.composable.ComposableFlipperNotConnectedButton
 import com.flipperdevices.faphub.installation.button.impl.viewmodel.FapStatusViewModel
+import com.flipperdevices.faphub.installation.button.impl.viewmodel.OpenFapViewModel
 import com.flipperdevices.faphub.installation.stateprovider.api.model.FapState
 import com.flipperdevices.faphub.installation.stateprovider.api.model.NotAvailableReason
 
@@ -28,6 +29,7 @@ internal fun ComposableFapButton(
     statusViewModel: FapStatusViewModel,
     config: FapButtonConfig?,
     bottomBarApi: BottomNavigationHandleDeeplink,
+    openViewModel: OpenFapViewModel,
     modifier: Modifier = Modifier
 ) {
     when (localState) {
@@ -42,7 +44,8 @@ internal fun ComposableFapButton(
             ComposableInstalledButton(
                 config = config,
                 fapButtonSize = fapButtonSize,
-                modifier = modifier
+                modifier = modifier,
+                viewModel = openViewModel
             )
 
         FapState.ReadyToInstall -> ComposableFapInstallButton(

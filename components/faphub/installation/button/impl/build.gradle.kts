@@ -22,6 +22,7 @@ dependencies {
 
     implementation(projects.components.bottombar.api)
     implementation(projects.components.screenstreaming.api)
+    implementation(projects.components.rootscreen.api)
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.service.api)
@@ -39,10 +40,6 @@ dependencies {
     implementation(libs.compose.navigation)
 
     implementation(projects.components.faphub.dao.api)
-
-    implementation(libs.tangle.viewmodel.compose)
-    implementation(libs.tangle.viewmodel.api)
-    anvil(libs.tangle.viewmodel.compiler)
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.lifecycle.viewmodel.ktx)

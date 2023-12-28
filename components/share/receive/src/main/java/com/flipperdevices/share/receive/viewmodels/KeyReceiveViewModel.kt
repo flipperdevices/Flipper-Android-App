@@ -10,12 +10,14 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
 import com.flipperdevices.deeplink.model.Deeplink
-import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.flipperdevices.share.receive.R
 import com.flipperdevices.share.receive.helpers.FlipperKeyParserHelper
 import com.flipperdevices.share.receive.helpers.ReceiveKeyActionHelper
 import com.flipperdevices.share.receive.models.ReceiveState
 import com.flipperdevices.share.receive.models.ReceiverError
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,14 +25,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import tangle.inject.TangleParam
-import tangle.viewmodel.VMInject
 import java.net.UnknownHostException
 import java.net.UnknownServiceException
 
-class KeyReceiveViewModel @VMInject constructor(
-    @TangleParam(DeeplinkConstants.KEY)
-    initialDeeplink: Deeplink?,
+class KeyReceiveViewModel @AssistedInject constructor(
+    @Assisted initialDeeplink: Deeplink,
     application: Application,
     private val synchronizationApi: SynchronizationApi,
     private val flipperKeyParserHelper: FlipperKeyParserHelper,
@@ -79,6 +78,7 @@ class KeyReceiveViewModel @VMInject constructor(
                     ReceiverError.CANT_CONNECT_TO_SERVER
                 }
             }
+
             else -> ReceiverError.INVALID_FILE_FORMAT
         }
         state.emit(ReceiveState.Error(errorType))
@@ -123,5 +123,12 @@ class KeyReceiveViewModel @VMInject constructor(
 
     fun onFinish() {
         synchronizationApi.startSynchronization(force = true)
+    }
+
+    @AssistedFactory
+    fun interface Factory {
+        operator fun invoke(
+            initialDeeplink: Deeplink
+        ): KeyReceiveViewModel
     }
 }

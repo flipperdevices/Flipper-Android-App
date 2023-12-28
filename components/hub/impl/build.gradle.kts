@@ -26,6 +26,7 @@ dependencies {
     implementation(projects.components.screenstreaming.api)
     implementation(projects.components.deeplink.api)
     implementation(projects.components.bottombar.api)
+    implementation(projects.components.rootscreen.api)
 
     // Compose
     implementation(libs.compose.ui)

@@ -27,6 +27,8 @@ dependencies {
     implementation(projects.components.bridge.pbutils)
     implementation(projects.components.bridge.synchronization.api)
 
+    implementation(projects.components.rootscreen.api)
+
     // Compose
     implementation(libs.compose.ui)
     implementation(libs.compose.tooling)
@@ -35,10 +37,6 @@ dependencies {
     implementation(libs.compose.placeholder)
     implementation(libs.compose.navigation)
     implementation(libs.image.lottie)
-
-    implementation(libs.tangle.viewmodel.compose)
-    implementation(libs.tangle.viewmodel.api)
-    anvil(libs.tangle.viewmodel.compiler)
 
     implementation(libs.appcompat)
 

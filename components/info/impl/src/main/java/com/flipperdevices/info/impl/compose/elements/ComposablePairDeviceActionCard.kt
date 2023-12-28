@@ -6,7 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.flipperdevices.core.ui.navigation.LocalGlobalNavigationNavStack
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.compose.dialogs.ComposableForgotDialog
@@ -15,6 +14,8 @@ import com.flipperdevices.info.impl.viewmodel.ConnectViewModel
 import com.flipperdevices.info.shared.ButtonElementRow
 import com.flipperdevices.info.shared.ComposableInfoDivider
 import com.flipperdevices.info.shared.InfoElementCard
+import com.flipperdevices.rootscreen.api.LocalRootNavigation
+import com.flipperdevices.rootscreen.model.RootScreenConfig
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
@@ -23,7 +24,7 @@ fun ComposablePairDeviceActionCard(
     deviceStatus: DeviceStatus,
     modifier: Modifier = Modifier,
 ) {
-    val navController = LocalGlobalNavigationNavStack.current
+    val rootNavigation = LocalRootNavigation.current
 
     InfoElementCard(modifier = modifier) {
         when (deviceStatus) {
@@ -32,7 +33,9 @@ fun ComposablePairDeviceActionCard(
 
             DeviceStatus.NoDevice ->
                 ComposableFirstConnectElement(
-                    onGoToConnectScreen = { connectViewModel.goToConnectScreen(navController) }
+                    onGoToConnectScreen = {
+                        rootNavigation.push(RootScreenConfig.FirstPair)
+                    }
                 )
 
             is DeviceStatus.NoDeviceInformation -> if (deviceStatus.connectInProgress) {

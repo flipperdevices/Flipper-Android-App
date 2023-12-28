@@ -16,7 +16,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.image.Picture
 import com.flipperdevices.core.ui.ktx.onHoldPress
-import com.flipperdevices.core.ui.navigation.LocalGlobalNavigationNavStack
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyemulate.composable.common.ComposableActionDisable
@@ -29,16 +28,17 @@ import com.flipperdevices.keyemulate.model.DisableButtonReason
 import com.flipperdevices.keyemulate.model.EmulateButtonState
 import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyemulate.viewmodel.SubGhzViewModel
-import tangle.viewmodel.compose.tangleViewModel
+import com.flipperdevices.rootscreen.api.LocalRootNavigation
+import com.flipperdevices.rootscreen.model.RootScreenConfig
 
 @Composable
 fun ComposableSubGhzSendButton(
     emulateConfig: EmulateConfig,
     isSynchronized: Boolean,
+    emulateViewModel: SubGhzViewModel,
     modifier: Modifier = Modifier
 ) {
-    val rootNavController = LocalGlobalNavigationNavStack.current
-    val emulateViewModel = tangleViewModel<SubGhzViewModel>()
+    val rootNavigation = LocalRootNavigation.current
     val emulateButtonState by emulateViewModel.getEmulateButtonStateFlow().collectAsState()
 
     if (!isSynchronized) {
@@ -52,7 +52,7 @@ fun ComposableSubGhzSendButton(
     }
 
     ComposableErrorDialogs(emulateButtonState, emulateViewModel::closeDialog) {
-        emulateViewModel.goToRemoteScreen(rootNavController)
+        rootNavigation.push(RootScreenConfig.ScreenStreaming)
     }
 
     when (emulateButtonState) {
@@ -62,6 +62,7 @@ fun ComposableSubGhzSendButton(
             iconId = R.drawable.ic_send,
             reason = (emulateButtonState as EmulateButtonState.Disabled).reason
         )
+
         is EmulateButtonState.Active,
         is EmulateButtonState.Inactive ->
             ComposableActiveStateEmulateInternal(
@@ -70,6 +71,7 @@ fun ComposableSubGhzSendButton(
                 emulateViewModel = emulateViewModel,
                 emulateConfig = emulateConfig
             )
+
         is EmulateButtonState.Loading -> ComposableActionLoading(
             modifier = modifier,
             loadingState = (emulateButtonState as EmulateButtonState.Loading).state

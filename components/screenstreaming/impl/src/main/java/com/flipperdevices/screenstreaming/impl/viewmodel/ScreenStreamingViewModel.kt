@@ -15,11 +15,11 @@ import com.flipperdevices.screenstreaming.impl.viewmodel.repository.FlipperButto
 import com.flipperdevices.screenstreaming.impl.viewmodel.repository.LockRepository
 import com.flipperdevices.screenstreaming.impl.viewmodel.repository.StreamingRepository
 import kotlinx.coroutines.flow.StateFlow
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
 private const val VIBRATOR_TIME_MS = 10L
 
-class ScreenStreamingViewModel @VMInject constructor(
+class ScreenStreamingViewModel @Inject constructor(
     serviceProvider: FlipperServiceProvider,
     application: Application,
     private val flipperButtonRepository: FlipperButtonRepository,

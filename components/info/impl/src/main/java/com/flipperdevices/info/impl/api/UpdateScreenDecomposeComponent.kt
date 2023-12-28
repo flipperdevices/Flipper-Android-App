@@ -10,7 +10,6 @@ import com.arkivanov.decompose.router.stack.StackNavigator
 import com.arkivanov.decompose.router.stack.push
 import com.flipperdevices.bottombar.handlers.ResetTabDecomposeHandler
 import com.flipperdevices.core.ui.ktx.viewModelWithFactory
-import com.flipperdevices.core.ui.navigation.LocalGlobalNavigationNavStack
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.info.impl.compose.screens.ComposableDeviceInfoScreen
 import com.flipperdevices.info.impl.model.DeviceScreenNavigationConfig
@@ -20,9 +19,10 @@ import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
 import com.flipperdevices.info.impl.viewmodel.FirmwareUpdateViewModel
 import com.flipperdevices.info.impl.viewmodel.FlipperColorViewModel
 import com.flipperdevices.info.impl.viewmodel.deviceinfo.BasicInfoViewModel
+import com.flipperdevices.rootscreen.api.LocalRootNavigation
+import com.flipperdevices.rootscreen.model.RootScreenConfig
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.updater.api.UpdaterCardApi
-import com.flipperdevices.updater.api.UpdaterFeatureEntry
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -36,7 +36,6 @@ class UpdateScreenDecomposeComponent @AssistedInject constructor(
     @Assisted private val deeplink: Deeplink?,
     @Assisted private val navigator: StackNavigator<DeviceScreenNavigationConfig>,
     private val updaterCardApi: UpdaterCardApi,
-    private val updaterFeatureEntry: UpdaterFeatureEntry,
     private val deviceStatusViewModelProvider: Provider<DeviceStatusViewModel>,
     private val connectViewModelProvider: Provider<ConnectViewModel>,
     private val flipperColorProvider: Provider<FlipperColorViewModel>,
@@ -49,7 +48,7 @@ class UpdateScreenDecomposeComponent @AssistedInject constructor(
     @Suppress("NonSkippableComposable")
     @Composable
     override fun Render() {
-        val globalNavController = LocalGlobalNavigationNavStack.current
+        val rootNavigation = LocalRootNavigation.current
         val deviceStatusViewModel = viewModelWithFactory(key = null) {
             deviceStatusViewModelProvider.get()
         }
@@ -92,7 +91,7 @@ class UpdateScreenDecomposeComponent @AssistedInject constructor(
                 navigator.push(DeviceScreenNavigationConfig.Options)
             },
             onStartUpdateRequest = {
-                globalNavController.navigate(updaterFeatureEntry.getUpdaterScreen(it))
+                rootNavigation.push(RootScreenConfig.UpdateScreen(it))
             },
             deeplink = deeplink,
             deviceStatus = deviceStatus,

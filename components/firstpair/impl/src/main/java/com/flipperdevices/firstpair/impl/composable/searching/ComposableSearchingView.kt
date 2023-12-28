@@ -23,19 +23,17 @@ import com.flipperdevices.firstpair.impl.viewmodels.connecting.PairDeviceViewMod
 import com.flipperdevices.firstpair.impl.viewmodels.searching.BLEDeviceViewModel
 import com.flipperdevices.firstpair.impl.viewmodels.searching.PermissionChangeDetectBroadcastReceiver
 import com.flipperdevices.firstpair.impl.viewmodels.searching.PermissionStateBuilder
-import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 internal fun ComposableSearchingView(
+    pairViewModel: PairDeviceViewModel,
+    bleDeviceViewModel: BLEDeviceViewModel,
     onHelpClicking: () -> Unit,
     onFinishConnection: () -> Unit,
     onBack: () -> Unit
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-
-    val pairViewModel: PairDeviceViewModel = tangleViewModel()
-    val bleDeviceViewModel: BLEDeviceViewModel = tangleViewModel()
 
     val permissionStateBuilder = remember(context) { PermissionStateBuilder(context = context) }
 

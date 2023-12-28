@@ -14,7 +14,6 @@ import com.flipperdevices.keyedit.impl.R
 import com.flipperdevices.keyedit.impl.model.EditableKey
 import com.flipperdevices.keyedit.impl.model.KeyEditState
 import com.flipperdevices.keyparser.api.KeyParser
-import com.flipperdevices.singleactivity.api.SingleActivityApi
 import javax.inject.Inject
 
 class LimboKeyProcessor @Inject constructor(
@@ -22,8 +21,7 @@ class LimboKeyProcessor @Inject constructor(
     private val utilsKeyApi: UtilsKeyApi,
     private val simpleKeyApi: SimpleKeyApi,
     private val synchronizationApi: SynchronizationApi,
-    private val inAppNotificationStorage: InAppNotificationStorage,
-    private val singleActivityApi: SingleActivityApi
+    private val inAppNotificationStorage: InAppNotificationStorage
 ) : EditableKeyProcessor<EditableKey.Limb> {
     override suspend fun loadKey(
         editableKey: EditableKey.Limb,
@@ -73,7 +71,7 @@ class LimboKeyProcessor @Inject constructor(
                 descId = R.string.saved_key_desc
             )
         )
-        singleActivityApi.open()
+        onEndAction()
     }
 }
 

@@ -18,6 +18,7 @@ import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.backhandler.BackCallback
 import com.flipperdevices.archive.api.ArchiveDecomposeComponent
+import com.flipperdevices.bottombar.api.BottomBarDecomposeComponent
 import com.flipperdevices.bottombar.handlers.ResetTabDecomposeHandler
 import com.flipperdevices.bottombar.impl.composable.ComposableInAppNotification
 import com.flipperdevices.bottombar.impl.composable.ComposableMainScreen
@@ -25,6 +26,7 @@ import com.flipperdevices.bottombar.impl.model.BottomBarTabEnum
 import com.flipperdevices.bottombar.impl.viewmodel.BottomBarViewModel
 import com.flipperdevices.bottombar.impl.viewmodel.InAppNotificationViewModel
 import com.flipperdevices.connection.api.ConnectionApi
+import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.android.OnLifecycleEvent
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.ktx.viewModelWithFactory
@@ -35,6 +37,7 @@ import com.flipperdevices.notification.api.FlipperAppNotificationDialogApi
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.unhandledexception.api.UnhandledExceptionRenderApi
+import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -55,7 +58,7 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
     private val appNotificationApi: FlipperAppNotificationDialogApi,
     private val bottomBarViewModelProvider: Provider<BottomBarViewModel>,
     private val inAppNotificationViewModelProvider: Provider<InAppNotificationViewModel>
-) : DecomposeComponent, ComponentContext by componentContext {
+) : DecomposeComponent, BottomBarDecomposeComponent, ComponentContext by componentContext {
     private val navigation = StackNavigation<BottomBarTabEnum>()
 
     private val stack: Value<ChildStack<BottomBarTabEnum, DecomposeComponent>> =
@@ -154,8 +157,9 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
     }
 
     @AssistedFactory
-    fun interface Factory {
-        operator fun invoke(
+    @ContributesBinding(AppGraph::class, BottomBarDecomposeComponent.Factory::class)
+    fun interface Factory : BottomBarDecomposeComponent.Factory {
+        override fun invoke(
             componentContext: ComponentContext,
             onBack: DecomposeOnBackParameter,
         ): BottomBarDecomposeComponentImpl

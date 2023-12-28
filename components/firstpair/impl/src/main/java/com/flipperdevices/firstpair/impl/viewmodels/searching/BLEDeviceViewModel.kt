@@ -17,13 +17,13 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import tangle.viewmodel.VMInject
 import java.util.concurrent.atomic.AtomicBoolean
+import javax.inject.Inject
 import javax.inject.Provider
 
 private const val TIMEOUT_MS = 30L * 1000
 
-class BLEDeviceViewModel @VMInject constructor(
+class BLEDeviceViewModel @Inject constructor(
     scannerProvider: Provider<FlipperScanner>
 ) : ViewModel(), LogTagProvider {
     override val TAG = "BLEDeviceViewModel"

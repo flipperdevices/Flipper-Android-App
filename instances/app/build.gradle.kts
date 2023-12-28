@@ -52,6 +52,9 @@ dependencies {
     implementation(projects.components.singleactivity.api)
     implementation(projects.components.singleactivity.impl)
 
+    implementation(projects.components.rootscreen.api)
+    implementation(projects.components.rootscreen.impl)
+
     implementation(projects.components.deeplink.api)
     implementation(projects.components.deeplink.impl)
 

@@ -24,11 +24,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withTimeout
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
 private const val TIMEOUT_MS = 30L * 1000
 
-class PairDeviceViewModel @VMInject constructor(
+class PairDeviceViewModel @Inject constructor(
     application: Application,
     private val firstPairStorage: FirstPairStorage,
     private val deviceColorSaver: DeviceColorSaver

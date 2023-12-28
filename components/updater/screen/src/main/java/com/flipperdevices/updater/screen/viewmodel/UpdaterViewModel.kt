@@ -28,11 +28,11 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.sync.Mutex
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
 private const val CHECK_CANCEL_DELAY = 100L
 
-class UpdaterViewModel @VMInject constructor(
+class UpdaterViewModel @Inject constructor(
     private val updaterApi: UpdaterApi,
     private val synchronizationApi: SynchronizationApi,
     serviceProvider: FlipperServiceProvider,

@@ -17,7 +17,6 @@ dependencies {
     implementation(projects.components.core.data)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.ktx)
-    implementation(projects.components.core.ui.navigation)
     implementation(projects.components.core.ui.decompose)
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ui.theme)
@@ -34,6 +33,7 @@ dependencies {
     implementation(projects.components.settings.api)
     implementation(projects.components.deeplink.api)
     implementation(projects.components.bottombar.api)
+    implementation(projects.components.rootscreen.api)
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.synchronization.api)
