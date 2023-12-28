@@ -9,7 +9,7 @@
 - [Refactor] Migrate archive screen to decompose
 - [Refactor] Migrate bottombar to decompose
 - [Refactor] Migrate root screens to decompose
-- [Feature] New report bug
+- [Feature] Button vibration in ScreenStreaming
 
 # 1.6.7
 
