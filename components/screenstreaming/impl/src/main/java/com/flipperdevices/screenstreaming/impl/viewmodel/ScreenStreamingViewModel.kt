@@ -1,8 +1,11 @@
 package com.flipperdevices.screenstreaming.impl.viewmodel
 
 import android.app.Application
+import android.os.Vibrator
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.core.ktx.android.vibrateCompat
 import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
 import com.flipperdevices.protobuf.screen.Gui
 import com.flipperdevices.screenstreaming.impl.composable.ButtonEnum
@@ -14,12 +17,15 @@ import com.flipperdevices.screenstreaming.impl.viewmodel.repository.StreamingRep
 import kotlinx.coroutines.flow.StateFlow
 import tangle.viewmodel.VMInject
 
+private const val VIBRATOR_TIME_MS = 10L
+
 class ScreenStreamingViewModel @VMInject constructor(
     serviceProvider: FlipperServiceProvider,
     application: Application,
     private val flipperButtonRepository: FlipperButtonRepository,
     private val buttonStackRepository: ButtonStackRepository,
 ) : AndroidLifecycleViewModel(application) {
+    private var vibrator = ContextCompat.getSystemService(application, Vibrator::class.java)
 
     private val lockRepository = LockRepository(
         scope = viewModelScope,
@@ -43,6 +49,8 @@ class ScreenStreamingViewModel @VMInject constructor(
         buttonEnum: ButtonEnum,
         inputType: Gui.InputType
     ) {
+        vibrator?.vibrateCompat(VIBRATOR_TIME_MS)
+
         val uuid = buttonStackRepository.onNewStackButton(buttonEnum.animEnum)
         flipperButtonRepository.pressOnButton(
             viewModelScope = viewModelScope,
