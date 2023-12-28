@@ -11,7 +11,6 @@ import javax.inject.Inject
 class ScreenStreamingDecomposeComponentNoop @Inject constructor() :
     ScreenStreamingDecomposeComponent {
 
-
     @Composable
     override fun Render() {
         // Noop
